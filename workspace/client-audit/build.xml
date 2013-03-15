@@ -1,0 +1,120 @@
+<!--
+==============================================================================
+=== Build file to allow ant (http://jakarta.apache.org/ant/) to be used
+=== to build the Sitools project.
+===
+=== Author : AKKA Technologies
+===
+=== name    : nom du projet
+===	default : tache ant executee par defaut
+===	basedir : repertoire courant lors de l'execution des taches ant
+===
+==============================================================================
+-->
+<project name="sitools-client-audit" default="audit" basedir=".">
+	
+	<property file="build.properties" />
+	
+	<!-- TODO CHANGE THIS -->	
+	<property name="cots.dir" value="${ROOT_DIRECTORY}/cots"/>
+	
+	<property name="jslint" location="${cots.dir}/audit/jslint4java" />
+	
+	<property name="client-user.dir" location="${ROOT_DIRECTORY}/workspace/client-user" />
+	<property name="client-admin.dir" location="${ROOT_DIRECTORY}/workspace/client-admin" />
+	
+	<property name="report-client-user.dir" location="report-client-user" />
+	<property name="report-client-admin.dir" location="report-client-admin" />
+
+	<!-- taskdef pour jsLint -->
+	<taskdef name="jslint" classname="com.googlecode.jslint4java.ant.JSLintTask" classpath="${jslint}/jslint4java-2.0.3.jar" />
+
+	<!--
+   ========================================================================
+     Targets projet
+   ========================================================================
+	-->
+
+	<target name="audit" depends="audit-user, audit-admin" />
+	
+	<!-- Targets for classic sources (multiple files in multiple folders)  -->
+	<target name="audit-user" depends="jslint-user-init, jslint-user" />
+	<target name="audit-admin" depends="jslint-admin-init, jslint-admin" />
+	
+<!--	 Targets for concatenated sources (all files in the same file) -->
+<!--	<target name="audit-user-all" depends="jslint-user-init, jslint-user-all" />-->
+<!--	<target name="audit-admin-all" depends="jslint-admin-init, jslint-admin-all" />-->
+
+	<!-- ========================================================================================= 
+		TARGETS POUR VALIDATION JSLINT USER
+	 ========================================================================================= -->
+
+	<target name="jslint-user-init">
+		<echo message="[init] jslint = ${jslint}" />
+		<mkdir dir="${report-client-user.dir}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${report-client-user.dir}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="jslint-user">
+		<echo message="[Running] jsLint validation tests on Folder ${client-user.dir}" />
+		<jslint options="white, bitwise, undef, regexp, newcap, sloppy, vars" failureProperty="jsLint.failure" haltOnFailure="false">
+			<formatter type="xml" destfile="${report-client-user.dir}/jslint.xml" />
+			<formatter type="plain" destfile="${report-client-user.dir}/jslint.out" />
+			<fileset dir="${client-user.dir}" includes="**/*.js" excludes="**/livegrid/dependencies/Ext.ux.livegrid/* **/*-min.js **/*-all.js" />
+		</jslint>
+		<echo message="[End] jsLint Results = ${jsLint.failure}" />
+	</target>	
+	
+	<!-- ========================================================================================= 
+		TARGETS POUR VALIDATION JSLINT ADMIN
+	 ========================================================================================= -->
+
+	<target name="jslint-admin-init">
+		<echo message="[init] jslint = ${jslint}" />
+		<mkdir dir="${report-client-admin.dir}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${report-client-admin.dir}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="jslint-admin">
+		<echo message="[Running] jsLint validation tests on Folder ${client-admin.dir}" />
+		<jslint options="white, bitwise, undef, regexp, newcap, sloppy, vars" failureProperty="jsLint.failure" haltOnFailure="false">
+			<formatter type="xml" destfile="${report-client-admin.dir}/jslint.xml" />
+			<formatter type="plain" destfile="${report-client-admin.dir}/jslint.out" />
+			<fileset dir="${client-admin.dir}" includes="**/*.js"  excludes="**/*-min.js **/*-all.js"/>
+		</jslint>
+		<echo message="[End] jsLint Results = ${jsLint.failure}" />
+	</target>
+	
+<!--	 ========================================================================================= -->
+<!--		TARGETS POUR VALIDATION JSLINT USER ALL-->
+<!--	 ========================================================================================= -->
+<!---->
+<!--	<target name="jslint-user-all">-->
+<!--		<echo message="[Running] jsLint validation tests on Folder ${client-user.dir}/js/minified" />-->
+<!--		<jslint options="white, bitwise, undef, regexp, newcap, laxbreak" failureProperty="jsLint.failure" haltOnFailure="false">-->
+<!--			<formatter type="xml" destfile="${report-client-user.dir}/jslint.xml" />-->
+<!--			<formatter type="plain" destfile="${report-client-user.dir}/jslint.out" />-->
+<!--			<fileset dir="${client-user.dir}/js/minified" includes="**/*.js" excludes="**/*-min.js" />-->
+<!--		</jslint>-->
+<!--		<echo message="[End] jsLint Results = ${jsLint.failure}" />-->
+<!--	</target>	-->
+<!--	-->
+<!--	 ========================================================================================= -->
+<!--		TARGETS POUR VALIDATION JSLINT ADMIN ALL-->
+<!--	 ========================================================================================= -->
+<!---->
+<!--	<target name="jslint-admin-all">-->
+<!--		<echo message="[Running] jsLint validation tests on Folder ${client-admin.dir}/js/minified" />-->
+<!--		<jslint options="white, bitwise, undef, regexp, newcap, laxbreak" failureProperty="jsLint.failure" haltOnFailure="false">-->
+<!--			<formatter type="xml" destfile="${report-client-admin.dir}/jslint.xml" />-->
+<!--			<formatter type="plain" destfile="${report-client-admin.dir}/jslint.out" />-->
+<!--			<fileset dir="${client-admin.dir}/js/minified" includes="**/*.js" excludes="**/*-min.js" />-->
+<!--		</jslint>-->
+<!--		<echo message="[End] jsLint Results = ${jsLint.failure}" />-->
+<!--	</target>-->
+
+</project>

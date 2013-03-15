@@ -1,0 +1,10 @@
+<ConceptTemplate>
+  <id>b9e6572b-2914-4f33-94bb-68920cd0a476</id>
+  <name>Humain  + Contexte</name>
+  <description></description>
+  <properties>
+    <fr.cnes.sitools.util.Property>
+      <name>Contexte</name>
+    </fr.cnes.sitools.util.Property>
+  </properties>
+</ConceptTemplate>

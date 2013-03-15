@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:OpensearchApplication:type:fr.cnes.sitools.dataset.opensearch.OpenSearchApplication</id>
+  <name>OpensearchApplication</name>
+  <description>Opensearch configuration</description>
+  <url>/sitools/datasets/{datasetId}/opensearch</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

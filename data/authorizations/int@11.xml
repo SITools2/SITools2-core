@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:OrderAdministration:type:fr.cnes.sitools.order.OrderAdministration</id>
+  <name>OrderAdministration</name>
+  <description>Management of off-line or asynchronous orders</description>
+  <url>/sitools/orders/admin</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

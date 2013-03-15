@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:ResourcePluginApplication:type:fr.cnes.sitools.resources.plugins.ResourcePluginApplication</id>
+  <name>ResourcePluginApplication</name>
+  <description>Application handling request of dynamic resources attachment</description>
+  <url>/sitools/projects/{projectId}/resources</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

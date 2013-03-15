@@ -1,0 +1,14 @@
+<jdbcdatasource>
+  <id>c08e7112-837f-4609-81c3-97e70b94033d</id>
+  <name>Postgres</name>
+  <description></description>
+  <status>ACTIVE</status>
+  <driverClass>org.postgresql.Driver</driverClass>
+  <url>jdbc:postgresql://odysseus2.silogic.fr:5432/CNES</url>
+  <userLogin>sitools</userLogin>
+  <userPassword>sitools</userPassword>
+  <sitoolsAttachementForUsers>/postgresDb</sitoolsAttachementForUsers>
+  <maxActive>10</maxActive>
+  <initialSize>5</initialSize>
+  <schemaOnConnection></schemaOnConnection>
+</jdbcdatasource>

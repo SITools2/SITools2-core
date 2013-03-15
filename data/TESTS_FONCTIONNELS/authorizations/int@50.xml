@@ -1,0 +1,21 @@
+<resourceAuthorization>
+  <id>urn:uuid:UserStorageApplication:type:fr.cnes.sitools.userstorage.UserStorageApplication</id>
+  <name>UserStorageApplication</name>
+  <description>Access to users space disk on server
+The security on this application is a bit different
+-&gt; The owner of the userstorage has all rights on its userstorage
+-&gt; Otherwise the application authorizations are used</description>
+  <url>/sitools/userstorage/{identifier}</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

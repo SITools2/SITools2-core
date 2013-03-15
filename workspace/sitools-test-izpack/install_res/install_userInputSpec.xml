@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<userInput>
+	<!-- DATABASE PROPERTIES -->
+	<panel order="0">
+		<field size="2" txt="Database properties" type="title"
+			id="input.title.dbProp" />
+
+		<field txt="PostgreSQL" type="staticText" id="input.pg.title" />
+
+
+		<field type="text" variable="input.database.hostname.pgsql">
+			<spec txt="Database host name: " set="localhost"
+				id="input.database.hostname.label" size="15" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="catalog.database.name.validator" txt="hostname is a required field" />
+		</field>
+
+		<field type="text" variable="input.database.port.pgsql">
+			<spec txt="Database port: " id="input.database.port.label" size="15"
+				set="5432" />
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Database port must be a number" id="input.database.port.validator">
+				<param name="pattern" value="\d+" />
+			</validator>
+		</field>
+
+		<field type="text" variable="input.database.name.pgsql">
+			<spec txt="Database name: " id="input.database.name.label" size="15"
+				set="CNES-test" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="input.database.name.validator" txt="Database name is a required field" />
+		</field>
+
+		<!-- <field type="text" variable="input.database.schema"> <spec txt="Schema 
+			name: " id="input.database.schema.label" size="15" set="fuse" /> </field> -->
+
+		<field type="text" variable="db_user_pgsql">
+			<spec size="15" txt="User" set="sitools" id="input.db_user.label" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="input.user.name.validator" txt="User name is a required field" />
+		</field>
+
+		<field type="password" align="left" variable="db_pwd_pgsql">
+			<spec>
+				<pwd txt="Password:" size="15" set="sitools" id="input.db_pwd.label" />
+				<pwd txt="Retype Password:" size="15" set="sitools" />
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+				txt="Both keystore passwords must match." id="catalog.database.password.validator" />
+		</field>
+
+
+		<!-- MYSQL -->
+		<field type="space" />
+		<field type="divider" />
+		<field type="space" />
+
+		<field txt="MySQL" type="staticText" id="input.pg.title" />
+
+
+		<field type="text" variable="input.database.hostname.mysql">
+			<spec txt="Database host name: " set="localhost"
+				id="input.database.hostname.label" size="15" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="catalog.database.name.validator" txt="hostname is a required field" />
+		</field>
+
+		<field type="text" variable="input.database.port.mysql">
+			<spec txt="Database port: " id="input.database.port.label" size="15"
+				set="3306" />
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Database port must be a number" id="input.database.port.validator">
+				<param name="pattern" value="\d+" />
+			</validator>
+		</field>
+
+		<field type="text" variable="input.database.name.mysql">
+			<spec txt="Database name: " id="input.database.name.label" size="15"
+				set="cnes-test" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="input.database.name.validator" txt="Database name is a required field" />
+		</field>
+
+
+		<field type="text" variable="db_user_mysql">
+			<spec size="15" txt="User" set="root" id="input.db_user.label" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="input.user.name.validator" txt="User name is a required field" />
+		</field>
+
+		<field type="password" align="left" variable="db_pwd_mysql">
+			<spec>
+				<pwd txt="Password:" size="15" set="mobi88" id="input.db_pwd.label" />
+				<pwd txt="Retype Password:" size="15" set="mobi88" />
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+				txt="Both keystore passwords must match." id="catalog.database.password.validator" />
+		</field>
+		
+		<field txt="Fields will be validated, it can be long if the SGBD can not be accessed" type="staticText" id="input.validation.msg" />
+		
+	</panel>
+	
+	
+	<!-- END OF DATABASE PROPERTIES -->
+
+
+</userInput>

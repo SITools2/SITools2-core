@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Xalan
+Bundle-SymbolicName: org.apache.xalan
+Bundle-Version: 2.7.1
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: Apache
+Bundle-ClassPath: serializer.jar,
+ xalan.jar,
+ xercesImpl.jar,
+ xml-apis.jar,
+ .

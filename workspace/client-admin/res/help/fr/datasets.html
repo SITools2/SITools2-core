@@ -1,0 +1,127 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>DataSets</title>
+
+<link href="../../css/help.css" rel="stylesheet" type="text/css"></head>
+<body>
+<h2>Create a dataset</h2>
+<ol>
+<li>Click on <b>Create</b> and fill in the form:</li>
+<ul>
+<li>Panel "Dataset information": set the dataset's
+general settings. The field "Datasource" is mandatory.</li>
+<li>Panel "Select tables": choose the tables
+linked to the dataset.<br>
+Select the tables to be associated in the left column then
+click on <b>›</b>.<br>
+You can associate all tables by pressing <b>››</b>.<br>
+To dissociate, click on tables in the right column then <b>‹</b>.<br>
+To dissociate all, click on ‹‹.<br>
+<br>
+To define an alias to a table, double-click on the <b>alias</b>
+column then enter the alias. </li>
+<li>Panel "Select fields": choose the fields
+linked to the dataset.<br>
+Select fields to associate in the left column then click on <b>›</b>.<br>
+To associate all fields, press the button <b>››</b>.<br>
+To dissociate, click on fields in the right column then <b>‹</b>.<br>
+To dissociate all, click on ‹‹. </li>
+<li>Panel "Fields setup" : set parameters for
+fields. You can add or delete fields as well.<br>
+"Assign clue" permits you to associate a concept of a dictionary to a
+field. </li>
+<li>Panel "Criteria (Where clause)" : select
+criteria via a wizard or a standard SQL command line. This wizard
+permits to define a join condition and/or a where clause.</li>
+<ul>
+<li>Wizard : &nbsp;You can add some Sql restriction to
+your Select with this wizard :&nbsp;</li>
+<ul>
+<li>Join Condition : &nbsp;Specify a join Condition
+between two tables. With a right mouse click on, you can&nbsp;</li>
+<ul>
+<li>add a condition &nbsp;:&nbsp;</li>
+<ul>
+<li>Specify a logic operator by double clicking on
+the first cell</li>
+<li>Specify some open parenthesis by double clicking
+on the second cell</li>
+</ul>
+<ul>
+<li>Define a left attribute by double click on the
+left attribute and choose in the list a left attribute</li>
+<li>Define an operator (this should be always
+"=")</li>
+<li>Define the right attribute (same way than the
+left attribute)</li>
+<li>Specify some close parenthesis by double clicking
+on the last cell</li>
+</ul>
+<li>delete a condition (you must have select a
+condition before)</li>
+<li>delete parenthesis : all the parenthesis of the
+selected conditions will be deleted</li>
+</ul>
+<li>Where Clause : Specify some values for the Where
+Clause :&nbsp;</li>
+<ul>
+<li>See add a condition. The only difference is that
+you have to enter a value for the right attribute.&nbsp;</li>
+</ul>
+</ul>
+<li>SQL : If you don't want to use the wizard, you can
+specify all the Where clause of this datasets.&nbsp;<br>
+SQL clause must be valid, and begin with the keyword WHERE
+</li>
+</ul>
+</ul>
+</ol>
+<ol>
+<li>Click on <b>OK</b> to save and close or <b>CANCEL</b>
+to cancel modifications.</li>
+</ol>
+<h2>Edit a dataset</h2>
+<ol><br><br></ol>
+<h2>Delete a dataset</h2>
+<ol>
+<li>Select the dataset to delete. The dataset must be <b>INACTIVE</b>.
+</li>
+<li>Click on <b>Delete</b>.</li>
+</ol>
+<h2>OpenSearch</h2>
+<p>
+Define an index for the OpenSearch.
+</p>
+<h2>Refresh datasets</h2>
+<p>
+Refresh the updated date, only if the status is <b>ACTIVE</b>.
+</p>
+<h2>Activate a dataset</h2>
+<ol>
+<li>Select the dataset storage you want to enable.</li>
+<li>Click on <b>Active</b>.</li>
+</ol>
+<h2>Disabling a dataset</h2>
+<ol>
+<li>Select the dataset storage you want to disable.</li>
+<li>Click on <b>Disable</b>.</li>
+</ol>
+</body></html>

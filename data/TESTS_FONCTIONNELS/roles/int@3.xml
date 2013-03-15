@@ -1,0 +1,5 @@
+<role>
+  <id>pub</id>
+  <name>public</name>
+  <description>The public user can access public data.</description>
+</role>

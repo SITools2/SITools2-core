@@ -1,0 +1,26 @@
+<projectModule>
+  <id>openSearchModule</id>
+  <name>OpenSearch</name>
+  <description>Project OpenSearch</description>
+  <author>akka</author>
+  <version>1.0</version>
+  <url>/deprecated</url>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/open_search.png</imagePath>
+  <title>title.opensearch</title>
+  <defaultWidth>740</defaultWidth>
+  <defaultHeight>480</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>openSearchModule</icon>
+  <specificType></specificType>
+  <xtype>sitools.user.modules.openSearchModule</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/openSearchModule/openSearchModule.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>6</priority>
+</projectModule>

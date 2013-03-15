@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jmeterTestPlan version="1.2" properties="2.1">
+  <hashTree>
+    <WorkBench guiclass="WorkBenchGui" testclass="WorkBench" testname="Plan de travail" enabled="true"/>
+    <hashTree>
+      <ProxyControl guiclass="ProxyControlGui" testclass="ProxyControl" testname="Serveur Proxy HTTP" enabled="true">
+        <stringProp name="ProxyControlGui.port">8085</stringProp>
+        <collectionProp name="ProxyControlGui.exclude_list">
+          <stringProp name="-835639533">.*\.jpg</stringProp>
+          <stringProp name="-135077191">.*\.html</stringProp>
+          <stringProp name="1358517207">.*\.js</stringProp>
+          <stringProp name="-835633829">.*\.png</stringProp>
+          <stringProp name="-835642634">.*\.gif</stringProp>
+          <stringProp name="-835640889">.*\.ico</stringProp>
+          <stringProp name="-135021706">.*\.jpeg</stringProp>
+          <stringProp name="85353921">.*\.properties</stringProp>
+          <stringProp name="-835646155">.*\.css</stringProp>
+          <stringProp name="-135018506">.*\.json</stringProp>
+        </collectionProp>
+        <collectionProp name="ProxyControlGui.include_list"/>
+        <boolProp name="ProxyControlGui.capture_http_headers">true</boolProp>
+        <intProp name="ProxyControlGui.grouping_mode">0</intProp>
+        <boolProp name="ProxyControlGui.add_assertion">true</boolProp>
+        <intProp name="ProxyControlGui.sampler_type_name">0</intProp>
+        <boolProp name="ProxyControlGui.sampler_redirect_automatically">false</boolProp>
+        <boolProp name="ProxyControlGui.sampler_follow_redirects">true</boolProp>
+        <boolProp name="ProxyControlGui.use_keepalive">true</boolProp>
+        <boolProp name="ProxyControlGui.sampler_download_images">false</boolProp>
+        <boolProp name="ProxyControlGui.regex_match">false</boolProp>
+        <boolProp name="ProxyControlGui.https_spoof">false</boolProp>
+        <stringProp name="ProxyControlGui.https_spoof_match"></stringProp>
+        <stringProp name="ProxyControlGui.content_type_include"></stringProp>
+        <stringProp name="ProxyControlGui.content_type_exclude"></stringProp>
+      </ProxyControl>
+      <hashTree/>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

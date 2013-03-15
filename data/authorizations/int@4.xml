@@ -1,0 +1,18 @@
+<resourceAuthorization>
+  <id>urn:uuid:FeedsPortalApplication:type:fr.cnes.sitools.server.Starter$5</id>
+  <name>FeedsPortalApplication</name>
+  <description>Feeds administration for portal</description>
+  <url>/sitools/portal/{dataId}/feeds</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

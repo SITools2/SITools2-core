@@ -1,0 +1,56 @@
+/*!
+ * Ext JS Library 3.3.1
+ * Copyright(c) 2006-2010 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
+
+#links ul li img {
+    margin-bottom: 1px;
+}
+
+#links {
+    background: -webkit-linear-gradient(top, #D8D8D8 , #FFFFFF);
+    background: -moz-linear-gradient(top, #D8D8D8 , #FFFFFF);
+    text-shadow: #fff 0 1px 0;
+}
+
+.links {
+    color: #585858;
+    font-family: "Helvetica Neue",sans-serif;
+    height: 40px;
+    width: 240px;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+.links-hover {
+    text-decoration: underline;
+    font-style: italic;
+}
+
+#links span {
+	color: black;
+    display: block;
+    font-size : 12pt;
+    vertical-align: middle;
+}
+
+.title-seeAlso {
+	font-size: 18pt;
+	color: #555555;
+	text-shadow: 2px 2px 2px #D5D5D5;
+	font-family: "Helvetica Neue",sans-serif;
+	height: 30px;
+    width: 120px;
+    padding: 20px 20px;
+    margin-bottom: 40px;
+}
+
+.icon-seeAlso {
+	float: left;
+	margin-right: 10px;
+}

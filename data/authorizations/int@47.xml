@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:TaskApplicationForAdmin:type:fr.cnes.sitools.server.Starter$9</id>
+  <name>TaskApplicationForAdmin</name>
+  <description>Exposes the list of all tasks</description>
+  <url>/sitools/tasks</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

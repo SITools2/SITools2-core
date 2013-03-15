@@ -1,0 +1,12 @@
+<formComponent>
+  <id>c4067d21-296b-49c7-a151-27151190922b</id>
+  <type>CHECKBOX</type>
+  <componentDefaultHeight>25</componentDefaultHeight>
+  <componentDefaultWidth>400</componentDefaultWidth>
+  <jsAdminObject>sitools.admin.forms.oneParam.withValues</jsAdminObject>
+  <jsUserObject>sitools.common.forms.components.CheckBox</jsUserObject>
+  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/WithValues.js</fileUrlAdmin>
+  <fileUrlUser>/sitools/common/js/forms/components/CheckBox.js</fileUrlUser>
+  <imageUrl>/sitools/common/res/images/formComponents/CheckBox.gif</imageUrl>
+  <priority>1</priority>
+</formComponent>

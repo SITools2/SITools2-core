@@ -1,0 +1,17 @@
+<resourceAuthorization>
+  <id>urn:uuid:client-public:type:fr.cnes.sitools.applications.PublicApplication</id>
+  <name>client-public</name>
+  <description>web client application for public resources used by other sitools client applications</description>
+  <url>/sitools</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

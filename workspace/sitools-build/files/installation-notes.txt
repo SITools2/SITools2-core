@@ -1,0 +1,28 @@
+1/ Description
+______________
+
+Identification                       : SITools2
+Date                                 : 2012-06-18
+Version                              : 0.9.6
+Owner                                : CNES
+Developer                            : AKKA Technologies
+
+
+____________________
+-0.9.6 (2012-06-18)
+Since the dataview configuration on a dataset has changed, all datasets have to be opened and saved.
+
+____________________
+-0.9.5 (2012-05-30)
+
+The DataSet data model has changed. 
+In order to start Sitools2 without errors follow the following procedure :
+    - Edit every xml files in the data/datasets directory
+    - In every "column" tag remove the following tags :
+    	- "datasetDetailUrl"
+    	- "columnAliasDetail"
+    	- "image" and all its children
+    	- "columnRenderer"
+
+All feature type will be deleted and have to be re-entered with the new interface.
+With this procedure, it is not needed to re-create every Datasets from scratch.   

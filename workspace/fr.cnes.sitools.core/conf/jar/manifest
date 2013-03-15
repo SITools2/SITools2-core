@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Created-By: Ant
+Title: @project@
+Specification-Title: @project@
+Implementation-Version: @version@
+Main-Class: fr.cnes.sitools.server.Starter

@@ -1,0 +1,23 @@
+<resourceAuthorization>
+  <id>urn:uuid:DimensionAdministration:type:fr.cnes.sitools.units.dimension.DimensionAdministration</id>
+  <name>DimensionAdministration</name>
+  <description>Application to manage DimensionsAdministrator must have all rights on this applicationpublic user must have GET right to access the dimension from the client-user interface</description>
+  <url>/sitools/units/admin</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

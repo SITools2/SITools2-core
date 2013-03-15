@@ -1,0 +1,10 @@
+<role>
+  <id>5b4be3b7-a284-46d3-895e-79813fbb56f9</id>
+  <name>avecTestAppli</name>
+  <description></description>
+  <users>
+    <resource>
+      <id>testAppli</id>
+    </resource>
+  </users>
+</role>

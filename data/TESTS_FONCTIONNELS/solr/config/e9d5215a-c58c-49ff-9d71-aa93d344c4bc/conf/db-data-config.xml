@@ -1,0 +1,11 @@
+<dataConfig>
+	<dataSource type="JdbcDataSource" driver="org.gjt.mm.mysql.Driver"
+		url="jdbc:mysql://odysseus2.silogic.fr:3306/cnes-fuse" user="sitools" password="sitools" />
+	<document name="e9d5215a-c58c-49ff-9d71-aa93d344c4bc">
+		<entity name="fsqdfqsd" query="SELECT HEADERS.DATASET as dataset_head, HEADERS.TARGNAME as targname, HEADERS.RA_TARG as ra_targ, HEADERS.DEC_TARG as dec_targ, HEADERS.DATEOBS as dateobs, HEADERS.EXPTIME as exptime, HEADERS.APERTURE as aperture, HEADERS.MODE as mode, HEADERS.EXPOS_NBR as expos_nbr, HEADERS.VMAG as vmag, HEADERS.SP_TYPE as sp_type, HEADERS.EBV as ebv, HEADERS.OBJCLASS as objclass, HEADERS.SRC_TYPE as src_type, HEADERS.DATEARCHIV as datearchiv, HEADERS.DATEPUBLIC as datepublic, HEADERS.REF as ref, HEADERS.Z as z, HEADERS.STARTTIME as starttime, HEADERS.ENDTIME as endtime, HEADERS.ELAT as elat, HEADERS.ELONG as elong, HEADERS.GLAT as glat, HEADERS.GLONG as glong, HEADERS.APER_PA as aper_pa, HEADERS.HIGH_PROPER_MOTION as high_proper_motion, HEADERS.MOVING_TARGET as moving_target, HEADERS.PR_INV_L as pr_inv_l, HEADERS.PR_INV_F as pr_inv_f, HEADERS.LOADEDatIAP as loadedatiap, HEADERS.HEALPIXID as healpixid, HEADERS.X_POS as x_pos, HEADERS.Y_POS as y_pos, HEADERS.Z_POS as z_pos, IAPDATASETS.DATASET as dataset, IAPDATASETS.NEVENTS as nevents, IAPDATASETS.TIMEOBS as timeobs, IAPDATASETS.CF_VERS as cf_vers, IAPDATASETS.SLIT as slit, IAPDATASETS.OBSSTART as obsstart, IAPDATASETS.OBSEND as obsend, IAPDATASETS.PLANTIME as plantime, IAPDATASETS.EXPNIGHT as expnight, IAPDATASETS.PRESENCE_ALL as presence_all, IAPDATASETS.DVD_ID as dvd_id, OBJECT_CLASS.OBJ_NBR as obj_nbr, OBJECT_CLASS.OBJECT_NAME as object_name FROM HEADERS INNER JOIN IAPDATASETS on HEADERS.DATASET=IAPDATASETS.DATASET INNER JOIN OBJECT_CLASS on HEADERS.OBJCLASS=OBJECT_CLASS.OBJ_NBR  WHERE 1=1 " transformer="TemplateTransformer">
+				<field column="dataset_head" name="dataset_head"  template="/e9d5215a-c58c-49ff-9d71-aa93d344c4bc/records/${fsqdfqsd.dataset_head}"/>
+				<field column="dateobs" name="dateobs" />
+				<field column="objclass" name="objclass" />
+		</entity>
+	</document>
+</dataConfig>

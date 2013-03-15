@@ -1,0 +1,78 @@
+/***************************************
+* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+/* styles for CSS Reset */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote{margin:0;padding:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul {list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;}
+
+/* styles for examples */
+/*body {
+	background-color: #DFE8F6;
+}
+
+#fisheye-menu {
+	text-align: center;
+}*/
+
+/* styles for FisheyeMenu */
+.ux-fisheye-menu-container {
+	//z-index : 15000;
+	position: absolute;
+	height: 60px;
+}
+
+a.ux-fisheye-menu-item {
+	display: block;
+	font: bold 12px Arial, Helvetica, sans-serif;
+	width: 40px;
+	color: white;
+	position: absolute;
+	text-align: center;
+	text-decoration: none;
+}
+
+a.ux-fisheye-menu-item span {
+	margin-bottom: 5px;
+	color: #CCCCCC;
+	display: none;
+	text-align: center;
+	background: url(../images/ux/bg-item-text.gif) no-repeat center bottom;
+}
+
+a.ux-fisheye-menu-item img {
+	border: none;
+	margin-right: 10px;
+	width: 100%;
+}
+
+.menu-wrap-top {
+	position: relative;
+}
+.menu-wrap-bottom {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+}
+
+.menu-align-top {
+	top: 0;
+	bottom: auto;
+}
+.menu-align-bottom {
+	bottom: 0;
+	top: auto;
+}

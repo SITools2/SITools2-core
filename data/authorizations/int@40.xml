@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:ConceptTemplateApplication:type:fr.cnes.sitools.dictionary.ConceptTemplateAdministration</id>
+  <name>ConceptTemplateApplication</name>
+  <description>ConceptTemplate management</description>
+  <url>/sitools/templates</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

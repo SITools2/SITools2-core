@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="org.restlet.ext.solr" default="build" basedir=".">
+
+	<property file="build.properties" />
+
+	<property file="../fr.cnes.sitools.core/build.properties" />
+	<property file="../fr.cnes.sitools.core/conf/build/properties/build-${HOST}.properties" />
+
+	<property name="build.dir" value="build" />
+	<property name="build.userlib.dir" value="${build.dir}/userlibraries" />
+	<property name="cots.dir" value="${ROOT_DIRECTORY}/cots" />
+
+	<target name="build" depends="refresh-userlibraries, build-project" />
+
+	<target name="build-project" description="invoke sitools/prototype/test-os-build">
+		<subant target="build-ext_solr">
+			<fileset dir="." includes="build/build.xml" />
+		</subant>
+	</target>
+
+	<!--  
+				TARGET refresh-userlibraries
+			 -->
+	<target name="refresh-userlibraries" description="Mise à jour des userlibrairies pour eclipse et pour Ant">
+		<xslt in="${build.userlib.dir}/org.restlet.ext.solr.userlibraries" out="${build.userlib.dir}/org.restlet.ext.solr.userlibraries.eclipse.xml" style="${build.userlib.dir}/org.restlet.ext.solr.userlibraries.xsl" force="true" processor="SaxonLiaison">
+			<param name="output" expression="eclipse" />
+			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="no" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+		<xslt in="${build.userlib.dir}/org.restlet.ext.solr.userlibraries" out="${build.userlib.dir}/org.restlet.ext.solr.userlibraries.ant.xml" style="${build.userlib.dir}/org.restlet.ext.solr.userlibraries.xsl" force="true" processor="SaxonLiaison">
+			<param name="output" expression="ant" />
+			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+	</target>
+
+</project>
+

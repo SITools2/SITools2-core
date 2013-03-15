@@ -1,0 +1,30 @@
+<resourceAuthorization>
+  <id>urn:uuid:client-admin:type:fr.cnes.sitools.applications.ClientAdminApplication</id>
+  <name>client-admin</name>
+  <description>The application is used by the administrator to access the Web client administrator application
+-&gt; public user must have GET authorization otherwise the login page will be unavailable
+-&gt; administrator user must have GET authorization has well</description>
+  <url>/sitools/client-admin</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>false</POST>
+      <GET>true</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

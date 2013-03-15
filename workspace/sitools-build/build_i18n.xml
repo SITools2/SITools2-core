@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="fr.cnes.sitools.i18n" default="i18n_test_labels"
+	basedir="." xmlns:ac="antlib:net.sf.antcontrib">
+
+
+	<target name="i18n_test_labels">
+
+		<patternset id="filestotest">
+			
+		</patternset>
+
+
+		<property file="../client-public/res/i18n/en/gui.properties"
+			prefix="i18n" />
+		<ac:propertyselector property="my.propertyList"
+			match="i18n.([^\=]*)" select="\1" />
+		<ac:sortlist property="propertyList" value="${my.propertyList}"
+			delimiter="," />
+		<echo file="i18n_result.txt" message="Liste des labels non utilises :${line.separator}" />
+		<ac:for list="${propertyList}" param="label">
+			<ac:sequential>
+				<antcall target="check_label">
+                    <param name="label" value="@{label}"/>
+                </antcall>
+				
+
+			</ac:sequential>
+		</ac:for>
+
+	</target>
+	
+	
+	<target name="check_label">
+		<condition property="contain">
+			<resourcecount when="greater" count="0">
+				<fileset dir="..">
+					<contains text="${label}" casesensitive="yes" />
+					<include name="**/*.js" />
+					<include name="**/*.java" />
+				</fileset>
+			</resourcecount>
+		</condition>
+		<ac:if>
+			<isfalse value="${contain}" />
+			<ac:then>
+				<echo append="true" file="i18n_result.txt" message="${label}:${line.separator}"/>
+			</ac:then>
+		</ac:if>	
+	</target>
+	
+</project>

@@ -1,0 +1,39 @@
+/***************************************
+* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+body{
+	overflow: hidden;
+}
+.x-icon-error{
+	background-image:url(../images/exclamation.gif) ! important;
+}
+.x-icon-information{
+	background-image:url(../images/information.gif) ! important;
+}
+.x-notification .x-window-body{
+	z-index: 11000 !important;
+	margin: 0;
+	padding:1em ! important; 
+	width: auto ! important;
+}
+.x-notification .x-tool-close{
+	display: none;
+}
+.x-notification.fixed .x-tool-close{
+	display: block;
+}

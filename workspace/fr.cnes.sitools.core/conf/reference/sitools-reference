@@ -1,0 +1,191 @@
+#! /bin/bash
+
+# ---------
+# Fonctions
+# ---------
+
+version() {
+	echo " SITools2 v.${version} Copyright 2010, 2011, 2012 CNES"
+}
+
+usage() {
+    echo "USAGE"
+    echo "  ${prog} <start|stop|restart|status> [-migration]"
+    echo "PARAMETERS:"
+    echo " -migration : used to start Sitools2 in migration mode to skip XML fields that are not in the models anymore"
+    echo " "
+}
+
+# ---------
+# This function is used to check when sitools must
+# be allowed running even when a pid file is already
+# present
+#
+# Returns 0 when both sitools is not running in memory and 
+# PID number exists in the the PID file
+# 
+# Returns 1 when both PID number is present and sitools
+# is running in memory
+#
+# Returns 2 when PID file is empty
+#
+# ---------
+automaticCleanIsNeeded() {
+    local pid=`cat ${SITOOLS_PID}`
+    if [ "${pid}" != "" ];then
+        isRunning=`ps -ef |grep ${pid} | grep -v grep | grep ${SITOOLS_JAR_NAME}`          
+        if [ "${isRunning}" != "" ];then
+            return 1
+        else              
+            return 0       
+        fi
+    else
+	return 2
+    fi
+
+}
+
+start() {
+    if [ -f ${SITOOLS_PID} ];then
+        automaticCleanIsNeeded
+	response=${?}
+        if [ ${response} -eq 1 ];then
+	   status
+        elif [ ${response} -eq 0 ];then
+           rm ${SITOOLS_PID} 
+	   start
+        elif [ ${response} -eq 2 ];then
+	   status
+        else 
+	   status
+	fi
+    else    
+        if [ "${SITOOLS}" != "" ];then
+            cd ${START_DIR}
+            cp fr.cnes.sitools.core.jar ${SITOOLS_JAR_NAME}
+	    local SITOOLS_START="./${SITOOLS}"
+            [ ! -x ${SITOOLS_START} ] && echo "Cannot start ${SITOOLS_START}" && exit 1
+            echo -e "Starting ${SITOOLS_START} ${1}...\c "
+            nohup ${SITOOLS_START} ${1} 2>&1 >> ${LOG} &
+            if [ ${?} -ne 0 ];then
+                echo "[ERROR]" | tee -a ${LOG}
+                echo "A problem happens: cannot start ${SITOOLS_START} ..." | tee -a ${LOG}
+                echo "Please, check the script before starting." | tee -a ${LOG}
+            else
+                echo "[OK]" | tee -a ${LOG}
+            fi
+        fi
+    fi
+}
+
+stop() {
+    echo -e "Shutting down sitools...\c "
+    if [ ! -f ${SITOOLS_PID} ];then
+        echo "[ERROR]"
+        echo "The file ${SITOOLS_PID} cannot be found..."
+        isRunning=`ps -ef | grep -v grep | grep ${SITOOLS_JAR_NAME} | awk '{print $2}'`
+        if [ "${isRunning}" != "" -a "`echo ${isRunning} | tr -d [:digit:]`" = "" ];then
+            echo " "
+            echo "Try to stop sitools..."
+            kill ${isRunning}
+        else
+            echo "sitools seems to be stopped..."
+        fi
+    else
+        kill `cat ${SITOOLS_PID}`
+        if [ ${?} -eq 0 ];then
+            echo "[OK]"
+            rm ${SITOOLS_PID}
+
+        else
+            echo "[ERROR]"
+        fi
+    fi
+}
+
+status() {
+    echo -e "Status of sitools..."
+    if [ -f ${SITOOLS_PID} ];then
+        local pid=`cat ${SITOOLS_PID}`
+        if [ "${pid}" != "" ];then
+            isRunning=`ps -ef |grep ${pid} | grep -v grep | grep ${SITOOLS_JAR_NAME}`            
+            if [ "${isRunning}" != "" ];then
+                echo "sitools is started (pid: ${pid})"
+            else               
+                echo "Warning... Le PID file is there (${pid}) but the processus is absent. Please restart sitools"      
+            fi
+        else
+            echo "the file ${SITOOLS_PID} is empty! An error may occured during starting sitools..."
+        fi
+    else
+        isRunning=`ps -ef |grep java | grep -v grep | grep ${SITOOLS_JAR_NAME}`
+        if [ "${isRunning}" != "" ];then
+            echo "... The PID file is absent but the processus seems working in memory."
+         else
+            echo "sitools is stopped."
+        fi
+    fi
+}
+
+# ---------
+# Principal
+# ---------
+prog=`basename ${0}`
+myDir=`dirname ${0}`
+myPid=${$}
+
+# Version de sitools
+version="@VERSION@"
+
+# Parametrage de l'environnement
+[ -f ${HOME}/.bash_profile ] && . ${HOME}/.bash_profile
+
+LOG_DIR="@ROOT_DIRECTORY@/LOG"
+[ ! -d ${LOG_DIR} ] && mkdir -p ${LOG_DIR}
+
+LOG="${LOG_DIR}/sitools.log"
+
+[ "${1}" = "" ] && usage && exit 0
+
+[ "${1}" = "--version" ] && version && exit 0
+
+START_DIR="@ROOT_DIRECTORY@/workspace/fr.cnes.sitools.core"
+SITOOLS="startSitools.sh"
+SITOOLS_START="${START_DIR}/${SITOOLS}"
+SITOOLS_PID="${LOG_DIR}/${SITOOLS}.run"
+SITOOLS_JAR_NAME="@PORT@_fr.cnes.sitools.core.jar"
+
+if [ ! -x ${SITOOLS_START} ];then
+    echo "--- ERROR ---" | tee -a ${LOG}
+    echo "${SITOOLS_START} cannot be found or executed. Abandon." | tee -a ${LOG}
+    echo "--- ERROR ---" | tee -a ${LOG}
+    exit 1
+fi
+
+
+
+case ${1} in
+    start)
+        start ${2}
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start ${2}
+        ;;
+    status)
+        status
+        ;;
+    *)
+        echo "option '${1}' unknown"
+        usage
+        exit 1
+        ;;
+esac
+
+# -------------
+# Fin du script
+# -------------
+

@@ -1,0 +1,34 @@
+
+/**
+ * Styles used by Ext.ux.plugins.SliderRange plugin for Ext.Slider
+ * @author  Dorothea Loew
+ * @date    Februar 15, 2009
+ */
+ 
+.ux-sliderrange-val {
+	width: 14px; 
+	overflow: visible;
+    position: absolute;
+    text-align: center;
+	font-size: 10px;
+	background: transparent url(../../img/ux/tick.gif) no-repeat top left;
+	line-height: 30px;
+	background-color: white;
+	vertical-align: bottom;
+	white-space: nowrap; /* IE only */
+	color: #385F95;
+}
+
+.ux-sliderrange {
+	position:relative;
+    left:0;
+    top:-3px;
+    overflow:visible;
+    zoom:1;
+}
+
+/* with range slider needs more space */
+.ux-sliderrange-slider {
+	height: 50px;
+}	
+

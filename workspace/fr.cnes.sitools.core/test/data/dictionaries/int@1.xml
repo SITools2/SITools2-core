@@ -1,0 +1,52 @@
+<dictionary>
+  <id>1111111-960a-4a49-9565-59d5c189ad22</id>
+  <name>Second test dictionary</name>
+  <description>A second dictionary for tests</description>
+  <conceptTemplate>
+    <id>aaaaaaa-ebd8-4a40-90ef-aa3154856771</id>
+    <name>A_template_for_tests</name>
+    <description></description>
+    <properties>
+      <fr.cnes.sitools.util.Property>
+        <name>second_name1</name>
+        <value>second_value1</value>
+      </fr.cnes.sitools.util.Property>
+      <fr.cnes.sitools.util.Property>
+        <name>second_name2</name>
+        <value>second_value2</value>
+      </fr.cnes.sitools.util.Property>
+    </properties>
+  </conceptTemplate>
+  <concepts>
+    <concept>
+      <id>0</id>
+      <name>second_concept1</name>
+      <description>A second concept1</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>second_name1</name>
+          <value>second_value1</value>
+        </fr.cnes.sitools.util.Property>
+        <fr.cnes.sitools.util.Property>
+          <name>second_name2</name>
+          <value>second_value2</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+    <concept>
+      <id>1</id>
+      <name>second_concept2</name>
+      <description>A second concept2</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>second_name1</name>
+          <value>second_value1</value>
+        </fr.cnes.sitools.util.Property>
+        <fr.cnes.sitools.util.Property>
+          <name>second_name2</name>
+          <value>second_value2</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+  </concepts>
+</dictionary>

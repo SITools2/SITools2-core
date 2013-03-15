@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =================================== == Copyright 2011, 2012 CNES - CENTRE 
+	NATIONAL d'ETUDES SPATIALES == == This file is part of SITools2. == == SITools2 
+	is free software: you can redistribute it and/or modify == it under the terms 
+	of the GNU General Public License as published by == the Free Software Foundation, 
+	either version 3 of the License, or == (at your option) any later version. 
+	== == SITools2 is distributed in the hope that it will be useful, == but 
+	WITHOUT ANY WARRANTY; without even the implied warranty of == MERCHANTABILITY 
+	or FITNESS FOR A PARTICULAR PURPOSE. See the == GNU General Public License 
+	for more details. == == You should have received a copy of the GNU General 
+	Public License == along with SITools2. If not, see <http://www.gnu.org/licenses/>. 
+	==================================== -->
+<project name="fr.cnes.sitools.core" default="build" basedir=".">
+
+	<!-- ============================================================================== 
+		=== Build file to allow ant (http://jakarta.apache.org/ant/) to be used === 
+		to build the Sitools project. === === Author : AKKA Technologies === === 
+		name : nom du projet === default : tache ant executee par defaut === basedir 
+		: repertoire courant lors de l'execution des taches ant === ============================================================================== -->
+
+	<!-- ATTENTION PENSER à positionner la propriété HOST dans le build.properties 
+		Si une nouvelle librairie est utilisée dans le projet PENSER à la rajouter 
+		à l'une OU l'autre des définitions de classpath dans le build.xml : - compile.classpath 
+		- test.classpath PENSER que le fichier reference pour l'ajout de propriétés 
+		est /conf/properties/sitools-reference.properties Il est utilisé pour générer 
+		le fichier sitools.properties correspondant à la plateforme et utilisé par 
+		l'application. -->
+
+	<property file="build.properties" />
+	
+	<property file="conf/build/properties/build-test.properties"/>
+	
+	<property file="conf/build/properties/build-${HOST}.properties" />
+
+	<property file="build-default.properties" />
+
+	<import file="sitools.userlibraries.ant.xml" optional="true" />
+
+	<property name="cots.dir" value="${ROOT_DIRECTORY}/cots" />
+
+	<property name="build.extensions.dir" value="../fr.cnes.sitools.ext.test/" />
+	<property name="conf.dir" value="conf" />
+	<property name="conf.reference.dir" value="${conf.dir}/reference" />
+	<property name="conf.bin.dir" value="${conf.dir}/bin" />
+	<property name="conf.jar.dir" value="${conf.dir}/jar" />
+	<property name="conf.build.dir" value="${conf.dir}/build" />
+	<property name="conf.build.properties.dir" value="${conf.dir}/build/properties" />
+	<property name="conf.build.userlib.dir" value="${conf.dir}/build/userlibrairies" />
+	<property name="conf.properties.dir" value="${conf.dir}/properties" />
+	<property file="${conf.reference.dir}/sitools-reference.properties"
+		prefix="properties" />              
+
+
+	<!-- TARGET par defaut : mise à jour du classpath, generation shell et build 
+		du projet. -->
+	<target name="build"
+		depends="refresh-properties, refresh-userlibraries, build-shell, build-project, build-tests" />
+	
+	
+
+	<!-- TARGET refresh-properties -->
+	<target name="refresh-properties"
+		description="Mise à jour du fichier de propriétés sitools.properties">
+		<copy outputencoding="UTF-8" tofile="${conf.properties.dir}/sitools.properties"
+			file="${conf.reference.dir}/sitools-reference.properties" overwrite="true" />
+		<propertyfile file="${conf.properties.dir}/sitools.properties"
+			comment="Update root property">
+			<entry key="Starter.ROOT_DIRECTORY" value="${ROOT_DIRECTORY}" />
+			<entry key="Starter.HOST_DOMAIN" value="${HOST_DOMAIN}" />
+			<entry key="Starter.DATABASE_URL" value="${DATABASE_URL}" />
+			<entry key="Starter.DATABASE_USER" value="${DATABASE_USER}" />
+			<entry key="Starter.DATABASE_PASSWORD" value="${DATABASE_PASSWORD}" />
+			<entry key="Starter.DATABASE_SCHEMA" value="${DATABASE_SCHEMA}" />
+			<entry key="Starter.PUBLIC_HOST_DOMAIN" value="${PUBLIC_HOST_DOMAIN}" />
+			<entry key="Starter.HOST_PORT" value="${HOST_PORT}" />
+			<entry key="Security.Intranet.net" value="${SECURITY_INTRANET_NET}" />
+			<entry key="Security.Intranet.mask" value="${SECURITY_INTRANET_MASK}" />
+		</propertyfile>
+		<condition property="itnetIsSet">
+			<isset property="Security.Intranet.ADMIN" />
+		</condition>
+		<antcall target="refresh-itnet"/>
+		<copy outputencoding="UTF-8" tofile="sitools.properties"
+			file="${conf.properties.dir}/sitools.properties" overwrite="true" />
+		
+		
+	</target>
+
+	<!-- TARGET for sitools.akka.eu -->
+	<target name="refresh-itnet" if="itnetIsSet">
+		<macrodef name="intranetkey">
+			<attribute name="propertyName" default="Security.Intranet.xxx" />
+			<attribute name="propertyValue" default="false" />
+			<sequential>
+				<propertyfile file="${conf.properties.dir}/sitools.properties">
+					<entry key="@{propertyName}" value="@{propertyValue}"
+						operation="=" default="false" />
+				</propertyfile>
+			</sequential>
+		</macrodef>
+		<intranetkey propertyName="Security.Intranet.ADMIN"
+			propertyValue="${Security.Intranet.ADMIN}" />
+		<intranetkey propertyName="Security.Intranet.USER"
+			propertyValue="${Security.Intranet.USER}" />
+		<intranetkey propertyName="Security.Intranet.SYSTEM"
+			propertyValue="${Security.Intranet.SYSTEM}" />
+		<intranetkey propertyName="Security.Intranet.ADMIN_DYNAMIC"
+			propertyValue="${Security.Intranet.ADMIN_DYNAMIC}" />
+		<intranetkey propertyName="Security.Intranet.USER_DYNAMIC"
+			propertyValue="${Security.Intranet.USER_DYNAMIC}" />
+		<intranetkey propertyName="Security.Intranet.SYSTEM_DYNAMIC"
+			propertyValue="${Security.Intranet.SYSTEM_DYNAMIC}" />
+	</target>
+
+
+
+
+	<!-- TARGET execute-tests les tests doivent être executés après le build-project 
+		ensuite on pourra aussi les executer avec le jar sitools généré dans dist 
+		au lieu des classes, pour être plus sûr du bon fonctionnement. -->
+	<target name="execute-tests" description="invoke sitools/prototype/execute-tests">
+		<subant target="execute-tests">
+			<fileset dir="${conf.build.dir}" includes="build.xml" />
+		</subant>
+	</target>
+	
+	<target name="javadoc" description="Generate project javadoc">
+		<subant target="javadoc-projet">
+			<fileset dir="${conf.build.dir}" includes="build.xml" />
+		</subant>	
+	</target>
+	
+
+
+	<!-- TARGET cobertura les tests doivent être executés en mode instrumente -->
+	<target name="coverage" description="invoke sitools/prototype/coverage">
+		<subant target="coverage">
+			<fileset dir="${conf.build.dir}" includes="build.xml" />
+		</subant>
+	</target>
+
+	<!-- TARGET audit les tests doivent être executés en mode instrumente -->
+	<target name="audit" description="Generates a report of code convention violations">
+		<subant target="audit">
+			<fileset dir="${conf.build.dir}" includes="build.xml" />
+		</subant>
+	</target>
+
+	<!-- TARGET build-project -->
+	<target name="build-project" description="invoke sitools/prototype/deploy-jar-projet" />
+
+	<!-- TARGET build-project -->
+	<target name="build-tests" description="invoke sitools/prototype/deploy-jar-test-projet">
+		<subant target="deploy-jar-test-projet">
+			<fileset dir="${conf.build.dir}" includes="build.xml" />
+		</subant>
+	</target>
+
+
+	<!-- TARGET refresh-userlibraries -->
+	<target name="refresh-userlibraries"
+		description="Mise à jour des userlibrairies pour eclipse et pour Ant">
+		<echo message="COTS dir : ${cots.dir}"/>
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries"
+			out="${conf.build.userlib.dir}/sitools.userlibraries.eclipse.xml"
+			style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true"
+			processor="SaxonLiaison">
+			<param name="output" expression="eclipse" />
+			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="no" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries"
+			out="${conf.build.userlib.dir}/sitools.userlibraries.ant.xml" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl"
+			force="true" processor="SaxonLiaison">
+			<param name="output" expression="ant" />
+			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
+			<outputproperty name="method" value="xml" />
+			<outputproperty name="standalone" value="yes" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+	</target>
+
+
+	<!-- TARGET xslt-build-shell -->
+	<target name="build-shell" description="Mise à jour du shell de lancement">
+		<!-- build script sitools -->
+		<copy file="${conf.reference.dir}/sitools-reference" tofile="${conf.bin.dir}/sitools"
+			outputencoding="UTF-8" overwrite="true">
+			<filterchain>
+				<replacetokens>
+					<token key="ROOT_DIRECTORY" value="${ROOT_DIRECTORY}" />
+					<token key="VERSION" value="${properties.Starter.VERSION}" />
+					<token key="PORT" value="${HOST_PORT}" />				
+				</replacetokens>
+			</filterchain>
+		</copy>
+		<copy outputencoding="UTF-8" tofile="sitools" file="${conf.bin.dir}/sitools"
+			overwrite="true" />
+		<chmod file="sitools" perm="ugo+rx" />
+		<chmod file="${conf.bin.dir}/sitools" perm="ugo+rx" />
+
+		<!-- build script start sitools -->
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.bin.dir}/startSitools.sh"
+			style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true"
+			processor="SaxonLiaison">
+			<param name="output" expression="shell" />
+			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
+			<param name="LOG_DIRECTORY" expression="${ROOT_DIRECTORY}" />
+			<param name="PORT" expression="${HOST_PORT}" />
+			<outputproperty name="method" value="text" />
+			<outputproperty name="standalone" value="no" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.bin.dir}/startSitools.bat"
+			style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true"
+			processor="SaxonLiaison">
+			<param name="output" expression="bat" />
+			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
+			<outputproperty name="method" value="text" />
+			<outputproperty name="standalone" value="no" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+		<copy outputencoding="UTF-8" tofile="startSitools.sh"
+			file="${conf.bin.dir}/startSitools.sh" overwrite="true" />
+		<copy outputencoding="UTF-8" tofile="startSitools.bat"
+			file="${conf.bin.dir}/startSitools.bat" overwrite="true" />
+		<chmod file="startSitools.sh" perm="ugo+rx" />
+		<chmod file="${conf.bin.dir}/startSitools.sh" perm="ugo+rx" />
+	</target>
+
+	<target name="jar" description="target to refresh the core jar">
+		<subant target="jar" buildpath="./conf/build" />
+		<subant target="deploy-jar" buildpath="./conf/build" />
+	</target>
+
+
+
+
+</project>

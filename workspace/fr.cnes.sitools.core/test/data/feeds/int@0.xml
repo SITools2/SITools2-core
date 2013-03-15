@@ -1,0 +1,39 @@
+<FeedModel>
+  <id>a_feed</id>
+  <name>a_feed</name>
+  <feedType>rss_2.0</feedType>
+  <title>a_feed</title>
+  <description>The description of the feed</description>
+  <link></link>
+  <entries>
+    <FeedEntryModel>
+      <link></link>
+      <updatedDate>2011-07-21 09:53:00.0 CEST</updatedDate>
+      <publishedDate>2011-07-21 09:53:00.0 CEST</publishedDate>
+      <title>a second item</title>
+      <description>The description of the second item</description>
+      <author>
+        <name></name>
+        <email></email>
+      </author>
+    </FeedEntryModel>
+    <FeedEntryModel>
+      <link></link>
+      <updatedDate>2011-07-21 09:52:00.0 CEST</updatedDate>
+      <publishedDate>2011-07-21 09:52:00.0 CEST</publishedDate>
+      <title>a first item</title>
+      <description>The description of a first item</description>
+      <author>
+        <name></name>
+        <email></email>
+      </author>
+    </FeedEntryModel>
+  </entries>
+  <parent>premier</parent>
+  <author>
+    <name></name>
+    <email></email>
+  </author>
+  <visible>true</visible>
+  <feedSource>CLASSIC</feedSource>
+</FeedModel>

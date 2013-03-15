@@ -1,0 +1,37 @@
+<resourceAuthorization>
+  <id>default</id>
+  <name>Default</name>
+  <type>class</type>
+  <description>Default Authorization Class</description>
+  <url></url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>false</POST>
+      <GET>true</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>true</HEAD>
+      <OPTIONS>true</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>Registered</role>
+      <POST>true</POST>
+      <GET>true</GET>
+      <PUT>true</PUT>
+      <HEAD>true</HEAD>
+      <OPTIONS>true</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

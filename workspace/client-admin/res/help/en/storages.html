@@ -1,0 +1,75 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>storages</title>
+
+<link href="../../css/help.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<p>Archival storage entity provides the services and functions for the storage definition, the permissions and retrieval of data. Archival storage component is the function that allows the administrator to handle the data storage (create, edit, delete, enable, disable, authorization and filtering).The following sections explain how to handle an archival storage.</p>
+<p><br>
+</p>
+<h2>Create an archival storage</h2>
+<br>
+<ol start="1" type="1">
+<li>Click on&nbsp;<span style="font-weight: bold;">Create</span></li>
+<li>Fill in the form with
+<ul>
+<li>A name</li>
+<li>A description</li>
+<li>A local path : must start with the protocol (eg:file:// ), some variable can be used as shortcuts (file://{$ROOT_DIRECTORY})</li>
+<li>A public url</li>
+<li>An Url attachment (urlAttach) : must start with /, the url to access the storage will be (/sitools/datastorage/user/<span style="font-style: italic;">urlAttach</span>)&nbsp;</li>
+<li>Recursive Access : if the subdirectories can be accessed or not</li>
+<li>Listing, when files can be listed</li>
+<li>Modifiable, when files can be modified</li>
+</ul>
+</li>
+</ol>
+
+
+<ol start="3">
+<li>Click on <span style="font-weight: bold;">Ok</span></li>
+</ol>
+
+<br>
+<h2>Edit an archival storage</h2><br>
+<ol>
+<li>Select the archival storage item you want to edit.</li>
+<li>Follow the steps above and click on <span style="font-weight: bold;">OK</span></li>
+</ol>
+
+<h2>Enable an archival storage</h2>
+<ol><li>Select the&nbsp;archival storage you want to enable.</li><li>Click on <b>Enable</b><b></b></li></ol>
+
+<h2>Disable an archival storage</h2>
+<ol><li>Select the&nbsp;archival storage you want to disable.</li><li>Click on <b>Disable</b>.</li></ol>
+
+<h2>Delete an archival storage</h2>
+<ol><li>Select the&nbsp;archival storage you want to delete.</li><li>Click on <b>Delete</b>.</li></ol><ol start="1" type="1"></ol>
+
+<h2>Configuring authorization</h2>
+<ol><li>Select the archival storage item  you want to authorize.</li><li>Disable the storage item.</li><li>Click on <b>Authorizations</b> and see the authorizations component</li></ol><ol start="1" type="1"></ol>
+
+<h2>Custom filter</h2>
+<p>In some cases, the authorization mechanism must deal with business information for which SITools2 does not have access. To handle these cases, a developer can create a plugin that the administrator will then deploy (for more details, see the developer guide).</p>
+<ol><li>Select the archival storage item  you want to authorize.</li><li>Disable the storage item.</li><li>Click on <b>Custom filter</b> and configure the plugin</li></ol><ol start="1" type="1"></ol><br>
+
+</body></html>

@@ -1,0 +1,10 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ADMUserSuite" >
+  <test name="ADMUserTest" preserve-order="true">
+    <classes>
+      <class name="test.AdminLogin" />
+      <class name="test.ADM51" />
+      <class name="test.ADMTestRoles" />
+    </classes>
+  </test>
+</suite>

@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:ResourceClassPluginApplication:type:fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication</id>
+  <name>ResourceClassPluginApplication</name>
+  <description>Exposition of dynamic resources classes</description>
+  <url>/sitools/plugins/resources</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

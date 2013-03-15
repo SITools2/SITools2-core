@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eclipse-userlibraries version="2">
+    <library name="fr_cnes_sitools_extensions" systemlibrary="false">
+        <archive path="D:/CNES-ULISSE/workspace/fr.cnes.sitools.extensions/dist/fr.cnes.sitools.extensions.jar"/>
+    </library>
+    <library name="restlet_jse_2_0_5_patched" systemlibrary="false">
+        <archive path="D:/CNES-ULISSE/workspace/org.restlet.patched/org.restlet.patched_1.0.3.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.net.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.osgi_4.0/org.osgi.core.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.dbcp_1.3/org.apache.commons.dbcp.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.crypto.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.freemarker.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.javamail.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.jackson.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/javax.mail_1.4/javax.mail.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.json_2.0/org.json.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/com.thoughtworks.xstream_1.3/com.thoughtworks.xstream.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.codehaus.jettison_1.2/org.codehaus.jettison.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.fileupload_1.2/org.apache.commons.fileupload.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.pool_1.5/org.apache.commons.pool.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.junit_4.8/org.junit.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/com.sun.syndication_1.0/com.sun.syndication.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.xml.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.xstream.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.atom.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.fileupload.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.jetty.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.json.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.rome.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/org.restlet.ext.wadl/org.restlet.ext.wadl_2.0.1.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.wadl.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.httpclient.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.httpclient_4.0/org.apache.httpclient.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.httpcore_4.0/org.apache.httpcore.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.httpmime_4.0/org.apache.httpmime.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.continuations.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.http.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.io.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.server.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.util.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.ajp.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.freemarker_2.3/org.freemarker.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/javax.servlet_2.5/javax.servlet.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.jdom_1.1/org.jdom.jar"/>
+    </library>
+    <library name="sitools_libraries" systemlibrary="false">
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/wstx-asl-3.2.7.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/activation-1.1.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-analysis-extras-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-cell-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-clustering-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-core-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-dataimporthandler-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-dataimporthandler-extras-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-solrj-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/apache-solr-uima-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/commons-codec-1.4.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/commons-httpclient-3.1.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/commons-io-1.4.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/geronimo-stax-api_1.0_spec-1.0.1.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/icu4j-4_6.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/jcl-over-slf4j-1.5.5.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-analyzers-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-core-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-highlighter-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-icu-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-instantiated-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-lucli-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-memory-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-misc-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-queries-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-queryparser-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-remote-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-smartcn-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-spatial-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-spellchecker-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-stempel-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-wordnet-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/lucene-xml-query-parser-3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/mail-1.4.1.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/slf4j-api-1.5.5.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/slf4j-jdk14-1.5.5.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.1.0/velocity-1.7.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/org.restlet.ext.solr/org.restlet.ext.solr_3.1.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.xalan_2.7.1/xml-apis.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.xalan_2.7.1/serializer.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.xalan_2.7.1/xalan.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.xalan_2.7.1/xercesImpl.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.gjt.mm.mysql_5.1.7/mysql-connector-java-5.1.7-bin.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.postgresql_8.3/postgresql-8.3-603.jdbc3.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.xmlpull_3.1/xpp3-1.1.4c.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.codehaus.jackson_1.8.0/jackson-all-1.8.0.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/javax.measure_0.9.5/javax.measure_0.9.5.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/fr.cnes.sitools.captcha_1.0/simplecaptcha-1.2.1.jar"/>        
+    </library>
+</eclipse-userlibraries>

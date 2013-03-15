@@ -1,0 +1,64 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>User</title>
+
+<link href="../../css/help.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>The “Users” panel shows the list of user accounts. The panel displays the login, first name, last name and email of each user. The administrator can create, delete a user account or edit his user information.</p>
+<h2><a name="leaf_user"></a>Create a user account</h2>
+<ol>
+<li>
+Click on <b>Create</b>.
+</li>
+<li>Enter the first name</li>
+<li>Enter the last name</li>
+<li>Enter the email</li>
+<li>Enter the login</li>
+<li>Enter the password</li>
+<li>Enter the confirm password.</li>
+<li>Fill a set of properties if needed</li>
+</ol>
+
+<div class="section">
+<h4>Username limitation:</h4>
+<p>The login is case sensitive and should be from 1 to 64 Unicode characters, excluding the following symbols:<br>
+! " # $ % & ' ( ) * + , / : ; < = > ? @ [ ] \ ^ ` { } | ~</p>
+<p>The first character cannot be a minus sign or a space, and the last character cannot be a space.</p>
+<p>The user's firstname can include up to 32 Unicode characters.</p>
+<p>The user's lastname can include up to 32 Unicode characters.</p>
+<p>The email's lastname can include up to 128 Unicode characters.</p>
+<h4>Password limitation:</h4>
+<p>The password is case sensitive and is limited up to 40 displayable characters, including letters, numbers, signs, and space.</p>
+<h4>Email limitation:</h4>
+<p>The message that is sent to the user is not customizable for this version.</p>
+</div>
+
+<h2>Edit a user account</h2>
+<p>Find the user account by entering the last name in the search field, select a row and click on <b>Edit</b>. The edit user information panel is the same as the create user information panel at the exception that the administrator cannot change the login.</p>
+
+<h2>Delete a user account</h2>
+<p>Find the user account by entering the last name in the search field, select a row and click on <b>Delete</b>. The user account will be definitively removed from the archive’s users.</p>
+
+</body>
+</html>

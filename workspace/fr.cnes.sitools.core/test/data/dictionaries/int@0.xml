@@ -1,0 +1,52 @@
+<dictionary>
+  <id>429c7ff8-960a-4a49-9565-59d5c189ad22</id>
+  <name>Test dictionary</name>
+  <description>A dictionary for tests</description>
+  <conceptTemplate>
+    <id>6ee4f32b-ebd8-4a40-90ef-aa3154856771</id>
+    <name>A_template_for_tests</name>
+    <description></description>
+    <properties>
+      <fr.cnes.sitools.util.Property>
+        <name>name1</name>
+        <value>value1</value>
+      </fr.cnes.sitools.util.Property>
+      <fr.cnes.sitools.util.Property>
+        <name>name2</name>
+        <value>value2</value>
+      </fr.cnes.sitools.util.Property>
+    </properties>
+  </conceptTemplate>
+  <concepts>
+    <concept>
+      <id>0</id>
+      <name>concept1</name>
+      <description>A concept1</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>name1</name>
+          <value>value1</value>
+        </fr.cnes.sitools.util.Property>
+        <fr.cnes.sitools.util.Property>
+          <name>name2</name>
+          <value>value2</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+    <concept>
+      <id>1</id>
+      <name>concept2</name>
+      <description>A concept2</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>name1</name>
+          <value>value1</value>
+        </fr.cnes.sitools.util.Property>
+        <fr.cnes.sitools.util.Property>
+          <name>name2</name>
+          <value>value2</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+  </concepts>
+</dictionary>

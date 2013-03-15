@@ -1,0 +1,125 @@
+[
+	{
+		"text": "Users & Groups",
+		"id": "usrgrpNodeId",
+		"children": [
+			{
+				"text": "Registers",
+				"icon" : "res/images/icons/tree_subman.png",
+				"leaf" : true,
+				"nodeName" : "regcrud",
+				"id": "regNodeId"
+			},
+			{
+				"text": "Users",
+				"icon" : "res/images/icons/tree_userman.png",
+				"leaf" : true,
+				"nodeName" : "usercrud",
+				"id": "usrNodeId"
+			},
+			{
+				"text" : "Groups",
+				"icon" : "res/images/icons/tree_groupman.png",
+				"leaf" : true,
+				"nodeName" : "groupcrud",
+				"id": "grpNodeId"
+			},
+			{
+				"text" : "Roles",
+				"icon" : "res/images/icons/tree_role.png",
+				"leaf" : true,
+				"nodeName" : "rolecrud",
+				"id": "roleNodeId"
+			},
+			{
+				"text" : "Users Storage",
+				"icon" : "res/images/icons/tree_role.png",
+				"leaf" : true,
+				"nodeName" : "userStorage",
+				"id": "userStorageNodeId"
+			},
+			{
+				"text" : "Orders",
+				"icon" : "res/images/icons/tree_role.png",
+				"leaf" : true,
+				"nodeName" : "order",
+				"id": "orderNodeId"
+			}
+		]
+	},
+	{
+		"text": "Security",
+		"id": "SecurityNodeId",
+		"children": [
+			{
+				"text" : "Applications",
+				"icon" : "res/images/icons/tree_firewall.png",
+				"leaf" : true,
+				"nodeName" : "applications",
+				"id": "applicationsNodeId"
+			}
+			
+		]
+	}, 
+	{
+		"text": "Projects",
+		"id": "ProjectsNodeId",
+		"children": [
+			{
+				"text" : "Projects",
+				"icon" : "res/images/icons/tree_firewall.png",
+				"leaf" : true,
+				"nodeName" : "projects",
+				"id": "projectsNodeId"
+			}
+		]
+	}, 
+	{
+		"text": "DataSets",
+		"id": "dataSetsNodeId",
+		"children": [
+	 
+			{
+				"text" : "DataSets",
+				"icon" : "res/images/icons/tree_firewall.png",
+				"leaf" : true,
+				"nodeName" : "datasets",
+				"id": "datasetsSqlNodeId"
+			}, 
+			{
+				"text" : "Forms",
+				"icon" : "res/images/icons/tree_firewall.png",
+				"leaf" : true,
+				"nodeName" : "forms",
+				"id": "formsNodeId"
+			}			
+		]
+	}, 
+	{
+		"text": "Dictionary",
+		"id": "DictionaryNodeId",
+		"children": [
+			{
+				"text" : "Dictionary",
+				"icon" : "res/images/icons/tree_firewall.png",
+				"leaf" : true,
+				"nodeName" : "dictionary",
+				"id": "dictionaryNodeId"
+			}
+		]
+	},
+	{
+		"text": "DataSources",
+		"id": "DataSourceNodeId",
+		"children": [
+			{
+				"text" : "DataBases",
+				"icon" : "res/images/icons/tree_databases.png",
+				"leaf" : true,
+				"nodeName" : "database",
+				"id": "DatabaseNodeId"
+			}
+		]
+	}
+	
+]

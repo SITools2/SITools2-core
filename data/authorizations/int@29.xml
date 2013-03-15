@@ -1,0 +1,19 @@
+<resourceAuthorization>
+  <id>urn:uuid:UserOrderApplication:type:fr.cnes.sitools.order.UserOrderApplication</id>
+  <name>UserOrderApplication</name>
+  <description>Application allowing users to follow their orders.</description>
+  <url>/sitools/orders/user</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>true</POST>
+      <GET>true</GET>
+      <DELETE>true</DELETE>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

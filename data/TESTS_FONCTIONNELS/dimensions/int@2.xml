@@ -1,0 +1,21 @@
+<dimension>
+  <id>Duration</id>
+  <name>Duration</name>
+  <description>ddd</description>
+  <dimensionHelperName>fr.cnes.sitools.units.helper.SitoolsUnitConverterHelper</dimensionHelperName>
+  <unitConverters/>
+  <units>
+    <unit>
+      <label>Hour</label>
+      <unitName>h</unitName>
+    </unit>
+    <unit>
+      <label>Second</label>
+      <unitName>s</unitName>
+    </unit>
+    <unit>
+      <label>minutes</label>
+      <unitName>i</unitName>
+    </unit>
+  </units>
+</dimension>

@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:JDBCDataSourceAdministration:type:fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration</id>
+  <name>JDBCDataSourceAdministration</name>
+  <description>Administration of JDBC datasources</description>
+  <url>/sitools/datasources</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

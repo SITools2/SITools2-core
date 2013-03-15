@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:AdministratorApplication:type:fr.cnes.sitools.applications.AdministratorApplication</id>
+  <name>AdministratorApplication</name>
+  <description>Miscellaneous resources for Administrators</description>
+  <url>/sitools/admin/miscellaneous</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

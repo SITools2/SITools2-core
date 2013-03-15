@@ -1,0 +1,28 @@
+<resourceAuthorization>
+  <id>urn:uuid:DatasetViewApplication:type:fr.cnes.sitools.dataset.view.DatasetViewApplication</id>
+  <name>DatasetViewApplication</name>
+  <description>Management of GUI components for datasetView.</description>
+  <url>/sitools/datasetViews</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>false</POST>
+      <GET>true</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

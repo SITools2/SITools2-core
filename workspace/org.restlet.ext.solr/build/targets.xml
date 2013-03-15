@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+	<target name="prepare-ext_solr">
+		<!-- Creation des repertoires dist.dir et out.jar.dir -->
+		<mkdir dir="${dist.lib.dir}" />
+	</target>
+
+
+	<target name="compile-ext_solr">
+		<javac srcdir="./src" debug="${debug}" deprecation="${deprecation}" optimize="${optimize}" encoding="${encoding}" includeAntRuntime="false">
+			<classpath refid="compile.classpath" />
+		</javac>
+	</target>
+
+	<target name="jar-ext_solr">
+		<delete file="${dist.dir}/${project.name}_${project.version}.jar" />
+		<property name="version.num" value="${project.version}" />
+		<buildnumber file="build.num" />
+		<jar jarfile="${dist.dir}/${project.name}_${project.version}.jar" basedir="./src" includes="**/*.class">
+			<metainf dir="./src/META-INF">
+				<include name="**/*Helper"/>
+			</metainf>
+		</jar>
+        
+	</target>
+
+	<target name="cleanup-ext_solr">
+		<delete>
+			<fileset dir="." includes="**/*.class" />
+		</delete>
+
+	</target>
+
+	<target name="deploy-jar-ext_solr">
+		<!-- Deploiement du JAR de l'extension -->
+		<echo message="- Deploiement du JAR de l'org.restlet.ext.solr -" ></echo>
+		<copy tofile="${project.name}_${project.version}.jar" file="${dist.dir}/${project.name}_${project.version}.jar" overwrite="true" />
+        <delete file="${dist.dir}/${project.name}_${project.version}.jar" />
+	</target> 

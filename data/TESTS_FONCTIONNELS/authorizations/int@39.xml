@@ -1,0 +1,28 @@
+<resourceAuthorization>
+  <id>urn:uuid:StorageApplication:type:fr.cnes.sitools.service.storage.StorageApplication</id>
+  <name>StorageApplication</name>
+  <description>Administration of Storage service</description>
+  <url>/sitools/datastorage</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>false</POST>
+      <GET>true</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

@@ -1,0 +1,122 @@
+/***************************************
+* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+html, body {
+border:0 none;
+font:9pt arial,tahoma,verdana,helvetica,sans-serif;
+height:100%;
+margin:0;
+overflow:hidden;
+padding:0;
+}
+
+a {
+color:blue;
+text-decoration:none;
+}
+
+.module-root {
+margin-bottom:10px;
+margin-top:30px;
+text-align:center;
+}
+.centering {
+margin-left:auto;
+margin-right:auto;
+text-align:left;
+}
+
+.subtitle {
+color:#1B40A7;
+font-size:12pt;
+margin-bottom:5px;
+}
+
+div.subtitle {
+height:20px;
+width:100%;
+}
+
+.s-textfilter .x-form-field-wrap {
+	background-color:#FFFFFF;
+	border:1px solid #99BBE8;
+}
+.s-textfilter .x-form-field-wrap .s-textfilter-text {
+	background-color:transparent;
+	background-image:url("/sitools/common/res/images/icons/search-icon.png");
+	background-position:0 0;
+	background-repeat:no-repeat;
+	border:medium none;
+	font-size:11px;
+	height:18px !important;
+	line-height:14px;
+	padding-left:18px;
+}
+.s-textfilter .x-form-field-trigger-wrap .s-textfilter-trigger {
+	background-color:transparent;
+	background-image:url("/sitools/common/res/images/icons/search-cancel.png");
+	background-position:0 0;
+	background-repeat:no-repeat;
+	border:medium none;
+	height:20px;
+	right:0;
+}
+
+.x-tree-node-leaf .x-tree-node-icon {
+	width:16px;
+	height:16px;
+}
+
+.x-button-dataSet {
+	margin:10px 30px 10px 50px;
+}
+
+
+	
+.subtitle{
+	padding-left:20px;
+}
+
+.menu-button{
+	padding-right:10px !important;
+}
+
+
+
+
+.x-tree-node-folder {
+	background-image : url("/sitools/cots/extjs/resources/images/default/tree/folder.gif") !important;
+}
+
+.sitools-explore-datasource {
+	background-image: url("/sitools/common/res/images/icons/tree_databases.png") !important;
+	height: 16px;
+	width: 16px;
+}
+
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: black; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: #A20000; }
+
+.uneditable-cell {
+	background-color: #ccc;	
+	opacity: .60;
+}

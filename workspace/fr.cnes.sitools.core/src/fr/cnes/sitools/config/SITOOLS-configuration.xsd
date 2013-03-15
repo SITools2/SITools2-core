@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/SITOOLS-configuration" xmlns:tns="http://www.example.org/SITOOLS-configuration" elementFormDefault="qualified">
+
+    <complexType name="JDBCDataSource">
+    	<complexContent>
+    		<extension base="tns:DataSource">
+    			<sequence>
+    				<element name="databaseURL" type="string"></element>
+    				<element name="driverClassName" type="string"></element>
+    				<element name="authentification"
+    					type="tns:Authentification" maxOccurs="unbounded"
+    					minOccurs="0">
+    				</element>
+    				<element name="authorization"
+    					type="tns:Authorization" maxOccurs="unbounded" minOccurs="0">
+    				</element>
+    			</sequence>
+
+    		</extension>
+    	</complexContent>
+    </complexType>
+
+    <complexType name="Authentification">
+    	<sequence>
+            <element name="role" type="string"></element>
+            <element name="login" type="string"></element>
+            <element name="password" type="string"></element>
+            <element name="schema" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Application">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="Server">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    		<element name="protocols" type="string"
+    			maxOccurs="unbounded" minOccurs="1">
+    		</element>
+    		<element name="publicBaseRef" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="applicationAttachments"
+    			type="tns:ApplicationAttachement" maxOccurs="unbounded"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ApplicationAttachement">
+    	<sequence>
+
+    		<element name="attachments" type="tns:Attachment"></element>
+    		<element ref="tns:application"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Filter"></complexType>
+
+    <complexType name="Attachment">
+    <sequence>
+    	<element name="baseRef" type="string" maxOccurs="1"
+    		minOccurs="1">
+    	</element>
+            <element name="publicBaseRef" type="string" maxOccurs="1" minOccurs="0"></element>
+            <element name="filters" type="tns:Filter" maxOccurs="unbounded"
+    		minOccurs="0">
+    		<annotation>
+    			<documentation>
+    				Chaîne des filtres, notamment de sécurité pour
+    				donner accès à l'application
+    			</documentation>
+    		</annotation>
+    	</element>
+
+    </sequence>
+    </complexType>
+
+    <group name="Filter">
+    	<sequence>
+    		<element name="BasicAuthenticatorFilter" type="string"></element>
+    		<element name="DigestAuthenticatorFilter" type="string"></element>
+    		<element name="NewElement" type="string"></element>
+    	</sequence>
+    </group>
+
+
+    <complexType name="Configuration">
+    	<sequence>
+    		<element name="servers" type="tns:Server"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="applications" type="tns:Application"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    		<element name="datasources"
+    			type="tns:DataSourceCollection" maxOccurs="1" minOccurs="0">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <element name="configuration" type="tns:Configuration"></element>
+
+    <element name="application" type="tns:Application"></element>
+
+    <complexType name="Authorization">
+    	<sequence>
+    		<choice>
+    			<element name="role" type="string"></element>
+    			<element name="user" type="string"></element>
+    			<element name="group" type="string"></element>
+    		</choice>    	
+    		<element name="select" type="boolean"></element>
+    		<element name="insert" type="boolean"></element>
+    		<element name="update" type="boolean"></element>
+    		<element name="delete" type="boolean"></element>
+    		<element name="restriction" type="tns:SQLRestriction"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+
+    	</sequence>
+    </complexType>
+
+    <complexType name="SQLRestriction">
+        <annotation>
+        	<documentation>Objectif : rajouter des clauses SQL pour restreindre l'accès aux requêtes de manipulation de données
+La propriété tableName pourrait être un template (expression régulière)
+La propriété whereClause pourrait comprendre des paramètres comme le %username%</documentation>
+        </annotation>
+        <sequence>
+            <element name="tableName" type="string"></element>
+    		<element name="whereClause" type="string"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="DataSourceCollection">
+    	<sequence>
+    		<element name="datasource" type="tns:DataSource"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="DataSource">
+    	<sequence>
+    		<element name="name" type="string"></element>
+    	</sequence>
+    </complexType>
+</schema>

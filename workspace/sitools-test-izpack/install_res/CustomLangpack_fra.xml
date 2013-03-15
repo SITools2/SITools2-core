@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<langpack>
+	<str id="installer.reversetitle" txt="Installation de $APP_NAME" />
+
+	<str id="TreePacksPanel.headline" txt="Selection des paquets à installer" />
+
+	<str id="data.validation.warning.title"	txt="Avertissement lors de la validation" />
+	<str id="data.validation.error.title"	txt="Erreur lors de la validation" />
+	
+
+	<str id="input.warning.database" txt="Attention le schema que vous avez saisi existe déjà,
+	Des erreurs peuvent survenir si vous choisissez la création des bases de données utilisateur" />
+
+	<str id="input.error.database" txt="Il y a une erreur dans la configuration du serveur" />
+	
+	<str id="DatabasePanel.headline" txt="Installation base de données"/>
+	
+	<str id="panel.databasePanel.label" txt="Cliquer sur les boutons suivants pour créer les tables dans la base de données."/>
+	<str id="panel.databasePanel.warning" txt="Le schema 'cnes-fuse' doit être déjà présente dans la base MySQL." />
+	<str id="panel.databasePanel.user.button" txt="Bases de données utilisateur"/>
+	<str id="panel.databasePanel.tests.button" txt="Bases de données de tests"/>
+	<str id="panel.databasePanel.user.button.tip" txt="Installe les bases de données utilisateur"/>
+	<str id="panel.databasePanel.tests.button.tip" txt="Installe les bases de données de tests"/>
+	
+	<str id="database.user.create.successfully" txt="Base de données de tests créées avec succès"/>
+	
+	<str id="TargetPanel.info" txt="Choisissez le chemin d'installation de votre instance de Sitools (dossier qui contient le repertoire workspace): "/>
+	
+	
+	
+</langpack>

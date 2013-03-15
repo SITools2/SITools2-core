@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:UserStorageManagement:type:fr.cnes.sitools.userstorage.UserStorageManagement</id>
+  <name>UserStorageManagement</name>
+  <description>Management of user space disk on server</description>
+  <url>/sitools/adminstorage</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

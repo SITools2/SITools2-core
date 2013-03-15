@@ -1,0 +1,10 @@
+<userStorage>
+  <userId>admin</userId>
+  <storage>
+    <userStoragePath>E:/CNES-ULISSE/data/storage/admin</userStoragePath>
+    <freeUserSpace>-6742</freeUserSpace>
+    <busyUserSpace>6752</busyUserSpace>
+    <quota>10</quota>
+  </storage>
+  <status>Active</status>
+</userStorage>

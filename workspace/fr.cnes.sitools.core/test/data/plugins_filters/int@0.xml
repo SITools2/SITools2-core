@@ -1,0 +1,32 @@
+<filterPlugin>
+  <id>storage_test_with_security_filter</id>
+  <name>DataStorageAuthorizer</name>
+  <description>Customizable datastorage directory authorizer</description>
+  <className>fr.cnes.sitools.filter.authorizer.DataStorageAuthorizerModel</className>
+  <classVersion>0.1</classVersion>
+  <classAuthor>AKKA Technologies</classAuthor>
+  <classOwner>CNES</classOwner>
+  <parametersMap>
+    <entry>
+      <string>authorize</string>
+      <filterParameter>
+        <name>authorize</name>
+        <description>Authorize true|false</description>
+        <value>true</value>
+        <valueType>xs:boolean</valueType>
+        <type>PARAMETER_INTERN</type>
+      </filterParameter>
+    </entry>
+    <entry>
+      <string>logdir</string>
+      <filterParameter>
+        <name>logdir</name>
+        <description>Storage logging directory</description>
+        <value></value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_INTERN</type>
+      </filterParameter>
+    </entry>
+  </parametersMap>
+  <filterClassName>fr.cnes.sitools.filter.authorizer.DataStorageAuthorizer</filterClassName>
+</filterPlugin>

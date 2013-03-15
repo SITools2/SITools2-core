@@ -1,0 +1,26 @@
+<projectModule>
+  <id>ProjectsFeeds</id>
+  <name>ProjectsFeeds</name>
+  <description>Feeds for Projects</description>
+  <author>akka</author>
+  <version>1.0</version>
+  <url>/deprecated</url>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/project_feeds.png</imagePath>
+  <title>title.ProjectsFeeds</title>
+  <defaultWidth>400</defaultWidth>
+  <defaultHeight>500</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>feedsModule</icon>
+  <specificType>ProjectsFeeds</specificType>
+  <xtype>sitools.user.modules.feedsReaderProject</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/feedsReader/feedReaderProject.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>4</priority>
+</projectModule>

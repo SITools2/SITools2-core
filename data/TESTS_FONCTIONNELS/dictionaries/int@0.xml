@@ -1,0 +1,61 @@
+<dictionary>
+  <id>c19faf95-c4c0-48b6-94a8-cdd288d08e90</id>
+  <name>Humain avec contexte</name>
+  <description></description>
+  <conceptTemplate>
+    <id>1518577c-c18e-4426-8236-aa2992a99ce4</id>
+    <name>HumanWithContext</name>
+    <description></description>
+    <properties>
+      <fr.cnes.sitools.util.Property>
+        <name>context</name>
+      </fr.cnes.sitools.util.Property>
+    </properties>
+  </conceptTemplate>
+  <concepts>
+    <concept>
+      <id>0</id>
+      <name>x_pos</name>
+      <description>position sur l&apos;axe X</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>context</name>
+          <value>Valeur comprise entre 0 et 1</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+    <concept>
+      <id>1</id>
+      <name>y_pos</name>
+      <description>position sur l&apos;axe Y</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>context</name>
+          <value>Valeur comprise entre 0 et 1</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+    <concept>
+      <id>2</id>
+      <name>z_pos</name>
+      <description>position sur l&apos;axe Z</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>context</name>
+          <value>Valeur comprise entre 0 et 1</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+    <concept>
+      <id>3</id>
+      <name>position</name>
+      <description>Position sur un axe ordonné</description>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>context</name>
+          <value>Valeur comprise entre 0 et 1</value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </concept>
+  </concepts>
+</dictionary>

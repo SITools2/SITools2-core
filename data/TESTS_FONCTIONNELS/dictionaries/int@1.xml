@@ -1,0 +1,61 @@
+<dictionary>
+  <id>d89ec204-2df2-443b-b7c4-871dae006582</id>
+  <name>Humain simple</name>
+  <description>description</description>
+  <conceptTemplate>
+    <id>d37013a9-4c20-4940-8286-2f0370720849</id>
+    <name>human</name>
+    <description></description>
+    <properties/>
+  </conceptTemplate>
+  <concepts>
+    <concept>
+      <id>0</id>
+      <name>X</name>
+      <description>position sur l&apos;axe X</description>
+      <properties/>
+    </concept>
+    <concept>
+      <id>1</id>
+      <name>Y</name>
+      <description>Position sur l&apos;axe Y</description>
+      <properties/>
+    </concept>
+    <concept>
+      <id>2</id>
+      <name>Z</name>
+      <description>Position sur l&apos;axe Z</description>
+      <properties/>
+    </concept>
+    <concept>
+      <id>3</id>
+      <name>Position</name>
+      <description>Position sur un axe ordonné</description>
+      <properties/>
+    </concept>
+    <concept>
+      <id>4</id>
+      <name>geography</name>
+      <description>Objet de localisation géographique</description>
+      <properties/>
+    </concept>
+    <concept>
+      <id>5</id>
+      <name>date Observation</name>
+      <description>Date de l&apos;observation de la donnée</description>
+      <properties/>
+    </concept>
+    <concept>
+      <id>6</id>
+      <name>Ra</name>
+      <description>Ra</description>
+      <properties/>
+    </concept>
+    <concept>
+      <id>7</id>
+      <name>Dec</name>
+      <description>Dec</description>
+      <properties/>
+    </concept>
+  </concepts>
+</dictionary>

@@ -1,0 +1,17 @@
+<resourceAuthorization>
+  <id>urn:uuid:client-user:type:fr.cnes.sitools.applications.ClientUserApplication</id>
+  <name>client-user</name>
+  <description>This application is used by users-&gt; to access the Web client application-&gt; to access the portal page-&gt; to access the desktop page</description>
+  <url>/sitools/client-user</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

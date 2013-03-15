@@ -1,0 +1,12 @@
+<formComponent>
+  <id>3b240943-5ea7-4357-8a65-d057497b6fed</id>
+  <type>MAPPANEL</type>
+  <componentDefaultHeight>300</componentDefaultHeight>
+  <componentDefaultWidth>300</componentDefaultWidth>
+  <jsAdminObject>sitools.admin.forms.oneParam.NoValuesWithProperties</jsAdminObject>
+  <jsUserObject>sitools.common.forms.components.mapPanel</jsUserObject>
+  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/NoValuesWithProperties.js</fileUrlAdmin>
+  <fileUrlUser>/sitools/common/js/forms/components/mapPanel.js</fileUrlUser>
+  <imageUrl>/sitools/common/res/images/formComponents/mapPanel.png</imageUrl>
+  <priority>2</priority>
+</formComponent>

@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SitoolsAllTestSuite" >
+  <test name="SitoolsAllTestSuite" preserve-order="true">
+    <classes>
+      <class name="test.AdminLogin" />
+<!--  Semantic    -->
+      <class name="test.datasets.Semantic" />
+<!--  Dataset    -->
+      <class name="test.datasets.DatasetCrud" />
+
+<!--  Collections    -->
+      <class name="test.datasets.CollectionCrud" />
+
+<!--  MultiDatasets    -->
+      <class name="test.form.FormProjectCrud" />
+
+<!--  USER interface    -->
+  	  <class name="test.clientUser.mutiDsForm" />
+    </classes>
+  </test>
+</suite>

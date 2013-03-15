@@ -1,0 +1,473 @@
+[
+   {
+      "text":"Users & Groups",
+      "nodeName":"usersandgroups",
+      "id":"usrgrpNodeId",
+      "iconMenu":"/sitools/common/res/images/icons/menu/usersGroups.png",
+      "children":[
+         {
+            "text":"Registers",
+            "iconMenu":"/sitools/common/res/images/icons/menu/regcrud.png",
+            "icon":"/sitools/common/res/images/icons/tree_subman.png",
+            "leaf":true,
+            "nodeName":"regcrud",
+            "id":"regNodeId"
+         },
+         {
+            "text":"Users",
+            "iconMenu":"/sitools/common/res/images/icons/menu/usercrud.png",
+            "icon":"/sitools/common/res/images/icons/tree_userman.png",
+            "leaf":true,
+            "nodeName":"usercrud",
+            "id":"usrNodeId"
+         },
+         {
+            "text":"Groups",
+            "iconMenu":"/sitools/common/res/images/icons/menu/groupcrud.png",
+            "icon":"/sitools/common/res/images/icons/tree_groupman.png",
+            "leaf":true,
+            "nodeName":"groupcrud",
+            "id":"grpNodeId"
+         },
+         {
+            "text":"Roles",
+            "iconMenu":"/sitools/common/res/images/icons/menu/rolecrud2.png",
+            "icon":"/sitools/common/res/images/icons/tree_role.png",
+            "leaf":true,
+            "nodeName":"rolecrud",
+            "id":"roleNodeId"
+         },
+         {
+            "text":"User Storage",
+            "iconMenu":"/sitools/common/res/images/icons/menu/userStorage.png",
+            "icon":"/sitools/common/res/images/icons/tree_user_storage.png",
+            "leaf":true,
+            "nodeName":"userStorage",
+            "id":"userStorageNodeId"
+         },
+         {
+            "text":"Data Orders",
+            "iconMenu":"/sitools/common/res/images/icons/menu/order.png",
+            "icon":"/sitools/common/res/images/icons/tree_orders.png",
+            "leaf":true,
+            "nodeName":"order",
+            "id":"orderNodeId"
+         }
+      ]
+   },
+   {
+      "text":"Security Management",
+      "nodeName":"security",
+      "id":"SecurityNodeId",
+      "iconMenu":"/sitools/common/res/images/icons/menu/security.png",
+      "children":[
+         {
+            "text":"Applications",
+            "iconMenu":"/sitools/common/res/images/icons/menu/applications.png",
+            "icon":"/sitools/common/res/images/icons/tree_applications.png",
+            "leaf":true,
+            "nodeName":"applications",
+            "id":"applicationsNodeId"
+         },
+         {
+            "text":"Authorization",
+            "iconMenu":"/sitools/common/res/images/icons/menu/authorizations.png",
+            "icon":"/sitools/common/res/images/icons/toolbar_autorizations.png",
+            "leaf":true,
+            "nodeName":"authorizations",
+            "id":"authorizationsId"
+         }
+      ]
+   },
+   {
+      "text":"Data Management",
+      "id":"DataManagementId",
+      "nodeName":"datamanagement",
+      "iconMenu":"/sitools/common/res/images/icons/menu/dataMgt.png",
+      "links":[
+			            {
+			            	 "label":"View security management",
+					         "text":"Security Management",
+						     "nodeName":"security",
+						     "iconMenu":"/sitools/common/res/images/icons/menu/security.png",
+						     "path":"Security Management"
+			            },
+			            {
+			            	"label":"Add a dataset to a project",
+			            	"text":"Projects Management",
+            				"nodeName":"projectsManagement",
+            				"iconMenu":"/sitools/common/res/images/icons/menu/datasets.png",
+            				"path":"Access Management/Projects Management"
+			            }
+		            ],
+      "children":[
+         {
+            "text":"DataBases JDBC",
+            "iconMenu":"/sitools/common/res/images/icons/menu/database.png",
+            "icon":"/sitools/common/res/images/icons/tree_databases.png",
+            "leaf":true,
+            "nodeName":"databaseJDBC",
+            "id":"DatabaseJDBCNodeId"
+         },
+         {
+            "text":"DataBases MongoDb",
+            "iconMenu":"/sitools/common/res/images/icons/menu/mongodb.png",
+            "icon":"/sitools/common/res/images/icons/tree_mongo.png",
+            "leaf":true,
+            "nodeName":"databaseMongoDb",
+            "id":"DatabaseMongoDbNodeId"
+         },
+         {
+            "text":"Dictionary",
+            "iconMenu":"/sitools/common/res/images/icons/menu/dictionary.png",
+            "icon":"/sitools/common/res/images/icons/tree_dictionary.png",
+            "leaf":true,
+            "nodeName":"dictionary",
+            "id":"dictionaryNodeId"
+         },
+         {
+            "text":"Template",
+            "iconMenu":"/sitools/common/res/images/icons/menu/template.png",
+            "icon":"/sitools/common/res/images/icons/tree_dictionary.png",
+            "leaf":true,
+            "nodeName":"template",
+            "id":"templateNodeId"
+         },
+         {
+            "text":"Units",
+            "iconMenu":"/sitools/common/res/images/icons/menu/units2.png",
+            "icon":"/sitools/common/res/images/icons/plot.png",
+            "leaf":true,
+            "nodeName":"units",
+            "id":"unitsNodeId"
+         },
+         {
+                  "text":"DataSets",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/datasets.png",
+                  "icon":"/sitools/common/res/images/icons/tree_datasets.png",
+                  "leaf":true,
+                  "nodeName":"datasets",
+                  "id":"datasetsSqlNodeId",
+                  "links":[
+                  			{
+                  				"label":"View archival storage",
+                  				"text":"Archival Storage Management",
+     						 	"iconMenu":"/sitools/common/res/images/icons/menu/storage.png",
+							    "nodeName":"storages",
+							    "path":"Archival Storage Management"
+      						},
+      						{
+      							"label":"View Portal News",
+					            "text":"Portal News",
+					            "iconMenu":"/sitools/common/res/images/icons/menu/rssFeedPortal5.png",
+					            "nodeName":"rssFeedPortal",
+					            "path":"Access Management"
+					        },
+					        {
+					        	"label":"Data Access Services",
+					         	"text":"Dataset | Multi-Datasets Management",
+					            "nodeName":"multiDataset",
+					            "id":"multiDatasetsNodeId",
+					            "iconMenu":"/sitools/common/res/images/icons/menu/collections.png",
+					            "path":"Access Management/Dataset | Multi-Datasets Management"
+					        }
+                  		  ]
+               },
+      ]
+   },
+   {
+      "text":"Access Management",
+      "id":"DataAccessNodeId",
+      "nodeName":"dataaccess",
+      "iconMenu":"/sitools/common/res/images/icons/menu/dataAccess.png",
+      "children":[
+         {
+            "text":"Portal News",
+            "iconMenu":"/sitools/common/res/images/icons/menu/rssFeedPortal5.png",
+            "icon":"/sitools/common/res/images/icons/rss.png",
+            "leaf":true,
+            "nodeName":"rssFeedPortal",
+            "id":"rssPortalNodeId",
+         },
+         {
+            "text":"Projects Management",
+            "nodeName":"projectsManagement",
+            "id":"ProjectsManagementNodeId",
+            "links":[
+			            {
+			            	  "label":"Create datasets",
+							  "text":"DataSets Management",
+				              "nodeName":"datasetsManagement",
+				              "iconMenu":"/sitools/common/res/images/icons/menu/datasets.png",
+				              "path":"Data Management"
+					    },
+					    {
+			            	  "label":"View security management",
+					          "text":"Security Management",
+						      "nodeName":"security",
+						      "iconMenu":"/sitools/common/res/images/icons/menu/security.png",
+						      "path":"Security Management"
+			            }
+		            ],
+            "children":[
+               {
+                  "text":"Projects",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/projects.png",
+                  "icon":"/sitools/common/res/images/icons/tree_projects.png",
+                  "leaf":true,
+                  "nodeName":"projects",
+                  "id":"projectsNodeId"
+               },
+               {
+                  "text":"RSS Feed",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/rssFeedPortal5.png",
+                  "icon":"/sitools/common/res/images/icons/rss.png",
+                  "leaf":true,
+                  "nodeName":"rssFeedProjects",
+                  "id":"rssProjectsNodeId",
+                  "links":[{
+      							"label":"View Portal News",
+					            "text":"Portal News",
+					            "iconMenu":"/sitools/common/res/images/icons/menu/rssFeedPortal5.png",
+					            "nodeName":"rssFeedPortal",
+					            "path":"Access Management"
+					        }
+					       ]
+               },
+               {
+                  "text":"Graphs",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/graphs.png",
+                  "icon":"/sitools/common/res/images/icons/graph.png",
+                  "leaf":true,
+                  "nodeName":"graphs",
+                  "id":"graphsNodeId"
+               },
+               {
+                  "text":"Modules",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/projectmodule2.png",
+                  "icon":"/sitools/common/res/images/icons/tree_projects_modules.png",
+                  "leaf":true,
+                  "nodeName":"projectmodule",
+                  "id":"modulesNodeId"
+               },
+               {
+                  "text":"Projects resources",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/project_resources2.png",
+                  "icon":"/sitools/common/res/images/icons/tree_projects_resources.png",
+                  "leaf":true,
+                  "nodeName":"project_resources",
+                  "id":"projectsResourcesNodeId"
+               }
+            ]
+         },
+         {
+            "text":"Dataset | Multi-Datasets Management",
+            "nodeName":"multiDataset",
+            "id":"multiDatasetsNodeId",
+            "iconMenu":"/sitools/common/res/images/icons/menu/multiDs.png",
+            "links":[
+            			{
+            				"label":"View data definition",
+            				"text":"DataSets Management",
+				            "nodeName":"datasetsManagement",
+				            "iconMenu":"/sitools/common/res/images/icons/menu/dataMgt.png",
+				            "path":"Data Management"
+            			}
+            		],
+            "children":[
+               {
+                  "text":"Collections",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/collections.png",
+                  "icon":"/sitools/common/res/images/icons/tree_projects.png",
+                  "leaf":true,
+                  "nodeName":"collections",
+                  "id":"collectionsNodeId"
+               },
+               {
+                  "text":"Formulaires",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/formsNodeId2.png",
+                  "icon":"/sitools/common/res/images/icons/tree_forms.png",
+                  "leaf":true,
+                  "nodeName":"multiDs",
+                  "id":"multiDsNodeId"
+               }
+            ]
+         },
+         {
+            "text":"DataSets Management",
+            "nodeName":"datasetsManagement",
+            "id":"dataSetsManagementNodeId",
+            "children":[
+               {
+                  "text":"RSS Feed",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/rssFeedPortal5.png",
+                  "icon":"/sitools/common/res/images/icons/rss.png",
+                  "leaf":true,
+                  "nodeName":"rssFeedDatasets",
+                  "id":"rssFeedDatasetsNodeId"
+               },
+               {
+                  "text":"Query Forms",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/formsNodeId2.png",
+                  "icon":"/sitools/common/res/images/icons/tree_forms.png",
+                  "leaf":true,
+                  "nodeName":"forms",
+                  "id":"formsNodeId"
+               },
+               {
+                  "text":"Converters",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/convertersNodeId3.png",
+                  "icon":"/sitools/common/res/images/icons/converter.png",
+                  "leaf":true,
+                  "nodeName":"converters",
+                  "id":"convertersNodeId"
+               },
+               {
+                  "text":"Filters",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/filtersNodeId4.png",
+                  "icon":"/sitools/common/res/images/icons/filters.png",
+                  "leaf":true,
+                  "nodeName":"filters",
+                  "id":"filtersNodeId"
+               },               
+               {
+                  "text":"Datasets resources",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/dataset_resources.png",
+                  "icon":"/sitools/common/res/images/icons/tree_datasets_resource.png",
+                  "leaf":true,
+                  "nodeName":"dataset_resources",
+                  "id":"datasetsResourcesNodeId"
+               },
+               {
+                  "text":"Dataset Views",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/datasetView.png",
+                  "icon":"/sitools/common/res/images/icons/tree_datasets.png",
+                  "leaf":true,
+                  "nodeName":"datasetView",
+                  "id":"datasetViewNodeId"
+               }
+            ]
+         },
+         {
+            "text":"Applications plugins",
+            "nodeName":"appPluginsNode",
+            "id":"AppPluginsNodeId",
+            "links":[
+			            {
+			            	  "label":"View security management",
+					          "text":"Security Management",
+						      "nodeName":"security",
+						      "iconMenu":"/sitools/common/res/images/icons/menu/security.png",
+						      "path":"Security"
+			            }
+		            ],
+            "children":[
+               {
+                  "text":"Applications plugins management",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/Application_plugins.png",
+                  "icon":"/sitools/common/res/images/icons/tree_application_plugin.png",
+                  "leaf":true,
+                  "nodeName":"Application_plugins",
+                  "id":"appPluginsId"
+               },
+               {
+                  "text":"Applications resources",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/applications2.png",
+                  "icon":"/sitools/common/res/images/icons/tree_application_resource.png",
+                  "leaf":true,
+                  "nodeName":"application_resources",
+                  "id":"applicationsResourcesNodeId"
+               }
+            ]
+         },
+         {
+                  "text":"General terms of use",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/licenceEditor.png",
+                  "icon":"/sitools/common/res/images/icons/toolbar_edit.png",
+                  "leaf":true,
+                  "nodeName":"licenceEditor",
+                  "id":"licenceNodeId"
+         }
+      ]
+   },
+   {
+      "text":"Utilities",
+      "nodeName":"extraFeaturesNode",
+      "id":"extraFeaturesId",
+      "iconMenu":"/sitools/common/res/images/icons/menu/extraFeatures.png",
+      "children":[
+      	 {
+                  "text":"Query Form Components",
+                  "iconMenu":"/sitools/common/res/images/icons/menu/formComponents.png",
+                  "icon":"/sitools/common/res/images/icons/form_component_type.png",
+                  "leaf":true,
+                  "nodeName":"formComponents",
+                  "id":"formComponentsNodeId"
+         },
+         {
+              "text":"Ftl Editor",
+              "iconMenu":"/sitools/common/res/images/icons/menu/ftlEditor.png",
+              "icon":"/sitools/common/res/images/icons/toolbar_edit.png",
+              "leaf":true,
+              "nodeName":"ftlEditor",
+              "id":"ftlNodeId"
+         },
+	     {
+	          "text":"Css Editor",
+	          "iconMenu":"/sitools/common/res/images/icons/menu/cssEditor.png",
+	          "icon":"/sitools/common/res/images/icons/toolbar_edit.png",
+	          "leaf":true,
+	          "nodeName":"cssEditor",
+	          "id":"cssNodeId"
+	     },
+         {
+              "text":"Analog",
+              "iconMenu":"/sitools/common/res/images/icons/menu/analog.png",
+              "icon":"/sitools/common/res/images/icons/tree_application_plugin.png",
+              "leaf":true,
+              "nodeName":"analog",
+              "id":"analogNodeId"
+         },
+	    {
+	          "text":"Gui services",
+	          "iconMenu":"/sitools/common/res/images/icons/menu/analog.png",
+	          "icon":"/sitools/common/res/images/icons/tree_application_plugin.png",
+	          "leaf":true,
+	          "nodeName":"guiservices",
+	          "id":"guiservicesid",
+	    }
+      ]
+   },
+   {
+      "text":"Archival Storage Management",
+      "iconMenu":"/sitools/common/res/images/icons/menu/storage.png",
+      "icon":"/sitools/common/res/images/icons/tree_user_storage.png",
+      "leaf":true,
+      "nodeName":"storages",
+      "id":"storagesNodeId",
+      "links":[
+      			{	
+      				"label":"View roles",
+		      		"text":"Roles",
+		            "iconMenu":"/sitools/common/res/images/icons/menu/rolecrud2.png",
+		            "nodeName":"rolecrud",
+		            "path":"Users & Groups"
+		        },
+		        {
+            	  "label":"View security management",
+		          "text":"Security Management",
+			      "nodeName":"security",
+			      "iconMenu":"/sitools/common/res/images/icons/menu/security.png",
+			      "path":"Security"
+			    },
+			    {
+			    	"label":"View datasets",
+			    	"text":"DataSets",
+                  	"nodeName":"datasets",
+                  	"iconMenu":"/sitools/common/res/images/icons/menu/datasets.png",
+                  	"path":"Data Management"
+			    }
+			    
+	          ]
+   }
+]

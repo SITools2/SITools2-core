@@ -1,0 +1,12 @@
+<formComponent>
+  <id>d318deed-fd2e-403f-8fca-b80b8bf7fd67</id>
+  <type>CONE_SEARCH_CARTESIEN</type>
+  <componentDefaultHeight>120</componentDefaultHeight>
+  <componentDefaultWidth>450</componentDefaultWidth>
+  <jsAdminObject>sitools.admin.forms.multiParam.coneSearch</jsAdminObject>
+  <jsUserObject>sitools.common.forms.components.ConeSearchCartesien</jsUserObject>
+  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/MultiParam/ConeSearch.js</fileUrlAdmin>
+  <fileUrlUser>/sitools/common/js/forms/components/ConeSearchCartesien.js</fileUrlUser>
+  <imageUrl>/sitools/common/res/images/formComponents/coneSearchCartesien.gif</imageUrl>
+  <priority>1</priority>
+</formComponent>

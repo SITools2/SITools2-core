@@ -1,0 +1,23 @@
+<resourceAuthorization>
+  <id>c8ebddc1-bb57-4715-b78c-067b8a00fa83</id>
+  <name>PostgresLiveGrid</name>
+  <description>Exposition of the dataset PostgresLiveGrid
+-&gt; Administrator must have all authorizations on this application
+-&gt; Public user must have at least GET/PUT/DELETE authorizations on this application
+PUT and DELETE authorizations are for SvaTasks managment</description>
+  <url>/postgresLiveGrid</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <POST>true</POST>
+      <GET>true</GET>
+      <PUT>true</PUT>
+      <DELETE>true</DELETE>
+      <OPTIONS>true</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ADMDatasetSuite" >
+  <test name="ADMDatasetSuite" preserve-order="true">
+    <classes>
+
+<!--  USER interface    -->
+      <class name="test.clientUser.portal" />
+	  
+    </classes>
+  </test>
+</suite>

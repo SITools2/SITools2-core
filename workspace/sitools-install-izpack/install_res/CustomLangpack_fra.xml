@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<langpack>
+	<str id="installer.reversetitle" txt="Installation de $APP_NAME" />
+
+	<str id="TreePacksPanel.headline" txt="Selection des paquets à installer" />
+
+	<str id="data.validation.warning.title"	txt="Avertissement lors de la validation" />
+	<str id="data.validation.error.title"	txt="Erreur lors de la validation" />
+	
+
+	<str id="input.warning.database" txt="Attention le schema que vous avez saisi existe déjà,
+	Des erreurs peuvent survenir si vous choisissez la création des bases de données utilisateur" />
+
+	<str id="input.error.database" txt="Il y a une erreur dans la configuration du serveur" />
+	
+	<str id="DatabasePanel.headline" txt="Installation base de données"/>
+	
+	<str id="panel.databasePanel.label" txt="Cliquer sur les boutons suivants pour créer les tables dans la base de données."/>
+	<str id="panel.databasePanel.warning" txt="La base de données doit être déjà présente et active." />
+	<str id="panel.databasePanel.user.button" txt="Bases de données utilisateur"/>
+	<str id="panel.databasePanel.tests.button" txt="Bases de données de tests"/>
+	<str id="panel.databasePanel.user.button.tip" txt="Installe les bases de données utilisateur"/>
+	<str id="panel.databasePanel.tests.button.tip" txt="Installe les bases de données de tests"/>
+	
+	<str id="database.user.create.successfully" txt="Base de données utilisateur créée avec succès"/>
+	
+	<str id="input.db_installed" txt="Voulez-vous installer la base de données utilisateur de SITools2 ?"/>
+	<str id="input.db_installed.yes" txt="Oui"/>
+	<str id="input.db_installed.no" txt="Non"/>
+	
+</langpack>

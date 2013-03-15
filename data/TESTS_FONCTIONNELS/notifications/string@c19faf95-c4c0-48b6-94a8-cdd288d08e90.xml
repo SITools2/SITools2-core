@@ -1,0 +1,15 @@
+<observable>
+  <uri>c19faf95-c4c0-48b6-94a8-cdd288d08e90</uri>
+  <observers>
+    <observer>
+      <uuid>ee65412e-bee0-4059-a351-a1450f94a19d</uuid>
+      <uriToNotify>riap://component/datasets/ee65412e-bee0-4059-a351-a1450f94a19d/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</uuid>
+      <uriToNotify>riap://component/datasets/9cbed21a-8daa-4e6b-af76-b65ea1bdcd72/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+  </observers>
+</observable>

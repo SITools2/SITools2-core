@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+	<property file="../fr.cnes.sitools.core/build.properties" />
+	<property file="../fr.cnes.sitools.core/conf/build/properties/build-${HOST}.properties" />
+	
+	<import
+		file="${ROOT_DIRECTORY}/workspace/fr.cnes.sitools.core/conf/build/userlibrairies/sitools.userlibraries.ant.xml"
+		optional="false" />	
+	
+	<property name="comp.lib.dir" value="${basedir}/../libraries" />
+	<property name="comp.cp.dir" value="${basedir}/../fr.cnes.sitools.core/build/jar" />
+	<property name="comp.wp.dir" value="${basedir}/.." />
+	<property name="cots.dir" value="${ROOT_DIRECTORY}/cots" />
+	<!-- ===============================================================================
+	         Parametres du projet
+	     =============================================================================== -->
+
+	<!-- Informations generales sur le projet -->
+	<property name="project.name" value="fr.cnes.sitools.extensions" />
+	<property name="project.fullname" value="Sitools2" />
+	<property name="project.version"         value="2.0"/>
+
+	<!-- Nom de l'application WEB -->
+	<property name="webapps.name" value="sitools" />
+
+	<!-- Nom des packages du projet utilises par javadoc -->
+	<property name="project.packagenames" value="fr.cnes.sitools" />
+
+	<!-- Information sur les auteurs du projet -->
+	<property name="author" value="AKKA Technologies" />
+	<property name="year" value="2011, 2012" />
+
+	<!-- Paramètres de compilation -->
+	<property name="debug" value="true" />
+	<property name="optimize" value="off" />
+	<property name="deprecation" value="off" />
+	<property name="encoding" value="UTF-8" />
+
+	<!-- Import la définition des répertoires de l'arborescence projet -->
+	<!-- Arborescence pour la construction de l'application -->
+	<property name="audit.dir" value="audit" />
+	<property name="audit.checkstyle.rules.dir" value="${audit.dir}/checkstyle" />
+	<property name="audit.pmd.rules.dir" value="${audit.dir}/pmd" />
+	<property name="audit.cobertura.rules.dir" value="${audit.dir}/cobertura" />
+	<property name="audit.xsl.dir" value="${audit.dir}/xsl" />
+
+	<property name="conf.dir" value="conf" />
+	<property name="conf.bin.dir" value="${conf.dir}/bin" />
+	<property name="conf.jar.dir" value="${conf.dir}/jar" />
+	<property name="conf.properties.dir" value="${conf.dir}/properties" />
+	<property name="conf.war.dir" value="${conf.dir}/war" />
+	<property name="conf.xml.dir" value="${conf.dir}/xml" />
+	<property name="lib.dir" value="lib" />
+	<property name="src.dir" value="src" />
+	<property name="web.dir" value="web" />
+
+	<!-- Arborescence pour la construction des tests -->
+	<property name="test.dir" value="test" />
+	<property name="test.conf.dir" value="${conf.properties.dir}" />
+	<!-- au lieu de test.dir/conf -->
+	<property name="test.lib.dir" value="${test.dir}/lib" />
+	<property name="test.reports.dir" value="${test.dir}/reports" />
+	<property name="test.reports.data.dir" value="${test.reports.dir}/xml" />
+	<property name="test.src.dir" value="${test.dir}/src" />
+
+	<property name="test.data.dir" value="${test.dir}/data" />
+	<property name="root.data.dir" value="${ROOT_DIRECTORY}/data" />
+
+	<!-- Repertoires destination pour la construction de l'application  -->
+	<property name="out.dir" value="build" />
+	<!--property name="out.dir"                 value="web/WEB-INF/"/-->
+	<property name="out.classes.dir" value="${out.dir}/classes" />
+	<property name="out.javadoc.dir" value="${out.dir}/javadoc" />
+	<property name="out.jar.dir" value="../fr.cnes.sitools.core/${out.dir}/jar" />
+	<property name="out.help.dir" value="${out.dir}/help" />
+	<property name="out.audit.dir" value="${out.dir}/audit" />
+	<property name="checkstyle.reports.dir" value="${out.audit.dir}/checkstyle" />
+	<property name="pmd.reports.dir" value="${out.audit.dir}/pmd" />
+	<property name="cpd.reports.dir" value="${out.audit.dir}/cpd" />
+	<property name="cobertura.reports.dir" value="${out.audit.dir}/cobertura" />
+	<property name="test.classes.dir" value="${out.dir}/classes" />
+	<property name="checkstyle.xsl" value="checkstyle-noframes-sorted.xsl" />
+	<!-- properties for Cobertura -->
+	<property name="instrumented.dir" value="${out.classes.dir}" />
+
+	<!-- Repertoires de deploiement des fichiers "externes" de l'application -->
+	<property name="dist.dir" value="dist" />
+	<property name="dist.bin.dir" value="${dist.dir}" />
+	<property name="dist.conf.dir" value="${dist.dir}" />
+	<property name="dist.lib.dir" value="${dist.dir}/lib" />
+
+	<!-- Informations pour le deploiement d'application WEB -->
+	<property name="deploy.webapps.dir" value="${deploy.web.rootdir}/webapps/${webapps.name}" />
+	<property name="deploy.webapps.uri" value="${deploy.web.host}:${deploy.web.port}/${webapps.name}" />
+
+	<!-- Informations pour le deploiement a distance d'application -->
+	<property name="deploy.remote.dir" value="${deploy.ftp.dir}" />
+

@@ -1,0 +1,17 @@
+<resourceAuthorization>
+  <id>urn:uuid:MultiDatasetsOpensearchApplication:type:fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication</id>
+  <name>MultiDatasetsOpensearchApplication</name>
+  <description>Application used to query over multiple opensearch indexes</description>
+  <url>/sitools/portal/opensearch</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

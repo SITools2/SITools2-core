@@ -1,0 +1,17 @@
+<resourceAuthorization>
+  <id>urn:uuid:UnitsApplication:type:fr.cnes.sitools.units.UnitsApplication</id>
+  <name>UnitsApplication</name>
+  <description>Application for unit utilities</description>
+  <url>/sitools/units</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

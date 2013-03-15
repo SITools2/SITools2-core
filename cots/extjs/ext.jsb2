@@ -1,0 +1,1652 @@
+{
+    "projectName": "Ext JS",
+    "deployDir": "ext-3.4+",
+    "licenseText": "Ext JS Library 3.4.0\nCopyright(c) 2006-2011 Sencha Inc.\nlicensing@sencha.com\nhttp://www.sencha.com/license",
+    "pkgs": [{
+        "name": "Ext Base",
+        "file": "adapter/ext/ext-base.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "Ext.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "TaskMgr.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "ext-base-begin.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-dom.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-event.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-ajax.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-anim.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-anim-extra.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-end.js",
+            "path": "src/ext-core/src/adapter/"
+        }]
+    },{
+        "name": "YUI Adapter",
+        "file": "adapter/yui/ext-yui-adapter.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "Ext.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "TaskMgr.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "yui-bridge.js",
+            "path": "src/adapter/"
+        }]
+    },{
+        "name": "Prototype Adapter",
+        "file": "adapter/prototype/ext-prototype-adapter.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "Ext.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "TaskMgr.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "prototype-bridge.js",
+            "path": "src/adapter/"
+        }]
+    },{
+        "name": "jQuery Adapter",
+        "file": "adapter/jquery/ext-jquery-adapter.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "Ext.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "TaskMgr.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "jquery-bridge.js",
+            "path": "src/adapter/"
+        }]
+    },{
+        "name": "Ext Core",
+        "file": "pkgs/ext-core.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "Observable.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "DomHelper.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Template.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "DomQuery.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "DelayedTask.js",
+            "path": "src/ext-core/src/util/"
+        },{
+            "text": "Element.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.traversal.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.insertion.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.style.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.position.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.scroll.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Element.fx.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Fx.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "CompositeElementLite.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Connection.js",
+            "path": "src/ext-core/src/data/"
+        },{
+            "text": "JSON.js",
+            "path": "src/ext-core/src/util/"
+        },
+        {
+            "text": "EventManager.js",
+            "path": "src/ext-core/src/core/"
+        },{
+            "text": "Loader.js",
+            "path": "src/ext-core/src/core/"
+        }]
+    },{
+        "name": "Ext Foundation",
+        "file": "pkgs/ext-foundation.js",
+        "isDebug": true,
+        "fileIncludes": [{
+            "text": "Ext-more.js",
+            "path": "src/core/"
+        },{
+            "text": "ext-base-dom-more.js",
+            "path": "src/adapter/"
+        },{
+            "text": "ext-base-region.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "ext-base-point.js",
+            "path": "src/ext-core/src/adapter/"
+        },{
+            "text": "DomHelper-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Template-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Function.js",
+            "path": "src/util/"
+        },{
+            "text": "Observable-more.js",
+            "path": "src/util/"
+        },{
+            "text": "EventManager-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.alignment.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.traversal-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.insertion-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.style-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.position-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.scroll-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.fx-more.js",
+            "path": "src/core/"
+        },{
+            "text": "Element.keys.js",
+            "path": "src/core/"
+        },{
+            "text": "CompositeElementLite-more.js",
+            "path": "src/core/"
+        },{
+            "text": "CompositeElement.js",
+            "path": "src/core/"
+        },{
+            "text": "UpdateManager.js",
+            "path": "src/util/"
+        },{
+            "text": "Date.js",
+            "path": "src/util/"
+        },{
+            "text": "MixedCollection.js",
+            "path": "src/util/"
+        },{
+            "text": "AbstractManager.js",
+            "path": "src/util/"
+        },{
+            "text": "Format.js",
+            "path": "src/util/"
+        },{
+            "text": "XTemplate.js",
+            "path": "src/util/"
+        },{
+            "text": "CSS.js",
+            "path": "src/util/"
+        },{
+            "text": "ClickRepeater.js",
+            "path": "src/util/"
+        },{
+            "text": "KeyNav.js",
+            "path": "src/util/"
+        },{
+            "text": "KeyMap.js",
+            "path": "src/util/"
+        },{
+            "text": "TextMetrics.js",
+            "path": "src/util/"
+        },{
+            "text": "Cookies.js",
+            "path": "src/util/"
+        },{
+            "text": "Error.js",
+            "path": "src/core/"
+        }]
+    },{
+        "name": "Drag Drop",
+        "file": "pkgs/ext-dd.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/ext-foundation.js"],
+        "fileIncludes": [{
+            "text": "DDCore.js",
+            "path": "src/dd/"
+        },{
+            "text": "DragTracker.js",
+            "path": "src/dd/"
+        },{
+            "text": "ScrollManager.js",
+            "path": "src/dd/"
+        },{
+            "text": "Registry.js",
+            "path": "src/dd/"
+        },{
+            "text": "StatusProxy.js",
+            "path": "src/dd/"
+        },{
+            "text": "DragSource.js",
+            "path": "src/dd/"
+        },{
+            "text": "DropTarget.js",
+            "path": "src/dd/"
+        },{
+            "text": "DragZone.js",
+            "path": "src/dd/"
+        },{
+            "text": "DropZone.js",
+            "path": "src/dd/"
+        },{
+            "text": "Element.dd.js",
+            "path": "src/core/"
+        }]
+    },{
+        "name": "Data Foundation",
+        "file": "pkgs/data-foundation.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/ext-foundation.js"],
+        "fileIncludes": [{
+            "text": "Api.js",
+            "path": "src/data/"
+        },{
+            "text": "SortTypes.js",
+            "path": "src/data/"
+        },{
+            "text": "Record.js",
+            "path": "src/data/"
+        },{
+            "text": "StoreMgr.js",
+            "path": "src/data/"
+        },{
+            "text": "Store.js",
+            "path": "src/data/"
+        },{
+            "text": "DataField.js",
+            "path": "src/data/"
+        },{
+            "text": "DataReader.js",
+            "path": "src/data/"
+        },{
+            "text": "DataWriter.js",
+            "path": "src/data/"
+        },{
+            "text": "DataProxy.js",
+            "path": "src/data/"
+        },{
+            "text": "Request.js",
+            "path": "src/data/"
+        }, {
+            "text": "Response.js",
+            "path": "src/data/"
+        }, {
+            "text": "ScriptTagProxy.js",
+            "path": "src/data/"
+        },{
+            "text": "HttpProxy.js",
+            "path": "src/data/"
+        },{
+            "text": "MemoryProxy.js",
+            "path": "src/data/"
+        },{
+            "text": "Types.js",
+            "path": "src/data/"
+        }]
+    },{
+        "name": "Data - Json",
+        "file": "pkgs/data-json.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/data-foundation.js"],
+        "fileIncludes": [{
+            "text": "JsonWriter.js",
+            "path": "src/data/"
+        },{
+            "text": "JsonReader.js",
+            "path": "src/data/"
+        },{
+            "text": "ArrayReader.js",
+            "path": "src/data/"
+        },{
+            "text": "ArrayStore.js",
+            "path": "src/data/"
+        },{
+            "text": "JsonStore.js",
+            "path": "src/data/"
+        }]
+    },{
+        "name": "Data - XML",
+        "file": "pkgs/data-xml.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/data-foundation.js"],
+        "fileIncludes": [{
+            "text": "XmlWriter.js",
+            "path": "src/data/"
+        },{
+            "text": "XmlReader.js",
+            "path": "src/data/"
+        },{
+            "text": "XmlStore.js",
+            "path": "src/data/"
+        }]
+    },{
+        "name": "Data - GroupingStore",
+        "file": "pkgs/data-grouping.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/data-foundation.js"],
+        "fileIncludes": [{
+            "text": "GroupingStore.js",
+            "path": "src/data/"
+        }]
+    },{
+        "name": "Direct",
+        "file": "pkgs/direct.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/ext-foundation.js"],
+        "fileIncludes": [{
+            "text": "DirectProxy.js",
+            "path": "src/data/"
+        },{
+            "text": "DirectStore.js",
+            "path": "src/data/"
+        },{
+            "text": "Direct.js",
+            "path": "src/direct/"
+        },{
+            "text": "Transaction.js",
+            "path": "src/direct/"
+        },{
+            "text": "Event.js",
+            "path": "src/direct/"
+        },{
+            "text": "Provider.js",
+            "path": "src/direct/"
+        },{
+            "text": "JsonProvider.js",
+            "path": "src/direct/"
+        },{
+            "text": "PollingProvider.js",
+            "path": "src/direct/"
+        },{
+            "text": "RemotingProvider.js",
+            "path": "src/direct/"
+        }]
+    },{
+        "name": "Component Foundation",
+        "file": "pkgs/cmp-foundation.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/ext-foundation.js"],
+        "fileIncludes": [{
+            "text": "ComponentMgr.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Component.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Action.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Layer.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Shadow.js",
+            "path": "src/widgets/"
+        },{
+            "text": "BoxComponent.js",
+            "path": "src/widgets/"
+        },{
+            "text": "SplitBar.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Container.js",
+            "path": "src/widgets/"
+        },{
+            "text": "ContainerLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "AutoLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "FitLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "CardLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "AnchorLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "ColumnLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "BorderLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "FormLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "AccordionLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "TableLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "AbsoluteLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "BoxLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "MenuOverflow.js",
+            "path": "src/widgets/layout/box/"
+        },{
+            "text": "ScrollerOverflow.js",
+            "path": "src/widgets/layout/box/"
+        },{
+            "text": "HBoxLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "VBoxLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "ToolbarLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "MenuLayout.js",
+            "path": "src/widgets/layout/"
+        },{
+            "text": "Viewport.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Panel.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Editor.js",
+            "path": "src/widgets/"
+        },{
+            "text": "ColorPalette.js",
+            "path": "src/widgets/"
+        },{
+            "text": "DatePicker.js",
+            "path": "src/widgets/"
+        },{
+            "text": "LoadMask.js",
+            "path": "src/widgets/"
+        },{
+            "text": "Slider.js",
+            "path": "src/widgets/"
+        },{
+            "text": "ProgressBar.js",
+            "path": "src/widgets/"
+        }]
+    },{
+        "name": "Window",
+        "file": "pkgs/window.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "Window.js",
+            "path": "src/widgets/"
+        },{
+            "text": "WindowManager.js",
+            "path": "src/widgets/"
+        },{
+            "text": "MessageBox.js",
+            "path": "src/widgets/"
+        },{
+            "text": "PanelDD.js",
+            "path": "src/widgets/"
+        }]
+    },{
+        "name": "State",
+        "file": "pkgs/state.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "Provider.js",
+            "path": "src/state/"
+        },{
+            "text": "StateManager.js",
+            "path": "src/state/"
+        },{
+            "text": "CookieProvider.js",
+            "path": "src/state/"
+        }]
+    },{
+        "name": "Data and ListViews",
+        "file": "pkgs/data-list-views.js",
+        "isDebug": true,
+        "pkgDeps": ["pkgs/cmp-foundation.js","pkgs/data-foundation.js"],
+        "fileIncludes": [{
+            "text": "DataView.js",
+            "path": "src/widgets/"
+        },{
+            "text": "ListView.js",
+            "path": "src/widgets/list/"
+        },{
+            "text": "Column.js",
+            "path": "src/widgets/list/"
+        },{
+            "text": "ColumnResizer.js",
+            "path": "src/widgets/list/"
+        },{
+            "text": "Sorter.js",
+            "path": "src/widgets/list/"
+        }]
+    },{
+        "name": "Resizable",
+        "file": "pkgs/resizable.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/ext-foundation.js"],
+        "fileIncludes": [{
+            "text": "Resizable.js",
+            "path": "src/widgets/"
+        }]
+
+    },{
+        "name": "TabPanel",
+        "file": "pkgs/pkg-tabs.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "TabPanel.js",
+            "path": "src/widgets/"
+        }]
+    },{
+        "name": "Buttons",
+        "file": "pkgs/pkg-buttons.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "Button.js",
+            "path": "src/widgets/"
+        },{
+            "text": "SplitButton.js",
+            "path": "src/widgets/"
+        },{
+            "text": "CycleButton.js",
+            "path": "src/widgets/"
+        }]
+    },{
+        "name": "Toolbars",
+        "file": "pkgs/pkg-toolbars.js",
+        "type": "js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "Toolbar.js",
+            "path": "src/widgets/"
+        },{
+            "text": "ButtonGroup.js",
+            "path": "src/widgets/"
+        },{
+            "text": "PagingToolbar.js",
+            "path": "src/widgets/"
+        }]
+    },{
+        "name": "History",
+        "file": "pkgs/pkg-history.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/ext-foundation.js"],
+        "fileIncludes": [{
+            "text": "History.js",
+            "path": "src/util/"
+        }]
+    },{
+        "name": "Tooltips",
+        "file": "pkgs/pkg-tips.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "Tip.js",
+            "path": "src/widgets/tips/"
+        },{
+            "text": "ToolTip.js",
+            "path": "src/widgets/tips/"
+        },{
+            "text": "QuickTip.js",
+            "path": "src/widgets/tips/"
+        },{
+            "text": "QuickTips.js",
+            "path": "src/widgets/tips/"
+        },{
+            "text": "SliderTip.js",
+            "path": "src/widgets/tips/"
+        }]
+    },{
+        "name": "Trees",
+        "file": "pkgs/pkg-tree.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "TreePanel.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeEventModel.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeSelectionModel.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "Tree.js",
+            "path": "src/data/"
+        },{
+            "text": "TreeNode.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "AsyncTreeNode.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeNodeUI.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeLoader.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeFilter.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeSorter.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeDropZone.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeDragZone.js",
+            "path": "src/widgets/tree/"
+        },{
+            "text": "TreeEditor.js",
+            "path": "src/widgets/tree/"
+        }]
+    },{
+        "name": "Charts",
+        "file": "pkgs/pkg-charts.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "swfobject.js",
+            "path": "src/widgets/chart/"
+        },{
+            "text": "FlashComponent.js",
+            "path": "src/widgets/chart/"
+        },{
+            "text": "EventProxy.js",
+            "path": "src/widgets/chart/"
+        },{
+            "text": "Chart.js",
+            "path": "src/widgets/chart/"
+        }]
+    },{
+        "name": "Menu",
+        "file": "pkgs/pkg-menu.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "Menu.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "MenuMgr.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "BaseItem.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "TextItem.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "Separator.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "Item.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "CheckItem.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "DateMenu.js",
+            "path": "src/widgets/menu/"
+        },{
+            "text": "ColorMenu.js",
+            "path": "src/widgets/menu/"
+        }]
+    },{
+        "name": "Forms",
+        "file": "pkgs/pkg-forms.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "Field.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "TextField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "TriggerField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "TextArea.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "NumberField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "DateField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "DisplayField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "Combo.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "Checkbox.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "CheckboxGroup.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "CompositeField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "Radio.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "RadioGroup.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "Hidden.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "BasicForm.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "Form.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "FieldSet.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "HtmlEditor.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "TimeField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "SliderField.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "Label.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "Action.js",
+            "path": "src/widgets/form/"
+        },{
+            "text": "VTypes.js",
+            "path": "src/widgets/form/"
+        }]
+    },{
+        "name": "Grid Foundation",
+        "file": "pkgs/pkg-grid-foundation.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/cmp-foundation.js"],
+        "fileIncludes": [{
+            "text": "GridPanel.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "PivotGrid.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "GridView.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "PivotGridView.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "PivotAxis.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "ColumnDD.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "ColumnSplitDD.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "GridDD.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "ColumnModel.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "AbstractSelectionModel.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "RowSelectionModel.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "Column.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "RowNumberer.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "CheckboxSelectionModel.js",
+            "path": "src/widgets/grid/"
+        }]
+    },{
+        "name": "Grid Editor",
+        "file": "pkgs/pkg-grid-editor.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/pkg-grid-foundation.js"],
+        "fileIncludes": [{
+            "text": "CellSelectionModel.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "EditorGrid.js",
+            "path": "src/widgets/grid/"
+        },{
+            "text": "GridEditor.js",
+            "path": "src/widgets/grid/"
+        }]
+    },{
+        "name": "Grid - Property Grid",
+        "file": "pkgs/pkg-grid-property.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/pkg-grid-foundation.js"],
+        "fileIncludes": [{
+            "text": "PropertyGrid.js",
+            "path": "src/widgets/grid/"
+        }]
+    },{
+        "name": "Grid - GroupingView",
+        "file": "pkgs/pkg-grid-grouping.js",
+        "isDebug": true,
+        "pkgs": ["pkgs/pkg-grid-foundation.js", "pkgs/data-grouping.js"],
+        "fileIncludes": [{
+            "text": "GroupingView.js",
+            "path": "src/widgets/grid/"
+        }]
+    },{
+        "name": "Ext Core",
+        "file": "ext-core-all.js",
+        "isDebug": true,
+        "includeDeps": true,
+        "pkgDeps": [
+            "adapter/ext/ext-base.js",
+            "pkgs/ext-core.js"
+        ],
+        "fileIncludes": []
+    },{
+        "name": "Ext All No Core",
+        "file": "ext-all-no-core.js",
+        "isDebug": true,
+        "includeDeps": true,
+        "pkgDeps": [
+            "pkgs/ext-foundation.js",
+            "pkgs/cmp-foundation.js",
+            "pkgs/ext-dd.js",
+            "pkgs/data-foundation.js",
+            "pkgs/data-json.js",
+            "pkgs/data-xml.js",
+            "pkgs/data-grouping.js",
+            "pkgs/direct.js",
+            "pkgs/resizable.js",
+            "pkgs/window.js",
+            "pkgs/state.js",
+            "pkgs/data-list-views.js",
+            "pkgs/pkg-tabs.js",
+            "pkgs/pkg-buttons.js",
+            "pkgs/pkg-toolbars.js",
+            "pkgs/pkg-history.js",
+            "pkgs/pkg-tips.js",
+            "pkgs/pkg-tree.js",
+            "pkgs/pkg-charts.js",
+            "pkgs/pkg-menu.js",
+            "pkgs/pkg-forms.js",
+            "pkgs/pkg-grid-foundation.js",
+            "pkgs/pkg-grid-editor.js",
+            "pkgs/pkg-grid-property.js",
+            "pkgs/pkg-grid-grouping.js"
+        ],
+        "fileIncludes": []
+    },{
+        "name": "Ext All",
+        "file": "ext-all.js",
+        "isDebug": true,
+        "includeDeps": true,
+        "pkgDeps": [
+            "pkgs/ext-core.js",
+            "ext-all-no-core.js"
+        ],
+        "fileIncludes": []
+    },
+    {
+        "name": "Calendar",
+        "file": "examples/calendar/calendar-all.js",
+        "isDebug": true,
+        "fileIncludes": [
+            {"path": "examples/calendar/src/",           "text": "Ext.calendar.js"},
+            {"path": "examples/calendar/src/templates/", "text": "DayHeaderTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "DayBodyTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "DayViewTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "BoxLayoutTemplate.js"},
+            {"path": "examples/calendar/src/templates/", "text": "MonthViewTemplate.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "CalendarScrollManager.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "StatusProxy.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "CalendarDD.js"},
+            {"path": "examples/calendar/src/dd/",        "text": "DayViewDD.js"},
+            {"path": "examples/calendar/src/",           "text": "EventRecord.js"},
+            {"path": "examples/calendar/src/views/",     "text": "MonthDayDetailView.js"},
+            {"path": "examples/calendar/src/widgets/",   "text": "CalendarPicker.js"},
+            {"path": "examples/calendar/src/",           "text": "WeekEventRenderer.js"},
+            {"path": "examples/calendar/src/views/",     "text": "CalendarView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "MonthView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "DayHeaderView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "DayBodyView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "DayView.js"},
+            {"path": "examples/calendar/src/views/",     "text": "WeekView.js"},
+            {"path": "examples/calendar/src/widgets/",   "text": "DateRangeField.js"},
+            {"path": "examples/calendar/src/widgets/",   "text": "ReminderField.js"},
+            {"path": "examples/calendar/src/",           "text": "EventEditForm.js"},
+            {"path": "examples/calendar/src/",           "text": "EventEditWindow.js"},
+            {"path": "examples/calendar/src/",           "text": "CalendarPanel.js"}
+        ]
+    },
+    {
+       "name": "User Extension JS Pack",
+       "file": "examples/ux/ux-all.js",
+       "isDebug": true,
+       "fileIncludes": [{
+          "text": "BufferView.js",
+          "path": "examples/ux/"
+       },{
+          "text": "CenterLayout.js",
+          "path": "examples/ux/"
+       },{
+          "text": "CheckColumn.js",
+          "path": "examples/ux/"
+       },{
+          "text": "ColumnHeaderGroup.js",
+          "path": "examples/ux/"
+       },{
+          "text": "ColumnNodeUI.js",
+          "path": "examples/ux/"
+       },{
+          "text": "DataView-more.js",
+          "path": "examples/ux/"
+       },{
+          "text": "FileUploadField.js",
+          "path": "examples/ux/fileuploadfield/"
+       },{
+          "text": "GMapPanel.js",
+          "path": "examples/ux/"
+       },{
+          "text": "GridFilters.js",
+          "path": "examples/ux/gridfilters/"
+       },{
+          "text": "Filter.js",
+          "path": "examples/ux/gridfilters/filter/"
+       },{
+          "text": "BooleanFilter.js",
+          "path": "examples/ux/gridfilters/filter/"
+       },{
+          "text": "DateFilter.js",
+          "path": "examples/ux/gridfilters/filter/"
+       },{
+          "text": "ListFilter.js",
+          "path": "examples/ux/gridfilters/filter/"
+       },{
+          "text": "NumericFilter.js",
+          "path": "examples/ux/gridfilters/filter/"
+       },{
+          "text": "StringFilter.js",
+          "path": "examples/ux/gridfilters/filter/"
+       },{
+          "text": "ListMenu.js",
+          "path": "examples/ux/gridfilters/menu/"
+       },{
+          "text": "RangeMenu.js",
+          "path": "examples/ux/gridfilters/menu/"
+       },{
+          "text": "GroupSummary.js",
+          "path": "examples/ux/"
+       },{
+          "text": "GroupTab.js",
+          "path": "examples/ux/"
+       },{
+          "text": "GroupTabPanel.js",
+          "path": "examples/ux/"
+       },{
+          "text": "ItemSelector.js",
+          "path": "examples/ux/"
+       },{
+          "text": "LockingGridView.js",
+          "path": "examples/ux/"
+       },{
+          "text": "MultiSelect.js",
+          "path": "examples/ux/"
+       },{
+          "text": "PagingMemoryProxy.js",
+          "path": "examples/ux/"
+       },{
+          "text": "PanelResizer.js",
+          "path": "examples/ux/"
+       },{
+          "text": "Portal.js",
+          "path": "examples/ux/"
+       },{
+          "text": "PortalColumn.js",
+          "path": "examples/ux/"
+       },{
+          "text": "Portlet.js",
+          "path": "examples/ux/"
+       },{
+          "text": "ProgressBarPager.js",
+          "path": "examples/ux/"
+       },{
+          "text": "RowEditor.js",
+          "path": "examples/ux/"
+       },{
+          "text": "RowExpander.js",
+          "path": "examples/ux/"
+       },{
+          "text": "RowLayout.js",
+          "path": "examples/ux/"
+       },{
+          "text": "SearchField.js",
+          "path": "examples/ux/"
+       },{
+          "text": "SelectBox.js",
+          "path": "examples/ux/"
+       },{
+          "text": "SlidingPager.js",
+          "path": "examples/ux/"
+       },{
+          "text": "SpinnerField.js",
+          "path": "examples/ux/"
+       },{
+          "text": "Spinner.js",
+          "path": "examples/ux/"
+       },{
+          "text": "Spotlight.js",
+          "path": "examples/ux/"
+       },{
+          "text": "StatusBar.js",
+          "path": "examples/ux/statusbar/"
+       },{
+          "text": "TabCloseMenu.js",
+          "path": "examples/ux/"
+       },{
+          "text": "TableGrid.js",
+          "path": "examples/ux/"
+       },{
+          "text": "TabScrollerMenu.js",
+          "path": "examples/ux/"
+       },{
+          "text": "XmlTreeLoader.js",
+          "path": "examples/ux/"
+       },{
+          "text": "ValidationStatus.js",
+          "path": "examples/ux/statusbar/"
+       }, {
+          "text": "TreeGridColumns.js",
+          "path": "examples/ux/treegrid/"
+       },{
+          "text": "TreeGridNodeUI.js",
+          "path": "examples/ux/treegrid/"
+       },{
+          "text": "TreeGridColumnResizer.js",
+          "path": "examples/ux/treegrid/"
+       },{
+          "text": "TreeGridSorter.js",
+          "path": "examples/ux/treegrid/"
+       },{
+          "text": "TreeGridLoader.js",
+          "path": "examples/ux/treegrid/"
+       },{
+          "text": "TreeGrid.js",
+          "path": "examples/ux/treegrid/"
+       }]
+    },{
+       "name": "User Extension CSS Pack",
+       "file": "examples/ux/css/ux-all.css",
+       "fileIncludes": [{
+          "text": "CenterLayout.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "ColumnHeaderGroup.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "ColumnNodeUI.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "fileuploadfield.css",
+          "path": "examples/ux/fileuploadfield/css/"
+       },{
+          "text": "GridFilters.css",
+          "path": "examples/ux/gridfilters/css/"
+       },{
+          "text": "RangeMenu.css",
+          "path": "examples/ux/gridfilters/css/"
+       },{
+          "text": "GroupSummary.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "GroupTab.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "LockingGridView.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "MultiSelect.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "PanelResizer.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "Portal.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "RowEditor.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "Spinner.css",
+          "path": "examples/ux/css/"
+       },{
+          "text": "statusbar.css",
+          "path": "examples/ux/statusbar/css/"
+       },{
+          "text": "treegrid.css",
+          "path": "examples/ux/treegrid/"
+       }]
+    },{
+       "name": "Ext All CSS",
+       "file": "resources/css/ext-all.css",
+       "fileIncludes": [],
+       "includeDeps": true,
+       "pkgDeps": [
+           "resources/css/ext-all-notheme.css",
+           "resources/css/xtheme-blue.css"
+       ]
+    },{
+       "name": "Ext All CSS No theme",
+       "file": "resources/css/ext-all-notheme.css",
+       "fileIncludes": [{
+           "text": "reset.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "core.css",
+           "path": "resources/css/structure/"
+       },{
+            "text": "resizable.css",
+            "path": "resources/css/structure/"
+       },{
+           "text": "tabs.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "form.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "button.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "toolbar.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "grid.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "pivotgrid.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "dd.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "tree.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "date-picker.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "qtips.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "menu.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "box.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "combo.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "panel.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "panel-reset.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "window.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "editor.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "borders.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "layout.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "progress.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "list-view.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "slider.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "dialog.css",
+           "path": "resources/css/structure/"
+       }]
+    },{
+       "name": "Ext Blue Theme",
+       "file": "resources/css/xtheme-blue.css",
+       "fileIncludes": [{
+           "text": "core.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "tabs.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "form.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "button.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "toolbar.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "resizable.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "grid.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "pivotgrid.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "dd.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "tree.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "date-picker.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "qtips.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "menu.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "box.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "combo.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "panel.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "window.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "editor.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "borders.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "layout.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "progress.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "list-view.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "slider.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "dialog.css",
+           "path": "resources/css/visual/"
+       }]
+    },{
+       "name": "Your Theme",
+       "file": "resources/css/yourtheme.css",
+       "fileIncludes": [{
+           "text": "core.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "tabs.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "form.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "button.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "toolbar.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "resizable.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "grid.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "dd.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "tree.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "date-picker.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "qtips.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "menu.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "box.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "combo.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "panel.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "window.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "editor.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "borders.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "layout.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "progress.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "list-view.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "slider.css",
+           "path": "resources/css/visual/"
+       },{
+           "text": "dialog.css",
+           "path": "resources/css/visual/"
+       }]
+    },{
+       "name": "Ext Gray Theme",
+       "file": "resources/css/xtheme-gray.css",
+       "fileIncludes": [{
+           "text": "core.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "tabs.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "form.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "button.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "toolbar.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "resizable.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "grid.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "pivotgrid.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "dd.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "tree.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "date-picker.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "qtips.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "menu.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "box.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "combo.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "panel.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "window.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "editor.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "borders.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "layout.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "progress.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "list-view.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "slider.css",
+           "path": "resources/css/theme-gray/"
+       },{
+           "text": "dialog.css",
+           "path": "resources/css/theme-gray/"
+       }]
+    },{
+       "name": "Ext Accessibility Theme",
+       "file": "resources/css/xtheme-access.css",
+       "fileIncludes": [{
+           "text": "core.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "tabs.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "form.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "button.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "toolbar.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "resizable.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "grid.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "dd.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "tree.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "date-picker.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "qtips.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "menu.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "box.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "combo.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "panel.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "window.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "editor.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "borders.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "layout.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "progress.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "list-view.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "slider.css",
+           "path": "resources/css/theme-access/"
+       },{
+           "text": "dialog.css",
+           "path": "resources/css/theme-access/"
+       }]
+    },{
+       "name": "Ext Debug CSS",
+       "file": "resources/css/debug.css",
+       "fileIncludes": [{
+           "text": "debug.css",
+           "path": "resources/css/structure/"
+       },{
+           "text": "debug.css",
+           "path": "resources/css/visual/"
+        }]
+    }, {
+		"name" : "Sitools Client-admin", 
+		"file" : "", 
+		"fileIncludes" : [{"text":"applicationsCrud.js","path":"../../workspace/client-admin/js/applications/"}, {"text":"applicationsprop.js","path":"../../workspace/client-admin/js/applications/"}, {"text":"applicationsRole.js","path":"../../workspace/client-admin/js/applications/"}, {"text":"applicationPluginCrud.js","path":"../../workspace/client-admin/js/applications/plugins/"}, {"text":"applicationPluginProp.js","path":"../../workspace/client-admin/js/applications/plugins/"}, {"text":"applicationResourcesCrud.js","path":"../../workspace/client-admin/js/applications/plugins/"}, {"text":"roleWin.js","path":"../../workspace/client-admin/js/applications/"}, {"text":"authorizationsCrud.js","path":"../../workspace/client-admin/js/authorizations/"}, {"text":"CollectionsCrudPanel.js","path":"../../workspace/client-admin/js/collections/"}, {"text":"CollectionsPropPanel.js","path":"../../workspace/client-admin/js/collections/"}, {"text":"convertersCrud.js","path":"../../workspace/client-admin/js/converters/"}, {"text":"convertersProp.js","path":"../../workspace/client-admin/js/converters/"}, {"text":"abstractDatasetProp.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"columnProp.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetForm.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetProp.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetsCrud.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetsDicoMapping.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetsOpenSearch.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetUrlWin.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"dictionaryWin.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"gridFieldSetup.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"joinConditionWin.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"joinPanel.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"joinTableWin.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetResourcesCrud.js","path":"../../workspace/client-admin/js/datasets/plugins/"}, {"text":"rssFeedDatasets.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"selectColumn.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"selectPredicat.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"unitWin.js","path":"../../workspace/client-admin/js/datasets/"}, {"text":"datasetViewprop.js","path":"../../workspace/client-admin/js/datasetViews/"}, {"text":"datasetViewscrud.js","path":"../../workspace/client-admin/js/datasetViews/"}, {"text":"databasecrud.js","path":"../../workspace/client-admin/js/datasource/"}, {"text":"databaseprop.js","path":"../../workspace/client-admin/js/datasource/"}, {"text":"databasetest.js","path":"../../workspace/client-admin/js/datasource/"}, {"text":"def.js","path":"../../workspace/client-admin/js/"}, {"text":"dictionaryCrud.js","path":"../../workspace/client-admin/js/dictionary/"}, {"text":"dictionaryGridPanel.js","path":"../../workspace/client-admin/js/dictionary/"}, {"text":"dictionaryprop.js","path":"../../workspace/client-admin/js/dictionary/"}, {"text":"templateCrud.js","path":"../../workspace/client-admin/js/dictionary/"}, {"text":"templateprop.js","path":"../../workspace/client-admin/js/dictionary/"}, {"text":"cssEditorCrud.js","path":"../../workspace/client-admin/js/fileEditor/"}, {"text":"fileEditorProp.js","path":"../../workspace/client-admin/js/fileEditor/"}, {"text":"ftlEditorCrud.js","path":"../../workspace/client-admin/js/fileEditor/"}, {"text":"licenceEditorProp.js","path":"../../workspace/client-admin/js/fileEditor/"}, {"text":"filtersCrud.js","path":"../../workspace/client-admin/js/filters/"}, {"text":"filtersProp.js","path":"../../workspace/client-admin/js/filters/"}, {"text":"filtersPluginsProp.js","path":"../../workspace/client-admin/js/filtersPlugins/"}, {"text":"filtersPluginsSingle.js","path":"../../workspace/client-admin/js/filtersPlugins/"}, {"text":"firewall.js","path":"../../workspace/client-admin/js/firewall/"}, {"text":"formComponentscrud.js","path":"../../workspace/client-admin/js/formComponents/"}, {"text":"formComponentsprop.js","path":"../../workspace/client-admin/js/formComponents/"}, {"text":"absoluteLayoutProp.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"componentPropPanel.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"ComponentFactory.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/"}, {"text":"DatasetContext.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/"}, {"text":"Abstract.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/MultiParam/"}, {"text":"ConeSearch.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/MultiParam/"}, {"text":"HorizontalLine.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/NoParam/"}, {"text":"Image.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/NoParam/"}, {"text":"Label.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/NoParam/"}, {"text":"Abstract.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"AbstractWithUnit.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"DateBetween.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"NoValuesWithProperties.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"NumberFieldAdmin.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"NumericBetween.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"TextField.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"WithoutValues.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"WithValues.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/OneParam/"}, {"text":"ProjectContext.js","path":"../../workspace/client-admin/js/forms/componentsAdminDef/"}, {"text":"ComponentsDisplayPanel.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"componentsListPanel.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"FormGridComponents.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"formPropPanel.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"formsCrud.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"winParent.js","path":"../../workspace/client-admin/js/forms/"}, {"text":"graphsCrud.js","path":"../../workspace/client-admin/js/graphs/"}, {"text":"graphsDatasetWin.js","path":"../../workspace/client-admin/js/graphs/"}, {"text":"graphsNodeWin.js","path":"../../workspace/client-admin/js/graphs/"}, {"text":"gui.js","path":"../../workspace/client-admin/js/"}, {"text":"id.js","path":"../../workspace/client-admin/js/"}, {"text":"analogProp.js","path":"../../workspace/client-admin/js/logs/"}, {"text":"dataView.js","path":"../../workspace/client-admin/js/menu/"}, {"text":"seeAlso.js","path":"../../workspace/client-admin/js/menu/"}, {"text":"TreeMenu.js","path":"../../workspace/client-admin/js/menu/"}, {"text":"MultiDsCrudPanel.js","path":"../../workspace/client-admin/js/multiDs/"}, {"text":"MultiDsPropPanel.js","path":"../../workspace/client-admin/js/multiDs/"}, {"text":"events.js","path":"../../workspace/client-admin/js/order/"}, {"text":"orderCrud.js","path":"../../workspace/client-admin/js/order/"}, {"text":"orderprop.js","path":"../../workspace/client-admin/js/order/"}, {"text":"rssFeedPortalCrud.js","path":"../../workspace/client-admin/js/portal/"}, {"text":"datasetsWin.js","path":"../../workspace/client-admin/js/projects/"}, {"text":"modulescrud.js","path":"../../workspace/client-admin/js/projects/modules/"}, {"text":"modulesprop.js","path":"../../workspace/client-admin/js/projects/modules/"}, {"text":"projectResourcesCrud.js","path":"../../workspace/client-admin/js/projects/plugins/"}, {"text":"projectsCrud.js","path":"../../workspace/client-admin/js/projects/"}, {"text":"projectsprop.js","path":"../../workspace/client-admin/js/projects/"}, {"text":"rssFeedProjects.js","path":"../../workspace/client-admin/js/projects/"}, {"text":"enumerationValueTypeSelector.js","path":"../../workspace/client-admin/js/resourcesPlugins/"}, {"text":"resourcesPluginsCrud.js","path":"../../workspace/client-admin/js/resourcesPlugins/"}, {"text":"resourcesPluginsProp.js","path":"../../workspace/client-admin/js/resourcesPlugins/"}, {"text":"rssFeedCrud.js","path":"../../workspace/client-admin/js/rssFeed/"}, {"text":"rssFeedItemProps.js","path":"../../workspace/client-admin/js/rssFeed/"}, {"text":"rssFeedProps.js","path":"../../workspace/client-admin/js/rssFeed/"}, {"text":"storageFiltersCrud.js","path":"../../workspace/client-admin/js/storage/plugins/"}, {"text":"storagesCrud.js","path":"../../workspace/client-admin/js/storage/"}, {"text":"storagesProp.js","path":"../../workspace/client-admin/js/storage/"}, {"text":"svaCrud.js","path":"../../workspace/client-admin/js/sva/"}, {"text":"svaProp.js","path":"../../workspace/client-admin/js/sva/"}, {"text":"tools.js","path":"../../workspace/client-admin/js/"}, {"text":"unitsCrud.js","path":"../../workspace/client-admin/js/units/"}, {"text":"unitsProps.js","path":"../../workspace/client-admin/js/units/"}, {"text":"groupcrud.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"groupprop.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"groups.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"regcrud.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"regprop.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"rolecrud.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"roleprop.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"roles.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"usercrud.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"userprop.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"users.js","path":"../../workspace/client-admin/js/usergroups/"}, {"text":"userStorageCrud.js","path":"../../workspace/client-admin/js/userStorage/"}, {"text":"userStorageprop.js","path":"../../workspace/client-admin/js/userStorage/"}, {"text":"tutoView.js","path":"../../workspace/client-admin/"}]
+	}, {
+		"name" : "Sitools Client-user", 
+		"file" : "", 
+		"fileIncludes" : [{"text":"ext-base.js","path":"../../workspace/client-user/"}, {"text":"columnsDefinition.js","path":"../../workspace/client-user/js/components/columnsDefinition/dependencies/"}, {"text":"datasetOpensearch.js","path":"../../workspace/client-user/js/components/datasetOpensearch/"}, {"text":"openSearchResultFeed.js","path":"../../workspace/client-user/js/components/datasetOpensearch/"}, {"text":"formComponentsPanel.js","path":"../../workspace/client-user/js/components/forms/"}, {"text":"forms.js","path":"../../workspace/client-user/js/components/forms/"}, {"text":"projectForm.js","path":"../../workspace/client-user/js/components/forms/"}, {"text":"resultsProjectForm.js","path":"../../workspace/client-user/js/components/forms/"}, {"text":"contextMenu.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"datasetLivegrid.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"dataView.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"dataviewUtils.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"Ext.ux.livegrid-all-debug.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/Ext.ux.livegrid/"}, {"text":"Ext.ux.livegrid-all.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/Ext.ux.livegrid/"}, {"text":"Ext.ux.livegrid-core.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/Ext.ux.livegrid/"}, {"text":"liveGridExample.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/Ext.ux.livegrid/"}, {"text":"goToSvaTaskWindow.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"goToTaskWindow.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"resourcePluginParamsWindow.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"storeLiveGrid.js","path":"../../workspace/client-user/js/components/livegrid/dependencies/"}, {"text":"dataPlotter.js","path":"../../workspace/client-user/js/components/plot/"}, {"text":"simpleViewDataDetails.js","path":"../../workspace/client-user/js/components/viewDataDetail/"}, {"text":"viewDataDetail.js","path":"../../workspace/client-user/js/components/viewDataDetail/"}, {"text":"def.js","path":"../../workspace/client-user/js/"}, {"text":"desktop.js","path":"../../workspace/client-user/js/desktop/"}, {"text":"env.js","path":"../../workspace/client-user/js/"}, {"text":"gui.js","path":"../../workspace/client-user/js/"}, {"text":"id.js","path":"../../workspace/client-user/js/"}, {"text":"applicationManager.js","path":"../../workspace/client-user/js/modules/applicationManager/dependencies/"}, {"text":"serverApplicationManager.js","path":"../../workspace/client-user/js/modules/applicationManager/"}, {"text":"dataSetExplorer.js","path":"../../workspace/client-user/js/modules/dataSetExplorer/"}, {"text":"extPoster.js","path":"../../workspace/client-user/js/modules/extPoster/"}, {"text":"feedReaderProject.js","path":"../../workspace/client-user/js/modules/feedsReader/"}, {"text":"formsModule.js","path":"../../workspace/client-user/js/modules/formsModule/"}, {"text":"help.js","path":"../../workspace/client-user/js/modules/help/"}, {"text":"htmlModuleJeobrowser.js","path":"../../workspace/client-user/js/modules/htmlModuleMapShup/"}, {"text":"openSearchModule.js","path":"../../workspace/client-user/js/modules/openSearchModule/"}, {"text":"projectDescription.js","path":"../../workspace/client-user/js/modules/projectDescription/"}, {"text":"projectGraph.js","path":"../../workspace/client-user/js/modules/projectGraph/"}, {"text":"order.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"orderProp.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"preference.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"svaTaskDetails.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"svaTasks.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"tasks.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"viewOrder.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"viewRecordSelectionDetail.js","path":"../../workspace/client-user/js/modules/userSpace/dependencies/"}, {"text":"userSpace.js","path":"../../workspace/client-user/js/modules/userSpace/"}, {"text":"portal.js","path":"../../workspace/client-user/js/portal/"}, {"text":"feedReaderPortal.js","path":"../../workspace/client-user/js/portal/portlets/"}, {"text":"portalOpensearch.js","path":"../../workspace/client-user/js/portal/portlets/"}, {"text":"sitoolsProject.js","path":"../../workspace/client-user/js/"}, {"text":"app.js","path":"../../workspace/client-user/siesta/docs/"}, {"text":"data.js","path":"../../workspace/client-user/siesta/docs/"}, {"text":"ext-all.js","path":"../../workspace/client-user/siesta/docs/extjs/"}, {"text":"README.js","path":"../../workspace/client-user/siesta/docs/guides/cross_page_testing/"}, {"text":"README.js","path":"../../workspace/client-user/siesta/docs/guides/extending_test_class/"}, {"text":"README.js","path":"../../workspace/client-user/siesta/docs/guides/siesta_automation/"}, {"text":"README.js","path":"../../workspace/client-user/siesta/docs/guides/siesta_getting_started/"}, {"text":"README.js","path":"../../workspace/client-user/siesta/docs/guides/testing_mvc_app/"}, {"text":"Siesta.Harness.Browser.ExtJS.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Harness.Browser.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Harness.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Harness.NodeJS.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.Click.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.Done.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.DoubleClick.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.Drag.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.RightClick.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.Role.HasTarget.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.Type.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Action.Wait.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Browser.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Date.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Element.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.Component.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.DataView.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.Element.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.FormField.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.Grid.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.Observable.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.ExtJS.Store.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Function.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.jQuery.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.More.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Simulate.Event.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Simulate.Keyboard.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Simulate.KeyCodes.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.Simulate.Mouse.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"Siesta.Test.TextSelection.js","path":"../../workspace/client-user/siesta/docs/output/"}, {"text":"prettify.js","path":"../../workspace/client-user/siesta/docs/resources/prettify/"}, {"text":"010_basic_assertions.t.js","path":"../../workspace/client-user/siesta/examples/010-basics/"}, {"text":"020_async_code.t.js","path":"../../workspace/client-user/siesta/examples/010-basics/"}, {"text":"030_global_variables.t.js","path":"../../workspace/client-user/siesta/examples/010-basics/"}, {"text":"040_todo_tests.t.js","path":"../../workspace/client-user/siesta/examples/010-basics/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/010-basics/"}, {"text":"010_text_selection.t.js","path":"../../workspace/client-user/siesta/examples/011-basic-browser/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/011-basic-browser/"}, {"text":"010_ext-bug.t.js","path":"../../workspace/client-user/siesta/examples/020-extjs-general/"}, {"text":"015_ext-combo.t.js","path":"../../workspace/client-user/siesta/examples/020-extjs-general/"}, {"text":"020_ext-custom-combo.t.js","path":"../../workspace/client-user/siesta/examples/020-extjs-general/"}, {"text":"030_ext-resize.t.js","path":"../../workspace/client-user/siesta/examples/020-extjs-general/"}, {"text":"040_ext-window.t.js","path":"../../workspace/client-user/siesta/examples/020-extjs-general/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/020-extjs-general/"}, {"text":"010_drag-drop.t.js","path":"../../workspace/client-user/siesta/examples/021-extjs-drag-drop/"}, {"text":"020_dd-tree.t.js","path":"../../workspace/client-user/siesta/examples/021-extjs-drag-drop/"}, {"text":"030_ext-calendar.t.js","path":"../../workspace/client-user/siesta/examples/021-extjs-drag-drop/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/021-extjs-drag-drop/"}, {"text":"010_basic_form.t.js","path":"../../workspace/client-user/siesta/examples/022-extjs-form/"}, {"text":"020_checkboxes.t.js","path":"../../workspace/client-user/siesta/examples/022-extjs-form/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/022-extjs-form/"}, {"text":"010_basic.t.js","path":"../../workspace/client-user/siesta/examples/023-extjs-grid/"}, {"text":"020_mouseover.t.js","path":"../../workspace/client-user/siesta/examples/023-extjs-grid/"}, {"text":"030_sel_model.t.js","path":"../../workspace/client-user/siesta/examples/023-extjs-grid/"}, {"text":"040_editing.t.js","path":"../../workspace/client-user/siesta/examples/023-extjs-grid/"}, {"text":"050_resizing.t.js","path":"../../workspace/client-user/siesta/examples/023-extjs-grid/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/023-extjs-grid/"}, {"text":"Your.Test.Class.js","path":"../../workspace/client-user/siesta/examples/023-extjs-grid/"}, {"text":"010_crud.t.js","path":"../../workspace/client-user/siesta/examples/024-extjs-crud/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/024-extjs-crud/"}, {"text":"app.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/"}, {"text":"Users.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/app/controller/"}, {"text":"User.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/app/model/"}, {"text":"Users.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/app/store/"}, {"text":"Edit.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/app/view/user/"}, {"text":"List.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/app/view/user/"}, {"text":"test-harness.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/"}, {"text":"010_sanity.t.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/tests/"}, {"text":"011_usermodel.t.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/tests/"}, {"text":"012_userlist_view.t.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/tests/"}, {"text":"013_useredit_view.t.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/tests/"}, {"text":"014_app.t.js","path":"../../workspace/client-user/siesta/examples/025-extjs-mvc/tests/"}, {"text":"010_ext-resize.t.js","path":"../../workspace/client-user/siesta/examples/026-extjs3/"}, {"text":"020_ext-window.t.js","path":"../../workspace/client-user/siesta/examples/026-extjs3/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/026-extjs3/"}, {"text":"010_hello_world.t.js","path":"../../workspace/client-user/siesta/examples/040-jquery/"}, {"text":"020_jquery_ui_selectable.t.js","path":"../../workspace/client-user/siesta/examples/040-jquery/"}, {"text":"030_monkey.t.js","path":"../../workspace/client-user/siesta/examples/040-jquery/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/040-jquery/"}, {"text":"hello_world.t.js","path":"../../workspace/client-user/siesta/examples/050-prototypejs/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/050-prototypejs/"}, {"text":"prototype.js","path":"../../workspace/client-user/siesta/examples/050-prototypejs/"}, {"text":"010_sanity.t.js","path":"../../workspace/client-user/siesta/examples/060-nodejs-browsers/"}, {"text":"020_basic.t.js","path":"../../workspace/client-user/siesta/examples/060-nodejs-browsers/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/060-nodejs-browsers/"}, {"text":"YourTestClass.js","path":"../../workspace/client-user/siesta/examples/060-nodejs-browsers/lib/"}, {"text":"preload.js","path":"../../workspace/client-user/siesta/examples/060-nodejs-browsers/preload/"}, {"text":"010_page_redirect.t.js","path":"../../workspace/client-user/siesta/examples/100-standardpkg-page-redirect/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/100-standardpkg-page-redirect/"}, {"text":"redirect_to.js","path":"../../workspace/client-user/siesta/examples/100-standardpkg-page-redirect/"}, {"text":"source_page.js","path":"../../workspace/client-user/siesta/examples/100-standardpkg-page-redirect/"}, {"text":"browse-all-desktop.js","path":"../../workspace/client-user/siesta/examples/"}, {"text":"010_sanity.t.js","path":"../../workspace/client-user/siesta/examples/events/"}, {"text":"020_basics.t.js","path":"../../workspace/client-user/siesta/examples/events/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/events/"}, {"text":"preload.js","path":"../../workspace/client-user/siesta/examples/events/"}, {"text":"010_sanity.t.js","path":"../../workspace/client-user/siesta/examples/synopsys/"}, {"text":"020_basics.t.js","path":"../../workspace/client-user/siesta/examples/synopsys/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/examples/synopsys/"}, {"text":"preload.js","path":"../../workspace/client-user/siesta/examples/synopsys/"}, {"text":"Slot.js","path":"../../workspace/client-user/siesta/lib/ExtX/Reference/"}, {"text":"Siesta.js","path":"../../workspace/client-user/siesta/lib/"}, {"text":"Manager.js","path":"../../workspace/client-user/siesta/lib/Siesta/Content/"}, {"text":"Browser.js","path":"../../workspace/client-user/siesta/lib/Siesta/Content/Manager/"}, {"text":"NodeJS.js","path":"../../workspace/client-user/siesta/lib/Siesta/Content/Manager/"}, {"text":"Preset.js","path":"../../workspace/client-user/siesta/lib/Siesta/Content/"}, {"text":"Resource.js","path":"../../workspace/client-user/siesta/lib/Siesta/Content/"}, {"text":"CSS.js","path":"../../workspace/client-user/siesta/lib/Siesta/Content/Resource/"}, {"text":"JavaScript.js","path":"../../workspace/client-user/siesta/lib/Siesta/Content/Resource/"}, {"text":"Harness.js","path":"../../workspace/client-user/siesta/lib/Siesta/"}, {"text":"Browser.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/"}, {"text":"ExtJS.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/"}, {"text":"FeatureSupport.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/"}, {"text":"Assertion.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/Model/"}, {"text":"TestFile.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/Model/"}, {"text":"AssertionGrid.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"Center.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"ExtHeader.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"ExtViewport.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"Header.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"MouseVisualizer.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"TestGrid.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"VersionField.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"Viewport.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/Browser/UI/"}, {"text":"NodeJS.js","path":"../../workspace/client-user/siesta/lib/Siesta/Harness/"}, {"text":"Result.js","path":"../../workspace/client-user/siesta/lib/Siesta/"}, {"text":"Assertion.js","path":"../../workspace/client-user/siesta/lib/Siesta/Result/"}, {"text":"Diagnostic.js","path":"../../workspace/client-user/siesta/lib/Siesta/Result/"}, {"text":"CanStyleOutput.js","path":"../../workspace/client-user/siesta/lib/Siesta/Role/"}, {"text":"ConsoleReporter.js","path":"../../workspace/client-user/siesta/lib/Siesta/Role/"}, {"text":"Ident.js","path":"../../workspace/client-user/siesta/lib/Siesta/Role/"}, {"text":"StorableIdent.js","path":"../../workspace/client-user/siesta/lib/Siesta/Role/"}, {"text":"Test.js","path":"../../workspace/client-user/siesta/lib/Siesta/"}, {"text":"Action.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Click.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/"}, {"text":"Done.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/"}, {"text":"DoubleClick.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/"}, {"text":"Drag.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/"}, {"text":"RightClick.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/"}, {"text":"HasTarget.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/Role/"}, {"text":"Type.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/"}, {"text":"Wait.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Action/"}, {"text":"ActionRegistry.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Browser.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Date.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Element.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"ExtJS.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Component.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/ExtJS/"}, {"text":"DataView.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/ExtJS/"}, {"text":"Element.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/ExtJS/"}, {"text":"FormField.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/ExtJS/"}, {"text":"Grid.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/ExtJS/"}, {"text":"Observable.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/ExtJS/"}, {"text":"Store.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/ExtJS/"}, {"text":"Function.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"jQuery.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"More.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Event.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Simulate/"}, {"text":"Keyboard.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Simulate/"}, {"text":"KeyCodes.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Simulate/"}, {"text":"Mouse.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/Simulate/"}, {"text":"TextSelection.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Todo.js","path":"../../workspace/client-user/siesta/lib/Siesta/Test/"}, {"text":"Queue.js","path":"../../workspace/client-user/siesta/lib/Siesta/Util/"}, {"text":"Serializer.js","path":"../../workspace/client-user/siesta/lib/Siesta/Util/"}, {"text":"XMLNode.js","path":"../../workspace/client-user/siesta/lib/Siesta/Util/"}, {"text":"shAutoloader.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushAppleScript.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushAS3.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushBash.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushColdFusion.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushCpp.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushCSharp.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushCss.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushDelphi.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushDiff.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushErlang.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushGroovy.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushJava.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushJavaFX.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushJScript.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushPerl.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushPhp.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushPlain.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushPowerShell.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushPython.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushRuby.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushSass.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushScala.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushSql.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushVb.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shBrushXml.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shCore.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shLegacy.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/scripts/"}, {"text":"shAutoloader.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/src/"}, {"text":"shCore.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/src/"}, {"text":"shLegacy.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/src/"}, {"text":"commonjs_tests.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/tests/"}, {"text":"jquery-1.4.2.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/tests/js/"}, {"text":"qunit.js","path":"../../workspace/client-user/siesta/resources/syntaxhighlighter_3.0.83/tests/js/"}, {"text":"siesta-all.js","path":"../../workspace/client-user/siesta/"}, {"text":"siesta-nodejs-all.js","path":"../../workspace/client-user/siesta/"}, {"text":"010_sanity.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"020_test.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"021_assertions_1.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"030_test_more.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"031_test_more_chain.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"040_keyevent_simulation.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"041_keyevent_simulation2.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"042_keyevent_simulation3.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"043_special_keys.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"050_mouse_click.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"050_mouse_click_jquery.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"051_mouse_overout.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"051_mouse_overout_with_span.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"052_mouse_move.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"060_element.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"061_element_wait_for_selectors.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"070_chaining_with_actions.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"071_chain_click.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"100_util_queue.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"110_util_serializer.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"120_util_xml_node.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"201_function.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"500_extjs_observable.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"501_extjs_combo_autocomplete.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"502_extjs_component.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"502_extjs_wait_for_cq.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"503_extjs_dataview.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"504_extjs_element.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"505_extjs_grid.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"506_extjs_observable.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"510_extjs_require_singleton.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"520_extjs_dataview.t.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"Normal.js","path":"../../workspace/client-user/siesta/tests/data/"}, {"text":"Singleton.js","path":"../../workspace/client-user/siesta/tests/data/"}, {"text":"index.js","path":"../../workspace/client-user/siesta/tests/"}, {"text":"AssertionsTranslator.js","path":"../../workspace/client-user/siesta/tests/lib/Siesta/Test/"}, {"text":"Self.js","path":"../../workspace/client-user/siesta/tests/lib/Siesta/Test/"}, {"text":"firstTest.js","path":"../../workspace/client-user/tests/"}]
+	}, {
+		"name" : "Sitools Client-public", 
+		"file" : "", 
+		"fileIncludes" : [{"text":"AES.js","path":"../../workspace/client-public/js/crypto/"}, {"text":"base64.js","path":"../../workspace/client-public/js/crypto/"}, {"text":"digest.js","path":"../../workspace/client-public/js/crypto/"}, {"text":"MD5.js","path":"../../workspace/client-public/js/crypto/"}, {"text":"SHA1.js","path":"../../workspace/client-public/js/crypto/"}, {"text":"TEA.js","path":"../../workspace/client-public/js/crypto/"}, {"text":"debug.js","path":"../../workspace/client-public/js/"}, {"text":"App.js","path":"../../workspace/client-public/js/desktop/"}, {"text":"Desktop.js","path":"../../workspace/client-public/js/desktop/"}, {"text":"Module.js","path":"../../workspace/client-public/js/desktop/"}, {"text":"StartMenu.js","path":"../../workspace/client-public/js/desktop/"}, {"text":"TaskBar.js","path":"../../workspace/client-public/js/desktop/"}, {"text":"env.js","path":"../../workspace/client-public/js/"}, {"text":"atom1FeedsReader.js","path":"../../workspace/client-public/js/feedsReader/"}, {"text":"feedItemDetails.js","path":"../../workspace/client-public/js/feedsReader/"}, {"text":"feedsReader.js","path":"../../workspace/client-public/js/feedsReader/"}, {"text":"rss2FeedsReader.js","path":"../../workspace/client-public/js/feedsReader/"}, {"text":"Ext.ux.FisheyeMenu.js","path":"../../workspace/client-public/js/fisheye/"}, {"text":"Ext.ux.FisheyeMenuExtention.js","path":"../../workspace/client-public/js/fisheye/"}, {"text":"AbstractComponentsWithUnit.js","path":"../../workspace/client-public/js/forms/"}, {"text":"ComponentFactory.js","path":"../../workspace/client-public/js/forms/"}, {"text":"BooleanCheckBox.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"CheckBox.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"ComboBox.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"ConeSearchCartesien.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"ConeSearchPGSphere.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"DateBetween.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"HorizontalLine.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"Image.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"Label.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"Listbox.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"ListBoxMultiple.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"mapPanel.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"NumberBetween.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"NumberFieldUser.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"OneOrBetween.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"Radio.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"textfield.js","path":"../../workspace/client-public/js/forms/components/"}, {"text":"DatasetContext.js","path":"../../workspace/client-public/js/forms/"}, {"text":"formParameterToComponent.js","path":"../../workspace/client-public/js/forms/"}, {"text":"ProjectContext.js","path":"../../workspace/client-public/js/forms/"}, {"text":"CustomDomQuery.js","path":"../../workspace/client-public/js/opensearchXMLReader/"}, {"text":"CustomXMLReader.js","path":"../../workspace/client-public/js/opensearchXMLReader/"}, {"text":"flotr-0.2.0-alpha.js","path":"../../workspace/client-public/js/plot/flotr/"}, {"text":"flotr.debug-0.2.0-alpha.js","path":"../../workspace/client-public/js/plot/flotr/"}, {"text":"base64.js","path":"../../workspace/client-public/js/plot/flotr/lib/"}, {"text":"canvas2image.js","path":"../../workspace/client-public/js/plot/flotr/lib/"}, {"text":"canvastext.js","path":"../../workspace/client-public/js/plot/flotr/lib/"}, {"text":"excanvas.js","path":"../../workspace/client-public/js/plot/flotr/lib/"}, {"text":"prototype-1.6.0.2.js","path":"../../workspace/client-public/js/plot/flotr/lib/"}, {"text":"Portal.js","path":"../../workspace/client-public/js/portal/"}, {"text":"PortalColumn.js","path":"../../workspace/client-public/js/portal/"}, {"text":"Portlet.js","path":"../../workspace/client-public/js/portal/"}, {"text":"siteMap.js","path":"../../workspace/client-public/js/"}, {"text":"TreeGrid.js","path":"../../workspace/client-public/js/treegrid/"}, {"text":"TreeGridColumnResizer.js","path":"../../workspace/client-public/js/treegrid/"}, {"text":"TreeGridColumns.js","path":"../../workspace/client-public/js/treegrid/"}, {"text":"TreeGridLoader.js","path":"../../workspace/client-public/js/treegrid/"}, {"text":"TreeGridNodeUI.js","path":"../../workspace/client-public/js/treegrid/"}, {"text":"TreeGridSorter.js","path":"../../workspace/client-public/js/treegrid/"}, {"text":"connect.js","path":"../../workspace/client-public/js/utils/"}, {"text":"console.js","path":"../../workspace/client-public/js/utils/"}, {"text":"logout.js","path":"../../workspace/client-public/js/utils/"}, {"text":"state.js","path":"../../workspace/client-public/js/utils/"}, {"text":"xpath.js","path":"../../workspace/client-public/js/utils/"}, {"text":"sitoolsVersion.js","path":"../../workspace/client-public/js/version/"}, {"text":"actionlink.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"checkcolumn.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"editProfile.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"ext-basex.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"Ext.ux.lockingGrid.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"Ext.ux.Plugin.RemoteComponent.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"Ext.ux.stateFullWindow.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"fileUploadField.js","path":"../../workspace/client-public/js/widgets/fileUploadField/"}, {"text":"BooleanFilter.js","path":"../../workspace/client-public/js/widgets/gridfilters/filter/"}, {"text":"DateFilter.js","path":"../../workspace/client-public/js/widgets/gridfilters/filter/"}, {"text":"Filter.js","path":"../../workspace/client-public/js/widgets/gridfilters/filter/"}, {"text":"ListFilter.js","path":"../../workspace/client-public/js/widgets/gridfilters/filter/"}, {"text":"NumericFilter.js","path":"../../workspace/client-public/js/widgets/gridfilters/filter/"}, {"text":"StringFilter.js","path":"../../workspace/client-public/js/widgets/gridfilters/filter/"}, {"text":"GridFilters.js","path":"../../workspace/client-public/js/widgets/gridfilters/"}, {"text":"ListMenu.js","path":"../../workspace/client-public/js/widgets/gridfilters/menu/"}, {"text":"RangeMenu.js","path":"../../workspace/client-public/js/widgets/gridfilters/menu/"}, {"text":"gridUp.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"highlighttext.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"imageChooser.js","path":"../../workspace/client-public/js/widgets/imageChooser/"}, {"text":"columnLock.js","path":"../../workspace/client-public/js/widgets/lockingGrid/"}, {"text":"columnLock.js","path":"../../workspace/client-public/js/widgets/lockingGrid_3.2/"}, {"text":"login.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"mif.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"Ext.ux.multiselect.js","path":"../../workspace/client-public/js/widgets/multiSelect/"}, {"text":"Ext.ux.Notification.js","path":"../../workspace/client-public/js/widgets/notification/"}, {"text":"panelSelectItems.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"register.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"requeteur.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"resetPassword.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"Ext.ux.RowEditor.js","path":"../../workspace/client-public/js/widgets/rowEditorGrid/"}, {"text":"rowExpander.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"sitoolsDatePicker.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"sitoolsBooleanFilter.js","path":"../../workspace/client-public/js/widgets/sitoolsFilters/"}, {"text":"sitoolsDateFilter.js","path":"../../workspace/client-public/js/widgets/sitoolsFilters/"}, {"text":"sitoolsFilter.js","path":"../../workspace/client-public/js/widgets/sitoolsFilters/"}, {"text":"sitoolsFiltersCollection.js","path":"../../workspace/client-public/js/widgets/sitoolsFilters/"}, {"text":"sitoolsNumericFilter.js","path":"../../workspace/client-public/js/widgets/sitoolsFilters/"}, {"text":"sitoolsStringFilter.js","path":"../../workspace/client-public/js/widgets/sitoolsFilters/"}, {"text":"sitoolsGridView.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"sitoolsImageSelect.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"sitoolsItems.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"spinner.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"spinnerfield.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"statusbar.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"textfilter.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"vtype.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"WindowImageViewer.js","path":"../../workspace/client-public/js/widgets/"}, {"text":"Definition.js","path":"../../workspace/client-public/res/wallpapers/"}, {"text":"units.js","path":"../../workspace/client-public/res/wallpapers/"}]
+	}],
+    "resources": [{
+        "src": "src/",
+        "dest": "src/",
+        "filters": ".*\\.js"
+    },{
+        "src": "examples/",
+        "dest": "examples/",
+        "filters": ".*[\\.html|\\.jpg|\\.png|\\.gif|\\.css|\\.js|\\.php]"
+    },{
+        "src": "test/",
+        "dest": "test/",
+        "filters": ".*[\\.js]"
+    },{
+        "src": "welcome/",
+        "dest": "welcome/",
+        "filters": ".*"
+    },{
+        "src": "index.html",
+        "dest": "index.html",
+        "filters": ".*"
+    },{
+        "src": "resources/",
+        "dest": "resources/",
+        "filters": ".*"
+    },{
+        "src": "release-notes.html",
+        "dest": "release-notes.html",
+        "filters": ".*"
+    },{
+        "src": "license.txt",
+        "dest": "license.txt",
+        "filters": ".*"
+    },{
+        "src": "gpl-3.0.txt",
+        "dest": "gpl-3.0.txt",
+        "filters": ".*"
+    },{
+        "src": "INCLUDE_ORDER.txt",
+        "dest": "INCLUDE_ORDER.txt",
+        "filters": ".*"
+    },{
+        "src": "ext.jsb2",
+        "dest": "ext.jsb2",
+        "filters": ".*"
+    }]
+}

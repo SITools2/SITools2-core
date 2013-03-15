@@ -1,0 +1,12 @@
+<dataConfig>
+	<dataSource type="JdbcDataSource" driver="org.gjt.mm.mysql.Driver"
+		url="jdbc:mysql://odysseus2.silogic.fr:3306/cnes-fuse" user="sitools" password="sitools" />
+	<document name="e6892ea4-680a-47d5-af82-c72908dea319">
+		<entity name="test mysdl" query='SELECT FUSE_PRG_ID.prop_id as prop_id, FUSE_PRG_ID.cycle as cycle, FUSE_PRG_ID.title as title, FUSE_PRG_ID.fname as fname, FUSE_PRG_ID.lname as lname, FUSE_PRG_ID.institution as institution, FUSE_PRG_ID.abstract as abstract FROM FUSE_PRG_ID WHERE 1=1 ' transformer="TemplateTransformer">
+				<field column="prop_id" name="prop_id"  template="/testmysql/records/${test mysdl.prop_id}"/>
+				<field column="title" name="title" />
+				<field column="institution" name="institution" />
+				<field column="abstract" name="abstract" />
+		</entity>
+	</document>
+</dataConfig>

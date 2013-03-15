@@ -1,0 +1,31 @@
+<form>
+  <id>a9514a0f-8b86-4d1d-8311-375cc7610231</id>
+  <parent>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</parent>
+  <name>small Query Forms</name>
+  <css></css>
+  <description></description>
+  <width>500</width>
+  <height>150</height>
+  <parentUrl>/9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</parentUrl>
+  <parameters>
+    <SimpleParameter>
+      <id>1</id>
+      <code>
+        <string>dataset_head</string>
+      </code>
+      <label>Dataset</label>
+      <width>400</width>
+      <height>25</height>
+      <xpos>0</xpos>
+      <ypos>10</ypos>
+      <css></css>
+      <jsAdminObject>sitools.component.forms.oneParam.TextField</jsAdminObject>
+      <jsUserObject>sitools.component.users.SubSelectionParameters.SingleSelection.TextField</jsUserObject>
+      <defaultValues>
+        <string></string>
+      </defaultValues>
+      <autoComplete>true</autoComplete>
+      <type>TEXTFIELD</type>
+    </SimpleParameter>
+  </parameters>
+</form>

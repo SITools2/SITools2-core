@@ -1,0 +1,23 @@
+<resourceAuthorization>
+  <id>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</id>
+  <name>mysqlLiveGrid</name>
+  <description>Exposition of the dataset mysqlLiveGrid
+-&gt; Administrator must have all authorizations on this application
+-&gt; Public user must have at least GET/PUT/DELETE authorizations on this application
+PUT and DELETE authorizations are for SvaTasks managment</description>
+  <url>/9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <POST>true</POST>
+      <GET>true</GET>
+      <PUT>true</PUT>
+      <DELETE>true</DELETE>
+      <OPTIONS>true</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

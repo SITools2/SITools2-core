@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<convs xmlns="http://www.example.org/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/config config.xsd ">
+  <cv>
+    <name>nullconverter</name>
+    <description>convertisseur nul</description>
+    <param_in> 
+    	<name>ID</name>
+    	<name>firstName</name>
+    </param_in>
+    <param_out>
+    	<name>ID</name>
+    	<name>firstName</name>
+    </param_out>
+    <class>file:///home/mmarseil/sitools-distribution/workspace/prototype/build/classes/fr/cnes/sitools/dataset/converter/NullConverter.class</class>
+    <classname>fr.cnes.sitools.dataset.converter.NullConverter</classname>
+  </cv>
+</convs>

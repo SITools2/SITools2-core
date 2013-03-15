@@ -1,0 +1,35 @@
+<observable>
+  <uri>5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</uri>
+  <observers>
+    <observer>
+      <uuid>48514858-73ba-4fa2-b0a9-7998b03889ca</uuid>
+      <uriToNotify>riap://component/feedsObject/5132d85b-68e4-4e2b-a921-6fd7de5dc4ee/feeds/48514858-73ba-4fa2-b0a9-7998b03889ca/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>Graph.5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</uuid>
+      <uriToNotify>riap://component/projects/5132d85b-68e4-4e2b-a921-6fd7de5dc4ee/graph/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>ResourceModel.0692ee93-4670-49e8-96d3-ff820fc33ec6</uuid>
+      <uriToNotify>riap://component/plugins/resources/0692ee93-4670-49e8-96d3-ff820fc33ec6/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>ResourceModel.c8aad1c3-615a-43dd-becb-d6db73eb4cbd</uuid>
+      <uriToNotify>riap://component/plugins/resources/c8aad1c3-615a-43dd-becb-d6db73eb4cbd/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>ResourceModel.ed74dd12-ea30-4017-bfc9-bddcc1acddc6</uuid>
+      <uriToNotify>riap://component/plugins/resources/ed74dd12-ea30-4017-bfc9-bddcc1acddc6/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>ResourceModel.f2a96958-be43-4969-a00d-011a26c3b614</uuid>
+      <uriToNotify>riap://component/plugins/resources/f2a96958-be43-4969-a00d-011a26c3b614/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+  </observers>
+</observable>

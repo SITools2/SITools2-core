@@ -1,0 +1,92 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Projects</title>
+
+<link href="../../css/help.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<p>The project component is the function that allows the administrator to display the different datasets and services on the web client (create, edit, delete, enable and disable).The following sections explain how to handle the project.</p>
+<h2>Create a project</h2>
+<ol>
+<li>Click on <span style="font-weight: bold;">Create</span></li>
+<h3>Project information panel</h3>
+<p>&nbsp;&nbsp;&nbsp; Enter:</p>
+<ol start="2" style="margin-left: 40px;">
+<li>the name: Name of the project that is displayed on the portal and in the URI for accessing to project desktop</li>
+<li>the description: Project description is displayed on the portal</li>
+<li>the URI attachment: URI where information related to the project is located</li>
+<li>the image: Image that is displayed on the portal</li>
+<li>the CSS: Reference to the CSS class from the main.css file</li>
+<li>is always visible: when it sets to true, the projects is always displayed on the portal even if the user is not allowed to access it (a padlock is displayed). Otherwise, the project is hidden on the portal when the user is not allowed to access it.</li> 
+</ol>
+<h3>Select datasets panel</h3>
+<p>&nbsp;&nbsp;&nbsp; This panel is used to select the datasets that are displayed on the web client<br>
+</p><h4 style="margin-left: 40px;">Add datasets:</h4>
+<ol style="margin-left: 40px;">
+<li>Click on <span style="font-weight: bold;">Add</span></li>
+<li>Select some datasets in the list&nbsp;</li>
+<li>Click on <span style="font-weight: bold;">Ok</span>
+to validate</li>
+</ol>
+<h4 style="margin-left: 40px;">Remove a dataset:</h4>
+<ol style="margin-left: 40px;">
+<li>Select a dataset in the list&nbsp;</li>
+<li>Click on <span style="font-weight: bold;">Remove</span>
+to remove it from the list</li>
+</ol>
+<li>Click on <span style="font-weight: bold;">Ok</span></li>
+</ol>
+<h4>Naming conventions:</h4>
+<ul>
+<li>The project name is case sensitive and should be from 1 to
+15 Unicode characters, excluding the following symbols :
+<p>! " $ % &amp; ' ( ) * + , / : ; &lt; = &gt; ?
+@ [ ] \ ^ ` { } | ~</p>
+</li>
+<li>The first character cannot be a minus sign or a space, and
+the last character cannot be a space.</li>
+<li>The project description is case sensitive and limited up to
+64 Unicode characters.</li>
+</ul>
+<h2>Edit a project</h2>
+<p>
+You can edit project information.
+</p>
+<h4>To edit project information:</h4>
+<ol>
+<li>Select the project.</li>
+<li>Click on <b>Edit</b> and edit the project
+information.</li>
+<li>Click on <b>OK</b> to finish.</li>
+</ol>
+<h2>Remove a project</h2>
+<ol>
+<li>Select the project.</li>
+<li>Click on <b>Delete</b> and then <b>Yes</b>
+on the prompt dialogue for confirmation.</li>
+</ol>
+
+<h2>Enable a project</h2>
+<ol><li>Select the project you want to enable.</li><li>Click on <b>Enable</b><b></b></li></ol>
+
+<h2>Disable a project</h2>
+<ol><li>Select the project you want to disable.</li><li>Click on <b>Disable</b>.</li></ol>
+</body></html>

@@ -1,0 +1,189 @@
+{
+	"components" : [{
+		"name" : "DataSetExplorer",
+		"description" : "Dataset Explorer",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/dataSetExplorer/dataSetExplorer.json",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/dataset_explorer.png",
+		"id" : "DataSetExplorer",
+		"title" : "title.DatasetExplorer",
+		"defaultWidth" : 200,
+		"defaultHeight" : 500,
+		"icon" : "datasetExplorerModule",
+		"specificType" : "datasetExplorer",
+		"x" : 0,
+		"y" : 0,
+		"xtype" : "sitools.component.users.datasets.datasetExplorer",
+		"dependencies" : {}
+	}, {
+		"name" : "EspacePersonnel",
+		"description" : "Espace Personnel",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/userSpace/userSpace.json",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/espace_utilisateur.png",
+		"id" : "EspacePersonnel",
+		"icon" : "preferences",
+		"title" : "title.personalspace",
+		"defaultWidth" : 600,
+		"defaultHeight" : 500,
+		"specificType" : "EspacePersonnel",
+		"xtype" : "sitools.component.users.userSpace",
+		"dependencies" : {
+			"js" : [{
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/preference.js"
+			}, {
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/order.js"
+			}, {
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/viewOrder.js"
+			}, {
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/orderProp.js"
+			}, {
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/viewRecordSelectionDetail.js"
+			}, {
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/svaTasks.js"
+			}, {
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/svaTaskDetails.js"
+			},{
+                "url" : "/sitools/client-user/js/components/userSpace/dependencies/tasks.js"
+            }
+
+			],
+			"css" : []
+		}
+	}, {
+		"name" : "projectGraph",
+		"description" : "Project Graph",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/projectGraph/projectGraph.json",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/project_graph.png",
+		"id" : "projectGraph",
+		"title" : "title.ProjectGraph",
+		"defaultWidth" : 800,
+		"defaultHeight" : 500,
+		"specificType" : "projectGraph",
+		"icon" : "graphModule",
+		"xtype" : "sitools.component.users.project.projectGraph",
+		"dependencies" : {}
+	}, {
+		"name" : "ProjectsFeeds",
+		"description" : "Feeds for Projects",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/feedsReader/feedsReaderProject.json",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/project_feeds.png",
+		"id" : "ProjectsFeeds",
+		"title" : "title.ProjectsFeeds",
+		"defaultWidth" : 400,
+		"defaultHeight" : 500,
+		"specificType" : "ProjectsFeeds",
+		"icon" : "feedsModule",
+		"xtype" : "sitools.component.users.project.feedsReaderProject",
+		"dependencies" : {
+			"js" : [{
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/preference.js"
+			}, {
+				"url" : "/sitools/client-user/js/components/userSpace/dependencies/order.js"
+			}],
+			"css" : []
+		}
+	}, {
+		"name" : "Help window",
+		"description" : "Help window",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/help/help.json",
+		"id" : "helpWindow",
+		"icon" : "icon-grid",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/help_gd.png",
+		"title" : "title.help",
+		"defaultWidth" : 740,
+		"defaultHeight" : 480,
+		"icon" : "helpModule",
+		"xtype" : "sitools.component.users.help",
+		"dependencies" : {
+			"css" : [],
+			"js" : []
+		}
+	}, {
+		"name" : "Forms",
+		"description" : "Forms Project",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/formsModule/formsModule.json",
+		"id" : "formsModule",
+		"icon" : "icon-grid",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/form_list.png",
+		"title" : "title.formsModule",
+		"defaultWidth" : 740,
+		"defaultHeight" : 480,
+		"icon" : "formsModule",
+		"xtype" : "sitools.component.formsModule",
+		"dependencies" : {
+			"css" : [],
+
+			"js" : []
+		}
+	}, {
+		"name" : "OpenSearch",
+		"description" : "Project OpenSearch",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/openSearchModule/openSearchModule.json",
+		"id" : "openSearchModule",
+		"icon" : "openSearchModule",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/open_search.png",
+		"title" : "title.opensearch",
+		"defaultWidth" : 740,
+		"defaultHeight" : 480,
+		"xtype" : "sitools.component.openSearchModule",
+		"dependencies" : {
+			"css" : [],
+
+			"js" : []
+		}
+	}, {
+		"name" : "Gestionnaire du bureau",
+		"description" : "Server Application Manager",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/applicationManager/serverApplicationManager.json",
+		"id" : "serverApplicationManager",
+		"icon" : "",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/desktop_manager.png",
+		"title" : "title.DesktopManager",
+		"defaultWidth" : 740,
+		"defaultHeight" : 480,
+		"icon" : "desktopManagerModule",
+		"xtype" : "serverApplicationManager",
+		"dependencies" : {
+			"css" : [{
+				"url" : "/sitools/common/js/widgets/rowEditorGrid/RowEditor.css"
+			}],
+
+			"js" : [{
+				"url" : "/sitools/common/js/widgets/rowEditorGrid/Ext.ux.RowEditor.js"
+			}]
+
+		}
+	}, {
+		"name" : "Poster",
+		"description" : "Poster module to test API",
+		"author" : "akka",
+		"version" : "1.0",
+		"url" : "/sitools/client-user/js/components/uploadPosterTest/extPoster.json",
+		"id" : "uploadPosterTest",
+		"icon" : "",
+		"imagePath" : "/sitools/common/res/images/desktop/120x120_sans_cadre/description_project.png",
+		"title" : "Poster",
+		"defaultWidth" : 740,
+		"defaultHeight" : 480,
+		"icon" : "projectDescriptionModule",
+		"xtype" : "sitools.component.extPoster",
+		"dependencies" : {}
+	}
+	]
+}
+

@@ -1,0 +1,42 @@
+<FormProject>
+  <id>AAAAAAAAA</id>
+  <parent>premier</parent>
+  <name>A form project</name>
+  <description>A form project description</description>
+  <width>0</width>
+  <height>0</height>
+  <dictionary>
+    <id>429c7ff8-960a-4a49-9565-59d5c189ad22</id>
+    <url>/dictionaries/429c7ff8-960a-4a49-9565-59d5c189ad22</url>
+  </dictionary>
+  <parameters>
+    <fr.cnes.sitools.form.project.model.FormParameter>
+      <label>param1</label>
+      <width>0</width>
+      <height>0</height>
+      <xpos>0</xpos>
+      <ypos>0</ypos>
+      <autoComplete>false</autoComplete>
+    </fr.cnes.sitools.form.project.model.FormParameter>
+    <fr.cnes.sitools.form.project.model.FormParameter>
+      <label>param2</label>
+      <width>0</width>
+      <height>0</height>
+      <xpos>0</xpos>
+      <ypos>0</ypos>
+      <autoComplete>false</autoComplete>
+    </fr.cnes.sitools.form.project.model.FormParameter>
+  </parameters>
+  <collection>
+    <id>e4fd5f63-3c00-476b-984b-3f0835219cb9</id>
+    <url>/collections/e4fd5f63-3c00-476b-984b-3f0835219cb9</url>
+  </collection>
+  <properties>
+    <string>prop1</string>
+    <string>prop2</string>
+  </properties>
+  <urlServicePropertiesSearch>/searchOnPropertiesTest</urlServicePropertiesSearch>
+  <urlServiceDatasetSearch>/searchOnDatasetTest</urlServiceDatasetSearch>
+  <idServicePropertiesSearch>6c952591-f229-43bf-b863-c7ef7f9789de</idServicePropertiesSearch>
+  <idServiceDatasetSearch>d2e7b612-ee51-4029-ad54-1cb9b648b86c</idServiceDatasetSearch>
+</FormProject>

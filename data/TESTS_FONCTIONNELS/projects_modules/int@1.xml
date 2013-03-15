@@ -1,0 +1,47 @@
+<projectModule>
+  <id>EspacePersonnel</id>
+  <name>EspacePersonnel</name>
+  <description>Espace Personnel</description>
+  <author>akka</author>
+  <version>1.0</version>
+  <url>/deprecated</url>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/espace_utilisateur.png</imagePath>
+  <title>title.personalspace</title>
+  <defaultWidth>600</defaultWidth>
+  <defaultHeight>500</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>preferences</icon>
+  <specificType>EspacePersonnel</specificType>
+  <xtype>sitools.user.modules.userSpace</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/dependencies/preference.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/dependencies/order.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/dependencies/viewOrder.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/dependencies/orderProp.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/dependencies/viewRecordSelectionDetail.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/dependencies/svaTasks.js</url>
+      </url>      
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/dependencies/tasks.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/userSpace/userSpace.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>1</priority>
+</projectModule>

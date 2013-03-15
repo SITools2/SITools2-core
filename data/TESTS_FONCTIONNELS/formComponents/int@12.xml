@@ -1,0 +1,12 @@
+<formComponent>
+  <id>494914a5-077c-48d6-b791-05aaf107d692</id>
+  <type>BOOLEAN_CHECKBOX</type>
+  <componentDefaultHeight>25</componentDefaultHeight>
+  <componentDefaultWidth>200</componentDefaultWidth>
+  <jsAdminObject>sitools.admin.forms.oneParam.withoutValues</jsAdminObject>
+  <jsUserObject>sitools.common.forms.components.BooleanCheckbox</jsUserObject>
+  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/WithoutValues.js</fileUrlAdmin>
+  <fileUrlUser>/sitools/common/js/forms/components/BooleanCheckBox.js</fileUrlUser>
+  <imageUrl>/sitools/common/res/images/formComponents/booleanCheckBox.gif</imageUrl>
+  <priority>1</priority>
+</formComponent>

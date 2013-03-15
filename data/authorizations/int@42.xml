@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:FilterPluginsApplication:type:fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication</id>
+  <name>FilterPluginsApplication</name>
+  <description>Exposition des classes de filtres de recherche</description>
+  <url>/sitools/datasets_filters</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

@@ -1,0 +1,103 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+
+
+<title>Applications</title><link href="../../css/help.css" rel="stylesheet" type="text/css"></head>
+<body><p>SVA are services that can be attached in a dataset. They can
+be added to Sitools2 as a plugin module extensions
+(fr.cnes.sitools.extensions.jar).</p><p>Developers of a SVA may combine
+the use of filters and converters are already defined on the dataset to
+fit their own query and return results with their own management
+synchronous or asynchronous.</p><h2>Associate a SVA</h2>
+
+<ol start="1" type="1"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Select the dataset in the
+     ComboBox.<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>Create</b>.</span>
+
+<p class="MsoNormal"><b style=""><span style="" lang="EN-GB">SVA class panel<o:p></o:p></span></b></p>
+
+<ol start="1" type="a"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Choose
+      a SVA that you want to apply<o:p></o:p></span></li></ol>
+
+<p class="MsoNormal"><b style=""><span style="" lang="EN-GB">SVA details panel<o:p></o:p></span></b></p>
+
+<ol start="1" type="a"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Label
+      : the label<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Run
+      type :<o:p></o:p></span></li></ol>
+
+<p class="MsoNormal" style="margin-left: 72pt; text-align: left; text-indent: -18pt; line-height: normal;" align="left"><!--[if !supportLists]--><span style="font-family: &quot;Times New Roman&quot;;" lang="EN-GB"><span style="">-<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><!--[endif]--><span style="" lang="EN-GB">SVA_FORCE_RUN_SYNC
+: the SVA will execute as a synchronous request<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-left: 72pt; text-align: left; text-indent: -18pt; line-height: normal;" align="left"><!--[if !supportLists]--><span style="font-family: &quot;Times New Roman&quot;;" lang="EN-GB"><span style="">-<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><!--[endif]--><span style="" lang="EN-GB">SVA_FORCE_RUN_ASYNC
+: the SVA will exectute as an asynchronous request<o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-left: 72pt; text-align: left; text-indent: -18pt; line-height: normal;" align="left"><!--[if !supportLists]--><span style="font-family: &quot;Times New Roman&quot;;" lang="EN-GB"><span style="">-<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><!--[endif]--><span style="" lang="EN-GB">SVA_DEFAULT_RUN_SYNC
+: </span><span class="hps"><span style="" lang="EN">The</span></span><span style="" lang="EN"> <span class="hps">SVA</span> <span class="hps">will ask</span> <span class="hps">the</span> <span class="hps">user</span>
+<span class="hps">the type</span> <span class="hps">of</span> <span class="hps">REQUEST</span>,
+<span class="hps">and</span> <span class="hps">by</span> <span class="hps">default</span>
+<span class="hps">an application</span> <span class="hps">will run</span> <span class="hps">synchronously</span></span><span style="" lang="EN-GB"> <o:p></o:p></span></p>
+
+<p class="MsoNormal" style="margin-left: 72pt; text-align: left; text-indent: -18pt; line-height: normal;" align="left"><!--[if !supportLists]--><span class="hps"><span style="font-family: &quot;Times New Roman&quot;;" lang="EN-GB"><span style="">-<span style="font-family: &quot;Times New Roman&quot;; font-style: normal; font-variant: normal; font-weight: normal; font-size: 7pt; line-height: normal; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span></span><!--[endif]--><span style="" lang="EN-GB">SVA_DEFAULT_RUN_ASYNC : </span><span class="hps"><span style="" lang="EN">The</span></span><span style="" lang="EN"> <span class="hps">SVA</span> <span class="hps">will ask</span> <span class="hps">the</span> <span class="hps">user</span> <span class="hps">the type</span>
+<span class="hps">of</span> <span class="hps">REQUEST</span>, <span class="hps">and</span>
+<span class="hps">by</span> <span class="hps">default</span> <span class="hps">an
+application</span> <span class="hps">will run</span> a<span class="hps">synchronously</span></span><span class="hps"><span style="" lang="EN-GB"><o:p></o:p></span></span></p>
+
+<ol start="3" type="a"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Method
+      : Querying the SVA will execute a POST or a GET request.<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Specific
+      Folder : </span><span style="" lang="EN-GB">check specificFolder
+      to create a new folder to store files for each SVA tasks</span><span style="" lang="EN-GB"><o:p></o:p></span></li></ol>
+
+<p class="MsoNormal"><b style=""><span style="" lang="EN-GB">Field Parameters mapping panel<o:p></o:p></span></b></p>
+
+<ol start="1" type="a"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Associate
+      required column to parameters<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Fill
+      in required internal parameters<o:p></o:p></span></li></ol>
+
+<p class="MsoNormal" style="text-align: left; line-height: normal;" align="left"><span style="" lang="EN-GB"><o:p>&nbsp;</o:p></span></p>
+
+</li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>Ok</b><o:p></o:p></span></li></ol>
+
+<h2>Edit a SVA</h2>
+
+<ol start="1" type="1"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Select a SVA in the list<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>Edit</b> and edit the
+     SVA details<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>Ok</b><o:p></o:p></span></li></ol>
+
+<ol></ol><h2>Delete a SVA</h2>
+
+<ol start="1" type="1"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Select a SVA in the list<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>delete</b><o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>Yes</b> to confirm
+     your choice.<o:p></o:p></span></li></ol>
+
+<h2>Active a SVA</h2>
+
+<ol start="1" type="1"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Select a SVA in the list<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>Enable</b> </span></li></ol>
+
+<h2>Disactive a SVA</h2>
+
+
+<ol start="1" type="1"><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Select a SVA in the list<o:p></o:p></span></li><li class="MsoNormal" style="text-align: left; line-height: normal;"><span style="" lang="EN-GB">Click on <b>Disable</b></span></li></ol>
+
+
+</body></html>

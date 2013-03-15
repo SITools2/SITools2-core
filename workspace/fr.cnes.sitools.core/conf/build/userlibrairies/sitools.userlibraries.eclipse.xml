@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<eclipse-userlibraries version="2">
+    <library name="audit" systemlibrary="false">
+        <archive path="E:/SITOOLS-MONGO/cots/audit/checkstyle/checkstyle-all-5.6.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/pmd/pmd-4.2.5.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/pmd/asm-3.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/pmd/jaxen-1.1.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/pmd/sitools_pmd_rules.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/findbugs/findbugs-ant.jar"/>        
+    </library>
+    <library name="fr_cnes_sitools_ext_test" systemlibrary="false">
+        <archive path="E:/SITOOLS-MONGO/workspace/fr.cnes.sitools.ext.test/dist/fr.cnes.sitools.ext.test.jar"/>
+    </library>
+    <library name="fr_cnes_sitools_extensions" systemlibrary="false">
+        <archive path="E:/SITOOLS-MONGO/workspace/fr.cnes.sitools.extensions/dist/fr.cnes.sitools.extensions.jar"/>
+    </library>
+    <library name="osgi_equinox" systemlibrary="false">
+        <archive path="E:/SITOOLS-MONGO/cots/osgi/equinox/org.eclipse.osgi_3.6.0.v20100517.jar"/>
+    </library>
+    <library name="restlet_jse_2_0_5_patched" systemlibrary="false">
+        <archive path="E:/SITOOLS-MONGO/workspace/org.restlet.patched/org.restlet.patched_1.0.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.net.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.osgi_4.0/org.osgi.core.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.apache.commons.dbcp_1.3/org.apache.commons.dbcp.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.crypto.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.freemarker.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.javamail.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.jackson.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/javax.mail_1.4/javax.mail.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.json_2.0/org.json.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/com.thoughtworks.xstream_1.3/com.thoughtworks.xstream.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.codehaus.jettison_1.2/org.codehaus.jettison.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.apache.commons.fileupload_1.2/org.apache.commons.fileupload.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.apache.commons.pool_1.5/org.apache.commons.pool.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.junit_4.8/org.junit.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.xml.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.xstream.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.atom.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.fileupload.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.jetty.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.json.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.rome.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/org.restlet.ext.wadl/org.restlet.ext.wadl_2.0.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.wadl.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.restlet.ext.httpclient.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.apache.httpclient_4.0/org.apache.httpclient.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.apache.httpcore_4.0/org.apache.httpcore.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.apache.httpmime_4.0/org.apache.httpmime.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.continuations.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.http.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.io.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.server.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.util.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.ajp.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.freemarker_2.3/org.freemarker.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/javax.servlet_2.5/javax.servlet.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/restlet-2.0.5-patched/org.jdom_1.1/org.jdom.jar"/>
+    </library>
+    <library name="sitools_libraries" systemlibrary="false">
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.xalan_2.7.1/xml-apis.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.xalan_2.7.1/serializer.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.xalan_2.7.1/xalan.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.xalan_2.7.1/xercesImpl.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/org.restlet.ext.solr/org.restlet.ext.solr_3.6.1.jar"/>        
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.gjt.mm.mysql_5.1.7/mysql-connector-java-5.1.7-bin.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.postgresql_8.3/postgresql-8.3-603.jdbc3.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.xmlpull_3.1/xpp3-1.1.4c.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.codehaus.jackson_1.8.0/jackson-all-1.8.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/javax.measure_0.9.5/javax.measure_0.9.5.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/com.sun.syndication_1.0/com.sun.syndication.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/fr.cnes.sitools.captcha_1.0/simplecaptcha-1.2.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/com.ice.tar_2.5/tar.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/com.mongodb/mongo-2.9.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/httpclient-4.1.3.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/httpcore-4.1.4.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/httpmime-4.1.3.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/activation-1.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-analysis-extras-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-cell-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-clustering-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-core-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-dataimporthandler-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-dataimporthandler-extras-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-langid-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-solrj-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-test-framework-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-uima-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/apache-solr-velocity-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/commons-codec-1.6.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/commons-fileupload-1.2.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/commons-httpclient-3.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/commons-io-2.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/commons-lang-2.6.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/geronimo-stax-api_1.0_spec-1.0.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/guava-r05.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/icu4j-4_6.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/jcl-over-slf4j-1.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/log4j-over-slf4j-1.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-analyzers-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-core-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-grouping-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-highlighter-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-kuromoji-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-memory-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-misc-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-phonetic-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-queries-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-spatial-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/lucene-spellchecker-3.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/mail-1.4.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/slf4j-api-1.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/slf4j-jdk14-1.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/velocity-1.7.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.solr_3.6.1/wstx-asl-3.2.7.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/apache-mime4j-core-0.7.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/apache-mime4j-dom-0.7.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/asm-3.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/bcmail-jdk15-1.45.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/bcprov-jdk15-1.45.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/boilerpipe-1.1.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/commons-compress-1.3.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/dom4j-1.6.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/fontbox-1.6.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/icu4j-4.8.1.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/jdom-1.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/jempbox-1.6.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/metadata-extractor-2.4.0-beta-1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/pdfbox-1.6.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/pdfbox-1.7.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/poi-3.8-beta4.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/poi-ooxml-3.8-beta4.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/poi-ooxml-schemas-3.8-beta4.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/poi-scratchpad-3.8-beta4.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/rome-0.9.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/tagsoup-1.2.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/tika-core-1.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/tika-parsers-1.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/xercesImpl-2.8.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/xml-apis-1.0.b2.jar"/>
+        <archive path="E:/SITOOLS-MONGO/workspace/libraries/org.apache.tika_1.0/xmlbeans-2.3.0.jar"/>
+    </library>
+    <library name="test" systemlibrary="false">
+        <archive path="E:/SITOOLS-MONGO/cots/saxon/SaxonLiaison.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/saxon/saxon9he.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/testng/testng-5.13.1.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/cobertura/cobertura.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/cobertura/lib/asm-tree-3.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/cobertura/lib/jakarta-oro-2.0.8.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/cobertura/lib/asm-3.0.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/cobertura/lib/log4j-1.2.9.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/emma/emma.jar"/>
+        <archive path="E:/SITOOLS-MONGO/cots/audit/emma/emma_ant.jar"/>
+    </library>
+</eclipse-userlibraries>

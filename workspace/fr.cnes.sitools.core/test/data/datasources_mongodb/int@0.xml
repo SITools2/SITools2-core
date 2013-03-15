@@ -1,0 +1,15 @@
+<mongodbdatasource>
+  <id>ac5c5a8b-0edc-4e5d-83ac-d8476a5e69cb</id>
+  <name>mongodb</name>
+  <description></description>
+  <status>ACTIVE</status>
+  <url>odysseus2.silogic.fr</url>
+  <userLogin>sitools</userLogin>
+  <userPassword>sitools</userPassword>
+  <sitoolsAttachementForUsers>/db/mongodb</sitoolsAttachementForUsers>
+  <maxActive>10</maxActive>
+  <databaseName>Continuous_integration_tests</databaseName>
+  <portNumber>27017</portNumber>
+  <driverClass>com.mongo.driver</driverClass>
+  <authentication>true</authentication>
+</mongodbdatasource>

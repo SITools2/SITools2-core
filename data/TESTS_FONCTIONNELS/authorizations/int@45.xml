@@ -1,0 +1,16 @@
+<resourceAuthorization>
+  <id>7671df1c-2373-4040-9918-e452e7674153</id>
+  <name>dsqdsqdqs</name>
+  <description>Exposition of the dataset dsqdsqdqs</description>
+  <url>/7671df1c-2373-4040-9918-e452e7674153</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

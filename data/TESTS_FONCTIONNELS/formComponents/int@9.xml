@@ -1,0 +1,12 @@
+<formComponent>
+  <id>39879eac-73d9-4766-80cf-b88f684948ed</id>
+  <type>DATE_BETWEEN</type>
+  <componentDefaultHeight>25</componentDefaultHeight>
+  <componentDefaultWidth>450</componentDefaultWidth>
+  <jsAdminObject>sitools.admin.forms.oneParam.DateBetween</jsAdminObject>
+  <jsUserObject>sitools.common.forms.components.DateBetween</jsUserObject>
+  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/DateBetween.js</fileUrlAdmin>
+  <fileUrlUser>/sitools/common/js/forms/components/DateBetween.js</fileUrlUser>
+  <imageUrl>/sitools/common/res/images/formComponents/dateBetween.gif</imageUrl>
+  <priority>1</priority>
+</formComponent>

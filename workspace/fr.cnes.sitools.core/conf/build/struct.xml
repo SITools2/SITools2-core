@@ -1,0 +1,247 @@
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+	<!-- ===============================================================================
+       Lecture des  fichiers "build.properties"
+     =============================================================================== -->
+
+	<property file="build.properties" />
+	
+	<property file="conf/build/properties/build-test.properties" />
+	
+	<property file="conf/build/properties/build-${HOST}.properties" />
+
+	<property file="conf/build/build-default.properties" />
+
+	<import file="userlibrairies/sitools.userlibraries.ant.xml" optional="false" />
+	
+	<property name="cots.dir"                value="${ROOT_DIRECTORY}/cots"/>
+	
+
+	<!-- ===============================================================================
+         Parametres du projet
+     =============================================================================== -->
+
+	<!-- Informations generales sur le projet -->
+	<property name="project.name"            value="fr.cnes.sitools.core"/>
+	<property name="project.test.name"		 value="fr.cnes.sitools.test"/>
+	<property name="project.fullname"        value="SITools2"/>
+	<property name="project.version"         value="2.0"/>
+
+	<!-- Nom de l'application WEB -->
+	<property name="webapps.name"            value="SITools2"/>
+
+	<!-- Nom des packages du projet utilises par javadoc -->
+	<property name="project.packagenames"    value="fr.cnes.sitools"/>
+
+	<!-- Information sur les auteurs du projet -->
+	<property name="author"                  value="AKKA Technologies"/>
+	<property name="owner"                   value="CNES"/>
+	<property name="year"                    value="2011, 2012"/>
+
+	<!-- Paramètres de compilation -->
+	<property name="debug"                   value="true"/>
+	<property name="optimize"                value="off"/>
+	<property name="deprecation"             value="off"/>
+	<property name="encoding"                value="UTF-8"/>
+
+	<!-- Import la définition des répertoires de l'arborescence projet -->
+	<!-- Arborescence pour la construction de l'application -->
+	<property name="audit.dir"               	value="audit"/>
+	<property name="audit.checkstyle.rules.dir"	value="${audit.dir}/checkstyle"/>
+	<property name="audit.pmd.rules.dir"     	value="${audit.dir}/pmd"/>
+	<property name="audit.xsl.dir"           	value="${audit.dir}/xsl"/>
+	
+	<property name="conf.dir"                value="conf"/>
+	<property name="conf.bin.dir"            value="${conf.dir}/bin"/>
+	<property name="conf.jar.dir"            value="${conf.dir}/jar"/>
+	<property name="conf.properties.dir"     value="${conf.dir}/properties"/>
+	<property name="conf.war.dir"            value="${conf.dir}/war"/>
+	<property name="conf.xml.dir"            value="${conf.dir}/xml"/>
+	<property name="lib.dir"                 value="lib"/>
+	<property name="src.dir"                 value="src"/>
+	<property name="web.dir"                 value="web"/>
+	
+
+	<!-- Arborescence pour la construction des tests -->
+	<property name="test.dir"                value="test"/>
+	<property name="test.conf.dir"           value="${conf.properties.dir}"/>
+	<!-- au lieu de test.dir/conf -->
+	<property name="test.lib.dir"            value="${test.dir}/lib"/>
+	<property name="test.reports.dir"        value="${test.dir}/reports"/>
+	<property name="test.reports.data.dir"   value="${test.reports.dir}/xml"/>
+	<property name="test.src.dir"            value="${test.dir}/src"/>
+	
+	<property name="test.data.dir"        	 value="${test.dir}/data"/>
+		
+	
+	
+	<property name="test.jMeter.dir"            value="${test.dir}/jMeter"/>
+		
+	<!-- Repertoires destination pour la construction de l'application  -->
+	<property name="out.dir"                 value="build"/>
+	<!--property name="out.dir"                 value="web/WEB-INF/"/-->
+	<property name="out.classes.dir"         value="${out.dir}/classes"/>
+	<property name="out.javadoc.dir"         value="${out.dir}/javadoc"/>
+	<property name="out.jar.dir"             value="${out.dir}/jar"/>
+	<property name="out.help.dir"            value="${out.dir}/help"/>
+	<property name="out.audit.dir"           value="${out.dir}/audit"/>
+	<property name="checkstyle.reports.dir"  value="${out.audit.dir}/checkstyle"/>
+	<property name="pmd.reports.dir"  		 value="${out.audit.dir}/pmd"/>
+	<property name="cpd.reports.dir"  		 value="${out.audit.dir}/cpd"/>
+	<property name="cobertura.reports.dir"   value="${out.audit.dir}/cobertura"/>
+	<property name="test.classes.dir"        value="${out.dir}/classes"/>
+	<property name="checkstyle.xsl"          value="checkstyle-noframes-sorted.xsl"/>
+    <property name="findbugs.reports.dir"    value="${out.audit.dir}/findbugs"/>
+	<!-- properties for Cobertura -->
+	<property name="instrumented.dir"         value="${out.dir}/instrumented"/>
+	
+	<!-- Repertoires de deploiement des fichiers "externes" de l'application -->
+	<property name="dist.dir"                value="dist"/>
+	<property name="dist.bin.dir"            value="${dist.dir}"/>
+	<property name="dist.conf.dir"           value="${dist.dir}"/>
+	<property name="dist.lib.dir"            value="${dist.dir}/lib"/>
+
+	<!-- Informations pour le deploiement d'application WEB -->
+	<property name="deploy.webapps.dir"      value="${deploy.web.rootdir}/webapps/${webapps.name}"/>
+	<property name="deploy.webapps.uri"      value="${deploy.web.host}:${deploy.web.port}/${webapps.name}"/>
+
+	<!-- Informations pour le deploiement a distance d'application -->
+	<property name="deploy.remote.dir"       value="${deploy.ftp.dir}"/>
+	
+	<!-- Informations pour le deploiement sur Sourceforge de l'application -->
+<!--	<property name="deploy.sf.basedir" 		value="D:\CNES-ULISSE\deploy\release-0.9.1M5"/>-->
+<!--	<property name="deploy.sf.version" 		value="0.9.1M5"/>-->
+<!--	<property name="deploy.sf.tar_gz_filename" value="${deploy.sf.basedir}/${project.fullname}_${deploy.sf.version}.tar.gz"/>-->
+<!--	-->
+	<property name="root.data.dir"        	 value="${ROOT_DIRECTORY}/data"/>
+	
+	
+	<!--
+   ========================================================================
+     Patterns de fichiers utilisees dans les targets
+   ========================================================================
+-->
+	<!-- Tous les fichiers sources -->
+	<patternset id="all.src.files">
+		<include name="**/*.java"/>
+		<include name="**/*.properties"/>
+	</patternset>
+
+	<!-- Tous les fichiers temporaires -->
+	<patternset id="all.tmp.files">
+		<include name="**/*.*~"/>
+		<include name="**/*.bak"/>
+		<include name="**/*.log"/>
+	</patternset>
+
+	<!-- Tous les fichiers ressource -->
+	<patternset id="all.resource.files">
+		<include name="**/*.properties"/>
+		<include name="**/*.xml"/>
+		<include name="**/*.xsd"/>
+		<include name="**/*.dtd"/>
+		<include name="**/*.wav"/>
+		<include name="**/*.gif"/>
+		<include name="**/*.jpg"/>
+		<include name="**/*.jpeg"/>
+		<include name="**/*.ini"/>
+		<include name="**/*.dat"/>
+		<include name="**/*.html"/>
+		<include name="**/*.hs"/>
+		<include name="**/*.jhm"/>
+		<include name="**/*.htm"/>
+		<include name="**/*.ftl"/>
+		<include name="**/*.xsl"/>
+		<include name="**/*Helper"/>
+	</patternset>
+
+	<!--
+   ========================================================================
+     Classpath utilises dans les targets
+   ========================================================================
+-->
+	<!-- Classpath pour la compilation -->
+	<path id="compile.classpath">
+		<path refid="sitools_libraries"/>
+		<path refid="restlet_jse_2_0_5_patched"/>
+		<path refid="osgi_equinox"/>
+		<!-- <path refid="fr_cnes_sitools_extensions"/>-->
+<!--		<pathelement location="${java.class.path}"/>-->
+		<!-- libs de l'application converties en plugins dans libraries
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>
+		-->
+	</path>
+
+	<!-- Classpath pour l'execution des tests -->
+	<path id="test.classpath">
+		<path refid="compile.classpath"/>
+		<path refid="test"/>
+		<path refid="fr_cnes_sitools_ext_test"/>
+		<pathelement location="${out.classes.dir}"/>
+		<pathelement location="${test.classes.dir}"/>
+		<pathelement location="${test.conf.dir}" />
+		<!-- <fileset dir="${test.lib.dir}">
+			<include name="**/*.jar"/>
+			<include name="**/*.zip"/>
+		</fileset>-->
+	</path>
+	
+	 <!-- Classpath of the files to instrument -->
+	<path id="instrument.classpath">
+		<fileset dir="${out.classes.dir}">
+			<include name="**/*.class" />
+		</fileset>
+	</path>
+	
+	<!-- Defines the directory where to find the instrumented classes -->
+	<path id="instrumented.classpath">
+		<pathelement location="${instrumented.dir}"/>
+	</path>
+
+	<!-- Classpath pour la génération des index des pages HTML utilisées par Java-Help -->
+	<path id="java.help.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement location="${lib.dir}"/>
+	</path>
+
+
+	<!-- Répertoires de l'arborescence de distribution -->
+	<property name="distribution.dir"        value="../../DISTRIBUTION_{project.version}"/>
+	<property name="distribution.lib.dir"    value="${distribution.dir}/lib"/>
+
+	<!-- Répertoire pour les test JMeter -->
+	<property name="jmeter" location="${cots.dir}/jakarta-jmeter-2.4" />
+	
+	<!-- Répertoire pour la validation JsLint -->
+	<property name="jslint" location="${cots.dir}/jslint4java-1.4.6" />
+    
+    <!-- Répertoire pour findbugs -->
+    <property name="findbugs.dir" location="${cots.dir}/audit/findbugs" />
+    
+	<property name="client-user.dir" location="${ROOT_DIRECTORY}/workspace/client-user" />
+	<property name="client-admin.dir" location="${ROOT_DIRECTORY}/workspace/client-admin" />
+	
+	<property name="report-client-user.dir" location="${client-user.dir}/report" />
+	<property name="report-client-admin.dir" location="${client-admin.dir}/report" />
+	
+
+	

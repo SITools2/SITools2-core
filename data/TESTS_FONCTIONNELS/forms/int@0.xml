@@ -1,0 +1,31 @@
+<form>
+  <id>4413f60f-8757-4341-b611-e8aacab8935c</id>
+  <parent>f855db31-0226-4f5d-abae-51052044f6f6</parent>
+  <name>Postgres Form</name>
+  <css></css>
+  <description></description>
+  <width>450</width>
+  <height>200</height>
+  <parentUrl>/pgDataV</parentUrl>
+  <parameters>
+    <SimpleParameter>
+      <id>1</id>
+      <code>
+        <string>dataset_head</string>
+      </code>
+      <label>Dataset</label>
+      <width>400</width>
+      <height>25</height>
+      <xpos>0</xpos>
+      <ypos>10</ypos>
+      <css></css>
+      <jsAdminObject>sitools.component.forms.oneParam.TextField</jsAdminObject>
+      <jsUserObject>sitools.component.users.SubSelectionParameters.SingleSelection.TextField</jsUserObject>
+      <defaultValues>
+        <string></string>
+      </defaultValues>
+      <autoComplete>true</autoComplete>
+      <type>TEXTFIELD</type>
+    </SimpleParameter>
+  </parameters>
+</form>

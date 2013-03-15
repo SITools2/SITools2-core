@@ -1,0 +1,12 @@
+<formComponent>
+  <id>d233107b-710d-43a1-966b-ef9ffa863c96</id>
+  <type>TEXTFIELD</type>
+  <componentDefaultHeight>25</componentDefaultHeight>
+  <componentDefaultWidth>400</componentDefaultWidth>
+  <jsAdminObject>sitools.admin.forms.oneParam.TextField</jsAdminObject>
+  <jsUserObject>sitools.common.forms.components.TextField</jsUserObject>
+  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/TextField.js</fileUrlAdmin>
+  <fileUrlUser>/sitools/common/js/forms/components/textfield.js</fileUrlUser>
+  <imageUrl>/sitools/common/res/images/formComponents/textField.gif</imageUrl>
+  <priority>2</priority>
+</formComponent>

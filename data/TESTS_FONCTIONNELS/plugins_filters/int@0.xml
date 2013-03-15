@@ -1,0 +1,12 @@
+<filterPlugin>
+  <id>755e960b-0e3b-4fa7-97c1-6794eae62beb</id>
+  <name>DataStorageAuthorizer</name>
+  <description>Customizable datastorage directory authorizer</description>
+  <className>fr.cnes.sitools.filter.authorizer.DataStorageAuthorizerModel</className>
+  <classVersion>0.1</classVersion>
+  <classAuthor>AKKA</classAuthor>
+  <classOwner>AKKA/CNES</classOwner>
+  <parametersMap>
+  </parametersMap>
+  <filterClassName>fr.cnes.sitools.filter.authorizer.DataStorageAuthorizer</filterClassName>
+</filterPlugin>

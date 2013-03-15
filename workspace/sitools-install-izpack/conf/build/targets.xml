@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+	<!-- ===============================================================================
+	         Validator targets
+	     =============================================================================== -->
+	<target name="prepare">
+		<!-- Creation des repertoires classes -->
+		<mkdir dir="${out.classes.dir}" />
+	</target>
+	
+	
+	<target name="compile">
+		<javac srcdir="./src" debug="${debug}" destdir="${out.classes.dir}" deprecation="${deprecation}" optimize="${optimize}" encoding="${encoding}" includeAntRuntime="false">
+			<classpath refid="compile.classpath" />
+		</javac>
+	</target>
+
+	<target name="jar-validator">
+		<delete file="${dist.dir.validator}/${jar.name.validator}" />
+		<property name="version.num" value="${project.version}" />
+		<buildnumber file="build.num" />
+		<mkdir dir="${dist.dir.validator}"></mkdir>
+		<jar jarfile="${dist.dir.validator}/${jar.name.validator}" >
+			<fileset dir="${out.classes.dir}" includes="**/*.class" />
+		</jar>
+		
+	</target>
+	
+	<!--<target name="jar-database-panel">
+		<delete file="${dist.dir.database-panel}/${jar.name.database-panel}" />
+		<property name="version.num" value="${project.version}" />
+		<buildnumber file="build.num" />
+		<mkdir dir="${dist.dir.database-panel}"></mkdir>
+		<jar jarfile="${dist.dir.database-panel}/${jar.name.database-panel}">
+			<fileset dir="${out.classes.dir}" includes="**/DatabasePanel.class" />			
+		</jar>		
+		
+        
+	</target>-->
+
+	<target name="cleanup">
+		<delete>
+			<fileset dir="." includes="**/*.class" />
+		</delete>
+
+	</target>	
+	
+
+	

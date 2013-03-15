@@ -1,0 +1,30 @@
+<observable>
+  <uri>d89ec204-2df2-443b-b7c4-871dae006582</uri>
+  <observers>
+    <observer>
+      <uuid>288e6a25-08db-46e7-820d-0af9ab935bc0</uuid>
+      <uriToNotify>riap://component/datasets/288e6a25-08db-46e7-820d-0af9ab935bc0/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>f855db31-0226-4f5d-abae-51052044f6f6</uuid>
+      <uriToNotify>riap://component/datasets/f855db31-0226-4f5d-abae-51052044f6f6/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>c8ebddc1-bb57-4715-b78c-067b8a00fa83</uuid>
+      <uriToNotify>riap://component/datasets/c8ebddc1-bb57-4715-b78c-067b8a00fa83/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>ee65412e-bee0-4059-a351-a1450f94a19d</uuid>
+      <uriToNotify>riap://component/datasets/ee65412e-bee0-4059-a351-a1450f94a19d/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</uuid>
+      <uriToNotify>riap://component/datasets/9cbed21a-8daa-4e6b-af76-b65ea1bdcd72/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+  </observers>
+</observable>

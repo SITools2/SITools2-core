@@ -1,0 +1,19 @@
+<dimension>
+  <id>Photometric_range</id>
+  <name>Photometric_range</name>
+  <description>The Photometric range dimension</description>
+  <dimensionHelperName>fr.cnes.sitools.units.helper.SitoolsUnitConverterHelper</dimensionHelperName>
+  <unitConverters>
+    <string>fr.cnes.sitools.units.converters.FrequencyWavelengthConverter</string>
+  </unitConverters>
+  <units>
+    <unit>
+      <label>millimetre</label>
+      <unitName>mm</unitName>
+    </unit>
+    <unit>
+      <label>Giga hertz</label>
+      <unitName>GHz</unitName>
+    </unit>
+  </units>
+</dimension>
