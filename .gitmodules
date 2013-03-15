@@ -1,0 +1,9 @@
+[submodule "extensions/astronomy"]
+	path = extensions/astronomy
+	url = http://odysseus1.silogic.fr/git/SITools2_v2/SITools2_ext_astro
+[submodule "extensions/mapshup"]
+	path = extensions/mapshup
+	url = http://odysseus1.silogic.fr/git/SITools2_v2/SITools2_ext_mapshup
+[submodule "extensions/nosql"]
+	path = extensions/nosql
+	url = http://odysseus1.silogic.fr/git/SITools2_v2/SITools2_ext_nosql
