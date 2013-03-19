@@ -5,3 +5,4 @@ classes/
 *.class
 dist/
 .settings/
+data/TESTS_mapshup/

@@ -1,0 +1,783 @@
+<manager>
+  <id>812d89c1-1a0e-4718-91ef-fbb004349825</id>
+  <lastUpdate>Tue Mar 19 17:53:14 CET 2013</lastUpdate>
+  <resources>
+    <resource>
+      <urn>urn:uuid:AuthorizationApplication:type:fr.cnes.sitools.security.authorization.AuthorizationApplication</urn>
+      <id>urn:uuid:AuthorizationApplication:type:fr.cnes.sitools.security.authorization.AuthorizationApplication</id>
+      <name>AuthorizationApplication</name>
+      <description>Authorizations for resource (application) access management.
+Be carefull with this application, administrator must have all authorizations
+Do not let public user have PUT/POST/DELETE authorizations</description>
+      <type>fr.cnes.sitools.security.authorization.AuthorizationApplication</type>
+      <category>SYSTEM</category>
+      <url>/sitools/authorizations</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:52:59 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:NotificationApplication:type:fr.cnes.sitools.notification.NotificationApplication</urn>
+      <id>urn:uuid:NotificationApplication:type:fr.cnes.sitools.notification.NotificationApplication</id>
+      <name>NotificationApplication</name>
+      <description>Application for registering observables and observers and for notifying observers when observable changes.</description>
+      <type>fr.cnes.sitools.notification.NotificationApplication</type>
+      <category>SYSTEM</category>
+      <url>/sitools/notifications</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:00 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:LogDirectory:type:fr.cnes.sitools.server.Starter$3</urn>
+      <id>urn:uuid:LogDirectory:type:fr.cnes.sitools.server.Starter$3</id>
+      <name>LogDirectory</name>
+      <description>This application give access to the server logs
+It would be better to give authorizations only to the administrator</description>
+      <type>fr.cnes.sitools.common.application.StaticWebApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/logs</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:00 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:client-public:type:fr.cnes.sitools.applications.PublicApplication</urn>
+      <id>urn:uuid:client-public:type:fr.cnes.sitools.applications.PublicApplication</id>
+      <name>client-public</name>
+      <description>web client application for public resources used by other sitools client applications -&gt; Administrator must have all authorizations on this application
+-&gt; Public user must have at least GET and PUT authorizations on this application
+PUT authorization is used to reset User password</description>
+      <type>fr.cnes.sitools.applications.PublicApplication</type>
+      <category>PUBLIC</category>
+      <url>/sitools</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:00 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:client-admin:type:fr.cnes.sitools.applications.ClientAdminApplication</urn>
+      <id>urn:uuid:client-admin:type:fr.cnes.sitools.applications.ClientAdminApplication</id>
+      <name>client-admin</name>
+      <description>The application is used by the administrator to access the Web client administrator application
+-&gt; public user must have GET authorization otherwise the login page will be unavailable
+-&gt; administrator user must have GET authorization has well</description>
+      <type>fr.cnes.sitools.applications.ClientAdminApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/client-admin</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:00 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:client-user:type:fr.cnes.sitools.applications.ClientUserApplication</urn>
+      <id>urn:uuid:client-user:type:fr.cnes.sitools.applications.ClientUserApplication</id>
+      <name>client-user</name>
+      <description>This application is used by users-&gt; to access the Web client application-&gt; to access the portal page-&gt; to access the desktop page</description>
+      <type>fr.cnes.sitools.applications.ClientUserApplication</type>
+      <category>USER</category>
+      <url>/sitools/client-user</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:01 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:UsersAndGroupsAdministration:type:fr.cnes.sitools.security.UsersAndGroupsAdministration</urn>
+      <id>urn:uuid:UsersAndGroupsAdministration:type:fr.cnes.sitools.security.UsersAndGroupsAdministration</id>
+      <name>UsersAndGroupsAdministration</name>
+      <description>Users and groups management</description>
+      <type>fr.cnes.sitools.security.UsersAndGroupsAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/admin/security</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:01 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:InscriptionApplication:type:fr.cnes.sitools.inscription.InscriptionApplication</urn>
+      <id>urn:uuid:InscriptionApplication:type:fr.cnes.sitools.inscription.InscriptionApplication</id>
+      <name>InscriptionApplication</name>
+      <description>Management of user registrations.</description>
+      <type>fr.cnes.sitools.inscription.InscriptionApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/inscriptions/admin</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:01 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:UserInscriptionApplication:type:fr.cnes.sitools.inscription.UserInscriptionApplication</urn>
+      <id>urn:uuid:UserInscriptionApplication:type:fr.cnes.sitools.inscription.UserInscriptionApplication</id>
+      <name>UserInscriptionApplication</name>
+      <description>User inscription management on client side
+-&gt; Administrator must have all authorizations-&gt; Public user must have at least POST right in order to register</description>
+      <type>fr.cnes.sitools.inscription.UserInscriptionApplication</type>
+      <category>USER</category>
+      <url>/sitools/inscriptions/user</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:01 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:RoleApplication:type:fr.cnes.sitools.role.RoleApplication</urn>
+      <id>urn:uuid:RoleApplication:type:fr.cnes.sitools.role.RoleApplication</id>
+      <name>RoleApplication</name>
+      <description>Roles management</description>
+      <type>fr.cnes.sitools.role.RoleApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/admin/security/roles</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:01 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:JDBCDataSourceAdministration:type:fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration</urn>
+      <id>urn:uuid:JDBCDataSourceAdministration:type:fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration</id>
+      <name>JDBCDataSourceAdministration</name>
+      <description>Administration of JDBC datasources</description>
+      <type>fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasources</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:01 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:MongoDBDataSourceAdministration:type:fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceAdministration</urn>
+      <id>urn:uuid:MongoDBDataSourceAdministration:type:fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceAdministration</id>
+      <name>MongoDBDataSourceAdministration</name>
+      <description>Administration of MongoDB datasources</description>
+      <type>fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/mongodbdatasource</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:02 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ConverterApplication:type:fr.cnes.sitools.dataset.converter.ConverterApplication</urn>
+      <id>urn:uuid:ConverterApplication:type:fr.cnes.sitools.dataset.converter.ConverterApplication</id>
+      <name>ConverterApplication</name>
+      <description>Act on converters defined for a dataset.</description>
+      <type>fr.cnes.sitools.dataset.converter.ConverterApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets/{datasetId}/datasets_converters</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:02 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FilterApplication:type:fr.cnes.sitools.dataset.filter.FilterApplication</urn>
+      <id>urn:uuid:FilterApplication:type:fr.cnes.sitools.dataset.filter.FilterApplication</id>
+      <name>FilterApplication</name>
+      <description>Act on filters defined for datasets.</description>
+      <type>fr.cnes.sitools.dataset.filter.FilterApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets/{datasetId}/datasets_filters</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:02 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ApplicationPluginApplication:type:fr.cnes.sitools.plugins.applications.ApplicationPluginApplication</urn>
+      <id>urn:uuid:ApplicationPluginApplication:type:fr.cnes.sitools.plugins.applications.ApplicationPluginApplication</id>
+      <name>ApplicationPluginApplication</name>
+      <description>Application for administration of application plugins. Also expose the application plugin classes</description>
+      <type>fr.cnes.sitools.plugins.applications.ApplicationPluginApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/plugins/applications</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:02 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ApplicationFilterPluginApplication:type:fr.cnes.sitools.plugins.filters.FilterPluginApplication</urn>
+      <id>urn:uuid:ApplicationFilterPluginApplication:type:fr.cnes.sitools.plugins.filters.FilterPluginApplication</id>
+      <name>ApplicationFilterPluginApplication</name>
+      <description>Application handling request of dynamic plugins attachment</description>
+      <type>fr.cnes.sitools.plugins.filters.FilterPluginApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/plugins/filters/instances</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:02 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ResourcePluginApplication:type:fr.cnes.sitools.plugins.resources.ResourcePluginApplication</urn>
+      <id>urn:uuid:ResourcePluginApplication:type:fr.cnes.sitools.plugins.resources.ResourcePluginApplication</id>
+      <name>ResourcePluginApplication</name>
+      <description>Application handling request of dynamic resources attachment</description>
+      <type>fr.cnes.sitools.plugins.resources.ResourcePluginApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/applications/{parentId}/resources</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:03 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:DictionaryApplication:type:fr.cnes.sitools.dictionary.DictionaryAdministration</urn>
+      <id>urn:uuid:DictionaryApplication:type:fr.cnes.sitools.dictionary.DictionaryAdministration</id>
+      <name>DictionaryApplication</name>
+      <description>Dictionary management</description>
+      <type>fr.cnes.sitools.dictionary.DictionaryAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/dictionaries</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:03 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:DataSetAdministration:type:fr.cnes.sitools.dataset.DataSetAdministration</urn>
+      <id>urn:uuid:DataSetAdministration:type:fr.cnes.sitools.dataset.DataSetAdministration</id>
+      <name>DataSetAdministration</name>
+      <description>DataSets management application</description>
+      <type>fr.cnes.sitools.dataset.DataSetAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:03 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ConceptTemplateApplication:type:fr.cnes.sitools.dictionary.ConceptTemplateAdministration</urn>
+      <id>urn:uuid:ConceptTemplateApplication:type:fr.cnes.sitools.dictionary.ConceptTemplateAdministration</id>
+      <name>ConceptTemplateApplication</name>
+      <description>ConceptTemplate management</description>
+      <type>fr.cnes.sitools.dictionary.ConceptTemplateAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/templates</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:03 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:PortalApplication:type:fr.cnes.sitools.portal.PortalApplication</urn>
+      <id>urn:uuid:PortalApplication:type:fr.cnes.sitools.portal.PortalApplication</id>
+      <name>PortalApplication</name>
+      <description>Portal definition application</description>
+      <type>fr.cnes.sitools.portal.PortalApplication</type>
+      <category>USER</category>
+      <url>/sitools/portal</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:03 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:MultiDatasetsOpensearchApplication:type:fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication</urn>
+      <id>urn:uuid:MultiDatasetsOpensearchApplication:type:fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication</id>
+      <name>MultiDatasetsOpensearchApplication</name>
+      <description>Application used to query over multiple opensearch indexes</description>
+      <type>fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication</type>
+      <category>USER</category>
+      <url>/sitools/portal/opensearch</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:04 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FormComponentApplication:type:fr.cnes.sitools.form.components.FormComponentsApplication</urn>
+      <id>urn:uuid:FormComponentApplication:type:fr.cnes.sitools.form.components.FormComponentsApplication</id>
+      <name>FormComponentApplication</name>
+      <description>Management of GUI components for forms.-&gt; Administrator user should have all rights on this application-&gt; public user must have GET authorization in order to get the list of form components in the client-user interface</description>
+      <type>fr.cnes.sitools.form.components.FormComponentsApplication</type>
+      <category>USER</category>
+      <url>/sitools/formComponents</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:04 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:CollectionApplication:type:fr.cnes.sitools.collections.CollectionsApplication</urn>
+      <id>urn:uuid:CollectionApplication:type:fr.cnes.sitools.collections.CollectionsApplication</id>
+      <name>CollectionApplication</name>
+      <description>Management of Collections of datasets</description>
+      <type>fr.cnes.sitools.collections.CollectionsApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/collections</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:04 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FormProjectApplication:type:fr.cnes.sitools.form.project.FormProjectApplication</urn>
+      <id>urn:uuid:FormProjectApplication:type:fr.cnes.sitools.form.project.FormProjectApplication</id>
+      <name>FormProjectApplication</name>
+      <description>Management of FormProject</description>
+      <type>fr.cnes.sitools.form.project.FormProjectApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/projects/{projectId}/formProject</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:04 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:DatasetViewApplication:type:fr.cnes.sitools.dataset.view.DatasetViewApplication</urn>
+      <id>urn:uuid:DatasetViewApplication:type:fr.cnes.sitools.dataset.view.DatasetViewApplication</id>
+      <name>DatasetViewApplication</name>
+      <description>Management of GUI components for datasetView.-&gt; Administrator user should have all rights on this application-&gt; public user must have GET authorization in order to get the list of datasetViews in the client-user interface</description>
+      <type>fr.cnes.sitools.dataset.view.DatasetViewApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasetViews</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:05 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ProjectModuleApplication:type:fr.cnes.sitools.project.modules.ProjectModuleApplication</urn>
+      <id>urn:uuid:ProjectModuleApplication:type:fr.cnes.sitools.project.modules.ProjectModuleApplication</id>
+      <name>ProjectModuleApplication</name>
+      <description>Management of GUI components for projectModule.</description>
+      <type>fr.cnes.sitools.project.modules.ProjectModuleApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/projectModules</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:05 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ProjectAdministration:type:fr.cnes.sitools.project.ProjectAdministration</urn>
+      <id>urn:uuid:ProjectAdministration:type:fr.cnes.sitools.project.ProjectAdministration</id>
+      <name>ProjectAdministration</name>
+      <description>Project Management</description>
+      <type>fr.cnes.sitools.project.ProjectAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/projects</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:05 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ExampleProject_fixed:type:fr.cnes.sitools.project.ProjectApplication</urn>
+      <id>654654654-68e4-4e2b-a921-6fd7de5dc4ef</id>
+      <name>ExampleProject_fixed</name>
+      <description>Exposition du project ExampleProject_fixed</description>
+      <type>fr.cnes.sitools.project.ProjectApplication</type>
+      <category>USER_DYNAMIC</category>
+      <url>/ExampleProject/fixed</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:05 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ExampleProject_desktop:type:fr.cnes.sitools.project.ProjectApplication</urn>
+      <id>5132d85b-68e4-4e2b-a921-6fd7de5dc4ef</id>
+      <name>ExampleProject_desktop</name>
+      <description>Exposition du project ExampleProject_desktop</description>
+      <type>fr.cnes.sitools.project.ProjectApplication</type>
+      <category>USER_DYNAMIC</category>
+      <url>/ExampleProject_desktop</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:06 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FormApplication:type:fr.cnes.sitools.form.dataset.FormApplication</urn>
+      <id>urn:uuid:FormApplication:type:fr.cnes.sitools.form.dataset.FormApplication</id>
+      <name>FormApplication</name>
+      <description>Form management</description>
+      <type>fr.cnes.sitools.form.dataset.FormApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets/{datasetId}/forms</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:06 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FeedsProjectApplication:type:fr.cnes.sitools.server.Starter$4</urn>
+      <id>urn:uuid:FeedsProjectApplication:type:fr.cnes.sitools.server.Starter$4</id>
+      <name>FeedsProjectApplication</name>
+      <description>Feeds administration for projects</description>
+      <type>fr.cnes.sitools.feeds.FeedsApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/projects/{dataId}/feeds</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:07 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FeedsDataSetsApplication:type:fr.cnes.sitools.server.Starter$5</urn>
+      <id>urn:uuid:FeedsDataSetsApplication:type:fr.cnes.sitools.server.Starter$5</id>
+      <name>FeedsDataSetsApplication</name>
+      <description>Feeds administration for datasets</description>
+      <type>fr.cnes.sitools.feeds.FeedsApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets/{dataId}/feeds</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:07 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FeedsPortalApplication:type:fr.cnes.sitools.server.Starter$6</urn>
+      <id>urn:uuid:FeedsPortalApplication:type:fr.cnes.sitools.server.Starter$6</id>
+      <name>FeedsPortalApplication</name>
+      <description>Feeds administration for portal</description>
+      <type>fr.cnes.sitools.feeds.FeedsApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/portal/{dataId}/feeds</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:08 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:OpensearchApplication:type:fr.cnes.sitools.dataset.opensearch.OpenSearchApplication</urn>
+      <id>urn:uuid:OpensearchApplication:type:fr.cnes.sitools.dataset.opensearch.OpenSearchApplication</id>
+      <name>OpensearchApplication</name>
+      <description>Opensearch configuration</description>
+      <type>fr.cnes.sitools.dataset.opensearch.OpenSearchApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets/{datasetId}/opensearch</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:08 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:Documentation:type:fr.cnes.sitools.server.Starter$8</urn>
+      <id>urn:uuid:Documentation:type:fr.cnes.sitools.server.Starter$8</id>
+      <name>Documentation</name>
+      <description>Diffusion de la documentation associée au projet</description>
+      <type>fr.cnes.sitools.common.application.StaticWebApplication</type>
+      <category>USER</category>
+      <url>/sitools/documentation</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:08 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:SolrApplication:type:fr.cnes.sitools.solr.SolrApplication</urn>
+      <id>urn:uuid:SolrApplication:type:fr.cnes.sitools.solr.SolrApplication</id>
+      <name>SolrApplication</name>
+      <description>Sample Solr integration</description>
+      <type>fr.cnes.sitools.solr.SolrApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/solr</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:09 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:OrderAdministration:type:fr.cnes.sitools.order.OrderAdministration</urn>
+      <id>urn:uuid:OrderAdministration:type:fr.cnes.sitools.order.OrderAdministration</id>
+      <name>OrderAdministration</name>
+      <description>Management of off-line or asynchronous orders</description>
+      <type>fr.cnes.sitools.order.OrderAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/orders/admin</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:09 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:UserOrderApplication:type:fr.cnes.sitools.order.UserOrderApplication</urn>
+      <id>urn:uuid:UserOrderApplication:type:fr.cnes.sitools.order.UserOrderApplication</id>
+      <name>UserOrderApplication</name>
+      <description>Application allowing users to follow their orders.
+-&gt; Administrator must have all authorizations-&gt; Public user must have GET/POST/DELETE authorizations to retrieve, create or delete its orders</description>
+      <type>fr.cnes.sitools.order.UserOrderApplication</type>
+      <category>USER</category>
+      <url>/sitools/orders/user</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:09 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:UserStorageManagement:type:fr.cnes.sitools.userstorage.UserStorageManagement</urn>
+      <id>urn:uuid:UserStorageManagement:type:fr.cnes.sitools.userstorage.UserStorageManagement</id>
+      <name>UserStorageManagement</name>
+      <description>Management of user space disk on server</description>
+      <type>fr.cnes.sitools.userstorage.UserStorageManagement</type>
+      <category>ADMIN</category>
+      <url>/sitools/adminstorage</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:09 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:UserStorageApplication:type:fr.cnes.sitools.userstorage.UserStorageApplication</urn>
+      <id>urn:uuid:UserStorageApplication:type:fr.cnes.sitools.userstorage.UserStorageApplication</id>
+      <name>UserStorageApplication</name>
+      <description>Access to users space disk on server
+The security on this application is a bit different
+-&gt; The owner of the userstorage has all rights on its userstorage
+-&gt; Otherwise the application authorizations are used</description>
+      <type>fr.cnes.sitools.userstorage.UserStorageApplication</type>
+      <category>USER</category>
+      <url>/sitools/userstorage/{identifier}</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:09 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ConverterPluginsApplication:type:fr.cnes.sitools.dataset.plugins.converters.ConverterPluginsApplication</urn>
+      <id>urn:uuid:ConverterPluginsApplication:type:fr.cnes.sitools.dataset.plugins.converters.ConverterPluginsApplication</id>
+      <name>ConverterPluginsApplication</name>
+      <description>Exposition of converters classes</description>
+      <type>fr.cnes.sitools.dataset.plugins.converters.ConverterPluginsApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets_converters</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:09 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:FilterPluginsApplication:type:fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication</urn>
+      <id>urn:uuid:FilterPluginsApplication:type:fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication</id>
+      <name>FilterPluginsApplication</name>
+      <description>Expose the classes of search filter plugins</description>
+      <type>fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/datasets_filters</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:10 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ResourceClassPluginApplication:type:fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication</urn>
+      <id>urn:uuid:ResourceClassPluginApplication:type:fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication</id>
+      <name>ResourceClassPluginApplication</name>
+      <description>Exposition of dynamic resources classes</description>
+      <type>fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/plugins/resources</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:10 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:ApplicationFilterClassPluginApplication:type:fr.cnes.sitools.plugins.filters.FilterClassPluginApplication</urn>
+      <id>urn:uuid:ApplicationFilterClassPluginApplication:type:fr.cnes.sitools.plugins.filters.FilterClassPluginApplication</id>
+      <name>ApplicationFilterClassPluginApplication</name>
+      <description>Exposition of dynamic filters classes</description>
+      <type>fr.cnes.sitools.plugins.filters.FilterClassPluginApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/plugins/filters/classes</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:10 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:StorageApplication:type:fr.cnes.sitools.service.storage.StorageApplication</urn>
+      <id>urn:uuid:StorageApplication:type:fr.cnes.sitools.service.storage.StorageApplication</id>
+      <name>StorageApplication</name>
+      <description>Storage service - Gives access to the files on the storages
+-&gt; The administrator does not need authorizations-&gt; The public user must have all authorizations according to ones specified on each storage. (Default GET and HEAD to authorize clients to detect content-type of a file)</description>
+      <type>fr.cnes.sitools.service.storage.StorageApplication</type>
+      <category>USER</category>
+      <url>/sitools/datastorage/user</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:10 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:StorageAdministration:type:fr.cnes.sitools.service.storage.StorageAdministration</urn>
+      <id>urn:uuid:StorageAdministration:type:fr.cnes.sitools.service.storage.StorageAdministration</id>
+      <name>StorageAdministration</name>
+      <description>Administration of Storage service 
+-&gt; The administrator must have all authorizations</description>
+      <type>fr.cnes.sitools.service.storage.StorageAdministration</type>
+      <category>ADMIN</category>
+      <url>/sitools/datastorage/admin</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:11 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:MailAdministration:type:fr.cnes.sitools.mail.MailAdministration</urn>
+      <id>urn:uuid:MailAdministration:type:fr.cnes.sitools.mail.MailAdministration</id>
+      <name>MailAdministration</name>
+      <description>Application used to send emails</description>
+      <type>fr.cnes.sitools.mail.MailAdministration</type>
+      <category>SYSTEM</category>
+      <url>/sitools/admin/mail</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:11 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:UploadApplication:type:fr.cnes.sitools.applications.UploadApplication</urn>
+      <id>urn:uuid:UploadApplication:type:fr.cnes.sitools.applications.UploadApplication</id>
+      <name>UploadApplication</name>
+      <description>Upload pictures, logos for using in datasets, projects, ...-&gt; administrator user can have GET/POST/PUT/DELETE authorizations to access, add or delete files or folder
+-&gt; public must have GET/POST authorization to access and upload the files
+In order to upload files using the ExtJs client, the HTTP-BASIC credentials can be sended in the cookie</description>
+      <type>fr.cnes.sitools.applications.UploadApplication</type>
+      <category>USER</category>
+      <url>/sitools/upload</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:11 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:TemporaryFolderApplication:type:fr.cnes.sitools.applications.TemporaryFolderApplication</urn>
+      <id>urn:uuid:TemporaryFolderApplication:type:fr.cnes.sitools.applications.TemporaryFolderApplication</id>
+      <name>TemporaryFolderApplication</name>
+      <description>Application to access a temporary folder on the server
+-&gt; administrator user can have GET/POST/PUT/DELETE authorizations to access, add or delete files or folder
+-&gt; public can have GET authorization to access the folders
+In order to download files using the ExtJs client, the HTTP-BASIC credentials can be sended in the cookie</description>
+      <type>fr.cnes.sitools.applications.TemporaryFolderApplication</type>
+      <category>USER</category>
+      <url>/sitools/tmp</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:11 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:OrdersFolderApplication:type:fr.cnes.sitools.applications.OrdersFilesApplication</urn>
+      <id>urn:uuid:OrdersFolderApplication:type:fr.cnes.sitools.applications.OrdersFilesApplication</id>
+      <name>OrdersFolderApplication</name>
+      <description>Application to access a folder dedicated to orders management
+-&gt; administrator user can have GET/POST/PUT/DELETE authorizations to access, add or delete files or folder
+-&gt; public must not have GET authorization not to access the folders</description>
+      <type>fr.cnes.sitools.applications.OrdersFilesApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/orders_files</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:11 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:AdministratorApplication:type:fr.cnes.sitools.applications.AdministratorApplication</urn>
+      <id>urn:uuid:AdministratorApplication:type:fr.cnes.sitools.applications.AdministratorApplication</id>
+      <name>AdministratorApplication</name>
+      <description>Miscellaneous resources for Administrators</description>
+      <type>fr.cnes.sitools.applications.AdministratorApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/admin/miscellaneous</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:12 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:TaskApplicationForUser:type:fr.cnes.sitools.server.Starter$9</urn>
+      <id>urn:uuid:TaskApplicationForUser:type:fr.cnes.sitools.server.Starter$9</id>
+      <name>TaskApplicationForUser</name>
+      <description>Exposes the list of tasks for a particular user,Only a particular User can access its tasks, he must have GET, PUT and DELETE rights on this application</description>
+      <type>fr.cnes.sitools.tasks.exposition.TaskApplication</type>
+      <category>USER</category>
+      <url>/sitools/userresource/{identifier}/tasks</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:12 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:TaskApplicationForAdmin:type:fr.cnes.sitools.server.Starter$10</urn>
+      <id>urn:uuid:TaskApplicationForAdmin:type:fr.cnes.sitools.server.Starter$10</id>
+      <name>TaskApplicationForAdmin</name>
+      <description>Exposes the list of all tasks</description>
+      <type>fr.cnes.sitools.tasks.exposition.TaskApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/tasks</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:12 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:UnitsApplication:type:fr.cnes.sitools.units.UnitsApplication</urn>
+      <id>urn:uuid:UnitsApplication:type:fr.cnes.sitools.units.UnitsApplication</id>
+      <name>UnitsApplication</name>
+      <description>Application for unit utilities</description>
+      <type>fr.cnes.sitools.units.UnitsApplication</type>
+      <category>USER</category>
+      <url>/sitools/units</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:13 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:DimensionAdministration:type:fr.cnes.sitools.units.dimension.DimensionAdministration</urn>
+      <id>urn:uuid:DimensionAdministration:type:fr.cnes.sitools.units.dimension.DimensionAdministration</id>
+      <name>DimensionAdministration</name>
+      <description>Application to manage DimensionsAdministrator must have all rights on this applicationpublic user must have GET right to access the dimension from the client-user interface</description>
+      <type>fr.cnes.sitools.units.dimension.DimensionAdministration</type>
+      <category>USER</category>
+      <url>/sitools/units/admin</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:13 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:GuiServiceApplication:type:fr.cnes.sitools.guiservice.GuiServiceApplication</urn>
+      <id>urn:uuid:GuiServiceApplication:type:fr.cnes.sitools.guiservice.GuiServiceApplication</id>
+      <name>GuiServiceApplication</name>
+      <description>Management of GUI components for client Gui Services.</description>
+      <type>fr.cnes.sitools.guiservice.GuiServiceApplication</type>
+      <category>ADMIN</category>
+      <url>/sitools/guiServices</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:13 CET 2013</lastUpdate>
+      <status>INACTIVE</status>
+    </resource>
+    <resource>
+      <urn>urn:uuid:AppRegistryApplication:type:fr.cnes.sitools.registry.AppRegistryApplication</urn>
+      <id>urn:uuid:AppRegistryApplication:type:fr.cnes.sitools.registry.AppRegistryApplication</id>
+      <name>AppRegistryApplication</name>
+      <description>Application for registering / exposing all applications 
+Be carrefull with this application, the administrator must have all authorizations
+Do not stop the application, Do not let public user have PUT/POST/DELETE authorizations</description>
+      <type>fr.cnes.sitools.registry.AppRegistryApplication</type>
+      <category>SYSTEM</category>
+      <url>/sitools/applications</url>
+      <author>AKKA Technologies</author>
+      <owner>CNES</owner>
+      <lastUpdate>Tue Mar 19 17:53:14 CET 2013</lastUpdate>
+      <status>ACTIVE</status>
+    </resource>
+  </resources>
+</manager>

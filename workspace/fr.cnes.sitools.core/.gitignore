@@ -1,0 +1,11 @@
+conf/build/userlibrairies/sitools.userlibraries.ant.xml
+conf/build/userlibrairies/sitools.userlibraries.eclipse.xml
+conf/properties/sitools.properties
+jar/
+fr.cnes.sitools.core.jar
+fr.cnes.sitools.test.jar
+sitools
+sitools.properties
+startSitools.bat
+startSitools.sh
+logs/
