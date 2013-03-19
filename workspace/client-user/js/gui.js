@@ -80,7 +80,7 @@ var portalApp = {
                 }
             },
             failure : function (response) {
-                Ext.Msg.alert('Status', i18n.get('warning.serverError'));
+                Ext.Msg.alert('Status', i18n.get('warfning.serverError'));
             }
         });
     },

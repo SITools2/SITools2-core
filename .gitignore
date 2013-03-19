@@ -1,0 +1,7 @@
+out/
+bin/
+.metadata/
+classes/
+*.class
+dist/
+.settings/

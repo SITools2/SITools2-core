@@ -2,11 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/selenium-java-client-driver.jar"/>
 	<classpathentry kind="lib" path="E:/CNES-ULISSE/cots/testng/testng-5.13.1.jar"/>
 	<classpathentry kind="lib" path="E:/CNES-ULISSE/cots/testng/SaxonLiaison.jar"/>
 	<classpathentry kind="lib" path="E:/CNES-ULISSE/cots/testng/saxon-8.7.jar"/>
-	<classpathentry kind="lib" path="E:/CNES-ULISSE/cots/gwt/gwtext-2.0.5/gwtext.jar"/>
-	<classpathentry kind="lib" path="E:/CNES-ULISSE/cots/gwt/gwt-2.0.4/gwt-user.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
