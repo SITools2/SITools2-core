@@ -8,3 +8,4 @@ dist/
 data/TESTS_mapshup/
 data/TESTS_jeobrowser/
 extensions/
+build.num
