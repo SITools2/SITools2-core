@@ -6,3 +6,5 @@ classes/
 dist/
 .settings/
 data/TESTS_mapshup/
+data/TESTS_jeobrowser/
+extensions/

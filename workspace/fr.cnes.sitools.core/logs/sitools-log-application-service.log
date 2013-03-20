@@ -1,7 +1,0 @@
-2013-03-19T17:03:44.24Z - 2013-03-19	18:03:44	127.0.0.1	-	127.0.0.1	1338	GET	/jeodataset/jeo/opensearch/refresh	-	200	-	0	31	http://localhost:1338	Restlet-Framework/2.0.5	-
-2013-03-19T17:03:45.13Z - 2013-03-19	18:03:45	127.0.0.1	admin	127.0.0.1	1338	PUT	/jeodataset/jeo/opensearch/refresh	-	200	1287	-	156	http://localhost:1338	Restlet-Framework/2.0.5	-
-2013-03-19T17:03:45.19Z - 2013-03-19	18:03:45	127.0.0.1	-	127.0.0.1	1338	GET	/jeodataset/jeo/opensearch/refresh	-	200	1287	0	0	http://localhost:1338	Restlet-Framework/2.0.5	-
-2013-03-19T17:03:45.21Z - 2013-03-19	18:03:45	127.0.0.1	-	127.0.0.1	1338	GET	/jeodataset/jeo/opensearch/refresh	-	200	-	0	0	http://localhost:1338	Restlet-Framework/2.0.5	-
-2013-03-19T17:03:45.27Z - 2013-03-19	18:03:45	127.0.0.1	admin	127.0.0.1	1338	PUT	/jeodataset/jeo/opensearch/refresh	-	200	1287	-	47	http://localhost:1338	Restlet-Framework/2.0.5	-
-2013-03-19T17:03:45.29Z - 2013-03-19	18:03:45	127.0.0.1	-	127.0.0.1	1338	GET	/jeodataset/jeo/opensearch/refresh	-	200	1287	0	15	http://localhost:1338	Restlet-Framework/2.0.5	-
-2013-03-19T17:03:45.32Z - 2013-03-19	18:03:45	127.0.0.1	admin	127.0.0.1	1338	PUT	/jeo_medias/jeo/opensearch/refresh	-	200	22	-	15	http://localhost:1338	Restlet-Framework/2.0.5	-
