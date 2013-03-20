@@ -1,0 +1,92 @@
+/*!
+ * Ext JS Library 3.3.1
+ * Copyright(c) 2006-2010 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
+#nodes {
+    background: -webkit-linear-gradient(top, #F8F8F8 , #D8D8D8);
+    background: -moz-linear-gradient(top, #F8F8F8 , #D8D8D8);
+    text-shadow: #fff 0 1px 0;
+    height : 100% !important;
+    width : 100% !important;
+}
+
+#nodes ul li img {
+    margin-bottom: 1px;
+}
+
+.nodes {
+    padding: 10px 20px;
+    color: #585858;
+    font-family: "Helvetica Neue",sans-serif;
+    height: 113px;
+    /*width: 385px*/;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+    margin-left: 125px;
+}
+
+.nodes-hover {
+    background: -webkit-linear-gradient(top, #D8D8D8 , #F8F8F8);
+    background: -moz-linear-gradient(top, #D8D8D8 , #F8F8F8);
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+}
+/*
+#nodes div.x-view-selected {
+    background-color: rgba(100, 100, 100, .15);
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+} */
+
+/*.x-slider-horz .x-slider-thumb {
+    background-image: url(images/slider-thumb.png);
+}*/
+
+.float {
+	float: left;
+	margin-right: 10px;
+}
+
+#nodes span {
+	color: black;
+    display: block;
+    font-size : 13pt;
+    font-weight: bold;
+    vertical-align: middle;
+	line-height: 113px;
+}
+
+#nodes div.x-view-selected {
+    background-color: rgba(100, 100, 100, .15);
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+.title {
+	font-size: 18pt;
+	color: #555555;
+	text-shadow: 2px 2px 2px #D5D5D5;
+	font-family: "Helvetica Neue",sans-serif;
+	height: 130px;
+    width: 300px;
+    padding: 10px 20px;
+}
+
+.qtip {
+	background: -webkit-linear-gradient(top, #D8D8D8 , #F8F8F8);
+}
+
+#adminMenu div.columns {
+	width: 50%;	
+}
+
+.icon-sitools{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}

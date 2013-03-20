@@ -1,0 +1,96 @@
+<resourcePlugin>
+  <id>2feb9eab-d282-402c-b553-705f2e0ad91f</id>
+  <name>AnalogService</name>
+  <description>Analog service producing an HTML log analysis report on Windows HOST</description>
+  <className>fr.cnes.sitools.resources.programs.SitoolsAnalogServiceModel</className>
+  <descriptionAction>HTML log report generation</descriptionAction>
+  <classVersion>0.2</classVersion>
+  <classAuthor>AKKA</classAuthor>
+  <classOwner></classOwner>
+  <parametersMap>
+    <entry>
+      <string>methods</string>
+      <resourceParameter>
+        <name>methods</name>
+        <description>List of methods implemented for this resource, separate by |</description>
+        <value>GET|PUT</value>
+        <valueType>xs:enum-multiple[GET, POST, PUT, DELETE]</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>fileName</string>
+      <resourceParameter>
+        <name>fileName</name>
+        <description>The name of the file to generate. Fill it to download a file. Leave it Empty to view resource Representation.</description>
+        <value></value>
+        <valueType>xs:template</valueType>
+        <type>PARAMETER_USER_INPUT</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>logdir</string>
+      <resourceParameter>
+        <name>logdir</name>
+        <description>Log directory</description>
+        <value>${context_root_dir}/workspace/fr.cnes.sitools.core/logs/sitools-log-service.log</value>
+        <valueType>xs:path</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>outputurl</string>
+      <resourceParameter>
+        <name>outputurl</name>
+        <description>Url of result</description>
+        <value>${context_host_ref}/sitools/admin/miscellaneous/analog/report.html</value>
+        <valueType>xs:url</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>imageurl</string>
+      <resourceParameter>
+        <name>imageurl</name>
+        <description>Analog images url</description>
+        <value>/sitools/admin/miscellaneous/analog/images/</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>url</string>
+      <resourceParameter>
+        <name>url</name>
+        <description>attachment url</description>
+        <value>/plugin/windows/analog</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_ATTACHMENT</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+    
+      <string>outputdir</string>
+      <resourceParameter>
+        <name>outputdir</name>
+        <description>Output directory</description>
+        <value>${context_root_dir}/data/analog</value>
+        <valueType>xs:path</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>analogexe</string>
+      <resourceParameter>
+        <name>analogexe</name>
+        <description>Absolute path to the analog executable</description>
+        <value>D:\CNES-ULISSE\cots\analog\analog 6.0/analog.exe</value>
+        <valueType>xs:path</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+  </parametersMap>
+  <parent>urn:uuid:AdministratorApplication:type:fr.cnes.sitools.applications.AdministratorApplication</parent>
+  <resourceClassName>fr.cnes.sitools.resources.programs.SitoolsAnalogService</resourceClassName>
+  <dataSetSelection>NONE</dataSetSelection>
+</resourcePlugin>

@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ADMCollectionSuite" >
+  <test name="ADMFormSuite" preserve-order="true">
+    <classes>
+      <class name="test.AdminLogin" />
+      <class name="test.form.FormProjectCrud" />
+    </classes>
+  </test>
+</suite>

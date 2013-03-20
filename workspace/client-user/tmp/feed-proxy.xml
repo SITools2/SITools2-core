@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/~d/styles/rss2full.xsl"?><?xml-stylesheet type="text/css" media="screen" href="http://feeds.feedburner.com/~d/styles/itemcontent.css"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:feedburner="http://rssnamespace.org/feedburner/ext/1.0"
+	version="2.0">
+
+	<channel>
+		<title>Ext JS Blog</title>
+
+		<link>http://www.extjs.com/blog</link>
+		<description>JavaScript UI Component Library</description>
+		<lastBuildDate>Thu, 22 Apr 2010 21:06:21 +0000</lastBuildDate>
+		<generator>http://wordpress.org/?v=2.9.2</generator>
+		<language>en</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+		<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom"
+			rel="self" type="application/rss+xml" href="http://feeds.feedburner.com/extblog" />
+		<feedburner:info uri="extblog" />
+		<atom10:link xmlns:atom10="http://www.w3.org/2005/Atom"
+			rel="hub" href="http://pubsubhubbub.appspot.com/" />
+		<item>
+			<title>Ext Designer Released: Watch the Screencast!</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/-l5IIK0o6CY/</link>
+			<comments>http://www.extjs.com/blog/2010/04/22/ext-designer-released-watch-the-screencast/#comments</comments>
+			<pubDate>Thu, 22 Apr 2010 21:06:21 +0000</pubDate>
+			<author>Abraham Elias</author>
+			<category><![CDATA[Ext Designer]]></category>
+			<category><![CDATA[Ext JS]]></category>
+			<category><![CDATA[Designer]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2946</guid>
+			<description>We are excited to announce the release of Ext Designer,
+				our new productivity tool for rapidly generating Ext interfaces. Ext
+				Designer is written completely in Ext JS and runs as a desktop
+				application on Windows, Mac, and Linux.&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=-l5IIK0o6CY:VUDJ0963c0M:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=-l5IIK0o6CY:VUDJ0963c0M:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=-l5IIK0o6CY:VUDJ0963c0M:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=-l5IIK0o6CY:VUDJ0963c0M:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=-l5IIK0o6CY:VUDJ0963c0M:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=-l5IIK0o6CY:VUDJ0963c0M:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=-l5IIK0o6CY:VUDJ0963c0M:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=-l5IIK0o6CY:VUDJ0963c0M:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=-l5IIK0o6CY:VUDJ0963c0M:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=-l5IIK0o6CY:VUDJ0963c0M:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/04/22/ext-designer-released-watch-the-screencast/feed/
+			</wfw:commentRss>
+			<slash:comments>41</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/04/22/ext-designer-released-watch-the-screencast/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Implementation Spotlight: Xero</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/9bQQN066Mz8/</link>
+			<comments>http://www.extjs.com/blog/2010/04/08/implementation-spotlight-xero/#comments</comments>
+
+			<pubDate>Thu, 08 Apr 2010 21:57:29 +0000</pubDate>
+			<author>Jay Robinson</author>
+			<category><![CDATA[Ext JS]]></category>
+			<category><![CDATA[Spotlight]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2941</guid>
+			<description>Xero is both a company and a product. The company was
+				founded in Wellington, New Zealand in 2006 and is listed on the New
+				Zealand Stock Exchange. Xero has offices in New Zealand, Australia
+				and the UK but it&amp;#8217;s sold globally, with over 17,000
+				customers in over 50 countries.&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=9bQQN066Mz8:M2I3hDxg-L0:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=9bQQN066Mz8:M2I3hDxg-L0:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=9bQQN066Mz8:M2I3hDxg-L0:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=9bQQN066Mz8:M2I3hDxg-L0:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=9bQQN066Mz8:M2I3hDxg-L0:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=9bQQN066Mz8:M2I3hDxg-L0:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=9bQQN066Mz8:M2I3hDxg-L0:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=9bQQN066Mz8:M2I3hDxg-L0:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=9bQQN066Mz8:M2I3hDxg-L0:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=9bQQN066Mz8:M2I3hDxg-L0:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/04/08/implementation-spotlight-xero/feed/
+			</wfw:commentRss>
+			<slash:comments>23</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/04/08/implementation-spotlight-xero/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Ext JS 3.2 Final Released</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/4EbSjKtFmFs/</link>
+			<comments>http://www.extjs.com/blog/2010/04/07/ext-js-3-2-final-released/#comments</comments>
+			<pubDate>Wed, 07 Apr 2010 20:23:14 +0000</pubDate>
+			<author>Ed Spencer</author>
+			<category><![CDATA[Ext JS]]></category>
+			<category><![CDATA[release]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2983</guid>
+			<description>Following on the heels of our successful beta and
+				release candidate for Ext JS 3.2, we are pleased to announce that
+				Ext JS 3.2 Final is now available.&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=4EbSjKtFmFs:_Guf7a7zAJM:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=4EbSjKtFmFs:_Guf7a7zAJM:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=4EbSjKtFmFs:_Guf7a7zAJM:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=4EbSjKtFmFs:_Guf7a7zAJM:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=4EbSjKtFmFs:_Guf7a7zAJM:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=4EbSjKtFmFs:_Guf7a7zAJM:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=4EbSjKtFmFs:_Guf7a7zAJM:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=4EbSjKtFmFs:_Guf7a7zAJM:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=4EbSjKtFmFs:_Guf7a7zAJM:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=4EbSjKtFmFs:_Guf7a7zAJM:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/04/07/ext-js-3-2-final-released/feed/
+			</wfw:commentRss>
+			<slash:comments>18</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/04/07/ext-js-3-2-final-released/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Implementation Spotlight: Telensa</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/B07dUTIFUA4/</link>
+			<comments>http://www.extjs.com/blog/2010/03/16/telensa/#comments</comments>
+			<pubDate>Tue, 16 Mar 2010 16:12:33 +0000</pubDate>
+			<author>Jay Robinson</author>
+			<category><![CDATA[Ext JS]]></category>
+			<category><![CDATA[Spotlight]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2561</guid>
+			<description>Rising energy and maintenance costs due to aging street
+				lighting equipment are some among many of the reasons local
+				authorities are choosing to invest in
+				PLANet&amp;#8201;&amp;#8212;&amp;#8201;&amp;#8216;Public Lighting
+				Active Network&amp;#8217; from Telensa. Using a robust Ext-based
+				user interface to control up to 150,000 lights wirelessly, PLANet
+				from Telensa can measure each lamp individually and switch on any
+				combination of lamps within seconds. Get a unique insight into the
+				development challenges faced at Telensa using Ext JS as their
+				front-end of choice.&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=B07dUTIFUA4:sxyYb0C8fmA:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=B07dUTIFUA4:sxyYb0C8fmA:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=B07dUTIFUA4:sxyYb0C8fmA:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=B07dUTIFUA4:sxyYb0C8fmA:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=B07dUTIFUA4:sxyYb0C8fmA:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=B07dUTIFUA4:sxyYb0C8fmA:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=B07dUTIFUA4:sxyYb0C8fmA:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=B07dUTIFUA4:sxyYb0C8fmA:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=B07dUTIFUA4:sxyYb0C8fmA:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=B07dUTIFUA4:sxyYb0C8fmA:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/03/16/telensa/feed/
+			</wfw:commentRss>
+			<slash:comments>9</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/03/16/telensa/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Announcing Ext JS 3.2 beta – Multisort, Transitions and
+				Composite Fields</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/FFyJu7c1mBw/</link>
+			<comments>http://www.extjs.com/blog/2010/03/09/announcing-ext-js-3-2-beta-multisort-transitions-and-composite-fields/#comments</comments>
+			<pubDate>Tue, 09 Mar 2010 17:01:38 +0000</pubDate>
+			<author>Ed Spencer</author>
+			<category><![CDATA[Ext JS]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2656</guid>
+			<description>&lt;p&gt;We are pleased to announce that a beta version
+				of Ext JS 3.2 is now publicly available. 3.2 introduces a number of
+				exciting new components and adds great new capabilities to your
+				existing applications.&lt;/p&gt;&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=FFyJu7c1mBw:4jMRlQKRS4A:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=FFyJu7c1mBw:4jMRlQKRS4A:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=FFyJu7c1mBw:4jMRlQKRS4A:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=FFyJu7c1mBw:4jMRlQKRS4A:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=FFyJu7c1mBw:4jMRlQKRS4A:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=FFyJu7c1mBw:4jMRlQKRS4A:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=FFyJu7c1mBw:4jMRlQKRS4A:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=FFyJu7c1mBw:4jMRlQKRS4A:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=FFyJu7c1mBw:4jMRlQKRS4A:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=FFyJu7c1mBw:4jMRlQKRS4A:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/03/09/announcing-ext-js-3-2-beta-multisort-transitions-and-composite-fields/feed/
+			</wfw:commentRss>
+			<slash:comments>74</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/03/09/announcing-ext-js-3-2-beta-multisort-transitions-and-composite-fields/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Implementation Spotlight: cara3 from Generis</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/KeuqGH--CFo/</link>
+			<comments>http://www.extjs.com/blog/2010/02/22/implementation-spotlight-cara3-from-generis/#comments</comments>
+			<pubDate>Tue, 23 Feb 2010 00:26:46 +0000</pubDate>
+			<author>Darrell Meyer</author>
+			<category><![CDATA[Ext GWT]]></category>
+			<category><![CDATA[Spotlight]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2535</guid>
+			<description>&lt;p&gt;cara3, built on Ext GWT, is an ergonomically
+				designed, fast, single browser window that connects individually or
+				simultaneously to different document repositories, like Documentum
+				and Sharepoint.&lt;/p&gt;&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=KeuqGH--CFo:aG9ynS0DqUc:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=KeuqGH--CFo:aG9ynS0DqUc:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=KeuqGH--CFo:aG9ynS0DqUc:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=KeuqGH--CFo:aG9ynS0DqUc:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=KeuqGH--CFo:aG9ynS0DqUc:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=KeuqGH--CFo:aG9ynS0DqUc:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=KeuqGH--CFo:aG9ynS0DqUc:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=KeuqGH--CFo:aG9ynS0DqUc:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=KeuqGH--CFo:aG9ynS0DqUc:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=KeuqGH--CFo:aG9ynS0DqUc:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/02/22/implementation-spotlight-cara3-from-generis/feed/
+			</wfw:commentRss>
+			<slash:comments>12</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/02/22/implementation-spotlight-cara3-from-generis/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Ext JS is Migrating to Git</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/e1m7V8zug1E/</link>
+			<comments>http://www.extjs.com/blog/2010/02/12/ext-js-is-migrating-to-git/#comments</comments>
+			<pubDate>Sat, 13 Feb 2010 00:49:42 +0000</pubDate>
+			<author>Ed Spencer</author>
+			<category><![CDATA[Community]]></category>
+			<category><![CDATA[Ext JS]]></category>
+			<category><![CDATA[Open Source]]></category>
+			<category><![CDATA[git]]></category>
+			<category><![CDATA[scm]]></category>
+			<category><![CDATA[svn]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2600</guid>
+			<description>With many of our developers moving to Git for smaller
+				internal projects, and with Ext JS 3.1.1 just released, we decided
+				to take the opportunity to move development of Ext to Git.&lt;div
+				class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=e1m7V8zug1E:QI6wzlZXpo4:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=e1m7V8zug1E:QI6wzlZXpo4:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=e1m7V8zug1E:QI6wzlZXpo4:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=e1m7V8zug1E:QI6wzlZXpo4:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=e1m7V8zug1E:QI6wzlZXpo4:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=e1m7V8zug1E:QI6wzlZXpo4:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=e1m7V8zug1E:QI6wzlZXpo4:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=e1m7V8zug1E:QI6wzlZXpo4:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=e1m7V8zug1E:QI6wzlZXpo4:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=e1m7V8zug1E:QI6wzlZXpo4:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/02/12/ext-js-is-migrating-to-git/feed/
+			</wfw:commentRss>
+			<slash:comments>40</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/02/12/ext-js-is-migrating-to-git/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>HTML5, Video, Canvas, and Ext JS</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/ZrHfd2fd3MY/</link>
+			<comments>http://www.extjs.com/blog/2010/01/14/html5-video-canvas-extjs/#comments</comments>
+			<pubDate>Thu, 14 Jan 2010 08:53:08 +0000</pubDate>
+			<author>David Davis</author>
+			<category><![CDATA[Ext JS]]></category>
+			<category><![CDATA[Extensions]]></category>
+			<category><![CDATA[Open Source]]></category>
+			<category><![CDATA[Tutorials]]></category>
+			<category><![CDATA[desktop]]></category>
+			<category><![CDATA[html5]]></category>
+			<category><![CDATA[video]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2000</guid>
+			<description>HTML5 is coming. All of us at Ext are excited to embrace
+				the new standard as it gains acceptance. This post will examine two
+				notable HTML5 developments - Video and Canvas. The video tag allows
+				for native video rendering, removing the current need for
+				third-party plugins like Flash. Likewise, the canvas tag has a clean
+				yet very powerful API allowing you to draw complex graphics at the
+				pixel level.&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=ZrHfd2fd3MY:BfB5Vnk50ME:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=ZrHfd2fd3MY:BfB5Vnk50ME:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=ZrHfd2fd3MY:BfB5Vnk50ME:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=ZrHfd2fd3MY:BfB5Vnk50ME:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=ZrHfd2fd3MY:BfB5Vnk50ME:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=ZrHfd2fd3MY:BfB5Vnk50ME:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=ZrHfd2fd3MY:BfB5Vnk50ME:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=ZrHfd2fd3MY:BfB5Vnk50ME:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=ZrHfd2fd3MY:BfB5Vnk50ME:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=ZrHfd2fd3MY:BfB5Vnk50ME:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/01/14/html5-video-canvas-extjs/feed/
+			</wfw:commentRss>
+			<slash:comments>28</slash:comments>
+			<enclosure url="http://xant.us/files/google_main.ogv"
+				length="4419816" type="video/ogg" />
+			<feedburner:origLink>http://www.extjs.com/blog/2010/01/14/html5-video-canvas-extjs/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Implementation Spotlight: Spiral Universe</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/iPYYkIbX5so/</link>
+			<comments>http://www.extjs.com/blog/2010/01/05/implementation-spotlight-spiral-universe/#comments</comments>
+			<pubDate>Tue, 05 Jan 2010 22:50:50 +0000</pubDate>
+			<author>Darrell Meyer</author>
+			<category><![CDATA[Ext GWT]]></category>
+			<category><![CDATA[Spotlight]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2332</guid>
+			<description>Spiral 2.0 is a browser-based desktop used by schools to
+				increase efficiency, reduce costs, and improve their management and
+				administration. Built on Ext GWT, Spiral Universe has become the
+				fastest growing School Information System available.&lt;div
+				class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=iPYYkIbX5so:ZcBRDro2Pho:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=iPYYkIbX5so:ZcBRDro2Pho:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=iPYYkIbX5so:ZcBRDro2Pho:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=iPYYkIbX5so:ZcBRDro2Pho:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=iPYYkIbX5so:ZcBRDro2Pho:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=iPYYkIbX5so:ZcBRDro2Pho:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=iPYYkIbX5so:ZcBRDro2Pho:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=iPYYkIbX5so:ZcBRDro2Pho:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=iPYYkIbX5so:ZcBRDro2Pho:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=iPYYkIbX5so:ZcBRDro2Pho:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2010/01/05/implementation-spotlight-spiral-universe/feed/
+			</wfw:commentRss>
+			<slash:comments>21</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2010/01/05/implementation-spotlight-spiral-universe/
+			</feedburner:origLink>
+		</item>
+		<item>
+			<title>Ext JS 3.1: Massive memory improvements, TreeGrid, and more</title>
+			<link>http://feedproxy.google.com/~r/extblog/~3/nSUKrAdraag/</link>
+			<comments>http://www.extjs.com/blog/2009/12/17/ext-js-3-1-massive-memory-improvements-treegrid-and-more%e2%80%a6/#comments</comments>
+			<pubDate>Thu, 17 Dec 2009 17:53:45 +0000</pubDate>
+			<author>Jamie Avins</author>
+			<category><![CDATA[Community]]></category>
+			<category><![CDATA[Ext JS]]></category>
+
+			<guid isPermaLink="false">http://www.extjs.com/blog/?p=2273</guid>
+			<description>On behalf of the Ext Team, I am extremely excited to
+				announce the final release of Ext JS 3.1. With this release we
+				rededicate ourselves to making Ext JS the best it can be, in both
+				features and performance.&lt;div class="feedflare"&gt;
+				&lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=nSUKrAdraag:q3PjP4JrEXs:yIl2AUoC8zA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=yIl2AUoC8zA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=nSUKrAdraag:q3PjP4JrEXs:dnMXMwOfBR0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=dnMXMwOfBR0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=nSUKrAdraag:q3PjP4JrEXs:F7zBnMyn0Lo"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=nSUKrAdraag:q3PjP4JrEXs:F7zBnMyn0Lo"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=nSUKrAdraag:q3PjP4JrEXs:7Q72WNTAKBA"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=7Q72WNTAKBA"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=nSUKrAdraag:q3PjP4JrEXs:V_sGLiPBpWU"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=nSUKrAdraag:q3PjP4JrEXs:V_sGLiPBpWU"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=nSUKrAdraag:q3PjP4JrEXs:l6gmwiTKsz0"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?d=l6gmwiTKsz0"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt; &lt;a
+				href="http://feeds.feedburner.com/~ff/extblog?a=nSUKrAdraag:q3PjP4JrEXs:gIN9vFwOqvQ"&gt;&lt;img
+				src="http://feeds.feedburner.com/~ff/extblog?i=nSUKrAdraag:q3PjP4JrEXs:gIN9vFwOqvQ"
+				border="0"&gt;&lt;/img&gt;&lt;/a&gt;
+				&lt;/div&gt;</description>
+			<wfw:commentRss>http://www.extjs.com/blog/2009/12/17/ext-js-3-1-massive-memory-improvements-treegrid-and-more%e2%80%a6/feed/
+			</wfw:commentRss>
+			<slash:comments>81</slash:comments>
+			<feedburner:origLink>http://www.extjs.com/blog/2009/12/17/ext-js-3-1-massive-memory-improvements-treegrid-and-more%e2%80%a6/
+			</feedburner:origLink>
+		</item>
+	</channel>
+</rss>

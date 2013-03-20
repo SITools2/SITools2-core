@@ -1,0 +1,9 @@
+<datasetView>
+  <id>5854b9b9-58fc-489f-ba66-48fcdffde657</id>
+  <jsObject>sitools.user.component.liveGrid</jsObject>
+  <fileUrl>/sitools/client-user/js/components/livegrid/dependencies/datasetLivegrid.js</fileUrl>
+  <imageUrl></imageUrl>
+  <priority>1</priority>
+  <name>Sitools Infinite Scrolling View</name>
+  <description>Sitools LiveGrid</description>
+</datasetView>

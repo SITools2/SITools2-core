@@ -1,0 +1,14 @@
+<dataConfig>
+    <dataSource  type="JdbcDataSource" driver="org.postgresql.Driver" url="jdbc:postgresql://odysseus2.silogic.fr:5432/CNES" user="sitools" password="sitools" />
+    <document name="fuse_index">
+        <entity name="fuse_prg_id" query="select * from fuse.fuse_prg_id">
+            <field column="prop_id" name="prop_id" />
+            <field column="cycle" name="cycle" />
+            <field column="title" name="title" />
+            <field column="fname" name="fname" />
+            <field column="lname" name="lname" />
+			<field column="institution" name="institution" />
+			<field column="abstract" name="abstract" />
+        </entity>
+    </document>
+</dataConfig>

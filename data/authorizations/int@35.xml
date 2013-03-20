@@ -1,0 +1,29 @@
+<resourceAuthorization>
+  <id>urn:uuid:UserInscriptionApplication:type:fr.cnes.sitools.inscription.UserInscriptionApplication</id>
+  <name>UserInscriptionApplication</name>
+  <description>User inscription management on client side
+-&gt; Administrator must have all authorizations-&gt; Public user must have at least POST right in order to register</description>
+  <url>/sitools/inscriptions/user</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>true</POST>
+      <GET>true</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

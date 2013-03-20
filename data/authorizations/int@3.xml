@@ -1,0 +1,18 @@
+<resourceAuthorization>
+  <id>urn:uuid:FeedsDataSetsApplication:type:fr.cnes.sitools.server.Starter$4</id>
+  <name>FeedsDataSetsApplication</name>
+  <description>Feeds administration for datasets</description>
+  <url>/sitools/datasets/{dataId}/feeds</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

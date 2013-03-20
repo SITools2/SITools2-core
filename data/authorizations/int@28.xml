@@ -1,0 +1,20 @@
+<resourceAuthorization>
+  <id>urn:uuid:UploadApplication:type:fr.cnes.sitools.applications.UploadApplication</id>
+  <name>UploadApplication</name>
+  <description>Upload pictures, logos for using in datasets, projects, ...-&gt; administrator user can have GET/POST/PUT/DELETE authorizations to access, add or delete files or folder
+-&gt; public must have GET/POST authorization to access and upload the files
+In order to upload files using the ExtJs client, the HTTP-BASIC credentials can be sended in the cookie</description>
+  <url>/sitools/upload</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>true</POST>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

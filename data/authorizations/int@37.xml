@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:ApplicationFilterClassPluginApplication:type:fr.cnes.sitools.plugins.filters.FilterClassPluginApplication</id>
+  <name>ApplicationFilterClassPluginApplication</name>
+  <description>Exposition of dynamic filters classes</description>
+  <url>/sitools/plugins/filters/classes</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

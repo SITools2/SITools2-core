@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:FormApplication:type:fr.cnes.sitools.dataset.form.FormApplication</id>
+  <name>FormApplication</name>
+  <description>Form management</description>
+  <url>/sitools/datasets/{datasetId}/forms</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

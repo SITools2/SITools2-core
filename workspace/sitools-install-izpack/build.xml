@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+<project name="fr.cnes.sitools.install" default="build" basedir=".">
+
+	<!-- ============================================================================== 
+		=== Build file to allow ant (http://jakarta.apache.org/ant/) to be used === 
+		to build the Sitools project. === === Author : AKKA Technologies === === 
+		name : nom du projet === default : tache ant executee par defaut === basedir 
+		: repertoire courant lors de l'execution des taches ant === ============================================================================== -->
+	<!-- Chargement du build.properties pour mettre en place les variables -->
+	<property file="build.properties" />
+	<!-- Chargement du build-install.properties pour mettre en place les variables 
+		relative a sitools.properties -->
+	<property file="build-install.properties" />
+
+	<import file="sitools.userlibraries.ant.xml" optional="true" />
+
+	<property name="fr.cnes.sitools.core.dir"
+		value="${ROOT_DIRECTORY_LOCAL}/workspace/fr.cnes.sitools.core" />
+	<property name="conf.dir" value="${fr.cnes.sitools.core.dir}/conf" />
+	<property name="conf.bin.dir" value="${conf.dir}/bin" />
+	<property name="conf.jar.dir" value="${conf.dir}/jar" />
+	<property name="conf.properties.dir" value="${conf.dir}/properties" />
+	<property name="conf.reference.dir" value="${conf.dir}/reference" />
+	<property name="conf.build.userlib.dir" value="${conf.dir}/build/userlibrairies" />
+	<property name="cots.dir" value="${ROOT_DIRECTORY_LOCAL}/cots" />
+
+	<!-- Informations pour la construction de l'installeur -->
+	<property name="install.dir" value="${basedir}" />
+	<property name="install.res.dir" value="${install.dir}/res" />
+	<property name="install.res.script.dir" value="${install.res.dir}/script" />
+	<property name="install.res.properties.dir" value="${install.res.dir}/properties" />
+	<property name="install.lib.dir" value="${install.dir}/lib" />
+	<property name="install.conf.dir" value="${install.dir}/conf" />
+	<property name="install.build.dir" value="${install.conf.dir}/build" />
+
+	<property name="product.short.name" value="sitools2" />
+	<property name="product.version" value="0.1" />
+	<property name="temp.dir" value="${install.dir}/tmp" />
+
+
+
+	<!-- Allows us to use the IzPack Ant task -->
+	<taskdef name="izpack" classpath="${install.lib.dir}/standalone-compiler.jar"
+		classname="com.izforge.izpack.ant.IzPackTask" />
+
+
+	<target name="build-jars" description="creates the Jars for IzPack custom behavior">
+		<subant target="build-jars">
+			<fileset dir="${install.build.dir}" includes="build.xml" />
+		</subant>
+	</target>
+
+	<target name="build"
+		depends="build-jars, refresh-properties-for-install, build-shell-for-install, build-izpack-installer" />
+
+	<!-- TARGET refresh-properties-for-install -->
+	<target name="refresh-properties-for-install"
+		description="Mise à jour du fichier de propriétés sitools.properties pour install">
+		<copy outputencoding="UTF-8"
+			tofile="${install.res.properties.dir}/sitools.properties" file="${conf.reference.dir}/sitools-reference.properties"
+			overwrite="true" />
+		<propertyfile file="${install.res.properties.dir}/sitools.properties"
+			comment="Update root property">
+			<!-- Sitools server parameters -->
+			<entry key="Starter.ROOT_DIRECTORY" value="${ROOT_DIRECTORY}" />
+			<entry key="Starter.HOST_DOMAIN" value="${HOST_DOMAIN}" />
+			<entry key="Starter.HOST_PORT" value="${HOST_PORT}" />
+			<entry key="Starter.PUBLIC_HOST_DOMAIN" value="${PUBLIC_HOST_DOMAIN}" />
+			<!-- Database parameters -->
+			<entry key="Starter.DATABASE_URL" value="${DATABASE_URL}" />
+			<entry key="Starter.DATABASE_USER" value="${DATABASE_USER}" />
+			<entry key="Starter.DATABASE_PASSWORD" value="${DATABASE_PASSWORD}" />
+			<entry key="Starter.DATABASE_DRIVER" value="${DATABASE_DRIVER}" />
+			<entry key="Starter.DATABASE_SCHEMA" value="${DATABASE_SCHEMA}" />
+			<!-- email parameters -->
+			<entry key="Starter.mail.send.admin" value="${EMAIL_ADDRESS}" />
+			<entry key="Starter.mail.send.server" value="${SMTP_SERVER}" />
+			<entry key="Starter.mail.send.tls" value="${SMTP_TLS}" />
+			<entry key="Starter.mail.send.identifier" value="${SMTP_IDENTIFIER}" />
+			<entry key="Starter.mail.send.secret" value="${SMTP_PASSWORD}" />
+			<entry key="Starter.StatusService.CONTACT_MAIL" value="${EMAIL_ADDRESS}" />
+			<!-- Proxy parameters -->
+			<entry key="Starter.WITH_PROXY" value="${WITH_PROXY}" />
+			<entry key="Starter.PROXY_HOST" value="${PROXY_HOST}" />
+			<entry key="Starter.PROXY_PORT" value="${PROXY_PORT}" />
+			<entry key="Starter.PROXY_USER" value="${PROXY_USER}" />
+			<entry key="Starter.PROXY_PASSWORD" value="${PROXY_PASSWORD}" />
+			<entry key="Starter.NONPROXY_HOSTS" value="${NONPROXY_HOSTS}" />
+
+			<entry key="Starter.APP_PATH" value="${APP_PATH}" />
+			<entry key="Starter.LogService.outputFile" value="${LOGSERVICE.OUTPUTFILE}" />
+			<entry key="Starter.Logging.configFile" value="${LOGGING_CONFIGFILE}" />
+
+
+
+		</propertyfile>
+	</target>
+
+	<!-- TARGET xslt-build-shell-for-install -->
+	<target name="build-shell-for-install"
+		description="Mise à jour du shell de lancement pour l'installeur">
+		<!-- build script sitools -->
+		<copy file="${conf.reference.dir}/sitools-reference" tofile="${install.res.script.dir}/sitools"
+			outputencoding="UTF-8" overwrite="true">
+			<filterchain>
+				<replacetokens>
+					<token key="ROOT_DIRECTORY" value="%{INSTALL_PATH}" />
+					<token key="VERSION" value="%{APP_VER}" />
+					<token key="PORT" value="%{host_port}" />				
+				</replacetokens>
+			</filterchain>
+		</copy>
+		
+		
+		<xslt in="${conf.build.userlib.dir}/sitools.dist.userlibraries"
+			out="${install.res.script.dir}/startSitools.sh" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl"
+			force="true" processor="SaxonLiaison">
+			<param name="output" expression="shell" />
+			<param name="ROOT_DIRECTORY" expression="%INSTALL_PATH" />
+			<param name="LOG_DIRECTORY" expression="%INSTALL_PATH" />
+			<param name="PORT" expression="%{host_port}" />				
+			<outputproperty name="method" value="text" />
+			<outputproperty name="standalone" value="no" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+		<xslt in="${conf.build.userlib.dir}/sitools.dist.userlibraries"
+			out="${install.res.script.dir}/startSitools.bat" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl"
+			force="true" processor="SaxonLiaison">
+			<param name="output" expression="bat" />
+			<param name="ROOT_DIRECTORY" expression="%INSTALL_PATH" />
+			<param name="LOG_DIRECTORY" expression="%INSTALL_PATH" />
+			<outputproperty name="method" value="text" />
+			<outputproperty name="standalone" value="no" />
+			<outputproperty name="encoding" value="UTF-8" />
+			<outputproperty name="indent" value="yes" />
+			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
+			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
+		</xslt>
+	</target>
+
+
+
+
+	<!-- TARGET build-izpack-installer creates the izpack installer file -->
+
+	<target name="build-izpack-installer" description="generation de l'installeur IzPack">
+		<echo message="Build installer from file : ${install.dir}/install.xml with base dir = ${install.dir}" ></echo>
+		<property file="${install.res.properties.dir}/sitools.properties" prefix="properties" />
+		<!-- Run installer build -->
+		<izpack input="${install.dir}/install.xml"
+			output="${install.dir}/${properties.Starter.appName}-${properties.Starter.VERSION}-install.jar"
+			installerType="standard" inheritAll="true" basedir="${install.dir}"
+			compression="deflate" compressionlevel="9" />
+	</target>
+
+
+
+</project>

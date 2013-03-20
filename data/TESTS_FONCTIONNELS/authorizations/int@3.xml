@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:ConverterPluginsApplication:type:fr.cnes.sitools.converters.ConverterPluginsApplication</id>
+  <name>ConverterPluginsApplication</name>
+  <description>Exposition of converters classes</description>
+  <url>/sitools/converters</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

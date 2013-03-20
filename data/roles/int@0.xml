@@ -1,0 +1,10 @@
+<role>
+  <id>admin</id>
+  <name>Administrator</name>
+  <description>Administrator can create/access/modify/delete users and groups, associate them to roles, then authorizations, and globally manage informations.</description>
+  <users>
+    <resource>
+      <id>admin</id>
+    </resource>
+  </users>
+</role>

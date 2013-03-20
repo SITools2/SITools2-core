@@ -1,0 +1,10 @@
+<role>
+  <id>8b66c140-05ae-4a6f-8aa6-ceeeeefc9eec</id>
+  <name>Avec Group Test Appli</name>
+  <description></description>
+  <groups>
+    <resource>
+      <id>test Appli</id>
+    </resource>
+  </groups>
+</role>

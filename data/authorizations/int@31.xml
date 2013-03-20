@@ -1,0 +1,20 @@
+<resourceAuthorization>
+  <id>urn:uuid:AppRegistryApplication:type:fr.cnes.sitools.registry.AppRegistryApplication</id>
+  <name>AppRegistryApplication</name>
+  <description>Application for registering / exposing all applications 
+Be carrefull with this application, the administrator must have all authorizations
+Do not stop the application, Do not let public user have PUT/POST/DELETE authorizations</description>
+  <url>/sitools/applications</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

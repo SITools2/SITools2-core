@@ -1,0 +1,15 @@
+<ConceptTemplate>
+  <id>6ee4f32b-ebd8-4a40-90ef-aa3154856771</id>
+  <name>A_template_for_tests</name>
+  <description></description>
+  <properties>
+    <fr.cnes.sitools.util.Property>
+      <name>name1</name>
+      <value>value1</value>
+    </fr.cnes.sitools.util.Property>
+    <fr.cnes.sitools.util.Property>
+      <name>name2</name>
+      <value>value2</value>
+    </fr.cnes.sitools.util.Property>
+  </properties>
+</ConceptTemplate>

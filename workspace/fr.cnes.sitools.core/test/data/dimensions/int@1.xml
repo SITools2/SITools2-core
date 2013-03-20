@@ -1,0 +1,31 @@
+<dimension>
+  <id>Lengths</id>
+  <name>Lengths</name>
+  <description>Lengths dimension</description>
+  <dimensionHelperName>fr.cnes.sitools.units.helper.SitoolsUnitConverterHelper</dimensionHelperName>
+  <unitConverters>
+    <string>fr.cnes.sitools.units.converters.FrequencyWavelengthConverter</string>
+  </unitConverters>
+  <units>
+    <unit>
+      <label>metre</label>
+      <unitName>m</unitName>
+    </unit>
+    <unit>
+      <label>foot</label>
+      <unitName>ft</unitName>
+    </unit>
+    <unit>
+      <label>light-year</label>
+      <unitName>ly</unitName>
+    </unit>
+    <unit>
+      <label>parsec</label>
+      <unitName>pc</unitName>
+    </unit>
+    <unit>
+      <label>centimetre</label>
+      <unitName>cm</unitName>
+    </unit>
+  </units>
+</dimension>

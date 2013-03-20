@@ -1,0 +1,17 @@
+<resourceAuthorization>
+  <id>urn:uuid:PortalApplication:type:fr.cnes.sitools.portal.PortalApplication</id>
+  <name>PortalApplication</name>
+  <description>Portal definition application</description>
+  <url>/sitools/portal</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

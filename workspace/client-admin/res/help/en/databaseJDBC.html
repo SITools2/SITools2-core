@@ -1,0 +1,100 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>DataBases</title>
+
+<link href="../../css/help.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<p>A data source component is the function that allows the administrator to handle data source (create, edit, delete, enable and disable a data source). This data source provides data that will be used by services (see dataset component). The following sections explain how to handle a database as a data source.</p>
+
+<h2>Create a database</h2>
+<ol>
+<li>Click on <b>Create</b>.</li>
+<li>Fill in the form to create a new database.</li>
+<li>You might click on <b>Test Connection</b> to verify that it works.</li>
+<li>Click on <b>OK</b> to validate.</li>
+</ol>
+
+<h2>Edit a database</h2>
+<ol>
+<li>Select a database.</li>
+<li>Click on <b>Edit</b>.</li>
+<li>Use the form to modify entries.</li>
+<li>You might click on <b>Test Connection</b> to check.</li>
+<li>Click on <b>OK</b> to validate.</li>
+</ol>
+
+<h2>Delete a database</h2>
+<ol>
+<li>Select a database.</li>
+<li>Click on <b>Delete</b>.</li>
+</ol>
+
+<h2>Enable a database</h2>
+<ol>
+<li>Select a database.</li>
+<li>Click on <b>Enable</b>.</li>
+</ol>
+
+<h2>Disable a database</h2>
+<ol>
+<li>Select a database.</li>
+<li>Click on <b>Disable</b>.</li>
+</ol>
+
+<h2>Testing connection</h2>
+<ol>
+<li>Select a database.</li>
+<li>Click on <b>Test Connection</b>.</li>
+</ol>
+<br/>
+It is also possible to monitor the pool of connection of a specific data source. There is currently no web user interface using this function. Nevertheless, monitoring function of a data source can be requested by means of CURL.
+<br/><br/>
+To get the list of available data sources from the archive facility, use the following command:
+curl -u login:password http://hostname:port/sitools/datasources
+<br/><br/>
+A response with the description of each data source is then given. Get the Id of each data source and execute the following command:
+curl -u login:password http://hostname:port/sitools/datasources/<sourceId>monitoring
+<br/><br/>
+A equivalent response should be displayed:
+<pre>
+{
+ "success": true,
+ "total": 11,
+ "data": [
+   "JDBC DataSource Monitoring",
+   "--------------------------------------------------",
+   "Url: jdbc:mysql://localhost:3306/cnes-fuse",
+   "User: sitools",
+   "DefaultCatalog: null",
+   "InitialSize: 5",
+   "NumActive: 0",
+   "MaxActive: 10",
+   "MaxIdl: 8",
+   "MinIdl: 0",
+   "NumIdle: 0"
+ ]
+}
+</pre>
+</body>
+</html>

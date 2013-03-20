@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:MailAdministration:type:fr.cnes.sitools.mail.MailAdministration</id>
+  <name>MailAdministration</name>
+  <description>Application used to send emails</description>
+  <url>/sitools/admin/mail</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

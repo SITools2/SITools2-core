@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:InscriptionApplication:type:fr.cnes.sitools.inscription.InscriptionApplication</id>
+  <name>InscriptionApplication</name>
+  <description>Management of user registrations.</description>
+  <url>/sitools/inscriptions/admin</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

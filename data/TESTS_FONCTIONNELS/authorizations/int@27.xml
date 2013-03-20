@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>8b0c9a92-a060-45bc-b2c2-6a4130e68f26</id>
+  <name>DBExplorerApplication for datasource postgres</name>
+  <description>Finder mapping a database resource.</description>
+  <url>/pg</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

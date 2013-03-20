@@ -1,0 +1,9 @@
+fr.cnes.sitools.resources.programs.CommandLineServiceModel
+fr.cnes.sitools.resources.programs.SitoolsAnalogServiceModel
+fr.cnes.sitools.resources.programs.UlisseTalendJobResourceModel
+fr.cnes.sitools.resources.html.HtmlResourceModel
+fr.cnes.sitools.resources.order.OrderResourceModel
+fr.cnes.sitools.resources.order.DirectOrderResourceModel
+fr.cnes.sitools.resources.geojson.JeoSearchResourcePostGisModel
+fr.cnes.sitools.resources.geojson.JeoSearchResourceMongoDBModel
+

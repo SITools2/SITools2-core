@@ -1,0 +1,26 @@
+<projectModule>
+  <id>739954a4-5593-48fe-bd5a-3eb4e4c3a7f6</id>
+  <name>formsAsMenu</name>
+  <description>A menu to display forms List</description>
+  <label>label.formsAsMenu</label>
+  <author>Akka</author>
+  <version>1.0</version>
+  <imagePath>http://localhost:8182/sitools/upload/form_list_small.png</imagePath>
+  <title>title.formsAsMenuModule</title>
+  <defaultWidth>0</defaultWidth>
+  <defaultHeight>0</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>formsModule</icon>
+  <specificType></specificType>
+  <xtype>sitools.user.modules.formsAsMenu</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/formsAsMenu/formsAsMenu.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>1</priority>
+</projectModule>

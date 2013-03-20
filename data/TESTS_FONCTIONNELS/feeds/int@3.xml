@@ -1,0 +1,32 @@
+<FeedModel>
+  <id>c268fb44-eb79-4657-8914-98d4c25bfbae</id>
+  <name>emptyFeeds</name>
+  <feedType>rss_2.0</feedType>
+  <title>An Empty Feed</title>
+  <description></description>
+  <link></link>
+  <entries>
+    <FeedEntryModel>
+      <link>http://google.fr</link>
+      <updatedDate>2012-03-22 11:15:00.0 CET</updatedDate>
+      <publishedDate>2012-03-22 11:15:00.0 CET</publishedDate>
+      <title>test item</title>
+      <description>avec descriptino</description>
+      <author>
+        <name>akka</name>
+        <email>akka</email>
+      </author>
+      <image>
+        <type>image/png</type>
+        <url>http://localhost:8182/sitools/upload/description_project_small.png</url>
+      </image>
+    </FeedEntryModel>
+  </entries>
+  <parent>f855db31-0226-4f5d-abae-51052044f6f6</parent>
+  <author>
+    <name></name>
+    <email></email>
+  </author>
+  <visible>true</visible>
+  <feedSource>CLASSIC</feedSource>
+</FeedModel>

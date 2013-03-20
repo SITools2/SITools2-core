@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+	
+	<import file="userlibraries/org.restlet.ext.solr.userlibraries.ant.xml" optional="false" />
+		    
+	<property file="../fr.cnes.sitools.core/build.properties" />
+	<property file="../fr.cnes.sitools.core/conf/build/properties/build-${HOST}.properties" />
+		
+	<property name="comp.cp.dir" value="${basedir}/../fr.cnes.sitools.core/build/jar" />
+	<property name="cots.dir" value="${ROOT_DIRECTORY}/cots" />
+	<!-- ===============================================================================
+	         Parametres du projet
+	     =============================================================================== -->
+		
+	<!-- Informations generales sur le projet -->
+	<property name="project.name" value="org.restlet.ext.solr" />
+	<property name="project.fullname" value="org.restlet.ext.solr" />
+	<property name="project.version" value="3.6.1" />
+		
+	<!-- Nom de l'application WEB -->
+	<property name="webapps.name" value="org.restlet.ext.solr" />
+		
+	<!-- Information sur les auteurs du projet -->
+	<property name="author" value="AKKA Technologies" />
+	<property name="year" value="2011" />
+		
+	<!-- Paramètres de compilation -->
+	<property name="debug" value="true" />
+	<property name="optimize" value="off" />
+	<property name="deprecation" value="off" />
+	<property name="encoding" value="UTF-8" />
+		
+		
+	<!-- Repertoires destination pour la construction de l'application  -->
+	<property name="out.dir" value="build" />
+	<!--property name="out.dir"                 value="web/WEB-INF/"/-->
+	<property name="out.classes.dir" value="${out.dir}/classes" />
+	<property name="out.javadoc.dir" value="${out.dir}/javadoc" />
+	<property name="out.jar.dir" value="../fr.cnes.sitools.core/${out.dir}/jar" />
+	<property name="out.help.dir" value="${out.dir}/help" />
+	<property name="out.audit.dir" value="${out.dir}/audit" />
+	<property name="pmd.reports.dir" value="${out.audit.dir}/pmd" />
+	<property name="cpd.reports.dir" value="${out.audit.dir}/cpd" />
+	<property name="test.classes.dir" value="${out.dir}/classes" />
+		
+	<!-- Repertoires de deploiement des fichiers "externes" de l'application -->
+	<property name="dist.dir" value="dist" />
+	<property name="dist.bin.dir" value="${dist.dir}" />
+	<property name="dist.conf.dir" value="${dist.dir}" />
+	<property name="dist.lib.dir" value="${dist.dir}/lib" />
+		
+	<!-- Informations pour le classPath de l'application -->
+	<property name="restlet.dir" value="${cots.dir}/restlet-2.0.5-patched" />
+	<property name="libraries.dir" value="../libraries" />
+		    
+	<!--
+	           ========================================================================
+	             Classpath utilises dans les targets
+	           ========================================================================
+	    -->
+	<!-- Classpath pour la compilation -->
+	<path id="compile.classpath">
+	    <path refid="sitools_libraries"/>
+	    <path refid="org.restlet.ext.solr_libraries"/>
+	</path>
+

@@ -1,0 +1,105 @@
+<filterChainedModel>
+  <id>c8ebddc1-bb57-4715-b78c-067b8a00fa83</id>
+  <parent>c8ebddc1-bb57-4715-b78c-067b8a00fa83</parent>
+  <filters>
+    <filterModel>
+      <id>22d57409-5831-4835-95f2-89e64760af4d</id>
+      <name>GridFilter</name>
+      <description>Required when using filtering via LiveGrid ExtJs</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.GridFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner>AKKA/CNES</classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>ec8b03e7-a9cd-49c1-983d-d6c3ab853b1e</id>
+      <name>SingleValueFilter</name>
+      <description>Required when using Single Value Component</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.SingleValueFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>90e988dd-82ca-4b92-89a5-ad7a3db94859</id>
+      <name>MultipleValueFilter</name>
+      <description>Required when using Multiple Value Components</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.MultipleValueFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>6b6c9dfc-a5f5-4687-8f44-aae54ca1ab6c</id>
+      <name>NumericBetweenFilter</name>
+      <description>Required when using Numeric Between Components</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.NumericBetweenFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>1b4ea9c2-0dc2-4eac-8822-e47cad9b9063</id>
+      <name>DateBetweenFilter</name>
+      <description>Required when using Date Between Components</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.DateBetweenFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>53ec9d5c-f26d-44f0-80bc-35df558a9cbf</id>
+      <name>OneOrBetweenFilter</name>
+      <description>Required when using One Or Between Components</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.OneOrBetweenFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>39e02beb-d3f7-4fab-8e09-d32cfe91f133</id>
+      <name>ConeSearchCartesien</name>
+      <description>Required when using cartesian cone search  Component</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.ConeSearchCartesienFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>1b747301-c516-44a3-a020-3218be9af52e</id>
+      <name>ConeSearchPgSphere</name>
+      <description>Required when using PgSphere cone search  Component</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.ConeSearchPgSphereFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+    <filterModel>
+      <id>b16bd3ec-0419-423d-9e1f-4b91107d54b5</id>
+      <name>NumberFieldFilter</name>
+      <description>Filter on the number datatype</description>
+      <className>fr.cnes.sitools.dataset.plugins.filters.core.NumberFieldFilter</className>
+      <classVersion>0.1</classVersion>
+      <classAuthor>AKKA</classAuthor>
+      <classOwner></classOwner>
+      <parametersMap/>
+      <status>ACTIVE</status>
+    </filterModel>
+  </filters>
+</filterChainedModel>

@@ -1,0 +1,238 @@
+/***************************************
+* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+.icon-regNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_subman.png");
+	background-repeat: no-repeat;
+}
+
+.icon-usrNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_userman.png");
+	background-repeat: no-repeat;
+}
+
+.icon-grpNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_groupman.png");
+	background-repeat: no-repeat;
+}
+
+.icon-roleNodeId {
+	background-image: url("/sitools/common/res/images/icons/tree_role.png");
+	background-repeat: no-repeat;
+}
+
+.icon-userStorageNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_user_storage.png");
+	background-repeat: no-repeat;
+}
+
+.icon-orderNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_orders.png");
+	background-repeat: no-repeat;
+}
+
+.icon-applicationsNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_applications.png");
+	background-repeat: no-repeat;
+}
+
+.icon-projectsNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_projects.png");
+	background-repeat: no-repeat;
+}
+
+.icon-datasetsSqlNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_datasets.png");
+	background-repeat: no-repeat;
+}
+
+.icon-formsNodeId {
+	background-image: url("/sitools/common/res/images/icons/tree_forms.png");
+	background-repeat: no-repeat;
+}
+
+.icon-collectionsNodeId {
+	background-image: url("/sitools/common/res/images/icons/tree_projects.png");
+	background-repeat: no-repeat;
+}
+
+.icon-multiDsNodeId {
+	background-image: url("/sitools/common/res/images/icons/tree_forms.png");
+	background-repeat: no-repeat;
+}
+
+.icon-dictionaryNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_dictionary.png");
+	background-repeat: no-repeat;
+}
+
+.icon-templateNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_dictionary.png");
+	background-repeat: no-repeat;
+}
+
+.icon-DatabaseJDBCNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_databases.png");
+	background-repeat: no-repeat;
+}
+
+.icon-rssFeedDatasetsNodeId {
+	background-image: url("/sitools/common/res/images/icons/rss.png");
+	background-repeat: no-repeat;
+}
+
+.icon-rssProjectsNodeId {
+	background-image: url("/sitools/common/res/images/icons/rss.png");
+	background-repeat: no-repeat;
+}
+
+.icon-rssPortalNodeId {
+	background-image: url("/sitools/common/res/images/icons/rss.png");
+	background-repeat: no-repeat;
+}
+
+.icon-authorizationsId {
+	background-image:
+		url("/sitools/common/res/images/icons/toolbar_autorizations.png");
+	background-repeat: no-repeat;
+}
+
+.icon-storagesNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_user_storage.png");
+	background-repeat: no-repeat;
+}
+
+.icon-convertersNodeId {
+	background-image: url("/sitools/common/res/images/icons/converter.png");
+	background-repeat: no-repeat;
+}
+
+.icon-filtersNodeId {
+	background-image: url("/sitools/common/res/images/icons/filters.png");
+	background-repeat: no-repeat;
+}
+
+.icon-formComponentsNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/form_component_type.png");
+	background-repeat: no-repeat;
+}
+
+.icon-graphsNodeId {
+	background-image: url("/sitools/common/res/images/icons/graph.png");
+	background-repeat: no-repeat;
+}
+
+.icon-appPluginsId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_application_plugin.png");
+	background-repeat: no-repeat;
+}
+
+.icon-DatabaseMongoDbNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_mongo.png");
+	background-repeat: no-repeat;
+}
+
+.icon-applicationsResourcesNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_application_resource_copy.png");
+	background-repeat: no-repeat;
+}
+
+.icon-svaNodeId {
+	background-image: url("/sitools/common/res/images/icons/SVA.png");
+	background-repeat: no-repeat;
+}
+
+.icon-projectsModulesNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_modules.png");
+	background-repeat: no-repeat;
+}
+
+.icon-projectsResourcesNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_projects_resources.png");
+	background-repeat: no-repeat;
+}
+
+.icon-unitsNodeId {
+	background-image: url("/sitools/common/res/images/icons/plot.png");
+	background-repeat: no-repeat;
+}
+
+.icon-datasetViewNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_datasets.png");
+	background-repeat: no-repeat;
+}
+
+.icon-datasetsResourcesNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_datasets_resource.png");
+	background-repeat: no-repeat;
+}
+
+.icon-projectsResourcesNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_projects_resources.png");
+	background-repeat: no-repeat;
+}
+
+.icon-modulesNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_projects_modules.png");
+	background-repeat: no-repeat;
+}
+
+.icon-ftlNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/toolbar_edit.png");
+	background-repeat: no-repeat;
+}
+
+.icon-cssNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/toolbar_edit.png");
+	background-repeat: no-repeat;
+}
+
+.icon-licenceNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/toolbar_edit.png");
+	background-repeat: no-repeat;
+}
+.icon-analogNodeId {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_application_plugin.png");
+	background-repeat: no-repeat;
+}

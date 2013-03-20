@@ -1,0 +1,20 @@
+<observable>
+  <uri>ee65412e-bee0-4059-a351-a1450f94a19d</uri>
+  <observers>
+    <observer>
+      <uuid>Graph.5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</uuid>
+      <uriToNotify>riap://component/projects/5132d85b-68e4-4e2b-a921-6fd7de5dc4ee/graph/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>FilterChainedModel.ee65412e-bee0-4059-a351-a1450f94a19d</uuid>
+      <uriToNotify>riap://component/datasets/ee65412e-bee0-4059-a351-a1450f94a19d/datasets_filters/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</uuid>
+      <uriToNotify>riap://component/projects/5132d85b-68e4-4e2b-a921-6fd7de5dc4ee/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+  </observers>
+</observable>

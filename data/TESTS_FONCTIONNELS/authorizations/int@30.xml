@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:NotificationApplication:type:fr.cnes.sitools.notification.NotificationApplication</id>
+  <name>NotificationApplication</name>
+  <description>Application for registering observables and observers and for notifying observers when observable changes.</description>
+  <url>/sitools/notifications</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

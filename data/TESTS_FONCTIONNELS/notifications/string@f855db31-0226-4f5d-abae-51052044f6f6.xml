@@ -1,0 +1,30 @@
+<observable>
+  <uri>f855db31-0226-4f5d-abae-51052044f6f6</uri>
+  <observers>
+    <observer>
+      <uuid>Graph.5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</uuid>
+      <uriToNotify>riap://component/projects/5132d85b-68e4-4e2b-a921-6fd7de5dc4ee/graph/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>4413f60f-8757-4341-b611-e8aacab8935c</uuid>
+      <uriToNotify>riap://component/datasets/f855db31-0226-4f5d-abae-51052044f6f6/forms/4413f60f-8757-4341-b611-e8aacab8935c/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>FilterChainedModel.f855db31-0226-4f5d-abae-51052044f6f6</uuid>
+      <uriToNotify>riap://component/datasets/f855db31-0226-4f5d-abae-51052044f6f6/datasets_filters/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>c268fb44-eb79-4657-8914-98d4c25bfbae</uuid>
+      <uriToNotify>riap://component/feedsObject/f855db31-0226-4f5d-abae-51052044f6f6/feeds/c268fb44-eb79-4657-8914-98d4c25bfbae/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+    <observer>
+      <uuid>5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</uuid>
+      <uriToNotify>riap://component/projects/5132d85b-68e4-4e2b-a921-6fd7de5dc4ee/notify</uriToNotify>
+      <methodToNotify>PUT</methodToNotify>
+    </observer>
+  </observers>
+</observable>

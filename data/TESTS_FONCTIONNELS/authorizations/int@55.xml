@@ -1,0 +1,18 @@
+<resourceAuthorization>
+  <id>urn:uuid:ProjectAdministration:type:fr.cnes.sitools.project.ProjectAdministration</id>
+  <name>ProjectAdministration</name>
+  <description>Project Management</description>
+  <url>/sitools/projects</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

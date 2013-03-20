@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+<project name="fr.cnes.sitools.test.install" basedir="."
+	default="build">
+
+	<!-- ============================================================================== 
+		=== Build file to allow ant (http://jakarta.apache.org/ant/) to be used === 
+		to build the Sitools project. === === Author : AKKA Technologies === === 
+		name : nom du projet === default : tache ant executee par defaut === basedir 
+		: repertoire courant lors de l'execution des taches ant === ============================================================================== -->
+	<!-- Chargement du build.properties pour mettre en place les variables -->
+	<property file="build.properties" />
+	<!-- Chargement du build-install.properties pour mettre en place les variables 
+		relative a sitools.properties -->
+	<property file="build-install.properties" />
+
+	<import file="sitools.userlibraries.ant.xml" optional="true" />
+
+	<property name="fr.cnes.sitools.core.dir"
+		value="${ROOT_DIRECTORY_LOCAL}/workspace/fr.cnes.sitools.core" />
+	<property name="conf.dir" value="${fr.cnes.sitools.core.dir}/conf" />
+	<property name="conf.bin.dir" value="${conf.dir}/bin" />
+	<property name="conf.jar.dir" value="${conf.dir}/jar" />
+	<property name="conf.properties.dir" value="${conf.dir}/properties" />
+	<property name="conf.reference.dir" value="${conf.dir}/reference" />
+	<property name="conf.build.userlib.dir" value="${conf.dir}/build/userlibrairies" />
+	<property name="cots.dir" value="${ROOT_DIRECTORY_LOCAL}/cots" />
+
+	<!-- Informations pour la construction de l'installeur -->
+	<property name="install.dir" value="${basedir}" />
+	<property name="install.res.dir" value="${install.dir}/res" />
+	<property name="install.res.script.dir" value="${install.res.dir}/script" />
+	<property name="install.res.properties.dir" value="${install.res.dir}/properties" />
+	<property name="install.lib.dir" value="${install.dir}/lib" />
+
+	<property name="temp.dir" value="${install.dir}/tmp" />
+
+	<!-- Targets dbunits pour exemple à reprendre -->
+
+	<!-- <property name="jdbc.postgresql.driver.jar" value="../libraries/postgresql-8.3-603.jdbc3.jar" 
+		/> <property name="jdbc.mysql.driver.jar" value="../libraries/mysql-connector-java-5.1.7-bin.jar" 
+		/> -->
+
+	<!-- Allows us to use the dbunit task -->
+	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
+		<classpath>
+			<path location="${cots.dir}/dbunit-2.4.8/dbunit-2.4.8.jar" />
+			<path location="${cots.dir}/slf4j-1.6.1/slf4j-api-1.6.1.jar" />
+			<path location="${cots.dir}/slf4j-1.6.1/slf4j-jdk14-1.6.1.jar" />
+		</classpath>
+	</taskdef>
+
+	<!-- Allows us to use the IzPack Ant task -->
+	<taskdef name="izpack" classpath="./install_res/libraries/standalone-compiler.jar"
+		classname="com.izforge.izpack.ant.IzPackTask" />
+
+
+
+	<!-- GENERATE The XML file for Database recovery with DBUnit for the tests 
+		execution -->
+	<!-- -->
+	<target name="save-pg" description="Save the Postgresql DB as an xml file">
+		<dbunit driver="${PG_DATABASE_DRIVER}" url="${PG_DATABASE_URL}"
+			userid="${PG_DATABASE_USER}" password="${PG_DATABASE_PASSWORD}"
+			schema="fuse" classpath="${PG_DATABASE_DRIVER_PATH}">
+			<dbconfig>
+				<property name="datatypeFactory"
+					value="org.dbunit.ext.postgresql.PostgresqlDataTypeFactory" />
+				<feature name="batchedStatements" value="true" />
+			</dbconfig>
+			<!-- Export of PG database -->
+			<!-- <export dest="./res/export/postgresql/export_fuse_pg.xml"> -->
+			<!-- <query name="headers" sql='SELECT * FROM fuse."headers"' /> -->
+			<!-- <query name="iapdatasets" sql='SELECT * FROM fuse."iapdatasets"' 
+				/> -->
+			<!-- <query name="object_class" sql='SELECT * FROM fuse."object_class"' 
+				/> -->
+			<!-- <query name="fuse_prg_id" sql='SELECT * FROM fuse."fuse_prg_id"' 
+				/> -->
+			<!-- </export> -->
+			<export dest="./res/export/postgresql/export_sitools_pg.xml">
+				<query name="USERS" sql='SELECT * FROM sitools."USERS"' />
+				<query name="GROUPS" sql='SELECT * FROM sitools."GROUPS"' />
+				<query name="USER_GROUP" sql='SELECT * FROM sitools."USER_GROUP"' />
+				<query name="USER_PROPERTIES" sql='SELECT * FROM sitools."USER_PROPERTIES"' />
+			</export>
+			<export dest="./res/export/postgresql/export_tests_pg.xml">
+				<query name="table_tests" sql='SELECT * FROM test."table_tests"' />
+			</export>
+		</dbunit>
+	</target>
+
+	<!-- GENERATE The XML file for Database recovery with DBUnit for the tests 
+		execution -->
+	<!-- -->
+	<target name="save-mysql" description="Save the Mysql DB as an xml file">
+<!--		<dbunit driver="${MYSQL_DATABASE_DRIVER}" url="${MYSQL_DATABASE_URL}/cnes-fuse"-->
+<!--			userid="${MYSQL_DATABASE_USER}" password="${MYSQL_DATABASE_PASSWORD}"-->
+<!--			classpath="${MYSQL_DATABASE_DRIVER_PATH}">-->
+<!--			<dbconfig>-->
+<!--				<property name="datatypeFactory" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />-->
+<!--				<feature name="batchedStatements" value="true" />-->
+<!--			</dbconfig>-->
+<!--			 Export of FUSE schema -->
+<!--			<export dest="./res/export/mysql/export_fuse_mysql.xml">-->
+<!--				<query name="HEADERS" sql='SELECT * FROM HEADERS' />-->
+<!--				<query name="IAPDATASETS" sql='SELECT * FROM IAPDATASETS' />-->
+<!--				<query name="OBJECT_CLASS" sql='SELECT * FROM OBJECT_CLASS' />-->
+<!--				<query name="FUSE_PRG_ID" sql='SELECT * FROM FUSE_PRG_ID' />-->
+<!--			</export>			-->
+<!--		</dbunit>-->
+		
+		<dbunit driver="${MYSQL_DATABASE_DRIVER}" url="${MYSQL_DATABASE_URL}/cnes"
+			userid="${MYSQL_DATABASE_USER}" password="${MYSQL_DATABASE_PASSWORD}"
+			classpath="${MYSQL_DATABASE_DRIVER_PATH}">
+			<dbconfig>
+				<property name="datatypeFactory" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
+				<feature name="batchedStatements" value="true" />
+			</dbconfig>
+			<export dest="./res/export/mysql/export_sitools_mysql.xml">
+				<query name="USERS" sql='SELECT * FROM USERS' />
+				<query name="GROUPS" sql='SELECT * FROM GROUPS' />
+				<query name="USER_GROUP" sql='SELECT * FROM USER_GROUP' />
+				<query name="USER_PROPERTIES" sql='SELECT * FROM USER_PROPERTIES' />
+			</export>			
+		</dbunit>
+		
+		<dbunit driver="${MYSQL_DATABASE_DRIVER}" url="${MYSQL_DATABASE_URL}/cnes-test"
+			userid="${MYSQL_DATABASE_USER}" password="${MYSQL_DATABASE_PASSWORD}"
+			classpath="${MYSQL_DATABASE_DRIVER_PATH}">
+			<dbconfig>
+				<property name="datatypeFactory" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
+				<feature name="batchedStatements" value="true" />
+			</dbconfig>
+			<export dest="./res/export/mysql/export_tests_mysql.xml">
+				<query name="TABLE_TESTS" sql='SELECT * FROM TABLE_TESTS' />
+			</export>
+		</dbunit>
+	</target>
+
+	<!-- ========================================================================================= 
+		Restauration des données exportées ========================================================================================= -->
+	<target name="restore-pg">
+		<dbunit driver="${PG_DATABASE_DRIVER}" url="${PG_DATABASE_URL}"
+			userid="${PG_DATABASE_USER}" password="${PG_DATABASE_PASSWORD}"
+			classpath="${jdbc.postgresql.driver.jar}" schema="fuse">
+			<dbconfig>
+				<property name="datatypeFactory"
+					value="org.dbunit.ext.postgresql.PostgresqlDataTypeFactory" />
+				<feature name="batchedStatements" value="true" />
+			</dbconfig>
+			<operation type="INSERT" src="./res/export/export_fuse_pg.xml" />
+		</dbunit>
+	</target>
+
+	<!-- ========================================================================================= 
+		Restauration des données exportées ========================================================================================= -->
+	<target name="restore-mysql">
+		<dbunit driver="${MYSQL_DATABASE_DRIVER}" url="${MYSQL_DATABASE_URL}/cnes-test"
+			userid="${MYSQL_DATABASE_USER}" password="${MYSQL_DATABASE_PASSWORD}"
+			classpath="${MYSQL_DATABASE_DRIVER_PATH}">
+			<dbconfig>
+				<property name="datatypeFactory" value="org.dbunit.ext.mysql.MySqlDataTypeFactory" />
+				<feature name="batchedStatements" value="true" />
+			</dbconfig>
+			<operation type="UPDATE" src="./res/export/export_sitools_mysql.xml" />
+		</dbunit>
+	</target>
+
+
+	<target name="build"
+		depends="build-jars, refresh-properties-for-install, build-izpack-installer" />
+
+
+	<!-- TARGET refresh-properties-for-install -->
+	<target name="refresh-properties-for-install"
+		description="Mise à jour du fichier de propriétés sitools.properties pour install">
+		<copy outputencoding="UTF-8"
+			tofile="${install.res.properties.dir}/sitools.properties" file="${fr.cnes.sitools.core.dir}/sitools.properties"
+			overwrite="true" />
+		<propertyfile file="${install.res.properties.dir}/sitools.properties"
+			comment="Update test ">
+			<entry key="Tests.PGSQL_DATABASE_USER" value="${PGSQL_DATABASE_USER}" />
+			<entry key="Tests.PGSQL_DATABASE_URL" value="${PGSQL_DATABASE_URL}" />
+			<entry key="Tests.PGSQL_DATABASE_PASSWORD" value="${PGSQL_DATABASE_PASSWORD}" />
+
+			<entry key="Tests.MYSQL_DATABASE_USER" value="${MYSQL_DATABASE_USER}" />
+			<entry key="Tests.MYSQL_DATABASE_URL" value="${MYSQL_DATABASE_URL}" />
+			<entry key="Tests.MYSQL_DATABASE_PASSWORD" value="${MYSQL_DATABASE_PASSWORD}" />
+		</propertyfile>
+	</target>
+
+	<!-- TARGET build-izpack-installer creates the izpack installer file -->
+
+	<target name="build-izpack-installer" description="generation de l'installeur IzPack">
+		<echo message="Build installer from file : ${install.dir}/install.xml">
+		</echo>
+		<property file="res/properties/sitools.properties" prefix="properties" />
+		<!-- Run installer build -->
+		<izpack input="${install.dir}/install.xml"
+			output="${install.dir}/${properties.Starter.appName}-${properties.Starter.VERSION}-DB-tests.jar"
+			installerType="standard" inheritAll="true" basedir="${install.dir}"
+			compression="deflate" compressionlevel="9" />
+	</target>
+
+	<!-- =============================================================================== 
+		BUILD DES SOURCES ET JAR DES SOURCES =============================================================================== -->
+	<!-- =============================================================================== 
+		Parametres du projet =============================================================================== -->
+
+	<!-- Informations generales sur le projet -->
+	<property name="project.name" value="sitools-test-izpack" />
+	<property name="project.fullname" value="sitools-test-izpack" />
+	<property name="project.version" value="0.9.1M4" />
+
+	<!-- Information sur les auteurs du projet -->
+	<property name="author" value="AKKA Technologies" />
+	<property name="year" value="2011, 2012" />
+
+	<!-- Paramètres de compilation -->
+	<property name="debug" value="true" />
+	<property name="optimize" value="off" />
+	<property name="deprecation" value="off" />
+	<property name="encoding" value="UTF-8" />
+
+
+	<!-- Repertoires destination pour la construction de l'application -->
+	<property name="out.dir" value="bin" />
+	<!--property name="out.dir" value="web/WEB-INF/"/ -->
+	<property name="out.classes.dir" value="${out.dir}" />
+
+	<!-- Repertoires de deploiement des fichiers "externes" du jar de validator -->
+	<property name="dist.dir.validator" value="bin/validator" />
+	<property name="jar.name.validator" value="validator.jar" />
+
+
+	<!-- Repertoires de deploiement des fichiers "externes" du jar de Database 
+		panel -->
+	<property name="dist.dir.database-panel" value="bin/panels" />
+	<property name="jar.name.database-panel" value="DatabasePanel.jar" />
+
+	<!-- Classpath pour la compilation -->
+	<path id="compile.classpath">
+		<pathelement location="install_res/libraries/standalone-compiler.jar" />
+		<pathelement location="install_res/libraries/dbunit-2.4.8.jar" />
+	</path>
+
+	<!-- TARGETS -->
+	<target name="build-jars"
+		depends="prepare, compile,jar-validator,jar-database-panel,cleanup" />
+
+	<target name="prepare">
+		<!-- Creation des repertoires classes -->
+		<mkdir dir="${out.classes.dir}" />
+	</target>
+
+
+	<target name="compile">
+		<javac srcdir="./src" debug="${debug}" destdir="${out.classes.dir}"
+			deprecation="${deprecation}" optimize="${optimize}" encoding="${encoding}"
+			includeAntRuntime="false">
+			<classpath refid="compile.classpath" />
+		</javac>
+	</target>
+
+	<target name="jar-validator">
+		<delete file="${dist.dir.validator}/${jar.name.validator}" />
+		<property name="version.num" value="${project.version}" />
+		<buildnumber file="build.num" />
+		<mkdir dir="${dist.dir.validator}"></mkdir>
+		<jar jarfile="${dist.dir.validator}/${jar.name.validator}">
+			<fileset dir="${out.classes.dir}" includes="**/JDBCConnectionModelTests.class" />
+			<fileset dir="${out.classes.dir}" includes="**/JDBCConnectionValidator.class" />
+			<fileset dir="${out.classes.dir}" includes="**/SchemaExportFileModel.class" />
+		</jar>
+
+	</target>
+
+	<target name="jar-database-panel">
+		<delete file="${dist.dir.database-panel}/${jar.name.database-panel}" />
+		<property name="version.num" value="${project.version}" />
+		<buildnumber file="build.num" />
+		<mkdir dir="${dist.dir.database-panel}"></mkdir>
+		<jar jarfile="${dist.dir.database-panel}/${jar.name.database-panel}">
+			<fileset dir="${out.classes.dir}" includes="**/DatabasePanel.class" />
+		</jar>
+	</target>
+
+	<target name="cleanup">
+		<delete>
+			<fileset dir="." includes="**/*.class" />
+		</delete>
+	</target>
+
+</project>

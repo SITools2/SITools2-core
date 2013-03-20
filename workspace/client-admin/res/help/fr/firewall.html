@@ -1,0 +1,73 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Firewall</title>
+
+<link href="../../css/help.css" rel="stylesheet" type="text/css" />
+<body>
+<h2><a name="leaf_firewall"></a>Firewall</h2>
+<p>
+The built-in firewall can prevent unauthorized logins, and control which services can be accessed. In addition, you can choose to allow or deny access to certain network ports from specific IP addresses.</p>
+<h4>To create a firewall rule:</h4>
+<ol>
+<li>
+Click the <b>General</b>, <b>LAN 1</b>, <b>LAN 2</b> (dual LAN models only), <b>LAN</b>, <b>PPPoE</b>, or <b>Wireless Network</b> tab, depending on the type of your network connection.
+</li>
+<li>Click <b>Create</b>.</li>
+<li>Apply the rules to specified ports by choosing any of the following in the <b>Ports</b> section:</li>
+<ul>
+<li>Choose <b>All</b> to apply the rules to all ports.</li>
+<li>Choose <b>Select from a list of built-in applications</b>.</li>
+<li>Choose <b>Custom</b> and click <b>Custom</b>, and then enter up to 15 ports separated with comma, or specify a port range.</li>
+<li class="no">
+You can also specify the protocols.
+</li>
+</ul>
+<li>Allow or deny access from specified source IP addresses by choosing any of the following in the <b>Source IP</b> section:</li>
+<ul>
+<li>Choose <b>All</b> to allow or deny all IP addresses.</li>
+<li>Enter a <b>Single host IP address</b>.</li>
+<li>Enter a <b>Subnet.</b> </li>
+</ul>
+</ol>
+<p>
+Now you can see the created firewall rule in the rule list.
+</p>
+<h4>To delete firewall rules:</h4>
+<ul>
+<li>Uncheck the checkbox next to all firewall rules.</li>
+<li>Delete all firewall rules.</li>
+</ul>
+<p>
+Choose <b>Allow</b> or <b>Deny</b> in the <b>Action</b> section to allow or deny the source IP address to access the specified ports.
+</p>
+<ol>
+<span class="note_head">Note:</span>
+<li>You can create up to 100 rules for a network interface, and you can reorder the rules with drag-and-drop functionality.</li>
+<li>Rules at the top will have higher priorities.</li>
+<li>When you combine 2 network interfaces with link aggregation, firewall will apply the rules of the first network interface, and reserve the rules of the second network interface.</li>
+<li>If your system has 2 network ports connecting to the same subnet, the firewall rules might not work properly.* </li>
+</ol>
+<p>____<br>
+* Applies to specific models only.</p>
+</body>
+</html>

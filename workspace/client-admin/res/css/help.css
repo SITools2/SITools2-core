@@ -1,0 +1,282 @@
+/***************************************
+* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+body {
+	background-color: #fefefe;
+	margin: 10px 5px;
+	padding: 0;
+}
+
+div.section {
+	font-size: 10px;
+	border: 1px solid #999999;
+	background-color: #efefef;
+	margin: 10px 15px;
+}
+
+div.section h3 {
+	font-size: 12px;
+	color: #333;
+	margin-left: 5px;
+}
+
+div.section h4 {
+	font-size: 11px;
+	color: #333;
+}
+
+div.section p,div.section li,div.section dt,div.section dd {
+	font-size: 10.5px;
+	font-weight: normal;
+}
+
+div.link {
+	background-color: #fec;
+	margin: 5px 10px 20px 10px;
+	border: 1px solid #f93;
+}
+
+div.link p {
+	background-color: #f93;
+	padding: 0 2px;
+	margin: 0;
+	font-weight: 800;
+	color: #fff;
+	text-align: center;
+}
+
+div.link a {
+	font-weight: 300;
+	letter-spacing: 0;
+	text-decoration: none;
+	color: black;
+}
+
+div.link a:hover {
+	color: orange;
+	font-size: 13px;
+	font-weight: 800;
+}
+
+div.link a:active {
+	color: red;
+}
+
+.top {
+	text-align: right;
+	padding-bottom: 1em;
+}
+
+.top a {
+	text-decoration: none;
+	color: white;
+	font-weight: 800;
+	padding: 2px;
+	font-size: 10px;
+	background-color: #f93;
+}
+
+.top a:hover {
+	color: yellow;
+}
+
+.top a:active {
+	color: red;
+	font-size: 11px;
+}
+
+.location,.location2 {
+	text-align: left;
+	font-size: 10px;
+	margin: 0 10px;
+	line-height: 1em;
+	border-top: 1px dotted #000;
+	padding: 4px 0 8px 0;
+}
+
+.location2 {
+	border-top: none;
+}
+
+.location b,.location2 b {
+	font-style: italic;
+	color: white;
+	background-color: #777;
+	padding-right: 3px;
+}
+
+.location span,.location2 span {
+	background-color: #777;
+	color: #ccc;
+	padding-right: 3px;
+	padding: 3px;
+}
+
+.location span.head,.location2 span.head {
+	background-color: #444;
+	padding-left: 2px;
+	color: white;
+}
+
+h1,h2,h3,h4 {
+	font-family: "Arial", "Helvetica", sans-serif;
+	color: #222200;
+	margin: 1em 10px 0.5em 10px;
+	padding: 0 0 1px 0;
+	font-weight: 600;
+}
+
+h1 {
+	margin-top: 0;
+	border-bottom: 1px solid;
+	font-weight: 800;
+	font-size: 18px;
+}
+
+h2 {
+	border-bottom: 1px dotted #000;
+	font-size: 16px;
+}
+
+h3 {
+	margin: 1em 10px 0 10px;
+	padding: 1px 2px;
+	background-color: #efefef;
+	font-size: 14px;
+}
+
+h4 {
+	margin-top: 0.5em;
+	margin-bottom: 0.2em;
+	font-weight: 600;
+	font-size: 12px;
+	color: #338;
+}
+
+p,ol,ul,dl,table {
+	font-size: 12px;
+	color: #444444;
+	line-height: 18px;
+	margin: 0 10px 0 10px;
+	padding: 0 0 6px 0;
+}
+
+ol li,ul li {
+	font-size: 12px;
+	margin: 0 0 0 25px;
+	padding-bottom: 3px;
+}
+
+ol ul,ul ul,ol ol,ul ol {
+	padding-bottom: 0;
+}
+
+ul li {
+	list-style-type: square;
+}
+
+ol ul li,ul ul li {
+	list-style-type: square;
+}
+
+ol ol li,ul ol li {
+	list-style-type: lower-alpha;
+}
+
+li.no {
+	list-style-type: none;
+}
+
+ul p {
+	padding-left: 15px;
+}
+
+table,th,td {
+	border: 1px solid #999999;
+	border-collapse: collapse;
+	font-size: 10px;
+	vertical-align: middle;
+	padding: 0;
+}
+
+table {
+	width: 95%;
+	margin-bottom: 1em;
+}
+
+th,td {
+	padding: 1px 5px 1px 5px;
+	background-color: #efefef;
+}
+
+td {
+	background-color: #fefefe;
+}
+
+table caption {
+	text-align: left;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 600;
+	font-size: 12px;
+}
+
+.letterSpace5 {
+	letter-spacing: 3px;
+	color: #cc0000;
+}
+
+b,i,strong {
+	color: #222200;
+	font-size: 95%;
+	padding-left: 2px;
+	padding-right: 2px;
+	font-weight: 600;
+}
+
+.note_head {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: 600;
+	color: #c30;
+	font-size: 12px;
+	margin-right: 2px;
+}
+
+.note_content {
+	color: #cc0000;
+}
+
+dt {
+	font-weight: 800;
+}
+
+a {
+	text-decoration: none;
+	color: #36d;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #06c;
+}
+
+a:active {
+	font-size: 110%;
+	color: #c03;
+}

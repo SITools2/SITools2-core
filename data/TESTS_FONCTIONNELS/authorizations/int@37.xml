@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:LogDirectory:type:fr.cnes.sitools.server.Starter$2</id>
+  <name>LogDirectory</name>
+  <description>Consultation des logs</description>
+  <url>/sitools/logs</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

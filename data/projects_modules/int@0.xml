@@ -1,0 +1,26 @@
+<projectModule>
+  <id>DataSetExplorer</id>
+  <name>DataSetExplorer</name>
+  <description>Dataset Explorer</description>
+  <label>label.datasetExplorer</label>
+  <author>akka</author>
+  <version>1.0</version>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/dataset_explorer.png</imagePath>
+  <title>title.DatasetExplorer</title>
+  <defaultWidth>200</defaultWidth>
+  <defaultHeight>500</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>datasetExplorerModule</icon>
+  <specificType>truc</specificType>
+  <xtype>sitools.user.modules.datasetExplorer</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/dataSetExplorer/dataSetExplorer.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>0</priority>
+</projectModule>

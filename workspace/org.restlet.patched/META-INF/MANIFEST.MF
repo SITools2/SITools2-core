@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Restlet 2.0 patched classes
+Bundle-SymbolicName: org.restlet.patched
+Bundle-Version: 1.0.2.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.restlet.engine.http.header,
+ org.restlet.ext.wadl;
+  uses:="org.restlet.data,
+   org.restlet.resource,
+   org.restlet.representation,
+   org.restlet",
+ org.restlet.security;uses:="org.restlet.routing,org.restlet.data,org.restlet"
+Require-Bundle: org.restlet.ext.wadl;bundle-version="2.0.1",
+ org.restlet;bundle-version="2.0.5"

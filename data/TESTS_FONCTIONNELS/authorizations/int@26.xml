@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>99380b0e-bf7e-4f5a-a759-4395d81d664d</id>
+  <name>DBExplorerApplication for datasource mysql_fuse</name>
+  <description>Finder mapping a database resource.</description>
+  <url>/mysql/fuse</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

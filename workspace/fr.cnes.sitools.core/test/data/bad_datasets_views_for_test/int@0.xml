@@ -1,0 +1,10 @@
+<datasetView>
+    <id>0d0f9ad1-2088-4f5e-a229-c89dd002d446</id>
+    <jsObject>sitools.user.component.dataviews.tplView.TplView</jsObject>
+    <fileUrl>/sitools/client-user/js/components/dataviews/tplView/TplView.js</fileUrl>
+    <imageUrl></imageUrl>
+    <priority>1</priority>
+    <name>Sitools DataView</name>
+    <description>Sitools DataView with Detail</description>
+    <unknownAttribute>Unknown value</unknownAttribute>
+</datasetView>

@@ -1,0 +1,21 @@
+<dimension>
+  <id>Longueurs</id>
+  <name>Longueurs</name>
+  <description>Description longueurs</description>
+  <dimensionHelperName>fr.cnes.sitools.units.helper.SitoolsUnitConverterHelper</dimensionHelperName>
+  <unitConverters/>
+  <units>
+    <unit>
+      <label>Mètre</label>
+      <unitName>m</unitName>
+    </unit>
+    <unit>
+      <label>Kilomètre</label>
+      <unitName>km</unitName>
+    </unit>
+    <unit>
+      <label>Année lumière</label>
+      <unitName>ly</unitName>
+    </unit>
+  </units>
+</dimension>

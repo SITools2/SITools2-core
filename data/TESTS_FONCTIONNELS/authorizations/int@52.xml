@@ -1,0 +1,16 @@
+<resourceAuthorization>
+  <id>urn:uuid:FormComponentApplication:type:fr.cnes.sitools.formComponents.FormComponentsApplication</id>
+  <name>FormComponentApplication</name>
+  <description>Management of GUI components for forms.</description>
+  <url>/sitools/formComponents</url>
+  <authorizations>
+    <authorize>
+      <role>public</role>
+      <GET>true</GET>
+    </authorize>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

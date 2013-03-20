@@ -1,0 +1,40 @@
+<graph>
+  <id>350f9f7e-834f-4825-a218-03916c790e71</id>
+  <nodeList>
+    <graphNodeComplete>
+      <text>node 1</text>
+      <leaf>false</leaf>
+      <type>node</type>
+      <description>desc</description>
+      <image/>
+      <children>
+        <graphNodeComplete>
+          <text>dataset</text>
+          <leaf>true</leaf>
+          <type>dataset</type>
+          <datasetId>4e45dc3c-8594-4a96-9df1-7a6314ffec27</datasetId>
+          <nbRecord>0</nbRecord>
+        </graphNodeComplete>
+      </children>
+      <nbRecord>0</nbRecord>
+    </graphNodeComplete>
+    <graphNodeComplete>
+      <text>node 2</text>
+      <leaf>false</leaf>
+      <type>node</type>
+      <description></description>
+      <image/>
+      <children>
+        <graphNodeComplete>
+          <text>DataSet de test</text>
+          <leaf>true</leaf>
+          <type>dataset</type>
+          <datasetId>bf77955a-2cec-4fc3-b95d-7397025fb299</datasetId>
+          <nbRecord>0</nbRecord>
+        </graphNodeComplete>
+      </children>
+      <nbRecord>0</nbRecord>
+    </graphNodeComplete>
+  </nodeList>
+  <parent>350f9f7e-834f-4825-a218-03916c790e71</parent>
+</graph>

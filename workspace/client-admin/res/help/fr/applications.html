@@ -1,0 +1,66 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<p>Registry handles all applications that SITools2 hosts. From this application, the administrator can see the details, delete, enable or disable an application as well as change authorizations.</p>
+
+<title>Registry</title><link href="../../css/help.css" rel="stylesheet" type="text/css"></head>
+<body>
+<h2>Show application's details</h2>
+<ol><li>Select the application you want to see.</li><li>Click on <b>Details</b> to see details.</li><li>Click on <b>Close</b> to close the window.</li></ol>
+
+<h2>Authorizations</h2>
+<ol>
+<li>Select the application for which you want to see authorizations.</li>
+<li>Click on <b>Authorizations</b>.</li>
+<li>A window opens an authorization panel with the following functions:</li>
+	<ul>
+		<li>Create a role: click on <b>Create</b> to add one or more roles for this application. Select all roles you want to add then click on <b>OK</b> to validate.<br>
+		One or more lines appear in the table then you can select all authorizations you want to set for the role:
+			<ul>
+				<li>all : can do everything</li>
+				<li>get : can consult resources without modify them</li>
+				<li>post : can create resources</li>
+				<li>put : can modify resources</li>
+				<li>delete : can delete resources</li>
+				<li>head : </li>
+				<li>options : </li>
+			</ul>	
+		</li>
+		<li>Delete a role : select a role in the list, click on <b>Delete</b> then click on <b>OK</b>.</li>
+	</ul></ol>
+<h2>Enable an application</h2>
+<ol><li>Select the application on the list</li><li>Click on <b>Enable</b> to enable the application, the applicaiton available</li></ol>
+
+<h2>Disable an application</h2>
+<ol><li>Select the application on the list</li><li>Click on <b>Disable</b> to disable the application, the application is no longer available</li></ol>
+
+<h2>Delete an application</h2>
+<ol><li>Select the application on the list</li><li>Click on <b>Delete</b> to delete the application, the application is no longer available</li></ol>
+
+<h2>Application API</h2>
+<p>For an easier authorization of an application according to both role and HTTP methods (get post, put, ...), the administrator can get the API description of each application by clicking on the question mark</p>
+
+<div class="section">
+<h4>Note:</h4>
+<p>If no role is set for one application, then a default authorization is applied (see Authorizations in Security Management).</p>
+</div>
+</body></html>

@@ -1,0 +1,20 @@
+<resourceAuthorization>
+  <id>1b0e7a6b-d6a0-4b9f-a77c-05f6fd2ee76d</id>
+  <name>test</name>
+  <description>Exposition du project test</description>
+  <url>/1b0e7a6b-d6a0-4b9f-a77c-05f6fd2ee76d</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <POST>true</POST>
+      <GET>true</GET>
+      <PUT>true</PUT>
+      <DELETE>true</DELETE>
+      <OPTIONS>true</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

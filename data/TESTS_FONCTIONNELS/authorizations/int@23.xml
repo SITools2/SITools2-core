@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:UsersAndGroupsAdministration:type:fr.cnes.sitools.security.UsersAndGroupsAdministration</id>
+  <name>UsersAndGroupsAdministration</name>
+  <description>Users and groups management</description>
+  <url>/sitools/admin/security</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

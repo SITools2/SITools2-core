@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+	<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->	
+	<!-- ===============================================================================
+	         Parametres du projet
+	     =============================================================================== -->
+		
+	<!-- Informations generales sur le projet -->
+	<property name="project.name" value="sitools-install-izpack" />
+	<property name="project.fullname" value="sitools-install-izpack" />
+	<property name="project.version" value="0.9" />
+		
+	<!-- Information sur les auteurs du projet -->
+	<property name="author" value="AKKA Technologies" />
+	<property name="year" value="2011, 2012" />
+		
+	<!-- Paramètres de compilation -->
+	<property name="debug" value="true" />
+	<property name="optimize" value="off" />
+	<property name="deprecation" value="off" />
+	<property name="encoding" value="UTF-8" />
+		
+		
+	<!-- Repertoires destination pour la construction de l'application  -->
+	<property name="out.dir" value="build" />
+	<!--property name="out.dir"                 value="web/WEB-INF/"/-->
+	<property name="out.classes.dir" value="${out.dir}/classes" />	
+	
+	<property name="src.dir" value="build" />
+	
+	<!-- Repertoires de deploiement des fichiers "externes" du jar de validator -->
+	<property name="dist.dir.validator" value="dist" />
+	<property name="jar.name.validator" value="sitools-install-izpack.jar" />
+	
+
+	<!-- Repertoires de deploiement des fichiers "externes" du jar de Database panel -->
+	<!--<property name="dist.dir.database-panel" value="bin/panels" />
+	<property name="jar.name.database-panel" value="DatabasePanel.jar" />-->
+	
+	
+		    
+	<!--
+	           ========================================================================
+	             Classpath utilises dans les targets
+	           ========================================================================
+	    -->
+	<!-- Classpath pour la compilation -->
+	<path id="compile.classpath">
+		<pathelement location="lib/standalone-compiler.jar"/>
+	</path>

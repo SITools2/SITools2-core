@@ -1,0 +1,21 @@
+<dimension>
+  <id>Angles</id>
+  <name>Angles</name>
+  <description>Liste des unités d&apos;angle</description>
+  <dimensionHelperName>fr.cnes.sitools.units.helper.SitoolsUnitConverterHelper</dimensionHelperName>
+  <unitConverters/>
+  <units>
+    <unit>
+      <label>Degré</label>
+      <unitName>°</unitName>
+    </unit>
+    <unit>
+      <label>Radian</label>
+      <unitName>rad</unitName>
+    </unit>
+    <unit>
+      <label>hour_angle</label>
+      <unitName>hr</unitName>
+    </unit>
+  </units>
+</dimension>

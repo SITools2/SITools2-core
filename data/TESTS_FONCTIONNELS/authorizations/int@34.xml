@@ -1,0 +1,17 @@
+<resourceAuthorization>
+  <id>urn:uuid:Documentation:type:fr.cnes.sitools.server.Starter$6</id>
+  <name>Documentation</name>
+  <description>Diffusion de la documentation associée au projet</description>
+  <url>/sitools/documentation</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

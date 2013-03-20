@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:FilterApplication:type:fr.cnes.sitools.dataset.filter.FilterApplication</id>
+  <name>FilterApplication</name>
+  <description>Act on filters defined for datasets.</description>
+  <url>/sitools/datasets/{datasetId}/filters</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

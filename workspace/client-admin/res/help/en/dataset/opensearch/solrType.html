@@ -1,0 +1,52 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Solr Type</title>
+
+<link href="/sitools/client-admin/res/css/help.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h2><a name="leaf_user"></a>Solr Type</h2>
+This is the type used by SolR for the indexing. <br>
+<span style="font-weight: bold;">text</span> &nbsp;<span style="font-weight: bold;">:</span><br>
+<ul><li>This is the
+default type </li><li>it cuts the term &nbsp;on every case change</li>
+<li>it cuts the term &nbsp;on changes from numeric to
+alphabet.</li>
+<li>It concatenates numbers ( 125-25 = 12525)</li>
+<li>it concatenates words (wi-fi = wifi).</li>
+<li>It&nbsp;keeps the origininal term.</li>
+<li>It apply a list of unindexed words and synonims</li>
+</ul>
+&nbsp;<span style="font-weight: bold;">text_ws :<br>
+</span>
+<ul>
+<li>It splits only on whitespace for exact matching of terms</li>
+</ul>
+<span style="font-weight: bold;">string</span> <br><ul style="font-weight: bold;"><li>You have to use this type for unique key otherwise it won't work.</li></ul>
+<br>
+<ol>
+<span class="note_head">Note:</span><li>The <span style="font-weight: bold;"><span style="font-weight: bold;"><span style="font-weight: bold;"></span></span>string</span>
+type is not analyzed, but indexed/stored verbatim, which means that it
+can"t be queried but it will be returned</li><li>You can also used any other types defined in schema.xml such as date, boolean, int ...</li>
+</ol>
+<br>
+<span style="font-weight: bold;"></span>
+</body></html>

@@ -1,0 +1,74 @@
+<converterChainedModel>
+  <id>c8ebddc1-bb57-4715-b78c-067b8a00fa83</id>
+  <parent>c8ebddc1-bb57-4715-b78c-067b8a00fa83</parent>
+  <converters>
+    <converterModel>
+      <id>3ba388f8-933d-404d-8a61-eb0b89174227</id>
+      <name>LinearConverter</name>
+      <description>A converter applying a linear transformation</description>
+      <className>fr.cnes.sitools.converter.basic.LinearConverter</className>
+      <descriptionAction></descriptionAction>
+      <classVersion>0.3</classVersion>
+      <classAuthor>AKKA/CNES</classAuthor>
+      <classOwner>AKKA/CNES</classOwner>
+      <parametersMap>
+        <entry>
+          <string>precision</string>
+          <converterParameter>
+            <name>precision</name>
+            <description>result precision (#0.00)</description>
+            <value>#0.00</value>
+            <valueType>string</valueType>
+            <parameterType>CONVERTER_PARAMETER_INTERN</parameterType>
+            <attachedColumn></attachedColumn>
+          </converterParameter>
+        </entry>
+        <entry>
+          <string>b</string>
+          <converterParameter>
+            <name>b</name>
+            <description>b in y = a.x+b</description>
+            <value>2</value>
+            <valueType>double</valueType>
+            <parameterType>CONVERTER_PARAMETER_INTERN</parameterType>
+            <attachedColumn></attachedColumn>
+          </converterParameter>
+        </entry>
+        <entry>
+          <string>a</string>
+          <converterParameter>
+            <name>a</name>
+            <description>a in y = a.x+b</description>
+            <value>10</value>
+            <valueType>double</valueType>
+            <parameterType>CONVERTER_PARAMETER_INTERN</parameterType>
+            <attachedColumn></attachedColumn>
+          </converterParameter>
+        </entry>
+        <entry>
+          <string>y</string>
+          <converterParameter>
+            <name>y</name>
+            <description>y in y = a.x+b</description>
+            <value></value>
+            <valueType>xs:string</valueType>
+            <parameterType>CONVERTER_PARAMETER_OUT</parameterType>
+            <attachedColumn>virtual</attachedColumn>
+          </converterParameter>
+        </entry>
+        <entry>
+          <string>x</string>
+          <converterParameter>
+            <name>x</name>
+            <description>x in y = a.x+b</description>
+            <value></value>
+            <valueType>xs:string</valueType>
+            <parameterType>CONVERTER_PARAMETER_IN</parameterType>
+            <attachedColumn>x_pos</attachedColumn>
+          </converterParameter>
+        </entry>
+      </parametersMap>
+      <status>ACTIVE</status>
+    </converterModel>
+  </converters>
+</converterChainedModel>

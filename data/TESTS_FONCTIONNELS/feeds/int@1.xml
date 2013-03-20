@@ -1,0 +1,16 @@
+<FeedModel>
+  <id>1b1ee7cb-95be-4a93-b1d9-48aae22daf43</id>
+  <name>EmptyFeed</name>
+  <feedType>rss_2.0</feedType>
+  <title>An empty Feed</title>
+  <description></description>
+  <link></link>
+  <entries/>
+  <parent>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</parent>
+  <author>
+    <name></name>
+    <email></email>
+  </author>
+  <visible>true</visible>
+  <feedSource>CLASSIC</feedSource>
+</FeedModel>

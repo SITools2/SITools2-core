@@ -1,0 +1,5 @@
+<role>
+  <id>reg</id>
+  <name>Registered</name>
+  <description>Registered users can access public and protected data.</description>
+</role>

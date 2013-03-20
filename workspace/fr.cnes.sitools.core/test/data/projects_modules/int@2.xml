@@ -1,0 +1,23 @@
+<projectModule>
+  <id>DataSetExplorer</id>
+  <name>DataSetExplorer</name>
+  <description>Browse several datasets</description>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <title>title.DatasetExplorer</title>
+  <defaultWidth>200</defaultWidth>
+  <defaultHeight>500</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>datasetExplorerModule</icon>
+  <xtype>sitools.user.modules.datasetExplorer</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/dataSetExplorer/dataSetExplorer.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>0</priority>
+</projectModule>

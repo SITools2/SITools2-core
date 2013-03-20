@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+	<path id="compile.classpath">
+		<pathelement location="${comp.wp.dir}/org.restlet.patched/org.restlet.patched_1.0.3.jar"/>
+		<pathelement location="${comp.cp.dir}/fr.cnes.sitools.core.jar" />
+		<pathelement location="${comp.lib.dir}/javax.measure_0.9.5/javax.measure_0.9.5.jar" />		
+		<path refid="restlet_jse_2_0_5_patched" />
+		<path refid="sitools_libraries" />
+	</path>
+
+	<target name="prepare-extensions">
+		<!-- Creation des repertoires dist.dir et out.jar.dir -->
+		<mkdir dir="${dist.dir}" />
+	</target>
+
+
+	<target name="compile-extensions">
+		<javac srcdir="./src" debug="${debug}" deprecation="${deprecation}" optimize="${optimize}" encoding="${encoding}" includeAntRuntime="false">
+			<classpath refid="compile.classpath" />
+		</javac>
+	</target>
+
+	<target name="jar-extensions">
+		<delete file="modules.jar" />
+		<property name="version.num" value="1.00" />
+		<buildnumber file="build.num" />
+		<jar jarfile="${dist.dir}/${project.name}.jar" basedir="./src" includes="**/*.class">
+			<metainf dir="./src/META-INF">
+				<include name="**/*Helper"/>
+			</metainf>
+		</jar>
+	</target>
+
+	<target name="cleanup-extensions">
+		<delete>
+			<fileset dir="." includes="**/*.class" />
+		</delete>
+
+	</target>
+
+	<!--<target name="deploy-jar-extensions"> -->
+		<!-- Deploiement du JAR de l'extension -->
+	<!--	<echo message="- Deploiement du JAR de l'extension -" />
+		<copy todir="${out.jar.dir}">
+			<fileset dir="${dist.lib.dir}" />
+		</copy>
+
+	</target> -->

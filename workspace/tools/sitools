@@ -1,0 +1,136 @@
+#! /bin/bash
+
+# ---------
+# Fonctions
+# ---------
+usage() {
+    echo "USAGE"
+    echo "  ${prog} <start|stop|restart|status>"
+    echo " "
+}
+
+start() {
+    if [ -f ${SITOOLS_PID} ];then
+        status
+    else    
+        if [ "${SITOOLS}" != "" ];then
+	    local SITOOLS_START="${START_DIR}/${SITOOLS}"
+            [ ! -x ${SITOOLS_START} ] && echo "Impossible de lancer ${SITOOLS_START}" && exit 1
+            echo -e "Demarrage de ${SITOOLS_START}...\c "
+            nohup ${SITOOLS_START} 2>&1 >> ${LOG} &
+            if [ ${?} -ne 0 ];then
+                echo "[ERREUR]" | tee -a ${LOG}
+                echo "Un probleme semble empecher ${SITOOLS_START} de demarrer..." | tee -a ${LOG}
+                echo "Veuillez controler le script avant de relancer." | tee -a ${LOG}
+            else
+                echo "[OK]" | tee -a ${LOG}
+            fi
+        fi
+    fi
+}
+
+stop() {
+    echo -e "Arret de sitools...\c "
+    if [ ! -f ${SITOOLS_PID} ];then
+        echo "[ERREUR]"
+        echo "Le fichier ${SITOOLS_PID} est introuvable..."
+        isRunning=`ps -ef | grep -v 'grep' | grep 'fr.cnes.sitools.server.Starter' | awk '{print $2}'`
+        if [ "${isRunning}" != "" -a "`echo ${isRunning} | tr -d [:digit:]`" = "" ];then
+            echo " "
+            echo "Tentative d'arret..."
+            kill ${isRunning}
+        else
+            echo "sitools semble etre arrete..."
+        fi
+    else
+        kill `cat ${SITOOLS_PID}`
+        if [ ${?} -eq 0 ];then
+            echo "[OK]"
+            \rm ${SITOOLS_PID}
+
+        else
+            echo "[ERREUR]"
+        fi
+    fi
+}
+
+status() {
+    echo -e "Etat de sitools..."
+    if [ -f ${SITOOLS_PID} ];then
+        local pid=`cat ${SITOOLS_PID}`
+        if [ "${pid}" != "" ];then
+            isRunning=`ps -ef |grep "${pid}" | grep -v 'grep' | grep 'fr.cnes.sitools.server.Starter'`
+            if [ "${isRunning}" != "" ];then
+                echo "sitools est lance (pid: ${pid})"
+            else
+                echo "Etrange... Le fichier PID est present (${pid}) mais le processus semble absent."
+            fi
+        else
+            echo "le fichier ${SITOOLS_PID} est vide! Une erreur a du se produire lors du lancement..."
+        fi
+    else
+        isRunning=`ps -ef |grep 'java' | grep -v 'grep' | grep 'fr.cnes.sitools.server.Starter'`
+        if [ "${isRunning}" != "" ];then
+            echo "Etrange... Le fichier PID est absent mais le processus semble fonctionner en memoire."
+         else
+            echo "sitools est arrete."
+        fi
+    fi
+}
+
+# ---------
+# Principal
+# ---------
+prog=`basename ${0}`
+myDir=`dirname ${0}`
+myPid=${$}
+
+# Parametrage de l'environnement
+[ -f ${HOME}/.bash_profile ] && . ${HOME}/.bash_profile
+
+LOG_DIR="${HOME}/LOG"
+[ ! -d ${LOG_DIR} ] && mkdir -p ${LOG_DIR}
+
+LOG="${LOG_DIR}/sitools.log"
+
+[ "${1}" = "" ] && usage && exit 0
+
+START_DIR="${HOME}/sitools-distribution/workspace/prototype"
+SITOOLS="startSitools.sh"
+SITOOLS_START="${START_DIR}/${SITOOLS}"
+SITOOLS_PID="${LOG_DIR}/${SITOOLS}.run"
+
+if [ ! -x ${SITOOLS_START} ];then
+    echo "--- ERREUR ---" | tee -a ${LOG}
+    echo "${SITOOLS_START} introuvable ou non executable. Abandon." | tee -a ${LOG}
+    echo "--- ERREUR ---" | tee -a ${LOG}
+    exit 1
+fi
+
+
+
+case ${1} in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    status)
+        status
+        ;;
+    *)
+        echo "option '${1}' inconnue"
+        usage
+        exit 1
+        ;;
+esac
+
+# -------------
+# Fin du script
+# -------------
+

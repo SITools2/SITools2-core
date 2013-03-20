@@ -1,0 +1,13 @@
+<resourceAuthorization>
+  <id>urn:uuid:StorageAdministration:type:fr.cnes.sitools.service.storage.StorageAdministration</id>
+  <name>StorageAdministration</name>
+  <description>Administration of Storage service 
+-&gt; The administrator must have all authorizations</description>
+  <url>/sitools/datastorage/admin</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

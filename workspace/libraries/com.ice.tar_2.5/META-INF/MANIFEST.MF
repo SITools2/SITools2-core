@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JavaTar
+Bundle-SymbolicName: com.ice.tar_2.5
+Bundle-Version: 2.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: ICE Engineering, Inc.
+Bundle-ClassPath: tar.jar
+Export-Package: com.ice.tar

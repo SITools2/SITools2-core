@@ -1,0 +1,25 @@
+<projectModule>
+  <id>4570d4e4-e5d1-4e7b-8ff4-9c3b400320cf</id>
+  <name>projectDescription</name>
+  <description>Show a Project Description</description>
+  <author>Akka</author>
+  <version>1.0</version>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/description_project.png</imagePath>
+  <title>project Description</title>
+  <defaultWidth>800</defaultWidth>
+  <defaultHeight>400</defaultHeight>
+  <x>450</x>
+  <y>0</y>
+  <icon>projectDescriptionModule</icon>
+  <specificType>projectDescription</specificType>
+  <xtype>sitools.user.modules.projectDescription</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/projectDescription/projectDescription.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>0</priority>
+</projectModule>

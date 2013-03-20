@@ -1,0 +1,19 @@
+<resourceAuthorization>
+  <id>urn:uuid:DeveloperApplication:type:fr.cnes.sitools.applications.DeveloperApplication</id>
+  <name>DeveloperApplication</name>
+  <description>Access the documentation folder, containing usefull information for developpers to extend Sitools
+-&gt; administrator user can have GET/POST/PUT/DELETE authorizations to access add or delete files or folder
+-&gt; public user must have GET authorization to access the folders</description>
+  <url>/sitools/developer</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

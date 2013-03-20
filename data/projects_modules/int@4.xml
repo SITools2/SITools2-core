@@ -1,0 +1,26 @@
+<projectModule>
+  <id>80f347ca-8003-4297-a96e-a6fdc045f711</id>
+  <name>Datastorage Explorer</name>
+  <description>Browse a Datastorage Directory</description>
+  <label>label.datastorageExplorer</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <imagePath>/sitools/common/res/images/icons/datastorage-explorer.png</imagePath>
+  <title>DataStorage Explorer</title>
+  <defaultWidth>100</defaultWidth>
+  <defaultHeight>600</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>datastorageExplorerModule</icon>
+  <specificType></specificType>
+  <xtype>sitools.user.modules.datastorageExplorer</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/cmsModule/datastorageExplorer.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>8</priority>
+</projectModule>

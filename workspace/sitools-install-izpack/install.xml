@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+<installation version="1.0">
+	<!-- Includes some jars -->
+	<!-- Contains the files for the database validator -->
+	<jar src="dist/sitools-install-izpack.jar" />
+	<!-- JDBC database drivers -->
+	<jar src="lib/postgresql-8.3-603.jdbc3.jar" />
+	<jar src="lib/mysql-connector-java-5.1.7-bin.jar" />
+	<info>
+		<appname>Sitools2</appname>
+		<appversion>2.0</appversion>
+		<authors>
+			<author email="" name="CNES" />
+			<author email="" name="Akka Technologies" />
+		</authors>
+		<uninstaller name="Uninstaller.jar" write="yes" />
+		<javaversion>1.6</javaversion>
+		<requiresjdk>no</requiresjdk>
+		<writeinstallationinformation>yes</writeinstallationinformation>
+		<summarylogfilepath>$INSTALL_PATH/installLog</summarylogfilepath>
+	</info>
+	
+	<listeners>
+		<listener installer="InstallDatabaseAction" jar ="dist/sitools-install-izpack.jar"/>
+	</listeners>
+
+	<guiprefs width="900" height="700" resizable="yes">
+		<modifier key="useHeadingPanel" value="yes" />
+		<modifier key="headingImageOnLeft" value="yes" />
+		<modifier key="headingLineCount" value="1" />
+		<modifier key="headingFontSize" value="1.5" />
+		<modifier key="headingBackgroundColor" value="0x00ffffff" />
+		<modifier key="headingPanelCounter" value="text" />
+		<modifier key="headingPanelCounterPos" value="inHeading" />
+		<modifier key="langDisplayType" value="native" />
+	</guiprefs>
+
+	<locale>
+		<langpack iso3="eng" />
+		<langpack iso3="fra" />
+	</locale>
+	<resources>
+		<res id="LicencePanel.licence_eng" parse="yes"
+			src="../fr.cnes.sitools.core/conf/licences/gpl-3.0.txt" />
+		<res id="LicencePanel.licence_fra" parse="yes"
+			src="../fr.cnes.sitools.core/conf/licences/gpl-3.0.txt" />
+		<res id="userInputSpec.xml" src="install_res/install_userInputSpec.xml" />
+		<!-- Ant action file -->
+		<!-- <res id="AntActionsSpec.xml" src="AntActionsSpec.xml" /> -->
+		<res id="Heading.image" src="res/img/logo_01_petiteTaille.png" />
+		<res id="installer.langsel.img" src="res/img/logo_02_tailleMoyenne.png" />
+		<!-- for internationnalization -->
+		<res id="userInputLang.xml_eng" src="install_res/userInputLang.xml_eng" />
+		<res id="userInputLang.xml_fra" src="install_res/userInputLang.xml_fra" />
+		<res id="CustomLangpack.xml_eng" src="install_res/CustomLangpack_eng.xml" />
+		<res id="CustomLangpack.xml_fra" src="install_res/CustomLangpack_fra.xml" />
+	</resources>
+
+	<conditions>
+		<condition type="variable" id="postgresqlSelected">
+			<name>input.database.driver</name>
+			<value>postgresql</value>
+		</condition>
+		<condition type="variable" id="mysqlSelected">
+			<name>input.database.driver</name>
+			<value>mysql</value>
+		</condition>
+
+	</conditions>
+
+	<dynamicvariables>
+		<!-- mysql -->
+		<variable name="db_url"
+			value="jdbc:${input.database.driver}://${input.database.hostname}:${input.database.port}/${input.database.name}"
+			condition="mysqlSelected" />
+		<variable name="db_driver" value="org.gjt.mm.mysql.Driver"
+			condition="mysqlSelected" />
+		<!-- postgresql -->
+		<variable name="db_url"
+			value="jdbc:${input.database.driver}://${input.database.hostname}:${input.database.port}/${input.database.name}"
+			condition="postgresqlSelected" />
+		<variable name="db_driver" value="org.postgresql.Driver"
+			condition="postgresqlSelected" />
+			<variable name="smtpUrl" value="${smtpServer}:${smtpPort}"/>
+	</dynamicvariables>
+
+	<panels>
+		<panel classname="CheckedHelloPanel" />
+		<panel classname="LicencePanel" />
+		<panel classname="TreePacksPanel" />
+		<panel classname="TargetPanel" />
+		<panel classname="UserInputPanel" id="UserInputPanel.0" />
+		<panel classname="UserInputPanel" id="UserInputPanel.1">
+			<!-- Database validator -->
+			<validator classname="fr.cnes.sitools.izpack.validator.JDBCConnectionValidator" />
+		</panel>
+		<panel classname="SummaryPanel" />
+		<panel classname="InstallPanel" />
+		<!-- Panel to create databases -->
+		<!--<panel classname="DatabasePanel" />-->
+		<panel classname="FinishPanel" />
+	</panels>
+	<variables>
+		<variable name="workspacePath" value="workspace" />
+		<variable name="fr.cnes.sitools.corePath" value="workspace/fr.cnes.sitools.core" />
+		<variable name="fr.cnes.sitools.extensions" value="workspace/fr.cnes.sitools.extensions" />
+		<variable name="libraries" value="workspace/libraries" />
+		<variable name="resPath" value="res" />
+		<variable name="scriptPath" value="res/script" />
+		<variable name="extPath" value="res/ext" />
+		<variable name="propertiesPath" value="res/properties" />
+		<variable name="imgPath" value="res/img" />
+		<variable name="dbPath" value="res/db" />
+		<variable name="update-classpathPath" value="workspace/sitools-update-classpath" />
+		
+	</variables>
+
+	<packs>
+		<!-- SERVER PACKS -->
+		<pack name="Server" preselected="yes" required="yes">
+			<description>Server files (Sitools, lib, cots, scripts, config, data,
+				database)</description>
+		</pack>
+		<!-- SITOOLS, contains the sitools Jar -->
+		<pack name="Sitools" preselected="yes" required="yes" parent="Server">
+			<description>This package contains the core of the server
+			</description>
+			<file override="update"
+				src="../fr.cnes.sitools.core/dist/lib/fr.cnes.sitools.core.jar"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath" />
+			<fileset override="update" dir="res/logs"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath/logs" />
+		</pack>
+		<!-- LIB, contains all the librairies and the custom restlet extensions -->
+		<pack name="libraries" preselected="yes" required="yes" parent="Server">
+			<description>Libraries (org.apache.solr_3.6.1, org.apache.xalan_2.7.1,
+				org.gjt.mm.mysql_5.1.7,
+				org.postgresql_8.3, org.xmlpull_3.1,
+				org.restlet.ext.solr_3.1.0, org.restlet.patched, org.restlet.ext.wadl_2.0.1)
+			</description>
+			<fileset override="update" dir="../libraries" targetdir="$INSTALL_PATH/$libraries"
+				includes="**/*.jar" />
+			<file override="update"
+				src="../org.restlet.ext.solr/org.restlet.ext.solr_3.6.1.jar"
+				targetdir="$INSTALL_PATH/workspace/org.restlet.ext.solr" />
+			<file override="update"
+				src="../org.restlet.patched/org.restlet.patched_1.0.3.jar"
+				targetdir="$INSTALL_PATH/workspace/org.restlet.patched" />
+			<file override="update"
+				src="../org.restlet.ext.wadl/org.restlet.ext.wadl_2.0.1.jar"
+				targetdir="$INSTALL_PATH/workspace/org.restlet.ext.wadl" />
+		</pack>
+		<!-- COTS, contains all the other librairies needed -->
+		<pack name="cots-restlet" preselected="yes" required="yes"
+			parent="Server">
+			<description>Cots-restlet</description>
+			<fileset override="update" dir="../../cots/restlet-2.0.5-patched"
+				targetdir="$INSTALL_PATH/cots/restlet-2.0.5-patched" includes="**/*.jar" />
+		</pack>
+		<!-- SCRIPTS, contains the starting scripts -->
+		<pack name="scripts" preselected="yes" required="yes" parent="Server">
+			<description>Scripts</description>
+			<!-- UNIX SCRIPT -->
+			<file override="true" src="$scriptPath/sitools"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath" />
+			<file override="true" src="$scriptPath/startSitools.sh"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath" />
+			<file override="true" src="$scriptPath/sitools.sh" targetdir="$INSTALL_PATH" />
+			<!-- WINDOWS SCRIPT -->
+			<file override="true" src="$scriptPath/startSitools.bat"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath" />
+			<file override="true" src="$scriptPath/sitools.bat" targetdir="$INSTALL_PATH" />
+			<!-- JAR UTILITIES -->
+			<file override="true" src="../../$update-classpathPath/sitools-update-classpath.jar"
+				targetdir="$INSTALL_PATH/$update-classpathPath" />
+			<fileset override="true" dir="res/ext"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath/ext" />
+			<!-- Makes those scripts parsable -->
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/startSitools.sh"
+				type="shell" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/sitools" type="shell" />
+			<parsable encoding="UTF-8" targetfile="$INSTALL_PATH/sitools.sh"
+				type="ant" />
+			<parsable encoding="UTF-8" targetfile="$INSTALL_PATH/sitools.bat"
+				type="ant" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/startSitools.bat"
+				type="shell" />
+			<!-- Makes those scripts executable -->
+			<executable targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/startSitools.sh"
+				stage="never" />
+			<executable targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/sitools"
+				stage="never" />
+			<executable targetfile="$INSTALL_PATH/sitools.sh" stage="never" />
+			<executable
+				targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/startSitools.bat"
+				stage="never" />
+			<executable targetfile="$INSTALL_PATH/sitools.bat" stage="never" />
+		</pack>
+		<!-- CONFIG, contains the config files -->
+		<pack name="config" preselected="yes" required="yes" parent="Server">
+			<description>Config</description>
+			<file override="true" src="$propertiesPath/sitools.properties"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath" />
+			<file override="true"
+				src="../fr.cnes.sitools.core/conf/properties/sitools-logging.properties"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath/conf/properties" />
+			<fileset override="true" dir="../fr.cnes.sitools.core/conf/resources"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath/conf/resources" />
+			<fileset override="true" dir="../fr.cnes.sitools.core/conf/licences"
+				targetdir="$INSTALL_PATH/licences" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/sitools.properties"
+				type="javaprop" />
+		</pack>
+		<!-- DATA -->
+		<pack name="data" preselected="yes" required="yes" parent="Server">
+			<description>Init data</description>
+			<fileset override="update" dir="../../data" targetdir="$INSTALL_PATH/data"
+				excludes="**/TESTS/**" />
+			<!-- ADD A USERSTORAGE FOR USER ADMIN TODO remove it in future version -->
+			<file override="true" src="$resPath/data/userstorage/int@0.xml"
+				targetdir="$INSTALL_PATH/data/userstorage" />
+			<!-- ADD A USERSTORAGE to store public desktop preferences -->
+			<file override="true" src="$resPath/data/userstorage/int@1.xml"
+				targetdir="$INSTALL_PATH/data/userstorage" />
+			<fileset override="update" dir="res/data/storage" targetdir="$INSTALL_PATH/data/storage" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/data/userstorage/int@0.xml" type="xml" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/data/userstorage/int@1.xml" type="xml" />
+		</pack>
+		<!-- DATABASE -->
+		<pack name="database" preselected="yes" required="yes" parent="Server">
+			<description>Database creation scripts</description>
+			<fileset override="true" dir="../../database" targetdir="$INSTALL_PATH/database" excludes="**/pgsql_sitools.sql"/>
+			<file override="true" src="$resPath/database/PGSQL/pgsql_sitools.sql"
+				targetdir="$INSTALL_PATH/database/PGSQL" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/database/PGSQL/pgsql_sitools.sql" type="ant" />			
+		</pack>
+		<!-- END OF SERVER PACKS SERVER EXTENSIONS -->
+		<pack name="Server extensions" preselected="yes" required="no">
+			<description>Server extensions</description>
+		</pack>
+		<!-- SERVER EXTENSIONS -->
+		<pack name="extensions" preselected="yes" required="no"
+			parent="Server extensions">
+			<description>Extensions for Converters, Filters,
+				SVAs and Applications
+			</description>
+			<file override="update"
+				src="../fr.cnes.sitools.extensions/dist/fr.cnes.sitools.extensions.jar"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath/ext" />
+		</pack>
+		<!-- END OF SERVER EXTENTIONS CLIENT PACKS -->
+		<pack name="Client" preselected="yes" required="no">
+			<description>Client files (ext-js, public, client-admin, client-user)
+			</description>
+		</pack>
+		<!-- EXT JS -->
+		<pack name="client-cots" preselected="yes" required="no" parent="Client">
+			<description>Ext-js librairy, Openlayers, GeoExt</description>
+			<fileset override="update" dir="../../cots/extjs" targetdir="$INSTALL_PATH/cots/extjs"
+				excludes="**/*.zip" />
+			<fileset override="update" dir="../../cots/GeoExt" targetdir="$INSTALL_PATH/cots/GeoExt"
+				excludes="**/*.zip" />
+			<fileset override="update" dir="../../cots/OpenLayers-2.11" targetdir="$INSTALL_PATH/cots/OpenLayers-2.11"
+				excludes="**/*.zip" />
+		</pack>
+		<!-- PUBLIC -->
+		<pack name="public" preselected="yes" required="no" parent="Client">
+			<description>Public</description>
+			<fileset override="update" dir="../client-public"
+				targetdir="$INSTALL_PATH/$workspacePath/client-public">
+				<exclude name=".*" />
+				<exclude name=".settings/" />
+			</fileset>
+			<depends packname="client-cots" />
+		</pack>
+		<!-- CLIENT ADMIN -->
+		<pack name="client-admin" preselected="yes" required="no" parent="Client">
+			<description>Client-admin</description>
+			<fileset override="update" dir="../client-admin"
+				targetdir="$INSTALL_PATH/$workspacePath/client-admin">
+				<exclude name=".*" />
+				<exclude name=".settings/" />
+			</fileset>
+			<depends packname="public" />
+		</pack>
+		<!-- CLIENT USER -->
+		<pack name="client-user" preselected="yes" required="no" parent="Client">
+			<description>Client-user</description>
+			<fileset override="update" dir="../client-user"
+				targetdir="$INSTALL_PATH/$workspacePath/client-user">
+				<exclude name=".*" />
+				<exclude name=".settings/" />
+			</fileset>
+			<depends packname="public" />
+		</pack>
+	</packs>
+</installation>

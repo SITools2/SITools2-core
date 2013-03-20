@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:ApplicationPluginApplication:type:fr.cnes.sitools.plugins.applications.ApplicationPluginApplication</id>
+  <name>ApplicationPluginApplication</name>
+  <description></description>
+  <url>/sitools/plugins/applications</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

@@ -1,0 +1,97 @@
+<resourcePlugin>
+  <id>641afda9-ca29-4f60-a925-5e62d4cb65a3</id>
+  <name>Order</name>
+  <description>Resource model for Order Resource</description>
+  <className>fr.cnes.sitools.resources.order.OrderResourceModel</className>
+  <classVersion>0.1</classVersion>
+  <classAuthor>AKKA</classAuthor>
+  <classOwner></classOwner>
+  <parametersMap>
+    <entry>
+      <string>methods</string>
+      <resourceParameter>
+        <name>methods</name>
+        <description>List of methods implemented for this resource, separate by |</description>
+        <value>POST</value>
+        <valueType>xs:enum-multiple[GET, POST, PUT, DELETE]</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>colUrl</string>
+      <resourceParameter>
+        <name>colUrl</name>
+        <description>Colum containing data url for order</description>
+        <value>local_url</value>
+        <valueType>xs:dataset.columnAlias</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>zip</string>
+      <resourceParameter>
+        <name>zip</name>
+        <description>(true or false) If the data needs to be zipped at the end</description>
+        <value>true</value>
+        <valueType>xs:boolean</valueType>
+        <type>PARAMETER_USER_INPUT</type>
+        <userUpdatable>true</userUpdatable>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>runTypeAdministration</string>
+      <resourceParameter>
+        <name>runTypeAdministration</name>
+        <description>The intern run type</description>
+        <value>TASK_DEFAULT_RUN_ASYNC</value>
+        <valueType>xs:enum[TASK_FORCE_RUN_SYNC,TASK_FORCE_RUN_ASYNC,TASK_DEFAULT_RUN_SYNC,TASK_DEFAULT_RUN_ASYNC]</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>image</string>
+      <resourceParameter>
+        <name>image</name>
+        <description>The image url</description>
+        <value></value>
+        <valueType>xs:image</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>resourceImplClassName</string>
+      <resourceParameter>
+        <name>resourceImplClassName</name>
+        <description>The name of the resource implementation</description>
+        <value>fr.cnes.sitools.resources.order.OrderResource</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>runTypeUserInput</string>
+      <resourceParameter>
+        <name>runTypeUserInput</name>
+        <description>The user input run type</description>
+        <value></value>
+        <valueType>xs:enum[,TASK_RUN_SYNC,TASK_RUN_ASYNC]</valueType>
+        <type>PARAMETER_USER_INPUT</type>
+        <userUpdatable>false</userUpdatable>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>url</string>
+      <resourceParameter>
+        <name>url</name>
+        <description>attachment url</description>
+        <value>/order</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_ATTACHMENT</type>
+      </resourceParameter>
+    </entry>
+  </parametersMap>
+  <parent>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</parent>
+  <resourceClassName>fr.cnes.sitools.resources.order.OrderResourceFacade</resourceClassName>
+  <applicationClassName>fr.cnes.sitools.dataset.DataSetApplication</applicationClassName>
+  <dataSetSelection>ALL</dataSetSelection>
+</resourcePlugin>

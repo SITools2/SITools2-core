@@ -1,0 +1,14 @@
+<resourceAuthorization>
+  <id>urn:uuid:AuthorizationApplication:type:fr.cnes.sitools.security.authorization.AuthorizationApplication</id>
+  <name>AuthorizationApplication</name>
+  <description>Authorizations for resource (application) access management.
+Be carefull with this application, administrator must have all authorizations
+Do not let public user have PUT/POST/DELETE authorizations</description>
+  <url>/sitools/authorizations</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

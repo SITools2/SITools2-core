@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/config" xmlns:cfg="http://www.example.org/config" elementFormDefault="qualified">
+
+<!-- Simple word type -->
+
+<xs:simpleType name="word">
+  <xs:restriction base="xs:string">
+    <xs:pattern value="[a-zA-Z]*"/>
+  </xs:restriction>
+</xs:simpleType>
+
+<!-- Parameters are simple column names without any space. -->
+
+<xs:complexType name="Parameters">
+	<xs:sequence>
+		<xs:element name="name" type="cfg:word" minOccurs="0" maxOccurs="unbounded"/>
+	</xs:sequence>
+</xs:complexType>
+
+<!-- URI to a .class file  -->
+
+<xs:simpleType name="Class">
+	<xs:restriction base="xs:string">
+		<xs:pattern value="(http|file)://.*\.class"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<!-- single converter type -->
+
+<xs:complexType name="Converter">
+	<xs:sequence>
+		<xs:element name="name" type="xs:string"/>
+		<xs:element name="description" type="xs:string"/>
+		<xs:element name="param_in" type="cfg:Parameters"/>
+		<xs:element name="param_out" type="cfg:Parameters"/>
+		<xs:element name="class" type="cfg:Class"/>
+		<xs:element name="classname" type="xs:string"/>
+	</xs:sequence>
+</xs:complexType>
+
+<!-- set of converters -->
+
+<xs:complexType name="Converters">
+	<xs:sequence>
+		<xs:element name="cv" type="cfg:Converter"/>
+	</xs:sequence>
+</xs:complexType>
+
+<xs:element name="convs" type="cfg:Converters"/>
+
+</xs:schema>

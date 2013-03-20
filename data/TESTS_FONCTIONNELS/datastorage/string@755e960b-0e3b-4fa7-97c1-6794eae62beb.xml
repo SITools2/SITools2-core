@@ -1,0 +1,12 @@
+<fr.cnes.sitools.service.storage.model.StorageDirectory>
+  <id>755e960b-0e3b-4fa7-97c1-6794eae62beb</id>
+  <name>testFonctionnel</name>
+  <description></description>
+  <localPath>file://{$ROOT_DIRECTORY}/data/TESTS_FONCTIONNELS</localPath>
+  <publicUrl>/testFonctionnel</publicUrl>
+  <attachUrl>/testFonctionnel</attachUrl>
+  <deeplyAccessible>true</deeplyAccessible>
+  <listingAllowed>true</listingAllowed>
+  <modifiable>true</modifiable>
+  <status>STARTED</status>
+</fr.cnes.sitools.service.storage.model.StorageDirectory>

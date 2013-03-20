@@ -1,0 +1,5 @@
+<role>
+  <id>edit</id>
+  <name>Editor</name>
+  <description>Editors can add/update/delete data</description>
+</role>

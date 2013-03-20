@@ -1,0 +1,14 @@
+<jdbcdatasource>
+  <id>ced86bfc-6fbc-4b26-b12e-1ad5eb8ae189</id>
+  <name>Mysql</name>
+  <description>A simple description</description>
+  <status>ACTIVE</status>
+  <driverClass>org.gjt.mm.mysql.Driver</driverClass>
+  <url>jdbc:mysql://odysseus2.silogic.fr:3306/cnes-fuse</url>
+  <userLogin>root</userLogin>
+  <userPassword>mysql</userPassword>
+  <sitoolsAttachementForUsers>/dbDemo</sitoolsAttachementForUsers>
+  <maxActive>10</maxActive>
+  <initialSize>5</initialSize>
+  <schemaOnConnection></schemaOnConnection>
+</jdbcdatasource>

@@ -1,0 +1,94 @@
+<resourcePlugin>
+  <id>e6bb14f3-dc96-4a81-94d4-e547ae47affc</id>
+  <name>HTML export POST synchrone : erreur !</name>
+  <description>Resource model for HTML export Resource</description>
+  <className>fr.cnes.sitools.resources.tasks.html.HtmlResourceModel</className>
+  <classVersion>0.1</classVersion>
+  <classAuthor>AKKA</classAuthor>
+  <classOwner></classOwner>
+  <parametersMap>
+    <entry>
+      <string>methods</string>
+      <resourceParameter>
+        <name>methods</name>
+        <description>List of methods implemented for this resource, separate by |</description>
+        <value>POST</value>
+        <valueType>xs:enum-multiple[GET, POST, PUT, DELETE]</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>title</string>
+      <resourceParameter>
+        <name>title</name>
+        <description>htmlTitle</description>
+        <value>HTML export POST synchrone : erreur !</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>runTypeAdministration</string>
+      <resourceParameter>
+        <name>runTypeAdministration</name>
+        <description>The intern run type</description>
+        <value>TASK_DEFAULT_RUN_SYNC</value>
+        <valueType>xs:enum[TASK_FORCE_RUN_SYNC,TASK_FORCE_RUN_ASYNC,TASK_DEFAULT_RUN_SYNC,TASK_DEFAULT_RUN_ASYNC]</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>image</string>
+      <resourceParameter>
+        <name>image</name>
+        <description>The image url</description>
+        <value></value>
+        <valueType>xs:image</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>resourceImplClassName</string>
+      <resourceParameter>
+        <name>resourceImplClassName</name>
+        <description>The name of the resource implementation</description>
+        <value>fr.cnes.sitools.resources.tasks.html.HtmlResource</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>runTypeUserInput</string>
+      <resourceParameter>
+        <name>runTypeUserInput</name>
+        <description>The user input run type</description>
+        <value></value>
+        <valueType>xs:enum[,TASK_RUN_SYNC,TASK_RUN_ASYNC]</valueType>
+        <type>PARAMETER_USER_INPUT</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>max_rows</string>
+      <resourceParameter>
+        <name>max_rows</name>
+        <description>Set max_rows=-1 to export everything</description>
+        <value>0</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_INTERN</type>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>url</string>
+      <resourceParameter>
+        <name>url</name>
+        <description>attachment url</description>
+        <value>/htmlExportErreur</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_ATTACHMENT</type>
+      </resourceParameter>
+    </entry>
+  </parametersMap>
+  <parent>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</parent>
+  <resourceClassName>fr.cnes.sitools.resources.tasks.html.HtmlResourceFacade</resourceClassName>
+  <dataSetSelection>ALL</dataSetSelection>
+</resourcePlugin>

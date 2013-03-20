@@ -1,0 +1,16 @@
+<resourceAuthorization>
+  <id>5eaa653f-3012-4043-aeb5-6cda68b3747f</id>
+  <name>fuse</name>
+  <description>Exposition du project fuse</description>
+  <url>/5eaa653f-3012-4043-aeb5-6cda68b3747f</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<userInput>
+	<panel order="0">
+		<field size="2" txt="Sitools properties" type="title" id="input.title" />
+		<!-- HOST PROPERTIES -->
+		<field txt="Host properties" type="staticText" id="input.host.title" />
+		<field type="text" variable="host_domain">
+			<spec size="20" txt="Host domain" set="localhost" id="input.host_domain" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="input.host.name.validator" txt="Host domain is a required field" />
+		</field>
+		<field type="text" variable="public_host_domain">
+			<spec size="20" txt="Public host domain" set="http://localhost:8182"
+				id="input.public_host_domain" />
+		</field>
+		<field type="text" variable="host_port">
+			<spec size="20" txt="Host port" set="8182" id="input.host_port" />
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Host port must be a number" id="input.host.port.validator">
+				<param name="pattern" value="\d+" />
+			</validator>
+		</field>
+		<!-- END OF HOST PROPERTIES -->
+		<field type="space" />
+		<field type="divider" />
+		<field type="space" />
+		<!-- EMAIL PROPERTIES -->
+		<field txt="Email properties" type="staticText" id="input.email.title" />
+		<field type="rule" variable="emailAddress">
+			<spec size="20" txt="Email Address" id="input.email_address"
+				layout="O:19:U @ O:10:U . O:4:U" />
+		</field>
+		<field type="text" variable="smtpServer">
+			<spec set="smtp://" size="20" txt="SMTP Server" id="input.smtp_server" />
+		</field>
+		<field type="text" variable="smtpPort">
+			<spec size="20" set="21" txt="Smtp port" id="input.smtpPort" />
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Host port must be a number" id="input.email.port.validator">
+				<param name="pattern" value="\d*" />
+			</validator>
+		</field>
+		<field type="text" variable="smtpId">
+			<spec size="20" txt="Smtp identifier" id="input.smtp_id" />
+		</field>
+		<field type="password" align="left" variable="smtpPwd">
+			<spec>
+				<pwd txt="Password:" size="20" set="" id="input.db_pwd.label" />
+				<pwd txt="Retype Password:" size="20" set=""
+					id="input.db_pwd.label.retype" />
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+				txt="Both keystore passwords must match." id="catalog.email.password.validator" />
+		</field>
+		<field type="combo" variable="smtpTls">
+			<spec id="input.smtpTls">
+				<choice txt="true" id="input.smtpTls.true" value="true" />
+				<choice txt="false" id="input.smtpTls.false" value="false"
+					set="true" />
+			</spec>
+		</field>
+		<!-- END OF EMAIL PROPERTIES -->
+		<field type="space" />
+		<field type="divider" />
+		<field type="space" />
+		<!-- PROXY PROPERTIES -->
+		<field txt="Proxy Properties" type="staticText" id="input.proxy.title" />
+		<field type="text" variable="proxy_host">
+			<spec size="20" txt="Proxy host" id="input.proxy_host" />
+		</field>
+		<field type="text" variable="proxy_port">
+			<spec size="20" txt="Proxy port" id="input.proxy_port" />
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Host proxy must be a number" id="input.proxy.port.validator">
+				<param name="pattern" value="\d*" />
+			</validator>
+		</field>
+		<field type="text" variable="proxy_user">
+			<spec size="20" txt="Proxy user" id="input.proxy_user" />
+		</field>
+		<field type="text" variable="non_proxy_hosts">
+			<spec size="20" txt="Non proxy hosts" id="input.non_proxy_hosts"
+				set="localhost|127.0.0.1" />
+		</field>
+		<field type="password" align="left" variable="proxy_pwd">
+			<spec>
+				<pwd txt="Password:" size="20" set="" id="input.proxy_pwd.label" />
+				<pwd txt="Retype Password:" size="20" set=""
+					id="input.proxy_pwd_retype.label" />
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+				txt="Both keystore passwords must match." id="catalog.proxy.password.validator" />
+		</field>
+		<field type="combo" variable="with_proxy">
+			<spec id="input.enable_proxy" txt="Enable proxy">
+				<choice txt="true" id="input.enable_proxy.true" value="true" />
+				<choice txt="false" id="input.enable_proxy.false" value="false"
+					set="true" />
+			</spec>
+		</field>
+	</panel>
+	<!-- DATABASE PROPERTIES -->
+	<panel order="1">
+		<field size="2" txt="Database properties" type="title"
+			id="input.title.dbProp" />
+		<field type="combo" variable="input.database.driver">
+			<description align="left" txt="Choose a database driver"
+				id="input.database.description.label" />
+			<spec id="input.database.driver.label">
+				<choice txt="mysql" id="input.mysql.label" value="mysql" />
+				<choice txt="postgresql" id="input.postgresql.label" value="postgresql"
+					set="true" />
+			</spec>
+		</field>
+		<field type="text" variable="input.database.hostname">
+			<spec txt="Database host name: " set="localhost"
+				id="input.database.hostname.label" size="15" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="catalog.database.name.validator" txt="hostname is a required field" />
+		</field>
+
+		<field type="text" variable="input.database.port">
+			<spec txt="Database port: " id="input.database.port.label" size="15"
+				set="5432" />
+			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
+				txt="Database port must be a number" id="input.database.port.validator">
+				<param name="pattern" value="\d+" />
+			</validator>
+		</field>
+		<field type="text" variable="input.database.name">
+			<spec txt="Database name: " id="input.database.name.label" size="15"
+				set="CNES" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="input.database.name.validator" txt="Database name is a required field" />
+		</field>
+		<field type="text" variable="db_schema">
+			<spec txt="Schema name: " id="input.database.schema.label" size="15"
+				set="sitools" />
+		</field>
+		<field type="text" variable="db_user">
+			<spec size="15" txt="User" set="" id="input.db_user.label" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="input.user.name.validator" txt="User name is a required field" />
+		</field>
+		<field type="password" align="left" variable="db_pwd">
+			<spec>
+				<pwd txt="Password:" size="15" set="" id="input.db_pwd.label" />
+				<pwd txt="Retype Password:" size="15" set="" />
+			</spec>
+			<validator class="com.izforge.izpack.util.PasswordEqualityValidator"
+				txt="Both keystore passwords must match." id="catalog.database.password.validator" />
+		</field>
+		
+		<field type="radio" variable="dbInstallSelected">
+			<description align="left" txt="Do you want to install the SITools2 User Database ?"
+				id="input.db_installed"/>
+			<spec>
+				<choice txt="Yes" id="input.db_installed.yes" value="true" />
+				<choice txt="No" id="input.db_installed.no" value="false" set="true" />
+			</spec>
+		</field>
+		
+	</panel>
+	<!-- END OF DATABASE PROPERTIES -->
+
+
+</userInput>

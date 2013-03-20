@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:FeedsProjectApplication:type:fr.cnes.sitools.server.Starter$3</id>
+  <name>FeedsProjectApplication</name>
+  <description>Feeds administration for projects</description>
+  <url>/sitools/projects/{dataId}/feeds</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

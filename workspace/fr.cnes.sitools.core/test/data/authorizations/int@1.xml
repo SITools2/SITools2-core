@@ -1,0 +1,6 @@
+<resourceAuthorization>
+  <id>urn:uuid:MultiDatasetsOpensearchApplication:type:fr.cnes.sitools.portal.multidatasets.opensearch.MultiDatasetsOpensearchApplication</id>
+  <name>MultiDatasetsOpensearchApplication</name>
+  <description>MultiOpensearch management</description>
+  <url>http://localhost:8182/sitools/portal/opensearch</url>
+</resourceAuthorization>

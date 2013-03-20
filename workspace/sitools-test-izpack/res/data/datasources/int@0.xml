@@ -1,0 +1,14 @@
+<jdbcdatasource>
+  <id>8e00fe38-6f95-4338-a81c-ed2ab1db9340</id>
+  <name>test</name>
+  <description></description>
+  <status>ACTIVE</status>
+  <driverClass>org.postgresql.Driver</driverClass>
+  <url>$db_url_pgsql</url>
+  <userLogin>$db_user_pgsql</userLogin>
+  <userPassword>$db_pwd_pgsql</userPassword>
+  <sitoolsAttachementForUsers>/datasourceCNES</sitoolsAttachementForUsers>
+  <maxActive>10</maxActive>
+  <initialSize>1</initialSize>
+  <schemaOnConnection></schemaOnConnection>
+</jdbcdatasource>

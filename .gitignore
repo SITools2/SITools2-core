@@ -1,0 +1,11 @@
+out/
+bin/
+.metadata/
+classes/
+*.class
+dist/
+.settings/
+data/TESTS_mapshup/
+data/TESTS_jeobrowser/
+extensions/
+build.num

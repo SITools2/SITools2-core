@@ -1,0 +1,18 @@
+<!DOCTYPE project [
+<!ENTITY struct  SYSTEM "struct.xml">
+<!ENTITY taskdef SYSTEM "taskdef.xml">
+<!ENTITY targets SYSTEM "targets.xml"> 
+]>
+
+<project name="org.restlet.ext.solr.build" default="build-ext_solr" basedir="..">
+
+	&struct;
+	<!-- Import des tasks -->
+	&taskdef;
+	<!-- Import des targets -->
+	&targets;
+	
+	<target name="build-ext_solr" depends="prepare-ext_solr,compile-ext_solr,jar-ext_solr,cleanup-ext_solr,deploy-jar-ext_solr" />
+
+</project>
+

@@ -1,0 +1,23 @@
+<resourceAuthorization>
+  <id>urn:uuid:UserInscriptionApplication:type:fr.cnes.sitools.inscription.UserInscriptionApplication</id>
+  <name>UserInscriptionApplication</name>
+  <description>User inscription management on client side</description>
+  <url>/sitools/inscriptions/user</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <POST>true</POST>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./schemaNosqlDb.xsd">
+	
+	<table>
+		<name>Match</name>
+		<column>
+			<name>transitId</name>
+			<type>long</type>
+		</column>
+		<column>
+			<name>sourceId</name>
+			<type>long</type>
+		</column>
+		<column>
+			<name>flags</name>
+			<type>byte</type>
+		</column>
+		<column>
+			<name>data</name>
+			<type>gaia.cu1.mdb.cu3.idt.xm.dmimpl.MatchImpl</type>
+		</column>
+	</table>
+	
+	<table>
+		<name>NewSource</name>
+		<column>
+			<name>sourceId</name>
+			<type>long</type>
+		</column>
+		<column>
+			<name>data</name>
+			<type>gaia.cu1.mdb.cu3.idt.xm.dmimpl.NewSourceImpl</type>
+		</column>
+	</table>
+	
+	<table>
+		<name>AstroElementary</name>
+		<column>
+			<name>transitId</name>
+			<type>long</type>
+		</column>
+		<column>
+			<name>data</name>
+			<type>gaia.cu1.mdb.cu3.idt.interm.dmimpl.AstroElementaryImpl</type>
+		</column>
+	</table>
+	
+	<table>
+		<name>AstroObservation</name>
+		<column>
+			<name>transitId</name>
+			<type>long</type>
+		</column>
+		<column>
+			<name>data</name>
+			<type>gaia.cu1.mdb.cu3.idt.raw.dmimpl.AstroObservationImpl</type>
+		</column>
+	</table>	
+	
+</tables>

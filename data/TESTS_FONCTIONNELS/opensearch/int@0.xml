@@ -1,0 +1,35 @@
+<opensearch>
+  <id>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</id>
+  <name>openSearch</name>
+  <description></description>
+  <indexedColumns>
+    <opensearchColumn>
+      <idColumn>9b61f542-f303-4314-ad2b-128fe935119a</idColumn>
+    </opensearchColumn>
+    <opensearchColumn>
+      <idColumn>89f0f3e2-0045-4cce-8d47-980f42501edf</idColumn>
+    </opensearchColumn>
+    <opensearchColumn>
+      <idColumn>e8d30079-9180-4d53-ae70-5d3808508c36</idColumn>
+      <type>string</type>
+    </opensearchColumn>
+  </indexedColumns>
+  <titleField>9b61f542-f303-4314-ad2b-128fe935119a</titleField>
+  <linkFieldRelative>false</linkFieldRelative>
+  <guidField>e8d30079-9180-4d53-ae70-5d3808508c36</guidField>
+  <pubDateField>89f0f3e2-0045-4cce-8d47-980f42501edf</pubDateField>
+  <status>INACTIVE</status>
+  <parent>9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</parent>
+  <image>
+    <type>Image</type>
+    <url></url>
+    <mediaType>Image</mediaType>
+  </image>
+  <defaultSearchField>9b61f542-f303-4314-ad2b-128fe935119a</defaultSearchField>
+  <uniqueKey>e8d30079-9180-4d53-ae70-5d3808508c36</uniqueKey>
+  <keywordColumns>
+    <string>dataset_head</string>
+  </keywordColumns>
+  <lastImportDate>2012-03-02 12:16:42.705 CET</lastImportDate>
+  <parentUrl>/9cbed21a-8daa-4e6b-af76-b65ea1bdcd72</parentUrl>
+</opensearch>

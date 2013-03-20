@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<langpack>
+	<str id="input.title" txt="Sitools properties"/> 
+	<str id="input.host.title" txt="Host properties:"/>   
+	<str id="input.host_domain" txt="Host domain:*"/>  
+	<str id="input.public_host_domain" txt="Public host domain:"/>  
+	<str id="input.host_port" txt="Host port:*"/>  
+	<str id="input.email.title" txt="Email properties:"/> 
+	<str id="input.email_address" txt="Email address:"/>  
+	<str id="input.smtp_server" txt="SMTP server:"/>  
+	
+	<str id="input.title.dbProp" txt="Database properties"/>  
+	<str id="input.database.driver.label" txt="Driver:"/>  
+	<str id="input.db_user.label" txt="User:*"/>  
+	<str id="input.db_pwd.label" txt="Password:*"/>  
+	<str id="input.db_pwd.label.retype" txt="Retype password:*"/>
+
+	<str id="input.database.description.label" txt="Please, fill the following form for the user database management"/>
+	<str id="input.postgresql.label" txt="PostGreSQL"/>
+	<str id="input.mysql.label" txt="MySQL"/>
+	<str id="input.database.hostname.label" txt="Database Hostname*"/>
+	<str id="input.database.port.label" txt="Database Port*"/>
+	<str id="input.database.name.label" txt="Database name*"/>
+	<str id="input.database.schema.label" txt="Schema name"/>
+	<str id="input.smtpPort" txt="SMTP Port:"/>
+	<str id="input.smtp_id" txt="SMTP login:"/>
+	<str id="input.smtpTls" txt="SMTP TLS :"/>
+	<str id="input.smtpTls.true" txt="True"/>
+	<str id="input.smtpTls.false" txt="False"/>
+	
+	<str id="input.proxy.title" txt="Proxy properties:"/>
+	<str id="input.proxy_host" txt="Proxy host:"/>
+	<str id="input.proxy_port" txt="Proxy port:"/>
+	<str id="input.proxy_user" txt="Proxy user:"/>
+	<str id="input.proxy_pwd.label" txt="Proxy password:"/>
+	<str id="input.proxy_pwd_retype.label" txt="Retype password:"/>
+	<str id="input.non_proxy_hosts" txt="Non proxy hosts:"/>
+	<str id="input.enable_proxy.true" txt="True"/>
+	<str id="input.enable_proxy.false" txt="False"/>
+	<str id="input.enable_proxy" txt="Enable proxy"/>
+	
+	<str id="database.user.create.successfully" txt="Database created successfully"/>
+	
+	<!-- VALIDATORS -->
+	<str id="catalog.database.name.validator" txt="hostname is a required field"/>
+	<str id="input.database.port.validator" txt="Database port must be a number"/>
+	<str id="input.database.name.validator" txt="Database name is a required field"/>
+	<str id="catalog.database.password.validator" txt="Both database passwords must match."/>
+	
+	<str id="input.host.port.validator" txt="Host port must be a number"/>
+	<str id="input.host.name.validator" txt="Host domain is a required field"/>
+	
+	<str id="input.database.email.validator" txt="Email port must be a number"/>
+	<str id="input.user.name.validator" txt="User name is a required field"/>
+	<str id="catalog.email.password.validator" txt="Both email passwords must match."/>
+	
+	<str id="input.proxy.port.validator" txt="Proxy port must be a number"/>
+	<str id="catalog.proxy.password.validator" txt="Both proxy passwords must match."/>
+	
+	<str id="input.error_database" txt="Error database"/>
+	
+	
+</langpack>

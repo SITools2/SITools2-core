@@ -1,0 +1,14 @@
+<resourceAuthorization>
+  <id>urn:uuid:OrdersFolderApplication:type:fr.cnes.sitools.applications.OrdersFolderApplication</id>
+  <name>OrdersFolderApplication</name>
+  <description>Application to access a folder dedicated to orders management
+-&gt; administrator user can have GET/POST/PUT/DELETE authorizations to access, add or delete files or folder
+-&gt; public must not have GET authorization not to access the folders</description>
+  <url>/sitools/adminData</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

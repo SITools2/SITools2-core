@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<langpack>
+	<str id="installer.reversetitle" txt="$APP_NAME install " />
+
+	<str id="TreePacksPanel.headline" txt="Select installation packages" />
+
+	<str id="data.validation.warning.title" txt="Warning while validating" />
+	<str id="data.validation.warning.title" txt="Validation failed" />
+
+	<str id="input.warning.database"
+		txt="Warning the schema you chose already exists
+		It that cas, if you choose to create the user database some errors can occur" />
+
+	<str id="input.error.database" txt="There is an error in the database configuration" />
+
+	<str id="DatabasePanel.headline" txt="Database install" />
+
+	<str id="panel.databasePanel.label" txt="Click the following buttons to create database tables." />
+	<str id="panel.databasePanel.warning" txt="The MySQL 'cnes-fuse' schema must be already present and empty." />
+	<str id="panel.databasePanel.user.button" txt="User database" />
+	<str id="panel.databasePanel.tests.button" txt="Tests database" />
+	<str id="panel.databasePanel.user.button.tip" txt="Install user databases" />
+	<str id="panel.databasePanel.tests.button.tip" txt="Install tests databases" />
+	
+	<str id="database.user.create.successfully" txt="Tests databases created successfuly"/>
+	
+	<str id="TargetPanel.info" txt="Select the Sitools installation path (folder containing workspace directory): "/>
+</langpack>

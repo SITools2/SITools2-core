@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Wadl
+Bundle-SymbolicName: org.restlet.ext.wadl
+Bundle-Version: 2.0.1
+Bundle-Activator: org.restlet.ext.wadl.Activator
+Require-Bundle: org.restlet;bundle-version="2.0.5",
+ org.restlet.ext.xml;bundle-version="2.0.5"
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.restlet.ext.wadl

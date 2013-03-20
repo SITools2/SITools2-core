@@ -1,0 +1,20 @@
+<resourceAuthorization>
+  <id>5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</id>
+  <name>TestFonctionnelProject</name>
+  <description>Exposition du project TestFonctionnelProject</description>
+  <url>/TFProject</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <POST>true</POST>
+      <GET>true</GET>
+      <PUT>true</PUT>
+      <DELETE>true</DELETE>
+      <OPTIONS>true</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

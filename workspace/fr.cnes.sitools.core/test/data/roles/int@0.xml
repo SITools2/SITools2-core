@@ -1,0 +1,5 @@
+<role>
+  <id>rev</id>
+  <name>Reviewer</name>
+  <description>Reviewers can create/access/modify/delete informations and make them accessible for registered public users.</description>
+</role>

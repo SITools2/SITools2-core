@@ -1,0 +1,12 @@
+<resourceAuthorization>
+  <id>urn:uuid:ConverterApplication:type:fr.cnes.sitools.dataset.converter.ConverterApplication</id>
+  <name>ConverterApplication</name>
+  <description>Act on converters defined for a dataset.</description>
+  <url>/sitools/datasets/{datasetId}/converters</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

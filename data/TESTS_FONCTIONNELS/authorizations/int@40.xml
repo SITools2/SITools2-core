@@ -1,0 +1,20 @@
+<resourceAuthorization>
+  <id>urn:uuid:TemporaryFolderApplication:type:fr.cnes.sitools.applications.TemporaryFolderApplication</id>
+  <name>TemporaryFolderApplication</name>
+  <description>Application to access a temporary folder on the server
+-&gt; administrator user can have GET/POST/PUT/DELETE authorizations to access, add or delete files or folder
+-&gt; public can have GET authorization to access the folders
+In order to download files using the ExtJs client, the HTTP-BASIC credentials can be sended in the cookie</description>
+  <url>/sitools/tmp</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

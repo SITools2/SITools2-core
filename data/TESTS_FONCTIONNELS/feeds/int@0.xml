@@ -1,0 +1,39 @@
+<FeedModel>
+  <id>48514858-73ba-4fa2-b0a9-7998b03889ca</id>
+  <name>AFeedRss</name>
+  <feedType>rss_2.0</feedType>
+  <title>A Feed RSs</title>
+  <description>a description</description>
+  <link>/sitools/client-user/</link>
+  <entries>
+    <FeedEntryModel>
+      <link>/sitools/client-user/</link>
+      <updatedDate>2011-09-29 17:21:00.0 CEST</updatedDate>
+      <publishedDate>2011-09-29 17:21:00.0 CEST</publishedDate>
+      <title>SecondItem</title>
+      <description>The second item description</description>
+      <author>
+        <name>akka</name>
+        <email>sitools@akka.eu</email>
+      </author>
+    </FeedEntryModel>
+    <FeedEntryModel>
+      <link>/sitools/client-user/</link>
+      <updatedDate>2011-09-29 17:20:00.0 CEST</updatedDate>
+      <publishedDate>2011-09-29 17:20:00.0 CEST</publishedDate>
+      <title>firstItem</title>
+      <description>the first item description</description>
+      <author>
+        <name>akka</name>
+        <email>sitoos@akka.eu</email>
+      </author>
+    </FeedEntryModel>
+  </entries>
+  <parent>5132d85b-68e4-4e2b-a921-6fd7de5dc4ee</parent>
+  <author>
+    <name>akka</name>
+    <email>sitools@akka.eu</email>
+  </author>
+  <visible>true</visible>
+  <feedSource>CLASSIC</feedSource>
+</FeedModel>

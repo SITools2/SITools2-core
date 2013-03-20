@@ -1,0 +1,72 @@
+<!-- ===================================
+==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  
+==  This file is part of SITools2.
+==  
+==  SITools2 is free software: you can redistribute it and/or modify
+==  it under the terms of the GNU General Public License as published by
+==  the Free Software Foundation, either version 3 of the License, or
+==  (at your option) any later version.
+==  
+==  SITools2 is distributed in the hope that it will be useful,
+==  but WITHOUT ANY WARRANTY; without even the implied warranty of
+==  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+==  GNU General Public License for more details.
+==  
+==  You should have received a copy of the GNU General Public License
+==  along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+==================================== -->
+<!--
+==============================================================================
+=== Build file to allow ant (http://jakarta.apache.org/ant/) to be used
+=== to build the Sitools project.
+===
+=== Author : AKKA Technologies
+===
+=== name    : nom du projet
+===	default : tache ant executee par defaut
+===	basedir : repertoire courant lors de l'execution des taches ant
+===
+==============================================================================
+-->
+
+<!DOCTYPE project [
+   <!ENTITY struct  SYSTEM "struct.xml">
+<!ENTITY taskdef SYSTEM "taskdef.xml">
+<!ENTITY targets SYSTEM "targets.xml"> 
+]>
+<project name="sitools-build" default="build" basedir="../..">
+
+	<!--
+   ========================================================================
+     Targets projet
+   ========================================================================
+	-->
+
+	<target name="build" depends="deploy-jar-projet, javadoc-projet" />
+
+	<target name="execute-tests" description="execution des tests unitaires JUnit" depends="test-init, test-compile, update-test-properties, test" />
+	
+	<target name="compilation" description="Compilation des sources" depends="init, clean, prepare, compile" />
+
+	<target name="sources-projet" description="Generation du ZIP des sources Java du projet" depends="init, clean, prepare, sources" />
+
+	<target name="javadoc-projet" description="Generation du ZIP contenant la javadoc du projet" depends="init, clean, prepare, javadoc, javadoc-tests" />
+
+	<target name="deploy-jar-projet" description="Deploiement local de l'application" depends="init, clean, prepare, compile, clean-dist, jar, deploy-jar" />
+	
+	<target name="deploy-jar-test-projet" description="Deploiement local de l'application avec tests" depends="init, test-init, clean, prepare, compile, test-compile, clean-dist, jar, jar-test, deploy-jar" />
+	<!-- index-help, after compile -->
+
+
+	<target name="deploy-signed-jar-projet" description="Deploiement local de l'application" depends="init, clean, prepare, compile, execute-tests, clean-dist, jar, signed-jar, deploy-jar" />
+
+	<target name="deploy-war-project" description="Deploiement local du WAR de l'application WEB" depends="init, clean, prepare, compile, execute-tests, clean-dist, jar, war, deploy-war" />
+	
+	<target name="deploy-version-sourceforge" description="Generation d'un tar.gz et du checksum MD5 pour un déploiement sur sourceforge" depends="generate_tar_gz, generate_md5"/>
+	
+	&struct;
+	&taskdef;
+	&targets;
+
+</project>

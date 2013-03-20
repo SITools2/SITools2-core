@@ -1,0 +1,26 @@
+<projectModule>
+  <id>8e573bd6-a329-448c-8a25-a44134b3e99c</id>
+  <name>Project Services</name>
+  <description>projects services</description>
+  <label>label.projectServices</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <imagePath></imagePath>
+  <title>Project Services</title>
+  <defaultWidth>450</defaultWidth>
+  <defaultHeight>350</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>projectServicesModule</icon>
+  <specificType></specificType>
+  <xtype>sitools.user.modules.projectServices</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/modules/resourcesPlugins/projectServices.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>7</priority>
+</projectModule>

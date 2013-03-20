@@ -1,0 +1,25 @@
+<resourceAuthorization>
+  <id>e9d5215a-c58c-49ff-9d71-aa93d344c4bc</id>
+  <name>fsqdfqsd</name>
+  <description>Exposition of the dataset fsqdfqsd
+-&gt; Administrator must have all authorizations on this application
+-&gt; Public user must have at least GET/PUT/DELETE authorizations on this application
+PUT and DELETE authorizations are for SvaTasks managment</description>
+  <url>/e9d5215a-c58c-49ff-9d71-aa93d344c4bc</url>
+  <authorizations>
+    <authorize>
+      <role>Reviewer</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>true</ALL>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

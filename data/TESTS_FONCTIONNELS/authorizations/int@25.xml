@@ -1,0 +1,18 @@
+<resourceAuthorization>
+  <id>e4bae87c-7dee-4ac3-b1b8-c3c87bdd4717</id>
+  <name>DBExplorerApplication for datasource mysql</name>
+  <description>Finder mapping a database resource.</description>
+  <url>/mysql</url>
+  <authorizations>
+    <authorize>
+      <role>Administrator</role>
+      <ALL>true</ALL>
+      <POST>false</POST>
+      <GET>false</GET>
+      <PUT>false</PUT>
+      <DELETE>false</DELETE>
+      <HEAD>false</HEAD>
+      <OPTIONS>false</OPTIONS>
+    </authorize>
+  </authorizations>
+</resourceAuthorization>

@@ -1,0 +1,41 @@
+D:\CNES-REST\SSL>keytool -keystore keystore -alias jetty -genkey -keyalg RSA
+Tapez le mot de passe du Keystore :
+Ressaisissez le nouveau mot de passe :
+Quels sont vos prÚnom et nom ?
+  [Unknown] :  192.168.2.12
+Quel est le nom de votre unitÚ organisationnelle ?
+  [Unknown] :  akka
+Quelle est le nom de votre organisation ?
+  [Unknown] :  akka
+Quel est le nom de votre ville de rÚsidence ?
+  [Unknown] :  merville
+Quel est le nom de votre Útat ou province ?
+  [Unknown] :  france
+Quel est le code de pays Ó deux lettres pour cette unitÚ ?
+  [Unknown] :  fr
+Est-ce CN=192.168.2.12, OU=akka, O=akka, L=merville, ST=france, C=fr ?
+  [non] :  oui
+
+SpÚcifiez le mot de passe de la clÚ pour <jetty>
+        (appuyez sur EntrÚe s'il s'agit du mot de passe du Keystore) :
+
+D:\CNES-REST\SSL>
+## Mot de passe = Mode de passe keystore  = restlet
+
+
+## Pour jetty - fichier .keystore dans le repertoire de l'utilisateur "Documents and settings"
+rename keystore .keystore 
+
+
+## Au lancement de l'application, saisir les passwords
+org.eclipse.jetty.ssl.keypassword : restlet
+org.eclipse.jetty.ssl.password : restlet
+org.eclipse.jetty.ssl.password : restlet
+
+
+cf
+ http://jetty.mortbay.org/jetty5/faq/faq_s_400-Security_t_ssl.html
+ http://wiki.restlet.org/docs_2.0/13-restlet/28-restlet/153-restlet.html
+ http://www.naviquan.com/blog/restlet-ssl
+
+keytool -certreq -keyalg RSA -alias jetty -file domain.csr -keystore keystore 
