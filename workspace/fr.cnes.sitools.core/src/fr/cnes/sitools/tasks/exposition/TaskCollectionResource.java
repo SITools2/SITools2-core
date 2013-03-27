@@ -22,18 +22,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
+import org.restlet.Context;
+import org.restlet.Request;
+import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
+import org.restlet.resource.Post;
+import org.restlet.resource.ResourceException;
+import org.restlet.security.User;
 
+import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.tasks.business.TaskManager;
 import fr.cnes.sitools.tasks.model.TaskModel;
+import fr.cnes.sitools.tasks.model.TaskResourceModel;
 
 /**
  * Handle the list of tasks or only the list for a particular User
@@ -52,6 +63,7 @@ public class TaskCollectionResource extends AbstractTaskResource {
   @Override
   public void doInit() {
     super.doInit();
+    this.setNegotiated(false);
   }
 
   /**
@@ -144,5 +156,59 @@ public class TaskCollectionResource extends AbstractTaskResource {
       }
     }
     return taskModels;
+  }
+
+  /**
+   * Create a new DataSet
+   * 
+   * @param representation
+   *          DataSet Representation
+   * @param variant
+   *          Variant user preferred MediaType
+   * @return Representation
+   */
+  @Post
+  public Representation newTaskModel(Representation representation, Variant variant) {
+    if (representation == null) {
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "TASK_MODEL_REPRESENTATION_REQUIRED");
+    }
+    try {
+      TaskModel taskModelInput = getTaskModelFromRepresentation(representation);
+
+      Context context = getContext().createChildContext();
+      context.getAttributes().put(TaskUtils.LOG_FOLDER,
+          SitoolsSettings.getInstance().getStoreDIR(Consts.APP_RESOURCE_LOGS_DIR));
+      // Create a task
+      Request request = new Request();
+      org.restlet.Response response = new org.restlet.Response(request);
+
+      TaskResourceModel model = new TaskResourceModel();
+      User user = getClientInfo().getUser();
+
+      Task task = TaskManager.getInstance().createTask(context, request, response, model, user, Level.INFO, true);
+      taskModelInput.setId(task.getTaskModel().getId());
+      task.setTaskModel(taskModelInput);
+
+      Response responseResult = new Response(true, task.getTaskModel(), TaskModel.class, "TaskModel");
+      return getRepresentation(responseResult, variant);
+
+    }
+    catch (ResourceException e) {
+      getLogger().log(Level.INFO, null, e);
+      throw e;
+    }
+    catch (Exception e) {
+      getLogger().log(Level.SEVERE, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
+  }
+
+  @Override
+  public void describePost(MethodInfo info) {
+    info.setDocumentation("Method to create a dataset");
+    info.setIdentifier("create_dataset");
+    addStandardPostOrPutRequestInfo(info);
+    addStandardResponseInfo(info);
+    addStandardInternalServerErrorInfo(info);
   }
 }

@@ -18,9 +18,12 @@
  ******************************************************************************/
 package fr.cnes.sitools.tasks.exposition;
 
+import java.io.IOException;
+
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
+import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 
 import com.thoughtworks.xstream.XStream;
@@ -55,16 +58,16 @@ public abstract class AbstractTaskResource extends SitoolsResource {
     application = (TaskApplication) getApplication();
     userId = (String) this.getRequest().getAttributes().get("identifier");
 
-//    if (userId != null && !userId.equals("anonymous")) {
-//      User user = getRequest().getClientInfo().getUser();
-//      if (user == null) {
-//        throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, "Those tasks are forbiden");
-//      }
-//      String userIdentifier = user.getIdentifier();
-//      if (!userId.equals(userIdentifier)) {
-//        throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, "Those tasks are forbiden");
-//      }
-//    }
+    // if (userId != null && !userId.equals("anonymous")) {
+    // User user = getRequest().getClientInfo().getUser();
+    // if (user == null) {
+    // throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, "Those tasks are forbiden");
+    // }
+    // String userIdentifier = user.getIdentifier();
+    // if (!userId.equals(userIdentifier)) {
+    // throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, "Those tasks are forbiden");
+    // }
+    // }
   }
 
   /**
@@ -73,9 +76,15 @@ public abstract class AbstractTaskResource extends SitoolsResource {
    * @param representation
    *          the representation sent (POST or PUT)
    * @return the corresponding TaskModel
+   * @throws IOException
    */
-  public final TaskModel getTaskModelFromRepresentation(Representation representation) {
+  public final TaskModel getTaskModelFromRepresentation(Representation representation) throws IOException {
     TaskModel task = null;
+    if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<TaskModel> obj = (ObjectRepresentation<TaskModel>) representation;
+      task = obj.getObject();
+    }
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       XstreamRepresentation<TaskModel> repXML = new XstreamRepresentation<TaskModel>(representation);
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);

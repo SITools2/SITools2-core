@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.tasks.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ import fr.cnes.sitools.common.model.IResource;
  * 
  */
 @XStreamAlias("TaskModel")
-public final class TaskModel implements IResource, Cloneable {
+public final class TaskModel implements IResource, Cloneable, Serializable {
 
   /**
    * serialVersionUID

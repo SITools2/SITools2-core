@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.tasks.exposition;
 
+import java.util.logging.Level;
+
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
@@ -27,6 +29,7 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
+import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.tasks.business.Task;
@@ -54,7 +57,8 @@ public class TaskResource extends AbstractTaskResource {
   @Override
   public void doInit() {
     super.doInit();
-    taskId = (String) this.getRequest().getAttributes().get("taskId");
+    this.setNegotiated(false);
+    taskId = (String) this.getRequest().getAttributes().get("taskId");   
 
   }
 
@@ -113,29 +117,34 @@ public class TaskResource extends AbstractTaskResource {
   @Put
   public Representation put(Representation representation, Variant variant) {
     Representation repr = null;
-
-    // Retrieve the SVA
-    Task task = TaskManager.getInstance().getById(taskId);
-    if (task == null) {
-      Response response = new Response(false, "NOT_FOUND");
-      repr = getRepresentation(response, variant);
-    }
-    else if (getUserId() != null && !getUserId().equals(task.getUserId())) {
-      getResponse().setStatus(Status.CLIENT_ERROR_FORBIDDEN);
-    }
-    else {
-      if (this.getReference().toString().endsWith("finish")) {
-        task.setTaskStatus(TaskStatus.TASK_STATUS_FINISHED);
-        Response response = new Response(true, task.getTaskModel(), TaskModel.class, "TaskModel");
+    try {
+      // Retrieve the SVA
+      Task task = TaskManager.getInstance().getById(taskId);
+      if (task == null) {
+        Response response = new Response(false, "NOT_FOUND");
         repr = getRepresentation(response, variant);
+      }
+      else if (getUserId() != null && !getUserId().equals(task.getUserId())) {
+        getResponse().setStatus(Status.CLIENT_ERROR_FORBIDDEN);
       }
       else {
-        TaskModel input = getTaskModelFromRepresentation(representation);
-        task.setTaskModel(input);
-        TaskManager.getInstance().updateTask(task);
-        Response response = new Response(true, task.getTaskModel(), TaskModel.class, "TaskModel");
-        repr = getRepresentation(response, variant);
+        if (this.getReference().toString().endsWith("finish")) {
+          task.setTaskStatus(TaskStatus.TASK_STATUS_FINISHED);
+          Response response = new Response(true, task.getTaskModel(), TaskModel.class, "TaskModel");
+          repr = getRepresentation(response, variant);
+        }
+        else {
+          TaskModel input = getTaskModelFromRepresentation(representation);
+          task.setTaskModel(input);
+          TaskManager.getInstance().updateTask(task);
+          Response response = new Response(true, task.getTaskModel(), TaskModel.class, "TaskModel");
+          repr = getRepresentation(response, variant);
+        }
       }
+    }
+    catch (Exception e) {
+      getLogger().log(Level.SEVERE, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     return repr;
 

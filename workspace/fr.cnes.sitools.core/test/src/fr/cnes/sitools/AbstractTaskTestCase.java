@@ -225,7 +225,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
       appContext.getAttributes().put("APP_REALM", smr);
 
       final String identifier = "identifier";
-      
+
       TaskApplication taskUser = new TaskApplication(appContext) {
         @Override
         public void sitoolsDescribe() {
@@ -233,7 +233,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
           this.setName("TaskApplication for user");
           this.setDescription("TaskApplication");
         }
-        
+
         // On ajoute un authorizer spécifique pour qu'un user puisse avoir que ses taches.
         @Override
         public Restlet getSecure() {
@@ -268,6 +268,9 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
       };
 
       this.component.getDefaultHost().attach(getAttachUrlAdmin(), taskAdmin);
+      // Attachement
+      component.getInternalRouter().attach(settings.getString(Consts.APP_TASK_URL), taskAdmin);
+
     }
 
     if (!this.component.isStarted()) {
@@ -311,7 +314,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
 
     deleteTaskForbiden(userId, task3, password, false);
     retrieveTasks(userId, 2, password, false);
-    deleteTask(userId, task2, password, false);
+    deleteTask(userId, task2.getTaskId(), password, false);
     retrieveTasks(userId, 1, password, false);
 
     cleanTasks(userId, password, false);
@@ -348,7 +351,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
 
     deleteTaskForbiden(userId, task3, password, true);
     retrieveTasks(userId, 2, password, true);
-    deleteTask(userId, task2, password, true);
+    deleteTask(userId, task2.getTaskId(), password, true);
     retrieveTasks(userId, 1, password, true);
 
     cleanTasks(userId, password, true);
@@ -381,7 +384,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
     setTaskFinish(null, task.getTaskId(), null, false);
 
     docAPI.appendSubChapter("Delete a task", "delete");
-    deleteTask(null, task, null, false);
+    deleteTask(null, task.getTaskId(), null, false);
     docAPI.appendSubChapter("Clean all tasks", "clean");
     cleanTasks(null, null, false);
 
@@ -407,12 +410,57 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
     Task task2 = createTask(userId + "_test");
     retrieveTasks(null, 2, null, false);
 
-    deleteTask(null, task2, null, false);
+    deleteTask(null, task2.getTaskId(), null, false);
     retrieveTasks(null, 1, null, false);
 
     cleanTasks(null, null, false);
 
     assertNone(null, null, false);
+
+    // create task the rest way
+
+  }
+
+  @Test
+  public void testForAdminRestWay() {
+    docAPI.setActive(false);
+    assertNone(null, null, false);
+
+    TaskModel taskModel = createTaskModelRestWay(null, null, false, Status.SUCCESS_OK);
+    retrieveTasks(null, 1, null, false);
+    // On supprime à la main
+    deleteTask(null, taskModel.getId(), null, false);
+
+    assertNone(null, null, false);
+  }
+
+  /**
+   * Allow a specific user to create a task
+   */
+  @Test
+  public void testForUserRestWay() {
+    docAPI.setActive(false);
+    String userId = "admin";
+    assertNone(null, null, false);
+
+    TaskModel taskModel = createTaskModelRestWay(userId, userAdminPwd, false, Status.SUCCESS_OK);
+    retrieveTasks(null, 1, null, false);
+    // On supprime à la main
+    deleteTask(null, taskModel.getId(), null, false);
+
+    assertNone(null, null, false);
+  }
+
+  /**
+   * Does not allow public user to create a task
+   */
+  @Test
+  public void testForPublicRestWay() {
+    docAPI.setActive(false);
+    String userId = "public";
+    assertNone(userId, null, true);
+
+    createTaskModelRestWay(userId, null, true, Status.CLIENT_ERROR_FORBIDDEN);
   }
 
   /**
@@ -643,8 +691,8 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
    * @param asPublic
    *          TODO
    */
-  private void deleteTask(String userId, Task task, String password, boolean asPublic) {
-    String url = getUrl(userId) + "/" + task.getTaskId();
+  private void deleteTask(String userId, String taskId, String password, boolean asPublic) {
+    String url = getUrl(userId) + "/" + taskId;
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       String template;
@@ -810,6 +858,82 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
     assertNotNull(task);
     return task;
 
+  }
+
+  /**
+   * Create a new Task created by the admin user
+   * 
+   * @return the new Task
+   */
+  private TaskModel createTaskModelRestWay(String userId, String password, boolean asPublic, Status expectedStatus) {
+
+    TaskModel model = new TaskModel();
+    model.setName("taskResourceForTest");
+    model.setDescription("A task created the rest way");
+    model.setUserId(userId);
+
+    Representation rep = getRepresentation(model, getMediaTest());
+    String url = getUrl(userId);
+    final Client client = new Client(Protocol.HTTP);
+    Request request = new Request(Method.POST, url);
+    request.setEntity(rep);
+    if (userId == null && password == null) {
+      userId = userAdminId;
+      password = userAdminPwd;
+    }
+    if (!asPublic) {
+      ChallengeResponse chal = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, userId, password);
+      request.setChallengeResponse(chal);
+    }
+    org.restlet.Response responseRestlet = client.handle(request);
+    try {
+      assertNotNull(responseRestlet);
+      if (expectedStatus.isError()) {
+        assertTrue(responseRestlet.getStatus().isError());
+        assertEquals(expectedStatus, responseRestlet.getStatus());
+      }
+      else {
+
+        Representation result = responseRestlet.getEntity();
+        assertNotNull(result);
+        assertTrue(responseRestlet.getStatus().isSuccess());
+        Response response = getResponse(getMediaTest(), result, TaskModel.class);
+        assertTrue(response.getSuccess());
+        TaskModel task = (TaskModel) response.getItem();
+        assertEquals(model.getDescription(), task.getDescription());
+        RIAPUtils.exhaust(result);
+        return task;
+      }
+    }
+    finally {
+      RIAPUtils.exhaust(responseRestlet);
+    }
+    return null;
+
+  }
+
+  @Test
+  public void createTaskRIAP() {
+
+    String userId = "admin";
+    assertNone(null, null, false);
+
+    TaskModel taskModel = new TaskModel();
+    taskModel.setName("A task");
+    taskModel.setDescription("A task created the rest way with RIAP");
+    taskModel.setUserId(userId);
+
+    SitoolsSettings settings = SitoolsSettings.getInstance();
+
+    String url = settings.getString(Consts.APP_TASK_URL);
+
+    TaskModel taskModelPersist = RIAPUtils.persistObject(taskModel, url, this.component.getContext());
+
+    retrieveTasks(null, 1, null, false);
+    // On supprime à la main
+    deleteTask(null, taskModelPersist.getId(), null, false);
+
+    assertNone(null, null, false);
   }
 
   // ------------------------------------------------------------
