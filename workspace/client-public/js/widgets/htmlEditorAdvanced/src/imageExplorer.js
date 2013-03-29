@@ -267,7 +267,7 @@ ImageExplorer.prototype = {
 		this.thumbTemplate = new Ext.XTemplate(
 			'<tpl for=".">',
 				'<tpl if="this.isImage(url)">',
-					'<div class="thumb-wrap" id="{shortName}">',
+					'<div class="thumb-wrap" id="{text}">',
 					'<div class="thumb"><img src="{url}" height="96" width="96" title="{shortName}"></div>',
 					'<span>{shortName}</span></div>',
 				'</tpl>',
