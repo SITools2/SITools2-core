@@ -2,7 +2,7 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2012-02-13
+Date                                 : 2012-04-02
 Version                              : 2.0
 Owner                                : CNES
 Developer                            : AKKA Technologies
@@ -15,6 +15,29 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (2.0)
 
 2/ Changes
+___________________
+-R9S1 (2013-04-02)
+	* New feature
+		- In fixed mode, it is possible to save a form and to display it at startup
+		- In fixed mode, it is possible to save a dataset view and to display it at startup
+		- GUI services administration
+
+	* Bugs fixed : 
+		- Bad layout on project tree graph when column label is too long to be displayed
+		- Project module parameters cannot be used in projectModule configured in desktop div
+		- 
+		
+	* Enhancements : 
+		- During the dataset configuration, it's not possible to change the alias of a table anymore, all columns must be removed before
+		- Date validity is checked when submiting a form with a date between
+		- Project has been moved to GitHub (https://github.com/SITools2/core-v2)
+		- Displayed column choice in the livegrid has been moved to a menu 
+		
+	
+	* API changes : 
+		- When querying the dataset record API, a 400 HTTP error code is returned 
+			* If a date is invalid 
+			* If a the dates in a date between filter are Inconsistent
 
 ____________________
 -2.0 (2013-02-13)
