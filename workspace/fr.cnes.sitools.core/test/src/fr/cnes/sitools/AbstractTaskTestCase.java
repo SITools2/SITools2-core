@@ -42,6 +42,7 @@ import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.data.Preference;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -885,6 +886,9 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
       ChallengeResponse chal = new ChallengeResponse(ChallengeScheme.HTTP_BASIC, userId, password);
       request.setChallengeResponse(chal);
     }
+    ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
+    objectMediaType.add(new Preference<MediaType>(getMediaTest()));
+    request.getClientInfo().setAcceptedMediaTypes(objectMediaType);
     org.restlet.Response responseRestlet = client.handle(request);
     try {
       assertNotNull(responseRestlet);
