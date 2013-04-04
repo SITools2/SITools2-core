@@ -90,15 +90,15 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
         // Correction bug Table alias KO - ID: 3566683
         this.panelSelectTables.addListener('activate', function (panel) {
 			var indexAlias = panel.datasourceUtils.getCmTablesDataset().getIndexById('alias');
-				if (indexAlias != -1){
-					if (this.gridFields.getStore().getCount() > 0){
-					    panel.gridTablesDataset.getColumnModel().setEditable(indexAlias, false);
-					}
-					else {
-					    panel.gridTablesDataset.getColumnModel().setEditable(indexAlias, true);
-					}
+			if (indexAlias !== -1) {
+				if (this.gridFields.getStore().getCount() > 0) {
+				    panel.gridTablesDataset.getColumnModel().setEditable(indexAlias, false);
 				}
-                 panel.gridTablesDataset.getView().refresh();
+				else {
+				    panel.gridTablesDataset.getColumnModel().setEditable(indexAlias, true);
+				}
+			}
+            panel.gridTablesDataset.getView().refresh();
 		}, this);
 		
 		// Permet de prendre en compte la nouvelle valeur
@@ -148,14 +148,27 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
                     Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
                     return false;
                 } else {
-                    var data = json.data;                    
+                    var data = json.data;
+                    
+                    var listDependencies = [];
                     Ext.each(data, function (datasetViewComponent) {
-						if (!Ext.isEmpty(datasetViewComponent.dependencies) && !Ext.isEmpty(datasetViewComponent.dependencies.js)) {
-						    Ext.each(datasetViewComponent.dependencies.js, function (dependencies) {
-						        includeJs(dependencies.url);
-						    }, this);
-						}
-                    });
+                        
+                        // Chargement des dependances pour permettre le parametrage du module dans le projet 
+                        // pour eviter de recharger la page
+                        if (!Ext.isEmpty(datasetViewComponent.dependencies && !Ext.isEmpty(datasetViewComponent.dependencies.js))) {
+                            listDependencies = listDependencies.concat(datasetViewComponent.dependencies.js);
+                        }
+                           
+                    }, this);
+                    
+                    if (!Ext.isEmpty(listDependencies)) {
+                        includeJsForceOrder(listDependencies, 0, function () {
+                            //load the dataset only when all dataviews dependencies are loaded
+                            if (this.url) {
+                                this.loadDataset();
+                            }
+                        }, this);
+                    }	
                 }
             }
         }); 
@@ -278,9 +291,7 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
      */
     onRender : function () {
         sitools.component.datasets.datasetsMultiTablesPanel.superclass.onRender.apply(this, arguments);
-        if (this.url) {
-            this.loadDataset();
-        }
+        
     }, 
     /**
      * called when user click on Ok button. 

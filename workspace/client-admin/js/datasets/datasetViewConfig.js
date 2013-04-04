@@ -34,9 +34,10 @@ sitools.admin.datasets.datasetViewConfig = Ext.extend(Ext.form.FormPanel, {
         this.title = i18n.get('label.viewConfig');
         var action = this.action;
         //Store of the comboDatasetsViews.
-        var storeDatasetViews = new Ext.data.JsonStore({
+        this.storeDatasetViews = new Ext.data.JsonStore({
             fields : [ 'id', 'name', 'description', 'jsObject', 'fileUrl', 'priority' ],
             url : this.urlDatasetViews,
+            autoLoad : false,
             root : "data", 
             sortInfo : {
                 field : 'priority',
@@ -45,6 +46,7 @@ sitools.admin.datasets.datasetViewConfig = Ext.extend(Ext.form.FormPanel, {
             listeners : {
                 scope : this, 
                 load : function (store, recs) {
+                    console.log("load from store");
                     if (Ext.isEmpty(this.comboDatasetViews.getValue())) {
                         if (!Ext.isEmpty(recs) && Ext.isArray(recs) && recs.length > 0) {
                             var minPriorityRec = null;
@@ -68,7 +70,7 @@ sitools.admin.datasets.datasetViewConfig = Ext.extend(Ext.form.FormPanel, {
         this.comboDatasetViews = new Ext.form.ComboBox({
             disabled : this.action == 'view' ? true : false, 
             id : "comboDatasetViews",
-            store : storeDatasetViews,
+            store : this.storeDatasetViews,
             fieldLabel : i18n.get('label.datasetViews'),
             displayField : 'name',
             valueField : 'id',
