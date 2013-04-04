@@ -1,44 +1,29 @@
 <projectModule>
-  <id>projectGraph</id>
-  <name>projectGraph</name>
-  <description>Project Graph</description>
-  <label>label.projectGraph</label>
-  <author>akka</author>
+  <id>9471a14c-c1db-4aff-8fe2-1d4332002579</id>
+  <name>Content viewer</name>
+  <description>HTML/CSS content viewer</description>
+  <label>label.contentViewer</label>
+  <author>AKKA</author>
   <version>1.0</version>
-  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/project_graph.png</imagePath>
-  <title>title.ProjectGraph</title>
-  <defaultWidth>800</defaultWidth>
-  <defaultHeight>500</defaultHeight>
+  <imagePath>http://localhost:8182/sitools/upload/postel-icon.png</imagePath>
+  <title>Content Viewer</title>
+  <defaultWidth>1000</defaultWidth>
+  <defaultHeight>600</defaultHeight>
   <x>0</x>
   <y>0</y>
-  <icon>graphModule</icon>
-  <specificType>projectGraph</specificType>
-  <xtype>sitools.user.modules.projectGraphTree</xtype>
+  <icon>contentViewerModule</icon>
+  <specificType></specificType>
+  <xtype>sitools.user.modules.contentViewerModule</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/common/js/treegrid/TreeGridSorter.js</url>
+        <url>/sitools/client-user/js/modules/cmsModule/contentViewerModule.js</url>
       </url>
-      <url>
-        <url>/sitools/common/js/treegrid/TreeGridColumnResizer.js</url>
-      </url>
-      <url>
-        <url>/sitools/js/treegrid/TreeGridNodeUI.js</url>
-      </url>
-      <url>
-        <url>/sitools/js/treegrid/TreeGridLoader.js</url>
-      </url>
-      <url>
-        <url>/sitools/js/treegrid/TreeGridColumns.js</url>
-      </url>
-      <url>
-        <url>/sitools/js/treegrid/TreeGrid.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/projectGraph/projectGraph.js</url>
+	  <url>
+        <url>/sitools/client-user/js/modules/cmsModule/cmsViewerTreeToolbar.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
-  <priority>2</priority>
+  <priority>9</priority>
 </projectModule>

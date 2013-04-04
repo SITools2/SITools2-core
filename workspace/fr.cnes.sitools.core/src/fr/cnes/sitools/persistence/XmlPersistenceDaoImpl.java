@@ -140,7 +140,7 @@ public abstract class XmlPersistenceDaoImpl<E extends Persistent> implements Per
     }
 
     // Pagination
-    int start = (filter.getStart() <= 0) ? 0 : filter.getStart() - 1;
+    int start = (filter.getStart() <= 0) ? 0 : filter.getStart();
     int limit = ((filter.getLimit() <= 0) || ((filter.getLimit() + start) > result.size())) ? (result.size() - start)
         : filter.getLimit();
     // subList
