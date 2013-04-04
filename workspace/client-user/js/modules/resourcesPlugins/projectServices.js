@@ -131,24 +131,24 @@ Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
 	
 	runJob : function (resource) {
 		
-		 var parameters = resource.parameters;
-         var url, icon, method, runTypeUserInput;
-         parameters.each(function (param) {
-             switch (param.name) {
-             case "methods":
-                 method = param.value;
-                 break;
-             case "url":
-                 url = projectGlobal.sitoolsAttachementForUsers + param.value;
-                 break;
-             case "runTypeUserInput":
-                 runTypeUserInput = param.value;
-                 break;
-             case "image":
-                 icon = param.value;
-                 break;
-             }
-         }, this);
+		var parameters = resource.parameters;
+        var url, icon, method, runTypeUserInput;
+        parameters.each(function (param) {
+            switch (param.name) {
+            case "methods":
+                method = param.value;
+                break;
+            case "url":
+                url = projectGlobal.sitoolsAttachementForUsers + param.value;
+                break;
+            case "runTypeUserInput":
+                runTypeUserInput = param.value;
+                break;
+            case "image":
+                icon = param.value;
+                break;
+			}
+        }, this);
 
 //        this.ctxMenu.handleResourceClick(resource, url, method, parameters);
         this.ctxMenu.resourceClick(resource, url, method, runTypeUserInput, parameters);

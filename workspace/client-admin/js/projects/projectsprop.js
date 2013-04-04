@@ -351,14 +351,12 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             	name : 'moduleConfig'
             }, {
                 name : 'label'
+            }, {
+            	name : 'dependencies'
             }], 
             listeners : {
 				scope : this, 
 				load : function (store) {
-					
-					
-					
-					
 					this.loadNonAvailableProjects(store);
 					if (this.action === "create") {
 						this._onAllModulesAttached();
@@ -939,7 +937,6 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
 	 */
     onRender : function () {
         sitools.component.projects.ProjectsPropPanel.superclass.onRender.apply(this, arguments);
-//        console.log('onRender');
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             if (this.action == 'modify' || this.action == "view") {
@@ -1100,28 +1097,30 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         }
     }, 
     loadNonAvailableProjects : function (store) {
+    	var listDependencies = [];
 		store.each(function (rec) {
 			
-			    // Chargement des dependances pour permettre le parametrage du module dans le projet 
-				// pour eviter de recharger la page
+			// Chargement des dependances pour permettre le parametrage du module dans le projet 
+			// pour eviter de recharger la page
+		   
+		    
 				if (!Ext.isEmpty(rec.get('dependencies') && !Ext.isEmpty(rec.get('dependencies').js))) {
-				    Ext.each(rec.get('dependencies').js, function (dependencies) {
-				        includeJs(dependencies.url);
-				    }, this);
+				    listDependencies = listDependencies.concat(rec.get('dependencies').js);
 				}
             
 			
-			var storeModules = this.modulePanel.getStore();
-			if (storeModules.findExact("name", rec.get('name')) == -1) {
-				storeModules.add(rec);
-			}
-		}, this);
-//		this.modulePanel.getView().refresh();
+				var storeModules = this.modulePanel.getStore();
+				if (storeModules.findExact("name", rec.get('name')) === -1) {
+					storeModules.add(rec);
+				}
+		    }, this);
+		
+	    if (!Ext.isEmpty(listDependencies)) {
+		    includeJsForceOrder(listDependencies, 0, function () {
+		        this.modulePanel.getView().refresh();
+		    }, this);
+		}
     }
-	
-    
-    
-
 });
 
 Ext.reg('s-projectsprop', sitools.component.projects.ProjectsPropPanel);

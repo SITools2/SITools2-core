@@ -424,22 +424,53 @@ function includeJs(url) {
         head.appendChild(script);
     }
 }
-
-function includeJsForceOrder(ConfUrls, indexAInclure) {
-    //Test if all inclusions are done for this module
+/**
+ * Include JS scripts in the given order and trigger callback when all scripts are loaded  
+ * @param ConfUrls {Array} the list of scripts to load
+ * @param indexAInclure {int} the index during the iteration
+ * @param callback {function} the callback
+ * @param scope {Object} the scope of the callback
+ */
+function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
+    //Test if all inclusions are done for this list of urls
     if (indexAInclure < ConfUrls.length) {
-        // if not : include the Js Script
-        var DSLScript = document.createElement("script");
-        DSLScript.type = "text/javascript";
-        DSLScript.onload = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1 ]);
-        DSLScript.onreadystatechange = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1 ]);
+        var url = ConfUrls[indexAInclure].url;
+    
+        var trouve = false;
+        var targetEl = "script";
+        var targetAttr = "src";
+        var scripts = document.getElementsByTagName(targetEl);
+        var script;
+        for (var i = scripts.length; i > 0; i--) {
+            script = scripts[i - 1];
+            if (script && script.getAttribute(targetAttr) !== null && script.getAttribute(targetAttr).indexOf(url) != -1) {
+                trouve = true;
+            }
+        }
+        if (!trouve) {
+            // if not : include the Js Script
+            var DSLScript = document.createElement("script");
+            DSLScript.type = "text/javascript";
+            DSLScript.onload = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.onreadystatechange = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.src = url;
 
-        DSLScript.src = ConfUrls[indexAInclure].url;
-
-        var headID = document.getElementsByTagName('head')[0];
-        headID.appendChild(DSLScript);
+            var headID = document.getElementsByTagName('head')[0];
+            headID.appendChild(DSLScript);
+        } else {
+            includeJsForceOrder(ConfUrls, indexAInclure + 1, callback, scope);
+        }
+    } else {
+        if (!Ext.isEmpty(callback)) {
+            if (Ext.isEmpty(scope)) {
+                callback.call();
+            } else {
+                callback.call(scope);
+            }
+        }
     }
 }
+
 
 Ext.override(Ext.PagingToolbar, {
     initComponent : function () {
