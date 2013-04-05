@@ -45,6 +45,8 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public TaskStoreXML(File location, Context context) {
     super(TaskModel.class, location, context);
@@ -52,6 +54,9 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public TaskStoreXML(Context context) {
     super(TaskModel.class, context);

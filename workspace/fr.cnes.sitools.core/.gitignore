@@ -4,7 +4,7 @@ conf/properties/sitools.properties
 jar/
 fr.cnes.sitools.core.jar
 fr.cnes.sitools.test.jar
-sitools
+/sitools
 sitools.properties
 startSitools.bat
 startSitools.sh

@@ -151,6 +151,11 @@ public class MongoDBRequestModel {
     this.collectionName = collectionName;
   }
 
+  /**
+   * Get the current request as a String object
+   * 
+   * @return the current request as a String
+   */
   public String toStringRequest() {
     return getFilterString() + "," + getKeysString();
   }

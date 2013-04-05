@@ -28,23 +28,27 @@ import org.restlet.data.MediaType;
 import org.restlet.ext.freemarker.TemplateRepresentation;
 
 /**
- * Inspired by Freemarker TemplateFilter 
+ * Inspired by Freemarker TemplateFilter
  * 
  * Extension for processing all text resources like a freemarker template
+ * 
+ * @author Akka Technologies
  */
 public class TemplateFilter extends org.restlet.ext.freemarker.TemplateFilter {
 
   @Override
   protected void afterHandle(Request request, Response response) {
-    boolean processTemplate = "true".equals(request.getResourceRef().getQueryAsForm().getFirstValue("processTemplate", "false"));
-    if (processTemplate && response.isEntityAvailable()
-        && (MediaType.TEXT_ALL.isCompatible(response.getEntity().getMediaType())  
-            || response.getEntity().getEncodings().contains(Encoding.FREEMARKER))) {
+    boolean processTemplate = "true".equals(request.getResourceRef().getQueryAsForm()
+        .getFirstValue("processTemplate", "false"));
+    if (processTemplate
+        && response.isEntityAvailable()
+        && (MediaType.TEXT_ALL.isCompatible(response.getEntity().getMediaType()) || response.getEntity().getEncodings()
+            .contains(Encoding.FREEMARKER))) {
       TemplateRepresentation representation = new TemplateRepresentation(response.getEntity(),
           super.getConfiguration(), response.getEntity().getMediaType());
       representation.setDataModel(createDataModel(request, response));
       response.setEntity(representation);
-      
+
       // TODO IMPROVEMENT make CacheDirectives a directory model property
       response.getCacheDirectives().add(CacheDirective.noCache());
     }

@@ -64,7 +64,7 @@ public final class StorageDirectory implements IResource, Persistent {
 
   /** Indicates if the storage content must be indexed by solr for search capabilities */
   private boolean indexed;
-  
+
   /** Authorizer instance */
   private String authorizerId = null;
 
@@ -270,14 +270,23 @@ public final class StorageDirectory implements IResource, Persistent {
     this.authorizerId = authorizerId;
   }
 
+  /**
+   * Gets the indexed value
+   * 
+   * @return the indexed
+   */
   public boolean isIndexed() {
     return indexed;
   }
 
+  /**
+   * Sets the value of indexed
+   * 
+   * @param indexed
+   *          the indexed to set
+   */
   public void setIndexed(boolean indexed) {
     this.indexed = indexed;
   }
 
-  
-  
 }

@@ -18,10 +18,16 @@
  ******************************************************************************/
 package fr.cnes.sitools.datasource.common;
 
+/**
+ * Enumeration representing the Datasource type of SITools2
+ * 
+ * 
+ * @author m.gond
+ */
 public enum DataSourceType {
-
+  /** SQL type */
   SQL,
-
+  /** MongoDB type */
   MONGODB
 
 }

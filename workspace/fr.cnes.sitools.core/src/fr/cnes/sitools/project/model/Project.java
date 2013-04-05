@@ -514,10 +514,21 @@ public final class Project implements IResource, Serializable {
     return ftlTemplateFile;
   }
 
+  /**
+   * Gets the navigationMode value
+   * 
+   * @return the navigationMode
+   */
   public String getNavigationMode() {
     return navigationMode;
   }
 
+  /**
+   * Sets the value of navigationMode
+   * 
+   * @param navigationMode
+   *          the navigationMode to set
+   */
   public void setNavigationMode(String navigationMode) {
     this.navigationMode = navigationMode;
   }

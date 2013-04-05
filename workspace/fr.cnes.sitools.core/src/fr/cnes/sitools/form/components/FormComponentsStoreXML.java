@@ -48,6 +48,8 @@ public final class FormComponentsStoreXML extends SitoolsStoreXML<FormComponent>
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public FormComponentsStoreXML(File location, Context context) {
     super(FormComponent.class, location, context);
@@ -55,6 +57,9 @@ public final class FormComponentsStoreXML extends SitoolsStoreXML<FormComponent>
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public FormComponentsStoreXML(Context context) {
     super(FormComponent.class, context);

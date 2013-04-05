@@ -18,7 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.util;
 
-import java.io.IOException;
 
 /**
  * <p>

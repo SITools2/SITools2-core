@@ -21,7 +21,13 @@ package fr.cnes.sitools.datasource.common;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.datasource.mongodb.business.SitoolsMongoDBDataSourceFactory;
 
-public class SitoolsDataSourceFactory {
+/**
+ * A datasource Factory to get a {@link SitoolsDataSource} from its name
+ * 
+ * 
+ * @author m.gond
+ */
+public final class SitoolsDataSourceFactory {
 
   /** Singleton instance */
   private static SitoolsDataSourceFactory instance = null;

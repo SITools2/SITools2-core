@@ -20,6 +20,12 @@ package fr.cnes.sitools.datasource.mongodb.model;
 
 import java.util.List;
 
+/**
+ * Attribute Value class specific to {@link MongoDBRecord}. Meaning Record from MongoDB datasource
+ * 
+ * 
+ * @author m.gond
+ */
 public class MongoDBAttributeValue {
 
   /**
@@ -37,6 +43,9 @@ public class MongoDBAttributeValue {
    */
   private String type;
 
+  /**
+   * The list of Children
+   */
   private List<MongoDBAttributeValue> children;
 
   /**

@@ -35,25 +35,33 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 
 /**
  * Storage of dimensions
+ * 
  * @author m.marseille (AKKA technologies)
  */
 public final class DimensionStoreXML extends SitoolsStoreXML<SitoolsDimension> {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "dimensions";
-  
+
   /**
-   * Constructor without file 
+   * Constructor without file
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public DimensionStoreXML(Context context) {
     super(SitoolsDimension.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
   }
-  
+
   /**
    * Constructor with file location
-   * @param location the file location
+   * 
+   * @param location
+   *          the file location
+   * @param context
+   *          the Restlet Context
    */
   public DimensionStoreXML(File location, Context context) {
     super(SitoolsDimension.class, location, context);
@@ -100,7 +108,7 @@ public final class DimensionStoreXML extends SitoolsStoreXML<SitoolsDimension> {
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("dimension", SitoolsDimension.class);
-    this.init(location, aliases);    
+    this.init(location, aliases);
   }
 
   @Override

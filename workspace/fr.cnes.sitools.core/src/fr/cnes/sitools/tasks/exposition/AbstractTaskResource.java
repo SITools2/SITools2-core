@@ -57,17 +57,6 @@ public abstract class AbstractTaskResource extends SitoolsResource {
     super.doInit();
     application = (TaskApplication) getApplication();
     userId = (String) this.getRequest().getAttributes().get("identifier");
-
-    // if (userId != null && !userId.equals("anonymous")) {
-    // User user = getRequest().getClientInfo().getUser();
-    // if (user == null) {
-    // throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, "Those tasks are forbiden");
-    // }
-    // String userIdentifier = user.getIdentifier();
-    // if (!userId.equals(userIdentifier)) {
-    // throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN, "Those tasks are forbiden");
-    // }
-    // }
   }
 
   /**
@@ -77,6 +66,7 @@ public abstract class AbstractTaskResource extends SitoolsResource {
    *          the representation sent (POST or PUT)
    * @return the corresponding TaskModel
    * @throws IOException
+   *           if there are some errors while reading the given {@link Representation}
    */
   public final TaskModel getTaskModelFromRepresentation(Representation representation) throws IOException {
     TaskModel task = null;

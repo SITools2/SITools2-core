@@ -50,7 +50,7 @@ public final class NotificationStoreXML implements NotificationStore {
 
   /** Persistent list of projects */
   private XmlMap list = null;
-
+  /** The Context */
   private Context context;
 
   /**
@@ -58,6 +58,8 @@ public final class NotificationStoreXML implements NotificationStore {
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public NotificationStoreXML(File location, Context context) {
     super();
@@ -67,6 +69,9 @@ public final class NotificationStoreXML implements NotificationStore {
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public NotificationStoreXML(Context context) {
     this.context = context;
@@ -85,7 +90,6 @@ public final class NotificationStoreXML implements NotificationStore {
 
     SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
     boolean strict = !settings.isStartWithMigration();
-
 
     XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, context, strict);
     xstream.autodetectAnnotations(true);

@@ -150,7 +150,6 @@ public final class AppRegistryStoreXML extends SitoolsStoreXML<AppRegistry> {
    * @param location
    *          Directory
    */
-  @SuppressWarnings("unchecked")
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("manager", AppRegistry.class);

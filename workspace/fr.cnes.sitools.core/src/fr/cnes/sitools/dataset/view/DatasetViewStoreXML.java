@@ -48,20 +48,24 @@ public final class DatasetViewStoreXML extends SitoolsStoreXML<DatasetView> {
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
-  public DatasetViewStoreXML(File location,  Context context) {
+  public DatasetViewStoreXML(File location, Context context) {
     super(DatasetView.class, location, context);
   }
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
-  public DatasetViewStoreXML( Context context) {
+  public DatasetViewStoreXML(Context context) {
     super(DatasetView.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
   }
-
 
   @Override
   public DatasetView update(DatasetView datasetView) {
@@ -91,8 +95,6 @@ public final class DatasetViewStoreXML extends SitoolsStoreXML<DatasetView> {
     return result;
   }
 
-
-
   /**
    * Sort the list (by default on the name)
    * 
@@ -121,7 +123,6 @@ public final class DatasetViewStoreXML extends SitoolsStoreXML<DatasetView> {
     }
   }
 
-
   /**
    * XStream FilePersistenceStrategy initialization
    * 
@@ -143,6 +144,5 @@ public final class DatasetViewStoreXML extends SitoolsStoreXML<DatasetView> {
   public String getCollectionName() {
     return COLLECTION_NAME;
   }
-
 
 }

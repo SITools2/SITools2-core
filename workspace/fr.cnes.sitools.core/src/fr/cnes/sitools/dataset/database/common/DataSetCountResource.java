@@ -88,6 +88,8 @@ public class DataSetCountResource extends AbstractDataSetResource {
   /**
    * Get the count of a search
    * 
+   * @param representation
+   *          The Post representation
    * @param variant
    *          the Variant needed
    * @return the number of records for a particular search
@@ -97,6 +99,13 @@ public class DataSetCountResource extends AbstractDataSetResource {
     return calcCount(variant);
   }
 
+  /**
+   * Calculate the count on a dataset and return a {@link Representation} with the specified {@link Variant}
+   * 
+   * @param variant
+   *          the {@link Variant} of the {@link Representation} needed
+   * @return the {@link Representation} containing the count of the dataset
+   */
   private Representation calcCount(Variant variant) {
     // first check if the datasource is activated or not
     SitoolsDataSource datasource = databaseParams.getDb();

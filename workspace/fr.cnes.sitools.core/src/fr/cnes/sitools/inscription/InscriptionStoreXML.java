@@ -49,6 +49,8 @@ public final class InscriptionStoreXML extends SitoolsStoreXML<Inscription> {
    * 
    * @param location
    *          directory for file persistence
+   * @param context
+   *          the Restlet Context
    */
   public InscriptionStoreXML(File location, Context context) {
     super(Inscription.class, location, context);
@@ -56,6 +58,9 @@ public final class InscriptionStoreXML extends SitoolsStoreXML<Inscription> {
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public InscriptionStoreXML(Context context) {
     super(Inscription.class, context);

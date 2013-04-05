@@ -88,7 +88,8 @@ public interface ContextAttributes {
 
   /** True not to use the status service when the response is an error, false otherwise */
   String NO_STATUS_SERVICE = "NO_STATUS_SERVICE";
-
-  Object START_WITH_MIGRATION = "START_WITH_MIGRATION";
+  
+  /** True to start in migration mode, false otherwise */
+  String START_WITH_MIGRATION = "START_WITH_MIGRATION";
 
 }

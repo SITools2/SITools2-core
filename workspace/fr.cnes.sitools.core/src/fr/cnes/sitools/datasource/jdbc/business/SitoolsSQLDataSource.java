@@ -233,7 +233,7 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
 
       tableNameList = new ArrayList<String>();
       DatabaseMetaData metaData = conn.getMetaData();
-      rs = metaData.getTables(null, schemaOnConnection, null, new String[] { "TABLE" });
+      rs = metaData.getTables(null, schemaOnConnection, null, new String[] {"TABLE"});
       while (rs.next()) {
         tableNameList.add(rs.getString("TABLE_NAME"));
       }
@@ -272,7 +272,7 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
 
       DatabaseMetaData metaData = conn.getMetaData();
 
-      rs = metaData.getTables(null, schema, null, new String[] { "TABLE", "VIEW" });
+      rs = metaData.getTables(null, schema, null, new String[] {"TABLE", "VIEW"});
       while (rs.next()) {
         tables.add(new Table(rs.getString("TABLE_NAME"), rs.getString("TABLE_SCHEM")));
       }

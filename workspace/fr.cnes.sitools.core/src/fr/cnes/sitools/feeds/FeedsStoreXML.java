@@ -120,6 +120,13 @@ public final class FeedsStoreXML extends SitoolsStoreXML<FeedModel> {
     this.init(location, aliases);
   }
 
+  /**
+   * Update the feedDetails in the store
+   * 
+   * @param feed
+   *          the {@link FeedModel} to get the details from
+   * @return the updated {@link FeedModel}
+   */
   public FeedModel updateDetails(FeedModel feed) {
     FeedModel result = null;
     for (Iterator<FeedModel> it = getRawList().iterator(); it.hasNext();) {

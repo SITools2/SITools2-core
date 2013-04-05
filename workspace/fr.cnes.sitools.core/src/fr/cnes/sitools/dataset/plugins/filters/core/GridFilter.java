@@ -99,10 +99,6 @@ public final class GridFilter extends AbstractFilter {
     // FilterParameter level = this.getInternParam("level");
     // Level loggingLevel = Level.parse((String) level.getValue());
 
-    String logString = "REQUEST: " + request.toString();
-    if (predicats != null) {
-      logString += predicats.toString();
-    }
     Form params = request.getResourceRef().getQueryAsForm();
     boolean filterExists = true;
     int i = 0;
@@ -130,7 +126,7 @@ public final class GridFilter extends AbstractFilter {
             value = null;
           }
         }
-        
+
         else if ("date".equals(params.getFirstValue(prefix + Param.TYPE.value()))) {
           // check date format
           try {

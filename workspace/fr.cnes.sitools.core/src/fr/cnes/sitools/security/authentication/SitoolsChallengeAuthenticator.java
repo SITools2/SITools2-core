@@ -145,14 +145,13 @@ public final class SitoolsChallengeAuthenticator extends DelegatedChallengeAuthe
    */
   @Override
   public void forbid(Response response) {
-    
 
-//    if (response.getRequest().getClientInfo().getAgent() != null
-//        && response.getRequest().getClientInfo().getAgent().equals(authenticationAgent)) {
+    // if (response.getRequest().getClientInfo().getAgent() != null
+    // && response.getRequest().getClientInfo().getAgent().equals(authenticationAgent)) {
 
-    String XUserAgent = (String) response.getRequest().getAttributes().get("X-User-Agent");
-    if ((null != XUserAgent) &&  authenticationAgent.equals(XUserAgent)) {
-    
+    String xUserAgent = (String) response.getRequest().getAttributes().get("X-User-Agent");
+    if ((null != xUserAgent) && authenticationAgent.equals(xUserAgent)) {
+
       fr.cnes.sitools.common.model.Response resp = new fr.cnes.sitools.common.model.Response(false,
           "CLIENT_ERROR_FORBIDDEN");
       Representation rep = SitoolsRepresentations.getRepresentation(resp, new Variant(MediaType.APPLICATION_JSON),
@@ -166,12 +165,12 @@ public final class SitoolsChallengeAuthenticator extends DelegatedChallengeAuthe
 
   @Override
   public void challenge(Response response, boolean stale) {
-//    if (response.getRequest().getClientInfo().getAgent() != null
-//        && response.getRequest().getClientInfo().getAgent().equals(authenticationAgent)) {
-    String XUserAgent = (String) response.getRequest().getAttributes().get("X-User-Agent");
-    if ((null != XUserAgent) &&  authenticationAgent.equals(XUserAgent)) {
-    
-    fr.cnes.sitools.common.model.Response resp = new fr.cnes.sitools.common.model.Response(false,
+    // if (response.getRequest().getClientInfo().getAgent() != null
+    // && response.getRequest().getClientInfo().getAgent().equals(authenticationAgent)) {
+    String xUserAgent = (String) response.getRequest().getAttributes().get("X-User-Agent");
+    if ((null != xUserAgent) && authenticationAgent.equals(xUserAgent)) {
+
+      fr.cnes.sitools.common.model.Response resp = new fr.cnes.sitools.common.model.Response(false,
           "CLIENT_ERROR_UNAUTHORIZED");
       Representation rep = SitoolsRepresentations.getRepresentation(resp, new Variant(MediaType.APPLICATION_JSON),
           getContext());
@@ -186,7 +185,7 @@ public final class SitoolsChallengeAuthenticator extends DelegatedChallengeAuthe
 
   @Override
   public boolean authenticate(Request request, Response response) {
-    
+
     // ADD PUBLIC ROLE
     if (request.getClientInfo() == null) {
       request.setClientInfo(new ClientInfo());
@@ -208,8 +207,7 @@ public final class SitoolsChallengeAuthenticator extends DelegatedChallengeAuthe
     if (!firstAttempt && cookieAuthentication) {
       Series<Cookie> cookies = request.getCookies();
       Cookie credentials = cookies.getFirst(cookieAuthenticationName);
-      
-      
+
       if (credentials == null) {
         return false;
       }

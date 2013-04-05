@@ -93,11 +93,6 @@ public final class ProjectListFormsResource extends AbstractProjectResource {
       return getRepresentation(response, variant);
     }
 
-    if (dsList == null) {
-      Response response = new Response(true, formListOutput, Form.class);
-      return getRepresentation(response, variant);
-    }
-
     AppRegistryApplication appManager = ((SitoolsApplication) getApplication()).getSettings().getAppRegistry();
     
     for (Iterator<Resource> iterator = dsList.iterator(); iterator.hasNext();) {

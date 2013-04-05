@@ -38,6 +38,9 @@ public final class ApplicationPluginStoreXmlImpl extends XmlPersistenceDaoImpl<A
    * 
    * @param storageRoot
    *          Path for file persistence strategy
+   * @param context
+   *          the Restlet Context
+   * 
    */
   public ApplicationPluginStoreXmlImpl(File storageRoot, Context context) {
     super(storageRoot, context);

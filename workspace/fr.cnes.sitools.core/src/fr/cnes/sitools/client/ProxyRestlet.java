@@ -82,7 +82,7 @@ public class ProxyRestlet extends Restlet implements WadlDescribable {
    * @param resource
    *          the ResourceInfo
    */
-  private void describe(ResourceInfo resource) {
+  public void describe(ResourceInfo resource) {
     setName("ProxyRestlet");
     setDescription("Simple proxy Restlet");
   }

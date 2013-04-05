@@ -56,7 +56,7 @@ public final class UserStorageStoreXML implements UserStorageStore {
 
   /** Persistent list of userStorages */
   private List<UserStorage> list = null;
-
+  /** The Context */
   private Context context;
 
   /**
@@ -64,6 +64,8 @@ public final class UserStorageStoreXML implements UserStorageStore {
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public UserStorageStoreXML(File location, Context context) {
     super();
@@ -73,6 +75,9 @@ public final class UserStorageStoreXML implements UserStorageStore {
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public UserStorageStoreXML(Context context) {
     this(new File(COLLECTION_NAME), context);

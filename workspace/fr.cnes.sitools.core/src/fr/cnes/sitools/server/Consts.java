@@ -442,7 +442,7 @@ public interface Consts {
   /** Userstorage refresh delay */
   String USERSTORAGE_REFRESH_DELAY = "Starter.USERSTORAGE_REFRESH_DELAY";
 
-  
+  /** The security realm */
   String REALM_CLASS = "Starter.REALM";
   /** Gui service management url */
   String APP_GUI_SERVICES_URL = "Starter.APP_GUI_SERVICES_URL";
@@ -450,6 +450,5 @@ public interface Consts {
   String APP_GUI_SERVICES_STORE_DIR = "Starter.APP_GUI_SERVICES_STORE_DIR";
   /** Gui service store */
   String APP_STORE_GUI_SERVICE = "APP_STORE_GUI_SERVICE";
-  
-  
+
 }

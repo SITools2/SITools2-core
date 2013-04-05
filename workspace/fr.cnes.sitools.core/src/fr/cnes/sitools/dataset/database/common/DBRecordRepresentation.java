@@ -115,8 +115,7 @@ public final class DBRecordRepresentation extends OutputRepresentation {
     catch (SitoolsException e) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage());
     }
-   
-    
+
   }
 
   @Override
@@ -277,6 +276,15 @@ public final class DBRecordRepresentation extends OutputRepresentation {
     }
   }
 
+  /**
+   * Create a {@link JSONObject} from an {@link AttributeValue}
+   * 
+   * @param obj
+   *          the {@link AttributeValue}
+   * @return a {@link JSONObject} containing the name and the value of the given {@link AttributeValue}
+   * @throws JSONException
+   *           if there is an error while creating the {@link JSONObject}
+   */
   private JSONObject getAttributeJSON(AttributeValue obj) throws JSONException {
     JSONObject attribute = new JSONObject();
     attribute.put("name", obj.getName());

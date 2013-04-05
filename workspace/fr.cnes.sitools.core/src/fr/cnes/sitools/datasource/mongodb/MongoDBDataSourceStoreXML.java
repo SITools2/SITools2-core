@@ -45,6 +45,8 @@ public final class MongoDBDataSourceStoreXML extends SitoolsStoreXML<MongoDBData
    * 
    * @param location
    *          Directory for file persistence
+   * @param context
+   *          the Restlet Context
    */
   public MongoDBDataSourceStoreXML(File location, Context context) {
     super(MongoDBDataSource.class, location, context);
@@ -52,6 +54,9 @@ public final class MongoDBDataSourceStoreXML extends SitoolsStoreXML<MongoDBData
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public MongoDBDataSourceStoreXML(Context context) {
     super(MongoDBDataSource.class, context);

@@ -45,6 +45,8 @@ public final class JDBCDataSourceStoreXML extends SitoolsStoreXML<JDBCDataSource
    * 
    * @param location
    *          Directory for file persistence
+   * @param context
+   *          the Restlet Context
    */
   public JDBCDataSourceStoreXML(File location, Context context) {
     super(JDBCDataSource.class, location, context);
@@ -52,6 +54,9 @@ public final class JDBCDataSourceStoreXML extends SitoolsStoreXML<JDBCDataSource
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public JDBCDataSourceStoreXML(Context context) {
     super(JDBCDataSource.class, context);

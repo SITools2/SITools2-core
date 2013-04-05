@@ -48,6 +48,8 @@ public final class ProjectModuleStoreXML extends SitoolsStoreXML<ProjectModuleMo
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public ProjectModuleStoreXML(File location, Context context) {
     super(ProjectModuleModel.class, location, context);
@@ -55,6 +57,9 @@ public final class ProjectModuleStoreXML extends SitoolsStoreXML<ProjectModuleMo
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public ProjectModuleStoreXML(Context context) {
     super(ProjectModuleModel.class, context);
@@ -94,7 +99,7 @@ public final class ProjectModuleStoreXML extends SitoolsStoreXML<ProjectModuleMo
         current.setPriority(module.getPriority());
 
         current.setDependencies(module.getDependencies());
-        
+
         current.setLabel(module.getLabel());
 
         it.remove();

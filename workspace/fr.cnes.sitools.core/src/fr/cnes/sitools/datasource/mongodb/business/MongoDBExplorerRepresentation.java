@@ -31,7 +31,7 @@ import com.mongodb.DBCursor;
 import fr.cnes.sitools.datasource.mongodb.dbexplorer.MongoDBExplorerResource;
 
 /**
- *   
+ * Representation for simple MongoDB datasource exploring
  * 
  * @author b.fiorito (AKKA Technologies)
  */
@@ -39,16 +39,19 @@ public class MongoDBExplorerRepresentation extends OutputRepresentation {
 
   /** The mongoDB cursor **/
   private DBCursor cursor;
-  
+
   /** DBExplorerResource for connection **/
   private MongoDBExplorerResource mongoDbResource;
 
   /**
    * Constructor
    * 
-   * @param mediaType the mediaType
-   * @param cursor the mongo cursor
-   * @param res the resource for pooled conenction
+   * @param mediaType
+   *          the mediaType
+   * @param cursor
+   *          the mongo cursor
+   * @param res
+   *          the resource for pooled conenction
    */
   public MongoDBExplorerRepresentation(MediaType mediaType, DBCursor cursor, MongoDBExplorerResource res) {
     super(MediaType.APPLICATION_JSON);
@@ -60,7 +63,6 @@ public class MongoDBExplorerRepresentation extends OutputRepresentation {
   @Override
   public void write(OutputStream outputStream) throws IOException {
     PrintStream out = new PrintStream(outputStream);
-    int i = 0;
     out.println("{\"success\": true,");
     out.println("\"total\":" + cursor.count() + ",");
 
@@ -76,7 +78,6 @@ public class MongoDBExplorerRepresentation extends OutputRepresentation {
       BasicDBObject record = (BasicDBObject) cursor.next();
       out.print(record.toString());
       out.flush();
-      i++;
     }
 
     out.println("],");

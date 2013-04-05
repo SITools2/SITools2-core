@@ -37,9 +37,6 @@ import fr.cnes.sitools.tasks.model.TaskRunTypeAdministration;
  */
 public class ServiceDatasetSearchResourceModel extends TaskResourceModel {
 
-  /** serialVersionUID */
-  private static final long serialVersionUID = 1L;
-
   /**
    * Default constructor, only overrides name, description and resourceClassName
    */

@@ -22,11 +22,21 @@ import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+/**
+ * Class for definition of a MongoDB database record
+ * 
+ * 
+ * @author m.gond
+ */
 public class MongoDBRecord {
-
+  /**
+   * Record identifier
+   */
   @XStreamAlias("uri")
   private String id;
-
+  /**
+   * Record values
+   */
   private List<MongoDBAttributeValue> attributeValues;
 
   /**

@@ -39,8 +39,6 @@ import fr.cnes.sitools.tasks.business.TaskManager;
  * @author m.gond
  */
 public class TaskApplication extends SitoolsApplication {
-  /** request attribute for user identifier */
-  private static final String USER_ATTRIBUTE = "identifier";
 
   /**
    * Constructor

@@ -18,7 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.plugins.filters.core;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +25,6 @@ import java.util.Set;
 import org.restlet.Request;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Reference;
-import org.restlet.ext.wadl.ParameterInfo;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.Validator;
@@ -37,6 +35,12 @@ import fr.cnes.sitools.dataset.model.Operator;
 import fr.cnes.sitools.dataset.model.Predicat;
 import fr.cnes.sitools.util.SQLUtils;
 
+/**
+ * Dataset filter on primary key, used to get the details of a specific record identified by its primary key
+ * 
+ * 
+ * @author m.gond
+ */
 public class PrimaryKeyFilter extends AbstractFilter {
 
   /**
@@ -52,8 +56,6 @@ public class PrimaryKeyFilter extends AbstractFilter {
     this.setClassOwner("CNES");
     this.setClassVersion("0.1");
     this.setDefaultFilter(true);
-
-    HashMap<String, ParameterInfo> rpd = new HashMap<String, ParameterInfo>();
 
   }
 

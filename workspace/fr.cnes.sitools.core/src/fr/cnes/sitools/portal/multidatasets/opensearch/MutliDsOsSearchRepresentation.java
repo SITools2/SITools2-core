@@ -226,7 +226,6 @@ public final class MutliDsOsSearchRepresentation extends OutputRepresentation {
 
     XMLInputFactory factory = XMLInputFactory.newInstance();
     XMLStreamReader reader = null;
-    String items = "";
     try {
       reader = factory.createXMLStreamReader(new StringReader(rssOs));
 
@@ -243,7 +242,6 @@ public final class MutliDsOsSearchRepresentation extends OutputRepresentation {
             }
             if (reader.getLocalName().equals("item")) {
               inItems = true;
-              items += "<item>";
               writer.writeStartElement(reader.getLocalName());
             }
             if (reader.getLocalName().equals("totalResults")) {

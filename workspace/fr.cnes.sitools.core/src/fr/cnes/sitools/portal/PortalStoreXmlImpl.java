@@ -27,17 +27,21 @@ import fr.cnes.sitools.portal.model.Portal;
 
 /**
  * Specialized XML Persistence implementation of PortalStore.
- *
+ * 
  * @author jp.boignard (AKKA Technologies)
  */
 public final class PortalStoreXmlImpl extends XmlPersistenceDaoImpl<Portal> implements PortalStore {
 
   /**
    * Constructor
-   * @param storageRoot Path for file persistence strategy 
+   * 
+   * @param storageRoot
+   *          Path for file persistence strategy
+   * @param context
+   *          the Restlet Context
    */
   public PortalStoreXmlImpl(File storageRoot, Context context) {
     super(storageRoot, context);
   }
-  
+
 }

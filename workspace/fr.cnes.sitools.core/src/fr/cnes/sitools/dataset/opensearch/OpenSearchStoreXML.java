@@ -27,8 +27,6 @@ import java.util.logging.Logger;
 
 import org.restlet.Context;
 
-import com.thoughtworks.xstream.XStream;
-
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
@@ -47,18 +45,12 @@ public final class OpenSearchStoreXML extends SitoolsStoreXML<Opensearch> {
   /** static logger for this store implementation */
   private static Logger log = Logger.getLogger(OpenSearchStoreXML.class.getName());
 
-  /** Directory for file persistence */
-  private File location = null;
-
-  /** XStream instance */
-  private XStream xstream = null;
-
   /**
    * Constructor with the XML file location
    * 
    * @param location
    *          directory of FilePersistenceStrategy
-   *  @param context
+   * @param context
    *          the context
    */
   public OpenSearchStoreXML(File location, Context context) {
@@ -67,7 +59,8 @@ public final class OpenSearchStoreXML extends SitoolsStoreXML<Opensearch> {
 
   /**
    * Default constructor
-   *  @param context
+   * 
+   * @param context
    *          the context
    */
   public OpenSearchStoreXML(Context context) {

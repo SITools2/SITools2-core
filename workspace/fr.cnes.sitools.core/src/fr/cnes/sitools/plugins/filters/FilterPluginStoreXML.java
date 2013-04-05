@@ -45,6 +45,9 @@ public final class FilterPluginStoreXML extends SitoolsStoreXML<FilterModel> {
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public FilterPluginStoreXML(Context context) {
     super(FilterModel.class, context);
@@ -57,6 +60,8 @@ public final class FilterPluginStoreXML extends SitoolsStoreXML<FilterModel> {
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public FilterPluginStoreXML(File location, Context context) {
     super(FilterModel.class, location, context);

@@ -46,6 +46,8 @@ public final class DictionaryStoreXML extends SitoolsStoreXML<Dictionary> {
    * 
    * @param location
    *          directory for file persistence
+   * @param context
+   *          the Restlet Context
    */
   public DictionaryStoreXML(File location, Context context) {
     super(Dictionary.class, location, context);
@@ -53,6 +55,9 @@ public final class DictionaryStoreXML extends SitoolsStoreXML<Dictionary> {
 
   /**
    * Default Constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public DictionaryStoreXML(Context context) {
     super(Dictionary.class, context);

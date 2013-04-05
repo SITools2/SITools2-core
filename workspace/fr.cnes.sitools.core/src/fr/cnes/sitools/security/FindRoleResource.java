@@ -46,6 +46,9 @@ import fr.cnes.sitools.util.RIAPUtils;
  */
 public final class FindRoleResource extends SitoolsResource {
 
+  /**
+   * Resource describe
+   */
   public void sitoolsDescribe() {
     setName("FindRoleResource");
     setDescription("Resource to get the Roles of a given user");
@@ -83,10 +86,11 @@ public final class FindRoleResource extends SitoolsResource {
   private Response getUserResponse() {
     Response response = null;
     try {
-//      User user =  getClientInfo().getUser();
+      // User user = getClientInfo().getUser();
       PublicApplication application = (PublicApplication) this.getApplication();
-      User user = RIAPUtils.getObject(getClientInfo().getUser().getIdentifier(), application.getSettings().getString(Consts.APP_SECURITY_URL) + "/users", getContext());
-      
+      User user = RIAPUtils.getObject(getClientInfo().getUser().getIdentifier(),
+          application.getSettings().getString(Consts.APP_SECURITY_URL) + "/users", getContext());
+
       if (user == null) {
         getResponse().setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
         response = new Response(false, "No user defined");

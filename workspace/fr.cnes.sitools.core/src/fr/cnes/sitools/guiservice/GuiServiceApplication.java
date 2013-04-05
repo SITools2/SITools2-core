@@ -31,8 +31,13 @@ import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.guiservice.model.GuiServiceModel;
-import fr.cnes.sitools.project.modules.ListComponentsResource;
 
+/**
+ * Application used to manage GuiServices
+ * 
+ * 
+ * @author m.gond
+ */
 public class GuiServiceApplication extends SitoolsApplication {
 
   /** Store */
@@ -62,7 +67,7 @@ public class GuiServiceApplication extends SitoolsApplication {
 
     Router router = new Router(getContext());
 
-    // Complete collection of gui services 
+    // Complete collection of gui services
     router.attachDefault(GuiServiceCollectionResource.class);
     router.attach("/{guiServiceId}", GuiServiceResource.class);
 

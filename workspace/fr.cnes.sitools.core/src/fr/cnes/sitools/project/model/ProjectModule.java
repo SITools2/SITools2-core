@@ -7,39 +7,39 @@ import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.util.Property;
 
 /**
- * The configuration of a projectModule in a Project. 
- *
+ * The configuration of a projectModule in a Project.
+ * 
  * @author d.arpin
  */
 public class ProjectModule extends Resource {
-  
-  /** uuid   */
+
+  /** uuid */
   private static final long serialVersionUID = -3850388533685437006L;
 
   /** priority */
   private Integer priority; // global ordering of all modules...
 
   /** CategoryModule */
-  private String categoryModule; 
-  
+  private String categoryModule;
+
   /** divIdToDisplay */
-  private String divIdToDisplay; 
+  private String divIdToDisplay;
 
   /** the list of roles */
   private List<Role> listRoles;
-  
+
   /** the xtype **/
   private String xtype;
-  
-  /**the list of modules parameters **/
+
+  /** the list of modules parameters **/
   private List<Property> listProjectModulesConfig;
-  
+
   /** The label of the project */
   private String label;
 
-  
   /**
    * Get the roles List
+   * 
    * @return List<Role>
    */
   public List<Role> getListRoles() {
@@ -48,7 +48,9 @@ public class ProjectModule extends Resource {
 
   /**
    * set the roles list
-   * @param listRoles the list roles
+   * 
+   * @param listRoles
+   *          the list roles
    */
   public void setListRoles(List<Role> listRoles) {
     this.listRoles = listRoles;
@@ -63,7 +65,6 @@ public class ProjectModule extends Resource {
     return priority;
   }
 
-
   /**
    * Sets the value of priority
    * 
@@ -73,6 +74,7 @@ public class ProjectModule extends Resource {
   public void setPriority(Integer priority) {
     this.priority = priority;
   }
+
   /**
    * Gets the category value
    * 
@@ -81,7 +83,6 @@ public class ProjectModule extends Resource {
   public String getCategoryModule() {
     return categoryModule;
   }
-
 
   /**
    * Sets the value of divIdToDisplay
@@ -92,6 +93,7 @@ public class ProjectModule extends Resource {
   public void setDivIdToDisplay(String divIdToDisplay) {
     this.divIdToDisplay = divIdToDisplay;
   }
+
   /**
    * Gets the divIdToDisplay value
    * 
@@ -100,7 +102,6 @@ public class ProjectModule extends Resource {
   public String getDivIdToDisplay() {
     return divIdToDisplay;
   }
-
 
   /**
    * Sets the value of category
@@ -112,24 +113,47 @@ public class ProjectModule extends Resource {
     this.categoryModule = categoryModule;
   }
 
+  /**
+   * Gets the xtype value
+   * 
+   * @return the xtype
+   */
   public String getXtype() {
     return xtype;
   }
 
+  /**
+   * Sets the value of xtype
+   * 
+   * @param xtype
+   *          the xtype to set
+   */
   public void setXtype(String xtype) {
     this.xtype = xtype;
   }
 
+  /**
+   * Gets the listProjectModulesConfig value
+   * 
+   * @return the listProjectModulesConfig
+   */
   public List<Property> getListProjectModulesConfig() {
     return listProjectModulesConfig;
   }
 
+  /**
+   * Sets the value of listProjectModulesConfig
+   * 
+   * @param listProjectModulesConfig
+   *          the listProjectModulesConfig to set
+   */
   public void setListProjectModulesConfig(List<Property> listProjectModulesConfig) {
     this.listProjectModulesConfig = listProjectModulesConfig;
   }
 
   /**
    * Gets the label value
+   * 
    * @return the label
    */
   public String getLabel() {
@@ -138,7 +162,9 @@ public class ProjectModule extends Resource {
 
   /**
    * Sets the value of label
-   * @param label the label to set
+   * 
+   * @param label
+   *          the label to set
    */
   public void setLabel(String label) {
     this.label = label;

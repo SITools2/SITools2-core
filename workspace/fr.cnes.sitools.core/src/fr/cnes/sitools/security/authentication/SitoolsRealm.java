@@ -333,22 +333,58 @@ public abstract class SitoolsRealm extends Realm {
 
     return result;
   }
-  
+
+  /**
+   * Find a user from its identifier
+   * 
+   * @param userIdentifier
+   *          the user identifier
+   * @return the {@link User}
+   */
   public abstract User findUser(String userIdentifier);
 
+  /**
+   * Find the List of {@link Group} containing the given {@link User}
+   * 
+   * @param user
+   *          the {@link User}
+   * @return the list of {@link Group} containing the given {@link User}
+   */
   public abstract Set<Group> findGroups(User user);
 
   // public abstract Set<Group> findGroups(User user, boolean inheritOnly);
 
   // public abstract Group findGroup(String name);
 
-  // when a user is removed role mappings need to be refreshed
+  /**
+   * Remove a user from the Realm
+   * <p>
+   * when a user is removed role mappings need to be refreshed
+   * </p>
+   * 
+   * @param userIdentifier
+   *          the user identifier
+   */
   public abstract void removeUser(String userIdentifier);
 
-  // when a group is removed role mappings need to be refreshed
+  //
+  /**
+   * Remove a Group from the Realm
+   * <p>
+   * when a group is removed role mappings need to be refreshed
+   * </p>
+   * 
+   * @param groupName
+   *          the Name of the group
+   */
   public abstract void removeGroup(String groupName);
 
-  // when a user or group is created or deleted mappings need to be refreshed
+  /**
+   * Refresh users and group in the Realm
+   * <p>
+   * when a user or group is created or deleted mappings need to be refreshed
+   * </p>
+   */
   public abstract void refreshUsersAndGroups();
 
 }

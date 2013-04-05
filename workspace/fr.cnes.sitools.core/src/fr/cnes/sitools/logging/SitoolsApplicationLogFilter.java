@@ -32,10 +32,24 @@ import org.restlet.service.LogService;
 
 import fr.cnes.sitools.common.application.ContextAttributes;
 
+/**
+ * Specific {@link LogFilter} to log request dedicated only to certain applications
+ * 
+ * 
+ * @author m.gond
+ */
 public class SitoolsApplicationLogFilter extends LogFilter {
-
+  /** The logger to log to */
   private Logger logger;
 
+  /**
+   * Constructor with Context and LogService
+   * 
+   * @param context
+   *          the Context
+   * @param logService
+   *          the {@link LogService}
+   */
   public SitoolsApplicationLogFilter(Context context, LogService logService) {
     super(context, logService);
     if (logService != null) {
@@ -71,13 +85,13 @@ public class SitoolsApplicationLogFilter extends LogFilter {
           }
         }
       }
-      else {
-        // super.afterHandle(request, response);
-      }
+      // else {
+      // // super.afterHandle(request, response);
+      // }
     }
-    else {
-      // super.afterHandle(request, response);
-    }
+    // else {
+    // // super.afterHandle(request, response);
+    // }
 
   }
 }

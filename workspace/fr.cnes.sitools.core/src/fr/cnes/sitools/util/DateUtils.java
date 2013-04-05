@@ -22,18 +22,32 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtils {
+/**
+ * Custom DateUtils class for SITools2. Created from the DateUtils from Restlet 2.0.5
+ * 
+ * 
+ * @author m.gond
+ */
+public final class DateUtils {
   /**
    * Default date format for date exchange between the server and the client in all the Sitools2 application
    */
-  public static String SITOOLS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+  public static final String SITOOLS_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
   /**
    * Default date format for date exchange between the server and the client in all the Sitools2 application
    */
-  public static String SITOOLS_TIME_FORMAT = "HH:mm:ss.SSS";
+  public static final String SITOOLS_TIME_FORMAT = "HH:mm:ss.SSS";
 
-  public static String FORMAT_ISO_8601_WITHOUT_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss";
+  /** ISO_8601 format without time zone */
+  public static final String FORMAT_ISO_8601_WITHOUT_TIME_ZONE = "yyyy-MM-dd'T'HH:mm:ss";
+
+  /**
+   * Private constructor
+   */
+  private DateUtils() {
+
+  }
 
   /**
    * Formats a Date according to the default date format.
@@ -93,7 +107,9 @@ public class DateUtils {
   /**
    * Parses a formatted date into a Date object.
    * 
-   * <p>An IllegalArgumentException is raised when date is empty or <code>null</code></p>
+   * <p>
+   * An IllegalArgumentException is raised when date is empty or <code>null</code>
+   * </p>
    * 
    * @param date
    *          The date to parse.

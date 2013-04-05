@@ -45,6 +45,8 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public ProjectStoreXML(File location, Context context) {
     super(Project.class, location, context);
@@ -52,6 +54,9 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public ProjectStoreXML(Context context) {
     super(Project.class, context);

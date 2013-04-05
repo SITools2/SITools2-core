@@ -58,6 +58,8 @@ public final class AuthorizationStoreXML extends Paginable<ResourceAuthorization
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public AuthorizationStoreXML(File location, Context context) {
     super(location, context);
@@ -65,6 +67,9 @@ public final class AuthorizationStoreXML extends Paginable<ResourceAuthorization
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public AuthorizationStoreXML(Context context) {
     super(context);

@@ -263,7 +263,7 @@ public final class StoreHelper {
     SitoolsStore<ProjectModuleModel> storeProjectModule = new ProjectModuleStoreXML(new File(
         settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PROJECTS_MODULES, storeProjectModule);
-    
+
     SitoolsStore<GuiServiceModel> storeGuiService = new GuiServiceStoreXML(new File(
         settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_GUI_SERVICE, storeGuiService);
@@ -333,7 +333,9 @@ public final class StoreHelper {
    * Read all the stores to check if there's some errors
    * 
    * @param stores
-   * @throws Exception
+   *          The list of Stores
+   * @throws SitoolsException
+   *           if there are errors
    */
   private static void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {

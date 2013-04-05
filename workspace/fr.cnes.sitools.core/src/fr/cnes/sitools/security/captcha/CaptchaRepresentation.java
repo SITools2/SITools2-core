@@ -43,7 +43,7 @@ public class CaptchaRepresentation extends OutputRepresentation {
   @Override
   public void write(OutputStream arg0) throws IOException {
     // String[] formats = ImageIO.getReaderFormatNames();
-    String[] writers = ImageIO.getWriterFormatNames();
+    // String[] writers = ImageIO.getWriterFormatNames();
 
     String format = "png";
 

@@ -45,13 +45,18 @@ public final class RoleStoreXML extends SitoolsStoreXML<Role> {
    * 
    * @param location
    *          file location
+   * @param context
+   *          the Restlet Context
    */
   public RoleStoreXML(File location, Context context) {
-    super(Role.class, location, context);    
+    super(Role.class, location, context);
   }
 
   /**
    * Default Constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public RoleStoreXML(Context context) {
     super(Role.class, context);
@@ -104,6 +109,5 @@ public final class RoleStoreXML extends SitoolsStoreXML<Role> {
   public String getCollectionName() {
     return "role";
   }
-
 
 }

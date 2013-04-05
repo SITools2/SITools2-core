@@ -66,6 +66,7 @@ public class SQLListIdDatabaseRequest extends SQLDatabaseRequest {
   /** The primaryKey */
   private Column primaryKey;
 
+  /** The Datasource **/
   private SitoolsSQLDataSource datasource;
 
   /**

@@ -48,7 +48,8 @@ public final class CollectionsStoreXML extends SitoolsStoreXML<Collection> {
    * 
    * @param location
    *          directory of FilePersistenceStrategy
-   * @param context TODO
+   * @param context
+   *          the Restlet Context
    */
   public CollectionsStoreXML(File location, Context context) {
     super(Collection.class, location, context);
@@ -56,6 +57,9 @@ public final class CollectionsStoreXML extends SitoolsStoreXML<Collection> {
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public CollectionsStoreXML(Context context) {
     super(Collection.class, context);

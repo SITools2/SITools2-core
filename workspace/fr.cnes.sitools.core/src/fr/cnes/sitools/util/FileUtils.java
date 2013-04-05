@@ -272,6 +272,8 @@ public final class FileUtils {
    * 
    * @param dir
    *          the directory to clean
+   * @param deleteDir
+   *          true to delete the directory, false otherwise
    * @return true if the directory is correctly cleaned
    * @throws IOException
    *           if reading directory fails
@@ -305,21 +307,21 @@ public final class FileUtils {
 
   }
 
-//  /**
-//   * Converts an array of file extensions to suffixes for use with IOFileFilters.
-//   * 
-//   * @param extensions
-//   *          file extensions to use
-//   * @return String[] suffixes array with form : "."+extension
-//   */
-//  @Deprecated
-//  private static String[] toSuffixes(String[] extensions) {
-//    String[] suffixes = new String[extensions.length];
-//    for (int i = 0; i < extensions.length; i++) {
-//      suffixes[i] = "." + extensions[i];
-//    }
-//    return suffixes;
-//  }
+  // /**
+  // * Converts an array of file extensions to suffixes for use with IOFileFilters.
+  // *
+  // * @param extensions
+  // * file extensions to use
+  // * @return String[] suffixes array with form : "."+extension
+  // */
+  // @Deprecated
+  // private static String[] toSuffixes(String[] extensions) {
+  // String[] suffixes = new String[extensions.length];
+  // for (int i = 0; i < extensions.length; i++) {
+  // suffixes[i] = "." + extensions[i];
+  // }
+  // return suffixes;
+  // }
 
   /**
    * Get the file name

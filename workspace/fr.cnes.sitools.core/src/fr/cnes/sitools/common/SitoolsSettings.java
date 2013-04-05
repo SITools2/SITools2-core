@@ -149,6 +149,9 @@ public final class SitoolsSettings {
    */
   private int userStorageRefreshDelay;
 
+  /**
+   * Whether or not to start the server with migration
+   */
   private boolean startWithMigration = false;
 
   /**
@@ -461,12 +464,16 @@ public final class SitoolsSettings {
   public String getStoreDIR(String storeID) {
     return getRootDirectory() + getStoreDIR() + getString(storeID);
   }
-  
+
   /**
    * Gets Store Directory for a specific ID keeping ${ROOT_DIRECTORY}
+   * 
+   * @param storeID
+   *          the store identifier
+   * @return the store directory
    */
-  public String getVariableStoreDIR(String storeID){
-    return "${ROOT_DIRECTORY}"+ getStoreDIR() + getString(storeID);
+  public String getVariableStoreDIR(String storeID) {
+    return "${ROOT_DIRECTORY}" + getStoreDIR() + getString(storeID);
   }
 
   /**

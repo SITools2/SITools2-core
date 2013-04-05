@@ -31,9 +31,6 @@ import fr.cnes.sitools.project.ProjectApplication;
  */
 public class ServicePropertiesSearchResourceModel extends ResourceModel {
   
-  /** serialVersionUID */
-  private static final long serialVersionUID = 1L;
-
   /**
    * Default constructor, only overrides name, description and resourceClassName
    */

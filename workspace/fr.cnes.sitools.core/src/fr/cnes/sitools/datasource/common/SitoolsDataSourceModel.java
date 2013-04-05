@@ -20,6 +20,12 @@ package fr.cnes.sitools.datasource.common;
 
 import fr.cnes.sitools.common.model.Resource;
 
+/**
+ * Abstract class to factories DataSourceModel attribute
+ * 
+ * 
+ * @author m.gond
+ */
 public abstract class SitoolsDataSourceModel {
 
   /**
@@ -61,10 +67,13 @@ public abstract class SitoolsDataSourceModel {
    */
   private int maxActive = 3;
   /**
-   * 
+   * The driver class String
    */
   private String driverClass;
 
+  /**
+   * Defaut constructor
+   */
   public SitoolsDataSourceModel() {
     super();
   }

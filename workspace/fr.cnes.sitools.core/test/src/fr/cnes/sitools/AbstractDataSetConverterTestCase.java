@@ -139,10 +139,6 @@ public class AbstractDataSetConverterTestCase extends AbstractDataSetManagerTest
   /**
    * Create a ConverterModelDTO object with the specified description and identifier
    * 
-   * @param description
-   *          the description
-   * @param id
-   *          the ConverterModelDTO identifier
    * @return the created ConverterModelDTO
    */
   public ConverterModelDTO createConverterObject() {

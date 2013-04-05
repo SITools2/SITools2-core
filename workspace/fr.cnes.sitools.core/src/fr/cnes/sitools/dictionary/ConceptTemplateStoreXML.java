@@ -45,6 +45,8 @@ public final class ConceptTemplateStoreXML extends SitoolsStoreXML<ConceptTempla
    * 
    * @param location
    *          directory for file persistence
+   * @param context
+   *          the Restlet Context
    */
   public ConceptTemplateStoreXML(File location, Context context) {
     super(ConceptTemplate.class, location, context);
@@ -52,6 +54,9 @@ public final class ConceptTemplateStoreXML extends SitoolsStoreXML<ConceptTempla
 
   /**
    * Default Constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public ConceptTemplateStoreXML(Context context) {
     super(ConceptTemplate.class, context);

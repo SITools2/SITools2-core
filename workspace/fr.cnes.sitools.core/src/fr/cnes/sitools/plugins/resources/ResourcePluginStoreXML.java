@@ -42,6 +42,9 @@ public final class ResourcePluginStoreXML extends SitoolsStoreXML<ResourceModel>
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public ResourcePluginStoreXML(Context context) {
     super(ResourceModel.class, context);
@@ -54,6 +57,8 @@ public final class ResourcePluginStoreXML extends SitoolsStoreXML<ResourceModel>
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public ResourcePluginStoreXML(File location, Context context) {
     super(ResourceModel.class, location, context);
@@ -62,7 +67,7 @@ public final class ResourcePluginStoreXML extends SitoolsStoreXML<ResourceModel>
   @Override
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
-    aliases.put("resourcePlugin", ResourceModel.class);    
+    aliases.put("resourcePlugin", ResourceModel.class);
     this.init(location, aliases);
   }
 
@@ -82,8 +87,8 @@ public final class ResourcePluginStoreXML extends SitoolsStoreXML<ResourceModel>
         current.setClassVersion(resource.getClassVersion());
         current.setClassName(resource.getClassName());
         current.setClassOwner(resource.getClassOwner());
-//        current.setCurrentClassAuthor(resource.getCurrentClassVersion());
-//        current.setCurrentClassVersion(resource.getCurrentClassVersion());
+        // current.setCurrentClassAuthor(resource.getCurrentClassVersion());
+        // current.setCurrentClassVersion(resource.getCurrentClassVersion());
         current.setParametersMap(resource.getParametersMap());
         current.setDescriptionAction(resource.getDescriptionAction());
         // specific ResourceModelDTO attributes

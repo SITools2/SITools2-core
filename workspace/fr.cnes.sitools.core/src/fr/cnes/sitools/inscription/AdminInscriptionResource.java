@@ -253,7 +253,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
         // to send email to user
         Mail mailToUser = new Mail();
 
-        String[] toList = new String[] { inscriptionInput.getEmail() };
+        String[] toList = new String[] {inscriptionInput.getEmail()};
         mailToUser.setToList(Arrays.asList(toList));
 
         // TODO EVOL : email subject should be a parameter

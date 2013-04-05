@@ -52,6 +52,8 @@ public final class SitoolsRepresentations {
    *          Response
    * @param variant
    *          RESTlet MediaType
+   * @param context
+   *          the Context
    * @return Representation (XStreamRepresentation)
    */
   public static Representation getRepresentation(Response response, Variant variant, Context context) {

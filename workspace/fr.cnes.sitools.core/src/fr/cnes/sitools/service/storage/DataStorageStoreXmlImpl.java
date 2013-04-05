@@ -48,7 +48,7 @@ public final class DataStorageStoreXmlImpl extends XmlPersistenceDaoImpl<Storage
   }
 
   @Override
-  public final Collection<StorageDirectory> getList(ResourceCollectionFilter filter) {
+  public Collection<StorageDirectory> getList(ResourceCollectionFilter filter) {
 
     List<StorageDirectory> result = new ArrayList<StorageDirectory>();
     if ((getList() == null) || (getList().size() <= 0) || (filter.getStart() > getList().size())) {

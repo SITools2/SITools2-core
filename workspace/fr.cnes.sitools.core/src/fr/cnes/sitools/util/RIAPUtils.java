@@ -262,7 +262,6 @@ public final class RIAPUtils {
       if (response == null || Status.isError(response.getStatus().getCode())) {
         throw new ResourceException(response.getStatus());
       }
-      @SuppressWarnings("unchecked")
       ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
       Response resp;
       try {
@@ -311,7 +310,6 @@ public final class RIAPUtils {
       if (response == null || Status.isError(response.getStatus().getCode())) {
         throw new ResourceException(response.getStatus());
       }
-      @SuppressWarnings("unchecked")
       ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
       Response resp;
       try {

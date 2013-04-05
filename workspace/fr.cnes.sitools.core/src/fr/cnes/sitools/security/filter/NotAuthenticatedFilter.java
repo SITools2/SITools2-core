@@ -23,6 +23,12 @@ import org.restlet.Response;
 import org.restlet.data.Status;
 import org.restlet.routing.Filter;
 
+/**
+ * A filter used to forbid request with bad credentials
+ * 
+ * 
+ * @author m.gond
+ */
 public class NotAuthenticatedFilter extends Filter {
 
   /*

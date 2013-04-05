@@ -236,9 +236,7 @@ public final class SearchActionResource extends AbstractStorageResource {
    * creation l'index solR.
    * 
    * @param sd
-   *          : the DataSet object
-   * @param os
-   *          the OpenSearch object
+   *          the StorageDirectory object
    * @return The response of the server
    */
   @SuppressWarnings("unchecked")

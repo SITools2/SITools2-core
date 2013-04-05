@@ -40,12 +40,13 @@ public final class GraphStoreXML extends SitoolsStoreXML<Graph> {
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "graph";
 
-
   /**
    * Constructor with the XML file location
    * 
    * @param location
    *          directory of FilePersistenceStrategy
+   * @param context
+   *          the Restlet Context
    */
   public GraphStoreXML(File location, Context context) {
     super(Graph.class, location, context);
@@ -53,6 +54,9 @@ public final class GraphStoreXML extends SitoolsStoreXML<Graph> {
 
   /**
    * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
    */
   public GraphStoreXML(Context context) {
     super(Graph.class, context);
@@ -107,6 +111,5 @@ public final class GraphStoreXML extends SitoolsStoreXML<Graph> {
   public String getCollectionName() {
     return COLLECTION_NAME;
   }
-
 
 }

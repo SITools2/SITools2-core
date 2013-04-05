@@ -18,18 +18,15 @@
  ******************************************************************************/
 package fr.cnes.sitools.guiservice;
 
-import java.util.List;
 import java.util.logging.Level;
 
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
-import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.guiservice.model.GuiServiceModel;
 

@@ -249,9 +249,9 @@ public abstract class SitoolsParameterizedResource extends SitoolsResource imple
       ResourceParameter resourceParameter = (ResourceParameter) iterator.next();
       if (resourceParameter.getName().equals(key)) {
         param = resourceParameter;
-      // getFirst > getLast overridden
-        //      break;
-        }
+        // getFirst > getLast overridden
+        // break;
+      }
     }
     if (param == null) {
       getLogger().warning("Param " + key + " not found");
@@ -268,9 +268,10 @@ public abstract class SitoolsParameterizedResource extends SitoolsResource imple
    * @return the String with the RegExp applied
    */
   protected final String applyRegExpReplacement(ResourceParameter param) {
-    if (null == param) 
+    if (null == param) {
       return null;
-    
+    }
+
     if ("xs:url".equals(param.getValueType())) {
       String url = param.getValue();
       if (param.getValue().contains(HOST_REF)) {

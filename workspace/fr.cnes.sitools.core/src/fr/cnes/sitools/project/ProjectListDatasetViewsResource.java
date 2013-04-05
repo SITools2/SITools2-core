@@ -26,10 +26,8 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
-import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -55,8 +53,6 @@ public final class ProjectListDatasetViewsResource extends AbstractProjectResour
    */
   @Get
   public Representation getDatasetViewsList(Variant variant) {
-    Project proj = ((ProjectApplication) getApplication()).getProject();
-    List<Resource> projectDatasetsList = proj.getDataSets();
 
     List<DatasetView> outputDatasetViews = getDatasetViewsModel();
 
