@@ -31,61 +31,96 @@ import org.restlet.data.Preference;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.plugins.resources.model.ResourceModel;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.tasks.AbstractTaskResourceTestCase;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Test case for CSV export
  * 
- * @author m.marseille (AKKA Technologies)
+ * @author m.gond (AKKA Technologies)
  */
-public class DataSetCsvExportTestCase extends AbstractSitoolsServerTestCase {
-
-  @Before
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-  }
-
-  @After
-  @Override
-  public void tearDown() throws Exception {
-    super.tearDown();
-  }
-
-  // /**
-  // * Executed once before all test methods
-  // */
-  // @BeforeClass
-  // public static void before() {
-  // Engine.clearThreadLocalVariables();
-  //
-  // SitoolsSettings settings = SitoolsSettings.getInstance("sitools", Starter.class.getClassLoader(), Locale.FRANCE,
-  // true);
-  //
-  // String source = settings.getRootDirectory() + TEST_FILES_REFERENCE_REPOSITORY;
-  // String cible = settings.getRootDirectory() + TEST_FILES_REPOSITORY;
-  //
-  // LOGGER.info("COPY SOURCE:" + source + " CIBLE:" + cible);
-  //
-  // setUpDataDirectory(source, cible);
-  // try {
-  // settings.setStoreDIR(TEST_FILES_REPOSITORY);
-  // Starter.start("localhost", DEFAULT_TEST_PORT, "http://localhost:" + DEFAULT_TEST_PORT);
-  // }
-  // catch (Exception e) {
-  // e.printStackTrace();
-  // }
-  // }
+public class DataSetCsvAsResourceExportTestCase extends AbstractTaskResourceTestCase {
 
   /**
-   * Test the dataset export
+   * The if of the dataset
+   */
+  private static final String DATASET_ID = "1d9e040c-5fb4-4e7e-af39-978dc4500183";
+  /**
+   * The url of the dataset
+   */
+  private static final String DATASET_URL = "/fuse";
+
+  /**
+   * The class name of the resourceModel
+   */
+  private String csvResourceModelClassName = "fr.cnes.sitools.resources.csv.CsvResourceModel";
+
+  /**
+   * The url attachment for the resource model
+   */
+  private String urlAttach = "/csv";
+  private ResourceModel csvResource;
+
+  /**
+   * absolute url for dataset management REST API
+   * 
+   * @return url
+   */
+  public final String getBaseDatasetUrl() {
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_URL) + "/" + DATASET_ID;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.SitoolsServerTestCase#setUp()
+   */
+  @Override
+  @Before
+  public void setUp() throws Exception {
+    super.setUp();
+    csvResource = createResourceModel(csvResourceModelClassName, "1000qsdqssdq", urlAttach);
+    csvResource.getParameterByName("max_rows").setValue("2");
+    create(csvResource, getBaseDatasetUrl());
+
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.AbstractSitoolsServerTestCase#tearDown()
+   */
+  @Override
+  @After
+  public void tearDown() throws Exception {
+    super.tearDown();
+    delete(csvResource, getBaseDatasetUrl());
+  }
+
+  /**
+   * Query the Resoure
    * 
    * @throws IOException
+   *           if the response cannot be read
    */
   @Test
-  public void testExport() throws IOException {
-    getCount();
-    export();
+  public void queryResourceCsv() throws IOException {
+    String url = getHostUrl() + DATASET_URL + urlAttach;
+    ClientResource cr = new ClientResource(url);
+    cr.getRequest().getClientInfo().getAcceptedMediaTypes().add(new Preference<MediaType>(MediaType.TEXT_CSV));
+    Representation rep = cr.get(MediaType.TEXT_CSV);
+    try {
+      String res = rep.getText();
+      assertNotNull(res);
+      assertTrue(res.startsWith("#"));
+    }
+    finally {
+      RIAPUtils.exhaust(rep);
+      cr.release();
+    }
   }
 
   /**
@@ -93,8 +128,10 @@ public class DataSetCsvExportTestCase extends AbstractSitoolsServerTestCase {
    * 
    * @throws IOException
    */
-  private void getCount() throws IOException {
-    ClientResource cr = new ClientResource(getHostUrl() + "/fuse/records");
+  @Test
+  public void getCountCsv() throws IOException {
+    String url = getHostUrl() + DATASET_URL + urlAttach;
+    ClientResource cr = new ClientResource(url);
     cr.getRequest().getClientInfo().getAcceptedMediaTypes().add(new Preference<MediaType>(MediaType.TEXT_CSV));
     cr.getRequest().getResourceRef().addQueryParameter("limit", "0");
     Representation rep = cr.get(MediaType.TEXT_CSV);
@@ -102,29 +139,6 @@ public class DataSetCsvExportTestCase extends AbstractSitoolsServerTestCase {
       String res = rep.getText();
       assertNotNull(res);
       assertTrue(res.matches("(.*\\n)*#NRECORDS : [0-9]*\\n(.*\\n)*"));
-    }
-    finally {
-      cr.release();
-      RIAPUtils.exhaust(rep);
-    }
-  }
-
-  /**
-   * Export the item in CSV format
-   * 
-   * @throws IOException
-   * 
-   */
-  protected void export() throws IOException {
-    ClientResource cr = new ClientResource(getHostUrl() + "/fuse/records");
-    cr.getRequest().getClientInfo().getAcceptedMediaTypes().add(new Preference<MediaType>(MediaType.TEXT_CSV));
-    cr.getRequest().getAttributes().put("start", 0);
-    cr.getRequest().getAttributes().put("limit", 2);
-    Representation rep = cr.get(MediaType.TEXT_CSV);
-    try {
-      String res = rep.getText();
-      assertNotNull(res);
-      assertTrue(res.startsWith("#"));
     }
     finally {
       cr.release();

@@ -9,4 +9,4 @@ fr.cnes.sitools.resources.tasks.test.MyTaskResourceFacadeModel
 fr.cnes.sitools.resources.order.DirectOrderResourceModel
 fr.cnes.sitools.resources.geojson.JeoSearchResourcePostGisModel
 fr.cnes.sitools.resources.geojson.JeoSearchResourceMongoDBModel
-
+fr.cnes.sitools.resources.csv.CsvResourceModel
