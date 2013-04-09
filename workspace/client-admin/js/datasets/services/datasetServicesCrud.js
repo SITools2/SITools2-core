@@ -37,7 +37,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
     modify : false,
     urlGrid : null,    
     
-    // Warning for version conflicts
     conflictWarned : false,
     viewConfig : {
         forceFit : true,
@@ -61,15 +60,15 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
             }
             return cls; 
         } 
-        
     },
-
     initComponent : function () {
     	this.appClassName = "fr.cnes.sitools.dataset.DataSetApplication";
     	this.parentType = "dataset";
     	this.urlParents = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
         this.resourcesUrlPart = loadUrl.get('APP_RESOURCES_URL');
         this.urlResources = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes';
+        
+        this.guiServicesUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_GUI_SERVICES_URL');
     	
     	//LIST OF PARENTS
         var storeParents = new Ext.data.JsonStore({
@@ -104,14 +103,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
             }
         });
         
-        
-        
         this.httpProxyResources = new Ext.data.HttpProxy({
             url : "/tmp",
             restful : true,
             method : 'GET'
-            
-            
         });
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
@@ -169,20 +164,24 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
             }, {
             	name : 'icon',
                 type : 'string'
-            } ],
+            },  {
+            	name : 'type',
+                type : 'string'
+            }],
             proxy : this.httpProxyResources
         });
 
         this.cm = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
             defaults : {
                 sortable : true
-            // columns are not sortable by default
             },
             columns : [ {
                 header : i18n.get('label.type'),
                 dataIndex : 'type',
-                width : 150
+                width : 150,
+                renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                	
+                }
             }, {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
@@ -289,7 +288,8 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
         		urlParent : urlParent,
         		parentType : this.parentType,
         		appClassName : this.appClassName,
-        		idParent : parentId
+        		idParent : parentId,
+        		guiServicesUrl : this.guiServicesUrl
         	});
         	up.show();
         }
@@ -306,7 +306,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
         	});
         	up.show();
         }
-        
     },
 
     /**
@@ -341,7 +340,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
             parentType : this.parentType
         });
         up.show();
-
     },
 
     /**
@@ -367,7 +365,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
                     this.doDelete(rec, parentId);
                 }
             }
-
         });
     },
 
@@ -389,7 +386,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
             failure : alertFailure
         });
     }
-
 });
 
 Ext.reg('s-dataset_services', sitools.admin.datasets.services.datasetServicesCrud);

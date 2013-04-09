@@ -47,31 +47,6 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 			padding : 6
 		});
     	
-		this.listeners = {
-			clientvalidation : function (formPanel, valid) {
-				if (valid) {
-					formPanel.getFooterToolbar().getComponent('btnValidateId').setDisabled(false);
-				}
-				else {
-					formPanel.getFooterToolbar().getComponent('btnValidateId').setDisabled(true);
-				}
-			}
-		};
-
-		this.buttons = [{
-				text : i18n.get('label.ok'),
-				id : "btnValidateId",
-				handler : this._onValidate,
-				scope : this,
-				disabled : true
-			}, {
-	            text : i18n.get('label.cancel'),
-	            handler : function () {
-	                this.close();
-	            },
-	            scope : this                            
-	        }];
-       
 		this.items = [this.parametersFieldset],
 		
         sitools.admin.common.FormParametersConfigUtil.superclass.initComponent.call(this);
@@ -138,7 +113,7 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 				
 			}, this);
 			
-//			this.doLayout();
+			this.doLayout();
 		}
 		catch (err) {
 			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod'));
@@ -147,12 +122,6 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 		
 		
 	}, 
-	
-	_onValidate : function () {
-//		this.rec.set('listProjectModulesConfig', this.getParametersValue());
-		this.rec.set( this.parametersFieldName, this.getParametersValue());
-		this.ownerCt.close();
-	},
 	
 	getParametersValue : function () {
 		var result = [];

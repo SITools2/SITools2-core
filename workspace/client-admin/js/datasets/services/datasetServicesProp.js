@@ -54,6 +54,8 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 
     initComponent : function () {
 
+    	this.guiServiceDatasetURL = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL') + '/' + this.idParent + loadUrl.get('APP_GUI_SERVICES_URL');
+    	
         this.title = this.action == "create" ? i18n.get('label.create' + this.parentType + 'Resource') : i18n.get('label.modify' + this.parentType + 'Resource'); 
 
         var expander = new Ext.ux.grid.RowExpander({
@@ -69,7 +71,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             expandOnDblClick : true
         });
         
-        
         this.gridDatasetServices = new Ext.grid.GridPanel({
             viewConfig : {
                 forceFit : true
@@ -81,7 +82,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 root : 'data',
                 restful : true,
                 proxy : new Ext.data.HttpProxy({
-                    url : this.urlResources,
+                    url : this.guiServicesUrl,
                     restful : true,
                     method : 'GET'
                 }),
@@ -101,14 +102,28 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     name : 'description',
                     type : 'string'
                 }, {
-                    name : 'resourceClassName',
+                    name : 'label',
+                    type : 'string'
+                }, {
+                    name : 'xtype',
+                    type : 'string'
+                }, {
+                    name : 'author',
+                    type : 'string'
+                }, {
+                    name : 'version',
+                    type : 'string'
+                }, {
+                    name : 'iconClass',
                     type : 'string'
                 }, {
                     name : 'parameters'                    
                 }, {
-                    name : 'dataSetSelection',
-                    type : 'string'
-                } ]
+                    name : 'priority',
+                    type : 'int'
+                }, {
+                    name : 'dataSetSelection'
+                }, ]
             }),
 
             cm : new Ext.grid.ColumnModel({
@@ -121,6 +136,11 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
                     width : 100,
+                    sortable : true
+                }, {
+                    header : i18n.get('label.description'),
+                    dataIndex : 'description',
+                    width : 300,
                     sortable : true
                 }, {
                     header : i18n.get('label.resourceClassName'),
@@ -143,39 +163,39 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 
         });
 
-        this.proxyFieldMapping = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
-
-        this.formParametersPanel = new sitools.admin.common.FormParametersConfigUtil();
         
-        var comboBehavior = new Ext.form.ComboBox({
+        var comboSelectionType = new Ext.form.ComboBox({
 		    typeAhead : false,
-			fieldLabel : i18n.get("label.behavior"), 
-            name : "behavior", 
+			fieldLabel : i18n.get("label.selectionType"), 
+            name : "dataSetSelection", 
             triggerAction : 'all',
 		    lazyRender : true,
 		    mode : 'local',
 		    anchor : "100%", 
 		    store : new Ext.data.ArrayStore({
 		        id : 0,
-		        fields : [ 'myId', 'displayText' ],
+		        fields : [ 'dataSetSelection' ],
 		        data : [ 
-					[ 'DISPLAY_IN_NEW_TAB', i18n.get('DISPLAY_IN_NEW_TAB') ],
-					[ 'DISPLAY_IN_DESKTOP', i18n.get('DISPLAY_IN_DESKTOP') ]
+					[ 'NONE' ],
+					[ 'SINGLE' ],
+					[ 'MULTIPLE' ],
+					[ 'ALL' ],
+					
 		        ]
 		    }),
-		    valueField : 'myId',
-		    displayField : 'displayText'
-		
+		    valueField : 'dataSetSelection',
+		    displayField : 'dataSetSelection'
+        });
+        
+        this.formParametersPanel = new sitools.admin.common.FormParametersConfigUtil({
+        	region : 'center'
         });
         
         // set the search form
         this.fieldMappingFormPanel = new Ext.FormPanel({
             height : 95,
             frame : true,
+            region : 'north',
             defaultType : 'textfield',
 			items : [{
                 fieldLabel : i18n.get('label.name'),
@@ -185,13 +205,13 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 fieldLabel : i18n.get('label.descriptionAction'),
                 name : 'descriptionAction',
                 anchor : '100%'
-            }, /*comboBehavior*/],
+            }, comboSelectionType],
             region : 'north'
         });
 
-        this.fieldMappingPanel = new Ext.Panel({
+        this.dsFieldParametersPanel = new Ext.Panel({
             layout : 'border',
-            id : 'fieldMappingPanel',
+            id : 'dsFieldParametersPanel',
             title : i18n.get('title.formFieldParameters'),
             items : [ this.fieldMappingFormPanel, this.formParametersPanel ]
 //            listeners : {
@@ -202,14 +222,11 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 //            }
         });
         
-        
-        
-
         this.tabPanel = new Ext.TabPanel({
             height : 450,
             activeTab : 0,
-            items : (this.action == "create") ? [ this.gridDatasetServices, this.fieldMappingPanel ] : [
-                this.fieldMappingPanel 
+            items : (this.action == "create") ? [ this.gridDatasetServices, this.dsFieldParametersPanel ] : [
+                this.dsFieldParametersPanel 
             ],
             buttons : [ {
                 text : i18n.get('label.ok'),
@@ -246,7 +263,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
      */
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action == "create") {
-            if (newTab.id == "formParametersPanel") {
+            if (newTab.id == "dsFieldParametersPanel") {
                 var rec = this.gridDatasetServices.getSelectionModel().getSelected();
                 if (!rec) {
                     var tmp = new Ext.ux.Notification({
@@ -273,10 +290,15 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 return false;
             }
             
-            if (!Ext.isEmpty(rec.data.parameters)) {
-                this.formParametersPanel.removeAll();
-                this.fillGridAndForm(rec.data.parameters, this.action);
-            }
+            this.formParametersPanel.rec = rec;
+            this.formParametersPanel.parametersList = rec.data.parameters;
+            this.formParametersPanel.parametersFieldName = 'parameters';
+            
+            this.fieldMappingFormPanel.getForm().findField('name').setValue(rec.data.name);
+            this.fieldMappingFormPanel.getForm().findField('descriptionAction').setValue(rec.data.descriptionAction);
+            
+            this.formParametersPanel.buildViewConfig(this.formParametersPanel.rec);
+            
         }
 
     },
@@ -288,7 +310,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         sitools.admin.datasets.services.datasetServicesProp.superclass.afterRender.apply(this, arguments);
 
         if (this.action == "modify") {
-            this.fillGridAndForm(this.record.data, this.action);
+            this.fillGridAndForm(this.record, this.action);
         } else {
             //only need to load the resourcesPlugins for creation
             this.gridDatasetServices.getStore().load({
@@ -301,49 +323,13 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
     },
 
     /**
-     * Fill the grid and form with data from resourcePlugin
-     * 
-     * @param resourcePlugin, the resource to fill the form with
-     * @param action, the mode (create or modify)
-     */
-    fillGridAndForm : function (resourcePlugin, action) {
-        if (!Ext.isEmpty(resourcePlugin)) {
-            
-            var rec = {};
-            var form = this.fieldMappingFormPanel.getForm();
-            rec.name = resourcePlugin.name;
-            rec.descriptionAction = resourcePlugin.descriptionAction;
-            rec.id = resourcePlugin.id;
-            rec.resourceClassName = resourcePlugin.resourceClassName;
-            rec.behavior = resourcePlugin.behavior;
-            form.loadRecord(new Ext.data.Record(rec));
-            
-            var parameters = resourcePlugin.parameters;
-            var store = this.formParametersPanel.getStore();
-            store.removeAll();
-            if (!Ext.isEmpty(parameters)) {
-                for (var i = 0; i < parameters.length; i++) {
-                    var recTmp = new Ext.data.Record(parameters[i]);
-                    if (action == "create" && Ext.isEmpty(parameters[i].value)) {
-                        recTmp.set("value", "");
-                    }
-                    store.add(recTmp);
-                }
-            }
-            store.sort('name', 'ASC');
-        }
-    },
-
-    /**
-     * Save the resource plugin properties
+     * Save the dataset IHM service properties
      */
     onValidate : function () {
         
-        var rec;
+        var rec, datasetServiceIhm = {};
         var jsonReturn = {};        
         
-        var parameters = [];
-        var resourcePlugin;
         if (this.action == "create") {
             rec = this.gridDatasetServices.getSelectionModel().getSelected();
             if (!rec) {
@@ -356,27 +342,12 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 }).show(document);
                 return false;
             }
-            resourcePlugin = rec.data;
         } else {
-            resourcePlugin = this.record.data;
-            jsonReturn.id = this.record.data.id;
+            rec = this.record.data;
         }
         
-        jsonReturn.classVersion = resourcePlugin.classVersion;
-        jsonReturn.classAuthor = resourcePlugin.classAuthor;
-        jsonReturn.classOwner = resourcePlugin.classOwner;
-        jsonReturn.description = resourcePlugin.description;
-        jsonReturn.className = resourcePlugin.className;
+        Ext.apply(datasetServiceIhm, rec.data);
         
-        jsonReturn.resourceClassName = resourcePlugin.resourceClassName;
-        jsonReturn.parent = resourcePlugin.parent;
-        
-        jsonReturn.applicationClassName = resourcePlugin.applicationClassName;
-        
-        if (!Ext.isEmpty(resourcePlugin.dataSetSelection)) {
-            jsonReturn.dataSetSelection = resourcePlugin.dataSetSelection;
-        }
-            
         var form = this.fieldMappingFormPanel.getForm();
         if (!form.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
@@ -385,44 +356,29 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 
         Ext.iterate(form.getValues(), function (key, value) {
             if (!Ext.isEmpty(value)) {
-                jsonReturn[key] = value;    
+            	datasetServiceIhm[key] = value;    
             }
-        }); 
+        });
         
-        var storeField = this.formParametersPanel.getStore();
+        datasetServiceIhm.parameters = [];
         
-        var re1 = new RegExp("^/.*$");
-        var re2 = new RegExp("^.*//.*$");
-        var re3 = new RegExp("^.*[!\"#$%&\'()*+,:;<=>?@\\`|~]+.*$");
+        Ext.iterate(this.formParametersPanel.getParametersValue(), function(item, ind, all){
+        	datasetServiceIhm.parameters.push(item);
+        });
         
-        for (var i = 0; i < storeField.getCount(); i++) {
-            var recTmp = storeField.getAt(i).data;
-            recTmp.violation = undefined;
-            if (recTmp.type == "PARAMETER_ATTACHMENT") {
-				var attach = recTmp.value;
-				var ok = re1.test(attach) && !re2.test(attach) && !re3.test(attach);
-				if (!ok) {
-					return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.invalidAttachment') + " : " + attach);
-				}
-			}     
-            parameters.push(recTmp);
-        }
-        
-        jsonReturn.parameters = parameters;
-
-        var url = this.urlResourcesCRUD, method;
+        var method;
         if (this.action == "modify") {
-            url += "/" + jsonReturn.id;
+            url += "/" + datasetServiceIhm.id;
             method = "PUT";
         } else {
             method = "POST";
         }
 
         Ext.Ajax.request({
-            url : url,
+            url : this.guiServiceDatasetURL,
             method : method,
             scope : this,
-            jsonData : jsonReturn,
+            jsonData : datasetServiceIhm,
             success : function (ret) {
                 var data = Ext.decode(ret.responseText);
                 if (!data.success) {

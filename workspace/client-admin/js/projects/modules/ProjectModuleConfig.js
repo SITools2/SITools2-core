@@ -34,16 +34,39 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
     layout : 'fit',
     initComponent : function () {
 		
+    	this.buttons = [{
+    		text : i18n.get('label.ok'),
+    		id : "btnValidateId",
+    		handler : this._onValidate,
+    		scope : this,
+    		disabled : true
+    	}, {
+    		text : i18n.get('label.cancel'),
+    		handler : function () {
+    			this.close();
+    		},
+    		scope : this                            
+    	}];
+    	
 		this.formPanel = new sitools.admin.common.FormParametersConfigUtil({
 			rec : this.module,
 			parametersList : this.module.data.listProjectModulesConfig,
-			parametersFieldName : 'listProjectModulesConfig'
+			parametersFieldName : 'listProjectModulesConfig',
+			buttonValidation : buttons[0]
 		});
+		
 		
         this.items = [this.formPanel];
         
         sitools.admin.projects.modules.ProjectModuleConfig.superclass.initComponent.call(this);
-    }
+    },
+    
+    _onValidate : function () {
+//		this.rec.set('listProjectModulesConfig', this.getParametersValue());
+		this.rec.set( 'listProjectModulesConfig', this.formPanel.getParametersValue());
+		this.close();
+	}
+    
 });
 
 Ext.reg('s-projectmoduleconfig', sitools.admin.projects.modules.ProjectModuleConfig);

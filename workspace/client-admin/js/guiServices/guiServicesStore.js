@@ -87,6 +87,10 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
         });
      },
      
+     updateRecord : function (rec){
+    	 this.saveRecord(rec, "modify");
+     },
+     
      deleteRecord : function (rec){
      	 Ext.Ajax.request({
             url : this.url + "/" + rec.id,
