@@ -113,6 +113,8 @@
 	<script type="text/javascript" src="js/menu/dataView.js"></script>
 	<script type="text/javascript" src="js/menu/seeAlso.js"></script>
 
+	<script type="text/javascript" src="js/commonUtils/FormParametersConfigUtil.js"></script>
+	
     <script type="text/javascript" src="js/menu/TreeMenu.js"></script>
     <script type="text/javascript" src="js/usergroups/RegCrudPanel.js"></script>
     <script type="text/javascript" src="js/usergroups/UserCrudPanel.js"></script>
@@ -228,7 +230,10 @@
     <script type="text/javascript" src="js/storage/storagesCrudPanel.js"></script>
     <script type="text/javascript" src="js/storage/storagesPropPanel.js"></script>
     
-    
+    <script type="text/javascript" src="js/datasets/services/datasetServicesCrud.js"></script>
+	<script type="text/javascript" src="js/datasets/services/datasetServicesProp.js"></script>
+	<script type="text/javascript" src="js/datasets/services/datasetServicesConfig.js"></script>
+	
     <script type="text/javascript" src="js/resourcesPlugins/resourcesPluginsCrudPanel.js"></script>
     <script type="text/javascript" src="js/resourcesPlugins/resourcesPluginsProp.js"></script>
     <script type="text/javascript" src="js/resourcesPlugins/enumerationValueTypeSelector.js"></script>

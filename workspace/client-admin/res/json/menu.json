@@ -331,12 +331,12 @@
                   "id":"filtersNodeId"
                },               
                {
-                  "text":"Datasets resources",
+                  "text":"Datasets services",
                   "iconMenu":"/sitools/common/res/images/icons/menu/dataset_resources.png",
                   "icon":"/sitools/common/res/images/icons/tree_datasets_resource.png",
                   "leaf":true,
-                  "nodeName":"dataset_resources",
-                  "id":"datasetsResourcesNodeId"
+                  "nodeName":"dataset_services",
+                  "id":"datasetsServicesNodeId"
                },
                {
                   "text":"Dataset Views",
