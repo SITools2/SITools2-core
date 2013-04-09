@@ -61,8 +61,6 @@ import fr.cnes.sitools.form.dataset.FormStoreXML;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.project.FormProjectStoreXML;
 import fr.cnes.sitools.form.project.model.FormProject;
-import fr.cnes.sitools.guiservice.GuiServiceStoreXML;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
 import fr.cnes.sitools.inscription.InscriptionStoreXML;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.notification.store.NotificationStore;
@@ -75,6 +73,10 @@ import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreXmlImpl;
 import fr.cnes.sitools.plugins.filters.FilterPluginStoreXML;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXML;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXML;
+import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.portal.PortalStore;
@@ -267,6 +269,10 @@ public final class StoreHelper {
     SitoolsStore<GuiServiceModel> storeGuiService = new GuiServiceStoreXML(new File(
         settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_GUI_SERVICE, storeGuiService);
+
+    SitoolsStore<GuiServicePluginModel> storeGuiServicePlugin = new GuiServicePluginStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
+    stores.put(Consts.APP_STORE_GUI_SERVICES_PLUGIN, storeGuiServicePlugin);
 
     if (settings.isStartWithMigration()) {
       migrateStores(stores);

@@ -129,6 +129,11 @@ public class DataSetNotificationResource extends AbstractDataSetResource {
         }
         return new StringRepresentation("DEPRECATED");
       }
+
+      if ((notification != null) && "GUI_SERVICE_PLUGIN_ADDED".equals(notification.getEvent())) {
+        System.out.println("COOL");
+        return new StringRepresentation("OK");
+      }
       else {
         // Others status
         return new StringRepresentation("OK");

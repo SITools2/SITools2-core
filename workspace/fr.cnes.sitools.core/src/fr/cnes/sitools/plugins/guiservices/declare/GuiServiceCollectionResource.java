@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.guiservice;
+package fr.cnes.sitools.plugins.guiservices.declare;
 
 import java.util.logging.Level;
 
@@ -28,7 +28,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 
 /**
  * Class Resource for managing GuiService Collection (GET, POST)
@@ -61,7 +61,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
     }
     try {
       // Parse object representation
-      GuiServiceModel guiServiceInput = getObject(representation, variant);
+      GuiServiceModel guiServiceInput = getObject(representation);
 
       // Business service
       GuiServiceModel guiServiceOutput = getStore().create(guiServiceInput);

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.guiservice;
+package fr.cnes.sitools.plugins.guiservices.implement;
 
 import java.io.File;
 import java.util.Iterator;
@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.restlet.Context;
 
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
  * Store to store GuiServicesModel
@@ -35,10 +35,10 @@ import fr.cnes.sitools.guiservice.model.GuiServiceModel;
  * 
  * @author m.gond
  */
-public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
+public class GuiServicePluginStoreXML extends SitoolsStoreXML<GuiServicePluginModel> {
 
   /** default location for file persistence */
-  private static final String COLLECTION_NAME = "GuiServices";
+  private static final String COLLECTION_NAME = "GuiServicePlugins";
 
   /**
    * Constructor with the XML file location
@@ -48,8 +48,8 @@ public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
    * @param context
    *          the Context
    */
-  public GuiServiceStoreXML(File location, Context context) {
-    super(GuiServiceModel.class, location, context);
+  public GuiServicePluginStoreXML(File location, Context context) {
+    super(GuiServicePluginModel.class, location, context);
   }
 
   /**
@@ -58,17 +58,17 @@ public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
    * @param context
    *          the Context
    */
-  public GuiServiceStoreXML(Context context) {
-    super(GuiServiceModel.class, context);
+  public GuiServicePluginStoreXML(Context context) {
+    super(GuiServicePluginModel.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
   }
 
   @Override
-  public GuiServiceModel update(GuiServiceModel guiService) {
-    GuiServiceModel result = null;
-    for (Iterator<GuiServiceModel> it = getRawList().iterator(); it.hasNext();) {
-      GuiServiceModel current = it.next();
+  public GuiServicePluginModel update(GuiServicePluginModel guiService) {
+    GuiServicePluginModel result = null;
+    for (Iterator<GuiServicePluginModel> it = getRawList().iterator(); it.hasNext();) {
+      GuiServicePluginModel current = it.next();
       if (current.getId().equals(guiService.getId())) {
         getLog().info("Updating ProjectguiService");
 
@@ -101,7 +101,7 @@ public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
   }
 
   @Override
-  public List<GuiServiceModel> retrieveByParent(String id) {
+  public List<GuiServicePluginModel> retrieveByParent(String id) {
     return null;
   }
 
@@ -113,7 +113,7 @@ public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
   @Override
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
-    aliases.put("guiService", GuiServiceModel.class);
+    aliases.put("guiServicePlugin", GuiServicePluginModel.class);
     this.init(location, aliases);
   }
 

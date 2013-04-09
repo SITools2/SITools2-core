@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.guiservice;
+package fr.cnes.sitools.plugins.guiservices.declare;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 
 /**
  * Base class for resource of management of GuiService
@@ -98,11 +98,9 @@ public abstract class AbstractGuiServiceResource extends SitoolsResource {
    * 
    * @param representation
    *          the representation used
-   * @param variant
-   *          the variant used
    * @return GuiService
    */
-  public final GuiServiceModel getObject(Representation representation, Variant variant) {
+  public final GuiServiceModel getObject(Representation representation) {
     GuiServiceModel projectModuleInput = null;
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the GuiService bean
@@ -115,7 +113,8 @@ public abstract class AbstractGuiServiceResource extends SitoolsResource {
     }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      projectModuleInput = new JacksonRepresentation<GuiServiceModel>(representation, GuiServiceModel.class).getObject();
+      projectModuleInput = new JacksonRepresentation<GuiServiceModel>(representation, GuiServiceModel.class)
+          .getObject();
     }
     return projectModuleInput;
   }

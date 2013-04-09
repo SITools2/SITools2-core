@@ -86,8 +86,6 @@ import fr.cnes.sitools.form.dataset.FormApplication;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.project.FormProjectApplication;
 import fr.cnes.sitools.form.project.model.FormProject;
-import fr.cnes.sitools.guiservice.GuiServiceApplication;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
 import fr.cnes.sitools.inscription.InscriptionApplication;
 import fr.cnes.sitools.inscription.UserInscriptionApplication;
 import fr.cnes.sitools.inscription.model.Inscription;
@@ -105,6 +103,10 @@ import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
 import fr.cnes.sitools.plugins.filters.FilterClassPluginApplication;
 import fr.cnes.sitools.plugins.filters.FilterPluginApplication;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceApplication;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginApplication;
+import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication;
 import fr.cnes.sitools.plugins.resources.ResourcePluginApplication;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
@@ -303,7 +305,8 @@ public final class Starter {
     String appLogName = settings.getString("Starter.AppLogService.logName");
     boolean appLogActive = Boolean.parseBoolean(settings.getString("Starter.AppLogService.active"));
 
-    LogService logServiceApplication = new LogDataServerService(appLogOutputFile, appLogLevelName, appLogFormat, appLogName, appLogActive) {
+    LogService logServiceApplication = new LogDataServerService(appLogOutputFile, appLogLevelName, appLogFormat,
+        appLogName, appLogActive) {
       /*
        * (non-Javadoc)
        * 
@@ -374,7 +377,8 @@ public final class Starter {
     serverHTTP.getContext().getAttributes().put("maxTotalConnections", DEFAULT_CONNECTIONS);
     serverHTTP.getContext().getAttributes().put("maxConnectionsPerHost", DEFAULT_CONNECTIONS);
 
-    serverHTTP.getContext().getParameters().add("useForwardedForHeader", settings.getString(Consts.USE_FORWARDED_FOR_HEADER));
+    serverHTTP.getContext().getParameters()
+        .add("useForwardedForHeader", settings.getString(Consts.USE_FORWARDED_FOR_HEADER));
 
     component.getClients().add(Protocol.FILE);
     component.getClients().add(Protocol.HTTP);
@@ -431,8 +435,8 @@ public final class Starter {
 
     String realm = settings.getString(Consts.REALM_CLASS, SitoolsMemoryRealm.class.getName());
     Class<?> realmClass = Class.forName(realm);
-    SitoolsRealm smr = (SitoolsRealm) realmClass.getConstructor(UsersAndGroupsStore.class, SitoolsStore.class, SitoolsSettings.class).newInstance(storeUandG,
-        storeRole, settings);
+    SitoolsRealm smr = (SitoolsRealm) realmClass.getConstructor(UsersAndGroupsStore.class, SitoolsStore.class,
+        SitoolsSettings.class).newInstance(storeUandG, storeRole, settings);
 
     // Realm
     // SitoolsRealm smr = new LdapMemoryRealm(storeUandG, storeRole, settings);
@@ -503,7 +507,8 @@ public final class Starter {
     // ApplicationManager for application registering
 
     // Store
-    SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores().get(Consts.APP_STORE_REGISTRY);
+    SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores()
+        .get(Consts.APP_STORE_REGISTRY);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -530,7 +535,8 @@ public final class Starter {
     // AuthorizationApplication for application security
 
     // Store
-    AuthorizationStore storeAuthorization = (AuthorizationStore) settings.getStores().get(Consts.APP_STORE_AUTHORIZATION);
+    AuthorizationStore storeAuthorization = (AuthorizationStore) settings.getStores().get(
+        Consts.APP_STORE_AUTHORIZATION);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -591,7 +597,8 @@ public final class Starter {
       public void sitoolsDescribe() {
         setCategory(Category.ADMIN);
         this.setName("LogDirectory");
-        this.setDescription("This application give access to the server logs\n" + "It would be better to give authorizations only to the administrator");
+        this.setDescription("This application give access to the server logs\n"
+            + "It would be better to give authorizations only to the administrator");
       }
     };
 
@@ -677,7 +684,8 @@ public final class Starter {
     // Gestion des inscriptions user et admin
 
     // Store
-    SitoolsStore<Inscription> storeIns = (SitoolsStore<Inscription>) settings.getStores().get(Consts.APP_STORE_INSCRIPTION);
+    SitoolsStore<Inscription> storeIns = (SitoolsStore<Inscription>) settings.getStores().get(
+        Consts.APP_STORE_INSCRIPTION);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_INSCRIPTIONS_ADMIN_URL);
@@ -739,7 +747,8 @@ public final class Starter {
     // Gestion des datasouces jdbc
 
     // Store
-    SitoolsStore<JDBCDataSource> storeDS = (SitoolsStore<JDBCDataSource>) settings.getStores().get(Consts.APP_STORE_DATASOURCE);
+    SitoolsStore<JDBCDataSource> storeDS = (SitoolsStore<JDBCDataSource>) settings.getStores().get(
+        Consts.APP_STORE_DATASOURCE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASOURCES_URL);
@@ -763,7 +772,8 @@ public final class Starter {
     // Gestion des datasouces mongodb
 
     // Store
-    SitoolsStore<MongoDBDataSource> storeMongoDBDs = (SitoolsStore<MongoDBDataSource>) settings.getStores().get(Consts.APP_STORE_DATASOURCE_MONGODB);
+    SitoolsStore<MongoDBDataSource> storeMongoDBDs = (SitoolsStore<MongoDBDataSource>) settings.getStores().get(
+        Consts.APP_STORE_DATASOURCE_MONGODB);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASOURCES_MONGODB_URL);
@@ -792,10 +802,12 @@ public final class Starter {
     // Gestion des converters attaches au dataset
 
     // Store
-    SitoolsStore<ConverterChainedModel> storeConv = (SitoolsStore<ConverterChainedModel>) settings.getStores().get(Consts.APP_STORE_DATASETS_CONVERTERS);
+    SitoolsStore<ConverterChainedModel> storeConv = (SitoolsStore<ConverterChainedModel>) settings.getStores().get(
+        Consts.APP_STORE_DATASETS_CONVERTERS);
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
+        + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -810,17 +822,20 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(converterApp);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL),
-        converterApp);
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
+            + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL), converterApp);
 
     // ==========================================
     // Gestion des filters attaches au dataset
 
     // Store
-    SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(Consts.APP_STORE_DATASETS_FILTERS);
+    SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(
+        Consts.APP_STORE_DATASETS_FILTERS);
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_DATASETS_FILTERS_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
+        + settings.getString(Consts.APP_DATASETS_FILTERS_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -835,15 +850,17 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(filterApp);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_DATASETS_FILTERS_URL),
-        filterApp);
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
+            + settings.getString(Consts.APP_DATASETS_FILTERS_URL), filterApp);
 
     // ===========================================================================
     // Gestion des plugins d'application
     // Et exposition des plugins d'ApplicationPlugin
 
     // Store
-    ApplicationPluginStore appPluginStore = (ApplicationPluginStore) settings.getStores().get(Consts.APP_STORE_PLUGINS_APPLICATIONS);
+    ApplicationPluginStore appPluginStore = (ApplicationPluginStore) settings.getStores().get(
+        Consts.APP_STORE_PLUGINS_APPLICATIONS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_PLUGINS_APPLICATIONS_URL);
@@ -868,7 +885,8 @@ public final class Starter {
     // Gestion des filtres dynamiques attaches aux applications ou autres restlets internes (DataStorage Directory)
 
     // Store
-    SitoolsStore<FilterModel> filterPluginStore = (SitoolsStore<FilterModel>) settings.getStores().get(Consts.APP_STORE_PLUGINS_FILTERS);
+    SitoolsStore<FilterModel> filterPluginStore = (SitoolsStore<FilterModel>) settings.getStores().get(
+        Consts.APP_STORE_PLUGINS_FILTERS);
 
     // Reference - only one filter can be defined for an {objectId}
     appReference = baseUrl + settings.getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL); // + "/{parentId}";
@@ -888,16 +906,19 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(filterPluginsApp);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), filterPluginsApp);
+    component.getInternalRouter()
+        .attach(settings.getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), filterPluginsApp);
 
     // ==========================================
     // Gestion des resources dynamiques attachees au projet
 
     // Store
-    SitoolsStore<ResourceModel> resPlugStore = (SitoolsStore<ResourceModel>) settings.getStores().get(Consts.APP_STORE_PLUGINS_RESOURCES);
+    SitoolsStore<ResourceModel> resPlugStore = (SitoolsStore<ResourceModel>) settings.getStores().get(
+        Consts.APP_STORE_PLUGINS_RESOURCES);
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{parentId}" + settings.getString(Consts.APP_RESOURCES_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{parentId}"
+        + settings.getString(Consts.APP_RESOURCES_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -918,7 +939,8 @@ public final class Starter {
     appManager.attachApplication(resourcePluginApp);
 
     // Toutes les resources pour tous les objets, attaché derrière APP_APPLICATION_URL car il s'agit du cas généralisé
-    component.getInternalRouter().attach(settings.getString(Consts.APP_APPLICATIONS_URL) + "/{parentId}" + settings.getString(Consts.APP_RESOURCES_URL),
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_APPLICATIONS_URL) + "/{parentId}" + settings.getString(Consts.APP_RESOURCES_URL),
         resourcePluginApp);
 
     // ==========================================
@@ -928,7 +950,8 @@ public final class Starter {
     // idem
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}" + settings.getString(Consts.APP_RESOURCES_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}"
+        + settings.getString(Consts.APP_RESOURCES_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -950,7 +973,8 @@ public final class Starter {
     // idem
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_APPLICATIONS_URL) + "/{parentId}" + settings.getString(Consts.APP_RESOURCES_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_APPLICATIONS_URL) + "/{parentId}"
+        + settings.getString(Consts.APP_RESOURCES_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -969,7 +993,8 @@ public final class Starter {
     // Dictionary management
 
     // Store
-    SitoolsStore<Dictionary> storeDictionary = (SitoolsStore<Dictionary>) settings.getStores().get(Consts.APP_STORE_DICTIONARY);
+    SitoolsStore<Dictionary> storeDictionary = (SitoolsStore<Dictionary>) settings.getStores().get(
+        Consts.APP_STORE_DICTIONARY);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DICTIONARIES_URL);
@@ -1016,7 +1041,8 @@ public final class Starter {
     // ConceptTemplate management
 
     // Store
-    SitoolsStore<ConceptTemplate> storeConceptTemplate = (SitoolsStore<ConceptTemplate>) settings.getStores().get(Consts.APP_STORE_TEMPLATE);
+    SitoolsStore<ConceptTemplate> storeConceptTemplate = (SitoolsStore<ConceptTemplate>) settings.getStores().get(
+        Consts.APP_STORE_TEMPLATE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DICTIONARIES_TEMPLATES_URL);
@@ -1086,7 +1112,8 @@ public final class Starter {
     // Gestion des formComponents
 
     // Store
-    SitoolsStore<FormComponent> storefc = (SitoolsStore<FormComponent>) settings.getStores().get(Consts.APP_STORE_FORMCOMPONENT);
+    SitoolsStore<FormComponent> storefc = (SitoolsStore<FormComponent>) settings.getStores().get(
+        Consts.APP_STORE_FORMCOMPONENT);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_FORMCOMPONENTS_URL);
@@ -1110,7 +1137,8 @@ public final class Starter {
     // Gestion des Collections
 
     // Store
-    SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>) settings.getStores().get(Consts.APP_STORE_COLLECTIONS);
+    SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>) settings.getStores().get(
+        Consts.APP_STORE_COLLECTIONS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_COLLECTIONS_URL);
@@ -1134,10 +1162,12 @@ public final class Starter {
     // Gestion des formulaires MultiDatasets
 
     // Store
-    SitoolsStore<FormProject> storeFormProject = (SitoolsStore<FormProject>) settings.getStores().get(Consts.APP_STORE_FORMPROJECT);
+    SitoolsStore<FormProject> storeFormProject = (SitoolsStore<FormProject>) settings.getStores().get(
+        Consts.APP_STORE_FORMPROJECT);
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{projectId}" + settings.getString(Consts.APP_FORMPROJECT_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{projectId}"
+        + settings.getString(Consts.APP_FORMPROJECT_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -1152,13 +1182,15 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(formProjectApplication);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_PROJECTS_URL) + "/{projectId}" + settings.getString(Consts.APP_FORMPROJECT_URL),
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_PROJECTS_URL) + "/{projectId}" + settings.getString(Consts.APP_FORMPROJECT_URL),
         formProjectApplication);
     // ===========================================================================
     // Gestion des datasets views
 
     // Store
-    SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>) settings.getStores().get(Consts.APP_STORE_DATASETS_VIEWS);
+    SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>) settings.getStores().get(
+        Consts.APP_STORE_DATASETS_VIEWS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_VIEWS_URL);
@@ -1182,7 +1214,8 @@ public final class Starter {
     // Gestion des modules de projets
 
     // Store
-    SitoolsStore<ProjectModuleModel> storeProjectModules = (SitoolsStore<ProjectModuleModel>) settings.getStores().get(Consts.APP_STORE_PROJECTS_MODULES);
+    SitoolsStore<ProjectModuleModel> storeProjectModules = (SitoolsStore<ProjectModuleModel>) settings.getStores().get(
+        Consts.APP_STORE_PROJECTS_MODULES);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_MODULES_URL);
@@ -1200,7 +1233,8 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(projectModulesApplication);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_PROJECTS_MODULES_URL), projectModulesApplication);
+    component.getInternalRouter()
+        .attach(settings.getString(Consts.APP_PROJECTS_MODULES_URL), projectModulesApplication);
 
     // ===========================================================================
     // Gestion des projets
@@ -1242,7 +1276,8 @@ public final class Starter {
     SitoolsStore<Form> storeForm = (SitoolsStore<Form>) settings.getStores().get(Consts.APP_STORE_FORM);
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_FORMS_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
+        + settings.getString(Consts.APP_FORMS_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -1257,7 +1292,8 @@ public final class Starter {
     // Attachment - recouvrement url du dataset administration
     appManager.attachApplication(formApplication);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_FORMS_URL),
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_FORMS_URL),
         formApplication);
 
     // ===========================================================================
@@ -1269,7 +1305,8 @@ public final class Starter {
     // attachment for Projects
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{dataId}" + settings.getString(Consts.APP_FEEDS_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{dataId}"
+        + settings.getString(Consts.APP_FEEDS_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -1294,7 +1331,8 @@ public final class Starter {
     // attachment for DataSets
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{dataId}" + settings.getString(Consts.APP_FEEDS_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{dataId}"
+        + settings.getString(Consts.APP_FEEDS_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -1319,7 +1357,8 @@ public final class Starter {
     // attachment for Portal
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_PORTAL_URL) + "/{dataId}" + settings.getString(Consts.APP_FEEDS_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_PORTAL_URL) + "/{dataId}"
+        + settings.getString(Consts.APP_FEEDS_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -1362,11 +1401,14 @@ public final class Starter {
     // feedsInternalApp.start();
 
     // RIAP
-    component.getInternalRouter().attach(settings.getString(Consts.APP_FEEDS_OBJECT_URL) + "/{dataId}" + settings.getString(Consts.APP_FEEDS_URL),
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_FEEDS_OBJECT_URL) + "/{dataId}" + settings.getString(Consts.APP_FEEDS_URL),
         feedsInternalApp);
 
     // Also attach it with the Portal Url RIAP
-    component.getInternalRouter().attach(settings.getString(Consts.APP_PORTAL_URL) + "/{dataId}" + settings.getString(Consts.APP_FEEDS_URL), feedsInternalApp);
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_PORTAL_URL) + "/{dataId}" + settings.getString(Consts.APP_FEEDS_URL),
+        feedsInternalApp);
 
     // ===========================================================================
     // Gestion des recherches opensearch
@@ -1375,7 +1417,8 @@ public final class Starter {
     SitoolsStore<Opensearch> storeOS = (SitoolsStore<Opensearch>) settings.getStores().get(Consts.APP_STORE_OPENSEARCH);
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_OPENSEARCH_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
+        + settings.getString(Consts.APP_OPENSEARCH_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -1391,7 +1434,8 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(opensearchApp);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_OPENSEARCH_URL),
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}" + settings.getString(Consts.APP_OPENSEARCH_URL),
         opensearchApp);
 
     // ===========================================================================
@@ -1410,7 +1454,8 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
 
     // Application
-    StaticWebApplication documentationApp = new StaticWebApplication(appContext, documentationAppPath, baseRef + appReference) {
+    StaticWebApplication documentationApp = new StaticWebApplication(appContext, documentationAppPath, baseRef
+        + appReference) {
       @Override
       public void sitoolsDescribe() {
         setName("Documentation");
@@ -1589,7 +1634,8 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(datasetFilterPluginsApp);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_DATASETS_FILTERS_PLUGINS_URL), datasetFilterPluginsApp);
+    component.getInternalRouter().attach(settings.getString(Consts.APP_DATASETS_FILTERS_PLUGINS_URL),
+        datasetFilterPluginsApp);
 
     // ===========================================================================
     // Exposition des classes de plugins de resources
@@ -1803,7 +1849,8 @@ public final class Starter {
     SitoolsStore<TaskModel> taskStore = (SitoolsStore<TaskModel>) settings.getStores().get(Consts.APP_STORE_TASK);
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_USERRESOURCE_ROOT_URL) + "/{" + identifier + "}" + settings.getString(Consts.APP_TASK_URL);
+    appReference = baseUrl + settings.getString(Consts.APP_USERRESOURCE_ROOT_URL) + "/{" + identifier + "}"
+        + settings.getString(Consts.APP_TASK_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -1887,7 +1934,8 @@ public final class Starter {
     // Dimension Management
 
     // Store
-    SitoolsStore<SitoolsDimension> storeDimension = (SitoolsStore<SitoolsDimension>) settings.getStores().get(Consts.APP_STORE_DIMENSION);
+    SitoolsStore<SitoolsDimension> storeDimension = (SitoolsStore<SitoolsDimension>) settings.getStores().get(
+        Consts.APP_STORE_DIMENSION);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DIMENSIONS_ADMIN_URL);
@@ -1907,10 +1955,11 @@ public final class Starter {
     component.getInternalRouter().attach(settings.getString(Consts.APP_DIMENSIONS_ADMIN_URL), dimAdminApp);
 
     // ===========================================================================
-    // Gestion des modules de projets
+    // Gestion des services IHM
 
     // Store
-    SitoolsStore<GuiServiceModel> storeGuiService = (SitoolsStore<GuiServiceModel>) settings.getStores().get(Consts.APP_STORE_GUI_SERVICE);
+    SitoolsStore<GuiServiceModel> storeGuiService = (SitoolsStore<GuiServiceModel>) settings.getStores().get(
+        Consts.APP_STORE_GUI_SERVICE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_GUI_SERVICES_URL);
@@ -1929,6 +1978,35 @@ public final class Starter {
     appManager.attachApplication(guiServiceApplication);
 
     component.getInternalRouter().attach(settings.getString(Consts.APP_GUI_SERVICES_URL), guiServiceApplication);
+
+    // ===========================================================================
+    // Gestion des services IHM
+
+    // Store
+    SitoolsStore<GuiServicePluginModel> storeGuiPluginService = (SitoolsStore<GuiServicePluginModel>) settings
+        .getStores().get(Consts.APP_STORE_GUI_SERVICES_PLUGIN);
+
+    // Reference
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}"
+        + settings.getString(Consts.APP_GUI_SERVICES_URL);
+
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    appContext.getAttributes().put(ContextAttributes.APP_STORE, storeGuiPluginService);
+
+    // Application
+    GuiServicePluginApplication guiServicePluginApplication = new GuiServicePluginApplication(appContext);
+
+    // Attachment
+    appManager.attachApplication(guiServicePluginApplication);
+
+    // Toutes les resources pour tous les objets, attaché derrière APP_APPLICATION_URL car il s'agit du cas généralisé
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_APPLICATIONS_URL) + "/{parentId}"
+            + settings.getString(Consts.APP_GUI_SERVICES_URL), guiServicePluginApplication);
 
     // Attachement of the appManager to have the security configured properly
     appManager.attachApplication(appManager);
@@ -2001,7 +2079,8 @@ public final class Starter {
       statusServ.setHomeRef(new Reference(baseUrl + homeRef));
     }
 
-    String statusTemplatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR) + settings.getString("Starter.StatusService.TEMPLATE");
+    String statusTemplatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+        + settings.getString("Starter.StatusService.TEMPLATE");
     File templateFile = new File(statusTemplatePath);
     if (templateFile == null || !templateFile.exists()) {
       component.getLogger().severe("Status template file not found :" + statusTemplatePath);

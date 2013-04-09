@@ -16,25 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.xml;
+package fr.cnes.sitools.json;
 
 import org.restlet.data.MediaType;
 
-import fr.cnes.sitools.AbstractGuiServiceTestCase;
+import fr.cnes.sitools.AbstractGuiServiceImplementTestCase;
 import fr.cnes.sitools.api.DocAPI;
 
-public class GuiServiceTestCase extends AbstractGuiServiceTestCase {
-
+public class GuiServiceImplementTestCase extends AbstractGuiServiceImplementTestCase {  
   static {
-    setMediaTest(MediaType.APPLICATION_XML);
-    docAPI = new DocAPI(GuiServiceTestCase.class, "Gui service API with XML format");
-    docAPI.setMediaTest(MediaType.APPLICATION_XML);
+    setMediaTest(MediaType.APPLICATION_JSON);
+    docAPI = new DocAPI(GuiServiceImplementTestCase.class, "Gui service API with JSON format");
+    docAPI.setMediaTest(MediaType.APPLICATION_JSON);
   }
 
   /**
    * Default constructor
    */
-  public GuiServiceTestCase() {
+  public GuiServiceImplementTestCase() {
     super();
 
   }

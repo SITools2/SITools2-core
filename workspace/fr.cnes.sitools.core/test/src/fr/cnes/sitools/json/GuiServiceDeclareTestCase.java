@@ -20,20 +20,20 @@ package fr.cnes.sitools.json;
 
 import org.restlet.data.MediaType;
 
-import fr.cnes.sitools.AbstractGuiServiceTestCase;
+import fr.cnes.sitools.AbstractGuiServiceDeclareTestCase;
 import fr.cnes.sitools.api.DocAPI;
 
-public class GuiServiceTestCase extends AbstractGuiServiceTestCase {  
+public class GuiServiceDeclareTestCase extends AbstractGuiServiceDeclareTestCase {  
   static {
     setMediaTest(MediaType.APPLICATION_JSON);
-    docAPI = new DocAPI(GuiServiceTestCase.class, "Gui service API with JSON format");
+    docAPI = new DocAPI(GuiServiceDeclareTestCase.class, "Gui service API with JSON format");
     docAPI.setMediaTest(MediaType.APPLICATION_JSON);
   }
 
   /**
    * Default constructor
    */
-  public GuiServiceTestCase() {
+  public GuiServiceDeclareTestCase() {
     super();
 
   }

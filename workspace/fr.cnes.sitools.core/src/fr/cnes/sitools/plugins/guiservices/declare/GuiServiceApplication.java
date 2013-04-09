@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.guiservice;
+package fr.cnes.sitools.plugins.guiservices.declare;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -30,7 +30,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 
 /**
  * Application used to manage GuiServices

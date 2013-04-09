@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.guiservice;
+package fr.cnes.sitools.plugins.guiservices.declare;
 
 import java.util.logging.Level;
 
@@ -31,7 +31,7 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 
 /**
  * Class Resource for managing single GuiService (GET UPDATE DELETE)
@@ -52,7 +52,8 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
   public final void describeGet(MethodInfo info) {
     info.setDocumentation("Method to retrieve a single GuiService by ID");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE, "Module identifier");
+    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
+        "GuiService identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
     addStandardResourceCollectionFilterInfo(info);
@@ -75,7 +76,7 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
       GuiServiceModel guiServiceInput = null;
       if (representation != null) {
         // Parse object representation
-        guiServiceInput = getObject(representation, variant);
+        guiServiceInput = getObject(representation);
 
         // Business service
         guiServiceOutput = getStore().update(guiServiceInput);
@@ -99,7 +100,8 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
   public final void describePut(MethodInfo info) {
     info.setDocumentation("Method to modify a single gui service sending its new representation");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE, "gui service identifier");
+    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
+        "gui service identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -144,7 +146,8 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
   public final void describeDelete(MethodInfo info) {
     info.setDocumentation("Method to delete a single gui service by ID");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE, "gui service identifier");
+    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
+        "gui service identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardSimpleResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);

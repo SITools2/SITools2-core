@@ -33,8 +33,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.guiservice.GuiServiceStoreXML;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXML;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.server.Consts;
 
 /**

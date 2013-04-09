@@ -51,13 +51,13 @@ import fr.cnes.sitools.common.model.Dependencies;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.model.Url;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.guiservice.GuiServiceApplication;
-import fr.cnes.sitools.guiservice.GuiServiceStoreXML;
-import fr.cnes.sitools.guiservice.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceApplication;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXML;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
-public abstract class AbstractGuiServiceTestCase extends AbstractSitoolsTestCase {
+public abstract class AbstractGuiServiceDeclareTestCase extends AbstractSitoolsTestCase {
 
   /**
    * static xml store instance for the test
