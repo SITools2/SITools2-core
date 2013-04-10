@@ -58,8 +58,13 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 
         var expander = new Ext.ux.grid.RowExpander({
             tpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+                '<tpl>' +
+	                '<div class="detail">' +
+	                	'<span style="font-weight:bold;">Author :&nbsp;</span>{author}' +
+	                	'<br>' +
+	                	'<span style="font-weight:bold;">Version :&nbsp;</span>{version}' +
+	                '</div>' +
+                '</tpl>',
                 {
                     compiled : true,
                     descEmpty : function (description) {
@@ -146,8 +151,8 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     width : 300,
                     sortable : true
                 }, {
-                    header : i18n.get('label.descriptionAction'),
-                    dataIndex : 'descriptionAction',
+                    header : i18n.get('label.version'),
+                    dataIndex : 'version',
                     width : 200,
                     sortable : false
                 } ]

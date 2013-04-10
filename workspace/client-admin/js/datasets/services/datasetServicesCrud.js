@@ -28,14 +28,13 @@ Ext.namespace('sitools.admin.datasets.services');
  * @class sitools.admin.datasets.services.datasetServicesCrud 
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPanel, {
+sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.EditorGridPanel, {
     
     border : false,
     height : 300,
     pageSize : 10,
     modify : false,
     urlGrid : null,    
-    
     conflictWarned : false,
     viewConfig : {
         forceFit : true,
@@ -122,7 +121,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
         });
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
-            root : "data",
+            root : "ServiceCollectionModel.services",
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -130,42 +129,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
                 name : 'name',
                 type : 'string'
             }, {
-                name : 'descriptionAction',
-                type : 'string'
-            }, {
                 name : 'description',
                 type : 'string'
             }, {
-                name : 'classVersion',
-                type : 'string'
-            }, {
-                name : 'classAuthor',
-                type : 'string'
-            }, {
-                name : 'currentClassVersion',
-                type : 'string'
-            }, {
-                name : 'currentClassAuthor',
-                type : 'string'
-            }, {
-                name : 'resourceClassName',
-                type : 'string'
-            }, {
-                name : 'classOwner',
-                type : 'string'
-            }, {
-                name : 'parameters'
-            }, {
                 name : 'parent',
-                type : 'string'
-            }, {
-                name : 'className',
-                type : 'string'
-            }, {
-                name : 'dataSetSelection',
-                type : 'string'
-            }, {
-                name : 'behavior',
                 type : 'string'
             }, {
             	name : 'type',
@@ -175,9 +142,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
                 type : 'string'
             }, {
             	name : 'icon',
-                type : 'string'
-            },  {
-            	name : 'type',
                 type : 'string'
             }],
             proxy : this.httpProxyResources
@@ -206,23 +170,26 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
                 dataIndex : 'name',
                 width : 180
             }, {
-                header : i18n.get('label.label'),
-                dataIndex : 'label',
-                width : 140
-            }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
                 width : 250,
                 sortable : false
             }, {
+                header : i18n.get('label.label'),
+                dataIndex : 'label',
+                width : 140,
+                editor : new Ext.form.TextField()
+            }, {
                 header : i18n.get('label.icon'),
                 dataIndex : 'icon',
                 width : 150,
-                sortable : false
+                sortable : false,
+                editor : new Ext.form.TextField()
             }, {
                 header : i18n.get('label.category'),
                 dataIndex : 'category',
-                width : 180
+                width : 180,
+                editor : new Ext.form.TextField()
             }  ]
         });
 
@@ -272,9 +239,16 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
                 emptyMsg : i18n.get('paging.empty'),
             };
         
+        this.sm = new Ext.grid.RowSelectionModel();
+        
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            celldblclick : function (grid, row, col){
+            	if (grid.getColumnModel().isCellEditable(col, row)){
+            		return;
+            	}
+            	this.onModify();
+            }
         };
 
         sitools.admin.datasets.services.datasetServicesCrud.superclass.initComponent.call(this);
@@ -318,8 +292,8 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.GridPa
         	var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
         		action : 'create',            
         		parentPanel : this,          
-        		urlResources : this.urlDatasetAllServicesSERVER.replace('{idDataset}', parentId),
-        		urlResourcesCRUD : this.httpProxyResources.url,
+        		urlResources : this.urlAllServicesSERVER,
+        		urlResourcesCRUD : this.urlDatasetAllServicesSERVER.replace('{idDataset}', parentId),
         		urlParent : urlParent,
         		parentType : this.parentType,
         		appClassName : this.appClassName,
