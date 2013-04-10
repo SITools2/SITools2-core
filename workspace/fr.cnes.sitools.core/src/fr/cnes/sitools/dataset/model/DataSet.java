@@ -29,6 +29,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.dataset.model.structure.SitoolsStructure;
+import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.properties.model.SitoolsProperty;
@@ -789,6 +790,7 @@ public final class DataSet implements IResource, Serializable {
 
   /**
    * Gets the datasetViewConfig value
+   * 
    * @return the datasetViewConfig
    */
   public List<Property> getDatasetViewConfig() {
@@ -797,7 +799,9 @@ public final class DataSet implements IResource, Serializable {
 
   /**
    * Sets the value of datasetViewConfig
-   * @param datasetViewConfig the datasetViewConfig to set
+   * 
+   * @param datasetViewConfig
+   *          the datasetViewConfig to set
    */
   public void setDatasetViewConfig(List<Property> datasetViewConfig) {
     this.datasetViewConfig = datasetViewConfig;

@@ -28,11 +28,17 @@ import org.restlet.representation.Representation;
 
 import com.thoughtworks.xstream.XStream;
 
+import fr.cnes.sitools.AbstractSitoolsServerTestCase;
 import fr.cnes.sitools.AbstractSitoolsTestCase;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.converter.dto.ConverterModelDTO;
+import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.DictionaryMapping;
+import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
+import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
+import fr.cnes.sitools.plugins.resources.model.ResourceModel;
+import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 
 public class GetRepresentationUtils {
 
@@ -115,7 +121,134 @@ public class GetRepresentationUtils {
   private static void configureDicoMapping(XStream xstream) {
     xstream.autodetectAnnotations(false);
     xstream.alias("response", Response.class);
+  }
 
+  // ------------------------------------------------------------
+  // DATASETS
+
+  /**
+   * Builds XML or JSON Representation of Project for Create and Update methods.
+   * 
+   * @param item
+   *          Project
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationDataset(DataSet item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JacksonRepresentation<DataSet>(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<DataSet> rep = new XstreamRepresentation<DataSet>(media, item);
+      configureDataset(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null; // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configures XStream mapping of a Response object with graph content.
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureDataset(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("response", Response.class);
+
+  }
+
+  // ------------------------------------------------------------
+  // GUI SERVICE PLUGIN
+
+  /**
+   * Builds XML or JSON Representation of Project for Create and Update methods.
+   * 
+   * @param item
+   *          Project
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationGuiServicePlugin(GuiServicePluginModel item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JacksonRepresentation<GuiServicePluginModel>(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<GuiServicePluginModel> rep = new XstreamRepresentation<GuiServicePluginModel>(media, item);
+      configureGuiServicePlugin(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null; // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configures XStream mapping of Response object with ConverterModel content.
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureGuiServicePlugin(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("response", Response.class);
+
+    // Parce que les annotations ne sont apparemment prises en compte
+    xstream.omitField(Response.class, "itemName");
+    xstream.omitField(Response.class, "itemClass");
+  }
+  
+  // ------------------------------------------------------------
+  // RESOURCE MODEL
+  
+  /**
+   * Builds XML or JSON Representation of Project for Create and Update methods.
+   * 
+   * @param item
+   *          Project
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationResource(ResourceModelDTO item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JacksonRepresentation<ResourceModelDTO>(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<ResourceModelDTO> rep = new XstreamRepresentation<ResourceModelDTO>(media, item);
+      configureResource(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Logger.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null;
+      // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configures XStream mapping for Response object with Project content.
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureResource(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("response", Response.class);
+    xstream.alias("resourcePlugin", ResourceModel.class);
+    xstream.alias("resourceParameter", ResourceParameter.class);
   }
 
 }

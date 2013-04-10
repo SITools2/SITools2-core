@@ -131,7 +131,7 @@ public class DataSetNotificationResource extends AbstractDataSetResource {
       }
 
       if ((notification != null) && "GUI_SERVICE_PLUGIN_ADDED".equals(notification.getEvent())) {
-        System.out.println("COOL");
+        System.out.println("##################################### COOL");
         return new StringRepresentation("OK");
       }
       else {

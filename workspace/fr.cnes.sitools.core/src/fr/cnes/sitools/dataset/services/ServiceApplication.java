@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.plugins.guiservices.implement;
+package fr.cnes.sitools.dataset.services;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -31,8 +31,8 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.notification.business.NotifierFilter;
-import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
  * Application used to manage GuiServices on datasets
@@ -40,10 +40,10 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
  * 
  * @author m.gond
  */
-public class GuiServicePluginApplication extends SitoolsApplication {
+public class ServiceApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<GuiServicePluginModel> store = null;
+  private SitoolsStore<ServiceCollectionModel> store = null;
 
   /**
    * Constructor
@@ -52,16 +52,16 @@ public class GuiServicePluginApplication extends SitoolsApplication {
    *          Restlet Host Context
    */
   @SuppressWarnings("unchecked")
-  public GuiServicePluginApplication(Context context) {
+  public ServiceApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<GuiServicePluginModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (SitoolsStore<ServiceCollectionModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
   public void sitoolsDescribe() {
     setCategory(Category.ADMIN);
-    setName("GuiServicePluginApplication");
-    setDescription("Management of GUI plugin services on a dataset");
+    setName("ServiceApplication");
+    setDescription("Management of services on a dataset");
   }
 
   @Override
@@ -70,8 +70,9 @@ public class GuiServicePluginApplication extends SitoolsApplication {
     Router router = new Router(getContext());
 
     // Complete collection of gui services
-    router.attachDefault(GuiServicePluginCollectionResource.class);
-    router.attach("/{guiServiceId}", GuiServicePluginResource.class);
+    router.attachDefault(ServiceCollectionResource.class);
+    router.attach("/server", ServerServiceCollectionResource.class);
+    router.attach("/server/{resourcePluginId}", ServerServiceResource.class);
 
     Filter filter = new NotifierFilter(getContext());
     filter.setNext(router);
@@ -83,15 +84,14 @@ public class GuiServicePluginApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<GuiServicePluginModel> getStore() {
+  public SitoolsStore<ServiceCollectionModel> getStore() {
     return store;
   }
 
   @Override
   public ApplicationInfo getApplicationInfo(Request request, Response response) {
     ApplicationInfo result = super.getApplicationInfo(request, response);
-    DocumentationInfo docInfo = new DocumentationInfo(
-        "Application for Gui plugin services on a dataset management in SITools2.");
+    DocumentationInfo docInfo = new DocumentationInfo("Application for services on a dataset management in SITools2.");
     docInfo.setTitle("API documentation.");
     result.getDocumentations().add(docInfo);
     return result;

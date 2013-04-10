@@ -68,14 +68,14 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
 
         guiServicePluginOutput = getStore().update(guiServicePluginInput);
 
-        // Notify observers
-        Notification notification = new Notification();
-        notification.setObservable(getParentId());
-        notification.setEvent("GUI_SERVICE_PLUGIN_UPDATED");
-        notification.setMessage("guiserviceplugin.update.success");
-        notification.setStatus("UPDATED");
-        notification.setEventSource(guiServicePluginOutput);
-        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+//        // Notify observers
+//        Notification notification = new Notification();
+//        notification.setObservable(getGuiServicePluginId());
+//        notification.setEvent("GUI_SERVICE_PLUGIN_UPDATED");
+//        notification.setMessage("guiserviceplugin.update.success");
+//        notification.setStatus("UPDATED");
+//        notification.setEventSource(guiServicePluginOutput);
+//        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
       }
       Response response = new Response(true, guiServicePluginOutput, GuiServicePluginModel.class, "guiServicePlugin");
@@ -127,11 +127,9 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
 
         // Notify observers
         Notification notification = new Notification();
-        notification.setObservable(getParentId());
+        notification.setObservable(getGuiServicePluginId());
         notification.setEvent("GUI_SERVICE_PLUGIN_DELETED");
         notification.setMessage("guiserviceplugin.delete.success");
-        notification.setStatus("DELETED");
-        notification.setEventSource(model);
         getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
         // Response

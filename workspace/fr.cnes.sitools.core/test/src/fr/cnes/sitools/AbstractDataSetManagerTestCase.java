@@ -73,6 +73,8 @@ import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.AttributeValueConverter;
+import fr.cnes.sitools.utils.GetRepresentationUtils;
+import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
  * 
@@ -672,86 +674,7 @@ public abstract class AbstractDataSetManagerTestCase extends AbstractSitoolsServ
    * @return Response
    */
   public Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-
-      if (dataClass == DataSet.class) {
-        xstream.alias("dataset", DataSet.class);
-        xstream.alias("datasource", JDBCDataSource.class);
-        xstream.alias("column", Column.class);
-        xstream.alias("structure", Structure.class);
-
-        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-
-          xstream.addImplicitCollection(DataSet.class, "columnModel", Column.class);
-          xstream.addImplicitCollection(DataSet.class, "structures", Structure.class);
-          xstream.addImplicitCollection(DataSet.class, "predicat", Predicat.class);
-
-          xstream.addImplicitCollection(DataSet.class, "dictionaryMappings", DictionaryMapping.class);
-          xstream.addImplicitCollection(DictionaryMapping.class, "mapping", ColumnConceptMapping.class);
-          xstream.addImplicitCollection(SitoolsStructure.class, "nodeList", StructureNodeComplete.class);
-          xstream.addImplicitCollection(StructureNodeComplete.class, "children", StructureNodeComplete.class);
-
-          xstream.addImplicitCollection(DataSet.class, "properties", SitoolsProperty.class);
-          xstream.addImplicitCollection(DataSet.class, "datasetViewConfig", Property.class);
-        }
-      }
-
-      if (dataClass == DataSetExpositionDTO.class) {
-        xstream.alias("dataset", DataSetExpositionDTO.class);
-        xstream.alias("column", Column.class);
-        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-          xstream.addImplicitCollection(DataSetExpositionDTO.class, "columnModel", "columnModel", Column.class);
-
-          xstream.addImplicitCollection(DataSetExpositionDTO.class, "dictionaryMappings", "dictionaryMappings",
-              DictionaryMappingDTO.class);
-          xstream
-              .addImplicitCollection(DictionaryMappingDTO.class, "mapping", "mapping", ColumnConceptMappingDTO.class);
-
-          xstream.addImplicitCollection(ConceptTemplate.class, "properties", "properties", Property.class);
-        }
-      }
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-
-        if (dataClass == DataSet.class) {
-          xstream.aliasField("dataset", Response.class, "item");
-        }
-        if (dataClass == DataSetExpositionDTO.class) {
-          xstream.aliasField("dataset", Response.class, "item");
-        }
-      }
-      xstream.aliasField("data", Response.class, "data");
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-        // Response response = rep.getObject();
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
-        return null; // TODO complete test for XML, Object representation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-    }
+    return GetResponseUtils.getResponseDataset(media, representation, dataClass, isArray);
   }
 
   /**
@@ -944,32 +867,7 @@ public abstract class AbstractDataSetManagerTestCase extends AbstractSitoolsServ
    * @return XML or JSON Representation
    */
   public static Representation getRepresentation(DataSet item, MediaType media) {
-    if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JacksonRepresentation<DataSet>(item);
-    }
-    else if (media.equals(MediaType.APPLICATION_XML)) {
-      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
-      XstreamRepresentation<DataSet> rep = new XstreamRepresentation<DataSet>(media, item);
-      configure(xstream);
-      rep.setXstream(xstream);
-      return rep;
-    }
-    else {
-      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-      return null; // TODO complete test with ObjectRepresentation
-    }
-  }
-
-  /**
-   * Configures XStream mapping of a Response object with graph content.
-   * 
-   * @param xstream
-   *          XStream
-   */
-  private static void configure(XStream xstream) {
-    xstream.autodetectAnnotations(false);
-    xstream.alias("response", Response.class);
-
+    return GetRepresentationUtils.getRepresentationDataset(item, media);
   }
 
 }

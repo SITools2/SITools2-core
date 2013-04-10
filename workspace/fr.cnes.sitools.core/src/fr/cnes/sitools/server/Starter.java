@@ -68,6 +68,8 @@ import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.plugins.converters.ConverterPluginsApplication;
 import fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication;
+import fr.cnes.sitools.dataset.services.ServiceApplication;
+import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.view.DatasetViewApplication;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration;
@@ -2003,10 +2005,37 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(guiServicePluginApplication);
 
-    // Toutes les resources pour tous les objets, attaché derrière APP_APPLICATION_URL car il s'agit du cas généralisé
     component.getInternalRouter().attach(
-        settings.getString(Consts.APP_APPLICATIONS_URL) + "/{parentId}"
-            + settings.getString(Consts.APP_GUI_SERVICES_URL), guiServicePluginApplication);
+        settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}" + settings.getString(Consts.APP_GUI_SERVICES_URL),
+        guiServicePluginApplication);
+
+    // ===========================================================================
+    // Gestion des services sur un dataset
+
+    // Store
+    SitoolsStore<ServiceCollectionModel> storeServiceCollection = (SitoolsStore<ServiceCollectionModel>) settings
+        .getStores().get(Consts.APP_STORE_SERVICES);
+
+    // Reference
+    appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}"
+        + settings.getString(Consts.APP_SERVICES_URL);
+
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    appContext.getAttributes().put(ContextAttributes.APP_STORE, storeServiceCollection);
+
+    // Application
+    ServiceApplication servicesApplication = new ServiceApplication(appContext);
+
+    // Attachment
+    appManager.attachApplication(servicesApplication);
+
+    component.getInternalRouter().attach(
+        settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}" + settings.getString(Consts.APP_SERVICES_URL),
+        servicesApplication);
 
     // Attachement of the appManager to have the security configured properly
     appManager.attachApplication(appManager);

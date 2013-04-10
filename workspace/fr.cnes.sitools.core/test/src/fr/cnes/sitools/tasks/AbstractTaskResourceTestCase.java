@@ -22,36 +22,25 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.logging.Logger;
-
 import org.restlet.Context;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.MediaType;
-import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
-import com.thoughtworks.xstream.XStream;
-
 import fr.cnes.sitools.AbstractSitoolsServerTestCase;
-import fr.cnes.sitools.AbstractSitoolsTestCase;
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
-import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.model.ExtensionModel;
-import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
-import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.tasks.model.TaskStatus;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.utils.GetRepresentationUtils;
+import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
  * Utility class to provide Method to test TaskResources
@@ -101,8 +90,8 @@ public abstract class AbstractTaskResourceTestCase extends AbstractSitoolsServer
    * @throws IllegalAccessException
    *           if there is an error while Instantiating a new TaskResourceModel
    */
-  public ResourceModel createResourceModel(String taskResourceModelClassName, String id, String urlAttach)
-    throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+  public static ResourceModel createResourceModel(String taskResourceModelClassName, String id, String urlAttach)
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 
     @SuppressWarnings("unchecked")
     Class<ResourceModel> resourceModelClass = (Class<ResourceModel>) Class.forName(taskResourceModelClassName);
@@ -331,7 +320,7 @@ public abstract class AbstractTaskResourceTestCase extends AbstractSitoolsServer
    *           when this exception is thrown.
    */
   public TaskModel testGetAsyncTaskModel(TaskModel taskModel, String userId, String password, boolean asPublic)
-    throws InterruptedException {
+      throws InterruptedException {
     String urlStatus = super.getHostUrl() + taskModel.getStatusUrl();
 
     int i = 0;
@@ -433,80 +422,7 @@ public abstract class AbstractTaskResourceTestCase extends AbstractSitoolsServer
    * @return Response
    */
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("resourcePlugin", ResourceModelDTO.class);
-      xstream.alias("resourceParameter", ResourceParameter.class);
-      xstream.omitField(ExtensionModel.class, "parametersMap");
-
-      xstream.alias("TaskModel", TaskModel.class);
-      xstream.alias("image", Resource.class);
-      xstream.alias("status", TaskStatus.class);
-
-      if (dataClass == ConstraintViolation.class) {
-        xstream.alias("constraintViolation", ConstraintViolation.class);
-      }
-
-      if (dataClass == ResourceModelDTO.class && media.isCompatible(MediaType.APPLICATION_JSON)) {
-        xstream.addImplicitCollection(ResourceModelDTO.class, "parameters", ResourceParameter.class);
-      }
-
-      if (dataClass == TaskModel.class && media.isCompatible(MediaType.APPLICATION_JSON)) {
-        xstream.addImplicitCollection(TaskModel.class, "properties", Object.class);
-
-      }
-
-      if (isArray) {
-        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-          if (dataClass == ConstraintViolation.class) {
-            xstream.addImplicitCollection(Response.class, "data", dataClass);
-          }
-          else {
-            xstream.addImplicitCollection(Response.class, "data", ResourceModelDTO.class);
-            xstream.addImplicitCollection(ResourceModelDTO.class, "parameters", ResourceParameter.class);
-          }
-        }
-        else {
-          xstream.alias("resourcePlugin", Object.class, ResourceModelDTO.class);
-        }
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-
-        if (dataClass == ResourceModelDTO.class) {
-          xstream.aliasField("resourcePlugin", Response.class, "item");
-          xstream.alias("resourcePlugin", Object.class, ResourceModelDTO.class);
-        }
-        if (dataClass == TaskModel.class) {
-          xstream.aliasField("TaskModel", Response.class, "item");
-        }
-      }
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-        // TODO complete test with ObjectRepresentation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-    }
+    return GetResponseUtils.getResponseResource(media, representation, dataClass, isArray);
   }
 
   /**
@@ -519,34 +435,7 @@ public abstract class AbstractTaskResourceTestCase extends AbstractSitoolsServer
    * @return XML or JSON Representation
    */
   public static Representation getRepresentation(ResourceModelDTO item, MediaType media) {
-    if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JacksonRepresentation<ResourceModelDTO>(item);
-    }
-    else if (media.equals(MediaType.APPLICATION_XML)) {
-      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
-      XstreamRepresentation<ResourceModelDTO> rep = new XstreamRepresentation<ResourceModelDTO>(media, item);
-      configure(xstream);
-      rep.setXstream(xstream);
-      return rep;
-    }
-    else {
-      Logger.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-      return null;
-      // TODO complete test with ObjectRepresentation
-    }
-  }
-
-  /**
-   * Configures XStream mapping for Response object with Project content.
-   * 
-   * @param xstream
-   *          XStream
-   */
-  private static void configure(XStream xstream) {
-    xstream.autodetectAnnotations(false);
-    xstream.alias("response", Response.class);
-    xstream.alias("resourcePlugin", ResourceModel.class);
-    xstream.alias("resourceParameter", ResourceParameter.class);
+    return GetRepresentationUtils.getRepresentationResource(item, media);
   }
 
 }

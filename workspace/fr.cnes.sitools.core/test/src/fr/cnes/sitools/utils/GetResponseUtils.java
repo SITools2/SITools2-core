@@ -28,13 +28,35 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.AbstractSitoolsTestCase;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
+import fr.cnes.sitools.common.model.Dependencies;
+import fr.cnes.sitools.common.model.ExtensionModel;
+import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.common.model.Url;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.converter.dto.ConverterChainedModelDTO;
 import fr.cnes.sitools.dataset.converter.dto.ConverterModelDTO;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
+import fr.cnes.sitools.dataset.dto.ColumnConceptMappingDTO;
+import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
+import fr.cnes.sitools.dataset.dto.DictionaryMappingDTO;
+import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.ColumnConceptMapping;
+import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.DictionaryMapping;
+import fr.cnes.sitools.dataset.model.Predicat;
+import fr.cnes.sitools.dataset.model.structure.SitoolsStructure;
+import fr.cnes.sitools.dataset.model.structure.StructureNodeComplete;
+import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
+import fr.cnes.sitools.datasource.jdbc.model.Structure;
+import fr.cnes.sitools.dictionary.model.ConceptTemplate;
+import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
+import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
+import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+import fr.cnes.sitools.properties.model.SitoolsProperty;
+import fr.cnes.sitools.tasks.model.TaskModel;
+import fr.cnes.sitools.tasks.model.TaskStatus;
+import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 
 public class GetResponseUtils {
@@ -247,6 +269,311 @@ public class GetResponseUtils {
       else {
         Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
         return null; // TODO complete test for XML, Object representation
+      }
+    }
+    finally {
+      RIAPUtils.exhaust(representation);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // DATASETS
+
+  /**
+   * REST API Response wrapper for single item expected.
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected in the item property of the Response object
+   * @return Response the response.
+   */
+  public static Response getResponseDataset(MediaType media, Representation representation, Class<?> dataClass) {
+    return getResponseDataset(media, representation, dataClass, false);
+  }
+
+  /**
+   * REST API Response Representation wrapper for single or multiple items expexted
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected for items of the Response object
+   * @param isArray
+   *          if true wrap the data property else wrap the item property
+   * @return Response
+   */
+  public static Response getResponseDataset(MediaType media, Representation representation, Class<?> dataClass,
+      boolean isArray) {
+    try {
+      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+      }
+
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
+      xstream.autodetectAnnotations(false);
+      xstream.alias("response", Response.class);
+
+      if (dataClass == DataSet.class) {
+        xstream.alias("dataset", DataSet.class);
+        xstream.alias("datasource", JDBCDataSource.class);
+        xstream.alias("column", Column.class);
+        xstream.alias("structure", Structure.class);
+
+        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
+
+          xstream.addImplicitCollection(DataSet.class, "columnModel", Column.class);
+          xstream.addImplicitCollection(DataSet.class, "structures", Structure.class);
+          xstream.addImplicitCollection(DataSet.class, "predicat", Predicat.class);
+
+          xstream.addImplicitCollection(DataSet.class, "dictionaryMappings", DictionaryMapping.class);
+          xstream.addImplicitCollection(DictionaryMapping.class, "mapping", ColumnConceptMapping.class);
+          xstream.addImplicitCollection(SitoolsStructure.class, "nodeList", StructureNodeComplete.class);
+          xstream.addImplicitCollection(StructureNodeComplete.class, "children", StructureNodeComplete.class);
+
+          xstream.addImplicitCollection(DataSet.class, "properties", SitoolsProperty.class);
+          xstream.addImplicitCollection(DataSet.class, "datasetViewConfig", Property.class);
+        }
+      }
+
+      if (dataClass == DataSetExpositionDTO.class) {
+        xstream.alias("dataset", DataSetExpositionDTO.class);
+        xstream.alias("column", Column.class);
+        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(DataSetExpositionDTO.class, "columnModel", "columnModel", Column.class);
+
+          xstream.addImplicitCollection(DataSetExpositionDTO.class, "dictionaryMappings", "dictionaryMappings",
+              DictionaryMappingDTO.class);
+          xstream
+              .addImplicitCollection(DictionaryMappingDTO.class, "mapping", "mapping", ColumnConceptMappingDTO.class);
+
+          xstream.addImplicitCollection(ConceptTemplate.class, "properties", "properties", Property.class);
+        }
+      }
+
+      if (isArray) {
+        xstream.addImplicitCollection(Response.class, "data", dataClass);
+      }
+      else {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
+
+        if (dataClass == DataSet.class) {
+          xstream.aliasField("dataset", Response.class, "item");
+        }
+        if (dataClass == DataSetExpositionDTO.class) {
+          xstream.aliasField("dataset", Response.class, "item");
+        }
+      }
+      xstream.aliasField("data", Response.class, "data");
+
+      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
+      rep.setXstream(xstream);
+
+      if (media.isCompatible(MediaType.APPLICATION_JSON) || media.isCompatible(MediaType.APPLICATION_XML)) {
+        Response response = rep.getObject("response");
+        // Response response = rep.getObject();
+
+        return response;
+      }
+      else {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
+        return null; // TODO complete test for XML, Object representation
+      }
+    }
+    finally {
+      RIAPUtils.exhaust(representation);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // GUI SERVICE PLUGIN MODEL
+
+  /**
+   * REST API Response wrapper for single item expected.
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected in the item property of the Response object
+   * @return Response the response.
+   */
+  public static Response getResponseGuiServicePlugin(MediaType media, Representation representation, Class<?> dataClass) {
+    return getResponseGuiServicePlugin(media, representation, dataClass, false);
+  }
+
+  /**
+   * REST API Response Representation wrapper for single or multiple items expexted
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected for items of the Response object
+   * @param isArray
+   *          if true wrap the data property else wrap the item property
+   * @return Response
+   */
+  public static Response getResponseGuiServicePlugin(MediaType media, Representation representation,
+      Class<?> dataClass, boolean isArray) {
+    try {
+      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+      }
+
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
+      xstream.alias("response", Response.class);
+      xstream.alias("guiServicePlugin", GuiServicePluginModel.class);
+
+      if (media.equals(MediaType.APPLICATION_JSON)) {
+        xstream.addImplicitCollection(Dependencies.class, "js", Url.class);
+        xstream.addImplicitCollection(Dependencies.class, "css", Url.class);
+      }
+
+      if (isArray) {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
+        if (media.equals(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(Response.class, "data", dataClass);
+        }
+      }
+      else {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
+
+        xstream.aliasField("guiServicePlugin", Response.class, "item");
+      }
+      xstream.aliasField("data", Response.class, "data");
+
+      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
+      rep.setXstream(xstream);
+
+      if (media.isCompatible(MediaType.APPLICATION_JSON) || media.isCompatible(MediaType.APPLICATION_XML)) {
+        Response response = rep.getObject("response");
+
+        return response;
+      }
+      else {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null; // TODO complete test with ObjectRepresentation
+      }
+    }
+    finally {
+      RIAPUtils.exhaust(representation);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // RESOURCE MODEL
+
+  /**
+   * REST API Response wrapper for single item expected.
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected in the item property of the Response object
+   * @return Response the response.
+   */
+  public static Response getResponseResource(MediaType media, Representation representation, Class<?> dataClass) {
+    return getResponseResource(media, representation, dataClass, false);
+  }
+
+  /**
+   * REST API Response Representation wrapper for single or multiple items expexted
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected for items of the Response object
+   * @param isArray
+   *          if true wrap the data property else wrap the item property
+   * @return Response
+   */
+  public static Response getResponseResource(MediaType media, Representation representation, Class<?> dataClass,
+      boolean isArray) {
+    try {
+      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+      }
+
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
+      xstream.autodetectAnnotations(false);
+      xstream.alias("response", Response.class);
+      xstream.alias("resourcePlugin", ResourceModelDTO.class);
+      xstream.alias("resourceParameter", ResourceParameter.class);
+      xstream.omitField(ExtensionModel.class, "parametersMap");
+
+      xstream.alias("TaskModel", TaskModel.class);
+      xstream.alias("image", Resource.class);
+      xstream.alias("status", TaskStatus.class);
+
+      if (dataClass == ConstraintViolation.class) {
+        xstream.alias("constraintViolation", ConstraintViolation.class);
+      }
+
+      if (dataClass == ResourceModelDTO.class && media.isCompatible(MediaType.APPLICATION_JSON)) {
+        xstream.addImplicitCollection(ResourceModelDTO.class, "parameters", ResourceParameter.class);
+      }
+
+      if (dataClass == TaskModel.class && media.isCompatible(MediaType.APPLICATION_JSON)) {
+        xstream.addImplicitCollection(TaskModel.class, "properties", Object.class);
+
+      }
+
+      if (isArray) {
+        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
+          if (dataClass == ConstraintViolation.class) {
+            xstream.addImplicitCollection(Response.class, "data", dataClass);
+          }
+          else {
+            xstream.addImplicitCollection(Response.class, "data", ResourceModelDTO.class);
+            xstream.addImplicitCollection(ResourceModelDTO.class, "parameters", ResourceParameter.class);
+          }
+        }
+        else {
+          xstream.alias("resourcePlugin", Object.class, ResourceModelDTO.class);
+        }
+      }
+      else {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
+
+        if (dataClass == ResourceModelDTO.class) {
+          xstream.aliasField("resourcePlugin", Response.class, "item");
+          xstream.alias("resourcePlugin", Object.class, ResourceModelDTO.class);
+        }
+        if (dataClass == TaskModel.class) {
+          xstream.aliasField("TaskModel", Response.class, "item");
+        }
+      }
+
+      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
+      rep.setXstream(xstream);
+
+      if (media.isCompatible(MediaType.APPLICATION_JSON) || media.isCompatible(MediaType.APPLICATION_XML)) {
+        Response response = rep.getObject("response");
+
+        return response;
+      }
+      else {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+        // TODO complete test with ObjectRepresentation
       }
     }
     finally {

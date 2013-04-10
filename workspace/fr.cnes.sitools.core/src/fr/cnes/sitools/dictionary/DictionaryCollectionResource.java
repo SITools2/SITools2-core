@@ -75,7 +75,6 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
       Notification notification = new Notification();
       notification.setObservable(dictionaryOutput.getId());
       notification.setEvent("DICTIONARY_CREATED");
-      notification.setEvent("DICTIONARY_CREATED");
       notification.setMessage("New dictionary created.");
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 

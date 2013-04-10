@@ -41,6 +41,8 @@ import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXML;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
+import fr.cnes.sitools.dataset.services.ServiceStoreXML;
+import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreXML;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXML;
@@ -273,6 +275,10 @@ public final class StoreHelper {
     SitoolsStore<GuiServicePluginModel> storeGuiServicePlugin = new GuiServicePluginStoreXML(new File(
         settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_GUI_SERVICES_PLUGIN, storeGuiServicePlugin);
+
+    SitoolsStore<ServiceCollectionModel> storeServices = new ServiceStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR)), context);
+    stores.put(Consts.APP_STORE_SERVICES, storeServices);
 
     if (settings.isStartWithMigration()) {
       migrateStores(stores);

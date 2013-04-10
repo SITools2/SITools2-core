@@ -1,4 +1,4 @@
-package fr.cnes.sitools.plugins.guiservices.implement;
+package fr.cnes.sitools.dataset.services;
 
 import java.util.logging.Level;
 
@@ -8,12 +8,12 @@ import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
+import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.notification.model.Notification;
-import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
+import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 
 /**
  * Resource to manage collection of guiservices on a specific parent id
@@ -21,17 +21,31 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
  * 
  * @author m.gond
  */
-public class GuiServicePluginCollectionResource extends AbstractGuiServicePluginResource {
+public class ServiceCollectionResource extends AbstractServiceResource {
 
   @Override
   public void sitoolsDescribe() {
-    setName("GuiServicePluginCollectionResource");
-    setDescription("Resource to deal with collection of GuiService plugin");
+    setName("ServiceCollectionResource");
+    setDescription("Resource to deal with collection of services on a dataset");
+  }
+
+  @Get
+  @Override
+  public Representation get(Variant variant) {
+    Response response = null;
+    ServiceCollectionModel serviceCollection = getStore().retrieve(getParentId());
+    if (serviceCollection == null) {
+      serviceCollection = new ServiceCollectionModel();
+      serviceCollection.setId(getParentId());
+    }
+    response = new Response(true, serviceCollection, ServiceCollectionModel.class, "ServiceCollectionModel");
+
+    return getRepresentation(response, variant);
   }
 
   @Override
   public final void describeGet(MethodInfo info) {
-    info.setDocumentation("Method to retrieve the list of GuiServices plugin for a specific parent Id");
+    info.setDocumentation("Method to retrieve the list of services on a dataset");
     this.addStandardGetRequestInfo(info);
     ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
         "Parent object identifier");
@@ -53,25 +67,14 @@ public class GuiServicePluginCollectionResource extends AbstractGuiServicePlugin
   public Representation newGuiServicePluginPlugin(Representation representation, Variant variant) {
     try {
 
-      GuiServicePluginModel guiServicePluginInput = getObject(representation);
+      ServiceCollectionModel servicesInput = getObject(representation);
 
       // Business service
-      guiServicePluginInput.setParent(getParentId());
+      servicesInput.setId(getParentId());
 
-      // Response
-      // fillParametersMap(resourceInput);
+      ServiceCollectionModel servicesOuput = getStore().create(servicesInput);
 
-      GuiServicePluginModel guiServicePluginOutput = getStore().create(guiServicePluginInput);
-
-//      // Notify observers
-//      Notification notification = new Notification();
-//      notification.setObservable(getGuiServicePluginId());
-//      notification.setEvent("GUI_SERVICE_PLUGIN_ADDED");
-//      notification.setMessage("guiserviceplugin.add.success");
-//      notification.setEventSource(guiServicePluginOutput);
-//      getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
-      Response response = new Response(true, guiServicePluginOutput, GuiServicePluginModel.class, "guiServicePlugin");
+      Response response = new Response(true, servicesOuput, ServiceCollectionModel.class, "services");
       return getRepresentation(response, variant);
 
     }
@@ -88,7 +91,7 @@ public class GuiServicePluginCollectionResource extends AbstractGuiServicePlugin
 
   @Override
   public final void describePost(MethodInfo info) {
-    info.setDocumentation("Method to create a new GuiService sending its representation.");
+    info.setDocumentation("Method to create a new list of services sending its representation.");
     ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
         "Parent object identifier");
     info.getRequest().getParameters().add(param);

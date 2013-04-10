@@ -450,10 +450,16 @@ public interface Consts {
   String APP_GUI_SERVICES_STORE_DIR = "Starter.APP_GUI_SERVICES_STORE_DIR";
   /** Gui service store */
   String APP_STORE_GUI_SERVICE = "APP_STORE_GUI_SERVICE";
-  
+
   /** Gui service plugin store directory */
   String APP_GUI_SERVICES_PLUGIN_STORE_DIR = "Starter.APP_GUI_SERVICES_PLUGIN_STORE_DIR";
   /** Gui service plugin store */
   String APP_STORE_GUI_SERVICES_PLUGIN = "APP_STORE_GUI_SERVICES_PLUGIN";
+  /** Services managment url */
+  String APP_SERVICES_URL = "Starter.APP_SERVICES_URL";
+  /** Gui service store directory */
+  String APP_SERVICES_STORE_DIR = "Starter.APP_SERVICES_STORE_DIR";
+  /** Gui service store */
+  String APP_STORE_SERVICES = "APP_STORE_SERVICES";
 
 }
