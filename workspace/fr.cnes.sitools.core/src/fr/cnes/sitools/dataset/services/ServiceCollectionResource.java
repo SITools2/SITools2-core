@@ -9,7 +9,7 @@ import org.restlet.ext.wadl.ParameterStyle;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
-import org.restlet.resource.Post;
+import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
@@ -63,18 +63,22 @@ public class ServiceCollectionResource extends AbstractServiceResource {
    *          client preferred media type
    * @return Representation
    */
-  @Post
-  public Representation newGuiServicePluginPlugin(Representation representation, Variant variant) {
+  @Put
+  public Representation updateServices(Representation representation, Variant variant) {
     try {
+      Response response = null;
+      ServiceCollectionModel serviceCollection = getStore().retrieve(getParentId());
+      if (serviceCollection == null) {
+        response = new Response(false, "services.not.found");
+      }
+      else {
 
-      ServiceCollectionModel servicesInput = getObject(representation);
+        ServiceCollectionModel servicesInput = getObject(representation);
 
-      // Business service
-      servicesInput.setId(getParentId());
+        ServiceCollectionModel servicesOuput = getStore().update(servicesInput);
 
-      ServiceCollectionModel servicesOuput = getStore().create(servicesInput);
-
-      Response response = new Response(true, servicesOuput, ServiceCollectionModel.class, "services");
+        response = new Response(true, servicesOuput, ServiceCollectionModel.class, "ServiceCollectionModel");
+      }
       return getRepresentation(response, variant);
 
     }

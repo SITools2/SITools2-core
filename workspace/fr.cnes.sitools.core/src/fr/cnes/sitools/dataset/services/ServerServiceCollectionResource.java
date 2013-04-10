@@ -119,10 +119,10 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
   @Override
   public final void describePost(MethodInfo info) {
     info.setDocumentation("Method to create a new list of services sending its representation.");
+    this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
         "Parent object identifier");
     info.getRequest().getParameters().add(param);
-    this.addStandardPostOrPutRequestInfo(info);
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
   }

@@ -12,7 +12,6 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
@@ -27,6 +26,7 @@ public class GuiServicePluginCollectionResource extends AbstractGuiServicePlugin
   public void sitoolsDescribe() {
     setName("GuiServicePluginCollectionResource");
     setDescription("Resource to deal with collection of GuiService plugin");
+    setNegotiated(false);
   }
 
   @Override

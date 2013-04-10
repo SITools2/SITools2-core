@@ -9,7 +9,6 @@ import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.ext.wadl.ResponseInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
@@ -17,14 +16,11 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
-import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
-import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -33,28 +29,34 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond
  */
-public class ServerServiceResource extends AbstractServerServiceResource {
+public class GuiServiceResource extends AbstractGuiServiceResource {
   /** The resource pluginId */
-  private String resourcePluginId;
+  private String guiServiceId;
 
   @Override
   public void doInit() {
     super.doInit();
 
-    resourcePluginId = (String) this.getRequest().getAttributes().get("resourcePluginId");
+    guiServiceId = (String) this.getRequest().getAttributes().get("guiServiceId");
 
   }
 
   @Override
   public void sitoolsDescribe() {
-    setName("ServerServiceResource");
+    setName("GuiServiceResource");
     setDescription("Resource to deal with collection of GuiService plugin");
   }
 
+  /**
+   * Get a GuiServicePluginModel from its id
+   * 
+   * @param variant
+   *          the variant needed
+   * @return the representation of the GuiServicePluginModel with the given variant
+   */
   @Get
-  @Override
-  public Representation get(Variant variant) {
-    String url = getResourcesUrl() + "/" + resourcePluginId;
+  public Representation getGuiService(Variant variant) {
+    String url = getGuiServicesUrl() + "/" + guiServiceId;
     Reference ref = new Reference(url);
     String parameters = getRequest().getResourceRef().getQuery();
     if (parameters != null && !parameters.isEmpty()) {
@@ -66,7 +68,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
 
   @Override
   public final void describeGet(MethodInfo info) {
-    info.setDocumentation("Method to retrieve a single ResourcePlugin plugin by ID and parent Id");
+    info.setDocumentation("Method to retrieve a single GuiService plugin by ID and parent Id");
     this.addStandardGetRequestInfo(info);
     ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
         "Gui service identifier");
@@ -78,7 +80,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
   }
 
   /**
-   * Update / Validate existing Converters
+   * Update / Validate existing GuiServicePluginModel
    * 
    * @param representation
    *          the representation parameter
@@ -87,29 +89,31 @@ public class ServerServiceResource extends AbstractServerServiceResource {
    * @return Representation
    */
   @Put
-  public Representation updateResourcePlugin(Representation representation, Variant variant) {
+  public Representation updateGuiService(Representation representation, Variant variant) {
     Response response = null;
     try {
-      ResourceModelDTO serverService = getObjectResourceModel(representation);
+      GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(representation);
 
       ServiceCollectionModel serviceCollection = getStore().retrieve(getParentId());
-      if (!serviceExists(serviceCollection, resourcePluginId)) {
-        response = new Response(false, "resource.not.defined");
+      if (!serviceExists(serviceCollection, guiServiceId)) {
+        response = new Response(false, "guiService.not.defined");
       }
       else {
 
-        String url = getResourcesUrl() + "/" + resourcePluginId;
-        ResourceModelDTO serverServiceOutput = RIAPUtils.updateObject(serverService, url, getContext());
+        String url = getGuiServicesUrl() + "/" + guiServiceId;
+        GuiServicePluginModel guiServiceOutput = RIAPUtils.updateObject(guiServiceInput, url, getContext());
 
-        ServiceModel service = getServiceModel(serviceCollection, resourcePluginId);
-        service.setId(serverServiceOutput.getId());
-        service.setName(serverServiceOutput.getName());
-        service.setDescription(serverServiceOutput.getDescription());
-        service.setType(ServiceEnum.SERVER);
+        ServiceModel service = getServiceModel(serviceCollection, guiServiceId);
+        service.setId(guiServiceOutput.getId());
+        service.setName(guiServiceOutput.getName());
+        service.setDescription(guiServiceOutput.getDescription());
+        service.setIcon(guiServiceOutput.getIconClass());
+        service.setLabel(guiServiceOutput.getLabel());
+        service.setType(ServiceEnum.GUI);
 
         getStore().update(serviceCollection);
 
-        response = new Response(true, serverServiceOutput, ResourceModelDTO.class, "resourcePlugin");
+        response = new Response(true, guiServiceOutput, GuiServicePluginModel.class, "guiServicePlugin");
       }
       return getRepresentation(response, variant);
     }
@@ -123,65 +127,49 @@ public class ServerServiceResource extends AbstractServerServiceResource {
     }
   }
 
-  /**
-   * Describe the Put command
-   * 
-   * @param info
-   *          the info sent
-   */
   @Override
-  public void describePut(MethodInfo info) {
-
-    // Method
-    info.setDocumentation("This method permits to modify a resource attached to an object");
-    info.setIdentifier("update_resource_plugin");
-
-    // Request
+  public final void describePut(MethodInfo info) {
+    info.setDocumentation("Method to modify a single gui service sending its new representation");
     this.addStandardPostOrPutRequestInfo(info);
-
-    ParameterInfo pic = new ParameterInfo("pluginId", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the resource");
-    info.getRequest().getParameters().add(pic);
-
-    // Response 200
-    this.addStandardResponseInfo(info);
-    // Response 500
-
-    ResponseInfo response = new ResponseInfo("Response when internal server error occurs");
-    response.getStatuses().add(Status.SERVER_ERROR_INTERNAL);
-    info.getResponses().add(response);
+    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
+        "gui service identifier");
+    info.getRequest().getParameters().add(param);
+    param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE, "Parent object identifier");
+    info.getRequest().getParameters().add(param);
+    this.addStandardObjectResponseInfo(info);
+    this.addStandardInternalServerErrorInfo(info);
   }
 
   /**
-   * Delete Converter
+   * Delete a GuiServicePluginModel
    * 
    * @param variant
    *          client preferred media type
    * @return Representation
    */
   @Delete
-  public Representation deleteServerService(Variant variant) {
+  public Representation deleteGuiService(Variant variant) {
     try {
       ServiceCollectionModel serviceCollection = getStore().retrieve(getParentId());
       Response response = null;
-      if (serviceExists(serviceCollection, resourcePluginId)) {
+      if (serviceExists(serviceCollection, guiServiceId)) {
 
-        String url = getResourcesUrl() + "/" + resourcePluginId;
+        String url = getGuiServicesUrl() + "/" + guiServiceId;
         boolean ok = RIAPUtils.deleteObject(url, getContext());
         if (ok) {
-          ServiceModel service = getServiceModel(serviceCollection, resourcePluginId);
+          ServiceModel service = getServiceModel(serviceCollection, guiServiceId);
           serviceCollection.getServices().remove(service);
           getStore().update(serviceCollection);
-          response = new Response(true, "resourceplugin.deleted.success");
+          response = new Response(true, "guiService.deleted.success");
 
         }
         else {
-          response = new Response(false, "resourceplugin.deleted.failure");
+          response = new Response(false, "guiService.deleted.failure");
         }
 
       }
       else {
-        response = new Response(false, "resource.not.defined");
+        response = new Response(false, "guiService.not.defined");
       }
       return getRepresentation(response, variant);
 
@@ -196,23 +184,15 @@ public class ServerServiceResource extends AbstractServerServiceResource {
     }
   }
 
-  /**
-   * Describe the Delete command
-   * 
-   * @param info
-   *          the info sent
-   */
   @Override
-  public void describeDelete(MethodInfo info) {
-    info.setDocumentation("This method delete a resource attached to an object");
-    info.setIdentifier("delete_resource_plugin");
-
+  public final void describeDelete(MethodInfo info) {
+    info.setDocumentation("Method to delete a single gui service by ID");
     this.addStandardGetRequestInfo(info);
-
-    ParameterInfo pic = new ParameterInfo("pluginId", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the resource");
-    info.getRequest().getParameters().add(pic);
-
+    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
+        "gui service identifier");
+    info.getRequest().getParameters().add(param);
+    param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE, "Parent object identifier");
+    info.getRequest().getParameters().add(param);
     this.addStandardSimpleResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
   }

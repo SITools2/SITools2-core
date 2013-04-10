@@ -1,5 +1,6 @@
 package fr.cnes.sitools.plugins.guiservices.implement;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,9 +117,16 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
    * @param representation
    *          the representation used
    * @return GuiService
+   * @throws IOException
+   *           if there is an error while parsing the java representation of the object
    */
-  public final GuiServicePluginModel getObject(Representation representation) {
+  public final GuiServicePluginModel getObject(Representation representation) throws IOException {
     GuiServicePluginModel projectModuleInput = null;
+    if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<GuiServicePluginModel> obj = (ObjectRepresentation<GuiServicePluginModel>) representation;
+      projectModuleInput = obj.getObject();
+    }
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the GuiService bean
       XstreamRepresentation<GuiServicePluginModel> repXML = new XstreamRepresentation<GuiServicePluginModel>(

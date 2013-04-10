@@ -1,13 +1,14 @@
 package fr.cnes.sitools;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -16,6 +17,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -27,13 +30,13 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
+import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.AbstractTaskResourceTestCase;
-import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
@@ -127,15 +130,18 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     try {
       createDataset(datasetId, urlAttachDataset);
       assertNoneServices();
-      resourceModel = createServiceResource();
-      assertServiceResource(1);
-      // guiService = createServiceIHM();
+      resourceModel = createServerService();
+      assertServerService(1);
+      guiService = createGuiService();
+      assertServicesCount(2);
+      assertServicesOrder(resourceModel.getId(), guiService.getId());
+      ServiceCollectionModel services = createCollectionToChangeOrder(resourceModel, guiService);
+      persistServicesOrder(services);
+      assertServicesOrder(guiService.getId(), resourceModel.getId());
+      deleteGuiService(guiService, getServiceUrl(datasetId));
       assertServicesCount(1);
-      deleteResourceModel(resourceModel, getServiceUrl(datasetId));
+      deleteServerService(resourceModel, getServiceUrl(datasetId));
       assertServicesCount(0);
-      if (guiService != null) {
-        deleteGuiService(guiService);
-      }
     }
     finally {
       deleteDataset(datasetId);
@@ -145,59 +151,51 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
   @Test
   public void testServerServiceCRUD() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
-    ResourceModel resourceModel = null;
+    ResourceModel serverService = null;
     try {
       createDataset(datasetId, urlAttachDataset);
-      assertServiceResource(0);
-      resourceModel = createServiceResource();
-      assertServiceResource(1);
-      resourceModel.setDescription("description changed");
-      resourceModel.setParent(datasetId);
-      updateServiceResource(resourceModel, getServiceUrl(datasetId));
-      // guiService = createServiceIHM();
-      deleteResourceModel(resourceModel, getServiceUrl(datasetId));
-      assertServiceResource(0);
+      assertServerService(0);
+      serverService = createServerService();
+      assertServerService(1);
+      serverService.setDescription("description changed");
+      serverService.setParent(datasetId);
+      updateServerService(serverService, getServiceUrl(datasetId));
+      deleteServerService(serverService, getServiceUrl(datasetId));
+      assertServerService(0);
     }
     finally {
       deleteDataset(datasetId);
     }
   }
 
-  private void assertServiceResource(int expected) {
-    String url = getServiceUrl(datasetId) + "/server";
-    if (docAPI.isActive()) {
-      Map<String, String> parameters = new LinkedHashMap<String, String>();
-      parameters.put("identifier", "dataset identifier");
-      retrieveDocAPI(url, "", parameters, String.format(getBaseUrl(), "%identifier%") + "/services");
+  @Test
+  public void testGuiServiceCRUD() throws InterruptedException, ClassNotFoundException, InstantiationException,
+      IllegalAccessException {
+    GuiServicePluginModel guiService = null;
+    try {
+      createDataset(datasetId, urlAttachDataset);
+      assertGuiService(0);
+      guiService = createGuiService();
+      assertGuiService(1);
+      guiService.setDescription("New description");
+      updateGuiService(guiService, getServiceUrl(datasetId));
+      deleteGuiService(guiService, getServiceUrl(datasetId));
+      assertGuiService(0);
     }
-    else {
-      ClientResource cr = new ClientResource(url);
-      docAPI.appendRequest(Method.GET, cr);
-
-      Representation result = cr.get(getMediaTest());
-      assertNotNull(result);
-      assertTrue(cr.getStatus().isSuccess());
-      Response response = GetResponseUtils.getResponseResource(getMediaTest(), result, ResourceModel.class, true);
-      assertTrue(response.getSuccess());
-      assertEquals(new Integer(expected), response.getTotal());
-      if (expected == 0) {
-        assertNull(response.getData());
-      }
-      else {
-        assertEquals(expected, response.getData().size());
-      }
-      RIAPUtils.exhaust(result);
+    finally {
+      deleteDataset(datasetId);
     }
-
   }
+
+  // -----------------------------------------------------
+  // SERVICES METHODS
 
   private void assertNoneServices() {
     assertServicesCount(0);
   }
 
   private void assertServicesCount(int expectedServicesCount) {
-    String url = getBaseDatasetUrl().replaceAll("\\{parentId\\}", datasetId)
-        + settings.getString(Consts.APP_SERVICES_URL);
+    String url = getServiceUrl(datasetId);
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       parameters.put("identifier", "dataset identifier");
@@ -226,7 +224,122 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  private ResourceModel createServiceResource() throws ClassNotFoundException, InstantiationException,
+  private String getServiceUrl(String parentId) {
+    return getBaseDatasetUrl().replaceAll("\\{parentId\\}", parentId) + settings.getString(Consts.APP_SERVICES_URL);
+  }
+
+  private ServiceCollectionModel createCollectionToChangeOrder(ResourceModel resourceModel,
+      GuiServicePluginModel guiService) {
+
+    ServiceCollectionModel collection = new ServiceCollectionModel();
+    List<ServiceModel> services = new ArrayList<ServiceModel>();
+
+    ServiceModel service = new ServiceModel();
+    service.setId(guiService.getId());
+    service.setName(guiService.getName());
+    service.setDescription(guiService.getDescription());
+    service.setIcon(guiService.getIconClass());
+    service.setLabel(guiService.getLabel());
+    service.setType(ServiceEnum.GUI);
+    services.add(service);
+
+    service = new ServiceModel();
+    service.setId(resourceModel.getId());
+    service.setName(resourceModel.getName());
+    service.setDescription(resourceModel.getDescription());
+    service.setType(ServiceEnum.SERVER);
+    services.add(service);
+
+    collection.setServices(services);
+    collection.setId(datasetId);
+
+    return collection;
+  }
+
+  private void assertServicesOrder(String id1, String id2) {
+    String url = getServiceUrl(datasetId);
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("identifier", "dataset identifier");
+      retrieveDocAPI(url, "", parameters, String.format(getBaseUrl(), "%identifier%") + "/services");
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      docAPI.appendRequest(Method.GET, cr);
+
+      Representation result = cr.get(getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = getResponseCollectionServices(getMediaTest(), result, ServiceCollectionModel.class, false);
+
+      assertTrue(response.getSuccess());
+      ServiceCollectionModel services = (ServiceCollectionModel) response.getItem();
+
+      assertNotNull(services.getServices());
+      assertEquals(2, services.getServices().size());
+
+      assertEquals(id1, services.getServices().get(0).getId());
+      assertEquals(id2, services.getServices().get(1).getId());
+
+      RIAPUtils.exhaust(result);
+    }
+  }
+
+  private void persistServicesOrder(ServiceCollectionModel services) {
+    Representation rep = getRepresentationCollectionServices(services, getMediaTest());
+    String url = getServiceUrl(datasetId);
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("POST", "A <i>ServiceCollectionModel</i> object");
+      postDocAPI(url, "", rep, parameters, url);
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      Representation result = cr.put(rep, getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = getResponseCollectionServices(getMediaTest(), result, ServiceCollectionModel.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
+      ServiceCollectionModel servicesOutput = (ServiceCollectionModel) response.getItem();
+      assertEquals(datasetId, servicesOutput.getId());
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  // ----------------------------------------------------------------------
+  // SERVER SERVICE METHODS
+
+  private void assertServerService(int expected) {
+    String url = getServiceUrl(datasetId) + "/server";
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("identifier", "dataset identifier");
+      retrieveDocAPI(url, "", parameters, String.format(getBaseUrl(), "%identifier%") + "/services");
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      docAPI.appendRequest(Method.GET, cr);
+
+      Representation result = cr.get(getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponseResource(getMediaTest(), result, ResourceModel.class, true);
+      assertTrue(response.getSuccess());
+      assertEquals(new Integer(expected), response.getTotal());
+      if (expected == 0) {
+        assertNull(response.getData());
+      }
+      else {
+        assertEquals(expected, response.getData().size());
+      }
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  private ResourceModel createServerService() throws ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel htmlResource = AbstractTaskResourceTestCase.createResourceModel(resourceModelClass,
         "test_html_resource", urlAttachResource);
@@ -235,79 +348,6 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     htmlResource.getParameterByName("title").setValue("HTML title");
     persistResourceModel(htmlResource, getServiceUrl(datasetId));
     return htmlResource;
-  }
-
-  private GuiServicePluginModel createServiceIHM() {
-    GuiServicePluginModel service = AbstractGuiServiceImplementTestCase.createObject("bbbbb");
-    persistGuiServicePlugin(service);
-    return service;
-  }
-
-  /**
-   * Create and activate a Dataset for Postgresql datasource. This dataset is created on the test.table_tests table
-   * 
-   * @param id
-   *          the id of the dataset
-   * @param urlAttachment
-   *          the url attachment
-   * @return the DataSet created
-   * @throws InterruptedException
-   *           if something is wrong
-   */
-  private DataSet createDataset(String id, String urlAttachment) throws InterruptedException {
-    DataSet item = CreateDatasetUtil.createDatasetFusePG(id, urlAttachment);
-    persistDataset(item);
-    item.setDirty(false);
-    changeStatus(item.getId(), "/start");
-    return item;
-  }
-
-  private void persistGuiServicePlugin(GuiServicePluginModel guiServiceIn) {
-    Representation rep = GetRepresentationUtils.getRepresentationGuiServicePlugin(guiServiceIn, getMediaTest());
-    String url = getServiceUrl(datasetId);
-    if (docAPI.isActive()) {
-      Map<String, String> parameters = new LinkedHashMap<String, String>();
-      parameters.put("POST", "A <i>GuiService</i> object");
-      postDocAPI(url, "", rep, parameters, url);
-    }
-    else {
-      ClientResource cr = new ClientResource(url);
-      Representation result = cr.post(rep, getMediaTest());
-      assertNotNull(result);
-      assertTrue(cr.getStatus().isSuccess());
-      Response response = GetResponseUtils.getResponseGuiServicePlugin(getMediaTest(), result,
-          GuiServicePluginModel.class);
-      assertTrue(response.getSuccess());
-      assertNotNull(response.getItem());
-      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
-      assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
-      assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
-      assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
-
-      RIAPUtils.exhaust(result);
-    }
-  }
-
-  private String getServiceUrl(String parentId) {
-    return getBaseDatasetUrl().replaceAll("\\{parentId\\}", parentId) + settings.getString(Consts.APP_SERVICES_URL);
-  }
-
-  private void deleteGuiService(GuiServicePluginModel guiService) {
-    String url = getServiceUrl(datasetId) + "/" + guiService.getId();
-    if (docAPI.isActive()) {
-      Map<String, String> parameters = new LinkedHashMap<String, String>();
-      parameters.put("guiServiceId", "GuiService identifier");
-      deleteDocAPI(url, "", parameters, getServiceUrl("{datasetId}") + "/%guiServiceId%");
-    }
-    else {
-      ClientResource cr = new ClientResource(url);
-      Representation result = cr.delete(getMediaTest());
-      assertNotNull(result);
-      assertTrue(cr.getStatus().isSuccess());
-      Response response = getResponse(getMediaTest(), result, GuiServicePluginModel.class);
-      assertTrue(response.getSuccess());
-      RIAPUtils.exhaust(result);
-    }
   }
 
   /**
@@ -348,7 +388,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
    * 
    * 
    */
-  public void updateServiceResource(ResourceModel resourceModel, String baseUrl) {
+  public void updateServerService(ResourceModel resourceModel, String baseUrl) {
     ResourceModelDTO dto = getResourceModelDTO(resourceModel);
 
     Representation appRep = GetRepresentationUtils.getRepresentationResource(dto, getMediaTest());
@@ -377,7 +417,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
    * 
    * 
    */
-  public void deleteResourceModel(ResourceModel resourceModel, String baseUrl) {
+  public void deleteServerService(ResourceModel resourceModel, String baseUrl) {
     ClientResource cr = new ClientResource(baseUrl + "/server/" + resourceModel.getId());
     Representation result = cr.delete(getMediaTest());
     assertNotNull(result);
@@ -397,6 +437,140 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
    */
   private ResourceModelDTO getResourceModelDTO(ResourceModel resource) {
     return ResourceModelDTO.resourceModelToDTO(resource);
+  }
+
+  // ----------------------------------------------------------
+  // GUI SERVICE METHODS
+  /**
+   * Assert that the number of gui services for a particular dataset is expected
+   * 
+   * @param expected
+   *          the number of gui services expected
+   */
+  private void assertGuiService(int expected) {
+    String url = getServiceUrl(datasetId) + "/gui";
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("identifier", "dataset identifier");
+      retrieveDocAPI(url, "", parameters, String.format(getBaseUrl(), "%identifier%") + "/services/gui");
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      docAPI.appendRequest(Method.GET, cr);
+
+      Representation result = cr.get(getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponseGuiServicePlugin(getMediaTest(), result,
+          GuiServicePluginModel.class, true);
+      assertTrue(response.getSuccess());
+      assertEquals(new Integer(expected), response.getTotal());
+      if (expected == 0) {
+        assertNull(response.getData());
+      }
+      else {
+        assertEquals(expected, response.getData().size());
+      }
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  private GuiServicePluginModel createGuiService() {
+    GuiServicePluginModel service = AbstractGuiServiceImplementTestCase.createObject("bbbbb");
+    persistGuiServicePlugin(service, getServiceUrl(datasetId));
+    return service;
+  }
+
+  private void persistGuiServicePlugin(GuiServicePluginModel guiServiceIn, String baseUrl) {
+    Representation rep = GetRepresentationUtils.getRepresentationGuiServicePlugin(guiServiceIn, getMediaTest());
+    String url = baseUrl + "/gui";
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("POST", "A <i>GuiService</i> object");
+      postDocAPI(url, "", rep, parameters, url);
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      Representation result = cr.post(rep, getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponseGuiServicePlugin(getMediaTest(), result,
+          GuiServicePluginModel.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
+      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
+      assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
+      assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
+      assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
+
+      RIAPUtils.exhaust(result);
+    }
+  }
+
+  private void updateGuiService(GuiServicePluginModel guiServiceIn, String baseUrl) {
+    Representation rep = GetRepresentationUtils.getRepresentationGuiServicePlugin(guiServiceIn, getMediaTest());
+    String url = baseUrl + "/gui/" + guiServiceIn.getId();
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("POST", "A <i>GuiService</i> object");
+      postDocAPI(url, "", rep, parameters, url);
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      Representation result = cr.put(rep, getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponseGuiServicePlugin(getMediaTest(), result,
+          GuiServicePluginModel.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
+      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
+      assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
+      assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
+      assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
+
+      RIAPUtils.exhaust(result);
+    }
+  }
+
+  private void deleteGuiService(GuiServicePluginModel guiService, String baseUrl) {
+    String url = baseUrl + "/gui/" + guiService.getId();
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("guiServiceId", "GuiService identifier");
+      deleteDocAPI(url, "", parameters, getServiceUrl("{datasetId}") + "/%guiServiceId%");
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      Representation result = cr.delete(getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = getResponse(getMediaTest(), result, GuiServicePluginModel.class);
+      assertTrue(response.getSuccess());
+      RIAPUtils.exhaust(result);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // OTHER METHODS
+  /**
+   * Create and activate a Dataset for Postgresql datasource. This dataset is created on the test.table_tests table
+   * 
+   * @param id
+   *          the id of the dataset
+   * @param urlAttachment
+   *          the url attachment
+   * @return the DataSet created
+   * @throws InterruptedException
+   *           if something is wrong
+   */
+  private DataSet createDataset(String id, String urlAttachment) throws InterruptedException {
+    DataSet item = CreateDatasetUtil.createDatasetFusePG(id, urlAttachment);
+    persistDataset(item);
+    item.setDirty(false);
+    changeStatus(item.getId(), "/start");
+    return item;
   }
 
   // ------------------------------------------------------------
@@ -475,6 +649,47 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     finally {
       RIAPUtils.exhaust(representation);
     }
+  }
+
+  /**
+   * Builds XML or JSON Representation of Project for Create and Update methods.
+   * 
+   * @param item
+   *          Project
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationCollectionServices(ServiceCollectionModel item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JacksonRepresentation<ServiceCollectionModel>(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<ServiceCollectionModel> rep = new XstreamRepresentation<ServiceCollectionModel>(media, item);
+      configureCollectionServices(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null; // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configures XStream mapping of Response object with ConverterModelDTO content.
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureCollectionServices(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("response", Response.class);
+
+    // Parce que les annotations ne sont apparemment prises en compte
+    xstream.omitField(Response.class, "itemName");
+    xstream.omitField(Response.class, "itemClass");
   }
 
 }

@@ -69,10 +69,11 @@ public class ServiceApplication extends SitoolsApplication {
 
     Router router = new Router(getContext());
 
-    // Complete collection of gui services
     router.attachDefault(ServiceCollectionResource.class);
     router.attach("/server", ServerServiceCollectionResource.class);
     router.attach("/server/{resourcePluginId}", ServerServiceResource.class);
+    router.attach("/gui", GuiServiceCollectionResource.class);
+    router.attach("/gui/{guiServiceId}", GuiServiceResource.class);
 
     Filter filter = new NotifierFilter(getContext());
     filter.setNext(router);
