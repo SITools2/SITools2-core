@@ -28,14 +28,12 @@ Ext.namespace('sitools.admin.datasets.services');
  *            create or modify
  * @param parentPanel
  *            the parent panel
- * @param urlResources
- *            the resources url
- * @param urlResourcesCRUD
- *            the URL of the resource CRUD
- * @param urlParent
- *            the url of the parent Object
  * @param appClassName
  *            the parent className
+ * @param urlAllServicesIHM
+ * 			the url of all services ihm
+ * @param urlDatasetServiceIHM
+ * 			the url of the service ihm
  * @param idParent
  *            the parent id
  * @param parentType
@@ -54,7 +52,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 
     initComponent : function () {
 
-    	this.guiServiceDatasetURL = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL') + '/' + this.idParent + loadUrl.get('APP_GUI_SERVICES_URL');
+    	this.guiServiceDatasetURL = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL') + '/' + this.idParent + "/services";
     	
         this.title = this.action == "create" ? i18n.get('label.create' + this.parentType + 'Resource') : i18n.get('label.modify' + this.parentType + 'Resource'); 
 
@@ -82,7 +80,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 root : 'data',
                 restful : true,
                 proxy : new Ext.data.HttpProxy({
-                    url : this.guiServicesUrl,
+                    url : this.urlAllServicesIHM,
                     restful : true,
                     method : 'GET'
                 }),
@@ -143,8 +141,8 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     width : 300,
                     sortable : true
                 }, {
-                    header : i18n.get('label.resourceClassName'),
-                    dataIndex : 'className',
+                    header : i18n.get('label.xtype'),
+                    dataIndex : 'xtype',
                     width : 300,
                     sortable : true
                 }, {
@@ -368,14 +366,13 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         
         var method;
         if (this.action == "modify") {
-            url += "/" + datasetServiceIhm.id;
             method = "PUT";
         } else {
             method = "POST";
         }
 
         Ext.Ajax.request({
-            url : this.guiServiceDatasetURL,
+            url : this.urlDatasetServiceIHM.replace('{idService}', datasetServiceIhm.id),
             method : method,
             scope : this,
             jsonData : datasetServiceIhm,
