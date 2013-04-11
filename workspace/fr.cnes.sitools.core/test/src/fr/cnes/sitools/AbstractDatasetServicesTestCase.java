@@ -1,6 +1,7 @@
 package fr.cnes.sitools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -28,6 +29,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
@@ -125,22 +127,24 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
   @Test
   public void testDatasetServices() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
-    ResourceModel resourceModel = null;
+    ResourceModel serverService = null;
     GuiServicePluginModel guiService = null;
     try {
       createDataset(datasetId, urlAttachDataset);
       assertNoneServices();
-      resourceModel = createServerService();
+      serverService = createServerService(true);
+      String serviceUrl = getServiceUrl(datasetId);
+      persistResourceModel(serverService, serviceUrl);
       assertServerService(1);
       guiService = createGuiService();
       assertServicesCount(2);
-      assertServicesOrder(resourceModel.getId(), guiService.getId());
-      ServiceCollectionModel services = createCollectionToChangeOrder(resourceModel, guiService);
+      assertServicesOrder(serverService.getId(), guiService.getId());
+      ServiceCollectionModel services = createCollectionToChangeOrder(serverService, guiService);
       persistServicesOrder(services);
-      assertServicesOrder(guiService.getId(), resourceModel.getId());
-      deleteGuiService(guiService, getServiceUrl(datasetId));
+      assertServicesOrder(guiService.getId(), serverService.getId());
+      deleteGuiService(guiService, serviceUrl);
       assertServicesCount(1);
-      deleteServerService(resourceModel, getServiceUrl(datasetId));
+      deleteServerService(serverService, serviceUrl);
       assertServicesCount(0);
     }
     finally {
@@ -155,11 +159,35 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     try {
       createDataset(datasetId, urlAttachDataset);
       assertServerService(0);
-      serverService = createServerService();
+      serverService = createServerService(true);
+      persistResourceModel(serverService, getServiceUrl(datasetId));
       assertServerService(1);
       serverService.setDescription("description changed");
       serverService.setParent(datasetId);
       updateServerService(serverService, getServiceUrl(datasetId));
+      deleteServerService(serverService, getServiceUrl(datasetId));
+      assertServerService(0);
+    }
+    finally {
+      deleteDataset(datasetId);
+    }
+  }
+
+  @Test
+  public void testServerServiceWithViolationsCRUD() throws InterruptedException, ClassNotFoundException,
+      InstantiationException, IllegalAccessException {
+    ResourceModel serverService = null;
+    try {
+      createDataset(datasetId, urlAttachDataset);
+      assertServerService(0);
+      serverService = createServerService(false);
+      String serviceUrl = getServiceUrl(datasetId);
+      persistServerServiceWithValidation(serverService, 1, serviceUrl);
+      serverService.getParameterByName("title").setValue("HTML title");
+      persistResourceModel(serverService, serviceUrl);
+      assertServerService(1);
+      serverService.getParameterByName("title").setValue("");
+      updateServerServiceWithValidation(serverService, 1, serviceUrl);
       deleteServerService(serverService, getServiceUrl(datasetId));
       assertServerService(0);
     }
@@ -339,14 +367,15 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
 
   }
 
-  private ResourceModel createServerService() throws ClassNotFoundException, InstantiationException,
+  private ResourceModel createServerService(boolean withTitle) throws ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel htmlResource = AbstractTaskResourceTestCase.createResourceModel(resourceModelClass,
         "test_html_resource", urlAttachResource);
     htmlResource.setName("HTML Resource TEST");
     htmlResource.setDescription("HTML Resource description");
-    htmlResource.getParameterByName("title").setValue("HTML title");
-    persistResourceModel(htmlResource, getServiceUrl(datasetId));
+    if (withTitle) {
+      htmlResource.getParameterByName("title").setValue("HTML title");
+    }
     return htmlResource;
   }
 
@@ -426,6 +455,56 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     Response response = getResponse(getMediaTest(), result, ResourceModel.class);
     assertTrue(response.getSuccess());
     RIAPUtils.exhaust(result);
+  }
+
+  /**
+   * Add an ResourceModel and assert that the validation process has failed
+   * 
+   * @param item
+   *          ResourceModel
+   * @param nbViolations
+   *          the number of violations to assert
+   * @param baseUrl
+   *          the base url of the services service
+   * 
+   */
+  public void persistServerServiceWithValidation(ResourceModel item, int nbViolations, String baseUrl) {
+    ResourceModelDTO dto = getResourceModelDTO(item);
+    Representation appRep = GetRepresentationUtils.getRepresentationResource(dto, getMediaTest());
+    ClientResource cr = new ClientResource(baseUrl + "/server");
+    Representation result = cr.post(appRep, getMediaTest());
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+    Response response = GetResponseUtils.getResponseResource(getMediaTest(), result, ConstraintViolation.class, true);
+    assertFalse(response.getSuccess());
+    ArrayList<Object> list = response.getData();
+    assertEquals(nbViolations, list.size());
+  }
+
+  /**
+   * Update an ResourceModelDTO and assert that the validation process has failed
+   * 
+   * @param item
+   *          ResourceModel
+   * @param nbViolations
+   *          the number of violations to assert
+   * @param baseUrl
+   *          the base url of the services service
+   * 
+   */
+  public void updateServerServiceWithValidation(ResourceModel item, int nbViolations, String baseUrl) {
+    ResourceModelDTO dto = getResourceModelDTO(item);
+    Representation appRep = GetRepresentationUtils.getRepresentationResource(dto, getMediaTest());
+
+    ClientResource cr = new ClientResource(baseUrl + "/server/" + item.getId());
+    Representation result = cr.put(appRep, getMediaTest());
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+    Response response = getResponse(getMediaTest(), result, ConstraintViolation.class, true);
+    assertFalse(response.getSuccess());
+    ArrayList<Object> list = response.getData();
+    assertEquals(nbViolations, list.size());
+
   }
 
   /**

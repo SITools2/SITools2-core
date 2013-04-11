@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.restlet.Client;
@@ -34,17 +33,10 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
-import com.thoughtworks.xstream.XStream;
-
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
-import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
@@ -54,6 +46,8 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.utils.GetRepresentationUtils;
+import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
  * Base test class for resource plugins
@@ -285,7 +279,7 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
 
     // add it to the server, it will fail with 2 violations
     create(resModel);
-    
+
     deletePlugin();
 
   }
@@ -664,62 +658,7 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
    * @return Response
    */
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("resourcePlugin", ResourceModelDTO.class);
-      xstream.alias("resourceParameter", ResourceParameter.class);
-      xstream.alias("ResourcePluginDescriptionDTO", ResourcePluginDescriptionDTO.class);
-
-      xstream.omitField(ExtensionModel.class, "parametersMap");
-
-      if (dataClass == ConstraintViolation.class) {
-        xstream.alias("constraintViolation", ConstraintViolation.class);
-      }
-
-      if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-        xstream.addImplicitCollection(ResourceModelDTO.class, "parameters", ResourceParameter.class);
-      }
-
-      if (isArray) {
-        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-          xstream.addImplicitCollection(Response.class, "data", dataClass);
-          if (dataClass == ResourceModelDTO.class) {
-            xstream.addImplicitCollection(ResourceModelDTO.class, "parameters", ResourceParameter.class);
-          }
-        }
-        else {
-          xstream.alias("resourcePlugin", Object.class, ResourceModelDTO.class);
-        }
-      }
-      else {
-        xstream.aliasField("resourcePlugin", Response.class, "item");
-        xstream.alias("resourcePlugin", Object.class, ResourceModelDTO.class);
-      }
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-        // TODO complete test with ObjectRepresentation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-    }
+    return GetResponseUtils.getResponseResource(media, representation, dataClass);
   }
 
   /**
@@ -732,34 +671,7 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
    * @return XML or JSON Representation
    */
   public static Representation getRepresentation(ResourceModelDTO item, MediaType media) {
-    if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JacksonRepresentation<ResourceModelDTO>(item);
-    }
-    else if (media.equals(MediaType.APPLICATION_XML)) {
-      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
-      XstreamRepresentation<ResourceModelDTO> rep = new XstreamRepresentation<ResourceModelDTO>(media, item);
-      configure(xstream);
-      rep.setXstream(xstream);
-      return rep;
-    }
-    else {
-      Logger.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-      return null;
-      // TODO complete test with ObjectRepresentation
-    }
-  }
-
-  /**
-   * Configures XStream mapping for Response object with Project content.
-   * 
-   * @param xstream
-   *          XStream
-   */
-  private static void configure(XStream xstream) {
-    xstream.autodetectAnnotations(false);
-    xstream.alias("response", Response.class);
-    xstream.alias("resourcePlugin", ResourceModelDTO.class);
-    xstream.alias("resourceParameter", ResourceParameter.class);
+    return GetRepresentationUtils.getRepresentationResource(item, media);
   }
 
 }

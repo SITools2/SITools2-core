@@ -89,6 +89,11 @@ public class GuiServicePluginStoreXML extends SitoolsStoreXML<GuiServicePluginMo
         current.setLabel(guiService.getLabel());
         current.setIconClass(guiService.getIconClass());
 
+        current.setDescriptionAction(guiService.getDescriptionAction());
+        current.setDataSetSelection(guiService.getDataSetSelection());
+
+        current.setParameters(guiService.getParameters());
+        current.setParent(guiService.getParent());
         it.remove();
 
         break;

@@ -446,6 +446,96 @@ public final class RIAPUtils {
   }
 
   /**
+   * Handle a call with the RIAP protocol without entity, parse the response and return a Response
+   * 
+   * @param url
+   *          the url
+   * @param method
+   *          the Method to perform
+   * @param mediaType
+   *          the accepted mediaType
+   * @param context
+   *          the Context
+   * @return the returned Representation
+   */
+  public static Response handleParseResponse(String url, Method method, MediaType mediaType, Context context) {
+
+    Request req = new Request(method, getRiapBase() + url);
+    ArrayList<Preference<MediaType>> acceptedMediaTypes = new ArrayList<Preference<MediaType>>();
+    acceptedMediaTypes.add(new Preference<MediaType>(mediaType));
+    req.getClientInfo().setAcceptedMediaTypes(acceptedMediaTypes);
+    org.restlet.Response response = null;
+    try {
+      response = context.getClientDispatcher().handle(req);
+
+      if (response == null || Status.isError(response.getStatus().getCode())) {
+        RIAPUtils.exhaust(response);
+        throw new ResourceException(response.getStatus());
+      }
+
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
+      Response resp;
+      try {
+        resp = (Response) or.getObject();
+        return resp;
+      }
+      catch (IOException e) {
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+      }
+    }
+    finally {
+      RIAPUtils.exhaust(response);
+    }
+  }
+
+  /**
+   * Handle a call with the RIAP protocol with entity , parse the response and return a Response object
+   * 
+   * @param url
+   *          the url
+   * @param entity
+   *          the entity of the request
+   * @param method
+   *          the Method to perform
+   * @param mediaType
+   *          the accepted mediaType
+   * @param context
+   *          the Context
+   * @return the returned Representation
+   */
+  public static Response handleParseResponse(String url, Representation entity, Method method, MediaType mediaType,
+      Context context) {
+
+    Request req = new Request(method, getRiapBase() + url, entity);
+    ArrayList<Preference<MediaType>> acceptedMediaTypes = new ArrayList<Preference<MediaType>>();
+    acceptedMediaTypes.add(new Preference<MediaType>(mediaType));
+    req.getClientInfo().setAcceptedMediaTypes(acceptedMediaTypes);
+    org.restlet.Response response = null;
+    try {
+      response = context.getClientDispatcher().handle(req);
+
+      if (response == null || Status.isError(response.getStatus().getCode())) {
+        RIAPUtils.exhaust(response);
+        throw new ResourceException(response.getStatus());
+      }
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
+      Response resp;
+      try {
+        resp = (Response) or.getObject();
+        return resp;
+      }
+      catch (IOException e) {
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+      }
+    }
+    finally {
+      RIAPUtils.exhaust(response);
+    }
+  }
+
+  /**
    * Exhaust response properly
    * 
    * @param response

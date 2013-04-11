@@ -23,17 +23,17 @@ import org.restlet.data.MediaType;
 import fr.cnes.sitools.AbstractDatasetServicesTestCase;
 import fr.cnes.sitools.api.DocAPI;
 
-public class DatasetServiceTestCase extends AbstractDatasetServicesTestCase {
+public class DatasetServicesTestCase extends AbstractDatasetServicesTestCase {
   static {
     setMediaTest(MediaType.APPLICATION_JSON);
-    docAPI = new DocAPI(DatasetServiceTestCase.class, "Dataset services API");
+    docAPI = new DocAPI(DatasetServicesTestCase.class, "Dataset services API");
     docAPI.setMediaTest(MediaType.APPLICATION_JSON);
   }
 
   /**
    * Default constructor
    */
-  public DatasetServiceTestCase() {
+  public DatasetServicesTestCase() {
     super();
 
   }

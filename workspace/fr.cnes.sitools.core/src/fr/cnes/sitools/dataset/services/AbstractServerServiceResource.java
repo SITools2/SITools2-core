@@ -2,7 +2,9 @@ package fr.cnes.sitools.dataset.services;
 
 import java.io.IOException;
 
+import org.restlet.Context;
 import org.restlet.data.MediaType;
+import org.restlet.data.Method;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.ObjectRepresentation;
@@ -10,8 +12,10 @@ import org.restlet.representation.Representation;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
+import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.RIAPUtils;
 
 public abstract class AbstractServerServiceResource extends AbstractServiceResource {
 
@@ -55,6 +59,23 @@ public abstract class AbstractServerServiceResource extends AbstractServiceResou
     SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
     return settings.getString(Consts.APP_APPLICATIONS_URL) + "/" + getParentId()
         + settings.getString(Consts.APP_RESOURCES_URL);
+  }
+
+  /**
+   * Persist a given T object to the given url
+   * 
+   * @param object
+   *          the object to persist
+   * @param url
+   *          the url
+   * @param context
+   *          the {@link Context}
+   * @param method TODO
+   * @return the persisted object
+   */
+  public Response handleResourceModelCall(ResourceModelDTO object, String url, Context context, Method method) {
+    Representation entity = new ObjectRepresentation<ResourceModelDTO>(object);
+    return RIAPUtils.handleParseResponse(url, entity, method, MediaType.APPLICATION_JAVA_OBJECT, context);
   }
   
   

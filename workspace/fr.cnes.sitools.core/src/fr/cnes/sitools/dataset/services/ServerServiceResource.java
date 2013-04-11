@@ -17,14 +17,11 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
-import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -99,17 +96,24 @@ public class ServerServiceResource extends AbstractServerServiceResource {
       else {
 
         String url = getResourcesUrl() + "/" + resourcePluginId;
-        ResourceModelDTO serverServiceOutput = RIAPUtils.updateObject(serverService, url, getContext());
+        Response responsePersist = handleResourceModelCall(serverService, url, getContext(), Method.PUT);
+        if (responsePersist.isSuccess()) {
+          // if the response is a success we have a ResourceModelDTO in return and it has been successfully added
+          if (responsePersist.getItem() == null) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "Empty ResourceModelDTO in return");
+          }
+          ResourceModelDTO serverServiceOutput = (ResourceModelDTO) responsePersist.getItem();
 
-        ServiceModel service = getServiceModel(serviceCollection, resourcePluginId);
-        service.setId(serverServiceOutput.getId());
-        service.setName(serverServiceOutput.getName());
-        service.setDescription(serverServiceOutput.getDescription());
-        service.setType(ServiceEnum.SERVER);
+          ServiceModel service = getServiceModel(serviceCollection, resourcePluginId);
+          service.setId(serverServiceOutput.getId());
+          service.setName(serverServiceOutput.getName());
+          service.setDescription(serverServiceOutput.getDescription());
+          service.setType(ServiceEnum.SERVER);
 
-        getStore().update(serviceCollection);
+          getStore().update(serviceCollection);
 
-        response = new Response(true, serverServiceOutput, ResourceModelDTO.class, "resourcePlugin");
+        }
+        response = responsePersist;
       }
       return getRepresentation(response, variant);
     }

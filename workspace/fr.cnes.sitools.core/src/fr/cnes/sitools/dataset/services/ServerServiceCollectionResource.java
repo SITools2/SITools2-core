@@ -1,10 +1,14 @@
 package fr.cnes.sitools.dataset.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
+import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.data.Preference;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
@@ -17,6 +21,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
@@ -75,33 +80,39 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
   @Post
   public Representation newServerService(Representation representation, Variant variant) {
     try {
-
+      Response response = null;
       ResourceModelDTO serverService = getObjectResourceModel(representation);
 
       String url = getResourcesUrl();
-      ResourceModelDTO serverServiceOutput = RIAPUtils.persistObject(serverService, url, getContext());
+      Response responsePersist = handleResourceModelCall(serverService, url, getContext(), Method.POST);
 
-      ServiceCollectionModel services = getStore().retrieve(getParentId());
+      if (responsePersist.isSuccess()) {
+        // if the response is a success we have a ResourceModelDTO in return and it has been successfully added
+        if (responsePersist.getItem() == null) {
+          throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "Empty ResourceModelDTO in return");
+        }
+        ResourceModelDTO serverServiceOutput = (ResourceModelDTO) responsePersist.getItem();
+        ServiceCollectionModel services = getStore().retrieve(getParentId());
 
-      if (services == null) {
-        services = new ServiceCollectionModel();
-        services.setId(getParentId());
-        getStore().create(services);
+        if (services == null) {
+          services = new ServiceCollectionModel();
+          services.setId(getParentId());
+          getStore().create(services);
+        }
+
+        ServiceModel service = new ServiceModel();
+        service.setId(serverServiceOutput.getId());
+        service.setName(serverServiceOutput.getName());
+        service.setDescription(serverServiceOutput.getDescription());
+        service.setType(ServiceEnum.SERVER);
+
+        if (services.getServices() == null) {
+          services.setServices(new ArrayList<ServiceModel>());
+        }
+        services.getServices().add(service);
+        getStore().update(services);
       }
-
-      ServiceModel service = new ServiceModel();
-      service.setId(serverServiceOutput.getId());
-      service.setName(serverServiceOutput.getName());
-      service.setDescription(serverServiceOutput.getDescription());
-      service.setType(ServiceEnum.SERVER);
-
-      if (services.getServices() == null) {
-        services.setServices(new ArrayList<ServiceModel>());
-      }
-      services.getServices().add(service);
-      getStore().update(services);
-
-      Response response = new Response(true, serverServiceOutput, ResourceModelDTO.class, "resourcePlugin");
+      response = responsePersist;
       return getRepresentation(response, variant);
 
     }
@@ -126,7 +137,5 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
   }
-
-  
 
 }
