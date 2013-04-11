@@ -131,10 +131,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 name : 'description',
                 type : 'string'
-            }, {
+            }, /*{
                 name : 'parent',
                 type : 'string'
-            }, {
+            },*/ {
             	name : 'type',
                 type : 'string'
             }, {
@@ -157,7 +157,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 width : 80,
                 resizable : false,
                 renderer: function(value, metadata, record, rowIndex, colIndex, store) {
-                	if (value == "AnalogService"){
+                	if (value == "SERVER"){
                 		metadata.style += "font-weight:bold; color:blue;";
                 	}
                 	else {
@@ -223,9 +223,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }, {
-                text : i18n.get('label.saveOrder'),
+                text : i18n.get('label.saveProperties'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
-                handler : this.onSaveOrder,
+                handler : this.onSaveProperties,
+                tooltip : i18n.get('label.savePropertiesHelp'),
                 xtype : 's-menuButton'
             }, '-' ]
         };
@@ -408,7 +409,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         });
     },
     
-    onSaveOrder : function () {
+    onSaveProperties : function () {
     	var rec = this.getSelectionModel().getSelected();
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
@@ -427,6 +428,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     	Ext.Ajax.request({
             url : this.urlDatasetAllServices.replace('{idDataset}', this.parentId),
             method : 'PUT',
+            jsonData : service,
             scope : this,
             success : function (ret) {
                 var Json = Ext.decode(ret.responseText);

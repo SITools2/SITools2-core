@@ -174,7 +174,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             triggerAction : 'all',
 		    lazyRender : true,
 		    mode : 'local',
-		    anchor : "100%", 
+		    anchor : "100%",
 		    store : new Ext.data.ArrayStore({
 		        id : 0,
 		        fields : [ 'dataSetSelection' ],
@@ -369,15 +369,18 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         	datasetServiceIhm.parameters.push(item);
         });
         
-        var method;
+        var method, url;
         if (this.action == "modify") {
+        	url = this.urlDatasetServiceIHM.replace('{idService}', datasetServiceIhm.id);
             method = "PUT";
         } else {
+//        	url = this.urlDatasetServiceIHM.replace('{idService}', '');
+        	url = '/sitools/datasets/'+this.idParent+'/services/gui';
             method = "POST";
         }
 
         Ext.Ajax.request({
-            url : this.urlDatasetServiceIHM.replace('{idService}', datasetServiceIhm.id),
+            url : url,
             method : method,
             scope : this,
             jsonData : datasetServiceIhm,

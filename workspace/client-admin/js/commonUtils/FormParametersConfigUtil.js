@@ -116,7 +116,7 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 			this.doLayout();
 		}
 		catch (err) {
-			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod'));
+			//Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod'));
 			return;
 		}
 		
