@@ -55,7 +55,7 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
     onRender : function () {
         sitools.admin.common.FormParametersConfigUtil.superclass.onRender.apply(this, arguments);
         
-        this.title = i18n.get('label.projectModuleConfig') + " " + this.rec.data.name;
+        this.title = i18n.get('label.projectModuleConfig') + " " + this.rec.name;
         this.buildViewConfig(this.rec);
     },
     
@@ -63,7 +63,7 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 		try {
 			this.parametersFieldset.removeAll();
 			
-            var getParametersMethod = eval(recSelected.data.xtype + ".getParameters");
+            var getParametersMethod = eval(recSelected.xtype + ".getParameters");
 			
 			if (!Ext.isFunction(getParametersMethod)) {
 				Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod'));
@@ -113,11 +113,12 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 				
 			}, this);
 			
-			this.doLayout();
+//			this.doLayout();
 		}
 		catch (err) {
-			//Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod'));
-			return;
+			throw err;
+//			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod'));
+//			return;
 		}
 		
 		
@@ -137,7 +138,11 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
             }
 		}, this);
 		return result;
-	} 
+	},
+	
+	setRecord : function (rec){
+		this.rec = rec;
+	}
 	
 });
 

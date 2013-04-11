@@ -47,7 +47,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
     modal : true,
     resizable : true,
     classChosen : "",
-    resourcePluginId : null,
+    datasetServiceIHMId : null,
     modelClassName : null,
 
     initComponent : function () {
@@ -80,7 +80,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             },
             layout : "fit",
             id : 'gridDatasetServices',
-            title : i18n.get('title.resourcePlugin' + this.parentType + 'Class'),
+            title : i18n.get('title.datasetServiceIHM'),
             store : new Ext.data.JsonStore({
                 root : 'data',
                 restful : true,
@@ -130,10 +130,8 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             }),
 
             cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
                 defaults : {
                     sortable : true
-                // columns are not sortable by default
                 },
                 columns : [ expander, {
                     header : i18n.get('label.name'),
@@ -157,13 +155,11 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     sortable : false
                 } ]
             }),
-            
             listeners : {
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
             plugins : expander
-
         });
 
         
@@ -173,8 +169,10 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             name : "dataSetSelection", 
             triggerAction : 'all',
 		    lazyRender : true,
+		    editable : false,
 		    mode : 'local',
 		    anchor : "100%",
+		    emptyText: i18n.get("label.selectionTypeEmpty"),
 		    store : new Ext.data.ArrayStore({
 		        id : 0,
 		        fields : [ 'dataSetSelection' ],
@@ -194,7 +192,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         	region : 'center'
         });
         
-        // set the search form
         this.fieldMappingFormPanel = new Ext.FormPanel({
             height : 95,
             frame : true,
@@ -217,12 +214,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             id : 'dsFieldParametersPanel',
             title : i18n.get('title.formFieldParameters'),
             items : [ this.fieldMappingFormPanel, this.formParametersPanel ]
-//            listeners : {
-//				scope : this,
-//				activate : function () {
-//					this.showOptions(this.formParametersPanel);
-//				}
-//            }
         });
         
         this.tabPanel = new Ext.TabPanel({
@@ -254,7 +245,8 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 this.tabPanel.setSize(size);
             }
 
-        };  
+        };
+        
         this.items = [ this.tabPanel ];
 
         sitools.admin.datasets.services.datasetServicesProp.superclass.initComponent.call(this);
@@ -280,7 +272,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 }
             }
         }
-
     },
     
     /**
@@ -293,14 +284,16 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 return false;
             }
             
-            this.formParametersPanel.rec = rec;
-            this.formParametersPanel.parametersList = rec.data.parameters;
-            this.formParametersPanel.parametersFieldName = 'parameters';
+            this.formParametersPanel.setRecord(rec.data);
             
-            this.fieldMappingFormPanel.getForm().findField('name').setValue(rec.data.name);
-            this.fieldMappingFormPanel.getForm().findField('descriptionAction').setValue(rec.data.descriptionAction);
+            this.formParametersPanel.buildViewConfig(rec.data);
+            this.formParametersPanel.doLayout();
             
-            this.formParametersPanel.buildViewConfig(this.formParametersPanel.rec);
+            
+            var form = this.fieldMappingFormPanel.getForm();
+            form.findField('name').setValue(rec.data.name);
+            form.findField('descriptionAction').setValue(rec.data.descriptionAction);
+            form.findField('dataSetSelection').reset();
             
         }
 
@@ -310,28 +303,23 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
      * If "action" is "modify", load data from record into the form else load empty form
      */
     afterRender : function () {
-        sitools.admin.datasets.services.datasetServicesProp.superclass.afterRender.apply(this, arguments);
-
         if (this.action == "modify") {
+        	this.formParametersPanel.rec = this.record;
+        	this.formParametersPanel.parametersList = this.record.parameters;
+//        	this.formParametersPanel.parametersFieldName = 'parameters';
             this.fillGridAndForm(this.record, this.action);
         } else {
-            //only need to load the resourcesPlugins for creation
-            this.gridDatasetServices.getStore().load({
-                params : {
-                    appClassName : this.appClassName,
-                    parent : this.idParent
-                }
-            });
+            this.gridDatasetServices.getStore().load();
         }
+        
+        sitools.admin.datasets.services.datasetServicesProp.superclass.afterRender.apply(this, arguments);
     },
 
     /**
      * Save the dataset IHM service properties
      */
     onValidate : function () {
-        
         var rec, datasetServiceIhm = {};
-        var jsonReturn = {};        
         
         if (this.action == "create") {
             rec = this.gridDatasetServices.getSelectionModel().getSelected();
@@ -345,11 +333,12 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 }).show(document);
                 return false;
             }
+            rec = rec.data;
         } else {
-            rec = this.record.data;
+            rec = this.record;
         }
         
-        Ext.apply(datasetServiceIhm, rec.data);
+        Ext.apply(datasetServiceIhm, rec);
         
         var form = this.fieldMappingFormPanel.getForm();
         if (!form.isValid()) {
@@ -374,8 +363,9 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         	url = this.urlDatasetServiceIHM.replace('{idService}', datasetServiceIhm.id);
             method = "PUT";
         } else {
-//        	url = this.urlDatasetServiceIHM.replace('{idService}', '');
-        	url = '/sitools/datasets/'+this.idParent+'/services/gui';
+        	 // Destroy gui service existing id, delegate the generation of the id to the server
+            Ext.destroyMembers(datasetServiceIhm, 'id');
+        	url = '/sitools/datasets/' + this.idParent + '/services/gui';
             method = "POST";
         }
 
@@ -402,7 +392,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 var tmp = new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
-                    html : i18n.get('label.resourcePlugin' + this.parentType + 'Saved'),
+                    html : i18n.get('label.datasetServiceIHM' + this.parentType + 'Saved'),
                     autoDestroy : true,
                     hideDelay : 1000
                 }).show(document);
@@ -432,8 +422,24 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         //this.gridFieldMapping.getView().refresh();
     },
 
-    onClose : function () {
-
+    /**
+     * Fill the grid and form with data from datasetServiceIHM
+     * 
+     * @param datasetServiceIHM, the resource to fill the form with
+     * @param action, the mode (create or modify)
+     */
+    fillGridAndForm : function (datasetServiceIHM, action) {
+        if (!Ext.isEmpty(datasetServiceIHM)) {
+        	var form = this.fieldMappingFormPanel.getForm();
+        	
+        	form.findField('name').setValue(datasetServiceIHM.name);
+        	form.findField('descriptionAction').setValue(datasetServiceIHM.descriptionAction);
+        	form.findField('dataSetSelection').setValue(datasetServiceIHM.dataSetSelection);
+        	
+        	this.formParametersPanel.parametersList = datasetServiceIHM.parameters;
+        	this.formParametersPanel.parametersFieldName = 'parameters';
+        	this.formParametersPanel.buildViewConfig(datasetServiceIHM);
+        }
     }
 });
 

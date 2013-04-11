@@ -49,7 +49,7 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
     	}];
     	
 		this.formPanel = new sitools.admin.common.FormParametersConfigUtil({
-			rec : this.module,
+			rec : this.module.data,
 			parametersList : this.module.data.listProjectModulesConfig,
 			parametersFieldName : 'listProjectModulesConfig',
 			buttonValidation : buttons[0]

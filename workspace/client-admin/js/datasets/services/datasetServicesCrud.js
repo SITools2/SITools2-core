@@ -109,6 +109,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     }                    
                     var url = this.urlDatasetAllServices.replace('{idDataset}', this.parentId);
                     this.httpProxyResources.setUrl(url, true);
+                    this.getStore().removeAll();
                     this.getStore().load();
                 }
             }
@@ -119,6 +120,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             restful : true,
             method : 'GET'
         });
+        
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
             root : "ServiceCollectionModel.services",
@@ -319,37 +321,11 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
-        if ("ACTIVE" === rec.data.status) {
-            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
-            return;
-        }
-        var urlParent = this.urlDatasets + "/" + parentId;
-        
+       
         if (rec.data.type == "GUI"){
-        	var up = new sitools.admin.datasets.services.datasetServicesProp({
-        		action : 'create',            
-        		parentPanel : this,          
-        		parentType : this.parentType,
-        		appClassName : this.appClassName,
-        		idParent : parentId,
-        		urlAllServicesIHM : this.urlAllServicesIHM,
-        		urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', parentId)
-        	});
-        	up.show();
+        	this.editGUIService(rec.data.id);
         }else if (rec.data.type == "SERVER") {
-        	var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
-        		action : 'modify',
-        		record : rec,
-        		parentPanel : this,          
-        		urlResources : this.urlDatasetAllServicesSERVER.replace('{idDataset}', parentId),
-//        		urlResourcesCRUD : this.httpProxyResources.url,
-        		urlResourcesCRUD : this.urlDatasets + "/" + parentId + "/services/server",
-        		urlParent : urlParent,
-        		appClassName : this.appClassName,
-        		idParent : parentId,
-        		parentType : this.parentType
-        	});
-        	up.show();
+        	this.editSERVERService(rec.data.id);
         }
         
     },
@@ -410,11 +386,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     },
     
     onSaveProperties : function () {
-    	var rec = this.getSelectionModel().getSelected();
-        if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
-        }
-    	
     	var service = {};
     	service.id = this.parentId;
     	service.name = "";
@@ -435,6 +406,58 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 if (showResponse(ret)) {
                     this.store.reload();
                 }
+            },
+            failure : alertFailure
+        });
+    },
+    
+    editGUIService : function (idService){
+    	Ext.Ajax.request({
+            url : this.urlDatasetServiceIHM.replace('{idService}', idService),
+            method : 'GET',
+            scope : this,
+            success : function (ret) {
+            	var json = Ext.decode(ret.responseText);
+            	
+            	var up = new sitools.admin.datasets.services.datasetServicesProp({
+            		action : 'modify',
+            		record : json.guiServicePlugin,
+            		parentPanel : this,          
+            		parentType : this.parentType,
+            		appClassName : this.appClassName,
+            		idParent : this.parentId,
+            		urlAllServicesIHM : this.urlAllServicesIHM,
+            		urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', this.parentId)
+            	});
+            	up.show();
+            },
+            failure : alertFailure
+        });
+    },
+    
+    editSERVERService : function (idService){
+    	var urlParent = this.urlDatasets + "/" + this.parentId;
+    	Ext.Ajax.request({
+            url : this.urlDatasetServiceSERVER.replace('{idService}', idService),
+            method : 'GET',
+            scope : this,
+            success : function (ret) {
+                var json = Ext.decode(ret.responseText);
+                var resourcePlugin = {};
+                resourcePlugin.data = json.resourcePlugin;
+                var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
+            		action : 'modify',
+            		record : resourcePlugin,
+            		parentPanel : this,          
+            		urlResources : this.urlAllServicesSERVER,
+//            		urlResourcesCRUD : this.httpProxyResources.url,
+            		urlResourcesCRUD : this.urlDatasets + "/" + this.parentId + "/services/server",
+            		urlParent : urlParent,
+            		appClassName : this.appClassName,
+            		idParent : this.parentId,
+            		parentType : this.parentType
+            	});
+            	up.show();
             },
             failure : alertFailure
         });
