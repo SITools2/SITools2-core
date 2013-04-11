@@ -52,6 +52,7 @@ import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
+import fr.cnes.sitools.plugins.resources.dto.ResourcePluginDescriptionDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.properties.model.SitoolsProperty;
 import fr.cnes.sitools.tasks.model.TaskModel;
@@ -516,6 +517,7 @@ public class GetResponseUtils {
       xstream.alias("response", Response.class);
       xstream.alias("resourcePlugin", ResourceModelDTO.class);
       xstream.alias("resourceParameter", ResourceParameter.class);
+      xstream.alias("ResourcePluginDescriptionDTO", ResourcePluginDescriptionDTO.class);
       xstream.omitField(ExtensionModel.class, "parametersMap");
 
       xstream.alias("TaskModel", TaskModel.class);
@@ -537,11 +539,8 @@ public class GetResponseUtils {
 
       if (isArray) {
         if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-          if (dataClass == ConstraintViolation.class) {
-            xstream.addImplicitCollection(Response.class, "data", dataClass);
-          }
-          else {
-            xstream.addImplicitCollection(Response.class, "data", ResourceModelDTO.class);
+          xstream.addImplicitCollection(Response.class, "data", dataClass);
+          if (dataClass == ResourceModelDTO.class) {
             xstream.addImplicitCollection(ResourceModelDTO.class, "parameters", ResourceParameter.class);
           }
         }

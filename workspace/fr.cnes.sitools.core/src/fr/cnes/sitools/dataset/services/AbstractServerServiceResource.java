@@ -10,10 +10,16 @@ import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 
+import com.thoughtworks.xstream.XStream;
+
 import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
+import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
+import fr.cnes.sitools.plugins.resources.model.ResourceModel;
+import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -70,14 +76,49 @@ public abstract class AbstractServerServiceResource extends AbstractServiceResou
    *          the url
    * @param context
    *          the {@link Context}
-   * @param method TODO
+   * @param method
+   *          TODO
    * @return the persisted object
    */
   public Response handleResourceModelCall(ResourceModelDTO object, String url, Context context, Method method) {
     Representation entity = new ObjectRepresentation<ResourceModelDTO>(object);
     return RIAPUtils.handleParseResponse(url, entity, method, MediaType.APPLICATION_JAVA_OBJECT, context);
   }
-  
-  
-  
+
+  /**
+   * Gets representation according to the specified MediaType.
+   * 
+   * @param response
+   *          : The response to get the representation from
+   * @param media
+   *          : The MediaType asked
+   * @return The Representation of the response with the selected mediaType
+   */
+  public final Representation getRepresentation(Response response, MediaType media) {
+    getLogger().info(media.toString());
+    if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      return new ObjectRepresentation<Response>(response);
+    }
+
+    XStream xstream = XStreamFactory.getInstance().getXStream(media, getContext());
+
+    xstream.alias("resourcePlugin", ResourceModel.class);
+    xstream.alias("resourceParameter", ResourceParameter.class);
+    xstream.alias("response", Response.class);
+    xstream.alias("item", Object.class, ResourceModel.class);
+    xstream.alias("resourcePlugin", Object.class, ResourceModel.class);
+
+    xstream.aliasField("resourcePlugin", Response.class, "item");
+
+    xstream.omitField(Response.class, "itemName");
+    xstream.omitField(Response.class, "itemClass");
+    xstream.omitField(ExtensionModel.class, "parametersMap");
+
+    xstream.setMode(XStream.NO_REFERENCES);
+
+    XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
+    rep.setXstream(xstream);
+    return rep;
+  }
+
 }

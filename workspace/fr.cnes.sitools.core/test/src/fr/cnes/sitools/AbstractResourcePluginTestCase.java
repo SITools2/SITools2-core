@@ -658,7 +658,7 @@ public abstract class AbstractResourcePluginTestCase extends AbstractSitoolsServ
    * @return Response
    */
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    return GetResponseUtils.getResponseResource(media, representation, dataClass);
+    return GetResponseUtils.getResponseResource(media, representation, dataClass, isArray);
   }
 
   /**

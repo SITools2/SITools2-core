@@ -61,7 +61,7 @@ public abstract class AbstractServiceResource extends SitoolsResource {
    *          the media used
    * @return Representation
    */
-  public final Representation getRepresentation(Response response, MediaType media) {
+  public Representation getRepresentation(Response response, MediaType media) {
     getLogger().info(media.toString());
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);

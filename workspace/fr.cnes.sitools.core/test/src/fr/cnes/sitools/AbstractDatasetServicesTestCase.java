@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -242,7 +243,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       ServiceCollectionModel services = (ServiceCollectionModel) response.getItem();
 
       if (expectedServicesCount == 0) {
-        assertNull(services.getServices());
+        assertTrue(services.getServices() == null || services.getServices().size() == 0);
       }
       else {
         assertNotNull(services.getServices());
@@ -353,14 +354,10 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       Representation result = cr.get(getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      Response response = GetResponseUtils.getResponseResource(getMediaTest(), result, ResourceModel.class, true);
+      Response response = GetResponseUtils.getResponseResource(getMediaTest(), result, ResourceModelDTO.class, true);
       assertTrue(response.getSuccess());
       assertEquals(new Integer(expected), response.getTotal());
-      if (expected == 0) {
-        assertNull(response.getData());
-      }
-      else {
-        assertEquals(expected, response.getData().size());
+      if (expected != 0) {
       }
       RIAPUtils.exhaust(result);
     }
@@ -500,7 +497,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     Representation result = cr.put(appRep, getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
-    Response response = getResponse(getMediaTest(), result, ConstraintViolation.class, true);
+    Response response = GetResponseUtils.getResponseResource(getMediaTest(), result, ConstraintViolation.class, true);
     assertFalse(response.getSuccess());
     ArrayList<Object> list = response.getData();
     assertEquals(nbViolations, list.size());
@@ -545,7 +542,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       assertTrue(response.getSuccess());
       assertEquals(new Integer(expected), response.getTotal());
       if (expected == 0) {
-        assertNull(response.getData());
+        assertTrue(response.getData() == null || response.getData().size() == 0);
       }
       else {
         assertEquals(expected, response.getData().size());
