@@ -172,7 +172,9 @@ public final class DataSetApplication extends AbstractDataSetApplication {
     router.attach("/forms", DataSetListFormsResource.class);
 
     // List of resources
-    router.attach("/services", ListPluginResource.class);
+    router.attach("/services", ListServicesResource.class);
+//    router.attach("/services/gui", ListGuiServicesResource.class);
+    router.attach("/services/server", ListPluginResource.class);
 
     // List of feeds
     router.attach("/feeds", DataSetListFeedsResource.class);

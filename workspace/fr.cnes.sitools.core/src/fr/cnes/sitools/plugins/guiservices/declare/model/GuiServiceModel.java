@@ -46,7 +46,7 @@ public class GuiServiceModel implements IResource, Serializable {
   /** Version */
   private String version;
   /** The css class of the icon */
-  private String iconClass;
+  private String icon;
   /** xtype */
   private String xtype;
   /** dependencies */
@@ -169,22 +169,22 @@ public class GuiServiceModel implements IResource, Serializable {
   }
 
   /**
-   * Gets the iconClass value
+   * Gets the icon value
    * 
-   * @return the iconClass
+   * @return the icon
    */
-  public String getIconClass() {
-    return iconClass;
+  public String getIcon() {
+    return icon;
   }
 
   /**
-   * Sets the value of iconClass
+   * Sets the value of icon
    * 
-   * @param iconClass
-   *          the iconClass to set
+   * @param icon
+   *          the icon to set
    */
-  public void setIconClass(String iconClass) {
-    this.iconClass = iconClass;
+  public void setIcon(String icon) {
+    this.icon = icon;
   }
 
   /**

@@ -19,7 +19,6 @@ import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
-import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -37,7 +36,6 @@ public class ServerServiceResource extends AbstractServerServiceResource {
   @Override
   public void doInit() {
     super.doInit();
-
     resourcePluginId = (String) this.getRequest().getAttributes().get("resourcePluginId");
 
   }
@@ -105,10 +103,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
           ResourceModelDTO serverServiceOutput = (ResourceModelDTO) responsePersist.getItem();
 
           ServiceModel service = getServiceModel(serviceCollection, resourcePluginId);
-          service.setId(serverServiceOutput.getId());
-          service.setName(serverServiceOutput.getName());
-          service.setDescription(serverServiceOutput.getDescription());
-          service.setType(ServiceEnum.SERVER);
+          populateServiceModel(serverServiceOutput, service);
 
           getStore().update(serviceCollection);
 
@@ -119,7 +114,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
     }
     catch (ResourceException e) {
       getLogger().log(Level.INFO, null, e);
-      throw e;
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);

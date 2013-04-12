@@ -39,7 +39,6 @@ public class ServiceCollectionResource extends AbstractServiceResource {
       serviceCollection.setId(getParentId());
     }
     response = new Response(true, serviceCollection, ServiceCollectionModel.class, "ServiceCollectionModel");
-
     return getRepresentation(response, variant);
   }
 
@@ -83,9 +82,8 @@ public class ServiceCollectionResource extends AbstractServiceResource {
 
     }
     catch (ResourceException e) {
-      e.printStackTrace();
       getLogger().log(Level.INFO, null, e);
-      throw e;
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);

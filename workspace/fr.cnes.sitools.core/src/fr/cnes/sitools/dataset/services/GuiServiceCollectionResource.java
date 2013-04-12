@@ -95,7 +95,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
       service.setId(guiServiceOutput.getId());
       service.setName(guiServiceOutput.getName());
       service.setDescription(guiServiceOutput.getDescription());
-      service.setIcon(guiServiceOutput.getIconClass());
+      service.setIcon(guiServiceOutput.getIcon());
       service.setLabel(guiServiceOutput.getLabel());
       service.setType(ServiceEnum.GUI);
 
@@ -110,9 +110,8 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
 
     }
     catch (ResourceException e) {
-      e.printStackTrace();
       getLogger().log(Level.INFO, null, e);
-      throw e;
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);
@@ -120,60 +119,60 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
     }
   }
 
-//  /**
-//   * Create / attach a new GuiServicePluginModel to a dataset
-//   * 
-//   * @param representation
-//   *          The representation parameter
-//   * @param variant
-//   *          client preferred media type
-//   * @return Representation
-//   */
-//  @Post
-//  public Representation newGuiService(Representation representation, Variant variant) {
-//    try {
-//
-//      GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(representation);
-//
-//      String url = getGuiServicesUrl();
-//      GuiServicePluginModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
-//
-//      ServiceCollectionModel services = getStore().retrieve(getParentId());
-//
-//      if (services == null) {
-//        services = new ServiceCollectionModel();
-//        services.setId(getParentId());
-//        getStore().create(services);
-//      }
-//
-//      ServiceModel service = new ServiceModel();
-//      service.setId(guiServiceOutput.getId());
-//      service.setName(guiServiceOutput.getName());
-//      service.setDescription(guiServiceOutput.getDescription());
-//      service.setIcon(guiServiceOutput.getIconClass());
-//      service.setLabel(guiServiceOutput.getLabel());
-//      service.setType(ServiceEnum.GUI);
-//
-//      if (services.getServices() == null) {
-//        services.setServices(new ArrayList<ServiceModel>());
-//      }
-//      services.getServices().add(service);
-//      getStore().update(services);
-//
-//      Response response = new Response(true, guiServiceOutput, GuiServicePluginModel.class, "guiServicePlugin");
-//      return getRepresentation(response, variant);
-//
-//    }
-//    catch (ResourceException e) {
-//      e.printStackTrace();
-//      getLogger().log(Level.INFO, null, e);
-//      throw e;
-//    }
-//    catch (Exception e) {
-//      getLogger().log(Level.SEVERE, null, e);
-//      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-//    }
-//  }
+  // /**
+  // * Create / attach a new GuiServicePluginModel to a dataset
+  // *
+  // * @param representation
+  // * The representation parameter
+  // * @param variant
+  // * client preferred media type
+  // * @return Representation
+  // */
+  // @Post
+  // public Representation newGuiService(Representation representation, Variant variant) {
+  // try {
+  //
+  // GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(representation);
+  //
+  // String url = getGuiServicesUrl();
+  // GuiServicePluginModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
+  //
+  // ServiceCollectionModel services = getStore().retrieve(getParentId());
+  //
+  // if (services == null) {
+  // services = new ServiceCollectionModel();
+  // services.setId(getParentId());
+  // getStore().create(services);
+  // }
+  //
+  // ServiceModel service = new ServiceModel();
+  // service.setId(guiServiceOutput.getId());
+  // service.setName(guiServiceOutput.getName());
+  // service.setDescription(guiServiceOutput.getDescription());
+  // service.setIcon(guiServiceOutput.getIconClass());
+  // service.setLabel(guiServiceOutput.getLabel());
+  // service.setType(ServiceEnum.GUI);
+  //
+  // if (services.getServices() == null) {
+  // services.setServices(new ArrayList<ServiceModel>());
+  // }
+  // services.getServices().add(service);
+  // getStore().update(services);
+  //
+  // Response response = new Response(true, guiServiceOutput, GuiServicePluginModel.class, "guiServicePlugin");
+  // return getRepresentation(response, variant);
+  //
+  // }
+  // catch (ResourceException e) {
+  // e.printStackTrace();
+  // getLogger().log(Level.INFO, null, e);
+  // throw e;
+  // }
+  // catch (Exception e) {
+  // getLogger().log(Level.SEVERE, null, e);
+  // throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+  // }
+  // }
 
   @Override
   public final void describePost(MethodInfo info) {

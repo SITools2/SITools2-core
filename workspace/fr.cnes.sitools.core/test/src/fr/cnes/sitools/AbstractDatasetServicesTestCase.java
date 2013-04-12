@@ -139,10 +139,17 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       assertServerService(1);
       guiService = createGuiService();
       assertServicesCount(2);
-      assertServicesOrder(serverService.getId(), guiService.getId());
+      // assert services order on the datasetApplication (expose services for user)
+      assertServicesOrderForUser(serverService.getId(), guiService.getId());
+      assertServicesOrderForAdmin(serverService.getId(), guiService.getId());
+
+      assertServicesOrder(serverService.getId(), guiService.getId(), serviceUrl);
       ServiceCollectionModel services = createCollectionToChangeOrder(serverService, guiService);
       persistServicesOrder(services);
-      assertServicesOrder(guiService.getId(), serverService.getId());
+      assertServicesOrderForAdmin(guiService.getId(), serverService.getId());
+      // assert services order on the datasetApplication (expose services for user)
+      assertServicesOrderForUser(guiService.getId(), serverService.getId());
+
       deleteGuiService(guiService, serviceUrl);
       assertServicesCount(1);
       deleteServerService(serverService, serviceUrl);
@@ -153,7 +160,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  @Test
+  // @Test
   public void testServerServiceCRUD() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel serverService = null;
@@ -174,7 +181,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  @Test
+  // @Test
   public void testServerServiceWithViolationsCRUD() throws InterruptedException, ClassNotFoundException,
       InstantiationException, IllegalAccessException {
     ResourceModel serverService = null;
@@ -197,7 +204,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  @Test
+  // @Test
   public void testGuiServiceCRUD() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     GuiServicePluginModel guiService = null;
@@ -257,6 +264,10 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     return getBaseDatasetUrl().replaceAll("\\{parentId\\}", parentId) + settings.getString(Consts.APP_SERVICES_URL);
   }
 
+  private String getUserServiceUrl(String datasetUrl) {
+    return getHostUrl() + datasetUrl + settings.getString(Consts.APP_SERVICES_URL);
+  }
+
   private ServiceCollectionModel createCollectionToChangeOrder(ResourceModel resourceModel,
       GuiServicePluginModel guiService) {
 
@@ -267,7 +278,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     service.setId(guiService.getId());
     service.setName(guiService.getName());
     service.setDescription(guiService.getDescription());
-    service.setIcon(guiService.getIconClass());
+    service.setIcon(guiService.getIcon());
     service.setLabel(guiService.getLabel());
     service.setType(ServiceEnum.GUI);
     services.add(service);
@@ -285,8 +296,18 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     return collection;
   }
 
-  private void assertServicesOrder(String id1, String id2) {
-    String url = getServiceUrl(datasetId);
+  private void assertServicesOrderForUser(String id, String id2) {
+    String baseUrl = getUserServiceUrl(urlAttachDataset);
+    assertServicesOrder(id, id2, baseUrl);
+  }
+
+  private void assertServicesOrderForAdmin(String id, String id2) {
+    String baseUrl = getServiceUrl(datasetId);
+    assertServicesOrder(id, id2, baseUrl);
+  }
+
+  private void assertServicesOrder(String id1, String id2, String baseUrl) {
+    String url = baseUrl;
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       parameters.put("identifier", "dataset identifier");

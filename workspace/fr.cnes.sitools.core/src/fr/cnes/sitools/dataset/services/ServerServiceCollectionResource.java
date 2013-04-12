@@ -1,14 +1,10 @@
 package fr.cnes.sitools.dataset.services;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 
-import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
-import org.restlet.data.Preference;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
@@ -21,9 +17,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
-import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -101,10 +95,7 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
         }
 
         ServiceModel service = new ServiceModel();
-        service.setId(serverServiceOutput.getId());
-        service.setName(serverServiceOutput.getName());
-        service.setDescription(serverServiceOutput.getDescription());
-        service.setType(ServiceEnum.SERVER);
+        populateServiceModel(serverServiceOutput, service);
 
         if (services.getServices() == null) {
           services.setServices(new ArrayList<ServiceModel>());
@@ -117,9 +108,8 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
 
     }
     catch (ResourceException e) {
-      e.printStackTrace();
       getLogger().log(Level.INFO, null, e);
-      throw e;
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);

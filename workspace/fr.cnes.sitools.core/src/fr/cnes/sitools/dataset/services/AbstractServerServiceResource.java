@@ -1,6 +1,7 @@
 package fr.cnes.sitools.dataset.services;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
@@ -17,6 +18,8 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.dataset.services.model.ServiceEnum;
+import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
@@ -119,6 +122,20 @@ public abstract class AbstractServerServiceResource extends AbstractServiceResou
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);
     return rep;
+  }
+
+  protected void populateServiceModel(ResourceModelDTO serverService, ServiceModel serviceModel) {
+    serviceModel.setId(serverService.getId());
+    serviceModel.setName(serverService.getName());
+    serviceModel.setDescription(serverService.getDescription());
+    List<ResourceParameter> parameters = serverService.getParameters();
+    for (ResourceParameter resourceParameter : parameters) {
+      if ("image".equals(resourceParameter.getName())) {
+        serviceModel.setIcon(resourceParameter.getValue());
+        break;
+      }
+    }
+    serviceModel.setType(ServiceEnum.SERVER);
   }
 
 }

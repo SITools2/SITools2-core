@@ -1982,7 +1982,7 @@ public final class Starter {
     component.getInternalRouter().attach(settings.getString(Consts.APP_GUI_SERVICES_URL), guiServiceApplication);
 
     // ===========================================================================
-    // Gestion des services IHM
+    // Gestion des services IHM sur un dataset
 
     // Store
     SitoolsStore<GuiServicePluginModel> storeGuiPluginService = (SitoolsStore<GuiServicePluginModel>) settings

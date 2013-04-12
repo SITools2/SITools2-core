@@ -117,7 +117,7 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
     }
     catch (ResourceException e) {
       getLogger().log(Level.INFO, null, e);
-      throw e;
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);
