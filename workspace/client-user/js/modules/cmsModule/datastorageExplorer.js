@@ -389,8 +389,15 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         }
         
         var uploadWin = new sitools.user.modules.datastorageUploadFile({
-        	urlUpload : urlUpload
+        	urlUpload : urlUpload,
+        	scope : this,
+        	callback : function (){
+        		this.tree.getLoader().load(this.tree.getRootNode(), function () {
+                    this.tree.getRootNode().expand(true);                        
+                }, this); 
+        	}
         }).show();
+        
         /*
          var fp = new Ext.FormPanel({
                 fileUpload: true,
