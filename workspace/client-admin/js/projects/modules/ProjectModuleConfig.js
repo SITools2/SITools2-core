@@ -38,8 +38,7 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
     		text : i18n.get('label.ok'),
     		id : "btnValidateId",
     		handler : this._onValidate,
-    		scope : this,
-    		disabled : true
+    		scope : this
     	}, {
     		text : i18n.get('label.cancel'),
     		handler : function () {
@@ -52,7 +51,6 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
 			rec : this.module.data,
 			parametersList : this.module.data.listProjectModulesConfig,
 			parametersFieldName : 'listProjectModulesConfig',
-			buttonValidation : buttons[0]
 		});
 		
 		
@@ -62,8 +60,7 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
     },
     
     _onValidate : function () {
-//		this.rec.set('listProjectModulesConfig', this.getParametersValue());
-		this.rec.set( 'listProjectModulesConfig', this.formPanel.getParametersValue());
+		this.module.set( 'listProjectModulesConfig', this.formPanel.getParametersValue());
 		this.close();
 	}
     

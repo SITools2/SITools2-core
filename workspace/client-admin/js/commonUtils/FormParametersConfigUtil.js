@@ -34,7 +34,6 @@ Ext.namespace('sitools.admin.common');
  * @extends Ext.form.FormPanel
  */
 sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
-	id : 'formModuleConfigId',
 	autoScroll : true,
 	frame: true,
 	border: false,
@@ -46,17 +45,14 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 			title : i18n.get('label.parameters'),
 			padding : 6
 		});
+    	if (!Ext.isEmpty(this.rec)){
+    		this.title = i18n.get('label.projectModuleConfig') + " " + this.rec.name;
+    		this.buildViewConfig(this.rec);
+    	}
     	
-		this.items = [this.parametersFieldset],
-		
-        sitools.admin.common.FormParametersConfigUtil.superclass.initComponent.call(this);
-    },
-    
-    onRender : function () {
-        sitools.admin.common.FormParametersConfigUtil.superclass.onRender.apply(this, arguments);
+    	this.items = [this.parametersFieldset],
         
-        this.title = i18n.get('label.projectModuleConfig') + " " + this.rec.name;
-        this.buildViewConfig(this.rec);
+    	sitools.admin.common.FormParametersConfigUtil.superclass.initComponent.call(this);
     },
     
     buildViewConfig : function (recSelected) {
@@ -113,7 +109,7 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
 				
 			}, this);
 			
-//			this.doLayout();
+			this.doLayout();
 		}
 		catch (err) {
 			throw err;

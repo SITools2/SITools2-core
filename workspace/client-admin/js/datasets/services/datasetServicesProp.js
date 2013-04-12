@@ -49,7 +49,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
     classChosen : "",
     datasetServiceIHMId : null,
     modelClassName : null,
-
+    currentRecordId : null,
     initComponent : function () {
 
     	this.guiServiceDatasetURL = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL') + '/' + this.idParent + "/services";
@@ -117,7 +117,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     name : 'version',
                     type : 'string'
                 }, {
-                    name : 'iconClass',
+                    name : 'icon',
                     type : 'string'
                 }, {
                     name : 'parameters'                    
@@ -155,10 +155,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     sortable : false
                 } ]
             }),
-            listeners : {
-                scope : this,
-                rowclick :  this.onClassClick
-            }, 
             plugins : expander
         });
 
@@ -188,12 +184,13 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 		    displayField : 'dataSetSelection'
         });
         
-        this.formParametersPanel = new sitools.admin.common.FormParametersConfigUtil({
+        this.centerPanel = new Ext.Panel({
+        	layout : 'fit',
         	region : 'center'
         });
         
         this.fieldMappingFormPanel = new Ext.FormPanel({
-            height : 95,
+            height : 115,
             frame : true,
             region : 'north',
             defaultType : 'textfield',
@@ -205,6 +202,12 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 fieldLabel : i18n.get('label.descriptionAction'),
                 name : 'descriptionAction',
                 anchor : '100%'
+            }, {
+                xtype : 'sitoolsSelectImage',
+                name : 'icon',
+                fieldLabel : i18n.get('label.icon'),
+                anchor : '100%', 
+                allowBlank : true
             }, comboSelectionType],
             region : 'north'
         });
@@ -213,7 +216,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             layout : 'border',
             id : 'dsFieldParametersPanel',
             title : i18n.get('title.formFieldParameters'),
-            items : [ this.fieldMappingFormPanel, this.formParametersPanel ]
+            items : [ this.fieldMappingFormPanel, this.centerPanel ]
         });
         
         this.tabPanel = new Ext.TabPanel({
@@ -244,7 +247,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 var size = window.body.getSize();
                 this.tabPanel.setSize(size);
             }
-
         };
         
         this.items = [ this.tabPanel ];
@@ -270,33 +272,28 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     }).show(document);
                     return false;
                 }
+                
+                if (rec.id == this.currentRecordId){
+                	return;
+                }
+                this.currentRecordId = rec.id;
+                
+                this.centerPanel.remove(this.formParametersPanel);
+                
+                this.formParametersPanel = new sitools.admin.common.FormParametersConfigUtil({
+        			rec : rec.data
+        		});
+                
+                this.centerPanel.add(this.formParametersPanel);
+                this.centerPanel.doLayout();
+                
+                var form = this.fieldMappingFormPanel.getForm();
+                form.findField('name').setValue(rec.data.name);
+                form.findField('descriptionAction').setValue(rec.data.descriptionAction);
+                form.findField('icon').setValue(rec.data.icon);
+                form.findField('dataSetSelection').reset();
             }
         }
-    },
-    
-    /**
-     * Load fields mapping form fields and parameters in fonction of the class clicked
-     */
-    onClassClick : function (self, rowIndex, e) {
-        if (this.action == "create") {
-            var rec = this.gridDatasetServices.getSelectionModel().getSelected();
-            if (!rec) {
-                return false;
-            }
-            
-            this.formParametersPanel.setRecord(rec.data);
-            
-            this.formParametersPanel.buildViewConfig(rec.data);
-            this.formParametersPanel.doLayout();
-            
-            
-            var form = this.fieldMappingFormPanel.getForm();
-            form.findField('name').setValue(rec.data.name);
-            form.findField('descriptionAction').setValue(rec.data.descriptionAction);
-            form.findField('dataSetSelection').reset();
-            
-        }
-
     },
     
     /**
@@ -304,9 +301,12 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
      */
     afterRender : function () {
         if (this.action == "modify") {
-        	this.formParametersPanel.rec = this.record;
-        	this.formParametersPanel.parametersList = this.record.parameters;
-//        	this.formParametersPanel.parametersFieldName = 'parameters';
+        	this.formParametersPanel = new sitools.admin.common.FormParametersConfigUtil({
+    			rec : this.record,
+    			parametersList :this.record.parameters
+    		});
+        	 this.centerPanel.add(this.formParametersPanel);
+             this.centerPanel.doLayout();
             this.fillGridAndForm(this.record, this.action);
         } else {
             this.gridDatasetServices.getStore().load();
@@ -399,7 +399,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
 
                 this.parentPanel.getStore().reload();
                 this.close();
-
             },
             failure : alertFailure
         });
@@ -419,7 +418,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
             var rec = store.getAt(lineNb);
             rec.set("violation", violation);
         }
-        //this.gridFieldMapping.getView().refresh();
     },
 
     /**
@@ -434,11 +432,8 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         	
         	form.findField('name').setValue(datasetServiceIHM.name);
         	form.findField('descriptionAction').setValue(datasetServiceIHM.descriptionAction);
+        	form.findField('icon').setValue(datasetServiceIHM.icon);
         	form.findField('dataSetSelection').setValue(datasetServiceIHM.dataSetSelection);
-        	
-        	this.formParametersPanel.parametersList = datasetServiceIHM.parameters;
-        	this.formParametersPanel.parametersFieldName = 'parameters';
-        	this.formParametersPanel.buildViewConfig(datasetServiceIHM);
         }
     }
 });

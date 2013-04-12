@@ -84,9 +84,9 @@ sitools.admin.guiservices.GuiServicesPropPanel = Ext.extend(Ext.Window, {
                     anchor : '100%', 
                     allowBlank : false
                 }, {
-                    xtype : 'textfield',
-                    name : 'iconClass',
-                    fieldLabel : i18n.get('label.iconClass'),
+                    xtype : 'sitoolsSelectImage',
+                    name : 'icon',
+                    fieldLabel : i18n.get('label.icon'),
                     anchor : '100%', 
                     allowBlank : true
                 }, {
