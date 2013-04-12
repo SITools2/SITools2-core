@@ -61,8 +61,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 '<tpl>' +
 	                '<div class="detail">' +
 	                	'<span style="font-weight:bold;">Author :&nbsp;</span>{author}' +
-	                	'<br>' +
-	                	'<span style="font-weight:bold;">Version :&nbsp;</span>{version}' +
 	                '</div>' +
                 '</tpl>',
                 {
@@ -291,7 +289,9 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 form.findField('name').setValue(rec.data.name);
                 form.findField('descriptionAction').setValue(rec.data.descriptionAction);
                 form.findField('icon').setValue(rec.data.icon);
-                form.findField('dataSetSelection').reset();
+                
+                var comboSelection = form.findField('dataSetSelection');
+                comboSelection.setValue(comboSelection.getStore().getAt(0).data.dataSetSelection);
             }
         }
     },
@@ -340,7 +340,12 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         
         Ext.apply(datasetServiceIhm, rec);
         
+        if (this.formParametersPanel && !this.formParametersPanel.getForm().isValid()){
+        	 Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
+             return false;
+        }
         var form = this.fieldMappingFormPanel.getForm();
+        
         if (!form.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
@@ -392,7 +397,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 var tmp = new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
-                    html : i18n.get('label.datasetServiceIHM' + this.parentType + 'Saved'),
+                    html : i18n.get('label.datasetServiceIHMSaved'),
                     autoDestroy : true,
                     hideDelay : 1000
                 }).show(document);

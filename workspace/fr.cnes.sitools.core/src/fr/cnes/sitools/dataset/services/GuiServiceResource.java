@@ -108,7 +108,8 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
         service.setName(guiServiceOutput.getName());
         service.setDescription(guiServiceOutput.getDescription());
         service.setType(ServiceEnum.GUI);
-
+        service.setIcon(guiServiceOutput.getIcon());
+        
         getStore().update(serviceCollection);
 
         response = new Response(true, guiServiceOutput, GuiServicePluginModel.class, "guiServicePlugin");
