@@ -366,7 +366,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     	else if (rec.data.type == "SERVER"){
     		url = this.urlDatasetServiceSERVER.replace('{idDataset}', parentId);
     	}
-    	url += url.replace('{idService}',rec.id);
+    	url = url.replace('{idService}',rec.id);
     	
         Ext.Ajax.request({
             url : url,
