@@ -56,29 +56,51 @@ public class DataSetListGuiServicesResource extends AbstractDataSetResource {
    */
   @Get
   public Representation getGuiServicesList(Variant variant) {
-
-    Representation rep = null;
-
+    Response response = null;
     DataSetApplication datasetApp = (DataSetApplication) getApplication();
     DataSet dataset = datasetApp.getDataSet();
 
-    List<GuiServicePluginModel> guiServiceListOuput = getGuiServicesList(dataset.getId());
+    String guiServiceId = (String) this.getRequest().getAttributes().get("guiServiceId");
+    if (guiServiceId == null || guiServiceId.isEmpty()) {
 
-    GuiServicePluginModel[] guiServicesOuput = new GuiServicePluginModel[guiServiceListOuput.size()];
-    guiServicesOuput = guiServiceListOuput.toArray(guiServicesOuput);
-    Response response = new Response(true, guiServicesOuput, GuiServicePluginModel.class, "guiServicePlugins");
-    response.setTotal(guiServicesOuput.length);
-    rep = getRepresentation(response, variant);
-
-    return rep;
+      List<GuiServicePluginModel> guiServiceListOuput = getGuiServicesList(dataset.getId());
+      GuiServicePluginModel[] guiServicesOuput = new GuiServicePluginModel[guiServiceListOuput.size()];
+      guiServicesOuput = guiServiceListOuput.toArray(guiServicesOuput);
+      response = new Response(true, guiServicesOuput, GuiServicePluginModel.class, "guiServicePlugins");
+      response.setTotal(guiServicesOuput.length);
+    }
+    else {
+      GuiServicePluginModel guiService = getGuiService(dataset.getId(), guiServiceId);
+      if (guiService == null) {
+        response = new Response(false, "guiservice.not.found");
+      }
+      else {
+        response = new Response(true, guiService, GuiServicePluginModel.class, "guiServicePlugin");
+      }
+    }
+    return getRepresentation(response, variant);
   }
 
   /**
-   * Get the list of forms for a dataset
+   * Get a Gui service from its id and parentId
+   * 
+   * @param parentId
+   *          the parent id
+   * @param guiServiceId
+   *          the guiservice id
+   * @return the gui service or null if not found
+   */
+  private GuiServicePluginModel getGuiService(String parentId, String guiServiceId) {
+    return RIAPUtils.getObject(guiServiceId, application.getSettings().getString(Consts.APP_DATASETS_URL) + "/"
+        + parentId + application.getSettings().getString(Consts.APP_GUI_SERVICES_URL), getContext());
+  }
+
+  /**
+   * Get the list of guiServices for a dataset
    * 
    * @param id
    *          the id of the dataset
-   * @return a Response containing the list of Forms
+   * @return the list of guiServices
    */
   private List<GuiServicePluginModel> getGuiServicesList(String id) {
     return RIAPUtils.getListOfObjects(application.getSettings().getString(Consts.APP_DATASETS_URL) + "/" + id

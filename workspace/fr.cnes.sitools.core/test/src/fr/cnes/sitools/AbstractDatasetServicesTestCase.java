@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
+import fr.cnes.sitools.plugins.resources.ListPluginExpositionResource;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.server.Consts;
@@ -123,7 +125,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
    * @throws InstantiationException
    * @throws ClassNotFoundException
    */
-//  @Test
+  // @Test
   public void testDatasetServices() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel serverService = null;
@@ -168,6 +170,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       serverService = createServerService(true);
       persistResourceModel(serverService, getServiceUrl(datasetId));
       assertServerService(1);
+      retrieveServerServiceForUser(serverService.getId());
       serverService.setDescription("description changed");
       serverService.setParent(datasetId);
       updateServerService(serverService, getServiceUrl(datasetId));
@@ -192,6 +195,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       serverService.getParameterByName("title").setValue("HTML title");
       persistResourceModel(serverService, serviceUrl);
       assertServerService(1);
+
       serverService.getParameterByName("title").setValue("");
       updateServerServiceWithValidation(serverService, 1, serviceUrl);
       deleteServerService(serverService, getServiceUrl(datasetId));
@@ -213,6 +217,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       guiService = createGuiService();
       assertGuiServiceForAdmin(1);
       assertGuiServiceForUser(1);
+      retrieveGuiServiceForUser(guiService.getId());
       guiService.setDescription("New description");
 
       updateGuiService(guiService, getServiceUrl(datasetId));
@@ -528,6 +533,17 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
 
   }
 
+  private void retrieveServerServiceForUser(String id) {
+    String baseUrl = getHostUrl() + urlAttachDataset;
+    ClientResource cr = new ClientResource(baseUrl + "/services/server/" + id);
+    Representation result = cr.get(getMediaTest());
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+    Response response = GetResponseUtils.getResponseResource(getMediaTest(), result, ResourceModelDTO.class);
+    assertTrue(response.getSuccess());
+    assertNotNull(response.getItem());
+  }
+
   /**
    * Get a ResourceModelDTO from a ResourceModel
    * 
@@ -661,6 +677,18 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       assertTrue(response.getSuccess());
       RIAPUtils.exhaust(result);
     }
+  }
+
+  private void retrieveGuiServiceForUser(String id) {
+    String baseUrl = getHostUrl() + urlAttachDataset;
+    ClientResource cr = new ClientResource(baseUrl + "/services/gui/" + id);
+    Representation result = cr.get(getMediaTest());
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+    Response response = GetResponseUtils.getResponseGuiServicePlugin(getMediaTest(), result,
+        GuiServicePluginModel.class);
+    assertTrue(response.getSuccess());
+    assertNotNull(response.getItem());
   }
 
   // ------------------------------------------------------------

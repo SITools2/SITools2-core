@@ -55,7 +55,8 @@ import fr.cnes.sitools.datasource.common.SitoolsDataSourceFactory;
 import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.feeds.FeedsClientResource;
-import fr.cnes.sitools.plugins.resources.ListPluginResource;
+import fr.cnes.sitools.plugins.resources.ListPluginExpositionResource;
+import fr.cnes.sitools.plugins.resources.PluginExpositionResource;
 import fr.cnes.sitools.properties.PropertyFilterResource;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -174,7 +175,9 @@ public final class DataSetApplication extends AbstractDataSetApplication {
     // List of resources
     router.attach("/services", ListServicesResource.class);
     router.attach("/services/gui", DataSetListGuiServicesResource.class);
-    router.attach("/services/server", ListPluginResource.class);
+    router.attach("/services/gui/{guiServiceId}", DataSetListGuiServicesResource.class);
+    router.attach("/services/server", ListPluginExpositionResource.class);
+    router.attach("/services/server/{resourceId}", PluginExpositionResource.class);
 
     // List of feeds
     router.attach("/feeds", DataSetListFeedsResource.class);

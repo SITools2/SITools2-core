@@ -29,7 +29,7 @@ import org.restlet.routing.Router;
 
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.feeds.FeedsClientResource;
-import fr.cnes.sitools.plugins.resources.ListPluginResource;
+import fr.cnes.sitools.plugins.resources.ListPluginExpositionResource;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -111,7 +111,7 @@ public final class ProjectApplication extends AbstractProjectApplication {
     router.attach("/clientFeeds/{feedsId}", FeedsClientResource.class);
 
     // List of resources
-    router.attach("/services", ListPluginResource.class);
+    router.attach("/services", ListPluginExpositionResource.class);
 
     router.attach("/formsProject", ProjectListFormsProjectResource.class);
 

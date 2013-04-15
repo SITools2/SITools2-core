@@ -98,7 +98,7 @@ sitools.user.modules.datastorageUploadFile  = Ext.extend(Ext.Window, {
                 }]
             });
             
-            this.items = [this.formPanel];
+		this.items = [this.formPanel];
         
         sitools.user.modules.datastorageUploadFile.superclass.initComponent.call(this);
     },
@@ -109,12 +109,11 @@ sitools.user.modules.datastorageUploadFile  = Ext.extend(Ext.Window, {
 	},
     
     createUploadedNode : function (fileName) {
-    	this.uploadedFileNode = 
-    		{
-            	text : fileName,
-            	leaf : true,
-            	url : this.urlUpload + fileName
-            }
+        this.uploadedFileNode = {
+            text : fileName,
+            leaf : true,
+            url : this.urlUpload + fileName
+        };
     }
     
 });
