@@ -483,7 +483,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   private void getServicesDescription(String parentApplicationUrl) {
-    String url = parentApplicationUrl + "/services";
+    String url = parentApplicationUrl + "/services/server";
     Representation result = null;
     try {
       ClientResource cr = new ClientResource(url);

@@ -16,8 +16,8 @@ public class ListServicesResource extends SitoolsResource {
 
   @Override
   public void sitoolsDescribe() {
-    // TODO Auto-generated method stub
-
+    setName("ListServicesResource");
+    setDescription("Gets the list of services for the dataset");
   }
 
   /**

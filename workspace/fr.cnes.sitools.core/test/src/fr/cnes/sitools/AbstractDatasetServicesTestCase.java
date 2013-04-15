@@ -3,11 +3,9 @@ package fr.cnes.sitools;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -125,7 +123,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
    * @throws InstantiationException
    * @throws ClassNotFoundException
    */
-  @Test
+//  @Test
   public void testDatasetServices() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel serverService = null;
@@ -204,19 +202,24 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  // @Test
+  @Test
   public void testGuiServiceCRUD() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     GuiServicePluginModel guiService = null;
     try {
       createDataset(datasetId, urlAttachDataset);
-      assertGuiService(0);
+      assertGuiServiceForAdmin(0);
+      assertGuiServiceForUser(0);
       guiService = createGuiService();
-      assertGuiService(1);
+      assertGuiServiceForAdmin(1);
+      assertGuiServiceForUser(1);
       guiService.setDescription("New description");
+
       updateGuiService(guiService, getServiceUrl(datasetId));
       deleteGuiService(guiService, getServiceUrl(datasetId));
-      assertGuiService(0);
+
+      assertGuiServiceForAdmin(0);
+      assertGuiServiceForUser(0);
     }
     finally {
       deleteDataset(datasetId);
@@ -538,14 +541,25 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
 
   // ----------------------------------------------------------
   // GUI SERVICE METHODS
+
+  private void assertGuiServiceForUser(int expected) {
+    String baseUrl = getUserServiceUrl(urlAttachDataset);
+    assertGuiService(expected, baseUrl);
+  }
+
+  private void assertGuiServiceForAdmin(int expected) {
+    String baseUrl = getServiceUrl(datasetId);
+    assertGuiService(expected, baseUrl);
+  }
+
   /**
    * Assert that the number of gui services for a particular dataset is expected
    * 
    * @param expected
    *          the number of gui services expected
    */
-  private void assertGuiService(int expected) {
-    String url = getServiceUrl(datasetId) + "/gui";
+  private void assertGuiService(int expected, String baseUrl) {
+    String url = baseUrl + "/gui";
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       parameters.put("identifier", "dataset identifier");

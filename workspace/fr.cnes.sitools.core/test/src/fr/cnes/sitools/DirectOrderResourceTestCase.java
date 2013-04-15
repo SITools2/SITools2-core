@@ -361,7 +361,7 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   private String getServicesDescription(String parentApplicationUrl) {
-    String url = parentApplicationUrl + "/services";
+    String url = parentApplicationUrl + "/services/server";
     Representation result = null;
     try {
       ClientResource cr = new ClientResource(url);
