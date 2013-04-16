@@ -4,9 +4,7 @@ bin/
 classes/
 *.class
 dist/
-data/TESTS_mapshup/
-data/TESTS_jeobrowser/
 extensions/
 build.num
-data/
+/data/
 .settings/
