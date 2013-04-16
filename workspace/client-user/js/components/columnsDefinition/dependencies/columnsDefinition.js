@@ -229,13 +229,45 @@ Ext.extend(sitools.user.component.columnsDefinition, Ext.Panel, {
      * @returns
      */
     showMeInFixedNav : function (me, config) {
-    	Ext.apply(config.windowSettings, {
-    		width : 400, 
-    		height : 400
-    	});
-    	SitoolsDesk.openModalWindow(me, config);
-    }    
+        Ext.apply(config.windowSettings, {
+            width : 400,
+            height : 400
+        });
+        SitoolsDesk.openModalWindow(me, config);
+    }
     
 });
+
+sitools.user.component.columnsDefinition.getParameters = function () {
+	return [];
+};
+
+sitools.user.component.columnsDefinition.executeAsService = function (config) {
+	var windowConfig = {
+        title : i18n.get('label.definitionTitle') + " : " + config.dataview.datasetName,
+        datasetName : config.dataview.datasetName,
+        iconCls : "semantic",
+        datasetDescription : config.datasetDescription,
+        type : "defi",
+        saveToolbar : true,
+        toolbarItems : []
+    };
+
+    var javascriptObject = sitools.user.component.columnsDefinition;
+
+    Ext.apply(windowConfig, {
+        id : "defi" + config.dataview.datasetId
+    });
+    var componentCfg = {
+        datasetId : config.dataview.datasetId,
+        datasetCm : config.dataview.datasetCm,
+        datasetName : config.dataview.datasetName,
+        dictionaryMappings : config.dataview.dictionaryMappings,
+        preferencesPath : "/" + config.dataview.datasetName,
+        preferencesFileName : "semantic"
+    };
+
+    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+};
 
 Ext.reg('sitools.user.component.columnsDefinition', sitools.user.component.columnsDefinition);

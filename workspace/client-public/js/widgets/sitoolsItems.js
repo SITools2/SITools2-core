@@ -144,7 +144,8 @@ Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
 Ext.tree.TreePanel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
 
 /**
- * Window that contains a tools to sort a store 
+ * Window that contains a tools to sort a store
+ * @cfg {} dataview The view the tool is open in
  * @cfg {} pos The position to apply to the window
  * @cfg {Ext.data.Store} store the store to sort
  * @cfg {} columnModel the dataset ColumnModel to know all columns on wich you can do a sort. 
@@ -319,7 +320,7 @@ sitools.widget.sortersTool = Ext.extend(Ext.Window, {
      */
     afterRender : function () {
     	sitools.widget.sortersTool.superclass.afterRender.call(this);
-    	this.setPosition(this.pos);
+    	this.setPosition(this.dataview.pos);
     	var i = 0;
     	Ext.each(this.sorters, function (sorter) {
     		var compositeField = this.f.getComponent(i);
@@ -330,6 +331,13 @@ sitools.widget.sortersTool = Ext.extend(Ext.Window, {
     }
 });
 Ext.reg('sitools.widget.sortersTool', sitools.widget.sortersTool);
+sitools.widget.sortersTool.getParameters = function () {
+	return [];
+}
+sitools.widget.sortersTool.executeAsService = function (config){
+	var sorterTool = new sitools.widget.sortersTool(config);
+	sorterTool.show();
+}
 
 /**
  * Build a window to define filter on a store using Filter API.  
@@ -405,7 +413,7 @@ sitools.widget.filterTool = Ext.extend(Ext.Window, {
 	            }
 	        } ]
 	    });
-	    sitools.widget.sortersTool.superclass.initComponent.call(this);
+	    sitools.widget.filterTool.superclass.initComponent.call(this);
     },
     getCompositeField : function (index) {
 		return this.f.items.items[index];		
@@ -575,7 +583,7 @@ sitools.widget.filterTool = Ext.extend(Ext.Window, {
 	    this.doLayout();
     }, 
     afterRender : function () {
-    	sitools.widget.sortersTool.superclass.afterRender.call(this);
+    	sitools.widget.filterTool.superclass.afterRender.call(this);
     	this.setPosition(this.pos);
     	var i = 0;
     	Ext.each(this.filters, function (filter) {
@@ -604,7 +612,15 @@ sitools.widget.filterTool = Ext.extend(Ext.Window, {
 //    	console.log(filterCmp);
     }
 });
-Ext.reg('sitools.widget.sortersTool', sitools.widget.sortersTool);
+Ext.reg('sitools.widget.filterTool', sitools.widget.filterTool);
+sitools.widget.filterTool.getParameters = function () {
+	return [];
+}
+sitools.widget.filterTool.executeAsService = function (config){
+	var filterTool = new sitools.widget.filterTool(config);
+	filterTool.show();
+}
+
 
 /**
  * A toolbar with buttons to move rows up or down

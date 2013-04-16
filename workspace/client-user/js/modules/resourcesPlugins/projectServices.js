@@ -85,20 +85,20 @@ sitools.user.modules.projectServices = function () {
             dataIndex : 'descriptionAction',
             width : 200,
             sortable : false
-        },{
-        	xtype : 'actioncolumn',
-        	width : 30,
-        	items : [{
-        		icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_application_resource.png",
-        		tooltip : i18n.get('label.runService'),
-        		scope : this,
-        		handler : function (grid, row){
-        			this.grid.getSelectionModel().selectRow(row);
-        			var job = this.grid.getSelectionModel().getSelected();
-        			this.runJob(job.data);
-        		}
-        		}]
-        }]
+        }, {
+            xtype : 'actioncolumn',
+            width : 30,
+            items : [ {
+                icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_application_resource.png",
+                tooltip : i18n.get('label.runService'),
+                scope : this,
+                handler : function (grid, row) {
+                    this.grid.getSelectionModel().selectRow(row);
+                    var job = this.grid.getSelectionModel().getSelected();
+                    this.runJob(job.data);
+                }
+            } ]
+        } ]
     });
 
     this.grid = new Ext.grid.GridPanel({

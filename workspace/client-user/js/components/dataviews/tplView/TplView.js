@@ -328,78 +328,87 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
             }
         }
     });
-    this.tbar = new Ext.Toolbar({
-		items : [{
-				text : 'Services', 
-				menu : ctxMenu
-	        }, {
-            text : i18n.get("label.multiSort"),
-            scope : this, 
-            handler : function () {
-                var pos = this.getPosition();
-
-                //this.ownerCt.ownerCt reprensents the Window
-                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-                var up = new sitools.widget.sortersTool({
-                    pos : pos,
-                    store : this.store,
-                    columnModel : this.columnModel
-                });
-                up.show();
-            }, 
-            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-        }, {
-            text : i18n.get("label.filter"),
-            scope : this, 
-            handler : function () {
-                var pos = this.getPosition();
-
-                //this.ownerCt.ownerCt reprensents the Window
-                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-                var up = new sitools.widget.filterTool({
-                    pos : pos,
-                    store : this.store,
-                    columnModel : this.columnModel
-                });
-                up.show();
-            }, 
-            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-        },
-        plotButton,
-        {
-            text : i18n.get('label.definitionTitle'),
-            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
-            scope : this,
-            handler : function () {
-                
-                var windowConfig = {
-                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
-                    datasetName : this.datasetName, 
-                    iconCls : "semantic", 
-                    datasetDescription : this.datasetDescription,
-                    type : "defi",
-                    saveToolbar : true, 
-                    toolbarItems : []
-                };
-                
-                var javascriptObject = sitools.user.component.columnsDefinition;
-                Ext.apply(windowConfig, {
-                    id : "defi" + this.datasetId
-                });
-                var componentCfg = {
-                    datasetId : this.datasetId,
-                    datasetCm : config.datasetCm, 
-                    datasetName : this.datasetName,
-                    dictionaryMappings : config.dictionaryMappings, 
-                    preferencesPath : "/" + this.datasetName, 
-                    preferencesFileName : "semantic"
-                };
-                
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
-            }
-        }]
-	});
+    
+    this.tbar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+        datasetUrl :  this.sitoolsAttachementForUsers,
+        datasetId : this.datasetId,
+        dataview : this,
+        origin : "sitools.user.component.dataviews.tplView.TplView"
+    });
+    
+//    this.tbar = new Ext.Toolbar({
+//		items : [{
+//				text : 'Services', 
+//				menu : ctxMenu
+//	        }, {
+//            text : i18n.get("label.multiSort"),
+//            scope : this, 
+//            handler : function () {
+//                var pos = this.getPosition();
+//
+//                //this.ownerCt.ownerCt reprensents the Window
+//                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
+//                var up = new sitools.widget.sortersTool({
+//                    pos : pos,
+//                    store : this.store,
+//                    columnModel : this.columnModel
+//                });
+//                up.show();
+//            }, 
+//            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
+//        }, {
+//            text : i18n.get("label.filter"),
+//            scope : this, 
+//            handler : function () {
+//                var pos = this.getPosition();
+//
+//                //this.ownerCt.ownerCt reprensents the Window
+//                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
+//                var up = new sitools.widget.filterTool({
+//                    pos : pos,
+//                    store : this.store,
+//                    columnModel : this.columnModel
+//                });
+//                up.show();
+//            }, 
+//            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
+//        },
+//        plotButton,
+//        {
+//            text : i18n.get('label.definitionTitle'),
+//            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
+//            scope : this,
+//            handler : function () {
+//                
+//                var windowConfig = {
+//                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
+//                    datasetName : this.datasetName, 
+//                    iconCls : "semantic", 
+//                    datasetDescription : this.datasetDescription,
+//                    type : "defi",
+//                    saveToolbar : true, 
+//                    toolbarItems : []
+//                };
+//                
+//                var javascriptObject = sitools.user.component.columnsDefinition;
+//                Ext.apply(windowConfig, {
+//                    id : "defi" + this.datasetId
+//                });
+//                var componentCfg = {
+//                    datasetId : this.datasetId,
+//                    datasetCm : config.datasetCm, 
+//                    datasetName : this.datasetName,
+//                    dictionaryMappings : config.dictionaryMappings, 
+//                    preferencesPath : "/" + this.datasetName, 
+//                    preferencesFileName : "semantic"
+//                };
+//                
+//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+//
+//            }
+//        }]
+//	});
+    
 	this.items = [panelWest, this.panelDetail];
 	this.dataviewUtils = sitools.user.component.dataviews.dataviewUtils;
 	        

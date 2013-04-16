@@ -383,6 +383,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         Ext.iterate(this.formParametersPanel.getParametersValue(), function (item, ind, all) {
             datasetServiceIhm.parameters.push(item);
         });
+        Ext.destroyMembers(datasetServiceIhm, 'dependencies');
         
         var method, url;
         if (this.action === "modify") {

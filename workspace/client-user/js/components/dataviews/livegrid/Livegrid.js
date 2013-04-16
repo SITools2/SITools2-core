@@ -309,6 +309,10 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         store.isInSort = false;
         store.isNewFilter = false;
 	    
+        if (!Ext.isEmpty(store.filters)) {
+            var params = store.buildQuery(store.filters.getFilterData());
+            Ext.apply(options.params, params);
+        }
 	    
 	    this._loadMaskAnchor = Ext.get(this.getView().mainBody.dom.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
 	    
@@ -425,65 +429,72 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         }
     });
     
-	/**
-	 * {Ext.Toolbar} Top toolbar with services
-	 */
-	this.topBar = new Ext.Toolbar({
-		items : [{
-			text : 'Services', 
-			menu : ctxMenu
-        }, "-", {
-            text : i18n.get("label.multiSort"),
-            scope : this, 
-            handler : function () {
-                var pos = this.getPosition();
-
-                //this.ownerCt.ownerCt reprensents the Window
-                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-                var up = new sitools.widget.sortersTool({
-                    pos : pos,
-                    store : this.getStore(),
-                    columnModel : this.getColumnModel()
-                });
-                up.show();
-            }, 
-            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-        }, "-",
-        plotButton, "-",
-        {
-            text : i18n.get('label.definitionTitle'),
-            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
-            scope : this,
-            handler : function () {
-                
-                var windowConfig = {
-                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
-                    datasetName : this.datasetName, 
-                    iconCls : "semantic", 
-                    datasetDescription : this.datasetDescription,
-                    type : "defi",
-                    saveToolbar : true, 
-                    toolbarItems : []
-                };
-                
-                var javascriptObject = sitools.user.component.columnsDefinition;
-                Ext.apply(windowConfig, {
-                    id : "defi" + this.datasetId
-                });
-                var componentCfg = {
-                    datasetId : this.datasetId,
-                    datasetCm : config.datasetCm, 
-                    datasetName : this.datasetName,
-                    dictionaryMappings : config.dictionaryMappings, 
-                    preferencesPath : "/" + this.datasetName, 
-                    preferencesFileName : "semantic"
-                };
-                
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
-            }
-        }]
-	});
+    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+    	datasetUrl :  this.sitoolsAttachementForUsers,
+    	datasetId : this.datasetId,
+    	dataview : this,
+    	origin : "Ext.ux.livegrid"
+    });
+    
+//	/**
+//	 * {Ext.Toolbar} Top toolbar with services
+//	 */
+//	this.topBar = new Ext.Toolbar({
+//		items : [{
+//			text : 'Services', 
+//			menu : ctxMenu
+//        }, "-", {
+//            text : i18n.get("label.multiSort"),
+//            scope : this, 
+//            handler : function () {
+//                var pos = this.getPosition();
+//
+//                //this.ownerCt.ownerCt reprensents the Window
+//                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
+//                var up = new sitools.widget.sortersTool({
+//                    pos : pos,
+//                    store : this.getStore(),
+//                    columnModel : this.getColumnModel()
+//                });
+//                up.show();
+//            }, 
+//            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
+//        }, "-",
+//        plotButton, "-",
+//        {
+//            text : i18n.get('label.definitionTitle'),
+//            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
+//            scope : this,
+//            handler : function () {
+//                
+//                var windowConfig = {
+//                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
+//                    datasetName : this.datasetName, 
+//                    iconCls : "semantic", 
+//                    datasetDescription : this.datasetDescription,
+//                    type : "defi",
+//                    saveToolbar : true, 
+//                    toolbarItems : []
+//                };
+//                
+//                var javascriptObject = sitools.user.component.columnsDefinition;
+//                Ext.apply(windowConfig, {
+//                    id : "defi" + this.datasetId
+//                });
+//                var componentCfg = {
+//                    datasetId : this.datasetId,
+//                    datasetCm : config.datasetCm, 
+//                    datasetName : this.datasetName,
+//                    dictionaryMappings : config.dictionaryMappings, 
+//                    preferencesPath : "/" + this.datasetName, 
+//                    preferencesFileName : "semantic"
+//                };
+//                
+//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+//
+//            }
+//        }]
+//	});
     
     /**
      * {Ext.ux.grid.livegrid.Toolbar} Bottom bar of the liveGrid
@@ -510,17 +521,6 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	        componentType : "data",
 	        plugins : [ filtersSimple ],
 	        listeners : {
-	        	afterrender : function (live) {
-	        		myViewSimple.hdCtxIndex = 0;
-	        		live.topBar.add('-');
-	        		live.topBar.add('->');
-	        		live.topBar.add('-');
-	        		live.topBar.add({
-	        			tooltip : i18n.get('label.addOrDeleteColumns'),
-	        			icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-						menu : myViewSimple.colMenu
-					});
-	        	},
 	            rowcontextmenu : function (grid, rowIndex, e) {
 	                e.stopEvent();
 	                var selections = grid.getSelectionModel().getSelections();

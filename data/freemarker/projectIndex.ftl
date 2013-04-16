@@ -191,7 +191,9 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/cartoView/featureStore.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/resourcePluginParamsPanel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/goToTaskPanel.js"></script>
-
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/serverServicesUtil.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/menuServicesToolbar.js"></script>
+	
 	
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/datasetOverView/datasetOverview.js"></script>

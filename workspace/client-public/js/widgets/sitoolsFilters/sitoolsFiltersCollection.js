@@ -28,7 +28,9 @@ sitools.widget.FiltersCollection = Ext.extend(Ext.util.MixedCollection, {
     
     constructor : function (config) {
         sitools.widget.FiltersCollection.superclass.constructor.call(this);
-        this.addAll(config.filters);
+        if (!Ext.isEmpty(config)) {
+            this.addAll(config.filters);
+        }
     },
 
     
