@@ -50,7 +50,7 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
                 name : 'version',
                 type : 'string'
             }, {
-                name : 'iconClass',
+                name : 'icon',
                 type : 'string'
             }, {
                 name : 'xtype',
@@ -64,13 +64,14 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
         });
         
         sitools.admin.guiServices.guiServicesStore.superclass.constructor.call(this, config);
-     },
+    },
      
-     saveRecord : function (rec, action){
-     	var met = action == 'modify' ? 'PUT' : 'POST';
-     	var url = this.url + ((action == 'modify') ? '/' + rec.id : "") ;
-     	
-     	Ext.Ajax.request({
+
+    saveRecord : function (rec, action) {
+        var met = action == 'modify' ? 'PUT' : 'POST';
+        var url = this.url + ((action == 'modify') ? '/' + rec.id : "");
+
+        Ext.Ajax.request({
             url : url,
             method : met,
             scope : this,
@@ -85,14 +86,15 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
             },
             failure : alertFailure
         });
-     },
+    },
      
-     updateRecord : function (rec){
-    	 this.saveRecord(rec, "modify");
-     },
-     
-     deleteRecord : function (rec){
-     	 Ext.Ajax.request({
+
+    updateRecord : function (rec) {
+        this.saveRecord(rec, "modify");
+    },
+
+    deleteRecord : function (rec) {
+        Ext.Ajax.request({
             url : this.url + "/" + rec.id,
             method : 'DELETE',
             scope : this,
@@ -102,8 +104,8 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
                 }
             },
             failure : alertFailure
-     	});
-     }
+        });
+    }
      
 });
 

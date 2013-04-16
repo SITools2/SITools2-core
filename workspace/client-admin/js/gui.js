@@ -95,6 +95,33 @@ function showHelp(helpUrl) {
 
 
 var clientAdmin = {
+    initGuiServices : function (callback) {
+        Ext.Ajax.request({
+            url : loadUrl.get('APP_URL') + loadUrl.get('APP_GUI_SERVICES_URL'),
+            params : {
+                sort : "priority",
+                dir : "DESC"
+            }, 
+            method : "GET",
+            scope : this,
+            success : function (ret) {
+                var json = Ext.decode(ret.responseText);
+                if (!json.success) {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+                    return false;
+                } else {
+                    var data = json.data;                    
+                    Ext.each(data, function (guiservice) {
+                        includeJsForceOrder(guiservice.dependencies.js, 0);
+                    });
+                    
+                }
+            },
+            callback : function () {
+                this.initDatasetViews(callback);
+            }
+        }); 
+    }, 
 	initDatasetViews : function (callback) {
 		Ext.Ajax.request({
 	        url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_VIEWS_URL'),
@@ -439,7 +466,7 @@ function initAppli() {
             var cb = function () {
 				clientAdmin.initGui();
             };
-            clientAdmin.initDatasetViews(cb);
+            clientAdmin.initGuiServices(cb);
         }
     });       
     

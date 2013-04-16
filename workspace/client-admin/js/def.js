@@ -435,7 +435,7 @@ function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
     //Test if all inclusions are done for this list of urls
     if (indexAInclure < ConfUrls.length) {
         var url = ConfUrls[indexAInclure].url;
-    
+        
         var trouve = false;
         var targetEl = "script";
         var targetAttr = "src";
@@ -453,10 +453,11 @@ function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
             DSLScript.type = "text/javascript";
             DSLScript.onload = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
             DSLScript.onreadystatechange = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.onerror = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
             DSLScript.src = url;
 
             var headID = document.getElementsByTagName('head')[0];
-            headID.appendChild(DSLScript);
+           headID.appendChild(DSLScript);           
         } else {
             includeJsForceOrder(ConfUrls, indexAInclure + 1, callback, scope);
         }

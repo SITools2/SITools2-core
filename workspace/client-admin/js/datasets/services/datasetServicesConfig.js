@@ -46,7 +46,6 @@ sitools.admin.datasets.datasetViewConfig = Ext.extend(Ext.form.FormPanel, {
             listeners : {
                 scope : this, 
                 load : function (store, recs) {
-                    console.log("load from store");
                     if (Ext.isEmpty(this.comboDatasetViews.getValue())) {
                         if (!Ext.isEmpty(recs) && Ext.isArray(recs) && recs.length > 0) {
                             var minPriorityRec = null;

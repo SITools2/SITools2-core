@@ -121,6 +121,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             method : 'GET'
         });
         
+
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
             root : "ServiceCollectionModel.services",
@@ -134,18 +135,18 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 name : 'description',
                 type : 'string'
             }, {
-            	name : 'type',
+                name : 'type',
                 type : 'string'
             }, {
-            	name : 'category',
+                name : 'category',
                 type : 'string'
             }, {
-            	name : 'icon',
+                name : 'icon',
                 type : 'string'
             }, {
-            	name : 'label',
+                name : 'label',
                 type : 'string'
-            }],
+            } ],
             proxy : this.httpProxyResources
         });
 
@@ -158,14 +159,13 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 dataIndex : 'type',
                 width : 80,
                 resizable : false,
-                renderer: function(value, metadata, record, rowIndex, colIndex, store) {
-                	if (value == "SERVER"){
-                		metadata.style += "font-weight:bold; color:blue;";
-                	}
-                	else {
-                		metadata.style += "font-weight:bold; color:green;";
-                	}
-                	return value;
+                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                    if (value === "SERVER") {
+                        metadata.style += "font-weight:bold; color:blue;";
+                    } else {
+                        metadata.style += "font-weight:bold; color:green;";
+                    }
+                    return value;
                 }
             }, {
                 header : i18n.get('label.name'),
@@ -191,11 +191,11 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 dataIndex : 'icon',
                 width : 60,
                 sortable : false,
-                renderer: function(value, metadata, record, rowIndex, colIndex, store) {
-                	if (!Ext.isEmpty(value)){
-                		value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
-                	}
-                	return value;
+                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                    if (!Ext.isEmpty(value)) {
+                        value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
+                    }
+                    return value;
                 }
             }]
         });
@@ -203,23 +203,23 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         this.tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
             defaults : {
-            	scope : this
+                scope : this
             },
-            items : [ this.comboParents, '-' , {
+            items : [ this.comboParents, '-', {
                 text : i18n.get('label.addServiceIhm'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create_serviceIhm.png',
-                handler : function (){
-                	this.onCreate('GUI');
+                handler : function () {
+                    this.onCreate('GUI');
                 },
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.addServiceServer'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create_serviceServer.png',
-                handler : function (){
-                	this.onCreate('SERVER');
+                handler : function () {
+                    this.onCreate('SERVER');
                 },
                 xtype : 's-menuButton'
-            }, '-' , {
+            }, '-', {
                 text : i18n.get('label.modify'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
@@ -244,18 +244,18 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 store : this.store,
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
-                emptyMsg : i18n.get('paging.empty'),
+                emptyMsg : i18n.get('paging.empty')
             };
         
         this.sm = new Ext.grid.RowSelectionModel();
         
         this.listeners = {
             scope : this, 
-            celldblclick : function (grid, row, col){
-            	if (grid.getColumnModel().isCellEditable(col, row)){
-            		return;
-            	}
-            	this.onModify();
+            celldblclick : function (grid, row, col) {
+                if (grid.getColumnModel().isCellEditable(col, row)) {
+                    return;
+                }
+                this.onModify();
             }
         };
 
@@ -277,30 +277,31 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         var urlParent = this.urlDatasets + "/" + parentId;
         
         
-        if (type === "GUI"){
-        	var up = new sitools.admin.datasets.services.datasetServicesProp({
-        		action : 'create',            
-        		parentPanel : this,          
-        		parentType : this.parentType,
-        		appClassName : this.appClassName,
-        		idParent : parentId,
-        		urlAllServicesIHM : this.urlAllServicesIHM,
-        		urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', parentId)
-        	});
-        	up.show();
+
+        if (type === "GUI") {
+            var up = new sitools.admin.datasets.services.datasetServicesProp({
+                action : 'create',
+                parentPanel : this,
+                parentType : this.parentType,
+                appClassName : this.appClassName,
+                idParent : parentId,
+                urlAllServicesIHM : this.urlAllServicesIHM,
+                urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', parentId)
+            });
+            up.show();
         }
         else if (type === "SERVER") {
-        	var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
-        		action : 'create',            
-        		parentPanel : this,          
-        		urlResources : this.urlAllServicesSERVER,
-        		urlResourcesCRUD : this.urlDatasetAllServicesSERVER.replace('{idDataset}', parentId),
-        		urlParent : urlParent,
-        		parentType : this.parentType,
-        		appClassName : this.appClassName,
-        		idParent : parentId
-        	});
-        	up.show();
+            var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
+                action : 'create',
+                parentPanel : this,
+                urlResources : this.urlAllServicesSERVER,
+                urlResourcesCRUD : this.urlDatasetAllServicesSERVER.replace('{idDataset}', parentId),
+                urlParent : urlParent,
+                parentType : this.parentType,
+                appClassName : this.appClassName,
+                idParent : parentId
+            });
+            up.show();
         }
     },
 
@@ -319,10 +320,11 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
        
-        if (rec.data.type == "GUI"){
-        	this.editGUIService(rec.data.id);
-        }else if (rec.data.type == "SERVER") {
-        	this.editSERVERService(rec.data.id);
+
+        if (rec.data.type == "GUI") {
+            this.editGUIService(rec.data.id);
+        } else if (rec.data.type == "SERVER") {
+            this.editSERVERService(rec.data.id);
         }
         
     },
@@ -386,17 +388,17 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
      * Save all Services Properties (label, icon, category) for the current Dataset
      */
     onSaveProperties : function () {
-    	var service = {};
-    	service.id = this.parentId;
-    	service.name = "";
-    	service.description = "";
-    	service.services = [];
-    	
-    	this.getStore().each(function(rec){
-    		service.services.push(rec.data);
-    	});
-    	
-    	Ext.Ajax.request({
+        var service = {};
+        service.id = this.parentId;
+        service.name = "";
+        service.description = "";
+        service.services = [];
+
+        this.getStore().each(function (rec) {
+            service.services.push(rec.data);
+        });
+
+        Ext.Ajax.request({
             url : this.urlDatasetAllServices.replace('{idDataset}', this.parentId),
             method : 'PUT',
             jsonData : service,
@@ -417,42 +419,45 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     },
     
     /**
-     * Modify an existing GUI Service 
+     * Modify an existing GUI Service
+     * 
      * @param idService
-     * 			the id of GUI Service to modify
+     *            the id of GUI Service to modify
      */
-    editGUIService : function (idService){
-    	Ext.Ajax.request({
+    editGUIService : function (idService) {
+        Ext.Ajax.request({
             url : this.urlDatasetServiceIHM.replace('{idService}', idService),
             method : 'GET',
             scope : this,
             success : function (ret) {
-            	var json = Ext.decode(ret.responseText);
-            	
-            	var up = new sitools.admin.datasets.services.datasetServicesProp({
-            		action : 'modify',
-            		record : json.guiServicePlugin,
-            		parentPanel : this,          
-            		parentType : this.parentType,
-            		appClassName : this.appClassName,
-            		idParent : this.parentId,
-            		urlAllServicesIHM : this.urlAllServicesIHM,
-            		urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', this.parentId)
-            	});
-            	up.show();
+                var json = Ext.decode(ret.responseText);
+
+                var up = new sitools.admin.datasets.services.datasetServicesProp({
+                    action : 'modify',
+                    record : json.guiServicePlugin,
+                    parentPanel : this,
+                    parentType : this.parentType,
+                    appClassName : this.appClassName,
+                    idParent : this.parentId,
+                    urlAllServicesIHM : this.urlAllServicesIHM,
+                    urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', this.parentId)
+                });
+                up.show();
             },
             failure : alertFailure
         });
     },
     
+
     /**
-     * Modify an existing SERVER Service 
+     * Modify an existing SERVER Service
+     * 
      * @param idService
-     * 			the id of SERVER Service to modify
+     *            the id of SERVER Service to modify
      */
-    editSERVERService : function (idService){
-    	var urlParent = this.urlDatasets + "/" + this.parentId;
-    	Ext.Ajax.request({
+    editSERVERService : function (idService) {
+        var urlParent = this.urlDatasets + "/" + this.parentId;
+        Ext.Ajax.request({
             url : this.urlDatasetServiceSERVER.replace('{idService}', idService),
             method : 'GET',
             scope : this,
@@ -461,17 +466,17 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 var resourcePlugin = {};
                 resourcePlugin.data = json.resourcePlugin;
                 var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
-            		action : 'modify',
-            		record : resourcePlugin,
-            		parentPanel : this,          
-            		urlResources : this.urlAllServicesSERVER,
-            		urlResourcesCRUD : this.urlDatasets + "/" + this.parentId + "/services/server",
-            		urlParent : urlParent,
-            		appClassName : this.appClassName,
-            		idParent : this.parentId,
-            		parentType : this.parentType
-            	});
-            	up.show();
+                    action : 'modify',
+                    record : resourcePlugin,
+                    parentPanel : this,
+                    urlResources : this.urlAllServicesSERVER,
+                    urlResourcesCRUD : this.urlDatasets + "/" + this.parentId + "/services/server",
+                    urlParent : urlParent,
+                    appClassName : this.appClassName,
+                    idParent : this.parentId,
+                    parentType : this.parentType
+                });
+                up.show();
             },
             failure : alertFailure
         });
