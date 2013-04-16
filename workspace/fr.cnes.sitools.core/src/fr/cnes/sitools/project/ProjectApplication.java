@@ -127,6 +127,9 @@ public final class ProjectApplication extends AbstractProjectApplication {
     //list of datasetViews from datasets used in the project
     router.attach("/datasetViews", ProjectListDatasetViewsResource.class);
     
+    //list of guiservices from datasets used in the project
+    router.attach("/guiServices", ProjectListGuiServicesResource.class);
+    
     // attach dynamic resources
     attachParameterizedResources(router);
 
