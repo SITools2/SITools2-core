@@ -58,6 +58,7 @@ import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
 import fr.cnes.sitools.form.dataset.dto.ValueDTO;
 import fr.cnes.sitools.form.project.dto.FormProjectDTO;
 import fr.cnes.sitools.form.project.model.FormParameter;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.graph.model.GraphNodeComplete;
 import fr.cnes.sitools.project.model.Project;
@@ -129,6 +130,7 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       getProjectModulesDetailsList(projectAttach, "", "");
       
       getDatasetViewsList(projectAttach);
+      getGuiServicesList(projectAttach);
 
       // test avec projet vide
       getFormList(projectAttachEmpty);
@@ -144,6 +146,8 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       e.printStackTrace();
     }
   }
+
+  
 
   /**
    * Test
@@ -498,6 +502,30 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       RIAPUtils.exhaust(result);
     }
   }
+  
+  private void getGuiServicesList(String projectAttach) {
+    String url = getBaseUrl() + projectAttach + "/guiServices";
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      String template = getBaseUrl() + projectAttach;
+      retrieveDocAPI(url, "", parameters, template);
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      Representation result = cr.get(getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      
+      Response response = getResponse(getMediaTest(), result, GuiServiceModel.class, true);
+      assertNotNull(response.getData());
+      
+      List<Object> guiServices = response.getData();
+      assertNotNull(guiServices);
+      
+      RIAPUtils.exhaust(result);
+    }
+    
+  }
 
   // ------------------------------------------------------------
   // RESPONSE REPRESENTATION WRAPPING
@@ -575,6 +603,8 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       xstream.alias("ProjectModuleModel", ProjectModuleModel.class);
       xstream.alias("dependencies", Dependencies.class);
       
+      //for guiServices
+      xstream.alias("guiService", GuiServiceModel.class);
 
       if (isArray) {
         if (media.isCompatible(MediaType.APPLICATION_JSON)) {
