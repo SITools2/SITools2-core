@@ -1388,22 +1388,3 @@ td.ux-taskButtons-edge {
 .menu-title {
 	color : white;
 }
-
-.services-toolbar {
-	-moz-box-shadow: 2px 2px 5px 2px #343434;
-	-webkit-box-shadow: 2px 2px 5px 2px #343434;
-	-o-box-shadow: 2px 2px 5px 2px #343434;
-	box-shadow: 2px 2px 5px 2px #343434;
-	filter:progid:DXImageTransform.Microsoft.Shadow(color=#343434, Direction=134, Strength=5);
-	
-	background: #adafba; /* Old browsers */
-background: -moz-linear-gradient(top,  #adafba 7%, #eaebf2 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(7%,#adafba), color-stop(100%,#eaebf2)) !important; /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  #adafba 7%,#eaebf2 100%) !important; /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  #adafba 7%,#eaebf2 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  #adafba 7%,#eaebf2 100%); /* IE10+ */
-background: linear-gradient(to bottom,  #adafba 7%,#eaebf2 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#adafba', endColorstr='#eaebf2',GradientType=0 ); /* IE6-9 */
-
-
-}

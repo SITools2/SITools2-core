@@ -375,6 +375,78 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 
 //    /*
 //	 * PlotXY button for launching numeric data preview as a plot
+    /*
+	 * PlotXY button for launching numeric data preview as a plot
+	 */
+    var plotButton = new Ext.Button({
+        text : 'Plot',
+        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
+        scope : this,
+        listeners : {
+            scope : this,
+            click : function (button, e) {
+                e.stopEvent();
+                var jsObj = sitools.user.component.dataPlotter;
+                var componentCfg = {
+//                    dataplot : Ext.apply(myStoreSimple, {
+//                        datasetId : config.datasetId,
+//                        columnModel : button.scope.colModel
+//                    }),
+                    columnModel :  config.datasetCm,          
+                    formParams : config.formParams,
+                    formMultiDsParams : config.formMultiDsParams,
+                    dataUrl :  config.dataUrl,
+                    datasetName : config.datasetName, 
+                    datasetId : config.datasetId, 
+                    componentType : "plot", 
+                    preferencesPath : "/" + config.datasetName, 
+                    preferencesFileName : "plot",
+                    filters : this.getFilters(),
+                    selections : Ext.isEmpty(this.getSelections())
+							? undefined
+							: this.getRecSelectedParamForLiveGrid()
+                };
+                var windowConfig = {
+                    id : "plot" + config.datasetId,
+                    title : "Data plot : " + config.datasetName,
+                    iconCls : "plot", 
+                    datasetName : config.datasetName,
+                    type : "plot",
+                    saveToolbar : true,
+                    winHeight : 600
+                };
+                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+            }
+        }
+    });
+    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
+		grid : this, 
+		event : null, 
+		dataUrl : this.sitoolsAttachementForUsers, 
+		datasetId : config.datasetId, 
+		datasetName : this.datasetName, 
+		origin : "Ext.ux.livegrid",
+        urlDetail : this.sitoolsAttachementForUsers, 
+        listeners : {
+			scope : this, 
+			beforeShow : function (menu) {
+				//Refresh the grid associated to the menu.
+				menu.setGrid(Ext.getCmp(this.id));
+				menu.setSelections(this.getSelectionModel().getSelections());
+			}
+        }
+    });
+    
+
+    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+        datasetUrl : this.sitoolsAttachementForUsers,
+        datasetId : this.datasetId,
+        dataview : this,
+        origin : "Ext.ux.livegrid"
+    });
+    
+//	/**
+//	 * {Ext.Toolbar} Top toolbar with services
 //	 */
 //    var plotButton = new Ext.Button({
 //        text : 'Plot',

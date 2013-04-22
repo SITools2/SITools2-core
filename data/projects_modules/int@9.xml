@@ -1,36 +1,26 @@
 <projectModule>
-  <id>DataSetExplorerDataView</id>
-  <name>DataSetExplorerDataView</name>
-  <description>Dataset Explorer with new dataview</description>
-  <label>label.datasetExplorerDataview</label>
-  <author>akka</author>
+  <id>739954a4-5593-48fe-bd5a-3eb4e4c3a7f6</id>
+  <name>formsAsMenu</name>
+  <description>A menu to display forms List</description>
+  <label>label.formsAsMenu</label>
+  <author>Akka</author>
   <version>1.0</version>
-  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/dataset_explorer.png</imagePath>
-  <title>title.DatasetExplorerDataView</title>
-  <defaultWidth>600</defaultWidth>
-  <defaultHeight>500</defaultHeight>
+  <imagePath>http://localhost:8182/sitools/upload/form_list_small.png</imagePath>
+  <title>title.formsAsMenuModule</title>
+  <defaultWidth>0</defaultWidth>
+  <defaultHeight>0</defaultHeight>
   <x>0</x>
   <y>0</y>
-  <icon>datasetExplorerModule</icon>
-  <specificType>truc</specificType>
-  <xtype>sitools.user.modules.datasetExplorerDataView</xtype>
+  <icon>formsModule</icon>
+  <specificType></specificType>
+  <xtype>sitools.user.modules.formsAsMenu</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/modules/dataSetExplorerDataView/dataSetExplorerDataView.js</url>
-      </url>
-      <url>
-        <url>/sitools/common/js/widgets/reorderer/Reorderer.js</url>
-      </url>
-      <url>
-        <url>/sitools/common/js/widgets/reorderer/ToolbarReorderer.js</url>
+        <url>/sitools/client-user/js/modules/formsAsMenu/formsAsMenu.js</url>
       </url>
     </js>
-    <css>
-      <url>
-        <url>/sitools/common/js/widgets/reorderer/multiple-sorting.css</url>
-      </url>
-    </css>
+    <css/>
   </dependencies>
-  <priority>0</priority>
+  <priority>1</priority>
 </projectModule>

@@ -193,7 +193,7 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/goToTaskPanel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/serverServicesUtil.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/menuServicesToolbar.js"></script>
-	
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/services/servicesToolbar.css">
 	
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/datasetOverView/datasetOverview.js"></script>

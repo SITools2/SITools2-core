@@ -31,8 +31,9 @@ Ext.namespace('sitools.user.component.dataviews.services');
  */
 sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.Toolbar, {
     enableOverflow: true,
+//    width : "97%",
     initComponent : function () {
-        this.cls = 'services-toolbar';
+        this.cls = "services-toolbar"; 
         
         this.urlDatasetServiceIHM = this.datasetUrl + "/services" + '/gui/{idService}';
 
@@ -60,7 +61,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     
 
     createMenuServices : function (store, records, opts) {
-        var icon, category, menu;
+        var icon, category, menu, btn = {};
         Ext.each(records, function (item) {
             
             if (!Ext.isEmpty(category = item.get('category'))) {
@@ -69,25 +70,30 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
                 menu = this;
             }
             
+            
             if (!Ext.isEmpty(icon = item.get('icon'))) {
-                menu.add({
-                    idService : item.get('id'),
-                    typeService : item.get('type'),
-                    text : i18n.get(item.get('label')),
+                Ext.apply(btn, {
                     iconCls : 'btn-format-icon',
-                    icon : icon,
-                    scope : this,
-                    handler : this.callService
-                });
-            } else {
-                menu.add({
-                    idService : item.get('id'),
-                    typeService : item.get('type'),
-                    text : item.get('name'),
-                    scope : this,
-                    handler : this.callService
+                    icon : icon
                 });
             }
+            
+            Ext.apply(btn, {
+                idService : item.get('id'),
+                typeService : item.get('type'),
+                text : (!Ext.isEmpty(item.get('label')) ? item.get('label') : item.get('name')),
+                cls : 'services-toolbar-btn',
+                icon : icon,
+                scope : this,
+                handler : this.callService
+            });
+            
+            menu.add(btn);
+            
+            if (this.id === menu.id) {
+                this.add('-');
+            }
+            
         }, this);
         this.createColumnsButton();
         this.doLayout();
@@ -96,7 +102,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
 
     createColumnsButton : function () {
         if (this.origin !== "sitools.user.component.dataviews.tplView.TplView") {
-            this.add('-', '->', '-');
+            this.add('->', '-');
             this.add({
                 tooltip : i18n.get('label.addOrDeleteColumns'),
                 icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
@@ -149,12 +155,15 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             button = new Ext.Button({
                 category : category,
                 text : category,
-                menu : new Ext.menu.Menu(),
-                icon : "/sitools/common/res/images/icons/white_arrow.gif",
+                cls : 'services-toolbar-btn',
+                menu : new Ext.menu.Menu({
+                    showSeparator : false
+                }),
                 iconAlign : "left",
                 clickEvent : 'mousedown'
             });
             this.add(button);
+            this.add('-');
         } else {
             button = buttonSearch[0];
         }

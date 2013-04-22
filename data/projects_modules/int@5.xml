@@ -1,29 +1,26 @@
 <projectModule>
-  <id>9471a14c-c1db-4aff-8fe2-1d4332002579</id>
-  <name>Content viewer</name>
-  <description>HTML/CSS content viewer</description>
-  <label>label.contentViewer</label>
-  <author>AKKA</author>
+  <id>uploadPosterTest</id>
+  <name>Poster</name>
+  <description>Poster module to test API</description>
+  <label>label.poster</label>
+  <author>akka</author>
   <version>1.0</version>
-  <imagePath>http://localhost:8182/sitools/upload/postel-icon.png</imagePath>
-  <title>Content Viewer</title>
-  <defaultWidth>1000</defaultWidth>
-  <defaultHeight>600</defaultHeight>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/description_project.png</imagePath>
+  <title>Poster</title>
+  <defaultWidth>740</defaultWidth>
+  <defaultHeight>480</defaultHeight>
   <x>0</x>
   <y>0</y>
-  <icon>contentViewerModule</icon>
+  <icon>projectDescriptionModule</icon>
   <specificType></specificType>
-  <xtype>sitools.user.modules.contentViewerModule</xtype>
+  <xtype>sitools.user.modules.extPoster</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/modules/cmsModule/contentViewerModule.js</url>
-      </url>
-	  <url>
-        <url>/sitools/client-user/js/modules/cmsModule/cmsViewerTreeToolbar.js</url>
+        <url>/sitools/client-user/js/modules/extPoster/extPoster.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
-  <priority>9</priority>
+  <priority>8</priority>
 </projectModule>

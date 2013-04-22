@@ -1,26 +1,26 @@
 <projectModule>
-  <id>uploadPosterTest</id>
-  <name>Poster</name>
-  <description>Poster module to test API</description>
-  <label>label.poster</label>
+  <id>ProjectsFeeds</id>
+  <name>ProjectsFeeds</name>
+  <description>Feeds for Projects</description>
+  <label>label.projectFeeds</label>
   <author>akka</author>
   <version>1.0</version>
-  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/description_project.png</imagePath>
-  <title>Poster</title>
-  <defaultWidth>740</defaultWidth>
-  <defaultHeight>480</defaultHeight>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/project_feeds.png</imagePath>
+  <title>title.ProjectsFeeds</title>
+  <defaultWidth>400</defaultWidth>
+  <defaultHeight>500</defaultHeight>
   <x>0</x>
   <y>0</y>
-  <icon>projectDescriptionModule</icon>
-  <specificType></specificType>
-  <xtype>sitools.user.modules.extPoster</xtype>
+  <icon>feedsModule</icon>
+  <specificType>ProjectsFeeds</specificType>
+  <xtype>sitools.user.modules.feedsReaderProject</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/modules/extPoster/extPoster.js</url>
+        <url>/sitools/client-user/js/modules/feedsReader/feedReaderProject.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
-  <priority>8</priority>
+  <priority>4</priority>
 </projectModule>
