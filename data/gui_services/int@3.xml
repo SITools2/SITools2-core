@@ -1,0 +1,15 @@
+<guiService>
+  <id>8c48e76b-7ce4-4af1-8c4e-a120e47d5ed8</id>
+  <name>Sorter Tool</name>
+  <description>a GUI service to sort</description>
+  <label>label.multiSort</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
+  <xtype>sitools.widget.sortersTool</xtype>
+  <dependencies>
+    <js/>
+    <css/>
+  </dependencies>
+  <priority>1</priority>
+</guiService>

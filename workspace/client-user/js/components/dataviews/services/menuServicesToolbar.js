@@ -63,7 +63,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
         var icon, category, menu;
         Ext.each(records, function (item) {
             
-            if (!Ext.isEmpty(category = item.get('category'))){
+            if (!Ext.isEmpty(category = item.get('category'))) {
                 menu = this.getMenu(category);
             } else {
                 menu = this;
@@ -73,7 +73,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
                 menu.add({
                     idService : item.get('id'),
                     typeService : item.get('type'),
-                    text : item.get('name'),
+                    text : i18n.get(item.get('label')),
                     iconCls : 'btn-format-icon',
                     icon : icon,
                     scope : this,
@@ -95,15 +95,15 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     
 
     createColumnsButton : function () {
-        if (this.origin !== "sitools.user.component.dataviews.tplView.TplView"){
+        if (this.origin !== "sitools.user.component.dataviews.tplView.TplView") {
             this.add('-', '->', '-');
             this.add({
                 tooltip : i18n.get('label.addOrDeleteColumns'),
                 icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-                menu : this.dataview.view.colMenu
+                menu : this.dataview.getDatasetView().colMenu
             });
+            this.dataview.getDatasetView().hdCtxIndex = 0;
         }
-        this.dataview.view.hdCtxIndex = 0;
         
     },
     
@@ -131,10 +131,11 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
                 var config = Ext.applyIf(guiServicePlugin, {
                     columnModel : this.dataview.getColumnModel(),
                     store : this.dataview.getStore(),
-                    dataview : this.dataview
+                    dataview : this.dataview,
+                    origin : this.origin
                 });
 
-                var service = new JsObj.executeAsService(config);
+                JsObj.executeAsService(config);
 
             },
             failure : alertFailure
@@ -143,8 +144,9 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     
     getMenu : function (category) {
         var buttonSearch = this.find('category', category);
-        if(Ext.isEmpty(buttonSearch)){
-            var button = new Ext.Button({
+        var button;
+        if (Ext.isEmpty(buttonSearch)) {
+            button = new Ext.Button({
                 category : category,
                 text : category,
                 menu : new Ext.menu.Menu(),

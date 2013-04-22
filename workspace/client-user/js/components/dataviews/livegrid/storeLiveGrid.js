@@ -225,22 +225,25 @@ sitools.user.component.dataviews.livegrid.StoreLiveGrid = function (config) {
     sitools.user.component.dataviews.livegrid.StoreLiveGrid.superclass.constructor.call(this, config);
 };
 Ext.extend(sitools.user.component.dataviews.livegrid.StoreLiveGrid, Ext.ux.grid.livegrid.Store, {
+    
+    paramPrefix : "filter",
+    
     getFormParams : function () {
 		return this.storeUtils.getFormParams();
 	},
 
-    buildQuery : function (filters) {
+	buildQuery : function (filters) {
         if (Ext.isEmpty(filters)) {
             return;
         }
         var p = {}, i, f, root, dataPrefix, key, tmp,
             len = filters.length;
-    
+
         for (i = 0; i < len; i++) {
             f = filters[i];
             root = [this.paramPrefix, '[', i, ']'].join('');
             p[root + '[columnAlias]'] = f.columnAlias;
-    
+
             dataPrefix = root + '[data]';
             for (key in f.data) {
                 p[[dataPrefix, '[', key, ']'].join('')] = f.data[key];

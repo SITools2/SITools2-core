@@ -71,9 +71,11 @@ Ext.ns("sitools.user.component.dataviews.cartoView");
  * 
  */
 sitools.user.component.dataviews.cartoView.cartoView = function (config) {
+    this.urlRecords = config.dataUrl + '/records';
+    this.origin = "sitools.user.component.dataviews.cartoView.cartoView";
     
 	var dataviewConfig = sitoolsUtils.arrayProperties2Object(config.datasetViewConfig);
-
+	
     //Définir le column Model.
     var colModel;
     if (!Ext.isEmpty(config.userPreference) && config.userPreference.datasetView === "Ext.ux.livegrid" && !Ext.isEmpty(config.userPreference.colModel)) {
@@ -112,137 +114,180 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         autoLoad: false
     });
     
+    this.store.filters = new sitools.widget.FiltersCollection({
+        filters : config.filters 
+    });
+    
+    this.store.on("beforeload", function (store, options) {
+        //set the nocount param to false.
+        //before load is called only when a new action (sort, filter) is applied
+        var noCount;
+        
+        if (!store.isFirstCountDone || store.isNewFilter) {
+            options.params.nocount = false;
+        } else {
+            options.params.nocount = true;
+        }
+
+        if (store.isNewFilter) {
+            options.params.start = 0;
+            options.params.limit = DEFAULT_LIVEGRID_BUFFER_SIZE;
+        }
+        
+        store.isNewFilter = false;        
+        
+        if (!Ext.isEmpty(store.filters)) {
+            var params = store.buildQuery(store.filters.getFilterData());
+            Ext.apply(options.params, params);
+        }
+        
+        if (!Ext.isEmpty(this.dataView)) {
+            this._loadMaskAnchor = Ext.get(this.el.dom);
+        
+            this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
+        }
+        this.store.storeOptions(options);
+        //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
+    }, this);
+    
     /*
 	 * the filters of the grid
 	 */
-    var filters = sitools.user.component.dataviews.dataviewUtils.getFilters(config.datasetCm, config.filters);
-    // Using the extended gridFilter to filter with the columnAlias
-    var gridFilters = new Ext.ux.grid.GridFiltersSpe({
-        encode : false, // json encode the filter query
-        local : false, // defaults to false (remote filtering)
-        filters : filters
-    });
+//    var filters = sitools.user.component.dataviews.dataviewUtils.getFilters(config.datasetCm, config.filters);
+//    // Using the extended gridFilter to filter with the columnAlias
+//    var gridFilters = new Ext.ux.grid.GridFiltersSpe({
+//        encode : false, // json encode the filter query
+//        local : false, // defaults to false (remote filtering)
+//        filters : filters
+//    });
 
     /*
 	 * PlotXY button for launching numeric data preview as a plot
 	 */
-    var plotButton = new Ext.Button({
-        text : 'Plot',
-        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
-        scope : this,
-        cm : cm, 
-        listeners : {
-	    	scope : this,
-	    	click : function (button, e) {
-                e.stopEvent();
-                var jsObj = sitools.user.component.dataPlotter;
-                var componentCfg = {
-                    columnModel :  config.datasetCm,          
-                    formParams : config.formParams,
-                    formMultiDsParams : config.formMultiDsParams,
-                    dataUrl :  config.dataUrl,
-                    datasetName : config.datasetName, 
-                    datasetId : config.datasetId, 
-                    componentType : "plot", 
-                    preferencesPath : "/" + config.datasetName, 
-                    preferencesFileName : "plot",
-                    filters : this.filters,
-                    selections : Ext.isEmpty(this.getSelections())
-                            ? undefined
-                            : this.getRecSelectedParam()
-                    
-                };
-                var windowConfig = {
-                    id : "plot" + config.datasetId,
-                    title : "Data plot : " + config.datasetName,
-                    datasetName : config.datasetName,
-                    type : "plot",
-                    iconCls : "plot", 
-                    saveToolbar : true,
-                    winHeight : 600
-                };
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-            }
-        }
-    });
-
+//    var plotButton = new Ext.Button({
+//        text : 'Plot',
+//        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
+//        scope : this,
+//        cm : cm, 
+//        listeners : {
+//	    	scope : this,
+//	    	click : function (button, e) {
+//                e.stopEvent();
+//                var jsObj = sitools.user.component.dataPlotter;
+//                var componentCfg = {
+//                    columnModel :  config.datasetCm,          
+//                    formParams : config.formParams,
+//                    formMultiDsParams : config.formMultiDsParams,
+//                    dataUrl :  config.dataUrl,
+//                    datasetName : config.datasetName, 
+//                    datasetId : config.datasetId, 
+//                    componentType : "plot", 
+//                    preferencesPath : "/" + config.datasetName, 
+//                    preferencesFileName : "plot",
+//                    filters : this.filters,
+//                    selections : Ext.isEmpty(this.getSelections())
+//                            ? undefined
+//                            : this.getRecSelectedParam()
+//                    
+//                };
+//                var windowConfig = {
+//                    id : "plot" + config.datasetId,
+//                    title : "Data plot : " + config.datasetName,
+//                    datasetName : config.datasetName,
+//                    type : "plot",
+//                    iconCls : "plot", 
+//                    saveToolbar : true,
+//                    winHeight : 600
+//                };
+//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+//            }
+//        }
+//    });
+//
+//    
+//    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
+//		grid : this, 
+//		event : null, 
+//		dataUrl : config.dataUrl, 
+//		datasetId : config.datasetId, 
+//		datasetName : config.datasetName, 
+//		origin : "sitools.user.component.dataviews.cartoView.cartoView",
+//        urlDetail : config.dataUrl, 
+//        listeners : {
+//			scope : this, 
+//			beforeShow : function (menu) {
+//				//Refresh the grid associated to the menu.
+//				menu.setGrid(this);
+//				menu.setSelections(this.gridPanel.getSelectionModel().getSelections());
+//			}
+//        }
+//    });
+//	/**
+//	 * {Ext.Toolbar} Top toolbar with services
+//	 */
+//	this.topBar = new Ext.Toolbar({
+//		items : [{
+//			text : 'Services', 
+//			menu : ctxMenu
+//        }, "-", {
+//            text : i18n.get("label.multiSort"),
+//            scope : this, 
+//            handler : function () {
+//                var pos = this.getPosition();
+//
+//                //this.ownerCt.ownerCt reprensents the Window
+//                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
+//                var up = new sitools.widget.sortersTool({
+//                    pos : pos,
+//                    store : this.gridPanel.getStore(),
+//                    columnModel : this.gridPanel.getColumnModel()
+//                });
+//                up.show();
+//            }, 
+//            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
+//        }, "-",
+//        plotButton, "-",
+//        {
+//            text : i18n.get('label.definitionTitle'),
+//            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
+//            scope : this,
+//            handler : function () {
+//                
+//                var windowConfig = {
+//                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
+//                    datasetName : this.datasetName, 
+//                    iconCls : "semantic", 
+//                    datasetDescription : this.datasetDescription,
+//                    type : "defi",
+//                    saveToolbar : true, 
+//                    toolbarItems : []
+//                };
+//                
+//                var javascriptObject = sitools.user.component.columnsDefinition;
+//                Ext.apply(windowConfig, {
+//                    id : "defi" + this.datasetId
+//                });
+//                var componentCfg = {
+//                    datasetId : this.datasetId,
+//                    datasetCm : config.datasetCm, 
+//                    datasetName : this.datasetName,
+//                    dictionaryMappings : config.dictionaryMappings, 
+//                    preferencesPath : "/" + this.datasetName, 
+//                    preferencesFileName : "semantic"
+//                };
+//                
+//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+//
+//            }
+//        }]
+//	});
     
-    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
-		grid : this, 
-		event : null, 
-		dataUrl : config.dataUrl, 
-		datasetId : config.datasetId, 
-		datasetName : config.datasetName, 
-		origin : "sitools.user.component.dataviews.cartoView.cartoView",
-        urlDetail : config.dataUrl, 
-        listeners : {
-			scope : this, 
-			beforeShow : function (menu) {
-				//Refresh the grid associated to the menu.
-				menu.setGrid(this);
-				menu.setSelections(this.gridPanel.getSelectionModel().getSelections());
-			}
-        }
+    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+        datasetUrl : this.sitoolsAttachementForUsers,
+        datasetId : this.datasetId,
+        dataview : this,
+        origin : this.origin
     });
-	/**
-	 * {Ext.Toolbar} Top toolbar with services
-	 */
-	this.topBar = new Ext.Toolbar({
-		items : [{
-			text : 'Services', 
-			menu : ctxMenu
-        }, "-", {
-            text : i18n.get("label.multiSort"),
-            scope : this, 
-            handler : function () {
-                var pos = this.getPosition();
-
-                //this.ownerCt.ownerCt reprensents the Window
-                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-                var up = new sitools.widget.sortersTool({
-                    pos : pos,
-                    store : this.gridPanel.getStore(),
-                    columnModel : this.gridPanel.getColumnModel()
-                });
-                up.show();
-            }, 
-            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-        }, "-",
-        plotButton, "-",
-        {
-            text : i18n.get('label.definitionTitle'),
-            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
-            scope : this,
-            handler : function () {
-                
-                var windowConfig = {
-                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
-                    datasetName : this.datasetName, 
-                    iconCls : "semantic", 
-                    datasetDescription : this.datasetDescription,
-                    type : "defi",
-                    saveToolbar : true, 
-                    toolbarItems : []
-                };
-                
-                var javascriptObject = sitools.user.component.columnsDefinition;
-                Ext.apply(windowConfig, {
-                    id : "defi" + this.datasetId
-                });
-                var componentCfg = {
-                    datasetId : this.datasetId,
-                    datasetCm : config.datasetCm, 
-                    datasetName : this.datasetName,
-                    dictionaryMappings : config.dictionaryMappings, 
-                    preferencesPath : "/" + this.datasetName, 
-                    preferencesFileName : "semantic"
-                };
-                
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
-            }
-        }]
-	});
 
     
     var bbar = new Ext.PagingToolbar({
@@ -289,32 +334,35 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
 	
     // create grid panel configured with feature store
     this.gridPanel = new Ext.grid.GridPanel({
-        title: "Feature Grid",
+        title : "Feature Grid",
         tbar : this.topBar,
-        region: "east",
+        region : "east",
         collapsible : true,
         flotable : true,
         split : true,
-        store: this.store,
-        plugins : [gridFilters], 
-        width: ""+gridWidth+"%",
-        cm : cm, 
-        sm: sm, 
+        store : this.store,
+//        plugins : [ gridFilters ],
+        width : "" + gridWidth + "%",
+        cm : cm,
+        sm : sm,
         bbar : bbar,
-        listeners: {
-	        afterrender : function (grid) {
-	        		grid.getView().hdCtxIndex = 0;
-	        		grid.ownerCt.topBar.add('-');
-	        		grid.ownerCt.topBar.add('->');
-	        		grid.ownerCt.topBar.add('-');
-	        		grid.ownerCt.topBar.add({
-	        			tooltip : i18n.get('label.addOrDeleteColumns'),
-	        			icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-						menu : grid.getView().colMenu
-					});
-	        }
-    	}
+//        listeners : {
+//            afterrender : function (grid) {
+//                grid.getView().hdCtxIndex = 0;
+//                this.topBar.add('-');
+//                this.topBar.add('->');
+//                this.topBar.add('-');
+//                this.topBar.add({
+//                    tooltip : i18n.get('label.addOrDeleteColumns'),
+//                    icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
+//                    menu : this.getDatasetView().colMenu
+//                });
+//            }, 
+//            scope : this
+//        }
     });
+    
+    
 
     // -- CONSTRUCTOR --
 	sitools.user.component.dataviews.cartoView.cartoView.superclass.constructor.call(this, Ext.apply({
@@ -344,7 +392,6 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
 };
 
 Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
-    svaList : null,
     /**
      * @private
 	 * @returns the JsonColModel used to store the userPreferences.
@@ -412,7 +459,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         // Add the filters params
         var filters = this.filters;
         if (!Ext.isEmpty(filters)) {
-            filters = this.gridPanel.plugins[0].buildQuery(filters.getFilterData(filters));
+            filters = this.store.buildQuery(filters.getFilterData(filters));
             if (!Ext.isEmpty(Ext.urlEncode(filters))) {
                 result += "&" + Ext.urlEncode(filters);
             }
@@ -464,7 +511,28 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
 		result = Ext.urlEncode(this.dataviewUtils.getFormParamsFromRecsSelected(recSelected));
 		
 		return result;
-	}
+	},
+	
+	getDatasetView : function () {
+        return this.gridPanel.getView();
+    },
+    
+    getStore : function () {
+        return this.store;
+    },
+    
+    getFilters : function () {
+        return this.store.filters;
+    },
+    /**
+     * @public
+     * return the sortInfo of the view.
+     * @return [] Array of sortInfo object 
+     */
+    getSortInfo : function () {
+        return this.store.sortInfo;
+    }
+    
 });
 
 /**

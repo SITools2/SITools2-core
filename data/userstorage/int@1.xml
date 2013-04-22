@@ -2,9 +2,10 @@
   <userId>admin</userId>
   <storage>
     <userStoragePath>${ROOT_DIRECTORY}/data/storage/admin</userStoragePath>
-    <freeUserSpace>1000000</freeUserSpace>
-    <busyUserSpace>0</busyUserSpace>
+    <freeUserSpace>915240</freeUserSpace>
+    <busyUserSpace>84760</busyUserSpace>
     <quota>1000000</quota>
+    <lastUpdate>2013-04-18 17:49:50.393 CEST</lastUpdate>
   </storage>
   <status>Active</status>
 </userStorage>

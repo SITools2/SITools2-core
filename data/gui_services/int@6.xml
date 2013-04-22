@@ -1,0 +1,19 @@
+<guiService>
+  <id>bce4c14d-746d-45e6-a790-e3b1cd9be604</id>
+  <name>Plot service</name>
+  <description>display a plot of the data displayed</description>
+  <label>label.plot</label>
+  <author>AKKA Technologies</author>
+  <version>1.0</version>
+  <icon>/sitools/res/images/icons/plot.png</icon>
+  <xtype>sitools.user.component.dataviews.services.plotService</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/components/dataviews/services/plotService.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>1</priority>
+</guiService>

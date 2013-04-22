@@ -53,7 +53,7 @@ sitools.user.component.dataviews.services.addSelectionService = Ext.extend(Ext.W
             scope : this,
             handler : function () {
                 var selectionName = this.findByType('form')[0].getForm().getFieldValues().selectionName;
-                this._addSelection(this.dataview.getSelectionModel().getSelections(), this.dataview, this.datasetId, selectionName);
+                this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId, selectionName);
                 this.close();
             }
         }, {

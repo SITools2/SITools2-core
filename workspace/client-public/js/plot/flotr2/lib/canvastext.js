@@ -1,34 +1,16 @@
-/***************************************
-* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
-* 
-* This file is part of SITools2.
-* 
-* SITools2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-* 
-* SITools2 is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* 
-* You should have received a copy of the GNU General Public License
-* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
-***************************************/
 /**
  * This code is released to the public domain by Jim Studt, 2007.
  * He may keep some sort of up to date copy at http://www.federated.com/~jim/canvastext/
- * It as been modified by Fabien Mï¿½nager to handle font style like size, weight, color and rotation. 
- * A partial support for accentuated letters as been added too.
+ * It as been modified by Fabien Ménager to handle font style like size, weight, color and rotation. 
+ * A partial support for special characters has been added too.
  */
 var CanvasText = {
-	/** The letters definition. It is a list of letters, 
-	 * with their width, and the coordinates of points compositing them.
-	 * The syntax for the points is : [x, y], null value means "pen up"
-	 */
+  /** The letters definition. It is a list of letters, 
+   * with their width, and the coordinates of points compositing them.
+   * The syntax for the points is : [x, y], null value means "pen up"
+   */
   letters: {
-		'\n':{ width: -1, points: [] },
+    '\n':{ width: -1, points: [] },
     ' ': { width: 10, points: [] },
     '!': { width: 10, points: [[5,21],[5,7],null,[5,2],[4,1],[5,0],[6,1],[5,2]] },
     '"': { width: 16, points: [[4,21],[4,14],null,[12,21],[12,14]] },
@@ -124,56 +106,115 @@ var CanvasText = {
     '|': { width: 8,  points: [[4,25],[4,-7]] },
     '}': { width: 14, points: [[5,25],[7,24],[8,23],[9,21],[9,19],[8,17],[7,16],[6,14],[6,12],[8,10],null,[7,24],[8,22],[8,20],[7,18],[6,17],[5,15],[5,13],[6,11],[10,9],[6,7],[5,5],[5,3],[6,1],[7,0],[8,-2],[8,-4],[7,-6],null,[8,8],[6,6],[6,4],[7,2],[8,1],[9,-1],[9,-3],[8,-5],[7,-6],[5,-7]] },
     '~': { width: 24, points: [[3,6],[3,8],[4,11],[6,12],[8,12],[10,11],[14,8],[16,7],[18,7],[20,8],[21,10],null,[3,8],[4,10],[6,11],[8,11],[10,10],[14,7],[16,6],[18,6],[20,7],[21,10],[21,12]] },
-    'ï¿½': { diacritic: 'ï¿½', letter: 'e' },
-    'ï¿½': { diacritic: '`', letter: 'e' },
-    'ï¿½': { diacritic: '^', letter: 'e' },
-    'ï¿½': { diacritic: 'ï¿½', letter: 'e' },
-    'ï¿½': { diacritic: '`', letter: 'a' },
-    'ï¿½': { diacritic: 'ï¿½', letter: 'c' },
-    'ï¿½': { diacritic: '~', letter: 'n' },
-    'ï¿½': { diacritic: '^', letter: 'o' },
-    'ï¿½': { diacritic: 'ï¿½', letter: 'E' },
-    'ï¿½': { diacritic: '`', letter: 'E' },
-    'ï¿½': { diacritic: '^', letter: 'E' },
-    'ï¿½': { diacritic: 'ï¿½', letter: 'E' },
-    'ï¿½': { diacritic: '`', letter: 'A' },
-    'ï¿½': { diacritic: 'ï¿½', letter: 'C' },
-    'ï¿½': { diacritic: '~', letter: 'N' },
-    'ï¿½': { diacritic: '^', letter: 'O' }
+    
+    // Lower case Latin-1
+    'à': { diacritic: '`', letter: 'a' },
+    'á': { diacritic: '´', letter: 'a' },
+    'â': { diacritic: '^', letter: 'a' },
+    'ä': { diacritic: '¨', letter: 'a' },
+    'ã': { diacritic: '~', letter: 'a' },
+    
+    'è': { diacritic: '`', letter: 'e' },
+    'é': { diacritic: '´', letter: 'e' },
+    'ê': { diacritic: '^', letter: 'e' },
+    'ë': { diacritic: '¨', letter: 'e' },
+    
+    'ì': { diacritic: '`', letter: 'i' },
+    'í': { diacritic: '´', letter: 'i' },
+    'î': { diacritic: '^', letter: 'i' },
+    'ï': { diacritic: '¨', letter: 'i' },
+    
+    'ò': { diacritic: '`', letter: 'o' },
+    'ó': { diacritic: '´', letter: 'o' },
+    'ô': { diacritic: '^', letter: 'o' },
+    'ö': { diacritic: '¨', letter: 'o' },
+    'õ': { diacritic: '~', letter: 'o' },
+
+    'ù': { diacritic: '`', letter: 'u' },
+    'ú': { diacritic: '´', letter: 'u' },
+    'û': { diacritic: '^', letter: 'u' },
+    'ü': { diacritic: '¨', letter: 'u' },
+    
+    'ý': { diacritic: '´', letter: 'y' },
+    'ÿ': { diacritic: '¨', letter: 'y' },
+    
+    'ç': { diacritic: '¸', letter: 'c' },
+    'ñ': { diacritic: '~', letter: 'n' },
+
+    // Upper case Latin-1
+    'À': { diacritic: '`', letter: 'A' },
+    'Á': { diacritic: '´', letter: 'A' },
+    'Â': { diacritic: '^', letter: 'A' },
+    'Ä': { diacritic: '¨', letter: 'A' },
+    'Ã': { diacritic: '~', letter: 'A' },
+    
+    'È': { diacritic: '`', letter: 'E' },
+    'É': { diacritic: '´', letter: 'E' },
+    'Ê': { diacritic: '^', letter: 'E' },
+    'Ë': { diacritic: '¨', letter: 'E' },
+
+    'Ì': { diacritic: '`', letter: 'I' },
+    'Í': { diacritic: '´', letter: 'I' },
+    'Î': { diacritic: '^', letter: 'I' },
+    'Ï': { diacritic: '¨', letter: 'I' },
+    
+    'Ò': { diacritic: '`', letter: 'O' },
+    'Ó': { diacritic: '´', letter: 'O' },
+    'Ô': { diacritic: '^', letter: 'O' },
+    'Ö': { diacritic: '¨', letter: 'O' },
+    'Õ': { diacritic: '~', letter: 'O' },
+    
+    'Ù': { diacritic: '`', letter: 'U' },
+    'Ú': { diacritic: '´', letter: 'U' },
+    'Û': { diacritic: '^', letter: 'U' },
+    'Ü': { diacritic: '¨', letter: 'U' },
+    
+    'Ý': { diacritic: '´', letter: 'Y' },
+    
+    'Ç': { diacritic: '¸', letter: 'C' },
+    'Ñ': { diacritic: '~', letter: 'N' }
   },
   
   specialchars: {
-  	'pi': { width: 19, points: [[6,14],[6,0],null,[14,14],[14,0],null,[2,13],[6,16],[13,13],[17,16]] }
+    'pi': { width: 19, points: [[6,14],[6,0],null,[14,14],[14,0],null,[2,13],[6,16],[13,13],[17,16]] }
   },
   
   /** Diacritics, used to draw accentuated letters */
   diacritics: {
-    'ï¿½': { entity: 'cedil', points: [[6,-4],[4,-6],[2,-7],[1,-7]] },
-    'ï¿½': { entity: 'acute', points: [[8,19],[13,22]] },
+    '¸': { entity: 'cedil', points: [[6,-4],[4,-6],[2,-7],[1,-7]] },
+    '´': { entity: 'acute', points: [[8,19],[13,22]] },
     '`': { entity: 'grave', points: [[7,22],[12,19]] },
     '^': { entity: 'circ',  points: [[5.5,19],[9.5,23],[12.5,19]] },
-    'ï¿½': { entity: 'trema', points: [[5,21],[6,20],[7,21],[6,22],[5,21],null,[12,21],[13,20],[14,21],[13,22],[12,21]] },
+    '¨': { entity: 'trema', points: [[5,21],[6,20],[7,21],[6,22],[5,21],null,[12,21],[13,20],[14,21],[13,22],[12,21]] },
     '~': { entity: 'tilde', points: [[4,18],[7,22],[10,18],[13,22]] }
   },
   
   /** The default font styling */
   style: {
-    size: 8,          // font height in pixels
-    font: null,       // not yet implemented
-    color: '#000000', // 
-    weight: 1,        // float, 1 for 'normal'
-    halign: 'l',      // l: left, r: right, c: center
-    valign: 'b',      // t: top, m: middle, b: bottom 
+    size: 8,            // font height in pixels
+    font: null,         // not yet implemented
+    color: '#000000',   // font color
+    weight: 1,          // float, 1 for 'normal'
+    textAlign: 'left',  // left, right, center
+    textBaseline: 'bottom', // top, middle, bottom 
     adjustAlign: false, // modifies the alignments if the angle is different from 0 to make the spin point always at the good position
-    angle: 0,         // in radians, anticlockwise
-    tracking: 1,      // space between the letters, float, 1 for 'normal'
-    boundingBoxColor: '#ff0000', //null // color of the bounding box (null to hide), can be used for debug and font drawing
-    originPointColor: '#000000' //null // color of the bounding box (null to hide), can be used for debug and font drawing
+    angle: 0,           // in radians, anticlockwise
+    tracking: 1,        // space between the letters, float, 1 for 'normal'
+    boundingBoxColor: '#ff0000', // color of the bounding box (null to hide), can be used for debug and font drawing
+    originPointColor: '#000000'  // color of the bounding box (null to hide), can be used for debug and font drawing
   },
   
   debug: false,
   _bufferLexemes: {},
-  
+
+  extend: function(dest, src) {
+    for (var property in src) {
+      if (property in dest) continue;
+      dest[property] = src[property];
+    }
+    return dest;
+  },
+
   /** Get the letter data corresponding to a char
    * @param {String} ch - The char
    */
@@ -185,33 +226,37 @@ var CanvasText = {
     if (CanvasText._bufferLexemes[str]) 
       return CanvasText._bufferLexemes[str];
     
-  	var i, c, matches = str.match(/&[A-Za-z]{2,5};|\s|./g);
-  	var result = [], chars = [];
-  	for (i = 0; i < matches.length; i++) {
-  		c = matches[i];
-  		if (c.length == 1) 
-  			chars.push(c);
-  		else {
-  			var entity = c.substring(1, c.length-1);
-  			if (CanvasText.specialchars[entity]) 
-  				chars.push(entity);
-  			else
-  				chars = chars.concat(c.toArray());
-  		}
-  	}
-  	for (i = 0; i < chars.length; i++) {
-  		c = chars[i];
-  		if (c = CanvasText.letters[c] || CanvasText.specialchars[c])
-  		  result.push(c);
-  	}
-  	return CanvasText._bufferLexemes[str] = result.compact();
+    var i, c, matches = str.match(/&[A-Za-z]{2,5};|\s|./g),
+        result = [], chars = [];
+        
+    for (i = 0; i < matches.length; i++) {
+      c = matches[i];
+      if (c.length == 1) 
+        chars.push(c);
+      else {
+        var entity = c.substring(1, c.length-1);
+        if (CanvasText.specialchars[entity]) 
+          chars.push(entity);
+        else
+          chars = chars.concat(c.toArray());
+      }
+    }
+    for (i = 0; i < chars.length; i++) {
+      c = chars[i];
+      if (c = CanvasText.letters[c] || CanvasText.specialchars[c]) result.push(c);
+    }
+    for (i = 0; i < result.length; i++) {
+      if (result === null || typeof result === 'undefined') 
+      delete result[i];
+    }
+    return CanvasText._bufferLexemes[str] = result;
   },
 
   /** Get the font ascent for a given style
    * @param {Object} style - The reference style
    */
   ascent: function(style) {
-  	style = style || {};
+    style = style || CanvasText.style;
     return (style.size || CanvasText.style.size);
   },
   
@@ -219,7 +264,7 @@ var CanvasText = {
    * @param {Object} style - The reference style
    * */
   descent: function(style) {
-  	style = style || {};
+    style = style || CanvasText.style;
     return 7.0*(style.size || CanvasText.style.size)/25.0;
   },
   
@@ -229,20 +274,22 @@ var CanvasText = {
    * */
   measure: function(str, style) {
     if (!str) return;
-    style = style || {};
+    style = style || CanvasText.style;
     
     var i, width, lexemes = CanvasText.parseLexemes(str),
         total = 0;
 
     for (i = lexemes.length-1; i > -1; --i) {
-    	c = lexemes[i];
-    	width = (c.diacritic) ? CanvasText.letter(c.letter).width : c.width;
+      c = lexemes[i];
+      width = (c.diacritic) ? CanvasText.letter(c.letter).width : c.width;
       total += width * (style.tracking || CanvasText.style.tracking) * (style.size || CanvasText.style.size) / 25.0;
     }
     return total;
   },
   
   getDimensions: function(str, style) {
+    style = style || CanvasText.style;
+    
     var width = CanvasText.measure(str, style),
         height = style.size || CanvasText.style.size,
         angle = style.angle || CanvasText.style.angle;
@@ -251,33 +298,7 @@ var CanvasText = {
     return {
       width:  Math.abs(Math.cos(angle) * width) + Math.abs(Math.sin(angle) * height),
       height: Math.abs(Math.sin(angle) * width) + Math.abs(Math.cos(angle) * height)
-    };
-  },
-  
-  getBestAlign: function(angle, style) {
-    angle += CanvasText.getAngleFromAlign(style.halign, style.valign);
-    var a = {h:'c', v:'m'};
-    if (Math.round(Math.cos(angle)*1000)/1000 != 0) 
-      a.h = (Math.cos(angle) > 0 ? 'r' : 'l');
-    
-    if (Math.round(Math.sin(angle)*1000)/1000 != 0) 
-      a.v = (Math.sin(angle) > 0 ? 't' : 'b');
-    return a;
-  },
-  
-  getAngleFromAlign: function(halign, valign) {
-    var pi = Math.PI, table = {
-      'rm': 0,
-      'rt': pi/4,
-      'ct': pi/2,
-      'lt': 3*(pi/4),
-      'lm': pi,
-      'lb': -3*(pi/4),
-      'cb': -pi/2,
-      'rb': -pi/4,
-      'cm': 0
-    };
-    return table[halign+valign];
+    }
   },
   
   /** Draws serie of points at given coordinates 
@@ -307,60 +328,53 @@ var CanvasText = {
       }
     }
     ctx.stroke();
+    ctx.closePath();
   },
   
   /** Draws a text at given coordinates and with a given style
-   * @param {Canvas context} ctx - The canvas context
    * @param {String} str - The text to draw
    * @param {Number} xOrig - The X coordinate
    * @param {Number} yOrig - The Y coordinate
    * @param {Object} style - The font style
    */
-  draw: function(ctx, str, xOrig, yOrig, style) {
+  draw: function(str, xOrig, yOrig, style) {
     if (!str) return;
-    style = style || CanvasText.style;
-    style.halign = style.halign || CanvasText.style.halign;
-    style.valign = style.valign || CanvasText.style.valign;
-    style.angle = style.angle || CanvasText.style.angle;
-    style.size = style.size || CanvasText.style.size;
-    style.adjustAlign = style.adjustAlign || CanvasText.style.adjustAlign;
+    CanvasText.extend(style, CanvasText.style);
     
     var i, c, total = 0,
         mag = style.size / 25.0,
         x = 0, y = 0,
-        lexemes = CanvasText.parseLexemes(str);
-    
-    var offset = {x:0, y:0}, 
+        lexemes = CanvasText.parseLexemes(str),
+        offset = {x: 0, y: 0}, 
         measure = CanvasText.measure(str, style),
         align;
         
     if (style.adjustAlign) {
       align = CanvasText.getBestAlign(style.angle, style);
-      style.halign = align.h;
-      style.valign = align.v;
+      CanvasText.extend(style, align);
     }
         
-    switch (style.halign) {
-      case 'l': break;
-      case 'c': offset.x = -measure / 2; break;
-      case 'r': offset.x = -measure; break;
+    switch (style.textAlign) {
+      case 'left': break;
+      case 'center': offset.x = -measure / 2; break;
+      case 'right':  offset.x = -measure; break;
     }
     
-    switch (style.valign) {
-      case 'b': break;
-      case 'm': offset.y = style.size / 2; break;
-      case 't': offset.y = style.size; break;
+    switch (style.textBaseline) {
+      case 'bottom': break;
+      case 'middle': offset.y = style.size / 2; break;
+      case 'top':    offset.y = style.size; break;
     }
     
-    ctx.save();
-    ctx.translate(xOrig, yOrig);
-    ctx.rotate(style.angle);
-    ctx.lineCap = "round";
-    ctx.lineWidth = 2.0 * mag * (style.weight || CanvasText.style.weight);
-    ctx.strokeStyle = style.color || CanvasText.style.color;
+    this.save();
+    this.translate(xOrig, yOrig);
+    this.rotate(style.angle);
+    this.lineCap = "round";
+    this.lineWidth = 2.0 * mag * (style.weight || CanvasText.style.weight);
+    this.strokeStyle = style.color || CanvasText.style.color;
     
     for (i = 0; i < lexemes.length; i++) {
-    	c = lexemes[i];
+      c = lexemes[i];
       if (c.width == -1) {
         x = 0;
         y = style.size * 1.4;
@@ -371,45 +385,45 @@ var CanvasText = {
           width = c.width;
           
       if (c.diacritic) {
-        var dia = CanvasText.diacritics[c.diacritic];
-        var charactere = CanvasText.letter(c.letter);
+        var dia = CanvasText.diacritics[c.diacritic],
+            character = CanvasText.letter(c.letter);
 
-        CanvasText.drawPoints(ctx, dia.points, x, y - (c.letter.toUpperCase() == c.letter ? 3 : 0), mag, offset);
-        points = charactere.points;
-        width = charactere.width;
+        CanvasText.drawPoints(this, dia.points, x, y - (c.letter.toUpperCase() == c.letter ? 3 : 0), mag, offset);
+        points = character.points;
+        width = character.width;
       }
 
-      CanvasText.drawPoints(ctx, points, x, y, mag, offset);
+      CanvasText.drawPoints(this, points, x, y, mag, offset);
       
       if (CanvasText.debug) {
-      	ctx.save();
-        ctx.lineJoin = "miter";
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = (style.boundingBoxColor || CanvasText.style.boundingBoxColor);
-      	ctx.strokeRect(x+offset.x, y+offset.y, width*mag, -style.size);
+        this.save();
+        this.lineJoin = "miter";
+        this.lineWidth = 0.5;
+        this.strokeStyle = (style.boundingBoxColor || CanvasText.style.boundingBoxColor);
+        this.strokeRect(x+offset.x, y+offset.y, width*mag, -style.size);
         
-        ctx.fillStyle = (style.originPointColor || CanvasText.style.originPointColor);
-        ctx.beginPath();
-        ctx.arc(0, 0, 1.5, 0, Math.PI*2, true);
-        ctx.fill();
-        
-      	ctx.restore();
+        this.fillStyle = (style.originPointColor || CanvasText.style.originPointColor);
+        this.beginPath();
+        this.arc(0, 0, 1.5, 0, Math.PI*2, true);
+        this.fill();
+        this.closePath();
+        this.restore();
       }
       
       x += width*mag*(style.tracking || CanvasText.style.tracking);
     }
-    ctx.restore();
+    this.restore();
     return total;
-  },
-  
-  /** Enables the text function for a Canvas context
-   * @param {Canvas context} ctx - The canvas context
-   */
-  enable: function(ctx) {
-    ctx.drawText    = function(text, x, y, style) { return CanvasText.draw(ctx, text, x, y, style); };
-    ctx.measureText = function(text, style) { return CanvasText.measure(text, style); };
-    ctx.getTextBounds = function(text, style) { return CanvasText.getDimensions(text, style); };
-    ctx.fontAscent  = function(style) { return CanvasText.ascent(style); };
-    ctx.fontDescent = function(style) { return CanvasText.descent(style); };
   }
 };
+
+/** The text functions are bound to the CanvasRenderingContext2D prototype */
+CanvasText.proto = window.CanvasRenderingContext2D ? window.CanvasRenderingContext2D.prototype : document.createElement('canvas').getContext('2d').__proto__;
+
+if (CanvasText.proto) {
+  CanvasText.proto.drawText      = CanvasText.draw;
+  CanvasText.proto.measure       = CanvasText.measure;
+  CanvasText.proto.getTextBounds = CanvasText.getDimensions;
+  CanvasText.proto.fontAscent    = CanvasText.ascent;
+  CanvasText.proto.fontDescent   = CanvasText.descent;
+}

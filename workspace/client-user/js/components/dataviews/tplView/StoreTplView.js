@@ -36,29 +36,9 @@ Ext.namespace('sitools.user.component.dataviews.tplView');
  */
 sitools.user.component.dataviews.tplView.StoreTplView = Ext.extend(sitools.user.component.dataviews.livegrid.StoreLiveGrid, {
 //sitools.user.component.dataViewStore = Ext.extend(sitools.user.component.dataviews.livegrid.StoreLiveGrid, {
-	paramPrefix : "filter",
-    
+	
     getAt : function (index) {
 		return this.data.itemAt(index);
-    },
+    } 
     
-    buildQuery : function (filters) {
-        if (Ext.isEmpty(filters)) {
-            return;
-        }
-        var p = {}, i, f, root, dataPrefix, key, tmp,
-            len = filters.length;
-
-        for (i = 0; i < len; i++) {
-            f = filters[i];
-            root = [this.paramPrefix, '[', i, ']'].join('');
-            p[root + '[columnAlias]'] = f.columnAlias;
-
-            dataPrefix = root + '[data]';
-            for (key in f.data) {
-                p[[dataPrefix, '[', key, ']'].join('')] = f.data[key];
-            }
-        }
-        return p;
-    }
 });

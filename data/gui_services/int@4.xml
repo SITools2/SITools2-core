@@ -1,0 +1,15 @@
+<guiService>
+  <id>fb778415-7c64-41bb-9f55-be719e6ebc12</id>
+  <name>Filter Tool</name>
+  <description>a filter tool for dataset</description>
+  <label>label.filter</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
+  <xtype>sitools.widget.filterTool</xtype>
+  <dependencies>
+    <js/>
+    <css/>
+  </dependencies>
+  <priority>3</priority>
+</guiService>
