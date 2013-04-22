@@ -66,6 +66,14 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                         var imageRegex = /\.(pdf)$/;
                         return (text.match(imageRegex));      
                     };
+                                        
+                    var url = attr.url;
+                    var appUrl = loadUrl.get('APP_URL');
+                    var index = url.indexOf(appUrl);
+                    if (index !== -1) {
+                        url = url.substring(index, url.length);
+                    }
+                    attr.url = url;
                     
                     var listeners = {
                         scope : this,
