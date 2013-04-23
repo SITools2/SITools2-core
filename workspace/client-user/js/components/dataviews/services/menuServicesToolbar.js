@@ -81,7 +81,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             Ext.apply(btn, {
                 idService : item.get('id'),
                 typeService : item.get('type'),
-                text : (!Ext.isEmpty(item.get('label')) ? item.get('label') : item.get('name')),
+                text : i18n.get(item.get('label')),
                 cls : 'services-toolbar-btn',
                 icon : icon,
                 scope : this,

@@ -229,7 +229,7 @@ Ext.extend(sitools.user.component.dataviews.livegrid.StoreLiveGrid, Ext.ux.grid.
     paramPrefix : "filter",
     
     getFormParams : function () {
-		return this.storeUtils.getFormParams();
+		return this.storeUtils.getFormParams(this);
 	},
 
 	buildQuery : function (filters) {

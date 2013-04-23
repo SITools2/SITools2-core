@@ -117,6 +117,12 @@ sitools.user.component.dataviews.services.addSelectionService.getParameters = fu
 };
 
 sitools.user.component.dataviews.services.addSelectionService.executeAsService = function (config) {
+    var selections = config.dataview.getSelections();
+    var rec = selections[0];
+    if (Ext.isEmpty(rec)) {
+        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noRecordsSelected'));
+        return;
+    }
     var addSelectionService = new sitools.user.component.dataviews.services.addSelectionService(config);
     addSelectionService.show();
 };

@@ -111,7 +111,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.featureStore, GeoExt.data.
     paramPrefix : "filter",
     
     getFormParams : function () {
-		return this.storeUtils.getFormParams();
+		return this.storeUtils.getFormParams(this);
 	}, 
 	loadRecords : function (o, options, success) {
 		this.bufferRange = [ -1, -1 ];
