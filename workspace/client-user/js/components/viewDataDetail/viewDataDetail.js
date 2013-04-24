@@ -409,11 +409,11 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	                                        var tooltip = "";
 	                                        var imageUrl = "";
 	                                        
-	                                        if (Ext.isEmpty(columnRenderer.toolTip)){
+	                                        if (!Ext.isEmpty(columnRenderer.toolTip)){
 	                                            tooltip = columnRenderer.toolTip;
 	                                        }
 	                                        else {
-	                                            tooltip = col.header;
+	                                            tooltip = column.header;
 	                                        }
 	                                        
 						                    if (!Ext.isEmpty(columnRenderer.url)) {

@@ -16,6 +16,8 @@ public class ServiceModel {
   private String icon;
   /** The label */
   private String label;
+  /** The visibility */
+  private boolean visible;
 
   /**
    * Gets the id value
@@ -148,6 +150,22 @@ public class ServiceModel {
    */
   public void setName(String name) {
     this.name = name;
+  }
+
+  /**
+   * Gets the visible value
+   * @return the visible
+   */
+  public boolean isVisible() {
+    return visible;
+  }
+
+  /**
+   * Sets the value of visible
+   * @param visible the visible to set
+   */
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
 }

@@ -42,7 +42,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             idProperty : 'id',
             root : 'ServiceCollectionModel.services',
             autoload : true,
-            fields : [ 'id', 'type', 'name', 'description', 'icon', 'label', 'category' ],
+            fields : [ 'id', 'type', 'name', 'description', 'icon', 'label', 'category', 'visible' ],
             listeners : {
                 scope : this,
                 load : this.createMenuServices
@@ -63,6 +63,10 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     createMenuServices : function (store, records, opts) {
         var icon, category, menu, btn = {};
         Ext.each(records, function (item) {
+            
+            if (!item.get('visible')) {
+                return;
+            }
             
             if (!Ext.isEmpty(category = item.get('category'))) {
                 menu = this.getMenu(category);
@@ -116,7 +120,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
 
     callService : function (button, e) {
         if (button.typeService === 'SERVER') {
-            this.serverServiceUtil.callServerService(button.idService, this.dataview.getSelectionModel().getSelections());
+            this.serverServiceUtil.callServerService(button.idService, this.dataview.getSelections());
         } else {
             this.callGUIService(button.idService);
         }

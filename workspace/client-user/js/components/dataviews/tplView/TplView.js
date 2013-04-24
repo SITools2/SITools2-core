@@ -218,26 +218,26 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				this.panelDetail.getCmDefAndbuildForm();
 				this.panelDetail.expand();
 				
-			}, 
-            contextmenu : function (dataView, index, node, e) {
-                e.stopEvent();
-                
-                var selections = dataView.getRecords(dataView.getSelectedNodes());
-                var ctxMenuLeVrai = new sitools.user.component.dataviews.ctxMenu({
-					grid : this, 
-					selections : selections, 
-					event : e, 
-					dataUrl : this.sitoolsAttachementForUsers, 
-					datasetId : this.datasetId, 
-					datasetName : this.datasetName, 
-					origin : this.origin,
-                    urlDetail : this.sitoolsAttachementForUsers
-                });
-				var xy = e.getXY();
-				ctxMenuLeVrai.showAt(xy);
-
-				//console.log (ctxMenuLeVrai);
-            }
+			}
+//            contextmenu : function (dataView, index, node, e) {
+//                e.stopEvent();
+//                
+//                var selections = dataView.getRecords(dataView.getSelectedNodes());
+//                var ctxMenuLeVrai = new sitools.user.component.dataviews.ctxMenu({
+//					grid : this, 
+//					selections : selections, 
+//					event : e, 
+//					dataUrl : this.sitoolsAttachementForUsers, 
+//					datasetId : this.datasetId, 
+//					datasetName : this.datasetName, 
+//					origin : this.origin,
+//                    urlDetail : this.sitoolsAttachementForUsers
+//                });
+//				var xy = e.getXY();
+//				ctxMenuLeVrai.showAt(xy);
+//
+//				//console.log (ctxMenuLeVrai);
+//            }
 			
 			
         }
