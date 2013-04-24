@@ -60,7 +60,6 @@ Ext.ns("sitools.user.component.dataviews.cartoView");
  *            } 
  *      }] 
  *      
- * @requires sitools.user.component.dataviews.ctxMenu
  * @requires sitools.user.component.columnsDefinition
  * @requires sitools.user.component.viewDataDetail
  * @requires Ext.ux.grid.GridFiltersSpe

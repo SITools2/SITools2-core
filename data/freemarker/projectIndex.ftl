@@ -183,7 +183,6 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/dataviewUtils.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/storeUtils.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/livegrid/storeLiveGrid.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/contextMenu.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/cartoView/featureSelectionModel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/cartoView/mapPanel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/tplView/PagingToolbarTplView.js"></script>
@@ -201,6 +200,7 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/diskSpace.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/tasks.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/viewTextPanel.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/userSpace/dependencies/orderProp.js"></script>
 	
 
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/help/help.js"></script>

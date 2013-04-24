@@ -60,7 +60,6 @@ Ext.ns("sitools.user.component.dataviews.cartoView");
  *            } 
  *      }] 
  *      
- * @requires sitools.user.component.dataviews.ctxMenu
  * @requires sitools.user.component.columnsDefinition
  * @requires sitools.user.component.viewDataDetail
  * @requires Ext.ux.grid.GridFiltersSpe
@@ -204,24 +203,6 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
 //        }
 //    });
 //
-//    
-//    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
-//		grid : this, 
-//		event : null, 
-//		dataUrl : config.dataUrl, 
-//		datasetId : config.datasetId, 
-//		datasetName : config.datasetName, 
-//		origin : "sitools.user.component.dataviews.cartoView.cartoView",
-//        urlDetail : config.dataUrl, 
-//        listeners : {
-//			scope : this, 
-//			beforeShow : function (menu) {
-//				//Refresh the grid associated to the menu.
-//				menu.setGrid(this);
-//				menu.setSelections(this.gridPanel.getSelectionModel().getSelections());
-//			}
-//        }
-//    });
 //	/**
 //	 * {Ext.Toolbar} Top toolbar with services
 //	 */
@@ -369,24 +350,7 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         layout: "border",
         dataviewUtils : sitools.user.component.dataviews.dataviewUtils, 
         items: [mapPanel, this.gridPanel],
-	    componentType : "data",
-//	    listeners : {
-//	        rowcontextmenu : function (grid, rowIndex, e) {
-//	            e.stopEvent();
-//	            var selections = grid.getSelectionModel().getSelections();
-//	            var ctxMenuLeVrai = new sitools.user.component.dataviews.ctxMenu({
-//					grid : grid, 
-//					event : e, 
-//					dataUrl : this.sitoolsAttachementForUsers, 
-//					datasetId : this.datasetId, 
-//					datasetName : this.datasetName, 
-//					origin : "Ext.ux.livegrid",
-//	                urlDetail : this.sitoolsAttachementForUsers
-//	            });
-//				var xy = e.getXY();
-//				ctxMenuLeVrai.showAt(xy);
-//	        }
-//	    }
+	    componentType : "data"
 	}, config));    
 
 };

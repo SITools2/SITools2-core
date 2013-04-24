@@ -234,7 +234,6 @@ Ext.ns("sitools.user.component.dataviews.livegrid");
  *      }] 
  *      
  * @requires sitools.user.component.dataviews.livegrid.LiveGrid.storeLiveGrid
- * @requires sitools.user.component.dataviews.ctxMenu
  * @requires sitools.user.component.columnsDefinition
  * @requires sitools.user.component.viewDataDetail
  * @requires Ext.ux.grid.GridFiltersSpe
@@ -419,24 +418,6 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
             }
         }
     });
-    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
-		grid : this, 
-		event : null, 
-		dataUrl : this.sitoolsAttachementForUsers, 
-		datasetId : config.datasetId, 
-		datasetName : this.datasetName, 
-		origin : "Ext.ux.livegrid",
-        urlDetail : this.sitoolsAttachementForUsers, 
-        listeners : {
-			scope : this, 
-			beforeShow : function (menu) {
-				//Refresh the grid associated to the menu.
-				menu.setGrid(Ext.getCmp(this.id));
-				menu.setSelections(this.getSelectionModel().getSelections());
-			}
-        }
-    });
-    
 
     this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
         datasetUrl : this.sitoolsAttachementForUsers,
@@ -489,24 +470,6 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 //            }
 //        }
 //    });
-//    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
-//		grid : this, 
-//		event : null, 
-//		dataUrl : this.sitoolsAttachementForUsers, 
-//		datasetId : config.datasetId, 
-//		datasetName : this.datasetName, 
-//		origin : "Ext.ux.livegrid",
-//        urlDetail : this.sitoolsAttachementForUsers, 
-//        listeners : {
-//			scope : this, 
-//			beforeShow : function (menu) {
-//				//Refresh the grid associated to the menu.
-//				menu.setGrid(Ext.getCmp(this.id));
-//				menu.setSelections(this.getSelectionModel().getSelections());
-//			}
-//        }
-//    });
-    
 
     this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
         datasetUrl : this.sitoolsAttachementForUsers,
@@ -540,66 +503,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	        columnLines : true,
 	        datasetId : config.datasetId,
 	        componentType : "data",
-//	        plugins : [ filtersSimple ],
-	        listeners : {
-//	            rowcontextmenu : function (grid, rowIndex, e) {
-//	                e.stopEvent();
-//	                var selections = grid.getSelectionModel().getSelections();
-//	                var ctxMenuLeVrai = new sitools.user.component.dataviews.ctxMenu({
-//						grid : grid, 
-//						event : e, 
-//						dataUrl : this.sitoolsAttachementForUsers, 
-//						datasetId : this.datasetId, 
-//						datasetName : this.datasetName, 
-//						origin : "Ext.ux.livegrid",
-//	                    urlDetail : this.sitoolsAttachementForUsers
-//	                });
-//					var xy = e.getXY();
-//					ctxMenuLeVrai.showAt(xy);
-//
-//					//console.log (ctxMenuLeVrai);
-//	            },
-//	            rowdblclick : function (grid, rowIndex, e) {
-//	                e.stopEvent();
-//	
-//	                // var desktop = window.SitoolsDesk.app.getDesktop();
-//	
-//	                var componentCfg = {
-//	                    baseUrl : this.urlRecords + "/",
-//	                    grid : grid, 
-//	                    fromWhere : "Ext.ux.livegrid", 
-//	                    datasetId : config.datasetId,
-//                        datasetUrl : this.sitoolsAttachementForUsers, 
-//                        selections : [grid.getSelectionModel().getSelected()], 
-//                        preferencesPath : "/" + this.datasetName, 
-//                        preferencesFileName : "dataDetails"
-//	                };
-//	                var jsObj = sitools.user.component.viewDataDetail;
-//	                
-//	                var windowConfig = {
-//	                    id : "dataDetail" + config.datasetId,
-//	                    title : i18n.get('label.viewDataDetail') + " : " + this.datasetName,
-//	                    datasetName : this.datasetName,
-//	                    saveToolbar : true,
-//	                    iconCls : "dataDetail", 
-//	                    type : "dataDetail", 
-//                        shadow : true,
-//                        shadowOffset : 5,                        
-//	                    toolbarItems : [{
-//			                iconCls : 'arrow-back',
-//			                handler : function () {
-//			                    this.ownerCt.ownerCt.items.items[0].goPrevious();
-//			                }
-//			            }, {
-//			                iconCls : 'arrow-next',
-//			                handler : function () {
-//								this.ownerCt.ownerCt.items.items[0].goNext();
-//			                }
-//			            }]
-//	                };
-//	                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
-//	            }
-	        }
+//	        plugins : [ filtersSimple ]
 	    }, config));    
 
 };

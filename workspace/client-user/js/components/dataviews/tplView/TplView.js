@@ -30,7 +30,6 @@ Ext.namespace('sitools.user.component.dataviews.tplView');
 /**
  * Define the sitools DataView to display Datasets via an Ext.Dataview
  * Build an Ext.DataView corresponding to the dataset Definition.
- * @requires sitools.user.component.dataviews.ctxMenu
  * @requires sitools.user.component.dataviews.tplView.StoreTplView
  * @requires sitools.user.component.viewDataDetail
  * @requires sitools.user.component.dataPlotter
@@ -219,27 +218,6 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				this.panelDetail.expand();
 				
 			}
-//            contextmenu : function (dataView, index, node, e) {
-//                e.stopEvent();
-//                
-//                var selections = dataView.getRecords(dataView.getSelectedNodes());
-//                var ctxMenuLeVrai = new sitools.user.component.dataviews.ctxMenu({
-//					grid : this, 
-//					selections : selections, 
-//					event : e, 
-//					dataUrl : this.sitoolsAttachementForUsers, 
-//					datasetId : this.datasetId, 
-//					datasetName : this.datasetName, 
-//					origin : this.origin,
-//                    urlDetail : this.sitoolsAttachementForUsers
-//                });
-//				var xy = e.getXY();
-//				ctxMenuLeVrai.showAt(xy);
-//
-//				//console.log (ctxMenuLeVrai);
-//            }
-			
-			
         }
 	});
 	
@@ -269,148 +247,16 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         split : true		
 	});
 	
-	if (! Ext.isEmpty(config.userPreference) && config.userPreference.datasetView == "sitools.user.component.dataviews.tplView.TplView") {
+	if (! Ext.isEmpty(config.userPreference) && config.userPreference.datasetView === "sitools.user.component.dataviews.tplView.TplView") {
 		this.panelDetail.setWidth(config.userPreference.viewPanelDetailSize.width);
 	}
 	
-//    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
-//		grid : this, 
-//		event : null, 
-//		dataUrl : this.sitoolsAttachementForUsers, 
-//		datasetId : this.datasetId, 
-//		datasetName : this.datasetName, 
-//		origin : this.origin,
-//        urlDetail : this.sitoolsAttachementForUsers, 
-//        listeners : {
-//			scope : this, 
-//			beforeShow : function (menu) {
-//				//Refresh the grid associated to the menu.
-//				menu.setGrid(Ext.getCmp(this.id));
-//				menu.setSelections(this.getSelections());
-//			}
-//        }
-//    });
-//
-//    var plotButton = new Ext.Button({
-//        text : 'Plot',
-//        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
-//        listeners : {
-//            scope : this,
-//			click : function (button, e) {
-//                e.stopEvent();
-//                var jsObj = sitools.user.component.dataPlotter;
-//                var componentCfg = {
-////                    dataplot : Ext.apply(this.store, {
-////                        datasetId : this.datasetId,
-////                        columnModel : this.columnModel
-////                    }),                     
-//                    columnModel :  config.datasetCm,          
-//                    formParams : config.formParams,
-//                    formMultiDsParams : config.formMultiDsParams,
-//                    dataUrl :  config.dataUrl,
-//                    datasetName : config.datasetName, 
-//                    datasetId : config.datasetId, 
-//                    componentType : "plot", 
-//                    preferencesPath : "/" + config.datasetName, 
-//                    preferencesFileName : "plot",
-//                    filters : this.getFilters(),
-//                    selections : Ext.isEmpty(this.getSelections())
-//                            ? undefined
-//                            : this.getRequestParam()
-//                };
-//                
-//                var windowConfig = {
-//                    id : "plot" + this.datasetId,
-//                    iconCls : "plot", 
-//                    title : "Data plot : " + this.datasetName,
-//                    datasetName : this.datasetName,
-//                    type : "plot",
-//                    saveToolbar : true
-//                };
-//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-//            }
-//        }
-//    });
-    
     this.tbar = new sitools.user.component.dataviews.services.menuServicesToolbar({
         datasetUrl :  this.sitoolsAttachementForUsers,
         datasetId : this.datasetId,
         dataview : this,
         origin : this.origin
     });
-    
-//    this.tbar = new Ext.Toolbar({
-//		items : [{
-//				text : 'Services', 
-//				menu : ctxMenu
-//	        }, {
-//            text : i18n.get("label.multiSort"),
-//            scope : this, 
-//            handler : function () {
-//                var pos = this.getPosition();
-//
-//                //this.ownerCt.ownerCt reprensents the Window
-//                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-//                var up = new sitools.widget.sortersTool({
-//                    pos : pos,
-//                    store : this.store,
-//                    columnModel : this.columnModel
-//                });
-//                up.show();
-//            }, 
-//            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-//        }, {
-//            text : i18n.get("label.filter"),
-//            scope : this, 
-//            handler : function () {
-//                var pos = this.getPosition();
-//
-//                //this.ownerCt.ownerCt reprensents the Window
-//                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-//                var up = new sitools.widget.filterTool({
-//                    pos : pos,
-//                    store : this.store,
-//                    columnModel : this.columnModel
-//                });
-//                up.show();
-//            }, 
-//            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-//        },
-//        plotButton,
-//        {
-//            text : i18n.get('label.definitionTitle'),
-//            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
-//            scope : this,
-//            handler : function () {
-//                
-//                var windowConfig = {
-//                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
-//                    datasetName : this.datasetName, 
-//                    iconCls : "semantic", 
-//                    datasetDescription : this.datasetDescription,
-//                    type : "defi",
-//                    saveToolbar : true, 
-//                    toolbarItems : []
-//                };
-//                
-//                var javascriptObject = sitools.user.component.columnsDefinition;
-//                Ext.apply(windowConfig, {
-//                    id : "defi" + this.datasetId
-//                });
-//                var componentCfg = {
-//                    datasetId : this.datasetId,
-//                    datasetCm : config.datasetCm, 
-//                    datasetName : this.datasetName,
-//                    dictionaryMappings : config.dictionaryMappings, 
-//                    preferencesPath : "/" + this.datasetName, 
-//                    preferencesFileName : "semantic"
-//                };
-//                
-//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//
-//            }
-//        }]
-//	});
     
 	this.items = [panelWest, this.panelDetail];
 	this.dataviewUtils = sitools.user.component.dataviews.dataviewUtils;
@@ -482,7 +328,6 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
 			request += this.getRequestParamWithoutSelection();
             
         } 
-        // Second case : Records are selected
         else {
             var recSelected;
             

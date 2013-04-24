@@ -111,14 +111,11 @@ sitools.user.modules.projectServices = function () {
 		}
     });
     
-    this.ctxMenu = new sitools.user.component.dataviews.ctxMenu({
+    this.serviceServerUtil = new sitools.user.component.dataviews.services.serverServicesUtil({
 		grid : this.grid, 
-		event : null, 
-		dataUrl : projectGlobal.sitoolsAttachementForUsers, 
+		datasetUrl : projectGlobal.sitoolsAttachementForUsers, 
 		datasetId : projectGlobal.projectId, 
-		datasetName : projectGlobal.projectName, 
-		origin : "sitools.user.modules.projectServices",
-        urlDetail : this.sitoolsAttachementForUsers 
+		origin : "sitools.user.modules.projectServices"
     });
     
     sitools.user.modules.projectServices.superclass.constructor.call(this, Ext.apply({
@@ -132,7 +129,7 @@ Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
 	runJob : function (resource) {
 		
 		var parameters = resource.parameters;
-        var url, icon, method, runTypeUserInput;
+        var url = null, icon = null, method = null, runTypeUserInput = null;
         parameters.each(function (param) {
             switch (param.name) {
             case "methods":
@@ -150,8 +147,7 @@ Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
 			}
         }, this);
 
-//        this.ctxMenu.handleResourceClick(resource, url, method, parameters);
-        this.ctxMenu.resourceClick(resource, url, method, runTypeUserInput, parameters);
+        this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters);
 	},
 	
 	getNbRowsSelected : function () {

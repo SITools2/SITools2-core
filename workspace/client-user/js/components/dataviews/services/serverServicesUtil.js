@@ -18,29 +18,21 @@
 /*global Ext, sitools, i18n, extColModelToStorage, projectId, userStorage, window, extColModelToSrv, userLogin, alertFailure, DEFAULT_LIVEGRID_BUFFER_SIZE, projectGlobal, SitoolsDesk, DEFAULT_ORDER_FOLDER, DEFAULT_PREFERENCES_FOLDER, loadUrl */
 
 /*
- * @include "../../viewDataDetail/viewDataDetail.js"
  * @include "resourcePluginParamsPanel.js"
  * @include "goToTaskPanel.js"
  * @include "../../../env.js"
- * @include "../../../sitoolsProject.js"
  * @include "../../../def.js"
  */
 Ext.namespace('sitools.user.component.dataviews.services');
 
 /**
- * Define the contextMenu and the toolbar menu for the Sitools data Views.
+ * Define an object to call server service resources
  * 
- * @class sitools.user.component.dataviews.ctxMenu
  * @extends Ext.util.Observable
  * @cfg {} grid The object that calls ContextMenu 
- * @cfg {Array} selections The selected Records
- * @cfg {} event The Html Event
- * @cfg {string} dataUrl The url Attachement of the dataset
- * @cfg {string} datasetId Dataset Id
+ * @cfg {string} datasetUrl The url Attachement of the dataset
  * @cfg {string} datasetName Dataset Name
- * @cfg {string} origin A string representing the caller of the contextMenu
- * @cfg {string} urlDetail the Url to request the Detailed record.
- * @requires sitools.user.component.viewDataDetail
+ * @cfg {string} origin name of the dataview which call this object
  * @requires sitools.user.component.dataviews.resourcePluginParamsPanel
  * @requires sitools.user.component.dataviews.goToTaskPanel
  */
@@ -63,14 +55,12 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
             success : function (ret) {
                 var json = Ext.decode(ret.responseText);
                 if (!json.success) {
-                    Ext.Msg.alert(i18n.get("label.warning"),i18n.get("label.resource.not.found"));
+                    Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.resource.not.found"));
                 }
                 
                 var resource = json.resourcePlugin;
-//                this.resourcePresent = true;
-                // get resource caracteristics from the parameters
                 var parameters = resource.parameters;
-                var url, runTypeUserInput, icon, methods;
+                var url = null, runTypeUserInput = null, icon = null, methods = null;
                 parameters.each(function (param) {
                     switch (param.name) {
                     case "methods":
@@ -163,14 +153,14 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
         if (methods.split("|") && methods.split("|").length > 1) {
             showParameterBox = true;
         }
-        var resourceWindow;
+        var componentCfg = null, windowConfig = null, jsObj = null;
         if (showParameterBox && this.origin !== "sitools.user.modules.projectServices") {
-            var windowConfig = {
+            windowConfig = {
                 title : i18n.get("label.resourceReqParam"), 
                 iconCls : "datasetRessource"
             };
-            var jsObj = sitools.user.component.dataviews.resourcePluginParamsPanel;
-            var componentCfg = {
+            jsObj = sitools.user.component.dataviews.resourcePluginParamsPanel;
+            componentCfg = {
                 resource : resource,
                 url : url,
                 methods : methods,
@@ -182,12 +172,12 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
             SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
         }
         else if (showParameterBox) {
-            var windowConfig = {
+            windowConfig = {
                 title : i18n.get("label.resourceReqParam"), 
                 iconCls : "datasetRessource"
             };
-            var jsObj = sitools.user.component.dataviews.resourcePluginParamsPanel;
-            var componentCfg = {
+            jsObj = sitools.user.component.dataviews.resourcePluginParamsPanel;
+            componentCfg = {
                 resource : resource,
                 url : url,
                 methods : methods,
@@ -254,7 +244,6 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
             });
         }
 
-        // If Get => the Resource MUST be synchrone and then send a representation
         if (method === "GET") {
             switch (resource.behavior) {
             case "DISPLAY_IN_NEW_TAB" : 
@@ -404,7 +393,6 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * 
      */
     checkResourceParameters : function (resource, url, methods, runType, parameters) {
-        var ok = true;
         //in the case of a OrderResource, let's check that the number of records is not superior to too_many_selected_threshold => stop the resource execution
         var maxThreshold = this.getParameterFromName(parameters, "too_many_selected_threshold");
         var nbRows;
