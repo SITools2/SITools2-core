@@ -102,7 +102,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     if (!Ext.isEmpty(rec.data.type)) {
                         this.appClassName = rec.data.type;
                     }    
-                    this.savePropertiesBtn.addClass('not-save-textfield');
+                    this.savePropertiesBtn.removeClass('not-save-textfield');
                     var url = this.urlDatasetAllServices.replace('{idDataset}', this.parentId);
                     this.httpProxyResources.setUrl(url, true);
                     this.getStore().removeAll();
