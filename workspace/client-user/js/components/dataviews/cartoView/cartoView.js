@@ -421,7 +421,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     getRequestParamWithoutSelection : function () {
 		var result = "", formParams = {};
         // Add the filters params
-        var filters = this.filters;
+        var filters = this.getFilters();
         if (!Ext.isEmpty(filters)) {
             filters = this.store.buildQuery(filters.getFilterData(filters));
             if (!Ext.isEmpty(Ext.urlEncode(filters))) {
@@ -495,6 +495,10 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
      */
     getSortInfo : function () {
         return this.store.sortInfo;
+    },
+    
+    getSelectionForPlot : function () {
+        return this.getRecSelectedParam();
     }
     
 });

@@ -115,7 +115,11 @@ Ext.reg('sitools.user.component.dataviews.services.addSelectionService', sitools
 sitools.user.component.dataviews.services.addSelectionService.getParameters = function () {
     return [];
 };
-
+/**
+ * @static
+ * Implementation of the method executeAsService to be able to launch this window as a service.
+ * @param {Object} config contains all the service configuration 
+ */
 sitools.user.component.dataviews.services.addSelectionService.executeAsService = function (config) {
     var selections = config.dataview.getSelections();
     var rec = selections[0];
