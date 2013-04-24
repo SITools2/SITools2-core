@@ -152,7 +152,13 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         var visible = new Ext.grid.CheckColumn({
             header : i18n.get('headers.visible'),
             dataIndex : 'visible',
-            width : 60
+            width : 60,
+            listeners : {
+                scope : this,
+                change : function (combo, newValue, oldValue) {
+                    this.savePropertiesBtn.addClass('not-save-textfield');
+                }
+            }
         });
         
         this.cm = new Ext.grid.ColumnModel({
@@ -185,7 +191,14 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 header : i18n.get('label.labelEditable'),
                 dataIndex : 'label',
                 width : 140,
-                editor : new Ext.form.TextField()
+                editor : new Ext.form.TextField({
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addClass('not-save-textfield');
+                        }
+                    }
+                })
             }, {
                 header : i18n.get('label.categoryEditable'),
                 dataIndex : 'category',
