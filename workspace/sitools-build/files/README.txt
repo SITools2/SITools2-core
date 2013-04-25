@@ -36,7 +36,12 @@ ___________________
 		- Upgrade to Flotr2 for the plot GUI service
 	
 	* API changes : 
-		- 
+		- Data folder :
+			- adminIndex.ftl and projectIndex.ftl has been changed
+			- new gui_services folder with some gui_services declared
+			- new services folder
+			- new plugin_gui_services folder
+			- new project_modules definition
 ___________________
 -2.0.1 (2013-04-02)
 	* New feature

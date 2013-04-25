@@ -98,6 +98,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
       service.setIcon(guiServiceOutput.getIcon());
       service.setLabel(guiServiceOutput.getLabel());
       service.setType(ServiceEnum.GUI);
+      service.setVisible(true);
 
       if (services.getServices() == null) {
         services.setServices(new ArrayList<ServiceModel>());

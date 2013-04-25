@@ -96,6 +96,7 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
 
         ServiceModel service = new ServiceModel();
         populateServiceModel(serverServiceOutput, service);
+        service.setVisible(true);
 
         if (services.getServices() == null) {
           services.setServices(new ArrayList<ServiceModel>());
