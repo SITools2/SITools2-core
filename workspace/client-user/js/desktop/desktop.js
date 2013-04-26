@@ -651,7 +651,7 @@ sitools.user.desktop.App = function() {
 			//add some method 
 			saveWindowSettings : function(forPublicUser) {
 				var desktopSettings = SitoolsDesk.navProfile
-						.getDesktopSettings();
+						.getDesktopSettings(forPublicUser);
 
 				userPreferences = {};
 				userPreferences.windowSettings = desktopSettings;
