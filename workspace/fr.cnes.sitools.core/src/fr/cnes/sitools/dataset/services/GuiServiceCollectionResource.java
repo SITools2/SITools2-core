@@ -34,7 +34,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
   @Override
   public void sitoolsDescribe() {
     setName("GuiServiceCollectionResource");
-    setDescription("Resource to deal with collection of GuiService plugin");
+    setDescription("Resource to deal with collection of GuiServices plugin");
   }
 
   /**

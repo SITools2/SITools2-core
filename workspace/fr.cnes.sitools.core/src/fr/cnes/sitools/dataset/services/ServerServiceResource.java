@@ -43,9 +43,16 @@ public class ServerServiceResource extends AbstractServerServiceResource {
   @Override
   public void sitoolsDescribe() {
     setName("ServerServiceResource");
-    setDescription("Resource to deal with collection of GuiService plugin");
+    setDescription("Resource to deal with a single server service");
   }
 
+  /**
+   * Retrieve an existing Server service
+   * 
+   * @param variant
+   *          client preferred media type
+   * @return Representation the server service found
+   */
   @Get
   @Override
   public Representation get(Variant variant) {
@@ -61,10 +68,10 @@ public class ServerServiceResource extends AbstractServerServiceResource {
 
   @Override
   public final void describeGet(MethodInfo info) {
-    info.setDocumentation("Method to retrieve a single ResourcePlugin plugin by ID and parent Id");
+    info.setDocumentation("Method to retrieve a single server service by its ID and parent Id");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
-        "Gui service identifier");
+    ParameterInfo param = new ParameterInfo("resourcePluginId", true, "class", ParameterStyle.TEMPLATE,
+        "Server service identifier");
     info.getRequest().getParameters().add(param);
     param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE, "Parent object identifier");
     info.getRequest().getParameters().add(param);
@@ -73,7 +80,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
   }
 
   /**
-   * Update / Validate existing Converters
+   * Update / Validate existing Server service
    * 
    * @param representation
    *          the representation parameter
@@ -82,7 +89,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
    * @return Representation
    */
   @Put
-  public Representation updateResourcePlugin(Representation representation, Variant variant) {
+  public Representation updateServerService(Representation representation, Variant variant) {
     Response response = null;
     try {
       ResourceModelDTO serverService = getObjectResourceModel(representation);
@@ -132,14 +139,17 @@ public class ServerServiceResource extends AbstractServerServiceResource {
   public void describePut(MethodInfo info) {
 
     // Method
-    info.setDocumentation("This method permits to modify a resource attached to an object");
+    info.setDocumentation("Method to modify a server service attached to a dataset");
     info.setIdentifier("update_resource_plugin");
 
     // Request
     this.addStandardPostOrPutRequestInfo(info);
 
-    ParameterInfo pic = new ParameterInfo("pluginId", true, "xs:string", ParameterStyle.TEMPLATE,
+    ParameterInfo pic = new ParameterInfo("resourcePluginId", true, "xs:string", ParameterStyle.TEMPLATE,
         "Identifier of the resource");
+    info.getRequest().getParameters().add(pic);
+
+    pic = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE, "Parent object identifier");
     info.getRequest().getParameters().add(pic);
 
     // Response 200
@@ -203,13 +213,16 @@ public class ServerServiceResource extends AbstractServerServiceResource {
    */
   @Override
   public void describeDelete(MethodInfo info) {
-    info.setDocumentation("This method delete a resource attached to an object");
+    info.setDocumentation("This method deletes a server service attached to a dataset");
     info.setIdentifier("delete_resource_plugin");
 
     this.addStandardGetRequestInfo(info);
 
     ParameterInfo pic = new ParameterInfo("pluginId", true, "xs:string", ParameterStyle.TEMPLATE,
         "Identifier of the resource");
+    info.getRequest().getParameters().add(pic);
+
+    pic = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE, "Parent object identifier");
     info.getRequest().getParameters().add(pic);
 
     this.addStandardSimpleResponseInfo(info);

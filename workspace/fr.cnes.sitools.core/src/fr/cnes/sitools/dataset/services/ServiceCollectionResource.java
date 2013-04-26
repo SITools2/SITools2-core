@@ -92,14 +92,15 @@ public class ServiceCollectionResource extends AbstractServiceResource {
   }
 
   @Override
-  public final void describePost(MethodInfo info) {
-    info.setDocumentation("Method to create a new list of services sending its representation.");
-    ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
-        "Parent object identifier");
-    info.getRequest().getParameters().add(param);
+  public final void describePut(MethodInfo info) {
     this.addStandardPostOrPutRequestInfo(info);
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
+    info.setDocumentation("Method to update a list of services on a dataset sending its representation.");
+    ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
+        "Parent object identifier");
+    info.getRequest().getParameters().add(param);
+    
   }
 
 }
