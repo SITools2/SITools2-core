@@ -41,30 +41,30 @@ sitools.user.desktop.navProfile.desktop = {
      */
 	createComponent : function (config) {
     	var desktop = getDesktop();
-    	var componentCfg  = config.componentCfg;
-    	var component = new config.JsObj(componentCfg);
-    	var windowSettings = config.windowSettings;
-    	//déléguer au composant l'ouverture
-    	if (Ext.isFunction(component.showMeInDesktopNav)) {
-    		component.showMeInDesktopNav(component, config);
-    		return;
-    	}
+        var componentCfg = config.componentCfg;
+        var component = new config.JsObj(componentCfg);
+        var windowSettings = config.windowSettings;
+        // déléguer au composant l'ouverture
+        if (Ext.isFunction(component.showMeInDesktopNav)) {
+            component.showMeInDesktopNav(component, config);
+            return;
+        }
 
-    	var reloadComp = config.reloadComp;
-    	
-    	if (Ext.isEmpty(component._getSettings)) {
-			component._getSettings = function () {
-				return {};
-			};
+        var reloadComp = config.reloadComp;
+
+        if (Ext.isEmpty(component._getSettings)) {
+            component._getSettings = function () {
+                return {};
+            };
         }
         
         var newwin;
         var winHeight = windowSettings.winHeight || DEFAULT_WIN_HEIGHT;
         var winWidth = windowSettings.winWidth || DEFAULT_WIN_WIDTH;
-        
+
         var x = windowSettings.x;
         var y = windowSettings.y;
-        
+
         var desktopEl = getDesktop().getDesktopEl();
         
         if (x < desktopEl.dom.offsetLeft) {

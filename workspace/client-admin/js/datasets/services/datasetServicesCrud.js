@@ -188,7 +188,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 width : 300,
                 sortable : false
             }, {
-                header : i18n.get('label.labelEditable'),
+                header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'label',
                 width : 140,
                 editor : new Ext.form.TextField({
@@ -200,7 +200,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     }
                 })
             }, {
-                header : i18n.get('label.categoryEditable'),
+                header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'category',
                 width : 180,
                 editor : new Ext.form.TextField({

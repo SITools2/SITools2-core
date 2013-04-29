@@ -60,24 +60,24 @@ sitools.user.desktop.App = function() {
 					forceLayout : true,
 					height : contentEl.getHeight(),
 					width : contentEl.getWidth(),
-					items : [{
-								layout : 'fit',
-								xtype : module.xtype,
-								listProjectModulesConfig : module.listProjectModulesConfig,
-								moduleProperties : module.properties
-							}],
+                    items : [ {
+                        layout : 'fit',
+                        xtype : module.xtype,
+                        listProjectModulesConfig : module.listProjectModulesConfig,
+                        moduleProperties : module.properties
+                    } ],
 					listeners : {
-						resize : function(me) {
+						resize : function (me) {
 							if (module.container) {
 								me.setSize(Ext.get(module.container).getSize());
 							}
 
 						},
-						maximizeDesktop : function(me) {
+						maximizeDesktop : function (me) {
 							me.hide();
 							me.doLayout();
 						},
-						minimizeDesktop : function(me) {
+						minimizeDesktop : function (me) {
 							me.setVisible(true);
 							me.doLayout();
 						}
@@ -312,8 +312,7 @@ sitools.user.desktop.App = function() {
 		SitoolsDesk.app.addListener("ready", desktopReady);
 		SitoolsDesk.app.addListener("modulesLoaded", _onModulesLoaded);
 
-		sql2ext.load(loadUrl.get('APP_URL')
-				+ "/client-user/conf/sql2ext.properties");
+        sql2ext.load(loadUrl.get('APP_URL') + "/client-user/conf/sql2ext.properties");
 
 		//handle windowResize event 
 		Ext.EventManager.onWindowResize(fireResize, SitoolsDesk);
@@ -323,12 +322,12 @@ sitools.user.desktop.App = function() {
 		// Ext.QuickTips.init();
 
 		// Apply a set of config properties to the singleton
-		Ext.apply(Ext.QuickTips.getQuickTip(), {
-					maxWidth : 200,
-					minWidth : 100,
-					showDelay : 50,
-					trackMouse : true
-				});
+        Ext.apply(Ext.QuickTips.getQuickTip(), {
+            maxWidth : 200,
+            minWidth : 100,
+            showDelay : 50,
+            trackMouse : true
+        });
 	}
 
 	/**
@@ -344,12 +343,12 @@ sitools.user.desktop.App = function() {
 	 * Show a {sitools.userProfile.Login} window
 	 */
 	function _onLogin() {
-		var tmp = new sitools.userProfile.Login({
-					closable : true,
-					url : loadUrl.get('APP_URL') + '/login',
-					register : loadUrl.get('APP_URL') + '/inscriptions/user',
-					reset : loadUrl.get('APP_URL') + '/resetPassword'
-				}).show();
+        var tmp = new sitools.userProfile.Login({
+            closable : true,
+            url : loadUrl.get('APP_URL') + '/login',
+            register : loadUrl.get('APP_URL') + '/inscriptions/user',
+            reset : loadUrl.get('APP_URL') + '/resetPassword'
+        }).show();
 	}
 
 	/**
@@ -398,12 +397,12 @@ sitools.user.desktop.App = function() {
 		}
 		//Create the component according to the navigation profile.
 		try {
-			SitoolsDesk.navProfile.createComponent({
-						componentCfg : componentCfg,
-						windowSettings : windowSettings,
-						reloadComp : reloadComp,
-						JsObj : JsObj
-					});
+            SitoolsDesk.navProfile.createComponent({
+                componentCfg : componentCfg,
+                windowSettings : windowSettings,
+                reloadComp : reloadComp,
+                JsObj : JsObj
+            });
 
 		} catch (r) {
 			Ext.Msg.alert(i18n.get("label.warning"), i18n
@@ -421,14 +420,14 @@ sitools.user.desktop.App = function() {
 		}
 		Ext.get("ux-taskbar").setVisible(true);
 		SitoolsDesk.getEnteteComp().fireEvent("desktopReady",
-				SitoolsDesk.getEnteteComp());
-		document.onkeypress = function(event) {
-			if (event.keyCode == event.DOM_VK_F1) {
-				// cancel browser app event handler for F1 key
-				event.stopPropagation()
-				event.preventDefault()
-			}
-		}
+ 			SitoolsDesk.getEnteteComp());
+        document.onkeypress = function (event) {
+            if (event.keyCode == event.DOM_VK_F1) {
+                // cancel browser app event handler for F1 key
+                event.stopPropagation()
+                event.preventDefault()
+            }
+        }
 	}
 
 	/**
