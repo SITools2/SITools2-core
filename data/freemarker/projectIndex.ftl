@@ -114,7 +114,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/crypto/digest.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/console.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/Date.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/utils/url.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/utils/reference.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/Utils.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>
@@ -153,7 +153,6 @@
 	<script type="text/javascript" src="${appUrl}/common/js/treegrid/TreeGrid.js"></script>
 
 	<script type="text/javascript" src="${appUrl}/common/js/utils/logout.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/utils/url.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/feedsReader/feedsReader.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/feedsReader/rss2FeedsReader.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/feedsReader/atom1FeedsReader.js"></script>

@@ -306,7 +306,7 @@ ImageChooser.prototype = {
 		var config = this.config;
 		if(selNode && callback){
 			var data = lookup[selNode.id];
-			var url = new URL(data.url);
+			var url = new Reference(data.url);
 			data.url = url.getFile();
 			
 			callback(data, config);
