@@ -315,9 +315,8 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
 	
     // create grid panel configured with feature store
     this.gridPanel = new Ext.grid.GridPanel({
-        title : "Feature Grid",
-        tbar : this.topBar,
-        region : "east",
+//        tbar : this.topBar,
+        region : "west",
         collapsible : true,
         flotable : true,
         split : true,
@@ -350,7 +349,8 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         layout: "border",
         dataviewUtils : sitools.user.component.dataviews.dataviewUtils, 
         items: [mapPanel, this.gridPanel],
-	    componentType : "data"
+	    componentType : "data",
+	    tbar : this.topBar
 	}, config));    
 
 };

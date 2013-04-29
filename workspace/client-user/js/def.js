@@ -515,20 +515,19 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig) {
         Ext.each(listeColonnes, function (item, index, totalItems) {
             var tooltip = "";
             if (item.toolTip) {
-            	tooltip = item.toolTip;
-            }
-            else {
-            	if (Ext.isArray(dictionnaryMappings) && !Ext.isEmpty(dictionnaryMappings)) {
-            		var dico = dictionnaryMappings[0];
-            		var dicoMapping = dico.mapping || [];
-            		dicoMapping.each(function (mapping) {
-            			if (item.columnAlias == mapping.columnAlias) {
-            				var concept = mapping.concept || {};
-            				if (!Ext.isEmpty(concept.description)) {
-            					tooltip += concept.description.replace('"', "''") + "<br>";
-            				}
-            			}
-            		});
+                tooltip = item.toolTip;
+            } else {
+                if (Ext.isArray(dictionnaryMappings) && !Ext.isEmpty(dictionnaryMappings)) {
+                    var dico = dictionnaryMappings[0];
+                    var dicoMapping = dico.mapping || [];
+                    dicoMapping.each(function (mapping) {
+                        if (item.columnAlias == mapping.columnAlias) {
+                            var concept = mapping.concept || {};
+                            if (!Ext.isEmpty(concept.description)) {
+                                tooltip += concept.description.replace('"', "''") + "<br>";
+                            }
+                        }
+                    });
                 }
             }
            
@@ -544,7 +543,7 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig) {
 	                columnAlias : item.columnAlias,
 	                dataIndexSitools : item.dataIndex,
 	                dataIndex : item.columnAlias,
-	                header : item.header,
+	                header : '<span style="font-size:110%">'+item.header+"</span>",
 	                width : item.width,
 	                sortable : item.sortable,
 	                hidden : hidden,

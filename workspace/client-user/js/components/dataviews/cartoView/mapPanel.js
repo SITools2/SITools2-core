@@ -151,7 +151,6 @@ sitools.user.component.dataviews.cartoView.mapPanel = function (config) {
     
     // -- CONSTRUCTOR --
     sitools.user.component.dataviews.cartoView.mapPanel.superclass.constructor.call(Ext.apply(this, {
-        title: "Map",
         region: "center",
         map: this.map,
         center: new OpenLayers.LonLat(5, 45),

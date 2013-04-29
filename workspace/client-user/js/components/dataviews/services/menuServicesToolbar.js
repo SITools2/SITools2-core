@@ -31,6 +31,8 @@ Ext.namespace('sitools.user.component.dataviews.services');
  */
 sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.Toolbar, {
     enableOverflow: true,
+    height: 30,
+    
 //    width : "97%",
     initComponent : function () {
         this.cls = "services-toolbar"; 
@@ -95,7 +97,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             menu.add(btn);
             
             if (this.id === menu.id) {
-                this.add('-');
+                this.add(' ');
             }
             
         }, this);
@@ -167,7 +169,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
                 clickEvent : 'mousedown'
             });
             this.add(button);
-            this.add('-');
+            this.add(' ');
         } else {
             button = buttonSearch[0];
         }

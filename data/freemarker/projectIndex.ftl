@@ -28,7 +28,6 @@
     <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/desktop.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/FisheyeMenu.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css">
 	<link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/reorderer/multiple-sorting.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/treegrid.css">
