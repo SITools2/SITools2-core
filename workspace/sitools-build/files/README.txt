@@ -7,7 +7,7 @@ Version                              : 2.0.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
-Repository url                       : http://sourceforge.net/projects/sitools2/
+Repository url                       : https://github.com/SITools2/core-v2.git
 Project page                         : http://sitools2.sourceforge.net/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
@@ -30,10 +30,12 @@ ___________________
 		- Paging problem in datastorage administration application
 		- DatasetView and ProjectModule dependencies are not loaded properly in the administration interface
 		- Fix PNG export in the plot GUI service
+		- Form size cannot be saved as public user
 		
 	* Enhancements : 
 		- No more context menu (right click) in dataviews
 		- Upgrade to Flotr2 for the plot GUI service
+		- Redesign window header style in desktop mode
 	
 	* API changes : 
 		- Data folder :
