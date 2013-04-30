@@ -499,6 +499,23 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     
     getSelectionForPlot : function () {
         return this.getRecSelectedParam();
+    },
+    
+    /**
+     * Return an array containing a button to show or hide columns
+     * @returns {Array}
+     */
+    createColumnsButton : function () {
+        var array = [];
+        array.push(new Ext.Toolbar.Separator());
+        array.push({
+            id : "columnsButtonId",
+            tooltip : i18n.get('label.addOrDeleteColumns'),
+            icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
+            menu : this.getDatasetView().colMenu
+        });
+        this.getDatasetView().hdCtxIndex = 0;
+        return array;
     }
     
 });

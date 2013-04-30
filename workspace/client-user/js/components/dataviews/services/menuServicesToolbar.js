@@ -44,7 +44,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             idProperty : 'id',
             root : 'ServiceCollectionModel.services',
             autoload : true,
-            fields : [ 'id', 'type', 'name', 'description', 'icon', 'label', 'category', 'visible' ],
+            fields : [ 'id', 'type', 'name', 'description', 'icon', 'label', 'category', 'visible', 'position' ],
             listeners : {
                 scope : this,
                 load : this.createMenuServices
@@ -63,8 +63,17 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     
 
     createMenuServices : function (store, records, opts) {
-        var icon, category, menu, btn = {};
+        
+        records = this.sortServices(records);
+        
+        var icon, category, menu = this, btn = {};
         Ext.each(records, function (item) {
+            menu = this;
+            
+            if (item instanceof Ext.Toolbar.Item || item.id === "columnsButtonId") {
+                menu.add(item);
+                return;
+            }
             
             if (!item.get('visible')) {
                 return;
@@ -72,8 +81,6 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             
             if (!Ext.isEmpty(category = item.get('category'))) {
                 menu = this.getMenu(category);
-            } else {
-                menu = this;
             }
             
             
@@ -101,22 +108,16 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             }
             
         }, this);
-        this.createColumnsButton();
+        //this.createColumnsButton();
         this.doLayout();
     },
     
 
-    createColumnsButton : function () {
-        if (this.origin !== "sitools.user.component.dataviews.tplView.TplView") {
-            this.add('->', '-');
-            this.add({
-                tooltip : i18n.get('label.addOrDeleteColumns'),
-                icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-                menu : this.dataview.getDatasetView().colMenu
-            });
-            this.dataview.getDatasetView().hdCtxIndex = 0;
-        }
-        
+    /**
+     * Return a array with the column filter button
+     */
+    addAdditionalButton : function () {
+        return this.dataview.createColumnsButton();
     },
     
 
@@ -135,9 +136,6 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             scope : this,
             success : function (ret) {
                 var guiServicePlugin = Ext.decode(ret.responseText).guiServicePlugin;
-
-                
-                
                 var JsObj = eval(guiServicePlugin.xtype);
 
                 var config = Ext.applyIf(guiServicePlugin, {
@@ -174,5 +172,21 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             button = buttonSearch[0];
         }
         return button.menu;
+    },
+    
+    sortServices : function (records) {
+        var tbRight = [], tb = [];
+        Ext.each(records, function (item) {
+            if (item.get('position') === 'right') {
+                tbRight.push(item);
+            } else {
+                tb.push(item);
+            }
+        });
+        tb.push(new Ext.Toolbar.Fill());
+        
+        return tb.concat(tbRight, this.addAdditionalButton());
     }
+    
+    
 });

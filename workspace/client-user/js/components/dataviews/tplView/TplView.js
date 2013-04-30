@@ -427,10 +427,15 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
      */
     getSortInfo : function () {
         return this.store.sortInfo;
+    },
+    
+    /**
+     * Return an empty array (can be modifiable)
+     * @returns {Array}
+     */
+    createColumnsButton : function () {
+        return [];
     }
-    
-    
-    
 
 });
 

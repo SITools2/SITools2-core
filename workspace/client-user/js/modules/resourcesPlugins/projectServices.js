@@ -36,6 +36,8 @@ sitools.user.modules.projectServices = function () {
 
 	this.url = projectGlobal.sitoolsAttachementForUsers + "/services";
 	this.layout = 'fit';
+	this.padding = '15px 20px 15px 20px';
+	
 	this.store = new Ext.data.JsonStore({
         idProperty : 'id',
         autoLoad : true,
@@ -63,7 +65,6 @@ sitools.user.modules.projectServices = function () {
             type : 'string'
         } ]
     });
-
 
     this.cm = new Ext.grid.ColumnModel({
         // specify any defaults for each column
@@ -101,10 +102,10 @@ sitools.user.modules.projectServices = function () {
         } ]
     });
 
+    
     this.grid = new Ext.grid.GridPanel({
-		title : i18n.get("label.projectServices"), 
+		//title : i18n.get("label.projectServices"), 
 		store : this.store,
-		
 		cm : this.cm, 
 		viewConfig : {
 			forceFit : true
@@ -127,7 +128,6 @@ sitools.user.modules.projectServices = function () {
 Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
 	
 	runJob : function (resource) {
-		
 		var parameters = resource.parameters;
         var url = null, icon = null, method = null, runTypeUserInput = null;
         parameters.each(function (param) {

@@ -18,6 +18,8 @@ public class ServiceModel {
   private String label;
   /** The visibility */
   private boolean visible;
+  /** The position */
+  private String position;
 
   /**
    * Gets the id value
@@ -168,4 +170,19 @@ public class ServiceModel {
     this.visible = visible;
   }
 
+  /**
+   * Gets the position value
+   * @return the position
+   */
+  public String getPosition() {
+    return position;
+  }
+
+  /**
+   * Sets the value of position
+   * @param position the position to set
+   */
+  public void setPosition(String position) {
+    this.position = position;
+  }
 }

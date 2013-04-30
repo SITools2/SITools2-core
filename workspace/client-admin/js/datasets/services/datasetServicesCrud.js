@@ -36,6 +36,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     modify : false,
     urlGrid : null,    
     conflictWarned : false,
+    clicksToEdit: 1,
     viewConfig : {
         forceFit : true,
         autoFill : true,
@@ -145,6 +146,9 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 name : 'visible',
                 type : 'bool'
+            }, {
+                name : 'position',
+                type : 'string'
             } ],
             proxy : this.httpProxyResources
         });
@@ -152,7 +156,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         var visible = new Ext.grid.CheckColumn({
             header : i18n.get('headers.visible'),
             dataIndex : 'visible',
-            width : 60,
+            width : 55,
             listeners : {
                 scope : this,
                 change : function (combo, newValue, oldValue) {
@@ -168,7 +172,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             columns : [ {
                 header : i18n.get('label.type'),
                 dataIndex : 'type',
-                width : 80,
+                width : 60,
                 resizable : false,
                 renderer : function (value, metadata, record, rowIndex, colIndex, store) {
                     if (value === "SERVER") {
@@ -181,11 +185,11 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 180
+                width : 160
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 300,
+                width : 280,
                 sortable : false
             }, {
                 header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
@@ -202,8 +206,32 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'category',
-                width : 180,
+                width : 150,
                 editor : new Ext.form.TextField({
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addClass('not-save-textfield');
+                        }
+                    }
+                })
+            }, {
+                header : 'Position' + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                dataIndex : 'position',
+                width : 100,
+                editor: new Ext.form.ComboBox({
+                    typeAhead : true,
+                    triggerAction : 'all',
+                    lazyRender : true,
+                    mode : 'local',
+                    store : new Ext.data.ArrayStore({
+                        id : 0,
+                        fields : ['position'],
+                        data : [['left'], ['right']]
+                    }),
+                    value : 'Left',
+                    valueField : 'position',
+                    displayField : 'position',
                     listeners : {
                         scope : this,
                         change : function (textfield, newValue, oldValue) {
@@ -214,7 +242,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 header : i18n.get('label.icon'),
                 dataIndex : 'icon',
-                width : 60,
+                width : 55,
                 sortable : false,
                 renderer : function (value, metadata, record, rowIndex, colIndex, store) {
                     if (!Ext.isEmpty(value)) {

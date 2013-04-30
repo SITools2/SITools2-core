@@ -645,13 +645,30 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
     
     getDatasetView : function () {
         return this.getView();
+    },
+    
+    /**
+     * Return an array containing a button to show or hide columns
+     * @returns {Array}
+     */
+    createColumnsButton : function () {
+        var array = [];
+        array.push(new Ext.Toolbar.Separator());
+        array.push({
+            id : "columnsButtonId",
+            tooltip : i18n.get('label.addOrDeleteColumns'),
+            icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
+            menu : this.getDatasetView().colMenu
+        });
+        this.getDatasetView().hdCtxIndex = 0;
+        return array;
     }
 });
 
 /**
- * @static
- * Implementation of the method getParameters to be able to load view Config panel.
- * @return {Array} the parameters to display into administration view. 
+ * @static Implementation of the method getParameters to be able to load view
+ *         Config panel.
+ * @return {Array} the parameters to display into administration view.
  */
 sitools.user.component.dataviews.livegrid.LiveGrid.getParameters = function () {
 	return [{
