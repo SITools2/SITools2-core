@@ -454,8 +454,8 @@ var projectGlobal = {
 //                var topEl = Ext.get('toppanel');
 //                topEl.update(Ext.util.Format.htmlDecode(data.project.htmlHeader));
             },
-            callback : function (){
-            	 this.getDataViewsDependencies();
+            callback : function () {
+                this.getDataViewsDependencies();
             },
             failure : function () {
 				Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProject'));

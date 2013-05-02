@@ -229,15 +229,15 @@ sitools.user.desktop.navProfile.desktop = {
                 layout : 'fit',
                 specificType : "moduleWindow",
                 listeners : {
-    			    render : function (me){
-    			        me.getEl().fadeIn({
-    			            duration: .5
-    			        });
-    			    }
-            	}, 
+                    render : function (me) {
+                        me.getEl().fadeIn({
+                            duration : .5
+                        });
+                    }
+                }, 
                 items : [ {
 			        id : module.id + "_module", 
-                	noBorder : true, 
+                   	noBorder : true, 
 					layout : 'fit',
 			        xtype : module.xtype, 
 			        moduleProperties : module.properties,
@@ -276,24 +276,28 @@ sitools.user.desktop.navProfile.desktop = {
         return win;    	
     },
     
-    
+
+        
     /**
      * Do nothing in fixed mode
      */
-    initNavbar : function (){
+    initNavbar : function () {
         return;
     }, 
     
+
+
     /**
      * Specific multiDataset search context methods
      */
     multiDataset : {
-    	/**
-    	 * Returns the right object to show multiDs results
-    	 * @returns
-    	 */
-    	getObjectResults : function () {
-	    	return sitools.user.component.forms.resultsProjectForm;
+        /**
+         * Returns the right object to show multiDs results
+         * 
+         * @returns
+         */
+        getObjectResults : function () {
+            return sitools.user.component.forms.resultsProjectForm;
 	    }, 
 	    /**
 	     * Handler of the button show data in the {sitools.user.component.forms.resultsProjectForm} object 

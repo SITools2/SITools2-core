@@ -265,7 +265,8 @@ sitools.user.desktop.navProfile.fixed = {
 
         }, 
 
-        initTaskbar : function (){
+
+        initTaskbar : function () {
             SitoolsDesk.getDesktop().taskbar.setEnableWarning(true); 
             var removeActivePanel = new Ext.Button({
                 scope : this, 
