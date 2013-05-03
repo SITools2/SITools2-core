@@ -543,7 +543,7 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig) {
 	                columnAlias : item.columnAlias,
 	                dataIndexSitools : item.dataIndex,
 	                dataIndex : item.columnAlias,
-	                header : '<span style="font-size:110%">'+item.header+"</span>",
+	                header : item.header,
 	                width : item.width,
 	                sortable : item.sortable,
 	                hidden : hidden,
