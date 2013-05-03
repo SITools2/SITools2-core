@@ -46,7 +46,8 @@ Require-Bundle: javax.servlet;bundle-version="2.5.0",
  fr.cnes.sitools.captcha;bundle-version="1.0.0",
  com.ice.tar_2.5;bundle-version="2.5.0",
  com.mongodb;bundle-version="2.9.1",
- org.apache.tika;bundle-version="1.0.0"
+ org.apache.tika;bundle-version="1.0.0",
+ org.apache.commons.codec;bundle-version="1.4.0"
 Export-Package: fr.cnes.sitools,
  fr.cnes.sitools.api,
  fr.cnes.sitools.applications,

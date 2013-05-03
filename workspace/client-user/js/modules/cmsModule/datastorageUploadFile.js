@@ -67,37 +67,30 @@ sitools.user.modules.datastorageUploadFile  = Ext.extend(Ext.Window, {
                             fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.lenght);
                             
                             this.createUploadedNode(fileName);
-                            console.log(this.urlUpload);
+                            
                             Ext.Ajax.request({
                                 url : this.urlUpload,
-                                form : 'formUploadId',
-//                                isUpload : true, 
+                                form : 'formUploadId', 
+                                isUpload : true, 
                                 waitMsg : "wait...", 
                                 method : 'POST',
                                 scope : this,
                                 success : function (response) {
-                                	var status = response.responseText.search("403");
-                                	console.dir(response);
-                                	if (status != -1){
-                                		Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.uploadForbidden'));                                		
-                                	} else if (response.responseText == "") {
-                                        new Ext.ux.Notification({
-                                            iconCls: 'x-icon-information',
-                                            title: i18n.get('label.information'),
-                                            html: i18n.get('label.fileUploaded'),
-                                            autoDestroy: true,
-                                            hideDelay:  3000
-                                        }).show(); 
-                                        Ext.getCmp('winUploadId').close();
-                                        
-                                        // call callback in order to add the uploadedFile to the parent component
-                                        this.callback.call(this.scope, this.uploadedFileNode);
-                                    } else {
-                                		Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.unknownError'));                                		
-                                    }
+                                    new Ext.ux.Notification({
+                                        iconCls: 'x-icon-information',
+                                        title: i18n.get('label.information'),
+                                        html: i18n.get('label.fileUploaded'),
+                                        autoDestroy: true,
+                                        hideDelay:  3000
+                                    }).show(); 
+                                    Ext.getCmp('winUploadId').close();
+                                    
+                                    // call callback in order to add the uploadedFile to the parent component
+                                    this.callback.call(this.scope, this.uploadedFileNode);
+                                    
                                 }, 
                                 failure : function (response) {
-                                    Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.unknownError'));
+                                    Ext.Msg.alert(i18n.get('label.error'));
                                 }
                             });
                         }
