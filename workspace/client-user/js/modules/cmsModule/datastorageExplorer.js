@@ -42,7 +42,7 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                 break;
             }
         }, this);
-        this.title = i18n.get('label.dsDirectory') + " : " + this.nameDatastorage;
+//        this.title = i18n.get('label.dsDirectory') + " : " + this.nameDatastorage;
         this.layout = 'border';
         
         this.uplLabel = {
@@ -53,9 +53,10 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         
         this.uplButton = {
         	xtype: 'button',
-            iconAlign : 'right',
             id: 'uplButton',
+//            iconAlign : 'right',
             iconCls : 'upload-icon',
+            text : i18n.get('label.uploadFile'),
             tooltip : i18n.get('label.uploadFile'),
             scope : this,
             handler : function () {
@@ -78,8 +79,9 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         this.dwlButton = {
         	xtype: 'button',
             id: 'dwlButton',
-            iconAlign : 'right',
+//            iconAlign : 'right',
             iconCls : 'download-icon',
+            text : i18n.get('label.downloadFile'),
             tooltip : i18n.get('label.downloadFile'),
             scope : this,
             handler : function () {
@@ -111,8 +113,9 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         
         this.delButton = {
         	xtype: 'button',
-            iconAlign : 'right',
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/delete.png',
+//            iconAlign : 'right',
+            iconCls : 'delete-icon',
+            text : i18n.get('label.delete'),
             tooltip : i18n.get('label.delete'),
             scope : this,
             handler : function () {
@@ -137,7 +140,9 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             }
         };
         
-        this.tbar = new Ext.Toolbar({items: ['->', this.uplLabel, this.uplButton, this.delLabel, this.delButton]});
+        this.tbar = new Ext.Toolbar({
+        	items: ['->', this.uplButton, this.delButton]}
+        );
         
         this.tree = new Ext.tree.TreePanel({
             region : 'west',
@@ -325,23 +330,27 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                     c.showAt(e.getXY());
                 },
                 click: function (node, e){
-                    this.getTopToolbar().removeAll();
-                    var listElToolbar;
+                	var tb = this.getTopToolbar();
                     if (node.leaf != "true") {
                     	this.tree.fireEvent('beforeexpandnode', node);
-                        listElToolbar = new Array('->', this.uplLabel, this.uplButton, this.delLabel, this.delButton);
+                    	tb.remove('uplButton');
+                    	tb.remove('dwlButton');
+                    	tb.insert(1,this.uplButton);
                     } else {
-                        listElToolbar = new Array('->', this.dwlLabel, this.dwlButton, this.delLabel, this.delButton);
+                    	tb.remove('uplButton');
+                    	tb.remove('dwlButton');
+                    	tb.insert(1,this.dwlButton);
                     }
-                    this.addButtonToToolbar(this.getTopToolbar(), listElToolbar);
-                    
+                	tb.doLayout();
+
                     if(this.isOpenable(node.text)) {
                         var rec = this.dataview.getStore().getById(node.id);
                     	this.displayFile(rec);
                     } else {
                     	this.detailPanel.setTitle(i18n.get('label.defaultTitleDetailPanel'));
-                        this.detailPanel.setSrc('/sitools/common/res/images/defaultDetailPanel.png');
-                        this.detailPanel.doLayout();                    }
+                    	this.detailPanel.setSrc('/sitools/common/html/aucunApercuDispo.html');
+                        this.detailPanel.doLayout();
+                    }
                 }
             }
         });
@@ -447,8 +456,9 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             collapsible : false,
             collapsed : false,
             autoScroll : true,
+            cls: 'detail-panel-datastorage',
             title: i18n.get('label.defaultTitleDetailPanel'),
-            defaultSrc: '/sitools/common/res/images/defaultDetailPanel.png',
+            defaultSrc: '/sitools/common/html/aucunApercuDispo.html',
             tools : [{
             	id : 'plus',
             	qtip : i18n.get("label.showInWindow"),
