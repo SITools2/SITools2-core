@@ -28,7 +28,6 @@
     <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/desktop.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/FisheyeMenu.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css">
 	<link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/reorderer/multiple-sorting.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/treegrid.css">
@@ -53,7 +52,7 @@
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
-    <script type="text/javascript" src="${appUrl}/common/js/plot/flotr/lib/prototype-1.6.0.2.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/prototype.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/prototype/ext-prototype-adapter-debug.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base-debug.js"></script>
 	
@@ -115,7 +114,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/crypto/digest.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/console.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/Date.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/utils/url.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/utils/reference.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/Utils.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>
@@ -154,7 +153,6 @@
 	<script type="text/javascript" src="${appUrl}/common/js/treegrid/TreeGrid.js"></script>
 
 	<script type="text/javascript" src="${appUrl}/common/js/utils/logout.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/utils/url.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/feedsReader/feedsReader.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/feedsReader/rss2FeedsReader.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/feedsReader/atom1FeedsReader.js"></script>
@@ -183,7 +181,6 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/dataviewUtils.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/storeUtils.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/livegrid/storeLiveGrid.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/contextMenu.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/cartoView/featureSelectionModel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/cartoView/mapPanel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/tplView/PagingToolbarTplView.js"></script>
@@ -191,7 +188,9 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/cartoView/featureStore.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/resourcePluginParamsPanel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/goToTaskPanel.js"></script>
-
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/serverServicesUtil.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/menuServicesToolbar.js"></script>
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/services/servicesToolbar.css">
 	
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/datasetOverView/datasetOverview.js"></script>
@@ -199,6 +198,7 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/diskSpace.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/tasks.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/viewTextPanel.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/userSpace/dependencies/orderProp.js"></script>
 	
 
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/help/help.js"></script>
@@ -219,10 +219,10 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/viewDataDetail/simpleViewDataDetails.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomDomQuery.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomXMLReader.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr/lib/base64.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr/lib/canvas2image.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr/lib/canvastext.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr/flotr.debug-0.2.0-alpha.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/base64.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/canvas2image.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/canvastext.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/flotr2.min.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/plot/dataPlotter.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/WindowImageViewer.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
@@ -236,6 +236,7 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/sitoolsProject.js"></script>
 	
 	<script type="text/javascript" src="${appUrl}/common/js/columnRenderer/behaviorEnum.js"></script>
+	
 
 	
 <!-- END_JS_DEV_INCLUDES -->

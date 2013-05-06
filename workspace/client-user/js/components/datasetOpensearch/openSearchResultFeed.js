@@ -184,12 +184,12 @@ sitools.user.component.openSearchResultFeed = function (config) {
                 saveToolbar : true,
                 type : "dataDetail", 
                 toolbarItems : [{
-	                icon : loadUrl.get('APP_URL') + "/common/res/images/icons/simple-arrow-left.png", 
+                    iconCls : 'arrow-back',
 	                handler : function () {
 	                    this.ownerCt.ownerCt.items.items[0].goPrevious();
 	                }
 	            }, {
-	                icon : loadUrl.get('APP_URL') + "/common/res/images/icons/simple-arrow-right.png", 
+	                iconCls : 'arrow-next',
 	                handler : function () {
 						this.ownerCt.ownerCt.items.items[0].goNext();
 	                }

@@ -89,7 +89,7 @@ sitools.user.component.entete.NavBar = Ext.extend(Ext.Toolbar, {
 							handler = eval(func);
 						}
 						else {
-							handler = module.openModule
+							handler = module.openModule;
 						}
 						Ext.apply(item, {
 							handler : handler

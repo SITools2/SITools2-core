@@ -74,7 +74,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/utils/console.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/Utils.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/Date.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/utils/url.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/utils/reference.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/sliderRange/js/ux/SliderRange.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>

@@ -36,6 +36,8 @@ sitools.user.modules.projectServices = function () {
 
 	this.url = projectGlobal.sitoolsAttachementForUsers + "/services";
 	this.layout = 'fit';
+	this.padding = '15px 20px 15px 20px';
+	
 	this.store = new Ext.data.JsonStore({
         idProperty : 'id',
         autoLoad : true,
@@ -64,7 +66,6 @@ sitools.user.modules.projectServices = function () {
         } ]
     });
 
-
     this.cm = new Ext.grid.ColumnModel({
         // specify any defaults for each column
         defaults : {
@@ -85,40 +86,37 @@ sitools.user.modules.projectServices = function () {
             dataIndex : 'descriptionAction',
             width : 200,
             sortable : false
-        },{
-        	xtype : 'actioncolumn',
-        	width : 30,
-        	items : [{
-        		icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_application_resource.png",
-        		tooltip : i18n.get('label.runService'),
-        		scope : this,
-        		handler : function (grid, row){
-        			this.grid.getSelectionModel().selectRow(row);
-        			var job = this.grid.getSelectionModel().getSelected();
-        			this.runJob(job.data);
-        		}
-        		}]
-        }]
+        }, {
+            xtype : 'actioncolumn',
+            width : 30,
+            items : [ {
+                icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_application_resource.png",
+                tooltip : i18n.get('label.runService'),
+                scope : this,
+                handler : function (grid, row) {
+                    this.grid.getSelectionModel().selectRow(row);
+                    var job = this.grid.getSelectionModel().getSelected();
+                    this.runJob(job.data);
+                }
+            } ]
+        } ]
     });
 
+    
     this.grid = new Ext.grid.GridPanel({
-		title : i18n.get("label.projectServices"), 
+		//title : i18n.get("label.projectServices"), 
 		store : this.store,
-		
 		cm : this.cm, 
 		viewConfig : {
 			forceFit : true
 		}
     });
     
-    this.ctxMenu = new sitools.user.component.dataviews.ctxMenu({
+    this.serviceServerUtil = new sitools.user.component.dataviews.services.serverServicesUtil({
 		grid : this.grid, 
-		event : null, 
-		dataUrl : projectGlobal.sitoolsAttachementForUsers, 
+		datasetUrl : projectGlobal.sitoolsAttachementForUsers, 
 		datasetId : projectGlobal.projectId, 
-		datasetName : projectGlobal.projectName, 
-		origin : "sitools.user.modules.projectServices",
-        urlDetail : this.sitoolsAttachementForUsers 
+		origin : "sitools.user.modules.projectServices"
     });
     
     sitools.user.modules.projectServices.superclass.constructor.call(this, Ext.apply({
@@ -130,9 +128,8 @@ sitools.user.modules.projectServices = function () {
 Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
 	
 	runJob : function (resource) {
-		
 		var parameters = resource.parameters;
-        var url, icon, method, runTypeUserInput;
+        var url = null, icon = null, method = null, runTypeUserInput = null;
         parameters.each(function (param) {
             switch (param.name) {
             case "methods":
@@ -150,8 +147,7 @@ Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
 			}
         }, this);
 
-//        this.ctxMenu.handleResourceClick(resource, url, method, parameters);
-        this.ctxMenu.resourceClick(resource, url, method, runTypeUserInput, parameters);
+        this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters);
 	},
 	
 	getNbRowsSelected : function () {

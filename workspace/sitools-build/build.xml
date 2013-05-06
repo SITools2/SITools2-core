@@ -488,7 +488,7 @@
 		<echo message="Replace ${sitools.project.tag.old} with ${sitools.project.tag}">
 		</echo>
 		<replace 
-    		dir=".."
+    		dir="../.."
     		value="${sitools.project.tag}"
     		failOnNoReplacements="true"
     		includesfile="list_files_for_version.properties"    			

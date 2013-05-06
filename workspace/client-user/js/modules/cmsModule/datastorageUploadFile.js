@@ -71,7 +71,7 @@ sitools.user.modules.datastorageUploadFile  = Ext.extend(Ext.Window, {
                             Ext.Ajax.request({
                                 url : this.urlUpload,
                                 form : 'formUploadId', 
-//                                isUpload : true, 
+                                isUpload : true, 
                                 waitMsg : "wait...", 
                                 method : 'POST',
                                 scope : this,

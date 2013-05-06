@@ -1,26 +1,48 @@
 <projectModule>
-  <id>ProjectsFeeds</id>
-  <name>ProjectsFeeds</name>
-  <description>Feeds for Projects</description>
-  <label>label.projectFeeds</label>
+  <id>projectGraph</id>
+  <name>projectGraph</name>
+  <description>Project Graph</description>
+  <label>label.projectGraph</label>
   <author>akka</author>
   <version>1.0</version>
-  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/project_feeds.png</imagePath>
-  <title>title.ProjectsFeeds</title>
-  <defaultWidth>400</defaultWidth>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/project_graph.png</imagePath>
+  <title>title.ProjectGraph</title>
+  <defaultWidth>800</defaultWidth>
   <defaultHeight>500</defaultHeight>
   <x>0</x>
   <y>0</y>
-  <icon>feedsModule</icon>
-  <specificType>ProjectsFeeds</specificType>
-  <xtype>sitools.user.modules.feedsReaderProject</xtype>
+  <icon>graphModule</icon>
+  <specificType>projectGraph</specificType>
+  <xtype>sitools.user.modules.projectGraphTree</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/modules/feedsReader/feedReaderProject.js</url>
+        <url>/sitools/common/js/treegrid/TreeGridSorter.js</url>
+      </url>
+      <url>
+        <url>/sitools/common/js/treegrid/TreeGridColumnResizer.js</url>
+      </url>
+      <url>
+        <url>/sitools/js/treegrid/TreeGridNodeUI.js</url>
+      </url>
+      <url>
+        <url>/sitools/js/treegrid/TreeGridLoader.js</url>
+      </url>
+      <url>
+        <url>/sitools/js/treegrid/TreeGridColumns.js</url>
+      </url>
+      <url>
+        <url>/sitools/js/treegrid/TreeGrid.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/projectGraph/projectGraph.js</url>
       </url>
     </js>
-    <css/>
+    <css>
+      <url>
+        <url>/sitools/common/js/treegrid/treegrid.css</url>
+      </url>
+    </css>
   </dependencies>
-  <priority>4</priority>
+  <priority>2</priority>
 </projectModule>

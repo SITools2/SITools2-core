@@ -26,7 +26,7 @@ Ext.ns("sitools.user.modules.userSpaceDependencies");
  * 
  * @class sitools.user.modules.userSpaceDependencies.viewRecordSelectionDetail
  * @extends Ext.Window
- * @requires sitools.user.component.dataviews.ctxMenu
+ * @requires sitools.user.component.dataviews.services.serverServicesUtil
  */
 sitools.user.modules.userSpaceDependencies.viewRecordSelectionDetail = Ext.extend(Ext.Window, {
     modal : true,
@@ -54,26 +54,7 @@ sitools.user.modules.userSpaceDependencies.viewRecordSelectionDetail = Ext.exten
             layout : 'fit', 
             autoScroll : true, 
             store : this.store,
-            cm : getColumnModel(this.orderRecord.colModel), 
-            listeners : {
-				scope : this, 
-				rowcontextmenu : function (grid, rowIndex, e) {
-	                e.stopEvent();
-	                var selections = grid.getSelectionModel().getSelections();
-	                var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
-						grid : this, 
-						selections : selections, 
-						event : e, 
-						dataUrl : this.orderRecord.dataUrl, 
-						datasetId : this.datasetId, 
-						datasetName : this.datasetName, 
-						origin : "selection",
-                        urlDetail : this.orderRecord.dataUrl
-	                });
-	                var xy = e.getXY();
-					ctxMenu.showAt(xy);
-	            }
-            },
+            cm : getColumnModel(this.orderRecord.colModel),
             sm : sm
         });
         Ext.apply(this.store, {

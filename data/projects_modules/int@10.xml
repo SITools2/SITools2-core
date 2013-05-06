@@ -1,26 +1,41 @@
 <projectModule>
-  <id>739954a4-5593-48fe-bd5a-3eb4e4c3a7f6</id>
-  <name>formsAsMenu</name>
-  <description>A menu to display forms List</description>
-  <label>label.formsAsMenu</label>
-  <author>Akka</author>
+  <id>9093d8f7-8032-4d09-a1c3-43c687dfdebd</id>
+  <name>Content Editor</name>
+  <description>Edit text/html file</description>
+  <label>label.contentEditor</label>
+  <author>AKKA</author>
   <version>1.0</version>
-  <imagePath>http://localhost:8182/sitools/upload/form_list_small.png</imagePath>
-  <title>title.formsAsMenuModule</title>
-  <defaultWidth>0</defaultWidth>
-  <defaultHeight>0</defaultHeight>
+  <imagePath></imagePath>
+  <title>Content Editor</title>
+  <defaultWidth>1000</defaultWidth>
+  <defaultHeight>600</defaultHeight>
   <x>0</x>
   <y>0</y>
-  <icon>formsModule</icon>
+  <icon>contentEditorModule</icon>
   <specificType></specificType>
-  <xtype>sitools.user.modules.formsAsMenu</xtype>
+  <xtype>sitools.user.modules.contentEditorModule</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/modules/formsAsMenu/formsAsMenu.js</url>
+        <url>/sitools/client-user/js/modules/cmsModule/cmsTreeToolbar.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/cmsModule/cmsContextMenu.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/cmsModule/contentEditorModule.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/cmsModule/chooseFileInExplorer.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/cmsModule/datastorageBrowser.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/modules/cmsModule/datastorageUploadFile.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
-  <priority>1</priority>
+  <priority>6</priority>
 </projectModule>

@@ -51,12 +51,10 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
 
   @Override
   public final void describeGet(MethodInfo info) {
-    info.setDocumentation("Method to retrieve a single GuiService plugin by ID and parent Id");
+    info.setDocumentation("Method to retrieve the list of server services from its parent Id");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("guiServiceId", true, "class", ParameterStyle.TEMPLATE,
-        "Gui service identifier");
-    info.getRequest().getParameters().add(param);
-    param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE, "Parent object identifier");
+    ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
+        "Parent object identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
     addStandardResourceCollectionFilterInfo(info);
@@ -87,7 +85,7 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
         }
         ResourceModelDTO serverServiceOutput = (ResourceModelDTO) responsePersist.getItem();
         ServiceCollectionModel services = getStore().retrieve(getParentId());
-
+        // create a new ServiceCollectionModel if it doesn't already exists
         if (services == null) {
           services = new ServiceCollectionModel();
           services.setId(getParentId());
@@ -96,6 +94,7 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
 
         ServiceModel service = new ServiceModel();
         populateServiceModel(serverServiceOutput, service);
+        service.setVisible(true);
 
         if (services.getServices() == null) {
           services.setServices(new ArrayList<ServiceModel>());
@@ -119,7 +118,7 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
 
   @Override
   public final void describePost(MethodInfo info) {
-    info.setDocumentation("Method to create a new list of services sending its representation.");
+    info.setDocumentation("Method to create a new server service sending its representation.");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
         "Parent object identifier");

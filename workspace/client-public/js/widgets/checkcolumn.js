@@ -89,7 +89,12 @@ Ext.ux.grid.CheckColumn = Ext.extend(Ext.Component, {
             e.stopEvent();
             var index = this.grid.getView().findRowIndex(t);
             var record = this.grid.store.getAt(index);
+            
+            var newValue;
+            newValue = !record.data[this.dataIndex];
+            
             record.set(this.dataIndex, !record.data[this.dataIndex]);
+            this.fireEvent('change', this, newValue);
         }
     },
 

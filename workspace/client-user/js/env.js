@@ -291,8 +291,6 @@ var projectGlobal = {
 								includeCss(dependencies.url);
 							}, this);
 						}
-
-
                     });
                     
                 }
@@ -320,10 +318,41 @@ var projectGlobal = {
                 }
             },
             callback : function () {
+                this.getGUIServicesDependencies();
+            }
+        });   
+    },
+    getGUIServicesDependencies : function () {
+        Ext.Ajax.request({
+            url : loadUrl.get('APP_URL') + "/guiServices",
+            method : "GET",
+            scope : this,
+            success : function (ret) {
+                var json = Ext.decode(ret.responseText);
+                if (!json.success) {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+                    return false;
+                } else {
+                    var data = json.data;                    
+                        Ext.each(data, function (service) {
+                            if (!Ext.isEmpty(service.dependencies.js)) {
+                                Ext.each(service.dependencies.js, function (dependencies) {
+                                    includeJs(dependencies.url);
+                                }, this);
+                            }
+                            if (!Ext.isEmpty(service.dependencies.css)) {
+                                Ext.each(service.dependencies.css, function (dependencies) {
+                                    includeCss(dependencies.url);
+                                }, this);
+                            }
+                        }, this);
+                }
+            },
+            callback : function () {
                 this.initLanguages();
             }
         });   
-    }, 
+    },
     initLanguages : function () {
         Ext.Ajax.request({
             scope : this,
@@ -425,8 +454,8 @@ var projectGlobal = {
 //                var topEl = Ext.get('toppanel');
 //                topEl.update(Ext.util.Format.htmlDecode(data.project.htmlHeader));
             },
-            callback : function (){
-            	 this.getDataViewsDependencies();
+            callback : function () {
+                this.getDataViewsDependencies();
             },
             failure : function () {
 				Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProject'));

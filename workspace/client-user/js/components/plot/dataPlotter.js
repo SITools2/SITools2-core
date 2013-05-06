@@ -349,7 +349,7 @@ sitools.user.component.dataPlotter = function (config) {
     var urlRecords = config.dataUrl + '/records';
     //if there was a selection let's add the selection string to the urlRecords
     if (this.isSelection) {
-        urlRecords += "?1=1&" + config.selections;   
+        urlRecords += "?1=1&" + decodeURIComponent(config.selections);   
     }
     var sitoolsAttachementForUsers = config.dataUrl;
     
@@ -364,7 +364,8 @@ sitools.user.component.dataPlotter = function (config) {
         datasetId : config.datasetId,
         isFirstCountDone : false,
         autoLoad : false,
-        filters : config.filters
+        filters : config.filters,
+        sortInfo : config.sortInfo
     });
     
     
@@ -571,7 +572,7 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
 						text : i18n.get('label.plot.savePng'), 
 						scope : this, 
 						handler : function () {
-							this.plot.saveImage("png", "plotImage");
+							this.plot.download.saveImage("png");
 						}
 					}]
 				});
@@ -620,7 +621,7 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
         var plotConfig = this.getPlotConfig(this.columnModel, records);
         this.plot = Flotr.draw($(this.rightPanel.body.id), [ plotConfig.data ], plotConfig.config);
         $(this.rightPanel.body.id).stopObserving('flotr:click');
-        $(this.rightPanel.body.id).observe('flotr:click', this.showDataDetail.bindAsEventListener(this));
+        $(this.rightPanel.body.id).observe('flotr:click', this.handleClick.bind(this, plotConfig));
         $(this.rightPanel.body.id).stopObserving('flotr:select');
         $(this.rightPanel.body.id).observe('flotr:select', function (evt) {
             var area = evt.memo[0];
@@ -899,9 +900,10 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
                 color : '#ff3f19', // => line color of points that are drawn
                 // when mouse comes near a value of a series
                 trackDecimals : 1, // => decimals for the track values
-                sensibility : 10 * 1000000000, // => the lower this number, the more
+                sensibility : 2, // => the lower this number, the more
                 // precise you have to aim to show a value
-                radius : 3
+                radius : 3,
+                trackFormatter  : (function (o) {return this.getTagValueFromObject(o); }).bind(this)
             // => radius of the track point
             },
             shadowSize : 4
@@ -918,8 +920,11 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
      * Function to show the details of a record
      * @param {} evt the event calling the function
      */
-    showDataDetail : function (evt) {
-        var idx = encodeURIComponent(evt.memo[1].prevHit.primaryKey);
+    showDataDetail : function (primaryKey) {
+        
+        
+        var idx = encodeURIComponent(primaryKey);
+        
         var jsObj = sitools.user.component.viewDataDetail;
         var componentCfg = {
             datasetUrl : this.dataUrl, 
@@ -933,7 +938,7 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
         
         var windowConfig = {
             id : "simpleDataDetail" + this.datasetId, 
-            title : i18n.get('label.viewDataDetail') + " : " + evt.memo[1].prevHit.primaryKey,
+            title : i18n.get('label.viewDataDetail') + " : " + primaryKey,
             datasetName : this.datasetName, 
             saveToolbar : false, 
             type : "simpleDataDetail", 
@@ -950,7 +955,34 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
         if (this.hasPlotted) {
             this.displayPlot(this.storeData.data.items);
         }
-    }
+    },
+    
+    handleClick : function (plotConfig, evt) {
+        var memo = evt.memo[1];
+        var object = memo.prevHit;
+        if (Ext.isEmpty(object)) {
+            var id = memo.el.id;
+            var options = plotConfig.config;
+            options.xaxis.min = null;
+            options.xaxis.max = null;
+            options.yaxis.min = null;
+            options.yaxis.max = null;
+            this.plot = Flotr.draw($(id), [ plotConfig.data ], options);
+        } else {
+            var primaryKey = this.getIdFromObject(object);
+            this.showDataDetail(primaryKey);
+        }
+    },
+    
+    getIdFromObject : function (object) {
+        var index = object.index;
+        return object.series.data[index][2];
+    },
+    
+    getTagValueFromObject : function (object) {
+        var index = object.index;
+        return object.series.data[index][3];
+    } 
 	
 });
 

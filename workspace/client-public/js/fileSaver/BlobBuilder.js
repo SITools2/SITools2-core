@@ -84,8 +84,8 @@ URL.createObjectURL = function(blob) {
 		} else {
 			return data_URI_header + "," + encodeURIComponent(blob.data);
 		}
-	} else if (real_create_object_url) {
-		return real_create_object_url.call(realURL, blob);
+	} else if (real_create_object_URL) {
+		return real_create_object_URL.call(realURL, blob);
 	}
 };
 URL.revokeObjectURL = function(object_url) {

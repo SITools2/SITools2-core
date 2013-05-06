@@ -1374,8 +1374,8 @@ td.ux-taskButtons-edge {
 	background-image : url(../images/icons/simple-arrow-right.png);
 }
 
-.menu-forms-title {
-	
+.btn-format-icon {
+	background-size : 16px 16px;
 }
 
 /** ENDTOOLBAR BUTTON **/

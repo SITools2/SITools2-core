@@ -82,8 +82,8 @@ sitools.user.component.dataviews.storeUtils = {
         }
         return primaryKey;
     },
-    getFormParams : function () {
-        return this.formParams;
+    getFormParams : function (store) {
+        return store.formParams;
     },
     /**
      * Build a string using a form param Value. 

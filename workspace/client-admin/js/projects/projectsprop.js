@@ -487,12 +487,12 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                 width : 100, 
                 editor : new Ext.form.TextField()
             }, {
-                header : i18n.get('headers.category'),
+                header : i18n.get('headers.category') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'categoryModule',
                 width : 100, 
                 editor : new Ext.form.TextField()
             }, {
-                header : i18n.get('headers.divIdToDisplay'),
+                header : i18n.get('headers.divIdToDisplay') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'divIdToDisplay',
                 width : 100, 
                 editor : new Ext.form.TextField()

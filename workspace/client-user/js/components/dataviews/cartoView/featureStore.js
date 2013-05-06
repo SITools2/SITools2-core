@@ -107,8 +107,11 @@ sitools.user.component.dataviews.cartoView.featureStore = function (config) {
 };
 
 Ext.extend(sitools.user.component.dataviews.cartoView.featureStore, GeoExt.data.FeatureStore, {
+    
+    paramPrefix : "filter",
+    
     getFormParams : function () {
-		return this.storeUtils.getFormParams();
+		return this.storeUtils.getFormParams(this);
 	}, 
 	loadRecords : function (o, options, success) {
 		this.bufferRange = [ -1, -1 ];
@@ -118,9 +121,9 @@ Ext.extend(sitools.user.component.dataviews.cartoView.featureStore, GeoExt.data.
 		}
         sitools.user.component.dataviews.cartoView.featureStore.superclass.loadRecords.call(this, o, options, success);
 	}, 
-	load : function (options) {
-		sitools.user.component.dataviews.cartoView.featureStore.superclass.load.call(this, options);
-	}, 
+//	load : function (options) {
+//		sitools.user.component.dataviews.cartoView.featureStore.superclass.load.call(this, options);
+//	}, 
     /**
      * Override
      */
@@ -162,6 +165,103 @@ Ext.extend(sitools.user.component.dataviews.cartoView.featureStore, GeoExt.data.
         }
         return true;
     },
+    
+    /**
+     * Sort by multiple fields in the specified order.
+     * 
+     * @param {Array}
+     *            An Array of field sort specifications, or, if ascending sort
+     *            is required on all columns, an Array of field names. A field
+     *            specification looks like:
+     * 
+     * <pre><code>
+     * {
+     *     ordersList : [ {
+     *         field : firstname,
+     *         direction : ASC
+     *     }, {
+     *         field : name
+     *         direction : DESC
+     *     } ]
+     * }
+     * 
+     * </code>
+     * 
+     */
+    multiSort : function (sorters, direction) {
+        this.hasMultiSort = true;
+        direction = direction || "ASC";
+
+        if (this.multiSortInfo && direction == this.multiSortInfo.direction) {
+            direction = direction.toggle("ASC", "DESC");
+        }
+
+        this.multiSortInfo = {
+            sorters : sorters,
+            direction : direction
+        };
+
+        if (this.remoteSort) {
+            // this.singleSort(sorters[0].field, sorters[0].direction);
+            this.load(this.lastOptions);
+
+        } else {
+            this.applySort();
+            this.fireEvent('datachanged', this);
+        }
+    },
+    getSortState : function () {
+        return this.hasMultiSort ? this.multiSortInfo : this.sortInfo;
+    },
+
+    // application du tri multiple sur le store
+    load : function (options) {
+        options = Ext.apply({}, options);
+        this.storeOptions(options);
+        if ((this.sortInfo || this.multiSortInfo) && this.remoteSort) {
+            var pn = this.paramNames;
+            options.params = Ext.apply({}, options.params);
+            this.isInSort = true;
+            var root = pn.sort;
+            if (this.hasMultiSort) {
+                options.params[pn.sort] = Ext.encode({
+                    "ordersList" : this.multiSortInfo.sorters
+                });
+            } else {
+                options.params[pn.sort] = Ext.encode({
+                    "ordersList" : [ this.sortInfo ]
+                });
+            }
+
+        }
+
+        try {
+            return this.execute('read', null, options);
+        } catch (e) {
+            this.handleException(e);
+            return false;
+        }
+    },
+    
+    buildQuery : function (filters) {
+        if (Ext.isEmpty(filters)) {
+            return;
+        }
+        var p = {}, i, f, root, dataPrefix, key, tmp,
+            len = filters.length;
+
+        for (i = 0; i < len; i++) {
+            f = filters[i];
+            root = [this.paramPrefix, '[', i, ']'].join('');
+            p[root + '[columnAlias]'] = f.columnAlias;
+
+            dataPrefix = root + '[data]';
+            for (key in f.data) {
+                p[[dataPrefix, '[', key, ']'].join('')] = f.data[key];
+            }
+        }
+        return p;
+    }
 
 
 });

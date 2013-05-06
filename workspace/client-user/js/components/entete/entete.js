@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-/*global Ext, sitools, showResponse, i18n, SitoolsDesk, extColModelToJsonColModel, loadUrl*/
+/*global Ext, sitools, showResponse, i18n, SitoolsDesk, extColModelToJsonColModel, loadUrl, projectGlobal*/
 
 Ext.namespace('sitools.user.component.entete');
 
@@ -174,7 +174,7 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 							    endOpacity : 0,
 							    useDisplay: false
 							});
-					}, me);
+					    }, me);
 				}, 
 				maximizeDesktop : function (me, navBar) {
 //					me.setPosition(me.getPosition()[0], this.calcUserContainerYPos(navBar));
@@ -238,7 +238,7 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 	/**
 	 * Return the Navbar Buttons
 	 */
-	getNavbarButtons : function (){
+	getNavbarButtons : function () {
 	    return this.navToolbarButtons;
 	},
 	

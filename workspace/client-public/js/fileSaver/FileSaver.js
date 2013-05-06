@@ -13,7 +13,7 @@
 
 /*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
 
-var saveAs = saveAs || (function(view) {
+ var saveAs = saveAs  || (navigator.msSaveBlob && navigator.msSaveBlob.bind(navigator)) ||  (function(view) {
 	"use strict";
 	var
 		  doc = view.document

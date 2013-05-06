@@ -2,12 +2,12 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2012-04-02
-Version                              : 2.0
+Date                                 : 2012-04-26
+Version                              : 2.0.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
-Repository url                       : http://sourceforge.net/projects/sitools2/
+Repository url                       : https://github.com/SITools2/core-v2.git
 Project page                         : http://sitools2.sourceforge.net/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
@@ -15,8 +15,37 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (2.0)
 
 2/ Changes
+
 ___________________
--R9S1 (2013-04-02)
+-2.0.2 (2013-04-26)
+	* New feature
+		- New CSV export resource plugin
+		- GUI services configuration on datasets
+		- GUI services categorization on datasets
+		- Service services categorization on datasets
+		- GUI services definition for sort, filter, plot, download, record details, column definition and add to selection
+		- GUI services and service services are displayed in dataset views
+
+	* Bugs fixed : 
+		- Paging problem in datastorage administration application
+		- DatasetView and ProjectModule dependencies are not loaded properly in the administration interface
+		- Fix PNG export in the plot GUI service
+		- Form size cannot be saved as public user
+		
+	* Enhancements : 
+		- No more context menu (right click) in dataviews
+		- Upgrade to Flotr2 for the plot GUI service
+		- Redesign window header style in desktop mode
+	
+	* API changes : 
+		- Data folder :
+			- adminIndex.ftl and projectIndex.ftl has been changed
+			- new gui_services folder with some gui_services declared
+			- new services folder
+			- new plugin_gui_services folder
+			- new project_modules definition
+___________________
+-2.0.1 (2013-04-02)
 	* New feature
 		- In fixed mode, it is possible to save a form and to display it at startup
 		- In fixed mode, it is possible to save a dataset view and to display it at startup
@@ -38,7 +67,8 @@ ___________________
 		- When querying the dataset record API, a 400 HTTP error code is returned 
 			* If a date is invalid 
 			* If a the dates in a date between filter are Inconsistent
-
+		- Upgrade org.restlet.patched from 1.0.2 to 1.0.3 (jar name changed)
+		- Logs file path in the sitools.properties are now relative to the ROOT_DIRECTORY
 ____________________
 -2.0 (2013-02-13)
 

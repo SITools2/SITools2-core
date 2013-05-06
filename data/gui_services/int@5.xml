@@ -1,0 +1,19 @@
+<guiService>
+  <id>31615731-6d95-43a4-9d90-2c03816bded3</id>
+  <name>Columns Definition</name>
+  <description>retrieve the columns definition for a dataset</description>
+  <label>label.definitionTitle</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <icon>/sitools/common/res/images/icons/tree_dictionary.png</icon>
+  <xtype>sitools.user.component.columnsDefinition</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>1</priority>
+</guiService>

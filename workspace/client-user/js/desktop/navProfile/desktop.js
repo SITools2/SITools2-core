@@ -41,30 +41,30 @@ sitools.user.desktop.navProfile.desktop = {
      */
 	createComponent : function (config) {
     	var desktop = getDesktop();
-    	var componentCfg  = config.componentCfg;
-    	var component = new config.JsObj(componentCfg);
-    	var windowSettings = config.windowSettings;
-    	//déléguer au composant l'ouverture
-    	if (Ext.isFunction(component.showMeInDesktopNav)) {
-    		component.showMeInDesktopNav(component, config);
-    		return;
-    	}
+        var componentCfg = config.componentCfg;
+        var component = new config.JsObj(componentCfg);
+        var windowSettings = config.windowSettings;
+        // déléguer au composant l'ouverture
+        if (Ext.isFunction(component.showMeInDesktopNav)) {
+            component.showMeInDesktopNav(component, config);
+            return;
+        }
 
-    	var reloadComp = config.reloadComp;
-    	
-    	if (Ext.isEmpty(component._getSettings)) {
-			component._getSettings = function () {
-				return {};
-			};
+        var reloadComp = config.reloadComp;
+
+        if (Ext.isEmpty(component._getSettings)) {
+            component._getSettings = function () {
+                return {};
+            };
         }
         
         var newwin;
         var winHeight = windowSettings.winHeight || DEFAULT_WIN_HEIGHT;
         var winWidth = windowSettings.winWidth || DEFAULT_WIN_WIDTH;
-        
+
         var x = windowSettings.x;
         var y = windowSettings.y;
-        
+
         var desktopEl = getDesktop().getDesktopEl();
         
         if (x < desktopEl.dom.offsetLeft) {
@@ -85,7 +85,8 @@ sitools.user.desktop.navProfile.desktop = {
             // Create the toolbar with the windowSettings.toolbarItems
             tbar = new Ext.Toolbar({
                 xtype : 'toolbar',
-                items : windowSettings.toolbarItems
+                items : windowSettings.toolbarItems,
+                cls : 'toolbar'
             });
         }
         
@@ -229,15 +230,15 @@ sitools.user.desktop.navProfile.desktop = {
                 layout : 'fit',
                 specificType : "moduleWindow",
                 listeners : {
-    			    render : function (me){
-    			        me.getEl().fadeIn({
-    			            duration: .5
-    			        });
-    			    }
-            	}, 
+                    render : function (me) {
+                        me.getEl().fadeIn({
+                            duration : .5
+                        });
+                    }
+                }, 
                 items : [ {
 			        id : module.id + "_module", 
-                	noBorder : true, 
+                   	noBorder : true, 
 					layout : 'fit',
 			        xtype : module.xtype, 
 			        moduleProperties : module.properties,
@@ -276,24 +277,28 @@ sitools.user.desktop.navProfile.desktop = {
         return win;    	
     },
     
-    
+
+        
     /**
      * Do nothing in fixed mode
      */
-    initNavbar : function (){
+    initNavbar : function () {
         return;
     }, 
     
+
+
     /**
      * Specific multiDataset search context methods
      */
     multiDataset : {
-    	/**
-    	 * Returns the right object to show multiDs results
-    	 * @returns
-    	 */
-    	getObjectResults : function () {
-	    	return sitools.user.component.forms.resultsProjectForm;
+        /**
+         * Returns the right object to show multiDs results
+         * 
+         * @returns
+         */
+        getObjectResults : function () {
+            return sitools.user.component.forms.resultsProjectForm;
 	    }, 
 	    /**
 	     * Handler of the button show data in the {sitools.user.component.forms.resultsProjectForm} object 

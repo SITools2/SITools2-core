@@ -38,13 +38,13 @@ Ext.namespace('Ext.ux', "sitools.user.desktop");
  * @requires Ext.app.App
  * @class sitools.user.Desktop.App
  */
-sitools.user.desktop.App = function() {
+sitools.user.desktop.App = function () {
 	/**
 	 * Initialize every modules that should be displayed in a specific Div. 
 	 * For each of them, creates a Ext.Panel renderTo the div defined in project administration.
 	 */
 	function initModulesDiv(modules) {
-		Ext.each(projectGlobal.modulesInDiv, function(module) {
+		Ext.each(projectGlobal.modulesInDiv, function (module) {
 			var contentEl = Ext.get(module.divIdToDisplay);
 			if (Ext.isEmpty(contentEl)) {
 				Ext.Msg.alert(i18n.get('label.error'), String.format(i18n
@@ -60,24 +60,24 @@ sitools.user.desktop.App = function() {
 					forceLayout : true,
 					height : contentEl.getHeight(),
 					width : contentEl.getWidth(),
-					items : [{
-								layout : 'fit',
-								xtype : module.xtype,
-								listProjectModulesConfig : module.listProjectModulesConfig,
-								moduleProperties : module.properties
-							}],
+                    items : [ {
+                        layout : 'fit',
+                        xtype : module.xtype,
+                        listProjectModulesConfig : module.listProjectModulesConfig,
+                        moduleProperties : module.properties
+                    } ],
 					listeners : {
-						resize : function(me) {
+						resize : function (me) {
 							if (module.container) {
 								me.setSize(Ext.get(module.container).getSize());
 							}
 
 						},
-						maximizeDesktop : function(me) {
+						maximizeDesktop : function (me) {
 							me.hide();
 							me.doLayout();
 						},
-						minimizeDesktop : function(me) {
+						minimizeDesktop : function (me) {
 							me.setVisible(true);
 							me.doLayout();
 						}
@@ -95,9 +95,9 @@ sitools.user.desktop.App = function() {
 	 */
 	function initBottom() {
 		var modules = projectGlobal.modules;
-		var bottom = new sitools.user.component.bottom.Bottom({
-					id : "bottomCompId"
-				});
+        var bottom = new sitools.user.component.bottom.Bottom({
+            id : "bottomCompId"
+        });
 	}
 
 	/**
@@ -106,16 +106,16 @@ sitools.user.desktop.App = function() {
 	 */
 	function initEntete() {
 		var entete = new sitools.user.component.entete.Entete({
-					renderTo : "x-headers",
-					id : "headersCompId",
-					htmlContent : projectGlobal.htmlHeader,
-					modules : projectGlobal.modules,
-					listeners : {
-						resize : function(me) {
-							me.setSize(SitoolsDesk.getEnteteEl().getSize());
-						}
+				renderTo : "x-headers",
+				id : "headersCompId",
+				htmlContent : projectGlobal.htmlHeader,
+				modules : projectGlobal.modules,
+				listeners : {
+					resize : function (me) {
+						me.setSize(SitoolsDesk.getEnteteEl().getSize());
 					}
-				});
+				}
+			});
 
 	}
 	/**
@@ -141,20 +141,20 @@ sitools.user.desktop.App = function() {
 					desktopReady.call(this);
 					Ext.get('ux-taskbar').mask();
 					var alertWindow = new Ext.Window({
-								title : i18n.get('label.maintenance'),
-								width : 600,
-								height : 400,
-								autoScroll : true,
-								closable : false,
-								items : [{
-											xtype : 'panel',
-											layout : 'fit',
-											autoScroll : true,
-											html : data.project.maintenanceText,
-											padding : "5"
-										}],
-								modal : true
-							});
+							title : i18n.get('label.maintenance'),
+							width : 600,
+							height : 400,
+							autoScroll : true,
+							closable : false,
+							items : [{
+									xtype : 'panel',
+									layout : 'fit',
+									autoScroll : true,
+									html : data.project.maintenanceText,
+									padding : "5"
+								}],
+							modal : true
+					    });
 					alertWindow.show();
 					return;
 				}
@@ -162,8 +162,8 @@ sitools.user.desktop.App = function() {
 				projectGlobal.modules = data.project.modules;
 				projectGlobal.modulesInDiv = [];
 
-				//Mise a l'écart des modules qui s'affichent dnas une div
-				Ext.each(projectGlobal.modules, function(module) {
+				//Mise a l'écart des modules qui s'affichent dans une div
+				Ext.each(projectGlobal.modules, function (module) {
 							if (!Ext.isEmpty(module.divIdToDisplay)) {
 								projectGlobal.modulesInDiv.push(module);
 							}
@@ -179,20 +179,12 @@ sitools.user.desktop.App = function() {
 				
 				getListOfModulesAndCreateModules(projectGlobal.sitoolsAttachementForUsers, projectGlobal.modules);		
 				
-				// TODO : change here loading project modules
-//				Ext.each(projectGlobal.modules, function(config) {
-//							getConfigAndCreateModule(config, this);
-//							SitoolsDesk.modulesACharger++;
-//						}, this);
-
-				
 			},
-			failure : function(response) {
+			failure : function (response) {
 				Ext.get('ux-taskbar').mask();
 				Ext.Msg.alert('Status', i18n.get('warning.not.authorized'),
-						function() {
-							window.location = loadUrl.get('APP_URL')
-									+ loadUrl.get('APP_CLIENT_USER_URL');
+						function () {
+							window.location = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL');
 						});
 				return;
 			}
@@ -249,7 +241,7 @@ sitools.user.desktop.App = function() {
 	 * @returns
 	 */
 	function initNavigationMode() {
-		if (projectGlobal.navigationMode == "desktop") {
+		if (projectGlobal.navigationMode === "desktop") {
 			SitoolsDesk.navProfile = sitools.user.desktop.navProfile.desktop;
 		} else {
 			SitoolsDesk.navProfile = sitools.user.desktop.navProfile.fixed;
@@ -263,7 +255,6 @@ sitools.user.desktop.App = function() {
 	 */
 	function _onAllJsIncludesDone() {
 		initNavigationMode();
-
 		SitoolsDesk.loadPreferences(this);
 
 		this.fireEvent('modulesLoaded');
@@ -272,6 +263,37 @@ sitools.user.desktop.App = function() {
 		this.fireEvent('ready');
 
 	}
+	
+    /**
+     * Initialize every modules that should be displayed in a specific Div. 
+     * For each of them, creates a Ext.Panel renderTo the div defined in project administration.
+     */
+    function checkModules(modules) {
+        var errorModules = [];
+        Ext.each(projectGlobal.modules, function (module) {
+            var moduleName = module.name;
+            
+            var xtype = module.xtype;            
+            var func = xtype + ".openModule";
+            try {
+                if (!Ext.isEmpty(xtype) && Ext.isFunction(eval(func))) {
+                    eval(func);
+                }
+                
+            } catch (err) {
+                errorModules.push(moduleName);
+            }
+        });
+        if (!Ext.isEmpty(errorModules)) {
+            var moduleNames = "";
+            Ext.each(errorModules, function (moduleName) {
+                moduleNames += "<br/> - " + moduleName;
+            });
+            var msg = String.format(i18n.get("label.cannotLoadModules"), moduleNames);
+            Ext.Msg.alert(i18n.get("label.warning"), msg);
+        }
+    }
+	
 
 	/**
 	 * Method called on moduleLoaded event.
@@ -289,7 +311,9 @@ sitools.user.desktop.App = function() {
 	 * Load every modules defined to be displayed in a specific div. 
 	 */
 	function _onModulesLoaded() {
-		initEntete();
+	    checkModules(projectGlobal.modules);
+		
+	    initEntete();
 		initBottom();
 		initTaskAndNavBar();
 		initModulesDiv(projectGlobal.modules);
@@ -312,8 +336,7 @@ sitools.user.desktop.App = function() {
 		SitoolsDesk.app.addListener("ready", desktopReady);
 		SitoolsDesk.app.addListener("modulesLoaded", _onModulesLoaded);
 
-		sql2ext.load(loadUrl.get('APP_URL')
-				+ "/client-user/conf/sql2ext.properties");
+        sql2ext.load(loadUrl.get('APP_URL') + "/client-user/conf/sql2ext.properties");
 
 		//handle windowResize event 
 		Ext.EventManager.onWindowResize(fireResize, SitoolsDesk);
@@ -323,12 +346,12 @@ sitools.user.desktop.App = function() {
 		// Ext.QuickTips.init();
 
 		// Apply a set of config properties to the singleton
-		Ext.apply(Ext.QuickTips.getQuickTip(), {
-					maxWidth : 200,
-					minWidth : 100,
-					showDelay : 50,
-					trackMouse : true
-				});
+        Ext.apply(Ext.QuickTips.getQuickTip(), {
+            maxWidth : 200,
+            minWidth : 100,
+            showDelay : 50,
+            trackMouse : true
+        });
 	}
 
 	/**
@@ -344,12 +367,12 @@ sitools.user.desktop.App = function() {
 	 * Show a {sitools.userProfile.Login} window
 	 */
 	function _onLogin() {
-		var tmp = new sitools.userProfile.Login({
-					closable : true,
-					url : loadUrl.get('APP_URL') + '/login',
-					register : loadUrl.get('APP_URL') + '/inscriptions/user',
-					reset : loadUrl.get('APP_URL') + '/resetPassword'
-				}).show();
+        var tmp = new sitools.userProfile.Login({
+            closable : true,
+            url : loadUrl.get('APP_URL') + '/login',
+            register : loadUrl.get('APP_URL') + '/inscriptions/user',
+            reset : loadUrl.get('APP_URL') + '/resetPassword'
+        }).show();
 	}
 
 	/**
@@ -398,12 +421,12 @@ sitools.user.desktop.App = function() {
 		}
 		//Create the component according to the navigation profile.
 		try {
-			SitoolsDesk.navProfile.createComponent({
-						componentCfg : componentCfg,
-						windowSettings : windowSettings,
-						reloadComp : reloadComp,
-						JsObj : JsObj
-					});
+            SitoolsDesk.navProfile.createComponent({
+                componentCfg : componentCfg,
+                windowSettings : windowSettings,
+                reloadComp : reloadComp,
+                JsObj : JsObj
+            });
 
 		} catch (r) {
 			Ext.Msg.alert(i18n.get("label.warning"), i18n
@@ -420,15 +443,14 @@ sitools.user.desktop.App = function() {
 			Ext.getBody().unmask();
 		}
 		Ext.get("ux-taskbar").setVisible(true);
-		SitoolsDesk.getEnteteComp().fireEvent("desktopReady",
-				SitoolsDesk.getEnteteComp());
-		document.onkeypress = function(event) {
-			if (event.keyCode == event.DOM_VK_F1) {
-				// cancel browser app event handler for F1 key
-				event.stopPropagation()
-				event.preventDefault()
-			}
-		}
+		SitoolsDesk.getEnteteComp().fireEvent("desktopReady", SitoolsDesk.getEnteteComp());
+        document.onkeypress = function (event) {
+            if (event.keyCode === event.DOM_VK_F1) {
+                // cancel browser app event handler for F1 key
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        };
 	}
 
 	/**
@@ -467,8 +489,11 @@ sitools.user.desktop.App = function() {
 				DSLScript.type = "text/javascript";
 				DSLScript.onload = includeJs.createDelegate(this, [ConfUrls,
 								indexAInclure + 1]);
-				DSLScript.onreadystatechange = includeJs.createDelegate(this, [
-								ConfUrls, indexAInclure + 1]);
+				DSLScript.onreadystatechange = includeJs.createDelegate(this, 
+				        [ConfUrls, indexAInclure + 1]);
+				//keep loading even if there is an error
+				DSLScript.onerror = includeJs.createDelegate(this, 
+				        [ConfUrls, indexAInclure + 1]);
 
 				DSLScript.src = ConfUrls[indexAInclure].url;
 
@@ -484,36 +509,35 @@ sitools.user.desktop.App = function() {
 				}
 			}
 		}
-
+		
 		var module = new Ext.app.Module(Ext.apply(config, {
-					init : function() {
-						// s'il y a des dependances
-						if (config.dependencies) {
-							if (config.dependencies.css) {
-								Ext.each(config.dependencies.css, function(
-												dependenceCss) {
-											includeCss(dependenceCss.url);
-										});
-							}
-
-							if (config.dependencies.js) {
-								includeJs(config.dependencies.js, 0);
-							}
-
-						} else {
-							SitoolsDesk.app.modulesCharges++;
-						}
-
-					},
-
-					getWindow : function() {
-						return Ext.getCmp(config.id);
-					},
-					openModule : function() {
-						var desktop = getDesktop();
-						return SitoolsDesk.navProfile.openModule(module);
+			init : function () {
+				// s'il y a des dependances
+				if (config.dependencies) {
+					if (config.dependencies.css) {
+						Ext.each(config.dependencies.css, function (dependenceCss) {
+									includeCss(dependenceCss.url);
+								});
 					}
-				}));
+
+					if (config.dependencies.js) {
+						includeJs(config.dependencies.js, 0);
+					}
+
+				} else {
+					SitoolsDesk.app.modulesCharges++;
+				}
+
+			},
+
+			getWindow : function () {
+				return Ext.getCmp(config.id);
+			},
+			openModule : function () {
+				var desktop = getDesktop();
+				return SitoolsDesk.navProfile.openModule(module);
+			}
+		}));
 		return module;
 
 	}
@@ -524,14 +548,12 @@ sitools.user.desktop.App = function() {
 	function getConfigAndCreateModule(config) {
 		Ext.Ajax.request({
 			method : "GET",
-			url : loadUrl.get('APP_URL')
-					+ loadUrl.get('APP_PROJECTS_MODULES_URL') + "/" + config.id,
+			url : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_MODULES_URL') + "/" + config.id,
 			scope : this,
-			success : function(response) {
+			success : function (response) {
 				var json = Ext.decode(response.responseText);
 				if (json.success) {
-					var configModule = Ext.applyIf(config, json.projectModule
-									|| {});
+					var configModule = Ext.applyIf(config, json.projectModule || {});
 					var module = createModule(configModule);
 					SitoolsDesk.app.modules.push(module);
 				} else {
@@ -550,6 +572,18 @@ sitools.user.desktop.App = function() {
 			failure : alertFailure
 		});
 	}
+	
+	function findProjectModuleConfig(configs, id) {
+        var configOut = null;
+        Ext.each(configs, function (conf) {
+            if (conf.id === id) {
+                configOut = conf;
+                return;
+            }
+        }, this);
+        return configOut;
+    }
+	
 	/**
 	 * Gets the list of modules for the project and creates all the modules
 	 * @recommanded New version of getConfigAndCreateModule
@@ -559,13 +593,13 @@ sitools.user.desktop.App = function() {
 			method : "GET",
 			url : projectAttachment + "/projectModules",
 			scope : this,
-			success : function(response) {
+			success : function (response) {
 				var json = Ext.decode(response.responseText);
-				Ext.each(json.data, function(projectModule){
+				Ext.each(json.data, function (projectModule) {
 					var projectConfig = findProjectModuleConfig(configs, projectModule.id);
 					if (!Ext.isEmpty(projectConfig)) {
 						var configModule = Ext.applyIf(projectConfig, projectModule	|| {});
-						var module = createModule(configModule);
+						var module = createModule(configModule);						
 						SitoolsDesk.app.modules.push(module);
 					}
 					else {
@@ -587,16 +621,8 @@ sitools.user.desktop.App = function() {
 		});		
 	}
 	
-	function findProjectModuleConfig(configs, id) {
-		var configOut;
-		Ext.each(configs, function(conf){
-			if(conf.id == id) {
-				configOut = conf;
-				return;
-			}
-		}, this);
-		return configOut;
-	}
+
+	
 
 	/**
 	 * Instanciation of a Ext.app.App object. 
@@ -606,14 +632,14 @@ sitools.user.desktop.App = function() {
 	function createApplication() {
 		return new Ext.app.App({
 			//initialize app
-			init : function() {
+			init : function () {
 				Ext.QuickTips.init();
 				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				//WTF with IE...
 				if (Ext.isIE) {
 					Ext.Msg.confirm(i18n.get('label.warning'), i18n
 									.get('label.IEWarning'),
-							function(buttonId) {
+							function (buttonId) {
 								if (buttonId === "yes") {
 									maskDesktop();
 									initProject();
@@ -630,28 +656,27 @@ sitools.user.desktop.App = function() {
 
 			},
 			//overrides getModules
-			getModules : function() {
+			getModules : function () {
 				return this.modules;
 			},
 			//overrides getModulesInDiv
-			getModulesInDiv : function() {
+			getModulesInDiv : function () {
 				return this.modulesInDiv;
 			},
 			//overrides
-			findModule : function(moduleId) {
-				var result;
-				Ext.each(this.modules.concat(this.modulesInDiv), function(
-								module) {
-							if (module.id === moduleId) {
-								result = module;
-							}
-						});
+			findModule : function (moduleId) {
+				var result = null;
+				Ext.each(this.modules.concat(this.modulesInDiv), function (module) {
+					if (module.id === moduleId) {
+						result = module;
+					}
+				});
 				return result;
 			},
 			//add some method 
-			saveWindowSettings : function(forPublicUser) {
+			saveWindowSettings : function (forPublicUser) {
 				var desktopSettings = SitoolsDesk.navProfile
-						.getDesktopSettings();
+						.getDesktopSettings(forPublicUser);
 
 				userPreferences = {};
 				userPreferences.windowSettings = desktopSettings;
@@ -683,7 +708,7 @@ sitools.user.desktop.App = function() {
 	 */
 	function getPortalPreferences(portalPrefCb) {
 		if (!Ext.isEmpty(userLogin)) {
-			var portalPrefSuccess = function(response) {
+			var portalPrefSuccess = function (response) {
 				if (Ext.isEmpty(response.responseText)) {
 					return;
 				}
@@ -693,7 +718,7 @@ sitools.user.desktop.App = function() {
 						this.app.language = json.language;
 					}
 				} catch (err) {
-					return;
+				    return;
 				}
 			};
 
@@ -745,7 +770,7 @@ sitools.user.desktop.App = function() {
 		 * @param {} panel The panel to be historized.
 		 * @returns
 		 */
-		addToHistory : function(panel) {
+		addToHistory : function (panel) {
 			panel.rendered = false;
 			SitoolsDesk.history.push(panel);
 		},
@@ -757,7 +782,7 @@ sitools.user.desktop.App = function() {
 		 * After All, call SitoolsDesk.app.initApp() to instanciate an Ext.Desktop.
 		 * @returns
 		 */
-		initDesktopApplication : function() {
+		initDesktopApplication : function () {
 			// START HERE !!!
 			Ext.QuickTips.init();
 
@@ -790,17 +815,16 @@ sitools.user.desktop.App = function() {
 			 *  - méthode N°5 : SitoolsDesk.app.initApp (Instancie l'objet Ext.Desktop et appel à SitoolsDesk.app.init())
 			 *  
 			 */
-			var initApplication = function() {
+			var initApplication = function () {
 				SitoolsDesk.app.initApp();
 			};
-			var i18nCb = function() {
+			var i18nCb = function () {
 				projectGlobal.getUserRoles(initApplication);
 			};
-			var portalPrefCb = function() {
-				i18n.load('/sitools/res/i18n/' + SitoolsDesk.app.language
-								+ '/gui.properties', i18nCb);
+			var portalPrefCb = function () {
+				i18n.load('/sitools/res/i18n/' + SitoolsDesk.app.language + '/gui.properties', i18nCb);
 			};
-			var callbackSiteMap = function() {
+			var callbackSiteMap = function () {
 				getPortalPreferences(portalPrefCb);
 			};
 			loadUrl.load('/sitools/client-user/siteMap', callbackSiteMap);
@@ -813,7 +837,7 @@ sitools.user.desktop.App = function() {
 		 * 1. moduleFactory.createModule 
 		 * 2. ajout du module dans le fisheyeMenu
 		 */
-		addApplication : function(composant) {
+		addApplication : function (composant) {
 			modulesExistants = SitoolsDesk.app.getModules();
 			if (!modulesExistants) {
 				modulesExistants = [];
@@ -831,7 +855,7 @@ sitools.user.desktop.App = function() {
 		 * On supprime son icone du menu demarrer et du fisheyeMenu ainsi que de
 		 * la liste des modules existants
 		 */
-		removeApplication : function(idApplication) {
+		removeApplication : function (idApplication) {
 			var moduleToRemove = SitoolsDesk.app.getModule(idApplication);
 			modulesExistants = SitoolsDesk.app.getModules();
 			SitoolsDesk.app.removeModule(moduleToRemove);
@@ -842,7 +866,7 @@ sitools.user.desktop.App = function() {
 		 * 1 - load the module Windows
 		 * 2 - load the Component windows (actually only "data", "form"  && "formProject" type window) 
 		 */
-		loadPreferences : function(scope) {
+		loadPreferences : function (scope) {
 			if (!Ext.isEmpty(projectGlobal.preferences) && !Ext.isEmpty(projectGlobal.preferences.projectSettings)) {
 				// Ne charge les préférences sauvegardées seulement si le navigationMode sauvegardé et le même que le courant
 				if (projectGlobal.navigationMode == projectGlobal.preferences.projectSettings.navigationMode){
@@ -878,7 +902,7 @@ sitools.user.desktop.App = function() {
 		 * @param {} component : the items to add to the Window
 		 * @param {string} JsObj : the name of the Javascript Object used to build the component inside the window
 		 */
-		addDesktopWindow : function(windowSettings, component, JsObj,
+		addDesktopWindow : function (windowSettings, component, JsObj,
 				reloadComp) {
 			if (Ext.isEmpty(windowSettings.saveToolbar)) {
 				windowSettings.saveToolbar = false;
@@ -899,8 +923,7 @@ sitools.user.desktop.App = function() {
 			}
 
 			//construction de l'url pour les préférences utilisateur. 
-			var baseFilePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/"
-					+ projectGlobal.projectName;
+			var baseFilePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + projectGlobal.projectName;
 
 			var filePath = component.preferencesPath;
 			var fileName = component.preferencesFileName;
@@ -911,23 +934,24 @@ sitools.user.desktop.App = function() {
 			filePath = baseFilePath + filePath;
 
 			//Méthod to call if no userPreferences found
-			var addWinPublic = function(windowSettings, component, JsObj,
+			var addWinPublic = function (windowSettings, component, JsObj,
 					reloadComp) {
-				var successPublic = function(response, opts) {
+				var successPublic = function (response, opts) {
 					try {
 						var json = Ext.decode(response.responseText);
 
 						Ext.apply(windowSettings, json.windowSettings);
-						Ext.apply(component, {
-									userPreference : json.componentSettings
-								});
+						Ext.apply(component, 
+					        {
+								userPreference : json.componentSettings
+							});
 						addWinData(windowSettings, component, JsObj, reloadComp);
 					} catch (err) {
 						addWinData(windowSettings, component, JsObj, reloadComp);
 					}
 				};
 
-				var failurePublic = function(response, opts) {
+				var failurePublic = function (response, opts) {
 					addWinData(windowSettings, component, JsObj, reloadComp);
 				};
 
@@ -939,14 +963,15 @@ sitools.user.desktop.App = function() {
 				addWinPublic(windowSettings, component, JsObj, reloadComp);
 			} else {
 				//Méthode appelée si l'on trouve des préférences pour le user
-				var successMethod = function(response, opts) {
+				var successMethod = function (response, opts) {
 					try {
 						var json = Ext.decode(response.responseText);
 
 						Ext.apply(windowSettings, json.windowSettings);
-						Ext.apply(component, {
-									userPreference : json.componentSettings
-								});
+						Ext.apply(component, 
+					        {
+								userPreference : json.componentSettings
+							});
 						addWinData(windowSettings, component, JsObj, reloadComp);
 					} catch (err) {
 						addWinPublic(windowSettings, component, JsObj,
@@ -954,7 +979,7 @@ sitools.user.desktop.App = function() {
 					}
 				};
 				//Si pas de préférences trouvées, on utilise addWinPublic
-				var failureMethod = function(response, opts) {
+				var failureMethod = function (response, opts) {
 					addWinPublic(windowSettings, component, JsObj, reloadComp);
 				};
 
@@ -966,42 +991,42 @@ sitools.user.desktop.App = function() {
 		 * Returns the Ext.Desktop instance. 
 		 * @returns {Ext.Desktop}
 		 */
-		getDesktop : function() {
+		getDesktop : function () {
 			return this.app.desktop;
 		},
 		/**
 		 * Returns the desktop Header Element. 
 		 * @returns {Ext.Element}
 		 */
-		getEnteteEl : function() {
+		getEnteteEl : function () {
 			return Ext.get('x-headers');
 		},
 		/**
 		 * Returns the panel charged of displaying headers of Sitools.
 		 * @returns {sitools.user.component.entete.Entete} The headers component
 		 */
-		getEnteteComp : function() {
+		getEnteteComp : function () {
 			return Ext.getCmp("headersCompId");
 		},
 		/**
 		 * Returns the footer Element. 
 		 * @returns {Ext.Element}
 		 */
-		getBottomEl : function() {
+		getBottomEl : function () {
 			return Ext.get('x-bottom');
 		},
 		/**
 		 * Returns the panel charged of displaying bottom of Sitools.
 		 * @returns {sitools.user.component.bottom.Bottom} The footer component
 		 */
-		getBottomComp : function() {
+		getBottomComp : function () {
 			return Ext.getCmp("bottomCompId");
 		},
 		/**
 		 * Remove the active Panel in desktop (the module representation incrusted in background of the desktop)
 		 * 
 		 */
-		removeActivePanel : function() {
+		removeActivePanel : function () {
 			if (this.getDesktop().activePanel) {
 				var panel = this.getDesktop().activePanel;
 				this.getDesktop().activePanel = null;
@@ -1012,14 +1037,14 @@ sitools.user.desktop.App = function() {
 		/**
 		 * Close every window in desktop and panel in fixed mode
 		 */
-		removeAllWindows : function(quiet) {
+		removeAllWindows : function (quiet) {
 			SitoolsDesk.navProfile.removeAllWindows(quiet);
 		},
 		/**
 		 * Minify every window in desktop. 
 		 */
-		minifyAllWindows : function() {
-			SitoolsDesk.getDesktop().getManager().each(function(win) {
+		minifyAllWindows : function () {
+			SitoolsDesk.getDesktop().getManager().each(function (win) {
 						if (Ext.isFunction(win.minimize)) {
 							win.minimize();
 						} else {
@@ -1032,8 +1057,8 @@ sitools.user.desktop.App = function() {
 		 * Open and shows all hidden windows that have a taskButton  
 		 * @returns
 		 */
-		openAllWindows : function() {
-			SitoolsDesk.getDesktop().getManager().each(function(win) {
+		openAllWindows : function () {
+			SitoolsDesk.getDesktop().getManager().each(function (win) {
 						if (!win.isVisible() && win.taskButton) {
 							win.show();
 						}
@@ -1046,39 +1071,40 @@ sitools.user.desktop.App = function() {
 		 * @param {} config a config object containg windowSettings
 		 * @returns
 		 */
-		openModalWindow : function(panel, config) {
+		openModalWindow : function (panel, config) {
 			var windowConfig = config.windowSettings || {};
 			Ext.apply(windowConfig, {
-						modal : true,
-						layout : 'fit'
-					});
+					modal : true,
+					layout : 'fit'
+				});
 
 			if (!Ext.isEmpty(windowConfig.toolbarItems)) {
 				Ext.apply(windowConfig, {
-							tbar : {
-								items : windowConfig.toolbarItems
-							},
-							listeners : {
-								afterrender : function(me) {
-									if (me.getHeight() > Ext.getBody()
-											.getHeight()) {
-										me.setHeight(Ext.getBody().getHeight());
-									}
-									if (me.getWidth() > Ext.getBody()
-											.getWidth()) {
-										me.setWidth(Ext.getBody().getWidth());
-									}
-									me.doLayout();
-
-								}
+					tbar : {
+						items : windowConfig.toolbarItems,
+						cls : 'toolbar'
+					},
+					listeners : {
+						afterrender : function (me) {
+							if (me.getHeight() > Ext.getBody()
+									.getHeight()) {
+								me.setHeight(Ext.getBody().getHeight());
 							}
-						});
+							if (me.getWidth() > Ext.getBody()
+									.getWidth()) {
+								me.setWidth(Ext.getBody().getWidth());
+							}
+							me.doLayout();
+
+						}
+					}
+				});
 			}
 
 			Ext.applyIf(windowConfig, {
-						width : DEFAULT_WIN_WIDTH,
-						height : DEFAULT_WIN_HEIGHT
-					})
+				width : DEFAULT_WIN_WIDTH,
+				height : DEFAULT_WIN_HEIGHT
+			});
 			var win = new Ext.Window(windowConfig);
 			win.show();
 			win.add(panel);
@@ -1092,7 +1118,7 @@ sitools.user.desktop.App = function() {
 		 * @param {Ext.event} e the click Event. 
 		 * @returns
 		 */
-		showHelp : function(b, e) {
+		showHelp : function (b, e) {
 			var help = Ext.getCmp("helpWindow");
 			if (!Ext.isEmpty(help)) {
 				help.show();
@@ -1129,46 +1155,44 @@ sitools.user.desktop.App = function() {
 				            url : rec.data.parentUrl,
 				            method : 'GET', 
 				            success : function (response) {
-				            	try {
-									var json2 = Ext.decode(response.responseText);
-									var dataset = json2.dataset;
-									
-				                    var jsObj = SitoolsDesk.navProfile.getFormOpenMode();
-				                    
-				                    var componentCfg = {
-				                        dataUrl : rec.data.parentUrl,
-				                        dataset : dataset,
-				                        formId : rec.data.id,
-				                        formName : rec.data.name,
-				                        formParameters : rec.data.parameters,
-				                        formWidth : rec.data.width,
-				                        formHeight : rec.data.height, 
-				                        formCss : rec.data.css, 
-				                        preferencesPath : "/" + dataset.name + "/forms", 
-				                        preferencesFileName : rec.data.name
-				                    };
-				                    
-				                    SitoolsDesk.navProfile.addSpecificFormParameters(componentCfg, dataset);
-				                    
-				                    var windowSettings = {
-				                        datasetName : dataset.name, 
-				                        type : "form", 
-				                        title : i18n.get('label.forms') + " : " + dataset.name + "." + rec.data.name, 
-				                        id : "form" + dataset.id + rec.data.id, 
-				                        saveToolbar : true, 
-				                        iconCls : "form"
-				                    };
-				                    
-				                    SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
-				                    return;
-				            		
-				            	}
-				            	catch (err) {
-				                    Ext.Msg.alert(i18n.get('label.error'), err);
-				                    return;
-				                }
-		            		}
-	                    });
+				                try {
+                                    var json2 = Ext.decode(response.responseText);
+                                    var dataset = json2.dataset;
+
+                                    var jsObj = SitoolsDesk.navProfile.getFormOpenMode();
+
+                                    var componentCfg = {
+                                        dataUrl : rec.data.parentUrl,
+                                        dataset : dataset,
+                                        formId : rec.data.id,
+                                        formName : rec.data.name,
+                                        formParameters : rec.data.parameters,
+                                        formWidth : rec.data.width,
+                                        formHeight : rec.data.height,
+                                        formCss : rec.data.css,
+                                        preferencesPath : "/" + dataset.name + "/forms",
+                                        preferencesFileName : rec.data.name
+                                    };
+
+                                    SitoolsDesk.navProfile.addSpecificFormParameters(componentCfg, dataset);
+
+                                    var windowSettings = {
+                                        datasetName : dataset.name,
+                                        type : "form",
+                                        title : i18n.get('label.forms') + " : " + dataset.name + "." + rec.data.name,
+                                        id : "form" + dataset.id + rec.data.id,
+                                        saveToolbar : true,
+                                        iconCls : "form"
+                                    };
+
+                                    SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
+                                    return;
+                                } catch (err) {
+                                    Ext.Msg.alert(i18n.get('label.error'), err);
+                                    return;
+                                }
+				            }
+                        });
 	                }
 	                catch (err) {
 	                    Ext.Msg.alert(i18n.get('label.error'), err);
@@ -1181,7 +1205,6 @@ sitools.user.desktop.App = function() {
 	                return;
 	            }
 	        });
-    }
-
+		}
 	};
 };

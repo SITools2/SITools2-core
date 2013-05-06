@@ -120,3 +120,10 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 	background-color: #ccc;	
 	opacity: .60;
 }
+
+.not-save-textfield {
+	background-color: rgb(255, 132, 132);
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 10px;
+	border-radius: 4px;
+}

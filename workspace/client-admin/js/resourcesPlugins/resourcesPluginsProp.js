@@ -654,7 +654,7 @@ sitools.admin.resourcesPlugins.resourcesPluginsProp = Ext.extend(Ext.Window, {
         }
             
         var form = this.fieldMappingFormPanel.getForm();
-        if (!form.isValid()) {
+        if (!this.fieldMappingFormPanel.rendered || !form.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
         }

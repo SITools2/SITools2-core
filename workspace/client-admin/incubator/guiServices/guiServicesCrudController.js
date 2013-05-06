@@ -125,24 +125,25 @@ sitools.admin.guiServices.guiServicesCrudController = Ext.extend(sitools.util.ab
         guiServicesPropView.show();
      },
      
-     _modifyPropView : function (){
-     	
-     	var rec = this.getView('crud').getSelectionModel().getSelected();
-        
-        if (!rec){
-        	return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+
+         _modifyPropView : function () {
+
+        var rec = this.getView('crud').getSelectionModel().getSelected();
+
+        if (!rec) {
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
-     	
+
         var guiServicesPropView = new sitools.admin.guiServices.guiServicesPropView({
             name : 'prop',
             action : 'modify',
-            store : this.getStore('dependencies')           
+            store : this.getStore('dependencies')
         });
-        
+
         this.registerView(guiServicesPropView);
         this.getStore('dependencies').removeAll();
         guiServicesPropView.show();
-     },
+    },
      
      _createGuiService : function (){
         var form = this.getView('prop').formPanel.getForm();

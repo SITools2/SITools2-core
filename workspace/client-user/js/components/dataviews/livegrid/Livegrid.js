@@ -234,7 +234,6 @@ Ext.ns("sitools.user.component.dataviews.livegrid");
  *      }] 
  *      
  * @requires sitools.user.component.dataviews.livegrid.LiveGrid.storeLiveGrid
- * @requires sitools.user.component.dataviews.ctxMenu
  * @requires sitools.user.component.columnsDefinition
  * @requires sitools.user.component.viewDataDetail
  * @requires Ext.ux.grid.GridFiltersSpe
@@ -267,7 +266,9 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	 */
     var colModel;
 
-    if (!Ext.isEmpty(config.userPreference) && config.userPreference.datasetView == "Ext.ux.livegrid" && !Ext.isEmpty(config.userPreference.colModel)) {
+    this.origin = "Ext.ux.livegrid";
+    
+    if (!Ext.isEmpty(config.userPreference) && config.userPreference.datasetView == this.origin && !Ext.isEmpty(config.userPreference.colModel)) {
         colModel = config.userPreference.colModel;
     }
     else {
@@ -275,18 +276,18 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
     }
     var cm = getColumnModel(colModel, config.dictionaryMappings, dataviewConfig);
     
-    /*
-	 * the filters of the grid
-	 */
-    var filters = sitools.user.component.dataviews.dataviewUtils.getFilters(config.datasetCm, config.filters);
-    // Using the extended gridFilter to filter with the columnAlias
-    var filtersSimple = new Ext.ux.grid.GridFiltersSpe({
-        encode : false, // json encode the filter query
-        local : false, // defaults to false (remote filtering)
-        filters : filters
-    });
+//    /*
+//	 * the filters of the grid
+//	 */
+//    var filters = sitools.user.component.dataviews.dataviewUtils.getFilters(config.datasetCm, config.filters);
+//    // Using the extended gridFilter to filter with the columnAlias
+//    var filtersSimple = new Ext.ux.grid.GridFiltersSpe({
+//        encode : false, // json encode the filter query
+//        local : false, // defaults to false (remote filtering)
+//        filters : filters
+//    });
 
-    var myStoreSimple = new sitools.user.component.dataviews.livegrid.StoreLiveGrid({
+    this.store = new sitools.user.component.dataviews.livegrid.StoreLiveGrid({
 		datasetCm : config.datasetCm,
 		urlRecords : this.urlRecords,
 		sitoolsAttachementForUsers : this.sitoolsAttachementForUsers,
@@ -298,7 +299,11 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 		datasetId : config.datasetId
 	});
     
-    myStoreSimple.addListener("beforeload", function (store, options) {
+    this.store.filters = new sitools.widget.FiltersCollection({
+        filters : config.filters 
+    });
+    
+    this.store.addListener("beforeload", function (store, options) {
         //set the nocount param to false.
         //before load is called only when a new action (sort, filter) is applied
         if (!store.isInSort || store.isNewFilter) {
@@ -309,16 +314,20 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         store.isInSort = false;
         store.isNewFilter = false;
 	    
+        if (!Ext.isEmpty(store.filters)) {
+            var params = store.buildQuery(store.filters.getFilterData());
+            Ext.apply(options.params, params);
+        }
 	    
 	    this._loadMaskAnchor = Ext.get(this.getView().mainBody.dom.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
 	    
 	    this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
 	    
-
+	    this.store.storeOptions(options);
         //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
     }, this);
     
-    myStoreSimple.addListener("load", function (store, records, options) {
+    this.store.addListener("load", function (store, records, options) {
 		if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
 			this._loadMaskAnchor.unmask();
 		}
@@ -334,7 +343,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	 * store buffers (the loadMask from the GridPanel will only be used for
 	 * initial loading, sorting and reloading).
 	 */
-    var myViewSimple = new Ext.ux.grid.livegrid.GridView({
+    this.view = new Ext.ux.grid.livegrid.GridView({
         nearLimit : DEFAULT_NEAR_LIMIT_SIZE, 
 		loadMask : {
 			msg : i18n.get('label.waitMessage'),
@@ -363,6 +372,8 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	 */
     var selModelSimple = new Ext.ux.grid.livegrid.RowSelectionModel({});
 
+//    /*
+//	 * PlotXY button for launching numeric data preview as a plot
     /*
 	 * PlotXY button for launching numeric data preview as a plot
 	 */
@@ -407,89 +418,73 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
             }
         }
     });
-    var ctxMenu = new sitools.user.component.dataviews.ctxMenu({
-		grid : this, 
-		event : null, 
-		dataUrl : this.sitoolsAttachementForUsers, 
-		datasetId : config.datasetId, 
-		datasetName : this.datasetName, 
-		origin : "Ext.ux.livegrid",
-        urlDetail : this.sitoolsAttachementForUsers, 
-        listeners : {
-			scope : this, 
-			beforeShow : function (menu) {
-				//Refresh the grid associated to the menu.
-				menu.setGrid(Ext.getCmp(this.id));
-				menu.setSelections(this.getSelectionModel().getSelections());
-			}
-        }
+
+    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+        datasetUrl : this.sitoolsAttachementForUsers,
+        datasetId : this.datasetId,
+        dataview : this,
+        origin : "Ext.ux.livegrid"
     });
     
-	/**
-	 * {Ext.Toolbar} Top toolbar with services
-	 */
-	this.topBar = new Ext.Toolbar({
-		items : [{
-			text : 'Services', 
-			menu : ctxMenu
-        }, "-", {
-            text : i18n.get("label.multiSort"),
-            scope : this, 
-            handler : function () {
-                var pos = this.getPosition();
+//	/**
+//	 * {Ext.Toolbar} Top toolbar with services
+//	 */
+//    var plotButton = new Ext.Button({
+//        text : 'Plot',
+//        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
+//        scope : this,
+//        listeners : {
+//            scope : this,
+//            click : function (button, e) {
+//                e.stopEvent();
+//                var jsObj = sitools.user.component.dataPlotter;
+//                var componentCfg = {
+////                    dataplot : Ext.apply(myStoreSimple, {
+////                        datasetId : config.datasetId,
+////                        columnModel : button.scope.colModel
+////                    }),
+//                    columnModel :  config.datasetCm,          
+//                    formParams : config.formParams,
+//                    formMultiDsParams : config.formMultiDsParams,
+//                    dataUrl :  config.dataUrl,
+//                    datasetName : config.datasetName, 
+//                    datasetId : config.datasetId, 
+//                    componentType : "plot", 
+//                    preferencesPath : "/" + config.datasetName, 
+//                    preferencesFileName : "plot",
+//                    filters : this.getFilters(),
+//                    selections : Ext.isEmpty(this.getSelections())
+//							? undefined
+//							: this.getRecSelectedParamForLiveGrid()
+//                };
+//                var windowConfig = {
+//                    id : "plot" + config.datasetId,
+//                    title : "Data plot : " + config.datasetName,
+//                    iconCls : "plot", 
+//                    datasetName : config.datasetName,
+//                    type : "plot",
+//                    saveToolbar : true,
+//                    winHeight : 600
+//                };
+//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+//            }
+//        }
+//    });
 
-                //this.ownerCt.ownerCt reprensents the Window
-                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-                var up = new sitools.widget.sortersTool({
-                    pos : pos,
-                    store : this.getStore(),
-                    columnModel : this.getColumnModel()
-                });
-                up.show();
-            }, 
-            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-        }, "-",
-        plotButton, "-",
-        {
-            text : i18n.get('label.definitionTitle'),
-            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
-            scope : this,
-            handler : function () {
-                
-                var windowConfig = {
-                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
-                    datasetName : this.datasetName, 
-                    iconCls : "semantic", 
-                    datasetDescription : this.datasetDescription,
-                    type : "defi",
-                    saveToolbar : true, 
-                    toolbarItems : []
-                };
-                
-                var javascriptObject = sitools.user.component.columnsDefinition;
-                Ext.apply(windowConfig, {
-                    id : "defi" + this.datasetId
-                });
-                var componentCfg = {
-                    datasetId : this.datasetId,
-                    datasetCm : config.datasetCm, 
-                    datasetName : this.datasetName,
-                    dictionaryMappings : config.dictionaryMappings, 
-                    preferencesPath : "/" + this.datasetName, 
-                    preferencesFileName : "semantic"
-                };
-                
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+        datasetUrl : this.sitoolsAttachementForUsers,
+        datasetId : this.datasetId,
+        dataview : this,
+        origin : this.origin
+    });
+    
 
-            }
-        }]
-	});
     
     /**
      * {Ext.ux.grid.livegrid.Toolbar} Bottom bar of the liveGrid
      */
     this.bottomBar = new Ext.ux.grid.livegrid.Toolbar({
-        view : myViewSimple,
+        view : this.view,
         enableOverflow: true,
         displayInfo : true,
         refreshText : i18n.get('label.refreshText')
@@ -497,8 +492,8 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
     
     // -- CONSTRUCTOR --
 	sitools.user.component.dataviews.livegrid.LiveGrid.superclass.constructor.call(this, Ext.apply({
-	        view : myViewSimple,
-	        store : myStoreSimple,
+	        view : this.view,
+	        store : this.store,
 	        layout : 'fit',
 	        cm : cm,
 	        sm : selModelSimple,
@@ -508,83 +503,12 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	        columnLines : true,
 	        datasetId : config.datasetId,
 	        componentType : "data",
-	        plugins : [ filtersSimple ],
-	        listeners : {
-	        	afterrender : function (live) {
-	        		myViewSimple.hdCtxIndex = 0;
-	        		live.topBar.add('-');
-	        		live.topBar.add('->');
-	        		live.topBar.add('-');
-	        		live.topBar.add({
-	        			tooltip : i18n.get('label.addOrDeleteColumns'),
-	        			icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-						menu : myViewSimple.colMenu
-					});
-	        	},
-	            rowcontextmenu : function (grid, rowIndex, e) {
-	                e.stopEvent();
-	                var selections = grid.getSelectionModel().getSelections();
-	                var ctxMenuLeVrai = new sitools.user.component.dataviews.ctxMenu({
-						grid : grid, 
-						event : e, 
-						dataUrl : this.sitoolsAttachementForUsers, 
-						datasetId : this.datasetId, 
-						datasetName : this.datasetName, 
-						origin : "Ext.ux.livegrid",
-	                    urlDetail : this.sitoolsAttachementForUsers
-	                });
-					var xy = e.getXY();
-					ctxMenuLeVrai.showAt(xy);
-
-					//console.log (ctxMenuLeVrai);
-	            },
-	            rowdblclick : function (grid, rowIndex, e) {
-	                e.stopEvent();
-	
-	                // var desktop = window.SitoolsDesk.app.getDesktop();
-	
-	                var componentCfg = {
-	                    baseUrl : this.urlRecords + "/",
-	                    grid : grid, 
-	                    fromWhere : "Ext.ux.livegrid", 
-	                    datasetId : config.datasetId,
-                        datasetUrl : this.sitoolsAttachementForUsers, 
-                        selections : [grid.getSelectionModel().getSelected()], 
-                        preferencesPath : "/" + this.datasetName, 
-                        preferencesFileName : "dataDetails"
-	                };
-	                var jsObj = sitools.user.component.viewDataDetail;
-	                
-	                var windowConfig = {
-	                    id : "dataDetail" + config.datasetId,
-	                    title : i18n.get('label.viewDataDetail') + " : " + this.datasetName,
-	                    datasetName : this.datasetName,
-	                    saveToolbar : true,
-	                    iconCls : "dataDetail", 
-	                    type : "dataDetail", 
-                        shadow : true,
-                        shadowOffset : 5,                        
-	                    toolbarItems : [{
-			                iconCls : 'arrow-back',
-			                handler : function () {
-			                    this.ownerCt.ownerCt.items.items[0].goPrevious();
-			                }
-			            }, {
-			                iconCls : 'arrow-next',
-			                handler : function () {
-								this.ownerCt.ownerCt.items.items[0].goNext();
-			                }
-			            }]
-	                };
-	                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
-	            }
-	        }
+//	        plugins : [ filtersSimple ]
 	    }, config));    
 
 };
 
 Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.livegrid.EditorGridPanel, {
-    svaList : null,
     /**
      * @private
 	 * @returns the JsonColModel used to store the userPreferences.
@@ -607,8 +531,16 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
      * @return [] Array of filter object 
      */
     getFilters : function () {
-	    return this.filters;
+	    return this.store.filters;
 	}, 
+	/**
+     * @private
+     * return the filters of the liveGrid.
+     * @return [] Array of filter object 
+     */
+    getSortInfo : function () {
+        return this.store.sortInfo;
+    }, 
     /**
      * 
      * @return {String} 
@@ -642,9 +574,9 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
     getRequestParamWithoutSelection : function () {
 		var result = "", formParams = {};
         // Add the filters params
-        var filters = this.filters;
+        var filters = this.getFilters();
         if (!Ext.isEmpty(filters)) {
-            filters = this.plugins[0].buildQuery(filters.getFilterData(filters));
+            filters = this.store.buildQuery(filters.getFilterData(filters));
             if (!Ext.isEmpty(Ext.urlEncode(filters))) {
                 result += "&" + Ext.urlEncode(filters);
             }
@@ -705,13 +637,38 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
             result += this.getRequestParamWithoutSelection();
 		}
 		return result;
-	}
+	},
+    
+    getSelectionForPlot : function () {
+        return this.getRecSelectedParamForLiveGrid();
+    },
+    
+    getDatasetView : function () {
+        return this.getView();
+    },
+    
+    /**
+     * Return an array containing a button to show or hide columns
+     * @returns {Array}
+     */
+    createColumnsButton : function () {
+        var array = [];
+        array.push(new Ext.Toolbar.Separator());
+        array.push({
+            id : "columnsButtonId",
+            tooltip : i18n.get('label.addOrDeleteColumns'),
+            icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
+            menu : this.getDatasetView().colMenu
+        });
+        this.getDatasetView().hdCtxIndex = 0;
+        return array;
+    }
 });
 
 /**
- * @static
- * Implementation of the method getParameters to be able to load view Config panel.
- * @return {Array} the parameters to display into administration view. 
+ * @static Implementation of the method getParameters to be able to load view
+ *         Config panel.
+ * @return {Array} the parameters to display into administration view.
  */
 sitools.user.component.dataviews.livegrid.LiveGrid.getParameters = function () {
 	return [{

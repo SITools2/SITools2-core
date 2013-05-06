@@ -36,22 +36,17 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     modify : false,
     urlGrid : null,    
     conflictWarned : false,
+    clicksToEdit: 1,
     viewConfig : {
         forceFit : true,
-        autoFill : true, 
+        autoFill : true,
         getRowClass : function (row, index) { 
             var cls = ''; 
             var data = row.data;
-            if (data.classVersion !== data.currentClassVersion
-                && data.currentClassVersion !== null 
-                && data.currentClassVersion !== undefined) {
+            if (data.classVersion !== data.currentClassVersion && data.currentClassVersion !== null && data.currentClassVersion !== undefined) {
                 if (!this.conflictWarned) {
-                    Ext.Msg.alert("warning.version.conflict", "Resources " 
-                    + data.name 
-                    + " definition (v" 
-                    + data.classVersion 
-                    + ") may conflict with current class version : " 
-                    + data.currentClassVersion);
+                    Ext.Msg.alert("warning.version.conflict", "Resources " + data.name + " definition (v" + data.classVersion
+                            + ") may conflict with current class version : " + data.currentClassVersion);
                     this.conflictWarned = true;
                 }
                 cls = "red-row";
@@ -60,12 +55,12 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         } 
     },
     initComponent : function () {
-    	this.appClassName = "fr.cnes.sitools.dataset.DataSetApplication";
-    	this.parentType = "dataset";
-    	
-        /****************************************************************************************************/
-    	
-    	this.urlDatasets = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
+        this.appClassName = "fr.cnes.sitools.dataset.DataSetApplication";
+        this.parentType = "dataset";
+
+        /** ************************************************************************************************* */
+
+        this.urlDatasets = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
         
         /** URL TO GET ALL SERVICES (IHM OR SERVER) EXISTING IN SITOOLS **/
         this.urlAllServicesIHM = '/sitools/guiServices';
@@ -82,7 +77,8 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         this.urlDatasetServiceIHM = '/sitools/datasets/{idDataset}/services/gui/{idService}';
         this.urlDatasetServiceSERVER = '/sitools/datasets/{idDataset}/services/server/{idService}';
         
-    	//LIST OF PARENTS
+
+        // LIST OF PARENTS
         var storeParents = new Ext.data.JsonStore({
             fields : [ 'id', 'name', 'type' ],
             url : this.urlDatasets,
@@ -106,7 +102,8 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     this.parentId = rec.data.id;
                     if (!Ext.isEmpty(rec.data.type)) {
                         this.appClassName = rec.data.type;
-                    }                    
+                    }    
+                    this.savePropertiesBtn.removeClass('not-save-textfield');
                     var url = this.urlDatasetAllServices.replace('{idDataset}', this.parentId);
                     this.httpProxyResources.setUrl(url, true);
                     this.getStore().removeAll();
@@ -146,10 +143,28 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 name : 'label',
                 type : 'string'
+            }, {
+                name : 'visible',
+                type : 'bool'
+            }, {
+                name : 'position',
+                type : 'string'
             } ],
             proxy : this.httpProxyResources
         });
 
+        var visible = new Ext.grid.CheckColumn({
+            header : i18n.get('headers.visible'),
+            dataIndex : 'visible',
+            width : 55,
+            listeners : {
+                scope : this,
+                change : function (combo, newValue, oldValue) {
+                    this.savePropertiesBtn.addClass('not-save-textfield');
+                }
+            }
+        });
+        
         this.cm = new Ext.grid.ColumnModel({
             defaults : {
                 sortable : true
@@ -157,7 +172,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             columns : [ {
                 header : i18n.get('label.type'),
                 dataIndex : 'type',
-                width : 80,
+                width : 60,
                 resizable : false,
                 renderer : function (value, metadata, record, rowIndex, colIndex, store) {
                     if (value === "SERVER") {
@@ -170,26 +185,64 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 180
+                width : 160
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 300,
+                width : 280,
                 sortable : false
             }, {
-                header : i18n.get('label.label'),
+                header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'label',
                 width : 140,
-                editor : new Ext.form.TextField()
+                editor : new Ext.form.TextField({
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addClass('not-save-textfield');
+                        }
+                    }
+                })
             }, {
-                header : i18n.get('label.category'),
+                header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'category',
-                width : 180,
-                editor : new Ext.form.TextField()
+                width : 150,
+                editor : new Ext.form.TextField({
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addClass('not-save-textfield');
+                        }
+                    }
+                })
+            }, {
+                header : 'Position' + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                dataIndex : 'position',
+                width : 100,
+                editor: new Ext.form.ComboBox({
+                    typeAhead : true,
+                    triggerAction : 'all',
+                    lazyRender : true,
+                    mode : 'local',
+                    store : new Ext.data.ArrayStore({
+                        id : 0,
+                        fields : ['position'],
+                        data : [['left'], ['right']]
+                    }),
+                    value : 'Left',
+                    valueField : 'position',
+                    displayField : 'position',
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addClass('not-save-textfield');
+                        }
+                    }
+                })
             }, {
                 header : i18n.get('label.icon'),
                 dataIndex : 'icon',
-                width : 60,
+                width : 55,
                 sortable : false,
                 renderer : function (value, metadata, record, rowIndex, colIndex, store) {
                     if (!Ext.isEmpty(value)) {
@@ -197,9 +250,20 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     }
                     return value;
                 }
-            }]
+            }, visible]
         });
+        
+        this.plugins = [ visible ];
 
+        this.savePropertiesBtn = new Ext.Button({
+            text : i18n.get('label.saveProperties'),
+            id : 'tocard',
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+            handler : this.onSaveProperties,
+            tooltip : i18n.get('label.savePropertiesHelp'),
+            xtype : 's-menuButton'
+        });
+        
         this.tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
             defaults : {
@@ -229,13 +293,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
-            }, {
-                text : i18n.get('label.saveProperties'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
-                handler : this.onSaveProperties,
-                tooltip : i18n.get('label.savePropertiesHelp'),
-                xtype : 's-menuButton'
-            }, '-' ]
+            }, this.savePropertiesBtn, '-' ]
         };
 
         this.bbar = {
@@ -266,7 +324,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
      * Open a {sitools.admin.resourcesPlugins.resourcesPluginsProp} resource plugin property window
      *  to create a new resource for the selected dataset in the comboBox
      *  @require type
-     *  		the type of service to create
+     *  the type of service to create
      */
     onCreate : function (type) {
         if (Ext.isEmpty(this.comboParents.getValue())) {
@@ -279,7 +337,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         
 
         if (type === "GUI") {
-            var up = new sitools.admin.datasets.services.datasetServicesProp({
+            var gui = new sitools.admin.datasets.services.datasetServicesProp({
                 action : 'create',
                 parentPanel : this,
                 parentType : this.parentType,
@@ -288,10 +346,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 urlAllServicesIHM : this.urlAllServicesIHM,
                 urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', parentId)
             });
-            up.show();
+            gui.show();
         }
         else if (type === "SERVER") {
-            var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
+            var server = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
                 action : 'create',
                 parentPanel : this,
                 urlResources : this.urlAllServicesSERVER,
@@ -301,7 +359,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 appClassName : this.appClassName,
                 idParent : parentId
             });
-            up.show();
+            server.show();
         }
     },
 
@@ -312,8 +370,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         if (Ext.isEmpty(this.comboParents.getValue())) {
             return;
         }
-        var parentId = this.comboParents.getValue();
-        
         var rec = this.getSelectionModel().getSelected();
         
         if (!rec) {
@@ -321,9 +377,9 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         }
        
 
-        if (rec.data.type == "GUI") {
+        if (rec.data.type === "GUI") {
             this.editGUIService(rec.data.id);
-        } else if (rec.data.type == "SERVER") {
+        } else if (rec.data.type === "SERVER") {
             this.editSERVERService(rec.data.id);
         }
         
@@ -342,13 +398,13 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('resourcesPlugins' + this.parentType + 'Crud.delete'),
             scope : this,
             fn : function (btn, text) {
-                if (btn == 'yes') {
+                if (btn === 'yes') {
                     this.doDelete(rec, parentId);
                 }
             }
@@ -360,22 +416,21 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
      * @param rec the record to delete
      */
     doDelete : function (rec, parentId) {
-    	
-    	var url;
-    	if (rec.data.type == "GUI"){
-    		url = this.urlDatasetServiceIHM.replace('{idDataset}', parentId);
-    	}
-    	else if (rec.data.type == "SERVER"){
-    		url = this.urlDatasetServiceSERVER.replace('{idDataset}', parentId);
-    	}
-    	url = url.replace('{idService}',rec.id);
-    	
+
+        var url = null;
+        if (rec.data.type === "GUI") {
+            url = this.urlDatasetServiceIHM.replace('{idDataset}', parentId);
+        } else if (rec.data.type === "SERVER") {
+            url = this.urlDatasetServiceSERVER.replace('{idDataset}', parentId);
+        }
+        url = url.replace('{idService}', rec.id);
+        
         Ext.Ajax.request({
             url : url,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
+                Ext.decode(ret.responseText);
                 if (showResponse(ret)) {
                     this.store.reload();
                 }
@@ -393,6 +448,8 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         service.name = "";
         service.description = "";
         service.services = [];
+        
+        this.savePropertiesBtn.removeClass('not-save-textfield');
 
         this.getStore().each(function (rec) {
             service.services.push(rec.data);
@@ -404,7 +461,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             jsonData : service,
             scope : this,
             success : function (ret) {
-                var tmp = new Ext.ux.Notification({
+                new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('label.datasetServicePropertiesSaved'),

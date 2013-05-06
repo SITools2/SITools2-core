@@ -1,48 +1,36 @@
 <projectModule>
-  <id>projectGraph</id>
-  <name>projectGraph</name>
-  <description>Project Graph</description>
-  <label>label.projectGraph</label>
+  <id>DataSetExplorerDataView</id>
+  <name>DataSetExplorerDataView</name>
+  <description>Dataset Explorer with new dataview</description>
+  <label>label.datasetExplorerDataview</label>
   <author>akka</author>
   <version>1.0</version>
-  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/project_graph.png</imagePath>
-  <title>title.ProjectGraph</title>
-  <defaultWidth>800</defaultWidth>
+  <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/dataset_explorer.png</imagePath>
+  <title>title.DatasetExplorerDataView</title>
+  <defaultWidth>600</defaultWidth>
   <defaultHeight>500</defaultHeight>
   <x>0</x>
   <y>0</y>
-  <icon>graphModule</icon>
-  <specificType>projectGraph</specificType>
-  <xtype>sitools.user.modules.projectGraphTree</xtype>
+  <icon>datasetExplorerModule</icon>
+  <specificType>truc</specificType>
+  <xtype>sitools.user.modules.datasetExplorerDataView</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/common/js/treegrid/TreeGridSorter.js</url>
+        <url>/sitools/client-user/js/modules/dataSetExplorerDataView/dataSetExplorerDataView.js</url>
       </url>
       <url>
-        <url>/sitools/common/js/treegrid/TreeGridColumnResizer.js</url>
+        <url>/sitools/common/js/widgets/reorderer/Reorderer.js</url>
       </url>
       <url>
-        <url>/sitools/js/treegrid/TreeGridNodeUI.js</url>
-      </url>
-      <url>
-        <url>/sitools/js/treegrid/TreeGridLoader.js</url>
-      </url>
-      <url>
-        <url>/sitools/js/treegrid/TreeGridColumns.js</url>
-      </url>
-      <url>
-        <url>/sitools/js/treegrid/TreeGrid.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/projectGraph/projectGraph.js</url>
+        <url>/sitools/common/js/widgets/reorderer/ToolbarReorderer.js</url>
       </url>
     </js>
     <css>
       <url>
-        <url>/sitools/common/js/treegrid/treegrid.css</url>
+        <url>/sitools/common/js/widgets/reorderer/multiple-sorting.css</url>
       </url>
     </css>
   </dependencies>
-  <priority>2</priority>
+  <priority>0</priority>
 </projectModule>

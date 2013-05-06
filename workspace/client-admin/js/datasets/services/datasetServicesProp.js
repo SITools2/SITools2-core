@@ -129,7 +129,6 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 } ],
                 listeners :  {
                     load : function (store, records) {
-                        
                         this.gridDatasetServices.getSelectionModel().lock();
                         this.loadDependencies(records, function () {
                             this.gridDatasetServices.getSelectionModel().unlock();
@@ -339,6 +338,13 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
      * Save the dataset IHM service properties
      */
     onValidate : function () {
+        
+        if (this.tabPanel.getActiveTab().id === 'gridDatasetServices') {
+            Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.checkForm'));
+            this.tabPanel.setActiveTab(1);
+            return false;
+        }
+        
         var rec, datasetServiceIhm = {};
         
         if (this.action === "create") {
@@ -360,12 +366,11 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         
         Ext.apply(datasetServiceIhm, rec);
         
-
-
-        if (this.formParametersPanel && !this.formParametersPanel.getForm().isValid()) {
+        if (Ext.isEmpty(this.formParametersPanel) || !this.formParametersPanel.getForm().isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
         }
+        
         var form = this.fieldMappingFormPanel.getForm();
         
         if (!form.isValid()) {
@@ -383,6 +388,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         Ext.iterate(this.formParametersPanel.getParametersValue(), function (item, ind, all) {
             datasetServiceIhm.parameters.push(item);
         });
+        Ext.destroyMembers(datasetServiceIhm, 'dependencies');
         
         var method, url;
         if (this.action === "modify") {

@@ -199,7 +199,8 @@ public final class SecurityUtil {
       digest.update(password.getBytes());
       // base64 = new BASE64Encoder().encode(digest.digest());
       // base64 = fr.cnes.sitools.util.Base64Sun.encode(digest.digest());
-      base64 = fr.cnes.sitools.util.Base64.encodeBytes(digest.digest());
+      // base64 = fr.cnes.sitools.util.Base64.encodeBytes(digest.digest());
+      base64 = new String(org.apache.commons.codec.binary.Base64.encodeBase64(digest.digest()));
 
     }
     catch (NoSuchAlgorithmException e) {

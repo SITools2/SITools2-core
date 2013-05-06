@@ -161,8 +161,15 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 }
 
 .upload-icon {
-    background: url("/sitools/common/res/images/icons/image_add.png") no-repeat scroll 0 0 transparent !important;
+    background: url("/sitools/common/res/mages/icons/image_add.png") no-repeat scroll 0 0 transparent !important;
+}
 
+.download-icon {
+	background: url("/sitools/common/res/images/icons/detailJson.png") no-repeat scroll 0 0 transparent !important;
+}
+
+.delete-icon {
+	background: url("/sitools/common/res/images/icons/delete.png") no-repeat scroll 0 0 transparent !important;
 }
 
 .x-button-dataSet {
@@ -477,6 +484,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background-image: url("/sitools/common/res/images/icons/cadenas.png");
 	background-position: 10px 10px;
 	background-repeat: no-repeat;
+}
+
+.toolbar {
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/title3_02.png") !important;
+	background-position: 0 -26px !important;
+	background-color : transparent; 
 }
 
 

@@ -37,7 +37,7 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /* Creates a new URL object with the specified url String. */
-function URL(url){
+function Reference(url){
 	if(url.length==0) eval('throw "Invalid URL ['+url+'];');
 	this.url=url;
 	this.port=-1;

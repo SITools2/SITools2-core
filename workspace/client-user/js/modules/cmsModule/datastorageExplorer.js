@@ -42,9 +42,107 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                 break;
             }
         }, this);
-        
-        this.title = i18n.get('label.dsDirectory') + " : " + this.nameDatastorage;
+//        this.title = i18n.get('label.dsDirectory') + " : " + this.nameDatastorage;
         this.layout = 'border';
+        
+        this.uplLabel = {
+        	xtype: 'label',
+            id: 'uplLabel',
+            text : i18n.get('label.uploadFile') + ' :'
+        };
+        
+        this.uplButton = {
+        	xtype: 'button',
+            id: 'uplButton',
+//            iconAlign : 'right',
+            iconCls : 'upload-icon',
+            text : i18n.get('label.uploadFile'),
+            tooltip : i18n.get('label.uploadFile'),
+            scope : this,
+            handler : function () {
+                var nodeSel = this.tree.getSelectionModel().getSelectedNode();
+                if (nodeSel != undefined){
+                    this.onUpload(nodeSel);
+                }
+                else {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+                }
+            }
+        };
+        
+        this.dwlLabel = {
+        	xtype: 'label',
+            id: 'dwlLabel',
+            text : i18n.get('label.downloadFile') + ' :'
+        };
+        
+        this.dwlButton = {
+        	xtype: 'button',
+            id: 'dwlButton',
+//            iconAlign : 'right',
+            iconCls : 'download-icon',
+            text : i18n.get('label.downloadFile'),
+            tooltip : i18n.get('label.downloadFile'),
+            scope : this,
+            handler : function () {
+                var nodeSel = this.tree.getSelectionModel().getSelectedNode();
+                if (nodeSel != undefined){
+                	var rec = this.dataview.getStore().getById(nodeSel.id);
+                    //the record exists in the dataview, lets show it
+                    if (nodeSel.leaf == "true") {
+	                    if (!Ext.isEmpty(rec)) {
+	                    	sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
+	                    }
+	                    else {
+                            this.loadDataview(nodeSel.parentNode);
+                            rec = this.dataview.getStore().getById(nodeSel.id);
+	                    	sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
+	                    }
+                    }
+                }
+                else {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+                }
+            }
+        };
+        
+        this.delLabel = {
+        	xtype: 'label',
+            text : i18n.get('label.delete') + ' :'
+        };
+        
+        this.delButton = {
+        	xtype: 'button',
+//            iconAlign : 'right',
+            iconCls : 'delete-icon',
+            text : i18n.get('label.delete'),
+            tooltip : i18n.get('label.delete'),
+            scope : this,
+            handler : function () {
+            	var node = this.tree.getSelectionModel().getSelectedNode();
+                if (node != undefined){
+                	Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.text + " ?",
+                            function (btn) {
+                        if (btn == 'yes') {
+                            var ind = this.tree.getRootNode().indexOf(node);
+                            if (ind != 0) {
+                                this.deleteNode(node);
+                            }
+                            else {
+                                Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.cannotDeleteRootNode'));
+                            }
+                        }
+                    }, this);
+                }
+                else {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+                }
+            }
+        };
+        
+        this.tbar = new Ext.Toolbar({
+        	items: ['->', this.uplButton, this.delButton]}
+        );
         
         this.tree = new Ext.tree.TreePanel({
             region : 'west',
@@ -108,57 +206,59 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                 leaf : false,
                 url : this.datastorageUrl
             },
-            tbar : [ '->', {
-                xtype : 'label',
-                text : i18n.get('label.uploadFile') + ' :'
-            }, {
-                xtype : 'button',
-                iconAlign : 'right',
-                iconCls : 'upload-icon',
-                tooltip : i18n.get('label.uploadFile'),
-                scope : this,
-                handler : function () {
-                    var nodeSel = this.tree.getSelectionModel().getSelectedNode();
-                    if (nodeSel != undefined){
-                        this.onUpload(nodeSel);
-                    }
-                    else {
-                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
-                    }
-                }
-            }],
-            contextMenu: new Ext.menu.Menu({
-                items: [{
-                    id: 'upload',
-                    text: i18n.get('label.uploadFile'),
-                    iconCls : 'upload-icon',
-                    scope : this,
-                    handler : function () {
-                        var node = this.tree.getSelectionModel().getSelectedNode();
-                        this.onUpload(node);
-                    }
-                },
-                {
-                    text : i18n.get('label.delete'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/delete.png',
-                    scope : this,
-                    handler : function () {
-                        var node = this.tree.getSelectionModel().getSelectedNode();
-                        Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.text + " ?",
-                                function (btn) {
-                            if (btn == 'yes') {
-                                var ind = this.tree.getRootNode().indexOf(node);
-                                if (ind != 0) {
-                                    this.deleteNode(node);
-                                }
-                                else {
-                                    Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.cannotDeleteRootNode'));
-                                }
-                            }
-                        }, this);
-                    }
-                }]
-            }),
+//            contextMenu: new Ext.menu.Menu({
+//                items: [{
+//                    id: 'upload',
+//                    text: i18n.get('label.uploadFile'),
+//                    iconCls : 'upload-icon',
+//                    scope : this,
+//                    handler : function () {
+//                        var node = this.tree.getSelectionModel().getSelectedNode();
+//                        this.onUpload(node);
+//                    }
+//                },
+//                {
+//                    id: 'download',
+//                    text: i18n.get('label.downloadFile'),
+//                    iconCls : 'download-icon',
+//                    scope : this,
+//                    handler : function () {
+//                        var node = this.tree.getSelectionModel().getSelectedNode();
+//                        var rec = this.dataview.getStore().getById(node.id);
+//                        //the record exists in the dataview, lets show it
+//                        if (node.leaf == "true") {
+//		                    if (!Ext.isEmpty(rec)) {
+//		                    	sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
+//		                    }
+//		                    else {
+//	                            this.loadDataview(node.parentNode);
+//	                            rec = this.dataview.getStore().getById(node.id);
+//		                    	sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
+//		                    }
+//                        }
+//                    }
+//                },
+//                {
+//                    text : i18n.get('label.delete'),
+//                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/delete.png',
+//                    scope : this,
+//                    handler : function () {
+//                        var node = this.tree.getSelectionModel().getSelectedNode();
+//                        Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.text + " ?",
+//                                function (btn) {
+//                            if (btn == 'yes') {
+//                                var ind = this.tree.getRootNode().indexOf(node);
+//                                if (ind != 0) {
+//                                    this.deleteNode(node);
+//                                }
+//                                else {
+//                                    Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.cannotDeleteRootNode'));
+//                                }
+//                            }
+//                        }, this);
+//                    }
+//                }]
+//            }),
             listeners : {
                 scope : this,
                 beforeload : function (node) {
@@ -180,22 +280,37 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                             try {
                                 var Json = Ext.decode(ret.responseText);
                                 Ext.each(Json, function (child) {
-                                    var nodeAdded = node.appendChild({
-                                        cls : child.cls,
-                                        text : child.text,
-                                        url : child.url,
-                                        leaf : child.leaf,
-                                        size : child.size,
-                                        lastmod : child.lastmod,
-                                        children : []
-                                    });
-                                    child.id = nodeAdded.id;
+                                	if(!child.leaf){
+                                        var nodeAdded = node.appendChild({
+                                            cls : child.cls,
+                                            text : decodeURIComponent(child.text),
+                                            url : child.url,
+                                            leaf : child.leaf,
+                                            size : child.size,
+                                            lastmod : child.lastmod,
+                                            children : []
+                                        });
+                                        child.id = nodeAdded.id;
+                                	}
                                 });
-                                
+                                Ext.each(Json, function (child) {
+                                	if(child.leaf){
+                                		var nodeAdded = node.appendChild({
+                                            cls : child.cls,
+                                            text : decodeURIComponent(child.text),
+                                            url : child.url,
+                                            leaf : child.leaf,
+                                            size : child.size,
+                                            lastmod : child.lastmod,
+                                            children : []
+                                        });
+                                        child.id = nodeAdded.id;
+                                	}
+                                });
                                 this.tree.expandPath(node.getPath());
                                 
                                 this.loadDataview(node);
-                                this.detailPanel.collapse(true);
+//                                this.detailPanel.collapse(false);
                                 
                                 return true;
                             } catch (err) {
@@ -214,28 +329,35 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                     c.contextNode = node;
                     c.showAt(e.getXY());
                 },
-                click : function (node, e){
-                    if (node.leaf == "true") {
-                        var rec = this.dataview.getStore().getById(node.id);
-                         //the record exists in the dataview, lets show it
-	                    if (!Ext.isEmpty(rec)) {
-	                        this.displayFile(rec);
-	                    }
-	                    else {
-                            this.loadDataview(node.parentNode);
-                            rec = this.dataview.getStore().getById(node.id);
-                            this.displayFile(rec);   
-                                    
-	                    }
+                click: function (node, e){
+                	var tb = this.getTopToolbar();
+                    if (node.leaf != "true") {
+                    	this.tree.fireEvent('beforeexpandnode', node);
+                    	tb.remove('uplButton');
+                    	tb.remove('dwlButton');
+                    	tb.insert(1,this.uplButton);
                     } else {
-                        this.tree.fireEvent('beforeexpandnode', node);
+                    	tb.remove('uplButton');
+                    	tb.remove('dwlButton');
+                    	tb.insert(1,this.dwlButton);
                     }
-                    
+                	tb.doLayout();
+
+                    if(this.isOpenable(node.text)) {
+                        var rec = this.dataview.getStore().getById(node.id);
+                    	this.displayFile(rec);
+                    } else {
+                    	this.detailPanel.setTitle(i18n.get('label.defaultTitleDetailPanel'));
+                    	this.detailPanel.setSrc('/sitools/common/html/aucunApercuDispo.html');
+                        this.detailPanel.doLayout();
+                    }
                 }
             }
         });
         
         Ext.QuickTips.init();
+        
+        
         
         this.store = new Ext.data.JsonStore({
             proxy : new Ext.data.HttpProxy({
@@ -256,6 +378,7 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                 {name : 'id', mapping : 'id'}
             ]
         });
+        
 //        this.store.load();
         
         this.tpl = new Ext.XTemplate(
@@ -316,16 +439,12 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                 scope : this,
                 click : function (dv, ind, node, e) {
                     var rec = dv.getStore().getAt(ind);
-                    if (rec.data.cls){
-                        var treeNode = this.tree.getNodeById(rec.data.id);
-                        this.tree.fireEvent('beforeexpandnode', treeNode);
-                    }
-                    else {
-                    	this.displayFile(rec);
-			        }
-                },
-                containerclick : function (dv, e){
-                    this.detailPanel.collapse(true);
+                    var treeNode = this.tree.getNodeById(rec.data.id);
+//                    if (rec.data.cls){
+//                        this.tree.fireEvent('beforeexpandnode', treeNode);
+//                    }
+                    this.tree.getSelectionModel().select(treeNode, e, true);
+                    this.tree.fireEvent('click', treeNode, e);
                 }
             }
         });
@@ -334,9 +453,12 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             id:'detail-view',
             region : 'south',
             height : 325,
-            collapsible : true,
-            collapsed : true,
+            collapsible : false,
+            collapsed : false,
             autoScroll : true,
+            cls: 'detail-panel-datastorage',
+            title: i18n.get('label.defaultTitleDetailPanel'),
+            defaultSrc: '/sitools/common/html/aucunApercuDispo.html',
             tools : [{
             	id : 'plus',
             	qtip : i18n.get("label.showInWindow"),
@@ -386,6 +508,9 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         }
         else if (node.isRoot){
             urlUpload = this.datastorageUrl;
+            if(urlUpload.charAt(urlUpload.length-1) != "/"){
+            	urlUpload = urlUpload + "/";
+            }
         }
         
         var uploadWin = new sitools.user.modules.datastorageUploadFile({
@@ -521,7 +646,7 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
     displayFile : function (rec) {
         this.detailPanel.setTitle(rec.data.text);
         this.detailPanel.setSrc(rec.data.url);
-        this.detailPanel.expand(true);
+//        this.detailPanel.expand(true);
         this.detailPanel.setHeight(350);                    
         this.detailPanel.doLayout();
     },
@@ -544,6 +669,12 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
     	
     	sitools.user.component.dataviews.dataviewUtils.showDisplayableUrl(panel.frameEl.src, true, customConfig);
     	
+    },
+    
+    addButtonToToolbar : function (tb, buttonStates) {
+        for (var i = 0; i < buttonStates.length; i++) {
+            tb.add(buttonStates[i]);
+        }
     },
     
     /**
