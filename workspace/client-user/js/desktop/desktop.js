@@ -1081,7 +1081,8 @@ sitools.user.desktop.App = function () {
 			if (!Ext.isEmpty(windowConfig.toolbarItems)) {
 				Ext.apply(windowConfig, {
 					tbar : {
-						items : windowConfig.toolbarItems
+						items : windowConfig.toolbarItems,
+						cls : 'toolbar'
 					},
 					listeners : {
 						afterrender : function (me) {

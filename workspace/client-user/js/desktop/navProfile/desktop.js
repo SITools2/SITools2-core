@@ -85,7 +85,8 @@ sitools.user.desktop.navProfile.desktop = {
             // Create the toolbar with the windowSettings.toolbarItems
             tbar = new Ext.Toolbar({
                 xtype : 'toolbar',
-                items : windowSettings.toolbarItems
+                items : windowSettings.toolbarItems,
+                cls : 'toolbar'
             });
         }
         

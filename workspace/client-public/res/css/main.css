@@ -486,4 +486,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background-repeat: no-repeat;
 }
 
+.toolbar {
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/title3_02.png") !important;
+	background-position: 0 -26px !important;
+	background-color : transparent; 
+}
+
 

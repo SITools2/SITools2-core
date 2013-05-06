@@ -42,7 +42,7 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 		case "openSearch" : 
 			this.grid = this.grid;
 	        this.recSelected = this.grid.getSelectionModel().getSelected();
-	        this.url = this.recSelected.data.guid;
+	        this.url = this.encodeUrlPrimaryKey(this.recSelected.data.guid);	        
 			break;
 		case "dataView" : 
 			break;
@@ -91,7 +91,7 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	                {
 	                compiled : true, 
 	                disableFormats : true,
-	                hasToolTip : function (toolTip){
+	                hasToolTip : function (toolTip) {
 	                    return !Ext.isEmpty(toolTip);
 	                }
 	            }),
@@ -133,15 +133,15 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
             autoScroll : true,
             region : "east", 
             hideLabels : true,
-            split : (this.fromWhere != 'dataView'), 
-            collapsible : (this.fromWhere != 'dataView'), 
-            collapsed : (this.fromWhere != 'dataView'),
+            split : (this.fromWhere !== 'dataView'), 
+            collapsible : (this.fromWhere !== 'dataView'), 
+            collapsed : (this.fromWhere !== 'dataView'),
             flex : 1,
-            title : (this.fromWhere == 'dataView') ? i18n.get("label.formImagePanelTitle") : null 
+            title : ((this.fromWhere === 'dataView') ? i18n.get("label.formImagePanelTitle") : null) 
         });
         
         var centerPanelItems;
-        if (this.fromWhere == 'dataView') {
+        if (this.fromWhere === 'dataView') {
             centerPanelItems = [this.formPanel, this.formPanelImg, this.linkPanel];
         }
         else {
@@ -216,7 +216,7 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	            return;
 	        }
 	        rec = rowSelect.getSelected();
-			this.url = rec.data.guid;
+			this.url = this.encodeUrlPrimaryKey(rec.data.guid);
 			break;
 		case "sitools.user.component.dataviews.tplView.TplView" : 
 			var index = this.grid.getStore().indexOf(this.recSelected);
@@ -259,8 +259,8 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	            return;
 	        }
 	        rec = rowSelect.getSelected();
-			this.url = rec.data.guid;
-			break;
+            this.url = this.encodeUrlPrimaryKey(rec.data.guid);
+            break;
 		case "sitools.user.component.dataviews.tplView.TplView" : 
 			var index = this.grid.getStore().indexOf(this.recSelected);
 			var nextRec = this.grid.getStore().getAt(index - 1);
@@ -550,5 +550,19 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
             height : config.windowSettings.winHeight || DEFAULT_WIN_HEIGHT
         });
         SitoolsDesk.openModalWindow(me, config);
+    },
+    
+    encodeUrlPrimaryKey : function (url) {
+      //get the end of the uri and encode it
+        var urlSplited = url.split('/');
+        var urlReturn = "";
+        for (var i = 0; i < urlSplited.length; i++) {
+            if (i < urlSplited.length - 1) {
+                urlReturn += urlSplited[i] + "/";
+            } else {
+                urlReturn += encodeURIComponent(urlSplited[i]);
+            }
+        }
+        return urlReturn;
     }
 });
