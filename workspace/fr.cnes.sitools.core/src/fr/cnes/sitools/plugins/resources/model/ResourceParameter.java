@@ -49,6 +49,11 @@ public final class ResourceParameter extends ExtensionParameter {
   private Boolean userUpdatable;
   
   /**
+   * sequence in order to sort parameters in a collection/map
+   */
+  private int sequence;
+  
+  /**
    * Constructor
    */
   public ResourceParameter() {
@@ -130,6 +135,21 @@ public final class ResourceParameter extends ExtensionParameter {
     this.userUpdatable = userUpdatable;
   }
 
-  
+  /**
+   * Gets the sequence value
+   * @return the sequence
+   */
+  public int getSequence() {
+    return sequence;
+  }
+
+  /**
+   * Sets the value of sequence
+   * @param sequence the sequence to set
+   */
+  public void setSequence(int sequence) {
+    this.sequence = sequence;
+  }
+
   
 }

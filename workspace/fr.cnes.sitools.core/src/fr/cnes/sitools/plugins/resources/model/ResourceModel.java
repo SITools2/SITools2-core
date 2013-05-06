@@ -120,6 +120,7 @@ public class ResourceModel extends ExtensionModel<ResourceParameter> implements 
    */
   public final void addParam(ResourceParameter param) {
     getParametersMap().put(param.getName(), param);
+    param.setSequence(getParametersMap().size());
   }
 
   /**
