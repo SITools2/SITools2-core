@@ -388,6 +388,20 @@ public interface Consts {
 
   /** The request header buffer size */
   String RESPONSE_HEADER_SIZE = "Starter.RESPONSE_HEADER_SIZE";
+  
+  /** Additional parameters for jetty */
+  String MIN_THREADS = "Starter.MIN_THREADS";
+  String MAX_THREADS = "Starter.MAX_THREADS";
+  String THREAD_MAX_IDLE_TIME_MS = "Starter.THREAD_MAX_IDLE_TIME_MS";
+  String LOW_RESOURCES_MAX_IDLE_TIME_MS = "Starter.LOW_RESOURCES_MAX_IDLE_TIME_MS";
+  String ACCEPTOR_THREADS = "Starter.ACCEPTOR_THREADS";
+  String ACCEPT_QUEUE_SIZE = "Starter.ACCEPT_QUEUE_SIZE";
+  String REQUEST_BUFFER_SIZE = "Starter.REQUEST_BUFFER_SIZE";
+  String RESPONSE_BUFFER_SIZE = "Starter.RESPONSE_BUFFER_SIZE";
+  String IO_MAX_IDLE_TIME_MS = "Starter.IO_MAX_IDLE_TIME_MS";
+  String SO_LINGER_TIME = "Starter.SO_LINGER_TIME";
+  String GRACEFUL_SHUTDOWN = "Starter.GRACEFUL_SHUTDOWN";
+
 
   /** Consts for Task management */
 
