@@ -149,6 +149,8 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 name : 'position',
                 type : 'string'
+            }, {
+                name : 'dataSetSelection'
             } ],
             proxy : this.httpProxyResources
         });

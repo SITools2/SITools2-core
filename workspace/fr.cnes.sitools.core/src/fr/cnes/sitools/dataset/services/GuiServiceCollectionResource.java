@@ -20,6 +20,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -78,10 +79,10 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
   protected Representation post(Representation entity, Variant variant) throws ResourceException {
     try {
 
-      GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(entity);
+      GuiServiceModel guiServiceInput = getObjectGuiServicePluginModel(entity);
 
       String url = getGuiServicesUrl();
-      GuiServicePluginModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
+      GuiServiceModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
 
       ServiceCollectionModel services = getStore().retrieve(getParentId());
 

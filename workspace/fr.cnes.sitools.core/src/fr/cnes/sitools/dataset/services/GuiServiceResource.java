@@ -20,6 +20,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -92,7 +93,7 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
   public Representation updateGuiService(Representation representation, Variant variant) {
     Response response = null;
     try {
-      GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(representation);
+      GuiServiceModel guiServiceInput = getObjectGuiServicePluginModel(representation);
 
       ServiceCollectionModel serviceCollection = getStore().retrieve(getParentId());
       if (!serviceExists(serviceCollection, guiServiceId)) {
@@ -101,12 +102,13 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
       else {
 
         String url = getGuiServicesUrl() + "/" + guiServiceId;
-        GuiServicePluginModel guiServiceOutput = RIAPUtils.updateObject(guiServiceInput, url, getContext());
+        GuiServiceModel guiServiceOutput = RIAPUtils.updateObject(guiServiceInput, url, getContext());
 
         ServiceModel service = getServiceModel(serviceCollection, guiServiceId);
         service.setId(guiServiceOutput.getId());
         service.setName(guiServiceOutput.getName());
         service.setDescription(guiServiceOutput.getDescription());
+        service.setDataSetSelection(guiServiceOutput.getDataSetSelection());
         service.setType(ServiceEnum.GUI);
         service.setIcon(guiServiceOutput.getIcon());
         

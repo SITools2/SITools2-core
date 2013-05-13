@@ -19,6 +19,7 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
@@ -62,7 +63,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
   public Representation get(Variant variant) {
 
     if (getGuiServicePluginId() != null) {
-      GuiServicePluginModel guiService = getStore().retrieve(getGuiServicePluginId());
+      GuiServiceModel guiService = getStore().retrieve(getGuiServicePluginId());
       Response response = new Response(true, guiService, GuiServicePluginModel.class, "guiServicePlugin");
       return getRepresentation(response, variant);
     }

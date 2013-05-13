@@ -60,6 +60,8 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
                 type : 'string'
             }, {
                 name : 'dependencies'
+            }, {
+                name : 'dataSetSelection'
             }]        
         });
         

@@ -30,6 +30,7 @@ import org.restlet.resource.Get;
 
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.model.DataSet;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -70,7 +71,7 @@ public class DataSetListGuiServicesResource extends AbstractDataSetResource {
       response.setTotal(guiServicesOuput.length);
     }
     else {
-      GuiServicePluginModel guiService = getGuiService(dataset.getId(), guiServiceId);
+      GuiServiceModel guiService = getGuiService(dataset.getId(), guiServiceId);
       if (guiService == null) {
         response = new Response(false, "guiservice.not.found");
       }
@@ -90,7 +91,7 @@ public class DataSetListGuiServicesResource extends AbstractDataSetResource {
    *          the guiservice id
    * @return the gui service or null if not found
    */
-  private GuiServicePluginModel getGuiService(String parentId, String guiServiceId) {
+  private GuiServiceModel getGuiService(String parentId, String guiServiceId) {
     return RIAPUtils.getObject(guiServiceId, application.getSettings().getString(Consts.APP_DATASETS_URL) + "/"
         + parentId + application.getSettings().getString(Consts.APP_GUI_SERVICES_URL), getContext());
   }

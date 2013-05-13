@@ -34,6 +34,7 @@ import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.ListPluginExpositionResource;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
@@ -129,7 +130,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
   public void testDatasetServices() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel serverService = null;
-    GuiServicePluginModel guiService = null;
+    GuiServiceModel guiService = null;
     try {
       createDataset(datasetId, urlAttachDataset);
       assertNoneServices();
@@ -277,7 +278,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
   }
 
   private ServiceCollectionModel createCollectionToChangeOrder(ResourceModel resourceModel,
-      GuiServicePluginModel guiService) {
+      GuiServiceModel guiService) {
 
     ServiceCollectionModel collection = new ServiceCollectionModel();
     List<ServiceModel> services = new ArrayList<ServiceModel>();
@@ -626,7 +627,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
           GuiServicePluginModel.class);
       assertTrue(response.getSuccess());
       assertNotNull(response.getItem());
-      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
+      GuiServiceModel guiServiceOut = (GuiServiceModel) response.getItem();
       assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
       assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
       assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
@@ -652,7 +653,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
           GuiServicePluginModel.class);
       assertTrue(response.getSuccess());
       assertNotNull(response.getItem());
-      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
+      GuiServiceModel guiServiceOut = (GuiServiceModel) response.getItem();
       assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
       assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
       assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
@@ -661,7 +662,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  private void deleteGuiService(GuiServicePluginModel guiService, String baseUrl) {
+  private void deleteGuiService(GuiServiceModel guiService, String baseUrl) {
     String url = baseUrl + "/gui/" + guiService.getId();
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();

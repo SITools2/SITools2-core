@@ -1,5 +1,7 @@
 package fr.cnes.sitools.dataset.services.model;
 
+import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
+
 
 public class ServiceModel {
   /** The id */
@@ -20,6 +22,8 @@ public class ServiceModel {
   private boolean visible;
   /** The position */
   private String position;
+  /** The dataSetSelection */
+  private DataSetSelectionType dataSetSelection;
 
   /**
    * Gets the id value
@@ -184,5 +188,21 @@ public class ServiceModel {
    */
   public void setPosition(String position) {
     this.position = position;
+  }
+
+  /**
+   * Gets the dataSetSelection value
+   * @return the dataSetSelection
+   */
+  public DataSetSelectionType getDataSetSelection() {
+    return dataSetSelection;
+  }
+
+  /**
+   * Sets the value of dataSetSelection
+   * @param dataSetSelection the dataSetSelection to set
+   */
+  public void setDataSetSelection(DataSetSelectionType dataSetSelection) {
+    this.dataSetSelection = dataSetSelection;
   }
 }

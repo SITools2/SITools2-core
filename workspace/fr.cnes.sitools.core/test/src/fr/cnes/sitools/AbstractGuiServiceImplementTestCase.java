@@ -44,6 +44,7 @@ import fr.cnes.sitools.common.model.Dependencies;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.model.Url;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginApplication;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXML;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
@@ -214,7 +215,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
       Response response = getResponse(getMediaTest(), result, GuiServicePluginModel.class);
       assertTrue(response.getSuccess());
       assertNotNull(response.getItem());
-      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
+      GuiServiceModel guiServiceOut = (GuiServiceModel) response.getItem();
       assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
       assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
       assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
@@ -241,7 +242,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
     }
   }
 
-  private void retrieve(String guiServiceId, GuiServicePluginModel guiServiceIn) {
+  private void retrieve(String guiServiceId, GuiServiceModel guiServiceIn) {
     String url = getServiceUrl(PARENT_ID) + "/" + guiServiceId;
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
@@ -256,7 +257,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
       Response response = getResponse(getMediaTest(), result, GuiServicePluginModel.class);
       assertTrue(response.getSuccess());
       assertNotNull(response.getItem());
-      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
+      GuiServiceModel guiServiceOut = (GuiServiceModel) response.getItem();
       assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
       assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
       assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
@@ -288,7 +289,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
       assertTrue(cr.getStatus().isSuccess());
       Response response = getResponse(getMediaTest(), result, GuiServicePluginModel.class);
       assertTrue(response.getSuccess());
-      GuiServicePluginModel guiServiceOut = (GuiServicePluginModel) response.getItem();
+      GuiServiceModel guiServiceOut = (GuiServiceModel) response.getItem();
       assertEquals(guiServiceIn.getId(), guiServiceOut.getId());
       assertEquals(guiServiceIn.getName(), guiServiceOut.getName());
       assertEquals(guiServiceIn.getDescription(), guiServiceOut.getDescription());
@@ -299,7 +300,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
     }
   }
 
-  private void delete(GuiServicePluginModel guiService) {
+  private void delete(GuiServiceModel guiService) {
     String url = getServiceUrl(PARENT_ID) + "/" + guiService.getId();
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();

@@ -128,6 +128,7 @@ public abstract class AbstractServerServiceResource extends AbstractServiceResou
     serviceModel.setId(serverService.getId());
     serviceModel.setName(serverService.getName());
     serviceModel.setDescription(serverService.getDescription());
+    serviceModel.setDataSetSelection(serverService.getDataSetSelection());
     List<ResourceParameter> parameters = serverService.getParameters();
     for (ResourceParameter resourceParameter : parameters) {
       if ("image".equals(resourceParameter.getName())) {

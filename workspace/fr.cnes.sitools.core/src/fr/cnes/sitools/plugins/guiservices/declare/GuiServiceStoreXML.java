@@ -89,6 +89,7 @@ public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
         current.setLabel(guiService.getLabel());
         current.setIcon(guiService.getIcon());
 
+        current.setDataSetSelection(guiService.getDataSetSelection());
         it.remove();
 
         break;

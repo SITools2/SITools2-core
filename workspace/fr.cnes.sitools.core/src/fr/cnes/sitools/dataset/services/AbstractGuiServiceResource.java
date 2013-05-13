@@ -13,6 +13,7 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.server.Consts;
 
@@ -27,8 +28,8 @@ public abstract class AbstractGuiServiceResource extends AbstractServiceResource
    * @throws IOException
    *           if there is an error while parsing the java representation of the object
    */
-  public final GuiServicePluginModel getObjectGuiServicePluginModel(Representation representation) throws IOException {
-    GuiServicePluginModel projectModuleInput = null;
+  public final GuiServiceModel getObjectGuiServicePluginModel(Representation representation) throws IOException {
+    GuiServiceModel projectModuleInput = null;
     if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       @SuppressWarnings("unchecked")
       ObjectRepresentation<GuiServicePluginModel> obj = (ObjectRepresentation<GuiServicePluginModel>) representation;

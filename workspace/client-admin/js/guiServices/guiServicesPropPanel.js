@@ -44,6 +44,31 @@ sitools.admin.guiservices.GuiServicesPropPanel = Ext.extend(Ext.Window, {
         
         this.gridDependencies = new sitools.admin.util.DependenciesPanel();        
         
+        var comboSelectionType = new Ext.form.ComboBox({
+            typeAhead : false,
+            fieldLabel : i18n.get("label.selectionType"), 
+            name : "dataSetSelection", 
+            triggerAction : 'all',
+            lazyRender : true,
+            editable : false,
+            mode : 'local',
+            anchor : "100%",
+            emptyText: i18n.get("label.selectionTypeEmpty"),
+            store : new Ext.data.ArrayStore({
+                id : 0,
+                fields : [ 'dataSetSelection' ],
+                data : [ 
+                    [ 'NONE' ],
+                    [ 'SINGLE' ],
+                    [ 'MULTIPLE' ],
+                    [ 'ALL' ]
+                    
+                ]
+            }),
+            valueField : 'dataSetSelection',
+            displayField : 'dataSetSelection'
+        });
+        
         this.formPanel = new Ext.form.FormPanel({
             title : i18n.get('label.projectModuleInfo'),
             border : false,
@@ -95,7 +120,7 @@ sitools.admin.guiservices.GuiServicesPropPanel = Ext.extend(Ext.Window, {
                     fieldLabel : i18n.get('label.xtype'),
                     anchor : '100%', 
                     allowBlank : false
-                }, {
+                }, comboSelectionType, {
                     xtype : 'spinnerfield',
                     name : 'priority',
                     id : 'priorityId', 

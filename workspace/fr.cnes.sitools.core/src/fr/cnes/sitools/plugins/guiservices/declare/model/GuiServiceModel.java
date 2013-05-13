@@ -22,6 +22,7 @@ import java.io.Serializable;
 
 import fr.cnes.sitools.common.model.Dependencies;
 import fr.cnes.sitools.common.model.IResource;
+import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 
 /**
  * Gui service model object
@@ -53,6 +54,10 @@ public class GuiServiceModel implements IResource, Serializable {
   private Dependencies dependencies;
   /** priority */
   private Integer priority; // global ordering of all gui service...
+  /**
+   * The type of selection authorized on a dataset
+   */
+  private DataSetSelectionType dataSetSelection = DataSetSelectionType.NONE;
 
   /**
    * Gets the id value
@@ -242,6 +247,25 @@ public class GuiServiceModel implements IResource, Serializable {
    */
   public void setPriority(Integer priority) {
     this.priority = priority;
+  }
+
+  /**
+   * Gets the dataSetSelection value
+   * 
+   * @return the dataSetSelection
+   */
+  public DataSetSelectionType getDataSetSelection() {
+    return dataSetSelection;
+  }
+
+  /**
+   * Sets the value of dataSetSelection
+   * 
+   * @param dataSetSelection
+   *          the dataSetSelection to set
+   */
+  public void setDataSetSelection(DataSetSelectionType dataSetSelection) {
+    this.dataSetSelection = dataSetSelection;
   }
 
 }

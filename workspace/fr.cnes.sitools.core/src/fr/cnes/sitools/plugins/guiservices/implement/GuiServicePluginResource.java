@@ -56,7 +56,7 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
    */
   @Put
   public Representation updateGuiServicePluginPlugin(Representation representation, Variant variant) {
-    GuiServicePluginModel guiServicePluginOutput = null;
+    GuiServiceModel guiServicePluginOutput = null;
     try {
 
       GuiServicePluginModel guiServicePluginInput = null;

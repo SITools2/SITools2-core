@@ -3,7 +3,6 @@ package fr.cnes.sitools.plugins.guiservices.implement.model;
 import java.util.List;
 
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
-import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 import fr.cnes.sitools.util.Property;
 
 /**
@@ -24,11 +23,6 @@ public class GuiServicePluginModel extends GuiServiceModel {
 
   /** description of what the guiservice plugin does */
   private String descriptionAction;
-
-  /**
-   * The type of selection authorized on a dataset
-   */
-  private DataSetSelectionType dataSetSelection = DataSetSelectionType.NONE;
 
   /**
    * The list of parameters and their values
@@ -71,25 +65,6 @@ public class GuiServicePluginModel extends GuiServiceModel {
    */
   public void setDescriptionAction(String descriptionAction) {
     this.descriptionAction = descriptionAction;
-  }
-
-  /**
-   * Gets the dataSetSelection value
-   * 
-   * @return the dataSetSelection
-   */
-  public DataSetSelectionType getDataSetSelection() {
-    return dataSetSelection;
-  }
-
-  /**
-   * Sets the value of dataSetSelection
-   * 
-   * @param dataSetSelection
-   *          the dataSetSelection to set
-   */
-  public void setDataSetSelection(DataSetSelectionType dataSetSelection) {
-    this.dataSetSelection = dataSetSelection;
   }
 
   /**

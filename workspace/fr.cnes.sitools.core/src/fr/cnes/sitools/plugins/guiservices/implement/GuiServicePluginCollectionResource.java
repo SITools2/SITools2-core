@@ -12,6 +12,7 @@ import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
@@ -61,7 +62,7 @@ public class GuiServicePluginCollectionResource extends AbstractGuiServicePlugin
       // Response
       // fillParametersMap(resourceInput);
 
-      GuiServicePluginModel guiServicePluginOutput = getStore().create(guiServicePluginInput);
+      GuiServiceModel guiServicePluginOutput = getStore().create(guiServicePluginInput);
 
 //      // Notify observers
 //      Notification notification = new Notification();
