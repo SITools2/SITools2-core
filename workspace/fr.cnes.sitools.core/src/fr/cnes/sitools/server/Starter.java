@@ -142,7 +142,7 @@ import fr.cnes.sitools.tasks.exposition.TaskApplication;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.trigger.AuthorizationTrigger;
 import fr.cnes.sitools.trigger.DataStorageTrigger;
-import fr.cnes.sitools.trigger.DefaultFiltersTrigger;
+import fr.cnes.sitools.trigger.DefaultGuiServicesTrigger;
 import fr.cnes.sitools.trigger.GroupTrigger;
 import fr.cnes.sitools.trigger.RoleTrigger;
 import fr.cnes.sitools.trigger.UserTrigger;
@@ -2055,8 +2055,9 @@ public final class Starter {
     notificationApplication.attachTrigger("AUTHORIZATION_CREATED", AuthorizationTrigger.class);
     notificationApplication.attachTrigger("AUTHORIZATION_UPDATED", AuthorizationTrigger.class);
     notificationApplication.attachTrigger("AUTHORIZATION_DELETED", AuthorizationTrigger.class);
-    notificationApplication.attachTrigger("DATASET_CREATED", DefaultFiltersTrigger.class);
     notificationApplication.attachTrigger("STORAGE_DELETED", DataStorageTrigger.class);
+    notificationApplication.attachTrigger("DATASET_CREATED", DefaultGuiServicesTrigger.class);
+
 
     // ============================
     // START SERVER

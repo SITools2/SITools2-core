@@ -84,13 +84,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
       String url = getGuiServicesUrl();
       GuiServiceModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
 
-      ServiceCollectionModel services = getStore().retrieve(getParentId());
-
-      if (services == null) {
-        services = new ServiceCollectionModel();
-        services.setId(getParentId());
-        getStore().create(services);
-      }
+      ServiceCollectionModel services = getServiceCollectionModel();
 
       ServiceModel service = new ServiceModel();
       service.setId(guiServiceOutput.getId());

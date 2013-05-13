@@ -62,6 +62,10 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
                 name : 'dependencies'
             }, {
                 name : 'dataSetSelection'
+            }, {
+                name : 'defaultGuiService',
+                type : 'boolean'
+
             }]        
         });
         
@@ -70,8 +74,8 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
      
 
     saveRecord : function (rec, action) {
-        var met = action == 'modify' ? 'PUT' : 'POST';
-        var url = this.url + ((action == 'modify') ? '/' + rec.id : "");
+        var met = action === 'modify' ? 'PUT' : 'POST';
+        var url = this.url + ((action === 'modify') ? '/' + rec.id : "");
 
         Ext.Ajax.request({
             url : url,

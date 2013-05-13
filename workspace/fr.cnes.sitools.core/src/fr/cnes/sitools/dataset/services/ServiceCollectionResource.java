@@ -76,6 +76,9 @@ public class ServiceCollectionResource extends AbstractServiceResource {
 
         ServiceCollectionModel servicesOuput = getStore().update(servicesInput);
 
+        unregisterObserver(servicesOuput);
+        registerObserver(servicesOuput);
+
         response = new Response(true, servicesOuput, ServiceCollectionModel.class, "ServiceCollectionModel");
       }
       return getRepresentation(response, variant);
@@ -100,7 +103,7 @@ public class ServiceCollectionResource extends AbstractServiceResource {
     ParameterInfo param = new ParameterInfo("parentId", true, "class", ParameterStyle.TEMPLATE,
         "Parent object identifier");
     info.getRequest().getParameters().add(param);
-    
+
   }
 
 }

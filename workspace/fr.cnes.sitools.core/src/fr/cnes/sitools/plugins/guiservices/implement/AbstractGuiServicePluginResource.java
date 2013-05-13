@@ -19,8 +19,11 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
+import fr.cnes.sitools.notification.business.NotificationManager;
+import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Abstract resource for GuiPluginService
@@ -63,7 +66,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
   public Representation get(Variant variant) {
 
     if (getGuiServicePluginId() != null) {
-      GuiServiceModel guiService = getStore().retrieve(getGuiServicePluginId());
+      GuiServicePluginModel guiService = getStore().retrieve(getGuiServicePluginId());
       Response response = new Response(true, guiService, GuiServicePluginModel.class, "guiServicePlugin");
       return getRepresentation(response, variant);
     }
@@ -144,6 +147,46 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
           .getObject();
     }
     return projectModuleInput;
+  }
+
+  /**
+   * Register as observer
+   * 
+   * @param input
+   *          The ConverterChainedModel
+   */
+  public final void registerObserver(GuiServicePluginModel input) {
+    NotificationManager notificationManager = application.getSettings().getNotificationManager();
+    if (notificationManager == null) {
+      getLogger().warning("NotificationManager is null");
+      return;
+    }
+
+    RestletObserver observer = new RestletObserver();
+    // passage RIAP
+    String uriToNotify = RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_DATASETS_URL) + "/" + input.getParent()
+        + getSitoolsSetting(Consts.APP_GUI_SERVICES_URL) + "/" + input.getId() + "/notify";
+    observer.setUriToNotify(uriToNotify);
+    observer.setMethodToNotify("PUT");
+    observer.setUuid("GuiServicePlugin." + input.getId());
+
+    notificationManager.addObserver(input.getParent(), observer);
+
+  }
+
+  /**
+   * Unregister as Observer
+   * 
+   * @param input
+   *          ConverterChainedModel Objet
+   */
+  public final void unregisterObserver(GuiServicePluginModel input) {
+    NotificationManager notificationManager = application.getSettings().getNotificationManager();
+    if (notificationManager == null) {
+      getLogger().warning("NotificationManager is null");
+      return;
+    }
+    notificationManager.removeObserver(input.getParent(), "GuiServicePlugin." + input.getId());
   }
 
   /**

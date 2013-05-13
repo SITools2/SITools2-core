@@ -24,14 +24,12 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.DocumentationInfo;
-import org.restlet.routing.Filter;
 import org.restlet.routing.Router;
 
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.notification.business.NotifierFilter;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
@@ -73,9 +71,9 @@ public class GuiServicePluginApplication extends SitoolsApplication {
     router.attachDefault(GuiServicePluginCollectionResource.class);
     router.attach("/{guiServiceId}", GuiServicePluginResource.class);
 
-    Filter filter = new NotifierFilter(getContext());
-    filter.setNext(router);
-    return filter;
+    router.attach("/{guiServiceId}/notify", GuiServicePluginNotificationResource.class);
+
+    return router;
   }
 
   /**

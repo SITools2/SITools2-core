@@ -142,7 +142,7 @@ public final class NotificationApplication extends SitoolsApplication {
     }
     else {
       getLogger().warning(
-          "Target class " + existingTargetClass.getName() + " is ever registered to " + eventName + " event.");
+          "Target class " + existingTargetClass.getName() + " is already registered to " + eventName + " event.");
     }
   }
 

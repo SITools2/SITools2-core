@@ -46,6 +46,13 @@ sitools.admin.guiservices.GuiServicesCrudPanel = Ext.extend(Ext.grid.GridPanel, 
         this.store = new sitools.admin.guiServices.guiServicesStore({
             url : this.url
         });
+        
+        var defaultGuiService = new Ext.grid.CheckColumn({
+            header : i18n.get('headers.defaultGuiService'),
+            dataIndex : 'defaultGuiService',
+            editable : false,
+            width : 55
+        });
 
         this.cm = new Ext.grid.ColumnModel({
             // specify any defaults for each column
@@ -61,14 +68,15 @@ sitools.admin.guiservices.GuiServicesCrudPanel = Ext.extend(Ext.grid.GridPanel, 
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 300,
+                width : 250,
                 sortable : false
             }, {
                 header : i18n.get('label.xtype'),
                 dataIndex : 'xtype',
-                width : 350,
+                width : 300,
                 sortable : false
-            } ]
+            }, defaultGuiService
+             ]
         });
 
         this.bbar = {

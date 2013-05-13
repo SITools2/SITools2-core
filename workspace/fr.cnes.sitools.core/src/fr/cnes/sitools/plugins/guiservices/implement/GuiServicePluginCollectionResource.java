@@ -59,19 +59,12 @@ public class GuiServicePluginCollectionResource extends AbstractGuiServicePlugin
       // Business service
       guiServicePluginInput.setParent(getParentId());
 
-      // Response
-      // fillParametersMap(resourceInput);
-
-      GuiServiceModel guiServicePluginOutput = getStore().create(guiServicePluginInput);
-
-//      // Notify observers
-//      Notification notification = new Notification();
-//      notification.setObservable(getGuiServicePluginId());
-//      notification.setEvent("GUI_SERVICE_PLUGIN_ADDED");
-//      notification.setMessage("guiserviceplugin.add.success");
-//      notification.setEventSource(guiServicePluginOutput);
-//      getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
+      GuiServicePluginModel guiServicePluginOutput = getStore().create(guiServicePluginInput);
+      
+      // Register GuiServicePluginCollectionResource as observer of datasets resources
+      registerObserver(guiServicePluginOutput);
+      
+      
       Response response = new Response(true, guiServicePluginOutput, GuiServicePluginModel.class, "guiServicePlugin");
       return getRepresentation(response, variant);
 

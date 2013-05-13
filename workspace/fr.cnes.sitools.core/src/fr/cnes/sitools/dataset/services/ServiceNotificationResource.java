@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.plugins.resources;
+package fr.cnes.sitools.dataset.services;
 
 import java.util.logging.Level;
 
@@ -28,21 +28,19 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.model.Notification;
-import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 
 /**
  * Resource handling notifications on resource plugins
  * 
- * @author m.marseille (AKKA Technologies)
+ * @author m.gond (AKKA Technologies)
  */
-public final class ResourcePluginNotificationResource extends AbstractResourcePluginResource {
-  
+public final class ServiceNotificationResource extends AbstractServiceResource {
+
   @Override
   public void sitoolsDescribe() {
-    setName("ResourcePluginNotificationResource");
-    setDescription("Resource handling notifications on resource plugins");
+    setName("ServiceNotificationResource");
+    setDescription("Resource handling notifications on services on a dataset");
     setNegotiated(false);
   }
 
@@ -64,10 +62,9 @@ public final class ResourcePluginNotificationResource extends AbstractResourcePl
         notification = getNotificationObject(representation);
       }
       if ((notification != null) && "DELETED".equals(notification.getStatus())) {
-        SitoolsStore<ResourceModel> store = ((ResourcePluginApplication) getApplication()).getStore();
-        
+
         // Business service
-        boolean ok = store.delete(getResourcePluginId());
+        boolean ok = getStore().delete(getParentId());
         if (ok) {
           return new StringRepresentation("OK");
         }

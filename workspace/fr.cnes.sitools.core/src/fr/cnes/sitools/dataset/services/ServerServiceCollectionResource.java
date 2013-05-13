@@ -84,13 +84,7 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
           throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "Empty ResourceModelDTO in return");
         }
         ResourceModelDTO serverServiceOutput = (ResourceModelDTO) responsePersist.getItem();
-        ServiceCollectionModel services = getStore().retrieve(getParentId());
-        // create a new ServiceCollectionModel if it doesn't already exists
-        if (services == null) {
-          services = new ServiceCollectionModel();
-          services.setId(getParentId());
-          getStore().create(services);
-        }
+        ServiceCollectionModel services = getServiceCollectionModel();
 
         ServiceModel service = new ServiceModel();
         populateServiceModel(serverServiceOutput, service);

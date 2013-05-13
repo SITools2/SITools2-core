@@ -17,6 +17,10 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
+import fr.cnes.sitools.notification.business.NotificationManager;
+import fr.cnes.sitools.notification.model.RestletObserver;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Abstract resource for GuiPluginService
@@ -30,9 +34,6 @@ public abstract class AbstractServiceResource extends SitoolsResource {
 
   /** store */
   private SitoolsStore<ServiceCollectionModel> store = null;
-
-  /** GuiService identifier parameter */
-  private String guiServicePluginId = null;
 
   /** The parent Id */
   private String parentId;
@@ -104,27 +105,6 @@ public abstract class AbstractServiceResource extends SitoolsResource {
   }
 
   /**
-   * 
-   * 
-   * Gets the guiServicePluginId value
-   * 
-   * @return the guiServicePluginId
-   */
-  public String getGuiServicePluginId() {
-    return guiServicePluginId;
-  }
-
-  /**
-   * Sets the value of guiServicePluginId
-   * 
-   * @param guiServicePluginId
-   *          the guiServicePluginId to set
-   */
-  public void setGuiServicePluginId(String guiServicePluginId) {
-    this.guiServicePluginId = guiServicePluginId;
-  }
-
-  /**
    * Sets the value of store
    * 
    * @param store
@@ -162,10 +142,28 @@ public abstract class AbstractServiceResource extends SitoolsResource {
     this.parentId = parentId;
   }
 
+  /**
+   * Check if the service exists in the given {@link ServiceCollectionModel}
+   * 
+   * @param serviceCollection
+   *          the list of service
+   * @param idService
+   *          the id of the service to look for
+   * @return true if the service exists, false otherwise
+   */
   public boolean serviceExists(ServiceCollectionModel serviceCollection, String idService) {
     return getServiceModel(serviceCollection, idService) != null;
   }
 
+  /**
+   * Get a service by its name in the given {@link ServiceCollectionModel}
+   * 
+   * @param serviceCollection
+   *          the list of service
+   * @param idService
+   *          the id of the service to look for
+   * @return the {@link ServiceModel} if it exists, null otherwise
+   */
   public ServiceModel getServiceModel(ServiceCollectionModel serviceCollection, String idService) {
     if (serviceCollection == null) {
       return null;
@@ -180,4 +178,65 @@ public abstract class AbstractServiceResource extends SitoolsResource {
     }
     return out;
   }
+
+  /**
+   * Register as observer
+   * 
+   * @param input
+   *          The ConverterChainedModel
+   */
+  public final void registerObserver(ServiceCollectionModel input) {
+    NotificationManager notificationManager = application.getSettings().getNotificationManager();
+    if (notificationManager == null) {
+      getLogger().warning("NotificationManager is null");
+      return;
+    }
+
+    RestletObserver observer = new RestletObserver();
+    // passage RIAP
+    String uriToNotify = RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_DATASETS_URL) + "/" + input.getId()
+        + getSitoolsSetting(Consts.APP_SERVICES_URL) + "/notify";
+    observer.setUriToNotify(uriToNotify);
+    observer.setMethodToNotify("PUT");
+    observer.setUuid("ServiceCollectionModel." + input.getId());
+
+    notificationManager.addObserver(input.getId(), observer);
+
+  }
+
+  /**
+   * Unregister as Observer
+   * 
+   * @param input
+   *          ConverterChainedModel Objet
+   */
+  public final void unregisterObserver(ServiceCollectionModel input) {
+    NotificationManager notificationManager = application.getSettings().getNotificationManager();
+    if (notificationManager == null) {
+      getLogger().warning("NotificationManager is null");
+      return;
+    }
+    notificationManager.removeObserver(input.getId(), "ServiceCollectionModel." + input.getId());
+  }
+
+  /**
+   * Get the ServiceCollectionModel associated to the current dataset or create one if it doesn't already exist
+   * 
+   * @return the ServiceCollectionModel associated to the current dataset
+   */
+  protected ServiceCollectionModel getServiceCollectionModel() {
+    ServiceCollectionModel services = getStore().retrieve(getParentId());
+    // create a new ServiceCollectionModel if it doesn't already exists
+    if (services == null) {
+      services = new ServiceCollectionModel();
+      services.setId(getParentId());
+      getStore().create(services);
+      
+      //register observer
+      registerObserver(services);
+
+    }
+    return services;
+  }
+
 }

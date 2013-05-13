@@ -85,6 +85,8 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
     parentId = (String) this.getRequest().getAttributes().get("parentId");
 
     resourcePluginId = ((String) this.getRequest().getAttributes().get("resourcePluginId"));
+    
+
 
   }
 
@@ -170,8 +172,8 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
 
     RestletObserver observer = new RestletObserver();
     // passage RIAP
-    String uriToNotify = RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_PLUGINS_RESOURCES_URL) + "/"
-        + input.getId() + "/notify";
+    String uriToNotify = RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_APPLICATIONS_URL) + "/"
+        + input.getParent() + getSitoolsSetting(Consts.APP_RESOURCES_URL) + "/" + input.getId() + "/notify";
     observer.setUriToNotify(uriToNotify);
     observer.setMethodToNotify("PUT");
     observer.setUuid("ResourceModel." + input.getId());

@@ -156,7 +156,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         });
 
         var visible = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.visible'),
+            header : i18n.get('headers.visible') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'visible',
             width : 55,
             listeners : {
@@ -191,7 +191,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 280,
+                width : 255,
                 sortable : false
             }, {
                 header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
@@ -244,7 +244,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             }, {
                 header : i18n.get('label.icon'),
                 dataIndex : 'icon',
-                width : 55,
+                width : 80,
                 sortable : false,
                 renderer : function (value, metadata, record, rowIndex, colIndex, store) {
                     if (!Ext.isEmpty(value)) {

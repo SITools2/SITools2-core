@@ -59,6 +59,9 @@ public class GuiServiceModel implements IResource, Serializable {
    */
   private DataSetSelectionType dataSetSelection = DataSetSelectionType.NONE;
 
+  /** priority */
+  private boolean defaultGuiService; // global ordering of all gui service...
+	
   /**
    * Gets the id value
    * 
@@ -266,6 +269,22 @@ public class GuiServiceModel implements IResource, Serializable {
    */
   public void setDataSetSelection(DataSetSelectionType dataSetSelection) {
     this.dataSetSelection = dataSetSelection;
+  }
+
+/**
+   * Gets the defaultGuiService value
+   * @return the defaultGuiService
+   */
+  public boolean isDefaultGuiService() {
+    return defaultGuiService;
+  }
+
+  /**
+   * Sets the value of defaultGuiService
+   * @param defaultGuiService the defaultGuiService to set
+   */
+  public void setDefaultGuiService(boolean defaultGuiService) {
+    this.defaultGuiService = defaultGuiService;
   }
 
 }

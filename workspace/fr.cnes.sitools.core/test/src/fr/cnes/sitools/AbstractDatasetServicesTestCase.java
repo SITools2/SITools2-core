@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,6 +28,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
@@ -36,7 +36,6 @@ import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
-import fr.cnes.sitools.plugins.resources.ListPluginExpositionResource;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.server.Consts;
@@ -126,7 +125,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
    * @throws InstantiationException
    * @throws ClassNotFoundException
    */
-  // @Test
+  @Test
   public void testDatasetServices() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel serverService = null;
@@ -161,7 +160,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  // @Test
+  @Test
   public void testServerServiceCRUD() throws InterruptedException, ClassNotFoundException, InstantiationException,
       IllegalAccessException {
     ResourceModel serverService = null;
@@ -183,7 +182,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     }
   }
 
-  // @Test
+  @Test
   public void testServerServiceWithViolationsCRUD() throws InterruptedException, ClassNotFoundException,
       InstantiationException, IllegalAccessException {
     ResourceModel serverService = null;
@@ -230,6 +229,50 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     finally {
       deleteDataset(datasetId);
     }
+  }
+
+  @Test
+  public void testDatasetServicesNotifications() throws InterruptedException, ClassNotFoundException,
+      InstantiationException, IllegalAccessException {
+
+    ResourceModel serverService = null;
+
+    createDataset(datasetId, urlAttachDataset);
+    assertServicesCount(0);
+    serverService = createServerService(true);
+    String serviceUrl = getServiceUrl(datasetId);
+    persistResourceModel(serverService, serviceUrl);
+    assertServerService(1);
+    createGuiService();
+    assertGuiServiceForAdmin(1);
+    assertServicesCount(2);
+
+    deleteDataset(datasetId);
+    assertServerService(0);
+    assertGuiServiceForAdmin(0);
+    assertServicesCount(0);
+
+  }
+
+  @Test
+  public void testDatasetDefaultGuiService() throws InterruptedException, ClassNotFoundException,
+      InstantiationException, IllegalAccessException {
+
+    // change the first GUI service on the store to create it by default when creating a dataset
+    SitoolsStore<GuiServiceModel> storeGuiService = (SitoolsStore<GuiServiceModel>) settings.getStores().get(
+        Consts.APP_STORE_GUI_SERVICE);
+    GuiServiceModel guiServiceModel = storeGuiService.retrieve("8c48e76b-7ce4-4af1-8c4e-a120e47d5ed8");
+    guiServiceModel.setDefaultGuiService(true);
+    storeGuiService.update(guiServiceModel);
+    try {
+      createDataset(datasetId, urlAttachDataset);
+      assertServicesCount(1);
+      assertGuiServiceForAdmin(1);
+    }
+    finally {
+      deleteDataset(datasetId);
+    }
+
   }
 
   // -----------------------------------------------------

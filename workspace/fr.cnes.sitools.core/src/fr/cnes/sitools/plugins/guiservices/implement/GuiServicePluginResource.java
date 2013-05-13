@@ -13,8 +13,6 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.notification.model.Notification;
-import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
@@ -56,7 +54,7 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
    */
   @Put
   public Representation updateGuiServicePluginPlugin(Representation representation, Variant variant) {
-    GuiServiceModel guiServicePluginOutput = null;
+    GuiServicePluginModel guiServicePluginOutput = null;
     try {
 
       GuiServicePluginModel guiServicePluginInput = null;
@@ -64,19 +62,12 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
 
         guiServicePluginInput = getObject(representation);
 
-        // Response
-        // fillParametersMap(resourceInput);
-
         guiServicePluginOutput = getStore().update(guiServicePluginInput);
 
-//        // Notify observers
-//        Notification notification = new Notification();
-//        notification.setObservable(getGuiServicePluginId());
-//        notification.setEvent("GUI_SERVICE_PLUGIN_UPDATED");
-//        notification.setMessage("guiserviceplugin.update.success");
-//        notification.setStatus("UPDATED");
-//        notification.setEventSource(guiServicePluginOutput);
-//        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+        // Register GuiServicePluginCollectionResource as observer of datasets resources
+        unregisterObserver(guiServicePluginOutput);
+        
+        registerObserver(guiServicePluginOutput);
 
       }
       Response response = new Response(true, guiServicePluginOutput, GuiServicePluginModel.class, "guiServicePlugin");
@@ -117,7 +108,7 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
   @Delete
   public Representation deleteGuiServicePlugin(Variant variant) {
     try {
-      GuiServiceModel model = getStore().retrieve(getGuiServicePluginId());
+      GuiServicePluginModel model = getStore().retrieve(getGuiServicePluginId());
       Response response = null;
       if (model == null) {
         response = new Response(false, "guiService.delete.failure");
@@ -126,12 +117,8 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
         // Business service
         getStore().delete(getGuiServicePluginId());
 
-        // Notify observers
-        Notification notification = new Notification();
-        notification.setObservable(getGuiServicePluginId());
-        notification.setEvent("GUI_SERVICE_PLUGIN_DELETED");
-        notification.setMessage("guiserviceplugin.delete.success");
-        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+        // Register ConverterChainedModel as observer of datasets resources
+        unregisterObserver(model);
 
         // Response
         response = new Response(true, "guiService.delete.success");

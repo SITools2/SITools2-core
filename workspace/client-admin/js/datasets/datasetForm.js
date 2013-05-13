@@ -87,7 +87,7 @@ sitools.admin.datasets.datasetForm = Ext.extend(Ext.Panel, {
 					field.fireEvent("change", newValue, field.getValue());
                 }, 
                 initValue : function (field, newValue) {
-                	this.getBubbleTarget().fireEvent("initComboDatasource", field, newValue);
+                    this.getBubbleTarget().fireEvent("initComboDatasource", field, newValue);
                 }
             },
             validator : function (value) {

@@ -36,9 +36,9 @@ sitools.admin.guiservices.GuiServicesPropPanel = Ext.extend(Ext.Window, {
     id : ID.PROP.GUISERVICES,
     layout : 'fit',
     initComponent : function () {
-        if (this.action == 'create') {
+        if (this.action === 'create') {
             this.title = i18n.get('label.createGuiService');
-        } else if (this.action == 'modify') {
+        } else if (this.action === 'modify') {
             this.title = i18n.get('label.modifyGuiService');
         }
         
@@ -132,6 +132,12 @@ sitools.admin.guiservices.GuiServicesPropPanel = Ext.extend(Ext.Window, {
                     accelerate : true,
                     anchor : "50%", 
                     allowBlank : false
+                }, {
+                    xtype : 'checkbox',
+                    name : 'defaultGuiService',
+                    fieldLabel : i18n.get('label.isDefault'),
+                    anchor : '95%',
+                    maxLength : 100
                 }
             ]
         });
