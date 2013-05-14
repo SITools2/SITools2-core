@@ -27,7 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.restlet.Context;
 
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
-import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**

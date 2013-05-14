@@ -54,6 +54,7 @@ public class DefaultFiltersTrigger extends TriggerResource {
     Notification notification = NotificationManager.getObject(representation);
     // TODO : voir comment récupérer proprement le store des datasets ici
     NotificationApplication application = (NotificationApplication) getApplication();
+    @SuppressWarnings("unchecked")
     SitoolsStore<DataSet> dsStore = (SitoolsStore<DataSet>) application.getSettings().getStores()
         .get(Consts.APP_STORE_DATASET);
 

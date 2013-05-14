@@ -4,6 +4,13 @@ import java.util.List;
 
 import fr.cnes.sitools.common.model.IResource;
 
+/**
+ * Model class to represent a collection of {@link ServiceModel} on a dataset.
+ * 
+ * 
+ * 
+ * @author m.gond
+ */
 public class ServiceCollectionModel implements IResource {
 
   /** The id */

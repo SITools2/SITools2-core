@@ -48,6 +48,7 @@ public final class FilterApplication extends SitoolsApplication {
    * @param context
    *          application context
    */
+  @SuppressWarnings("unchecked")
   public FilterApplication(Context context) {
     super(context);
     this.store = (SitoolsStore<FilterChainedModel>) context.getAttributes().get(ContextAttributes.APP_STORE);

@@ -81,9 +81,6 @@ public class MongoDBDatabaseRequest implements DatabaseRequest {
   /** The nbTotalResults */
   private int nbTotalResults = 0;
 
-  /** true if the query is distinct, false otherwise */
-  private boolean distinct = false;
-
   /** The datasource */
   private SitoolsMongoDBDataSource datasource = null;
 
@@ -202,7 +199,8 @@ public class MongoDBDatabaseRequest implements DatabaseRequest {
    * Create a MongoDBRequestModel Object
    * 
    * @return MongoDBRequestModel
-   * @throws SitoolsException throws SitoolsException
+   * @throws SitoolsException
+   *           throws SitoolsException
    */
   public MongoDBRequestModel createMongoDBRequestModel() throws SitoolsException {
     String collectionName = params.getStructures().get(0).getName();

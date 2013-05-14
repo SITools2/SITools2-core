@@ -37,6 +37,7 @@ import org.restlet.security.Authorizer;
 import fr.cnes.sitools.common.SitoolsMediaType;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.filter.TemplateFilter;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.plugins.filters.business.FilterFactory;
@@ -93,7 +94,8 @@ public final class StorageApplication extends SitoolsApplication {
   public void sitoolsDescribe() {
     setCategory(Category.USER);
     setName("StorageApplication");
-    setDescription("Storage service - Gives access to the files on the storages\n" + "-> The administrator does not need authorizations"
+    setDescription("Storage service - Gives access to the files on the storages\n"
+        + "-> The administrator does not need authorizations"
         + "-> The public user must have all authorizations according to ones specified on each storage."
         + " (Default GET and HEAD to authorize clients to detect content-type of a file)");
   }
@@ -144,7 +146,8 @@ public final class StorageApplication extends SitoolsApplication {
         String filterId = storageDirectory.getId(); // getAuthorizerId();
 
         // get the Application corresponding to the given applicationId
-        FilterModel filterModel = RIAPUtils.getObject(filterId, getSettings().getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), getContext(),
+        FilterModel filterModel = RIAPUtils.getObject(filterId,
+            getSettings().getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), getContext(),
             SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL);
 
         Filter filter = null;
@@ -162,7 +165,8 @@ public final class StorageApplication extends SitoolsApplication {
         // 2. priority classic authorizer
         Authorizer directoryAuthorizer = getAuthorizer(storageDirectory.getId());
         if ((directoryAuthorizer == null) || (directoryAuthorizer == Authorizer.ALWAYS)) {
-          getLogger().warning("No security configuration for [" + storageDirectory.getName() + "] datastorage directory.");
+          getLogger().warning(
+              "No security configuration for [" + storageDirectory.getName() + "] datastorage directory.");
         }
         else {
           directoryAuthorizer.setNext(secureDir);
@@ -229,64 +233,74 @@ public final class StorageApplication extends SitoolsApplication {
    */
   public void startDirectory(StorageDirectory storageDirectory) {
 
-    Directory directory = directories.get(storageDirectory.getId());
+    try {
+      Directory directory = directories.get(storageDirectory.getId());
 
-    // Security filters
-    Restlet secureDir = directory;
+      // Security filters
+      Restlet secureDir = directory;
 
-    // 1. optional customizable filter
-    String filterId = storageDirectory.getId(); // getAuthorizerId();
+      // 1. optional customizable filter
+      String filterId = storageDirectory.getId(); // getAuthorizerId();
 
-    // get the Application corresponding to the given applicationId
-    FilterModel filterModel = RIAPUtils.getObject(filterId, getSettings().getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), getContext(),
-        SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL);
+      // get the Application corresponding to the given applicationId
+      FilterModel filterModel = RIAPUtils.getObject(filterId,
+          getSettings().getString(Consts.APP_PLUGINS_FILTERS_INSTANCES_URL), getContext(),
+          SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL);
 
-    Filter filter = null;
-    // if the filterModel is null no specific filter defined.
-    if (filterModel != null) {
+      Filter filter = null;
+      // if the filterModel is null no specific filter defined.
+      if (filterModel != null) {
 
-      // FIXME Create a child context ... perte des attributs => les répliquer ?
-      // Est ce que le directory a besoin d'infos du contexte ?
-      Context childContext = this.getContext().createChildContext();
-      childContext.getAttributes().putAll(childContext.getAttributes());
-      filter = FilterFactory.getInstance(childContext, filterId, filterModel);
+        // FIXME Create a child context ... perte des attributs => les répliquer ?
+        // Est ce que le directory a besoin d'infos du contexte ?
+        Context childContext = this.getContext().createChildContext();
+        childContext.getAttributes().putAll(childContext.getAttributes());
 
-      if (filter != null) {
-        filter.setNext(directory);
-        secureDir = filter;
-        getLogger().info("Directory secured with specific authoriser");
+        filter = FilterFactory.getInstance(childContext, filterId, filterModel);
+
+        if (filter != null) {
+          filter.setNext(directory);
+          secureDir = filter;
+          getLogger().info("Directory secured with specific authoriser");
+        }
       }
+
+      // 2. priority classic authorizer
+      Authorizer directoryAuthorizer = getAuthorizer(storageDirectory.getId());
+      if ((directoryAuthorizer == null) || (directoryAuthorizer == Authorizer.ALWAYS)) {
+        getLogger()
+            .warning("No security configuration for [" + storageDirectory.getName() + "] datastorage directory.");
+      }
+      else {
+        directoryAuthorizer.setNext(secureDir);
+        secureDir = directoryAuthorizer;
+      }
+
+      // Insert a TemplateFilter before secureDir
+      TemplateFilter tf = new TemplateFilter();
+      tf.getConfiguration().setCustomAttribute("directory", storageDirectory);
+      tf.setNext(secureDir);
+
+      route.attach(storageDirectory.getAttachUrl(), tf); // tf
+
+      // if (secureDir == directory) {
+      // route.attach(storageDirectory.getAttachUrl(), secureDir, Router.MODE_FIRST_MATCH);
+      // }
+      // else {
+      // route.attach(storageDirectory.getAttachUrl(), secureDir, Router.MODE_BEST_MATCH);
+      // }
+
+      directories.put(storageDirectory.getId(), directory);
+      securedDirectories.put(storageDirectory.getId(), tf); // secureDir
+
+      storageDirectory.setStatus("STARTED");
+      store.update(storageDirectory);
     }
-
-    // 2. priority classic authorizer
-    Authorizer directoryAuthorizer = getAuthorizer(storageDirectory.getId());
-    if ((directoryAuthorizer == null) || (directoryAuthorizer == Authorizer.ALWAYS)) {
-      getLogger().warning("No security configuration for [" + storageDirectory.getName() + "] datastorage directory.");
+    catch (SitoolsException e) {
+      getLogger().log(Level.WARNING, e.getMessage(), e);
+      storageDirectory.setStatus("ERROR");
+      store.update(storageDirectory);
     }
-    else {
-      directoryAuthorizer.setNext(secureDir);
-      secureDir = directoryAuthorizer;
-    }
-
-    // Insert a TemplateFilter before secureDir
-    TemplateFilter tf = new TemplateFilter();
-    tf.getConfiguration().setCustomAttribute("directory", storageDirectory);
-    tf.setNext(secureDir);
-
-    route.attach(storageDirectory.getAttachUrl(), tf); // tf
-
-    // if (secureDir == directory) {
-    // route.attach(storageDirectory.getAttachUrl(), secureDir, Router.MODE_FIRST_MATCH);
-    // }
-    // else {
-    // route.attach(storageDirectory.getAttachUrl(), secureDir, Router.MODE_BEST_MATCH);
-    // }
-
-    directories.put(storageDirectory.getId(), directory);
-    securedDirectories.put(storageDirectory.getId(), tf); // secureDir
-
-    storageDirectory.setStatus("STARTED");
-    store.update(storageDirectory);
   }
 
   /**

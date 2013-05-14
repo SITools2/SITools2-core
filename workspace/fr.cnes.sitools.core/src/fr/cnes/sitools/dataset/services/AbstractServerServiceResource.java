@@ -26,6 +26,12 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
+/**
+ * Abstract class to manage ServerService
+ * 
+ * 
+ * @author m.gond
+ */
 public abstract class AbstractServerServiceResource extends AbstractServiceResource {
 
   /**
@@ -124,6 +130,14 @@ public abstract class AbstractServerServiceResource extends AbstractServiceResou
     return rep;
   }
 
+  /**
+   * Populate a given {@link ServiceModel} with the value from a {@link ResourceModelDTO}
+   * 
+   * @param serverService
+   *          the {@link ResourceModelDTO} to get the values from
+   * @param serviceModel
+   *          the {@link ServiceModel} to populate
+   */
   protected void populateServiceModel(ResourceModelDTO serverService, ServiceModel serviceModel) {
     serviceModel.setId(serverService.getId());
     serviceModel.setName(serverService.getName());

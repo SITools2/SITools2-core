@@ -12,6 +12,12 @@ import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
+/**
+ * Resource to get the list of services on a Dataset
+ * 
+ * 
+ * @author m.gond
+ */
 public class ListServicesResource extends SitoolsResource {
 
   @Override
@@ -21,7 +27,7 @@ public class ListServicesResource extends SitoolsResource {
   }
 
   /**
-   * Get the list of resources for the dataset
+   * Get the list of services for the dataset
    * 
    * @param variant
    *          the variant asked

@@ -51,6 +51,7 @@ public abstract class AbstractDataSetApplication extends SitoolsParameterizedApp
    * @param context
    *          RESTlet Application Context
    */
+  @SuppressWarnings("unchecked")
   public AbstractDataSetApplication(Context context) {
     super(context);
     this.store = (SitoolsStore<DataSet>) context.getAttributes().get(ContextAttributes.APP_STORE);

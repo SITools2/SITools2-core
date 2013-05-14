@@ -100,6 +100,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
    * @param context
    *          Restlet Host context
    */
+  @SuppressWarnings("unchecked")
   public AppRegistryApplication(Context context) {
     super(context);
     this.store = (SitoolsStore<AppRegistry>) context.getAttributes().get(ContextAttributes.APP_STORE);

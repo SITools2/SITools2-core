@@ -1,6 +1,5 @@
 package fr.cnes.sitools.dataset.services;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
@@ -18,9 +17,7 @@ import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
-import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
-import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -79,25 +76,18 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
   protected Representation post(Representation entity, Variant variant) throws ResourceException {
     try {
 
-      GuiServiceModel guiServiceInput = getObjectGuiServicePluginModel(entity);
+      GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(entity);
 
       String url = getGuiServicesUrl();
-      GuiServiceModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
+      GuiServicePluginModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
 
       ServiceCollectionModel services = getServiceCollectionModel();
 
       ServiceModel service = new ServiceModel();
-      service.setId(guiServiceOutput.getId());
-      service.setName(guiServiceOutput.getName());
-      service.setDescription(guiServiceOutput.getDescription());
-      service.setIcon(guiServiceOutput.getIcon());
+      populateGuiServiceModel(guiServiceOutput, service);
       service.setLabel(guiServiceOutput.getLabel());
-      service.setType(ServiceEnum.GUI);
       service.setVisible(true);
 
-      if (services.getServices() == null) {
-        services.setServices(new ArrayList<ServiceModel>());
-      }
       services.getServices().add(service);
       getStore().update(services);
 
@@ -114,61 +104,6 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-
-  // /**
-  // * Create / attach a new GuiServicePluginModel to a dataset
-  // *
-  // * @param representation
-  // * The representation parameter
-  // * @param variant
-  // * client preferred media type
-  // * @return Representation
-  // */
-  // @Post
-  // public Representation newGuiService(Representation representation, Variant variant) {
-  // try {
-  //
-  // GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(representation);
-  //
-  // String url = getGuiServicesUrl();
-  // GuiServicePluginModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
-  //
-  // ServiceCollectionModel services = getStore().retrieve(getParentId());
-  //
-  // if (services == null) {
-  // services = new ServiceCollectionModel();
-  // services.setId(getParentId());
-  // getStore().create(services);
-  // }
-  //
-  // ServiceModel service = new ServiceModel();
-  // service.setId(guiServiceOutput.getId());
-  // service.setName(guiServiceOutput.getName());
-  // service.setDescription(guiServiceOutput.getDescription());
-  // service.setIcon(guiServiceOutput.getIconClass());
-  // service.setLabel(guiServiceOutput.getLabel());
-  // service.setType(ServiceEnum.GUI);
-  //
-  // if (services.getServices() == null) {
-  // services.setServices(new ArrayList<ServiceModel>());
-  // }
-  // services.getServices().add(service);
-  // getStore().update(services);
-  //
-  // Response response = new Response(true, guiServiceOutput, GuiServicePluginModel.class, "guiServicePlugin");
-  // return getRepresentation(response, variant);
-  //
-  // }
-  // catch (ResourceException e) {
-  // e.printStackTrace();
-  // getLogger().log(Level.INFO, null, e);
-  // throw e;
-  // }
-  // catch (Exception e) {
-  // getLogger().log(Level.SEVERE, null, e);
-  // throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-  // }
-  // }
 
   @Override
   public final void describePost(MethodInfo info) {

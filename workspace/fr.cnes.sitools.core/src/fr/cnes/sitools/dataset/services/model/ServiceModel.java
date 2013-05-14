@@ -2,7 +2,13 @@ package fr.cnes.sitools.dataset.services.model;
 
 import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 
-
+/**
+ * Model class to represent a Service on a dataset. It can be either a GUI service or a Server service. This model class
+ * contains the common fields between a GuiServicePluginModel and a ResourceModel
+ * 
+ * 
+ * @author m.gond
+ */
 public class ServiceModel {
   /** The id */
   private String id;
@@ -160,6 +166,7 @@ public class ServiceModel {
 
   /**
    * Gets the visible value
+   * 
    * @return the visible
    */
   public boolean isVisible() {
@@ -168,7 +175,9 @@ public class ServiceModel {
 
   /**
    * Sets the value of visible
-   * @param visible the visible to set
+   * 
+   * @param visible
+   *          the visible to set
    */
   public void setVisible(boolean visible) {
     this.visible = visible;
@@ -176,6 +185,7 @@ public class ServiceModel {
 
   /**
    * Gets the position value
+   * 
    * @return the position
    */
   public String getPosition() {
@@ -184,7 +194,9 @@ public class ServiceModel {
 
   /**
    * Sets the value of position
-   * @param position the position to set
+   * 
+   * @param position
+   *          the position to set
    */
   public void setPosition(String position) {
     this.position = position;
@@ -192,6 +204,7 @@ public class ServiceModel {
 
   /**
    * Gets the dataSetSelection value
+   * 
    * @return the dataSetSelection
    */
   public DataSetSelectionType getDataSetSelection() {
@@ -200,7 +213,9 @@ public class ServiceModel {
 
   /**
    * Sets the value of dataSetSelection
-   * @param dataSetSelection the dataSetSelection to set
+   * 
+   * @param dataSetSelection
+   *          the dataSetSelection to set
    */
   public void setDataSetSelection(DataSetSelectionType dataSetSelection) {
     this.dataSetSelection = dataSetSelection;

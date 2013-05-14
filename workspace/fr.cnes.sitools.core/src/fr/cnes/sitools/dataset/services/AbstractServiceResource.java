@@ -1,5 +1,6 @@
 package fr.cnes.sitools.dataset.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.restlet.data.MediaType;
@@ -230,6 +231,7 @@ public abstract class AbstractServiceResource extends SitoolsResource {
     if (services == null) {
       services = new ServiceCollectionModel();
       services.setId(getParentId());
+      services.setServices(new ArrayList<ServiceModel>());
       getStore().create(services);
       
       //register observer

@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.restlet.Context;
 import org.restlet.routing.Filter;
 
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 
 /**
@@ -38,7 +39,6 @@ public final class FilterFactory {
    */
   private FilterFactory() {
     super();
-    // TODO Auto-generated constructor stub
   }
 
   /**
@@ -51,10 +51,14 @@ public final class FilterFactory {
    * @param model
    *          the model
    * @return the instanciate Filter
+   * @throws SitoolsException
+   *           if there is an error during the instantiation of the Filter
    */
-  public static Filter getInstance(Context context, String filterId, FilterModel model) {
+  @SuppressWarnings("unchecked")
+  public static Filter getInstance(Context context, String filterId, FilterModel model) throws SitoolsException {
     Filter filterInstance = null;
     try {
+      @SuppressWarnings("rawtypes")
       Class classImpl = Class.forName(model.getFilterClassName());
 
       Class<?>[] objParam = new Class<?>[1];
@@ -70,32 +74,25 @@ public final class FilterFactory {
       filterInstance = constructor.newInstance(context);
     }
     catch (SecurityException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new SitoolsException(e.getMessage(), e);
     }
     catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new SitoolsException(e.getMessage(), e);
     }
     catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new SitoolsException(e.getMessage(), e);
     }
     catch (NoSuchMethodException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new SitoolsException(e.getMessage(), e);
     }
     catch (InstantiationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new SitoolsException(e.getMessage(), e);
     }
     catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new SitoolsException(e.getMessage(), e);
     }
     catch (InvocationTargetException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new SitoolsException(e.getMessage(), e);
     }
 
     return filterInstance;

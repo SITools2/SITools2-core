@@ -13,10 +13,17 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
-import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
+import fr.cnes.sitools.dataset.services.model.ServiceEnum;
+import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.server.Consts;
 
+/**
+ * Abstract class to manage GuiServices
+ * 
+ * 
+ * @author m.gond
+ */
 public abstract class AbstractGuiServiceResource extends AbstractServiceResource {
 
   /**
@@ -28,8 +35,8 @@ public abstract class AbstractGuiServiceResource extends AbstractServiceResource
    * @throws IOException
    *           if there is an error while parsing the java representation of the object
    */
-  public final GuiServiceModel getObjectGuiServicePluginModel(Representation representation) throws IOException {
-    GuiServiceModel projectModuleInput = null;
+  public final GuiServicePluginModel getObjectGuiServicePluginModel(Representation representation) throws IOException {
+    GuiServicePluginModel projectModuleInput = null;
     if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       @SuppressWarnings("unchecked")
       ObjectRepresentation<GuiServicePluginModel> obj = (ObjectRepresentation<GuiServicePluginModel>) representation;
@@ -62,5 +69,23 @@ public abstract class AbstractGuiServiceResource extends AbstractServiceResource
     SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
     return settings.getString(Consts.APP_DATASETS_URL) + "/" + getParentId()
         + settings.getString(Consts.APP_GUI_SERVICES_URL);
+  }
+  
+  
+  /**
+   * Populate a given {@link ServiceModel} with the value from a {@link GuiServicePluginModel}
+   * 
+   * @param guiService
+   *          the {@link GuiServicePluginModel} to get the values from
+   * @param serviceModel
+   *          the {@link ServiceModel} to populate
+   */
+  protected void populateGuiServiceModel(GuiServicePluginModel guiService, ServiceModel serviceModel) {
+    serviceModel.setId(guiService.getId());
+    serviceModel.setName(guiService.getName());
+    serviceModel.setDescription(guiService.getDescription());
+    serviceModel.setType(ServiceEnum.GUI);
+    serviceModel.setIcon(guiService.getIcon());
+    serviceModel.setDataSetSelection(guiService.getDataSetSelection());
   }
 }

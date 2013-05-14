@@ -1,6 +1,5 @@
 package fr.cnes.sitools.dataset.services;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
@@ -90,9 +89,6 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
         populateServiceModel(serverServiceOutput, service);
         service.setVisible(true);
 
-        if (services.getServices() == null) {
-          services.setServices(new ArrayList<ServiceModel>());
-        }
         services.getServices().add(service);
         getStore().update(services);
       }

@@ -191,6 +191,7 @@ public final class RequestPostgres implements RequestSql {
       }
       // List of values
       else if (predicat.getRightValue() instanceof List) {
+        @SuppressWarnings("unchecked")
         List<String> values = (List<String>) predicat.getRightValue();
         String in = "";
         String glue = "";

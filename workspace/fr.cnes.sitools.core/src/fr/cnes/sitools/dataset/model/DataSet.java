@@ -29,7 +29,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.dataset.model.structure.SitoolsStructure;
-import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.properties.model.SitoolsProperty;

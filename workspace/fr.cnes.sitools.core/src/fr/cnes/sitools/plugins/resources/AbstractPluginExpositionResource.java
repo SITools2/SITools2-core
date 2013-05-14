@@ -11,6 +11,12 @@ import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.util.DateUtils;
 
+/**
+ * Abstract class to expose the resource plugins available
+ * 
+ * 
+ * @author m.gond
+ */
 public abstract class AbstractPluginExpositionResource extends SitoolsResource {
 
   /**

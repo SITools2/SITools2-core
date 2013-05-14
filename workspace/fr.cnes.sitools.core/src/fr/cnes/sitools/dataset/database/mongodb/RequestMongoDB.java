@@ -173,6 +173,7 @@ public class RequestMongoDB implements RequestNoSQL {
       }
       // List of values
       else if (predicat.getRightValue() instanceof List) {
+        @SuppressWarnings("unchecked")
         List<String> values = (List<String>) predicat.getRightValue();
         List<Object> tmpValue = new ArrayList<Object>();
         for (String val : values) {

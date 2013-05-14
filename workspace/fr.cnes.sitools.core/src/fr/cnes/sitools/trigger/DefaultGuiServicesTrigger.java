@@ -39,6 +39,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author m.arpin (AKKA Technologies)
  */
 public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
+  
   /**
    * Method applied after POST request
    * 
@@ -48,7 +49,7 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
   @Post
   public void event(Representation representation) {
     super.event(representation);
-    
+
     Notification notification = NotificationManager.getObject(representation);
     if ((notification == null) || notification.getEvent() == null) {
       getLogger().warning("Notification Event null");
@@ -80,9 +81,7 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
 
           guiSericePluginModel.setLabel(guiService.getLabel());
           guiSericePluginModel.setIcon(guiService.getIcon());
-
-          // TODO Le positionner quand Bastien aura fini la contextualisation
-          // guiSericePluginModel.setDataSetSelection(guiService.getDataSetSelection());
+          guiSericePluginModel.setDataSetSelection(guiService.getDataSetSelection());
 
           createGuiService(getContext(), datasetId, guiSericePluginModel);
         }

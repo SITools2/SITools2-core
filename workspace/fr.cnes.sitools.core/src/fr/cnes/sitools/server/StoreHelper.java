@@ -295,6 +295,7 @@ public final class StoreHelper {
    * @param stores
    *          the Map of stores
    */
+  @SuppressWarnings({"resource", "unchecked" })
   private static void migrateStores(Map<String, Object> stores) {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -349,6 +350,7 @@ public final class StoreHelper {
    * @throws SitoolsException
    *           if there are errors
    */
+  @SuppressWarnings({"resource", "unchecked" })
   private static void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -396,7 +398,7 @@ public final class StoreHelper {
           AuthorizationStore storeImpl = (AuthorizationStore) store;
           try {
             List<ResourceAuthorization> authorization = storeImpl.getList();
-            for (ResourceAuthorization persistent : authorization) {
+            for (IResource persistent : authorization) {
               storeImpl.retrieve(persistent.getId());
             }
           }

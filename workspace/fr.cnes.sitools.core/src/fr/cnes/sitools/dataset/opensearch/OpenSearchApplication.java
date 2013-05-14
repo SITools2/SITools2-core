@@ -57,6 +57,7 @@ public final class OpenSearchApplication extends SitoolsApplication {
    * @param context
    *          RESTlet Host Context
    */
+  @SuppressWarnings("unchecked")
   public OpenSearchApplication(Context context) {
     super(context);
     this.store = (SitoolsStore<Opensearch>) context.getAttributes().get(ContextAttributes.APP_STORE);

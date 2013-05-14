@@ -48,6 +48,7 @@ public final class ConverterApplication extends SitoolsApplication {
    * @param context
    *          application context
    */
+  @SuppressWarnings("unchecked")
   public ConverterApplication(Context context) {
     super(context);
     this.store = (SitoolsStore<ConverterChainedModel>) context.getAttributes().get(ContextAttributes.APP_STORE);

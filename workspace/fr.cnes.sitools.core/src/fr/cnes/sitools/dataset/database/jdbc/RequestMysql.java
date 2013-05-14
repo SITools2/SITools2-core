@@ -72,28 +72,6 @@ public final class RequestMysql implements RequestSql {
   /**
    * Get from clause
    * 
-   * @param structures
-   *          a list of structures
-   * @return the clause
-   */
-  // public String getFromClause(List<Structure> structures) {
-  // String clause = "";
-  // String glue = "";
-  // for (Structure structure : structures) {
-  // clause += glue;
-  // String name = structure.getName();
-  // clause += name;
-  // glue = ", ";
-  // if (structure.getAlias() != null && !"".equals(structure.getAlias())) {
-  // clause += " " + structure.getAlias();
-  // }
-  // }
-  // return clause;
-  // }
-
-  /**
-   * Get from clause
-   * 
    * @param structure
    *          the sitoolsStructure
    * @return the clause
@@ -257,6 +235,7 @@ public final class RequestMysql implements RequestSql {
         pred += ((BigDecimal) predicat.getRightValue()).toPlainString();
       }
       else if (predicat.getRightValue() instanceof List) {
+        @SuppressWarnings("unchecked")
         List<String> values = (List<String>) predicat.getRightValue();
         String in = "";
         String glue = "";
