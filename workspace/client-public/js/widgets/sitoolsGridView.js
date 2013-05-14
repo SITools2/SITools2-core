@@ -23,37 +23,38 @@
  * @extends Ext.grid.GridView
  */
 Ext.ux.sitoolsGridView = Ext.extend(Ext.grid.GridView, {
-	// surcharge de la m�thode pour que l'ajout d'une colonne relance une
+	// surcharge de la méthode pour que l'ajout d'une colonne relance une
 	// interrogation du store
 	// avec comme parametre le nouveau columnModel
-	beforeColMenuShow : function () {
-		var cm = this.cm, colCount = cm.getColumnCount();
-		this.colMenu.removeAll();
-		for (var i = 0; i < colCount; i++) {
-			if (cm.config[i].hideable !== false) {
-				this.colMenu.add(new Ext.menu.CheckItem({
-				    itemId : 'col-' + cm.getColumnId(i),
-				    text : cm.getColumnHeader(i),
-				    checked : !cm.isHidden(i),
-				    hideOnClick : false,
-				    disabled : cm.config[i].hideable === false,
-				    listeners : {
-				        scope : this,
-				        checkchange : function (ci, checked) {
-					        if (checked) {
-						        var colModel = extColModelToSrv(this.cm);
-						        this.grid.getStore().load({
-							        params : {
-								        colModel : Ext.util.JSON.encode(colModel)
-							        }
-						        });
-					        }
-				        }
-				    }
-				}));
-			}
-		}
-	}, 
+//	beforeColMenuShow : function () {
+//		var cm = this.cm, colCount = cm.getColumnCount();
+//		this.colMenu.removeAll();
+//		for (var i = 0; i < colCount; i++) {
+//			if (cm.config[i].hideable !== false) {
+//				this.colMenu.add(new Ext.menu.CheckItem({
+//				    itemId : 'col-' + cm.getColumnId(i),
+//				    text : cm.getColumnHeader(i),
+//				    checked : !cm.isHidden(i),
+//				    hideOnClick : false,
+//				    disabled : cm.config[i].hideable === false,
+//				    listeners : {
+//				        scope : this,
+//				        checkchange : function (ci, checked) {
+//					        if (checked) {
+//						        var colModel = extColModelToSrv(this.cm);
+//						        this.grid.getStore().load({
+//							        params : {
+//								        colModel : Ext.util.JSON.encode(colModel)
+//							        }
+//						        });
+//					        }
+//				        }
+//				    }
+//				}));
+//			}
+//		}
+//	}, 
+	
     doRender : function(columns, records, store, startRow, colCount, stripe) {
         var templates    = this.templates,
             cellTemplate = templates.cell,

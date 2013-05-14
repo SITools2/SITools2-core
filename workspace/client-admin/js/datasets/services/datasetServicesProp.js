@@ -305,7 +305,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                 form.findField('icon').setValue(rec.data.icon);
                 
                 var comboSelection = form.findField('dataSetSelection');
-                comboSelection.setValue(comboSelection.getStore().getAt(0).data.dataSetSelection);
+                comboSelection.setValue(rec.data.dataSetSelection);
             }
         }
     },

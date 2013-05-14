@@ -315,7 +315,6 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
 	
     // create grid panel configured with feature store
     this.gridPanel = new Ext.grid.GridPanel({
-//        tbar : this.topBar,
         region : "west",
         collapsible : true,
         flotable : true,
@@ -326,20 +325,13 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         cm : cm,
         sm : sm,
         bbar : bbar,
-//        listeners : {
-//            afterrender : function (grid) {
-//                grid.getView().hdCtxIndex = 0;
-//                this.topBar.add('-');
-//                this.topBar.add('->');
-//                this.topBar.add('-');
-//                this.topBar.add({
-//                    tooltip : i18n.get('label.addOrDeleteColumns'),
-//                    icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-//                    menu : this.getDatasetView().colMenu
-//                });
-//            }, 
-//            scope : this
-//        }
+        view : new Ext.ux.sitoolsGridView({
+            nearLimit : DEFAULT_NEAR_LIMIT_SIZE, 
+            loadMask : {
+                msg : i18n.get('label.waitMessage'),
+                msgCls : "x-mask-loading"
+            }
+        })
     });
     
     
@@ -509,10 +501,10 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         var array = [];
         array.push(new Ext.Toolbar.Separator());
         array.push({
-            id : "columnsButtonId",
+            name : "columnsButton",
             tooltip : i18n.get('label.addOrDeleteColumns'),
-            icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-            menu : this.getDatasetView().colMenu
+            iconCls: 'x-cols-icon',
+            menu : sitools.user.component.dataviews.dataviewUtils.createColMenu(this.getDatasetView(), this.getColumnModel())
         });
         this.getDatasetView().hdCtxIndex = 0;
         return array;

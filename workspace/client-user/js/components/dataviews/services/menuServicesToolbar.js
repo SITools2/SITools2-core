@@ -44,7 +44,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             idProperty : 'id',
             root : 'ServiceCollectionModel.services',
             autoload : true,
-            fields : [ 'id', 'type', 'name', 'description', 'icon', 'label', 'category', 'visible', 'position' ],
+            fields : [ 'id', 'type', 'name', 'description', 'icon', 'label', 'category', 'visible', 'position', 'dataSetSelection' ],
             listeners : {
                 scope : this,
                 load : this.createMenuServices
@@ -60,8 +60,23 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
         
         sitools.user.component.dataviews.services.menuServicesToolbar.superclass.initComponent.call(this);
     },
-    
 
+    afterRender : function () {
+        
+//        if (this.origin === "sitools.user.component.dataviews.cartoView.cartoView"){
+//            
+//            this.dataview.gridPanel.selModel.addListener('selectionchange', function () {
+//                this.updateContextToolbar();
+//            }, this);
+//            sitools.user.component.dataviews.services.menuServicesToolbar.superclass.afterRender.apply(this, arguments);
+//        }
+        
+        this.dataview.getSelectionModel().addListener('selectionchange', function () {
+                this.updateContextToolbar();
+            }, this);
+        sitools.user.component.dataviews.services.menuServicesToolbar.superclass.afterRender.apply(this, arguments);
+    },
+    
     createMenuServices : function (store, records, opts) {
         
         records = this.sortServices(records);
@@ -70,12 +85,16 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
         Ext.each(records, function (item) {
             menu = this;
             
-            if (item instanceof Ext.Toolbar.Item || item.id === "columnsButtonId") {
+            if (item instanceof Ext.Toolbar.Item || item.name === "columnsButton") {
                 menu.add(item);
                 return;
             }
             
             if (!item.get('visible')) {
+                return;
+            }
+            
+            if (!this.isSelectionOK(item.get('dataSetSelection'))) {
                 return;
             }
             
@@ -108,7 +127,6 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             }
             
         }, this);
-        //this.createColumnsButton();
         this.doLayout();
     },
     
@@ -121,6 +139,11 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     },
     
 
+    /**
+     * Execute the service when the button service is clicked
+     * @param button
+     * @param e
+     */
     callService : function (button, e) {
         if (button.typeService === 'SERVER') {
             this.serverServiceUtil.callServerService(button.idService, this.dataview.getSelections());
@@ -174,6 +197,12 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
         return button.menu;
     },
     
+    /**
+     * Sort all services in the right order before being displayed
+     * @param records
+     *          
+     * @returns Tab of records
+     */
     sortServices : function (records) {
         var tbRight = [], tb = [];
         Ext.each(records, function (item) {
@@ -186,7 +215,61 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
         tb.push(new Ext.Toolbar.Fill());
         
         return tb.concat(tbRight, this.addAdditionalButton());
-    }
+    },
     
+    /**
+     * Update the toolbar according to the dataview selection 
+     */
+    updateContextToolbar : function () {
+        if (this.store.getTotalCount() === 0) {
+            return;
+        }
+        
+        var records = [];
+        this.removeAll();
+        
+        this.store.each(function (rec) {
+            records.push(rec); 
+        });
+        this.createMenuServices(this.store, records, null);
+    },
+    
+    /**
+     * Return true if the datasetSelection match the dataview selection
+     * 
+     * @param selectionString
+     *          the datasetSelection string (NONE, SINGLE, MULTIPLE, ALL)
+     * @returns {Boolean}
+     */
+    isSelectionOK : function (selectionString) {
+        var selectionOK = false;
+        switch (selectionString) {
+
+        case "NONE":
+            if (Ext.isEmpty(this.dataview.getSelections())) {
+                selectionOK = true;
+            }
+            break;
+            
+        case "SINGLE":
+            if (Ext.isEmpty(this.dataview.getSelections()) || this.dataview.getSelections().length >= 1) {
+                selectionOK = true;
+            }
+            break;
+            
+        case "MULTIPLE":
+            if (Ext.isEmpty(this.dataview.getSelections()) || this.dataview.getSelections().length > 1) {
+                selectionOK = true;
+            }
+            break;
+            
+        case "ALL":
+            if (Ext.isEmpty(this.dataview.getSelections()) || this.dataview.getSelections().length > 1) {
+                selectionOK = true;
+            }
+            break;
+        }
+        return selectionOK;
+    }
     
 });

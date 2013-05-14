@@ -302,6 +302,9 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
     getSelections : function () {
 		return this.dataView.getSelectedRecords();
     },
+    getSelectionModel : function () {
+        return this.dataView;
+    },
     getNbRowsSelected : function () {
 		return this.getSelections().length;
     }, 

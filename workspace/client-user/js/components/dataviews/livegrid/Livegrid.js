@@ -370,7 +370,6 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	 * <tt>versionchange</tt> or <tt>selectiondirty</tt> can help in telling
 	 * if their positions in the data repository changed.
 	 */
-    var selModelSimple = new Ext.ux.grid.livegrid.RowSelectionModel({});
 
 //    /*
 //	 * PlotXY button for launching numeric data preview as a plot
@@ -419,11 +418,8 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         }
     });
 
-    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
-        datasetUrl : this.sitoolsAttachementForUsers,
-        datasetId : this.datasetId,
-        dataview : this,
-        origin : "Ext.ux.livegrid"
+    var selModelSimple = new Ext.ux.grid.livegrid.RowSelectionModel({
+        toto : "toto"
     });
     
 //	/**
@@ -655,10 +651,10 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
         var array = [];
         array.push(new Ext.Toolbar.Separator());
         array.push({
-            id : "columnsButtonId",
+            name : "columnsButton",
             tooltip : i18n.get('label.addOrDeleteColumns'),
-            icon : '/sitools/cots/extjs/resources/images/default/grid/columns.gif',
-            menu : this.getDatasetView().colMenu
+            iconCls: 'x-cols-icon',
+            menu : sitools.user.component.dataviews.dataviewUtils.createColMenu(this.getDatasetView(), this.getColumnModel())
         });
         this.getDatasetView().hdCtxIndex = 0;
         return array;

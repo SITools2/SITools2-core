@@ -451,7 +451,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         service.description = "";
         service.services = [];
         
-        this.savePropertiesBtn.removeClass('not-save-textfield');
 
         this.getStore().each(function (rec) {
             service.services.push(rec.data);
@@ -463,6 +462,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
             jsonData : service,
             scope : this,
             success : function (ret) {
+                this.savePropertiesBtn.removeClass('not-save-textfield');
                 new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),

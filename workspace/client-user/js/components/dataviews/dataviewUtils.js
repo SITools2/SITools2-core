@@ -552,7 +552,38 @@ sitools.user.component.dataviews.dataviewUtils = {
         }
         return filters;
 
+    },
+    
+    createColMenu : function (view, columnModel) {
+        var colCount = columnModel.getColumnCount();
+        var menu = new Ext.menu.Menu();
+        
+        for (var i = 0; i < colCount; i++) {
+            if (columnModel.config[i].hideable !== false) {
+                menu.add(new Ext.menu.CheckItem({
+                    itemId : 'col-' + columnModel.getColumnId(i),
+                    text : columnModel.getColumnHeader(i),
+                    checked : !columnModel.isHidden(i),
+                    hideOnClick : false,
+                    disabled : columnModel.config[i].hideable === false,
+                    listeners : {
+                        scope : view,
+                        checkchange : function (ci, checked) {
+                            if (checked) {
+                                var colModel = extColModelToSrv(columnModel);
+                                view.grid.getStore().load({
+                                    params : {
+                                        colModel : Ext.util.JSON.encode(colModel)
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }));
+            }
+        }
+        menu.on('itemclick', view.handleHdMenuClick, view);
+        
+        return menu;
     }
-
-
 };
