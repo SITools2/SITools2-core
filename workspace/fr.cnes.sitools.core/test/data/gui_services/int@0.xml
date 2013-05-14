@@ -12,4 +12,5 @@
 		<css/>
 	</dependencies>
 	<priority>1</priority>
+	<defaultGuiService>false</defaultGuiService>
 </guiService>
