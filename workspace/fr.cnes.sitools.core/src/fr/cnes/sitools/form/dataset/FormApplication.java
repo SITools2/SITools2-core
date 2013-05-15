@@ -51,6 +51,7 @@ public final class FormApplication extends SitoolsApplication {
    * @param context
    *          RESTlet Host Context
    */
+  @SuppressWarnings("unchecked")
   public FormApplication(Context context) {
     super(context);
     this.store = (SitoolsStore<Form>) context.getAttributes().get(ContextAttributes.APP_STORE);

@@ -10,10 +10,12 @@
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/dataviews/services/addSelectionService.js</url>
+        <url>/sitools/client-user/js/components/datasetServices/addSelectionService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
   <priority>1</priority>
+  <dataSetSelection>MULTIPLE</dataSetSelection>
+  <defaultGuiService>false</defaultGuiService>
 </guiService>

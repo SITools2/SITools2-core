@@ -42,6 +42,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 
 //    this.autoScroll = true;
     Ext.apply(this, config);
+    
 	
 	this.urlRecords = config.dataUrl + '/records';
     this.sitoolsAttachementForUsers = config.dataUrl;
@@ -112,6 +113,9 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
             var success = rightPanel.fireEvent('buffer', store);
         }
         store.isFirstCountDone = true;
+        
+        
+        this.getTopToolbar().updateContextToolbar();
 	
 	}, this);
 	
@@ -189,6 +193,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         columnModel : this.columnModel.config, 
         overClass: 'x-view-over',
         itemSelector: 'div.thumb-wrap',
+        selectedClass : 'x-view-selected-datasetView',
         emptyText: '', 
         listeners : {
 			scope : this, 
@@ -216,6 +221,11 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				});
 				this.panelDetail.getCmDefAndbuildForm();
 				this.panelDetail.expand();
+				
+				//destroy all selections if all was selected and another row is selected
+				if (this.isAllSelected() && recNodes.length === 1) {
+				    this.selectAllRows.toggle();				    
+				}
 				
 			}
         }
@@ -265,7 +275,15 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         store: this.store,       // grid and PagingToolbar using same store
         displayInfo: true,
         pageSize: DEFAULT_LIVEGRID_BUFFER_SIZE,
-        items : []
+        items : [],
+        listeners : {
+            scope : this,
+            change : function () {
+                if (this.isAllSelected()) {
+                    this.selectAll();
+                }
+            }
+        } 
     });
 	Ext.apply(config, this);
 	sitools.user.component.dataviews.tplView.TplView.superclass.constructor.call(this, config);
@@ -332,13 +350,21 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
             
         } 
         else {
-            var recSelected;
+            if (this.isAllSelected()) {
+                //First Case : all the dataset is selected.
+                request = "ranges=[[0," + this.store.getTotalCount() + "]]";
+                //We have to re-build all the request in case we use a range selection.
+                request += this.getRequestParamWithoutSelection();
+            } else {
             
-            recSelected = selections;
-            
-            formParams = this.dataviewUtils.getFormParamsFromRecsSelected(recSelected);
-            // use the form API to request the selected records
-            request += "&" + Ext.urlEncode(formParams);
+                var recSelected;
+                
+                recSelected = selections;
+                
+                formParams = this.dataviewUtils.getFormParamsFromRecsSelected(recSelected);
+                // use the form API to request the selected records
+                request += "&" + Ext.urlEncode(formParams);
+            }
         
         }
         return request;
@@ -436,8 +462,56 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
      * Return an empty array (can be modifiable)
      * @returns {Array}
      */
-    createColumnsButton : function () {
-        return [];
+    /**
+     * Return an array containing a button to show or hide columns
+     * @returns {Array}
+     */
+    getCustomToolbarButtons : function () {
+        var array = [];
+        var iconCls = (this.isAllSelected()) ? "checkbox-icon-on" : "checkbox-icon-off";
+        var pressed = this.isAllSelected();
+        
+        array.push(new Ext.Toolbar.Separator());
+        
+        this.selectAllRows = new Ext.Button({
+            name : "selectAll",
+            tooltip : i18n.get('label.selectAll'),
+            iconCls: iconCls,
+            enableToggle : true,
+            scope : this,
+            text : i18n.get('label.selectAll'),
+            cls : 'services-toolbar-btn',
+            pressed : pressed,
+            handler :  function (button, e) {
+                if (button.pressed) {
+                    this.selectAll();
+                } else {
+                    this.deselectAll();
+                }
+            },
+            toggleHandler : function (button, pressed) {
+                if (pressed) {
+                    button.setIconClass("checkbox-icon-on");
+                } else {
+                    button.setIconClass("checkbox-icon-off");
+                }
+            }      
+            
+        });
+        array.push(this.selectAllRows);
+        return array;
+    },
+    
+    selectAll : function () {
+        this.dataView.selectRange(0, DEFAULT_LIVEGRID_BUFFER_SIZE);
+    },
+    
+    deselectAll : function () {
+        this.dataView.clearSelections();
+    },
+    
+    isAllSelected : function () {
+        return (!Ext.isEmpty(this.selectAllRows) && this.selectAllRows.pressed);
     }
 
 });

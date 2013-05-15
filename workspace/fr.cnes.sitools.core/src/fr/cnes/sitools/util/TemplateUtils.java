@@ -215,7 +215,7 @@ public final class TemplateUtils {
    * @param buffer
    *          the StringBuffer
    */
-  public static void describeClassForTemplate(String entry, Class classe, StringBuffer buffer) {
+  public static void describeClassForTemplate(String entry, Class<?> classe, StringBuffer buffer) {
     buffer.append("# ---------------\n# " + classe.getName() + " " + entry + "\n");
     Field[] fields = classe.getDeclaredFields();
     for (Field field : fields) {

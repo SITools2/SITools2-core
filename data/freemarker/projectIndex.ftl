@@ -178,6 +178,7 @@
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/gridfilters/GridFilters.js"></script>
 	
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/livegrid/Ext.ux.livegrid/Ext.ux.livegrid-all-debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/livegrid/Ext.ux.livegrid/CheckboxSelectionModel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/dataviewUtils.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/storeUtils.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/livegrid/storeLiveGrid.js"></script>

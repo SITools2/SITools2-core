@@ -331,6 +331,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 		if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
 			this._loadMaskAnchor.unmask();
 		}
+		this.topBar.updateContextToolbar();
     }, this);    
     
 	/*
@@ -370,102 +371,10 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	 * <tt>versionchange</tt> or <tt>selectiondirty</tt> can help in telling
 	 * if their positions in the data repository changed.
 	 */
-
-//    /*
-//	 * PlotXY button for launching numeric data preview as a plot
-    /*
-	 * PlotXY button for launching numeric data preview as a plot
-	 */
-    var plotButton = new Ext.Button({
-        text : 'Plot',
-        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
-        scope : this,
-        listeners : {
-            scope : this,
-            click : function (button, e) {
-                e.stopEvent();
-                var jsObj = sitools.user.component.dataPlotter;
-                var componentCfg = {
-//                    dataplot : Ext.apply(myStoreSimple, {
-//                        datasetId : config.datasetId,
-//                        columnModel : button.scope.colModel
-//                    }),
-                    columnModel :  config.datasetCm,          
-                    formParams : config.formParams,
-                    formMultiDsParams : config.formMultiDsParams,
-                    dataUrl :  config.dataUrl,
-                    datasetName : config.datasetName, 
-                    datasetId : config.datasetId, 
-                    componentType : "plot", 
-                    preferencesPath : "/" + config.datasetName, 
-                    preferencesFileName : "plot",
-                    filters : this.getFilters(),
-                    selections : Ext.isEmpty(this.getSelections())
-							? undefined
-							: this.getRecSelectedParamForLiveGrid()
-                };
-                var windowConfig = {
-                    id : "plot" + config.datasetId,
-                    title : "Data plot : " + config.datasetName,
-                    iconCls : "plot", 
-                    datasetName : config.datasetName,
-                    type : "plot",
-                    saveToolbar : true,
-                    winHeight : 600
-                };
-                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-            }
-        }
+    var selModelSimple = new Ext.ux.grid.livegrid.CheckboxSelectionModel({
+        checkOnly : true,
+        isSelectionModel : true
     });
-
-    var selModelSimple = new Ext.ux.grid.livegrid.RowSelectionModel({
-        toto : "toto"
-    });
-    
-//	/**
-//	 * {Ext.Toolbar} Top toolbar with services
-//	 */
-//    var plotButton = new Ext.Button({
-//        text : 'Plot',
-//        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
-//        scope : this,
-//        listeners : {
-//            scope : this,
-//            click : function (button, e) {
-//                e.stopEvent();
-//                var jsObj = sitools.user.component.dataPlotter;
-//                var componentCfg = {
-////                    dataplot : Ext.apply(myStoreSimple, {
-////                        datasetId : config.datasetId,
-////                        columnModel : button.scope.colModel
-////                    }),
-//                    columnModel :  config.datasetCm,          
-//                    formParams : config.formParams,
-//                    formMultiDsParams : config.formMultiDsParams,
-//                    dataUrl :  config.dataUrl,
-//                    datasetName : config.datasetName, 
-//                    datasetId : config.datasetId, 
-//                    componentType : "plot", 
-//                    preferencesPath : "/" + config.datasetName, 
-//                    preferencesFileName : "plot",
-//                    filters : this.getFilters(),
-//                    selections : Ext.isEmpty(this.getSelections())
-//							? undefined
-//							: this.getRecSelectedParamForLiveGrid()
-//                };
-//                var windowConfig = {
-//                    id : "plot" + config.datasetId,
-//                    title : "Data plot : " + config.datasetName,
-//                    iconCls : "plot", 
-//                    datasetName : config.datasetName,
-//                    type : "plot",
-//                    saveToolbar : true,
-//                    winHeight : 600
-//                };
-//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-//            }
-//        }
-//    });
 
     this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
         datasetUrl : this.sitoolsAttachementForUsers,
@@ -485,6 +394,15 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         displayInfo : true,
         refreshText : i18n.get('label.refreshText')
     });
+    
+    
+    //create a new columnModel with the selectionModel
+    var configCol = cm.config;
+    configCol.unshift(selModelSimple);
+    cm = new Ext.grid.ColumnModel({
+        columns : configCol
+    }); 
+    
     
     // -- CONSTRUCTOR --
 	sitools.user.component.dataviews.livegrid.LiveGrid.superclass.constructor.call(this, Ext.apply({
@@ -647,7 +565,7 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
      * Return an array containing a button to show or hide columns
      * @returns {Array}
      */
-    createColumnsButton : function () {
+    getCustomToolbarButtons : function () {
         var array = [];
         array.push(new Ext.Toolbar.Separator());
         array.push({
@@ -658,7 +576,14 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
         });
         this.getDatasetView().hdCtxIndex = 0;
         return array;
+    },
+    
+    isAllSelected : function () {
+        var nbRowsSelected = this.getNbRowsSelected();
+        return nbRowsSelected === this.getStore().getTotalCount();
     }
+    
+    
 });
 
 /**

@@ -492,4 +492,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background-color : transparent; 
 }
 
+.checkbox-icon-on {
+	background-image: url("../images/icons/row-check-sprite-on.gif");	
+}
+
+.checkbox-icon-off {
+	background-image: url("../images/icons/row-check-sprite-off.gif");	
+}
 

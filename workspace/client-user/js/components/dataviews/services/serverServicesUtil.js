@@ -60,7 +60,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 
                 var resource = json.resourcePlugin;
                 var parameters = resource.parameters;
-                var url = null, runTypeUserInput = null, icon = null, methods = null;
+                var url = null, runTypeUserInput = null, methods = null;
                 parameters.each(function (param) {
                     switch (param.name) {
                     case "methods":
@@ -71,10 +71,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                         break;
                     case "url":
                         url = this.datasetUrl + param.value;
-                        break;
-                    case "image":
-                        icon = param.value;
-                        break;
+                        break;                    
                     }
                 }, this);
                 

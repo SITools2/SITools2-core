@@ -1,19 +1,24 @@
 <guiService>
-  <id>bce4c14d-746d-45e6-a790-e3b1cd9be604</id>
-  <name>Plot service</name>
-  <description>display a plot of the data displayed</description>
-  <label>label.plot</label>
-  <author>AKKA Technologies</author>
+  <id>31615731-6d95-43a4-9d90-2c03816bded3</id>
+  <name>Columns Definition</name>
+  <description>retrieve the columns definition for a dataset</description>
+  <label>label.definitionTitle</label>
+  <author>AKKA</author>
   <version>1.0</version>
-  <icon>/sitools/res/images/icons/plot.png</icon>
-  <xtype>sitools.user.component.dataviews.services.plotService</xtype>
+  <icon>/sitools/common/res/images/icons/tree_dictionary.png</icon>
+  <xtype>sitools.user.component.dataviews.services.columnsDefinitionService</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/dataviews/services/plotService.js</url>
+        <url>/sitools/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/components/datasetServices/columnsDefinitionService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
   <priority>1</priority>
+  <dataSetSelection>NONE</dataSetSelection>
+  <defaultGuiService>true</defaultGuiService>
 </guiService>

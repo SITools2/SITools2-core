@@ -49,7 +49,7 @@ sitools.user.component.dataviews.dataviewUtils = {
         // build the primaryKey Value
         var primaryKeyValues = [];
         Ext.each(recSelected, function (record) {
-            primaryKeyValues.push(encodeURIComponent(record.get(primaryKeyName)));
+            primaryKeyValues.push(record.get(primaryKeyName));
         });
 
         // use the form API to request the selected records
@@ -559,7 +559,7 @@ sitools.user.component.dataviews.dataviewUtils = {
         var menu = new Ext.menu.Menu();
         
         for (var i = 0; i < colCount; i++) {
-            if (columnModel.config[i].hideable !== false) {
+            if (columnModel.config[i].hideable !== false && !columnModel.config[i].isSelectionModel) {
                 menu.add(new Ext.menu.CheckItem({
                     itemId : 'col-' + columnModel.getColumnId(i),
                     text : columnModel.getColumnHeader(i),

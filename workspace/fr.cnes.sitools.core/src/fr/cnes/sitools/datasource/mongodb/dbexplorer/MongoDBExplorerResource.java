@@ -301,25 +301,6 @@ public class MongoDBExplorerResource extends SitoolsResource {
   }
 
   /**
-   * Create a MongoDBRecord from a BasicDBObject
-   * 
-   * @param object
-   *          a {@link BasicDBObject}
-   * @return a {@link MongoDBRecord}
-   */
-  private MongoDBRecord getMongoDBRecord(BasicDBObject object) {
-    MongoDBRecord rec = new MongoDBRecord();
-    rec.setAttributeValues(getAttributeValue(object, true));
-    if (!getBaseRef().contains(object.getString("_id"))) {
-      rec.setId(getBaseRef());
-    }
-    else {
-      rec.setId(getBaseRef() + "/" + object.getString("_id"));
-    }
-    return rec;
-  }
-
-  /**
    * Create a List of {@link MongoDBAttributeValue} from a {@link BasicDBObject} Each {@link MongoDBAttributeValue}
    * contains the key and its children. If withValue is true, it also contains the value
    * 

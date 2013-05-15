@@ -73,15 +73,15 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     this.urlRecords = config.dataUrl + '/records';
     this.origin = "sitools.user.component.dataviews.cartoView.cartoView";
     
-	var dataviewConfig = sitoolsUtils.arrayProperties2Object(config.datasetViewConfig);
-	
+    var dataviewConfig = sitoolsUtils.arrayProperties2Object(config.datasetViewConfig);
+    
     //Définir le column Model.
     var colModel;
     if (!Ext.isEmpty(config.userPreference) && config.userPreference.datasetView === "Ext.ux.livegrid" && !Ext.isEmpty(config.userPreference.colModel)) {
         colModel = config.userPreference.colModel;
     }
     else {
-		colModel = config.datasetCm; 
+        colModel = config.datasetCm; 
     }
     var cm = getColumnModel(colModel, config.dictionaryMappings, dataviewConfig);
     /** 
@@ -97,18 +97,18 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     
     // create feature store, binding it to the vector layer using the specific objects to load totalProperty
     this.store = new sitools.user.component.dataviews.cartoView.featureStore({
-		datasetCm : config.datasetCm,
-		userPreference : config.userPreference, 
-		bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
-		formParams : config.formParams, 
-		formMultiDsParams : config.formMultiDsParams, 
-		datasetId : config.datasetId,
-		remoteSort: true, 
+        datasetCm : config.datasetCm,
+        userPreference : config.userPreference, 
+        bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
+        formParams : config.formParams, 
+        formMultiDsParams : config.formMultiDsParams, 
+        datasetId : config.datasetId,
+        remoteSort: true, 
         layer: vecLayer,
         fields: fields,
         proxy: new sitools.user.data.ProtocolProxy({
-			totalProperty : "totalResults",
-			url : config.dataUrl + dataviewConfig.jeoResourceUrl
+            totalProperty : "totalResults",
+            url : config.dataUrl + dataviewConfig.jeoResourceUrl
         }),
         autoLoad: false
     });
@@ -149,119 +149,9 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
     }, this);
     
-    /*
-	 * the filters of the grid
-	 */
-//    var filters = sitools.user.component.dataviews.dataviewUtils.getFilters(config.datasetCm, config.filters);
-//    // Using the extended gridFilter to filter with the columnAlias
-//    var gridFilters = new Ext.ux.grid.GridFiltersSpe({
-//        encode : false, // json encode the filter query
-//        local : false, // defaults to false (remote filtering)
-//        filters : filters
-//    });
-
-    /*
-	 * PlotXY button for launching numeric data preview as a plot
-	 */
-//    var plotButton = new Ext.Button({
-//        text : 'Plot',
-//        icon : loadUrl.get('APP_URL') + "/res/images/icons/plot.png",
-//        scope : this,
-//        cm : cm, 
-//        listeners : {
-//	    	scope : this,
-//	    	click : function (button, e) {
-//                e.stopEvent();
-//                var jsObj = sitools.user.component.dataPlotter;
-//                var componentCfg = {
-//                    columnModel :  config.datasetCm,          
-//                    formParams : config.formParams,
-//                    formMultiDsParams : config.formMultiDsParams,
-//                    dataUrl :  config.dataUrl,
-//                    datasetName : config.datasetName, 
-//                    datasetId : config.datasetId, 
-//                    componentType : "plot", 
-//                    preferencesPath : "/" + config.datasetName, 
-//                    preferencesFileName : "plot",
-//                    filters : this.filters,
-//                    selections : Ext.isEmpty(this.getSelections())
-//                            ? undefined
-//                            : this.getRecSelectedParam()
-//                    
-//                };
-//                var windowConfig = {
-//                    id : "plot" + config.datasetId,
-//                    title : "Data plot : " + config.datasetName,
-//                    datasetName : config.datasetName,
-//                    type : "plot",
-//                    iconCls : "plot", 
-//                    saveToolbar : true,
-//                    winHeight : 600
-//                };
-//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-//            }
-//        }
-//    });
-//
-//	/**
-//	 * {Ext.Toolbar} Top toolbar with services
-//	 */
-//	this.topBar = new Ext.Toolbar({
-//		items : [{
-//			text : 'Services', 
-//			menu : ctxMenu
-//        }, "-", {
-//            text : i18n.get("label.multiSort"),
-//            scope : this, 
-//            handler : function () {
-//                var pos = this.getPosition();
-//
-//                //this.ownerCt.ownerCt reprensents the Window
-//                //this.ownerCt.ownerCt.items.items[0] reprensents the first (and only child of the window) -> the future component
-//                var up = new sitools.widget.sortersTool({
-//                    pos : pos,
-//                    store : this.gridPanel.getStore(),
-//                    columnModel : this.gridPanel.getColumnModel()
-//                });
-//                up.show();
-//            }, 
-//            icon : loadUrl.get('APP_URL') + "/common/res/images/icons/hmenu-asc-all.png"
-//        }, "-",
-//        plotButton, "-",
-//        {
-//            text : i18n.get('label.definitionTitle'),
-//            icon :  loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png",
-//            scope : this,
-//            handler : function () {
-//                
-//                var windowConfig = {
-//                    title : i18n.get('label.definitionTitle') + " : " + this.datasetName, 
-//                    datasetName : this.datasetName, 
-//                    iconCls : "semantic", 
-//                    datasetDescription : this.datasetDescription,
-//                    type : "defi",
-//                    saveToolbar : true, 
-//                    toolbarItems : []
-//                };
-//                
-//                var javascriptObject = sitools.user.component.columnsDefinition;
-//                Ext.apply(windowConfig, {
-//                    id : "defi" + this.datasetId
-//                });
-//                var componentCfg = {
-//                    datasetId : this.datasetId,
-//                    datasetCm : config.datasetCm, 
-//                    datasetName : this.datasetName,
-//                    dictionaryMappings : config.dictionaryMappings, 
-//                    preferencesPath : "/" + this.datasetName, 
-//                    preferencesFileName : "semantic"
-//                };
-//                
-//                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//
-//            }
-//        }]
-//	});
+    this.store.on("load", function (store, records, options) {
+        this.topBar.updateContextToolbar();
+    }, this);
     
     this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
         datasetUrl : this.sitoolsAttachementForUsers,
@@ -278,41 +168,53 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         displayInfo: true,
         displayMsg: i18n.get('paging.display'), 
         listeners : {
-			scope : this, 
-			change : function (tb, pageData) {
-		        var plotComp = Ext.getCmp("plot" + this.datasetId);
-		        if (plotComp) {
-		            var rightPanel = plotComp.findById('plot-right-panel');
-		            var success = rightPanel.fireEvent('buffer', tb.store, pageData.activePage, pageData.activePage, pageData.pages);
-		        }
-			}
-		}
+            scope : this, 
+//          change : function (tb, pageData) {
+                
+//              var plotComp = Ext.getCmp("plot" + this.datasetId);
+//              if (plotComp) {
+//                  var rightPanel = plotComp.findById('plot-right-panel');
+//                  var success = rightPanel.fireEvent('buffer', tb.store, pageData.activePage, pageData.activePage, pageData.pages);
+//              }
+//          }
+        }
     });
     
     var sm = new sitools.user.component.dataviews.cartoView.featureSelectionModel({
-		listeners : {
-			scope : this, 
-			gridFeatureSelected : function (g, rowIndex, e) {
-				try {
-					var row = g.getStore().getAt(rowIndex);
-					var feature = row.getFeature();
-					var featurePos = {
-						lon : feature.geometry.x, 
-						lat : feature.geometry.y
-					};
-					var lonlat = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
-					mapPanel.getMap().panTo(lonlat);
-				}
-				catch (err) {
-					return;
-				}
-				
-			}
-		}
-	});
-	
-	var gridWidth = 100 - dataviewConfig.mapWidth;
-	
+        listeners : {
+            scope : this, 
+            gridFeatureSelected : function (g, rowIndex, e) {
+                try {
+                    var row = g.getStore().getAt(rowIndex);
+                    var feature = row.getFeature();
+                    var featurePos = {
+                        lon : feature.geometry.x, 
+                        lat : feature.geometry.y
+                    };
+                    var lonlat = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
+                    mapPanel.getMap().panTo(lonlat);
+                }
+                catch (err) {
+                    return;
+                }
+                
+            }
+        },
+        isSelectionModel : true,
+        checkOnly : true        
+    });
+    
+    var gridWidth = 100 - dataviewConfig.mapWidth;
+    
+    
+    //create a new columnModel with the selectionModel
+    var configCol = cm.config;
+    configCol.unshift(sm);
+    cm = new Ext.grid.ColumnModel({
+        columns : configCol
+    }); 
+    
+    
     // create grid panel configured with feature store
     this.gridPanel = new Ext.grid.GridPanel({
         region : "west",
@@ -335,44 +237,46 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     });
     
     
+    
+    
 
     // -- CONSTRUCTOR --
-	sitools.user.component.dataviews.cartoView.cartoView.superclass.constructor.call(this, Ext.apply({
+    sitools.user.component.dataviews.cartoView.cartoView.superclass.constructor.call(this, Ext.apply({
         layout: "border",
         dataviewUtils : sitools.user.component.dataviews.dataviewUtils, 
         items: [mapPanel, this.gridPanel],
-	    componentType : "data",
-	    tbar : this.topBar
-	}, config));    
+        componentType : "data",
+        tbar : this.topBar
+    }, config));    
 
 };
 
 Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     /**
      * @private
-	 * @returns the JsonColModel used to store the userPreferences.
-	 */
+     * @returns the JsonColModel used to store the userPreferences.
+     */
     _getSettings : function () {
-		return {
-			datasetName : this.datasetName, 
-			colModel : extColModelToJsonColModel(this.gridPanel.colModel.config), 
-			datasetView : "sitools.user.component.dataviews.cartoView.cartoView",
-			datasetUrl : this.sitoolsAttachementForUsers, 
-			dictionaryMappings : this.dictionaryMappings, 
+        return {
+            datasetName : this.datasetName, 
+            colModel : extColModelToJsonColModel(this.gridPanel.colModel.config), 
+            datasetView : "sitools.user.component.dataviews.cartoView.cartoView",
+            datasetUrl : this.sitoolsAttachementForUsers, 
+            dictionaryMappings : this.dictionaryMappings, 
             preferencesPath : this.preferencesPath, 
             preferencesFileName : this.preferencesFileName
         };
 
     }, 
-//	,
+//  ,
 //    /**
 //     * @private
 //     * return the filters of the liveGrid.
 //     * @return [] Array of filter object 
 //     */
 //    getFilters : function () {
-//	    return this.filters;
-//	}, 
+//      return this.filters;
+//  }, 
 //    /**
 //     * 
 //     * @return {String} 
@@ -387,7 +291,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     
         // First case : no records selected: build the Query
         if (Ext.isEmpty(this.getSelections())) {
-			request += this.getRequestParamWithoutSelection();
+            request += this.getRequestParamWithoutSelection();
         } 
         // Second case : Records are selected
         else {
@@ -397,21 +301,21 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         return request;
     }, 
     getSelectionModel : function () {
-    	return this.gridPanel.getSelectionModel();
+        return this.gridPanel.getSelectionModel();
     },
     getSelections : function () {
-		return this.gridPanel.getSelectionModel().getSelections();
+        return this.gridPanel.getSelectionModel().getSelections();
     }, 
     
     getNbRowsSelected : function () {
-		return this.gridPanel.getSelectionModel().getSelections().length;
+        return this.gridPanel.getSelectionModel().getSelections().length;
     }, 
     getColumnModel : function () {
         return this.gridPanel.getColumnModel();
     }, 
     
     getRequestParamWithoutSelection : function () {
-		var result = "", formParams = {};
+        var result = "", formParams = {};
         // Add the filters params
         var filters = this.getFilters();
         if (!Ext.isEmpty(filters)) {
@@ -449,27 +353,37 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         return result;
     }, 
     /**
-	 * @method
-	 * will check if there is some pendingSelection (no requested records)
-	 * <li>First case, there is no pending Selection, it will build a form parameter
-	 * with a list of id foreach record.</li>
-	 * <li>Second case, there is some pending Selection : it will build a ranges parameter
-	 * with all the selected ranges.</li>
-	 * @returns {} Depending on liveGridSelectionModel, will return either an object that will use form API 
-	 * (p[0] = LISTBOXMULTIPLE|primaryKeyName|primaryKeyValue1|primaryKeyValue1|...|primaryKeyValueN), 
-	 * either an object that will contain an array of ranges of selection 
-	 * (ranges=[range1, range2, ..., rangen] where rangeN = [startIndex, endIndex])
-	 * 
-	 */
-	getRecSelectedParam : function () {
-		var sm = this.gridPanel.getSelectionModel(), result;
-		var recSelected = sm.getSelections();
-		result = Ext.urlEncode(this.dataviewUtils.getFormParamsFromRecsSelected(recSelected));
-		
-		return result;
-	},
-	
-	getDatasetView : function () {
+     * @method
+     * will check if there is some pendingSelection (no requested records)
+     * <li>First case, there is no pending Selection, it will build a form parameter
+     * with a list of id foreach record.</li>
+     * <li>Second case, there is some pending Selection : it will build a ranges parameter
+     * with all the selected ranges.</li>
+     * @returns {} Depending on liveGridSelectionModel, will return either an object that will use form API 
+     * (p[0] = LISTBOXMULTIPLE|primaryKeyName|primaryKeyValue1|primaryKeyValue1|...|primaryKeyValueN), 
+     * either an object that will contain an array of ranges of selection 
+     * (ranges=[range1, range2, ..., rangen] where rangeN = [startIndex, endIndex])
+     * 
+     */
+    getRecSelectedParam : function () {
+        var sm = this.gridPanel.getSelectionModel(), result;
+        var recSelected = sm.getSelections();
+        
+        if (sm.markAll) {
+            //First Case : all the dataset is selected.
+            result = "ranges=[[0," + this.store.getTotalCount() + "]]";
+            //We have to re-build all the request in case we use a range selection.
+            result += this.getRequestParamWithoutSelection();
+        }
+        else {
+            //Second Case : there is a selection, send the selection.
+            result = Ext.urlEncode(this.dataviewUtils.getFormParamsFromRecsSelected(recSelected));
+        }
+        return result;
+    },
+    
+    
+    getDatasetView : function () {
         return this.gridPanel.getView();
     },
     
@@ -497,7 +411,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
      * Return an array containing a button to show or hide columns
      * @returns {Array}
      */
-    createColumnsButton : function () {
+    getCustomToolbarButtons : function () {
         var array = [];
         array.push(new Ext.Toolbar.Separator());
         array.push({
@@ -508,6 +422,10 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         });
         this.getDatasetView().hdCtxIndex = 0;
         return array;
+    },
+    
+    isAllSelected : function () {
+        return this.getSelectionModel().markAll;
     }
     
 });
@@ -524,7 +442,7 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
         width : 80
     });
 
-	var cm = new Ext.grid.ColumnModel({
+    var cm = new Ext.grid.ColumnModel({
         columns: [{
             header: 'Layer Name',
             dataIndex: 'layerName',
@@ -546,109 +464,109 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
 
     // create the Data Store
     var store = new Ext.data.JsonStore({
-		fields : [{
-			name : "layerName",
-			type : "string"
-		}, {
-			name : "url",
-			type : "string"
-		}, {
-			name : "baseLayer", 
-			type : "boolean"
-		}]
+        fields : [{
+            name : "layerName",
+            type : "string"
+        }, {
+            name : "url",
+            type : "string"
+        }, {
+            name : "baseLayer", 
+            type : "boolean"
+        }]
     });
 
     return [{
-		jsObj : "Ext.form.TextField", 
-		config : {
-			anchor : "100%", 
-	        parameterName : "jeoResourceUrl", 
-	        fieldLabel : i18n.get("label.jeoResourceUrl"), 
-	        value : "/jeo/opensearch/search"
-		}
-	},{
-		jsObj : "Ext.ux.form.SpinnerField", 
-		config : {
-			anchor : "100%", 
-	        parameterName : "mapWidth", 
-	        fieldLabel : i18n.get("label.mapWidth"), 
-	        value : "70"
-		}
-	}, {
-		jsObj : "Ext.grid.EditorGridPanel", 
-		config : {
-			title : i18n.get('label.Layers'),	
-			store: store,
-	        cm: cm,
-	        sm : new Ext.grid.RowSelectionModel(),
-	        anchor : "100%", 
-	        height: 200,
-	        autoScroll : true, 
-	        plugins : [baseLayer], 
-	        clicksToEdit: 2,
-	        listeners : {
-				scope : this,
-				afterrender : function (grid) {
-					if (grid.getStore().getCount() === 0) {
-						var TypeRec = grid.getStore().recordType;
-						var rec = new TypeRec({
-							layerName : "openstreetmap", 
-							url : "http://maps.opengeo.org/geowebcache/service/wms", 
-							baseLayer : true
-						});
-						grid.getStore().add(rec);
-						grid.getView().refresh();
-					}
-				}
-			}, 
-	        getValue : function () {
-				var res = [];
-				var store = this.getStore();
-				store.each(function (rec) {
-					res.push(rec.data);
-				});
-				return Ext.encode(res);
-			}, 
-			setValue : function (value) {
-				var values = Ext.decode(value);
-				
-				var grid = this;
-				Ext.each(values, function (value) {
-					var rec = new Ext.data.Record(value);
-					grid.getStore().add(rec);
-				});
-			}, 
-	        tbar: [{
-	            text: i18n.get('label.addLayer'),
-	            handler : function (btn) {
-	                var grid = btn.ownerCt.ownerCt;
+        jsObj : "Ext.form.TextField", 
+        config : {
+            anchor : "100%", 
+            parameterName : "jeoResourceUrl", 
+            fieldLabel : i18n.get("label.jeoResourceUrl"), 
+            value : "/jeo/opensearch/search"
+        }
+    },{
+        jsObj : "Ext.ux.form.SpinnerField", 
+        config : {
+            anchor : "100%", 
+            parameterName : "mapWidth", 
+            fieldLabel : i18n.get("label.mapWidth"), 
+            value : "70"
+        }
+    }, {
+        jsObj : "Ext.grid.EditorGridPanel", 
+        config : {
+            title : i18n.get('label.Layers'),   
+            store: store,
+            cm: cm,
+            sm : new Ext.grid.RowSelectionModel(),
+            anchor : "100%", 
+            height: 200,
+            autoScroll : true, 
+            plugins : [baseLayer], 
+            clicksToEdit: 2,
+            listeners : {
+                scope : this,
+                afterrender : function (grid) {
+                    if (grid.getStore().getCount() === 0) {
+                        var TypeRec = grid.getStore().recordType;
+                        var rec = new TypeRec({
+                            layerName : "openstreetmap", 
+                            url : "http://maps.opengeo.org/geowebcache/service/wms", 
+                            baseLayer : true
+                        });
+                        grid.getStore().add(rec);
+                        grid.getView().refresh();
+                    }
+                }
+            }, 
+            getValue : function () {
+                var res = [];
+                var store = this.getStore();
+                store.each(function (rec) {
+                    res.push(rec.data);
+                });
+                return Ext.encode(res);
+            }, 
+            setValue : function (value) {
+                var values = Ext.decode(value);
+                
+                var grid = this;
+                Ext.each(values, function (value) {
+                    var rec = new Ext.data.Record(value);
+                    grid.getStore().add(rec);
+                });
+            }, 
+            tbar: [{
+                text: i18n.get('label.addLayer'),
+                handler : function (btn) {
+                    var grid = btn.ownerCt.ownerCt;
 
-	                var Layer = grid.getStore().recordType;
-	                var l = new Layer({
-	                    layerName: '',
-	                    url: ''
-	                });
-	                grid.stopEditing();
-	                store.insert(0, l);
-	                grid.startEditing(0, 0);
-	            }
-	        }, {
-	            text: i18n.get('label.deleteLayer'),
-	            handler : function (btn) {
-	                var grid = btn.ownerCt.ownerCt;
-	                var rec = grid.getSelectionModel().getSelected();
-	                if (Ext.isEmpty(rec)) {
-						Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noRecordSelected'));
-						return;
-	                }
-	                
-	                grid.getStore().remove(rec);
-	                
-	            }
-	        }], 
-	        parameterName : "layers"
-		}
-	}];
+                    var Layer = grid.getStore().recordType;
+                    var l = new Layer({
+                        layerName: '',
+                        url: ''
+                    });
+                    grid.stopEditing();
+                    store.insert(0, l);
+                    grid.startEditing(0, 0);
+                }
+            }, {
+                text: i18n.get('label.deleteLayer'),
+                handler : function (btn) {
+                    var grid = btn.ownerCt.ownerCt;
+                    var rec = grid.getSelectionModel().getSelected();
+                    if (Ext.isEmpty(rec)) {
+                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noRecordSelected'));
+                        return;
+                    }
+                    
+                    grid.getStore().remove(rec);
+                    
+                }
+            }], 
+            parameterName : "layers"
+        }
+    }];
 };
 
  

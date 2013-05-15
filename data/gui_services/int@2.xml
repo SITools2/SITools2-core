@@ -1,19 +1,21 @@
 <guiService>
-  <id>2f98aeef-238e-4571-8373-206868f3c43b</id>
-  <name>Download Service</name>
-  <description>a GUI Service to dowload a selection of data</description>
-  <label>label.downloadFile</label>
-  <author>AKKA</author>
+  <id>bce4c14d-746d-45e6-a790-e3b1cd9be604</id>
+  <name>Plot service</name>
+  <description>display a plot of the data displayed</description>
+  <label>label.plot</label>
+  <author>AKKA Technologies</author>
   <version>1.0</version>
-  <icon>/sitools/common/res/images/icons/add_request.png</icon>
-  <xtype>sitools.user.component.dataviews.services.downloadService</xtype>
+  <icon>/sitools/res/images/icons/plot.png</icon>
+  <xtype>sitools.user.component.dataviews.services.plotService</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/dataviews/services/downloadService.js</url>
+        <url>/sitools/client-user/js/components/datasetServices/plotService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
   <priority>1</priority>
+  <dataSetSelection>ALL</dataSetSelection>
+  <defaultGuiService>true</defaultGuiService>
 </guiService>

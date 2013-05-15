@@ -6,10 +6,16 @@
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
-  <xtype>sitools.widget.filterTool</xtype>
+  <xtype>sitools.user.component.dataviews.services.filterService</xtype>
   <dependencies>
-    <js/>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/components/datasetServices/filterService.js</url>
+      </url>
+    </js>
     <css/>
   </dependencies>
   <priority>3</priority>
+  <dataSetSelection>NONE</dataSetSelection>
+  <defaultGuiService>true</defaultGuiService>
 </guiService>

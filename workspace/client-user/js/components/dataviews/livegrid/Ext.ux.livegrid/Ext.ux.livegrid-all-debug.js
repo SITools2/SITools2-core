@@ -2075,7 +2075,7 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
 Ext.ux.grid.livegrid.RowSelectionModel = function (config) {
-
+    
     this.addEvents({
         /**
          * The selection dirty event will be triggered in case records were
@@ -2414,7 +2414,6 @@ Ext.extend(Ext.ux.grid.livegrid.RowSelectionModel, Ext.grid.RowSelectionModel, {
         if (!preventViewNotify) {
             this.grid.getView().onRowDeselect(index);
         }
-
         this.fireEvent("rowdeselect", this, index, record);
         this.fireEvent("selectionchange", this);
     },
@@ -2445,11 +2444,17 @@ Ext.extend(Ext.ux.grid.livegrid.RowSelectionModel, Ext.grid.RowSelectionModel, {
         if (r) {
             this.selections.remove(r);
         }
+        // SITOOLS 
+        this.last = this.lastActive = index;
+        
         if (!preventViewNotify) {
             this.grid.getView().onRowDeselect(index);
         }
-        this.fireEvent("rowdeselect", this, index, r);
-        this.fireEvent("selectionchange", this);
+        
+        if (!this.silent) {
+            this.fireEvent("rowdeselect", this, index, r);
+            this.fireEvent("selectionchange", this);
+        }
     },
 
     /**
@@ -2488,9 +2493,13 @@ Ext.extend(Ext.ux.grid.livegrid.RowSelectionModel, Ext.grid.RowSelectionModel, {
             if (!preventViewNotify) {
                 this.grid.getView().onRowSelect(index);
             }
+            
 
-            this.fireEvent("rowselect", this, index, r);
-            this.fireEvent("selectionchange", this);
+            if (!this.silent) {
+                this.fireEvent("rowselect", this, index, r);
+                this.fireEvent("selectionchange", this);
+            }
+
         }
     },
 
@@ -2655,17 +2664,18 @@ Ext.extend(Ext.ux.grid.livegrid.RowSelectionModel, Ext.grid.RowSelectionModel, {
         if (this.locked) {
             return;
         }
+        //SITOOLS MG, clear all selections, not only the ones in the store
         if (fast !== true) {
-            var ds = this.grid.store;
-            var s = this.selections;
-            var ind = -1;
-            s.each(function (r) {
-                ind = ds.indexOfId(r.id);
+            var s = this.getAllSelections();
+            this.silent = true;
+            s.each(function (ind) {
                 if (ind != -1) {
-                    this.deselectRow(ind + ds.bufferRange[0]);
+                    this.deselectRow(ind);
                 }
             }, this);
             s.clear();
+            this.silent = false;
+            this.deselectRow(0);
 
             this.pendingSelections = {};
 
@@ -2698,15 +2708,53 @@ Ext.extend(Ext.ux.grid.livegrid.RowSelectionModel, Ext.grid.RowSelectionModel, {
         }
 
         if (startRow <= endRow) {
-            for (var i = startRow; i <= endRow; i++) {
+            this.silent = true;
+            for (var i = startRow; i < endRow; i++) {
                 this.selectRow(i, true);
             }
+            this.silent = false;
+            this.selectRow(endRow, true);
         } else {
-            for (var i = startRow; i >= endRow; i--) {
+            this.silent = true;
+            for (var i = startRow; i > endRow; i--) {
                 this.selectRow(i, true);
             }
+            this.silent = false;
+            this.selectRow(endRow, true);
         }
 
+    },
+    
+    /**
+     * Deselects a range of rows if the selection model
+     * {@link Ext.grid.AbstractSelectionModel#isLocked is not locked}.  
+     * All rows in between startRow and endRow are also deselected.
+     * @param {Number} startRow The index of the first row in the range
+     * @param {Number} endRow The index of the last row in the range
+     */
+    deselectRange : function (startRow, endRow, preventViewNotify) {
+        if(this.isLocked()){
+            return;
+        }
+        this.silent = true;
+        for(var i = startRow; i < endRow; i++){
+            this.deselectRow(i, preventViewNotify);
+        }
+        this.silent = false;
+        this.deselectRow(endRow, preventViewNotify);
+
+    },
+    
+    /**
+     * Selects all rows if the selection model
+     * {@link Ext.grid.AbstractSelectionModel#isLocked is not locked}. 
+     */
+    selectAll : function(){
+        if(this.isLocked()){
+            return;
+        }
+        this.selections.clear();
+        this.selectRange(0, this.grid.store.getTotalCount()-1, false);
     }
 
 });

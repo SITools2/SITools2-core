@@ -221,7 +221,7 @@ function extColModelToSrv(ExtColModel) {
 		columns = ExtColModel;
 	}
 	Ext.each(columns, function (column) {
-		if (!column.hidden) {
+		if (!column.hidden && !column.isSelectionModel) {
 			colModel.push(column.columnAlias);
 		}
 	});

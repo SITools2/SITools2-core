@@ -10,10 +10,12 @@
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/dataviews/services/viewDataDetailsService.js</url>
+        <url>/sitools/client-user/js/components/datasetServices/viewDataDetailsService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
   <priority>1</priority>
+  <dataSetSelection>SINGLE</dataSetSelection>
+  <defaultGuiService>true</defaultGuiService>
 </guiService>
