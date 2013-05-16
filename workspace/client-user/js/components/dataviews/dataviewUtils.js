@@ -396,11 +396,15 @@ sitools.user.component.dataviews.dataviewUtils = {
 		if (Ext.getCmp("mifToDownload")) {
 			Ext.getCmp("mifToDownload").destroy();
 		}
+		
+		var forceDlParam = "forceDownload=true";
+		var defaultSrc = url + ((url.indexOf("?") === -1) ? "?" : "&") + forceDlParam;
+		
 		var mifToDownload = new Ext.ux.ManagedIFrame.Panel({
 			layout : 'fit',
 			id : "mifToDownload", 
 	        region : 'center',
-	        defaultSrc : url, 
+	        defaultSrc : defaultSrc, 
 	        renderTo : Ext.getBody(), 
 	        cls : 'x-hidden'
 		});

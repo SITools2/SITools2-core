@@ -97,8 +97,6 @@
     <script type="text/javascript" src="${appUrl}/client-user/js/id.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/utils.js"></script>
 	
-    <script type="text/javascript" src="${appUrl}/common/js/fisheye/Ext.ux.FisheyeMenu.js"></script>
-  	<script type="text/javascript" src="${appUrl}/common/js/fisheye/Ext.ux.FisheyeMenuExtention.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/desktop/StartMenu.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/desktop/previewBox.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/desktop/TaskBar.js"></script>

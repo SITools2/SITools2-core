@@ -24,90 +24,90 @@ Ext.namespace('sitools.user.modules');
  * @cfg urlUpload the url where upload the choosen file
  * @extends Ext.Window
  */
-sitools.user.modules.datastorageUploadFile  = Ext.extend(Ext.Window, {
-    
+sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
+
     id : 'winUploadId',
-	width: 320,
-	height : 125,
-	modal : true,
-    
+    width : 320,
+    height : 125,
+    modal : true,
+
     initComponent : function () {
-		this.title = i18n.get('label.uploadFile');
-        
-		this.formPanel = new Ext.FormPanel({
-                fileUpload: true,
-                formId : 'formUploadId', 
-                autoHeight: true,
-                bodyStyle: 'padding: 10px 10px 0 10px;',
-                labelWidth: 100,
-                defaults: {
-                    anchor: '100%',
-                    allowBlank: false,
-                    msgTarget: 'side'
-                },
-                items: [{
-                    xtype: 'fileuploadfield',
-                    id: 'form-file',
-                    emptyText: i18n.get('label.selectFile'),
-                    fieldLabel: i18n.get('label.file'),
-                    name: 'image',
-                    buttonText: ''
-                        ,
-                    buttonCfg: {
-                        iconCls: 'upload-icon'
+        this.title = i18n.get('label.uploadFile');
+
+        this.formPanel = new Ext.FormPanel({
+            fileUpload : true,
+            formId : 'formUploadId',
+            autoHeight : true,
+            bodyStyle : 'padding: 10px 10px 0 10px;',
+            labelWidth : 100,
+            defaults : {
+                anchor : '100%',
+                allowBlank : false,
+                msgTarget : 'side'
+            },
+            items : [ {
+                xtype : 'fileuploadfield',
+                id : 'form-file',
+                emptyText : i18n.get('label.selectFile'),
+                fieldLabel : i18n.get('label.file'),
+                name : 'image',
+                buttonText : '',
+                buttonCfg : {
+                    iconCls : 'upload-icon'
+                }
+            } ],
+            buttons : [ {
+                text : i18n.get('label.uploadFile'),
+                scope : this,
+                handler : function () {
+                    if (this.formPanel.getForm().isValid()) {
+                        var f = this.formPanel.getForm();
+                        var fileName = f.findField('form-file').getValue();
+                        fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.lenght);
+
+                        this.createUploadedNode(fileName);
+
+                        Ext.Ajax.request({
+                            url : this.urlUpload,
+                            form : 'formUploadId',
+                            isUpload : true,
+                            waitMsg : "wait...",
+                            method : 'POST',
+                            scope : this,
+                            success : function (response) {
+                                new Ext.ux.Notification({
+                                    iconCls : 'x-icon-information',
+                                    title : i18n.get('label.information'),
+                                    html : i18n.get('label.fileUploaded'),
+                                    autoDestroy : true,
+                                    hideDelay : 3000
+                                }).show();
+                                Ext.getCmp('winUploadId').close();
+
+                                // call callback in order to add the
+                                // uploadedFile to the parent component
+                                this.callback.call(this.scope, this.uploadedFileNode);
+
+                            },
+                            failure : function (response) {
+                                Ext.Msg.alert(i18n.get('label.error'));
+                            }
+                        });
                     }
-                }],
-                buttons: [{
-                    text: i18n.get('label.uploadFile'),
-                    scope : this, 
-                    handler : function () {
-                        if (this.formPanel.getForm().isValid()) {
-                            var f = this.formPanel.getForm();
-                            var fileName = f.findField('form-file').getValue();
-                            fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.lenght);
-                            
-                            this.createUploadedNode(fileName);
-                            
-                            Ext.Ajax.request({
-                                url : this.urlUpload,
-                                form : 'formUploadId', 
-                                isUpload : true, 
-                                waitMsg : "wait...", 
-                                method : 'POST',
-                                scope : this,
-                                success : function (response) {
-                                    new Ext.ux.Notification({
-                                        iconCls: 'x-icon-information',
-                                        title: i18n.get('label.information'),
-                                        html: i18n.get('label.fileUploaded'),
-                                        autoDestroy: true,
-                                        hideDelay:  3000
-                                    }).show(); 
-                                    Ext.getCmp('winUploadId').close();
-                                    
-                                    // call callback in order to add the uploadedFile to the parent component
-                                    this.callback.call(this.scope, this.uploadedFileNode);
-                                    
-                                }, 
-                                failure : function (response) {
-                                    Ext.Msg.alert(i18n.get('label.error'));
-                                }
-                            });
-                        }
-                    }
-                }]
-            });
-            
-		this.items = [this.formPanel];
-        
+                }
+            } ]
+        });
+
+        this.items = [ this.formPanel ];
+
         sitools.user.modules.datastorageUploadFile.superclass.initComponent.call(this);
     },
-    
-	isImage : function (text) {
-		var imageRegex = /\.(png|jpg|jpeg|gif|bmp|tif|JPG|JPEG)$/;
-		return (text.match(imageRegex));	                    
-	},
-    
+
+    isImage : function (text) {
+        var imageRegex = /\.(png|jpg|jpeg|gif|bmp|tif|JPG|JPEG)$/;
+        return (text.match(imageRegex));
+    },
+
     createUploadedNode : function (fileName) {
         this.uploadedFileNode = {
             text : fileName,
@@ -115,5 +115,5 @@ sitools.user.modules.datastorageUploadFile  = Ext.extend(Ext.Window, {
             url : this.urlUpload + fileName
         };
     }
-    
+
 });

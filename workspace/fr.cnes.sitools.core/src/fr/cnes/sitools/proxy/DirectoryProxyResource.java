@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.Disposition;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
@@ -149,6 +150,7 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
   @Override
   public void doInit() {
     try {
+
       // SITOOLS
       Object intranet = getRequestAttributes().get("Sitools.intranet");
       if (intranet != null) {
@@ -198,7 +200,7 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
       else {
         setIndexName(getDirectory().getIndexName());
       }
-      
+
       if (getClientDispatcher() == null) {
         getLogger().warning(
             "No client dispatcher is available on the context. Can't get the target URI: " + this.getTargetUri());
@@ -230,7 +232,7 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
               // Append the index name
               // PATCH SITOOLS TO PREVENT automatic index.html response
               if ((getIndexName() != null) && (getIndexName().length() > 0)) {
-              // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
+                // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
                 this.setDirectoryUri(this.getTargetUri());
                 // this.setBaseName(getDirectory().getIndexName());
                 this.setBaseName(getIndexName());
@@ -257,6 +259,18 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
             this.setIfDirectoryTarget(false);
             this.setIfFileTarget(true);
             this.setFileContent(contextResponse.getEntity());
+            // PATCH SITOOLS : Force download
+            try {
+              if (Boolean.parseBoolean(getRequest().getResourceRef().getQueryAsForm()
+                  .getFirstValue("forceDownload", "false"))) {
+                Disposition disp = new Disposition(Disposition.TYPE_ATTACHMENT);
+                this.getFileContent().setDisposition(disp);
+              }
+            }
+            catch (Exception e) {
+              // do nothing
+              getLogger().fine("Wrong parameter for forceDownload");
+            }
           }
         }
         else {
@@ -268,10 +282,10 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
           if (this.getTargetUri().endsWith("/")) {
             // In this case, the trailing "/" shows that the URI
             // must point to a directory
-            
+
             // PATCH SITOOLS TO PREVENT automatic index.html response
             if ((getIndexName() != null) && (getIndexName().length() > 0)) {
-            // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
+              // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
               this.setDirectoryUri(this.getTargetUri());
               this.setIfDirectoryTarget(true);
 
@@ -291,10 +305,10 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
             // Try to determine if this target URI with no trailing
             // "/" is a directory, in order to force the
             // redirection.
-            
+
             // PATCH SITOOLS TO PREVENT automatic index.html response
             if ((getIndexName() != null) && (getIndexName().length() > 0)) {
-            // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
+              // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
               // Append the index name
               contextResponse = getRepresentation(this.getTargetUri() + "/" + getIndexName());
               // contextResponse = getRepresentation(this.getTargetUri() + "/" + getDirectory().getIndexName());
@@ -435,6 +449,3 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
   }
 
 }
-
-
-  

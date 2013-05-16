@@ -195,6 +195,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         itemSelector: 'div.thumb-wrap',
         selectedClass : 'x-view-selected-datasetView',
         emptyText: '', 
+        simpleSelect : true,
         listeners : {
 			scope : this, 
 			selectionchange : function (dataView, recNodes) {
@@ -223,8 +224,11 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				this.panelDetail.expand();
 				
 				//destroy all selections if all was selected and another row is selected
-				if (this.isAllSelected() && recNodes.length === 1) {
-				    this.selectAllRows.toggle();				    
+				if (this.isAllSelected() && recNodes.length === DEFAULT_LIVEGRID_BUFFER_SIZE - 1) {
+				    this.selectAllRows.toggle();
+				    this.deselectAll();
+				    var unselectedRec = this.getUnselectedRow(recs, this.store.data.items);
+				    this.select(unselectedRec);
 				}
 				
 			}
@@ -512,6 +516,26 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
     
     isAllSelected : function () {
         return (!Ext.isEmpty(this.selectAllRows) && this.selectAllRows.pressed);
+    },
+    /**
+     * Get the unselected row from the list of all selected records and the
+     * whole store
+     * 
+     * @param selectedRecs
+     *            the selected records
+     * @param allRecs
+     *            all the records from the store
+     * @returns the unselected item, or null if not found
+     */
+    getUnselectedRow : function (selectedRecs, allRecs) {
+        var unselected = null;
+        Ext.each(allRecs, function (record) {
+            if (selectedRecs.indexOf(record) === -1) {
+                unselected = record;
+                return;
+            }
+        }, this);
+        return unselected;
     }
 
 });
