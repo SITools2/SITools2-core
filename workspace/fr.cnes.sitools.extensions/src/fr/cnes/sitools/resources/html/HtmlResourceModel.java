@@ -62,7 +62,7 @@ public class HtmlResourceModel extends ResourceModel {
     this.addParam(param1);
     this.addParam(param2);
     this.setApplicationClassName(DataSetApplication.class.getName());
-    this.setDataSetSelection(DataSetSelectionType.ALL);
+    this.setDataSetSelection(DataSetSelectionType.MULTIPLE);
     this.getParameterByName("methods").setValue("GET");
     this.completeAttachUrlWith("/htmlexport");
   }

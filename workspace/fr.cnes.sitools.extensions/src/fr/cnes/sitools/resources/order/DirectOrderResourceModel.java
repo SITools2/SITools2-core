@@ -55,7 +55,7 @@ public class DirectOrderResourceModel extends OrderResourceModel {
     setName("DirectOrderResourceModel");
     setDescription("Order resources associated to metadata, creating a ZIP, TAR or TAR.GZ 'on the fly' and download it.");
     this.setApplicationClassName(DataSetApplication.class.getName());
-    this.setDataSetSelection(DataSetSelectionType.ALL);
+    this.setDataSetSelection(DataSetSelectionType.MULTIPLE);
     this.getParameterByName("methods").setValue("GET");
     this.getParameterByName(TaskResourceModel.RUN_TYPE_PARAM_NAME_ADMINISTATION).setValue(
         TaskRunTypeAdministration.TASK_FORCE_RUN_SYNC.toString());

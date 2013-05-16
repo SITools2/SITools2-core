@@ -74,7 +74,7 @@ public class OrderResourceModel extends TaskResourceModel {
 
     this.setApplicationClassName(DataSetApplication.class.getName());
     this.getParameterByName("methods").setValue("POST");
-    this.setDataSetSelection(DataSetSelectionType.ALL);
+    this.setDataSetSelection(DataSetSelectionType.MULTIPLE);
 
     // paramètres pour la limitation du nombre de fichiers
     ResourceParameter paramMaxWarningThreshold = new ResourceParameter("max_warning_threshold",

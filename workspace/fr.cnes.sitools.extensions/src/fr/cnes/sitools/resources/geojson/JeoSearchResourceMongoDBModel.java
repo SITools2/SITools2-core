@@ -60,7 +60,7 @@ public class JeoSearchResourceMongoDBModel extends ResourceModel {
     this.addParam(param1);
 
     this.setApplicationClassName(DataSetApplication.class.getName());
-    this.setDataSetSelection(DataSetSelectionType.ALL);
+    this.setDataSetSelection(DataSetSelectionType.MULTIPLE);
     this.getParameterByName("methods").setValue("GET");
     this.getParameterByName("url").setValue("/jeo/opensearch/search");
 

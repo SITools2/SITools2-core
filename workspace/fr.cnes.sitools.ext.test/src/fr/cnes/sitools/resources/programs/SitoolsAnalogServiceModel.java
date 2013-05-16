@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.resources.programs;
 
+import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
@@ -42,7 +43,7 @@ public class SitoolsAnalogServiceModel extends ResourceModel {
     setClassOwner("CNES");
     setClassVersion("0.2");
     setResourceClassName("fr.cnes.sitools.resources.programs.SitoolsAnalogService");
-
+    setDataSetSelection(DataSetSelectionType.NONE);
     // ResourceParameter url = new ResourceParameter("url", "Attachment URL",
     // ResourceParameterType.PARAMETER_ATTACHMENT);
 

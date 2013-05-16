@@ -60,7 +60,7 @@ public class CsvResourceModel extends ResourceModel {
 
     this.addParam(maxRows);
     this.setApplicationClassName(DataSetApplication.class.getName());
-    this.setDataSetSelection(DataSetSelectionType.ALL);
+    this.setDataSetSelection(DataSetSelectionType.MULTIPLE);
     this.getParameterByName("methods").setValue("GET");
     this.completeAttachUrlWith("/csv");
   }

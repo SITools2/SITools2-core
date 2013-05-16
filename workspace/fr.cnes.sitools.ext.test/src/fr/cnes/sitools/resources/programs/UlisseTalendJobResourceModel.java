@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.resources.programs;
 
+import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
@@ -41,7 +42,7 @@ public class UlisseTalendJobResourceModel extends ResourceModel {
     setClassAuthor("AKKA Technologies");
     setClassOwner("CNES");
     setResourceClassName("fr.cnes.sitools.resources.programs.UlisseTalendJobResource");
-    
+    setDataSetSelection(DataSetSelectionType.NONE);
     /**
      * Parameter for attachment
      */
