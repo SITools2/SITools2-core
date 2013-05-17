@@ -91,5 +91,8 @@ public interface ContextAttributes {
   
   /** True to start in migration mode, false otherwise */
   String START_WITH_MIGRATION = "START_WITH_MIGRATION";
+  
+  /** Attribute to store jetty server properties */
+  String JETTY_PROPERTIES = "JETTY_PROPERTIES";
 
 }

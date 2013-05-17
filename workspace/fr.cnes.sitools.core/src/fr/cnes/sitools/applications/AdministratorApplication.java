@@ -29,6 +29,7 @@ import org.restlet.routing.Router;
 
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.Category;
+import fr.cnes.sitools.common.resource.JettyPropertiesResource;
 import fr.cnes.sitools.common.resource.SitoolsSettingsResource;
 import fr.cnes.sitools.notification.business.NotifierFilter;
 import fr.cnes.sitools.proxy.DirectoryProxy;
@@ -163,6 +164,8 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     analogDir.setNocache(true);
 
     router.attach("/analog", analogDir);
+    
+    router.attach("/jettyprops", JettyPropertiesResource.class);
 
     Filter filter = new NotifierFilter(getContext());
     filter.setNext(router);

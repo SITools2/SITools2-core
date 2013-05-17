@@ -33,7 +33,6 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.Server;
 import org.restlet.data.Method;
-import org.restlet.data.Parameter;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.ext.solr.SolrClientHelper;
@@ -163,24 +162,6 @@ public final class Starter {
   /** Resource bundle name */
   public static final String BUNDLE = "sitools";
 
-  /** Maximal header buffer size for request */
-  public static final int DEFAULT_REQUEST_HEADER_SIZE = 512 * 1024;
-
-  /** Maximal header buffer size for request */
-  public static final int DEFAULT_RESPONSE_HEADER_SIZE = 512 * 1024;
-
-  public static final int DEFAULT_MIN_THREADS=1;
-  public static final int DEFAULT_MAX_THREADS=255;
-  public static final int DEFAULT_THREAD_MAX_IDLE_TIME_MS=60000;
-  public static final int DEFAULT_LOW_RESOURCES_MAX_IDLE_TIME_MS=2500;
-  public static final int DEFAULT_ACCEPTOR_THREADS=1;
-  public static final int DEFAULT_ACCEPT_QUEUE_SIZE=0;
-  public static final int DEFAULT_REQUEST_BUFFER_SIZE=8192;
-  public static final int DEFAULT_RESPONSE_BUFFER_SIZE=32768;
-  public static final int DEFAULT_IO_MAX_IDLE_TIME_MS=30000;
-  public static final int DEFAULT_SO_LINGER_TIME=1000;
-  public static final int DEFAULT_GRACEFUL_SHUTDOWN=0;
-  
   /** Maximal connections */
   public static final int DEFAULT_CONNECTIONS = 50;
 
@@ -336,133 +317,12 @@ public final class Starter {
     // ============================
     // Protocols
 
-    // try to get buffer
-
-    int requestHeaderSize;
-    try {
-      requestHeaderSize = settings.getInt(Consts.REQUEST_HEADER_SIZE);
-    }
-    catch (Exception e) {
-      requestHeaderSize = DEFAULT_REQUEST_HEADER_SIZE;
-    }
-
-    int responseHeaderSize;
-    try {
-      responseHeaderSize = settings.getInt(Consts.RESPONSE_HEADER_SIZE);
-    }
-    catch (Exception e) { 
-      responseHeaderSize = DEFAULT_RESPONSE_HEADER_SIZE;
-    }
-        
-    int minThreads;
-    try {
-      minThreads = settings.getInt(Consts.MIN_THREADS);
-    } catch (Exception e) {
-      minThreads = DEFAULT_MIN_THREADS;  
-    }
-    
-    int maxThreads;
-    try { 
-      maxThreads = settings.getInt(Consts.MAX_THREADS);
-    }
-    catch (Exception e) { 
-      maxThreads = DEFAULT_MAX_THREADS; 
-    }
-    
-    int threadMaxIdleTimeMs;
-    try {
-      threadMaxIdleTimeMs = settings.getInt(Consts.THREAD_MAX_IDLE_TIME_MS);
-    }
-    catch (Exception e) { 
-      threadMaxIdleTimeMs = DEFAULT_THREAD_MAX_IDLE_TIME_MS;
-    }
-        
-    int lowResourcesMaxIdleTimeMs;
-    try {
-      lowResourcesMaxIdleTimeMs = settings.getInt(Consts.LOW_RESOURCES_MAX_IDLE_TIME_MS);
-    }
-    catch (Exception e) {
-      lowResourcesMaxIdleTimeMs = DEFAULT_LOW_RESOURCES_MAX_IDLE_TIME_MS;
-    }
-    
-    int acceptorThreads;
-    try {
-      acceptorThreads = settings.getInt(Consts.ACCEPTOR_THREADS);
-    }
-    catch (Exception e) {
-      acceptorThreads = DEFAULT_ACCEPTOR_THREADS;
-    }
-    
-    int acceptQueueSize;
-    try {
-      acceptQueueSize = settings.getInt(Consts.ACCEPT_QUEUE_SIZE);
-    }
-    catch (Exception e) {
-      acceptQueueSize = DEFAULT_ACCEPT_QUEUE_SIZE;
-    }
-    
-    
-    int requestBufferSize;
-    try {
-      requestBufferSize = settings.getInt(Consts.REQUEST_BUFFER_SIZE);
-    }
-    catch (Exception e) {
-      requestBufferSize = DEFAULT_REQUEST_BUFFER_SIZE;
-    }
-    
-    int responseBufferSize;
-    try {
-      responseBufferSize = settings.getInt(Consts.RESPONSE_BUFFER_SIZE);
-    }
-    catch (Exception e) {
-      responseBufferSize = DEFAULT_RESPONSE_BUFFER_SIZE;
-    }
-    
-    int ioMaxIdleTimeMs;
-    try {
-      ioMaxIdleTimeMs = settings.getInt(Consts.IO_MAX_IDLE_TIME_MS);
-    }
-    catch (Exception e) {
-      ioMaxIdleTimeMs = DEFAULT_IO_MAX_IDLE_TIME_MS;
-    }
-    
-    int soLingerTime;
-    try {
-      soLingerTime = settings.getInt(Consts.SO_LINGER_TIME);
-    }
-    catch (Exception e) {
-      soLingerTime = DEFAULT_SO_LINGER_TIME;
-    }
-    
-    int gracefulShutdown;
-    try {
-      gracefulShutdown = settings.getInt(Consts.GRACEFUL_SHUTDOWN);
-    }
-    catch (Exception e) {
-      gracefulShutdown = DEFAULT_GRACEFUL_SHUTDOWN;
-    }
-
-
     // HTTP
-    component.getContext().getParameters().add("requestHeaderSize", "" + requestHeaderSize);
-    component.getContext().getParameters().add("responseHeaderSize", "" + responseHeaderSize);
     
-    component.getContext().getParameters().add("minThreads", "" + minThreads);
-    component.getContext().getParameters().add("maxThreads", "" + maxThreads);
-    component.getContext().getParameters().add("threadMaxIdleTimeMs", "" + threadMaxIdleTimeMs);
-    component.getContext().getParameters().add("lowResourcesMaxIdleTimeMs", "" + lowResourcesMaxIdleTimeMs);
-    component.getContext().getParameters().add("acceptorThreads", "" + acceptorThreads);
-    component.getContext().getParameters().add("acceptQueueSize", "" + acceptQueueSize);
-    component.getContext().getParameters().add("requestBufferSize", "" + requestBufferSize);
-    component.getContext().getParameters().add("responseBufferSize", "" + responseBufferSize);
-    component.getContext().getParameters().add("ioMaxIdleTimeMs", "" + ioMaxIdleTimeMs);
-    component.getContext().getParameters().add("soLingerTime", "" + soLingerTime);
-    component.getContext().getParameters().add("gracefulShutdown", "" + gracefulShutdown);
-    
-
     // if IP address is specified for the HTTP protocol (useful when multiple
     // address available)
     String ipAddress = settings.getString("Starter.component.protocol.HTTP.address");
+   
     Server serverHTTP = null;
     if ((ipAddress != null) && !ipAddress.equals("")) {
       serverHTTP = component.getServers().add(Protocol.HTTP, ipAddress, Integer.parseInt(hostPort));
@@ -470,42 +330,16 @@ public final class Starter {
     else {
       serverHTTP = component.getServers().add(Protocol.HTTP, Integer.parseInt(hostPort));
     }
-    Parameter param = serverHTTP.getContext().getParameters().getFirst("requestHeaderSize");
-    if (param != null) {
-      param.setValue("" + requestHeaderSize); // 32*1024 int 4*1024 Size of the buffer
-      // to be used for request and response
-      // headers.
-    }
-    else {
-      serverHTTP.getContext().getParameters().add("requestHeaderSize", "" + requestHeaderSize);
-    }
-
-    param = serverHTTP.getContext().getParameters().getFirst("responseHeaderSize");
-    if (param != null) {
-      param.setValue("" + responseHeaderSize); // 32*1024 int 8*1024 Size of the content
-      // buffer for receiving requests.);
-    }
-    else {
-      serverHTTP.getContext().getParameters().add("responseHeaderSize", "" + responseHeaderSize);
-    }
+    
+    JettyProperties jettyProps = new JettyProperties();
+    jettyProps.setValues(settings);
+    jettyProps.addParamsToServerContext(serverHTTP);
+    
+    serverHTTP.getContext().getParameters().add("useForwardedForHeader", settings.getString(Consts.USE_FORWARDED_FOR_HEADER));
     
     serverHTTP.getContext().getAttributes().put("maxThreads", DEFAULT_CONNECTIONS);
     serverHTTP.getContext().getAttributes().put("maxTotalConnections", DEFAULT_CONNECTIONS);
     serverHTTP.getContext().getAttributes().put("maxConnectionsPerHost", DEFAULT_CONNECTIONS);
-
-    serverHTTP.getContext().getParameters()
-        .add("useForwardedForHeader", settings.getString(Consts.USE_FORWARDED_FOR_HEADER));
-    serverHTTP.getContext().getParameters().add("minThreads", "" + minThreads);
-    serverHTTP.getContext().getParameters().add("maxThreads", "" + maxThreads);
-    serverHTTP.getContext().getParameters().add("threadMaxIdleTimeMs", "" + threadMaxIdleTimeMs);
-    serverHTTP.getContext().getParameters().add("lowResourcesMaxIdleTimeMs", "" + lowResourcesMaxIdleTimeMs);
-    serverHTTP.getContext().getParameters().add("acceptorThreads", "" + acceptorThreads);
-    serverHTTP.getContext().getParameters().add("acceptQueueSize", "" + acceptQueueSize);
-    serverHTTP.getContext().getParameters().add("requestBufferSize", "" + requestBufferSize);
-    serverHTTP.getContext().getParameters().add("responseBufferSize", "" + responseBufferSize);
-    serverHTTP.getContext().getParameters().add("ioMaxIdleTimeMs", "" + ioMaxIdleTimeMs);
-    serverHTTP.getContext().getParameters().add("soLingerTime", "" + soLingerTime);
-    serverHTTP.getContext().getParameters().add("gracefulShutdown", "" + gracefulShutdown);
     
     component.getClients().add(Protocol.FILE);
     component.getClients().add(Protocol.HTTP);
@@ -1955,6 +1789,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    appContext.getAttributes().put(ContextAttributes.JETTY_PROPERTIES, serverHTTP.getContext().getParameters());
 
     // To authorize cookie authentication for this application
     appContext.getAttributes().put(ContextAttributes.COOKIE_AUTHENTICATION, Boolean.TRUE);
@@ -2190,7 +2025,9 @@ public final class Starter {
     component.getHosts().add(host);
 
     component.start();
-
+    
+    serverHTTP.getContext().getAttributes().get("org.restlet.engine.helper");
+    
     server = component;
   }
 
