@@ -595,7 +595,7 @@ sitools.user.desktop.navProfile.desktop = {
 				                    datasetViewConfig : dataset.datasetViewConfig,
 				                    dictionaryMappings : dataset.dictionaryMappings, 
 				                    preferencesPath : "/" + dataset.name, 
-				                    preferencesFileName : "datasetView"
+				                    preferencesFileName : "datasetOverview"
 				                };
 				                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
 				
