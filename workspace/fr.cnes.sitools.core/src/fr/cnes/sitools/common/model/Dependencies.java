@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.common.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,7 +29,11 @@ import java.util.List;
  * 
  * @author m.gond
  */
-public class Dependencies {
+public class Dependencies implements Serializable {
+  /**
+   * serialVersionUID
+   */
+  private static final long serialVersionUID = -3239787982855482109L;
   /** List of js {@link Url} */
   private List<Url> js;
   /** List of css {@link Url} */

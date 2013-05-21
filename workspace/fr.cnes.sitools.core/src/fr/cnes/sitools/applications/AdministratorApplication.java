@@ -30,6 +30,7 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.resource.JettyPropertiesResource;
+import fr.cnes.sitools.common.resource.SitoolsJavaVersionResource;
 import fr.cnes.sitools.common.resource.SitoolsSettingsResource;
 import fr.cnes.sitools.notification.business.NotifierFilter;
 import fr.cnes.sitools.proxy.DirectoryProxy;
@@ -153,7 +154,8 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     router.attach("/cgu.html", dpLicence);
 
     router.attach("/settings/{PARAMETER}", SitoolsSettingsResource.class);
-
+    router.attach("/javaVersion", SitoolsJavaVersionResource.class);
+    
     // Create a directory with no-cache parameter to true to
     DirectoryProxy analogDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + analogReportsDir,
         getAttachementRef() + analogReportsDir);

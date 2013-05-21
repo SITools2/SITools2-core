@@ -33,6 +33,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
   public void sitoolsDescribe() {
     setName("GuiServiceCollectionResource");
     setDescription("Resource to deal with collection of GuiServices plugin");
+    setNegotiated(false);
   }
 
   /**
@@ -73,14 +74,12 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
    */
   @Post
   @Override
-  protected Representation post(Representation entity, Variant variant) throws ResourceException {
+  public Representation post(Representation entity, Variant variant) throws ResourceException {
     try {
-
       GuiServicePluginModel guiServiceInput = getObjectGuiServicePluginModel(entity);
 
       String url = getGuiServicesUrl();
       GuiServicePluginModel guiServiceOutput = RIAPUtils.persistObject(guiServiceInput, url, getContext());
-
       ServiceCollectionModel services = getServiceCollectionModel();
 
       ServiceModel service = new ServiceModel();

@@ -276,7 +276,7 @@ var projectGlobal = {
             success : function (ret) {
                 var json = Ext.decode(ret.responseText);
                 if (!json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.errorloadingdataviews'));
                     return false;
                 } else {
                     var data = json.data;                    
@@ -308,7 +308,7 @@ var projectGlobal = {
             success : function (ret) {
                 var json = Ext.decode(ret.responseText);
                 if (!json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.errorLoadingFormDependencies'));
                     return false;
                 } else {
                     var data = json.data;                    
@@ -330,7 +330,7 @@ var projectGlobal = {
             success : function (ret) {
                 var json = Ext.decode(ret.responseText);
                 if (!json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.errorLoadingGuiServicesDependencies'));
                     return false;
                 } else {
                     var data = json.data;                    
@@ -384,7 +384,7 @@ var projectGlobal = {
 	            success : function (ret) {
 	                var json = Ext.decode(ret.responseText);
 	                if (!json.success) {
-	                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+	                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.errorGettingUserRoles'));
 	                    return false;
 	                } else {
 						this.user = json.user;        

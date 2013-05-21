@@ -30,10 +30,9 @@ import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
  * 
  * @author m.gond
  */
+@SuppressWarnings("serial")
 public class GuiServiceModel implements IResource, Serializable {
 
-  /** serialVersionUID */
-  private static final long serialVersionUID = 1L;
   /** The id */
   private String id;
   /** The name */

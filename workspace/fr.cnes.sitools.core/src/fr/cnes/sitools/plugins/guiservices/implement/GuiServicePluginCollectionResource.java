@@ -52,24 +52,21 @@ public class GuiServicePluginCollectionResource extends AbstractGuiServicePlugin
   @Post
   public Representation newGuiServicePluginPlugin(Representation representation, Variant variant) {
     try {
-
       GuiServicePluginModel guiServicePluginInput = getObject(representation);
 
       // Business service
       guiServicePluginInput.setParent(getParentId());
 
       GuiServicePluginModel guiServicePluginOutput = getStore().create(guiServicePluginInput);
-      
+
       // Register GuiServicePluginCollectionResource as observer of datasets resources
       registerObserver(guiServicePluginOutput);
-      
-      
+
       Response response = new Response(true, guiServicePluginOutput, GuiServicePluginModel.class, "guiServicePlugin");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
-      e.printStackTrace();
       getLogger().log(Level.INFO, null, e);
       throw e;
     }

@@ -39,7 +39,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author m.arpin (AKKA Technologies)
  */
 public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
-  
+
   /**
    * Method applied after POST request
    * 
@@ -65,25 +65,25 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
 
       for (GuiServiceModel guiService : allGuiServices) {
         if (guiService.isDefaultGuiService()) {
-          GuiServicePluginModel guiSericePluginModel = new GuiServicePluginModel();
+          GuiServicePluginModel guiServicePluginModel = new GuiServicePluginModel();
 
-          guiSericePluginModel.setName(guiService.getName());
-          guiSericePluginModel.setDescription(guiService.getDescription());
+          guiServicePluginModel.setName(guiService.getName());
+          guiServicePluginModel.setDescription(guiService.getDescription());
 
-          guiSericePluginModel.setAuthor(guiService.getAuthor());
-          guiSericePluginModel.setVersion(guiService.getVersion());
+          guiServicePluginModel.setAuthor(guiService.getAuthor());
+          guiServicePluginModel.setVersion(guiService.getVersion());
 
-          guiSericePluginModel.setXtype(guiService.getXtype());
+          guiServicePluginModel.setXtype(guiService.getXtype());
 
-          guiSericePluginModel.setPriority(guiService.getPriority());
+          guiServicePluginModel.setPriority(guiService.getPriority());
 
-          guiSericePluginModel.setDependencies(guiService.getDependencies());
+          guiServicePluginModel.setDependencies(guiService.getDependencies());
 
-          guiSericePluginModel.setLabel(guiService.getLabel());
-          guiSericePluginModel.setIcon(guiService.getIcon());
-          guiSericePluginModel.setDataSetSelection(guiService.getDataSetSelection());
+          guiServicePluginModel.setLabel(guiService.getLabel());
+          guiServicePluginModel.setIcon(guiService.getIcon());
+          guiServicePluginModel.setDataSetSelection(guiService.getDataSetSelection());
 
-          createGuiService(getContext(), datasetId, guiSericePluginModel);
+          createGuiService(getContext(), datasetId, guiServicePluginModel);
         }
 
       }
@@ -97,14 +97,15 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
    * @param datasetId
    *          dataset identifier
    * @param guiService
-   *          the guiserviceplugin model * @param context the context
+   *          the guiserviceplugin model
+   * @param context
+   *          the context
    */
-  protected void createGuiService(Context context, String datasetId, GuiServicePluginModel guiService) {
-
+  private void createGuiService(Context context, String datasetId, GuiServicePluginModel guiService) {
     SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
     RIAPUtils.persistObject(guiService,
-        settings.getString(Consts.APP_DATASETS_URL) + "/" + datasetId + settings.getString(Consts.APP_SERVICES_URL)
-            + "/gui", context);
+            settings.getString(Consts.APP_DATASETS_URL) + "/" + datasetId + settings.getString(Consts.APP_SERVICES_URL)
+                + "/gui", context);
 
   }
 }

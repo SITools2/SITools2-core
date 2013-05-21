@@ -14,6 +14,7 @@ import org.restlet.resource.Get;
 
 import com.thoughtworks.xstream.XStream;
 
+import fr.cnes.sitools.common.SitoolsMediaType;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
@@ -102,7 +103,8 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
    */
   public final Representation getRepresentation(Response response, MediaType media) {
     getLogger().info(media.toString());
-    if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+    if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)
+        || media.isCompatible(SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL)) {
       return new ObjectRepresentation<Response>(response);
     }
 

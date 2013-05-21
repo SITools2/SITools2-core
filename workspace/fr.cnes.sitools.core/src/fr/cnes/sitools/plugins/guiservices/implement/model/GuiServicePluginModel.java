@@ -14,7 +14,7 @@ import fr.cnes.sitools.util.Property;
 public class GuiServicePluginModel extends GuiServiceModel {
 
   /** serialVersionUID */
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = -5607479913913255555L;
 
   /**
    * Parent of the resource
