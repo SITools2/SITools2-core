@@ -41,7 +41,6 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.util.RIAPUtils;
 
-
 /**
  * Test Reset an user Password
  * 
@@ -51,7 +50,6 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  */
 public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsServerTestCase {
-
 
   /**
    * Test Reset the user password without API
@@ -79,6 +77,7 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsServe
 
   /**
    * Invoke PUT
+   * 
    * @param user
    *          the user to update
    */

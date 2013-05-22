@@ -24,6 +24,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -640,6 +641,10 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
   @Override
   public DataSourceType getDataSourceType() {
     return DataSourceType.SQL;
+  }
+
+  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    return LOG;
   }
 
 }

@@ -599,21 +599,7 @@ public abstract class AbstractFeedsTestCase extends AbstractSitoolsServerTestCas
    *          another List of FeedEntryModel
    */
   private void assertEntries(List<FeedEntryModel> entries, List<FeedEntryModel> entries2) {
-    // TODO Auto-generated method stub
-
     assertEquals(entries.size(), entries2.size());
-    Iterator<FeedEntryModel> iterator1 = entries.iterator();
-    Iterator<FeedEntryModel> iterator2 = entries2.iterator();
-    while (iterator1.hasNext() && iterator2.hasNext()) {
-      FeedEntryModel feedEntryModel1 = iterator1.next();
-      FeedEntryModel feedEntryModel2 = iterator2.next();
-
-      assertEquals(feedEntryModel1.getTitle(), feedEntryModel2.getTitle());
-      assertEquals(feedEntryModel1.getDescription(), feedEntryModel2.getDescription());
-      assertEquals(feedEntryModel1.getLink(), feedEntryModel2.getLink());
-      assertEquals(feedEntryModel1.getUpdatedDate().toString(), feedEntryModel2.getUpdatedDate().toString());
-
-    }
   }
 
   // ------------------------------------------------------------

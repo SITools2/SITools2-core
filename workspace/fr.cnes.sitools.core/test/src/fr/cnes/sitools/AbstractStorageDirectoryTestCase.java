@@ -29,8 +29,10 @@ import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.restlet.data.LocalReference;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.data.Reference;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
@@ -144,7 +146,9 @@ public abstract class AbstractStorageDirectoryTestCase extends AbstractSitoolsSe
     testdir.setDescription("directory for tests");
     testdir.setId(DIRECTORY_ID);
     testdir.setListingAllowed(true);
-    String localPath = "file://" + SitoolsSettings.getInstance().getString("Starter.ROOT_DIRECTORY");
+    
+    Reference storageReference = LocalReference.createFileReference(SitoolsSettings.getInstance().getString("Starter.ROOT_DIRECTORY"));
+    String localPath = storageReference.toString();
     if (localPath.endsWith("/")) {
       testdir.setLocalPath(localPath);
     }

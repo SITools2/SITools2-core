@@ -1049,4 +1049,12 @@ public class DBResultSet implements ResultSet {
     return localResultSet.wasNull();
   }
 
+  public <T> T getObject(int arg0, Class<T> arg1) throws SQLException {
+    return (T) localResultSet.getObject(arg0);
+  }
+
+  public <T> T getObject(String arg0, Class<T> arg1) throws SQLException {
+    return (T) localResultSet.getObject(arg0);
+  }
+
 }
