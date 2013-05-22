@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,21 +203,23 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
 
       // Attachement
       component.getInternalRouter().attach(settings.getString(Consts.APP_AUTHORIZATIONS_URL), appAuthorization);
-
+      
+      settings.setStores(new HashMap<String, Object>());
+      
       // Context
       Context appContext = this.component.getContext().createChildContext();
-      appContext.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository()
-            + SitoolsSettings.getInstance().getString(Consts.APP_TASK_STORE_DIR));
+            + settings.getString(Consts.APP_TASK_STORE_DIR));
         cleanDirectory(storeDirectory);
         store = new TaskStoreXML(storeDirectory, appContext);
       }
 
       if (storeResource == null) {
         File storeDirectory = new File(getTestRepository()
-            + SitoolsSettings.getInstance().getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR));
+            + settings.getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR));
         cleanDirectory(storeDirectory);
         storeResource = new ResourcePluginStoreXML(storeDirectory, appContext);
       }
