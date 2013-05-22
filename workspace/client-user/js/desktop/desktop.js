@@ -255,20 +255,16 @@ sitools.user.desktop.App = function () {
 	 */
 	function _onAllJsIncludesDone() {
 		initNavigationMode();
-		SitoolsDesk.loadPreferences(this);
+//		SitoolsDesk.loadPreferences(this);
 
 		this.fireEvent('modulesLoaded');
-
-		//when preferences are loaded fireEvent Ready.
-		this.fireEvent('ready');
-
 	}
 	
     /**
      * Initialize every modules that should be displayed in a specific Div. 
      * For each of them, creates a Ext.Panel renderTo the div defined in project administration.
      */
-    function checkModules(modules) {
+    function checkModules(modules, callback) {
         var errorModules = [];
         Ext.each(projectGlobal.modules, function (module) {
             var moduleName = module.name;
@@ -283,14 +279,23 @@ sitools.user.desktop.App = function () {
             } catch (err) {
                 errorModules.push(moduleName);
             }
-        });
+        }, this);
         if (!Ext.isEmpty(errorModules)) {
             var moduleNames = "";
             Ext.each(errorModules, function (moduleName) {
                 moduleNames += "<br/> - " + moduleName;
             });
             var msg = String.format(i18n.get("label.cannotLoadModules"), moduleNames);
-            Ext.Msg.alert(i18n.get("label.warning"), msg);
+            Ext.Msg.alert(i18n.get("label.warning"), msg, function () {
+                onAllInit.call(this);
+            }, this);
+            var window = Ext.MessageBox.getDialog(i18n.get("label.warning"));
+            var pos = window.getPosition();
+            pos[1] = pos[1] - 200;
+            window.setPosition(pos);
+        }
+        else {
+            onAllInit.call(this);
         }
     }
 	
@@ -305,26 +310,31 @@ sitools.user.desktop.App = function () {
 		SitoolsDesk.navProfile.initNavbar();
 	}
 
+	function onAllInit() {
+	    SitoolsDesk.loadPreferences(this);
+        initEntete();
+        initBottom();
+        initTaskAndNavBar();
+        initModulesDiv(projectGlobal.modules);
+
+        if (projectGlobal.preferences
+                && projectGlobal.preferences.projectSettings
+                && projectGlobal.preferences.projectSettings.desktopMaximizeMode) {
+            getDesktop().maximize();
+        }
+      //when preferences are loaded fireEvent Ready.
+        this.fireEvent('ready');
+    }
+	
 	/**
 	 * Called on modulesLoaded event. 
 	 * After modules are loaded and built, initialize the headers and footer components
 	 * Load every modules defined to be displayed in a specific div. 
 	 */
 	function _onModulesLoaded() {
-	    checkModules(projectGlobal.modules);
-		
-	    initEntete();
-		initBottom();
-		initTaskAndNavBar();
-		initModulesDiv(projectGlobal.modules);
-
-		if (projectGlobal.preferences
-				&& projectGlobal.preferences.projectSettings
-				&& projectGlobal.preferences.projectSettings.desktopMaximizeMode) {
-			getDesktop().maximize();
-		}
+	    checkModules.call(this, projectGlobal.modules, onAllInit);
 	}
-
+	
 	/**
 	 * Initialize the project. 
 	 * Load sql2Ext settings, 

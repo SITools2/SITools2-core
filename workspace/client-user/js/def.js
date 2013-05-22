@@ -179,7 +179,7 @@ function extColModelToJsonColModel(ExtColModel) {
 		columns = ExtColModel;
 	}
 	Ext.each(columns, function (column) {
-	    if (column.id !== 'checker') {
+	    if (!column.isSelectionModel) {
             colModel.push({
                 columnAlias : column.columnAlias,
                 dataIndex : column.dataIndexSitools,

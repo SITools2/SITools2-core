@@ -61,11 +61,14 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
     isColumn : true, // So that ColumnModel doesn't feed this through the
                         // Column constructor
 
+    headerChecked : '<div id="qtip-checker" ext:qtip="' + i18n.get('label.deselectAll') + '" class="x-grid3-hd-checker">&#160;</div>',
+    headerUnchecked : '<div id="qtip-checker" ext:qtip="' + i18n.get('label.selectAll') + '" class="x-grid3-hd-checker">&#160;</div>',
     constructor : function (config) {
         Ext.apply(this, config);
 
         if (!this.header) {
-            this.header = Ext.grid.CheckboxSelectionModel.prototype.header;
+            this.header = this.headerUnchecked;
+           //this.header = Ext.grid.CheckboxSelectionModel.prototype.header;
         }
 
         if (this.checkOnly) {

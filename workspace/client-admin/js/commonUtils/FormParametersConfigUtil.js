@@ -71,7 +71,11 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
             var parameters = getParametersMethod();
 
             if (Ext.isEmpty(parameters)) {
-                this.parametersFieldset.setVisible(false);
+                //this.parametersFieldset.setVisible(false);
+                this.parametersFieldset.add({
+                    xtype : 'label',
+                    html : '<h2 style="text-align:center;">'+ i18n.get('label.noParameter')+ '</h2>'
+                });
             } else {
                 this.parametersFieldset.setVisible(true);
             }
