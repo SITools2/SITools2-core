@@ -88,6 +88,13 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
                 this.headerCheckbox.addClass('x-grid3-hd-checker-on');
             }
         }, this);
+        
+        
+        this.grid.view.addListener('buffer', function() {
+            if(this.markAll){
+                this.selectAll();
+            }
+        }, this);
 
         // this.grid.on('render', function(){
         // Ext.fly(this.grid.getView().innerHd).on('mousedown',
@@ -116,21 +123,21 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
             e.stopEvent();
             var row = e.getTarget('.x-grid3-row');
             if (row) {
-                if (this.headerCheckbox) {
-                    this.markAll = false;
-                    this.headerCheckbox.removeClass('x-grid3-hd-checker-on');
-                }
-
                 var index = row.rowIndex;
                 if (this.isSelected(index)) {
-                    if (e.shiftKey && !this.singleSelect && this.last !== false) {
-                        var last = this.last;
-                        this.deselectRange(last, index);
-                        this.last = last;
-                        // view.focusRow(rowIndex);
-                        // this.fireEvent('handleMouseDown', this);
+                    if (this.markAll) {
+                        // Show a dialog using config options:
+                        this.selectRow(index, false);
                     } else {
-                        this.deselectRow(index);
+                        if (e.shiftKey && !this.singleSelect && this.last !== false) {
+                            var last = this.last;
+                            this.deselectRange(last, index);
+                            this.last = last;
+                            // view.focusRow(rowIndex);
+                            // this.fireEvent('handleMouseDown', this);
+                        } else {
+                            this.deselectRow(index);
+                        }
                     }
                 } else {
                     if (e.shiftKey && !this.singleSelect && this.last !== false) {
@@ -143,6 +150,10 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
                         this.selectRow(index, true);
                     }
                     // this.grid.getView().focusRow(index);
+                }
+                if (this.headerCheckbox) {
+                    this.markAll = false;
+                    this.headerCheckbox.removeClass('x-grid3-hd-checker-on');
                 }
             }
         }
@@ -184,7 +195,7 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
         // return;
         // }
 
-        this.markAll = false;
+//        this.markAll = false;
 
         if (this.headerCheckbox) {
             this.headerCheckbox.removeClass('x-grid3-hd-checker-on');
@@ -197,6 +208,7 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
      * Overriden to clear header sort state
      */
     clearSelections : function (fast) {
+        console.log("clear selections");
         if (this.isLocked()) {
             return;
         }
@@ -207,7 +219,14 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
             this.headerCheckbox.removeClass('x-grid3-hd-checker-on');
         }
 
-        Ext.ux.grid.livegrid.CheckboxSelectionModel.superclass.clearSelections.call(this, fast);
+        //always clearSelections in fast mode
+        Ext.ux.grid.livegrid.CheckboxSelectionModel.superclass.clearSelections.call(this, true);
+        
+        if (!fast) {
+            //done only on user change selection, not at livegrid startup
+            this.fireEvent("selectionchange", this);
+            this.grid.getView().refresh();
+        }
 
     },
 
@@ -216,13 +235,14 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
      * {@link Ext.grid.AbstractSelectionModel#isLocked is not locked}.
      */
     selectAll : function () {
-        Ext.ux.grid.livegrid.CheckboxSelectionModel.superclass.selectAll.call(this);
-
+        console.log("selectAll");
+        this.clearSelections();
         this.markAll = true;
 
         if (this.headerCheckbox) {
             this.headerCheckbox.addClass('x-grid3-hd-checker-on');
         }
-    }
+        Ext.ux.grid.livegrid.CheckboxSelectionModel.superclass.selectAll.call(this, true);
+    } 
 
 });

@@ -24,11 +24,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.junit.Before;
@@ -45,13 +45,14 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.feeds.FeedsStoreXML;
+import fr.cnes.sitools.feeds.AbstractFeedsResource;
 import fr.cnes.sitools.feeds.model.FeedAuthorModel;
 import fr.cnes.sitools.feeds.model.FeedCollectionModel;
 import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.feeds.model.SitoolsDateConverter;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.DateUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -155,20 +156,22 @@ public abstract class AbstractFeedsPortalTestCase extends AbstractSitoolsServerT
     super.setUp();
     docAPI.setActive(false);
 
-//    Map<String, Object> mapStore = settings.getStores();
-//    FeedsStoreXML feedsStore = (FeedsStoreXML) mapStore.get(Consts.APP_STORE_FEED);
-//
-//    List<FeedModel> list = feedsStore.getList();
-//    for (Iterator<FeedModel> iterator = list.iterator(); iterator.hasNext();) {
-//      feedsStore.delete(iterator.next().getId());
-//    }
+    // Map<String, Object> mapStore = settings.getStores();
+    // FeedsStoreXML feedsStore = (FeedsStoreXML) mapStore.get(Consts.APP_STORE_FEED);
+    //
+    // List<FeedModel> list = feedsStore.getList();
+    // for (Iterator<FeedModel> iterator = list.iterator(); iterator.hasNext();) {
+    // feedsStore.delete(iterator.next().getId());
+    // }
   }
 
   /**
    * Test CRUD Graph with JSon format exchanges.
+   * 
+   * @throws ParseException
    */
   @Test
-  public void testCRUD() {
+  public void testCRUD() throws ParseException {
     docAPI.setActive(false);
     try {
       assertNone();
@@ -202,9 +205,11 @@ public abstract class AbstractFeedsPortalTestCase extends AbstractSitoolsServerT
 
   /**
    * Test CRUD Graph with JSon format exchanges.
+   * 
+   * @throws ParseException
    */
   @Test
-  public void testCRUD2docAPI() {
+  public void testCRUD2docAPI() throws ParseException {
     docAPI.setActive(true);
     docAPI.appendChapter("Manipulating Feeds Collection for portal");
     docAPI
@@ -267,8 +272,9 @@ public abstract class AbstractFeedsPortalTestCase extends AbstractSitoolsServerT
    * @param idProject
    *          project id
    * @return FeedModel
+   * @throws ParseException
    */
-  public FeedModel createObject(String idProject, String id) {
+  public FeedModel createObject(String idProject, String id) throws ParseException {
 
     FeedModel item = new FeedModel();
 
@@ -292,21 +298,24 @@ public abstract class AbstractFeedsPortalTestCase extends AbstractSitoolsServerT
     FeedEntryModel entry1 = new FeedEntryModel();
     entry1.setTitle("title1");
     entry1.setDescription("description1");
-    entry1.setUpdatedDate(new Date());
+    entry1.setUpdatedDate(DateUtils.parse("2013-01-01T00:00:00.000"));
+    entry1.setPublishedDate(DateUtils.parse("2013-01-01T00:00:00.000"));
     entry1.setLink("link1");
     entries.add(entry1);
 
     FeedEntryModel entry2 = new FeedEntryModel();
     entry2.setTitle("title2");
     entry2.setDescription("description2");
-    entry2.setUpdatedDate(new Date());
+    entry2.setUpdatedDate(DateUtils.parse("2013-02-01T00:00:00.000"));
+    entry2.setPublishedDate(DateUtils.parse("2013-02-01T00:00:00.000"));
     entry2.setLink("link2");
     entries.add(entry2);
 
     FeedEntryModel entry3 = new FeedEntryModel();
     entry3.setTitle("title3");
     entry3.setDescription("description3");
-    entry3.setUpdatedDate(new Date());
+    entry3.setUpdatedDate(DateUtils.parse("2013-03-01T00:00:00.000"));
+    entry3.setPublishedDate(DateUtils.parse("2013-03-01T00:00:00.000"));
     entry3.setLink("link3");
     entries.add(entry3);
 
@@ -338,6 +347,7 @@ public abstract class AbstractFeedsPortalTestCase extends AbstractSitoolsServerT
       Response response = getResponse(getMediaTest(), result, FeedModel.class);
       assertTrue(response.getSuccess());
       FeedModel feedModel = (FeedModel) response.getItem();
+      AbstractFeedsResource.sortEntries(item);
       assertFeedModel(feedModel, item);
     }
     RIAPUtils.exhaust(result);

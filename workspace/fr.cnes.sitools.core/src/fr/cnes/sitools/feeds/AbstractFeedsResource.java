@@ -249,7 +249,7 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
    * @param feedInput
    *          the feedInput to sort
    */
-  public final void sortEntries(FeedModel feedInput) {
+  public static final void sortEntries(FeedModel feedInput) {
     List<FeedEntryModel> entries = feedInput.getEntries();
     if (entries != null) {
       Collections.sort(entries, new Comparator<FeedEntryModel>() {

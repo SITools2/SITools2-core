@@ -538,8 +538,15 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
 	 */
 	getRecSelectedParamForLiveGrid : function () {
 		var sm = this.getSelectionModel(), result;
-		if (Ext.isEmpty(sm.getPendingSelections())) {
-			//First Case : no pending Selections.
+		
+		if(this.isAllSelected()) {
+		    //First Case : all the dataset is selected.
+            result = "ranges=[[0," + this.store.getTotalCount() + "]]";
+            //We have to re-build all the request in case we use a range selection.
+            result += this.getRequestParamWithoutSelection();
+		}
+		else if (Ext.isEmpty(sm.getPendingSelections())) {
+			//second Case : no pending Selections.
 			var recSelected = sm.getSelections();
 			result = Ext.urlEncode(this.dataviewUtils.getFormParamsFromRecsSelected(recSelected));
 		}
@@ -580,7 +587,7 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
     
     isAllSelected : function () {
         var nbRowsSelected = this.getNbRowsSelected();
-        return nbRowsSelected === this.getStore().getTotalCount();
+        return nbRowsSelected === this.getStore().getTotalCount() || this.getSelectionModel().markAll;
     }
     
     

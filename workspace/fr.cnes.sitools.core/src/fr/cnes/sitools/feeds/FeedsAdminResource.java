@@ -105,7 +105,7 @@ public final class FeedsAdminResource extends AbstractFeedsResource {
           return getRepresentation(response, variant);
         }
 
-        this.sortEntries(feedInput);
+        AbstractFeedsResource.sortEntries(feedInput);
 
         // Business service
         feedOutput = getStore().update(feedInput);

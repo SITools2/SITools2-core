@@ -2749,12 +2749,13 @@ Ext.extend(Ext.ux.grid.livegrid.RowSelectionModel, Ext.grid.RowSelectionModel, {
      * Selects all rows if the selection model
      * {@link Ext.grid.AbstractSelectionModel#isLocked is not locked}. 
      */
-    selectAll : function(){
+    selectAll : function (keepExisting) {
         if(this.isLocked()){
-            return;
+            return
         }
         this.selections.clear();
-        this.selectRange(0, this.grid.store.getTotalCount()-1, false);
+        var store = this.grid.store;
+        this.selectRange(store.bufferRange[0],store.bufferRange[1] , (Ext.isEmpty(keepExisting)?false:keepExisting));
     }
 
 });

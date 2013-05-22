@@ -83,7 +83,7 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
         }
         feedsInput.setParent(getDataId());
 
-        this.sortEntries(feedsInput);
+        AbstractFeedsResource.sortEntries(feedsInput);
 
         // Business service
         FeedModel feedOutput = getStore().create(feedsInput);
