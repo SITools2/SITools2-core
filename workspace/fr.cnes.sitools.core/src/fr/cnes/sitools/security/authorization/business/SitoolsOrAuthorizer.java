@@ -83,8 +83,7 @@ public class SitoolsOrAuthorizer extends DelegatedAuthorizer {
     if (authorizers.size() == 0) {
       return true;
     }
-    boolean authorization = authorize(request, response, 0);
-    return authorization;
+    return authorize(request, response, 0);
   }
 
   /**

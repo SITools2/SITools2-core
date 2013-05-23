@@ -67,8 +67,7 @@ public class AuthorizerResource extends AbstractAuthorizationResource {
     
     if (authorization != null) {
       // TODO Optimisation : authorization.setBasedOnDefault(basedOnDefault);
-      ObjectRepresentation<ResourceAuthorization> rep = new ObjectRepresentation<ResourceAuthorization>(authorization);
-      return rep;
+      return new ObjectRepresentation<ResourceAuthorization>(authorization);
     }
     throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
   }

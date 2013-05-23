@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
@@ -191,19 +192,27 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
         }
       }
 
-      String request = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_USERS, USER_FIELD_FILTER) : jdbcStoreResource.SELECT_USERS;
+      String request = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_USERS, USER_FIELD_FILTER)
+        : jdbcStoreResource.SELECT_USERS;
 
-      Statement st = cx.createStatement();
-      rs = st.executeQuery(request);
+      Statement st = null;
+      try {
+        st = cx.createStatement();
+        rs = st.executeQuery(request);
 
-      List<User> ul = new ArrayList<User>();
+        List<User> ul = new ArrayList<User>();
 
-      while (rs.next()) {
-        User u = parseUser(rs);
-        ul.add(u);
+        while (rs.next()) {
+          User u = parseUser(rs);
+          ul.add(u);
+        }
+        return ul;
       }
-      st.close();
-      return ul;
+      finally {
+        if (st != null) {
+          st.close();
+        }
+      }
 
     }
     catch (SQLException e) {
@@ -253,18 +262,27 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
         }
       }
 
-      String request = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_GROUPS, GROUP_FIELD_FILTER) : jdbcStoreResource.SELECT_GROUPS;
+      String request = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_GROUPS, GROUP_FIELD_FILTER)
+        : jdbcStoreResource.SELECT_GROUPS;
 
-      Statement st = cx.createStatement();
-      rs = st.executeQuery(request);
+      ArrayList<Group> gl;
+      Statement st = null;
+      try {
+        st = cx.createStatement();
+        rs = st.executeQuery(request);
 
-      ArrayList<Group> gl = new ArrayList<Group>();
+        gl = new ArrayList<Group>();
 
-      while (rs.next()) {
-        Group g = parseGroup(rs);
-        gl.add(g);
+        while (rs.next()) {
+          Group g = parseGroup(rs);
+          gl.add(g);
+        }
       }
-      st.close();
+      finally {
+        if (st != null) {
+          st.close();
+        }
+      }
       return gl;
 
     }
@@ -323,7 +341,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
       }
 
       String query = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_USERS_BY_GROUP, USER_FIELD_FILTER)
-          : jdbcStoreResource.SELECT_USERS_BY_GROUP;
+        : jdbcStoreResource.SELECT_USERS_BY_GROUP;
 
       PreparedStatement st = cx.prepareStatement(query);
       st.setString(1, name);
@@ -379,7 +397,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
       }
 
       String query = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_GROUPS_BY_USER, GROUP_FIELD_FILTER)
-          : jdbcStoreResource.SELECT_GROUPS_BY_USER;
+        : jdbcStoreResource.SELECT_GROUPS_BY_USER;
 
       PreparedStatement st = cx.prepareStatement(query);
       st.setString(1, identifier);
@@ -561,10 +579,10 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
         cx.rollback();
       }
       catch (SQLException e1) {
-        e1.printStackTrace();
+        logger.log(Level.INFO, null, e1);
         throw new SitoolsException("CREATE_USER ROLLBACK" + e1.getMessage(), e1);
       }
-      e.printStackTrace();
+      logger.log(Level.INFO, null, e);
       throw new SitoolsException("CREATE_USER " + e.getMessage(), e);
     }
     finally {

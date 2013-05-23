@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 import org.restlet.Client;
 import org.restlet.Component;
@@ -106,7 +107,7 @@ public final class MailAdministration extends SitoolsApplication {
     }
     catch (Exception e) {
       getLogger().warning("MailAdministration initialization failed. Check your mail settings in sitools.properties and restart server.");
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
     
     // register client protocol according to the configuration

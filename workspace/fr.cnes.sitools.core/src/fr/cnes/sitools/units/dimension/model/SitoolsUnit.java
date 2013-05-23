@@ -66,8 +66,7 @@ public final class SitoolsUnit {
    */
   public Unit<?> getInstanceFrom(String sequence) {
     try {
-      Unit<?> u = Unit.valueOf(sequence);
-      return u;
+      return Unit.valueOf(sequence);
     }
     catch (Exception e) {
       Logger.getLogger("SitoolsUnit").info(sequence + " : not a valid unit");

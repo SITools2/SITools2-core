@@ -37,7 +37,6 @@ import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.project.graph.model.Graph;
 
 /**
@@ -47,6 +46,10 @@ import fr.cnes.sitools.project.graph.model.Graph;
  * 
  */
 public final class GraphResource extends AbstractGraphResource {
+  /**
+   * The name of the graph element in the Response returned
+   */
+  private static final String GRAPH_RESPONSE_NAME = "graph";
 
   @Override
   public void sitoolsDescribe() {
@@ -66,7 +69,7 @@ public final class GraphResource extends AbstractGraphResource {
   public Representation retrieveGraph(Variant variant) {
     if (getProjectId() != null) {
       Graph graph = getStore().retrieve(getGraphId());
-      Response response = new Response(true, graph, Graph.class, "graph");
+      Response response = new Response(true, graph, Graph.class, GRAPH_RESPONSE_NAME);
       return getRepresentation(response, variant);
     }
     else {
@@ -84,8 +87,8 @@ public final class GraphResource extends AbstractGraphResource {
   public void describeGet(MethodInfo info) {
     info.setDocumentation("Retrieve the graph definition.");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo paramProjectId = new ParameterInfo("projectId", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the project");
+    ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardObjectResponseInfo(info);
   }
@@ -116,7 +119,7 @@ public final class GraphResource extends AbstractGraphResource {
         registerObserver(graphOutput);
       }
 
-      Response response = new Response(true, graphOutput, Graph.class, "graph");
+      Response response = new Response(true, graphOutput, Graph.class, GRAPH_RESPONSE_NAME);
       return getRepresentation(response, variant);
 
     }
@@ -134,8 +137,8 @@ public final class GraphResource extends AbstractGraphResource {
   public void describePut(MethodInfo info) {
     info.setDocumentation("Modifies the graph definition.");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo paramProjectId = new ParameterInfo("projectId", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the project");
+    ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -166,7 +169,7 @@ public final class GraphResource extends AbstractGraphResource {
       registerObserver(graph);
 
       // Response
-      Response response = new Response(true, graph, Graph.class, "graph");
+      Response response = new Response(true, graph, Graph.class, GRAPH_RESPONSE_NAME);
       return getRepresentation(response, variant);
 
     }
@@ -184,8 +187,8 @@ public final class GraphResource extends AbstractGraphResource {
   public void describePost(MethodInfo info) {
     info.setDocumentation("Method to add a graph definition.");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo paramProjectId = new ParameterInfo("projectId", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the project");
+    ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -202,7 +205,6 @@ public final class GraphResource extends AbstractGraphResource {
   public void configure(XStream xstream, Response response) {
     xstream.autodetectAnnotations(false);
     xstream.alias("response", Response.class);
-    xstream.alias("graph", Dictionary.class);
   }
 
   /**
@@ -248,8 +250,8 @@ public final class GraphResource extends AbstractGraphResource {
   public void describeDelete(MethodInfo info) {
     info.setDocumentation("Method to delete the graph definition.");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo paramProjectId = new ParameterInfo("projectId", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the project");
+    ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardSimpleResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);

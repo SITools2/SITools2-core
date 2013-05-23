@@ -92,8 +92,7 @@ public final class Group implements Serializable {
    * @return Restlet Group
    */
   public org.restlet.security.Group wrap() {
-    org.restlet.security.Group g = new org.restlet.security.Group(this.name, this.description);
-    return g;
+    return new org.restlet.security.Group(this.name, this.description);
   }
 
   /**

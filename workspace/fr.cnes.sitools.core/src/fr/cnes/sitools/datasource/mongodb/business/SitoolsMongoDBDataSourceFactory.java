@@ -22,6 +22,10 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.restlet.Context;
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
@@ -52,6 +56,9 @@ public final class SitoolsMongoDBDataSourceFactory {
    * DataSources list
    */
   private static Map<String, SitoolsMongoDBDataSource> dataSources = new ConcurrentHashMap<String, SitoolsMongoDBDataSource>();
+
+  /** Resource logger Context / Application ? ok */
+  private Logger logger = Context.getCurrentLogger();
 
   /**
    * Private constructor for utility class
@@ -89,13 +96,13 @@ public final class SitoolsMongoDBDataSourceFactory {
         MongoOptions options = new MongoOptions();
         ServerAddress address = new ServerAddress(dataSource.getUrl(), dataSource.getPortNumber());
         options.setConnectionsPerHost(dataSource.getMaxActive());
-        mongo = new Mongo(address, options);        
+        mongo = new Mongo(address, options);
       }
       catch (UnknownHostException e) {
-        e.printStackTrace();
+        logger.log(Level.INFO, null, e);
       }
       catch (MongoException e) {
-        e.printStackTrace();
+        logger.log(Level.INFO, null, e);
       }
 
       foundDatasource = new SitoolsMongoDBDataSource(dataSource, mongo);

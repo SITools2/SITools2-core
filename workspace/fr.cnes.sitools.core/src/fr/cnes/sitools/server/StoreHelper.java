@@ -295,7 +295,7 @@ public final class StoreHelper {
    * @param stores
    *          the Map of stores
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void migrateStores(Map<String, Object> stores) {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -314,16 +314,16 @@ public final class StoreHelper {
       }
       else {
         // specific Stores
-        if (store instanceof NotificationStoreXML) {
-          // TODO voir ce que fait ce store
+        // if (store instanceof NotificationStoreXML) {
+        // TODO voir ce que fait ce store
 
-          // NotificationStoreXML storeImpl = (NotificationStoreXML) store;
-          // List<Notification> notifications = storeImpl.getList();
-          // for (Persistent persistent : list) {
-          // storeImpl.update(persistent);
-          // }
-        }
-        else if (store instanceof AuthorizationStore) {
+        // NotificationStoreXML storeImpl = (NotificationStoreXML) store;
+        // List<Notification> notifications = storeImpl.getList();
+        // for (Persistent persistent : list) {
+        // storeImpl.update(persistent);
+        // }
+        // }
+        if (store instanceof AuthorizationStore) {
           AuthorizationStore storeImpl = (AuthorizationStore) store;
           List<ResourceAuthorization> authorization = storeImpl.getList();
           for (ResourceAuthorization persistent : authorization) {
@@ -350,7 +350,7 @@ public final class StoreHelper {
    * @throws SitoolsException
    *           if there are errors
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -385,16 +385,16 @@ public final class StoreHelper {
       }
       else {
         // specific Stores
-        if (store instanceof NotificationStoreXML) {
-          // TODO voir ce que fait ce store
+        // if (store instanceof NotificationStoreXML) {
+        // TODO voir ce que fait ce store
 
-          // NotificationStoreXML storeImpl = (NotificationStoreXML) store;
-          // List<Notification> notifications = storeImpl.getList();
-          // for (Persistent persistent : list) {
-          // storeImpl.update(persistent);
-          // }
-        }
-        else if (store instanceof AuthorizationStore) {
+        // NotificationStoreXML storeImpl = (NotificationStoreXML) store;
+        // List<Notification> notifications = storeImpl.getList();
+        // for (Persistent persistent : list) {
+        // storeImpl.update(persistent);
+        // }
+        // }
+        if (store instanceof AuthorizationStore) {
           AuthorizationStore storeImpl = (AuthorizationStore) store;
           try {
             List<ResourceAuthorization> authorization = storeImpl.getList();

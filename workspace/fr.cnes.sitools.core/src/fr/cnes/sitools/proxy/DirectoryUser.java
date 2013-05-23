@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -142,7 +143,7 @@ public final class DirectoryUser extends DirectoryProxy {
         response.setEntity(new JsonRepresentation(new fr.cnes.sitools.common.model.Response(true, "Saved")));
       }
       catch (IOException e) {
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
     }
     else {

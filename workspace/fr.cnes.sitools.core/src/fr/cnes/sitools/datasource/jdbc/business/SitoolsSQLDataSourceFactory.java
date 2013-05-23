@@ -21,12 +21,14 @@ package fr.cnes.sitools.datasource.jdbc.business;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import org.restlet.Context;
 
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 
@@ -200,8 +202,8 @@ public final class SitoolsSQLDataSourceFactory {
 
     }
     catch (NamingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      Context.getCurrentLogger().log(Level.INFO, null, e);
+
     }
     return ds;
   }

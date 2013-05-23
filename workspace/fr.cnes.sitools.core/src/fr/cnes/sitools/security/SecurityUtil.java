@@ -124,8 +124,7 @@ public final class SecurityUtil {
     if (authorizer == null) {
       return true;
     }
-    boolean authorization = authorizer.authorize(request, null);
-    return authorization;
+    return authorizer.authorize(request, null);
   }
 
   /**

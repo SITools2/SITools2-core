@@ -147,8 +147,7 @@ public abstract class XmlPersistenceDaoImpl<E extends Persistent> implements Per
     // Returns a view of the portion of this list between the specified
     // fromIndex, inclusive,
     // and toIndex, exclusive.
-    List<E> pageList = new ArrayList<E>(result).subList(start, start + limit);
-    return pageList;
+    return new ArrayList<E>(result).subList(start, start + limit);
   }
 
   @Override

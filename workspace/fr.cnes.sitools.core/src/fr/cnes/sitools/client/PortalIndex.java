@@ -114,8 +114,7 @@ public final class PortalIndex extends SitoolsResource {
     Representation portalFtl = new ClientResource(ref).get();
 
     // Wraps the bean with a FreeMarker representation
-    TemplateRepresentation result = new TemplateRepresentation(portalFtl, pid, MediaType.TEXT_HTML);
-    return result;
+    return new TemplateRepresentation(portalFtl, pid, MediaType.TEXT_HTML);
   }
 
   /**

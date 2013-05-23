@@ -1,4 +1,5 @@
 /*******************************************************************************
+
  * Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
@@ -152,8 +153,7 @@ public final class GroupResource extends UsersAndGroupsResource implements fr.cn
 
       // Response
       Response response = new Response(true, output, Group.class, "group");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {

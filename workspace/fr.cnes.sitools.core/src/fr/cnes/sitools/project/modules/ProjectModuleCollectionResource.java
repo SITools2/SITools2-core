@@ -71,8 +71,7 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
 
       // Response
       Response response = new Response(true, projectModuleOutput, ProjectModuleModel.class, "projectModule");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
@@ -107,8 +106,7 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
       if (getProjectModuleId() != null) {
         ProjectModuleModel projectModule = getStore().retrieve(getProjectModuleId());
         Response response = new Response(true, projectModule, ProjectModuleModel.class, "projectModule");
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
       else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
@@ -117,8 +115,7 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
         projectModules = getStore().getPage(filter, projectModules);
         Response response = new Response(true, projectModules, ProjectModuleModel.class, "projectModules");
         response.setTotal(total);
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {

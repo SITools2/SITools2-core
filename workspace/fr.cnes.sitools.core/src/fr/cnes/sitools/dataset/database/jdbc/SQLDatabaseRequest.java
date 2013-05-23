@@ -282,7 +282,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
           resultSet.close();
         }
         catch (Exception e) {
-          e.printStackTrace();
+          logger.log(Level.INFO, null, e);
         }
       }
     }
@@ -359,7 +359,7 @@ public class SQLDatabaseRequest implements DatabaseRequest {
       return (uri.equals("")) ? null : uri.substring(0, uri.lastIndexOf(";"));
     }
     catch (SQLException e) {
-      e.printStackTrace();
+      logger.log(Level.INFO, null, e);
       throw new SitoolsException("ERROR_BUILDING_URI", e);
     }
   }

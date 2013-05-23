@@ -71,8 +71,7 @@ public class DatasetViewCollectionResource extends AbstractDatasetViewResource {
 
       // Response
       Response response = new Response(true, datasetViewOutput, DatasetView.class, "datasetView");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
@@ -107,8 +106,7 @@ public class DatasetViewCollectionResource extends AbstractDatasetViewResource {
       if (getDatasetViewId() != null) {
         DatasetView datasetView = getStore().retrieve(getDatasetViewId());
         Response response = new Response(true, datasetView, DatasetView.class, "datasetView");
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
       else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
@@ -117,8 +115,7 @@ public class DatasetViewCollectionResource extends AbstractDatasetViewResource {
         datasetViews = getStore().getPage(filter, datasetViews);
         Response response = new Response(true, datasetViews, DatasetView.class, "datasetViews");
         response.setTotal(total);
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {

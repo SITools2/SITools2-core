@@ -97,10 +97,7 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
       }
 
       // Response
-      Representation rep = getRepresentation(response, variant, false);
-
-      return rep;
-
+      return getRepresentation(response, variant, false);
     }
     catch (ResourceException e) {
       throw e;
@@ -135,8 +132,7 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
       if (getFeedsId() != null) {
         FeedModel feed = getStore().retrieve(getFeedsId());
         Response response = new Response(true, feed, FeedModel.class, "FeedModel");
-        Representation rep = getRepresentation(response, variant, false);
-        return rep;
+        return getRepresentation(response, variant, false);
       }
       else if (getDataId() == null || getDataId().equals("idObject")) {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
@@ -171,8 +167,7 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
         feedsOutput = feeds.toArray(feedsOutput);
         Response response = new Response(true, feedsOutput);
         response.setTotal(total);
-        Representation rep = getRepresentation(response, variant, true);
-        return rep;
+        return getRepresentation(response, variant, true);
       }
     }
     catch (ResourceException e) {
@@ -252,8 +247,7 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
       else {
         response = new Response(false, "BAD_PARAMETERS");
       }
-      Representation rep = getRepresentation(response, variant, true);
-      return rep;
+      return getRepresentation(response, variant, true);
     }
     catch (ResourceException e) {
       getLogger().log(Level.INFO, null, e);

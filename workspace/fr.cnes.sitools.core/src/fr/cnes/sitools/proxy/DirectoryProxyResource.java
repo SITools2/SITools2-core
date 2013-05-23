@@ -21,6 +21,7 @@ package fr.cnes.sitools.proxy;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -91,8 +92,7 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
             FileUtils.cleanDirectory(new File(decodedPath), true);
           }
           catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            getLogger().log(Level.INFO, null, e);
           }
         }
         // END PATCH SITOOLS JPB

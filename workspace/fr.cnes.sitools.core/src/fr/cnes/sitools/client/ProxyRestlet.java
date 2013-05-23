@@ -72,8 +72,7 @@ public class ProxyRestlet extends Restlet implements WadlDescribable {
 
   @Override
   public ResourceInfo getResourceInfo(ApplicationInfo applicationInfo) {
-    ResourceInfo resourceInfo = new ResourceInfo();
-    return resourceInfo;
+    return new ResourceInfo();
   }
 
   /**

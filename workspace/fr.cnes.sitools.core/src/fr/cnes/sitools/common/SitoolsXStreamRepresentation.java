@@ -199,7 +199,7 @@ public final class SitoolsXStreamRepresentation<T> extends WriterRepresentation 
         result = (T) getXstream().fromXML(this.representation.getStream());
       }
       catch (IOException e) {
-        e.printStackTrace();
+        Context.getCurrentLogger().log(Level.INFO, null, e);
       }
     }
 

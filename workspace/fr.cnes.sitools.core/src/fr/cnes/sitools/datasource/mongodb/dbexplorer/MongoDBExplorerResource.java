@@ -213,33 +213,14 @@ public class MongoDBExplorerResource extends SitoolsResource {
     }
     // COLLECTIONS TARGET => GET THE LIST OF COLLECTIONS
     if (this.collectionsTarget) {
-      try {
-        Set<String> collections = database.getCollectionNames();
-        Database mongoDatabase = new Database();
-        mongoDatabase.setUrl(getBaseRef());
-        for (String colName : collections) {
-          Collection collection = new Collection();
-          collection.setName(colName);
-          collection.setUrl(getBaseRef() + "/" + colName);
-          mongoDatabase.getCollections().add(collection);
-        }
-        Response response = new Response(true, mongoDatabase, Database.class, "mongodbdatabase");
-        return getRepresentation(response, variant);
-      }
-      catch (MongoException e) {
-        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-      }
+      Database mongoDatabase = getCollections(database);
+      Response response = new Response(true, mongoDatabase, Database.class, "mongodbdatabase");
+      return getRepresentation(response, variant);
 
     }
     // COLLECTION TARGET => GET THE DESCRIPTION OF THE COLLECTION
     if (this.collectionTarget) {
-      List<String> statusDetails = new ArrayList<String>();
-      DBCollection collectionMongo = database.getCollection(this.collectionName);
-      Collection collection = new Collection();
-      collection.setName(collectionName);
-      collection.setUrl(getBaseRef());
-      traceObjects(collectionMongo.getStats(), statusDetails);
-      collection.setStatusDetails(statusDetails);
+      Collection collection = getACollection(database, this.collectionName);
       Response response = new Response(true, collection, Collection.class, "collection");
       return getRepresentation(response, variant);
     }
@@ -287,6 +268,53 @@ public class MongoDBExplorerResource extends SitoolsResource {
     }
 
     return represent;
+  }
+
+  /**
+   * Get a {@link Collection} from the MongoDB database and its name
+   * 
+   * @param database
+   *          the database
+   * @param colName
+   *          the name of the collection
+   * @return a {@link Collection} from the MongoDB database and its name
+   */
+  private Collection getACollection(DB database, String colName) {
+    List<String> statusDetails = new ArrayList<String>();
+    DBCollection collectionMongo = database.getCollection(colName);
+    Collection collection = new Collection();
+    collection.setName(colName);
+    collection.setUrl(getBaseRef());
+    traceObjects(collectionMongo.getStats(), statusDetails);
+    collection.setStatusDetails(statusDetails);
+    return collection;
+  }
+
+  /**
+   * Get a {@link Database} with the list of collections
+   * 
+   * @param database
+   *          the MongoDB database
+   * @return a {@link Database} with the list of collections
+   * @throws ResourceException
+   *           if there is an error
+   */
+  private Database getCollections(DB database) throws ResourceException {
+    try {
+      Set<String> collections = database.getCollectionNames();
+      Database mongoDatabase = new Database();
+      mongoDatabase.setUrl(getBaseRef());
+      for (String colName : collections) {
+        Collection collection = new Collection();
+        collection.setName(colName);
+        collection.setUrl(getBaseRef() + "/" + colName);
+        mongoDatabase.getCollections().add(collection);
+      }
+      return mongoDatabase;
+    }
+    catch (MongoException e) {
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
   }
 
   /**

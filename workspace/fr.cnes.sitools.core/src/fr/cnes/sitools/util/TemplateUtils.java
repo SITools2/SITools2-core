@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.restlet.data.LocalReference;
@@ -78,11 +79,11 @@ public final class TemplateUtils {
       return result;
     }
     catch (ResourceException e) {
-      e.printStackTrace();
+      logger.log(Level.INFO, null, e);
       logger.warning("Error getting template " + templatePath + " for object " + object.toString());
     }
     catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.INFO, null, e);
       logger.warning("Error getting template " + templatePath + " for object " + object.toString());
     }
 
@@ -127,11 +128,11 @@ public final class TemplateUtils {
       return out.toString();
     }
     catch (TemplateException e) {
-      e.printStackTrace();
-      logger.warning("Error getting template " + templatePath);
+      logger.log(Level.INFO, null, e);
+      logger.warning("Error getting template " + templatePath);      
     }
     catch (IOException e) {
-      e.printStackTrace();
+      logger.log(Level.INFO, null, e);
       logger.warning("Error getting template " + templatePath);
     }
 
@@ -173,8 +174,7 @@ public final class TemplateUtils {
         out.close();
       }
       catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        logger.log(Level.INFO, null, e);
       }
     }
   }

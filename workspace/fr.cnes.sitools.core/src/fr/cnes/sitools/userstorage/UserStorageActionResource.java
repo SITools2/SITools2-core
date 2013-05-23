@@ -256,7 +256,7 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
   public void describePut(MethodInfo info) {
     info.setDocumentation("Method to perform several action on the userstorage of the specified user.");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo paramUserId = new ParameterInfo("identifier", true, "xs:string", ParameterStyle.TEMPLATE,
+    ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
         "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     ParameterInfo paramAction = new ParameterInfo("action", false, "xs:string", ParameterStyle.TEMPLATE,

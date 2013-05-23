@@ -219,25 +219,8 @@ public final class OneOrBetweenFilter extends AbstractFormFilter {
       catch (NumberFormatException e) {
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Not numeric value entered", e);
       }
-      if (parameters.length == DIMENSION + 2) {
-        // get dimension, if exists
-        String dimension = parameters[DIMENSION];
-        // get unit, if exists
-        String unit = parameters[UNIT];
-        try {
-          if (col.getUnit() == null) {
-            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
-                "The column asked has no unit, it cannot be converted");
-          }
-          value1 = convert(unit, col.getUnit().getUnitName(), paramValues[1], dimension);
-          value2 = convert(unit, col.getUnit().getUnitName(), paramValues[2], dimension);
-        }
-        catch (SitoolsException e) {
-          throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage(), e);
-        }
-      }
-      values = new NumericBetweenSelection(value1, value2);
-      return true;
+
+      return check2Values(parameters, col, paramValues, value1, value2);
     }
     else {
       Number value;
@@ -247,21 +230,82 @@ public final class OneOrBetweenFilter extends AbstractFormFilter {
       catch (NumberFormatException e) {
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Not numeric value entered", e);
       }
-      if (parameters.length == DIMENSION + 2) {
-        // get dimension, if exists
-        String dimension = parameters[DIMENSION];
-        // get unit, if exists
-        String unit = parameters[UNIT];
-        try {
-          value = convert(unit, col.getUnit().getUnitName(), paramValues[0], dimension);
-        }
-        catch (SitoolsException e) {
-          throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage(), e);
-        }
-      }
-      values = value;
-      return true;
+      
+      return check1Value(parameters, col, paramValues, value);
     }
+  }
+
+  /**
+   * Check 1 value
+   * 
+   * @param parameters
+   *          the list of parameters
+   * @param col
+   *          the column
+   * @param paramValues
+   *          the parameters values
+   * @param value
+   *          the first value   
+   * @return true if the values are correct, otherwise an exception is thrown
+   * @throws ResourceException
+   *           if there is an error
+   */
+  private boolean check1Value(String[] parameters, Column col, String[] paramValues, Number value)
+    throws ResourceException {
+    if (parameters.length == DIMENSION + 2) {
+      // get dimension, if exists
+      String dimension = parameters[DIMENSION];
+      // get unit, if exists
+      String unit = parameters[UNIT];
+      try {
+        value = convert(unit, col.getUnit().getUnitName(), paramValues[0], dimension);
+      }
+      catch (SitoolsException e) {
+        throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage(), e);
+      }
+    }
+    values = value;
+    return true;
+  }
+
+  /**
+   * Check 2 values
+   * 
+   * @param parameters
+   *          the list of parameters
+   * @param col
+   *          the column
+   * @param paramValues
+   *          the parameters values
+   * @param value1
+   *          the first value
+   * @param value2
+   *          the second value
+   * @return true if the values are correct, otherwise an exception is thrown
+   * @throws ResourceException
+   *           if there is an error
+   */
+  private boolean check2Values(String[] parameters, Column col, String[] paramValues, Number value1, Number value2)
+    throws ResourceException {
+    if (parameters.length == DIMENSION + 2) {
+      // get dimension, if exists
+      String dimension = parameters[DIMENSION];
+      // get unit, if exists
+      String unit = parameters[UNIT];
+      try {
+        if (col.getUnit() == null) {
+          throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+              "The column asked has no unit, it cannot be converted");
+        }
+        value1 = convert(unit, col.getUnit().getUnitName(), paramValues[1], dimension);
+        value2 = convert(unit, col.getUnit().getUnitName(), paramValues[2], dimension);
+      }
+      catch (SitoolsException e) {
+        throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e.getMessage(), e);
+      }
+    }
+    values = new NumericBetweenSelection(value1, value2);
+    return true;
   }
 
   /**

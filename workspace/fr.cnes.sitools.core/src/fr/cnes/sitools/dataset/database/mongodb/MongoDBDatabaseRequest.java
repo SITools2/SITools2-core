@@ -530,8 +530,7 @@ public class MongoDBDatabaseRequest implements DatabaseRequest {
     RequestMongoDB request = new RequestMongoDB();
     // List<Column> columns = params.getDataset().getColumnModel();
     List<Column> columns = params.getSqlVisibleColumns();
-    String json = request.getAttributes(columns);
-    return json;
+    return request.getAttributes(columns);
   }
 
   /**

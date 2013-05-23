@@ -82,8 +82,7 @@ public class PropertyListResource extends AbstractCollectionsResource {
       response = new Response(false, "Collection not found");
     }
 
-    Representation representation = getRepresentation(response, variant);
-    return representation;
+    return getRepresentation(response, variant);
   }
 
   @Override

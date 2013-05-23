@@ -72,7 +72,6 @@ public class ClientResourceProxy implements ClientProxy {
       request.setProxyChallengeResponse(ProxySettings.getProxyAuthentication());
     }
     Response response = new Response(request);
-    ClientResource client = new ClientResource(request, response);
-    return client;
+    return new ClientResource(request, response);
   }
 }

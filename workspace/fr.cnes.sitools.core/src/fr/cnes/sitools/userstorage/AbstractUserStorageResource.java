@@ -38,7 +38,12 @@ import fr.cnes.sitools.userstorage.model.UserStorage;
  *
  */
 public abstract class AbstractUserStorageResource extends SitoolsResource {
-
+  
+  /**
+   * The name of the project ID parameter name
+   */
+  public static final String IDENTIFIER_PARAM_NAME = "identifier";
+  
   /** Application */
   private UserStorageManagement application = null;
   
@@ -62,7 +67,7 @@ public abstract class AbstractUserStorageResource extends SitoolsResource {
     application = (UserStorageManagement) getApplication();
     store = application.getStore();
 
-    identifier = (String) this.getRequest().getAttributes().get("identifier");
+    identifier = (String) this.getRequest().getAttributes().get(IDENTIFIER_PARAM_NAME);
     action = (String) this.getRequest().getAttributes().get("action");
   }
 

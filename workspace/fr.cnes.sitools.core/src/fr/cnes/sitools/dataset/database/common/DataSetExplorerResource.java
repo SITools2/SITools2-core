@@ -170,8 +170,7 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
    */
   @Get("xml")
   public final Representation getXML() {
-    Representation result = processConstraint(MediaType.TEXT_XML);
-    return result;
+    return processConstraint(MediaType.TEXT_XML);
   }
 
   /**
@@ -242,8 +241,7 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
    */
   @Get("json")
   public final Representation getJSON() {
-    Representation result = processConstraint(MediaType.APPLICATION_JSON);
-    return result;
+    return processConstraint(MediaType.APPLICATION_JSON);
   }
 
   /**
@@ -255,8 +253,7 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
   public final Representation getHTML() {
     // On retourne du XML si on demande du HTML pour le fonctionnement avec les navigateurs
     // L'export HTML n'étant pas implémenté on retourne du XML
-    Representation result = processConstraint(MediaType.TEXT_XML);
-    return result;
+    return processConstraint(MediaType.TEXT_XML);
   }
 
   /**
@@ -266,8 +263,7 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
    */
   @Get("csv")
   public Representation getCSV() {
-    Representation result = processConstraint(MediaType.TEXT_CSV);
-    return result;
+    return processConstraint(MediaType.TEXT_CSV);
   }
 
   /**

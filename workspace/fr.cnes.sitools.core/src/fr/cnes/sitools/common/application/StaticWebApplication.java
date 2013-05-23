@@ -20,6 +20,7 @@ package fr.cnes.sitools.common.application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.Restlet;
@@ -67,7 +68,7 @@ public abstract class StaticWebApplication extends SitoolsApplication {
     }
     catch (IOException e) {
       Context.getCurrentLogger().severe("Chemin d'application incorrect");
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
     this.baseUrl = baseURL;
     setDescription(description);
@@ -102,7 +103,7 @@ public abstract class StaticWebApplication extends SitoolsApplication {
     }
     catch (IOException e) {
       Context.getCurrentLogger().severe("Chemin d'application incorrect");
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
     this.baseUrl = baseURL;
     

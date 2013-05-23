@@ -18,24 +18,17 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
-import org.restlet.data.Preference;
-import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
-import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.model.DataSet;
@@ -66,31 +59,14 @@ public final class RefreshDataSetResource extends AbstractDataSetResource {
    */
   @SuppressWarnings("unused")
   private Opensearch refreshOpensearch(String id) {
-    Request reqPUT = new Request(Method.PUT, RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_DATASETS_URL) + "/"
-        + id + "/opensearch/refresh");
-    ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
-    objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
-    reqPUT.getClientInfo().setAcceptedMediaTypes(objectMediaType);
-    org.restlet.Response response = getContext().getClientDispatcher().handle(reqPUT);
 
-    if (response == null || Status.isError(response.getStatus().getCode())) {
+    String url = getSitoolsSetting(Consts.APP_DATASETS_URL) + "/" + id + "/opensearch/refresh";
+    Response resp = RIAPUtils.handleParseResponse(url, Method.PUT, MediaType.APPLICATION_JAVA_OBJECT, getContext());
+    // check if there is an object in the response, if not return null
+    if (resp == null) {
       return null;
     }
-
-    @SuppressWarnings("unchecked")
-    ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
-    try {
-      Response resp = or.getObject();
-      // check if there is an object in the response, if not return null
-      if (resp == null) {
-        return null;
-      }
-      Opensearch opensearch = (Opensearch) resp.getItem();
-      return opensearch;
-    }
-    catch (IOException e) { // marshalling error
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
-    }
+    return (Opensearch) resp.getItem();
   }
 
   /**
@@ -144,7 +120,7 @@ public final class RefreshDataSetResource extends AbstractDataSetResource {
     info.setIdentifier("update_dataset");
     addStandardGetRequestInfo(info);
     ParameterInfo pic = new ParameterInfo("datasetId", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the dataset");
+      "Identifier of the dataset");
     info.getRequest().getParameters().add(pic);
     addStandardSimpleResponseInfo(info);
   }

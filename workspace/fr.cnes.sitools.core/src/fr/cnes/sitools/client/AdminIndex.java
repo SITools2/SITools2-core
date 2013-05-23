@@ -82,8 +82,7 @@ public class AdminIndex extends SitoolsResource {
     Representation adminFtl = new ClientResource(ref).get();
 
     // Wraps the bean with a FreeMarker representation
-    TemplateRepresentation result = new TemplateRepresentation(adminFtl, aid, MediaType.TEXT_HTML);
-    return result;
+    return new TemplateRepresentation(adminFtl, aid, MediaType.TEXT_HTML);
   }
 
   /**

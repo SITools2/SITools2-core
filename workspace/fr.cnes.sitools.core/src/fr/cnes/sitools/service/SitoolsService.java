@@ -18,7 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.service;
 
-import java.util.Hashtable;
+import java.util.Map;
 
 import org.restlet.Component;
 
@@ -61,5 +61,5 @@ public interface SitoolsService {
    * Get properties of the service
    * @return the table of properties
    */
-  Hashtable<String, Object> getProperties();
+  Map<String, Object> getProperties();
 }

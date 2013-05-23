@@ -422,8 +422,7 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
     }
     // FIN SITOOLS
 
-    List<Variant> result = super.getVariants(method);
-    return result;
+    return super.getVariants(method);
   }
 
   @Override

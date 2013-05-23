@@ -183,9 +183,7 @@ public final class UsersResource extends UsersAndGroupsResource {
 
       // Response
       Response response = new Response(true, output, Group.class, "group");
-      Representation rep = getRepresentation(response, variant.getMediaType());
-      return rep;
-
+      return getRepresentation(response, variant.getMediaType());
     }
     catch (SitoolsException e) {
       getLogger().log(Level.SEVERE, null, e);
@@ -250,8 +248,7 @@ public final class UsersResource extends UsersAndGroupsResource {
       if (input.getProperties() != null && !checkPropertiesName(input.getProperties())) {
         MediaType media = representation.getMediaType();
         Response response = new Response(false, "Duplicated Property Name");
-        Representation rep = getRepresentation(response, media);
-        return rep;
+        return getRepresentation(response, media);
       }
 
       // Business service
@@ -294,15 +291,12 @@ public final class UsersResource extends UsersAndGroupsResource {
 
       // Response
       Response response = new Response(true, output, User.class, "user");
-      Representation rep = getRepresentation(response, media);
-      return rep;
-
+      return getRepresentation(response, media);
     }
     catch (SitoolsException e) {
       MediaType media = representation.getMediaType();
       Response response = new Response(false, e.getMessage());
-      Representation rep = getRepresentation(response, media);
-      return rep;
+      return getRepresentation(response, media);
     }
     catch (ResourceException e) {
       getLogger().log(Level.INFO, null, e);

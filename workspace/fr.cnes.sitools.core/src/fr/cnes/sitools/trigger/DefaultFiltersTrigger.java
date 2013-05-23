@@ -19,6 +19,7 @@
 package fr.cnes.sitools.trigger;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.representation.Representation;
@@ -73,8 +74,7 @@ public class DefaultFiltersTrigger extends TriggerResource {
           loop++;
         }
         catch (InterruptedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          getLogger().log(Level.INFO, null, e);
         }
       }
 

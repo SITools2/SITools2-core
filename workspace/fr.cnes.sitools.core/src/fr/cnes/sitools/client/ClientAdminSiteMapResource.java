@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 import org.restlet.resource.Get;
 
@@ -134,28 +135,24 @@ public class ClientAdminSiteMapResource extends SitoolsResource {
     try {
       fout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
     }
-    catch (UnsupportedEncodingException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
+    catch (UnsupportedEncodingException e) {
+      getLogger().log(Level.INFO, null, e);
     }
-    catch (FileNotFoundException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
+    catch (FileNotFoundException e) {
+      getLogger().log(Level.INFO, null, e);
     }
    
     try {
       fout.write(siteMap);
     }
     catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
     try {
       fout.close();
     }
     catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
   }
 

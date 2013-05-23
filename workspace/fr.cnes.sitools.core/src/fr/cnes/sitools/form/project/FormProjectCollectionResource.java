@@ -84,8 +84,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
 
       // Response
       Response response = new Response(true, formProjectOutput, FormProject.class, "formProject");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
@@ -306,8 +305,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
         response.setTotal(total);
 
       }
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
       getLogger().log(Level.INFO, null, e);

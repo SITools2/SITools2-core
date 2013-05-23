@@ -297,8 +297,7 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
    */
   @Override
   public Connection getConnection() throws SQLException {
-    Connection conn = ds.getConnection();
-    return conn;
+    return ds.getConnection();
   }
 
   @Override

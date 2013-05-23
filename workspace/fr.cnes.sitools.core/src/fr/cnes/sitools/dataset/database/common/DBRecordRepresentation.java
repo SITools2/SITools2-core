@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.ext.json.JsonRepresentation;
@@ -70,6 +71,9 @@ public final class DBRecordRepresentation extends OutputRepresentation {
 
   /** The request */
   private DatabaseRequest databaseRequest;
+
+  /** Resource logger Context / Application ? ok */
+  private Logger logger = Context.getCurrentLogger();
 
   /**
    * SQL table Representation
@@ -166,17 +170,15 @@ public final class DBRecordRepresentation extends OutputRepresentation {
         arg0.write(jr.getText().getBytes());
       }
       catch (JSONException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        logger.log(Level.INFO, null, e);
       }
       catch (SitoolsException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        logger.log(Level.INFO, null, e);
       }
 
     }
     else if (this.getMediaType().isCompatible(MediaType.APPLICATION_XML)
-        || this.getMediaType().isCompatible(MediaType.TEXT_XML)) {
+      || this.getMediaType().isCompatible(MediaType.TEXT_XML)) {
 
       boolean success = (record == null) ? false : true;
 
@@ -187,7 +189,7 @@ public final class DBRecordRepresentation extends OutputRepresentation {
 
       Response response = new Response(success, record, Record.class, "record");
       XstreamRepresentation<Response> innerRepresentation = new XstreamRepresentation<Response>(this.getMediaType(),
-          response);
+        response);
 
       XStream xstream = XStreamFactory.getInstance().getXStream(this.getMediaType(), res.getContext());
       innerRepresentation.setXstream(xstream);

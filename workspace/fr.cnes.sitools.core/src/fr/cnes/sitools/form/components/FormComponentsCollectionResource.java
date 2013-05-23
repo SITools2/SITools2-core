@@ -71,8 +71,7 @@ public class FormComponentsCollectionResource extends AbstractFormComponentsReso
 
       // Response
       Response response = new Response(true, formComponentOutput, FormComponent.class, "formComponent");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
@@ -107,8 +106,7 @@ public class FormComponentsCollectionResource extends AbstractFormComponentsReso
       if (getFormComponentId() != null) {
         FormComponent formComponent = getStore().retrieve(getFormComponentId());
         Response response = new Response(true, formComponent, FormComponent.class, "formComponent");
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
       else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
@@ -117,8 +115,7 @@ public class FormComponentsCollectionResource extends AbstractFormComponentsReso
         formComponents = getStore().getPage(filter, formComponents);
         Response response = new Response(true, formComponents, FormComponent.class, "formComponents");
         response.setTotal(total);
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {

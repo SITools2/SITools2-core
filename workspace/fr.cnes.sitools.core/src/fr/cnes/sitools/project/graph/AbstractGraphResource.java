@@ -48,6 +48,10 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  */
 public abstract class AbstractGraphResource extends SitoolsResource {
+  /**
+   * The name of the project ID parameter name
+   */
+  public static final String PROJECT_ID_PARAM_NAME = "projectId";
 
   /** parent application */
   private ProjectAdministration application = null;
@@ -79,7 +83,7 @@ public abstract class AbstractGraphResource extends SitoolsResource {
     application = (ProjectAdministration) getApplication();
     store = application.getGraphStore();
 
-    projectId = (String) this.getRequest().getAttributes().get("projectId");
+    projectId = (String) this.getRequest().getAttributes().get(PROJECT_ID_PARAM_NAME);
     // We have only one graph for a project. Graph and project have the same id
     // for simplification
     graphId = projectId;
@@ -163,8 +167,8 @@ public abstract class AbstractGraphResource extends SitoolsResource {
     }
     // passage en RIAP
     RestletObserver observer = new RestletObserver();
-    String uriToNotify = RIAPUtils.getRiapBase() + application.getSettings().getString(Consts.APP_PROJECTS_URL)
-        + "/" + input.getId() + "/graph/notify";
+    String uriToNotify = RIAPUtils.getRiapBase() + application.getSettings().getString(Consts.APP_PROJECTS_URL) + "/"
+      + input.getId() + "/graph/notify";
     observer.setUriToNotify(uriToNotify);
     observer.setMethodToNotify("PUT");
     observer.setUuid("Graph." + input.getId());

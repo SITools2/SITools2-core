@@ -71,8 +71,7 @@ public class CollectionsCollectionResource extends AbstractCollectionsResource {
 
       // Response
       Response response = new Response(true, collectionOutput, Collection.class, "collection");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
@@ -107,8 +106,7 @@ public class CollectionsCollectionResource extends AbstractCollectionsResource {
       if (getCollectionId() != null) {
         Collection collection = getStore().retrieve(getCollectionId());
         Response response = new Response(true, collection, Collection.class, "collection");
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
       else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
@@ -117,8 +115,7 @@ public class CollectionsCollectionResource extends AbstractCollectionsResource {
         collections = getStore().getPage(filter, collections);
         Response response = new Response(true, collections, Collection.class, "collections");
         response.setTotal(total);
-        Representation rep = getRepresentation(response, variant);
-        return rep;
+        return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {

@@ -169,18 +169,15 @@ public final class OpensearchNotificationResource extends AbstractSearchResource
         return or.getObject();
       }
       catch (IllegalArgumentException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
       catch (ClassNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
 
     }
     catch (IOException e) {
       getLogger().log(Level.WARNING, "Bad representation of project resource updating notification", e);
-      e.printStackTrace();
     }
     return null;
   }

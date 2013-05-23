@@ -67,7 +67,8 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
       if (this.getReference().toString().endsWith("test")) {
         if (representation != null) {
           JDBCDataSource dsInput = getObject(representation);
-          return testDataSourceConnection(dsInput, variant);
+          response = testDataSourceConnection(dsInput);
+          break;
         }
       }
 
@@ -80,54 +81,17 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
 
       // on fait le test avec la datasource
       if (this.getReference().toString().endsWith("test")) {
-        return testDataSourceConnection(ds, variant);
+        response = testDataSourceConnection(ds);
+        break;
       }
 
       if (this.getReference().toString().endsWith("start")) {
-        if ("ACTIVE".equals(ds.getStatus())) {
-          JDBCDataSource dsResult = getStore().update(ds);
-          response = new Response(true, dsResult, JDBCDataSource.class);
-          response.setMessage("datasource.update.blocked");
-          break;
-        }
-
-        try {
-          if (!testDataSourceConnection(ds)) {
-            response = new Response(false, ds, JDBCDataSource.class);
-            response.setMessage("datasource.connection.error");
-            break;
-          }
-
-          getJDBCDataSourceAdministration().attachDataSource(ds);
-          ds.setStatus("ACTIVE");
-          JDBCDataSource dsResult = getStore().update(ds);
-          response = new Response(true, dsResult, JDBCDataSource.class); // TODO API ajouter ,"datasource"
-          response.setMessage("datasource.update.success");
-        }
-        catch (Exception e) {
-          response = new Response(false, "datasource.update.error");
-        }
+        response = this.startDataSource(ds);
         break;
       }
 
       if (this.getReference().toString().endsWith("stop")) {
-        if (!"ACTIVE".equals(ds.getStatus())) {
-          JDBCDataSource dsResult = getStore().update(ds);
-          response = new Response(true, dsResult, JDBCDataSource.class);
-          response.setMessage("datasource.stop.blocked");
-          break;
-        }
-
-        try {
-          getJDBCDataSourceAdministration().detachDataSource(ds);
-          ds.setStatus("INACTIVE");
-          JDBCDataSource dsResult = getStore().update(ds);
-          response = new Response(true, dsResult, JDBCDataSource.class);
-          response.setMessage("datasource.stop.success");
-        }
-        catch (Exception e) {
-          response = new Response(false, "datasource.stop.error");
-        }
+        response = this.stopDataSource(ds);
         break;
       }
 
@@ -135,6 +99,74 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
 
     // Response
     return getRepresentation(response, variant);
+  }
+
+  /**
+   * Start the given JDBCDataSource
+   * 
+   * @param ds
+   *          the JDBCDataSource
+   * @return the {@link Response}
+   */
+  private Response startDataSource(JDBCDataSource ds) {
+    Response response;
+    do {
+      if ("ACTIVE".equals(ds.getStatus())) {
+        JDBCDataSource dsResult = getStore().update(ds);
+        response = new Response(true, dsResult, JDBCDataSource.class);
+        response.setMessage("datasource.update.blocked");
+        break;
+      }
+
+      try {
+        if (!checkDataSourceConnection(ds)) {
+          response = new Response(false, ds, JDBCDataSource.class);
+          response.setMessage("datasource.connection.error");
+          break;
+        }
+
+        getJDBCDataSourceAdministration().attachDataSource(ds);
+        ds.setStatus("ACTIVE");
+        JDBCDataSource dsResult = getStore().update(ds);
+        response = new Response(true, dsResult, JDBCDataSource.class); // TODO API ajouter ,"datasource"
+        response.setMessage("datasource.update.success");
+      }
+      catch (Exception e) {
+        response = new Response(false, "datasource.update.error");
+      }
+    } while (false);
+    return response;
+  }
+
+  /**
+   * Stop the given JDBCDataSource
+   * 
+   * @param ds
+   *          the JDBCDataSource
+   * @return the {@link Response}
+   */
+  private Response stopDataSource(JDBCDataSource ds) {
+    Response response;
+    do {
+      if (!"ACTIVE".equals(ds.getStatus())) {
+        JDBCDataSource dsResult = getStore().update(ds);
+        response = new Response(true, dsResult, JDBCDataSource.class);
+        response.setMessage("datasource.stop.blocked");
+        break;
+      }
+
+      try {
+        getJDBCDataSourceAdministration().detachDataSource(ds);
+        ds.setStatus("INACTIVE");
+        JDBCDataSource dsResult = getStore().update(ds);
+        response = new Response(true, dsResult, JDBCDataSource.class);
+        response.setMessage("datasource.stop.success");
+      }
+      catch (Exception e) {
+        response = new Response(false, "datasource.stop.error");
+      }
+    } while (false);
+    return response;
   }
 
   /**
@@ -174,11 +206,9 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
    * 
    * @param ds
    *          the DataSource to test
-   * @param variant
-   *          client preferred media type
    * @return Representation results of the connection test.
    */
-  public Representation testDataSourceConnection(JDBCDataSource ds, Variant variant) {
+  public Response testDataSourceConnection(JDBCDataSource ds) {
     Boolean result = Boolean.TRUE;
     ArrayList<String> trace = new ArrayList<String>();
 
@@ -196,7 +226,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
         }
         catch (Exception e) {
           result = false;
-          getJDBCDataSourceAdministration().getLogger().info(e.getMessage());
+          getApplication().getLogger().info(e.getMessage());
           trace.add("Load driver class failed. Cause: " + e.getMessage());
           break;
         }
@@ -207,7 +237,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
         }
         catch (Exception e) {
           result = false;
-          getJDBCDataSourceAdministration().getLogger().info(e.getMessage());
+          getApplication().getLogger().info(e.getMessage());
           trace.add("Get connection for user failed. Cause: " + e.getMessage());
           break;
         }
@@ -220,7 +250,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           }
           catch (Exception e) {
             result = false;
-            getJDBCDataSourceAdministration().getLogger().info(e.getMessage());
+            getApplication().getLogger().info(e.getMessage());
             trace.add("Execute statement on connection user failed. Cause: " + e.getMessage());
             break;
           }
@@ -261,7 +291,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           }
           catch (Exception e) {
             result = false;
-            getJDBCDataSourceAdministration().getLogger().info(e.getMessage());
+            getApplication().getLogger().info(e.getMessage());
             trace.add("Get connection for admin failed. Cause: " + e.getMessage());
             break;
           }
@@ -274,7 +304,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
             }
             catch (Exception e) {
               result = false;
-              getJDBCDataSourceAdministration().getLogger().info(e.getMessage());
+              getApplication().getLogger().info(e.getMessage());
               trace.add("Execute statement on connection admin failed. Cause: " + e.getMessage());
               break;
             }
@@ -302,9 +332,8 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
       }
     }
 
-    Response response = new Response(result, trace, String.class, "logs");
+    return new Response(result, trace, String.class, "logs");
 
-    return getRepresentation(response, variant);
   }
 
   /**
@@ -314,118 +343,8 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
    *          the datasource to test
    * @return Boolean results of the connection test.
    */
-  public Boolean testDataSourceConnection(JDBCDataSource ds) {
-    Boolean result = Boolean.TRUE;
-    ArrayList<String> trace = new ArrayList<String>();
-
-    Connection cnxUsr = null;
-    Statement statUsr = null;
-
-    boolean isDriverClassLoaded = false;
-    try {
-      do {
-        trace.add("Test jdbc data source connection for user ...");
-        try {
-          Class.forName(ds.getDriverClass());
-          isDriverClassLoaded = true;
-        }
-        catch (Exception e) {
-          result = false;
-          getApplication().getLogger().info(e.getMessage());
-          break;
-        }
-
-        try {
-          cnxUsr = DriverManager.getConnection(ds.getUrl(), ds.getUserLogin(), ds.getUserPassword());
-        }
-        catch (Exception e) {
-          result = false;
-          getApplication().getLogger().info(e.getMessage());
-          break;
-        }
-
-        if (result) {
-          try {
-            statUsr = cnxUsr.createStatement();
-            statUsr.executeQuery("SELECT 1");
-          }
-          catch (Exception e) {
-            result = false;
-            getApplication().getLogger().info(e.getMessage());
-            break;
-          }
-        }
-      } while (false);
-
-    }
-    finally {
-      if (statUsr != null) {
-        try {
-          statUsr.close();
-        }
-        catch (SQLException e) {
-          getLogger().warning(e.getMessage());
-        }
-      }
-      if (cnxUsr != null) {
-        try {
-          cnxUsr.close();
-        }
-        catch (SQLException e) {
-          getLogger().warning(e.getMessage());
-        }
-      }
-    }
-
-    Connection cnxAdm = null;
-    Statement statAdm = null;
-    if (isDriverClassLoaded) {
-
-      try {
-        do {
-          try {
-            cnxAdm = DriverManager.getConnection(ds.getUrl(), ds.getUserLogin(), ds.getUserPassword());
-          }
-          catch (Exception e) {
-            result = false;
-            getJDBCDataSourceAdministration().getLogger().info(e.getMessage());
-            break;
-          }
-
-          if (cnxAdm != null) {
-            try {
-              statAdm = cnxAdm.createStatement();
-              statAdm.executeQuery("SELECT 1");
-            }
-            catch (Exception e) {
-              result = false;
-              getJDBCDataSourceAdministration().getLogger().info(e.getMessage());
-              break;
-            }
-          }
-        } while (false);
-      }
-      finally {
-
-        if (statAdm != null) {
-          try {
-            statAdm.close();
-          }
-          catch (SQLException e) {
-            getLogger().warning(e.getMessage());
-          }
-        }
-        if (cnxAdm != null) {
-          try {
-            cnxAdm.close();
-          }
-          catch (SQLException e) {
-            getLogger().warning(e.getMessage());
-          }
-        }
-      }
-    }
-    return result;
+  public Boolean checkDataSourceConnection(JDBCDataSource ds) {
+    return testDataSourceConnection(ds).getSuccess();
   }
 
 }

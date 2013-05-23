@@ -145,7 +145,7 @@ public class DataSetExplorerUtil {
     Map<String, Object> attributes = this.getRequest().getAttributes();
 
     this.recordName = (attributes.get("record") != null) ? Reference.decode((String) attributes.get("record"),
-        CharacterSet.UTF_8) : null;
+      CharacterSet.UTF_8) : null;
 
     // parameters : pagination, ...
     this.pagination = this.getRequest().getResourceRef().getQueryAsForm();
@@ -154,16 +154,16 @@ public class DataSetExplorerUtil {
     // pas de / à la fin...
     if (this.getRequest().getResourceRef().getBaseRef().toString().endsWith("/")) {
       this.baseRef = this.getRequest().getResourceRef().getBaseRef().toString()
-          .substring(1, this.getRequest().getResourceRef().getBaseRef().toString().length());
+        .substring(1, this.getRequest().getResourceRef().getBaseRef().toString().length());
     }
     else {
       this.baseRef = this.getRequest().getResourceRef().getBaseRef().toString();
     }
 
     databaseParams = new DatabaseRequestParameters(this.getDataSource(), this.getPaginationStartRecord(),
-        this.getDistinct(), this.getCountIsDone(), this.getDataSet(), this.getPredicats(), this.getStructures(),
-        this.getOrderBy(), this.getColumnFromDistinctQuery(), this.getSQLColumnVisible(), this.getPaginationExtend(),
-        this.getBaseRef(), this.getListOfIds(), this.getRanges(), this.getAllColumnVisible());
+      this.getDistinct(), this.getCountIsDone(), this.getDataSet(), this.getPredicats(), this.getStructures(),
+      this.getOrderBy(), this.getColumnFromDistinctQuery(), this.getSQLColumnVisible(), this.getPaginationExtend(),
+      this.getBaseRef(), this.getListOfIds(), this.getRanges(), this.getAllColumnVisible());
 
     int nbmaxrows = this.application.getSettings().getInt("AbstractDatabaseRequest.MAX_ROWS");
     databaseParams.setMaxrows(nbmaxrows);
@@ -272,33 +272,76 @@ public class DataSetExplorerUtil {
       String colModel = pagination.getFirstValue(COLS);
       HashMap<String, Column> results = new HashMap<String, Column>();
       if (colModel != null && colModel != "") {
-        List<String> columns = Arrays.asList((colModel.substring(1, colModel.length() - 1)).split(", "));
+        List<String> columnsString = Arrays.asList((colModel.substring(1, colModel.length() - 1)).split(", "));
         List<Column> model = application.getDataSet().getColumnModel();
-        for (Column column : model) {
-          if (columns.contains(column.getColumnAlias())) {
-            if (column.getSpecificColumnType() == SpecificColumnType.DATABASE
-                || column.getSpecificColumnType() == SpecificColumnType.SQL) {
-              results.put(column.getColumnAlias(), column);
-            }
-          }
-        }
-        // Add all requestable columns
-        for (Column column : model) {
-          if (column.isPrimaryKey()
-              || (column.getColumnRenderer() != null && BehaviorEnum.noClientAccess.equals(column.getColumnRenderer()
-                  .getBehavior()))) {
-            if (column.getSpecificColumnType() == SpecificColumnType.DATABASE
-                || column.getSpecificColumnType() == SpecificColumnType.SQL) {
-              results.put(column.getColumnAlias(), column);
-            }
-          }
-        }
+        // extract all the columns from the request
+        extractAskedColumns(results, columnsString, model);
+        // Add all requestable columns (columns that must be in the request (ex : primary key))
+        extractRequestableColumns(results, model);
         if (!results.isEmpty()) {
           return new ArrayList<Column>(results.values());
         }
       }
       return application.getDataSet().getDefaultColumnVisible();
     }
+  }
+
+  /**
+   * Extract all requestable columns and add them to the given Map
+   * 
+   * @param results
+   *          the Map to add the columns
+   * @param model
+   *          the columnModel to extract the columns from
+   */
+  private void extractRequestableColumns(Map<String, Column> results, List<Column> model) {
+    for (Column column : model) {
+      if ((column.isPrimaryKey() || isNoClientAccess(column)) && isRequestableColumn(column)) {
+        results.put(column.getColumnAlias(), column);
+      }
+    }
+  }
+
+  /**
+   * Check if the given column is noClientAccess
+   * 
+   * @param column
+   *          the {@link Column}
+   * @return true if the column is noClientAccess, false otherwise
+   */
+  private boolean isNoClientAccess(Column column) {
+    return column.getColumnRenderer() != null
+      && BehaviorEnum.noClientAccess.equals(column.getColumnRenderer().getBehavior());
+  }
+
+  /**
+   * Extract all columns asked by the request and add them to the given Map
+   * 
+   * @param results
+   *          the Map to add the columns
+   * @param columnsString
+   *          the list of asked columns
+   * @param model
+   *          the columnModel to extract the columns from
+   */
+  private void extractAskedColumns(Map<String, Column> results, List<String> columnsString, List<Column> model) {
+    for (Column column : model) {
+      if (columnsString.contains(column.getColumnAlias()) && isRequestableColumn(column)) {
+        results.put(column.getColumnAlias(), column);
+      }
+    }
+  }
+
+  /**
+   * Check if the column is requestable
+   * 
+   * @param column
+   *          the {@link Column}
+   * @return true if the given column is requestable, false otherwise
+   */
+  private boolean isRequestableColumn(Column column) {
+    return column.getSpecificColumnType() == SpecificColumnType.DATABASE
+      || column.getSpecificColumnType() == SpecificColumnType.SQL;
   }
 
   /**
@@ -323,10 +366,8 @@ public class DataSetExplorerUtil {
       }
       // Add all requestable columns
       for (Column column : model) {
-        if (column.isPrimaryKey() || BehaviorEnum.noClientAccess.equals(column.getColumnRenderer())) {
-          if (!results.contains(column)) {
-            results.add(column);
-          }
+        if ((column.isPrimaryKey() || isNoClientAccess(column)) && !results.contains(column)) {
+          results.add(column);
         }
       }
       if (!results.isEmpty()) {
@@ -343,8 +384,7 @@ public class DataSetExplorerUtil {
    * @return The list of column defined in the DataSet
    */
   public final List<Column> getColumnFromDataset() {
-    List<Column> model = application.getDataSet().getColumnModel();
-    return model;
+    return application.getDataSet().getColumnModel();
   }
 
   /**
@@ -366,8 +406,7 @@ public class DataSetExplorerUtil {
    * @return the reference
    */
   public final String getFromTableName(int i) {
-    String reference = new Table(getTableName(i), getSchemaName(i)).getFROMReference();
-    return reference;
+    return new Table(getTableName(i), getSchemaName(i)).getFROMReference();
   }
 
   /**
@@ -422,7 +461,7 @@ public class DataSetExplorerUtil {
     String nbHits = this.pagination.getFirstValue("limit", true);
     try {
       int extend = ((nbHits != null) && !nbHits.equals("")) ? Integer.parseInt(nbHits)
-          : DatabaseRequestParameters.RETURN_FIRST_PAGE;
+        : DatabaseRequestParameters.RETURN_FIRST_PAGE;
 
       if (extend == -1) {
         return DatabaseRequestParameters.RETURN_ALL;
@@ -444,8 +483,7 @@ public class DataSetExplorerUtil {
   public final boolean getCountIsDone() {
     boolean countIsNotDone = Boolean.parseBoolean(this.pagination.getFirstValue("nocount", true));
     try {
-      boolean isDone = !countIsNotDone;
-      return isDone;
+      return !countIsNotDone;
     }
     catch (NumberFormatException e) {
       return true;
@@ -477,7 +515,6 @@ public class DataSetExplorerUtil {
       return orders;
     }
     catch (IOException e) {
-      // e.printStackTrace();
       String sortParam = this.pagination.getFirstValue("sort", true);
       if ((sortParam != null) && !sortParam.equals("")) {
         Column col = application.getDataSet().findByColumnAlias(sortParam);
@@ -556,22 +593,6 @@ public class DataSetExplorerUtil {
     return application.getDataSet().getColumnModel();
   }
 
-  // /**
-  // * convert a operator to a SQL operator
-  // *
-  // * @param compareOperator
-  // * the operator
-  // * @return the SQL operator
-  // */
-  // public final String convertOperator(String compareOperator) {
-  // for (Operator operator : Operator.values()) {
-  // if (operator.name().equalsIgnoreCase(compareOperator)) {
-  // return operator.value();
-  // }
-  // }
-  // return null;
-  // }
-
   /**
    * Gets the arrayPredicatsPostFilters value
    * 
@@ -588,12 +609,12 @@ public class DataSetExplorerUtil {
     }
     catch (ResourceException e) {
       application.getLogger().warning(
-          "Exception when applying filterChained on dataset " + application.getDataSet().getName());
+        "Exception when applying filterChained on dataset " + application.getDataSet().getName());
       throw e;
     }
     catch (Exception e) {
       application.getLogger().warning(
-          "Exception when applying filterChained on dataset " + application.getDataSet().getName());
+        "Exception when applying filterChained on dataset " + application.getDataSet().getName());
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     if (predicatsResult == null) {
@@ -650,17 +671,7 @@ public class DataSetExplorerUtil {
    * @return the list of identifiers
    */
   private String[] getListOfIds() {
-    Form bodyForm = null;
-    // Try to get the Form from the context, if not, get it from the body
-    if (getContext() != null && getContext().getAttributes().get(TaskUtils.BODY_CONTENT) != null) {
-      bodyForm = (Form) getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
-    }
-    else {
-      Representation body = this.getRequest().getEntity();
-      if (body != null && body.isAvailable() && body.getSize() > 0) {
-        bodyForm = new Form(body);
-      }
-    }
+    Form bodyForm = getBodyForm();
 
     if (bodyForm != null) {
       String urlFile = bodyForm.getFirstValue("urlFile");
@@ -675,15 +686,7 @@ public class DataSetExplorerUtil {
             String text = repFile.getText();
             json = new JSONObject(text);
 
-            // look for the primary key column
-            Column primaryKey = null;
-            List<Column> columns = this.getColumnModel();
-            for (Column column : columns) {
-              if (column.isPrimaryKey()) {
-                primaryKey = column;
-                break;
-              }
-            }
+            Column primaryKey = getPrimaryKey();
 
             // create the list of ids from the JSON object
             JSONObject orderRecord = json.getJSONObject("orderRecord");
@@ -695,19 +698,53 @@ public class DataSetExplorerUtil {
             return idList;
           }
           catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
           }
           catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
           }
         }
       }
     }
     return null;
+  }
+
+  /**
+   * Gets the primary key from the columnModel
+   * 
+   * @return the {@link Column} which is primary key, or null if not found
+   */
+  private Column getPrimaryKey() {
+    // look for the primary key column
+    Column primaryKey = null;
+    List<Column> columns = this.getColumnModel();
+    for (Column column : columns) {
+      if (column.isPrimaryKey()) {
+        primaryKey = column;
+        break;
+      }
+    }
+    return primaryKey;
+  }
+
+  /**
+   * Try to get the Form from the context, if not, get it from the body
+   * 
+   * @return a Form from the request or the Context
+   */
+  private Form getBodyForm() {
+    Form bodyForm = null;
+    // Try to get the Form from the context, if not, get it from the body
+    if (getContext() != null && getContext().getAttributes().get(TaskUtils.BODY_CONTENT) != null) {
+      bodyForm = (Form) getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
+    }
+    else {
+      Representation body = this.getRequest().getEntity();
+      if (body != null && body.isAvailable() && body.getSize() > 0) {
+        bodyForm = new Form(body);
+      }
+    }
+    return bodyForm;
   }
 
   /**
@@ -782,21 +819,21 @@ public class DataSetExplorerUtil {
    */
   public static void addDatasetExplorerGetRequestInfo(MethodInfo info) {
     ParameterInfo startInfo = new ParameterInfo("start", false, "xs:int", ParameterStyle.QUERY,
-        "Starting index for SQL request.");
+      "Starting index for SQL request.");
     ParameterInfo limitInfo = new ParameterInfo("limit", false, "xs:int", ParameterStyle.QUERY,
-        "Maximal number of records returned.");
+      "Maximal number of records returned.");
     ParameterInfo queryInfo = new ParameterInfo("query", false, "xs:string", ParameterStyle.QUERY,
-        "Request sent by filters and forms.");
+      "Request sent by filters and forms.");
     ParameterInfo colModelInfo = new ParameterInfo("colModel", false, "xs:string", ParameterStyle.QUERY,
-        "Column model description used for getting back records.");
+      "Column model description used for getting back records.");
     ParameterInfo sortInfo = new ParameterInfo("sort", false, "xs:string", ParameterStyle.QUERY,
-        "Column name to sort by.");
+      "Column name to sort by.");
     ParameterInfo dirInfo = new ParameterInfo("dir", false, "xs:string", ParameterStyle.QUERY,
-        "(ASC or DESC) Sorting order.");
+      "(ASC or DESC) Sorting order.");
     ParameterInfo distinctInfo = new ParameterInfo("distinct", false, "xs:boolean", ParameterStyle.QUERY,
-        "If true then creates a DISTINCT SQL request.");
+      "If true then creates a DISTINCT SQL request.");
     ParameterInfo rangesInfo = new ParameterInfo("ranges", false, "xs:string", ParameterStyle.QUERY,
-        "Array of index ranges to select (example : [[1,10],[20,50]])");
+      "Array of index ranges to select (example : [[1,10],[20,50]])");
 
     info.getRequest().getParameters().add(colModelInfo);
     info.getRequest().getParameters().add(startInfo);

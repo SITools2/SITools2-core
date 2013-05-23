@@ -507,8 +507,7 @@ public final class SitoolsSettings {
       return format;
     }
     String result = format.replaceAll("\\$\\{ROOT_DIRECTORY\\}", getRootDirectory());
-    String filedir = result.replaceFirst("^(file://.:)", result.substring(0, 8));
-    return filedir;
+    return result.replaceFirst("^(file://.:)", result.substring(0, 8));
   }
 
   /**

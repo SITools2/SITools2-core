@@ -19,6 +19,7 @@
 package fr.cnes.sitools.mail;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -190,7 +191,7 @@ public final class MailResource extends SitoolsResource {
         }
       }
       catch (IOException e) {
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
       if (input == null) {
         throw new RuntimeException("Only Mail object accepted for MailResource.POST( ObjectRepresentation)");

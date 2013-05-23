@@ -145,16 +145,15 @@ public abstract class SitoolsResource extends AbstractSitoolsResource {
         return or.getObject();
       }
       catch (IllegalArgumentException e) {
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
       catch (ClassNotFoundException e) {
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
 
     }
     catch (IOException e) {
-      getLogger().log(Level.WARNING, "Bad representation of resource updating notification", e);
-      e.printStackTrace();
+      getLogger().log(Level.WARNING, "Bad representation of resource updating notification", e);      
     }
     return null;
   }

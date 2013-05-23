@@ -21,6 +21,9 @@ package fr.cnes.sitools.dataset.converter.business;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+
+import org.restlet.Context;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.Validator;
@@ -130,7 +133,7 @@ public class ConverterChained extends AbstractConverter {
           }
         }
         catch (Exception e) {
-          e.printStackTrace();
+          Context.getCurrentLogger().log(Level.INFO, null, e);
         }
       }
     }

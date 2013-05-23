@@ -93,108 +93,21 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         }
 
         if (this.getReference().toString().endsWith("start")) {
-          if ("ACTIVE".equals(ds.getStatus())) {
-            response = new Response(true, "dataset.update.blocked");
-            break;
-          }
-
-          try {
-            // get total results
-            List<Column> columns = ds.getColumnModel();
-            List<Predicat> predicats = ds.getPredicat();
-            List<Structure> structures = ds.getStructures();
-
-            String sql = null;
-            try {
-              boolean ok = testRequest(ds);
-              if (!ok) {
-                response = new Response(false, "dataset.sql.error : " + sql);
-                break;
-              }
-
-              int nbTotalResults = getTotalResults(ds, structures, columns, predicats);
-              ds.setNbRecords(nbTotalResults);
-            }
-            catch (Exception e) {
-              getLogger().warning(e.getMessage());
-              response = new Response(false, "dataset.sql.error : " + sql);
-              break;
-            }
-
-            ds.setStatus("ACTIVE"); // TODO dans le start application.
-
-            ds.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
-
-            DataSet dsResult = store.update(ds);
-
-            application.attachDataSet(dsResult);
-
-            response = new Response(true, dsResult, DataSet.class, "dataset");
-            response.setMessage("dataset.update.success");
-
-            // Notify observers
-            Notification notification = new Notification();
-            notification.setObservable(dsResult.getId());
-            notification.setStatus(dsResult.getStatus());
-            notification.setEvent("DATASET_STATUS_CHANGED");
-            notification.setMessage("dataset.update.success");
-            getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
-          }
-          catch (Exception e) {
-            e.printStackTrace();
-            response = new Response(false, "dataset.update.error");
-          }
+          this.startDataset(ds);
           break;
         }
 
         if (this.getReference().toString().endsWith("stop")) {
-          if (!"ACTIVE".equals(ds.getStatus())) {
-
-            // Par mesure de securite
-            try {
-              application.detachDataSet(ds);
-              ds.setStatus("INACTIVE"); // TODO dans le stop application.
-              store.update(ds);
-            }
-            catch (Exception e) {
-              e.printStackTrace();
-            }
-
-            response = new Response(true, "dataset.stop.blocked");
-            break;
-          }
-
-          try {
-            application.detachDataSet(ds);
-            ds.setStatus("INACTIVE"); // TODO dans le stop application.
-            DataSet dsResult = store.update(ds);
-
-            response = new Response(true, dsResult, DataSet.class, "dataset");
-            response.setMessage("dataset.stop.success");
-
-            // Notify observers
-            Notification notification = new Notification();
-            notification.setObservable(dsResult.getId());
-            notification.setStatus(dsResult.getStatus());
-            notification.setEvent("DATASET_STATUS_CHANGED");
-            notification.setMessage("dataset.stop.success");
-            getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-          }
-          catch (Exception e) {
-            e.printStackTrace();
-            response = new Response(false, "dataset.stop.error");
-          }
+          this.stopDataset(ds);
           break;
         }
 
         if (this.getReference().toString().endsWith("getSqlString")) {
           try {
             response = new Response(true, getRequestString(ds));
-
           }
           catch (Exception e) {
-            e.printStackTrace();
+            getLogger().log(Level.INFO, null, e);
             response = new Response(false, "dataset.stop.error");
           }
           break;
@@ -202,7 +115,6 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         if (this.getReference().toString().endsWith("refreshNotion")) {
           try {
             if (ds.getDirty()) {
-              // ds.refreshNotion(getContext(), getSitoolsSetting(Consts.APP_DICTIONARIES_URL));
               store.update(ds);
               response = new Response(true, ds, DataSet.class, "dataset");
             }
@@ -212,7 +124,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
 
           }
           catch (Exception e) {
-            e.printStackTrace();
+            getLogger().log(Level.INFO, null, e);
             response = new Response(false, "dataset.stop.error");
           }
           break;
@@ -230,6 +142,122 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
     }
 
     return rep;
+  }
+
+  /**
+   * Start the dataset
+   * 
+   * @param ds
+   *          the dataset
+   * @return the response
+   */
+  private Response startDataset(DataSet ds) {
+    Response response;
+    do {
+      if ("ACTIVE".equals(ds.getStatus())) {
+        response = new Response(true, "dataset.update.blocked");
+        break;
+      }
+
+      try {
+        // get total results
+        List<Column> columns = ds.getColumnModel();
+        List<Predicat> predicats = ds.getPredicat();
+        List<Structure> structures = ds.getStructures();
+
+        String sql = null;
+        try {
+          boolean ok = testRequest(ds);
+          if (!ok) {
+            response = new Response(false, "dataset.sql.error : " + sql);
+            break;
+          }
+
+          int nbTotalResults = getTotalResults(ds, structures, columns, predicats);
+          ds.setNbRecords(nbTotalResults);
+        }
+        catch (Exception e) {
+          getLogger().warning(e.getMessage());
+          response = new Response(false, "dataset.sql.error : " + sql);
+          break;
+        }
+
+        ds.setStatus("ACTIVE"); // TODO dans le start application.
+
+        ds.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
+
+        DataSet dsResult = store.update(ds);
+
+        application.attachDataSet(dsResult);
+
+        response = new Response(true, dsResult, DataSet.class, "dataset");
+        response.setMessage("dataset.update.success");
+
+        // Notify observers
+        Notification notification = new Notification();
+        notification.setObservable(dsResult.getId());
+        notification.setStatus(dsResult.getStatus());
+        notification.setEvent("DATASET_STATUS_CHANGED");
+        notification.setMessage("dataset.update.success");
+        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+
+      }
+      catch (Exception e) {
+        getLogger().log(Level.INFO, null, e);
+        response = new Response(false, "dataset.update.error");
+      }
+    } while (false);
+    return response;
+  }
+
+  /**
+   * Stop the dataset
+   * 
+   * @param ds
+   *          the {@link DataSet}
+   * @return the {@link Response}
+   */
+  private Response stopDataset(DataSet ds) {
+    Response response;
+    do {
+      if (!"ACTIVE".equals(ds.getStatus())) {
+
+        // Par mesure de securite
+        try {
+          application.detachDataSet(ds);
+          ds.setStatus("INACTIVE"); // TODO dans le stop application.
+          store.update(ds);
+        }
+        catch (Exception e) {
+          getLogger().log(Level.INFO, null, e);
+        }
+
+        response = new Response(true, "dataset.stop.blocked");
+        break;
+      }
+
+      try {
+        application.detachDataSet(ds);
+        ds.setStatus("INACTIVE"); // TODO dans le stop application.
+        DataSet dsResult = store.update(ds);
+
+        response = new Response(true, dsResult, DataSet.class, "dataset");
+        response.setMessage("dataset.stop.success");
+
+        // Notify observers
+        Notification notification = new Notification();
+        notification.setObservable(dsResult.getId());
+        notification.setStatus(dsResult.getStatus());
+        notification.setEvent("DATASET_STATUS_CHANGED");
+        notification.setMessage("dataset.stop.success");
+        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+      }
+      catch (Exception e) {
+        getLogger().log(Level.INFO, null, e);
+        response = new Response(false, "dataset.stop.error");
+      }
+    } while (false);
+    return response;
   }
 
   @Override
@@ -356,7 +384,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         }
         catch (Exception e) {
 
-          e.printStackTrace();
+          getLogger().log(Level.INFO, null, e);
         }
       }
     }
@@ -582,7 +610,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         }
         catch (Exception e) {
 
-          e.printStackTrace();
+          getLogger().log(Level.INFO, null, e);
         }
       }
     }

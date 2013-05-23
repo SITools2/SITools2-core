@@ -167,7 +167,7 @@ public final class UserStorageCollectionResource extends AbstractUserStorageReso
   public void describeGet(MethodInfo info) {
     info.setDocumentation("Method to create one or all user storages, depending if user identifier is given or not.");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo paramUserId = new ParameterInfo("identifier", false, "xs:string", ParameterStyle.TEMPLATE,
+    ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, false, "xs:string", ParameterStyle.TEMPLATE,
         "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);

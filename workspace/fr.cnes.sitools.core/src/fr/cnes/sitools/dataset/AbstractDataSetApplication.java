@@ -101,8 +101,7 @@ public abstract class AbstractDataSetApplication extends SitoolsParameterizedApp
 
   @Override
   public ApplicationInfo getApplicationInfo(Request request, Response response) {
-    ApplicationInfo result = super.getApplicationInfo(request, response);
-    return result;
+    return super.getApplicationInfo(request, response);
   }
 
   /**

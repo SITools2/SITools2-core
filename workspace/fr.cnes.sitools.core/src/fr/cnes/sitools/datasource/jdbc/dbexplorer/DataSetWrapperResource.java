@@ -84,14 +84,12 @@ public class DataSetWrapperResource extends DBExplorerResource {
             + "/Database.ftl").get();
 
         // Wraps the bean with a FreeMarker representation
-        TemplateRepresentation result = new TemplateRepresentation(databaseFtl, database, MediaType.TEXT_HTML);
-        return result;
+        return new TemplateRepresentation(databaseFtl, database, MediaType.TEXT_HTML);
       }
       else {
         // autres representations JSON, XML avec xstream
         Response response = new Response(true, database, Database.class, "database");
-        Representation result = this.getRepresentation(response, media);
-        return result;
+        return this.getRepresentation(response, media);
 
       }
 
@@ -154,8 +152,7 @@ public class DataSetWrapperResource extends DBExplorerResource {
       if (media.isCompatible(MediaType.APPLICATION_JSON)) {
         // autres representations JSON, XML avec xstream
         Response response = new Response(true, myDataSet, DataSet.class, "DataSet");
-        Representation result = this.getRepresentation(response, media);
-        return result;
+        return this.getRepresentation(response, media);
       }
       else {
         Response response = new Response(false, "FORMAT INCOMPATIBLE");

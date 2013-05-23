@@ -68,9 +68,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
 
       // Response
       Response response = new Response(true, guiServiceOutput, GuiServiceModel.class, "guiService");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
-
+      return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
       getLogger().log(Level.INFO, null, e);

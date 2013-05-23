@@ -18,8 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.units.dimension.model;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -63,11 +61,11 @@ public final class SitoolsDimension implements IResource {
   /** List of converters for special dimensions */
   private List<String> unitConverters;
 
-//  /** List of unit names */
-//  private List<String> unitNames;
-//
-//  /** List of unit labels */
-//  private List<String> unitLabels;
+  // /** List of unit names */
+  // private List<String> unitNames;
+  //
+  // /** List of unit labels */
+  // private List<String> unitLabels;
 
   /** Indicates if the dimension is consistent */
   @XStreamOmitField
@@ -146,52 +144,6 @@ public final class SitoolsDimension implements IResource {
    */
   public void setDimensionHelperName(String dimensionHelperName) {
     this.dimensionHelperName = dimensionHelperName;
-  }
-
-  /**
-   * Get helper to have the converters
-   * 
-   * @param helperName
-   *          the helper name
-   * @return the helper
-   */
-  public DimensionHelper getDimensionHelper(String helperName) {
-    try {
-      @SuppressWarnings("unchecked")
-      Class<DimensionHelper> helperClass = (Class<DimensionHelper>) Class.forName(helperName);
-      Constructor<DimensionHelper> constructor = helperClass.getDeclaredConstructor();
-      DimensionHelper helper = constructor.newInstance();
-      return helper;
-    }
-    catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (SecurityException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (NoSuchMethodException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (IllegalArgumentException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (InstantiationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    catch (InvocationTargetException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    return null;
   }
 
   @Override
@@ -309,24 +261,24 @@ public final class SitoolsDimension implements IResource {
     this.id = string;
   }
 
-//  /**
-//   * Sets the value of unitNames
-//   * 
-//   * @param unitNames
-//   *          the unitNames to set
-//   */
-//  public void setUnitNames(List<String> unitNames) {
-//    this.unitNames = unitNames;
-//  }
-//
-//  /**
-//   * Gets the unitNames value
-//   * 
-//   * @return the unitNames
-//   */
-//  public List<String> getUnitNames() {
-//    return unitNames;
-//  }
+  // /**
+  // * Sets the value of unitNames
+  // *
+  // * @param unitNames
+  // * the unitNames to set
+  // */
+  // public void setUnitNames(List<String> unitNames) {
+  // this.unitNames = unitNames;
+  // }
+  //
+  // /**
+  // * Gets the unitNames value
+  // *
+  // * @return the unitNames
+  // */
+  // public List<String> getUnitNames() {
+  // return unitNames;
+  // }
 
   /**
    * Sets the value of parent
@@ -382,13 +334,13 @@ public final class SitoolsDimension implements IResource {
         List<SitoolsUnitConverter> registeredConverters = this.getConverters(); // get the list of registered converters
         for (SitoolsUnitConverter conv : registeredConverters) {
           if (conv.getStartUnit().isCompatible(startUnit.getUnit())
-              && conv.getTargetUnit().isCompatible(targetUnit.getUnit())) {
+            && conv.getTargetUnit().isCompatible(targetUnit.getUnit())) {
             conv.setStartUnit(startUnit.getUnit());
             conv.setTargetUnit(targetUnit.getUnit());
             return conv.getBaseToTargetConverter();
           }
           if (conv.getStartUnit().isCompatible(targetUnit.getUnit())
-              && conv.getTargetUnit().isCompatible(startUnit.getUnit())) {
+            && conv.getTargetUnit().isCompatible(startUnit.getUnit())) {
             conv.setStartUnit(startUnit.getUnit());
             conv.setTargetUnit(targetUnit.getUnit());
             return conv.getTargetToBaseConverter();

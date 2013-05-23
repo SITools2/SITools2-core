@@ -479,11 +479,11 @@ public abstract class AbstractDirectoryServerResource extends ServerResource {
           }
         }
         catch (FileUploadException e) {
-          e.printStackTrace();
+          getLogger().log(Level.INFO, null, e);
           getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
         }
         catch (Exception e) {
-          e.printStackTrace();
+          getLogger().log(Level.INFO, null, e);
           getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
         }
 

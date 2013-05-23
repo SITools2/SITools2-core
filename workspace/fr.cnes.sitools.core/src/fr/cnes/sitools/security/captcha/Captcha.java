@@ -93,8 +93,7 @@ public class Captcha {
    * @return BufferedImage
    */
   public BufferedImage getImage() {
-    BufferedImage returnedImage = image;
-    return returnedImage;
+    return image;
   }
   
   

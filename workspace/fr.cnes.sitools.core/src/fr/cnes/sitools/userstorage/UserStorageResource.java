@@ -81,8 +81,8 @@ public final class UserStorageResource extends AbstractUserStorageResource {
   public void describeGet(MethodInfo info) {
     info.setDocumentation("Method to get representation of a user storage.");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo paramUserId = new ParameterInfo("identifier", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the user to deal with.");
+    ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }
@@ -110,8 +110,8 @@ public final class UserStorageResource extends AbstractUserStorageResource {
   public void describePost(MethodInfo info) {
     info.setDocumentation("Method to create a new User Storage for the specified user.");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo paramUserId = new ParameterInfo("identifier", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the user to deal with.");
+    ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }
@@ -128,15 +128,15 @@ public final class UserStorageResource extends AbstractUserStorageResource {
   @Delete
   public Representation doDelete(Representation representation, Variant variant) {
 
-// TODO DELETE CONTENT ?
-// Peut être fait par l'action Clean.    
-//    try {
-//      UserStorage userStorage = getStore().retrieve(getIdentifier());
-//      UserStorageManager.delete(getContext(), userStorage);
-//    }
-//    catch (Exception e) {
-//      getContext().getLogger().log(Level.FINE, "unable to delete UserStorage", e);
-//    }
+    // TODO DELETE CONTENT ?
+    // Peut être fait par l'action Clean.
+    // try {
+    // UserStorage userStorage = getStore().retrieve(getIdentifier());
+    // UserStorageManager.delete(getContext(), userStorage);
+    // }
+    // catch (Exception e) {
+    // getContext().getLogger().log(Level.FINE, "unable to delete UserStorage", e);
+    // }
 
     getStore().delete(getIdentifier());
     Response response = new Response(true, "userstorage.delete.success");
@@ -149,8 +149,8 @@ public final class UserStorageResource extends AbstractUserStorageResource {
   public void describeDelete(MethodInfo info) {
     info.setDocumentation("Method to delete the userstorage the specified user.");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo paramUserId = new ParameterInfo("identifier", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the user to deal with.");
+    ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }
@@ -212,8 +212,8 @@ public final class UserStorageResource extends AbstractUserStorageResource {
   public void describePut(MethodInfo info) {
     info.setDocumentation("Method to modify the userstorage of the specified user.");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo paramUserId = new ParameterInfo("identifier", true, "xs:string", ParameterStyle.TEMPLATE,
-        "Identifier of the user to deal with.");
+    ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
+      "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }

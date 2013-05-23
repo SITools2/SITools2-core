@@ -123,8 +123,7 @@ public final class User implements Serializable {
    */
   public org.restlet.security.User wrap(String realm) {
     String decodeSecret = getSecret();
-    org.restlet.security.User u = new org.restlet.security.User(identifier, decodeSecret, firstName, lastName, email);
-    return u;
+    return new org.restlet.security.User(identifier, decodeSecret, firstName, lastName, email);
   }
 
   /**
@@ -133,8 +132,7 @@ public final class User implements Serializable {
    * @return org.restlet.security.User
    */
   public org.restlet.security.User wrap() {
-    org.restlet.security.User u = new org.restlet.security.User(identifier, secret, firstName, lastName, email);
-    return u;
+    return new org.restlet.security.User(identifier, secret, firstName, lastName, email);
   }
 
   /**

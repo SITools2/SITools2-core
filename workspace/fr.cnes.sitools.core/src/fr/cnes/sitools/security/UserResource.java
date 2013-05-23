@@ -180,8 +180,7 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
       if (input.getProperties() != null && !checkPropertiesName(input.getProperties())) {
         MediaType media = representation.getMediaType();
         Response response = new Response(false, "Duplicated Property Name");
-        Representation rep = getRepresentation(response, media);
-        return rep;
+        return getRepresentation(response, media);
       }
 
       if ((input.getSecret() != null) && !input.getSecret().equals("")) {
@@ -212,15 +211,13 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
 
       // Response
       Response response = new Response(true, output, User.class, "user");
-      Representation rep = getRepresentation(response, variant);
-      return rep;
+      return getRepresentation(response, variant);
 
     }
     catch (SitoolsException e) {
       MediaType media = representation.getMediaType();
       Response response = new Response(false, e.getMessage());
-      Representation rep = getRepresentation(response, media);
-      return rep;
+      return getRepresentation(response, media);
     }
     catch (ResourceException e) {
       getLogger().log(Level.INFO, null, e);
@@ -260,7 +257,7 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     }
     catch (Exception e) {
       response = new Response(false, e.getMessage());
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
     return getRepresentation(response, variant);
   }
