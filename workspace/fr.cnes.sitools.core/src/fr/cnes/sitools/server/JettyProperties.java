@@ -14,34 +14,60 @@ import fr.cnes.sitools.common.SitoolsSettings;
 public class JettyProperties {
 
   /** Maximal header buffer size for request */
-  public static final int DEFAULT_REQUEST_HEADER_SIZE = 512 * 1024;
   /** Maximal header buffer size for request */
-  public static final int DEFAULT_RESPONSE_HEADER_SIZE = 512 * 1024;
-  /** Other properties */
+
+  /** default Minimum threads waiting to service requests. */
   public static final int DEFAULT_MIN_THREADS = 1;
+  /** Default Maximum threads that will service requests. */
   public static final int DEFAULT_MAX_THREADS = 255;
+  /** Default Time for an idle thread to wait for a request or read. */
   public static final int DEFAULT_THREAD_MAX_IDLE_TIME_MS = 60000;
+  /** Default Time in ms that connections will persist if listener is low on resources. */
   public static final int DEFAULT_LOW_RESOURCES_MAX_IDLE_TIME_MS = 2500;
+  /** Default Number of acceptor threads to set. */
   public static final int DEFAULT_ACCEPTOR_THREADS = 1;
+  /** Default Size of the accept queue. */
   public static final int DEFAULT_ACCEPT_QUEUE_SIZE = 0;
+  /** Default Size of the buffer to be used for request headers. */
+  public static final int DEFAULT_REQUEST_HEADER_SIZE = 512 * 1024;
+  /** Default Size of the buffer to be used for response headers. */
+  public static final int DEFAULT_RESPONSE_HEADER_SIZE = 512 * 1024;
+  /** Default Size of the content buffer for receiving requests. */
   public static final int DEFAULT_REQUEST_BUFFER_SIZE = 8192;
+  /** Default Size of the content buffer for sending responses. */
   public static final int DEFAULT_RESPONSE_BUFFER_SIZE = 32768;
+  /** Default Maximum time to wait on an idle IO operation. */
   public static final int DEFAULT_IO_MAX_IDLE_TIME_MS = 30000;
+  /** Default SO linger time (see Jetty documentation). */
   public static final int DEFAULT_SO_LINGER_TIME = 1000;
+  /** Default The time (in ms) to wait for existing requests to complete before fully stopping the server. */
   public static final int DEFAULT_GRACEFUL_SHUTDOWN = 0;
 
-  private int requestHeaderSize;
-  private int responseHeaderSize;
+  /** Minimum threads waiting to service requests. */
   private int minThreads;
+  /** Maximum threads that will service requests. */
   private int maxThreads;
+  /** Time for an idle thread to wait for a request or read. */
   private int threadMaxIdleTimeMs;
+  /** Time in ms that connections will persist if listener is low on resources. */
   private int lowResourcesMaxIdleTimeMs;
+  /** Number of acceptor threads to set. */
   private int acceptorThreads;
+  /** Size of the accept queue. */
   private int acceptQueueSize;
+  /** Size of the buffer to be used for request headers. */
   private int requestBufferSize;
+  /** Size of the buffer to be used for response headers. */
   private int responseBufferSize;
+  /** Size of the content buffer for receiving requests. */
+  private int requestHeaderSize;
+  /** Size of the content buffer for sending responses. */
+  private int responseHeaderSize;
+  /** Maximum time to wait on an idle IO operation. */
   private int ioMaxIdleTimeMs;
+  /** SO linger time (see Jetty documentation). */
   private int soLingerTime;
+  /** The time (in ms) to wait for existing requests to complete before fully stopping the server. */
   private int gracefulShutdown;
 
   /**
@@ -149,6 +175,7 @@ public class JettyProperties {
    * addParamsToServerContext
    * 
    * @param serverHTTP
+   *          The server to add to parameters to
    */
   public void addParamsToServerContext(Server serverHTTP) {
 
@@ -169,11 +196,14 @@ public class JettyProperties {
   }
 
   /**
-   * addParam
+   * Add a parameter to a Server
    * 
    * @param serverHTTP
+   *          the service to add the parameters to
    * @param propName
+   *          the name of the property to add
    * @param propValue
+   *          the value to set
    */
   private void addParam(Server serverHTTP, String propName, int propValue) {
 

@@ -43,8 +43,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * Encapsulation of a result set with its database connection
- * in order to release it after use. 
+ * Encapsulation of a result set with its database connection in order to release it after use.
  * 
  * TODO DESIGN AbstractResultSet > AbstractResultSet générique (XMLDBResultSet, DBSQLResultSet) > implements closable
  * 
@@ -128,6 +127,7 @@ public class DBResultSet implements ResultSet {
 
   /**
    * Get the logger
+   * 
    * @return the logger
    */
   private Logger getLogger() {
@@ -1049,12 +1049,63 @@ public class DBResultSet implements ResultSet {
     return localResultSet.wasNull();
   }
 
-  public <T> T getObject(int arg0, Class<T> arg1) throws SQLException {
-    return (T) localResultSet.getObject(arg0);
+  /**
+   * <p>
+   * Retrieves the value of the designated column in the current row of this <code>ResultSet</code> object and will
+   * convert from the SQL type of the column to the requested Java data type, if the conversion is supported. If the
+   * conversion is not supported or null is specified for the type, a <code>SQLException</code> is thrown.
+   * <p>
+   * At a minimum, an implementation must support the conversions defined in Appendix B, Table B-3 and conversion of
+   * appropriate user defined SQL types to a Java type which implements {@code SQLData}, or {@code Struct}. Additional
+   * conversions may be supported and are vendor defined.
+   * 
+   * @param <T>
+   *          Class representing the Java data type to convert the designated column to.
+   * @param columnIndex
+   *          the first column is 1, the second is 2, ...
+   * @param type
+   *          Class representing the Java data type to convert the designated column to.
+   * @return an instance of {@code type} holding the column value
+   * @throws SQLException
+   *           if conversion is not supported, type is null or another error occurs. The getCause() method of the
+   *           exception may provide a more detailed exception, for example, if a conversion error occurs
+   * @throws SQLException
+   *           if the JDBC driver does not support this method
+   */
+  public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
+    @SuppressWarnings("unchecked")
+    T object = (T) localResultSet.getObject(columnIndex);
+    return object;
   }
 
-  public <T> T getObject(String arg0, Class<T> arg1) throws SQLException {
-    return (T) localResultSet.getObject(arg0);
+  /**
+   * <p>
+   * Retrieves the value of the designated column in the current row of this <code>ResultSet</code> object and will
+   * convert from the SQL type of the column to the requested Java data type, if the conversion is supported. If the
+   * conversion is not supported or null is specified for the type, a <code>SQLException</code> is thrown.
+   * <p>
+   * At a minimum, an implementation must support the conversions defined in Appendix B, Table B-3 and conversion of
+   * appropriate user defined SQL types to a Java type which implements {@code SQLData}, or {@code Struct}. Additional
+   * conversions may be supported and are vendor defined.
+   * 
+   * @param <T>
+   *          Class representing the Java data type to convert the designated column to.
+   * @param columnLabel
+   *          the label for the column specified with the SQL AS clause. If the SQL AS clause was not specified, then
+   *          the label is the name of the column
+   * @param type
+   *          Class representing the Java data type to convert the designated column to.
+   * @return an instance of {@code type} holding the column value
+   * @throws SQLException
+   *           if conversion is not supported, type is null or another error occurs. The getCause() method of the
+   *           exception may provide a more detailed exception, for example, if a conversion error occurs
+   * @throws SQLException
+   *           if the JDBC driver does not support this method
+   */
+  public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
+    @SuppressWarnings("unchecked")
+    T object = (T) localResultSet.getObject(columnLabel);
+    return object;
   }
 
 }

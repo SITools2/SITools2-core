@@ -383,26 +383,38 @@ public interface Consts {
   /** url orders files */
   String APP_ADMINSTORAGE_ORDERS_URL = "Starter.APP_ADMINSTORAGE_ORDERS_URL";
 
-  /** The request header buffer size */
-  String REQUEST_HEADER_SIZE = "Starter.REQUEST_HEADER_SIZE";
 
-  /** The request header buffer size */
-  String RESPONSE_HEADER_SIZE = "Starter.RESPONSE_HEADER_SIZE";
   
-  /** Additional parameters for jetty */
+  /** Minimum threads waiting to service requests. */
   String MIN_THREADS = "Starter.MIN_THREADS";
+  /** Maximum threads that will service requests. */
   String MAX_THREADS = "Starter.MAX_THREADS";
+  /** Time for an idle thread to wait for a request or read. */
   String THREAD_MAX_IDLE_TIME_MS = "Starter.THREAD_MAX_IDLE_TIME_MS";
+  /** Time in ms that connections will persist if listener is low on resources. */
   String LOW_RESOURCES_MAX_IDLE_TIME_MS = "Starter.LOW_RESOURCES_MAX_IDLE_TIME_MS";
+  /** Number of acceptor threads to set. */
   String ACCEPTOR_THREADS = "Starter.ACCEPTOR_THREADS";
+  /** Size of the accept queue. */
   String ACCEPT_QUEUE_SIZE = "Starter.ACCEPT_QUEUE_SIZE";
+  /** Size of the buffer to be used for request headers. */
+  String REQUEST_HEADER_SIZE = "Starter.REQUEST_HEADER_SIZE";
+  /** Size of the buffer to be used for response headers. */
+  String RESPONSE_HEADER_SIZE = "Starter.RESPONSE_HEADER_SIZE";
+  /** Size of the content buffer for receiving requests. */
   String REQUEST_BUFFER_SIZE = "Starter.REQUEST_BUFFER_SIZE";
+  /** Size of the content buffer for sending responses. */
   String RESPONSE_BUFFER_SIZE = "Starter.RESPONSE_BUFFER_SIZE";
+  /** Maximum time to wait on an idle IO operation. */
   String IO_MAX_IDLE_TIME_MS = "Starter.IO_MAX_IDLE_TIME_MS";
+  /** SO linger time (see Jetty documentation). */
   String SO_LINGER_TIME = "Starter.SO_LINGER_TIME";
+  /** The time (in ms) to wait for existing requests to complete before fully stopping the server. */
   String GRACEFUL_SHUTDOWN = "Starter.GRACEFUL_SHUTDOWN";
 
 
+  
+  
   /** Consts for Task management */
 
   String APP_TASK_STORE_DIR = "Starter.APP_TASK_STORE_DIR";
