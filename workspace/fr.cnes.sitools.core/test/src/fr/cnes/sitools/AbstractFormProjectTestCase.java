@@ -49,6 +49,7 @@ import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.dataset.converter.dto.ConverterChainedModelDTO;
 import fr.cnes.sitools.form.project.model.FormParameter;
 import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.form.project.model.FormPropertyParameter;
@@ -80,7 +81,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
    */
   protected String getBaseUrl() {
     return super.getBaseUrl() + settings.getString(Consts.APP_PROJECTS_URL) + "/" + projectId
-        + settings.getString(Consts.APP_FORMPROJECT_URL);
+      + settings.getString(Consts.APP_FORMPROJECT_URL);
   }
 
   /**
@@ -108,7 +109,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
 
   protected String getResourceBaseUrl() {
     return super.getBaseUrl() + settings.getString(Consts.APP_PROJECTS_URL) + "/" + projectId
-        + settings.getString(Consts.APP_RESOURCES_URL);
+      + settings.getString(Consts.APP_RESOURCES_URL);
   }
 
   /**
@@ -125,7 +126,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     create(formProject);
 
     retrieve(formProject);
-    
+
     retrieveByName(formProject);
 
     update(formProject);
@@ -273,7 +274,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       RIAPUtils.exhaust(result);
     }
   }
-  
+
   private void retrieveByName(FormProject formProject) {
     String url = getBaseUrl();
     if (docAPI.isActive()) {
@@ -285,15 +286,15 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       Reference ref = new Reference(url);
       ref.addQueryParameter("query", "A form project");
       ClientResource cr = new ClientResource(ref);
-      
+
       Representation result = cr.get(getMediaTest());
-      
+
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
       Response response = getResponse(getMediaTest(), result, FormProject.class, true);
       assertTrue(response.getSuccess());
       assertEquals(new Integer(1), response.getTotal());
-      
+
       RIAPUtils.exhaust(result);
     }
   }
@@ -358,9 +359,9 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     assertParameterValue(dtoServiceSearch.getParameters(), "dictionary", formProjectOut.getDictionary().getId());
     assertParameterValue(dtoServiceSearch.getParameters(), "collection", formProjectOut.getCollection().getId());
     assertParameterValue(dtoServiceSearch.getParameters(), "nbThreads",
-        settings.getString(Consts.DEFAULT_THREAD_POOL_SIZE));
+      settings.getString(Consts.DEFAULT_THREAD_POOL_SIZE));
     assertParameterValue(dtoServiceSearch.getParameters(), "nbDatasetsMax", formProjectOut.getNbDatasetsMax()
-        .toString());
+      .toString());
 
     // PROPERTIES SERVICE
     String idServiceProperties = formProjectOut.getIdServicePropertiesSearch();
@@ -466,6 +467,8 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       }
 
       if (isArray) {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
         if (media.equals(MediaType.APPLICATION_JSON)) {
           xstream.addImplicitCollection(Response.class, "data", dataClass);
         }
@@ -551,7 +554,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
    * @return Response
    */
   public static Response getResponseResourceModelDTO(MediaType media, Representation representation,
-      Class<?> dataClass, boolean isArray) {
+    Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
         Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
