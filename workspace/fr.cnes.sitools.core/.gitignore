@@ -10,3 +10,4 @@ startSitools.bat
 startSitools.sh
 logs/
 documentation/
+build/javadoc/

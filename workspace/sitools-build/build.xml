@@ -44,6 +44,8 @@
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<target name="build" depends="init, export, izpack, javadoc, file-list, tar-gz, checksum" description="Création d'une distribution" />
 
+	<target name="build-git" depends="export-git, izpack, javadoc, file-list-git, tar-gz, checksum" description="Création d'une distribution" />
+
 
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -122,6 +124,21 @@
 		<echo message="workspace exported"/>
 		<echo message="SVN export from branch/tag ${repos.new.revision} done"/>
 
+	</target>
+	
+	<target name="export-git" description="Tache GIT d'export de la version actuelle">
+		<exec executable="scripts/clone-tag.bat" osfamily="windows">
+			<arg value="${sitools.git.repository.url}"/>
+			<arg value="${distribution.dir}"/>
+			<arg value="${sitools.project.tag}"/>
+		</exec>
+		
+		<exec executable="scripts/clone-tag.sh" osfamily="unix">
+			<arg value="${sitools.git.repository.url}"/>
+			<arg value="${distribution.dir}"/>
+			<arg value="${sitools.project.tag}"/>
+		</exec>
+		
 	</target>
 
 
@@ -406,6 +423,22 @@
 		<echo message="Files : &#x0A;${list}" append="true" file="${distribution.dir}/list-file.txt"/>
 
 	</target>
+	
+	
+	<target name="file-list-git" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
+			<exec executable="scripts/diff-files.bat" osfamily="windows">
+				<arg value="${sitools.Version.reference}"/>
+				<arg value="${sitools.Version.tag}"/>
+				<arg value="${distribution.dir}"/>
+			</exec>
+			
+			<exec executable="scripts/diff-files.sh" osfamily="unix">
+				<arg value="${sitools.Version.reference}"/>
+				<arg value="${sitools.Version.tag}"/>
+				<arg value="${distribution.dir}"/>
+			</exec>
+			
+		</target>
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Target for archive creation
@@ -457,10 +490,11 @@
 		<mkdir dir="${distribution.dir}/documentation"/>
 		<mkdir dir="${distribution.dir}/documentation/javadoc"/>
 		<javadoc 
-			access="private" 
 			destdir="${distribution.dir}/documentation/javadoc"
 			packagenames="fr.cnes.sitools.*"
-			sourcepathref="javadoc" author="true" public="true"
+			sourcepathref="javadoc"
+			author="true"
+			public="true"
 			version="true" use="true" windowtitle="${project.fullname} ${project.version}"
 			doctitle="${project.fullname} ${project.version}"
 			bottom="Copyright &amp;copy; ${year} ${owner}. All Rights Reserved.">
@@ -473,6 +507,7 @@
 				<path>
 					<fileset dir="${distribution.dir}/workspace/libraries">
 						<include name="**/*.jar"/>
+						<exclude name="org.apache.solr_3.1.0/*.jar"/>
 					</fileset>
 				</path>
 				<path>

@@ -674,10 +674,17 @@
 	<mkdir dir="${out.javadoc.dir}/sources" />
 
 	<!-- Generation de la javadoc du projet -->
-	<javadoc sourcepathref="javadoc" packagenames="${project.packagenames}.*"
-		destdir="${out.javadoc.dir}/sources" author="true" public="true"
-		version="true" use="true" windowtitle="${project.fullname} ${project.version}"
-		doctitle="${project.fullname} ${project.version}" bottom="Copyright &amp;copy; ${year} ${owner}. All Rights Reserved.">
+	<javadoc 
+		sourcepathref="javadoc" 
+		packagenames="${project.packagenames}.*"
+		destdir="${out.javadoc.dir}/sources" 
+		author="true"
+		public="true"
+		version="true"
+		use="true"
+		windowtitle="${project.fullname} ${project.version}"
+		doctitle="${project.fullname} ${project.version}"
+		bottom="Copyright &amp;copy; ${year} ${owner}. All Rights Reserved.">
 		<classpath>
 			<path>
 				<fileset dir="${cots.dir}/restlet-2.0.5-patched">
