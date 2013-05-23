@@ -181,7 +181,7 @@ public final class MongoDBDataSourceResource extends AbstractDataSourceResource 
         }
       }
       catch (Exception e) {
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
 
       // Business service

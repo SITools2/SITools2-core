@@ -599,7 +599,7 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
         bds.close();
       }
       catch (SQLException e) {
-        e.printStackTrace();
+        LOG.log(Level.INFO, null, e);
       }
     }
   }

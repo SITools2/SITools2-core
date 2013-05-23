@@ -197,19 +197,7 @@ public final class DBRecordSetExportRepresentation {
         // Getting the headers
         // List<Column> cols = dsa.getDataSet().getColumnModel();
         List<Column> cols = this.datasetExplorerUtil.getAllColumnVisible();
-        String value = "";
-        for (Column col : cols) {
-          // if (col.isVisible()) {
-          commentLine += commentStart;
-          value = col.getColumnAlias() + " : ";
-          SitoolsUnit unit = col.getUnit();
-          if (unit != null && !"".equals(unit.getLabel())) {
-            value += "unit =" + unit.getLabel();
-          }
-          value += "\n";
-          commentLine += value;
-          // }
-        }
+        commentLine = getCsvCommentHeader(commentStart, commentLine, cols);
         arg0.write(commentLine.getBytes());
         arg0.flush();
       }
@@ -223,6 +211,32 @@ public final class DBRecordSetExportRepresentation {
       Logger.getLogger(this.getClass().getName()).severe(ioe.getMessage());
       return false;
     }
+  }
+
+  /**
+   * Get the csv comment header from a list of {@link Column}
+   * 
+   * @param commentStart
+   *          the commentStart
+   * @param commentLine
+   *          the commentLine
+   * @param cols
+   *          the list of {@link Column}
+   * @return the header
+   */
+  private String getCsvCommentHeader(String commentStart, String commentLine, List<Column> cols) {
+    String value = "";
+    for (Column col : cols) {
+      commentLine += commentStart;
+      value = col.getColumnAlias() + " : ";
+      SitoolsUnit unit = col.getUnit();
+      if (unit != null && !"".equals(unit.getLabel())) {
+        value += "unit =" + unit.getLabel();
+      }
+      value += "\n";
+      commentLine += value;
+    }
+    return commentLine;
   }
 
   /**

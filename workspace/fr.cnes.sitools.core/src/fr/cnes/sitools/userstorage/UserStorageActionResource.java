@@ -176,43 +176,7 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
         String[] toList = new String[] {user.getEmail()};
 
         if (storage.getStorage().getBusyUserSpace() > storage.getStorage().getQuota()) {
-          Mail mailToUser = new Mail();
-          mailToUser.setToList(Arrays.asList(toList));
-
-          // TODO EVOL : email subject should be a parameter
-          mailToUser.setSubject("Sitools quota");
-
-          // default body
-          mailToUser.setBody("Your quota exceeded:" + storage.getStorage().getBusyUserSpace() + " used / "
-              + storage.getStorage().getQuota() + " authorized");
-
-          // use a freemarker template for email body with Mail object
-          String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
-              + "mail.quota.exceeded.ftl";
-          Map<String, Object> root = new HashMap<String, Object>();
-          root.put("mail", mailToUser);
-          root.put("storage", storage);
-
-          TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
-
-          root.put("context", getContext());
-
-          String body = TemplateUtils.toString(templatePath, root);
-          if (Util.isNotEmpty(body)) {
-            mailToUser.setBody(body);
-          }
-          org.restlet.Response sendMailResponse = null;
-          try {
-            // riap request to MailAdministration application
-            Request request = new Request(Method.POST, RIAPUtils.getRiapBase()
-                + settings.getString(Consts.APP_MAIL_ADMIN_URL), new ObjectRepresentation<Mail>(mailToUser));
-
-            sendMailResponse = getContext().getClientDispatcher().handle(request);
-          }
-          catch (Exception e) {
-            getApplication().getLogger().warning("Failed to post message to user");
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-          }
+          org.restlet.Response sendMailResponse = sendMailQuotaExceeded(storage, toList);
           if (sendMailResponse.getStatus().isError()) {
             response = new Response(false, "userstorage.notify.error");
           }
@@ -237,6 +201,55 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "action.unknown");
     }
     return new EmptyRepresentation();
+  }
+
+  /**
+   * Send a mail to notify an user than is quota is exceeded
+   * 
+   * @param storage
+   *        th user storage
+   * @param toList
+   *        th user mail
+   * @return a {@link org.restlet.Response} mail 
+   */
+  private org.restlet.Response sendMailQuotaExceeded(UserStorage storage, String[] toList) {
+    Mail mailToUser = new Mail();
+    mailToUser.setToList(Arrays.asList(toList));
+    // TODO EVOL : email subject should be a parameter
+    mailToUser.setSubject("Sitools quota");
+
+    // default body
+    mailToUser.setBody("Your quota exceeded:" + storage.getStorage().getBusyUserSpace() + " used / "
+        + storage.getStorage().getQuota() + " authorized");
+
+    // use a freemarker template for email body with Mail object
+    String templatePath = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
+        + "mail.quota.exceeded.ftl";
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("mail", mailToUser);
+    root.put("storage", storage);
+
+    TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
+
+    root.put("context", getContext());
+
+    String body = TemplateUtils.toString(templatePath, root);
+    if (Util.isNotEmpty(body)) {
+      mailToUser.setBody(body);
+    }
+    org.restlet.Response sendMailResponse = null;
+    try {
+      // riap request to MailAdministration application
+      Request request = new Request(Method.POST, RIAPUtils.getRiapBase()
+          + getSettings().getString(Consts.APP_MAIL_ADMIN_URL), new ObjectRepresentation<Mail>(mailToUser));
+
+      sendMailResponse = getContext().getClientDispatcher().handle(request);
+    }
+    catch (Exception e) {
+      getApplication().getLogger().warning("Failed to post message to user");
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
+    return sendMailResponse;
   }
 
   @Override

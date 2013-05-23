@@ -210,7 +210,7 @@ public final class DataSetResource extends AbstractDataSetResource {
         application.detachDataSetDefinitif(datasetOutput);
       }
       catch (Exception e) {
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
 
       // Business service

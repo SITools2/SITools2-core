@@ -197,8 +197,9 @@ public final class ConverterStoreXML extends SitoolsStoreXML<ConverterChainedMod
       for (ConverterChainedModel converter : result) {
         if (null == converter.getName()) {
           result.remove(converter);
+          continue;
         }
-        if (converter.getName().toLowerCase().startsWith(filter.getQuery().toLowerCase())) {
+        if (!converter.getName().toLowerCase().startsWith(filter.getQuery().toLowerCase())) {
           if ((filter.getParent() != null) && !filter.getParent().equals(converter.getParent())) {
             result.remove(converter);
           }

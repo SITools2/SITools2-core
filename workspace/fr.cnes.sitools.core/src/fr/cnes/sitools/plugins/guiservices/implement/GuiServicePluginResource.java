@@ -75,7 +75,6 @@ public class GuiServicePluginResource extends AbstractGuiServicePluginResource {
 
     }
     catch (ResourceException e) {
-      e.printStackTrace();
       getLogger().log(Level.INFO, null, e);
       throw e;
     }

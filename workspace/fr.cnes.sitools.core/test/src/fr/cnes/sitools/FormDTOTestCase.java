@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -33,6 +34,7 @@ import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
+import org.restlet.data.Reference;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -161,6 +163,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     assertNone(form);
     create(form);
     retrieve(form);
+    retrieveByName(form);
     update(form);
     delete(form);
     assertNone(form);
@@ -276,6 +279,32 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     assertEquals(form.getDescription(), item.getDescription());
     RIAPUtils.exhaust(result);
     cr.release();
+  }
+  
+  /**
+   * Invoke GET
+   * 
+   * @param item
+   *          FormDTO
+   */
+  public void retrieveByName(FormDTO item) {
+    
+    Reference ref = new Reference(String.format(getBaseUrl(), dataSetId));
+    ref.addQueryParameter("query", "name");
+    
+    ClientResource cr = new ClientResource(ref);
+    
+    Representation result = cr.get(MediaType.APPLICATION_JSON);
+       
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+
+    Response response = getResponse(MediaType.APPLICATION_JSON, result, FormDTO.class, true);
+    assertTrue(response.getSuccess());
+    assertEquals(new Integer(1), response.getTotal());
+    
+    RIAPUtils.exhaust(result);
+    cr.release();
 
   }
 
@@ -385,6 +414,8 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
 
       if (isArray) {
         xstream.addImplicitCollection(Response.class, "data", dataClass);
+        xstream.addImplicitCollection(FormDTO.class, "parameters", "parameters", ParameterDTO.class);
+        xstream.addImplicitCollection(ParameterDTO.class, "values", "values", ValueDTO.class);
       }
       else {
         xstream.alias("item", dataClass);

@@ -1,12 +1,13 @@
 package fr.cnes.sitools.common.task;
 
+import java.util.logging.Level;
+
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 
 /**
- * Task to dispatch a pre-build request in asynchronous mode. <b/>
- * Requests must have all ChallengeResponse set. <b/>
+ * Task to dispatch a pre-build request in asynchronous mode. <b/> Requests must have all ChallengeResponse set. <b/>
  * 
  * Initially created to meet the needs of mailing
  * 
@@ -56,7 +57,7 @@ public class RequestDispatcherTask implements Runnable {
     }
     catch (Exception e) {
       taskResponse = new fr.cnes.sitools.common.model.Response(false, "task.failed.exception");
-      e.printStackTrace();
+      context.getLogger().log(Level.INFO, null, e);
     }
   }
 

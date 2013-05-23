@@ -139,7 +139,6 @@ public final class FilterPluginResource extends AbstractFilterPluginResource {
 
     }
     catch (ResourceException e) {
-      e.printStackTrace();
       getLogger().log(Level.INFO, null, e);
       throw e;
     }

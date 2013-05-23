@@ -94,6 +94,7 @@ public final class FormStoreXML extends SitoolsStoreXML<Form> {
       for (Form form : result) {
         if (null == form.getName()) {
           result.remove(form);
+          continue;
         }
         if (form.getName().toLowerCase().startsWith(filter.getQuery().toLowerCase())) {
           if ((filter.getParent() != null) && !filter.getParent().equals(form.getParent())) {

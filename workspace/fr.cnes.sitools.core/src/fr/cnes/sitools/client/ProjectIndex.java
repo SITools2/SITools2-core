@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.data.LocalReference;
 import org.restlet.data.MediaType;
@@ -143,23 +144,23 @@ public final class ProjectIndex extends SitoolsResource {
       }
 
       // generate the index.html page with the opensearch informations
-//      
-//      
+      //
+      //
       Reference ref = LocalReference.createFileReference(application.getProjectIndexUrl());
       Configuration config = new Configuration();
       try {
-        config.setDirectoryForTemplateLoading(new File(application.getSettings().getStoreDIR(Consts.TEMPLATE_STORE_DIR)));
+        config
+            .setDirectoryForTemplateLoading(new File(application.getSettings().getStoreDIR(Consts.TEMPLATE_STORE_DIR)));
       }
       catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        getLogger().log(Level.INFO, null, e);
       }
-      
+
       Representation projectFtl = new ClientResource(ref).get();
 
       // Wraps the bean with a FreeMarker representation
       TemplateRepresentation result = new TemplateRepresentation(projectFtl, config, pid, MediaType.TEXT_HTML);
-      
+
       return result;
     }
     else {

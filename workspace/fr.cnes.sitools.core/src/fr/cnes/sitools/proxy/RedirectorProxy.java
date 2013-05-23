@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.proxy;
 
+import java.util.logging.Level;
+
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -71,7 +73,7 @@ public class RedirectorProxy extends Redirector implements WadlDescribable {
       super.handle(request, response);
     }
     catch (Exception e) {
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
   }
 

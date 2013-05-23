@@ -112,7 +112,7 @@ public final class GroupResource extends UsersAndGroupsResource implements fr.cn
     }
     catch (Exception e) {
       response = new Response(false, e.getMessage());
-      e.printStackTrace();
+      getLogger().log(Level.INFO, null, e);
     }
     return response;
   }

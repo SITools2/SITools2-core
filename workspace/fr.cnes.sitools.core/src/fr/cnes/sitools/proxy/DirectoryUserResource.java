@@ -21,6 +21,7 @@ package fr.cnes.sitools.proxy;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -93,8 +94,7 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
             FileUtils.cleanDirectory(new File(decodedPath), true);
           }
           catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            getLogger().log(Level.INFO, null, e);
           }
         }
         // END PATCH SITOOLS JPB
@@ -211,7 +211,7 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
       else {
         setIndexName(getDirectory().getIndexName());
       }
-      
+
       if (getClientDispatcher() == null) {
         getLogger().warning(
             "No client dispatcher is available on the context. Can't get the target URI: " + this.getTargetUri());
@@ -243,7 +243,7 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
               // Append the index name
               // PATCH SITOOLS TO PREVENT automatic index.html response
               if ((getIndexName() != null) && (getIndexName().length() > 0)) {
-              // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
+                // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
                 this.setDirectoryUri(this.getTargetUri());
                 // this.setBaseName(getDirectory().getIndexName());
                 this.setBaseName(getIndexName());
@@ -281,10 +281,10 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
           if (this.getTargetUri().endsWith("/")) {
             // In this case, the trailing "/" shows that the URI
             // must point to a directory
-            
+
             // PATCH SITOOLS TO PREVENT automatic index.html response
             if ((getIndexName() != null) && (getIndexName().length() > 0)) {
-            // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
+              // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
               this.setDirectoryUri(this.getTargetUri());
               this.setIfDirectoryTarget(true);
 
@@ -304,10 +304,10 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
             // Try to determine if this target URI with no trailing
             // "/" is a directory, in order to force the
             // redirection.
-            
+
             // PATCH SITOOLS TO PREVENT automatic index.html response
             if ((getIndexName() != null) && (getIndexName().length() > 0)) {
-            // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
+              // if ((getDirectory().getIndexName() != null) && (getDirectory().getIndexName().length() > 0)) {
               // Append the index name
               contextResponse = getRepresentation(this.getTargetUri() + "/" + getIndexName());
               // contextResponse = getRepresentation(this.getTargetUri() + "/" + getDirectory().getIndexName());
@@ -416,7 +416,8 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
         // PUBLIC HOST DOMAIN + proxyDirectory.getProxyAttachRef
         getReference().setBaseRef(
             publicHostDomain
-                + proxyDirectory.getProxyBaseRef().replace("{" + proxyDirectory.getUserAttribute() + "}", username) + "/files");
+                + proxyDirectory.getProxyBaseRef().replace("{" + proxyDirectory.getUserAttribute() + "}", username)
+                + "/files");
       }
     }
     // FIN SITOOLS
@@ -449,6 +450,3 @@ public final class DirectoryUserResource extends AbstractDirectoryServerResource
   }
 
 }
-
-
-  

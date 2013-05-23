@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.security.authorization;
 
+import java.io.IOException;
 import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
@@ -111,23 +112,8 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
   public Representation updateResourceAuthorization(Representation representation, Variant variant) {
     ResourceAuthorization authorizationOutput = null;
     try {
-      ResourceAuthorization authorizationInput = null;
       if (representation != null) {
-        if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-          // Parse the XML representation to get the bean
-          authorizationInput = new XstreamRepresentation<ResourceAuthorization>(representation).getObject();
-
-        }
-        else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-
-          authorizationInput = new JacksonRepresentation<ResourceAuthorization>(representation,
-              ResourceAuthorization.class).getObject();
-        }
-        else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
-          @SuppressWarnings("unchecked")
-          ObjectRepresentation<ResourceAuthorization> obj = (ObjectRepresentation<ResourceAuthorization>) representation;
-          authorizationInput = obj.getObject();
-        }
+        ResourceAuthorization authorizationInput = getAuthorizationFromMediaType(representation);
 
         // Business service
         if (authorizationInput.getAuthorizations() == null) {
@@ -186,6 +172,33 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
+  }
+
+  /**
+   * Instanciate a {@link ResourceAuthorization} from a {@link MediaType}
+   * 
+   * @param representation
+   *          the representation
+   * 
+   * @return a {@link ResourceAuthorization} corresponding to the right {@link MediaType}, null otherwise
+   * @throws IOException IOException
+   */
+  private ResourceAuthorization getAuthorizationFromMediaType(Representation representation) throws IOException {
+    ResourceAuthorization authorizationInput = null;
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      // Parse the XML representation to get the bean
+      authorizationInput = new XstreamRepresentation<ResourceAuthorization>(representation).getObject();
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      authorizationInput = new JacksonRepresentation<ResourceAuthorization>(representation, ResourceAuthorization.class)
+          .getObject();
+    }
+    else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<ResourceAuthorization> obj = (ObjectRepresentation<ResourceAuthorization>) representation;
+      authorizationInput = obj.getObject();
+    }
+    return authorizationInput;
   }
 
   @Override

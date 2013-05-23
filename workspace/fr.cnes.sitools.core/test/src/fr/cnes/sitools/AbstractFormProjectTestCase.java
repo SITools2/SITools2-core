@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.data.MediaType;
+import org.restlet.data.Reference;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
@@ -45,6 +46,7 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Resource;
+import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.form.project.model.FormParameter;
@@ -123,6 +125,8 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     create(formProject);
 
     retrieve(formProject);
+    
+    retrieveByName(formProject);
 
     update(formProject);
 
@@ -266,6 +270,30 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
 
       assertServices(formProjectOut);
 
+      RIAPUtils.exhaust(result);
+    }
+  }
+  
+  private void retrieveByName(FormProject formProject) {
+    String url = getBaseUrl();
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("identifier", "FormProject identifier");
+      retrieveDocAPI(url, "", parameters, getBaseUrl() + "/%identifier%");
+    }
+    else {
+      Reference ref = new Reference(url);
+      ref.addQueryParameter("query", "A form project");
+      ClientResource cr = new ClientResource(ref);
+      
+      Representation result = cr.get(getMediaTest());
+      
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = getResponse(getMediaTest(), result, FormProject.class, true);
+      assertTrue(response.getSuccess());
+      assertEquals(new Integer(1), response.getTotal());
+      
       RIAPUtils.exhaust(result);
     }
   }

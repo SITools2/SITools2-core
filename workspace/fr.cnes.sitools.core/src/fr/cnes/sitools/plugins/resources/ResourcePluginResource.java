@@ -132,7 +132,6 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
 
     }
     catch (ResourceException e) {
-      e.printStackTrace();
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
@@ -392,7 +391,7 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
 
         // Register ConverterChainedModel as observer of datasets resources
         unregisterObserver(resource);
-        
+
         // Add to dynamic list of resources
         SitoolsParameterizedApplication app = (SitoolsParameterizedApplication) ((ResourcePluginApplication) getApplication())
             .getSettings().getAppRegistry().getApplication(getParentId());
@@ -449,7 +448,7 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
       registry.reattachApplication(app);
     }
   }
-  
+
   /**
    * Add current Class description for comparison with stored application descriptions
    * 
