@@ -154,7 +154,13 @@ sitools.user.component.dataviews.cartoView.mapPanel = function (config) {
         region: "center",
         map: this.map,
         center: new OpenLayers.LonLat(5, 45),
-        zoom: 6
+        zoom: 6,
+        listeners : {
+            scope : this,
+            beforedestroy : function (panel) {
+                this.map.layers.clear();
+            }
+        }
 	}));    
 
 };

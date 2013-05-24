@@ -203,7 +203,7 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 	word-spacing:	0;
 	line-height:	20px;
 	text-align:	start;
-	vertical-align:	;
+	/*vertical-align:	;*/
 	direction:	ltr;
 	text-overflow:	clip;
 	padding-left: 5px;
