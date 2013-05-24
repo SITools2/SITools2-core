@@ -63,7 +63,26 @@ sitools.user.modules.projectServices = function () {
         }, {
             name : 'behavior',
             type : 'string'
-        } ]
+        }, {
+            name : 'image',
+            type : 'string'
+        } ],
+        listeners : {
+            scope : this,
+            load : function (store, records, options) {
+                Ext.each(records, function (record) {
+                    var parameters = record.get("parameters");
+                    if (!Ext.isEmpty(parameters)) {
+                        Ext.each(parameters, function (parameter) {
+                            if (parameter.name === "image") {
+                                record.set("image", parameter.value);
+                                return;
+                            }
+                        }, this);
+                    }
+                }, this);
+            }
+        }
     });
 
     this.cm = new Ext.grid.ColumnModel({
@@ -73,6 +92,17 @@ sitools.user.modules.projectServices = function () {
         // columns are not sortable by default
         },
         columns : [ {
+            header : i18n.get('label.icon'),
+            dataIndex : 'image',
+            width : 25,
+            sortable : false,
+            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                if (!Ext.isEmpty(value)) {
+                    value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
+                }
+                return value;
+            }
+        }, {
             header : i18n.get('label.name'),
             dataIndex : 'name',
             width : 150

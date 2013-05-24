@@ -27,32 +27,32 @@ import fr.cnes.sitools.common.model.ExtensionParameter;
 
 /**
  * Class for parameters of resources
- *
+ * 
  * @author m.marseille (AKKA Technologies)
  */
 @XStreamAlias("resourceParameter")
 public final class ResourceParameter extends ExtensionParameter {
-  
+
   /**
    * Type of the parameter
    */
   private ResourceParameterType type;
-  
+
   /**
    * An object can be useful at runtime for dynamic parameters
    */
   private Object valueObject;
-  
+
   /**
    * To know if the user should update this parameter
    */
   private Boolean userUpdatable;
-  
+
   /**
    * sequence in order to sort parameters in a collection/map
    */
   private int sequence;
-  
+
   /**
    * Constructor
    */
@@ -60,10 +60,12 @@ public final class ResourceParameter extends ExtensionParameter {
     super();
     this.type = ResourceParameterType.PARAMETER_ATTACHMENT;
   }
-  
+
   /**
    * Constructor by copy
-   * @param clone ResourceParameter
+   * 
+   * @param clone
+   *          ResourceParameter
    */
   public ResourceParameter(ResourceParameter clone) {
     super();
@@ -74,22 +76,29 @@ public final class ResourceParameter extends ExtensionParameter {
     this.setValue(clone.getValue());
     this.setValueObject(clone.getValueObject());
     this.setUserUpdatable(clone.getUserUpdatable());
+    this.setSequence(clone.getSequence());
   }
-  
+
   /**
    * Constructor
-   * @param name the name of the parameter
-   * @param description the description of the parameter
-   * @param type the type of the parameter
+   * 
+   * @param name
+   *          the name of the parameter
+   * @param description
+   *          the description of the parameter
+   * @param type
+   *          the type of the parameter
    */
   public ResourceParameter(String name, String description, ResourceParameterType type) {
     super(name, description);
     this.type = type;
   }
-  
+
   /**
    * Sets the value of type
-   * @param type the type to set
+   * 
+   * @param type
+   *          the type to set
    */
   public void setType(ResourceParameterType type) {
     this.type = type;
@@ -97,6 +106,7 @@ public final class ResourceParameter extends ExtensionParameter {
 
   /**
    * Gets the type value
+   * 
    * @return the type
    */
   public ResourceParameterType getType() {
@@ -105,6 +115,7 @@ public final class ResourceParameter extends ExtensionParameter {
 
   /**
    * Gets the object value
+   * 
    * @return the object
    */
   public Object getValueObject() {
@@ -113,7 +124,9 @@ public final class ResourceParameter extends ExtensionParameter {
 
   /**
    * Sets the object
-   * @param valueObject the object to set
+   * 
+   * @param valueObject
+   *          the object to set
    */
   public void setValueObject(Object valueObject) {
     this.valueObject = valueObject;
@@ -121,6 +134,7 @@ public final class ResourceParameter extends ExtensionParameter {
 
   /**
    * Gets the userUpdatable value
+   * 
    * @return the userUpdatable
    */
   public Boolean getUserUpdatable() {
@@ -129,7 +143,9 @@ public final class ResourceParameter extends ExtensionParameter {
 
   /**
    * Sets the value of userUpdatable
-   * @param userUpdatable the userUpdatable to set
+   * 
+   * @param userUpdatable
+   *          the userUpdatable to set
    */
   public void setUserUpdatable(Boolean userUpdatable) {
     this.userUpdatable = userUpdatable;
@@ -137,6 +153,7 @@ public final class ResourceParameter extends ExtensionParameter {
 
   /**
    * Gets the sequence value
+   * 
    * @return the sequence
    */
   public int getSequence() {
@@ -145,11 +162,12 @@ public final class ResourceParameter extends ExtensionParameter {
 
   /**
    * Sets the value of sequence
-   * @param sequence the sequence to set
+   * 
+   * @param sequence
+   *          the sequence to set
    */
   public void setSequence(int sequence) {
     this.sequence = sequence;
   }
 
-  
 }

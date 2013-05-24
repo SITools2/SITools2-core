@@ -66,7 +66,7 @@ public class ListPluginExpositionResource extends AbstractPluginExpositionResour
     ArrayList<ResourceModelDTO> resourcesList = new ArrayList<ResourceModelDTO>();
 
     Collection<ResourceModel> resourcesListObjet = ((SitoolsParameterizedApplication) getApplication()).getModelMap()
-        .values();
+      .values();
 
     if (resourcesListObjet != null) {
       for (Iterator<ResourceModel> it = resourcesListObjet.iterator(); it.hasNext();) {

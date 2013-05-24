@@ -19,7 +19,11 @@
 package fr.cnes.sitools.plugins.resources;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -36,6 +40,7 @@ import fr.cnes.sitools.common.AbstractPluginResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.ExtensionModel;
+import fr.cnes.sitools.common.model.ExtensionParameter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
@@ -85,8 +90,6 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
     parentId = (String) this.getRequest().getAttributes().get("parentId");
 
     resourcePluginId = ((String) this.getRequest().getAttributes().get("resourcePluginId"));
-    
-
 
   }
 
@@ -151,7 +154,7 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       JacksonRepresentation<ResourceModelDTO> json = new JacksonRepresentation<ResourceModelDTO>(representation,
-          ResourceModelDTO.class);
+        ResourceModelDTO.class);
       resourceInputDTO = json.getObject();
     }
     return resourceInputDTO;
@@ -173,7 +176,7 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
     RestletObserver observer = new RestletObserver();
     // passage RIAP
     String uriToNotify = RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_APPLICATIONS_URL) + "/"
-        + input.getParent() + getSitoolsSetting(Consts.APP_RESOURCES_URL) + "/" + input.getId() + "/notify";
+      + input.getParent() + getSitoolsSetting(Consts.APP_RESOURCES_URL) + "/" + input.getId() + "/notify";
     observer.setUriToNotify(uriToNotify);
     observer.setMethodToNotify("PUT");
     observer.setUuid("ResourceModel." + input.getId());
@@ -309,6 +312,10 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
     // current.setCurrentClassAuthor(resource.getCurrentClassVersion());
     // current.setCurrentClassVersion(resource.getCurrentClassVersion());
     // parametersMap
+    int sequenceNumber = 1;
+    for (ResourceParameter parameter : resource.getParameters()) {
+      parameter.setSequence(sequenceNumber++);
+    }
     current.setParametersMap(fromListToMap(resource.getParameters()));
     current.setDescriptionAction(resource.getDescriptionAction());
     // specific ResourceModelDTO attributes

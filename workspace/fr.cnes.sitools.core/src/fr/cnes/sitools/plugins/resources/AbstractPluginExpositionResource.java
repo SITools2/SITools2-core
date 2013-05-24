@@ -2,6 +2,8 @@ package fr.cnes.sitools.plugins.resources;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -75,6 +77,12 @@ public abstract class AbstractPluginExpositionResource extends SitoolsResource {
     for (ResourceParameter resourceParameter : values) {
       parameters.add(new ResourceParameter(resourceParameter));
     }
+    Collections.sort(parameters, new Comparator<ResourceParameter>() {
+      @Override
+      public int compare(ResourceParameter o1, ResourceParameter o2) {
+        return new Integer(o1.getSequence()).compareTo(o2.getSequence());
+      }
+    });
     return parameters;
   }
 

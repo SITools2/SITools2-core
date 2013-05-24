@@ -278,6 +278,13 @@ sitools.admin.resourcesPlugins.resourcesPluginsProp = Ext.extend(Ext.Window, {
 					type : "boolean"
                 }]
             }), 
+            tbar : {
+                xtype : 'sitools.widget.GridSorterToolbar',
+                defaults : {
+                    scope : this
+                }
+            },
+            sm : new Ext.grid.RowSelectionModel(),
             bbar : new Ext.ux.StatusBar({
                 id: 'statusBar',
                 hidden : true,
@@ -287,14 +294,13 @@ sitools.admin.resourcesPlugins.resourcesPluginsProp = Ext.extend(Ext.Window, {
             cm : new Ext.grid.ColumnModel({
                 // specify any defaults for each column
                 defaults : {
-                    sortable : true
+                    sortable : false
                 // columns are not sortable by default
                 },
                 columns : [expanderGridFieldMapping, {
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
-                    width : 100,
-                    sortable : true
+                    width : 100
                 }/*, {
                     header : i18n.get('label.description'),
                     dataIndex : 'description',
@@ -303,13 +309,11 @@ sitools.admin.resourcesPlugins.resourcesPluginsProp = Ext.extend(Ext.Window, {
                 }*/, {
                     header : i18n.get('label.type'),
                     dataIndex : 'type',
-                    width : 150,
-                    sortable : false
+                    width : 150
                 }, {
                     header : i18n.get('label.value'),
                     dataIndex : 'value',
                     width : 230,
-                    sortable : false,
                     editable : true,
                     editor : new Ext.form.TextField()
                 }, userUpdatable ]
@@ -606,7 +610,7 @@ sitools.admin.resourcesPlugins.resourcesPluginsProp = Ext.extend(Ext.Window, {
                     store.add(recTmp);
                 }
             }
-            store.sort('name', 'ASC');
+//            store.sort('name', 'ASC');
         }
     },
 

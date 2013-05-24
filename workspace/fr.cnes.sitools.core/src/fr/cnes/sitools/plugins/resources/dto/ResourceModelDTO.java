@@ -19,6 +19,9 @@
 package fr.cnes.sitools.plugins.resources.dto;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import fr.cnes.sitools.common.dto.ExtensionModelDTO;
 import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
@@ -61,6 +64,7 @@ public class ResourceModelDTO extends ExtensionModelDTO<ResourceParameter> {
    * The behavior when using the resource in Sitools IHM
    */
   private ResourceBehaviorType behavior = ResourceBehaviorType.DISPLAY_IN_NEW_TAB;
+
   /**
    * Gets the parent value
    * 
@@ -139,6 +143,7 @@ public class ResourceModelDTO extends ExtensionModelDTO<ResourceParameter> {
 
   /**
    * Gets the behavior value
+   * 
    * @return the behavior
    */
   public ResourceBehaviorType getBehavior() {
@@ -147,7 +152,9 @@ public class ResourceModelDTO extends ExtensionModelDTO<ResourceParameter> {
 
   /**
    * Sets the value of behavior
-   * @param behavior the behavior to set
+   * 
+   * @param behavior
+   *          the behavior to set
    */
   public void setBehavior(ResourceBehaviorType behavior) {
     this.behavior = behavior;
@@ -172,7 +179,17 @@ public class ResourceModelDTO extends ExtensionModelDTO<ResourceParameter> {
     current.setClassOwner(resource.getClassOwner());
     // current.setCurrentClassAuthor(resource.getCurrentClassVersion());
     // current.setCurrentClassVersion(resource.getCurrentClassVersion());
-    current.setParameters(new ArrayList<ResourceParameter>(resource.getParametersMap().values()));
+
+    List<ResourceParameter> parameters = new ArrayList<ResourceParameter>(resource.getParametersMap().values());
+    Collections.sort(parameters, new Comparator<ResourceParameter>() {
+
+      @Override
+      public int compare(ResourceParameter o1, ResourceParameter o2) {
+        return new Integer(o1.getSequence()).compareTo(o2.getSequence());
+      }
+    });
+
+    current.setParameters(parameters);
     current.setDescriptionAction(resource.getDescriptionAction());
     // specific ResourceModelDTO attributes
     current.setApplicationClassName(resource.getApplicationClassName());
@@ -185,5 +202,4 @@ public class ResourceModelDTO extends ExtensionModelDTO<ResourceParameter> {
 
     return current;
   }
-
 }
