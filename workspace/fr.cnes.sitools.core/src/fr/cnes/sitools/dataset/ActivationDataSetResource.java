@@ -93,12 +93,12 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         }
 
         if (this.getReference().toString().endsWith("start")) {
-          this.startDataset(ds);
+          response = this.startDataset(ds);
           break;
         }
 
         if (this.getReference().toString().endsWith("stop")) {
-          this.stopDataset(ds);
+          response = this.stopDataset(ds);
           break;
         }
 
