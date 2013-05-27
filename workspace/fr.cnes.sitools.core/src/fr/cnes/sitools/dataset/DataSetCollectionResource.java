@@ -21,6 +21,7 @@ package fr.cnes.sitools.dataset;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.restlet.data.Status;
@@ -33,6 +34,7 @@ import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.notification.model.Notification;
 
@@ -79,6 +81,15 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
       // to prevent illegal status like "ACTIVE"
       datasetInput.setStatus("NEW");
       datasetInput.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
+
+      // attribution d'un id par défaut à chaque colonne.
+      if (datasetInput.getColumnModel() != null) {
+        for (Column column : datasetInput.getColumnModel()) {
+          if ((column.getId() == null) || column.getId().equals("")) {
+            column.setId(UUID.randomUUID().toString());
+          }
+        }
+      }
 
       // Business service
       DataSet datasetOutput = store.create(datasetInput);
