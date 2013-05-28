@@ -16,6 +16,6 @@
     <css/>
   </dependencies>
   <priority>1</priority>
-  <dataSetSelection>ALL</dataSetSelection>
+  <dataSetSelection>MULTIPLE</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
 </guiService>
