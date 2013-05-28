@@ -639,9 +639,6 @@ sitools.admin.datasets.DicoMapping = Ext.extend(Ext.Window, {
      * @param {} dictionaryMapping
      */
     loadMappingData : function (dictionaryMapping) {
-        var defaultDico = (dictionaryMapping.defaultDico === true) ? true : false;
-        this.checkboxDefaultDictionary.setValue(defaultDico);
-        
         this.isModified = false;
         this.comboDictionaries.enable();
         
@@ -651,28 +648,32 @@ sitools.admin.datasets.DicoMapping = Ext.extend(Ext.Window, {
         var storeGridMapping = this.gridMapping.getStore();
         storeGridMapping.removeAll();
         
-        var mappings = dictionaryMapping.mapping;
-        if (Ext.isEmpty(mappings)) {
-            return;
-        }
-        Ext.each(mappings, function (mapDetails) {
-            var column = storeColumn.getById(mapDetails.columnId);
-            var concept = storeConcept.getById(mapDetails.conceptId);
-            
-            var idNewRec = column.get('columnAlias') + concept.get('id');
-            
-            var rec = {
-                idMapping : idNewRec,
-                columnAlias : column.get('columnAlias'),
-                columnId : column.get('id')
-            };
-            Ext.iterate(concept.data, function (key, value) {
-                rec[key] = value;
+        if (!Ext.isEmpty(dictionaryMapping)) {
+            var defaultDico = (dictionaryMapping.defaultDico === true) ? true : false;
+            this.checkboxDefaultDictionary.setValue(defaultDico);
+            var mappings = dictionaryMapping.mapping;
+            if (Ext.isEmpty(mappings)) {
+                return;
+            }
+            Ext.each(mappings, function (mapDetails) {
+                var column = storeColumn.getById(mapDetails.columnId);
+                var concept = storeConcept.getById(mapDetails.conceptId);
+                
+                var idNewRec = column.get('columnAlias') + concept.get('id');
+                
+                var rec = {
+                        idMapping : idNewRec,
+                        columnAlias : column.get('columnAlias'),
+                        columnId : column.get('id')
+                };
+                Ext.iterate(concept.data, function (key, value) {
+                    rec[key] = value;
+                });
+                storeGridMapping.add(new Ext.data.Record(rec, rec.idMapping));                     
+                
             });
-            storeGridMapping.add(new Ext.data.Record(rec, rec.idMapping));                     
-            
-        });
-        storeGridMapping.sort();
+            storeGridMapping.sort();
+        }
     },
     
     /**

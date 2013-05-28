@@ -213,7 +213,6 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
      * Overriden to clear header sort state
      */
     clearSelections : function (fast) {
-        console.log("clear selections");
         if (this.isLocked()) {
             return;
         }
@@ -240,7 +239,6 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
      * {@link Ext.grid.AbstractSelectionModel#isLocked is not locked}.
      */
     selectAll : function () {
-        console.log("selectAll");
         this.clearSelections();
         this.markAll = true;
 
