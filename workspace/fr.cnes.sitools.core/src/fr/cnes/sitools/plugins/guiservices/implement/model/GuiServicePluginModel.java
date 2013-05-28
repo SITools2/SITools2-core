@@ -24,6 +24,9 @@ public class GuiServicePluginModel extends GuiServiceModel {
   /** description of what the guiservice plugin does */
   private String descriptionAction;
 
+  /** the gui service version, used only for client */
+  private String currentGuiServiceVersion;
+
   /**
    * The list of parameters and their values
    */
@@ -84,6 +87,22 @@ public class GuiServicePluginModel extends GuiServiceModel {
    */
   public void setParameters(List<Property> parameters) {
     this.parameters = parameters;
+  }
+
+  /**
+   * Gets the currentGuiServiceVersion value
+   * @return the currentGuiServiceVersion
+   */
+  public String getCurrentGuiServiceVersion() {
+    return currentGuiServiceVersion;
+  }
+
+  /**
+   * Sets the value of currentGuiServiceVersion
+   * @param currentGuiServiceVersion the currentGuiServiceVersion to set
+   */
+  public void setCurrentGuiServiceVersion(String currentGuiServiceVersion) {
+    this.currentGuiServiceVersion = currentGuiServiceVersion;
   }
 
 }

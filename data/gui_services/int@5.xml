@@ -1,16 +1,19 @@
 <guiService>
-  <id>8c48e76b-7ce4-4af1-8c4e-a120e47d5ed8</id>
-  <name>Sorter Tool</name>
-  <description>a GUI service to sort</description>
-  <label>label.multiSort</label>
+  <id>31615731-6d95-43a4-9d90-2c03816bded3</id>
+  <name>Columns Definition</name>
+  <description>retrieve the columns definition for a dataset</description>
+  <label>label.definitionTitle</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
-  <xtype>sitools.user.component.dataviews.services.sorterService</xtype>
+  <icon>/sitools/common/res/images/icons/tree_dictionary.png</icon>
+  <xtype>sitools.user.component.dataviews.services.columnsDefinitionService</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/datasetServices/sorterService.js</url>
+        <url>/sitools/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/components/datasetServices/columnsDefinitionService.js</url>
       </url>
     </js>
     <css/>

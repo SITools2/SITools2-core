@@ -1,21 +1,21 @@
 <guiService>
-  <id>2f98aeef-238e-4571-8373-206868f3c43b</id>
-  <name>Download Service</name>
-  <description>a GUI Service to dowload a selection of data</description>
-  <label>label.downloadFile</label>
+  <id>fb778415-7c64-41bb-9f55-be719e6ebc12</id>
+  <name>Filter Tool</name>
+  <description>a filter tool for dataset</description>
+  <label>label.filter</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <icon>/sitools/common/res/images/icons/add_request.png</icon>
-  <xtype>sitools.user.component.dataviews.services.downloadService</xtype>
+  <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
+  <xtype>sitools.user.component.dataviews.services.filterService</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/datasetServices/downloadService.js</url>
+        <url>/sitools/client-user/js/components/datasetServices/filterService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
-  <priority>1</priority>
-  <dataSetSelection>MULTIPLE</dataSetSelection>
+  <priority>3</priority>
+  <dataSetSelection>NONE</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
 </guiService>

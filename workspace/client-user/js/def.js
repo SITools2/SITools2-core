@@ -37,7 +37,6 @@ var DEFAULT_WINORDER_WIDTH = 400;
 var DEFAULT_ORDER_FOLDER = "dataSelection";
 var DEFAULT_PREFERENCES_FOLDER = "preferences";
 var DEFAULT_LIVEGRID_BUFFER_SIZE = 300; 
-var WARNING_NB_RECORDS_PLOT = 10000;
 var URL_CGU = "/sitools/res/licences/cgu.html";
 var COOKIE_DURATION = 20;
 var MULTIDS_TIME_DELAY = 2000;

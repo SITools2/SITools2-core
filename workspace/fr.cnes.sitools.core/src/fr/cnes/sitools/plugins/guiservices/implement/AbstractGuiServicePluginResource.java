@@ -22,6 +22,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
+import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -68,6 +69,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
 
     if (getGuiServicePluginId() != null) {
       GuiServicePluginModel guiService = getStore().retrieve(getGuiServicePluginId());
+      addCurrentGuiServiceModelDescription(guiService);
       Response response = new Response(true, guiService, GuiServicePluginModel.class, "guiServicePlugin");
       return getRepresentation(response, variant);
     }
@@ -84,7 +86,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
       }
       int total = guiServicePluginArray.size();
       guiServicePluginArray = getStore().getPage(filter, guiServicePluginArray);
-
+      addCurrentGuiServiceModelDescription(guiServicePluginArray);
       Response response = new Response(true, guiServicePluginArray, GuiServicePluginModel.class, "guiServicePlugins");
       response.setTotal(total);
       return getRepresentation(response, variant);
@@ -104,7 +106,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
   public final Representation getRepresentation(Response response, MediaType media) {
     getLogger().info(media.toString());
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)
-        || media.isCompatible(SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL)) {
+      || media.isCompatible(SitoolsMediaType.APPLICATION_JAVA_OBJECT_SITOOLS_MODEL)) {
       return new ObjectRepresentation<Response>(response);
     }
 
@@ -136,7 +138,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the GuiService bean
       XstreamRepresentation<GuiServicePluginModel> repXML = new XstreamRepresentation<GuiServicePluginModel>(
-          representation);
+        representation);
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
       xstream.autodetectAnnotations(false);
       xstream.alias("guiServicePlugin", GuiServicePluginModel.class);
@@ -146,7 +148,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       projectModuleInput = new JacksonRepresentation<GuiServicePluginModel>(representation, GuiServicePluginModel.class)
-          .getObject();
+        .getObject();
     }
     return projectModuleInput;
   }
@@ -167,7 +169,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
     RestletObserver observer = new RestletObserver();
     // passage RIAP
     String uriToNotify = RIAPUtils.getRiapBase() + getSitoolsSetting(Consts.APP_DATASETS_URL) + "/" + input.getParent()
-        + getSitoolsSetting(Consts.APP_GUI_SERVICES_URL) + "/" + input.getId() + "/notify";
+      + getSitoolsSetting(Consts.APP_GUI_SERVICES_URL) + "/" + input.getId() + "/notify";
     observer.setUriToNotify(uriToNotify);
     observer.setMethodToNotify("PUT");
     observer.setUuid("GuiServicePlugin." + input.getId());
@@ -189,6 +191,62 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
       return;
     }
     notificationManager.removeObserver(input.getParent(), "GuiServicePlugin." + input.getId());
+  }
+
+  /**
+   * Add the current {@link GuiServiceModel} version to the given List of {@link GuiServicePluginModel}
+   * 
+   * @param guiServicePluginArray
+   *          a {@link List} of {@link GuiServicePluginModel}
+   */
+  private void addCurrentGuiServiceModelDescription(List<GuiServicePluginModel> guiServicePluginArray) {
+    List<GuiServiceModel> serviceModels = RIAPUtils.getListOfObjects(
+      getSettings().getString(Consts.APP_GUI_SERVICES_URL), getContext());
+    for (GuiServicePluginModel guiServicePluginModel : guiServicePluginArray) {
+      addCurrentGuiServiceModelDescription(guiServicePluginModel, serviceModels);
+    }
+
+  }
+
+  /**
+   * Add the current {@link GuiServiceModel} version to the {@link GuiServicePluginModel}
+   * 
+   * @param guiService
+   *          a {@link GuiServicePluginModel}
+   */
+  private void addCurrentGuiServiceModelDescription(GuiServicePluginModel guiService) {
+    if (guiService != null) {
+      List<GuiServiceModel> serviceModels = RIAPUtils.getListOfObjects(
+        getSettings().getString(Consts.APP_GUI_SERVICES_URL), getContext());
+      addCurrentGuiServiceModelDescription(guiService, serviceModels);
+    }
+  }
+
+  /**
+   * Add the current {@link GuiServiceModel} version to the {@link GuiServicePluginModel}
+   * 
+   * @param guiService
+   *          a {@link GuiServicePluginModel}
+   * @param serviceModels
+   *          the list of {@link GuiServiceModel} to get the version from
+   */
+  private void addCurrentGuiServiceModelDescription(GuiServicePluginModel guiService,
+    List<GuiServiceModel> serviceModels) {
+    GuiServiceModel guiServiceModel = null;
+
+    for (GuiServiceModel model : serviceModels) {
+      if (model.getXtype().equals(guiService.getXtype())) {
+        guiServiceModel = model;
+        break;
+      }
+    }
+
+    if (guiServiceModel != null) {
+      guiService.setCurrentGuiServiceVersion(guiServiceModel.getVersion());
+    }
+    else {
+      guiService.setCurrentGuiServiceVersion("GUI_SERVICE_MODEL_NOT_FOUND");
+    }
   }
 
   /**

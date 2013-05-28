@@ -18,7 +18,7 @@
 ***************************************/
 /*global Ext, sitools, projectGlobal, commonTreeUtils, showResponse, DEFAULT_PREFERENCES_FOLDER, 
  document, i18n, $, Flotr, userLogin, SitoolsDesk, sql2ext, loadUrl,
- SITOOLS_DATE_FORMAT, SITOOLS_DEFAULT_IHM_DATE_FORMAT, DEFAULT_LIVEGRID_BUFFER_SIZE, WARNING_NB_RECORDS_PLOT*/
+ SITOOLS_DATE_FORMAT, SITOOLS_DEFAULT_IHM_DATE_FORMAT, DEFAULT_LIVEGRID_BUFFER_SIZE*/
 /*
  * @include "../viewDataDetail/viewDataDetail.js"
  * @include "../../sitoolsProject.js"
@@ -33,6 +33,7 @@
 
 Ext.namespace('sitools.user.component');
 
+var WARNING_NB_RECORDS_PLOT = 10000;
 /**
  * @cfg {String} dataUrl the dataset url attachment
  * @cfg {} columnModel the dataset's column model
@@ -403,12 +404,17 @@ sitools.user.component.dataPlotter = function (config) {
             scope : this, 
 			click : function (button, e) {
                 var form = this.leftPanel.getForm();
-                var pageSize = form.findField("nbRecords").getValue();
+                var pageSize;
+                if (!this.isSelection) {
+                    pageSize = form.findField("nbRecords").getValue();
+                } else {
+                    pageSize = this.selectionSize;
+                }
                 
-                if (pageSize > WARNING_NB_RECORDS_PLOT) {   
+                if (pageSize > this.maxWarningRecords) {   
                     Ext.Msg.show({
 						title: i18n.get("label.warning"),
-						msg: String.format(i18n.get("label.plot.toManyRecordsAsked"), pageSize, WARNING_NB_RECORDS_PLOT) ,
+						msg : String.format(i18n.get("label.plot.toManyRecordsAsked"), pageSize, this.maxWarningRecords),
 						buttons: Ext.Msg.YESNO,
 						icon: Ext.MessageBox.WARNING,
 						scope : this,

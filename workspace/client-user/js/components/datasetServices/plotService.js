@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, loadUrl, extColModelToStorage, SitoolsDesk*/
+/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, loadUrl, extColModelToStorage, SitoolsDesk, WARNING_NB_RECORDS_PLOT*/
 
 Ext.namespace('sitools.user.component.dataviews.services');
 
@@ -33,7 +33,15 @@ sitools.user.component.dataviews.services.plotService = {};
 Ext.reg('sitools.user.component.dataviews.services.plotService', sitools.user.component.dataviews.services.plotService);
 
 sitools.user.component.dataviews.services.plotService.getParameters = function () {
-    return [];
+    return [{
+        jsObj : "Ext.form.TextField", 
+        config : {
+            anchor : "100%", 
+            fieldLabel : i18n.get("label.warning_nb_records"), 
+            value : WARNING_NB_RECORDS_PLOT,
+            name : "warning_nb_records"
+        }
+    }];
 };
 
 sitools.user.component.dataviews.services.plotService.executeAsService = function (config) {
@@ -48,6 +56,12 @@ sitools.user.component.dataviews.services.plotService.executeAsService = functio
     
     var sortInfo = grid.getSortInfo(); 
     
+    var maxWarningRecords = WARNING_NB_RECORDS_PLOT;
+    Ext.each(config.parameters, function (param) {
+        if (param.name === "warning_nb_records") {
+            maxWarningRecords = parseInt(param.value, 10);
+        }
+    }, this);
     
     var jsObj = sitools.user.component.dataPlotter;
     var componentCfg = {
@@ -62,7 +76,9 @@ sitools.user.component.dataviews.services.plotService.executeAsService = functio
         preferencesFileName : "plot",
         filters : grid.getFilters(),
         selections : Ext.isEmpty(grid.getSelections()) ? undefined : grid.getSelectionForPlot(),
-        sortInfo : sortInfo
+        sortInfo : sortInfo,
+        selectionSize : (grid.isAllSelected()) ? grid.store.getTotalCount() : grid.getNbRowsSelected(),
+        maxWarningRecords : maxWarningRecords
     };
     var windowConfig = {
         id : "plot" + datasetId,

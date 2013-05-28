@@ -29,7 +29,6 @@ Ext.namespace('sitools.admin.datasets.services');
  * @extends Ext.grid.GridPanel
  */
 sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.EditorGridPanel, {
-    
     border : false,
     height : 300,
     pageSize : 10,
@@ -40,16 +39,23 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     viewConfig : {
         forceFit : true,
         autoFill : true,
-        getRowClass : function (row, index) { 
-            var cls = ''; 
-            var data = row.data;
-            if (data.classVersion !== data.currentClassVersion && data.currentClassVersion !== null && data.currentClassVersion !== undefined) {
-                if (!this.conflictWarned) {
-                    Ext.Msg.alert("warning.version.conflict", "Resources " + data.name + " definition (v" + data.classVersion
-                            + ") may conflict with current class version : " + data.currentClassVersion);
+        allLoaded : false,
+        getRowClass : function (row, index, rowParams, store) {
+            var cls = '';
+            if (this.allLoaded) {
+                if (index === 0) {
+                    this.message = "";
+                }
+                var data = row.data;
+                if (data.modelVersion !== data.definitionVersion && !Ext.isEmpty(data.definitionVersion)) {
+                    this.message += "Resources " + data.name + " definition (v" + data.modelVersion + ") may conflict with current class version : "
+                            + data.definitionVersion + "<br/>";                        
+                    cls = "red-row";
+                }
+                if (!this.conflictWarned && !Ext.isEmpty(this.message) && index === store.getCount() - 1) {
+                    Ext.Msg.alert("warning.version.conflict", this.message);
                     this.conflictWarned = true;
                 }
-                cls = "red-row";
             }
             return cls; 
         } 
@@ -151,8 +157,22 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 type : 'string'
             }, {
                 name : 'dataSetSelection'
+            }, {
+                name : 'modelVersion',
+                type : 'string'
+            }, {
+                name : 'definitionVersion',
+                type : 'string'
             } ],
-            proxy : this.httpProxyResources
+            proxy : this.httpProxyResources,
+            listeners : {
+                scope : this,
+                beforeLoad : function () {
+                    this.getView().allLoaded = false;  
+                    this.getView().conflictWarned = false;
+                },
+                load : this.loadServerPluginClassDescription                    
+            }
         });
 
         var visible = new Ext.grid.CheckColumn({
@@ -453,7 +473,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         
 
         this.getStore().each(function (rec) {
-            service.services.push(rec.data);
+            var record = rec.data;
+            Ext.destroyMembers(record, 'modelVersion');
+            Ext.destroyMembers(record, 'definitionVersion');
+            service.services.push(record);
         });
 
         Ext.Ajax.request({
@@ -536,6 +559,51 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     parentType : this.parentType
                 });
                 up.show();
+            },
+            failure : alertFailure
+        });
+    },
+    
+
+    loadServerPluginClassDescription : function (store, records, options) {
+        Ext.Ajax.request({
+            url : this.urlDatasetAllServicesSERVER.replace('{idDataset}', this.parentId),
+            method : 'GET',
+            scope : this,
+            success : function (ret) {
+                var json = Ext.decode(ret.responseText);
+                if (json.success) {
+                    var data = json.data;
+                    Ext.each(data, function (pluginFromServer) {
+                        var plugin = store.getById(pluginFromServer.id);
+                        plugin.set("definitionVersion", pluginFromServer.currentClassVersion);
+                        plugin.set("modelVersion", pluginFromServer.classVersion);
+                    }, this);
+                    this.loadGuiPluginModelDescription(store, records, options);
+                }
+
+            },
+            failure : alertFailure
+        });
+    },
+
+    loadGuiPluginModelDescription : function (store, records, options) {
+        Ext.Ajax.request({
+            url : this.urlDatasetAllServicesIHM.replace('{idDataset}', this.parentId),
+            method : 'GET',
+            scope : this,
+            success : function (ret) {
+                var json = Ext.decode(ret.responseText);
+                if (json.success) {
+                    var data = json.data;
+                    Ext.each(data, function (guiPluginFromServer) {
+                        var plugin = store.getById(guiPluginFromServer.id);
+                        plugin.set("definitionVersion", guiPluginFromServer.currentGuiServiceVersion);
+                        plugin.set("modelVersion", guiPluginFromServer.version);
+                    }, this);
+                    this.getView().allLoaded = true;
+                    this.getView().refresh();
+                }
             },
             failure : alertFailure
         });

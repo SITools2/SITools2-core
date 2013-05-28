@@ -19,6 +19,7 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
+<html>
 
   <head>
 
@@ -218,11 +219,6 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/viewDataDetail/simpleViewDataDetails.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomDomQuery.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomXMLReader.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/base64.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/canvas2image.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/canvastext.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/flotr2.min.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/plot/dataPlotter.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/WindowImageViewer.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/spinner.js"></script>

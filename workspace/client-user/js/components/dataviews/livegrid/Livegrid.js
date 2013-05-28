@@ -541,7 +541,7 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
 		
 		if (this.isAllSelected()) {
 		    //First Case : all the dataset is selected.
-		    result = "ranges=[[0," + this.store.getTotalCount() - 1 + "]]";
+		    result = "ranges=[[0," + (this.store.getTotalCount() - 1) + "]]";
             //We have to re-build all the request in case we use a range selection.
             result += this.getRequestParamWithoutSelection();
 		}
@@ -566,7 +566,7 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
 
         if (this.isAllSelected()) {
             //First Case : all the dataset is selected.
-            result = "ranges=[[0," + this.store.getTotalCount() - 1 + "]]";
+            result = "ranges=[[0," + (this.store.getTotalCount() - 1) + "]]";
         }
         else if (Ext.isEmpty(sm.getPendingSelections())) {
             //second Case : no pending Selections.

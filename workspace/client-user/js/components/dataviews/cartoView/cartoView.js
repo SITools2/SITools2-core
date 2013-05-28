@@ -371,7 +371,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         
         if (sm.markAll) {
             //First Case : all the dataset is selected.
-            result = "ranges=[[0," + this.store.getTotalCount() - 1 + "]]";
+            result = "ranges=[[0," + (this.store.getTotalCount() - 1) + "]]";
             //We have to re-build all the request in case we use a range selection.
             result += this.getRequestParamWithoutSelection();
         }
@@ -404,7 +404,18 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     },
     
     getSelectionForPlot : function () {
-        return this.getRecSelectedParam();
+        var sm = this.gridPanel.getSelectionModel(), result;
+        var recSelected = sm.getSelections();
+        
+        if (sm.markAll) {
+            //First Case : all the dataset is selected.
+            result = "ranges=[[0," + (this.store.getTotalCount() - 1) + "]]";
+        }
+        else {
+            //Second Case : there is a selection, send the selection.
+            result = Ext.urlEncode(this.dataviewUtils.getFormParamsFromRecsSelected(recSelected));
+        }
+        return result;
     },
     
     /**
