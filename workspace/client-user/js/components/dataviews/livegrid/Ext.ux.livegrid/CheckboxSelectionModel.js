@@ -230,8 +230,8 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
             //done only on user change selection, not at livegrid startup
             this.fireEvent("selectionchange", this);
             this.grid.getView().refresh();
+            this.grid.getView().processRows(0, false);
         }
-
     },
 
     /**
