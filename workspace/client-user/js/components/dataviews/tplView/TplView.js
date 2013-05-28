@@ -357,7 +357,7 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
         else {
             if (this.isAllSelected()) {
                 //First Case : all the dataset is selected.
-                request = "&ranges=[[0," + this.store.getTotalCount() + "]]";
+                request = "&ranges=[[0," + (this.store.getTotalCount() - 1) + "]]";
                 //We have to re-build all the request in case we use a range selection.
                 request += this.getRequestParamWithoutSelection();
             } else {
