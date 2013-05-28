@@ -441,7 +441,7 @@ var projectGlobal = {
             success : function (ret) {
                 var data = Ext.decode(ret.responseText);
                 if (!data.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectFound'));
                     return false;
                 } else {
                     this.sitoolsAttachementForUsers = data.project.sitoolsAttachementForUsers;
@@ -458,7 +458,7 @@ var projectGlobal = {
                 this.getDataViewsDependencies();
             },
             failure : function () {
-				Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProject'));
+				Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectError'));
             }
         });
     },    
