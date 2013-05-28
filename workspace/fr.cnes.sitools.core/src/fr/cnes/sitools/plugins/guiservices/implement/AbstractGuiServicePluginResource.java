@@ -233,19 +233,20 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
   private void addCurrentGuiServiceModelDescription(GuiServicePluginModel guiService,
     List<GuiServiceModel> serviceModels) {
     GuiServiceModel guiServiceModel = null;
-
-    for (GuiServiceModel model : serviceModels) {
-      if (model.getXtype().equals(guiService.getXtype())) {
-        guiServiceModel = model;
-        break;
+    if (serviceModels != null) {
+      for (GuiServiceModel model : serviceModels) {
+        if (model.getXtype().equals(guiService.getXtype())) {
+          guiServiceModel = model;
+          break;
+        }
       }
-    }
 
-    if (guiServiceModel != null) {
-      guiService.setCurrentGuiServiceVersion(guiServiceModel.getVersion());
-    }
-    else {
-      guiService.setCurrentGuiServiceVersion("GUI_SERVICE_MODEL_NOT_FOUND");
+      if (guiServiceModel != null) {
+        guiService.setCurrentGuiServiceVersion(guiServiceModel.getVersion());
+      }
+      else {
+        guiService.setCurrentGuiServiceVersion("GUI_SERVICE_MODEL_NOT_FOUND");
+      }
     }
   }
 

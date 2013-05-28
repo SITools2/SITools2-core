@@ -2,7 +2,7 @@
   <id>2f98aeef-238e-4571-8373-206868f3c43b</id>
   <name>Download Service</name>
   <description>a GUI Service to dowload a selection of data</description>
-  <label>label.downloadFile</label>
+  <label>label.downloadFileService</label>
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/add_request.png</icon>
@@ -16,6 +16,6 @@
     <css/>
   </dependencies>
   <priority>1</priority>
-  <dataSetSelection>MULTIPLE</dataSetSelection>
+  <dataSetSelection>ALL</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
 </guiService>

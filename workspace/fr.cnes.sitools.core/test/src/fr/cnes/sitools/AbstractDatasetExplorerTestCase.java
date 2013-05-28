@@ -162,7 +162,6 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
     getRecordsWithRangeOfIndexOutOfMaxRecords(url);
     getRecordsWithRangeOfIndexNegative(url);
     getRecordsWithRangeOfIndexStartSuperiorToEnd(url);
-    getRecordsWithRangeOfIndexInvalidRange(url);
 
   }
 
@@ -179,7 +178,6 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
     getRecordsWithRangeOfIndexOutOfMaxRecordsMongoDB(url);
     getRecordsWithRangeOfIndexNegative(url);
     getRecordsWithRangeOfIndexStartSuperiorToEnd(url);
-    getRecordsWithRangeOfIndexInvalidRange(url);
   }
 
   /**
@@ -515,7 +513,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
   private void getRecordsWithRangeOfIndexStartSuperiorToEnd(String urlAttachDataset) {
     getRecordsWithRange(urlAttachDataset, "[[0,9], [10, 0]]", 10);
   }
-  
+
   /**
    * Get records with ranges of indexes
    * 

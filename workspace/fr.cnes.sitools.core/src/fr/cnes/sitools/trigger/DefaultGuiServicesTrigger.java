@@ -61,7 +61,7 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
 
       // Get all the defaults guiServices
       List<GuiServiceModel> allGuiServices = RIAPUtils.getListOfObjects(getSitoolsSetting(Consts.APP_GUI_SERVICES_URL),
-          getContext());
+        getContext());
 
       for (GuiServiceModel guiService : allGuiServices) {
         if (guiService.isDefaultGuiService()) {
@@ -76,8 +76,6 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
           guiServicePluginModel.setXtype(guiService.getXtype());
 
           guiServicePluginModel.setPriority(guiService.getPriority());
-
-          guiServicePluginModel.setDependencies(guiService.getDependencies());
 
           guiServicePluginModel.setLabel(guiService.getLabel());
           guiServicePluginModel.setIcon(guiService.getIcon());
@@ -104,8 +102,8 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
   private void createGuiService(Context context, String datasetId, GuiServicePluginModel guiService) {
     SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
     RIAPUtils.persistObject(guiService,
-            settings.getString(Consts.APP_DATASETS_URL) + "/" + datasetId + settings.getString(Consts.APP_SERVICES_URL)
-                + "/gui", context);
+      settings.getString(Consts.APP_DATASETS_URL) + "/" + datasetId + settings.getString(Consts.APP_SERVICES_URL)
+        + "/gui", context);
 
   }
 }

@@ -56,11 +56,16 @@ public class AttributeValueConverter implements Converter {
     attr.setName(reader.getValue());
     // moveUp to go back to the root
     reader.moveUp();
-    // moveDown to get the second value
-    reader.moveDown();
-    attr.setValue(reader.getValue());
-    // moveUp to go back to the root
-    reader.moveUp();
+    if (reader.hasMoreChildren()) {
+      // moveDown to get the second value
+      reader.moveDown();
+      attr.setValue(reader.getValue());
+      // moveUp to go back to the root
+      reader.moveUp();
+    }
+    else {
+      attr.setValue(null);
+    }
 
     return attr;
 
