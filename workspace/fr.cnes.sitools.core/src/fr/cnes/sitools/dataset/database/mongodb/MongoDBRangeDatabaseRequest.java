@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.database.mongodb;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,13 +74,17 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
   @Override
   public final void createRequest() throws SitoolsException {
 
+    int maxOffset = super.calculateTotalCountFromBase();
+    clearInvalidRanges(maxOffset);
+
     nbTotalResults = calculateTotalCount();
     // set is count done to false not to calculate the total number of records for the request
     params.setCountDone(false);
 
     request = createMongoDBRequestModel();
-
-    executeRequest(ranges.get(currentRangeIndex));
+    if (ranges.size() > 0) {
+      executeRequest(ranges.get(currentRangeIndex));
+    }
 
   }
 
@@ -156,6 +161,8 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
    */
   @Override
   public int calculateTotalCountFromBase() throws SitoolsException {
+    int max = super.calculateTotalCountFromBase();
+    clearInvalidRanges(max);
     return calculateTotalCount();
   }
 
@@ -170,6 +177,41 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
       totalCount += range.getEnd() - range.getStart() + 1;
     }
     return totalCount;
+  }
+
+  /**
+   * Clear all invalid range
+   * 
+   * @param max
+   *          the maximum range number allowed
+   */
+  private void clearInvalidRanges(int max) {
+    Iterator<Range> it = ranges.iterator();
+    while (it.hasNext()) {
+      Range range = it.next();
+      if (range.getStart() >= max) {
+        it.remove();
+        continue;
+      }
+      if (range.getEnd() >= max) {
+        range.setEnd(max - 1);
+      }
+
+      if (range.getStart() < 0) {
+        it.remove();
+        continue;
+      }
+
+      if (range.getEnd() < 0) {
+        it.remove();
+        continue;
+      }
+
+      if (range.getStart() > range.getEnd()) {
+        it.remove();
+        continue;
+      }
+    }
   }
 
 }

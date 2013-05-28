@@ -216,6 +216,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
           // ResultSet >> Record >> Converters >> Record >> JSON
 
           PrintStream out = new PrintStream(arg0);
+          int nbRecordsSent = 0;
           try {
             // Checking if limit = 0 or -1 is present
             // boolean isShortResponse = false;
@@ -245,7 +246,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
 
             boolean isNext = false;
 
-            int nbRecordsSent = 0;
+            
 
             while (databaseRequest.nextResult()) {
 
@@ -273,12 +274,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
               out.flush();
               nbRecordsSent++;
             }
-            out.println();
-            out.println("],");
-
-            out.println("\"count\":" + nbRecordsSent + ",");
-            out.println("\"offset\":" + databaseRequest.getStartIndex());
-            out.println("}");
+           
             // }
           }
 
@@ -287,6 +283,12 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.sql", esql);
           }
           finally {
+            out.println();
+            out.println("],");
+
+            out.println("\"count\":" + nbRecordsSent + ",");
+            out.println("\"offset\":" + databaseRequest.getStartIndex());
+            out.println("}");
             if (out != null) {
               out.close();
             }

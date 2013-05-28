@@ -155,6 +155,8 @@ sitools.user.component.dataviews.services.filterService = Ext.extend(Ext.Window,
         //save the options has last options in the store
         //this.store.storeOptions(options);
         this.store.load(options);
+        //clear the selections
+        this.dataview.getSelectionModel().clearSelections();
         this.close();
     },
      

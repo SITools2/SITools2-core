@@ -224,7 +224,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				this.panelDetail.expand();
 				
 				//destroy all selections if all was selected and another row is selected
-				if (this.isAllSelected() && recNodes.length === DEFAULT_LIVEGRID_BUFFER_SIZE - 1) {
+				if (this.isAllSelected() && (recNodes.length === DEFAULT_LIVEGRID_BUFFER_SIZE - 1 || recNodes.length === this.store.getTotalCount() - 1)) {
 				    this.selectAllRows.toggle();
 				    this.deselectAll();
 				    var unselectedRec = this.getUnselectedRow(recs, this.store.data.items);
@@ -356,7 +356,7 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
         else {
             if (this.isAllSelected()) {
                 //First Case : all the dataset is selected.
-                request = "ranges=[[0," + this.store.getTotalCount() + "]]";
+                request = "ranges=[[0," + this.store.getTotalCount() - 1 + "]]";
                 //We have to re-build all the request in case we use a range selection.
                 request += this.getRequestParamWithoutSelection();
             } else {

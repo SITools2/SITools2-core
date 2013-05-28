@@ -127,6 +127,8 @@ sitools.user.component.dataviews.services.sorterService = Ext.extend(Ext.Window,
         else {
             this.store.sort(sorters);
         }
+        //clear the selections
+        this.dataview.getSelectionModel().clearSelections();
         this.close();
     },
     /**

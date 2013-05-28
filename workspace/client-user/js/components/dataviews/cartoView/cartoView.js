@@ -371,7 +371,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         
         if (sm.markAll) {
             //First Case : all the dataset is selected.
-            result = "ranges=[[0," + this.store.getTotalCount() + "]]";
+            result = "ranges=[[0," + this.store.getTotalCount() - 1 + "]]";
             //We have to re-build all the request in case we use a range selection.
             result += this.getRequestParamWithoutSelection();
         }

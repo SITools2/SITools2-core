@@ -385,7 +385,7 @@ sitools.user.component.dataPlotter = function (config) {
             options.params.nocount = true;
         }
         
-        if (!this.isSelection && !Ext.isEmpty(store.filters)) {
+        if (!Ext.isEmpty(store.filters)) {
             var params = store.buildQuery(store.filters.getFilterData());
             Ext.apply(options.params, params);
         }

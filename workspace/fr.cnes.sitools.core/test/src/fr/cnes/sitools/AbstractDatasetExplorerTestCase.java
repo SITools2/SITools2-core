@@ -128,19 +128,18 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
    * Test Dataset exploration API
    */
   @Test
-  public void testCRUD() {
+  public void testSQL() {
     docAPI.setActive(false);
     DataSet ds = getDataset(getBaseUrlDataset());
     String url = DATASET_URL;
     getCount(url, 4689);
     getCountWithCountResource(4689, url);
-    getCountWithCountResourceWithRange(url);
+
     getRecordsWithCount(url);
     getRecordsWithNoCount(url);
     getRecord(url, "A0010101A001010117");
     getRecordTrySQLInjection(url, sqlInjectionStr);
     getRecordTrySQLInjection(url, sqlDeleteInjectionStr);
-    getRecordsWithRangeOfIndex(url);
     getRecordsDistinct(url, "aperture", 4);
     getRecordsDistinctUnknownColumn(url, "testtest");
     getRecordsUnknownColumn(url, "aperture", "testtest");
@@ -151,10 +150,43 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
   }
 
   /**
+   * Test Dataset exploration API with ranges parameters
+   */
+  @Test
+  public void testRangeSQL() {
+    docAPI.setActive(false);
+    String url = DATASET_URL;
+    getCountWithCountResourceWithRange(url);
+    getCountWithCountResourceWithRangeOutofMaxRecords(url);
+    getRecordsWithRangeOfIndex(url);
+    getRecordsWithRangeOfIndexOutOfMaxRecords(url);
+    getRecordsWithRangeOfIndexNegative(url);
+    getRecordsWithRangeOfIndexStartSuperiorToEnd(url);
+    getRecordsWithRangeOfIndexInvalidRange(url);
+
+  }
+
+  /**
+   * Test Dataset exploration API with ranges parameters
+   */
+  @Test
+  public void testRangeMongoDB() {
+    docAPI.setActive(false);
+    String url = DATASET_URL_MONGODB;
+    getCountWithCountResourceWithRange(url);
+    getCountWithCountResourceWithRangeOutofMaxRecordsMongoDB(url);
+    getRecordsWithRangeOfIndex(url);
+    getRecordsWithRangeOfIndexOutOfMaxRecordsMongoDB(url);
+    getRecordsWithRangeOfIndexNegative(url);
+    getRecordsWithRangeOfIndexStartSuperiorToEnd(url);
+    getRecordsWithRangeOfIndexInvalidRange(url);
+  }
+
+  /**
    * Test Dataset exploration API
    */
   @Test
-  public void testCrudMongoDB() {
+  public void testMongoDB() {
     docAPI.setActive(false);
     DataSet ds = getDataset(getBaseUrlDatasetMongoDB());
     String url = DATASET_URL_MONGODB;
@@ -191,7 +223,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
 
     getCount(url, 4689);
     docAPI.appendSubChapter("Obtaining the total nunmber of records in a dataset, recommended method",
-        "counting_recommended");
+      "counting_recommended");
     getCountWithCountResource(4689, url);
 
     docAPI.appendSubChapter("Obtaining a defined set of records, from 2 to 6.", "retrieving");
@@ -216,8 +248,8 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
     getRecordsWithRangeOfIndex(url);
 
     docAPI.appendSubChapter(
-        "Obtaining the nunmber of records in a request on a dataset with ranges parameters, recommended method",
-        "counting_recommended_ranges");
+      "Obtaining the nunmber of records in a request on a dataset with ranges parameters, recommended method",
+      "counting_recommended_ranges");
 
     getCountWithCountResourceWithRange(url);
 
@@ -308,7 +340,32 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
    *          the url attachment of the dataset
    */
   private void getCountWithCountResourceWithRange(String urlAttachDataset) {
-    String url = getHostUrl() + urlAttachDataset + "/count?ranges=[[0,150]]";
+    getCountResourceWithRange(urlAttachDataset, "[[0,150]]", 151);
+
+  }
+
+  /**
+   * Test the limit=0 parameter to get the number of records
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getCountWithCountResourceWithRangeOutofMaxRecords(String urlAttachDataset) {
+    getCountResourceWithRange(urlAttachDataset, "[[0,150], [4680, 6000]]", 151 + 9);
+  }
+
+  /**
+   * Test the limit=0 parameter to get the number of records
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getCountWithCountResourceWithRangeOutofMaxRecordsMongoDB(String urlAttachDataset) {
+    getCountResourceWithRange(urlAttachDataset, "[[0,150], [800, 1000]]", 151 + 13);
+  }
+
+  private void getCountResourceWithRange(String urlAttachDataset, String ranges, int expectedCount) {
+    String url = getHostUrl() + urlAttachDataset + "/count?ranges=" + ranges;
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       parameters.put("ranges", "The list of range to select");
@@ -322,7 +379,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
       assertNotNull(rep);
       Response response = getResponseRecord(getMediaTest(), rep, Record.class);
       assertNotNull(response);
-      assertEquals(Integer.valueOf(151), response.getTotal());
+      assertEquals(Integer.valueOf(expectedCount), response.getTotal());
 
       RIAPUtils.exhaust(rep);
     }
@@ -341,7 +398,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
       parameters.put("limit", "number of records to send, including the starting one");
       String uri = getHostUrl() + urlAttachDataset;
       this.retrieveDocAPI(uri + "/records?start=2&limit=5", "", parameters,
-          String.format(uri, "/records?start=2&limit=5"));
+        String.format(uri, "/records?start=2&limit=5"));
     }
     else {
       queryDatasetRequestUrl(urlAttachDataset + "/records", "?start=2&limit=5", 5);
@@ -363,7 +420,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
       parameters.put("nocount", "true indicates that counting before request is disabled");
       String uri = getHostUrl() + urlAttachDataset;
       this.retrieveDocAPI(uri + "/records?start=2&limit=5&nocount=true", "", parameters,
-          String.format(uri, "/records?start=2&limit=5&nocount=true"));
+        String.format(uri, "/records?start=2&limit=5&nocount=true"));
     }
     else {
       queryDatasetRequestUrl(urlAttachDataset + "/records", "?start=2&limit=5&nocount=true", 5);
@@ -405,7 +462,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       this.retrieveDocAPI(uri + "/records/" + sqlInjectionStr, "", parameters,
-          String.format(uri, "/records/" + sqlInjectionStr));
+        String.format(uri, "/records/" + sqlInjectionStr));
     }
     else {
       ClientResource cr = new ClientResource(uri + "/records/" + sqlInjectionStr);
@@ -426,15 +483,69 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
    *          the url attachment of the dataset
    */
   private void getRecordsWithRangeOfIndex(String urlAttachDataset) {
+    getRecordsWithRange(urlAttachDataset, "[[2,5],[1,1],[6,8]]", 8);
+  }
+
+  /**
+   * Get records with ranges of indexes
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithRangeOfIndexOutOfMaxRecords(String urlAttachDataset) {
+    getRecordsWithRange(urlAttachDataset, "[[0,9], [4680, 6000]]", 19);
+  }
+
+  /**
+   * Get records with ranges of indexes
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithRangeOfIndexNegative(String urlAttachDataset) {
+    getRecordsWithRange(urlAttachDataset, "[[0,9], [-1, 50], [-10,-5]]", 10);
+  }
+
+  /**
+   * Get records with ranges of indexes
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithRangeOfIndexStartSuperiorToEnd(String urlAttachDataset) {
+    getRecordsWithRange(urlAttachDataset, "[[0,9], [10, 0]]", 10);
+  }
+  
+  /**
+   * Get records with ranges of indexes
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithRangeOfIndexInvalidRange(String urlAttachDataset) {
+    getRecordsWithRange(urlAttachDataset, "[[-10,-1]]", 0);
+  }
+
+  /**
+   * Get records with ranges of indexes
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithRangeOfIndexOutOfMaxRecordsMongoDB(String urlAttachDataset) {
+    getRecordsWithRange(urlAttachDataset, "[[0,9], [800, 900]]", 10 + 13);
+  }
+
+  private void getRecordsWithRange(String urlAttachDataset, String ranges, int nbrecordsExpected) {
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       parameters.put("ranges", "Array of ranges to query");
       String uri = getHostUrl() + urlAttachDataset;
-      this.retrieveDocAPI(uri + "/records?ranges=[[2,5],[1,1],[6,8]]", "", parameters,
-          String.format(uri, "/records?ranges=[[2,5],[1,1],[6,8"));
+      this.retrieveDocAPI(uri + "/records?ranges=" + ranges, "", parameters,
+        String.format(uri, "/records?ranges=" + ranges));
     }
     else {
-      queryDatasetRequestUrl(urlAttachDataset + "/records", "?ranges=[[2,5],[1,1],[6,8]]", 8);
+      queryDatasetRequestUrl(urlAttachDataset + "/records", "?ranges=" + ranges, nbrecordsExpected);
 
     }
   }
@@ -455,11 +566,11 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
       parameters.put("ranges", "Array of ranges to query");
       String uri = getHostUrl() + urlAttachDataset;
       this.retrieveDocAPI(uri + "/records?distinct=true&colModel=" + colName, "", parameters,
-          String.format(uri, "/records?distinct=true&colModel=" + colName));
+        String.format(uri, "/records?distinct=true&colModel=" + colName));
     }
     else {
       queryDatasetRequestUrl(urlAttachDataset + "/records", "?distinct=true&colModel=" + colName,
-          expectedNumberOfRecords);
+        expectedNumberOfRecords);
 
     }
   }
@@ -477,7 +588,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
       parameters.put("ranges", "Array of ranges to query");
       String uri = getHostUrl() + getBaseUrlDataset();
       this.retrieveDocAPI(uri + "/records?distinct=true&colModel=" + colName, "", parameters,
-          String.format(uri, "/records?distinct=true&colModel=" + colName));
+        String.format(uri, "/records?distinct=true&colModel=" + colName));
     }
     else {
       queryDatasetRequestUrl(urlAttachDataset + "/records", "?distinct=true&colModel=" + colName, 0);
@@ -500,11 +611,11 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
       parameters.put("ranges", "Array of ranges to query");
       String uri = getHostUrl() + getBaseUrlDataset();
       this.retrieveDocAPI(uri + "/records?colModel=\"" + colModel + "\"&start=2&limit=5", "", parameters,
-          String.format(uri, "?colModel=\"" + colModel + "\"&start=2&limit=5"));
+        String.format(uri, "?colModel=\"" + colModel + "\"&start=2&limit=5"));
     }
     else {
       List<Record> records = queryDatasetRequestUrl(urlAttachDataset + "/records", "?colModel=\"" + colModel
-          + "\"&start=2&limit=5");
+        + "\"&start=2&limit=5");
 
       assertNotNull(records);
       assertEquals(5, records.size());
@@ -545,7 +656,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
    */
   private void deleteConverters(String id) {
     ClientResource cr = new ClientResource(getBaseUrl() + settings.getString(Consts.APP_DATASETS_URL) + "/" + id
-        + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL));
+      + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL));
     Representation result = cr.delete(getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
@@ -580,13 +691,13 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
     param2.setValue("param2_value");
 
     ConverterParameter paramColIn = new ConverterParameter("colIn", "colIn",
-        ConverterParameterType.CONVERTER_PARAMETER_IN);
+      ConverterParameterType.CONVERTER_PARAMETER_IN);
     paramColIn.setAttachedColumn(column);
     ConverterParameter paramColOut = new ConverterParameter("colOut", "colOut",
-        ConverterParameterType.CONVERTER_PARAMETER_OUT);
+      ConverterParameterType.CONVERTER_PARAMETER_OUT);
     paramColOut.setAttachedColumn(column);
     ConverterParameter paramColInOut = new ConverterParameter("colInOut", "colInOut",
-        ConverterParameterType.CONVERTER_PARAMETER_INOUT);
+      ConverterParameterType.CONVERTER_PARAMETER_INOUT);
     paramColInOut.setAttachedColumn(column);
 
     conv.getParameters().add(param1);
@@ -597,7 +708,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
 
     Representation rep = getRepresentationConverter(conv, getMediaTest());
     ClientResource cr = new ClientResource(getBaseUrl() + settings.getString(Consts.APP_DATASETS_URL) + "/" + id
-        + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL));
+      + settings.getString(Consts.APP_DATASETS_CONVERTERS_URL));
     Representation result = cr.post(rep, getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
