@@ -334,6 +334,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 		this.topBar.updateContextToolbar();
     }, this);    
     
+   
 	/*
 	 * Here is where the magic happens: BufferedGridView. The nearLimit is a
 	 * parameter for the predictive fetch algorithm within the view. If your
@@ -417,6 +418,13 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	        columnLines : true,
 	        datasetId : config.datasetId,
 	        componentType : "data",
+	        listeners : {
+	            scope : this,
+	            sortchange: function (store, sortInfo) {
+	                //force to deselect every rows after the sort as changed
+	                this.getSelectionModel().clearSelections();
+	            }
+	        }
 //	        plugins : [ filtersSimple ]
 	    }, config));    
 
