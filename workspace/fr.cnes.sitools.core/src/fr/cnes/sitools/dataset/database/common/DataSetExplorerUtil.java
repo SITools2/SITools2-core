@@ -23,9 +23,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
@@ -270,7 +272,7 @@ public class DataSetExplorerUtil {
     }
     else {
       String colModel = pagination.getFirstValue(COLS);
-      HashMap<String, Column> results = new HashMap<String, Column>();
+      Set<Column> results = new LinkedHashSet<Column>();
       if (colModel != null && colModel != "") {
         List<String> columnsString = Arrays.asList((colModel.substring(1, colModel.length() - 1)).split(", "));
         List<Column> model = application.getDataSet().getColumnModel();
@@ -279,7 +281,7 @@ public class DataSetExplorerUtil {
         // Add all requestable columns (columns that must be in the request (ex : primary key))
         extractRequestableColumns(results, model);
         if (!results.isEmpty()) {
-          return new ArrayList<Column>(results.values());
+          return new ArrayList<Column>(results);
         }
       }
       return application.getDataSet().getDefaultColumnVisible();
@@ -294,10 +296,10 @@ public class DataSetExplorerUtil {
    * @param model
    *          the columnModel to extract the columns from
    */
-  private void extractRequestableColumns(Map<String, Column> results, List<Column> model) {
+  private void extractRequestableColumns(Set<Column> results, List<Column> model) {
     for (Column column : model) {
       if ((column.isPrimaryKey() || isNoClientAccess(column)) && isRequestableColumn(column)) {
-        results.put(column.getColumnAlias(), column);
+        results.add(column);
       }
     }
   }
@@ -324,10 +326,10 @@ public class DataSetExplorerUtil {
    * @param model
    *          the columnModel to extract the columns from
    */
-  private void extractAskedColumns(Map<String, Column> results, List<String> columnsString, List<Column> model) {
+  private void extractAskedColumns(Set<Column> results, List<String> columnsString, List<Column> model) {
     for (Column column : model) {
       if (columnsString.contains(column.getColumnAlias()) && isRequestableColumn(column)) {
-        results.put(column.getColumnAlias(), column);
+        results.add(column);
       }
     }
   }

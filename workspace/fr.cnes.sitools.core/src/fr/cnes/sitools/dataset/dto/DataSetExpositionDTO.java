@@ -72,6 +72,11 @@ public final class DataSetExpositionDTO {
   private Resource image;
 
   /**
+   * Total number of results for information
+   */
+  private int nbRecords;
+
+  /**
    * Gets the id value
    * 
    * @return the id
@@ -278,6 +283,25 @@ public final class DataSetExpositionDTO {
    */
   public void setImage(Resource image) {
     this.image = image;
+  }
+
+  /**
+   * Gets the nbRecords value
+   * 
+   * @return the nbRecords
+   */
+  public int getNbRecords() {
+    return nbRecords;
+  }
+
+  /**
+   * Sets the value of nbRecords
+   * 
+   * @param nbRecords
+   *          the nbRecords to set
+   */
+  public void setNbRecords(int nbRecords) {
+    this.nbRecords = nbRecords;
   }
 
 }

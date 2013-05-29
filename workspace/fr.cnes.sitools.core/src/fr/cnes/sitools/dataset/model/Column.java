@@ -155,7 +155,7 @@ public final class Column {
    *          set the column type
    */
   public Column(String id, String dataIndex, String header, int width, boolean sortable, boolean visible,
-      String sqlColumnType) {
+    String sqlColumnType) {
     super();
     this.id = id;
     this.dataIndex = dataIndex;
@@ -570,6 +570,56 @@ public final class Column {
    */
   public void setFormat(String format) {
     this.format = format;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    Column other = (Column) obj;
+    if (id == null) {
+      if (other.id != null) {
+        return false;
+      }
+    }
+    else if (!id.equals(other.id)) {
+      return false;
+    }
+
+    if (columnAlias == null) {
+      if (other.columnAlias != null) {
+        return false;
+      }
+    }
+    else if (!columnAlias.equals(other.columnAlias)) {
+      return false;
+    }
+    return true;
   }
 
 }

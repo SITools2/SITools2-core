@@ -162,6 +162,7 @@ public final class DataSetExpositionResource extends AbstractDataSetResource {
     dsExp.setDescription(ds.getDescription());
     dsExp.setDatasetViewConfig(ds.getDatasetViewConfig());
     dsExp.setImage(ds.getImage());
+    dsExp.setNbRecords(ds.getNbRecords());
 
     // set the dictionary mapping
     DataSetApplication app = (DataSetApplication) getApplication();
@@ -170,7 +171,7 @@ public final class DataSetExpositionResource extends AbstractDataSetResource {
       for (DictionaryMappingDTO dictionaryMappingDTO : mappings) {
         // default case
         if (allMapping || (dictionaryId == null && dictionaryMappingDTO.isDefaultDico())
-            || (dictionaryId != null && dictionaryId.equals(dictionaryMappingDTO.getDictionaryId()))) {
+          || (dictionaryId != null && dictionaryId.equals(dictionaryMappingDTO.getDictionaryId()))) {
           dsExp.getDictionaryMappings().add(dictionaryMappingDTO);
           if (!allMapping) {
             break;

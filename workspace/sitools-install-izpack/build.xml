@@ -106,8 +106,6 @@
 			<entry key="Starter.NONPROXY_HOSTS" value="${NONPROXY_HOSTS}" />
 
 			<entry key="Starter.APP_PATH" value="${APP_PATH}" />
-			<entry key="Starter.LogService.outputFile" value="${LOGSERVICE.OUTPUTFILE}" />
-			<entry key="Starter.Logging.configFile" value="${LOGGING_CONFIGFILE}" />
 
 
 
