@@ -90,11 +90,15 @@ var onBeforeRequest = function (conn, options) {
 		        Ext.apply(Ext.Ajax.defaultHeaders, {
 					Authorization : Ext.util.Cookies.get('hashCode')
 		        });
+		    } else {
+		        Ext.apply(Ext.Ajax.defaultHeaders, {
+                    Authorization : ''
+                });
 		    }
 		}
     }
     if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), date.add(Date.MINUTE, 20));
+        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), date.add(Date.MINUTE, COOKIE_DURATION));
     }
 };
 

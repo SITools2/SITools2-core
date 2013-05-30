@@ -22,13 +22,12 @@ Ext.namespace('sitools.component.version');
 sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
     
 	layout : 'fit', 
-    version : null,
     
     initComponent : function () {
     this.versionUrl = loadUrl.get('APP_URL') + '/version';
         
         var title = new Ext.form.Label({
-            html : '<h2>SITools2</h2' 
+            html : '<h2>SITools2</h2><br/>' 
         });
         
         var logo = new Ext.form.Label({
@@ -44,6 +43,9 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
         });
         
         this.versionLabel = new Ext.form.Label({            
+        });
+        
+        this.buildDateLabel = new Ext.form.Label({            
         }); 
         
         var panelVersion = new Ext.Panel({
@@ -59,7 +61,7 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
             
         });
         
-        panelVersion.add([logo, title, this.versionLabel, credits, website]);
+        panelVersion.add([logo, title, this.versionLabel, this.buildDateLabel, credits, website]);
         
         this.tabs = new Ext.TabPanel({
             activeTab: 0,
@@ -94,9 +96,13 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
                         Ext.Msg.alert(i18n.get('label.warning'), json.message);
                         return false;
                     }
-                    this.version = json.version;
+                    var info = json.info;
                     
-                    this.versionLabel.setText("<h3>Version : " + this.version + "</h3>", false);                    
+                    var version = info.version;
+                    var buildDate = info.buildDate;
+                    
+                    this.versionLabel.setText("<h3>Version : " + version + "</h3>", false);                    
+                    this.buildDateLabel.setText("<h3>Build date : " + buildDate + "</h3>", false);                    
                     
                     //this.doLayout();
                     

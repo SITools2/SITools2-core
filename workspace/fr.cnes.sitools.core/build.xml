@@ -61,8 +61,14 @@
 	<!-- TARGET refresh-properties -->
 	<target name="refresh-properties"
 		description="Mise à jour du fichier de propriétés sitools.properties">
+		
+		<tstamp>
+		    <format property="NOW" pattern="yyyy-MM-dd HH:mm:ss" locale="fr,FR"/>
+	  	</tstamp>
+		
 		<copy outputencoding="UTF-8" tofile="${conf.properties.dir}/sitools.properties"
 			file="${conf.reference.dir}/sitools-reference.properties" overwrite="true" />
+		
 		<propertyfile file="${conf.properties.dir}/sitools.properties"
 			comment="Update root property">
 			<entry key="Starter.ROOT_DIRECTORY" value="${ROOT_DIRECTORY}" />
@@ -75,7 +81,9 @@
 			<entry key="Starter.HOST_PORT" value="${HOST_PORT}" />
 			<entry key="Security.Intranet.net" value="${SECURITY_INTRANET_NET}" />
 			<entry key="Security.Intranet.mask" value="${SECURITY_INTRANET_MASK}" />
+			<entry key="Starter.BUILD_DATE" value="${NOW}" />
 		</propertyfile>
+		
 		<condition property="itnetIsSet">
 			<isset property="Security.Intranet.ADMIN" />
 		</condition>
