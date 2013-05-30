@@ -31,6 +31,7 @@ import org.restlet.resource.ClientResource;
 
 import com.thoughtworks.xstream.XStream;
 
+import fr.cnes.sitools.client.model.VersionBuildDateDTO;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
@@ -53,7 +54,7 @@ public class PublicApplicationTestCase extends AbstractSitoolsServerTestCase {
 
   /** Order Folder URL */
   private static final String SVA_ORDER_URL = SitoolsSettings.getInstance().getString(
-      Consts.APP_ADMINSTORAGE_ORDERS_URL);
+    Consts.APP_ADMINSTORAGE_ORDERS_URL);
 
   /**
    * Test to reach the public application
@@ -131,12 +132,14 @@ public class PublicApplicationTestCase extends AbstractSitoolsServerTestCase {
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
 
-    Response resp = getResponse(getMediaTest(), result, String.class);
+    Response resp = getResponse(getMediaTest(), result, VersionBuildDateDTO.class);
     assertNotNull(resp);
     assertTrue(resp.getSuccess());
     assertNotNull(resp.getItem());
 
-    assertNotSame("", (String) resp.getItem());
+    VersionBuildDateDTO info = (VersionBuildDateDTO) resp.getItem();
+    String version = info.getVersion();
+    assertNotSame("", version);
 
     RIAPUtils.exhaust(result);
 
@@ -183,6 +186,7 @@ public class PublicApplicationTestCase extends AbstractSitoolsServerTestCase {
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
       xstream.autodetectAnnotations(false);
       xstream.alias("response", Response.class);
+      xstream.alias("info", VersionBuildDateDTO.class);
 
       if (isArray) {
         xstream.addImplicitCollection(Response.class, "data", dataClass);
@@ -191,8 +195,8 @@ public class PublicApplicationTestCase extends AbstractSitoolsServerTestCase {
         xstream.alias("item", dataClass);
         xstream.alias("item", Object.class, dataClass);
 
-        if (dataClass == String.class) {
-          xstream.aliasField("version", Response.class, "item");
+        if (dataClass == VersionBuildDateDTO.class) {
+          xstream.aliasField("info", Response.class, "item");
         }
       }
       xstream.aliasField("data", Response.class, "data");

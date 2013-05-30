@@ -27,9 +27,9 @@
 		l'application. -->
 
 	<property file="build.properties" />
-	
-	<property file="conf/build/properties/build-test.properties"/>
-	
+
+	<property file="conf/build/properties/build-test.properties" />
+
 	<property file="conf/build/properties/build-${HOST}.properties" />
 
 	<property file="build-default.properties" />
@@ -47,30 +47,21 @@
 	<property name="conf.build.properties.dir" value="${conf.dir}/build/properties" />
 	<property name="conf.build.userlib.dir" value="${conf.dir}/build/userlibrairies" />
 	<property name="conf.properties.dir" value="${conf.dir}/properties" />
-	<property file="${conf.reference.dir}/sitools-reference.properties"
-		prefix="properties" />              
+	<property file="${conf.reference.dir}/sitools-reference.properties" prefix="properties" />
 
 
 	<!-- TARGET par defaut : mise à jour du classpath, generation shell et build 
 		du projet. -->
-	<target name="build"
-		depends="refresh-properties, refresh-userlibraries, build-shell, build-project, build-tests" />
-	
-	
+	<target name="build" depends="refresh-properties, refresh-userlibraries, build-shell, build-project, build-tests" />
+
+
 
 	<!-- TARGET refresh-properties -->
-	<target name="refresh-properties"
-		description="Mise à jour du fichier de propriétés sitools.properties">
-		
-		<tstamp>
-		    <format property="NOW" pattern="yyyy-MM-dd HH:mm:ss" locale="fr,FR"/>
-	  	</tstamp>
-		
-		<copy outputencoding="UTF-8" tofile="${conf.properties.dir}/sitools.properties"
-			file="${conf.reference.dir}/sitools-reference.properties" overwrite="true" />
-		
-		<propertyfile file="${conf.properties.dir}/sitools.properties"
-			comment="Update root property">
+	<target name="refresh-properties" description="Mise à jour du fichier de propriétés sitools.properties">
+
+		<copy outputencoding="UTF-8" tofile="${conf.properties.dir}/sitools.properties" file="${conf.reference.dir}/sitools-reference.properties" overwrite="true" />
+
+		<propertyfile file="${conf.properties.dir}/sitools.properties" comment="Update root property">
 			<entry key="Starter.ROOT_DIRECTORY" value="${ROOT_DIRECTORY}" />
 			<entry key="Starter.HOST_DOMAIN" value="${HOST_DOMAIN}" />
 			<entry key="Starter.DATABASE_URL" value="${DATABASE_URL}" />
@@ -81,46 +72,50 @@
 			<entry key="Starter.HOST_PORT" value="${HOST_PORT}" />
 			<entry key="Security.Intranet.net" value="${SECURITY_INTRANET_NET}" />
 			<entry key="Security.Intranet.mask" value="${SECURITY_INTRANET_MASK}" />
-			<entry key="Starter.BUILD_DATE" value="${NOW}" />
 		</propertyfile>
-		
+
 		<condition property="itnetIsSet">
 			<isset property="Security.Intranet.ADMIN" />
 		</condition>
-		<antcall target="refresh-itnet"/>
-		<copy outputencoding="UTF-8" tofile="sitools.properties"
-			file="${conf.properties.dir}/sitools.properties" overwrite="true" />
-		
-		
+		<antcall target="refresh-itnet" />
+		<copy outputencoding="UTF-8" tofile="sitools.properties" file="${conf.properties.dir}/sitools.properties" overwrite="true" />
+
+
 	</target>
+
+
+	<macrodef name="updatePropertyKey">
+		<attribute name="propertyName" default="Security.Intranet.xxx" />
+		<attribute name="propertyValue" default="false" />
+		<attribute name="propertyFile" default="${conf.properties.dir}/sitools.properties" />
+		<sequential>
+			<propertyfile file="@{propertyFile}">
+				<entry key="@{propertyName}" value="@{propertyValue}" operation="=" default="false" />
+			</propertyfile>
+		</sequential>
+	</macrodef>
 
 	<!-- TARGET for sitools.akka.eu -->
 	<target name="refresh-itnet" if="itnetIsSet">
-		<macrodef name="intranetkey">
-			<attribute name="propertyName" default="Security.Intranet.xxx" />
-			<attribute name="propertyValue" default="false" />
-			<sequential>
-				<propertyfile file="${conf.properties.dir}/sitools.properties">
-					<entry key="@{propertyName}" value="@{propertyValue}"
-						operation="=" default="false" />
-				</propertyfile>
-			</sequential>
-		</macrodef>
-		<intranetkey propertyName="Security.Intranet.ADMIN"
-			propertyValue="${Security.Intranet.ADMIN}" />
-		<intranetkey propertyName="Security.Intranet.USER"
-			propertyValue="${Security.Intranet.USER}" />
-		<intranetkey propertyName="Security.Intranet.SYSTEM"
-			propertyValue="${Security.Intranet.SYSTEM}" />
-		<intranetkey propertyName="Security.Intranet.ADMIN_DYNAMIC"
-			propertyValue="${Security.Intranet.ADMIN_DYNAMIC}" />
-		<intranetkey propertyName="Security.Intranet.USER_DYNAMIC"
-			propertyValue="${Security.Intranet.USER_DYNAMIC}" />
-		<intranetkey propertyName="Security.Intranet.SYSTEM_DYNAMIC"
-			propertyValue="${Security.Intranet.SYSTEM_DYNAMIC}" />
+		<updatePropertyKey propertyName="Security.Intranet.ADMIN" propertyValue="${Security.Intranet.ADMIN}" />
+		<updatePropertyKey propertyName="Security.Intranet.USER" propertyValue="${Security.Intranet.USER}" />
+		<updatePropertyKey propertyName="Security.Intranet.SYSTEM" propertyValue="${Security.Intranet.SYSTEM}" />
+		<updatePropertyKey propertyName="Security.Intranet.ADMIN_DYNAMIC" propertyValue="${Security.Intranet.ADMIN_DYNAMIC}" />
+		<updatePropertyKey propertyName="Security.Intranet.USER_DYNAMIC" propertyValue="${Security.Intranet.USER_DYNAMIC}" />
+		<updatePropertyKey propertyName="Security.Intranet.SYSTEM_DYNAMIC" propertyValue="${Security.Intranet.SYSTEM_DYNAMIC}" />
 	</target>
 
+	<!-- TARGET refresh-properties -->
+	<target name="refresh-build-date" description="Mise à jour du fichier de propriétés sitools.properties pour positionner la buid-date">
 
+		<tstamp>
+			<format property="NOW" pattern="yyyy-MM-dd HH:mm:ss" locale="fr,FR" />
+		</tstamp>
+
+		<updatePropertyKey propertyName="Starter.BUILD_DATE" propertyValue="${NOW}" />
+		<updatePropertyKey propertyName="Starter.BUILD_DATE" propertyValue="${NOW}" propertyFile="sitools.properties" />
+
+	</target>
 
 
 	<!-- TARGET execute-tests les tests doivent être executés après le build-project 
@@ -131,13 +126,13 @@
 			<fileset dir="${conf.build.dir}" includes="build.xml" />
 		</subant>
 	</target>
-	
+
 	<target name="javadoc" description="Generate project javadoc">
 		<subant target="javadoc-projet">
 			<fileset dir="${conf.build.dir}" includes="build.xml" />
-		</subant>	
+		</subant>
 	</target>
-	
+
 
 
 	<!-- TARGET cobertura les tests doivent être executés en mode instrumente -->
@@ -162,17 +157,14 @@
 		<subant target="deploy-jar-test-projet">
 			<fileset dir="${conf.build.dir}" includes="build.xml" />
 		</subant>
+		<antcall target="refresh-build-date" />
 	</target>
 
 
 	<!-- TARGET refresh-userlibraries -->
-	<target name="refresh-userlibraries"
-		description="Mise à jour des userlibrairies pour eclipse et pour Ant">
-		<echo message="COTS dir : ${cots.dir}"/>
-		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries"
-			out="${conf.build.userlib.dir}/sitools.userlibraries.eclipse.xml"
-			style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true"
-			processor="SaxonLiaison">
+	<target name="refresh-userlibraries" description="Mise à jour des userlibrairies pour eclipse et pour Ant">
+		<echo message="COTS dir : ${cots.dir}" />
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.build.userlib.dir}/sitools.userlibraries.eclipse.xml" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true" processor="SaxonLiaison">
 			<param name="output" expression="eclipse" />
 			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
 			<outputproperty name="method" value="xml" />
@@ -182,9 +174,7 @@
 			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
 			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
 		</xslt>
-		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries"
-			out="${conf.build.userlib.dir}/sitools.userlibraries.ant.xml" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl"
-			force="true" processor="SaxonLiaison">
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.build.userlib.dir}/sitools.userlibraries.ant.xml" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true" processor="SaxonLiaison">
 			<param name="output" expression="ant" />
 			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
 			<outputproperty name="method" value="xml" />
@@ -200,25 +190,21 @@
 	<!-- TARGET xslt-build-shell -->
 	<target name="build-shell" description="Mise à jour du shell de lancement">
 		<!-- build script sitools -->
-		<copy file="${conf.reference.dir}/sitools-reference" tofile="${conf.bin.dir}/sitools"
-			outputencoding="UTF-8" overwrite="true">
+		<copy file="${conf.reference.dir}/sitools-reference" tofile="${conf.bin.dir}/sitools" outputencoding="UTF-8" overwrite="true">
 			<filterchain>
 				<replacetokens>
 					<token key="ROOT_DIRECTORY" value="${ROOT_DIRECTORY}" />
 					<token key="VERSION" value="${properties.Starter.VERSION}" />
-					<token key="PORT" value="${HOST_PORT}" />				
+					<token key="PORT" value="${HOST_PORT}" />
 				</replacetokens>
 			</filterchain>
 		</copy>
-		<copy outputencoding="UTF-8" tofile="sitools" file="${conf.bin.dir}/sitools"
-			overwrite="true" />
+		<copy outputencoding="UTF-8" tofile="sitools" file="${conf.bin.dir}/sitools" overwrite="true" />
 		<chmod file="sitools" perm="ugo+rx" />
 		<chmod file="${conf.bin.dir}/sitools" perm="ugo+rx" />
 
 		<!-- build script start sitools -->
-		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.bin.dir}/startSitools.sh"
-			style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true"
-			processor="SaxonLiaison">
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.bin.dir}/startSitools.sh" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true" processor="SaxonLiaison">
 			<param name="output" expression="shell" />
 			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
 			<param name="LOG_DIRECTORY" expression="${ROOT_DIRECTORY}" />
@@ -230,9 +216,7 @@
 			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
 			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
 		</xslt>
-		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.bin.dir}/startSitools.bat"
-			style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true"
-			processor="SaxonLiaison">
+		<xslt in="${conf.build.userlib.dir}/sitools.userlibraries" out="${conf.bin.dir}/startSitools.bat" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl" force="true" processor="SaxonLiaison">
 			<param name="output" expression="bat" />
 			<param name="ROOT_DIRECTORY" expression="${ROOT_DIRECTORY}" />
 			<outputproperty name="method" value="text" />
@@ -242,10 +226,8 @@
 			<classpath location="${cots.dir}/saxon/saxon9he.jar" />
 			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
 		</xslt>
-		<copy outputencoding="UTF-8" tofile="startSitools.sh"
-			file="${conf.bin.dir}/startSitools.sh" overwrite="true" />
-		<copy outputencoding="UTF-8" tofile="startSitools.bat"
-			file="${conf.bin.dir}/startSitools.bat" overwrite="true" />
+		<copy outputencoding="UTF-8" tofile="startSitools.sh" file="${conf.bin.dir}/startSitools.sh" overwrite="true" />
+		<copy outputencoding="UTF-8" tofile="startSitools.bat" file="${conf.bin.dir}/startSitools.bat" overwrite="true" />
 		<chmod file="startSitools.sh" perm="ugo+rx" />
 		<chmod file="${conf.bin.dir}/startSitools.sh" perm="ugo+rx" />
 	</target>
