@@ -196,12 +196,17 @@
 	background-repeat: no-repeat;
 }
 
-.icon-datasetsResourcesNodeId {
+.icon-datasetsServicesNodeId {
 	background-image:
 		url("/sitools/common/res/images/icons/tree_datasets_resource.png");
 	background-repeat: no-repeat;
 }
 
+.icon-guiservicesid {
+	background-image:
+		url("/sitools/common/res/images/icons/tree_datasets_gui_services.png");
+	background-repeat: no-repeat;
+}
 .icon-projectsResourcesNodeId {
 	background-image:
 		url("/sitools/common/res/images/icons/tree_projects_resources.png");

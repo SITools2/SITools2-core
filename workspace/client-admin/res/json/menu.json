@@ -345,7 +345,15 @@
                   "leaf":true,
                   "nodeName":"datasetView",
                   "id":"datasetViewNodeId"
-               }
+               },
+			   {
+		          "text":"Gui services",
+		          "iconMenu":"/sitools/common/res/images/icons/menu/tree_datasets_gui_services.png",
+		          "icon":"/sitools/common/res/images/icons/tree_datasets_gui_services.png",
+		          "leaf":true,
+		          "nodeName":"guiservices",
+		          "id":"guiservicesid",
+			   }
             ]
          },
          {
@@ -427,15 +435,7 @@
               "leaf":true,
               "nodeName":"analog",
               "id":"analogNodeId"
-         },
-	    {
-	          "text":"Gui services",
-	          "iconMenu":"/sitools/common/res/images/icons/menu/analog.png",
-	          "icon":"/sitools/common/res/images/icons/tree_application_plugin.png",
-	          "leaf":true,
-	          "nodeName":"guiservices",
-	          "id":"guiservicesid",
-	    }
+         }
       ]
    },
    {

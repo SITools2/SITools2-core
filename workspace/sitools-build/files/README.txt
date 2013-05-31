@@ -3,7 +3,7 @@ ______________
 
 Identification                       : SITools2
 Date                                 : 2012-04-26
-Version                              : 2.0.2
+Version                              : 2.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -23,24 +23,24 @@ ___________________
 		- Gui and server services are displayed in the dataviews depending on the number of lines selected
 		- Gui and server services can be aligned on the left or the right of the dataview toolbar
 		- Java7 code compatibility
-		- Jetty server properties available from the sitools.properties file
-		
+		- Jetty server properties configuration available from the sitools.properties file
 
 	* Bugs fixed : 
 		- Impossible to load a project desktop if a project module is not available
-		- Base64 class file removed, replace by org.apache.commons.codec.binary.Base64
+		- Impossible to add a concept to a column when the dataset was just created (status NEW)
+		- CartoView is very long to close when there are a lot of data to display 
 		
 	* Enhancements : 
 		- Datastorage module ergonomy improvement
 		- DatasetSelectionType of the servers extensions changed (ALL to MUTLIPLE)
-		
-		
+		- Selection with checkbox on the livegrid and cartoView
+		- Code quality improvement
 	
 	* API changes : 
+		- Base64 class file removed, replace by org.apache.commons.codec.binary.Base64
 		- Data folder :
-			- adminIndex.ftl and projectIndex.ftl has been changed
+			- projectIndex.ftl has been changed
 			- new gui_services definition
-			- new project_modules definition
 ___________________
 -2.0.2 (2013-04-26)
 	* New feature
