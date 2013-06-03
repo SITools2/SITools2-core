@@ -450,6 +450,7 @@
 		<tar destfile="${archive.path}" compression="gzip">
 			<fileset dir="${distribution.dir}">
 				<exclude name="**/documentation/javadoc/**"/>
+				<exclude name=".git/**"/>
 			</fileset>
 		</tar>
 	</target>

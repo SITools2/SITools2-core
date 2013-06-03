@@ -2,7 +2,7 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2012-04-26
+Date                                 : 2012-06-03
 Version                              : 2.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
@@ -17,7 +17,7 @@ Reference tag                        : (2.0)
 2/ Changes
 
 ___________________
---2.1 ()
+--2.1 (2012-06-03)
 	* New feature
 		- Default Gui Services are added by default to a dataset when creating a dataset
 		- Gui and server services are displayed in the dataviews depending on the number of lines selected
