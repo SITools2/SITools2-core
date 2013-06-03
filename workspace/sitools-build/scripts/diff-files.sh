@@ -9,10 +9,10 @@ cd ${3}
 git diff --name-only --diff-filter=MCR ${1} ${2}> modified_list-diff.txt
 git diff --name-only --diff-filter=A  ${1} ${2}> added_list-diff.txt
 git diff --name-only --diff-filter=D  ${1} ${2}> deleted_list-diff.txt
+git ls-tree -r --name-only ${2} > list-file.txt
 
 # tri des fichiers
 java -jar lib/FileSorting.jar modified_list-diff.txt modified_list-diff.txt
 java -jar lib/FileSorting.jar added_list-diff.txt added_list-diff.txt
 java -jar lib/FileSorting.jar deleted_list-diff.txt deleted_list-diff.txt
-
-git ls-tree -r --name-only ${2} > list-file.txt
+java -jar lib/FileSorting.jar list-file.txt list-file.txt
