@@ -35,7 +35,13 @@
 	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant"/>
 
 	<!-- Creating distribution folder from tag -->
-	<property name="distribution.dir" value="DISTRIBUTION-${repos.new.tag}"/>
+	<property name="distribution.dir" value="DISTRIBUTION-${sitools.project.tag}"/>
+
+	<!-- Creating distribution folder from tag for astronomy -->
+	<property name="distribution.astro.dir" value="DISTRIBUTION-ASTRO-${sitools.project.tag}"/>
+
+	<!-- Creating distribution folder from tag for astronomy -->
+	<property name="distribution.earthObservation.dir" value="DISTRIBUTION-earthObservation-${sitools.project.tag}"/>
 
 
 
@@ -44,8 +50,11 @@
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<target name="build" depends="init, export, izpack, javadoc, file-list, tar-gz, checksum" description="Création d'une distribution" />
 
-	<target name="build-git" depends="export-git, izpack, javadoc, file-list-git, tar-gz, checksum" description="Création d'une distribution" />
+	<target name="build-git" depends="export-git-core, izpack, javadoc, file-list-git-core, tar-gz-core, checksum-core" description="Création d'une distribution" />
 
+	<target name="build-git-ext-astro" depends="export-git-astro, file-list-git-astro, tar-gz-astro, checksum-astro" description="Création d'une distribution" />
+
+	<target name="build-git-ext-earthObservation" depends="export-git-earthObservation, file-list-git-earthObservation, tar-gz-earthObservation, checksum-earthObservation" description="Création d'une distribution" />
 
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -125,20 +134,45 @@
 		<echo message="SVN export from branch/tag ${repos.new.revision} done"/>
 
 	</target>
-	
+
 	<target name="export-git" description="Tache GIT d'export de la version actuelle">
 		<exec executable="scripts/clone-tag.bat" osfamily="windows">
-			<arg value="${sitools.git.repository.url}"/>
-			<arg value="${distribution.dir}"/>
-			<arg value="${sitools.project.tag}"/>
+			<arg value="${url}"/>
+			<arg value="${dir}"/>
+			<arg value="${tag}"/>
 		</exec>
-		
+
 		<exec executable="scripts/clone-tag.sh" osfamily="unix">
-			<arg value="${sitools.git.repository.url}"/>
-			<arg value="${distribution.dir}"/>
-			<arg value="${sitools.project.tag}"/>
+			<arg value="${url}"/>
+			<arg value="${dir}"/>
+			<arg value="${tag}"/>
 		</exec>
-		
+
+	</target>
+
+	<target name="export-git-core" description="Tache GIT d'export de la version actuelle">
+		<antcall target="export-git">
+			<param name="url" value="${sitools.git.repository.url}"/>
+			<param name="dir" value="${distribution.dir}"/>
+			<param name="tag" value="${repos.new.tag}"/>
+		</antcall>
+
+	</target>
+
+	<target name="export-git-astro" description="Tache GIT d'export de la version actuelle de l'extension astronomy">
+		<antcall target="export-git">
+			<param name="url" value="${sitools.git.repository.astro.url}" />
+			<param name="dir" value="${distribution.astro.dir}" />
+			<param name="tag" value="${repos.new.tag}" />
+		</antcall>
+	</target>
+
+	<target name="export-git-earthObservation" description="Tache GIT d'export de la version actuelle de l'extension observation de la Terre">
+		<antcall target="export-git">
+			<param name="url" value="${sitools.git.repository.earthObservation.url}" />
+			<param name="dir" value="${distribution.earthObservation.dir}" />
+			<param name="tag" value="${repos.new.tag}" />
+		</antcall>
 	</target>
 
 
@@ -423,36 +457,108 @@
 		<echo message="Files : &#x0A;${list}" append="true" file="${distribution.dir}/list-file.txt"/>
 
 	</target>
-	
-	
+
+
 	<target name="file-list-git" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
-			<exec executable="scripts/diff-files.bat" osfamily="windows">
-				<arg value="${sitools.Version.reference}"/>
-				<arg value="${sitools.Version.tag}"/>
-				<arg value="${distribution.dir}"/>
-			</exec>
-			
-			<exec executable="scripts/diff-files.sh" osfamily="unix">
-				<arg value="${sitools.Version.reference}"/>
-				<arg value="${sitools.Version.tag}"/>
-				<arg value="${distribution.dir}"/>
-			</exec>
-			
-		</target>
+		<!--<exec executable="scripts/diff-files.bat" osfamily="windows">
+			<arg value="${reference}"/>
+			<arg value="${tag}"/>
+			<arg value="${dir}"/>
+		</exec>
+		
+		<exec executable="scripts/diff-files.sh" osfamily="unix">
+			<arg value="${reference}"/>
+			<arg value="${tag}"/>
+			<arg value="${dir}"/>
+		</exec>-->
+
+		<path id="list.files">
+			<fileset dir="${dir}">
+				<include name="**/*.*"/>
+				<exclude name=".git/**"/>
+			</fileset>
+		</path>
+		<property name="files" refid="list.files"/>
+		<echo message="${files}"/>
+		<pathconvert property="list" refid="list.files" pathsep="&#x0A;">
+			<mapper>
+				<globmapper from='${sitools.ROOT_DIRECTORY}/workspace/sitools-build/${dir}/*' to="*" handledirsep="true"/>
+			</mapper>
+		</pathconvert>
+		<echo message="Files : &#x0A;${list}" append="true" file="${dir}/list-file.txt"/>
+	</target>
+
+
+	<target name="file-list-git-core" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
+		<antcall target="file-list-git">
+			<param name="reference" value="${sitools.Version.reference}" />
+			<param name="dir" value="${distribution.dir}" />
+			<param name="version" value="${sitools.Version.tag}" />
+		</antcall>
+	</target>
+
+	<target name="file-list-git-astro" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
+		<antcall target="file-list-git">
+			<param name="reference" value="${sitools.Version.reference}" />
+			<param name="dir" value="${distribution.astro.dir}" />
+			<param name="version" value="${sitools.Version.tag}" />
+		</antcall>
+	</target>
+
+	<target name="file-list-git-earthObservation" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
+		<antcall target="file-list-git">
+			<param name="reference" value="${sitools.Version.reference}" />
+			<param name="dir" value="${distribution.earthObservation.dir}" />
+			<param name="version" value="${sitools.Version.tag}" />
+		</antcall>
+	</target>
+
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Target for archive creation
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<target name="tar-gz" description="Genere l archive">
 		<!-- Creating archive -->
-		<property name="archive.path" value="${distribution.dir}/${sitools.project.title}-${sitools.project.tag}.tar.gz"/>
+		<property name="archive.path" value="${dir}/${title}-${version}.tar.gz"/>
 		<echo message="generating archive ${archive.path}"/>
 		<tar destfile="${archive.path}" compression="gzip">
-			<fileset dir="${distribution.dir}">
+			<fileset dir="${dir}">
 				<exclude name="**/documentation/javadoc/**"/>
 				<exclude name=".git/**"/>
 			</fileset>
 		</tar>
+	</target>
+
+	<target name="tar-gz-core" description="Genere l archive">
+
+		<antcall target="tar-gz">
+			<param name="title" value="${sitools.project.title}" />
+			<param name="dir" value="${distribution.dir}" />
+			<param name="version" value="${sitools.project.tag}" />
+		</antcall>
+	</target>
+
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			Target for archive creation
+		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<target name="tar-gz-astro" description="Genere l archive">
+
+		<antcall target="tar-gz">
+			<param name="title" value="${sitools.project.astro.title}" />
+			<param name="dir" value="${distribution.astro.dir}" />
+			<param name="version" value="${sitools.project.tag}" />
+		</antcall>
+	</target>
+
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				Target for archive creation
+			+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<target name="tar-gz-earthObservation" description="Genere l archive">
+		<antcall target="tar-gz">
+			<param name="title" value="${sitools.project.earthObservation.title}" />
+			<param name="dir" value="${distribution.earthObservation.dir}" />
+			<param name="version" value="${sitools.project.tag}" />
+		</antcall>
 	</target>
 
 
@@ -464,20 +570,51 @@
 
 		<!-- Generating MD5 checksum -->
 		<echo message="generating MD5 ..."/>
-		<checksum forceOverwrite="yes" algorithm="MD5" todir="${distribution.dir}">
-			<fileset dir="${distribution.dir}">
-				<include name="${sitools.project.title}-${sitools.project.tag}.tar.gz"/>
+		<checksum forceOverwrite="yes" algorithm="MD5" todir="${dir}">
+			<fileset dir="${dir}">
+				<include name="${title}-${version}.tar.gz"/>
 			</fileset>
 		</checksum>
 
 		<!-- Check MD5 generated -->
 		<echo message="verifying MD5 ..."/>
-		<checksum algorithm="MD5" todir="${distribution.dir}" verifyProperty="isMD5ok">
-			<fileset dir="${distribution.dir}">
-				<include name="${sitools.project.title}-${sitools.project.tag}.tar.gz"/>
+		<checksum algorithm="MD5" todir="${dir}" verifyProperty="isMD5ok">
+			<fileset dir="${dir}">
+				<include name="${title}-${version}.tar.gz"/>
 			</fileset>
 		</checksum>
 	</target>
+
+
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+			Target for MD5
+		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<target name="checksum-core" description="Genere le MD5 de l archive">
+		<antcall target="checksum">
+			<param name="title" value="${sitools.project.title}"/>
+			<param name="dir" value="${distribution.dir}"/>
+			<param name="version" value="${sitools.project.tag}"/>
+		</antcall>
+	</target>
+
+	<target name="checksum-astro" description="Genere le MD5 de l archive">
+		<antcall target="checksum">
+			<param name="title" value="${sitools.project.astro.title}"/>
+			<param name="dir" value="${distribution.astro.dir}"/>
+			<param name="version" value="${sitools.project.tag}"/>
+		</antcall>
+	</target>
+
+	<target name="checksum-earthObservation" description="Genere le MD5 de l archive">
+		<antcall target="checksum">
+			<param name="title" value="${sitools.project.earthObservation.title}"/>
+			<param name="dir" value="${distribution.earthObservation.dir}"/>
+			<param name="version" value="${sitools.project.tag}"/>
+		</antcall>
+	</target>
+
+
+
 
 
 	<path id="javadoc">
