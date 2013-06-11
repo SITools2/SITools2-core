@@ -147,7 +147,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			cls : "userProfileBtn", 
 			text  : i18n.get('label.register'), 
 			handler : function () {
-				var register = new sitools.widget.Register({
+				var register = new sitools.userProfile.Register({
 	                closable : true,
 	                url : "/sitools/inscriptions/user",
 	                login : "/sitools/login"

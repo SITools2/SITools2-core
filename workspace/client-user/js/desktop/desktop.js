@@ -452,8 +452,13 @@ sitools.user.desktop.App = function () {
 		if (Ext.getBody().isMasked()) {
 			Ext.getBody().unmask();
 		}
-		Ext.get("ux-taskbar").setVisible(true);
-		SitoolsDesk.getEnteteComp().fireEvent("desktopReady", SitoolsDesk.getEnteteComp());
+		
+
+		if (!Ext.isEmpty(SitoolsDesk.getEnteteComp())) {
+		    Ext.get("ux-taskbar").setVisible(true);
+		    SitoolsDesk.getEnteteComp().fireEvent("desktopReady", SitoolsDesk.getEnteteComp());
+		}
+		
         document.onkeypress = function (event) {
             if (event.keyCode === event.DOM_VK_F1) {
                 // cancel browser app event handler for F1 key
