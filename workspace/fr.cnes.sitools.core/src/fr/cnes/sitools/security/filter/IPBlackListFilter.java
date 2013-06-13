@@ -59,7 +59,7 @@ public class IPBlackListFilter extends SecurityFilter {
   protected int beforeHandle(Request request, Response response) {
     int status = STOP;
 
-    String clientip = request.getClientInfo().getAddress();
+    String clientip = getIpAddress(request);
     status = ((ipContainer != null) && ipContainer.contains(clientip)) ? STOP : super.beforeHandle(request, response);
     if (status == STOP) {
       response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Your IP address was blacklisted");

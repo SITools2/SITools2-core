@@ -138,7 +138,7 @@ public class SecurityFilter extends Filter {
    */
   public boolean isIntranet(Request request) {
     // get the address of the Request
-    String ip = request.getClientInfo().getAddress();
+    String ip = getIpAddress(request);
     // transform this address into a long
     long lAddress = getAddress(ip);
     // loop thought all the intranet address to check if the given address match one of them
@@ -150,6 +150,17 @@ public class SecurityFilter extends Filter {
       }
     }
     return ok;
+  }
+
+  /**
+   * Gets the IP address from the request
+   * 
+   * @param request
+   *          the {@link Request}
+   * @return the IP address as a String
+   */
+  protected String getIpAddress(Request request) {
+    return request.getClientInfo().getUpstreamAddress();
   }
 
   /**
