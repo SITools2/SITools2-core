@@ -36,7 +36,7 @@ sitools.user.component.entete.NavBarButtons = Ext.extend(Ext.Toolbar, {
         
         if (!Ext.isEmpty(userLogin)) {
             // width with save button
-          this.width = '204px';
+            this.width = '204px';
         }
         
         

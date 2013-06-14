@@ -117,52 +117,51 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 		}
 		
 
-		sitools.user.component.bottom.Bottom.superclass.initComponent.call(Ext.apply(this,  {
-			
-//			html : this.htmlContent, 
-			listeners : {
-				scope : this,
-				afterRender : function (me) {
-					
-					if (!this.defaultBottom){
-						me.setHeight(0);
-					}
-					else {
-						var bottomEl = SitoolsDesk.getBottomEl();
-						me.fillLinks();
-						me.setHeight(bottomEl.getHeight());
-						me.heightNormalMode = bottomEl.getHeight();
-						me.doLayout();
-						Ext.get("sitools_build_by").alignTo(this.panelMiddle.getEl(), "bl-bl");
 
-						var fr = Ext.get("sitools_footer_right");
-						if (Ext.isDefined(fr) && !Ext.isEmpty(fr)){
-							fr.alignTo(this.panelRight.getEl(), "c-c");
-						}
-					}
-				}, 
-				resize : function (me) {
-					if (!this.defaultBottom){
-						me.setHeight(0);
-					}
-					else {
-						me.setSize(SitoolsDesk.getBottomEl().getSize());
-						me.doLayout();
-						Ext.get("sitools_logo").alignTo(this.panelLeft.getEl(), "c-c");
-						Ext.get("sitools_build_by").alignTo(this.panelMiddle.getEl(), "bl-bl");
-						
-						var fr = Ext.get("sitools_footer_right");
-						if (Ext.isDefined(fr) && !Ext.isEmpty(fr)){
-							fr.alignTo(this.panelRight.getEl(), "c-c");
-						}
-					}
-				},
-				
-				maximizeDesktop : this.onMaximizeDesktop, 
-				minimizeDesktop : this.onMinimizeDesktop
-			}
-			
-		}));
+		sitools.user.component.bottom.Bottom.superclass.initComponent.call(Ext.apply(this, {
+
+            // html : this.htmlContent,
+            listeners : {
+                scope : this,
+                afterRender : function (me) {
+
+                    if (!this.defaultBottom) {
+                        me.setHeight(0);
+                    } else {
+                        var bottomEl = SitoolsDesk.getBottomEl();
+                        me.fillLinks();
+                        me.setHeight(bottomEl.getHeight());
+                        me.heightNormalMode = bottomEl.getHeight();
+                        me.doLayout();
+                        Ext.get("sitools_build_by").alignTo(this.panelMiddle.getEl(), "bl-bl");
+
+                        var fr = Ext.get("sitools_footer_right");
+                        if (Ext.isDefined(fr) && !Ext.isEmpty(fr)) {
+                            fr.alignTo(this.panelRight.getEl(), "c-c");
+                        }
+                    }
+                },
+                resize : function (me) {
+                    if (!this.defaultBottom) {
+                        me.setHeight(0);
+                    } else {
+                        me.setSize(SitoolsDesk.getBottomEl().getSize());
+                        me.doLayout();
+                        Ext.get("sitools_logo").alignTo(this.panelLeft.getEl(), "c-c");
+                        Ext.get("sitools_build_by").alignTo(this.panelMiddle.getEl(), "bl-bl");
+
+                        var fr = Ext.get("sitools_footer_right");
+                        if (Ext.isDefined(fr) && !Ext.isEmpty(fr)) {
+                            fr.alignTo(this.panelRight.getEl(), "c-c");
+                        }
+                    }
+                },
+
+                maximizeDesktop : this.onMaximizeDesktop,
+                minimizeDesktop : this.onMinimizeDesktop
+            }
+
+        }));
 	}, 
 	onMaximizeDesktop : function () {
 		this.container.setHeight(0);
@@ -171,7 +170,8 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 	}, 
 	onMinimizeDesktop : function () {
 		this.container.dom.style.height = "";
-		this.setVisible(true);
+		this.setSize(SitoolsDesk.getBottomEl().getSize());
+		this.show();
 		this.doLayout();
 	},
 	fillLinks : function () {

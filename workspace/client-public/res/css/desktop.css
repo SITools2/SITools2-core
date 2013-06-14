@@ -178,6 +178,7 @@ html, body {
 	padding:0;
 	/*position:relative;*/
  	z-index: 10000;
+ 	visibility:hidden;
 }
 
 .x-btn-icon .ux-taskbutton-center .x-btn-text{
@@ -931,7 +932,6 @@ td.ux-taskButtons-edge {
 	float : left;
 	width : 80%;
 	height : 100%; /*1000px;*/
-	background-image : url("/sitools/upload/sol02.jpg") !important;
 }
 
 .x-navBar {
@@ -949,7 +949,7 @@ td.ux-taskButtons-edge {
 	padding-right: 6px;
 	height : 35px;	
 	background-color: #000000;
-	position: initial;
+	/*position: initial;*/
 }
 
 .navBarButtons-icon {

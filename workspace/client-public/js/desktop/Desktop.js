@@ -293,9 +293,7 @@ Ext.Desktop = function (app) {
 	this.minimize = function () {
 		SitoolsDesk.getEnteteComp().fireEvent("minimizeDesktop");
 		SitoolsDesk.getBottomComp().fireEvent("minimizeDesktop");
-		SitoolsDesk.app.getModulesInDiv().each(function (moduleInDiv) {
-			moduleInDiv.fireEvent("minimizeDesktop", moduleInDiv);
-		});
+		
 		Ext.DomQuery.select("div[stype=freeDiv]").each(function (freeDiv) {
 			freeDiv.style.height = "";
 			freeDiv.style.width = "";
@@ -318,6 +316,10 @@ Ext.Desktop = function (app) {
 			}
 		});
 		SitoolsDesk.getDesktop().taskbar.tbPanel.ownerCt.doLayout()
+		
+		SitoolsDesk.app.getModulesInDiv().each(function (moduleInDiv) {
+			moduleInDiv.fireEvent("minimizeDesktop", moduleInDiv);
+		});
 		
 	}
 	/**

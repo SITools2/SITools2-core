@@ -47,7 +47,6 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 		    border : false, 
 		    layout : 'hbox',
 		    height : 35,
-		    flex : 1, 
 		    listeners : {
                 scope : this, 
                 maximizeDesktop : this.onMaximizeDesktopNavbar, 
@@ -91,7 +90,9 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 //					this.entetePanel.fireEvent("navBarRendered", navBar);
 //				}, 
 				windowResize : function (me) {
-					this.userContainer.hide();
+				    if (!Ext.isEmpty(this.userContainer) && this.userContainer.isVisible()) {
+				        this.userContainer.hide();
+				    }
 				}, 
 				desktopReady : function (me) {
 					this.entetePanel.fireEvent("desktopReady", this.navToolbarButtons);
@@ -110,6 +111,7 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 //		this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
 		if (this.userContainer) {
 			this.userContainer.fireEvent("maximizeDesktop", this.userContainer, this.navToolbarButtons);
+			this.userContainer = null;
 		}
 		this.doLayout();
 	}, 
@@ -124,6 +126,7 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 //		this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
 		if (this.userContainer) {
 			this.userContainer.fireEvent("minimizeDesktop", this.userContainer, this.navToolbarButtons);
+			this.userContainer = null;
 		}
 		this.doLayout();
 		
@@ -179,12 +182,14 @@ sitools.user.component.entete.Entete = Ext.extend(Ext.Panel, {
 				maximizeDesktop : function (me, navBar) {
 //					me.setPosition(me.getPosition()[0], this.calcUserContainerYPos(navBar));
 					if (me.isVisible()) {
+					    me.setVisible(false);
 						me.destroy();
 //						this.showUserContainer(navBar);
 					}
 				}, 
 				minimizeDesktop : function (me, navBar) {
 					if (me.isVisible()) {
+					    me.setVisible(false);
 						me.destroy();
 //						this.showUserContainer(navBar);
 					}

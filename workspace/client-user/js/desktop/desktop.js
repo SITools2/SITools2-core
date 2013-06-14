@@ -68,7 +68,7 @@ sitools.user.desktop.App = function () {
                     } ],
 					listeners : {
 						resize : function (me) {
-							if (module.container) {
+							if (!SitoolsDesk.desktopMaximizeMode && module.container) {
 								me.setSize(Ext.get(module.container).getSize());
 							}
 
@@ -78,7 +78,10 @@ sitools.user.desktop.App = function () {
 							me.doLayout();
 						},
 						minimizeDesktop : function (me) {
-							me.setVisible(true);
+						    if (module.container) {
+                                me.setSize(Ext.get(module.container).getSize());
+                            }
+							me.show();
 							me.doLayout();
 						}
 					}
@@ -200,39 +203,34 @@ sitools.user.desktop.App = function () {
 	 * Fires event resize on each module representation included in a specific Div  
 	 */
 	function fireResize(newW, newH) {
-		try {
-			var desktop = SitoolsDesk.getDesktop();
-			if (SitoolsDesk.desktopMaximizeMode) {
-				desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody()
-						.getHeight()
-						- this.getEnteteEl().getHeight());
-				desktop.getDesktopAndTaskBarEl().setWidth(Ext.getBody()
-						.getWidth());
-				desktop.getDesktopEl().setHeight(Ext.getBody().getHeight()
-						- this.getEnteteEl().getHeight()
-						- desktop.taskbar.tbPanel.getHeight());
-				desktop.getDesktopEl().setWidth(Ext.getBody().getWidth());
-			}
-			if (!Ext.isEmpty(desktop.activePanel)) {
-				desktop.activePanel.fireEvent("resizeDesktop",
-						desktop.activePanel);
-			}
-			SitoolsDesk.getEnteteComp().fireEvent("resize",
-					SitoolsDesk.getEnteteComp(), newW, newH);
-			SitoolsDesk.getEnteteComp().fireEvent("windowResize",
-					SitoolsDesk.getEnteteComp(), newW, newH);
-			SitoolsDesk.getBottomComp().fireEvent("resize",
-					SitoolsDesk.getBottomComp(), newW, newH);
-			SitoolsDesk.getBottomComp().fireEvent("windowResize",
-					SitoolsDesk.getBottomComp(), newW, newH);
-			for (var int = 0; int < projectGlobal.modulesInDiv.length; int++) {
-				var module = projectGlobal.modulesInDiv[int];
-				var panel = Ext.getCmp(module.id);
-				panel.fireEvent("resize", panel, newW, newH);
-			}
-
-		} catch (err) {
-			return null;
+		var desktop = SitoolsDesk.getDesktop();
+		if (SitoolsDesk.desktopMaximizeMode) {
+			desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody()
+					.getHeight()
+					- this.getEnteteEl().getHeight());
+			desktop.getDesktopAndTaskBarEl().setWidth(Ext.getBody()
+					.getWidth());
+			desktop.getDesktopEl().setHeight(Ext.getBody().getHeight()
+					- this.getEnteteEl().getHeight()
+					- desktop.taskbar.tbPanel.getHeight());
+			desktop.getDesktopEl().setWidth(Ext.getBody().getWidth());
+		}
+		if (!Ext.isEmpty(desktop.activePanel)) {
+			desktop.activePanel.fireEvent("resizeDesktop",
+					desktop.activePanel);
+		}
+		SitoolsDesk.getEnteteComp().fireEvent("resize",
+				SitoolsDesk.getEnteteComp(), newW, newH);
+		SitoolsDesk.getEnteteComp().fireEvent("windowResize",
+				SitoolsDesk.getEnteteComp(), newW, newH);
+		SitoolsDesk.getBottomComp().fireEvent("resize",
+				SitoolsDesk.getBottomComp(), newW, newH);
+		SitoolsDesk.getBottomComp().fireEvent("windowResize",
+				SitoolsDesk.getBottomComp(), newW, newH);
+		for (var int = 0; int < projectGlobal.modulesInDiv.length; int++) {
+			var module = projectGlobal.modulesInDiv[int];
+			var panel = Ext.getCmp(module.id);
+			panel.fireEvent("resize", panel, newW, newH);
 		}
 	}
 
@@ -800,7 +798,7 @@ sitools.user.desktop.App = function () {
 		initDesktopApplication : function () {
 			// START HERE !!!
 			Ext.QuickTips.init();
-
+			
 			if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
 				var auth = Ext.util.Cookies.get('hashCode');
 
