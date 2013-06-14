@@ -157,11 +157,14 @@ sitools.user.modules.datastorageBrowser  = Ext.extend(Ext.Window, {
                 },    
                 beforeexpandnode : function (node) {
                     node.removeAll();
+                    var reference = new Reference(node.attributes.url);
+                    var url = reference.getFile();
+                    console.log("beforeexpandnode : " + url);
                     Ext.Ajax.request({
                         params : {
                             index : ""
                         },
-                        url : node.attributes.url,
+                        url : url,
                         headers : {
                             'Accept' : 'application/json+sitools-directory'
                         },

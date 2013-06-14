@@ -112,26 +112,15 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
             handler : this.onValidate
         });
         
-        this.buttons = [/*{
-        		xtype : 'label',
-        		text : i18n.get('label.refreshBeforeSave')
-        	},{
-	            xtype : 'button',
-	            iconAlign : 'right',
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-	            tooltip : i18n.get('label.refresh'),
-	            scope : this,
-	            handler : function (){
-	            	this.cms.refreshTree();
-	            	this.buttonOK.setDisabled(false);
-	            }
-	        },*/ this.buttonOK ,{
+
+
+        this.buttons = [ this.buttonOK, {
             text : i18n.get('label.cancel'),
             scope : this,
             handler : function () {
                 this.close();
             }
-        }];
+        } ];
     
         
         sitools.user.modules.chooseFileInExplorer.superclass.initComponent.call(this);
@@ -155,8 +144,9 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
         }
     },
     
-    findOldNode : function (nodeName){
-    	return selectNode = this.cms.tree.getRootNode().findChild('text', nodeName, true);
+
+    findOldNode : function (nodeName) {
+        return selectNode = this.cms.tree.getRootNode().findChild('text', nodeName, true);
     },
     
     onValidate : function () {

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, i18n, loadUrl, locale */
+/*global Ext, sitools, i18n, loadUrl, locale, Reference */
 
 Ext.namespace('sitools.user.modules');
 /**
@@ -213,12 +213,15 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                     return node.isRoot || Ext.isDefined(node.attributes.children);
                 },
                 beforeexpandnode : function (node) {
+                    this.tree.getSelectionModel().clearSelections();
                     node.removeAll();
+                    var reference = new Reference(node.attributes.url);
+                    var url = reference.getFile();
                     Ext.Ajax.request({
                         params : {
                             index : ""
                         },
-                        url : node.attributes.url,
+                        url : url,
                         headers : {
                             'Accept' : 'application/json+sitools-directory'
                         },
@@ -227,34 +230,21 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                         success : function (ret) {
                             try {
                                 var Json = Ext.decode(ret.responseText);
+                                //first append the folders
                                 Ext.each(Json, function (child) {
                                     if (!child.leaf) {
-                                        var nodeAdded = node.appendChild({
-                                            cls : child.cls,
-                                            text : decodeURIComponent(child.text),
-                                            url : child.url,
-                                            leaf : child.leaf,
-                                            size : child.size,
-                                            lastmod : child.lastmod,
-                                            children : []
-                                        });
+                                        var nodeAdded = this.appendChild(child, node);
                                         child.id = nodeAdded.id;
+                                        
                                     }
-                                });
+                                }, this);
+                                //then append the files
                                 Ext.each(Json, function (child) {
                                     if (child.leaf) {
-                                        var nodeAdded = node.appendChild({
-                                            cls : child.cls,
-                                            text : decodeURIComponent(child.text),
-                                            url : child.url,
-                                            leaf : child.leaf,
-                                            size : child.size,
-                                            lastmod : child.lastmod,
-                                            children : []
-                                        });
+                                        var nodeAdded = this.appendChild(child, node);
                                         child.id = nodeAdded.id;
                                     }
-                                });
+                                }, this);
                                 this.loadDataview(node);
                                 
                                 // if there is a node to select prior to the expanding of the node
@@ -454,6 +444,20 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
 
         sitools.user.modules.datastorageExplorer.superclass.initComponent.call(this);
     },
+    
+    appendChild : function (child, parent) {
+        var reference = new Reference(child.url);
+        var url = reference.getFile();
+        return parent.appendChild({
+            cls : child.cls,
+            text : decodeURIComponent(child.text),
+            url : url,
+            leaf : child.leaf,
+            size : child.size,
+            lastmod : child.lastmod,
+            children : []
+        });
+    },
 
     isImage : function (text) {
         var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
@@ -478,7 +482,7 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                 urlUpload = urlUpload + "/";
             }
         }
-
+        
         var uploadWin = new sitools.user.modules.datastorageUploadFile({
             urlUpload : urlUpload,
             scope : this,
@@ -499,7 +503,6 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         } else if (node.attributes.cls) {
             deleteUrl = node.attributes.url;
         }
-
         Ext.Ajax.request({
             url : deleteUrl + "?recursive=true",
             method : 'DELETE',
@@ -552,6 +555,10 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             Json.push(child.attributes);
         });
         this.dataview.getStore().loadData(Json);
+        //clear any file already displayed
+        this.detailPanel.setTitle(i18n.get('label.defaultTitleDetailPanel'));
+        this.detailPanel.setSrc(this.noPreviewAvailableUrl);
+        this.detailPanel.doLayout();
     },
 
     detachPanel : function (panel) {

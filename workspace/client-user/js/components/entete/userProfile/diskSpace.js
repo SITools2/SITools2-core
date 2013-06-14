@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-/*global Ext, sitools, i18n, userLogin, document, alertFailure, SitoolsDesk, userLogin, DEFAULT_ORDER_FOLDER, loadUrl, viewFileContent*/
+/*global Ext, sitools, i18n, userLogin, document, alertFailure, SitoolsDesk, userLogin, DEFAULT_ORDER_FOLDER, loadUrl, viewFileContent, Reference*/
 
 Ext.namespace('sitools.user.component.entete.userProfile');
 
@@ -53,7 +53,7 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
             } ];
 
         sitools.user.component.entete.userProfile.diskSpace.superclass.initComponent.call(Ext.apply(this, {
-        	expanded : true,
+            expanded : true,
             useArrows : true,
             autoScroll : true,
             layout : 'fit', 
@@ -78,8 +78,10 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
                 },
                 beforeexpandnode : function (node) {
                     node.removeAll();
+                    var reference = new Reference(node.attributes.url);
+                    var url = reference.getFile();
                     Ext.Ajax.request({
-                        url : node.attributes.url,
+                        url : url,
                         method : 'GET',
                         scope : this,
                         success : function (ret) {
