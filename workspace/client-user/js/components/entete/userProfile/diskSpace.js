@@ -92,10 +92,12 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
                                     if (child.leaf) {
                                         text += "<span style='font-style:italic'> (" + Ext.util.Format.fileSize(child.size) + ")</span>";
                                     }
+                                    var reference = new Reference(child.url);
+                                    var url = reference.getFile();
                                     node.appendChild({
                                         cls : child.cls,
                                         text : text,
-                                        url : child.url,
+                                        url : url,
                                         leaf : child.leaf,
                                         children : [],
                                         checked : child.checked

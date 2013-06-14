@@ -43,7 +43,15 @@ ImageChooser.prototype = {
 			        {name:'lastmod', type:'date', dateFormat:'timestamp'}
 			    ],
 			    listeners: {
-			    	'load': {fn:function(){ this.view.select(0); }, scope:this, single:true}
+			    	scope : this,
+			    	load : function (store, records, options) {
+			    		Ext.each(records, function(record){
+			    			var url = new Reference(record.get('url'));
+			    			var recordUrl = url.getFile();
+			    			record.set("url", recordUrl);
+			    		});
+			    		this.view.select(0);
+			    	}
 			    }
 			});
 			this.store.load();
@@ -240,10 +248,14 @@ ImageChooser.prototype = {
 		this.thumbTemplate = new Ext.XTemplate(
 			'<tpl for=".">',
 				'<div class="thumb-wrap" id="{name}">',
-				'<div class="thumb"><img src="{url}" height="96" width="96" title="{name}"></div>',
+				'<div class="thumb"><img src="{[this.formatUrl(values.url)]}" height="96" width="96" title="{name}"></div>',
 				'<span>{shortName}</span></div>',
-			'</tpl>'
-		);
+			'</tpl>', {
+			formatUrl : function(url) {
+				var url = new Reference(url);
+    			return url.getFile();
+	        }
+		});
 		this.thumbTemplate.compile();
 
 		this.detailsTemplate = new Ext.XTemplate(
@@ -306,9 +318,6 @@ ImageChooser.prototype = {
 		var config = this.config;
 		if(selNode && callback){
 			var data = lookup[selNode.id];
-			var url = new Reference(data.url);
-			data.url = url.getFile();
-			
 			callback(data, config);
 		}; 
 		this.win.close();
