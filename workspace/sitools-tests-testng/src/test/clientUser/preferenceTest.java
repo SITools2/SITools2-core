@@ -1,3 +1,21 @@
+ /*******************************************************************************
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ *
+ * This file is part of SITools2.
+ *
+ * SITools2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SITools2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package test.clientUser;
 
 import junit.framework.Assert;
@@ -76,7 +94,7 @@ public class preferenceTest  extends SELTestCase  {
 		selenium.waitForPageToLoad("10000");
 		SEL.sleep(1000);
 		
-		//Vérifier que les préférences utilisateur sont chargées : 
+		//Vï¿½rifier que les prï¿½fï¿½rences utilisateur sont chargï¿½es : 
 		SEL.waitPresence(SEL.locByText("span", "Datasets Forms"), 10000);
 		Assert.assertEquals(selenium.getElementPositionLeft(SEL4Ext.getWinId("formsModule")), 0);
 		Assert.assertEquals(selenium.getElementPositionTop(SEL4Ext.getWinId("formsModule")), 395);

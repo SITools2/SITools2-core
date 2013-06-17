@@ -1,3 +1,21 @@
+ /*******************************************************************************
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ *
+ * This file is part of SITools2.
+ *
+ * SITools2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SITools2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package sitoolsObjects;
 
 import imageChooser.imageChooser;
@@ -66,7 +84,7 @@ public class Dataset {
 		selenium.type(SEL.locById("sitoolsAttachementForUsers"), "/dataset/" + name);
 		// fin du premier panel
 
-		// 2° panel : select Propriétés
+		// 2ï¿½ panel : select Propriï¿½tï¿½s
 //		selenium.click("//div[@id='datasetsMultiTablesPanel']/descendant::*[text()='Properties']");
 		selenium.click(SEL.locByText("datasetsMultiTablesPanel", "*", "Properties", true));
 		selenium.click(SEL.locByText("componentGridProperties", "button", "Create", true));
@@ -119,7 +137,7 @@ public class Dataset {
 		
 		
 		
-		// 3° panel : select Tables
+		// 3ï¿½ panel : select Tables
 //		selenium.click("xpath=//div[@id='datasetsMultiTablesPanel']/descendant::ul[1]/li[3]/a[2]");
 		selenium.click(SEL.locByText("datasetsMultiTablesPanel", "*", "Select tables", true));
 		// attente du chargement des tables
@@ -135,7 +153,7 @@ public class Dataset {
 		// click sur bouton >
 		selenium.click(SEL.locByStyle("selectTablesPanel", "button", "simple-arrow-right.png", true));
 
-		// 4° panel : select fields
+		// 4ï¿½ panel : select fields
 		selenium.click(SEL.locByText("datasetsMultiTablesPanel", "*", "Select fields", true));
 		// attente du chargement des fields
 		String gridColumnsTables = SEL.locByCss("gridColumnTables", "div", "x-grid3-body", true);
@@ -144,11 +162,11 @@ public class Dataset {
 		selenium.click(SEL.locByStyle("datasetsMultiTablesPanel_SelectFields", "button", "double-arrow-right.png", true));
 //		selenium.click("//div[@id='datasetsMultiTablesPanel_SelectFields']/div/div/div/div/div/div/div[2]/descendant::table[2]");
 
-		// 5° panel : fields Setup
+		// 5ï¿½ panel : fields Setup
 		selenium.click(SEL.locByText("datasetsMultiTablesPanel", "*", "Fields setup", true));
 		// attente du chargement des fields
 		SEL.sleep(1000);
-		//construction de la clé primaire
+		//construction de la clï¿½ primaire
 		selenium.click(SEL.locByText("gridColumnSelect", "button", "Create", true));
 		selenium.type(SEL.locByItem("columnPropId", "input[2]", true), "primary_key");
 		selenium.type(SEL.locByItem("columnPropId", "textarea", true), pkey);
@@ -170,7 +188,7 @@ public class Dataset {
 		SEL.sleep(1000);
 		
 		
-		// 6° panel : conditions :
+		// 6ï¿½ panel : conditions :
 		selenium.click("xpath=//div[@id='datasetsMultiTablesPanel']/descendant::ul[1]/li[6]/a[2]");
 		SEL.sleep(1000);
 		//ajout de deux condition : 

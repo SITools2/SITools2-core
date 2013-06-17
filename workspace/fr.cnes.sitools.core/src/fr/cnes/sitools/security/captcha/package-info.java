@@ -1,21 +1,19 @@
-/**
- *  Objectif : sécuriser les services client d'inscription, de modification de profil (password)
- *  par l'utilisation d'une image capcha. 
- *  
- *  Le formulaire d'inscription est généré sur le client avec une image
- *  Logiquement, le contrôle est effectué par le serveur, qui doit donc conserver une resource captcha ...
- * 
- * Comme expliqué ici :
- * http://tech.groups.yahoo.com/group/rest-discuss/message/14699
- * 
- * Depuis le client, un appel POST sur une /sitools/capchas/ qui crée une image captcha accessible par
- * GET /sitools/captchas/{id}
- * au max X (5?) images captchas sont conservées en mémoire dans une FIFO
- * une fois récupérée par GET l'image est effacée.
- * 
- * Un filtre de sécurité FilterCaptcha (qui hérite de SecurityFilter) détecte si withCaptcha est positionné dans le contexte des attributs.
- * Si oui, l'identifiant de captcha est récupéré et le mot de passe associé.
- * Un appel au store (mémoire) des captchas est réalisé pour récupérer le code et comparer.
- * 
- */
+    /*******************************************************************************
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ *
+ * This file is part of SITools2.
+ *
+ * SITools2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SITools2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package fr.cnes.sitools.security.captcha;

@@ -1,18 +1,18 @@
-/*******************************************************************************
- * Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- * 
+     /*******************************************************************************
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ *
  * This file is part of SITools2.
- * 
+ *
  * SITools2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * SITools2 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -90,7 +90,7 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
 
     MediaType ftl = MediaType.register("text/freemarker", "freemarker template files");
     this.getMetadataService().addExtension("ftl", ftl);
-    
+
     this.getMetadataService().addExtension("css", MediaType.TEXT_CSS);
     this.getMetadataService().addExtension("html", MediaType.TEXT_HTML);
 
@@ -155,10 +155,10 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
 
     router.attach("/settings/{PARAMETER}", SitoolsSettingsResource.class);
     router.attach("/javaVersion", SitoolsJavaVersionResource.class);
-    
+
     // Create a directory with no-cache parameter to true to
     DirectoryProxy analogDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + analogReportsDir,
-        getAttachementRef() + analogReportsDir);
+      getAttachementRef() + analogReportsDir);
 
     analogDir.setDeeplyAccessible(true);
     analogDir.setListingAllowed(true);
@@ -166,7 +166,7 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     analogDir.setNocache(true);
 
     router.attach("/analog", analogDir);
-    
+
     router.attach("/jettyprops", JettyPropertiesResource.class);
 
     Filter filter = new NotifierFilter(getContext());
