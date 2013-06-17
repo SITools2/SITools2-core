@@ -27,8 +27,8 @@ Ext.namespace('sitools.widget.HtmlEditor');
 sitools.widget.HtmlEditor.datasetLink = Ext.extend(Ext.util.Observable, {
 
 	init : function(cmp) {
-        this.cmp = cmp;
-        this.cmp.on('render', this.onRender, this);
+//        this.cmp = cmp;
+//        this.cmp.on('render', this.onRender, this);
 		
 		this.browseField = new Ext.form.TriggerField({
             name : 'datasetLink',

@@ -68,7 +68,12 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     
                 case "siteName" :
                     this.siteName = config.value;
-                    break;    
+                    break;
+                
+                case "allowDataPublish" :
+                    // Parse string to boolean
+                    this.allowDataPublish = config.value == "true";
+                    break;  
                 }
             }
         }, this);
@@ -113,6 +118,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             enableDD : true,
             title : i18n.get('label.sitePlan'),
             tbar : new sitools.user.modules.cmsTreeToolbar({
+                allowDataPublish : this.allowDataPublish,
                 cms : this,
                 textTooltip : textTooltip
             }),
@@ -229,18 +235,12 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 handler : this.onSave
             });
         
-        this.htmlEditor = new Ext.form.HtmlEditor({
+        this.idTextarea = Ext.id();
+        this.htmlEditor = new Ext.form.TextArea({
             directoryImageUrl : this.directoryImageUrl,
-            plugins : Ext.ux.form.HtmlEditor.plugins(),
-            id : 'htmlEditorId',
-            region : 'center',
-            listeners : { 
-                scope : this,
-                afterrender : function () {
-                    var tbar = this.htmlEditor.getToolbar();
-                    tbar.enableOverflow = true;
-                }
-            }
+            id : this.idTextarea,
+            name : this.idTextarea,
+            region : 'center'
         });
         
         this.viewerEditorPanel = new Ext.ux.ManagedIFrame.Panel({
@@ -251,11 +251,19 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         });
             
         this.contentPanel = new Ext.Panel({
-            id:'content-editor',
+            id: 'content-editor',
             layout : 'border',
             region : 'center',
             bbar : ['->', this.saveButton],
-            items : [this.htmlEditor, this.viewerEditorPanel]
+            items : [this.htmlEditor, this.viewerEditorPanel],
+            listeners : {
+                scope : this,
+                resize : function (panel, newWidth, newHeight, origWidth, origHeight) {
+                    if (CKEDITOR.instances[this.idTextarea]) {
+                        CKEDITOR.instances[this.idTextarea].resize(newWidth, newHeight - panel.getBottomToolbar().getHeight());
+                    }
+                }
+            }
         });
         
         this.items = [this.tree, this.contentPanel];
@@ -273,7 +281,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 scope : this,
                 success : function (ret) {
                     var data = ret.responseText;
-                    this.findByType('htmleditor')[0].setValue(data);
+//                    this.findByType('textarea')[0].setValue(data);
                     this.tree.getRootNode().expand(true);
                 },
                 failure : alertFailure
@@ -328,11 +336,21 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 url : this.newUrl,
                 method : 'GET',
                 scope : this,
-                params : {
-                    processTemplate : true
-                },
+//                params : {
+//                    processTemplate : true
+//                },
                 success : function (ret) {
                     var contentType = ret.getResponseHeader("content-type");
+                    if (Ext.isEmpty(CKEDITOR.instances[this.idTextarea])){
+                        CKEDITOR.replace(this.idTextarea, {
+                            toolbar : 'SITools_Advanced'
+                        });
+                        
+                        CKEDITOR.instances[this.idTextarea].config.fullPage = true;
+                        CKEDITOR.instances[this.idTextarea].config.height = this.contentPanel.getHeight() - 136;
+                       
+                        
+                    }
                     if (contentType.contains("text")) {
                         
                         
@@ -344,19 +362,25 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         //	                base.href = this.dynamicUrlDatastorage + "/";
                         //	                this.htmlEditor.iframe.contentDocument.getElementsByTagName("head")[0].appendChild(base);
                         //                }
-                        this.findByType('htmleditor')[0].setValue(data);
-                        this.setEditable(true);
+//                        this.findByType('htmleditor')[0].setValue(data);
+                        var callback = Ext.createDelegate(function () {
+                            CKEDITOR.instances[this.idTextarea].setReadOnly(false);
+                        }, this);
+                        
+                        CKEDITOR.instances[this.idTextarea].setData(data, callback);
                     } else {
-                        this.findByType('htmleditor')[0].setValue(i18n.get("label.cannotEditOtherThanText"));
-                        this.setEditable(false);
+//                        this.findByType('textarea')[0].setValue(i18n.get("label.cannotEditOtherThanText"));
+                        CKEDITOR.instances[this.idTextarea].setData(i18n.get("label.cannotEditOtherThanText"));
+                        CKEDITOR.instances[this.idTextarea].setReadOnly(true);
                     }
                     
                     
                 },
                 failure : function(ret) {
                     var data = ret.responseText;
-                    this.findByType('htmleditor')[0].setValue(data);
-                    this.setEditable(false);
+                    CKEDITOR.instances[this.idTextarea].setData(data);
+//                    this.findByType('textarea')[0].setValue(data);
+                    CKEDITOR.instances[this.idTextarea].setReadOnly(true);
                 }
             });
             
@@ -379,7 +403,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     },
     
     onSave : function () {
-        var text = this.htmlEditor.getValue();
+        var text = CKEDITOR.instances[this.idTextarea].getData();
         
         if (text.indexOf("<base href=\"" + this.dynamicUrlDatastorage + "/\"") !== -1) {
             text = text.replace("<base href=\"" + this.dynamicUrlDatastorage + "/\"",
@@ -800,7 +824,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
      */
     setEditable : function (editable) {
         this.editable = editable;
-        this.findByType('htmleditor')[0].setReadOnly(!this.editable);
+//        this.findByType('htmleditor')[0].setReadOnly(!this.editable);
+        this.findByType('textarea')[0].setReadOnly(!this.editable);
         this.saveButton.setDisabled(!this.editable);        
     },
     /**
@@ -874,6 +899,7 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
         config : {
             fieldLabel : i18n.get("label.urlDatastorage"),
             allowBlank : false,
+            id : "urlDatastorageId",
             width : 200,
             listeners: {
                 render: function(c) {
@@ -888,13 +914,55 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
         }
     },
     {
+        jsObj : "Ext.form.Checkbox", 
+        config : {
+            fieldLabel : i18n.get("label.allowDataPublish"),
+            checked : true,
+            id : "allowDataPublishId",
+            listeners: {
+                render: function(c) {
+                  Ext.QuickTips.register({
+                    target: c,
+                    text: "Allow to copy/publish files from one datastorage to another. Useless when only one storage."
+                  });
+                },
+                valid : function (box){
+                    console.log(box.getValue());
+                },
+                check : function (box, checked){
+                    if (this.ownerCt) {
+                        var src = this.ownerCt.getComponent("nameDatastorageSrcId");
+                        var dest = this.ownerCt.getComponent("nameDatastorageDestId");
+                        if (!checked) {
+                            src.reset();
+                            src.setDisabled(true);
+                            dest.reset();
+                            dest.setDisabled(true);
+                        }
+                        else {
+                            src.reset();
+                            src.setDisabled(false);
+                            dest.reset();
+                            dest.setDisabled(false);
+                        }
+                    }
+                }
+            },
+            name : "allowDataPublish",
+            value : ""
+        }
+    },
+    {
         jsObj : "Ext.form.TextField", 
         config : {
             fieldLabel : i18n.get("label.nameDatastorageSrc"),
             allowBlank : false,
+            id : "nameDatastorageSrcId",
             width : 200,
             listeners: {
                 render: function(c) {
+                    var checkbox = this.ownerCt.getComponent("allowDataPublishId");
+                    this.setDisabled(!checkbox.getValue());
                   Ext.QuickTips.register({
                     target: c,
                     text: "The NAME of the development datastorage to copy content from"
@@ -910,9 +978,12 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
         config : {
             fieldLabel : i18n.get("label.nameDatastorageDest"),
             allowBlank : false,
+            id : "nameDatastorageDestId",
             width : 200,
             listeners: {
                 render: function(c) {
+                    var checkbox = this.ownerCt.getComponent("allowDataPublishId");
+                    this.setDisabled(!checkbox.getValue());
                   Ext.QuickTips.register({
                     target: c,
                     text: "The NAME of the production datastorage to copy the content to"
@@ -922,7 +993,8 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             name : "nameDatastorageDest",
             value : ""
         }
-    }/*,
+    }
+    /*,
     {
         jsObj : "Ext.form.TextField", 
         config : {

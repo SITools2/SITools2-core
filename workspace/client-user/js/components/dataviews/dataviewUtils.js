@@ -472,12 +472,19 @@ sitools.user.component.dataviews.dataviewUtils = {
 	 * @param {string} value The img src
 	 */
 	showPreview : function (value, title) {
-	    var previewWin = new sitools.widget.WindowImageViewer({            
-	            title : title,
-	            src : value,
-	            hideAction : 'close',
-	            resizeImage : false
-	        });
+	    var previewWin = new sitools.widget.WindowImageZoomer({            
+            title : title,
+            src : value,
+            hideAction : 'close',
+            resizeImage : false  
+	    });
+	    
+//	    var previewWin = new sitools.widget.WindowImageViewer({            
+//	        title : title,
+//	        src : value,
+//	        hideAction : 'close',
+//	        resizeImage : false  
+//	    });
 	    
 	    previewWin.show();
 	    previewWin.toFront();

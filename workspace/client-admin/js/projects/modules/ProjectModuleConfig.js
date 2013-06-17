@@ -60,8 +60,16 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
     },
     
     _onValidate : function () {
-		this.module.set( 'listProjectModulesConfig', this.formPanel.getParametersValue());
-		this.close();
+        if (this.formPanel.getForm().isValid()){
+            this.module.set( 'listProjectModulesConfig', this.formPanel.getParametersValue());
+            this.close();
+        } 
+        else {
+            Ext.getCmp('bbarFormParam').setStatus({
+                text : i18n.get('label.checkformvalue'),
+                iconCls : 'x-status-error'
+            });
+        }
 	}
     
 });

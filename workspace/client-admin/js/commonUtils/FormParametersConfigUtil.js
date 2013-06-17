@@ -42,6 +42,12 @@ sitools.admin.common.FormParametersConfigUtil = Ext.extend(Ext.form.FormPanel, {
     isRenderer : false,
     initComponent : function () {
 
+        this.bbar = new Ext.ux.StatusBar({
+            text : i18n.get('label.formReady'),
+            id : 'bbarFormParam',
+            iconCls : 'x-status-valid'
+        });
+        
         this.parametersFieldset = new Ext.form.FieldSet({
             title : i18n.get('label.parameters'),
             padding : 6

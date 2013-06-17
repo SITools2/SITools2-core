@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-/*global Ext, ann, alert, document, alertFailure, getDesktop, SitoolsDesk, locale */
+/*global Ext, ann, alert, document, alertFailure, getDesktop, SitoolsDesk, locale, portal */
 /*global DEFAULT_WIN_HEIGHT, DEFAULT_WIN_WIDTH, sitools, loadUrl, includeJs, DEFAULT_PREFERENCES_FOLDER */
 
 /*
@@ -457,8 +457,35 @@ var projectGlobal = {
             callback : function () {
                 this.getDataViewsDependencies();
             },
-            failure : function () {
-				Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectError'));
+            failure : function (response, opts) {
+                if (response.status === 403) {
+                    Ext.getBody().unmask();
+                    Ext.MessageBox.buttonText.ok = i18n.get('label.login');
+                    Ext.Msg.show({
+                        title : i18n.get('label.information'),
+                        msg : i18n.get('label.projectNeedToBeLogged'),
+                        width : 350,
+                        buttons : Ext.MessageBox.OKCANCEL,
+                        icon : Ext.MessageBox.INFO,
+                        fn : function (response) {
+                            if (response === 'ok') {
+                                new sitools.userProfile.Login({
+                                    url : loadUrl.get('APP_URL') + '/login',
+                                    register : loadUrl.get('APP_URL') + '/inscriptions/user',
+                                    reset : loadUrl.get('APP_URL') + '/resetPassword',
+                                    handler : function () {
+                                        portal.initAppliPortal({
+                                            siteMapRes : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')
+                                        });
+                                    }
+                                }).show();
+                            }
+                        }
+                    });
+                }
+                else {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectError'));
+                }
             }
         });
     },    

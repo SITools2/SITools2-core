@@ -240,6 +240,8 @@ ImageChooser.prototype = {
 
 		this.reset();
 	    this.win.show(el);
+	    SitoolsDesk.getDesktop().getManager().bringToFront(this.win);
+	    
 		this.callback = callback;
 		this.animateTarget = el;
 	},

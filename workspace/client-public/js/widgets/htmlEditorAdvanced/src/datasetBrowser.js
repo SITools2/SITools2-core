@@ -163,7 +163,7 @@ sitools.widget.HtmlEditor.datasetBrowser = function(config) {
 								this.getRootNode().expand();
 							}
 						},
-						bbar : [{
+						bbar : ['->', {
 							xtype : 'button',
 							text : i18n.get('label.select'),
 							scope : this,
@@ -193,12 +193,17 @@ Ext.extend(sitools.widget.HtmlEditor.datasetBrowser, Ext.tree.TreePanel, {
 					
 						urlLink = selNode.attributes.dataUrl;
 						displayValue = selNode.attributes.winTitle;
-						this.browseField.setValue(displayValue);
+//						this.browseField.setValue(displayValue);
+						
 					if (selNode.attributes.type == "data"){
-						this.browseField.dataLinkComponent = String.format("<a href='#' onclick='parent.sitools.user.component.dataviews.dataviewUtils.showDetailsData(\"\",\"\",\"{0}\"); return false;'>", urlLink);
+					    this.browseField.setValue('Data : ' + selNode.attributes.datasetName);
+//						this.browseField.dataLinkComponent = String.format("<a href='#' onclick='parent.sitools.user.component.dataviews.dataviewUtils.showDetailsData(\"\",\"\",\"{0}\"); return false;'>", urlLink);
+						this.browseField.dataLinkComponent = String.format("parent.sitools.user.component.dataviews.dataviewUtils.showDetailsData(\"\",\"\",\"{0}\"); return false;", urlLink);
 					}
 					else if (selNode.attributes.type == "form"){
-						this.browseField.dataLinkComponent = String.format("<a href='#' onclick='parent.SitoolsDesk.showFormFromEditor(\"{0}\\/forms\"); return false;'>", urlLink);
+					    this.browseField.setValue('Form : ' + selNode.attributes.datasetName);
+//						this.browseField.dataLinkComponent = String.format('<a href="#" onclick="parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;">', urlLink);
+						this.browseField.dataLinkComponent = String.format('parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;', urlLink);
 					}
 					this.ownerCt.close();
 				}

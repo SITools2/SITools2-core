@@ -23,6 +23,7 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.cmsContextMenu
  * @cfg cms the parent cms of the toolbar
  * @cfg textTooltip the text tooltip for the copy button
+ * @cfg allowDataPublish display or not publish button
  * @extends Ext.Toolbar
  */
 sitools.user.modules.cmsTreeToolbar = Ext.extend(Ext.Toolbar, {
@@ -82,6 +83,7 @@ sitools.user.modules.cmsTreeToolbar = Ext.extend(Ext.Toolbar, {
 	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/converter.png',
 	            tooltip : this.textTooltip,
 	            scope : this.cms,
+	            hidden : !this.allowDataPublish, // if false, publishing is allowed
 	            handler : this.cms.runCopy
 	        }];
     
