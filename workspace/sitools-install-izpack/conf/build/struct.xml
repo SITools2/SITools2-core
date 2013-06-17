@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 	<!-- ===================================
-==  Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 ==  
 ==  This file is part of SITools2.
 ==  
@@ -28,7 +28,7 @@
 		
 	<!-- Information sur les auteurs du projet -->
 	<property name="author" value="AKKA Technologies" />
-	<property name="year" value="2011, 2012" />
+	<property name="year" value="2010-2013" />
 		
 	<!-- Paramètres de compilation -->
 	<property name="debug" value="true" />

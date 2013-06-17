@@ -1,3 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =================================== == Copyright 2010-2013 CNES - CENTRE 
+	NATIONAL d'ETUDES SPATIALES == == This file is part of SITools2. == == SITools2 
+	is free software: you can redistribute it and/or modify == it under the terms 
+	of the GNU General Public License as published by == the Free Software Foundation, 
+	either version 3 of the License, or == (at your option) any later version. 
+	== == SITools2 is distributed in the hope that it will be useful, == but 
+	WITHOUT ANY WARRANTY; without even the implied warranty of == MERCHANTABILITY 
+	or FITNESS FOR A PARTICULAR PURPOSE. See the == GNU General Public License 
+	for more details. == == You should have received a copy of the GNU General 
+	Public License == along with SITools2. If not, see <http://www.gnu.org/licenses/>. 
+	==================================== -->
 <!--
 ==============================================================================
 === Build file to allow ant (http://jakarta.apache.org/ant/) to be used
@@ -23,6 +35,10 @@
 	<property name="repos.ref.tag" value="${sitools.Version.reference}"/>
 	<property name="repos.new.revision" value="${sitools.Revision.current}"/>
 	<property name="repos.ref.revision" value="${sitools.Revision.reference}"/>
+
+	<property name="workspace.dir" value=".."/>
+	<property name="fr.cnes.sitools.core.dir" value="${workspace.dir}/fr.cnes.sitools.core"/>
+	<property name="conf.dir" value="${fr.cnes.sitools.core.dir}/conf"/>
 
 	<!-- Initialization of SVN-ant libraries -->
 	<path id="path.svnant">
@@ -689,5 +705,47 @@
     			value="sonar.projectVersion=${sitools.project.tag}"/>
 		</replace>
 	</target>
+	
+	
+	<!-- Ajoute le texte de licence au début de chaque fichier -->
+	<target name="replace_headers">
+		<echo message="changing all files header in directory : ${workspace.dir}"/> 
+		<loadfile property="javaheader" srcFile="${conf.dir}/licences/header_GPLv3.txt" />
+		<replaceregexp match="(/\*.*\*/.*)??^package " flags="sm"
+			replace="${javaheader}${line.separator}package ">
+			<fileset dir="${workspace.dir}">
+				<include name="**/*.java" />
+			</fileset>			
+		</replaceregexp>
+	</target>
+	
+	<!-- Supprime le texte de licence au début de chaque fichier -->
+	<target name="remove_headers">
+		<replaceregexp match="(/\*.*\*/.*)??^package " flags="sm"
+			replace="package ">
+			<fileset dir="src">
+				<include name="**/*.java" />
+			</fileset>
+		</replaceregexp>
+	</target>
+	
+	<!-- Supprime le texte de licence au début de chaque fichier -->
+		<target name="change_copyright" description="Change the copyright year values in all the files of the workspace">
+			<echo message="Replace 'Copyright 2010- 2013 CNES' with 'Copyright 2010-2013 CNES'"></echo>
+				<replace 
+		    		value="Copyright 2010-2013 CNES"
+					token="Copyright 2010- 2013 CNES"
+		    		failOnNoReplacements="true"
+		    		summary="true"
+		    		encoding="ISO-8859-1">
+					<fileset dir="../..">
+						<include name="**/*.java" />
+						<include name="**/*.js" />
+						<include name="**/*.css" />
+						<include name="**/*.xml" />
+					</fileset>
+				</replace>
+		</target>
+	
 
 </project>
