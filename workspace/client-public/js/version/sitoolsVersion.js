@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -35,7 +35,7 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
         });
         
         var credits = new Ext.form.Label({
-            html : '<p>Copyright 2010, 2011, 2012 CNES</p>'
+            html : '<p>Copyright 2010-2013 CNES</p>'
         });
         
         var website = new Ext.form.Label({
