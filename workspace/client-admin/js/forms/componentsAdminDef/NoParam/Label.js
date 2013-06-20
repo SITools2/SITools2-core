@@ -107,7 +107,8 @@ sitools.admin.forms.noParam.label = Ext.extend(Ext.form.FormPanel, {
                 xpos : this.xyOnCreate.x, 
                 css : f.findField('CSS').getValue(),
                 jsAdminObject : this.jsAdminObject,
-                jsUserObject : this.jsUserObject
+                jsUserObject : this.jsUserObject,
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

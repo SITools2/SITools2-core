@@ -141,6 +141,7 @@ public final class ParameterDTO {
    */
   private String jsUserObject;
 
+  private String containerPanelId;
 
   /**
    * the way the Values are requested : "S" : specified by the administrator "D" : from the database .
@@ -644,6 +645,14 @@ public final class ParameterDTO {
    */
   public void setJsAdminObject(String jsAdminObject) {
     this.jsAdminObject = jsAdminObject;
+  }
+
+  public String getContainerPanelId() {
+    return containerPanelId;
+  }
+
+  public void setContainerPanelId(String containerPanelId) {
+    this.containerPanelId = containerPanelId;
   }
 
   /**

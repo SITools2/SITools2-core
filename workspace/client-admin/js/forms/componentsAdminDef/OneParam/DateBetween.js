@@ -189,7 +189,8 @@ sitools.admin.forms.oneParam.DateBetween = Ext.extend(sitools.admin.forms.onePar
                 jsAdminObject : this.jsAdminObject,
                 jsUserObject : this.jsUserObject,
                 defaultValues : defaultValues, 
-                extraParams : extraParams
+                extraParams : extraParams,
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

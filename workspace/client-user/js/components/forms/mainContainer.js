@@ -45,12 +45,47 @@ sitools.user.component.forms.mainContainer = function (config) {
 //sitools.component.users.datasets.forms = function (config) {
     Ext.apply(this, config);
     this.componentType = "form";
-    this.componentList = new sitools.user.component.formComponentsPanel({
-        width : config.formWidth,
-        height : config.formHeight, 
-        css : config.formCss, 
-        formId : config.formId
+    
+    var panelIdObject = {};
+    
+    Ext.each(config.formParameters, function(formParam) { 
+    	var containerId = formParam.containerPanelId;
+    	if (Ext.isEmpty(panelIdObject[containerId])){
+    		panelIdObject[containerId] = [];
+    	}
+    	panelIdObject[containerId].push(formParam);
     });
+    
+    var items = [];
+    
+    Ext.iterate(panelIdObject, function(key, formParams){
+    		
+    	console.log(key);
+    	
+    	var componentList = new  sitools.user.component.formComponentsPanel({
+            height : 200,
+            border: true,
+            css : config.formCss, 
+            formId : config.formId,
+            id : key
+    	});
+    	
+    	componentList.datasetCm = config.dataset.columnModel;
+		componentList.loadParameters(formParams, config.dataUrl, "dataset");
+
+		items.push(componentList);
+    	
+    	
+    });
+    
+    
+    
+//    this.componentList = new sitools.user.component.formComponentsPanel({
+//        width : config.formWidth,
+//        height : config.formHeight, 
+//        css : config.formCss, 
+//        formId : config.formId
+//    });
     if (Ext.isEmpty(config.dataset)) {
 	    Ext.Ajax.request({
 			url : config.dataUrl, 
@@ -59,8 +94,8 @@ sitools.user.component.forms.mainContainer = function (config) {
 			success : function (ret) {
 				if (showResponse(ret)) {
 	                var json = Ext.decode(ret.responseText);
-	                this.componentList.datasetCm = json.dataset.columnModel;
-					this.componentList.loadParameters(config.formParameters, config.dataUrl, "dataset");
+//	                this.componentList.datasetCm = json.dataset.columnModel;
+//					this.componentList.loadParameters(config.formParameters, config.dataUrl, "dataset");
 					this.datasetId = json.dataset.id;
 					this.datasetName = json.dataset.name;
 					this.datasetCm = json.dataset.columnModel;
@@ -71,8 +106,8 @@ sitools.user.component.forms.mainContainer = function (config) {
 		});
     }
     else {
-		this.componentList.datasetCm = config.dataset.columnModel;
-		this.componentList.loadParameters(config.formParameters, config.dataUrl, "dataset");
+//		this.componentList.datasetCm = config.dataset.columnModel;
+//		this.componentList.loadParameters(config.formParameters, config.dataUrl, "dataset");
 		this.datasetId = config.dataset.id;
 		this.datasetName = config.dataset.name;
 		this.datasetCm = config.dataset.columnModel;
@@ -80,14 +115,19 @@ sitools.user.component.forms.mainContainer = function (config) {
 		this.dictionaryMappings = config.dataset.dictionaryMappings;
     }
     
+    
+    
     sitools.user.component.forms.mainContainer.superclass.constructor.call(this, Ext.apply({
         height : config.formHeight,
         width : config.formWidth,
         autoScroll : true,
         bodyBorder : false,
         border : false,
-        items : [ this.componentList ],
-        layout : "absolute", 
+        items : items ,
+        layout : 
+		{ type:'vbox',
+             align:'stretch'
+         },
         buttons : [ {
             text : i18n.get('label.search'),
             scope : this,

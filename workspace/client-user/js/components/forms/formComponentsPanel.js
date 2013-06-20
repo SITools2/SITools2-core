@@ -43,12 +43,13 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
 
         Ext.apply(this, {
             // title: this.formName,
-            id : "panelResultForm" + this.formId, 
+            //id : "panelResultForm" + this.formId, 
             bodyCssClass : this.css,
             height : this.height,
             width : this.width,
-            border : false,
-            bodyBorder : false,
+            //border : false,
+            //bodyBorder : false,
+            collapsible: true,
             layout : "absolute",
             labelWidth : 100,
             // autoHeight :true,

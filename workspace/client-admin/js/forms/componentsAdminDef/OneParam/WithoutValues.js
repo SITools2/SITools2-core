@@ -104,7 +104,8 @@ sitools.admin.forms.oneParam.withoutValues = Ext.extend(sitools.admin.forms.oneP
                 css : f.findField('CSS').getValue(),
                 jsAdminObject : this.jsAdminObject,
                 jsUserObject : this.jsUserObject,
-                defaultValues : [ defaultValue ]
+                defaultValues : [ defaultValue ],
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

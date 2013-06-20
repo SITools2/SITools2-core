@@ -104,7 +104,9 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                 name : 'unit'
             }, {
 				name : 'extraParams'
-            }],
+            }, {
+                name : 'containerPanelId'
+            },],
             autoLoad : false
         });
         
@@ -219,6 +221,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
             context : "dataset", 
             storeConcepts : this.storeConcepts
         });
+
         
         var dispPanel = new Ext.Panel({
 			layout : "hbox", 
@@ -230,46 +233,54 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
 			listeners : {
 				scope : this, 
 				activate : function () {
+					
 					this.absoluteLayout.fireEvent('activate');
+										
+//					Ext.getCmp('mainpanel').fireEvent('activate');
+					
 					var absoluteLayout = this.absoluteLayout;
 					var displayPanelDropTargetEl =  absoluteLayout.body.dom;
 					var formComponentsStore = this.formComponentsStore;
 					var datasetColumnModel = this.datasetColumnModel;
 					var storeConcepts = this.storeConcepts;
-					var displayPanelDropTarget = new Ext.dd.DropTarget(displayPanelDropTargetEl, {
-						ddGroup     : 'gridComponentsList',
-						notifyDrop  : function (ddSource, e, data) {
-							var xyDrop = e.xy;
-							var xyRef = Ext.get(absoluteLayout.body).getXY();
-							
-							var xyOnCreate = {
-								x : xyDrop[0] - xyRef[0], 
-								y : xyDrop[1] - xyRef[1]
-							};
-							// Reference the record (single selection) for readability
-							var rec = ddSource.dragData.selections[0];
-					        var ComponentWin = new sitools.admin.forms.componentPropPanel({
-					            urlAdmin : rec.data.jsonDefinitionAdmin,
-					            datasetColumnModel : datasetColumnModel,
-					            ctype : rec.data.type,
-					            action : "create",
-					            componentDefaultHeight : rec.data.componentDefaultHeight,
-					            componentDefaultWidth : rec.data.componentDefaultWidth,
-					            dimensionId : rec.data.dimensionId,
-					            unit : rec.data.unit,
-					            extraParams : rec.data.extraParams, 
-					            jsAdminObject : rec.data.jsAdminObject, 
-					            jsUserObject : rec.data.jsUserObject, 
-					            context : "dataset", 
-					            xyOnCreate : xyOnCreate, 
-					            storeConcepts : this.storeConcepts, 
-					            absoluteLayout : absoluteLayout, 
-					            record : rec, 
-					            formComponentsStore : formComponentsStore
-					        });
-					        ComponentWin.show();
-						}
-					});
+
+//					var displayPanelDropTarget = new Ext.dd.DropTarget(displayPanelDropTargetEl, {
+//						ddGroup     : 'gridComponentsList',
+//						overClass : 'not-save-textfield',
+//						notifyDrop  : function (ddSource, e, data) {
+//							var xyDrop = e.xy;
+//							var xyRef = Ext.get(absoluteLayout.body).getXY();
+//							
+//							var xyOnCreate = {
+//								x : xyDrop[0] - xyRef[0], 
+//								y : xyDrop[1] - xyRef[1]
+//							};
+//							// Reference the record (single selection) for readability
+//							var rec = ddSource.dragData.selections[0];
+//					        var ComponentWin = new sitools.admin.forms.componentPropPanel({
+//					            urlAdmin : rec.data.jsonDefinitionAdmin,
+//					            datasetColumnModel : datasetColumnModel,
+//					            ctype : rec.data.type,
+//					            action : "create",
+//					            componentDefaultHeight : rec.data.componentDefaultHeight,
+//					            componentDefaultWidth : rec.data.componentDefaultWidth,
+//					            dimensionId : rec.data.dimensionId,
+//					            unit : rec.data.unit,
+//					            extraParams : rec.data.extraParams, 
+//					            jsAdminObject : rec.data.jsAdminObject, 
+//					            jsUserObject : rec.data.jsUserObject, 
+//					            context : "dataset", 
+//					            xyOnCreate : xyOnCreate, 
+//					            storeConcepts : this.storeConcepts, 
+//					            absoluteLayout : absoluteLayout, 
+//					            record : rec, 
+//					            formComponentsStore : formComponentsStore
+//					        });
+//					        ComponentWin.show();
+//						}
+//					});
+			       
+					//this.componentListPanel.dd.addToGroup('gridComponentsTest');
 					
 				}
 			}
@@ -310,7 +321,9 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
     },
 
     onRender : function () {
+    	
         sitools.admin.forms.formPropPanel.superclass.onRender.apply(this, arguments);
+        
         if (this.urlFormulaire) {
             // Si l'objet est en modification, on charge l'objet en question
             if (this.action == 'modify') {
@@ -325,7 +338,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                             Ext.Msg.alert(i18n.get('label.warning'), Json.message);
                             return;
                         }
-
+                        
                         var f = this.findByType('form')[0].getForm();
                         var data = Json.form;
                         if (!Ext.isEmpty(data.width)) {
@@ -366,7 +379,8 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                                     parentParam : parameters[i].parentParam, 
                                     dimensionId : parameters[i].dimensionId, 
                                     unit : parameters[i].unit, 
-                                    extraParams : parameters[i].extraParams
+                                    extraParams : parameters[i].extraParams,
+                                    containerPanelId : parameters[i].containerPanelId
                                 }));
 
                             }
@@ -407,6 +421,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
         if (store.getCount() > 0) {
             putObject.parameters = [];
         }
+		
         store.each(function (component) {
 
             putObject.parameters.push({
@@ -428,7 +443,8 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                 parentParam : component.data.parentParam, 
                 dimensionId : component.data.dimensionId, 
                 unit : component.data.unit, 
-                extraParams : component.data.extraParams
+                extraParams : component.data.extraParams,
+                containerPanelId : component.data.containerPanelId
             });
         });
         if (this.action == 'modify') {

@@ -194,7 +194,8 @@ sitools.admin.forms.oneParam.NoValuesWithProperties = Ext.extend(sitools.admin.f
                 jsAdminObject : this.jsAdminObject,
                 jsUserObject : this.jsUserObject,
                 extraParams : extraParams, 
-                defaultValues : [ defaultValue ]
+                defaultValues : [ defaultValue ],
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

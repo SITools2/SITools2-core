@@ -94,7 +94,8 @@ sitools.admin.forms.oneParam.TextField = Ext.extend(sitools.admin.forms.oneParam
                 jsAdminObject : this.jsAdminObject,
                 jsUserObject : this.jsUserObject,
                 defaultValues : [ defaultValue ], 
-                autoComplete : f.findField('autoComplete').getValue()
+                autoComplete : f.findField('autoComplete').getValue(),
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

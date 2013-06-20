@@ -310,7 +310,8 @@ sitools.admin.forms.multiParam.coneSearch = Ext.extend(sitools.admin.forms.multi
                 dimensionId : this.dimension.getValue(), 
                 unit : unitObject, 
                 extraParams : extraParams, 
-                defaultValues : [ defaultValue1, defaultValue2, defaultValue3]
+                defaultValues : [ defaultValue1, defaultValue2, defaultValue3],
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

@@ -81,6 +81,9 @@ public abstract class AbstractParameter {
    */
   private String jsUserObject;
 
+  private String containerPanelId;
+
+
 
   /**
    * Default Values of the parameter
@@ -452,7 +455,14 @@ public abstract class AbstractParameter {
   public void setUnit(SitoolsUnit unit) {
     this.unit = unit;
   }
+  
+  public String getContainerPanelId() {
+    return containerPanelId;
+  }
 
+  public void setContainerPanelId(String containerPanelId) {
+    this.containerPanelId = containerPanelId;
+  }
   
 
 }

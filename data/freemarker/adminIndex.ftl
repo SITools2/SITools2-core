@@ -196,6 +196,7 @@
     <script type="text/javascript" src="js/forms/componentsAdminDef/OneParam/Abstract.js"></script>
     <script type="text/javascript" src="js/forms/componentsAdminDef/OneParam/AbstractWithUnit.js"></script>
     <script type="text/javascript" src="js/forms/componentsAdminDef/MultiParam/Abstract.js"></script>
+    <script type="text/javascript" src="js/forms/advancedFormPanel.js"></script>
 
     <script type="text/javascript" src="js/applications/applicationsRole.js"></script>
     <script type="text/javascript" src="js/applications/roleWin.js"></script>

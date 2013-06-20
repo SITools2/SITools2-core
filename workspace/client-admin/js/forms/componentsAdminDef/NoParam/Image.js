@@ -106,7 +106,8 @@ sitools.admin.forms.noParam.image = Ext.extend(Ext.form.FormPanel, {
                 ypos : componentYpos,
                 css : f.findField('CSS').getValue(),
                 jsAdminObject : this.jsAdminObject, 
-                jsUserObject : this.jsUserObject
+                jsUserObject : this.jsUserObject,
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

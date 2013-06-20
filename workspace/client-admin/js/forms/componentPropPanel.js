@@ -37,6 +37,7 @@ sitools.admin.forms.componentPropPanel = Ext.extend(Ext.Window, {
     modal : true,
     pageSize : 10,
     
+    
 
     initComponent : function () {
         this.title = i18n.get('label.componentProperties');
@@ -61,7 +62,8 @@ sitools.admin.forms.componentPropPanel = Ext.extend(Ext.Window, {
 				extraParams : rec.data.extraParams, 
 				context : this.context, 
 				storeConcepts : this.storeConcepts, 
-				formComponentsStore : this.formComponentsStore
+				formComponentsStore : this.formComponentsStore,
+				containerPanelId : this.containerPanelId
             };
         } else {
             JsObj = eval(this.jsAdminObject);
@@ -78,7 +80,8 @@ sitools.admin.forms.componentPropPanel = Ext.extend(Ext.Window, {
 				context : this.context, 
 				storeConcepts : this.storeConcepts, 
 				formComponentsStore : this.formComponentsStore, 
-				xyOnCreate : this.xyOnCreate
+				xyOnCreate : this.xyOnCreate,
+				containerPanelId : this.containerPanelId
             };
         }
         

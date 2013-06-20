@@ -31,6 +31,8 @@ Ext.namespace('sitools.admin.forms');
  */
 sitools.admin.forms.componentsListPanel = Ext.extend(Ext.grid.GridPanel, {
     width : 220,
+    id: 'gridsource',
+    draggable : true,
 
     initComponent : function () {
         this.title = i18n.get('label.chooseComponent');
@@ -148,6 +150,7 @@ sitools.admin.forms.componentsListPanel = Ext.extend(Ext.grid.GridPanel, {
     },
     afterRender : function () {
         sitools.admin.forms.componentsListPanel.superclass.afterRender.apply(this, arguments);
+        this.dd.addToGroup('gridComponentsTest');
 //        this.gridComponents.setSize(this.body.getSize());
     },
 //    onValidate : function () {

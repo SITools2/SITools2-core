@@ -132,6 +132,7 @@ public final class ParametersDTO {
     if (abstractParameter.getExtraParams() != null) {
       paramDTO.setExtraParams(abstractParameter.getExtraParams());
     }
+    paramDTO.setContainerPanelId(abstractParameter.getContainerPanelId());
 
     // Set code property
     paramDTO.setCode(abstractParameter.getCode());
@@ -236,6 +237,7 @@ public final class ParametersDTO {
       if (paramDTO.getExtraParams() != null) {
         param.setExtraParams(paramDTO.getExtraParams());
       }
+      param.setContainerPanelId(paramDTO.getContainerPanelId());
 
     }
     return param;

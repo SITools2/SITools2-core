@@ -122,7 +122,8 @@ sitools.admin.forms.oneParam.NumericBetween = Ext.extend(sitools.admin.forms.one
                 defaultValues : [ defaultValueFrom, defaultValueTo ], 
                 dimensionId : this.dimension.getValue(), 
                 unit : unitObject, 
-                extraParams : extraParams
+                extraParams : extraParams,
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

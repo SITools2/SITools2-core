@@ -314,8 +314,8 @@ sitools.admin.forms.oneParam.withValues = Ext.extend(sitools.admin.forms.onePara
                 jsAdminObject : this.jsAdminObject,
                 jsUserObject : this.jsUserObject,
                 valueSelection : valueSelection, 
-                parentParam : parentParam
-
+                parentParam : parentParam,
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;

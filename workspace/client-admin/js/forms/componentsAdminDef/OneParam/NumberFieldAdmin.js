@@ -115,7 +115,8 @@ sitools.admin.forms.oneParam.NumberFieldAdmin = Ext.extend(sitools.admin.forms.o
                 defaultValues : [ defaultValue ],
                 dimensionId : this.dimension.getValue(), 
                 unit : unitObject, 
-                extraParams : extraParams
+                extraParams : extraParams,
+                containerPanelId : this.containerPanelId
             }));
         }
         return true;
