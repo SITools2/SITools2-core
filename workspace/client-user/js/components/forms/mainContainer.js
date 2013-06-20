@@ -80,13 +80,12 @@ sitools.user.component.forms.mainContainer = function (config) {
     
     
     
-    this.componentList = new sitools.user.component.formComponentsPanel({
-        width : config.formWidth,
-        height : config.formHeight,
-        css : config.formCss, 
-        formId : config.formId
-    });
-    
+//    this.componentList = new sitools.user.component.formComponentsPanel({
+//        width : config.formWidth,
+//        height : config.formHeight, 
+//        css : config.formCss, 
+//        formId : config.formId
+//    });
     if (Ext.isEmpty(config.dataset)) {
 	    Ext.Ajax.request({
 			url : config.dataUrl, 
@@ -116,8 +115,6 @@ sitools.user.component.forms.mainContainer = function (config) {
 		this.dictionaryMappings = config.dataset.dictionaryMappings;
     }
     
-    console.log('height = ' + config.formHeight);
-    
     
     
     sitools.user.component.forms.mainContainer.superclass.constructor.call(this, Ext.apply({
@@ -127,6 +124,10 @@ sitools.user.component.forms.mainContainer = function (config) {
         bodyBorder : false,
         border : false,
         items : items ,
+        layout : 
+		{ type:'vbox',
+             align:'stretch'
+         },
         buttons : [ {
             text : i18n.get('label.search'),
             scope : this,
@@ -148,8 +149,8 @@ sitools.user.component.forms.mainContainer = function (config) {
 						xpos = (size.width - cmpChildSize.width) / 2;
 					}
 					this.componentList.setPosition(xpos, ypos);
+					
 				}
-				
 			}
         },          
         bbar : new Ext.ux.StatusBar({

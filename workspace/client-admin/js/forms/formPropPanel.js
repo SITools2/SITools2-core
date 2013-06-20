@@ -50,10 +50,6 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
         if (this.action == 'create') {
             this.title = i18n.get('label.createForm');
         }
-        this.zoneStore = new Ext.data.JsonStore({
-        	root : 'zone',
-        	fields : [ { id : 'id'} ]
-        });
         this.formComponentsStore = new Ext.data.JsonStore({
             root : 'data',
             fields : [ {
@@ -205,12 +201,10 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
             } 
         });
         this.absoluteLayout = new sitools.admin.forms.ComponentsDisplayPanel({
-        	zoneStore : this.zoneStore,
-        	formComponentsStore : this.formComponentsStore, 
+			formComponentsStore : this.formComponentsStore, 
 			datasetColumnModel : this.datasetColumnModel,
 			context : "dataset", 
-			formSize : this.formSize,
-			action : this.action
+			formSize : this.formSize
         });
         
         var absContainer = new Ext.Panel({
@@ -239,7 +233,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
 			listeners : {
 				scope : this, 
 				activate : function () {
-
+					
 					this.absoluteLayout.fireEvent('activate');
 										
 //					Ext.getCmp('mainpanel').fireEvent('activate');
@@ -361,7 +355,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                         
                         var record = new Ext.data.Record(rec);
                         f.loadRecord(record);
-                        
+
                         if (data.parameters) {
                             var parameters = data.parameters;
                             var i;
@@ -422,88 +416,37 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
         putObject.width = width;
         putObject.height = height;
 
-//        var paramObject = {};        
-//        var paramstore = this.formComponentsStore;
-//        if (paramstore.getCount() > 0) {
-//            paramObject = [];
-//        }		
-//        paramstore.each(function (component) {
-//            paramObject.push({
-//                type : component.data.type,
-//                code : component.data.code,
-//                label : component.data.label,
-//                values : component.data.values,
-//                width : component.data.width,
-//                height : component.data.height,
-//                xpos : component.data.xpos,
-//                ypos : component.data.ypos,
-//                id : component.data.id,
-//                css : component.data.css,
-//                jsAdminObject : component.data.jsAdminObject,
-//                jsUserObject : component.data.jsUserObject,
-//                defaultValues : component.data.defaultValues,
-//                valueSelection : component.data.valueSelection, 
-//                autoComplete : component.data.autoComplete, 
-//                parentParam : component.data.parentParam, 
-//                dimensionId : component.data.dimensionId, 
-//                unit : component.data.unit, 
-//                extraParams : component.data.extraParams,
-//                containerPanelId : component.data.containerPanelId
-//            });
-//        });
-//        
-        var zonestore = this.zoneStore;
-        
-        if (zonestore.getCount() > 0) {
-            putObject.zones = [];
+        var store = this.formComponentsStore;
+
+        if (store.getCount() > 0) {
+            putObject.parameters = [];
         }
-        
-        proppanel = this;
-        
-        zonestore.each(function (component) {
-        	
-            var paramObject = {};
-            var paramstore = proppanel.formComponentsStore;
-            if (paramstore.getCount() > 0) {
-                paramObject = [];
-            }
-            
-            paramstore.each(function (param) {
-            	if (param.data.containerPanelId == component.data.id){
-	                paramObject.push({
-	                    type : param.data.type,
-	                    code : param.data.code,
-	                    label : param.data.label,
-	                    values : param.data.values,
-	                    width : param.data.width,
-	                    height : param.data.height,
-	                    xpos : param.data.xpos,
-	                    ypos : param.data.ypos,
-	                    id : param.data.id,
-	                    css : param.data.css,
-	                    jsAdminObject : param.data.jsAdminObject,
-	                    jsUserObject : param.data.jsUserObject,
-	                    defaultValues : param.data.defaultValues,
-	                    valueSelection : param.data.valueSelection, 
-	                    autoComplete : param.data.autoComplete, 
-	                    parentParam : param.data.parentParam, 
-	                    dimensionId : param.data.dimensionId, 
-	                    unit : param.data.unit, 
-	                    extraParams : param.data.extraParams,
-	                    containerPanelId : param.data.containerPanelId
-	                });
-            	}
-            });
-            
-            putObject.zones.push({
-                id : component.data.id,
+		
+        store.each(function (component) {
+
+            putObject.parameters.push({
+                type : component.data.type,
+                code : component.data.code,
+                label : component.data.label,
+                values : component.data.values,
+                width : component.data.width,
                 height : component.data.height,
-                position : component.data.position,
-                title : component.data.title,
-                params : paramObject
+                xpos : component.data.xpos,
+                ypos : component.data.ypos,
+                id : component.data.id,
+                css : component.data.css,
+                jsAdminObject : component.data.jsAdminObject,
+                jsUserObject : component.data.jsUserObject,
+                defaultValues : component.data.defaultValues,
+                valueSelection : component.data.valueSelection, 
+                autoComplete : component.data.autoComplete, 
+                parentParam : component.data.parentParam, 
+                dimensionId : component.data.dimensionId, 
+                unit : component.data.unit, 
+                extraParams : component.data.extraParams,
+                containerPanelId : component.data.containerPanelId
             });
         });
-        
         if (this.action == 'modify') {
             Ext.Ajax.request({
                 url : this.urlFormulaire,

@@ -34,6 +34,10 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     border : true,
     collapsible : true,
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Etude formulaires
     initComponent : function () {
 
         Ext.apply(this, {
@@ -41,7 +45,11 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
             layout : "absolute",
             autoScroll : true, 
             enableDragDrop : true,
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> Etude formulaires
             listeners : {
             	
             	scope : this,
@@ -50,6 +58,10 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
             		
                     var y = 0;
                     var x = 25;
+<<<<<<< HEAD
+=======
+                    var componentId = "";
+>>>>>>> Etude formulaires
                     this.removeAll(true);
                     
                     var mypanel = this;
@@ -128,6 +140,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 	                    }
 	            	}
                     , this);
+<<<<<<< HEAD
                     
                     this.doLayout();
             		
@@ -200,6 +213,9 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
                          });
                     }, this);
                     
+=======
+            		
+>>>>>>> Etude formulaires
             	}
             }
             
@@ -211,7 +227,11 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     afterRender : function () {
     	
     	sitools.admin.forms.advancedFormPanel.superclass.afterRender.apply(this, arguments);
+<<<<<<< HEAD
             	
+=======
+        
+>>>>>>> Etude formulaires
         var ddGroup = this.ddGroup;
         var datasetColumnModel = this.datasetColumnModel;
         var formComponentsStore = this.formComponentsStore;
@@ -265,6 +285,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 		});
 		
 
+<<<<<<< HEAD
     },
     
     
@@ -300,5 +321,10 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 	    });
     }
 
+=======
+    }
+
+
+>>>>>>> Etude formulaires
 });
 
