@@ -30,7 +30,6 @@ sitools.component.fileEditor.licenceEditorProp = Ext.extend(Ext.Panel, {
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
-        this.title = i18n.get('label.modifyLicence');
         this.layout = 'fit';
         
         var bToolBar = new Ext.Toolbar({
@@ -46,32 +45,19 @@ sitools.component.fileEditor.licenceEditorProp = Ext.extend(Ext.Panel, {
         
         this.bbar = bToolBar;
         
-        this.items = [{
-            xtype : 'htmleditor',
-            id : 'fileEditor',
-            autoScroll : true,
-            listeners : {
-                afterrender : function () {
-                    this.syncValue();
-                }
-            }
-        }];
         
-        this.listeners = {
-                scope : this, 
-                activate : function () {
-                    this.findByType('htmleditor')[0].syncValue();
-                }
-            };
+        this.fileEditor = new Ext.form.TextArea({
+        });
+        
+        this.items = [this.fileEditor];
         
         sitools.component.fileEditor.licenceEditorProp.superclass.initComponent.call(this);
         
         
     },
     
-    onRender : function () {
-        sitools.component.fileEditor.licenceEditorProp.superclass.onRender.apply(this, arguments);
-        
+    afterRender : function () {
+        sitools.component.fileEditor.licenceEditorProp.superclass.afterRender.apply(this, arguments);
         if (this.url) {
             Ext.Ajax.request({
                 url : this.url + '/cgu.html',
@@ -79,7 +65,12 @@ sitools.component.fileEditor.licenceEditorProp = Ext.extend(Ext.Panel, {
                 scope : this,
                 success : function (ret) {
                     var data = ret.responseText;
-                    this.findByType('htmleditor')[0].setValue(data);
+                    CKEDITOR.replace(this.fileEditor.id, {
+                        customConfig: 'config-basic-plus.js',
+                        fullPage : true,
+                        height : 350
+                    });
+                    this.fileEditor.setValue(data);
                 },
                 failure : alertFailure
             });
@@ -87,7 +78,8 @@ sitools.component.fileEditor.licenceEditorProp = Ext.extend(Ext.Panel, {
     },
     
     onValidate : function () {
-        var text = this.findByType('htmleditor')[0].getValue();
+        CKEDITOR.instances[this.fileEditor.id].updateElement();
+        var text = this.fileEditor.getValue();
         Ext.Ajax.request({
             url : this.url + '/cgu.html',
             method : 'PUT',

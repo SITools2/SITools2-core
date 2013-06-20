@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, i18n, loadUrl */
+/*global Ext, sitools, i18n, loadUrl, CKEDITOR, document, locale, alertFailure */
 
 Ext.namespace('sitools.user.modules');
 /**
@@ -32,10 +32,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     activeNode : null,
     initComponent : function () {
         
-        this.templateHtmlFile = '<base href="'+loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_URL')+'${directory.attachUrl}/">' +
-                '<meta http--equiv="content-type" content="text/html;charset=UTF-8">' +
-                '<title></title>';
-        
+        this.templateHtmlFile = "<html><head><title>{text}</title></head><body></body></html>";
         
         this.CONST_URLDATASTORAGE = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_URL');
         
@@ -48,8 +45,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         // "/datastorage/user/postel-site";
         
         Ext.each(this.listProjectModulesConfig, function (config) {
-            if (config.value != "" && config.value !== undefined) {
-                switch (config.name){
+            if (!Ext.isEmpty(config.value)) {
+                switch (config.name) {
                 case "dynamicUrlDatastorage" :
                     this.dynamicUrlDatastorage = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_URL') + config.value;
                     break;
@@ -151,18 +148,18 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         listeners : listeners
                     });
                     // apply baseAttrs, nice idea Corey!
-                    if(this.baseAttrs){
+                    if (this.baseAttrs) {
                         Ext.applyIf(attr, this.baseAttrs);
                     }
-                    if(this.applyLoader !== false && !attr.loader){
+                    if (this.applyLoader !== false && !attr.loader) {
                         attr.loader = this;
                     }
-                    if(Ext.isString(attr.uiProvider)){
-                       attr.uiProvider = this.uiProviders[attr.uiProvider] || eval(attr.uiProvider);
+                    if (Ext.isString(attr.uiProvider)) {
+                        attr.uiProvider = this.uiProviders[attr.uiProvider] || eval(attr.uiProvider);
                     }
-                    if(attr.nodeType){
+                    if (attr.nodeType) {
                         return new Ext.tree.TreePanel.nodeTypes[attr.nodeType](attr);
-                    }else{
+                    } else {
                         return attr.leaf ?
                                     new Ext.tree.TreeNode(attr) :
                                     new Ext.tree.AsyncTreeNode(attr);
@@ -201,13 +198,13 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 scope : this,
                 click : function (node) {
 //                    if (node.isLeaf()){
-                        this.treeAction(node);
+                    this.treeAction(node);
 //                    }
                 },
-                contextmenu : function(node, e) {
+                contextmenu : function (node, e) {
                     this.tree.getSelectionModel().select(node, e, true);
                     var c = node.getOwnerTree().contextMenu;
-                    if (!node.isLeaf()){
+                    if (!node.isLeaf()) {
                         c.getComponent('manage-node').setVisible(false);
                     }
                     else {
@@ -219,8 +216,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 render : function () {
                     this.tree.getRootNode().expand(true);
                 },
-                dragdrop : function (tree, node, dd, e){
-                	this.createJsonTree();	
+                dragdrop : function (tree, node, dd, e) {
+                    this.createJsonTree();	
                 }
             }
         });
@@ -243,8 +240,9 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             region : 'center'
         });
         
+
         this.viewerEditorPanel = new Ext.ux.ManagedIFrame.Panel({
-        	id : 'viewerEditorPanel',
+            id : 'viewerEditorPanel',
             region : 'south',
             autoScroll : true,
             hidden : true
@@ -280,8 +278,6 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 method : 'GET',
                 scope : this,
                 success : function (ret) {
-                    var data = ret.responseText;
-//                    this.findByType('textarea')[0].setValue(data);
                     this.tree.getRootNode().expand(true);
                 },
                 failure : alertFailure
@@ -341,15 +337,21 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
 //                },
                 success : function (ret) {
                     var contentType = ret.getResponseHeader("content-type");
-                    if (Ext.isEmpty(CKEDITOR.instances[this.idTextarea])){
+                    if (Ext.isEmpty(CKEDITOR.instances[this.idTextarea])) {
+                        var height = this.contentPanel.getHeight() - this.contentPanel.getBottomToolbar().getHeight();
                         CKEDITOR.replace(this.idTextarea, {
-                            toolbar : 'SITools_Advanced'
+                            baseHref : this.dynamicUrlDatastorage + "/",
+                            language : locale.getLocale(),
+                            fullPage : true,
+                            on :
+                            {
+                                instanceReady : function()
+                                {
+                                    this.resize("100%", height);
+                                    
+                                }
+                            }
                         });
-                        
-                        CKEDITOR.instances[this.idTextarea].config.fullPage = true;
-                        CKEDITOR.instances[this.idTextarea].config.height = this.contentPanel.getHeight() - 136;
-                       
-                        
                     }
                     if (contentType.contains("text")) {
                         
@@ -376,7 +378,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     
                     
                 },
-                failure : function(ret) {
+                failure : function (ret) {
                     var data = ret.responseText;
                     CKEDITOR.instances[this.idTextarea].setData(data);
 //                    this.findByType('textarea')[0].setValue(data);
@@ -387,7 +389,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             this.hideViewer();
         }
         else {
-        	this.displayViewer(this.newUrl);
+            this.displayViewer(this.newUrl);
         }
     },
     
@@ -404,11 +406,6 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     
     onSave : function () {
         var text = CKEDITOR.instances[this.idTextarea].getData();
-        
-        if (text.indexOf("<base href=\"" + this.dynamicUrlDatastorage + "/\"") !== -1) {
-            text = text.replace("<base href=\"" + this.dynamicUrlDatastorage + "/\"",
-					"<base href=\"" + loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_URL') + "${directory.attachUrl}/\"");
-        }
         
         Ext.Ajax.request({
             url : this.newUrl,
@@ -479,7 +476,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
 	            headers : {
 	                'Content-Type' : this.mediaType
 	            },
-	            jsonData : this.templateHtmlFile+ text,
+	            jsonData : this.templateHtmlFile.replace("{text}", text),
 	            success : function (ret) {
 	                new Ext.ux.Notification({
 	                    iconCls : 'x-icon-information',
@@ -517,7 +514,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 headers : {
                     'Content-Type' : this.mediaType
                 },
-                jsonData : this.templateHtmlFile + text,
+                jsonData : this.templateHtmlFile.replace("{text}", text),
                 success : function (ret) {
                     new Ext.ux.Notification({
                         iconCls : 'x-icon-information',
@@ -557,8 +554,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 'Content-Type' : 'application/json'
             },
             jsonData : tree,
-            failure : function (response, opts){
-                Ext.Msg.alert(response.status + " " +response.statusText, response.responseText);
+            failure : function (response, opts) {
+                Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
             }
         });
     },
@@ -599,17 +596,17 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
      * @param {boolean} deleteFile true to delete the file on the server, false otherwise
      * @param {boolean} saveJson createFile true to save to save the json, false otherwise
      */
-    deleteNode : function (node, deleteFile, saveJson){
+    deleteNode : function (node, deleteFile, saveJson) {
         this.htmlEditor.setValue("");
         this.setEditable(false);
-        if(deleteFile){
+        if (deleteFile) {
 	        this.url = this.dynamicUrlDatastorage;
 	        
 	        var deleteUrl;
 	        if (node.isLeaf()) {
 	            deleteUrl = this.url + node.attributes.link;
 	        }
-	        else{
+	        else {
 	            deleteUrl = this.url + node.attributes.link;
 	        }
 	        Ext.Ajax.request({
@@ -630,9 +627,9 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
 	                    hideDelay : 1000
 	                }).show(document);
 	            },
-	            failure : function (response, opts){
-	                Ext.Msg.alert(response.status + " " +response.statusText, response.responseText);
-	            }
+	            failure : function (response, opts) {
+                    Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
+                }
 	        });
         } else {
             node.remove(true);
@@ -643,13 +640,14 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         
     },
     
-    manageNodes : function (node, action){
-        if (node.isLeaf()){
-            switch (action){
+
+    manageNodes : function (node, action) {
+        if (node.isLeaf()) {
+            switch (action) {
             case "valid":
                 this.onValid(node);
                 break;
-            
+
             case "unvalid":
                 this.unValid(node);
                 break;
@@ -658,12 +656,13 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         this.createJsonTree();
     },
     
-    onValid : function (item){
-        if (!item.attributes.sync){
+
+    onValid : function (item) {
+        if (!item.attributes.sync) {
             item.attributes.sync = true;
-            
+
             this.changeIcon(item);
-            
+
             new Ext.ux.Notification({
                 iconCls : 'x-icon-information',
                 title : i18n.get('label.information'),
@@ -671,8 +670,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 autoDestroy : true,
                 hideDelay : 1000
             }).show(document);
-        }
-        else {
+        } else {
             new Ext.ux.Notification({
                 iconCls : 'x-icon-information',
                 title : i18n.get('label.information'),
@@ -683,12 +681,13 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         }
     },
     
-    unValid : function (item){
-        if (item.attributes.sync){
+
+    unValid : function (item) {
+        if (item.attributes.sync) {
             item.attributes.sync = false;
-            
+
             this.changeIcon(item);
-            
+
             new Ext.ux.Notification({
                 iconCls : 'x-icon-information',
                 title : i18n.get('label.information'),
@@ -696,8 +695,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 autoDestroy : true,
                 hideDelay : 1000
             }).show(document);
-        }
-        else {
+        } else {
             new Ext.ux.Notification({
                 iconCls : 'x-icon-information',
                 title : i18n.get('label.information'),
@@ -708,7 +706,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         }
     },
     
-    runCopy : function (){
+
+    runCopy : function () {
         var copyUrl = this.CONST_URLDATASTORAGE + "/copy" + this.datastorageSrc + this.datastorageDest;
         
         Ext.Ajax.request({
@@ -724,13 +723,14 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     hideDelay : 1000
                 }).show(document);
             },
-            failure : function (response, opts){
-                Ext.Msg.alert(response.status + " " +response.statusText, response.responseText);
+            failure : function (response, opts) {
+                Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
             }
         });
     },
     
-    createEmptyJson : function (url){
+
+    createEmptyJson : function (url) {
         var json = [];
         
         var rootNode = {
@@ -748,7 +748,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             method : 'PUT',
             scope : this,
             jsonData : json,
-            success : function (ret){
+            success : function (ret) {
                 new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
@@ -761,39 +761,40 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             headers : {
                 'Content-Type' : 'application/json'
             },
-            failure : function (response, opts){
-                Ext.Msg.alert(response.status + " " +response.statusText, response.responseText);
+            failure : function (response, opts) {
+                Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
             }
         });
     },
     
     
-    checkJsonUrlValidation : function (){
+
+    checkJsonUrlValidation : function () {
         var jsonUrl = this.tree.getLoader().url;
         Ext.Ajax.request({
             url : jsonUrl,
             method : 'GET',
             scope : this,
-            failure : function (response, opts){
+            failure : function (response, opts) {
                 Ext.Msg.show({
-                       title: i18n.get('label.warning'),
-                       msg: i18n.get('label.noJsonFileFound'),
-                       buttons: Ext.Msg.YESNOCANCEL,
-                       fn: function (btnId, text, opt){
-                               if (btnId == "yes"){
-                                   this.createEmptyJson(jsonUrl);
-                               }
-                           },
-                       animEl: 'elId',
-                       scope : this,
-                       icon: Ext.MessageBox.QUESTION
+                    title : i18n.get('label.warning'),
+                    msg : i18n.get('label.noJsonFileFound'),
+                    buttons : Ext.Msg.YESNOCANCEL,
+                    fn : function (btnId, text, opt) {
+                        if (btnId === "yes") {
+                            this.createEmptyJson(jsonUrl);
+                        }
+                    },
+                    animEl : 'elId',
+                    scope : this,
+                    icon : Ext.MessageBox.QUESTION
                 });
             }
         });
     },
     
     displayViewer : function (url) {
-    	this.viewerEditorPanel.remove();
+        this.viewerEditorPanel.remove();
         this.viewerEditorPanel.setSrc(this.newUrl);
         
         this.viewerEditorPanel.setHeight(this.contentPanel.getHeight() - 30);
@@ -804,15 +805,15 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     },
     
     hideViewer : function () {
-    	this.viewerEditorPanel.remove();
-    	this.viewerEditorPanel.setVisible(false);
+        this.viewerEditorPanel.remove();
+        this.viewerEditorPanel.setVisible(false);
         this.contentPanel.doLayout();
     },
     
     /**
      * Refresh the tree, reload the tree and print show it again
      */    
-    refreshTree : function (){
+    refreshTree : function () {
         this.tree.getLoader().load(this.tree.getRootNode(), function () {
             this.tree.getRootNode().expand(true);                        
         }, this);  
@@ -874,7 +875,7 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
     return [{
         jsObj : "Ext.form.Label", 
         config : {
-            html : "This module needs 2 datastorages. "+
+            html : "This module needs 2 datastorages. " +
             "All files are edited in the development datastorage, and then copied to the production datastorage<br/>"            
         }
     },  {
@@ -883,12 +884,12 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             fieldLabel : i18n.get("label.siteName"),
             allowBlank : false,
             width : 200,
-            listeners: {
-                render: function(c) {
-                  Ext.QuickTips.register({
-                    target: c,
-                    text: "The name of your site"
-                  });
+            listeners : {
+                render : function (c) {
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : "The name of your site"
+                    });
                 }
             },
             name : "siteName",
@@ -901,12 +902,12 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             allowBlank : false,
             id : "urlDatastorageId",
             width : 200,
-            listeners: {
-                render: function(c) {
-                  Ext.QuickTips.register({
-                    target: c,
-                    text: "The URL of the development datastorage"
-                  });
+            listeners : {
+                render : function (c) {
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : "The URL of the development datastorage"
+                    });
                 }
             },
             name : "dynamicUrlDatastorage",
@@ -919,17 +920,14 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             fieldLabel : i18n.get("label.allowDataPublish"),
             checked : true,
             id : "allowDataPublishId",
-            listeners: {
-                render: function(c) {
-                  Ext.QuickTips.register({
-                    target: c,
-                    text: "Allow to copy/publish files from one datastorage to another. Useless when only one storage."
-                  });
+            listeners : {
+                render : function (c) {
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : "Allow to copy/publish files from one datastorage to another. Useless when only one storage."
+                    });
                 },
-                valid : function (box){
-                    console.log(box.getValue());
-                },
-                check : function (box, checked){
+                check : function (box, checked) {
                     if (this.ownerCt) {
                         var src = this.ownerCt.getComponent("nameDatastorageSrcId");
                         var dest = this.ownerCt.getComponent("nameDatastorageDestId");
@@ -960,13 +958,13 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             id : "nameDatastorageSrcId",
             width : 200,
             listeners: {
-                render: function(c) {
+                render: function (c) {
                     var checkbox = this.ownerCt.getComponent("allowDataPublishId");
                     this.setDisabled(!checkbox.getValue());
-                  Ext.QuickTips.register({
-                    target: c,
-                    text: "The NAME of the development datastorage to copy content from"
-                  });
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : "The NAME of the development datastorage to copy content from"
+                    });
                 }
             },
             name : "nameDatastorageSrc",
@@ -981,13 +979,13 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             id : "nameDatastorageDestId",
             width : 200,
             listeners: {
-                render: function(c) {
+                render : function (c) {
                     var checkbox = this.ownerCt.getComponent("allowDataPublishId");
                     this.setDisabled(!checkbox.getValue());
-                  Ext.QuickTips.register({
-                    target: c,
-                    text: "The NAME of the production datastorage to copy the content to"
-                  });
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : "The NAME of the production datastorage to copy the content to"
+                    });
                 }
             },
             name : "nameDatastorageDest",

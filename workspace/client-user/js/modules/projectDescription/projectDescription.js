@@ -26,52 +26,25 @@ Ext.namespace('sitools.user.modules');
  */
 sitools.user.modules.projectDescription = Ext.extend(Ext.Panel, {
     initComponent : function () {
-        
-        this.form = new Ext.form.FormPanel({
-            title : 'form',
-            layout : 'fit',
-            items : [{
-                xtype : 'textarea',
-                name : 'my_textarea',
-                id : 'my_textarea',
-                width : '100px',
-                height : '100px',
-                listeners : {
-                    focus : function (area){
-                        CKEDITOR.replace('my_textarea');
-                    }
-                }
-            }],
-            listeners : {
-                scope : this,
-                afterrender : function (form) {
-//                    form.findByType('textarea')[0];
-//                    CKEDITOR.replace('my_textarea');
-                }
-            }
-        });
-        
-        this.items = [this.form];
-        
-//		Ext.Ajax.request({
-//			method : "GET", 
-//			url : projectGlobal.sitoolsAttachementForUsers, 
-//			success : function (response) {
-//				if (!showResponse(response, false)) {
-//	                return;
-//	            }
-//	            var config = Ext.decode(response.responseText);
-//	            this.add({
-//					xtype : "panel", 
-//					style : 'border-top : 2px solid #8C8F96;',
-//					html : Ext.util.Format.htmlDecode(config.project.htmlDescription), 
-//					autoScroll : true
-//				});
-//				this.doLayout();
-//			}, 
-//			failure : alertFailure, 
-//			scope : this
-//		});
+		Ext.Ajax.request({
+			method : "GET", 
+			url : projectGlobal.sitoolsAttachementForUsers, 
+			success : function (response) {
+				if (!showResponse(response, false)) {
+	                return;
+	            }
+	            var config = Ext.decode(response.responseText);
+	            this.add({
+					xtype : "panel", 
+					style : 'border-top : 2px solid #8C8F96;',
+					html : Ext.util.Format.htmlDecode(config.project.htmlDescription), 
+					autoScroll : true
+				});
+				this.doLayout();
+			}, 
+			failure : alertFailure, 
+			scope : this
+		});
         sitools.user.modules.projectDescription.superclass.initComponent.call(this);
     }, 
     /**

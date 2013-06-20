@@ -32,6 +32,7 @@ Ext.namespace('sitools.admin.datasets');
  */
 //sitools.component.datasets.datasetForm = Ext.extend(Ext.Panel, {
 sitools.admin.datasets.datasetForm = Ext.extend(Ext.Panel, {
+    
     initComponent : function () {
 		var action = this.action;
 
@@ -114,6 +115,7 @@ sitools.admin.datasets.datasetForm = Ext.extend(Ext.Panel, {
                 xtype : 'form',
                 border : false,
                 padding : 10,
+                autoScroll : true,
                 defaults : {
 					disabled : this.action == 'view' ? true : false
                 }, 
@@ -165,11 +167,12 @@ sitools.admin.datasets.datasetForm = Ext.extend(Ext.Panel, {
                     anchor : '95%',
                     maxLength : 100
                 }, {
-                    xtype : 'htmleditor',
+                    xtype : 'textarea',
                     id : 'descriptionHTML',
+                    cls : 'ckeditor',
                     fieldLabel : i18n.get('label.descriptionHTML'),
                     height : 150,
-                    anchor : '95%'
+                    width : '94%'
                 }, {
                     xtype : 'hidden',
                     name : 'dirty', 

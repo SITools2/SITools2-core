@@ -483,6 +483,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                         {
                         id: 'datasetFieldId',
                         type: 'text',
+                        disabled : true,
                         setup: function( data ) {
 							this.getElement().unselectable();
 						},
@@ -499,7 +500,10 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                         },
                         validate: function() {
                             var dialog = this.getDialog();
-
+                            
+                            if ( dialog.getContentElement( 'info', 'linkType' ) && dialog.getValueOf( 'info', 'linkType' ) != 'datasetLink' )
+								return true;
+                            
                             var url = dialog.getContentElement('info','datasetTextId');
                             
                             if (!this.dataLinkComponent || !this.getValue() || !url.getValue()){
@@ -510,15 +514,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                             
                         },
                         commit: function( data ) {
-//                            var datasetField = dialog.getContentElement('info','datasetFieldId');
-                            if (!data.datasetLink){
-                                data.datasetLink = {};
-                            }
                             
-                            if (!this.dataLinkComponent) {
-                                alert(i18n.get('label.datasetLinkNeeded'));
-                                return false;
-                            }
                             
                             data.datasetLink.link = this.dataLinkComponent;
                             
@@ -552,6 +548,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                                 }
                             });
                             win.show();
+                            win.setZIndex(20000);
                         }
                         }
                     ],

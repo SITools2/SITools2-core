@@ -515,7 +515,8 @@
                                         url : loadUrl.get('APP_URL') + '/upload/?media=json',
                                         width : 515,
                                         height : 450,
-                                        fieldUrl : this
+                                        fieldUrl : this,
+                                        zindex : 20000
                                     });
                                     chooser.show(document, function (data, config) {
                                         var dialog = CKEDITOR.dialog.getCurrent();

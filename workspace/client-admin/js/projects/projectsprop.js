@@ -224,14 +224,16 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                 anchor : '100%',
                 maxLength : 100
             }, {
-                xtype : 'htmleditor',
+                xtype : 'textarea',
                 id : 'htmlDescription',
+                cls : 'ckeditor',
                 fieldLabel : i18n.get('label.descriptionHTML'),
                 height : 150,
                 anchor : '95%', 
                 value : this.defaultDescription
             }, {
-                xtype : 'htmleditor',
+                xtype : 'textarea',
+                cls : 'ckeditor',
                 id : 'maintenanceText',
                 fieldLabel : i18n.get('label.maintenanceText'),
                 height : 150,
@@ -278,8 +280,9 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                 tooltip : i18n.get("label.projectTemplateHelp"), 
                 value : this.defaultValueTpl
             }, {
-                xtype : 'htmleditor',
+                xtype : 'textarea',
                 id : 'htmlHeader',
+                cls : 'ckeditor',
                 fieldLabel : i18n.get('label.htmlHeader'),
                 height : 150,
                 anchor : '95%', 
@@ -730,6 +733,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
         }
+        this.refreshTextAreaValues();
 		if (this.action == 'modify') {
 			var name = f.findField("name").getValue();
 			var originalName = f.findField("name").originalValue;
@@ -1017,6 +1021,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                                 storeLinks.add(new Ext.data.Record(item));
                             }, this);
                         }
+                        this.applyCkeditor();
                         
                     },
                     failure : function (ret) {
@@ -1120,6 +1125,27 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
 		        this.modulePanel.getView().refresh();
 		    }, this);
 		}
+    },
+    
+
+    applyCkeditor : function () {
+        // Selectively replace <textarea> elements, based on
+        // custom assertions.
+        CKEDITOR.replaceAll(function (textarea, config) {
+            if (!Ext.isEmpty(textarea.classList) && textarea.classList.contains("ckeditor")) {
+                config.customConfig = 'config-basic.js';
+                config.width = "95%";
+                return true;
+            } else {
+                return false;
+            }
+        });
+    },
+    
+    refreshTextAreaValues : function () {
+        Ext.iterate(CKEDITOR.instances, function(key, instance){
+            instance.updateElement();
+        });
     }
 });
 

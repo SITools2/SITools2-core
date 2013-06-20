@@ -454,8 +454,10 @@ var projectGlobal = {
 //                var topEl = Ext.get('toppanel');
 //                topEl.update(Ext.util.Format.htmlDecode(data.project.htmlHeader));
             },
-            callback : function () {
-                this.getDataViewsDependencies();
+            callback : function (options, success, response) {
+                if (success) {
+                    this.getDataViewsDependencies();
+                }
             },
             failure : function (response, opts) {
                 if (response.status === 403) {
@@ -465,7 +467,7 @@ var projectGlobal = {
                         title : i18n.get('label.information'),
                         msg : i18n.get('label.projectNeedToBeLogged'),
                         width : 350,
-                        buttons : Ext.MessageBox.OKCANCEL,
+                        buttons : Ext.MessageBox.OK,
                         icon : Ext.MessageBox.INFO,
                         fn : function (response) {
                             if (response === 'ok') {
@@ -479,6 +481,8 @@ var projectGlobal = {
                                         });
                                     }
                                 }).show();
+                            } else {
+                                console.log("stop");
                             }
                         }
                     });

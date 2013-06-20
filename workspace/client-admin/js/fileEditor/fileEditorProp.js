@@ -67,6 +67,7 @@ sitools.component.fileEditor.fileEditorProp = Ext.extend(Ext.Window, {
                     afterrender : function () {
                         this.syncValue();
                         this.toggleSourceEdit(true);
+                        this.getToolbar().hide();
                     }
                 }
             }],

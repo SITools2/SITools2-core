@@ -22,6 +22,11 @@
  * licensing@sencha.com
  * http://www.sencha.com/license
  */
+/**
+ * Possibilité de paramétrer le zindex de cette fenêtre pour qu'elle reste toujours au dessus d'une autre fenêtre.
+ * C'est utile dans le cas ou on utilise ce composant dans l'éditeur HTML CKEDITOR puisque ses fenêtres sont ouvertes
+ * en dehors du windowManager de Sitools 
+ */
 var ImageChooser = function(config){
 	this.config = config;
 }
@@ -119,7 +124,7 @@ ImageChooser.prototype = {
 		        }],
 		        buttons: [{
 		            text: 'upload',
-//		            scope : this, 
+		            scope : this, 
 		            handler: function(){
 		                if(fp.getForm().isValid()){
 		                	Ext.Ajax.request ({
@@ -128,21 +133,32 @@ ImageChooser.prototype = {
 //		                		isUpload : true, 
 		                		waitMsg : "wait...", 
 		                		method : 'PUT', 
+		                		scope : this,
 		                		success : function (response) {
 			                		new Ext.ux.Notification({
 			    						iconCls:	'x-icon-information',
 			    						title:	  i18n.get('label.information'),
 			    						html:	  i18n.get ('label.imageUploaded'),
 			    						autoDestroy: true,
-			    						hideDelay:  1000
-			    					}).show(document); 
-		                			Ext.getCmp('imageChooserDataViewId').refresh();
+			    						hideDelay:  1000,
+			    						listeners : {
+			    							scope : this,
+			    							destroy : function (win) {
+			    								this.bringToFront(this.win);			    											    								
+			    							},
+			    							show : function (win) {
+			    								this.bringToFront(this.win);
+			    							}
+			    						}
+			    					}).show(document);
+			                		
+			                		Ext.getCmp('imageChooserDataViewId').refresh();
 		                			
 		                		}, 
 		                		failure : function (response){
 		                			Ext.Msg.alert (i18n.get('label.error'));
 		                		}, 
-		                		callback : function (){
+		                		callback : function () {
 		                			Ext.getCmp('imageChooserDataViewId').getStore().load();
 		                			Ext.getCmp('imageChooserDataViewId').refresh();
 		                		}
@@ -232,6 +248,15 @@ ImageChooser.prototype = {
 					key: 27, // Esc key
 					handler: function(){ this.win.close(); },
 					scope: this
+				},
+				listeners : {
+					scope : this,
+					activate : function (win) {
+						this.bringToFront(win);
+					},
+					show : function (win) {
+						this.bringToFront(win);
+					}
 				}
 			};
 			Ext.apply(cfg, this.config);
@@ -240,7 +265,6 @@ ImageChooser.prototype = {
 
 		this.reset();
 	    this.win.show(el);
-	    SitoolsDesk.getDesktop().getManager().bringToFront(this.win);
 	    
 		this.callback = callback;
 		this.animateTarget = el;
@@ -327,6 +351,13 @@ ImageChooser.prototype = {
 
 	onLoadException : function(v,o){
 	    this.view.getEl().update('<div style="padding:10px;">Error loading images.</div>');
+	},
+	
+	bringToFront : function (win){
+		if (win && !Ext.isEmpty(win.zindex) && win.isVisible()) {
+			win.focus();
+			win.setZIndex(win.zindex);
+		}
 	}
 };
 

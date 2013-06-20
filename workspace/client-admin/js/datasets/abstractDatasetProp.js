@@ -298,7 +298,7 @@ sitools.admin.datasets.abstractDatasetWin = {
 							storeProp.add(recProp);
 						});
                     }
-                    
+                    this.applyCkeditor();
                 },
                 failure : function (ret) {
                     var data = Ext.decode(ret.responseText);
@@ -311,5 +311,25 @@ sitools.admin.datasets.abstractDatasetWin = {
             this.viewConfigPanel.getDatasetViewsCombo().getStore().load();
         }
 
+    },
+    
+    applyCkeditor : function () {
+        // Selectively replace <textarea> elements, based on
+        // custom assertions.
+        CKEDITOR.replaceAll(function (textarea, config) {
+            if (!Ext.isEmpty(textarea.classList) && textarea.classList.contains("ckeditor")) {
+                config.customConfig = 'config-basic.js';
+                config.width = "95%";
+                return true;
+            } else {
+                return false;
+            }
+        });
+    },
+    
+    refreshTextAreaValues : function () {
+        Ext.iterate(CKEDITOR.instances, function(key, instance){
+            instance.updateElement();
+        });
     }
 };

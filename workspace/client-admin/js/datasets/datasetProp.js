@@ -317,8 +317,9 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
             return;
         }
 
+        this.refreshTextAreaValues();
         var putObject = {};
-        Ext.iterate(f.getValues(), function (key, value) {
+        Ext.iterate(f.getFieldValues(), function (key, value) {
             if (key === 'image') {
                 // TODO : definir une liste de mediaType et type
                 putObject.image = {};
@@ -516,7 +517,7 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
             };
         }
         return result;
-    } 
+    }
 });
 
 Ext.reg('s-datasetsMultiTablesPanel', sitools.component.datasets.datasetsMultiTablesPanel);
