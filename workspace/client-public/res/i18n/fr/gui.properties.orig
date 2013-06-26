@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #-------------------------------------------------------------------------------
 # Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 # 
@@ -134,7 +135,6 @@ label.desktop=Desktop
 label.fixed=Fixe 
 label.notImplementedMethod=Methode non implémentée
 label.projectTemplateHelp=Le nom du fichier modèle (.ftl)
-label.projectNeedToBeLogged=<i>Ceci est un project privé.</i> <br> Vous devez être connecté et avoir des droits suffisants pour accéder au projet.
 
 #-------------------------------------------------------------------------------
 # Resources Plugins
@@ -489,8 +489,6 @@ label.authentication=Authentification
 label.key=clé
 label.selectCollection=Selectionner une collection
 label.displayRecordsProblem=Un problème est survenu durant l'exploration des données.
-label.host=Hôte
-label.advancedParameters=Paramètres avancés
 
 #-------------------------------------------------------------------------------
 # Dictionary
@@ -581,7 +579,6 @@ label.chooseComponent=Choose Component
 title.componentList=Component List
 label.componentProperties=Propriétés des composants
 label.css=CSS
-label.formReady=Formulaire Prêt
 label.changeFormSize=Change Form Size
 label.graphs.reset=Annuler les modifications ?
 form.delete.success=Formulaire de Recherche supprimé
@@ -1475,8 +1472,6 @@ label.duplicate=Duplicate
 label.columnType=Type de la colonne
 label.database=Base de données
 label.unableToParseRequest=Impossible d'exécuter la requête
-label.datasetLinkNeeded=Un lien vers un dataset est requis
-label.datasetLinkTextNeeded=Un lien vers un Dataset et un texte sont requis
 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
@@ -2243,7 +2238,7 @@ label.saveSettings=Enr. configuration
 label.showPreview=Voir aperçu
 label.addSelection=Ajouter à mes sélections
 label.export.all.CSV=Exporter en CSV 
-label.downloadFileService=Télécharger le jeu de données
+label.downloadFile=Télécharger le jeu de données
 label.tooManyRecords=Ce dataset contient {1} enregistrements, cette grille affiche {0} enregistrements.
 label.addRequest=Ajouter la requête
 label.detailColumnDefinition=Définition de la colonne
@@ -2456,7 +2451,7 @@ label.noLinkDefined=Aucun lien de défini
 label.cannotEditOtherThanText=Impossible d'éditer autre chose que du <u><i>texte</i></u>
 label.selectDatasetLink=Sélection du jeu de données
 label.insertDatasetLink=Insérer un lien vers un dataset
-label.text=Texte
+label.text=texte
 label.openDatasetBrowser=Ouvrir l'explorateur de datasets...
 label.select=Selectionner
 label.selectNode=Selectionnez un noeud (dataset ou formulaire)
@@ -2581,16 +2576,6 @@ guiService.delete.failure=Erreur lors de la suppression du service IHM
 headers.defaultGuiService=Par défaut
 label.isDefault=Par défaut
 label.warning_nb_records=Number maximum de points affichés avant avertissement
-
-#-------------------------------------------------------------------------------
-# Window Image Zoomer
-#-------------------------------------------------------------------------------
-label.windowImgZoomer=Image Zoomer
-label.resetZoom=Réinitialiser le zoom
-label.zoomIn=Zoom Avant
-label.zoomOut=Zoom Arrière
-label.downloadImage=Télécharger l'image
-
 #-------------------------------------------------------------------------------
 # No SQL
 #-------------------------------------------------------------------------------

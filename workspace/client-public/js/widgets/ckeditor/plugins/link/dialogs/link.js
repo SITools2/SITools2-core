@@ -332,6 +332,15 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 	var commonLang = editor.lang.common,
 		linkLang = editor.lang.link;
 
+	// Items Combo Box
+	var itemsCombo = [[linkLang.toUrl, 'url'],
+					[linkLang.toAnchor, 'anchor'],
+					[linkLang.toEmail, 'email']];
+			
+	if (editor.config.displayDatasetLink == true || !Ext.isDefined(editor.config.displayDatasetLink)){
+		itemsCombo.push([ 'Dataset Link', 'datasetLink' ]);
+	}
+		
 	return {
 		title: linkLang.title,
 		minWidth: 350,
@@ -347,12 +356,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 				type: 'select',
 				label: linkLang.type,
 				'default': 'url',
-				items: [
-					[ linkLang.toUrl, 'url' ],
-					[ 'Dataset Link', 'datasetLink' ],
-					[ linkLang.toAnchor, 'anchor' ],
-					[ linkLang.toEmail, 'email' ]
-					],
+				items: itemsCombo,
 				onChange: linkTypeChanged,
 				setup: function( data ) {
 					if ( data.type )

@@ -321,6 +321,7 @@ sitools.admin.datasets.abstractDatasetWin = {
             if (!Ext.isEmpty(textarea.classList) && textarea.classList.contains("ckeditor")) {
                 config.customConfig = 'config-basic.js';
                 config.width = "95%";
+                config.displayDatasetLink = false;
                 return true;
             } else {
                 return false;
