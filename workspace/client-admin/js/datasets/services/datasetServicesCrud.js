@@ -86,7 +86,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
 
         // LIST OF PARENTS
         var storeParents = new Ext.data.JsonStore({
-            fields : [ 'id', 'name', 'type' ],
+            fields : [ 'id', 'name', 'type', 'sitoolsAttachementForUsers' ],
             url : this.urlDatasets,
             root : "data",
             autoLoad : true
@@ -365,6 +365,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 parentType : this.parentType,
                 appClassName : this.appClassName,
                 idParent : parentId,
+                urlDataset : urlParent,
                 urlAllServicesIHM : this.urlAllServicesIHM,
                 urlDatasetServiceIHM : this.urlDatasetServiceIHM.replace('{idDataset}', parentId)
             });
@@ -507,6 +508,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
      *            the id of GUI Service to modify
      */
     editGUIService : function (idService) {
+        
+        var parentId = this.comboParents.getValue();
+        var urlParent = this.urlDatasets + "/" + parentId;
+        
         Ext.Ajax.request({
             url : this.urlDatasetServiceIHM.replace('{idService}', idService),
             method : 'GET',
@@ -518,6 +523,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     action : 'modify',
                     record : json.guiServicePlugin,
                     parentPanel : this,
+                    urlDataset : urlParent,
                     parentType : this.parentType,
                     appClassName : this.appClassName,
                     idParent : this.parentId,

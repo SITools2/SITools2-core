@@ -76,7 +76,7 @@ sitools.admin.datasets.columnRenderer.urlPanel = Ext.extend(Ext.Panel, {
 					}, {
 						xtype : 'sitoolsSelectImage',
 						name : 'image',
-						vtype : "image",
+//						vtype : "image",
                         hidden : true,
                         disabled : true,
 						fieldLabel : i18n.get('label.image'),

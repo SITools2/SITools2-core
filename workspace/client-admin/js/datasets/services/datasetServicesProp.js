@@ -51,6 +51,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
     modelClassName : null,
     currentRecordId : null,
     initComponent : function () {
+        this.id = "datasetServicesPropId";
 
         this.guiServiceDatasetURL = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL') + '/' + this.idParent + "/services";
 
@@ -203,6 +204,7 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
         this.dsFieldParametersPanel = new Ext.Panel({
             layout : 'border',
             id : 'dsFieldParametersPanel',
+            urlDataset : this.urlDataset,
             title : i18n.get('title.formFieldParameters'),
             items : [ this.fieldMappingFormPanel, this.centerPanel ]
         });

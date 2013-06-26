@@ -223,15 +223,12 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/viewDataDetail/simpleViewDataDetails.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomDomQuery.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomXMLReader.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/WindowImageViewer.js"></script>	
-    <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/widgets/WindowImageViewer.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/spinner.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/spinnerfield.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsDatePicker.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/imageChooser/imageChooser.js"></script>
-	
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/WindowImageZoomViewer.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/WindowImageZoomer.js"></script>	
 	
 	<script type="text/javascript" src="${appUrl}/common/res/multizoom/script/core/Simple_Viewer_beta_1.1.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/res/multizoom/script/extension/toolbar-ext.js"></script>

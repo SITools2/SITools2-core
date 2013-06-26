@@ -1135,6 +1135,8 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             if (!Ext.isEmpty(textarea.classList) && textarea.classList.contains("ckeditor")) {
                 config.customConfig = 'config-basic.js';
                 config.width = "95%";
+                // false to hide datasetLink label in link.js combo
+                config.displayDatasetLink = false;
                 return true;
             } else {
                 return false;
