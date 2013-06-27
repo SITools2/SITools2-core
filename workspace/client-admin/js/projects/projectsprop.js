@@ -939,8 +939,8 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
 	/**
 	 * do a specific render to fill informations from the project.
 	 */
-    onRender : function () {
-        sitools.component.projects.ProjectsPropPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.component.projects.ProjectsPropPanel.superclass.afterRender.apply(this, arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             if (this.action == 'modify' || this.action == "view") {
@@ -1033,6 +1033,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             
             if (this.action === "create") {
                 this.fillDefaultLinks();
+                this.applyCkeditor();
             }
         }
     }, 

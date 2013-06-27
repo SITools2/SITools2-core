@@ -309,6 +309,7 @@ sitools.admin.datasets.abstractDatasetWin = {
 //            this.formulairePrincipal.getDataSourceCombo().getStore().load();
             this.formulairePrincipal.loadDatasources();
             this.viewConfigPanel.getDatasetViewsCombo().getStore().load();
+            this.applyCkeditor();
         }
 
     },
