@@ -166,7 +166,7 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
                             //load the dataset only when all dataviews dependencies are loaded
                             if (this.url) {
                                 this.loadDataset();
-                            }
+                            } 
                         }, this);
                     }	
                 }

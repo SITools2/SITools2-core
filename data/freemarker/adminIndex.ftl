@@ -106,7 +106,6 @@
     <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsDatePicker.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditorFormField.js"></script>
 	
     
     <script type="text/javascript" src="js/def.js"></script>
