@@ -1,0 +1,43 @@
+.toolbar {
+	display: inline-block;
+	position: absolute;
+	right: 3px;
+	top: 3px;
+	z-index: 5;
+}
+.toolbarButton {
+	margin: 0 2px;
+	cursor: pointer;
+}
+.helptext {
+	-webkit-border-radius: 7px;
+	-khtml-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	background-color: #fff;
+	border:1px dotted #D0D0D0;
+	color:#404040;
+	font-size:12px;
+	height:150px;
+	overflow:auto;
+	padding:5px;
+	position:absolute;
+	right:11px;
+	top:11px;
+	width:300px;
+	z-index: 5;
+}
+.toolbar hr {
+	border-top: 0px solid #fff;
+	border-left: 0px solid #fff;
+	border-right: 0px solid #fff;
+	border-bottom: 1px dotted #808080;
+	margin: 1px 0px 7px 0px;
+}
+.movement-controls {
+	position: absolute;
+	right: 3px;
+	bottom: 3px;
+	z-index: 4;
+	border: 0 solid #FFFFFF;
+}
