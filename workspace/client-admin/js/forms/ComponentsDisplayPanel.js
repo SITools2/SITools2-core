@@ -35,7 +35,7 @@ Ext.namespace('sitools.admin.forms');
  */
 sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	
-	y : 200,
+	y : 0,
 	
 	initComponent : function () {
 		
@@ -104,7 +104,6 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
     	this.add(aPanel);
     	
     	// resize container panel if needed
-    	console.log(this.y);
     	this.y = this.y + 200;
     	if (this.y > 500) {
     		this.formSize.height = this.y;
@@ -145,7 +144,9 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         
         this.add(mainPanel);
         
-
+        if ( this.action == 'create'  ) {
+        	this.y = 200;
+        }
         
 //        if ( this.action == 'modify'  ) {
 
@@ -156,6 +157,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        if (!Ext.isEmpty(this.formComponentsStore.getModifiedRecords())){
 	        	
 	        	var parent = this;
+	        	parent.y =  0;
 	        	var recordsArray = this.formComponentsStore.getModifiedRecords();
 	        	var panels = {};
 	        
@@ -185,6 +187,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        	
 	        	Ext.iterate(panels, function(key, value){
 	        		parent.add(value);
+	        		parent.y = parent.y + 200;
 		        });
 
 	        }
