@@ -466,7 +466,6 @@ sitools.user.component.dataviews.dataviewUtils = {
             }
         });
 
-<<<<<<< HEAD
     }, 
     /**
      * @static 
@@ -484,33 +483,6 @@ sitools.user.component.dataviews.dataviewUtils = {
         previewWin.show();
         previewWin.toFront();
     }, 
-=======
-	}, 
-	/**
-	 * @static 
-	 * Definition of the showPreview method used by the columnRenderer.
-	 * @param {string} value The img src
-	 */
-	showPreview : function (value, title) {
-	    var previewWin = new sitools.widget.WindowImageViewer({            
-	        title : title,
-	        src : value,
-	        hideAction : 'close',
-	        resizeImage : false  
-	    });
-	    
-	    previewWin.show();
-	    previewWin.toFront();
-	}, 
-	/**
-	 * Return true if the column is NoClientAccess
-	 * @param {Object} column the column object
-	 * @return {boolean} true if the column should not be used in client
-	 */
-	isNoClientAccess : function (column) {
-		return !Ext.isEmpty(column.columnRenderer) &&  ColumnRendererEnum.NO_CLIENT_ACCESS == column.columnRenderer.behavior;
-	}, 
->>>>>>> quicklook
     /**
      * Return true if the column is NoClientAccess
      * @param {Object} column the column object

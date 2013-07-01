@@ -232,8 +232,8 @@
 	
 	<!-- IMAGE ZOOM VIEWER -->
 	<script type="text/javascript" src="${appUrl}/common/res/multizoom/core/Simple_Viewer_beta_1.1.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/res/multizoom/script/extension/toolbar-ext.js"></script>
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/multizoom/script/extension/toolbar-ext.css">
+	<script type="text/javascript" src="${appUrl}/common/res/multizoom/extension/toolbar-ext.js"></script>
+	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/multizoom/extension/toolbar-ext.css">
 	
     <script type="text/javascript" src="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.js"></script>
 	

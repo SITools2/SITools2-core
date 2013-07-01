@@ -34,7 +34,7 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 	minWidth : 0,
 	padding : '2px 2px 2px 2px',
 	
-	initComponent : function(config) {
+	initComponent : function (config) {
 		viewer.onload = viewer.toolbar;
 	
 		Ext.each(this.parameters, function (config) {
@@ -45,11 +45,11 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
                     break;
                     
                 case "sizeLimitWidth" :
-                    this.sizeLimitWidth = config.value + "px";
+                    this.sizeLimitWidth = config.value;
                     break;
                     
                 case "sizeLimitHeight" :
-                    this.sizeLimitHeight = config.value + "px";
+                    this.sizeLimitHeight = config.value;
                     break;  
                     
                 case "zoomFactor" :
@@ -63,29 +63,73 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
             }
         }, this);
         
-        
-        var rec = this.dataview.getSelections()[0];
+		
+		
+		var rec = this.dataview.getSelections()[0];
 		this.src = rec.get(this.columnImage);
 		this.title = this.columnImage;
         
-		this.viewer = new viewer({
-			// parent : panel.getEl(),
-			imageSource : this.src,
-			frame : [this.sizeLimitWidth, this.sizeLimitHeight],
-			zoomFactor : this.zoomFactor,
-			maxZoom : this.maxZoom
-		});
+		var id = Ext.id();
+		this.panel = new Ext.Panel({
+            bodyCfg : {
+                tag : 'img',
+                src : this.src,
+                id : id
+            },
+            listeners :  {
+                scope : this,
+                render : function () {
+                    this.panel.body.on('load', this.onImageLoad, this, {
+                        single : true
+                    });
+                    
+                }
+            }
+        });
+		
+		this.items=[this.panel];
+		
+
+//		this.viewer = new viewer({
+//            // parent : panel.getEl(),
+//            imageSource : this.src,
+//            frame : [ this.sizeLimitWidth, this.sizeLimitHeight ],
+//            zoomFactor : this.zoomFactor,
+//            maxZoom : this.maxZoom
+//        });
 
 		this.listeners = {
-			scope : this,
-			render : function(window) {
-				window.body.appendChild(this.viewer.frameElement);
-			},
-			afterrender : function(window) {
-				this.onImageLoad();
-				window.doLayout();
-			}
-		};
+            scope : this,
+            afterrender : function () {
+                var height = parseInt(this.sizeLimitHeight);
+                //add the padding
+                height += this.getAdditionalHeight();
+                var width = parseInt(this.sizeLimitWidth);
+                width += this.getAdditionalWidth();
+                this.setSize(width, height);
+            },
+            
+            resize : function (window, width, height) {
+                if(!Ext.isEmpty(this.viewer)){
+                    var frameElementWidth = width - this.getAdditionalWidth();
+                    var frameElementHeight = height - this.getAdditionalHeight();
+                    
+                    this.viewer.setFrameProp([frameElementWidth +"px", frameElementHeight+"px"]);
+                    
+//                    var image = this.panel.getEl().child("img");
+//                    var imgWidth = image.getWidth();
+//                    var imgHeigt = image.getHeight();
+//                    
+//                    var position = this.viewer.centerImage(imgWidth,imgHeigt, 0,0);
+//                    this.viewer.setDimension(dimension[0],dimension[1]);
+//                    this.viewer.setPosition(position[0],position[1]);
+                    this.viewer.reset();
+                    
+                }
+                
+            }
+            
+        };
 		
 		// this.items = [this.panel];
 		this.autoScroll = true;
@@ -98,16 +142,46 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
      * Method called when the image is loaded. It is in charge of resizing the image according to the desktop size
      */
     onImageLoad : function () {
-    	// <img>
+        var img = this.panel.getEl().child("img");
+        this.viewer = new viewer({
+            image : img.dom,
+//            imageSource : this.src,
+            frame : [ this.sizeLimitWidth + "px", this.sizeLimitHeight + "px" ],
+            zoomFactor : this.zoomFactor,
+            maxZoom : this.maxZoom
+        });
+//        this.resizeWindow();
+//        this.doLayout();
+	},
+	
+	getAdditionalHeight : function () {
+	    var height = 4;
+        var enteteEl = this.getEl().child(".x-window-tl");
+        height += enteteEl.getHeight();
+        
+        return height;
+        
+	},
+	
+	getAdditionalWidth : function () {
+	    return 4;
+	},
+	
+	
+	/**
+     * Method called when the image is loaded. It is in charge of resizing the image according to the desktop size
+     */
+    resizeWindow : function () {
+        // <img>
         var imgTag = Ext.get(this.viewer.frameElement).dom.firstChild;
         
         // <div> container of the image
         var frameTag = Ext.get(this.viewer.frameElement).dom;
         
-		var hi = this.body.dom.offsetHeight;
-		var wi = this.body.dom.offsetWidth;
+        var hi = this.body.dom.offsetHeight;
+        var wi = this.body.dom.offsetWidth;
         
-		
+        
         var hiImg = imgTag.offsetHeight;
         var wiImg = imgTag.offsetWidth;
         
@@ -115,190 +189,187 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
         var hiFrame = frameTag.offsetHeight;
         var wiFrame = frameTag.offsetWidth;
         
-		var desktop = getDesktop();
-		var ww = desktop.getWinWidth();
-		var hw = desktop.getWinHeight();
+        var desktop = getDesktop();
+        var ww = desktop.getWinWidth();
+        var hw = desktop.getWinHeight();
 
-		var reduceImg = false;
+        var reduceImg = false;
 
-		if (hiImg > hiFrame) {
-			wiImg = wiImg * hiFrame / hiImg;
-			hiImg = hiFrame;
-			reduceImg = true;
-		}
-		if (wiImg > wiFrame) {
-			hiImg = hiImg * wiFrame / wiImg;
-			wiImg = wiFrame;
-			reduceImg = true;
-		}
-		if (reduceImg) {
-			hiImg *= 0.9;
-			wiImg *= 0.9;
-		}
-		/*********************************************/
-		var reduce = false;
-		
-		if (hi > hw) {
-			wi = wi * hw / hi;
-			hi = hw;
-			reduce = true;
-		}
-		if (wi > ww) {
-			hi = hi * ww / wi;
-			wi = ww;
-			reduce = true;
-		}
-		if (reduce) {
-			hi *= 0.9;
-			wi *= 0.9;
-		}
-
-		// set frame size to the original image size or smaller
-		Ext.get(this.viewer.frameElement).setSize(wiImg, hiImg);
-		
-		//this.setSize(this.getFrameWidth() + wiImg, this.getFrameHeight() + hiImg);
-//		this.setSize(wiImg + 20, hiImg + 35);
-//		this.setSize(wi + this.getFrameWidth(), hi + this.getFrameHeight());
+        if (hiImg > hiFrame) {
+            wiImg = wiImg * hiFrame / hiImg;
+            hiImg = hiFrame;
+            reduceImg = true;
+        }
+        if (wiImg > wiFrame) {
+            hiImg = hiImg * wiFrame / wiImg;
+            wiImg = wiFrame;
+            reduceImg = true;
+        }
+        if (reduceImg) {
+            hiImg *= 0.9;
+            wiImg *= 0.9;
+        }
+        /*********************************************/
+        var reduce = false;
         
-		this.center();
-	}
+        if (hi > hw) {
+            wi = wi * hw / hi;
+            hi = hw;
+            reduce = true;
+        }
+        if (wi > ww) {
+            hi = hi * ww / wi;
+            wi = ww;
+            reduce = true;
+        }
+        if (reduce) {
+            hi *= 0.9;
+            wi *= 0.9;
+        }
+
+        // set frame size to the original image size or smaller
+        Ext.get(this.viewer.frameElement).setSize(wiImg, hiImg);
+        
+        //this.setSize(this.getFrameWidth() + wiImg, this.getFrameHeight() + hiImg);
+//      this.setSize(wiImg + 20, hiImg + 35);
+//      this.setSize(wi + this.getFrameWidth(), hi + this.getFrameHeight());
+        
+        this.center();
+    }
+	
+	
+	
 });
 
 Ext.reg('sitools.user.component.dataviews.services.WindowImageZoomer', sitools.user.component.dataviews.services.WindowImageZoomer);
 
 sitools.user.component.dataviews.services.WindowImageZoomer.getParameters = function () {
-    return [{
-    	jsObj : "Ext.form.ComboBox",
-    	config : {
-    		fieldLabel : i18n.get('headers.previewUrl'),
-    		width : 200,
-            typeAhead : true,
-            mode : 'local',
-            forceSelection : true,
-            triggerAction : 'all',
-            valueField: 'display',
-            displayField: 'display',
-            value : 'Image',
-	    	store : new Ext.data.ArrayStore({
-	    		autoLoad : true,
-		        fields : [ 'value', 'display', 'tooltip' ],
-		        data : [ [ '', '' ],
-		                [ 'Image', 'Image', i18n.get("label.image.tooltip") ], 
-		                [ 'URL', 'URL', i18n.get("label.url.tooltip") ],
-		                [ 'DataSetLink', 'DataSetLink', i18n.get("label.datasetlink.tooltip") ]]              
-	    	}),
-	    	listeners : {
-	    		scope : this,
-	    		change : function (combo ,newValue, oldValue) {
-	    		}
-	    	},
-	    	name : "featureType",
-	    	id : "featureType",
-	        value : ""
-    	}
-        
-    },{
-        jsObj : "Ext.form.ComboBox", 
-        config : {
-            fieldLabel : i18n.get('label.columnImage'),
-            width : 200,
-            typeAhead : true,
-            mode : 'local',
-            forceSelection : true,
-            triggerAction : 'all',
-            store: new Ext.data.JsonStore({
-	            fields : [ 'header' ],
-	            url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
-	            root : "dataset.columnModel",
-	            autoLoad : true
-        	}),
-		    valueField: 'header',
-		    displayField: 'header',
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : i18n.get('label.columnImageTooltip')
-                    });
-                }
-            },
-            name : "columnImage",
-            id : "columnImage",
-            value : ""
-        }
-    }, 
-   	{
-        jsObj : "Ext.form.TextField", 
-        config : {
-            fieldLabel : i18n.get("label.sizeLimitWidth"),
-            allowBlank : false,
-            width : 200,
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : i18n.get('label.sizeLimitWidthTooltip')
-                    });
-                }
-            },
-            name : "sizeLimitWidth",
-            value : "500"
-        }
-    },
-    {
-        jsObj : "Ext.form.TextField", 
-        config : {
-            fieldLabel : i18n.get('label.sizeLimitHeight'),
-            allowBlank : false,
-            width : 200,
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : i18n.get('label.sizeLimitHeightTooltip')
-                    });
-                }
-            },
-            name : "sizeLimitHeight",
-            value : "500"
-        }
-    },
-    {
-        jsObj : "Ext.form.TextField", 
-        config : {
-            fieldLabel : i18n.get('label.zoomFactor'),
-            allowBlank : false,
-            width : 200,
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : i18n.get('label.zoomFactorTooltip')
-                    });
-                }
-            },
-            name : "zoomFactor",
-            value : "20"
-        }
-    },
-    {
-        jsObj : "Ext.form.TextField", 
-        config : {
-            fieldLabel : i18n.get('label.maxZoom'),
-            allowBlank : false,
-            width : 200,
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : i18n.get('label.maxZoomTooltip')
-                    });
-                }
-            },
-            name : "maxZoom",
-            value : "10000"
-        }
-    }];
+    return [
+        {
+            jsObj : "Ext.form.ComboBox",
+            config : {
+                fieldLabel : i18n.get('headers.previewUrl'),
+                width : 200,
+                typeAhead : true,
+                mode : 'local',
+                forceSelection : true,
+                triggerAction : 'all',
+                valueField : 'display',
+                displayField : 'display',
+                value : 'Image',
+                store : new Ext.data.ArrayStore({
+                    autoLoad : true,
+                    fields : [ 'value', 'display', 'tooltip' ],
+                    data : [ [ '', '' ], [ 'Image', 'Image', i18n.get("label.image.tooltip") ], [ 'URL', 'URL', i18n.get("label.url.tooltip") ],
+                            [ 'DataSetLink', 'DataSetLink', i18n.get("label.datasetlink.tooltip") ] ]
+                }),
+                listeners : {
+                    scope : this,
+                    change : function (combo, newValue, oldValue) {
+                    }
+                },
+                name : "featureType",
+                id : "featureType"
+            }
+        }, {
+            jsObj : "Ext.form.ComboBox",
+            config : {
+                fieldLabel : i18n.get('label.columnImage'),
+                width : 200,
+                typeAhead : true,
+                mode : 'local',
+                forceSelection : true,
+                triggerAction : 'all',
+                store : new Ext.data.JsonStore({
+                    fields : [ 'header' ],
+                    url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
+                    root : "dataset.columnModel",
+                    autoLoad : true
+                }),
+                valueField : 'header',
+                displayField : 'header',
+                listeners : {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : i18n.get('label.columnImageTooltip')
+                        });
+                    }
+                },
+                name : "columnImage",
+                id : "columnImage",
+                value : ""
+            }
+        }, {
+            jsObj : "Ext.form.TextField",
+            config : {
+                fieldLabel : i18n.get("label.sizeLimitWidth"),
+                allowBlank : false,
+                width : 200,
+                listeners : {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : i18n.get('label.sizeLimitWidthTooltip')
+                        });
+                    }
+                },
+                name : "sizeLimitWidth",
+                value : "500"
+            }
+        }, {
+            jsObj : "Ext.form.TextField",
+            config : {
+                fieldLabel : i18n.get('label.sizeLimitHeight'),
+                allowBlank : false,
+                width : 200,
+                listeners : {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : i18n.get('label.sizeLimitHeightTooltip')
+                        });
+                    }
+                },
+                name : "sizeLimitHeight",
+                value : "500"
+            }
+        }, {
+            jsObj : "Ext.form.TextField",
+            config : {
+                fieldLabel : i18n.get('label.zoomFactor'),
+                allowBlank : false,
+                width : 200,
+                listeners : {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : i18n.get('label.zoomFactorTooltip')
+                        });
+                    }
+                },
+                name : "zoomFactor",
+                value : "20"
+            }
+        }, {
+            jsObj : "Ext.form.TextField",
+            config : {
+                fieldLabel : i18n.get('label.maxZoom'),
+                allowBlank : false,
+                width : 200,
+                listeners : {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : i18n.get('label.maxZoomTooltip')
+                        });
+                    }
+                },
+                name : "maxZoom",
+                value : "10000"
+            }
+        } 
+    ];
 };
 
 sitools.user.component.dataviews.services.WindowImageZoomer.executeAsService = function (config) {

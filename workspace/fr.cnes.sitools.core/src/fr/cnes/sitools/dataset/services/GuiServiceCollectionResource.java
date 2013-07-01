@@ -103,7 +103,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
       ServiceModel service = new ServiceModel();
       populateGuiServiceModel(guiServiceOutput, service);
       service.setLabel(guiServiceOutput.getLabel());
-      service.setVisible(true);
+      service.setVisible(guiServiceInput.isDefaultVisibility());
 
       services.getServices().add(service);
       getStore().update(services);

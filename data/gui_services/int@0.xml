@@ -1,21 +1,25 @@
 <guiService>
-  <id>cec5c162-41c8-4866-88eb-df21784dbb5e</id>
-  <name>Record details Service</name>
-  <description>Display the details of a selected record</description>
-  <label>label.details</label>
-  <author>Akka Technologies</author>
+  <id>31615731-6d95-43a4-9d90-2c03816bded3</id>
+  <name>Columns Definition</name>
+  <description>retrieve the columns definition for a dataset</description>
+  <label>label.definitionTitle</label>
+  <author>AKKA</author>
   <version>1.0</version>
-  <icon>/sitools/common/res/images/icons/toolbar_details.png</icon>
-  <xtype>sitools.user.component.dataviews.services.viewDataDetailsService</xtype>
+  <icon>/sitools/common/res/images/icons/tree_dictionary.png</icon>
+  <xtype>sitools.user.component.dataviews.services.columnsDefinitionService</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/datasetServices/viewDataDetailsService.js</url>
+        <url>/sitools/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/components/datasetServices/columnsDefinitionService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
   <priority>1</priority>
-  <dataSetSelection>SINGLE</dataSetSelection>
+  <dataSetSelection>NONE</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
+  <defaultVisibility>true</defaultVisibility>
 </guiService>

@@ -58,8 +58,11 @@ public class GuiServiceModel implements IResource, Serializable {
    */
   private DataSetSelectionType dataSetSelection = DataSetSelectionType.NONE;
 
-  /** priority */
-  private boolean defaultGuiService; // global ordering of all gui service...
+  /** default gui service */
+  private boolean defaultGuiService; 
+  
+  /** The default visibility when creating a GuiService */
+  private boolean defaultVisibility;
 	
   /**
    * Gets the id value
@@ -284,6 +287,22 @@ public class GuiServiceModel implements IResource, Serializable {
    */
   public void setDefaultGuiService(boolean defaultGuiService) {
     this.defaultGuiService = defaultGuiService;
+  }
+
+  /**
+   * Gets the defaultVisibility value
+   * @return the defaultVisibility
+   */
+  public boolean isDefaultVisibility() {
+    return defaultVisibility;
+  }
+
+  /**
+   * Sets the value of defaultVisibility
+   * @param defaultVisibility the defaultVisibility to set
+   */
+  public void setDefaultVisibility(boolean defaultVisibility) {
+    this.defaultVisibility = defaultVisibility;
   }
 
 }

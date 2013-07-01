@@ -33,4 +33,5 @@
   <priority>1</priority>
   <dataSetSelection>MULTIPLE</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
+  <defaultVisibility>true</defaultVisibility>
 </guiService>

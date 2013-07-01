@@ -1,24 +1,22 @@
 <guiService>
-  <id>31615731-6d95-43a4-9d90-2c03816bded3</id>
-  <name>Columns Definition</name>
-  <description>retrieve the columns definition for a dataset</description>
-  <label>label.definitionTitle</label>
+  <id>fb778415-7c64-41bb-9f55-be719e6ebc12</id>
+  <name>Filter Tool</name>
+  <description>a filter tool for dataset</description>
+  <label>label.filter</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <icon>/sitools/common/res/images/icons/tree_dictionary.png</icon>
-  <xtype>sitools.user.component.dataviews.services.columnsDefinitionService</xtype>
+  <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
+  <xtype>sitools.user.component.dataviews.services.filterService</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/columnsDefinitionService.js</url>
+        <url>/sitools/client-user/js/components/datasetServices/filterService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
-  <priority>1</priority>
+  <priority>3</priority>
   <dataSetSelection>NONE</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
+  <defaultVisibility>true</defaultVisibility>
 </guiService>

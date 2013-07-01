@@ -163,7 +163,7 @@ function viewer(arguments) //argument array
 	
 	//Private access
 	var image=null,imageSource=null,parent=null,replace=null,preLoader=null;
-	var frame=['500px','500px',true]; //Format: ['width in px or % (number)','height in px or % (number)', auto adjust frameElement to image (boolean)]
+	var frame=['400px','400px',true]; //Format: ['width in px or % (number)','height in px or % (number)', auto adjust frameElement to image (boolean)]
 	var borderClass=null;
 	var zoomFactor='10%'; //10% increase per zoom in			
 	var maxZoom='300%'; //Either 'percentage' or ['max width in pixel', 'max height in pixel']
@@ -568,16 +568,15 @@ function viewer(arguments) //argument array
 			
 	if(image!=null) {
 		if (parent != null) {
-			/*image.parentNode.removeChild(image);
-			parent.appendChild(self.frameElement);*/
+			image.parentNode.removeChild(image);
+			parent.appendChild(self.frameElement);
 		}
 		else if (replace != null) {
-			/*image.parentNode.removeChild(image);
-			replace.parentNode.replaceChild(self.frameElement, replace);*/
+			image.parentNode.removeChild(image);
+			replace.parentNode.replaceChild(self.frameElement, replace);
 		}
-		else{
-		    /*image.parentNode.replaceChild(self.frameElement,image);*/
-		}
+		else
+			image.parentNode.replaceChild(self.frameElement,image);
 		
 		image.style.margin=image.style.padding="0";
 		image.style.borderWidth="0px";
@@ -585,20 +584,16 @@ function viewer(arguments) //argument array
 		image.style.zIndex=3;
 		self.frameElement.appendChild(image);
 		
-		if(imageSource!=null){
-		    self.preInitImage();
-		}
-		else {
-		    self.initImage();
-		}
+		if(imageSource!=null)
+			self.preInitImage();
+		else
+			self.initImage();
 	}
 	else {		
-		if(parent!=null) {
-		    /*parent.appendChild(self.frameElement);*/
-		}
-		else if(replace!=null) {
-		    /*replace.parentNode.replaceChild(self.frameElement,replace);*/
-		}
+		if(parent!=null)
+			parent.appendChild(self.frameElement);
+		else if(replace!=null)
+			replace.parentNode.replaceChild(self.frameElement,replace);
 			
 		image=document.createElement('img');
 		image.style.position='absolute';
@@ -611,7 +606,7 @@ function viewer(arguments) //argument array
 	if(borderClass!=null) { //Browser rendering of borders with padding have been a problem.
 		self.outerFrame = document.createElement('div');
 		self.outerFrame.className=borderClass;
-		/*self.frameElement.parentNode.replaceChild(self.outerFrame,self.frameElement);*/
+		self.frameElement.parentNode.replaceChild(self.outerFrame,self.frameElement);
 		self.outerFrame.appendChild(self.frameElement);
 	}
 }

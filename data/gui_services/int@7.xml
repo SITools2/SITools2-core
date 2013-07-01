@@ -1,0 +1,22 @@
+<guiService>
+  <id>56b12ab7-4fdb-49ac-921c-db23f6d892df</id>
+  <name>Window Image Zoomer</name>
+  <description>Display an image with zoom functions</description>
+  <label>label.windowImgZoomer</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <icon>/sitools/common/res/images/icons/zoom_image.png</icon>
+  <xtype>sitools.user.component.dataviews.services.WindowImageZoomer</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/components/datasetServices/WindowImageZoomer.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>0</priority>
+  <dataSetSelection>SINGLE</dataSetSelection>
+  <defaultGuiService>true</defaultGuiService>
+  <defaultVisibility>false</defaultVisibility>
+</guiService>

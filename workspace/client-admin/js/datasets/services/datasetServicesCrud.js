@@ -513,7 +513,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         var urlParent = this.urlDatasets + "/" + parentId;
         
         Ext.Ajax.request({
-            url : this.urlDatasetServiceIHM.replace('{idService}', idService),
+            url : this.urlDatasetServiceIHM.replace('{idService}', idService).replace('{idDataset}', this.parentId),
             method : 'GET',
             scope : this,
             success : function (ret) {
@@ -546,7 +546,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     editSERVERService : function (idService) {
         var urlParent = this.urlDatasets + "/" + this.parentId;
         Ext.Ajax.request({
-            url : this.urlDatasetServiceSERVER.replace('{idService}', idService),
+            url : this.urlDatasetServiceSERVER.replace('{idService}', idService).replace('{idDataset}', this.parentId),
             method : 'GET',
             scope : this,
             success : function (ret) {
