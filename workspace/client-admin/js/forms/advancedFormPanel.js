@@ -34,10 +34,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     border : true,
     collapsible : true,
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Etude formulaires
     initComponent : function () {
 
         Ext.apply(this, {
@@ -45,11 +41,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
             layout : "absolute",
             autoScroll : true, 
             enableDragDrop : true,
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> Etude formulaires
             listeners : {
             	
             	scope : this,
@@ -58,10 +50,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
             		
                     var y = 0;
                     var x = 25;
-<<<<<<< HEAD
-=======
-                    var componentId = "";
->>>>>>> Etude formulaires
                     this.removeAll(true);
                     
                     var mypanel = this;
@@ -140,7 +128,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 	                    }
 	            	}
                     , this);
-<<<<<<< HEAD
                     
                     this.doLayout();
             		
@@ -213,9 +200,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
                          });
                     }, this);
                     
-=======
-            		
->>>>>>> Etude formulaires
             	}
             }
             
@@ -227,11 +211,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     afterRender : function () {
     	
     	sitools.admin.forms.advancedFormPanel.superclass.afterRender.apply(this, arguments);
-<<<<<<< HEAD
             	
-=======
-        
->>>>>>> Etude formulaires
         var ddGroup = this.ddGroup;
         var datasetColumnModel = this.datasetColumnModel;
         var formComponentsStore = this.formComponentsStore;
@@ -285,12 +265,11 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 		});
 		
 
-<<<<<<< HEAD
     },
     
     
     onContextMenu : function (event, htmlEl, options) {
-		//ici le this est le container sur lequel on a cliquÃ©. 
+		//ici le this est le container sur lequel on a cliqué. 
 		event.stopEvent();
 		var ctxMenu = new Ext.menu.Menu({
 			items : [{
@@ -305,26 +284,8 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
         });
 		var xy = event.getXY();
 		ctxMenu.showAt(xy);
-    },
-    
-    
-    deletePanel : function(){
-    	
-    	var displayPanel = this;
-    	
-    	this.formComponentsStore.each(function (record) {
-	        var rec = this;
-	        if ( this.data.containerPanelId == displayPanel.id ) {
-	        	displayPanel.formComponentsStore.remove(rec);
-	        	displayPanel.fireEvent("activate");
-	        }
-	    });
-    }
-
-=======
     }
 
 
->>>>>>> Etude formulaires
 });
 

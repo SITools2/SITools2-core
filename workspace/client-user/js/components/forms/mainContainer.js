@@ -80,12 +80,13 @@ sitools.user.component.forms.mainContainer = function (config) {
     
     
     
-//    this.componentList = new sitools.user.component.formComponentsPanel({
-//        width : config.formWidth,
-//        height : config.formHeight, 
-//        css : config.formCss, 
-//        formId : config.formId
-//    });
+    this.componentList = new sitools.user.component.formComponentsPanel({
+        width : config.formWidth,
+        height : config.formHeight, 
+        css : config.formCss, 
+        formId : config.formId
+    });
+    
     if (Ext.isEmpty(config.dataset)) {
 	    Ext.Ajax.request({
 			url : config.dataUrl, 
@@ -149,8 +150,8 @@ sitools.user.component.forms.mainContainer = function (config) {
 						xpos = (size.width - cmpChildSize.width) / 2;
 					}
 					this.componentList.setPosition(xpos, ypos);
-					
 				}
+				
 			}
         },          
         bbar : new Ext.ux.StatusBar({
