@@ -34,7 +34,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     border : true,
     collapsible : true,
 
-
     initComponent : function () {
 
         Ext.apply(this, {
@@ -42,7 +41,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
             layout : "absolute",
             autoScroll : true, 
             enableDragDrop : true,
-            
+
             listeners : {
             	
             	scope : this,
@@ -51,7 +50,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
             		
                     var y = 0;
                     var x = 25;
-                    var componentId = "";
                     this.removeAll(true);
                     
                     var mypanel = this;
@@ -130,7 +128,78 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 	                    }
 	            	}
                     , this);
+                    
+                    this.doLayout();
             		
+//                    //add a resizer on each container.
+                  Ext.each(this.items.items, function (container) {
+                      var resizer = new Ext.Resizable(container.getId(), {
+                          handles : 's e',
+                          minWidth : 150,
+                          maxWidth : 1000,
+            	                // minHeight : 30,
+            	//                maxHeight : 200,
+                          constrainTo : this.body,
+                          resizeChild : true,
+                          listeners : {
+                              scope : this,
+                              resize : function (resizable, width, height, e) {
+                                  var store = this.formComponentsStore;
+            	
+                                  var rec = store.getAt(store.find('id', container.getId()));
+                                  var PanelPos = this.getEl().getAnchorXY();
+            	
+                                  rec.set("width", width);
+                                  rec.set("height", height);
+                                  container.items.items[0].setSize(width - container.getEl().getPadding('l') - container.getEl().getPadding('r'), height);
+            	                        //redimensionner dans le cas de listbox : 
+                                  if (rec.data.type === "LISTBOX" || rec.data.type === "LISTBOXMULTIPLE") {
+            							var multiselect = container.findByType('multiselect')[0];
+            							multiselect.view.container.setHeight(height - container.getEl().getPadding('b') - container.getEl().getPadding('t') - 40);
+                                  }
+                              }
+                          }
+                      });
+                  	}, this);
+                    
+                    Ext.each(this.items.items, function (container) {
+                    	container.getEl().on('contextmenu', this.onContextMenu, container);
+                    	 var dd = new Ext.dd.DDProxy(container.getEl().dom.id, 'group', {
+                             isTarget : false
+                         });
+                         Ext.apply(dd, {
+                             win : this,
+                             startDrag : function (x, y) {
+                                 var dragEl = Ext.get(this.getDragEl());
+                                 var el = Ext.get(this.getEl());
+
+                                 dragEl.applyStyles({
+                                     border : '',
+                                     'z-index' : this.win.ownerCt.ownerCt.lastZIndex + 1
+                                 });
+                                 dragEl.update(el.dom.innerHTML);
+                                 dragEl.addClass(el.dom.className);
+
+                                 this.constrainTo(this.win.body);
+                             },
+                             afterDrag : function () {
+                                 var dragEl = Ext.get(this.getDragEl());
+                                 var container = Ext.get(this.getEl());
+
+                                 var x = dragEl.getX();
+                                 var y = dragEl.getY();
+
+                                 var store = this.win.formComponentsStore;
+
+                                 var rec = store.getAt(store.find('id', container.id));
+                                 var PanelPos = Ext.get(this.win.body).getAnchorXY();
+
+                                 rec.set("xpos", x - PanelPos[0]);
+                                 rec.set("ypos", y - PanelPos[1]);
+                             }
+                         });
+                    }, this);
+                    
             	}
             }
             
@@ -142,7 +211,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     afterRender : function () {
     	
     	sitools.admin.forms.advancedFormPanel.superclass.afterRender.apply(this, arguments);
-        
+            	
         var ddGroup = this.ddGroup;
         var datasetColumnModel = this.datasetColumnModel;
         var formComponentsStore = this.formComponentsStore;
@@ -196,6 +265,25 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 		});
 		
 
+    },
+    
+    
+    onContextMenu : function (event, htmlEl, options) {
+		//ici le this est le container sur lequel on a cliqué. 
+		event.stopEvent();
+		var ctxMenu = new Ext.menu.Menu({
+			items : [{
+				text : i18n.get('label.edit'), 
+				scope : this, 
+				handler : this.onEdit
+			}, {
+				text : i18n.get('label.delete'), 
+				scope : this, 
+				handler : this.onDelete
+			} ]
+        });
+		var xy = event.getXY();
+		ctxMenu.showAt(xy);
     }
 
 

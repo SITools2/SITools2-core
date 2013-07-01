@@ -204,7 +204,8 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
 			formComponentsStore : this.formComponentsStore, 
 			datasetColumnModel : this.datasetColumnModel,
 			context : "dataset", 
-			formSize : this.formSize
+			formSize : this.formSize,
+			action : this.action
         });
         
         var absContainer = new Ext.Panel({
@@ -233,7 +234,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
 			listeners : {
 				scope : this, 
 				activate : function () {
-					
+
 					this.absoluteLayout.fireEvent('activate');
 										
 //					Ext.getCmp('mainpanel').fireEvent('activate');
