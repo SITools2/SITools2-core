@@ -1,21 +1,22 @@
 <guiService>
-  <id>7c634378-02fa-4b87-99c7-4ce6a73bbd31</id>
-  <name>Add Selection Service</name>
-  <description>a GUI Service to order a selection of data and add them to an user space</description>
-  <label>label.addSelection</label>
+  <id>8c48e76b-7ce4-4af1-8c4e-a120e47d5ed8</id>
+  <name>Sorter Tool</name>
+  <description>a GUI service to sort</description>
+  <label>label.multiSort</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <icon>/sitools/common/res/images/icons/add_selection.png</icon>
-  <xtype>sitools.user.component.dataviews.services.addSelectionService</xtype>
+  <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
+  <xtype>sitools.user.component.dataviews.services.sorterService</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/components/datasetServices/addSelectionService.js</url>
+        <url>/sitools/client-user/js/components/datasetServices/sorterService.js</url>
       </url>
     </js>
     <css/>
   </dependencies>
   <priority>1</priority>
-  <dataSetSelection>MULTIPLE</dataSetSelection>
-  <defaultGuiService>false</defaultGuiService>
+  <dataSetSelection>NONE</dataSetSelection>
+  <defaultGuiService>true</defaultGuiService>
+  <defaultVisibility>true</defaultVisibility>
 </guiService>

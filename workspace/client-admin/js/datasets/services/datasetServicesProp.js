@@ -127,6 +127,8 @@ sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
                     name : 'dataSetSelection'
                 }, {
                     name : 'dependencies'
+                }, {
+                    name : 'defaultVisibility'
                 } ],
                 listeners :  {
                     load : function (store, records) {

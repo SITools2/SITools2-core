@@ -346,43 +346,44 @@ sitools.user.component.dataviews.dataviewUtils = {
 		});
 	}, 
 	/**
-	 * @static
-	 * Build a MIF panel with a given url and load it into the desktop 
-	 * @param {} value the url to request 
-     * @param {boolean} true if the url is displayable in a window, false otherwise
-	 */
+     * @static Build a MIF panel with a given url and load it into the desktop
+     * @param {}
+     *            value the url to request
+     * @param {boolean}
+     *            true if the url is displayable in a window, false otherwise
+     */
 	showDisplayableUrl : function (value, isDisplayable, customConfig) {
-	    if (isDisplayable) {
-	    	
-	    	if (customConfig){
-	    		var windowConfig = customConfig;
-	    	}
-	    	else {
-		    	var windowConfig = {
-			        title : value,
-			        id : value, 
-			        iconCls : "version"
-		    	};
-	    	}
-		    
-		    var jsObj = Ext.ux.ManagedIFrame.Panel;
-		    var componentCfg = {
-		        defaults : {
-		            padding : 10
-		        },
-		        layout : 'fit',
-		        region : 'center',
-		        defaultSrc : value,
-		        listeners : {
-		        	documentloaded : function (iframe){
-		        		this.ownerCt.syncSize();
-    				}
-		        }
-		    };
-		    
-		    SitoolsDesk.addDesktopWindow(
-		            windowConfig, componentCfg,
-		            jsObj);
+        if (isDisplayable) {
+            
+            if (customConfig) {
+                var windowConfig = customConfig;
+            }
+            else {
+            	var windowConfig = {
+                    title : value,
+                    id : value, 
+                    iconCls : "version"
+            	};
+            }
+    	    
+            var jsObj = Ext.ux.ManagedIFrame.Panel;
+            var componentCfg = {
+                defaults : {
+                    padding : 10
+                },
+                layout : 'fit',
+                region : 'center',
+                defaultSrc : value,
+                listeners : {
+                    documentloaded : function (iframe){
+                    	this.ownerCt.syncSize();
+                    }
+                }
+            };
+    	    
+        SitoolsDesk.addDesktopWindow(
+                windowConfig, componentCfg,
+                jsObj);
         } else {             
             sitools.user.component.dataviews.dataviewUtils.downloadFile(value);                
         }

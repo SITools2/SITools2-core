@@ -80,6 +80,8 @@ public class DefaultGuiServicesTrigger extends DefaultFiltersTrigger {
           guiServicePluginModel.setLabel(guiService.getLabel());
           guiServicePluginModel.setIcon(guiService.getIcon());
           guiServicePluginModel.setDataSetSelection(guiService.getDataSetSelection());
+          guiServicePluginModel.setDefaultVisibility(guiService.isDefaultVisibility());
+
 
           createGuiService(getContext(), datasetId, guiServicePluginModel);
         }

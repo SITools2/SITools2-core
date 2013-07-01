@@ -66,6 +66,10 @@ sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
                 name : 'defaultGuiService',
                 type : 'boolean'
 
+            }, {
+                name : 'defaultVisibility',
+                type : 'boolean'
+
             }]        
         });
         

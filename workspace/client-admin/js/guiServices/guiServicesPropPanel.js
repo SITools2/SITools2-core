@@ -138,6 +138,12 @@ sitools.admin.guiservices.GuiServicesPropPanel = Ext.extend(Ext.Window, {
                     fieldLabel : i18n.get('label.isDefault'),
                     anchor : '95%',
                     maxLength : 100
+                }, {
+                    xtype : 'checkbox',
+                    name : 'defaultVisibility',
+                    fieldLabel : i18n.get('label.defaultVisibilty'),
+                    anchor : '95%',
+                    maxLength : 100                    
                 }
             ]
         });

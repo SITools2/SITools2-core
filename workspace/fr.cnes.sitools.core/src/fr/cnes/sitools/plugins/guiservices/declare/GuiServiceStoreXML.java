@@ -92,6 +92,7 @@ public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
         current.setDefaultGuiService(guiService.isDefaultGuiService());
 
         current.setDataSetSelection(guiService.getDataSetSelection());
+        current.setDefaultVisibility(guiService.isDefaultVisibility());
         it.remove();
 
         break;
