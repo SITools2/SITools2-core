@@ -878,7 +878,7 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             html : "This module needs 2 datastorages. " +
             "All files are edited in the development datastorage, and then copied to the production datastorage<br/>"            
         }
-    },  {
+    }, {
         jsObj : "Ext.form.TextField", 
         config : {
             fieldLabel : i18n.get("label.siteName"),
@@ -901,20 +901,55 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             fieldLabel : i18n.get("label.urlDatastorage"),
             allowBlank : false,
             id : "urlDatastorageId",
-            width : 200,
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : "The URL of the development datastorage"
-                    });
-                }
-            },
+            hidden : true,
             name : "dynamicUrlDatastorage",
             value : ""
         }
-    },
-    {
+    }, {
+        jsObj : "Ext.form.ComboBox", 
+        config : {
+            fieldLabel : i18n.get("label.nameDatastorageSrc"),
+            id : "nameDatastorageSrcId",
+            allowBlank : false,
+            typeAhead : true,
+            triggerAction : 'all',
+            editable : false,
+            width : 200,
+            valueField : 'name',
+            displayField : 'name',
+            store : new Ext.data.JsonStore({
+                root : 'data',
+                restful : true,
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories',
+                remoteSort : true,
+                idProperty : 'id',
+                fields : [ {
+                    name : 'id',
+                    type : 'string'
+                }, {
+                    name : 'name',
+                    type : 'string'
+                }, {
+                    name : 'attachUrl',
+                    type : 'string'
+                }]
+            }),
+            listeners: {
+                render: function (c) {
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : "The NAME of the development datastorage to copy content from"
+                    });
+                },
+                select : function (combo, rec, ind) {
+                    var urlAttachField = this.ownerCt.getComponent("urlDatastorageId");
+                    urlAttachField.setValue(rec.data.attachUrl);
+                }
+            },
+            name : "nameDatastorageSrc",
+            value : ""
+        }
+    }, {
         jsObj : "Ext.form.Checkbox", 
         config : {
             fieldLabel : i18n.get("label.allowDataPublish"),
@@ -929,18 +964,13 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
                 },
                 check : function (box, checked) {
                     if (this.ownerCt) {
-                        var src = this.ownerCt.getComponent("nameDatastorageSrcId");
                         var dest = this.ownerCt.getComponent("nameDatastorageDestId");
                         if (!checked) {
-                            src.reset();
-                            src.setDisabled(true);
-                            dest.reset();
+                            dest.clearInvalid();
                             dest.setDisabled(true);
                         }
                         else {
-                            src.reset();
-                            src.setDisabled(false);
-                            dest.reset();
+                            dest.clearInvalid();
                             dest.setDisabled(false);
                         }
                     }
@@ -949,67 +979,48 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             name : "allowDataPublish",
             value : ""
         }
-    },
-    {
-        jsObj : "Ext.form.TextField", 
-        config : {
-            fieldLabel : i18n.get("label.nameDatastorageSrc"),
-            allowBlank : false,
-            id : "nameDatastorageSrcId",
-            width : 200,
-            listeners: {
-                render: function (c) {
-                    var checkbox = this.ownerCt.getComponent("allowDataPublishId");
-                    this.setDisabled(!checkbox.getValue());
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : "The NAME of the development datastorage to copy content from"
-                    });
-                }
-            },
-            name : "nameDatastorageSrc",
-            value : ""
-        }
-    },
-    {
-        jsObj : "Ext.form.TextField", 
+    }, {
+        jsObj : "Ext.form.ComboBox", 
         config : {
             fieldLabel : i18n.get("label.nameDatastorageDest"),
-            allowBlank : false,
             id : "nameDatastorageDestId",
+            allowBlank : false,
+            typeAhead : true,
+            editable : false,
+            triggerAction : 'all',
             width : 200,
+            valueField : 'name',
+            displayField : 'name',
+            store : new Ext.data.JsonStore({
+                root : 'data',
+                restful : true,
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories',
+                remoteSort : true,
+                idProperty : 'id',
+                fields : [ {
+                    name : 'id',
+                    type : 'string'
+                }, {
+                    name : 'name',
+                    type : 'string'
+                }]
+            }),
             listeners: {
                 render : function (c) {
                     var checkbox = this.ownerCt.getComponent("allowDataPublishId");
-                    this.setDisabled(!checkbox.getValue());
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : "The NAME of the production datastorage to copy the content to"
-                    });
+                    if (!Ext.isEmpty(checkbox)) {
+                        this.setDisabled(!checkbox.getValue());
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : "The NAME of the production datastorage to copy the content to"
+                        });
+                    }
                 }
             },
             name : "nameDatastorageDest",
             value : ""
         }
-    }
-    /*,
-    {
-        jsObj : "Ext.form.TextField", 
-        config : {
-            fieldLabel : i18n.get("label.imageDatastorageDirectory"),
-            width : 200,
-            listeners: {
-                render: function(c) {
-                  Ext.QuickTips.register({
-                    target: c,
-                    text: "The url of the image directory attachment"
-                  });
-                }
-            },
-            name : "imageDatastorageDirectory",
-            value : ""
-        }
-    }*/];
+    }];
 };
 
 Ext.reg('sitools.user.modules.contentEditorModule', sitools.user.modules.contentEditorModule);

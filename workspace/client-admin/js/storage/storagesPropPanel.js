@@ -80,6 +80,7 @@ sitools.admin.storages.storagesPropPanel = Ext.extend(Ext.Window, {
                         xtype : 'textfield',
                         name : 'localPath',
                         fieldLabel : i18n.get('label.localPath'),
+                        allowBlank : false,
                         anchor : '100%',
                         maxLength : 100
                     }, {
