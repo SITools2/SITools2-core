@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2012-06-03
-Version                              : 2.1
+Date                                 : 2013-07-02
+Version                              : 2.1.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -15,9 +15,37 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (2.0)
 
 2/ Changes
+___________________
+-2.1.1 (2013-07-02)
+	* New feature
+		- IP blacklist and Intranet/Extranet filtering available when SITools2 is configured behind an Apache Proxy
+		- Direct authentication on project page when project is private
+		- New Quicklook GUI service to zoom into images
+		
+	* Bugs fixed : 
+		- Bad resize when zooming with the browser
+		
+	* Enhancements : 
+		- JDBC datasource administration interface
+		- New HTML editor (CKEDITOR)
+		- Default visibility configuration on GUI services
+	
+	* API changes :
+		- Data folder : 
+			- projectIndex.ftl has been changed
+			- portalIndex.ftl has been changed
+			- adminIndex.ftl has been changed
+			- new gui_services definition
+		- Content editor project module configuration changed, it needs to be reconfigured using the following procedure
+			- Deactivate the project
+			- Edit the project and set the content editor project module as not available
+			- Save the project
+			- Edit the project and set the content editor project module as available and configure it
+			- Don't forget to set the roles
+			- Save the project and activate it		 
 
 ___________________
---2.1 (2012-06-03)
+-2.1 (2013-06-03)
 	* New feature
 		- Default Gui Services are added by default to a dataset when creating a dataset
 		- Gui and server services are displayed in the dataviews depending on the number of lines selected
