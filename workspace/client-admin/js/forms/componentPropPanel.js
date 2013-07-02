@@ -37,7 +37,6 @@ sitools.admin.forms.componentPropPanel = Ext.extend(Ext.Window, {
     modal : true,
     pageSize : 10,
     
-    
 
     initComponent : function () {
         this.title = i18n.get('label.componentProperties');

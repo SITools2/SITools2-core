@@ -38,7 +38,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	y : 0,
 	
 	initComponent : function () {
-		
+        
         Ext.apply(this, {
 			id : "absoluteLayout",
 			layout : 
@@ -145,12 +145,11 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         this.add(mainPanel);
         
         if ( this.action == 'create'  ) {
-        	this.y = 200;
+        	this.y = 250;
         }
         
 //        if ( this.action == 'modify'  ) {
 
-        	
         	/*  loop on the form components
 	         *	retrieve the container panel id
 	         * */
@@ -187,7 +186,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        	
 	        	Ext.iterate(panels, function(key, value){
 	        		parent.add(value);
-	        		parent.y = parent.y + 200;
+	        		parent.y = parent.y + 210;
 		        });
 
 	        }
@@ -233,6 +232,11 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
       
         this.doLayout();
         
+
+		Ext.each(this.items.items, function (container) {
+        	container.getEl().on('contextmenu', this._onContextMenu, container);
+        }, this);
+        
         
         /* loop on the panels */
         if (!Ext.isEmpty(this.items)){
@@ -242,6 +246,8 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        }, this);
 	        
         }
+        
+        
       
         
         //add a resizer on each container.
@@ -277,6 +283,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         
         
         
+
 //        Ext.each(this.items.items, function (container) {
 //        	
 //        	container.getEl().on('contextmenu', this.onContextMenu, container);
@@ -365,26 +372,55 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 		
     }, 
     
-    onContextMenu : function (event, htmlEl, options) {
+    
+    _removePanel : function () {
+
+    	console.log('remove panel');
+    	
+//    	var aPanel = new sitools.admin.forms.advancedFormPanel({
+//    		title: 'advanced form',
+//    		frame : true,
+//    		height: 200,
+//    		width: 200,
+//    		ddGroup     : 'gridComponentsList',
+//    		datasetColumnModel : this.datasetColumnModel,
+//    		storeConcepts : this.storeConcepts, 
+//    		formComponentsStore : this.formComponentsStore,
+//    		absoluteLayout : this,
+//    	});
+//    	this.add(aPanel);
+//    	
+//    	// resize container panel if needed
+//    	this.y = this.y + 200;
+//    	if (this.y > 500) {
+//    		this.formSize.height = this.y;
+//    	}
+//        var size = {
+//           width : this.formSize.width,
+//           height : this.formSize.height
+//        };
+//        this.setSize(size);
+//    	
+//    	this.doLayout();
+
+    },
+    
+    _onContextMenu : function (event, htmlEl, options) {
 		//ici le this est le container sur lequel on a cliqué. 
 		event.stopEvent();
 		var ctxMenu = new Ext.menu.Menu({
-			items : [{
-				text : i18n.get('label.edit'), 
+			items : [ {
+				text : 'Delete this form', 
 				scope : this, 
-				handler : this.onEdit
-			}, {
-				text : i18n.get('label.delete'), 
-				scope : this, 
-				handler : this.onDelete
-			} , {
-				text : 'test',
-				
-			}]
+				handler : function(){
+					this.deletePanel();
+				}
+			} ]
         });
 		var xy = event.getXY();
 		ctxMenu.showAt(xy);
-    }
+    },
+
     
 
 });

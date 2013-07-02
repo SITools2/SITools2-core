@@ -284,8 +284,21 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
         });
 		var xy = event.getXY();
 		ctxMenu.showAt(xy);
+    },
+    
+    
+    deletePanel : function(){
+    	
+    	var displayPanel = this;
+    	
+    	this.formComponentsStore.each(function (record) {
+	        var rec = this;
+	        if ( this.data.containerPanelId == displayPanel.id ) {
+	        	displayPanel.formComponentsStore.remove(rec);
+	        	displayPanel.fireEvent("activate");
+	        }
+	    });
     }
-
 
 });
 

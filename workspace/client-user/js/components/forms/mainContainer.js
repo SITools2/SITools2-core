@@ -82,7 +82,7 @@ sitools.user.component.forms.mainContainer = function (config) {
     
     this.componentList = new sitools.user.component.formComponentsPanel({
         width : config.formWidth,
-        height : config.formHeight, 
+        height : config.formHeight,
         css : config.formCss, 
         formId : config.formId
     });
@@ -116,6 +116,8 @@ sitools.user.component.forms.mainContainer = function (config) {
 		this.dictionaryMappings = config.dataset.dictionaryMappings;
     }
     
+    console.log('height = ' + config.formHeight);
+    
     
     
     sitools.user.component.forms.mainContainer.superclass.constructor.call(this, Ext.apply({
@@ -125,10 +127,6 @@ sitools.user.component.forms.mainContainer = function (config) {
         bodyBorder : false,
         border : false,
         items : items ,
-        layout : 
-		{ type:'vbox',
-             align:'stretch'
-         },
         buttons : [ {
             text : i18n.get('label.search'),
             scope : this,
