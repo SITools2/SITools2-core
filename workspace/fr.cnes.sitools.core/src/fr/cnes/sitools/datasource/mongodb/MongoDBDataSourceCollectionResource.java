@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -73,8 +73,7 @@ public final class MongoDBDataSourceCollectionResource extends AbstractDataSourc
 
       if ((datasourceInput.getSitoolsAttachementForUsers() == null)
           || datasourceInput.getSitoolsAttachementForUsers().equals("")) {
-        datasourceInput.setSitoolsAttachementForUsers("/sitools/users/resources/datasources/"
-            + datasourceInput.getName());
+        datasourceInput.setSitoolsAttachementForUsers("/datasourcesmongodb/" + datasourceInput.getName());
       }
 
       // Business service

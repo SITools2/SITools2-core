@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -72,8 +72,7 @@ public final class JDBCDataSourceCollectionResource extends AbstractDataSourceRe
 
       if ((datasourceInput.getSitoolsAttachementForUsers() == null)
           || datasourceInput.getSitoolsAttachementForUsers().equals("")) {
-        datasourceInput.setSitoolsAttachementForUsers("/sitools/users/resources/datasources/"
-            + datasourceInput.getName());
+        datasourceInput.setSitoolsAttachementForUsers("/datasources/" + datasourceInput.getName());
       }
 
       // Business service
