@@ -18,7 +18,11 @@
  ******************************************************************************/
 package fr.cnes.sitools.form.model;
 
+import java.util.List;
+
 import fr.cnes.sitools.common.model.IResource;
+import fr.cnes.sitools.form.dataset.model.Zone;
+
 
 /**
  * Abstract model class for FormModel
@@ -60,7 +64,18 @@ public abstract class AbstractFormModel implements IResource {
    * Parent url attachment DataSet
    */
   private String parentUrl;
+  
+  /**
+   * The list of parameters of the Form
+   */
+  private List<AbstractParameter> parameters;
 
+  /**
+   * The list of zones in the Form
+   */
+  private List<Zone> zones;
+
+  
   /**
    * Default constructor
    */
@@ -218,6 +233,31 @@ public abstract class AbstractFormModel implements IResource {
    */
   public void setParentUrl(String parentUrl) {
     this.parentUrl = parentUrl;
+  }
+  
+  /**
+   * Gets the parameters value
+   * @return the parameters
+   */
+  public List<AbstractParameter> getParameters() {
+    return parameters;
+  }
+
+  /**
+   * Sets the value of parameters
+   * @param parameters
+   *          the parameters to set
+   */
+  public void setParameters(List<AbstractParameter> parameters) {
+    this.parameters = parameters;
+  }
+  
+  public List<Zone> getZones() {
+    return zones;
+  }
+
+  public void setZones(List<Zone> zones) {
+    this.zones = zones;
   }
 
 }

@@ -31,34 +31,11 @@ import fr.cnes.sitools.form.model.AbstractParameter;
 public final class Form extends AbstractFormModel {
 
   /**
-   * List of Form Components
-   */
-  private List<AbstractParameter> parameters;
-
-  /**
    * Constructor
    */
   public Form() {
     super();
   }
 
-  /**
-   * Gets the parameters value
-   * 
-   * @return the parameters
-   */
-  public List<AbstractParameter> getParameters() {
-    return parameters;
-  }
-
-  /**
-   * Sets the value of parameters
-   * 
-   * @param parameters
-   *          the parameters to set
-   */
-  public void setParameters(List<AbstractParameter> parameters) {
-    this.parameters = parameters;
-  }
 
 }

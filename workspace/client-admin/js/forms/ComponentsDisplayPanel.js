@@ -36,6 +36,7 @@ Ext.namespace('sitools.admin.forms');
 sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	
 	y : 0,
+	position : 0,
 	
 	initComponent : function () {
         
@@ -113,6 +114,14 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
            height : this.formSize.height
         };
         this.setSize(size);
+        
+        this.position = this.position + 1;
+        
+        this.zoneStore.add(new Ext.data.Record({
+            id : aPanel.id,
+            height : aPanel.height,
+            position : this.position
+        }));
     	
     	this.doLayout();
 
@@ -143,6 +152,15 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         });
         
         this.add(mainPanel);
+        
+        if (Ext.isEmpty(this.zoneStore.data.items)){
+	        this.zoneStore.add(new Ext.data.Record({
+	            id : mainPanel.id,
+	            height : mainPanel.height,
+	            title : 'Main Panel',
+	            position : 0
+	        }));
+        }
         
         if ( this.action == 'create'  ) {
         	this.y = 250;
@@ -193,45 +211,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 
 //        }
 
-
-
-
-        
-//        var mainPanel = new Ext.Panel({
-//        	
-//        	title: 'main',
-//        	height: 200,
-//			
-//			border: true,
-//			id : 'mainpanel',
-//			cls: 'toto',
-//
-//			listeners : {
-//				
-//				activate : function () {
-//	
-//					var mainPanelDropTargetEl =  this.body.dom;
-//					
-//					var mainPanelDropTarget = new Ext.dd.DropTarget(mainPanelDropTargetEl, {
-//						
-//						ddGroup     : 'gridComponentsList',
-//						
-//						notifyDrop  : function (ddSource, e, data) {
-//							console.log('youpi');
-//						},
-//						
-//						overClass : 'not-save-textfield'
-//					});
-//					//Ext.getCmp('gridsource').dd.addToGroup('gridComponentsTest');
-//					
-//				}
-//			}
-//        });
-//        
-//        this.add(mainPanel);
-      
         this.doLayout();
-        
 
 		Ext.each(this.items.items, function (container) {
         	container.getEl().on('contextmenu', this._onContextMenu, container);
@@ -247,128 +227,6 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        
         }
         
-        
-      
-        
-        //add a resizer on each container.
-//      Ext.each(this.items.items, function (container) {
-//          var resizer = new Ext.Resizable(container.getId(), {
-//              handles : 's e',
-//              minWidth : 150,
-//              maxWidth : 1000,
-//	                // minHeight : 30,
-//	//                maxHeight : 200,
-//              constrainTo : this.body,
-//              resizeChild : true,
-//              listeners : {
-//                  scope : this,
-//                  resize : function (resizable, width, height, e) {
-//                      var store = this.formComponentsStore;
-//	
-//                      var rec = store.getAt(store.find('id', container.getId()));
-//                      var PanelPos = this.getEl().getAnchorXY();
-//	
-//                      rec.set("width", width);
-//                      rec.set("height", height);
-//                      container.items.items[0].setSize(width - container.getEl().getPadding('l') - container.getEl().getPadding('r'), height);
-//	                        //redimensionner dans le cas de listbox : 
-//                      if (rec.data.type === "LISTBOX" || rec.data.type === "LISTBOXMULTIPLE") {
-//							var multiselect = container.findByType('multiselect')[0];
-//							multiselect.view.container.setHeight(height - container.getEl().getPadding('b') - container.getEl().getPadding('t') - 40);
-//                      }
-//                  }
-//              }
-//          });
-//      	}, this);
-        
-        
-        
-
-//        Ext.each(this.items.items, function (container) {
-//        	
-//        	container.getEl().on('contextmenu', this.onContextMenu, container);
-//            var dd = new Ext.dd.DDProxy(container.getEl().dom.id, 'group', {
-//                isTarget : false
-//            });
-//            Ext.apply(dd, {
-//                win : this,
-//                startDrag : function (x, y) {
-//                    var dragEl = Ext.get(this.getDragEl());
-//                    var el = Ext.get(this.getEl());
-//
-//                    dragEl.applyStyles({
-//                        border : '',
-//                        'z-index' : this.win.ownerCt.ownerCt.lastZIndex + 1
-//                    });
-//                    dragEl.update(el.dom.innerHTML);
-//                    dragEl.addClass(el.dom.className);
-//
-//                    this.constrainTo(this.win.body);
-//                },
-//                afterDrag : function () {
-//                    var dragEl = Ext.get(this.getDragEl());
-//                    var container = Ext.get(this.getEl());
-//
-//                    var x = dragEl.getX();
-//                    var y = dragEl.getY();
-//
-//                    var store = this.win.formComponentsStore;
-//
-//                    var rec = store.getAt(store.find('id', container.id));
-//                    var PanelPos = Ext.get(this.win.body).getAnchorXY();
-//
-//                    rec.set("xpos", x - PanelPos[0]);
-//                    rec.set("ypos", y - PanelPos[1]);
-//                }
-//            });
-//        }, this);
-//        
-      
-        
-
-        
-        
-
-//        Ext.each(this.items.items, function (container) {
-//
-//        	container.getEl().on('contextmenu', this.onContextMenu, container);
-//        	
-//            var dd = new Ext.dd.DDProxy(container.getEl().dom.id, 'group', {
-//                isTarget : false
-//            });
-//
-//            Ext.apply(dd, {
-//                win : this,
-//                startDrag : function (x, y) {
-//                    var dragEl = Ext.get(this.getDragEl());
-//                    var el = Ext.get(this.getEl());
-//
-//                    dragEl.applyStyles({
-//                        border : '',
-//                        'z-index' : this.win.ownerCt.ownerCt.lastZIndex + 1
-//                    });
-//                    dragEl.update(el.dom.innerHTML);
-//                    dragEl.addClass(el.dom.className);
-//
-//                    this.constrainTo(this.win.body);
-//                },
-//                afterDrag : function () {
-//                    var dragEl = Ext.get(this.getDragEl());
-//                    var container = Ext.get(this.getEl());
-//
-//                    var x = dragEl.getX();
-//                    var y = dragEl.getY();
-//
-//                    var store = this.win.formComponentsStore;
-//
-//                    var rec = store.getAt(store.find('id', container.id));
-//                    var PanelPos = Ext.get(this.win.body).getAnchorXY();
-//
-//                    rec.set("xpos", x - PanelPos[0]);
-//                    rec.set("ypos", y - PanelPos[1]);
-//                }
-//            });
-//        }, this);
 		
     }, 
     

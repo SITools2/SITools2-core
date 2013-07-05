@@ -50,6 +50,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.converter.dto.ConverterChainedModelDTO;
+import fr.cnes.sitools.form.model.AbstractParameter;
 import fr.cnes.sitools.form.project.model.FormParameter;
 import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.form.project.model.FormPropertyParameter;
@@ -215,7 +216,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     formProject.setProperties(properties);
 
     // parameters
-    List<FormParameter> parameters = new ArrayList<FormParameter>();
+    List<AbstractParameter> parameters = new ArrayList<AbstractParameter>();
     FormParameter param1 = new FormParameter();
     param1.setLabel("param1");
     parameters.add(param1);
@@ -223,6 +224,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     param2.setLabel("param2");
     parameters.add(param2);
 
+    
     formProject.setParameters(parameters);
 
     return formProject;

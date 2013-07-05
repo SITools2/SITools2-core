@@ -39,10 +39,6 @@ public class FormProjectDTO extends AbstractFormModel {
    * the Dictionnary
    */
   private Dictionary dictionary = null;
-  /**
-   * The list of parameters of the Form
-   */
-  private List<FormParameter> parameters;
 
   /**
    * The collection of dataset of the Form
@@ -65,25 +61,6 @@ public class FormProjectDTO extends AbstractFormModel {
   public FormProjectDTO() {
     super();
     // TODO Auto-generated constructor stub
-  }
-
-  /**
-   * Gets the parameters value
-   * 
-   * @return the parameters
-   */
-  public List<FormParameter> getParameters() {
-    return parameters;
-  }
-
-  /**
-   * Sets the value of parameters
-   * 
-   * @param parameters
-   *          the parameters to set
-   */
-  public void setParameters(List<FormParameter> parameters) {
-    this.parameters = parameters;
   }
 
   /**

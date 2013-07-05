@@ -35,6 +35,7 @@ import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
 import fr.cnes.sitools.form.dataset.dto.ValueDTO;
+import fr.cnes.sitools.form.dataset.dto.ZoneDTO;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
@@ -103,10 +104,17 @@ public abstract class AbstractFormResource extends SitoolsResource {
     if (response == null) {
       xstream.alias("form", FormDTO.class);
       xstream.aliasField("parameters", FormDTO.class, "parameters");
+      xstream.aliasField("zones", FormDTO.class, "zones");
+      
+      xstream.aliasField("params", ZoneDTO.class, "params");
+      xstream.alias("zone", ZoneDTO.class);
+      
       xstream.aliasField("values", ParameterDTO.class, "values");
 
       xstream.alias("parameters", ParameterDTO.class);
       xstream.alias("values", ValueDTO.class);
+      
+      xstream.alias("param", ParameterDTO.class);
     }
     else {
       configure(xstream, response);
@@ -115,10 +123,17 @@ public abstract class AbstractFormResource extends SitoolsResource {
         xstream.alias("form", FormDTO.class);
 
         xstream.aliasField("parameters", FormDTO.class, "parameters");
+        xstream.aliasField("zones", FormDTO.class, "zones");
+        
         xstream.aliasField("values", ParameterDTO.class, "values");
-
+        
+        xstream.aliasField("params", ZoneDTO.class, "params");
+        
+        xstream.alias("zone", ZoneDTO.class);
+        
         xstream.alias("parameters", ParameterDTO.class);
         xstream.alias("values", ValueDTO.class);
+        xstream.alias("param", ParameterDTO.class);
 
       }
       else if (response.getItem() instanceof Form) {

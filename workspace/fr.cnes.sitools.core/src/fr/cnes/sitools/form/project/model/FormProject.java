@@ -38,10 +38,7 @@ public final class FormProject extends AbstractFormModel {
    * the Dictionnary
    */
   private Resource dictionary = null;
-  /**
-   * The list of parameters of the Form
-   */
-  private List<FormParameter> parameters;
+
   /**
    * The collection of dataset of the Form
    */
@@ -86,25 +83,6 @@ public final class FormProject extends AbstractFormModel {
    */
   public void setDictionary(Resource dictionary) {
     this.dictionary = dictionary;
-  }
-
-  /**
-   * Gets the parameters value
-   * 
-   * @return the parameters
-   */
-  public List<FormParameter> getParameters() {
-    return parameters;
-  }
-
-  /**
-   * Sets the value of parameters
-   * 
-   * @param parameters
-   *          the parameters to set
-   */
-  public void setParameters(List<FormParameter> parameters) {
-    this.parameters = parameters;
   }
 
   /**

@@ -18,9 +18,14 @@
  ******************************************************************************/
 package fr.cnes.sitools.form.dataset.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.cnes.sitools.form.dataset.model.Form;
+import fr.cnes.sitools.form.dataset.model.SimpleParameter;
+import fr.cnes.sitools.form.dataset.model.Zone;
+import fr.cnes.sitools.form.model.AbstractParameter;
+import fr.cnes.sitools.form.model.Value;
 
 /**
  * FormDTO class to store Form definition
@@ -58,6 +63,12 @@ public final class FormDTO {
    * Comment for <code>parametersDTO</code>
    */
   private List<ParameterDTO> parameters;
+  
+  /**
+   * Comment for <code>zoneDTO</code>
+   */
+  private List<ZoneDTO> zones;
+
 
   /**
    * width
@@ -252,6 +263,7 @@ public final class FormDTO {
     dto.setName(form.getName());
     dto.setDescription(form.getDescription());
     dto.setParameters(ParametersDTO.parametersToDTO(form.getParameters()));
+    dto.setZones(zonesToDTO(form.getZones()));
     dto.setWidth(form.getWidth());
     dto.setHeight(form.getHeight());
     dto.setCss(form.getCss());
@@ -273,6 +285,7 @@ public final class FormDTO {
     form.setName(dto.getName());
     form.setDescription(dto.getDescription());
     form.setParameters(ParametersDTO.dtoToParameters(dto.getParameters()));
+    form.setZones(dtoToZones(dto.getZones()));
     form.setWidth(dto.getWidth());
     form.setHeight(dto.getHeight());
     form.setCss(dto.getCss());
@@ -316,5 +329,96 @@ public final class FormDTO {
   public String getParentUrl() {
     return parentUrl;
   }
+
+  public List<ZoneDTO> getZones() {
+    return zones;
+  }
+
+  public void setZones(List<ZoneDTO> zones) {
+    this.zones = zones;
+  }
+  
+  /**
+   * 
+   * @param zones
+   * @return
+   */
+  public static List<ZoneDTO> zonesToDTO(List<Zone> zones) {
+
+
+    List<ZoneDTO> zonesDTO = new ArrayList<ZoneDTO>();
+
+    if (zones != null){
+      for (Zone myzone : zones) {
+        zonesDTO.add(zoneToDTO(myzone));
+      }
+    }
+  
+    return zonesDTO;
+
+  }
+  
+  /**
+   * 
+   * @param zone
+   * @return
+   */
+  private static ZoneDTO zoneToDTO(Zone zone) {
+
+    ZoneDTO zoneDTO = new ZoneDTO();
+
+    zoneDTO.setCss(zone.getCss());
+    zoneDTO.setHeight(zone.getHeight());
+    zoneDTO.setId(zone.getId());
+    zoneDTO.setTitle(zone.getTitle());
+    zoneDTO.setPosition(zone.getPosition());
+    zoneDTO.setWidth(zone.getWidth());
+    if (!zone.getParams().isEmpty()){
+      zoneDTO.setParams(ParametersDTO.parametersToDTO(zone.getParams()));
+    }
+    return zoneDTO;
+    
+  }
+  
+  
+  /**
+   * dtoToZones
+   * @param dtos
+   * @return
+   */
+  public static List<Zone> dtoToZones(List<ZoneDTO> dtos) {
+
+    List<Zone> zones = new ArrayList<Zone>();
+    if ((dtos != null) && (dtos.size() > 0)) {
+      for (ZoneDTO zoneDTO : dtos) {
+        zones.add(dtoToZone(zoneDTO));
+      }
+    }
+    return zones;
+  }
+  
+  /**
+   * dtoToZone
+   * @param zoneDTO
+   * @return
+   */
+  private static Zone dtoToZone(ZoneDTO zoneDTO) {
+
+    Zone zone = new Zone();
+
+    zone.setId(zoneDTO.getId());
+    zone.setCss(zoneDTO.getCss());
+    zone.setHeight(zoneDTO.getHeight());
+    zone.setPosition(zoneDTO.getPosition());
+    zone.setWidth(zoneDTO.getWidth());
+    zone.setTitle(zoneDTO.getTitle());
+    if (!zoneDTO.getParams().isEmpty()){
+      zone.setParams(ParametersDTO.dtoToParameters(zoneDTO.getParams()));
+    }
+    return zone;
+  }
+
+  
+  
 
 }
