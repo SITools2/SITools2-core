@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ***************************************/
-/*global Ext, sitools, getDesktop, i18n*/
+/*global Ext, sitools, getDesktop, i18n, viewer*/
 Ext.ns('sitools.widget');
 
 /**
@@ -35,13 +35,20 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 	padding : '2px 2px 2px 2px',
 	
 	initComponent : function (config) {
-		viewer.onload = viewer.toolbar;
+		viewer.onload = function(self){
+	        viewer.toolbarextjs(self);
+	        viewer.preview(self);
+		};
 	
 		Ext.each(this.parameters, function (config) {
             if (!Ext.isEmpty(config.value)) {
                 switch (config.name) {
                 case "columnImage" :
                     this.columnImage = config.value;
+                    break;
+                    
+                case "thumbnailColumnImage" :
+                    this.thumbnailColumnImage = config.value;
                     break;
                     
                 case "sizeLimitWidth" :
@@ -67,6 +74,11 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 		
 		var rec = this.dataview.getSelections()[0];
 		this.src = rec.get(this.columnImage);
+		if(!Ext.isEmpty(this.thumbnailColumnImage)){
+		    this.previewSrc = rec.get(this.thumbnailColumnImage);
+		}else {
+		    this.previewSrc = this.src;
+		}
 		this.title = this.columnImage;
         
 		var id = Ext.id();
@@ -100,14 +112,6 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 
 		this.listeners = {
             scope : this,
-            afterrender : function () {
-                var height = parseInt(this.sizeLimitHeight);
-                //add the padding
-                height += this.getAdditionalHeight();
-                var width = parseInt(this.sizeLimitWidth);
-                width += this.getAdditionalWidth();
-                this.setSize(width, height);
-            },
             
             resize : function (window, width, height) {
                 if(!Ext.isEmpty(this.viewer)){
@@ -124,6 +128,7 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 //                    this.viewer.setDimension(dimension[0],dimension[1]);
 //                    this.viewer.setPosition(position[0],position[1]);
                     this.viewer.reset();
+                    this.viewer.fireEvent("resize");
                     
                 }
                 
@@ -148,16 +153,20 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 //            imageSource : this.src,
             frame : [ this.sizeLimitWidth + "px", this.sizeLimitHeight + "px" ],
             zoomFactor : this.zoomFactor,
-            maxZoom : this.maxZoom
+            maxZoom : this.maxZoom,
+            previewSrc : this.previewSrc
         });
-//        this.resizeWindow();
-//        this.doLayout();
+        this.updateWindowSize(this.sizeLimitHeight, this.sizeLimitWidth)
+        this.doLayout();
 	},
 	
 	getAdditionalHeight : function () {
 	    var height = 4;
         var enteteEl = this.getEl().child(".x-window-tl");
         height += enteteEl.getHeight();
+        if (!Ext.isEmpty(this.viewer) && !Ext.isEmpty(this.viewer.toolbarHeight)) { 
+            height += this.viewer.toolbarHeight;
+        }
         
         return height;
         
@@ -167,75 +176,17 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 	    return 4;
 	},
 	
+	updateWindowSize : function (frameHeight, frameWidth) {
+	    var height = parseInt(frameHeight);
+        //add the padding
+        height += this.getAdditionalHeight();
+        var width = parseInt(frameWidth);
+        width += this.getAdditionalWidth();
+        this.setSize(width, height);
+	}
 	
-	/**
-     * Method called when the image is loaded. It is in charge of resizing the image according to the desktop size
-     */
-    resizeWindow : function () {
-        // <img>
-        var imgTag = Ext.get(this.viewer.frameElement).dom.firstChild;
-        
-        // <div> container of the image
-        var frameTag = Ext.get(this.viewer.frameElement).dom;
-        
-        var hi = this.body.dom.offsetHeight;
-        var wi = this.body.dom.offsetWidth;
-        
-        
-        var hiImg = imgTag.offsetHeight;
-        var wiImg = imgTag.offsetWidth;
-        
-        // the image div frame size
-        var hiFrame = frameTag.offsetHeight;
-        var wiFrame = frameTag.offsetWidth;
-        
-        var desktop = getDesktop();
-        var ww = desktop.getWinWidth();
-        var hw = desktop.getWinHeight();
-
-        var reduceImg = false;
-
-        if (hiImg > hiFrame) {
-            wiImg = wiImg * hiFrame / hiImg;
-            hiImg = hiFrame;
-            reduceImg = true;
-        }
-        if (wiImg > wiFrame) {
-            hiImg = hiImg * wiFrame / wiImg;
-            wiImg = wiFrame;
-            reduceImg = true;
-        }
-        if (reduceImg) {
-            hiImg *= 0.9;
-            wiImg *= 0.9;
-        }
-        /*********************************************/
-        var reduce = false;
-        
-        if (hi > hw) {
-            wi = wi * hw / hi;
-            hi = hw;
-            reduce = true;
-        }
-        if (wi > ww) {
-            hi = hi * ww / wi;
-            wi = ww;
-            reduce = true;
-        }
-        if (reduce) {
-            hi *= 0.9;
-            wi *= 0.9;
-        }
-
-        // set frame size to the original image size or smaller
-        Ext.get(this.viewer.frameElement).setSize(wiImg, hiImg);
-        
-        //this.setSize(this.getFrameWidth() + wiImg, this.getFrameHeight() + hiImg);
-//      this.setSize(wiImg + 20, hiImg + 35);
-//      this.setSize(wi + this.getFrameWidth(), hi + this.getFrameHeight());
-        
-        this.center();
-    }
+	
+	
 	
 	
 	
@@ -280,14 +231,21 @@ sitools.user.component.dataviews.services.WindowImageZoomer.getParameters = func
                 mode : 'local',
                 forceSelection : true,
                 triggerAction : 'all',
+                tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{columnAlias}</div></tpl>',
                 store : new Ext.data.JsonStore({
-                    fields : [ 'header' ],
+                    fields : [ 'columnAlias' ],
                     url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
                     root : "dataset.columnModel",
-                    autoLoad : true
+                    autoLoad : true,
+                    listeners : {
+                        load : function (store) {
+                            store.add(new Ext.data.Record({'columnAlias':""}));
+                        }
+                        
+                    }
                 }),
-                valueField : 'header',
-                displayField : 'header',
+                valueField : 'columnAlias',
+                displayField : 'columnAlias',
                 listeners : {
                     render : function (c) {
                         Ext.QuickTips.register({
@@ -298,6 +256,42 @@ sitools.user.component.dataviews.services.WindowImageZoomer.getParameters = func
                 },
                 name : "columnImage",
                 id : "columnImage",
+                value : ""
+            }
+        }, {
+            jsObj : "Ext.form.ComboBox",
+            config : {
+                fieldLabel : i18n.get('label.thumbnailColumnImage'),
+                width : 200,
+                typeAhead : true,
+                mode : 'local',
+                forceSelection : true,
+                triggerAction : 'all',
+                tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{columnAlias}</div></tpl>',
+                store : new Ext.data.JsonStore({
+                    fields : [ 'columnAlias' ],
+                    url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
+                    root : "dataset.columnModel",
+                    autoLoad : true,
+                    listeners : {
+                        load : function (store) {
+                            store.add(new Ext.data.Record({'columnAlias':""}));
+                        }
+                        
+                    }
+                }),
+                valueField : 'columnAlias',
+                displayField : 'columnAlias',
+                listeners : {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : i18n.get('label.thumbnailColumnImageTooltip')
+                        });
+                    }
+                },
+                name : "thumbnailColumnImage",
+                id : "thumbnailColumnImage",
                 value : ""
             }
         }, {

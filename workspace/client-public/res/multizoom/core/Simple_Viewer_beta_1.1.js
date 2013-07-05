@@ -150,6 +150,12 @@ function debug_msgs() {
 		this.counter++;
 	}
 }
+
+function setVisible(element, visibility){
+	element.style.display = visibility?"block":"none";
+}
+
+
 var debug=new debug_msgs();
 
 /*-------------The image viewer--------------*/
@@ -267,6 +273,9 @@ function viewer(arguments) //argument array
 	self.getZoomLevel = function() {
 		return zoomLevel;
 	}
+	self.getZoomFactor = function() {
+		return zoomFactor;
+	}
 	self.zoomTo = function(newZoomLevel, x, y) {
 		var frameDimension = self.getFrameDimension();
 		//check if x and y coordinate is within the self.frameElement
@@ -308,6 +317,7 @@ function viewer(arguments) //argument array
 			self.setDimension(dimension[0],dimension[1]);
 			self.setPosition(position[0],position[1]);
 			self.setMouseCursor();
+			self.fireEvent('zoomto');
 		}
 		else
 			return false;
@@ -359,11 +369,14 @@ function viewer(arguments) //argument array
 		self.setDimension(dimension[0],dimension[1]);
 		self.setPosition(position[0],position[1]);
 		zoomLevel=0;
+		self.fireEvent("reset");
 	}
 	self.moveBy = function(x,y) {
 		var position = self.getPosition();
 		position = self.centerImage(image.width,image.height, position[0]+x,position[1]+y);
 		self.setPosition(position[0],position[1]);
+		self.fireEvent("moveby");
+		
 	}
 	self.hide = function() {
 		if(self.outerFrame)
@@ -419,6 +432,7 @@ function viewer(arguments) //argument array
 		
 		position = self.centerImage(image.width,image.height, position[0],position[1]);
 		self.setPosition(position[0],position[1]);
+		self.fireEvent("move");
 	}
 	self.onmouseup_or_out = function(event) {
 		if (!event) //For IE
@@ -492,6 +506,7 @@ function viewer(arguments) //argument array
 		}
 		else maxZoom='300%';
 	}
+	
 	self.setFrameProp = function(newFrameProp) {
 		self.frameElement.style.width=newFrameProp[0];
 		self.frameElement.style.height=newFrameProp[1];
@@ -549,6 +564,29 @@ function viewer(arguments) //argument array
 		}
 		image.onload=self.initImage;
 		image.src=imageSource;
+	}
+	
+	self.getImageSrc = function() {
+		return image.src;
+	}
+	
+	self.fireEvent = function (event){
+		var element = self.frameElement;
+	    if (document.createEventObject){
+	    // dispatch for IE
+	    var evt = document.createEventObject();
+	    return element.fireEvent('on'+event,evt)
+	    }
+	    else{
+	    // dispatch for firefox + others
+	    var evt = document.createEvent("HTMLEvents");
+	    evt.initEvent(event, true, true ); // event type,bubbling,cancelable
+	    return !element.dispatchEvent(evt);
+	    }
+	}
+	
+	self.getOriginalDimension = function () {
+		return [orignalW,orignalH];
 	}
 
 	

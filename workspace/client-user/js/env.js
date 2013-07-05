@@ -333,12 +333,11 @@ var projectGlobal = {
                     Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.errorLoadingGuiServicesDependencies'));
                     return false;
                 } else {
-                    var data = json.data;                    
+                    var data = json.data;
+                    var javascriptDependencies = []
                         Ext.each(data, function (service) {
                             if (!Ext.isEmpty(service.dependencies.js)) {
-                                Ext.each(service.dependencies.js, function (dependencies) {
-                                    includeJs(dependencies.url);
-                                }, this);
+                                javascriptDependencies = javascriptDependencies.concat(service.dependencies.js);
                             }
                             if (!Ext.isEmpty(service.dependencies.css)) {
                                 Ext.each(service.dependencies.css, function (dependencies) {
@@ -346,10 +345,8 @@ var projectGlobal = {
                                 }, this);
                             }
                         }, this);
+                    includeJsForceOrder(javascriptDependencies, 0, this.initLanguages, this);
                 }
-            },
-            callback : function () {
-                this.initLanguages();
             }
         });   
     },

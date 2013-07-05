@@ -1,0 +1,15 @@
+.previewFrame {
+	position : absolute;
+	overflow: hidden;
+	border:1px solid #0f0f0f;	
+}
+
+.previewBox {
+	position : absolute;
+	background: #000;
+	opacity: 0.5;
+}
+
+.previewBox_over {
+	background: #4cf1fe;
+}
