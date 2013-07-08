@@ -12,8 +12,27 @@
       <url>
         <url>/sitools/client-user/js/components/datasetServices/WindowImageZoomer.js</url>
       </url>
+      <url>
+        <url>/sitools/common/res/multizoom/core/Simple_Viewer_beta_1.1.js</url>
+      </url>
+      <url>
+        <url>/sitools/common/res/multizoom/extension/toolbar-ext.js</url>
+      </url>
+      <url>
+        <url>/sitools/common/res/multizoom/extension/preview-ext.js</url>
+      </url>
+      <url>
+        <url>/sitools/common/res/multizoom/extension/toolbar-ext-extjs.js</url>
+      </url>
     </js>
-    <css/>
+    <css>
+      <url>
+        <url>/sitools/common/res/multizoom/extension/toolbar-ext.css</url>
+      </url>
+      <url>
+        <url>/sitools/common/res/multizoom/extension/preview-ext.css</url>
+      </url>
+    </css>
   </dependencies>
   <priority>0</priority>
   <dataSetSelection>SINGLE</dataSetSelection>

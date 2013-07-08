@@ -1,46 +1,55 @@
-viewer.toolbarImages = loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar"
-viewer.toolbar = function(self) {
+/*global viewer, document, retInt, window, fireEvent, getMouseXY, Event, loadUrl*/
+viewer.toolbarImages = loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar";
+viewer.toolbar = function (self) {
 	var toolbar = document.createElement('div');
-	toolbar.className='toolbar';
+	toolbar.className = 'toolbar';
 	
-	var isEnterKey = function(event) {
-		var keyCode;
-		if(event.keyCode) // IE
-			keyCode = event.keyCode, event.returnValue = false;
-		else if(event.which) // Netscape/Firefox/Opera
-			keyCode = event.which, event.preventDefault();
-		return keyCode==13;
-	}
+	var isEnterKey = function (event) {
+        var keyCode;
+        if (event.keyCode) { // IE
+            keyCode = event.keyCode;
+            event.returnValue = false;
+        } else if (event.which) { // Netscape/Firefox/Opera
+            keyCode = event.which;
+            event.preventDefault();
+        }
+        return keyCode == 13;
+    };
 	
+
 	var zoomIn = document.createElement('img');
-	zoomIn.className='toolbarButton';
-	zoomIn.title= i18n.get('label.zoomIn');
-	zoomIn.tabIndex="1";
-	//zoomIn.src=viewer.toolbarImages+'/zoom_in.png';
-	zoomIn.src = loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/zoom_in.png';
-	zoomIn.onclick = zoomIn.onkeypress = function(event) {
-		event=event?event:window.event;
-		if (event.type == 'keypress') 
-			if(!isEnterKey(event))
-				return;
-		var frameDimension = self.getFrameDimension();
-		self.zoomTo(self.getZoomLevel()+1, frameDimension[0]/2,frameDimension[1]/2);
-	}
+    zoomIn.className = 'toolbarButton';
+    zoomIn.title = i18n.get('label.zoomIn');
+    zoomIn.tabIndex = "1";
+    // zoomIn.src=viewer.toolbarImages+'/zoom_in.png';
+    zoomIn.src = loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/zoom_in.png';
+    zoomIn.onclick = zoomIn.onkeypress = function (event) {
+        event = event ? event : window.event;
+        if (event.type == 'keypress'){
+            if (!isEnterKey(event)) {
+                return;
+            }
+        }
+        var frameDimension = self.getFrameDimension();
+        self.zoomTo(self.getZoomLevel() + 1, frameDimension[0] / 2, frameDimension[1] / 2);
+    };
 	
+
 	var zoomOut = document.createElement('img');
-	zoomOut.className='toolbarButton';
-	zoomOut.title= i18n.get('label.zoomOut');
-	zoomOut.tabIndex="1";
-	zoomOut.src = loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/zoom_out.png';
-	zoomOut.onclick = zoomOut.onkeypress = function(event) {
-		event=event?event:window.event;
-		if (event.type == 'keypress') 
-			if(!isEnterKey(event))
-				return;
-		
-		var frameDimension = self.getFrameDimension();
-		self.zoomTo(self.getZoomLevel()-1, frameDimension[0]/2,frameDimension[1]/2);
-	}
+    zoomOut.className = 'toolbarButton';
+    zoomOut.title = i18n.get('label.zoomOut');
+    zoomOut.tabIndex = "1";
+    zoomOut.src = loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/zoom_out.png';
+    zoomOut.onclick = zoomOut.onkeypress = function (event) {
+        event = event ? event : window.event;
+        if (event.type == 'keypress'){
+            if (!isEnterKey(event)) {
+                return;
+            }
+        }
+        var frameDimension = self.getFrameDimension();
+        self.zoomTo(self.getZoomLevel() - 1, frameDimension[0] / 2, frameDimension[1] / 2);
+    };
 	
 	var center = document.createElement('img');
 	center.className='toolbarButton';
@@ -149,7 +158,17 @@ viewer.toolbar = function(self) {
     toolbar.appendChild(download);
 	
 	
-	self.frameElement.appendChild(toolbar);
+    var divToolbar = document.createElement("div");
+    divToolbar.style.width = "100%";
+    divToolbar.style.height = "25px";
+    divToolbar.style.border = "1px solid red";
+    divToolbar.style.background = "yellow";
+    divToolbar.appendChild(toolbar);
+    self.frameElement.parentNode.appendChild(divToolbar);
+    
+    
+    
+//	self.frameElement.appendChild(toolbar);
 	self.frameElement.appendChild(controls);
 	self.frameElement.appendChild(map);
 }

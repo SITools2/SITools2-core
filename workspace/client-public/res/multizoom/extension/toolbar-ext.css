@@ -1,13 +1,11 @@
 .toolbar {
 	display: inline-block;
-	position: absolute;
-	right: 3px;
-	top: 3px;
+	
 	z-index: 5;
 }
 .toolbarButton {
-	margin: 0 2px;
-	cursor: pointer;
+	margin: 0 2px !important;
+	cursor: pointer !important;
 }
 .helptext {
 	-webkit-border-radius: 7px;
@@ -40,4 +38,9 @@
 	bottom: 3px;
 	z-index: 4;
 	border: 0 solid #FFFFFF;
+}
+
+.pourcentage {
+	font-weight : bold !important;
+	font-size : 110% !important;
 }

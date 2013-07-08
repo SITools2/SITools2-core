@@ -127,6 +127,7 @@ sitools.admin.datasets.datasetForm = Ext.extend(Ext.Panel, {
                     name : 'name',
                     fieldLabel : i18n.get('label.name'),
                     anchor : '95%',
+                    allowBlank : false,
                     vtype : "name", 
                     maxLength : 50
                 }, {
