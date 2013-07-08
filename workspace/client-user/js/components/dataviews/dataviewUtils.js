@@ -590,5 +590,9 @@ sitools.user.component.dataviews.dataviewUtils = {
         menu.on('itemclick', view.handleHdMenuClick, view);
         
         return menu;
+    },
+    
+    copyImageToClipboard : function CopyToClip(img) {
+       
     }
 };

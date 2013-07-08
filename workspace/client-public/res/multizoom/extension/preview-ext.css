@@ -1,15 +1,25 @@
 .previewFrame {
 	position : absolute;
+	margin : 2px 0px 0px 2px;
 	overflow: hidden;
-	border:1px solid #0f0f0f;	
+	-moz-box-shadow: 2px 2px 2px #B4B4B4;
+	-webkit-box-shadow: 2px 2px 2px #B4B4B4;
+	-o-box-shadow: 2px 2px 2px #B4B4B4;
+	box-shadow: 2px 2px 2px #B4B4B4;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 .previewBox {
 	position : absolute;
-	background: #000;
-	opacity: 0.5;
+	background: #202020;
+	opacity: 0.6;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
 }
 
 .previewBox_over {
-	background: #4cf1fe;
+	background: #9BDA7C;
 }

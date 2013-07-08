@@ -40,7 +40,43 @@
 	border: 0 solid #FFFFFF;
 }
 
-.pourcentage {
+.preview-toolbar {
+	-moz-box-shadow: 0px 0px 6px 0px #858585;
+	-webkit-box-shadow: 0px 0px 6px 0px #858585;
+	-o-box-shadow: 0px 0px 6px 0px #858585;
+	box-shadow: 0px 0px 6px 0px #858585;
+}
+
+.zoomFactorLabel {
+	font-size: 14px !important;
+	text-shadow: 0px 0px 7px #858585;
+	padding-right: 15px !important;
 	font-weight : bold !important;
-	font-size : 110% !important;
+}
+
+.previewBarBtn-icon {
+	height : 32px !important;
+	width :32px !important;
+	-webkit-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+   	-moz-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+    -ms-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+    -o-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+    transition: width .5s cubic-bezier( .4, 1, .4, 1);
+    z-index:1;
+}
+
+.previewBarBtn-icon:HOVER {
+	-webkit-transform: scale(1.09);
+	-moz-transform: scale(1.09);
+	-ms-transform: scale(1.09);
+	-o-transform: scale(1.09);
+	transform: scale(1.09);
+	z-index:5;
+	opacity: .8;
+    -moz-opacity: .8;
+    filter:alpha(opacity=70);
+}
+
+.previewBarBtn-icon:ACTIVE {
+	opacity : .5;
 }

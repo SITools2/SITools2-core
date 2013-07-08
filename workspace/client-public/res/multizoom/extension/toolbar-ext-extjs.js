@@ -4,7 +4,7 @@ viewer.toolbarextjs = function (viewer) {
     
     var self = this;
     
-    viewer.toolbarHeight = 50;
+    viewer.toolbarHeight = 53;
     viewer.withToolbar = true;
     
     var id  = Ext.id();
@@ -65,51 +65,43 @@ viewer.toolbarextjs = function (viewer) {
     var tb = new Ext.Toolbar({
         renderTo: id,
         height: 50,
+        enableOverflow : true,
+        cls : 'preview-toolbar',
         items: [
+            {
+                xtype: 'button', // same as 'tbsplitbutton'
+                //iconCls : 'arrow-back',
+                icon : loadUrl.get('APP_URL') + '/common/res/multizoom/images/toolbar/backward.png',
+                iconCls : 'previewBarBtn-icon',
+                tooltip : i18n.get('label.previous'),
+                handler : function () {
+                    alert("TODO");
+                }
+            },
+            {
+                xtype: 'button', // same as 'tbsplitbutton'
+            //    iconCls : 'arrow-next',
+                icon : loadUrl.get('APP_URL') + '/common/res/multizoom/images/toolbar/forward.png',
+                iconCls : 'previewBarBtn-icon',
+                tooltip : i18n.get('label.next'),
+                handler : function () {
+                    alert("TODO");
+                }
+            },
+            '->',
             {
                 // xtype: 'button', // default for Toolbars, same as 'tbbutton'
                 text: '100%',
                 xtype : 'label',
-                cls : 'pourcentage'
-            },
-            '->',
-            {
-                xtype: 'button', // same as 'tbsplitbutton'
-                iconCls : 'arrow-back',
-                handler : function () {
-                    alert("TODO");
-                }
+                name : 'labelZoomName',
+                cls : 'zoomFactorLabel',
+                autoWidth : true
             },
             {
                 xtype: 'button', // same as 'tbsplitbutton'
-                iconCls : 'arrow-next',
-                handler : function () {
-                    alert("TODO");
-                }
-            },
-            {
-                xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
-                tooltip : i18n.get('label.downloadImage'),
-                text : 'download',
-                handler : function () {
-                    var img = viewer.frameElement.firstChild;
-                    sitools.user.component.dataviews.dataviewUtils.downloadFile(img.src);
-                }
-            },
-            {
-                xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/copy.png',
-                tooltip : i18n.get('label.copyImage'),
-                text : 'copy',
-                handler : function () {
-                    alert("TODO");
-                }
-            },
-            {
-                xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/zoom_in.png',
-                tooltip : i18n.get('label.zoomin'),
+                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar/zoom-in.png",
+                tooltip : i18n.get('label.zoomIn'),
+                iconCls : 'previewBarBtn-icon',
                 handler : function () {
                     var frameDimension = viewer.getFrameDimension();
                     viewer.zoomTo(viewer.getZoomLevel() + 1, frameDimension[0] / 2, frameDimension[1] / 2);
@@ -117,8 +109,9 @@ viewer.toolbarextjs = function (viewer) {
             },
             {
                 xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/zoom_out.png',
-                tooltip : i18n.get('label.zoomout'),
+                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar/zoom-out.png",
+                tooltip : i18n.get('label.zoomOut'),
+                iconCls : 'previewBarBtn-icon',
                 handler : function () {
                     var frameDimension = viewer.getFrameDimension();
                     viewer.zoomTo(viewer.getZoomLevel() - 1, frameDimension[0] / 2, frameDimension[1] / 2);
@@ -126,8 +119,31 @@ viewer.toolbarextjs = function (viewer) {
             },
             {
                 xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/stretch_optimally.png',
-                tooltip : i18n.get('label.reset'),
+                icon : loadUrl.get('APP_URL') + '/common/res/multizoom/images/toolbar/download-image.png',
+                tooltip : i18n.get('label.downloadImage'),
+                iconCls : 'previewBarBtn-icon',
+                //text : 'download',
+                handler : function () {
+                    var img = viewer.frameElement.firstChild;
+                    sitools.user.component.dataviews.dataviewUtils.downloadFile(img.src);
+                }
+            },
+            {
+                xtype: 'button', // same as 'tbsplitbutton'
+                icon : loadUrl.get('APP_URL') + '/common/res/multizoom/images/toolbar/copy-image.png',
+                tooltip : i18n.get('label.copyImage'),
+                iconCls : 'previewBarBtn-icon',
+                //text : 'copy',
+                handler : function () {
+                    var img = viewer.frameElement.firstChild;
+                    sitools.user.component.dataviews.dataviewUtils.copyImageToClipboard(img.src);
+                }
+            },
+            {
+                xtype: 'button', // same as 'tbsplitbutton'
+                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/stretch-optimally.png',
+                tooltip : i18n.get('label.resetZoom'),
+                iconCls : 'previewBarBtn-icon',
                 handler : function () {
                     viewer.reset();
                 }
@@ -135,6 +151,7 @@ viewer.toolbarextjs = function (viewer) {
                 xtype : 'component',
                 autoEl : {
                     tag : 'img',
+                    style : 'padding-left:10px;',
                     src : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/movement-controls.png',
                     useMap : "#controls"
                 }
@@ -145,7 +162,9 @@ viewer.toolbarextjs = function (viewer) {
     
 
     var callbackZoomTo = function (viewer) {
-        var labelPourcentage = tb.items.get(0);
+        // Get the zoom label by name
+        var labelPourcentage = tb.find('name', 'labelZoomName')[0];
+        
         var zoomLevel = viewer.getZoomLevel();
         var zoomFactor = viewer.getZoomFactor() - 1;
         var pourcentage = 100;
