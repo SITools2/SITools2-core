@@ -292,99 +292,7 @@ sitools.user.component.dataviews.dataviewUtils = {
         }
         return valueFormat;    
     }, 
-<<<<<<< .mine	/**
-	 * @static
-	 * Execute a REST OPTION request to the value url. 
-	 * Switch on Content-Type value to determine if we open a new iframe, or a window. 
-	 * @param {} value the url to request 
-	 */
-	downloadData : function (value) {
-	//    value = encodeURIComponent(value);
-	   //build first request to get the headers
-	    Ext.Ajax.request({
-			url : value,
-			method : 'HEAD',
-			scope : this,
-			success : function (ret) {
-				try {
-					var headerFile = ret.getResponseHeader("Content-Type")
-							.split(";")[0].split("/")[0];
-					if (headerFile == "text") {
-						Ext.Ajax.request({
-							url : value,
-							method : 'GET',
-							scope : this,
-							success : function (ret) {
-								var windowConfig = {
-									id : "winPreferenceDetailId",
-									title : value, 
-									iconCls : "version"
-								};
-								var jsObj = Ext.Panel;
-								var componentCfg = {
-									layout : 'fit',
-									autoScroll : true,
-									html : ret.responseText
-								};
-								SitoolsDesk.addDesktopWindow(
-										windowConfig, componentCfg,
-										jsObj);
-							}
-						});
-					} else if (headerFile == "image") {
-	                    sitools.user.component.dataviews.dataviewUtils.showPreview(value, item.header);
-					} else {
-						sitools.user.component.dataviews.dataviewUtils.downloadFile(value);         
-					}
-				} catch (err) {
-					Ext.Msg.alert(i18n.get('label.error'), err);
-				}
-			},
-			failure : function (ret) {
-				return null;
-			}
-		});
-	}, 
-	/**
-     * @static Build a MIF panel with a given url and load it into the desktop
-     * @param {}
-     *            value the url to request
-     * @param {boolean}
-     *            true if the url is displayable in a window, false otherwise
-     */
-	showDisplayableUrl : function (value, isDisplayable, customConfig) {
-        if (isDisplayable) {
-            
-            if (customConfig) {
-                var windowConfig = customConfig;
-            }
-            else {
-            	var windowConfig = {
-                    title : value,
-                    id : value, 
-                    iconCls : "version"
-            	};
-            }
-    	    
-            var jsObj = Ext.ux.ManagedIFrame.Panel;
-            var componentCfg = {
-                defaults : {
-                    padding : 10
-                },
-                layout : 'fit',
-                region : 'center',
-                defaultSrc : value,
-                listeners : {
-                    documentloaded : function (iframe){
-                    	this.ownerCt.syncSize();
-                    }
-                }
-            };
-    	    
-        SitoolsDesk.addDesktopWindow(
-                windowConfig, componentCfg,
-                jsObj);
-=======    /**
+    /**
      * @static
      * Execute a REST OPTION request to the value url. 
      * Switch on Content-Type value to determine if we open a new iframe, or a window. 
@@ -476,7 +384,7 @@ sitools.user.component.dataviews.dataviewUtils = {
         SitoolsDesk.addDesktopWindow(
                 windowConfig, componentCfg,
                 jsObj);
->>>>>>> .theirs        } else {             
+        } else {             
             sitools.user.component.dataviews.dataviewUtils.downloadFile(value);                
         }
         
@@ -575,31 +483,6 @@ sitools.user.component.dataviews.dataviewUtils = {
         previewWin.show();
         previewWin.toFront();
     }, 
-	}, 
-	/**
-	 * @static 
-	 * Definition of the showPreview method used by the columnRenderer.
-	 * @param {string} value The img src
-	 */
-	showPreview : function (value, title) {
-	    var previewWin = new sitools.widget.WindowImageViewer({            
-	        title : title,
-	        src : value,
-	        hideAction : 'close',
-	        resizeImage : false  
-	    });
-	    
-	    previewWin.show();
-	    previewWin.toFront();
-	}, 
-	/**
-	 * Return true if the column is NoClientAccess
-	 * @param {Object} column the column object
-	 * @return {boolean} true if the column should not be used in client
-	 */
-	isNoClientAccess : function (column) {
-		return !Ext.isEmpty(column.columnRenderer) &&  ColumnRendererEnum.NO_CLIENT_ACCESS == column.columnRenderer.behavior;
-	}, 
     /**
      * Return true if the column is NoClientAccess
      * @param {Object} column the column object

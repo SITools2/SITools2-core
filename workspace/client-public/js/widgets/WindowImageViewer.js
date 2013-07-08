@@ -69,7 +69,6 @@ sitools.widget.WindowImageViewer = Ext.extend(Ext.Window, {
                 single : true
             });
         }
-        
     },
     /**
      * Method called when the image is loaded. It is in charge of resizing the image according to the desktop size
