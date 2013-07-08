@@ -69,7 +69,8 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
                     allowBlank : true
                 }, {
                     name : 'name',
-                    fieldLabel : i18n.get('label.name')
+                    fieldLabel : i18n.get('label.name'),
+                    vtype : "withoutSpace"
                 }, {
                     name : 'description',
                     fieldLabel : i18n.get('label.description'),
@@ -93,43 +94,38 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
                     }),
                     valueField : 'code',
                     displayField : 'label',
-                    anchor : "50%"
-                }, {
-                    name : 'url',
-                    fieldLabel : i18n.get('label.url'), 
-                    validator : function (value) {
-						var driverValue = Ext.getCmp('driverDatasourceId').getValue();
-						if (Ext.isEmpty(driverValue)) {
-							return "The Driver is empty";
-						}
-						else {
-							switch (driverValue) {
-							case 'org.gjt.mm.mysql.Driver' :
-								if (value.match("mysql")) {
-									return true;
-								} else {
-									return "The driver doesn't match with this url";
-								}
-								break;
-							case 'org.postgresql.Driver' :
-								if (value.match("postgresql")) {
-									return true;
-								} else {
-									return "The driver doesn't match with this url";
-								}
-								break;
-							}
-						}
-						return true;
+                    anchor : "50%",
+                    listeners : {
+                        select : function (combo, record, index) {
+                            var driverValue = record.get("code");
+                            var portField = Ext.getCmp('portField');
+                            switch (driverValue) {
+                            case 'org.gjt.mm.mysql.Driver':
+                                portField.setValue("3306");
+                                break;
+                            case 'org.postgresql.Driver':
+                                portField.setValue("5432");
+                                break;
+                            }
+                        }
                     }
+                }, {
+                    name : 'host',
+                    fieldLabel : i18n.get('label.host'), 
+                    vtype : "withoutSpace"
+                }, {
+                    id : 'portField',
+                    name : 'port',
+                    fieldLabel : i18n.get('label.portNumber'),
+                    xtype : "numberfield"
+                }, {
+                    name : 'database',
+                    fieldLabel : i18n.get('label.databaseName'),
+                    vtype : "withoutSpace"
                 }, {
                     name : 'schemaOnConnection',
                     fieldLabel : i18n.get('label.schemaOnConnection'),
                     allowBlank : true
-                }, {
-                    name : 'sitoolsAttachementForUsers',
-                    fieldLabel : i18n.get('label.userAttach'), 
-                    vtype : "attachment"
                 }, {
                     name : 'userLogin',
                     fieldLabel : i18n.get('label.userLogin'), 
@@ -139,63 +135,79 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
                     inputType : 'password',
                     name : 'userPassword', 
                     vtype : "withoutSpace"
-                },  {
-                    xtype : 'spinnerfield',
-                    name : 'maxActive',
-                    id : 'maxActiveId', 
-                    fieldLabel : i18n.get('label.maxActive'),
-                    minValue : 0,
-                    maxValue : 20,
-                    allowDecimals : false,
-                    incrementValue : 1,
-                    accelerate : true,
-                    anchor : "50%", 
-                    value : 10,
-                    validator : function (value) {
-						var initialSizeValue = Ext.getCmp("initialSizeId").getValue();
-						if (Ext.isEmpty(initialSizeValue)) {
-							initialSizeValue = 0;
-						}
-						if (Ext.isEmpty(value)) {
-							return i18n.get('label.nullValue');
-						}
-						if (initialSizeValue > value) {
-							return String.format(i18n.get('label.dbMaxActiveError'), value, initialSizeValue);
-						}
-						else {
-							return true;
-						}
-                    }
                 }, {
-                    xtype : 'spinnerfield',
-                    name : 'initialSize',
-                    id : 'initialSizeId', 
-                    fieldLabel : i18n.get('label.initialSize'),
-                    minValue : 0,
-                    maxValue : 20,
-                    allowDecimals : false,
-                    incrementValue : 1,
-                    accelerate : true,
-                    anchor : "50%", 
-                    value : 5,
-                    validator : function (value) {
-						var maxActiveValue = Ext.getCmp("maxActiveId").getValue();
-						if (Ext.isEmpty(maxActiveValue)) {
-							maxActiveValue = 0;
-						}
-						if (Ext.isEmpty(value)) {
-							return i18n.get('label.nullValue');
-						}
-						if (maxActiveValue < value) {
-							return String.format(i18n.get('label.dbMaxActiveError'), maxActiveValue, value);
-						}
-						else {
-							return true;
-						}
-                    }
-
-                } ]
-            } ],
+                    // Fieldset in Column 1
+                    xtype: 'fieldset',
+                    title: i18n.get("label.advancedParameters"),
+                    collapsible: true,
+                    collapsed : true,
+                    autoHeight : true,
+                    defaultType : "textfield",
+                    items : [
+                        {
+                            name : 'sitoolsAttachementForUsers',
+                            fieldLabel : i18n.get('label.userAttach'), 
+                            vtype : "attachment",
+                            allowBlank : true,
+                            anchor : '100%'
+                        },  {
+                            xtype : 'spinnerfield',
+                            name : 'maxActive',
+                            id : 'maxActiveId', 
+                            fieldLabel : i18n.get('label.maxActive'),
+                            minValue : 0,
+                            maxValue : 20,
+                            allowDecimals : false,
+                            incrementValue : 1,
+                            accelerate : true,
+                            anchor : "50%", 
+                            value : 10,
+                            validator : function (value) {
+                                var initialSizeValue = Ext.getCmp("initialSizeId").getValue();
+                                if (Ext.isEmpty(initialSizeValue)) {
+                                    initialSizeValue = 0;
+                                }
+                                if (Ext.isEmpty(value)) {
+                                    return i18n.get('label.nullValue');
+                                }
+                                if (initialSizeValue > value) {
+                                    return String.format(i18n.get('label.dbMaxActiveError'), value, initialSizeValue);
+                                }
+                                else {
+                                    return true;
+                                }
+                            }
+                        }, {
+                            xtype : 'spinnerfield',
+                            name : 'initialSize',
+                            id : 'initialSizeId', 
+                            fieldLabel : i18n.get('label.initialSize'),
+                            minValue : 0,
+                            maxValue : 20,
+                            allowDecimals : false,
+                            incrementValue : 1,
+                            accelerate : true,
+                            anchor : "50%", 
+                            value : 5,
+                            validator : function (value) {
+                                var maxActiveValue = Ext.getCmp("maxActiveId").getValue();
+                                if (Ext.isEmpty(maxActiveValue)) {
+                                    maxActiveValue = 0;
+                                }
+                                if (Ext.isEmpty(value)) {
+                                    return i18n.get('label.nullValue');
+                                }
+                                if (maxActiveValue < value) {
+                                    return String.format(i18n.get('label.dbMaxActiveError'), maxActiveValue, value);
+                                }
+                                else {
+                                    return true;
+                                }
+                            }
+                        }
+                    ]
+                }]
+            }],
             buttons : [ {
                 text : i18n.get('label.testCnx'),
                 scope : this,
@@ -212,7 +224,6 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
                     this.close();
                 }
             } ]
-            
         } ];
         this.listeners = {
 			scope : this, 
@@ -238,7 +249,15 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
                 scope : this,
                 success : function (ret) {
                     var data = Ext.decode(ret.responseText);
+
+                    var datasource = data.jdbcdatasource;
+                    var reference = new Reference(datasource.url);
+                    datasource.host = reference.getHost();
+                    datasource.port = reference.getPort();
+                    var databaseNameUrl = reference.getFile();
+                    datasource.database = databaseNameUrl.substring(1,databaseNameUrl.length);
                     f.setValues(data.jdbcdatasource);
+                    
                     var tmp = f.isValid();
                 },
                 failure : alertFailure
@@ -261,11 +280,15 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
             return;
         }
         var met = this.action == 'modify' ? 'PUT' : 'POST';
+        var values = frm.getFieldValues();
+        values.url = this._createUrl(values);
+        Ext.destroyMembers(values, "host", "port", "database");
+        
         Ext.Ajax.request({
             url : this.url,
             method : met,
             scope : this,
-            jsonData : frm.getFieldValues(),
+            jsonData : values,
             success : function (ret) {
                 this.store.reload();
                 this.close();
@@ -277,11 +300,32 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
     _onTest : function () {
         var frm = this.findByType('form')[0].getForm();
         var vals = frm.getFieldValues();
+        vals.url = this._createUrl(vals);
+        Ext.destroyMembers(vals, "host", "port", "database");
+
+        
         var dbt = new sitools.admin.datasource.DataBaseTest({
             url : this.url + '/test',
             data : vals
         });
         dbt.show();
+    },
+    
+    _createUrl : function (values) {
+        var protocol = "jdbc:";
+        
+        var driverValue = values.driverClass;
+        switch (driverValue) {
+        case 'org.gjt.mm.mysql.Driver':
+            protocol += "mysql";
+            break;
+        case 'org.postgresql.Driver':
+            protocol += "postgresql";
+            break;
+        }
+        
+        protocol += "://";
+        return protocol + values.host + ":" + values.port + "/" + values.database;        
     }
 
 });

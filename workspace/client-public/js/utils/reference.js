@@ -64,7 +64,7 @@ function Reference(url){
 		}
 		var portColonIndex=this.host.indexOf(':');
 		if(portColonIndex>=0){
-			this.port=this.host.substring(portColonIndex);
+			this.port=this.host.substring(portColonIndex+1);
 			this.host=this.host.substring(0,portColonIndex);
 		}
 		this.file=this.url.substring(protocolSepIndex+3);
