@@ -206,6 +206,8 @@ function viewer(arguments) //argument array
 		eval(key + '=temp;');
 	}
 
+	self.previewSrc = previewSrc;
+	
 	/*Internal states,HTML elements and properties*/
 	self.frameElement = null;
 	var orignalW,orignalH, zoomLevel=0;

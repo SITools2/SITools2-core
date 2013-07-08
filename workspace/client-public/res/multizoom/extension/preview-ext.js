@@ -256,7 +256,7 @@ viewer.preview = function (viewer) {
 	image.style.position = "absolute";
 	// TODO load a thumbnail
 	// image.src = viewer.getImageSrc();
-	image.src = urlPreview;
+	image.src = viewer.previewSrc;
 
 	
 
