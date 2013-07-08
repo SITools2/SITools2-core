@@ -61,6 +61,14 @@ viewer.toolbarextjs = function (viewer) {
     divToolbar.appendChild(map);
     viewer.frameElement.parentNode.appendChild(divToolbar);
     
+    var labelPourcentage = new Ext.form.Label({
+        // xtype: 'button', // default for Toolbars, same as 'tbbutton'
+        text: '100%',
+        xtype : 'label',
+        name : 'labelZoomName',
+        cls : 'zoomFactorLabel',
+        autoWidth : true
+    });
     
     var tb = new Ext.Toolbar({
         renderTo: id,
@@ -89,14 +97,8 @@ viewer.toolbarextjs = function (viewer) {
                 }
             },
             '->',
-            {
-                // xtype: 'button', // default for Toolbars, same as 'tbbutton'
-                text: '100%',
-                xtype : 'label',
-                name : 'labelZoomName',
-                cls : 'zoomFactorLabel',
-                autoWidth : true
-            },
+            labelPourcentage
+            ,
             {
                 xtype: 'button', // same as 'tbsplitbutton'
                 icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar/zoom-in.png",
@@ -162,21 +164,24 @@ viewer.toolbarextjs = function (viewer) {
     
 
     var callbackZoomTo = function (viewer) {
-        // Get the zoom label by name
-        var labelPourcentage = tb.find('name', 'labelZoomName')[0];
         
-        var zoomLevel = viewer.getZoomLevel();
-        var zoomFactor = viewer.getZoomFactor() - 1;
-        var pourcentage = 100;
-        for ( var i = zoomLevel; i > 0; i--) {
-            pourcentage -= pourcentage * zoomFactor;
-        }
-        pourcentage = Math.round(pourcentage * 100) / 100;
+        var dimensionImage = viewer.getDimension();
+        var originalDimensionImage = viewer.getOriginalDimension();
+        
+        var pourcentage = dimensionImage[0] / originalDimensionImage[0];
+        console.log("x : " + pourcentage + " y : " + (dimensionImage[1] / originalDimensionImage[1]));
+//        for ( var i = zoomLevel; i > 0; i--) {
+//            pourcentage += pourcentage * zoomFactor;
+//        }
+        
+        pourcentage = Math.round(pourcentage * 100);
         labelPourcentage.setText(pourcentage + "%");
 
     };
     
     Event.observe(viewer.frameElement, 'zoomto', callbackZoomTo.bind(self, viewer));
+    Event.observe(viewer.frameElement, 'init', callbackZoomTo.bind(self, viewer));
+    Event.observe(viewer.frameElement, 'resize', callbackZoomTo.bind(self, viewer));
     
     
 	

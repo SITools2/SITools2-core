@@ -43,52 +43,7 @@ viewer.preview = function (viewer) {
 		return [ previewDimension[0], previewDimension[1] ];
 	};
 
-	self.centerPreviewImage = function (width, height, x, y) { // width and
-																// height of
-																// image and
-																// (x,y) is the
-																// (left,top) of
-																// the image
-		if (typeof width == 'undefined' || typeof height == 'undefined') {
-			var temp = self.getDimension();
-			width = temp[0];
-			height = temp[1];
-		}
-		if (typeof x == 'undefined' || typeof y == 'undefined') {
-			var temp = self.getPosition();
-			x = temp[0];
-			y = temp[1];
-		}
-
-		var frameDimension = self.getPreviewFrameDimension();
-
-		if (width <= frameDimension[0]) {
-			x = Math.round((frameDimension[0] - width) / 2);
-		}
-		if (height <= frameDimension[1]) {
-			y = Math.round((frameDimension[1] - height) / 2);
-		}
-
-		if (width > frameDimension[0]) {
-			if (x > 0) {
-				x = 0;
-			}
-			else if ((x + width) < frameDimension[0]) {
-				x = frameDimension[0] - width;
-			}
-		}
-
-		if (height > frameDimension[1]) {
-			if (y > 0) {
-				y = 0;
-			}
-			else if ((y + height) < frameDimension[1]) {
-				y = frameDimension[1] - height;
-			}
-		}
-
-		return [ x, y ];
-	};
+	
 
 	self.fitToPreviewFrame = function (width, height, frameDimension) { // width
 																		// and

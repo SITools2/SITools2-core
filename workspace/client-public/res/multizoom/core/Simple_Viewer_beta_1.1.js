@@ -543,6 +543,8 @@ function viewer(arguments) //argument array
 			viewer.onload(self);
 		if(self.onload!=null)
 			self.onload();
+		
+		self.fireEvent("init");
 	}
 	self.preInitImage = function() { //Triggers after pre-Loader image has been loaded					
 		if(preLoader!=null) 
@@ -651,4 +653,3 @@ function viewer(arguments) //argument array
 	}
 }
 //Static events
-viewer.onload = null;
