@@ -162,7 +162,6 @@ Ext.ux.TaskBarContainer = Ext.extend(Ext.Container, {
 	    this.fireEvent('resize', this, w, h, w, h);
     }, 
     onMaximizeDesktop : function () {
-    	console.log('max');
     }
 });
 

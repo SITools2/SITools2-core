@@ -169,10 +169,6 @@ viewer.toolbarextjs = function (viewer) {
         var originalDimensionImage = viewer.getOriginalDimension();
         
         var pourcentage = dimensionImage[0] / originalDimensionImage[0];
-        console.log("x : " + pourcentage + " y : " + (dimensionImage[1] / originalDimensionImage[1]));
-//        for ( var i = zoomLevel; i > 0; i--) {
-//            pourcentage += pourcentage * zoomFactor;
-//        }
         
         pourcentage = Math.round(pourcentage * 100);
         labelPourcentage.setText(pourcentage + "%");

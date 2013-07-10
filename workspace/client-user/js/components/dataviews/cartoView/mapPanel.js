@@ -104,7 +104,6 @@ sitools.user.component.dataviews.cartoView.mapPanel = function (config) {
     var selectCtrl = new OpenLayers.Control.SelectFeature(this.featureLayer, {
     	id : "selectCtrl", 
     	onSelect : function (feature) {
-    		console.log(feature);
     	}
     });
     

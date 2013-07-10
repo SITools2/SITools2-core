@@ -2359,13 +2359,6 @@ Graph = function(el, data, options){
     this.draw(_.bind(function() {
       E.fire(this.el, 'flotr:afterinit', [this]);
     }, this));
-/*
-    try {
-  } catch (e) {
-    try {
-      console.error(e);
-    } catch (e2) {}
-  }*/
 };
 
 function observe (object, name, callback) {

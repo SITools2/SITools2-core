@@ -78,7 +78,7 @@ sitools.user.component.dataviews.dataviewUtils = {
                     if (!Ext.isEmpty(dataviewConfig) && !Ext.isEmpty(dataviewConfig.lineHeight)) {
                         imageStyle += "max-height: " + (dataviewConfig.lineHeight - 10) + "px;";
                     }
-                    var html = sitools.user.component.dataviews.dataviewUtils.getRendererHTML(item, imageStyle);
+                    var html = sitools.user.component.dataviews.dataviewUtils.getRendererHTML(item, imageStyle );
                     var str;
                     if (!Ext.isEmpty(html)) {
                         if (item.columnRenderer.behavior == ColumnRendererEnum.IMAGE_FROM_SQL) {
@@ -207,53 +207,31 @@ sitools.user.component.dataviews.dataviewUtils = {
             var columnRenderer = item.columnRenderer;
             switch (columnRenderer.behavior) {
             case ColumnRendererEnum.URL_LOCAL :
-                valueDisplayed = "";
-                if (!Ext.isEmpty(columnRenderer.linkText)) {
-                    valueDisplayed = columnRenderer.linkText;
-                } else if (!Ext.isEmpty(columnRenderer.image)) {
-                    valueDisplayed = "<img src=\"" + columnRenderer.image.url + "\" class='sitools-display-image' style ='" + imageStyle + "' ></img>";
-                }
-                html = "<a href='#' onClick='sitools.user.component.dataviews.dataviewUtils.downloadData(\"{0}\");'>" + valueDisplayed + "</a>"; 
-                break;
             case ColumnRendererEnum.URL_EXT_NEW_TAB :
-                valueDisplayed = "";
-                if (!Ext.isEmpty(columnRenderer.linkText)) {
-                    valueDisplayed = columnRenderer.linkText;
-                } else if (!Ext.isEmpty(columnRenderer.image)) {
-                    valueDisplayed = "<img  src=\"" + columnRenderer.image.url + "\" class='sitools-display-image' style ='" + imageStyle + "' ></img>";
-                }
-                html = "<a href='#' onClick='window.open(\"{0}\");'>" + valueDisplayed + "</a>"; 
-                break;
             case ColumnRendererEnum.URL_EXT_DESKTOP :
-                valueDisplayed = "";
                 if (!Ext.isEmpty(columnRenderer.linkText)) {
-                    valueDisplayed = columnRenderer.linkText;
+                    html = "<span class='link featureType' sitools:column='"+item.columnAlias+"'>" + columnRenderer.linkText + "</span>";
                 } else if (!Ext.isEmpty(columnRenderer.image)) {
-                    valueDisplayed = "<img src=\"" + columnRenderer.image.url + "\" class='sitools-display-image' style ='" + imageStyle + "' ></img>";
+                    html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img src=\"" + columnRenderer.image.url + "\" class='sitools-display-image' style ='" + imageStyle + "' ></img></div>";
                 }
-                html = "<a href='#' onClick='sitools.user.component.dataviews.dataviewUtils.showDisplayableUrl(\"{0}\", " + columnRenderer.displayable + ");'>" + valueDisplayed + "</a>"; 
-                              
                 break;
             case ColumnRendererEnum.IMAGE_NO_THUMB :
-                html = "<a href='#' onClick='sitools.user.component.dataviews.dataviewUtils.showPreview(\"{0}\",\"" + columnRenderer.linkText + "\");'>" + columnRenderer.linkText + "</a>"; 
+                html = "<span class='link featureType' sitools:column='"+item.columnAlias+"'>" + columnRenderer.linkText + "</span>"; 
                 break;
             case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
-                html = "<a href='#' onClick='sitools.user.component.dataviews.dataviewUtils.showPreview(\"{0}\",\"" + item.header + "\");'><img class='sitools-display-image' src='{0}' style ='" + imageStyle + "'></img></a>"; 
+                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image' src='{0}' style ='" + imageStyle + "'></img></div>";  
                 break;
             case ColumnRendererEnum.IMAGE_FROM_SQL :
-                html = "<div style='text-align:center;'><a href='#' onClick='sitools.user.component.dataviews.dataviewUtils.showPreview(\"{0}\",\"" + item.header + "\");'><img class='sitools-display-image' src='{1}' style ='" + imageStyle + "'></a></div>"; 
+                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image image-link' src='{1}' style ='" + imageStyle + "'></div>"; 
                 break;
             case ColumnRendererEnum.DATASET_LINK :
-                html = "<a href='#' onClick='sitools.user.component.dataviews.dataviewUtils.showDetailsData(\"{0}\"," +
-                        "\"" + columnRenderer.columnAlias + "\", \""
-                            + columnRenderer.datasetLinkUrl + "\");'>{0}</a>"; 
+                html = "<span class='link featureType' sitools:column='"+item.columnAlias+"'>{0}</span>"; 
                 break;
             case ColumnRendererEnum.DATASET_ICON_LINK :
                 if (!Ext.isEmpty(columnRenderer.image)) {
                     imageUrl = columnRenderer.image.url;                    
                 }
-                html = "<a href='#' onClick='sitools.user.component.dataviews.dataviewUtils.showDetailsData(\"{0}\", \"" + columnRenderer.columnAlias + "\", \""
-                    + columnRenderer.datasetLinkUrl + "\");'><img style ='" + imageStyle + "' class='sitools-display-image' src='" + imageUrl + "'></a>";
+                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img style ='" + imageStyle + "' class='sitools-display-image' src='" + imageUrl + "'></div>";
                 break;
             default : 
                 html = "{0}"; 
@@ -266,6 +244,52 @@ sitools.user.component.dataviews.dataviewUtils = {
     getRendererViewDataDetails : function (item) {
         
         
+    },
+    
+    
+    featureTypeAction : function (column, record, controller) {
+        var service = controller.getService(column.columnAlias);
+        if (!Ext.isEmpty(service)) {
+            controller.callGuiService(service.id, record, column.columnAlias);
+        }
+        else {
+            this.executeFeatureType(column, record);
+        }
+    },
+    
+    executeFeatureType : function (column, record) {
+        if (!Ext.isEmpty(column.columnRenderer) && !Ext.isEmpty(column.columnRenderer.behavior)) {
+            var value = record.get(column.columnAlias);
+            var columnRenderer = column.columnRenderer;
+            switch (columnRenderer.behavior) {
+            case ColumnRendererEnum.URL_LOCAL :
+                sitools.user.component.dataviews.dataviewUtils.downloadData(value);
+                break;
+            case ColumnRendererEnum.URL_EXT_NEW_TAB :
+                window.open(value); 
+                break;
+            case ColumnRendererEnum.URL_EXT_DESKTOP :
+                sitools.user.component.dataviews.dataviewUtils.showDisplayableUrl(value, columnRenderer.displayable); 
+                break;
+            case ColumnRendererEnum.IMAGE_NO_THUMB :
+                sitools.user.component.dataviews.dataviewUtils.showPreview(value, columnRenderer.linkText); 
+                break;
+            case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
+                sitools.user.component.dataviews.dataviewUtils.showPreview(value, column.header); 
+                break;
+            case ColumnRendererEnum.IMAGE_FROM_SQL :
+                sitools.user.component.dataviews.dataviewUtils.showPreview(value, column.header);
+                break;
+            case ColumnRendererEnum.DATASET_LINK :
+                sitools.user.component.dataviews.dataviewUtils.showDetailsData(value, columnRenderer.columnAlias, columnRenderer.datasetLinkUrl); 
+                break;
+            case ColumnRendererEnum.DATASET_ICON_LINK :
+                sitools.user.component.dataviews.dataviewUtils.showDetailsData(value, columnRenderer.columnAlias, columnRenderer.datasetLinkUrl);
+                break;
+            default : 
+                break;
+            }
+        } 
     },
     
     

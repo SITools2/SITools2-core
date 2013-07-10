@@ -395,7 +395,6 @@ sitools.component.sva.svaProp = Ext.extend(Ext.Window, {
 
             config.fieldUrl.setValue(data.url);
         }
-        // console.dir (this);
         var chooser = new ImageChooser({
             url : loadUrl.get('APP_URL') + '/client-admin/res/json/componentList.json',
             width : 515,

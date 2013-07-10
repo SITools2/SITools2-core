@@ -43,7 +43,6 @@ Ext.namespace('sitools.user.component.forms');
  */
 sitools.user.component.forms.mainContainer = function (config) {
 //sitools.component.users.datasets.forms = function (config) {
-    // console.dir (config.node);
     Ext.apply(this, config);
     this.componentType = "form";
     this.componentList = new sitools.user.component.formComponentsPanel({

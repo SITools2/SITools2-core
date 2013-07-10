@@ -310,7 +310,6 @@ sitools.admin.applications.plugins.applicationPluginProp = Ext.extend(Ext.Window
                         } 
                         else if (rec.valueType == "xs:image") {
                             
-                            // console.dir (this);
                             var chooser = new ImageChooser({
                                 url : loadUrl.get('APP_URL') + loadUrl.get('APP_UPLOAD_URL') + '/?media=json',
                                 width : 515,

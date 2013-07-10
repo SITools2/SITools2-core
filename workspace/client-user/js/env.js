@@ -478,8 +478,6 @@ var projectGlobal = {
                                         });
                                     }
                                 }).show();
-                            } else {
-                                console.log("stop");
                             }
                         }
                     });

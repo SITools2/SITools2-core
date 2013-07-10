@@ -119,14 +119,46 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 	
 	}, this);
 	
-
+	var callbackClickFeatureType = function (e, t, o) {
+	    e.stopEvent();
+	    var record = o.record;
+	    var controller = o.controller;
+	    
+	    var column = o.column;
+        sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
+	};
     
     
 	this.store.load({
 		params : {
 			start : 0, 
 			limit : DEFAULT_LIVEGRID_BUFFER_SIZE
-		}
+		},
+		callback : function () {
+		    var nodes = this.dataView.getNodes();
+		    var controller = this.getTopToolbar().guiServiceController;
+		    Ext.each(nodes, function(node) {
+		        var record = this.dataView.getRecord(node);
+		        var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", node);
+		        Ext.each(featureTypeNodes, function(featureTypeNode) {
+		            var featureTypeNodeElement = Ext.get(featureTypeNode);
+		            
+		            var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
+		            var column = this.getColumnFromColumnModel(columnAlias);
+		            
+		            
+		            featureTypeNodeElement.addListener("click", callbackClickFeatureType, this, {
+		                record : record,
+		                controller : controller,
+		                column : column
+		            });
+		        }, this);
+            }, this);
+		    
+		    
+                
+		},
+		scope : this
 	});
     
     
@@ -247,7 +279,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 
 	this.panelDetail = new sitools.user.component.viewDataDetail({
 		fromWhere : "dataView",
-		grid : this.dataView, 
+		grid : this, 
 		baseUrl : this.sitoolsAttachementForUsers, 
 		datasetId : config.datasetId, 
 		datasetUrl : this.sitoolsAttachementForUsers, 
@@ -265,11 +297,12 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 		this.panelDetail.setWidth(config.userPreference.viewPanelDetailSize.width);
 	}
 	
-    this.tbar = new sitools.user.component.dataviews.services.menuServicesToolbar({
-        datasetUrl :  this.sitoolsAttachementForUsers,
+	this.tbar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+        datasetUrl : this.sitoolsAttachementForUsers,
         datasetId : this.datasetId,
         dataview : this,
-        origin : this.origin
+        origin : this.origin,
+        columnModel : config.datasetCm
     });
     
 	this.items = [panelWest, this.panelDetail];
@@ -536,6 +569,19 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
             }
         }, this);
         return unselected;
+    },
+    
+    getColumnFromColumnModel : function (columnAlias) {
+        var index = Ext.each(this.columnModel.columns, function (col) {
+            if (col.columnAlias === columnAlias) {
+                return false;
+            }
+        }, this);
+        if (!Ext.isEmpty(index)) {
+            return this.columnModel.columns[index];
+        } else {
+            return null;
+        }
     }
 
 });

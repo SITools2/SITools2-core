@@ -51,7 +51,6 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
             onTriggerClick : function () {
 		        if (!this.disabled) {
                     
-                    // console.dir (this);
 		            var browser = new sitools.user.modules.datastorageBrowser({
                         datastorageUrl : this.datastorageUrl,
                         field : this,

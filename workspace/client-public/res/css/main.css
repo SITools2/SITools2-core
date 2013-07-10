@@ -500,3 +500,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	background-image: url("../images/icons/row-check-sprite-off.gif");	
 }
 
+.image-link {
+	cursor : pointer;
+	text-align : center;	
+}
+
+.link {
+	cursor : pointer;
+	text-decoration: underline;
+	color : blue;
+	text-align: center;
+	display : inline !important;
+}
+

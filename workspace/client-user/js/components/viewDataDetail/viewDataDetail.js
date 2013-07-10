@@ -40,7 +40,6 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
         var rec;
         switch (this.fromWhere) {
 		case "openSearch" : 
-			this.grid = this.grid;
 	        this.recSelected = this.grid.getSelectionModel().getSelected();
 	        this.url = this.encodeUrlPrimaryKey(this.recSelected.data.guid);	        
 			break;
@@ -135,9 +134,16 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
             hideLabels : true,
             split : (this.fromWhere !== 'dataView'), 
             collapsible : (this.fromWhere !== 'dataView'), 
-            collapsed : (this.fromWhere !== 'dataView'),
+//            collapsed : (this.fromWhere !== 'dataView'),
+            collapsed : false,
             flex : 1,
-            title : ((this.fromWhere === 'dataView') ? i18n.get("label.formImagePanelTitle") : null) 
+            title : ((this.fromWhere === 'dataView') ? i18n.get("label.formImagePanelTitle") : null),
+            listeners : {
+                scope : this,
+                expand : function (panel) {
+                    
+                } 
+            }
         });
         
         var centerPanelItems;
@@ -319,7 +325,14 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	    }
     }, 
     buildForm : function () {
-      
+        var callbackClickFeatureType = function (e, t, o) {
+            e.stopEvent();
+            var record = o.record;
+            var controller = o.controller;
+            
+            var column = o.column;
+            sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
+        };
         
 	    if (!Ext.isEmpty(this._loadMaskAnchor)) {
             this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
@@ -465,10 +478,45 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
                             this.linkPanel.doLayout();
                         }
                         
+                        this.formPanelImg.doLayout();
 	                    this.doLayout();
 	                    if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
 							this._loadMaskAnchor.unmask();
-						}		                
+						}
+	                    
+                        var nodeFormPanel = this.formPanel.getEl().dom;
+                        var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", nodeFormPanel);
+                        
+                        var formPanelImgPanel = this.formPanelImg.getEl().dom;
+                        featureTypeNodes = featureTypeNodes.concat(Ext.DomQuery.jsSelect(".featureType", formPanelImgPanel));
+                        
+                        console.dir(featureTypeNodes);
+                        
+                        var controller = this.grid.getTopToolbar().guiServiceController;
+                        var jsonObj = {};
+                        Ext.each(attributes, function (attribute){
+                            jsonObj[attribute.name] = attribute.value;
+                        });
+                        
+                        Ext.each(featureTypeNodes, function(featureTypeNode) {
+                            var featureTypeNodeElement = Ext.get(featureTypeNode);
+                            
+                            var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
+                            var column = this.findColumn(columnAlias);
+                            
+                            featureTypeNodeElement.addListener("click", callbackClickFeatureType, this, {
+                                record : new Ext.data.Record(jsonObj),
+                                controller : controller,
+                                column : column
+                            });
+                        }, this);
+	                        
+
+                        if (this.formPanelImg.collapsible && this.formPanelImg.isVisible()) {    
+	                        this.formPanelImg.collapse();
+	                    }
+	                    
+	                    
                     }
 	            },
 	            failure : function () {

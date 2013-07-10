@@ -30,7 +30,6 @@ Ext.form.SitoolsSelectImage = Ext.extend(Ext.form.TriggerField, {
 	            config.fieldUrl.setValue(data.url);  
                 config.fieldUrl.fireEvent('change', this, data.url, config.fieldUrl.startValue);
 	        }
-	        // console.dir (this);
 	        var chooser = new ImageChooser({
 	            url : loadUrl.get('APP_URL') + '/upload/?media=json',
 	            width : 515,

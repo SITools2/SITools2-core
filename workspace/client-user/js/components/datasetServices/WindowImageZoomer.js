@@ -70,15 +70,24 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
             }
         }, this);
         
+		var rec;
+		if (Ext.isEmpty(this.record)) {
+		    rec = this.dataview.getSelections()[0];
+	    } else {
+	        rec = this.record;
+	    }
 		
+
+        if (Ext.isEmpty(this.columnImage)) {
+            this.columnImage = this.columnAlias;
+        }		
 		
-		var rec = this.dataview.getSelections()[0];
 		this.src = rec.get(this.columnImage);
-		if(!Ext.isEmpty(this.thumbnailColumnImage)){
-		    this.previewSrc = rec.get(this.thumbnailColumnImage);
-		}else {
-		    this.previewSrc = this.src;
-		}
+		if (!Ext.isEmpty(this.thumbnailColumnImage)) {
+            this.previewSrc = rec.get(this.thumbnailColumnImage);
+        } else {
+            this.previewSrc = this.src;
+        }
 		this.title = this.columnImage;
         
 		var id = Ext.id();

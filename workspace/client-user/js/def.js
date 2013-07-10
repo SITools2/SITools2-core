@@ -562,10 +562,11 @@ Ext.override(Ext.PagingToolbar, {
  * @param {Object} dataviewConfig the specific dataview Configuration.
  * @return {Ext.grid.ColumnModel} the builded columnModel
  */
-function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig) {
+function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, dataviewId) {
     var columns = [];
     if (!Ext.isEmpty(listeColonnes)) {
         Ext.each(listeColonnes, function (item, index, totalItems) {
+            
             var tooltip = "";
             if (item.toolTip) {
                 tooltip = item.toolTip;
@@ -584,7 +585,7 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig) {
                 }
             }
            
-            var renderer = sitools.user.component.dataviews.dataviewUtils.getRendererLiveGrid(item, dataviewConfig);
+            var renderer = sitools.user.component.dataviews.dataviewUtils.getRendererLiveGrid(item, dataviewConfig, dataviewId);
             var hidden;
             if (Ext.isEmpty(item.visible)) {
                 hidden = item.hidden;

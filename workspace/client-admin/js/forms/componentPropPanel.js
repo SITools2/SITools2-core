@@ -106,7 +106,6 @@ sitools.admin.forms.componentPropPanel = Ext.extend(Ext.Window, {
         });
 
         this.items = [ this.componentPropPanel ];
-        // console.dir (this.component);
         sitools.admin.forms.componentPropPanel.superclass.initComponent.call(this);
     },
     afterRender : function () {

@@ -296,8 +296,6 @@ sitools.user.component.dataviews.services.filterService = Ext.extend(Ext.Window,
         });
         filterCmp[0].setValue(filter.value);
         
-//      console.log(container);
-//      console.log(filterCmp);
     }
 });
 sitools.user.component.dataviews.services.filterService.getParameters = function () {

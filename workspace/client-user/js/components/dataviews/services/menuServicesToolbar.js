@@ -25,7 +25,14 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * Create A Toolbar from the currents dataset services
  * @required datasetId
  * @required datasetUrl
- * @cfg {Ext.data.JsonStore} the store where nodes are saved
+ * @required dataview
+ * @required origin
+ * @required columnModel
+ * @cfg {String} datasetUrl the url of the dataset
+ * @cfg {String} datasetId the id of the dataset
+ * @cfg {Object} dataview the dataview
+ * @cfg {String} origin the name of the dataview
+ * @cfg {Array} columnModel the dataset columnModel
  * @class sitools.user.component.dataviews.services.menuServicesToolbar
  * @extends Ext.Toolbar
  */
@@ -55,6 +62,13 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
         this.serverServiceUtil = new sitools.user.component.dataviews.services.serverServicesUtil({
             datasetUrl : this.datasetUrl,
             grid : this.dataview,
+            origin : this.origin
+        });
+        
+        this.guiServiceController = new sitools.user.component.dataviews.services.GuiServiceController({
+            datasetUrl : this.datasetUrl,
+            columnModel : this.columnModel,
+            dataview : this.dataview,
             origin : this.origin
         });
         
@@ -174,26 +188,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     },
     
     callGUIService : function (idService) {
-        Ext.Ajax.request({
-            url : this.urlDatasetServiceIHM.replace('{idService}', idService),
-            method : 'GET',
-            scope : this,
-            success : function (ret) {
-                var guiServicePlugin = Ext.decode(ret.responseText).guiServicePlugin;
-                var JsObj = eval(guiServicePlugin.xtype);
-
-                var config = Ext.applyIf(guiServicePlugin, {
-                    columnModel : this.dataview.getColumnModel(),
-                    store : this.dataview.getStore(),
-                    dataview : this.dataview,
-                    origin : this.origin
-                });
-
-                JsObj.executeAsService(config);
-
-            },
-            failure : alertFailure
-        });
+        this.guiServiceController.callGuiService(idService);
     },
     
     getMenu : function (category) {

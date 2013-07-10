@@ -274,7 +274,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
     else {
 		colModel = config.datasetCm; 
     }
-    var cm = getColumnModel(colModel, config.dictionaryMappings, dataviewConfig);
+    var cm = getColumnModel(colModel, config.dictionaryMappings, dataviewConfig, this.getId());
     
 //    /*
 //	 * the filters of the grid
@@ -353,6 +353,26 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         }, 
         datasetViewConfig : dataviewConfig
     });
+    
+//    this.view.addListener('buffer', function(view, store, rowIndex, visibleRows, totalCount) {
+//        var columnModel = this.getColumnModel();
+//        Ext.each(columnModel.columns, function (column, colIndex) {
+//            if (!Ext.isEmpty(column.columnRenderer) && !columnModel.isHidden(colIndex)) {
+//                for ( var row = 0; row <= visibleRows; row++) {
+//                    var cell = view.getCell(row + rowIndex, colIndex);
+//                    
+//                    var element = Ext.get(cell);
+//                    var link = element.child("a");
+//                    link.addListener("click", function() {
+//                        alert("ta mere");
+//                    });
+//                }
+//                
+//                var featureType = sitools.admin.datasets.columnRenderer.behaviorEnum.getColumnRendererCategoryFromBehavior(column.columnRenderer.behavior);
+//            }
+//        },this);        
+//        
+//    }, this);
 	
     /*
 	 * BufferedRowSelectionModel introduces a different selection model and a
@@ -381,7 +401,8 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         datasetUrl : this.sitoolsAttachementForUsers,
         datasetId : this.datasetId,
         dataview : this,
-        origin : this.origin
+        origin : this.origin,
+        columnModel : config.datasetCm
     });
     
 
@@ -423,6 +444,17 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	            sortchange: function (store, sortInfo) {
 	                //force to deselect every rows after the sort as changed
 	                this.getSelectionModel().clearSelections();
+	            },
+	            cellclick : function (grid, rowIndex, columnIndex, e) {
+	                var columnModel = this.getColumnModel();
+	                var column = columnModel.columns[columnIndex];	   
+	                if (Ext.isEmpty(column.columnRenderer)) {
+	                    return;
+	                }
+	                var record = grid.getStore().getAt(rowIndex);  // Get the Record
+	                var controller = this.getTopToolbar().guiServiceController;
+	                sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
+	                
 	            }
 	        }
 //	        plugins : [ filtersSimple ]

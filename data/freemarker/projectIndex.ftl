@@ -50,6 +50,8 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/htmlEditorAdvanced/resources/css/htmleditorplugins.css">
 	<link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/xtheme-gray-custom.css">
 	
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/services/servicesToolbar.css">
+	
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
@@ -194,7 +196,10 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/goToTaskPanel.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/serverServicesUtil.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/menuServicesToolbar.js"></script>
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/services/servicesToolbar.css">
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/guiServiceController.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/services/guiServicesStore.js"></script>
+	
+	
 	
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/datasetOverView/datasetOverview.js"></script>
