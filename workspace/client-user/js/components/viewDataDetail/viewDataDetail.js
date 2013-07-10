@@ -72,7 +72,7 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
         this.layout = "border";
 
         this.linkStore = new Ext.data.Store({
-	        fields : [ 'name', 'value', 'image', 'behavior', 'columnRenderer']
+	        fields : [ 'name', 'value', 'image', 'behavior', 'columnRenderer', 'html']
 	    }); 
         
         var linkDataview = new Ext.DataView({
@@ -85,7 +85,7 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	                '<tpl if="this.hasToolTip(toolTip) == false">',
                         'ext:qtip="{name}">', 
                     '</tpl>',
-	                '<img src="{image}" />',
+                    '{html}',
 	                '</li>', '</tpl>', '</ul>', 
 	                {
 	                compiled : true, 
@@ -325,14 +325,6 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	    }
     }, 
     buildForm : function () {
-        var callbackClickFeatureType = function (e, t, o) {
-            e.stopEvent();
-            var record = o.record;
-            var controller = o.controller;
-            
-            var column = o.column;
-            sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
-        };
         
 	    if (!Ext.isEmpty(this._loadMaskAnchor)) {
             this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
@@ -408,7 +400,8 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	                                                image : columnRenderer.image.url,
 	                                                behavior : behavior,
                                                     columnRenderer : columnRenderer,
-                                                    toolTip : columnRenderer.toolTip
+                                                    toolTip : columnRenderer.toolTip,
+                                                    html : html
                                                     
 	                                            };
 	                                            rec = new Ext.data.Record(rec);
@@ -422,7 +415,8 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	                                        var tooltip = "";
 	                                        var imageUrl = "";
 	                                        
-	                                        if (!Ext.isEmpty(columnRenderer.toolTip)){
+
+	                                        if (!Ext.isEmpty(columnRenderer.toolTip)) {
 	                                            tooltip = columnRenderer.toolTip;
 	                                        }
 	                                        else {
@@ -459,8 +453,7 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	                    this.formPanel.removeAll();
 	                    this.formPanelImg.removeAll();
 	                    
-                         
-                        this.formPanel.add(itemsForm);
+                         his.formPanel.add(itemsForm);
 	                    this.formPanel.doLayout();
                         
                         if (this.linkStore.getCount() === 0) {
@@ -484,38 +477,8 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 							this._loadMaskAnchor.unmask();
 						}
 	                    
-                        var nodeFormPanel = this.formPanel.getEl().dom;
-                        var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", nodeFormPanel);
-                        
-                        var formPanelImgPanel = this.formPanelImg.getEl().dom;
-                        featureTypeNodes = featureTypeNodes.concat(Ext.DomQuery.jsSelect(".featureType", formPanelImgPanel));
-                        
-                        console.dir(featureTypeNodes);
-                        
-                        var controller = this.grid.getTopToolbar().guiServiceController;
-                        var jsonObj = {};
-                        Ext.each(attributes, function (attribute){
-                            jsonObj[attribute.name] = attribute.value;
-                        });
-                        
-                        Ext.each(featureTypeNodes, function(featureTypeNode) {
-                            var featureTypeNodeElement = Ext.get(featureTypeNode);
-                            
-                            var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
-                            var column = this.findColumn(columnAlias);
-                            
-                            featureTypeNodeElement.addListener("click", callbackClickFeatureType, this, {
-                                record : new Ext.data.Record(jsonObj),
-                                controller : controller,
-                                column : column
-                            });
-                        }, this);
-	                        
-
-                        if (this.formPanelImg.collapsible && this.formPanelImg.isVisible()) {    
-	                        this.formPanelImg.collapse();
-	                    }
-	                    
+	                    //Register events on column values with featureTypes  
+	                    this.registerClickEvent(attributes);
 	                    
                     }
 	            },
@@ -612,5 +575,53 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
             }
         }
         return urlReturn;
+    },
+    
+    callbackClickFeatureType : function (e, t, o) {
+        e.stopEvent();
+        var record = o.record;
+        var controller = o.controller;            
+        var column = o.column;
+        sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
+    },
+    
+    
+    registerClickEvent : function (attributes) {
+        
+        var nodeFormPanel = this.formPanel.getEl().dom;
+        var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", nodeFormPanel);
+        
+        var formPanelImgPanel = this.formPanelImg.getEl().dom;
+        featureTypeNodes = featureTypeNodes.concat(Ext.DomQuery.jsSelect(".featureType", formPanelImgPanel));
+
+        var linkImagePanel = this.linkPanel.getEl().dom;
+        featureTypeNodes = featureTypeNodes.concat(Ext.DomQuery.jsSelect(".featureType", linkImagePanel));
+        
+        var controller = this.grid.getTopToolbar().guiServiceController;
+        
+        //Create a Record from the attribute Values 
+        var jsonObj = {};
+        Ext.each(attributes, function (attribute) {
+            jsonObj[attribute.name] = attribute.value;
+        });
+        
+        
+        Ext.each(featureTypeNodes, function (featureTypeNode) {
+            var featureTypeNodeElement = Ext.get(featureTypeNode);
+            
+            var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
+            var column = this.findColumn(columnAlias);
+            
+            featureTypeNodeElement.addListener("click", this.callbackClickFeatureType, this, {
+                record : new Ext.data.Record(jsonObj),
+                controller : controller,
+                column : column
+            });
+        }, this);
+            
+
+        if (this.formPanelImg.collapsible && this.formPanelImg.isVisible()) {    
+            this.formPanelImg.collapse();
+        }
     }
 });

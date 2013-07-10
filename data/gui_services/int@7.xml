@@ -36,6 +36,6 @@
   </dependencies>
   <priority>0</priority>
   <dataSetSelection>SINGLE</dataSetSelection>
-  <defaultGuiService>true</defaultGuiService>
+  <defaultGuiService>false</defaultGuiService>
   <defaultVisibility>false</defaultVisibility>
 </guiService>

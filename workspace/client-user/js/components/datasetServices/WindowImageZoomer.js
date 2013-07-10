@@ -39,11 +39,16 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 	        viewer.toolbarextjs(self);
 	        viewer.preview(self);
 		};
-	
+		
+
+		if (Ext.isEmpty(this.parameters)) {
+            this.parameters = sitools.user.component.dataviews.services.WindowImageZoomer.getDefaultParameters();
+        }
+		
 		Ext.each(this.parameters, function (config) {
             if (!Ext.isEmpty(config.value)) {
                 switch (config.name) {
-                case "columnImage" :
+                case "columnAlias" :
                     this.columnImage = config.value;
                     break;
                     
@@ -69,7 +74,8 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
                 }
             }
         }, this);
-        
+		
+		
 		var rec;
 		if (Ext.isEmpty(this.record)) {
 		    rec = this.dataview.getSelections()[0];
@@ -109,31 +115,14 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 		
 		this.items=[this.panel];
 
-//		this.viewer = new viewer({
-//            // parent : panel.getEl(),
-//            imageSource : this.src,
-//            frame : [ this.sizeLimitWidth, this.sizeLimitHeight ],
-//            zoomFactor : this.zoomFactor,
-//            maxZoom : this.maxZoom
-//        });
-
 		this.listeners = {
             scope : this,
             
             resize : function (window, width, height) {
-                if(!Ext.isEmpty(this.viewer)){
+                if (!Ext.isEmpty(this.viewer)) {
                     var frameElementWidth = width - this.getAdditionalWidth();
                     var frameElementHeight = height - this.getAdditionalHeight();
-                    
-                    this.viewer.setFrameProp([frameElementWidth +"px", frameElementHeight+"px"]);
-                    
-//                    var image = this.panel.getEl().child("img");
-//                    var imgWidth = image.getWidth();
-//                    var imgHeigt = image.getHeight();
-//                    
-//                    var position = this.viewer.centerImage(imgWidth,imgHeigt, 0,0);
-//                    this.viewer.setDimension(dimension[0],dimension[1]);
-//                    this.viewer.setPosition(position[0],position[1]);
+                    this.viewer.setFrameProp([ frameElementWidth + "px", frameElementHeight + "px" ]);
                     this.viewer.reset();
                     this.viewer.fireEvent("resize");
                     
@@ -157,7 +146,6 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
         var img = this.panel.getEl().child("img");
         this.viewer = new viewer({
             image : img.dom,
-//            imageSource : this.src,
             frame : [ this.sizeLimitWidth + "px", this.sizeLimitHeight + "px" ],
             zoomFactor : this.zoomFactor,
             maxZoom : this.maxZoom,
@@ -191,6 +179,7 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
         width += this.getAdditionalWidth();
         this.setSize(width, height);
 	}
+
 });
 
 Ext.reg('sitools.user.component.dataviews.services.WindowImageZoomer', sitools.user.component.dataviews.services.WindowImageZoomer);
@@ -365,6 +354,28 @@ sitools.user.component.dataviews.services.WindowImageZoomer.getParameters = func
             }
         } 
     ];
+};
+
+sitools.user.component.dataviews.services.WindowImageZoomer.getDefaultParameters = function () {
+    return [ {
+        name : "featureType",
+        value : "Image"
+    }, {
+        name : "columnAlias",
+        value : ""
+    }, {
+        name : "sizeLimitWidth",
+        value : "500"
+    }, {
+        name : "sizeLimitHeight",
+        value : "500"
+    }, {
+        name : "zoomFactor",
+        value : "20"
+    }, {
+        name : "maxZoom",
+        value : "10000"
+    } ];
 };
 
 sitools.user.component.dataviews.services.WindowImageZoomer.executeAsService = function (config) {

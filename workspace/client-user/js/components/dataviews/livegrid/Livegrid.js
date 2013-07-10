@@ -353,26 +353,6 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         }, 
         datasetViewConfig : dataviewConfig
     });
-    
-//    this.view.addListener('buffer', function(view, store, rowIndex, visibleRows, totalCount) {
-//        var columnModel = this.getColumnModel();
-//        Ext.each(columnModel.columns, function (column, colIndex) {
-//            if (!Ext.isEmpty(column.columnRenderer) && !columnModel.isHidden(colIndex)) {
-//                for ( var row = 0; row <= visibleRows; row++) {
-//                    var cell = view.getCell(row + rowIndex, colIndex);
-//                    
-//                    var element = Ext.get(cell);
-//                    var link = element.child("a");
-//                    link.addListener("click", function() {
-//                        alert("ta mere");
-//                    });
-//                }
-//                
-//                var featureType = sitools.admin.datasets.columnRenderer.behaviorEnum.getColumnRendererCategoryFromBehavior(column.columnRenderer.behavior);
-//            }
-//        },this);        
-//        
-//    }, this);
 	
     /*
 	 * BufferedRowSelectionModel introduces a different selection model and a
@@ -453,8 +433,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	                }
 	                var record = grid.getStore().getAt(rowIndex);  // Get the Record
 	                var controller = this.getTopToolbar().guiServiceController;
-	                sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
-	                
+	                sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);	                
 	            }
 	        }
 //	        plugins : [ filtersSimple ]

@@ -119,14 +119,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 	
 	}, this);
 	
-	var callbackClickFeatureType = function (e, t, o) {
-	    e.stopEvent();
-	    var record = o.record;
-	    var controller = o.controller;
-	    
-	    var column = o.column;
-        sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
-	};
+	
     
     
 	this.store.load({
@@ -137,26 +130,22 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 		callback : function () {
 		    var nodes = this.dataView.getNodes();
 		    var controller = this.getTopToolbar().guiServiceController;
-		    Ext.each(nodes, function(node) {
-		        var record = this.dataView.getRecord(node);
-		        var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", node);
-		        Ext.each(featureTypeNodes, function(featureTypeNode) {
-		            var featureTypeNodeElement = Ext.get(featureTypeNode);
-		            
-		            var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
-		            var column = this.getColumnFromColumnModel(columnAlias);
-		            
-		            
-		            featureTypeNodeElement.addListener("click", callbackClickFeatureType, this, {
-		                record : record,
-		                controller : controller,
-		                column : column
-		            });
-		        }, this);
+		    Ext.each(nodes, function (node) {
+                var record = this.dataView.getRecord(node);
+                var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", node);
+                Ext.each(featureTypeNodes, function (featureTypeNode) {
+                    var featureTypeNodeElement = Ext.get(featureTypeNode);
+
+                    var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
+                    var column = this.getColumnFromColumnModel(columnAlias);
+
+                    featureTypeNodeElement.addListener("click", this.callbackClickFeatureType, this, {
+                        record : record,
+                        controller : controller,
+                        column : column
+                    });
+                }, this);
             }, this);
-		    
-		    
-                
 		},
 		scope : this
 	});
@@ -582,6 +571,14 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
         } else {
             return null;
         }
+    },
+    
+    callbackClickFeatureType : function (e, t, o) {
+        e.stopEvent();
+        var record = o.record;
+        var controller = o.controller;        
+        var column = o.column;
+        sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
     }
 
 });

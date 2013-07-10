@@ -246,7 +246,20 @@ sitools.user.component.dataviews.dataviewUtils = {
         
     },
     
-    
+
+    /**
+     * Execute the action on a featureType column. It can be either a
+     * Gui_Service action if one is configured, or a classic featureType
+     * action
+     * 
+     * @param column
+     *            {Object} the column
+     * @param record
+     *            {Ext.data.Record} the record
+     * @param controller
+     *            {sitools.user.component.dataviews.services.GuiServiceController}
+     *            the current Gui_Service controller
+     */
     featureTypeAction : function (column, record, controller) {
         var service = controller.getService(column.columnAlias);
         if (!Ext.isEmpty(service)) {
@@ -256,7 +269,14 @@ sitools.user.component.dataviews.dataviewUtils = {
             this.executeFeatureType(column, record);
         }
     },
-    
+    /**
+     * Execute the featureType action depending on the given column and record
+     * 
+     * @param column
+     *            {Object} the column
+     * @param record
+     *            {Ext.data.Record} the record
+     */
     executeFeatureType : function (column, record) {
         if (!Ext.isEmpty(column.columnRenderer) && !Ext.isEmpty(column.columnRenderer.behavior)) {
             var value = record.get(column.columnAlias);
@@ -275,16 +295,12 @@ sitools.user.component.dataviews.dataviewUtils = {
                 sitools.user.component.dataviews.dataviewUtils.showPreview(value, columnRenderer.linkText); 
                 break;
             case ColumnRendererEnum.IMAGE_THUMB_FROM_IMAGE :
+            case ColumnRendererEnum.IMAGE_FROM_SQL :
                 sitools.user.component.dataviews.dataviewUtils.showPreview(value, column.header); 
                 break;
-            case ColumnRendererEnum.IMAGE_FROM_SQL :
-                sitools.user.component.dataviews.dataviewUtils.showPreview(value, column.header);
-                break;
             case ColumnRendererEnum.DATASET_LINK :
-                sitools.user.component.dataviews.dataviewUtils.showDetailsData(value, columnRenderer.columnAlias, columnRenderer.datasetLinkUrl); 
-                break;
             case ColumnRendererEnum.DATASET_ICON_LINK :
-                sitools.user.component.dataviews.dataviewUtils.showDetailsData(value, columnRenderer.columnAlias, columnRenderer.datasetLinkUrl);
+                sitools.user.component.dataviews.dataviewUtils.showDetailsData(value, columnRenderer.columnAlias, columnRenderer.datasetLinkUrl); 
                 break;
             default : 
                 break;
