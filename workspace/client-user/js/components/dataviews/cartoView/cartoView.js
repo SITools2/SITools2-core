@@ -153,12 +153,14 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         this.topBar.updateContextToolbar();
     }, this);
     
-    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+    this.topBar =  new sitools.user.component.dataviews.services.menuServicesToolbar({
         datasetUrl : this.sitoolsAttachementForUsers,
         datasetId : this.datasetId,
         dataview : this,
-        origin : this.origin
+        origin : this.origin,
+        columnModel : config.datasetCm
     });
+   
 
     
     var bbar = new Ext.PagingToolbar({
@@ -212,7 +214,7 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     configCol.unshift(sm);
     cm = new Ext.grid.ColumnModel({
         columns : configCol
-    }); 
+    });
     
     
     // create grid panel configured with feature store
@@ -233,7 +235,21 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
                 msg : i18n.get('label.waitMessage'),
                 msgCls : "x-mask-loading"
             }
-        })
+        }),
+        listeners : {
+            scope : this,
+            cellclick : function (grid, rowIndex, columnIndex, e) {
+                var columnModel = this.getColumnModel();
+                var column = columnModel.columns[columnIndex];     
+                if (Ext.isEmpty(column.columnRenderer)) {
+                    return;
+                }
+                var record = grid.getStore().getAt(rowIndex);  // Get the Record
+                var controller = this.getTopToolbar().guiServiceController;
+                sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
+                
+            }
+        }
     });
     
     
@@ -262,7 +278,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
             colModel : extColModelToJsonColModel(this.gridPanel.colModel.config), 
             datasetView : "sitools.user.component.dataviews.cartoView.cartoView",
             datasetUrl : this.sitoolsAttachementForUsers, 
-            dictionaryMappings : this.dictionaryMappings, 
+            dictionaryMappings : this.dictionaryMappings,
             preferencesPath : this.preferencesPath, 
             preferencesFileName : this.preferencesFileName
         };

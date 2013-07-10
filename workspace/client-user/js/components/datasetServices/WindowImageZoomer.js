@@ -35,7 +35,7 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 	padding : '2px 2px 2px 2px',
 	
 	initComponent : function (config) {
-		viewer.onload = function(self){
+		viewer.onload = function (self) {
 	        viewer.toolbarextjs(self);
 	        viewer.preview(self);
 		};
@@ -76,7 +76,6 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
 	    } else {
 	        rec = this.record;
 	    }
-		
 
         if (Ext.isEmpty(this.columnImage)) {
             this.columnImage = this.columnAlias;
@@ -109,7 +108,6 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
         });
 		
 		this.items=[this.panel];
-		
 
 //		this.viewer = new viewer({
 //            // parent : panel.getEl(),
@@ -193,12 +191,6 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(Ext.Win
         width += this.getAdditionalWidth();
         this.setSize(width, height);
 	}
-	
-	
-	
-	
-	
-	
 });
 
 Ext.reg('sitools.user.component.dataviews.services.WindowImageZoomer', sitools.user.component.dataviews.services.WindowImageZoomer);

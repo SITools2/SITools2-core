@@ -158,7 +158,6 @@ viewer.toolbarextjs = function (viewer) {
                     useMap : "#controls"
                 }
             }
-            
         ]
     });
     
@@ -178,6 +177,7 @@ viewer.toolbarextjs = function (viewer) {
     Event.observe(viewer.frameElement, 'zoomto', callbackZoomTo.bind(self, viewer));
     Event.observe(viewer.frameElement, 'init', callbackZoomTo.bind(self, viewer));
     Event.observe(viewer.frameElement, 'resize', callbackZoomTo.bind(self, viewer));
+    Event.observe(viewer.frameElement, 'reset', callbackZoomTo.bind(self, viewer));
     
     
 	

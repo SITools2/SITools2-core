@@ -1,23 +1,22 @@
 .previewFrame {
+	background-color: rgba(255, 255, 255, 0.3);
 	position : absolute;
 	margin : 2px 0px 0px 2px;
 	overflow: hidden;
-	-moz-box-shadow: 2px 2px 2px #B4B4B4;
-	-webkit-box-shadow: 2px 2px 2px #B4B4B4;
-	-o-box-shadow: 2px 2px 2px #B4B4B4;
-	box-shadow: 2px 2px 2px #B4B4B4;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px;
+	-moz-box-shadow: 1px 1px 2px #B4B4B4;
+	-webkit-box-shadow: 1px 1px 2px #B4B4B4;
+	-o-box-shadow: 1px 1px 2px #B4B4B4;
+	box-shadow: 1px 1px 2px #B4B4B4;
 }
 
 .previewBox {
 	position : absolute;
 	background: #202020;
+	-moz-box-shadow: 0px 0px 3px 1px #B4B4B4;
+	-webkit-box-shadow: 0px 0px 3px 1px #B4B4B4;
+	-o-box-shadow: 0px 0px 3px 1px #B4B4B4;
+	box-shadow: 0px 0px 3px 1px #B4B4B4;
 	opacity: 0.6;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
 }
 
 .previewBox_over {
