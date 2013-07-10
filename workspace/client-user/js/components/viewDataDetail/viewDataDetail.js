@@ -453,7 +453,7 @@ sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
 	                    this.formPanel.removeAll();
 	                    this.formPanelImg.removeAll();
 	                    
-                         his.formPanel.add(itemsForm);
+                        this.formPanel.add(itemsForm);
 	                    this.formPanel.doLayout();
                         
                         if (this.linkStore.getCount() === 0) {

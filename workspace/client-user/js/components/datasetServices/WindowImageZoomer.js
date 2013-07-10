@@ -244,8 +244,8 @@ sitools.user.component.dataviews.services.WindowImageZoomer.getParameters = func
                         });
                     }
                 },
-                name : "columnImage",
-                id : "columnImage",
+                name : "columnAlias",
+                id : "columnAlias",
                 value : ""
             }
         }, {
