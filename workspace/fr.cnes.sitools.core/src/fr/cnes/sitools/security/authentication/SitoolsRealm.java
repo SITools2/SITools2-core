@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
+import org.junit.rules.Verifier;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.ClientInfo;
 import org.restlet.engine.security.RoleMapping;
@@ -40,6 +41,7 @@ import org.restlet.security.User;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.security.SecurityUtil;
+
 
 /**
  * SitoolsRealm based on a memory Role management
@@ -62,6 +64,9 @@ public abstract class SitoolsRealm extends Realm {
 
   /** Scheme */
   private String scheme;
+  
+  /** SitoolsSettings */
+  private SitoolsSettings settings;
 
   /**
    * Constructor
@@ -81,6 +86,8 @@ public abstract class SitoolsRealm extends Realm {
 
     setVerifier(new SitoolsDefaultVerifier());
     setEnroler(new SitoolsDefaultEnroler());
+    
+    this.settings = settings;
   }
 
   /**
@@ -125,6 +132,25 @@ public abstract class SitoolsRealm extends Realm {
     }
   }
 
+  
+  /**
+   * Only verify if user exists in realm.
+   */
+  protected class SitoolsLocalUsernameVerifier extends LocalVerifier {
+
+    @Override
+    public char[] getLocalSecret(String arg0) {
+      return null;
+    }
+
+    @Override
+    public boolean verify(String identifier, char[] secret) {
+      return (findUser(identifier) != null);
+    }
+    
+  }
+    
+  
   /**
    * Verifier based on the default security model. It looks up users in the mapped organizations.
    */
@@ -404,5 +430,16 @@ public abstract class SitoolsRealm extends Realm {
    * </p>
    */
   public abstract void refreshUsersAndGroups();
+  
+  /**
+   * Verifiers can call this event
+   */
+  public abstract boolean onVerify(boolean result, fr.cnes.sitools.security.model.User user);
 
+  public SitoolsSettings getSettings() {
+    return settings;
+  }
+
+  
+  
 }

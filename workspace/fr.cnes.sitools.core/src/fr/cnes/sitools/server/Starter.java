@@ -360,27 +360,7 @@ public final class Starter {
       stores = StoreHelper.initContext(component.getContext());
     }
     catch (SitoolsException e) {
-      // If there is an error while creating the stores, we attach an error page to the server and stop the starting
-      // process
-      final Exception sitoolsException = e;
-      // create the virtual host
-      Context vhostContext = component.getContext().createChildContext();
-      VirtualHost host = Starter.initVirtualHost(vhostContext, settings);
-      // SERVER STATUS SERVICE
-      String baseUrl = settings.getString(Consts.APP_URL);
-      Starter.initStatusService(settings, baseUrl, component);
-      // attach a new Restlet to it
-      host.attach(new Restlet() {
-        @Override
-        public void handle(Request request, Response response) {
-          throw new ResourceException(sitoolsException);
-        }
-      });
-      // ============================
-      // START SERVER
-      component.getHosts().add(host);
-      component.start();
-      server = component;
+      startServerFailed(settings, component, e);
       return;
     }
     settings.setStores(stores);
@@ -395,9 +375,17 @@ public final class Starter {
     UsersAndGroupsStore storeUandG = (UsersAndGroupsStore) settings.getStores().get(Consts.APP_STORE_USERSANDGROUPS);
 
     String realm = settings.getString(Consts.REALM_CLASS, SitoolsMemoryRealm.class.getName());
-    Class<?> realmClass = Class.forName(realm);
-    SitoolsRealm smr = (SitoolsRealm) realmClass.getConstructor(UsersAndGroupsStore.class, SitoolsStore.class,
-        SitoolsSettings.class).newInstance(storeUandG, storeRole, settings);
+
+    SitoolsRealm smr;
+    try {
+      Class<?> realmClass = Class.forName(realm);
+      smr = (SitoolsRealm) realmClass.getConstructor(UsersAndGroupsStore.class, SitoolsStore.class,
+          SitoolsSettings.class).newInstance(storeUandG, storeRole, settings);
+    }
+    catch (Exception e) {
+      startServerFailed(settings, component, e);
+      return;
+    }
 
     // Realm
     // SitoolsRealm smr = new LdapMemoryRealm(storeUandG, storeRole, settings);
@@ -2029,6 +2017,32 @@ public final class Starter {
     serverHTTP.getContext().getAttributes().get("org.restlet.engine.helper");
     
     server = component;
+  }
+
+  private static void startServerFailed(SitoolsSettings settings, Component component, Exception e)
+      throws Exception {
+    // If there is an error while creating the stores, we attach an error page to the server and stop the starting
+    // process
+    final Exception sitoolsException = e;
+    // create the virtual host
+    Context vhostContext = component.getContext().createChildContext();
+    VirtualHost host = Starter.initVirtualHost(vhostContext, settings);
+    // SERVER STATUS SERVICE
+    String baseUrl = settings.getString(Consts.APP_URL);
+    Starter.initStatusService(settings, baseUrl, component);
+    // attach a new Restlet to it
+    host.attach(new Restlet() {
+      @Override
+      public void handle(Request request, Response response) {
+        throw new ResourceException(sitoolsException);
+      }
+    });
+    // ============================
+    // START SERVER
+    component.getHosts().add(host);
+    component.start();
+    server = component;
+    return;
   }
 
   /**

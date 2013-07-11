@@ -57,6 +57,8 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   /** Users and Groups store */
   private UsersAndGroupsStore storeUsersAndGroups = null;
   
+
+
   /**
    * Constructor
    * 
@@ -550,5 +552,21 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
 
     return result;
   }
+  
+  @Override
+  public boolean onVerify(boolean result, fr.cnes.sitools.security.model.User user) {
+    if (!result) {
+      // i can log ...
+      this.getSettings().getComponent().getLogger().fine("User not authenticated");
+
+    }
+    return result;
+  }
+
+  protected UsersAndGroupsStore getStoreUsersAndGroups() {
+    return storeUsersAndGroups;
+  }
+  
+  
   
 }
