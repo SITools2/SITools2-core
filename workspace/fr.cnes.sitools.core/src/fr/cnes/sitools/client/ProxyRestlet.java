@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -64,6 +64,10 @@ public class ProxyRestlet extends Restlet implements WadlDescribable {
     if (externalUrl == null || "".equals(externalUrl)) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "external_url parameter is mandatory");
     }
+
+    String reqString = request.getResourceRef().toString();
+    int externalUrlIndex = reqString.indexOf("external_url=");
+    externalUrl = reqString.substring(externalUrlIndex + "external_url=".length());
 
     Redirector redirector = new RedirectorProxy(getContext(), externalUrl, Redirector.MODE_SERVER_OUTBOUND);
 

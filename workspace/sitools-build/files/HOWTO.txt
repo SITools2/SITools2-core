@@ -1,0 +1,26 @@
+HOWTO
+
+How to configure a Quicklook with Zoom capabilities on a specific dataset column
+	- Edit the dataset and configure the column with an Image FeatureType
+	- Add a Gui Service (from the Dataset services menu) named Window Image Zoomer
+	- Configure the Window Image Zoomer with
+		- FeatureType : Image
+		- Image Column : the column of the quicklook
+		- Image preview column : the column containing a Thumbnail of the quicklook, used as a preview of the zoomed area
+		- Limit Width / Limit Height : The size of the window which will be opened
+		- Zoom Factor : The percentage of zoom at each level
+		- Max Zoom : The maximum percentage of Zoom between the original size of the window and the zoomed size
+	- Open the dataset in the client interface and click on the column to open the Image Zoomer
+	
+How to configure a Quicklook with Zoom capabilities on a all dataset columns with Image FeatureType		
+	- Edit the dataset and configure the columns with an Image FeatureType
+	- Add a Gui Service (from the Dataset services menu) named Window Image Zoomer
+	- Configure the Window Image Zoomer with
+		- FeatureType : Image
+		- Image Column : Leave the value blank (important!!!)
+		- Image preview column :  Leave the value blank (important!!!)
+		- Limit Width / Limit Height : The size of the window which will be opened
+		- Zoom Factor : The percentage of zoom at each level
+		- Max Zoom : The maximum percentage of Zoom between the original size of the window and the zoomed size
+	- Open the dataset in the client interface and click on the column to open the Image Zoomer
+	
