@@ -31,7 +31,20 @@ sitools.Portal = function (projectsList, languages, preferences) {
             text : i18n.get('label.connection'),
             itemId : 'menu_login',
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/login.png',
-            handler : this.connect
+            scope : this,
+            handler : function () {
+                sitools.userProfile.LoginUtils.connect({
+                    closable : true,
+                    url : loadUrl.get('APP_URL') + '/login',
+                    register : loadUrl.get('APP_URL') + '/inscriptions/user',
+                    reset : loadUrl.get('APP_URL') + '/resetPassword',
+                    handler : function () {
+                        portal.initAppliPortal({
+                            siteMapRes : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')
+                        });
+                    }
+                });
+            }
 
         };
     } else {
@@ -41,9 +54,8 @@ sitools.Portal = function (projectsList, languages, preferences) {
             text : i18n.get('label.logout'),
             itemId : 'menu_logout',
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/logout.png',
-            handler : function () {
-                utils_logout();
-            }
+            scope : this,
+            handler : sitools.userProfile.LoginUtils.logout
         };
 
     }
@@ -538,21 +550,7 @@ Ext.extend(sitools.Portal, Ext.Viewport, {
         sitools.Portal.superclass.onRender.apply(this, arguments);
         // this.
         // this.doLayout();
-    },
-    connect : function () {
-        var tmp = new sitools.userProfile.Login({
-            closable : true,
-            url : loadUrl.get('APP_URL') + '/login',
-            register : loadUrl.get('APP_URL') + '/inscriptions/user',
-            reset : loadUrl.get('APP_URL') + '/resetPassword',
-            handler : function () {
-                portal.initAppliPortal({
-                    siteMapRes : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')
-                });
-            }
-        }).show();
-
-    }
+    }    
 });
 
 Ext.reg('sitools.Portal', sitools.Portal);

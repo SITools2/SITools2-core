@@ -125,7 +125,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			scope : this, 
 			text  : i18n.get('label.logout'), 
 			handler : function () {
-				utils_logout();
+			    sitools.userProfile.LoginUtils.logout();
 			}
 		});
 		var login = new Ext.Button({
@@ -133,12 +133,12 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			cls : "userProfileBtn", 
 			text  : i18n.get('label.login'), 
 			handler : function () {
-				var tmp = new sitools.userProfile.Login({
-		            closable : true,
-		            url : loadUrl.get('APP_URL') + '/login',
-		            register : loadUrl.get('APP_URL') + '/inscriptions/user',
-		            reset : loadUrl.get('APP_URL') + '/resetPassword'
-		        }).show();
+			    sitools.userProfile.LoginUtils.connect({
+			        closable : true,
+                    url : loadUrl.get('APP_URL') + '/login',
+                    register : loadUrl.get('APP_URL') + '/inscriptions/user',
+                    reset : loadUrl.get('APP_URL') + '/resetPassword'
+                });			    
 			}
 		});
 		
