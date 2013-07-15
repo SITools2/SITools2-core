@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -36,6 +36,7 @@ import fr.cnes.sitools.client.ProxyRestlet;
 import fr.cnes.sitools.client.SitoolsVersionResource;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.model.Category;
+import fr.cnes.sitools.login.LoginDetailsResource;
 import fr.cnes.sitools.login.LoginResource;
 import fr.cnes.sitools.login.ResetPasswordResource;
 import fr.cnes.sitools.proxy.DirectoryProxy;
@@ -130,6 +131,8 @@ public final class PublicApplication extends StaticWebApplication {
       router.attach("/login", LoginResource.class);
 
     }
+
+    router.attach("/login-details", LoginDetailsResource.class);
 
     String target = getBaseUrl() + "{keywords}";
 
