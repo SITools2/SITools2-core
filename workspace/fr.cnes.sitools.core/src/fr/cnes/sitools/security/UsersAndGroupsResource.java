@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.security;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
@@ -150,6 +152,35 @@ public abstract class UsersAndGroupsResource extends SitoolsResource {
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);
     return rep;
+  }
+
+  /**
+   * Gets DataSet object from Representation
+   * 
+   * @param representation
+   *          of a DataSet
+   * @return DataSet
+   * @throws IOException
+   *           if there is an error while deserializing Java Object
+   */
+  public final Group getGroupObject(Representation representation) throws IOException {
+    Group object = null;
+    if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<Group> obj = (ObjectRepresentation<Group>) representation;
+      object = obj.getObject();
+    }
+    else if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      // Parse the XML representation to get the dataset bean
+      object = new XstreamRepresentation<Group>(representation).getObject();
+
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      object = new JacksonRepresentation<Group>(representation, Group.class).getObject();
+    }
+
+    return object;
   }
 
   /**

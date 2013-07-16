@@ -62,12 +62,16 @@ public final class LoginDetailsResource extends SitoolsResource {
     List<Property> list = new ArrayList<Property>();
     String delegateLogin = settings.getString(Consts.SECURITY_DELEGATE_LOGIN, "false");
     String delegateLogout = settings.getString(Consts.SECURITY_DELEGATE_LOGOUT, "false");
+    String delegateUserManagment = settings.getString(Consts.SECURITY_DELEGATE_USER_MANAGMENT, "false");
     list.add(new Property(Consts.SECURITY_DELEGATE_LOGIN, delegateLogin, null));
     list.add(new Property(Consts.SECURITY_DELEGATE_LOGIN_URL, settings.getString(Consts.SECURITY_DELEGATE_LOGIN_URL),
         null));
     list.add(new Property(Consts.SECURITY_DELEGATE_LOGOUT, delegateLogout, null));
     list.add(new Property(Consts.SECURITY_DELEGATE_LOGOUT_URL, settings.getString(Consts.SECURITY_DELEGATE_LOGOUT_URL),
         null));
+    list.add(new Property(Consts.SECURITY_DELEGATE_USER_MANAGMENT, delegateUserManagment, null));
+    list.add(new Property(Consts.SECURITY_DELEGATE_USER_MANAGMENT_URL, settings
+        .getString(Consts.SECURITY_DELEGATE_USER_MANAGMENT_URL), null));
 
     Response response = new Response(true, list, Property.class, "property");
 

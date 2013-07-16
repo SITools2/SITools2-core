@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,11 +22,9 @@ import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
@@ -130,16 +128,7 @@ public final class GroupResource extends UsersAndGroupsResource implements fr.cn
   @Put
   public Representation update(Representation representation, Variant variant) {
     try {
-      Group input = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        input = new XstreamRepresentation<Group>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-        // Parse the JSON representation to get the bean
-        input = new JacksonRepresentation<Group>(representation, Group.class).getObject();
-      }
+      Group input = getGroupObject(representation);
       input.setName(getGroupName());
       // Business service
       Group output = getStore().updateGroup(input);

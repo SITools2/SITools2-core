@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -72,6 +72,7 @@ public final class UsersResource extends UsersAndGroupsResource {
   public void sitoolsDescribe() {
     setName("UsersResource");
     setDescription("Resource for managing a user collection");
+    setNegotiated(false);
   }
 
   /**
@@ -79,11 +80,11 @@ public final class UsersResource extends UsersAndGroupsResource {
    * 
    * @return an XML representation of the user
    */
-  @Get("xml")
-  public Representation getXML() {
+  @Get
+  public Representation get(Variant variant) {
     getLogger().info("UsersResource.getXML");
     Response response = getUsersResponse();
-    return getRepresentation(response, MediaType.APPLICATION_XML);
+    return getRepresentation(response, variant);
   }
 
   @Override
@@ -101,30 +102,6 @@ public final class UsersResource extends UsersAndGroupsResource {
       this.addStandardResourceCollectionFilterInfo(info);
     }
     this.addStandardObjectResponseInfo(info);
-  }
-
-  /**
-   * Get a JSON representation
-   * 
-   * @return a JSON representation of the user
-   */
-  @Get("json")
-  public Representation getJSON() {
-    getLogger().info("UsersResource.getJSON");
-    Response response = getUsersResponse();
-    return getRepresentation(response, MediaType.APPLICATION_JSON);
-  }
-
-  /**
-   * Get a Java Class representation
-   * 
-   * @return a Java Class representation of the user
-   */
-  @Get("class")
-  public Representation getObject() {
-    getLogger().info("UsersResource.getObject");
-    Response response = getUsersResponse();
-    return getRepresentation(response, MediaType.APPLICATION_JAVA_OBJECT);
   }
 
   /**
@@ -166,24 +143,21 @@ public final class UsersResource extends UsersAndGroupsResource {
   @Put
   public Representation update(Representation representation, Variant variant) {
     try {
-      Group input = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the inscription bean
-        input = new XstreamRepresentation<Group>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-        // Parse the JSON representation to get the bean
-        input = new JacksonRepresentation<Group>(representation, Group.class).getObject();
-      }
+      Group input = getGroupObject(representation);
 
       // Business service
       input.checkUserUnicity();
       Group output = getStore().updateGroupUsers(input);
 
+      // Notify observers
+      Notification notification = new Notification();
+      notification.setEvent("GROUP_UPDATED");
+      notification.setObservable(output.getName());
+      getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+
       // Response
       Response response = new Response(true, output, Group.class, "group");
-      return getRepresentation(response, variant.getMediaType());
+      return getRepresentation(response, variant);
     }
     catch (SitoolsException e) {
       getLogger().log(Level.SEVERE, null, e);
@@ -330,7 +304,10 @@ public final class UsersResource extends UsersAndGroupsResource {
   private void sendMailToUser(User user, String pass) {
 
     SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
-
+    if (user.getEmail() == null) {
+      getLogger().info("User " + user.getIdentifier() + " has no email, cannot send confirmation email");
+      return;
+    }
     String[] toList = new String[] {user.getEmail()};
     Mail mailToUser = new Mail();
     mailToUser.setToList(Arrays.asList(toList));
@@ -352,7 +329,7 @@ public final class UsersResource extends UsersAndGroupsResource {
         "sitoolsUrl",
         getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
             + settings.getString(Consts.APP_CLIENT_USER_URL) + "/");
-    
+
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 
     root.put("context", getContext());
