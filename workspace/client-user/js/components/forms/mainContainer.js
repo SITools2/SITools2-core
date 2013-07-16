@@ -32,6 +32,7 @@ Ext.namespace('sitools.user.component.forms');
  * @cfg {string} formId Form Id
  * @cfg {string} formName Form Name
  * @cfg {Array} formParameters Array of form parameters
+ * @cfg {Array} formZones Array of form Zones containing parameters
  * @cfg {number} formWidth Form Width 
  * @cfg {number} formHeight Form Height 
  * @cfg {string} formCss Name of a specific css class to apply to form
@@ -48,20 +49,29 @@ sitools.user.component.forms.mainContainer = function (config) {
     
     var panelIdObject = {};
     
-    Ext.each(config.formParameters, function(formParam) { 
-    	var containerId = formParam.containerPanelId;
-    	if (Ext.isEmpty(panelIdObject[containerId])){
-    		panelIdObject[containerId] = [];
-    	}
-    	panelIdObject[containerId].push(formParam);
-    });
+    // New Form model with zones
+    if (!Ext.isEmpty(this.formZones)){
+        Ext.each(this.formZones, function(formParam) { 
+            var containerId = formParam.containerPanelId;
+            if (Ext.isEmpty(panelIdObject[containerId])){
+                panelIdObject[containerId] = [];
+            }
+            panelIdObject[containerId].push(formParam);
+        });
+    } else { // old form model
+        Ext.each(config.formParameters, function(formParam) { 
+            var containerId = formParam.containerPanelId;
+            if (Ext.isEmpty(panelIdObject[containerId])){
+                panelIdObject[containerId] = [];
+            }
+            panelIdObject[containerId].push(formParam);
+        });
+    }
     
     var items = [];
+    var globalParams = {};
     
     Ext.iterate(panelIdObject, function(key, formParams){
-    		
-    	console.log(key);
-    	
     	var componentList = new  sitools.user.component.formComponentsPanel({
             height : 200,
             border: true,
@@ -69,16 +79,18 @@ sitools.user.component.forms.mainContainer = function (config) {
             formId : config.formId,
             id : key
     	});
-    	
-    	componentList.datasetCm = config.dataset.columnModel;
-		componentList.loadParameters(formParams, config.dataUrl, "dataset");
+
+        if (!Ext.isEmpty(this.formZones)) {
+            globalParams.formZones = formParams;
+        } else {
+            globalParams.oldParameters = formParams;
+        }
+
+        componentList.datasetCm = config.dataset.columnModel;
+        componentList.loadParameters(globalParams, config.dataUrl, "dataset");
 
 		items.push(componentList);
-    	
-    	
-    });
-    
-    
+    }, this);
     
     this.componentList = new sitools.user.component.formComponentsPanel({
         width : config.formWidth,
@@ -115,10 +127,6 @@ sitools.user.component.forms.mainContainer = function (config) {
         this.datasetView = config.dataset.datasetView;
 		this.dictionaryMappings = config.dataset.dictionaryMappings;
     }
-    
-    console.log('height = ' + config.formHeight);
-    
-    
     
     sitools.user.component.forms.mainContainer.superclass.constructor.call(this, Ext.apply({
         height : config.formHeight,

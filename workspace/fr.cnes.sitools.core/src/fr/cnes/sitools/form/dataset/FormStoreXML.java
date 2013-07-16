@@ -133,6 +133,7 @@ public final class FormStoreXML extends SitoolsStoreXML<Form> {
         current.setHeight(form.getHeight());
         current.setCss(form.getCss());
         current.setParentUrl(form.getParentUrl());
+        current.setZones(form.getZones());
         it.remove();
 
         break;

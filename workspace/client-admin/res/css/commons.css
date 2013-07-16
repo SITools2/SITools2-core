@@ -52,4 +52,7 @@ a.small-link{
 	background-repeat: no-repeat;
 }
 
+.over-form-component {
+	cursor: move !important;
+}
 

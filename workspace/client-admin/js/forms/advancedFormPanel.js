@@ -66,12 +66,13 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 	                        // component.data.height;
 	                        var containerItems = [ sitools.common.forms.formParameterToComponent(component.data, null, null, this.datasetColumnModel, this.context).component ];
 	                        containerItems[0].setDisabled(true);
+	                        containerItems.overCls = 'over-form-component';
 	                        
 	                        var container = new Ext.Container({
-	                        	
 	                            width : parseInt(component.data.width, 10),
 	                            height : parseInt(component.data.height, 10),
 	                            bodyCssClass : "noborder",
+	                            overCls : 'over-form-component',
 	                            cls : component.data.css,
 	                            x : x,
 	                            y : y,
@@ -81,7 +82,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 	                            items : containerItems, 
 	                            displayPanel : this, 
 	                            record : component, 
-	                            
 	                            onEdit : function () {
 	            			        var rec = this.record;
 	            			        if (!rec) {
@@ -126,8 +126,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 	                        });
 	                        this.add(container);
 	                    }
-	            	}
-                    , this);
+	            	}, this);
                     
                     this.doLayout();
             		
@@ -289,16 +288,19 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     
     deletePanel : function(){
     	
-    	var displayPanel = this;
+    	var zoneToRemove = this.ownerCt.zoneStore.find('id', this.id);
+    	this.zoneStore.removeAt(zoneToRemove);
     	
-    	this.formComponentsStore.each(function (record) {
-	        var rec = this;
-	        if ( this.data.containerPanelId == displayPanel.id ) {
-	        	displayPanel.formComponentsStore.remove(rec);
-	        	displayPanel.fireEvent("activate");
-	        }
-	    });
+    	this.formComponentsStore.remove(this.zoneStore.filter('id', this.id));
+    	
+    	this.fireEvent("activate");
+    	
+//    	this.formComponentsStore.each(function (record) {
+//	        var rec = this;
+//	        if ( this.data.containerPanelId == displayPanel.id ) {
+//	        	displayPanel.formComponentsStore.remove(rec);
+//	        }
+//	    });
     }
 
 });
-

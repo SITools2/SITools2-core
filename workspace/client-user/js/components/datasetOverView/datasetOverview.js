@@ -192,6 +192,7 @@ Ext.extend(sitools.user.component.DatasetOverview, Ext.Panel, {
 							    id : form.id,
 							    formName : form.name,
 							    formParameters : form.parameters,
+							    formZones : form.zones,
 							    formWidth : form.width,
 							    formHeight : form.height, 
 							    formCss : form.css, 

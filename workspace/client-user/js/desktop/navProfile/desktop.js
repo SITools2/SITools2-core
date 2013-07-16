@@ -640,6 +640,7 @@ sitools.user.desktop.navProfile.desktop = {
 			            formId : pref.componentSettings.formId,
 		                formName : pref.componentSettings.formName,
 		                formParameters : pref.componentSettings.formParameters,
+		                formZones : pref.componentSettings.zones,
 		                formWidth : pref.componentSettings.formWidth,
 		                formHeight : pref.componentSettings.formHeight, 
 		                formCss : pref.componentSettings.formCss, 

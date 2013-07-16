@@ -91,39 +91,21 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
     
     _addPanel : function () {
 
-    	var aPanel = new sitools.admin.forms.advancedFormPanel({
-    		title: 'advanced form',
-    		frame : true,
-    		height: 200,
-    		width: 200,
-    		ddGroup     : 'gridComponentsList',
-    		datasetColumnModel : this.datasetColumnModel,
-    		storeConcepts : this.storeConcepts, 
-    		formComponentsStore : this.formComponentsStore,
-    		absoluteLayout : this,
-    	});
-    	this.add(aPanel);
+        var setupAdvancedPanel = new sitools.admin.forms.setupAdvancedFormPanel({
+            parentContainer : this,
+            currentPosition : this.position
+        });
+        setupAdvancedPanel.show();
+       
+    	
     	
     	// resize container panel if needed
-    	this.y = this.y + 200;
-    	if (this.y > 500) {
-    		this.formSize.height = this.y;
-    	}
-        var size = {
-           width : this.formSize.width,
-           height : this.formSize.height
-        };
-        this.setSize(size);
-        
-        this.position = this.position + 1;
-        
-        this.zoneStore.add(new Ext.data.Record({
-            id : aPanel.id,
-            height : aPanel.height,
-            position : this.position
-        }));
-    	
-    	this.doLayout();
+//    	
+//        
+//        this.position = this.position + 1;
+//        
+//        
+//    	this.doLayout();
 
     },
     
@@ -134,36 +116,54 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         
         this.removeAll();
 
-        var mainPanel = new sitools.admin.forms.advancedFormPanel({
-        	
-        	title: 'form',
-        	height: 200,
-			
-			border: true,
-			id : 'mainpanel',
-			cls: 'toto',
-			
-			ddGroup : 'gridComponentsList',
-    		datasetColumnModel : this.datasetColumnModel,
-    		storeConcepts : this.storeConcepts, 
-    		formComponentsStore : this.formComponentsStore,
-    		absoluteLayout : this,
-			
-        });
-        
-        this.add(mainPanel);
-        
-        if (Ext.isEmpty(this.zoneStore.data.items)){
-	        this.zoneStore.add(new Ext.data.Record({
-	            id : mainPanel.id,
-	            height : mainPanel.height,
-	            title : 'Main Panel',
-	            position : 0
-	        }));
+        if (this.zoneStore.getCount() > 0) {
+            this.zoneStore.each(function (rec) {
+                var zonePanel = new sitools.admin.forms.advancedFormPanel({
+                    title: rec.data.title,
+                    height: rec.data.height,
+                    position : rec.data.position,
+                    border: true,
+                    id : rec.data.id,
+                    ddGroup : 'gridComponentsList',
+                    datasetColumnModel : this.datasetColumnModel,
+                    storeConcepts : this.storeConcepts,
+                    context : 'dataset',
+                    formComponentsStore : this.formComponentsStore,
+                    absoluteLayout : this
+                });
+                this.add(zonePanel);
+            }, this);
+        }
+        else {
+            var mainPanel = new sitools.admin.forms.advancedFormPanel({
+                title: 'form',
+                id : Ext.id(),
+                height: 200,
+                border: true,
+                ddGroup : 'gridComponentsList',
+                datasetColumnModel : this.datasetColumnModel,
+                storeConcepts : this.storeConcepts,
+                context : 'dataset',
+                formComponentsStore : this.formComponentsStore,
+                absoluteLayout : this
+            });
+            this.add(mainPanel);
+            
+            this.formComponentsStore.each(function (rec) {
+                rec.set('containerPanelId', mainPanel.id);
+            }, this);
+            
+            this.zoneStore.add(new Ext.data.Record({
+                id : mainPanel.id,
+                title : 'Main Panel',
+                height : mainPanel.height,
+                position : 0
+            }));
         }
         
-        if ( this.action == 'create'  ) {
-        	this.y = 250;
+
+        if (this.action == 'create') {
+            this.y = 250;
         }
         
 //        if ( this.action == 'modify'  ) {
@@ -183,13 +183,16 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        	for (var i = 0; i < recordsArray.length; i++) {
 	
 	        		var containerId = recordsArray[i].data.containerPanelId;
+	        		var zoneIndex = this.zoneStore.find('id', containerId);
+                    var zone = this.zoneStore.getAt(zoneIndex);
 	        		
 	        		var aPanel = new sitools.admin.forms.advancedFormPanel({
-	            		id: recordsArray[i].data.containerPanelId,
-	            		title: 'advanced form',
+	            		id: containerId,
+	            		title: zone.data.title,
 	            		frame : true,
-	            		height: 200,
+	            		height: zone.data.height,
 	            		ddGroup : 'gridComponentsList',
+	            		context : 'dataset',
 	            		datasetColumnModel : this.datasetColumnModel,
 	            		storeConcepts : this.storeConcepts, 
 	            		formComponentsStore : this.formComponentsStore,
@@ -206,7 +209,6 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        		parent.add(value);
 	        		parent.y = parent.y + 210;
 		        });
-
 	        }
 
 //        }
@@ -226,8 +228,6 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	        }, this);
 	        
         }
-        
-		
     }, 
     
     
@@ -270,15 +270,12 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 			items : [ {
 				text : 'Delete this form', 
 				scope : this, 
-				handler : function(){
+				handler : function() {
 					this.deletePanel();
 				}
 			} ]
         });
 		var xy = event.getXY();
 		ctxMenu.showAt(xy);
-    },
-
-    
-
+    }
 });

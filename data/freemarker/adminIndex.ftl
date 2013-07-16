@@ -190,6 +190,7 @@
     <script type="text/javascript" src="js/forms/formsCrud.js"></script>
     <script type="text/javascript" src="js/forms/componentPropPanel.js"></script>
     <script type="text/javascript" src="js/forms/absoluteLayoutProp.js"></script>
+	<script type="text/javascript" src="js/forms/setupAdvancedFormPanel.js"></script>
     <script type="text/javascript" src="js/forms/componentsListPanel.js"></script>
     <script type="text/javascript" src="js/forms/formPropPanel.js"></script>
     <script type="text/javascript" src="js/forms/winParent.js"></script>

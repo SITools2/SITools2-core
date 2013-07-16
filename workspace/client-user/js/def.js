@@ -967,6 +967,7 @@ sitools.user.clickDatasetIcone = function (url, type, extraCmpConfig) {
 					                    formId : form.id,
 					                    formName : form.name,
 					                    formParameters : form.parameters,
+					                    formZones : form.zones,
 					                    formWidth : form.width,
 					                    formHeight : form.height, 
 					                    formCss : form.css, 

@@ -37,23 +37,23 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
 //sitools.component.users.datasets.formsContainer = Ext.extend(Ext.Panel, {
     
     initComponent : function () {
-        // this.indexes = new Array();
-        // this.loadParameters (this.formParameters,
-        // this.formParameters[0].code);
+//        this.indexes = new Array();
+//        this.loadParameters (this.formParameters,
+//        this.formParameters[0].code);
 
         Ext.apply(this, {
-            // title: this.formName,
-            //id : "panelResultForm" + this.formId, 
+//            title: this.formName,
+//            id : "panelResultForm" + this.formId, 
             bodyCssClass : this.css,
             height : this.height,
             width : this.width,
-            //border : false,
-            //bodyBorder : false,
-            collapsible: true,
-            layout : "absolute",
+//            border : false,
+//            bodyBorder : false,
+//            collapsible: true,
+            layout : "form",
             labelWidth : 100,
-            // autoHeight :true,
-            // width:600,
+            autoHeight : true,
+//            width:600,
             padding : 10,
             items : [],
 
@@ -118,6 +118,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                 catch (err) {
                 	return;
                 }
+                this.doLayout();
             }
         };
         sitools.user.component.formComponentsPanel.superclass.initComponent.apply(this, arguments);
@@ -129,24 +130,62 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
      * @param {string} context the context should be "dataset" or "project"
      */
     loadParameters : function (parameters, dataUrl, context) {
-        Ext.each(parameters, function (parameter) {
-            var y = Ext.isEmpty(parameter.ypos) ? y + 50 : parameter.ypos;
-            var x = Ext.isEmpty(parameter.xpos) ? x : parameter.xpos;
+        
+        if (!Ext.isEmpty(parameters.formZones)){
+            Ext.each(parameters.formZones, function(zone){
+                var zoneFieldset = new Ext.form.FieldSet({
+                    title : (!Ext.isEmpty(zone.title) ? zone.title : zone.id),
+                    itemId : zone.id,
+                    height : zone.height,
+                    width : '500',
+                    position : zone.position,
+                    collapsible: (zone.position == 0) ? false : true,
+                    formId : this.formId,
+                    datasetCm : this.datasetCm,
+                    layout : 'absolute'
+                });
+                
+                Ext.each(zone.params, function (param){
+                    var y = Ext.isEmpty(param.ypos) ? y + 50 : param.ypos;
+                    var x = Ext.isEmpty(param.xpos) ? x : param.xpos;
+                    var containerItems = [ sitools.common.forms.formParameterToComponent(param, dataUrl, this.formId, this.datasetCm, context).component];
 
-            var containerItems = [ sitools.common.forms.formParameterToComponent(parameter, dataUrl, this.formId, this.datasetCm, context).component];
-
-            var container = new Ext.Container({
-                width : parameter.width,
-                height : parameter.height,
-                x : x,
-                y : y,
-                bodyCssClass : "noborder",
-                cls : parameter.css,
-                items : containerItems
-            });
-            this.add(container);
-        }, this);
-
+                    var container = new Ext.Container({
+                        width : param.width,
+                        height : param.height,
+                        x : x,
+                        y : y,
+                        bodyCssClass : "noborder",
+                        cls : param.css,
+                        items : containerItems
+                    });
+                    this.add(container);
+                    
+                }, zoneFieldset);
+                
+                this.insert(zoneFieldset.position, zoneFieldset);
+                
+            }, this);
+        } else {
+//            this.layout = 'absolute';
+            Ext.each(parameters.oldParameters, function (parameter) {
+                var y = Ext.isEmpty(parameter.ypos) ? y + 50 : parameter.ypos;
+                var x = Ext.isEmpty(parameter.xpos) ? x : parameter.xpos;
+                
+                var containerItems = [ sitools.common.forms.formParameterToComponent(parameter, dataUrl, this.formId, this.datasetCm, context).component];
+                
+                var container = new Ext.Container({
+                    width : parameter.width,
+                    height : parameter.height,
+                    x : x,
+                    y : y,
+                    bodyCssClass : "noborder",
+                    cls : parameter.css,
+                    items : containerItems
+                });
+                this.add(container);
+            }, this);
+        }
     }, 
     paramToAPI : function (paramValue) {
 		var stringParam = paramValue.type + "|" + paramValue.code + "|" + paramValue.value;
