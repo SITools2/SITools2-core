@@ -106,8 +106,9 @@ sitools.Portal = function (projectsList, languages, preferences) {
 	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_userman.png',
 	            identifier : user,
 	            edit : loadUrl.get('APP_URL') + '/editProfile/' + user,
-	            handler : function () {	                
-	                var callback = Ext.createDelegate(this.onEditProfile, this, [user, this.edit, this.onRender]);
+	            scope : this,
+	            handler : function (button, e) {	                
+	                var callback = Ext.createDelegate(this.onEditProfile, this, [user, button.edit]);
 	                sitools.userProfile.LoginUtils.editProfile(callback);
 	            }
 	    
@@ -536,7 +537,7 @@ Ext.extend(sitools.Portal, Ext.Viewport, {
         // this.doLayout();
     }, 
     
-    onEditProfile : function (user, url, handler) {
+    onEditProfile : function (user, url) {
         var win = new Ext.Window({
             items : [], 
             modal : true, 
@@ -550,7 +551,6 @@ Ext.extend(sitools.Portal, Ext.Viewport, {
             closable : true,
             identifier : user,
             url : url,
-            handler : handler, 
             height : win.body.getHeight()
         });
         win.add(edit);
