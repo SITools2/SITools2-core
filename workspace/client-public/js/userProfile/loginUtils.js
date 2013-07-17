@@ -50,7 +50,7 @@ sitools.userProfile.LoginUtils = {
 
                     if (delegateLogin) {
                         if (Ext.isEmpty(delegateLoginUrl)) {
-                            Ext.msg.Alert(i18n.get("label.warning"), "No Logout url defined");
+                            Ext.Msg.alert(i18n.get("label.warning"), "No Logout url defined");
                             return;
                         }
                         sitools.userProfile.LoginUtils.delegateLoginLogout(delegateLoginUrl);
@@ -95,7 +95,7 @@ sitools.userProfile.LoginUtils = {
                     utils_logout(!delegateLogout);
                     if (delegateLogout) {
                         if (Ext.isEmpty(delegateLogoutUrl)) {
-                            Ext.msg.Alert(i18n.get("label.warning"), "No Logout url defined");
+                            Ext.Msg.alert(i18n.get("label.warning"), "No Logout url defined");
                             return;
                         }
                         sitools.userProfile.LoginUtils.delegateLoginLogout(delegateLogoutUrl);
@@ -115,51 +115,57 @@ sitools.userProfile.LoginUtils = {
         });
 
     },
-    
-//    editProfile : function () {
-//        var url = loadUrl.get('APP_URL') + "/login-details";
-//        Ext.Ajax.request({
-//            method : "GET",
-//            url : url,
-//            success : function (ret) {
-//                var Json = Ext.decode(ret.responseText);
-//                if (Json.success) {
-//                    var data = Json.data;
-//                    var delegateLogout = false;
-//                    var delegateLogoutUrl = null;
-//
-//                    Ext.each(data, function (property) {
-//                        if (property.name === "Starter.SECURITY.DELEGATE_USER_MANAGMENT") {
-//                            delegateUserManagment = (property.value === "true");
-//                        }
-//                        if (property.name === "Starter.SECURITY.DELEGATE_USER_MANAGMENT_URL") {
-//                            delegateUserManagmentUrl = property.value;
-//                        }
-//                    });
-//                        
-//                    utils_logout(!delegateLogout);
-//                    if (delegateLogout) {
-//                        if (Ext.isEmpty(delegateLogoutUrl)) {
-//                            Ext.msg.Alert(i18n.get("label.warning"), "No Logout url defined");
-//                            return;
-//                        }
-//                        sitools.userProfile.LoginUtils.delegateLoginLogout(delegateLogoutUrl);
-//                    }
-//
-//                } else {
-//                    // if the parameters are not available perform classic
-//                    // logout
-//                    utils_logout(true);
-//                }
-//            },
-//            failure : function () {
-//                // if the parameters are not available perform classic logout
-//                utils_logout(true);
-//            }
-//
-//        });
-//
-//    },
+    /**
+     * 
+     * @param config
+     */
+    editProfile : function (callback) {
+        var url = loadUrl.get('APP_URL') + "/login-details";
+        Ext.Ajax.request({
+            method : "GET",
+            url : url,
+            success : function (ret) {
+                var Json = Ext.decode(ret.responseText);
+                if (Json.success) {
+                    var data = Json.data;
+                    var delegateUserManagment = false;
+                    var delegateUserManagmentUrl = null;
+
+                    Ext.each(data, function (property) {
+                        if (property.name === "Starter.SECURITY.DELEGATE_USER_MANAGMENT") {
+                            delegateUserManagment = (property.value === "true");
+                        }
+                        if (property.name === "Starter.SECURITY.DELEGATE_USER_MANAGMENT_URL") {
+                            delegateUserManagmentUrl = property.value;
+                        }
+                    });
+                    
+                    if (delegateUserManagment) {
+                        if (Ext.isEmpty(delegateUserManagmentUrl)) {
+                            Ext.Msg.alert(i18n.get("label.warning"), "No user managment url defined");
+                            return;
+                        }
+                        sitools.userProfile.LoginUtils.delegateLoginLogout(delegateUserManagmentUrl);
+                    } else {
+                        // if the parameters are not available perform classic
+                        // user managment
+                        callback.call();
+                    }
+
+                } else {
+                    // if the parameters are not available perform classic
+                    // user managment
+                    callback.call();
+                }
+            },
+            failure : function () {
+                // if the parameters are not available perform classic logout
+                callback.call();
+            }
+
+        });
+
+    },
 
     sitoolsLogin : function (config) {
         new sitools.userProfile.Login(config).show();
@@ -168,6 +174,8 @@ sitools.userProfile.LoginUtils = {
     delegateLoginLogout : function (urlTemplate) {
         var url = urlTemplate.replace("{goto}", document.URL);
         window.open(url, "_self");
-    }
+    },
+    
+    
 
 };

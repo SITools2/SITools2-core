@@ -106,25 +106,9 @@ sitools.Portal = function (projectsList, languages, preferences) {
 	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_userman.png',
 	            identifier : user,
 	            edit : loadUrl.get('APP_URL') + '/editProfile/' + user,
-	            handler : function () {
-            		var win = new Ext.Window({
-						items : [], 
-						modal : true, 
-						width : 400, 
-						height : 405, 
-						resizable : false
-					});
-					
-					win.show();
-					var edit = new sitools.userProfile.editProfile({
-		                closable : true,
-		                identifier : user,
-		                url : this.edit,
-		                handler : this.onRender, 
-		                height : win.body.getHeight()
-			    	});
-                    win.add(edit);
-                    win.doLayout();
+	            handler : function () {	                
+	                var callback = Ext.createDelegate(this.onEditProfile, this, [user, this.edit, this.onRender]);
+	                sitools.userProfile.LoginUtils.editProfile(callback);
 	            }
 	    
 	        };
@@ -550,7 +534,28 @@ Ext.extend(sitools.Portal, Ext.Viewport, {
         sitools.Portal.superclass.onRender.apply(this, arguments);
         // this.
         // this.doLayout();
-    }    
+    }, 
+    
+    onEditProfile : function (user, url, handler) {
+        var win = new Ext.Window({
+            items : [], 
+            modal : true, 
+            width : 400, 
+            height : 405, 
+            resizable : false
+        });
+        
+        win.show();
+        var edit = new sitools.userProfile.editProfile({
+            closable : true,
+            identifier : user,
+            url : url,
+            handler : handler, 
+            height : win.body.getHeight()
+        });
+        win.add(edit);
+        win.doLayout();
+    }
 });
 
 Ext.reg('sitools.Portal', sitools.Portal);

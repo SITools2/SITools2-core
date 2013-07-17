@@ -329,33 +329,44 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 		
 	}, 
 	/**
-	 * Open a window in the desktop with the sitools.userProfile.editProfile object. 
-	 * @param {Ext.DataView} dataView the clicked Dataview
-	 * @param {numeric} index the index of the clicked node
-	 * @param {Html Element} node the clicked html element 
-	 * @param {Ext.event} e The click event
+	 * Edit the profile of the user depending on the server configuration
+	* @param {Ext.DataView} dataView the clicked Dataview
+     * @param {numeric} index the index of the clicked node
+     * @param {Html Element} node the clicked html element 
+     * @param {Ext.event} e The click event
 	 */
 	editProfile : function (dataView, index, node, e) {
 		if (this.user.identifier === "public") {
 			return;
 		}
-		var componentCfg = {
-		    identifier : this.user.identifier,
-		    url: '/sitools/editProfile/' + this.user.identifier,
-		    handler : function (user) {
-				projectGlobal.user = user;
-			}
+		
+        var callback = Ext.createDelegate(this.onEditProfile, this);		
+		sitools.userProfile.LoginUtils.editProfile(callback);
+		
+	}, 
+	
+	/**
+     * Open a window in the desktop with the sitools.userProfile.editProfile object. 
+     */
+	onEditProfile : function () {
+	    var componentCfg = {
+            identifier : this.user.identifier,
+            url : '/sitools/editProfile/' + this.user.identifier,
+            handler : function (user) {
+                projectGlobal.user = user;
+            }
         };
         var jsObj = sitools.userProfile.editProfile;
 
         var windowConfig = {
             title : i18n.get('label.editProfile'),
-            saveToolbar : false, 
+            saveToolbar : false,
             iconCls : "editProfile"
         };
-		SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
-		this.destroy();
-	}, 
+        SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
+        this.destroy();
+	},
+	
 	/**
 	 * Open a window in the desktop with the sitools.user.component.entete.userProfile.tasks object. 
 	 * @param {Ext.DataView} dataView the clicked Dataview
