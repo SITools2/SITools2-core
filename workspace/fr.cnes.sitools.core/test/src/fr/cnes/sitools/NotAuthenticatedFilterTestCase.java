@@ -43,7 +43,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  */
 public class NotAuthenticatedFilterTestCase extends SitoolsServerTestCase {
   /** The url to query */
-  private static final String URL = getHostUrl() + "/sitools/client-user/siteMap";
+  private static final String URL = getHostUrl() + "/sitools/datasets";
   /** good user login */
   private static final String GOOD_USER = "admin";
   /** good user password */
