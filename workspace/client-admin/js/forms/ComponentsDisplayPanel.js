@@ -89,8 +89,6 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         
         this.formSize.height = totalHeight + 20;
         this.setHeight(totalHeight + 20);
-        if (totalHeight > this.formSize.height) {
-        }
 //        if (this.action == 'create') {
 //            this.y = 250;
 //        }
