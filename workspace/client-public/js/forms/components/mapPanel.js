@@ -161,6 +161,7 @@ sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
 	    Ext.apply(this, {
 	    	layout : "hbox",
 	    	stype : "sitoolsFormContainer",
+	    	overCls : 'fieldset-child',
 	        items : [this.mapPanel], 
 	        listeners : {
 	        	scope : this, 

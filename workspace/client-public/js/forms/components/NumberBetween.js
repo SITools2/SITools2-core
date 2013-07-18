@@ -111,6 +111,7 @@ sitools.common.forms.components.NumericBetween = Ext.extend(sitools.common.forms
 	    Ext.apply(this, {
 	        layout : 'hbox',
 	        stype : "sitoolsFormContainer",
+	        overCls : 'fieldset-child',
 			defaults : {
 	        	xtype : 'container',
 	        	autoEl : 'div'

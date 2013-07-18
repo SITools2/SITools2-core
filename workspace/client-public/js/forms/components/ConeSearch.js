@@ -149,7 +149,8 @@ sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.f
 	        	xtype : 'container',
 	        	autoEl : 'div'
 	        },
-	        items : items, 
+	        items : items,
+	        overCls : 'fieldset-child',
 	        stype : "sitoolsFormContainer"
 	    });
 	    sitools.common.forms.components.AbstractConeSearch.superclass.initComponent.apply(

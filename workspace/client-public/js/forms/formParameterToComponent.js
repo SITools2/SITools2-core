@@ -27,9 +27,10 @@ Ext.ns("sitools.common.forms");
  * @param {string} formId the main formId
  * @param {} datasetCm the dataset Column model 
  * @param {string} context should be dataset or project. 
+ *  @param {formComponentsPanel} the parent form
  * @return {Ext.Container} the container to include into form
  */
-sitools.common.forms.formParameterToComponent = function (parameter, dataUrl, formId, datasetCm, context) {
+sitools.common.forms.formParameterToComponent = function (parameter, dataUrl, formId, datasetCm, context, form) {
 
 	var valuesToSelect = null;
 	this.component = null;
@@ -56,7 +57,8 @@ sitools.common.forms.formParameterToComponent = function (parameter, dataUrl, fo
         defaultValues : parameter.defaultValues, 
         extraParams : parameter.extraParams, 
         datasetCm : datasetCm, 
-        context : context
+        context : context,
+        form : form,
 	});
 	
 	return {

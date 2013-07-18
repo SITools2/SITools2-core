@@ -80,6 +80,7 @@ sitools.common.forms.components.NumberField = Ext.extend(sitools.common.forms.Ab
 	    Ext.apply(this, {
 	        layout : 'hbox',
 	        stype : "sitoolsFormContainer",
+	        overCls : 'fieldset-child',
 			defaults : {
 	        	xtype : 'container',
 	        	autoEl : 'div'

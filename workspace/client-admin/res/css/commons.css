@@ -16,12 +16,30 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-root { 
-    display: block;
+root {
+	display: block;
 }
 
-.noborder{
-    border : 0;
+.noborder {
+	border: 0;
+}
+
+.x-tool-close-fieldset {
+	background-position: 0 -0;
+	float: right;
+	margin-right : 2px;
+}
+
+.x-tool-gear-fieldset {
+	background-position: 0 -90px;
+	float: right;
+	margin-right : 2px;
+}
+
+.x-tool-toggle-fieldset {
+	background-position: 0 -60px;
+	float: right;
+	margin-right : 2px;
 }
 
 /*
@@ -29,30 +47,32 @@ root {
     padding-right:5px;
 }
 */
-
-
-a.small-link{
-    padding:10px;
-    text-decoration:underline;
-    color:blue;
-    font-weight:bold;
-    font-size:small;
-    cursor:pointer;
+a.small-link {
+	padding: 10px;
+	text-decoration: underline;
+	color: blue;
+	font-weight: bold;
+	font-size: small;
+	cursor: pointer;
 }
 
-.draggable  {
-    border: 1px solid #a0a0a0;
-/*    padding-left: 20px;*/
-	
+.draggable {
+	border: 1px solid #a0a0a0;
+	/*    padding-left: 20px;*/
 }
 
 .xg-hmenu-help {
 	background-image: url("/sitools/common/res/images/icons/help.png");
-	background-position: left center; 
+	background-position: left center;
 	background-repeat: no-repeat;
 }
 
-.over-form-component {
+.fieldset-child:HOVER {
 	cursor: move !important;
+	opacity: 0.8;
 }
 
+.fieldset-child:ACTIVE {
+	cursor: pointer !important;
+	opacity: 1;
+}

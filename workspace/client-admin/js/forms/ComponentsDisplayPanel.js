@@ -37,245 +37,72 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	
 	y : 0,
 	position : 0,
-	
+	padding : 5,
+	bodyStyle : 'background-color : #EDF2FF;',
 	initComponent : function () {
         
         Ext.apply(this, {
 			id : "absoluteLayout",
-			layout : 
-			{ type:'vbox',
-                 align:'stretch'
-             },
-	        title : i18n.get('label.disposition'),
+			layout : {
+                type : 'vbox',
+                align : 'stretch'
+            },
 	        autoScroll : true,
 	        height : this.formSize.height, 
 	        width : this.formSize.width, 
-	        tbar : new Ext.Toolbar({
-	
-	            items : [ {
-	                scope : this,
-	                text : i18n.get("label.changeFormSize"),
-	                handler : this._sizeUp
-	            } ,
-	            {
-	                scope : this,
-	                text : "Add advanced criteria",
-	                handler : this._addPanel
-	            }
-	            
-	            ]
-	
-	        }),
 	        listeners : {
 	            scope : this,
-	            activate : this._activeDisposition,
-//	            afterRender : function () {
-//	                var ddTarget = new Ext.dd.DDTarget("ddTargetId", 'group');
-//	            }
+	            activate : this._activeDisposition
 	        }        
         });
         sitools.admin.forms.ComponentsDisplayPanel.superclass.initComponent.call(this);
 		
 	}, 
 	
-    _sizeUp : function () {
-        var panelProp = new sitools.admin.forms.absoluteLayoutProp({
-            absoluteLayout : this,
-            tabPanel : this.ownerCt.ownerCt.ownerCt,
-            win : this.ownerCt.ownerCt.ownerCt.ownerCt, 
-            formSize : this.formSize
-        });
-        panelProp.show();
-
-    },
-    
-    _addPanel : function () {
-
-        var setupAdvancedPanel = new sitools.admin.forms.setupAdvancedFormPanel({
-            parentContainer : this,
-            currentPosition : this.position
-        });
-        setupAdvancedPanel.show();
-       
-    	
-    	
-    	// resize container panel if needed
-//    	
-//        
-//        this.position = this.position + 1;
-//        
-//        
-//    	this.doLayout();
-
-    },
-    
     _activeDisposition : function () {
-    	
         this.body.addClass(Ext.getCmp("formMainFormId").find('name', 'css')[0].getValue());
-        this.setSize(this.formSize);
+        this.setWidth(this.formSize.width);
         
         this.removeAll();
 
+        var totalHeight = 0;
         if (this.zoneStore.getCount() > 0) {
             this.zoneStore.each(function (rec) {
+                totalHeight += rec.data.height;
                 var zonePanel = new sitools.admin.forms.advancedFormPanel({
+                    id : rec.data.id,
                     title: rec.data.title,
                     height: rec.data.height,
                     position : rec.data.position,
+                    collapsible : rec.data.collapsible,
                     border: true,
-                    id : rec.data.id,
                     ddGroup : 'gridComponentsList',
                     datasetColumnModel : this.datasetColumnModel,
+                    formComponentsStore : this.formComponentsStore,
                     storeConcepts : this.storeConcepts,
                     context : 'dataset',
-                    formComponentsStore : this.formComponentsStore,
                     absoluteLayout : this
                 });
                 this.add(zonePanel);
             }, this);
         }
-        else {
-            var mainPanel = new sitools.admin.forms.advancedFormPanel({
-                title: 'form',
-                id : Ext.id(),
-                height: 200,
-                border: true,
-                ddGroup : 'gridComponentsList',
-                datasetColumnModel : this.datasetColumnModel,
-                storeConcepts : this.storeConcepts,
-                context : 'dataset',
-                formComponentsStore : this.formComponentsStore,
-                absoluteLayout : this
-            });
-            this.add(mainPanel);
-            
-            this.formComponentsStore.each(function (rec) {
-                rec.set('containerPanelId', mainPanel.id);
-            }, this);
-            
-            this.zoneStore.add(new Ext.data.Record({
-                id : mainPanel.id,
-                title : 'Main Panel',
-                height : mainPanel.height,
-                position : 0
-            }));
-        }
         
-
-        if (this.action == 'create') {
-            this.y = 250;
+        this.formSize.height = totalHeight + 20;
+        this.setHeight(totalHeight + 20);
+        if (totalHeight > this.formSize.height) {
         }
-        
-//        if ( this.action == 'modify'  ) {
-
-        	/*  loop on the form components
-	         *	retrieve the container panel id
-	         * */
-	        if (!Ext.isEmpty(this.formComponentsStore.getModifiedRecords())){
-	        	
-	        	var parent = this;
-	        	parent.y =  0;
-	        	var recordsArray = this.formComponentsStore.getModifiedRecords();
-	        	var panels = {};
-	        
-	        	//parent.removeAll();
-	        	
-	        	for (var i = 0; i < recordsArray.length; i++) {
-	
-	        		var containerId = recordsArray[i].data.containerPanelId;
-	        		var zoneIndex = this.zoneStore.find('id', containerId);
-                    var zone = this.zoneStore.getAt(zoneIndex);
-	        		
-	        		var aPanel = new sitools.admin.forms.advancedFormPanel({
-	            		id: containerId,
-	            		title: zone.data.title,
-	            		frame : true,
-	            		height: zone.data.height,
-	            		ddGroup : 'gridComponentsList',
-	            		context : 'dataset',
-	            		datasetColumnModel : this.datasetColumnModel,
-	            		storeConcepts : this.storeConcepts, 
-	            		formComponentsStore : this.formComponentsStore,
-	            		absoluteLayout : this,
-	        		});
-	        		
-	        		if ( !Ext.isEmpty(containerId) && Ext.isEmpty(panels[containerId])){
-	            		panels[containerId] = [];
-	            		panels[containerId].push(aPanel);
-	            	}
-	        	}
-	        	
-	        	Ext.iterate(panels, function(key, value){
-	        		parent.add(value);
-	        		parent.y = parent.y + 210;
-		        });
-	        }
-
+//        if (this.action == 'create') {
+//            this.y = 250;
 //        }
-
         this.doLayout();
 
-		Ext.each(this.items.items, function (container) {
-        	container.getEl().on('contextmenu', this._onContextMenu, container);
-        }, this);
-        
-        
         /* loop on the panels */
-        if (!Ext.isEmpty(this.items)){
-        	
-	        this.items.each(function(item){
-	        	item.fireEvent('activate');
-	        }, this);
-	        
+        if (!Ext.isEmpty(this.items)) {
+            this.items.each(function (item) {
+                item.fireEvent('activate');
+            }, this);
+
         }
-    }, 
-    
-    
-    _removePanel : function () {
-
-    	console.log('remove panel');
-    	
-//    	var aPanel = new sitools.admin.forms.advancedFormPanel({
-//    		title: 'advanced form',
-//    		frame : true,
-//    		height: 200,
-//    		width: 200,
-//    		ddGroup     : 'gridComponentsList',
-//    		datasetColumnModel : this.datasetColumnModel,
-//    		storeConcepts : this.storeConcepts, 
-//    		formComponentsStore : this.formComponentsStore,
-//    		absoluteLayout : this,
-//    	});
-//    	this.add(aPanel);
-//    	
-//    	// resize container panel if needed
-//    	this.y = this.y + 200;
-//    	if (this.y > 500) {
-//    		this.formSize.height = this.y;
-//    	}
-//        var size = {
-//           width : this.formSize.width,
-//           height : this.formSize.height
-//        };
-//        this.setSize(size);
-//    	
-//    	this.doLayout();
-
-    },
-    
-    _onContextMenu : function (event, htmlEl, options) {
-		//ici le this est le container sur lequel on a cliqué. 
-		event.stopEvent();
-		var ctxMenu = new Ext.menu.Menu({
-			items : [ {
-				text : 'Delete this form', 
-				scope : this, 
-				handler : function() {
-					this.deletePanel();
-				}
-			} ]
-        });
-		var xy = event.getXY();
-		ctxMenu.showAt(xy);
     }
+    
 });

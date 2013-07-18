@@ -137,18 +137,28 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                     title : (!Ext.isEmpty(zone.title) ? zone.title : zone.id),
                     itemId : zone.id,
                     height : zone.height,
-                    width : '500',
                     position : zone.position,
-                    collapsible: (zone.position == 0) ? false : true,
+                    style : 'background-color:#FCFCFC;',
+                    cls : zone.css,
+                    animCollapse : true,
+                    collapsible: zone.collapsible,
+                    isCollapsed : zone.collapsed,
                     formId : this.formId,
                     datasetCm : this.datasetCm,
-                    layout : 'absolute'
+                    layout : 'absolute',
+                    listeners : {
+                        render : function (fieldset) {
+                            if (fieldset.isCollapsed){
+                                fieldset.collapse(true);
+                            }
+                        }
+                    }
                 });
                 
                 Ext.each(zone.params, function (param){
                     var y = Ext.isEmpty(param.ypos) ? y + 50 : param.ypos;
                     var x = Ext.isEmpty(param.xpos) ? x : param.xpos;
-                    var containerItems = [ sitools.common.forms.formParameterToComponent(param, dataUrl, this.formId, this.datasetCm, context).component];
+                    var containerItems = [ sitools.common.forms.formParameterToComponent(param, dataUrl, this.formId, this.datasetCm, context, this).component];
 
                     var container = new Ext.Container({
                         width : param.width,
@@ -159,11 +169,11 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                         cls : param.css,
                         items : containerItems
                     });
-                    this.add(container);
+                    zoneFieldset.add(container);
                     
-                }, zoneFieldset);
+                }, this);
                 
-                this.insert(zoneFieldset.position, zoneFieldset);
+                this.add(zoneFieldset);
                 
             }, this);
         } else {
@@ -172,7 +182,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                 var y = Ext.isEmpty(parameter.ypos) ? y + 50 : parameter.ypos;
                 var x = Ext.isEmpty(parameter.xpos) ? x : parameter.xpos;
                 
-                var containerItems = [ sitools.common.forms.formParameterToComponent(parameter, dataUrl, this.formId, this.datasetCm, context).component];
+                var containerItems = [ sitools.common.forms.formParameterToComponent(parameter, dataUrl, this.formId, this.datasetCm, context, this).component];
                 
                 var container = new Ext.Container({
                     width : parameter.width,

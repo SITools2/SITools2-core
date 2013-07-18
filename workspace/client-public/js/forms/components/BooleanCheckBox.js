@@ -44,6 +44,7 @@ sitools.common.forms.components.BooleanCheckbox = Ext.extend(Ext.Container, {
 	    Ext.apply(this, {
 	    	layout : "hbox",
 	    	stype : "sitoolsFormContainer",
+	    	overCls : 'fieldset-child',
 	        items : [this.cbGroup]
 	    });
 	    sitools.common.forms.components.BooleanCheckbox.superclass.initComponent.apply(

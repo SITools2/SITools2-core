@@ -56,8 +56,7 @@ sitools.common.forms.components.Radio = Ext.extend(Ext.Container, {
 	        listeners : {
 	        	scope : this, 
 	        	change : function () {
-	        		var parentPanel = this.ownerCt.ownerCt;
-                    parentPanel.fireEvent('componentChanged', parentPanel, this);
+                    this.form.fireEvent('componentChanged', this.form, this);
 	        	}
 	        }
 	        
@@ -66,6 +65,7 @@ sitools.common.forms.components.Radio = Ext.extend(Ext.Container, {
     	Ext.apply(this, {
 	    	layout : "hbox",
 	    	stype : "sitoolsFormContainer",
+	    	overCls : 'fieldset-child',
 	        items : [this.radioGroup]
 	    });
 	    sitools.common.forms.components.Radio.superclass.initComponent.apply(this,

@@ -29,6 +29,7 @@ sitools.common.forms.components.Hl = Ext.extend(Ext.Container, {
 
     initComponent : function () {
 	    Ext.apply(this, {
+	        overCls : 'fieldset-child',
 		    html : "<hr>"
 	    });
 	    sitools.common.forms.components.Hl.superclass.initComponent.apply(this, arguments);

@@ -30,7 +30,8 @@ sitools.common.forms.components.Label = Ext.extend(Ext.Container, {
     initComponent : function () {
 	    Ext.apply(this, {
 	        html : this.label,
-	        cls : this.css
+	        cls : this.css,
+	        overCls : 'fieldset-child'
 	    });
 	    sitools.common.forms.components.Label.superclass.initComponent.apply(this, arguments);
     },

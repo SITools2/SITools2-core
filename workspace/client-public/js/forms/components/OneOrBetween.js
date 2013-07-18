@@ -142,6 +142,7 @@ sitools.common.forms.components.OneOrBetween = Ext.extend(sitools.common.forms.A
 	        layout : 'hbox',
 	        columns : Ext.isEmpty(unit) ? 6 : 7,
 	        fieldLabel : this.label,
+	        overCls : 'fieldset-child',
 	        stype : "sitoolsFormContainer",
 
 	        items : items

@@ -330,25 +330,33 @@ public final class FormDTO {
     return parentUrl;
   }
 
+  /**
+   * Gets the zones value
+   * @return the zones
+   */
   public List<ZoneDTO> getZones() {
     return zones;
   }
 
+  /**
+   * Sets the value of zones
+   * @param zones the zones to set
+   */
   public void setZones(List<ZoneDTO> zones) {
     this.zones = zones;
   }
-  
+
   /**
+   * Convert a list of Zone to a ZoneDTO
    * 
-   * @param zones
-   * @return
+   * @param zones a list of zones
+   * @return {@link ZoneDTO}
    */
   public static List<ZoneDTO> zonesToDTO(List<Zone> zones) {
 
-
     List<ZoneDTO> zonesDTO = new ArrayList<ZoneDTO>();
 
-    if (zones != null){
+    if (zones != null) {
       for (Zone myzone : zones) {
         zonesDTO.add(zoneToDTO(myzone));
       }
@@ -359,9 +367,10 @@ public final class FormDTO {
   }
   
   /**
+   * Convert A Zone To a ZoneDTO
    * 
-   * @param zone
-   * @return
+   * @param zone A zone
+   * @return {@link ZoneDTO}
    */
   private static ZoneDTO zoneToDTO(Zone zone) {
 
@@ -373,6 +382,8 @@ public final class FormDTO {
     zoneDTO.setTitle(zone.getTitle());
     zoneDTO.setPosition(zone.getPosition());
     zoneDTO.setWidth(zone.getWidth());
+    zoneDTO.setCollapsible(zone.isCollapsible());
+    zoneDTO.setCollapsed(zone.isCollapsed());
     if (!zone.getParams().isEmpty()){
       zoneDTO.setParams(ParametersDTO.parametersToDTO(zone.getParams()));
     }
@@ -412,7 +423,9 @@ public final class FormDTO {
     zone.setPosition(zoneDTO.getPosition());
     zone.setWidth(zoneDTO.getWidth());
     zone.setTitle(zoneDTO.getTitle());
-    if (!zoneDTO.getParams().isEmpty()){
+    zone.setCollapsible(zoneDTO.isCollapsible());
+    zone.setCollapsed(zoneDTO.isCollapsed());
+    if (!zoneDTO.getParams().isEmpty()) {
       zone.setParams(ParametersDTO.dtoToParameters(zoneDTO.getParams()));
     }
     return zone;

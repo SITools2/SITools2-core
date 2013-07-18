@@ -29,7 +29,8 @@ sitools.common.forms.components.Image = Ext.extend(Ext.Container, {
 
     initComponent : function () {
         Ext.apply(this, {
-            html : "<img src='" + this.label + "'>"
+            overCls : 'fieldset-child',
+            html : "<img src='" + this.label + "' height='" + this.height + "px' width='" + this.widthBox + "px'>"
         });
         sitools.common.forms.components.Image.superclass.initComponent.apply(this, arguments);
     },

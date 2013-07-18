@@ -80,6 +80,7 @@ sitools.common.forms.components.DateBetween = Ext.extend(Ext.Container, {
         });
         Ext.apply(this, {
             layout : 'hbox',
+            overCls : 'fieldset-child',
             stype : "sitoolsFormContainer",
 
             items : [this.fieldFrom, this.fieldTo ]

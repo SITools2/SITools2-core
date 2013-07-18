@@ -29,38 +29,59 @@ Ext.namespace("sitools.admin.forms");
  */
 sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
     modal : true,
-    height : 180,
+    height : 210,
     width : 260,
     initComponent : function () {
 
-        this.currentPosition++; 
+        this.title = i18n.get('label.setupAdvancedFormPanel');
+        this.fielsetPosition = this.parentContainer.zoneStore.getCount() + 1;
         
-        var form = new Ext.form.FormPanel({
-            labelWidth : 75,
+        this.form = new Ext.form.FormPanel({
             padding : 5,
             items : [ {
                 xtype : 'textfield',
+                name : 'title',
                 id : "title",
-                fieldLabel : i18n.get('label.panelTitle'),
+                fieldLabel : i18n.get('label.titleCriteria'),
                 anchor : "100%"
             }, {
                 xtype : 'textfield',
+                name : 'height',
                 id : "height",
                 fieldLabel : i18n.get('label.height'),
+                value : 200,
                 anchor : "100%"
             }, {
+                xtype : 'textfield',
+                fieldLabel : i18n.get('label.css'),
+                name : 'css',
+                id : 'cssFieldset',
+                anchor : "100%"
+            }, {
+                xtype : 'checkbox',
+                fieldLabel : i18n.get('label.collapsible'),
+                name : 'collapsible',
+                id : 'collapseFieldset',
+                anchor : "100%"
+            }, {
+                xtype : 'checkbox',
+                fieldLabel : i18n.get('label.collapsed'),
+                name : 'collapsed',
+                id : 'isCollapseFieldset',
+                anchor : "100%"
+            }   /*{
                 xtype : 'spinnerfield',
                 id : 'position', 
                 fieldLabel : i18n.get('label.position'),
                 minValue : 0,
                 maxValue : 10,
-                value : this.currentPosition,
+                value : currentPosition,
                 allowDecimals : false,
                 incrementValue : 1,
                 accelerate : true,
                 anchor : "100%", 
                 allowBlank : false
-            }],
+            }*/],
             buttons : [ {
                 scope : this,
                 text : i18n.get('label.ok'),
@@ -72,51 +93,68 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
             } ]
         });
         
-        this.title = i18n.get('label.setupAdvancedFormPanel');
-        this.items = [ form ];
+        this.items = [ this.form ];
         
         sitools.admin.forms.setupAdvancedFormPanel.superclass.initComponent.call(this);
 
     },
+    
+    onRender : function () {
+        sitools.admin.forms.setupAdvancedFormPanel.superclass.onRender.apply(this, arguments);
+        if (this.action === 'modify') {
+            var recZone = new Ext.data.Record(this.zone);
+            this.form.getForm().loadRecord(recZone);
+        }
+        
+    },
+    
     _onValidate : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.form.getForm();
         
         var title = f.findField('title').getValue();
+        var isCollapsible = f.findField('collapseFieldset').getValue();
+        var isCollapse = f.findField('isCollapseFieldset').getValue();
+        var cssFieldset = f.findField('cssFieldset').getValue();
         var height = parseInt(f.findField('height').getValue(), 10);
-        var position = parseInt(f.findField('position').getValue(), 10);
         
-        var aPanel = new sitools.admin.forms.advancedFormPanel({
-            title: title,
-            frame : true,
-            height: height,
-            ddGroup : 'gridComponentsList',
-            datasetColumnModel : this.parentContainer.datasetColumnModel,
-            storeConcepts : this.parentContainer.storeConcepts, 
-            formComponentsStore : this.parentContainer.formComponentsStore,
-            absoluteLayout : this.parentContainer
-        });
+//        var aPanel = new sitools.admin.forms.advancedFormPanel({
+//            title: title,
+//            frame : true,
+//            height: height,
+//            width : "100%",
+//            bodyCssClass : cssFieldset,
+//            collapsible : isCollapsible,
+//            ddGroup : 'gridComponentsList',
+//            datasetColumnModel : this.parentContainer.datasetColumnModel,
+//            storeConcepts : this.parentContainer.storeConcepts, 
+//            formComponentsStore : this.parentContainer.formComponentsStore,
+//            absoluteLayout : this.parentContainer
+//        });
         
-        this.parentContainer.y = this.parentContainer.y + 200;
-        if (this.parentContainer.y > 500) {
-            this.parentContainer.formSize.height = this.parentContainer.y;
-        }
-        var size = {
-            width : this.parentContainer.formSize.width,
-            height : this.parentContainer.formSize.height
+        var rec = {
+            title : title,
+            height : height,
+            css : cssFieldset,
+            collapsible : isCollapsible,
+            collapsed : isCollapse,
+            position : this.fielsetPosition
         };
-        this.parentContainer.setSize(size);
         
-        this.parentContainer.zoneStore.add(new Ext.data.Record({
-            id : aPanel.id,
-            height : aPanel.height,
-            position : position
-        }));
+        if (this.action === 'modify') {
+            var zoneToRemove = this.parentContainer.zoneStore.find('id', this.zone.id);
+            var zoneRec = this.parentContainer.zoneStore.getAt(zoneToRemove);
+            
+            Ext.apply(zoneRec.data, rec, {id : this.zone.id});
+        }
+        else {
+            rec.id = Ext.id();
+            this.parentContainer.zoneStore.add(new Ext.data.Record(rec));
+        }
         
-        this.parentContainer.insert(position, aPanel);
         
-        this.parentContainer.doLayout();
         this.destroy();
-
+        
+        this.parentContainer.fireEvent('activate');
     },
     _onCancel : function () {
         this.destroy();

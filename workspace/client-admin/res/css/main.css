@@ -127,3 +127,10 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 	-webkit-border-radius: 10px;
 	border-radius: 4px;
 }
+
+.over-dd-form {
+	background-color: #84BAFF;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}

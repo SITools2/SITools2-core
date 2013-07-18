@@ -52,7 +52,8 @@ sitools.common.forms.components.CheckBox = Ext.extend(Ext.Container, {
 	    });
 	    Ext.apply(this, {
 	    	height : this.height, 
-	        width : this.width, 
+	        width : this.width,
+	        overCls : 'fieldset-child',
 	        layout : "hbox", 
 	        stype : "sitoolsFormContainer",
 	        items : [this.cbGroup]

@@ -182,8 +182,9 @@ sitools.admin.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
     onCreate : function () {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
-            return;
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
+        
         var up = new sitools.admin.forms.formPropPanel({
             urlFormulaire : this.urlFormulaires,
             action : 'create',
@@ -194,9 +195,7 @@ sitools.admin.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
     },
 
     onModify : function () {
-        if (Ext.isEmpty(this.comboDatasets.getValue())) {
-            return;
-        }
+        
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
@@ -213,7 +212,7 @@ sitools.admin.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
     onDelete : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return false;
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),

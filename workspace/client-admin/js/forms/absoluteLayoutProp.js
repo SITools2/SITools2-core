@@ -87,7 +87,7 @@ sitools.admin.forms.absoluteLayoutProp = Ext.extend(Ext.Window, {
         this.absoluteLayout.doLayout();
         this.absoluteLayout.formSize = size;
         this.win.formSize = size;
-        this.win.doLayout();
+//        this.win.doLayout();
         this.destroy();
 
     },

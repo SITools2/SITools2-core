@@ -82,8 +82,7 @@ sitools.common.forms.components.ListBoxMultiple = Ext.extend(Ext.Container, {
             listeners : {
                 scope : this, 
                 'click' : function () {
-                    var parentPanel = this.ownerCt.ownerCt;
-                    parentPanel.fireEvent('componentChanged', parentPanel, this);
+                    this.form.fireEvent('componentChanged', this.form, this);
                 },
                 'afterRender' : function () {
 				    this.setSelectedValue(this.defaultValues);
@@ -93,7 +92,8 @@ sitools.common.forms.components.ListBoxMultiple = Ext.extend(Ext.Container, {
         Ext.apply(this, {
 	    	height : this.height, 
 	        width : this.width, 
-	        layout : "hbox", 
+	        layout : "hbox",
+	        overCls : 'fieldset-child',
 	        stype : "sitoolsFormContainer",
 	        items : [this.multiSelect]
 	    });

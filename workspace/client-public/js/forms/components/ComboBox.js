@@ -115,14 +115,14 @@ sitools.common.forms.components.ComboBox = Ext.extend(Ext.Container, {
 	        listeners : {
 	            scope : this, 
 	            'select' : function () {
-	                var parentPanel = this.ownerCt.ownerCt;
-	                parentPanel.fireEvent('componentChanged', parentPanel, this);
+                    this.form.fireEvent('componentChanged', this.form, this);
 	            }
 	        }
 	    });
 	    Ext.apply(this, {
 	    	stype : "sitoolsFormContainer",
 	        layout : "hbox",
+	        overCls : 'fieldset-child',
 	    	items : [this.combo]
 	    });
 	    sitools.common.forms.components.ComboBox.superclass.initComponent.apply(this,
