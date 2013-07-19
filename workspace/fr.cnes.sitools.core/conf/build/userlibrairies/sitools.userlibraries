@@ -94,7 +94,7 @@
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/commons-io-2.1.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/commons-lang-2.6.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/geronimo-stax-api_1.0_spec-1.0.1.jar"/>
-        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/guava-r05.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/guava-14.0.1.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/icu4j-4_6.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/jcl-over-slf4j-1.6.1.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_3.6.1/log4j-over-slf4j-1.6.1.jar"/>
