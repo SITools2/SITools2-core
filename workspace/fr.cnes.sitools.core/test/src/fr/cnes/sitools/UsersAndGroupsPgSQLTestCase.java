@@ -111,6 +111,8 @@ public class UsersAndGroupsPgSQLTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
+    Context ctx = this.component.getContext().createChildContext();
+    ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
     if (ds == null) {
       ds = SitoolsSQLDataSourceFactory
           .getInstance()
@@ -119,7 +121,7 @@ public class UsersAndGroupsPgSQLTestCase extends AbstractSitoolsTestCase {
     }
 
     if (store == null) {
-      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds);
+      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
     }
 
     if (this.component == null) {
@@ -130,8 +132,6 @@ public class UsersAndGroupsPgSQLTestCase extends AbstractSitoolsTestCase {
       this.component.getClients().add(Protocol.CLAP);
 
       // Context
-      Context ctx = this.component.getContext().createChildContext();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 
       this.component.getDefaultHost().attach(getAttachUrl(), new UsersAndGroupsAdministration(ctx));

@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -30,6 +30,10 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+import org.restlet.Context;
+
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
@@ -76,6 +80,8 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
 
   /** Resources */
   private JDBCUsersAndGroupsStoreResource jdbcStoreResource = null;
+  /** The sitools settings */
+  private SitoolsSettings settings;
 
   // /** Credentials of users */
   // private Map<String, String> credentials = new ConcurrentHashMap<String, String>();
@@ -90,9 +96,11 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * @throws SitoolsException
    *           if the connection fail
    */
-  public JDBCUsersAndGroupsStore(String name, SitoolsSQLDataSource ds) throws SitoolsException {
+  public JDBCUsersAndGroupsStore(String name, SitoolsSQLDataSource ds, Context context) throws SitoolsException {
     this.name = name;
     this.ds = ds;
+
+    settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
 
     try {
       ds.getConnection();
@@ -137,10 +145,18 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    * @throws SitoolsException
    *           if users are not modifiable
    */
-  private void checkUser() throws SitoolsException {
-    if (!isUserModifiable()) {
-      throw new SitoolsException("Operation refused");
+  private void checkUser(User user) throws SitoolsException {
+
+    String userRegExp = settings.getString("STARTER.SECURITY.USER_LOGIN_REGEX", null);
+    if (user.getIdentifier() != null && (userRegExp != null && !user.getIdentifier().matches(userRegExp))) {
+      throw new SitoolsException("WRONG USER LOGIN");
     }
+    //at that point, the password is encoded, so no verification can be done
+    //    String passwordRegExp = settings.getString("STARTER.SECURITY.USER_PASSWORD_REGEX", null);
+//    if (user.getSecret() != null && (passwordRegExp != null && !user.getSecret().matches(passwordRegExp))) {
+//      throw new SitoolsException("WRONG USER PASSWORD");
+//    }
+
   }
 
   /**
@@ -193,7 +209,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
       }
 
       String request = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_USERS, USER_FIELD_FILTER)
-        : jdbcStoreResource.SELECT_USERS;
+          : jdbcStoreResource.SELECT_USERS;
 
       Statement st = null;
       try {
@@ -263,7 +279,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
       }
 
       String request = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_GROUPS, GROUP_FIELD_FILTER)
-        : jdbcStoreResource.SELECT_GROUPS;
+          : jdbcStoreResource.SELECT_GROUPS;
 
       ArrayList<Group> gl;
       Statement st = null;
@@ -341,7 +357,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
       }
 
       String query = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_USERS_BY_GROUP, USER_FIELD_FILTER)
-        : jdbcStoreResource.SELECT_USERS_BY_GROUP;
+          : jdbcStoreResource.SELECT_USERS_BY_GROUP;
 
       PreparedStatement st = cx.prepareStatement(query);
       st.setString(1, name);
@@ -397,7 +413,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
       }
 
       String query = (filter != null) ? filter.toSQL(jdbcStoreResource.SELECT_GROUPS_BY_USER, GROUP_FIELD_FILTER)
-        : jdbcStoreResource.SELECT_GROUPS_BY_USER;
+          : jdbcStoreResource.SELECT_GROUPS_BY_USER;
 
       PreparedStatement st = cx.prepareStatement(query);
       st.setString(1, identifier);
@@ -545,11 +561,10 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
 
   @Override
   public User createUser(User bean) throws SitoolsException {
-    checkUser();
-
-    if (!User.isValid(bean)) {
-      throw new SitoolsException("CREATE_USER_MALFORMED");
+    if (!isUserModifiable()) {
+      throw new SitoolsException("Operation refused");
     }
+    checkUser(bean);
 
     Connection cx = null;
     try {
@@ -676,7 +691,10 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    */
   @Override
   public User updateUser(User bean) throws SitoolsException {
-    checkUser();
+    if (!isUserModifiable()) {
+      throw new SitoolsException("Operation refused");
+    }
+    checkUser(bean);
     Connection cx = null;
     try {
       cx = ds.getConnection();
@@ -741,7 +759,9 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    */
   @Override
   public boolean deleteUser(String identifier) throws SitoolsException {
-    checkUser();
+    if (!isUserModifiable()) {
+      throw new SitoolsException("Operation refused");
+    }
     Connection cx = null;
     try {
       cx = ds.getConnection();

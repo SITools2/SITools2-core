@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -111,6 +111,9 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
+    // Context
+    Context ctx = this.component.getContext().createChildContext();
+    ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
     if (ds == null) {
       ds = SitoolsSQLDataSourceFactory
           .getInstance()
@@ -119,7 +122,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
     }
 
     if (store == null) {
-      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds);
+      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
     }
 
     if (this.component == null) {
@@ -129,9 +132,6 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
       this.component.getClients().add(Protocol.FILE);
       this.component.getClients().add(Protocol.CLAP);
 
-      // Context
-      Context ctx = this.component.getContext().createChildContext();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 
       this.component.getDefaultHost().attach(getAttachUrl(), new UsersAndGroupsAdministration(ctx));

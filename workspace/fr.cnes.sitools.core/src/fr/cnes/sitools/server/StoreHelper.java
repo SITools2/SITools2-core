@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -140,98 +140,98 @@ public final class StoreHelper {
     SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
 
     SitoolsSQLDataSource dsSecurity = SitoolsSQLDataSourceFactory
-      .getInstance()
-      .setupDataSource(
-        settings.getString("Starter.DATABASE_DRIVER"), settings.getString("Starter.DATABASE_URL"), settings.getString("Starter.DATABASE_USER"), settings.getString("Starter.DATABASE_PASSWORD"), settings.getString("Starter.DATABASE_SCHEMA")); //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        .getInstance()
+        .setupDataSource(
+            settings.getString("Starter.DATABASE_DRIVER"), settings.getString("Starter.DATABASE_URL"), settings.getString("Starter.DATABASE_USER"), settings.getString("Starter.DATABASE_PASSWORD"), settings.getString("Starter.DATABASE_SCHEMA")); //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-    JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity);
+    JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity, context);
     stores.put(Consts.APP_STORE_USERSANDGROUPS, storeUandG);
 
     SitoolsStore<Role> storeRole = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_ROLE, storeRole);
 
     SitoolsStore<AppRegistry> storeApp = new AppRegistryStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_REGISTRY, storeApp);
 
     AuthorizationStore storeAuthorization = new AuthorizationStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_AUTHORIZATION, storeAuthorization);
 
     NotificationStore storeNotification = new NotificationStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_NOTIFICATIONS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_NOTIFICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_NOTIFICATION, storeNotification);
 
     SitoolsStore<Inscription> storeIns = new InscriptionStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_INSCRIPTION, storeIns);
 
     SitoolsStore<JDBCDataSource> storeDS = new JDBCDataSourceStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DATASOURCES_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASOURCES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASOURCE, storeDS);
 
     SitoolsStore<MongoDBDataSource> storeMongoDBDS = new MongoDBDataSourceStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DATASOURCES_MONGODB_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASOURCES_MONGODB_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASOURCE_MONGODB, storeMongoDBDS);
 
     SitoolsStore<Dictionary> storeDictionary = new DictionaryStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DICTIONARY, storeDictionary);
 
     SitoolsStore<ConceptTemplate> storeConceptTemplate = new ConceptTemplateStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_TEMPLATE, storeConceptTemplate);
 
     ApplicationPluginStore storeApplicationPlugin = new ApplicationPluginStoreXmlImpl(new File(
-      settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_APPLICATIONS, storeApplicationPlugin);
 
     SitoolsStore<FilterModel> storeFilterPlugin = new FilterPluginStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_FILTERS, storeFilterPlugin);
 
     SitoolsStore<ResourceModel> storeResourcePlugins = new ResourcePluginStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_RESOURCES, storeResourcePlugins);
 
     SitoolsStore<DataSet> storeDataSet = new DataSetStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASET, storeDataSet);
 
     SitoolsStore<ConverterChainedModel> storeConv = new ConverterStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_CONVERTERS, storeConv);
 
     SitoolsStore<FilterChainedModel> storeFilter = new FilterStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_FILTERS, storeFilter);
 
     SitoolsStore<DatasetView> storeDsView = new DatasetViewStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_VIEWS, storeDsView);
 
     PortalStore storePortal = new PortalStoreXmlImpl(new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR)),
-      context);
+        context);
     stores.put(Consts.APP_STORE_PORTAL, storePortal);
 
     SitoolsStore<FormComponent> storefc = new FormComponentsStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_FORMCOMPONENT, storefc);
 
     SitoolsStore<Collection> storeCollections = new CollectionsStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_COLLECTIONS, storeCollections);
 
     SitoolsStore<FormProject> storeFormProject = new FormProjectStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_FORMPROJECT, storeFormProject);
 
     SitoolsStore<Project> storePrj = new ProjectStoreXML(new File(settings.getStoreDIR(Consts.APP_PROJECTS_STORE_DIR)),
-      context);
+        context);
     stores.put(Consts.APP_STORE_PROJECT, storePrj);
 
     SitoolsStore<Graph> storeGraph = new GraphStoreXML(new File(settings.getStoreDIR(Consts.APP_GRAPHS_STORE_DIR)),
-      context);
+        context);
     stores.put(Consts.APP_STORE_GRAPH, storeGraph);
 
     SitoolsStore<Form> storeForm = new FormStoreXML(new File(settings.getStoreDIR(Consts.APP_FORMS_STORE_DIR)), context);
@@ -241,43 +241,43 @@ public final class StoreHelper {
     stores.put(Consts.APP_STORE_FEED, storeFeeds);
 
     SitoolsStore<Opensearch> storeOS = new OpenSearchStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_OPENSEARCH, storeOS);
 
     SitoolsStore<Order> storeOrd = new OrderStoreXML(new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR)),
-      context);
+        context);
     stores.put(Consts.APP_STORE_ORDER, storeOrd);
 
     UserStorageStore storeUserStorage = new UserStorageStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_USERSTORAGE, storeUserStorage);
 
     DataStorageStore storeDataStorage = new DataStorageStoreXmlImpl(new File(
-      settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASTORAGE, storeDataStorage);
 
     SitoolsStore<SitoolsDimension> storeDimensions = new DimensionStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DIMENSION, storeDimensions);
 
     SitoolsStore<TaskModel> storeTaskModel = new TaskStoreXML(
-      new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR)), context);
+        new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_TASK, storeTaskModel);
 
     SitoolsStore<ProjectModuleModel> storeProjectModule = new ProjectModuleStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PROJECTS_MODULES, storeProjectModule);
 
     SitoolsStore<GuiServiceModel> storeGuiService = new GuiServiceStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_GUI_SERVICE, storeGuiService);
 
     SitoolsStore<GuiServicePluginModel> storeGuiServicePlugin = new GuiServicePluginStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_GUI_SERVICES_PLUGIN, storeGuiServicePlugin);
 
     SitoolsStore<ServiceCollectionModel> storeServices = new ServiceStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_SERVICES, storeServices);
 
     if (settings.isStartWithMigration()) {
@@ -295,7 +295,7 @@ public final class StoreHelper {
    * @param stores
    *          the Map of stores
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void migrateStores(Map<String, Object> stores) {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -350,7 +350,7 @@ public final class StoreHelper {
    * @throws SitoolsException
    *           if there are errors
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {

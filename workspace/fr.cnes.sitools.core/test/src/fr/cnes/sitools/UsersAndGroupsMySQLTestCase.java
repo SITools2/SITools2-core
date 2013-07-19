@@ -108,6 +108,9 @@ public class UsersAndGroupsMySQLTestCase extends AbstractSitoolsTestCase {
    */
   public void setUp() throws Exception {
     SitoolsSettings settings = SitoolsSettings.getInstance();
+    // Context
+    Context ctx = this.component.getContext().createChildContext();
+    ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
     if (ds == null) {
       ds = SitoolsSQLDataSourceFactory
           .getInstance()
@@ -116,7 +119,7 @@ public class UsersAndGroupsMySQLTestCase extends AbstractSitoolsTestCase {
     }
 
     if (store == null) {
-      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds);
+      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
     }
 
     if (this.component == null) {
@@ -126,9 +129,6 @@ public class UsersAndGroupsMySQLTestCase extends AbstractSitoolsTestCase {
       this.component.getClients().add(Protocol.FILE);
       this.component.getClients().add(Protocol.CLAP);
 
-      // Context
-      Context ctx = this.component.getContext().createChildContext();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 
       this.component.getDefaultHost().attach(getAttachUrl(), new UsersAndGroupsAdministration(ctx));

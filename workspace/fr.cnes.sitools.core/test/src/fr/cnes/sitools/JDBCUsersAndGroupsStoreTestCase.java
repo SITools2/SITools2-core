@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -27,8 +27,10 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.restlet.Context;
 
 import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
@@ -60,6 +62,9 @@ public class JDBCUsersAndGroupsStoreTestCase extends AbstractSitoolsTestCase {
    * @throws Exception
    */
   public void setUp() throws Exception {
+    Context ctxUAG = new Context();
+    ctxUAG.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+
     if (ds == null) {
       ds = SitoolsSQLDataSourceFactory
           .getInstance()
@@ -68,7 +73,7 @@ public class JDBCUsersAndGroupsStoreTestCase extends AbstractSitoolsTestCase {
     }
 
     if (store == null) {
-      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds);
+      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctxUAG);
     }
   }
 

@@ -147,16 +147,16 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
       this.component.getClients().add(Protocol.CLAP);
 
       // USERS AND GROUPS
+      // Context
+      Context ctxUAG = this.component.getContext().createChildContext();
+      ctxUAG.getAttributes().put(ContextAttributes.SETTINGS, settings);
 
       SitoolsSQLDataSource ds = SitoolsSQLDataSourceFactory
           .getInstance()
           .setupDataSource(
               SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_DRIVER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_URL"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_USER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_PASSWORD"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-      JDBCUsersAndGroupsStore ugstore = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds);
+      JDBCUsersAndGroupsStore ugstore = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctxUAG);
 
-      // Context
-      Context ctxUAG = this.component.getContext().createChildContext();
-      ctxUAG.getAttributes().put(ContextAttributes.SETTINGS, settings);
         
       ctxUAG.getAttributes().put(ContextAttributes.APP_STORE, ugstore);
 
