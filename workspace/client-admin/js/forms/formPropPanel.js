@@ -50,7 +50,8 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
             this.title = i18n.get('label.createForm');
         }
         this.zoneStore = new Ext.data.JsonStore({
-            root : 'zone',
+            root : 'data',
+            idProperty : 'id',
             fields : [ {
                 id : 'id',
                 type : 'string'
@@ -74,7 +75,17 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                 type : 'boolean'
             }, {
                 name : 'params'
-            }]
+            }, {
+                name : 'containerPanelId',
+                type : 'string'
+            }],
+            listeners : {
+                scope : this,
+                remove : function (store, rec, ind) {
+                    store.commitChanges();
+                    this.absoluteLayout.fireEvent('activate');
+                }
+            }
         });
         this.formComponentsStore = new Ext.data.JsonStore({
             root : 'data',
@@ -279,54 +290,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
 			listeners : {
 				scope : this, 
 				activate : function () {
-
 					this.absoluteLayout.fireEvent('activate');
-										
-//					Ext.getCmp('mainpanel').fireEvent('activate');
-					
-					var absoluteLayout = this.absoluteLayout;
-					var displayPanelDropTargetEl =  absoluteLayout.body.dom;
-					var formComponentsStore = this.formComponentsStore;
-					var datasetColumnModel = this.datasetColumnModel;
-					var storeConcepts = this.storeConcepts;
-
-//					var displayPanelDropTarget = new Ext.dd.DropTarget(displayPanelDropTargetEl, {
-//						ddGroup     : 'gridComponentsList',
-//						overClass : 'not-save-textfield',
-//						notifyDrop  : function (ddSource, e, data) {
-//							var xyDrop = e.xy;
-//							var xyRef = Ext.get(absoluteLayout.body).getXY();
-//							
-//							var xyOnCreate = {
-//								x : xyDrop[0] - xyRef[0], 
-//								y : xyDrop[1] - xyRef[1]
-//							};
-//							// Reference the record (single selection) for readability
-//							var rec = ddSource.dragData.selections[0];
-//					        var ComponentWin = new sitools.admin.forms.componentPropPanel({
-//					            urlAdmin : rec.data.jsonDefinitionAdmin,
-//					            datasetColumnModel : datasetColumnModel,
-//					            ctype : rec.data.type,
-//					            action : "create",
-//					            componentDefaultHeight : rec.data.componentDefaultHeight,
-//					            componentDefaultWidth : rec.data.componentDefaultWidth,
-//					            dimensionId : rec.data.dimensionId,
-//					            unit : rec.data.unit,
-//					            extraParams : rec.data.extraParams, 
-//					            jsAdminObject : rec.data.jsAdminObject, 
-//					            jsUserObject : rec.data.jsUserObject, 
-//					            context : "dataset", 
-//					            xyOnCreate : xyOnCreate, 
-//					            storeConcepts : this.storeConcepts, 
-//					            absoluteLayout : absoluteLayout, 
-//					            record : rec, 
-//					            formComponentsStore : formComponentsStore
-//					        });
-//					        ComponentWin.show();
-//						}
-//					});
-			       
-					//this.componentListPanel.dd.addToGroup('gridComponentsTest');
 				}
 			}
 		});
@@ -413,7 +377,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                         if (!Ext.isEmpty(globalParameters.formZones)) {
                             Ext.each(globalParameters.formZones, function (zone) {
                                 this.zoneStore.add(new Ext.data.Record({
-                                    id : zone.id,
+                                    containerPanelId : zone.id,
                                     title : zone.title,
                                     height : zone.height,
                                     collapsible : zone.collapsible,
@@ -453,7 +417,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                         } else if (!Ext.isEmpty(globalParameters.oldParams)) {
                             var idGen = Ext.id();
                             this.zoneStore.add(new Ext.data.Record({
-                                id : idGen,
+                                containerPanelId : idGen,
                                 title : data.name,
                                 height : data.height,
                                 css : data.css,
@@ -566,7 +530,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
             if (paramstore.getCount() > 0) {
                 paramObject = [];
                 paramstore.each(function (param) {
-                    if (param.data.containerPanelId == component.data.id){
+                    if (param.data.containerPanelId == component.data.containerPanelId){
                         paramObject.push({
                             type : param.data.type,
                             code : param.data.code,
@@ -594,7 +558,7 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
                 
                 if (!Ext.isEmpty(paramObject)){
                     putObject.zones.push({
-                        id : component.data.id,
+                        id : component.data.containerPanelId,
                         height : component.data.height,
                         position : component.data.position,
                         css : component.data.css,

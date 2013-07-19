@@ -63,14 +63,14 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         this.body.addClass(Ext.getCmp("formMainFormId").find('name', 'css')[0].getValue());
         this.setWidth(this.formSize.width);
         
-        this.removeAll();
+        this.removeAll(true);
 
         var totalHeight = 0;
         if (this.zoneStore.getCount() > 0) {
             this.zoneStore.each(function (rec) {
                 totalHeight += rec.data.height;
                 var zonePanel = new sitools.admin.forms.advancedFormPanel({
-                    id : rec.data.id,
+                    containerPanelId : rec.data.containerPanelId,
                     title: rec.data.title,
                     height: rec.data.height,
                     position : rec.data.position,

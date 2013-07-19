@@ -90,7 +90,8 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 
                         var containerId = component.data.containerPanelId;
 
-                        if (containerId == this.id) {
+//                        if (containerId == this.id) {
+                          if (containerId == this.containerPanelId) {
 
                             y = Ext.isEmpty(component.data.ypos) ? y + 50 : component.data.ypos;
                             x = Ext.isEmpty(component.data.xpos) ? x : component.data.xpos;
@@ -130,7 +131,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
                                         record : this.record,
                                         formComponentsStore : this.displayPanel.formComponentsStore,
                                         absoluteLayout : this.displayPanel,
-                                        containerPanelId : mypanel.id
+                                        containerPanelId : mypanel.containerPanelId
                                     });
                                     propComponentPanel.show();
                                 },
@@ -212,7 +213,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 		            absoluteLayout : absoluteLayout, 
 		            record : rec, 
 		            formComponentsStore : formComponentsStore,
-		            containerPanelId : mypanel.id
+		            containerPanelId : mypanel.containerPanelId
 		        });
 		        ComponentWin.show();
 			},
@@ -221,7 +222,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     },
     
     onContextMenu : function (event, htmlEl, options) {
-		//ici le this est le container sur lequel on a cliqué. 
+		//ici le this est le container sur lequel on a cliquï¿½. 
 		event.stopEvent();
 		var ctxMenu = new Ext.menu.Menu({
 			items : [{
@@ -320,7 +321,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     },
     
     editPanel : function () {
-        var zoneToRemove = this.absoluteLayout.zoneStore.find('id', this.id);
+        var zoneToRemove = this.absoluteLayout.zoneStore.find('containerPanelId', this.containerPanelId);
         var zoneRec = this.absoluteLayout.zoneStore.getAt(zoneToRemove);
         
         var setupAdvancedPanel = new sitools.admin.forms.setupAdvancedFormPanel({
@@ -334,17 +335,17 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
     deletePanel : function () {
         var parentContainer = this.absoluteLayout;
 
-        var zoneToRemove = parentContainer.zoneStore.find('id', this.id);
+        var zoneToRemove = parentContainer.zoneStore.find('containerPanelId', this.containerPanelId);
         parentContainer.zoneStore.removeAt(zoneToRemove);
 
         this.formComponentsStore.each(function (component) {
-            if (component.data.containerPanelId == this.id) {
+            if (component.data.containerPanelId == this.containerPanelId) {
                 this.formComponentsStore.remove(component);
             }
         }, this);
 
         this.destroy();
-        parentContainer.fireEvent('activate');
+//        parentContainer.fireEvent('activate');
 //        parentContainer.doLayout();
     }
 });

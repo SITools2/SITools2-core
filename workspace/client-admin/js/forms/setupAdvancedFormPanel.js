@@ -117,20 +117,6 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
         var cssFieldset = f.findField('cssFieldset').getValue();
         var height = parseInt(f.findField('height').getValue(), 10);
         
-//        var aPanel = new sitools.admin.forms.advancedFormPanel({
-//            title: title,
-//            frame : true,
-//            height: height,
-//            width : "100%",
-//            bodyCssClass : cssFieldset,
-//            collapsible : isCollapsible,
-//            ddGroup : 'gridComponentsList',
-//            datasetColumnModel : this.parentContainer.datasetColumnModel,
-//            storeConcepts : this.parentContainer.storeConcepts, 
-//            formComponentsStore : this.parentContainer.formComponentsStore,
-//            absoluteLayout : this.parentContainer
-//        });
-        
         var rec = {
             title : title,
             height : height,
@@ -141,21 +127,21 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
         };
         
         if (this.action === 'modify') {
-            var zoneToRemove = this.parentContainer.zoneStore.find('id', this.zone.id);
+            var zoneToRemove = this.parentContainer.zoneStore.find('containerPanelId', this.zone.containerPanelId);
             var zoneRec = this.parentContainer.zoneStore.getAt(zoneToRemove);
             
-            Ext.apply(zoneRec.data, rec, {id : this.zone.id});
+            Ext.apply(zoneRec.data, rec, {containerPanelId : this.zone.containerPanelId});
         }
         else {
-            rec.id = Ext.id();
+            rec.containerPanelId = Ext.id();
             this.parentContainer.zoneStore.add(new Ext.data.Record(rec));
         }
         
-        
         this.destroy();
-        
+//        this.parentContainer.doLayout();
         this.parentContainer.fireEvent('activate');
     },
+    
     _onCancel : function () {
         this.destroy();
     }
