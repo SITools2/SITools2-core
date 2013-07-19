@@ -76,7 +76,7 @@ viewer.toolbarextjs = function (viewer) {
         enableOverflow : true,
         cls : 'preview-toolbar',
         items: [
-            {
+            /*{
                 xtype: 'button', // same as 'tbsplitbutton'
                 //iconCls : 'arrow-back',
                 icon : loadUrl.get('APP_URL') + '/common/res/multizoom/images/toolbar/backward.png',
@@ -95,7 +95,7 @@ viewer.toolbarextjs = function (viewer) {
                 handler : function () {
                     alert("TODO");
                 }
-            },
+            },*/
             '->',
             labelPourcentage
             ,
@@ -130,7 +130,7 @@ viewer.toolbarextjs = function (viewer) {
                     sitools.user.component.dataviews.dataviewUtils.downloadFile(img.src);
                 }
             },
-            {
+            /*{
                 xtype: 'button', // same as 'tbsplitbutton'
                 icon : loadUrl.get('APP_URL') + '/common/res/multizoom/images/toolbar/copy-image.png',
                 tooltip : i18n.get('label.copyImage'),
@@ -140,7 +140,7 @@ viewer.toolbarextjs = function (viewer) {
                     var img = viewer.frameElement.firstChild;
                     sitools.user.component.dataviews.dataviewUtils.copyImageToClipboard(img.src);
                 }
-            },
+            },*/
             {
                 xtype: 'button', // same as 'tbsplitbutton'
                 icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/stretch-optimally.png',
