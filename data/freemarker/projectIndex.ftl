@@ -122,6 +122,7 @@
 	<script type="text/javascript" src="${appUrl}/common/js/utils/reference.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/utils/Utils.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/userProfile/loginUtils.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/register.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/resetPassword.js"></script>

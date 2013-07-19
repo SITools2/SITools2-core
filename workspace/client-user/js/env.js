@@ -468,7 +468,7 @@ var projectGlobal = {
                         icon : Ext.MessageBox.INFO,
                         fn : function (response) {
                             if (response === 'ok') {
-                                new sitools.userProfile.Login({
+                                sitools.userProfile.LoginUtils.connect({
                                     url : loadUrl.get('APP_URL') + '/login',
                                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
                                     reset : loadUrl.get('APP_URL') + '/resetPassword',
@@ -477,7 +477,7 @@ var projectGlobal = {
                                             siteMapRes : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')
                                         });
                                     }
-                                }).show();
+                                });
                             }
                         }
                     });

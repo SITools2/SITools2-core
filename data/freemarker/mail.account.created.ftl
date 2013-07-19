@@ -14,7 +14,7 @@ ${description!}
 Your new account is now available
 <ul>
 <li>Login : ${user.identifier}</li>
-<li>Password : ${pass}</li>
+<li>Password : ${pass!}</li>
 </ul>
 </p>
 

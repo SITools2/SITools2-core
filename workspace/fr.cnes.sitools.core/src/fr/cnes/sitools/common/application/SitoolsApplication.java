@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -105,6 +105,9 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
 
   /** info */
   private SitoolsApplicationInfo sitoolsApplicationInfo = null;
+
+  /** True to set that the application needs a user authentication, false otherwise */
+  private boolean isUserAuthenticationNeeded = true;
 
   static {
 
@@ -261,8 +264,8 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
 
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
-    Request reqPOST = new Request(Method.POST, RIAPUtils.getRiapBase() + settings.getString(Consts.APP_APPLICATIONS_URL), new ObjectRepresentation<Resource>(
-        resource));
+    Request reqPOST = new Request(Method.POST, RIAPUtils.getRiapBase()
+        + settings.getString(Consts.APP_APPLICATIONS_URL), new ObjectRepresentation<Resource>(resource));
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
     org.restlet.Response r = getContext().getClientDispatcher().handle(reqPOST);
 
@@ -291,7 +294,8 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
    */
   public final void unregister() {
 
-    Request reqDELETE = new Request(Method.DELETE, RIAPUtils.getRiapBase() + settings.getString(Consts.APP_APPLICATIONS_URL) + "/" + this.getId());
+    Request reqDELETE = new Request(Method.DELETE, RIAPUtils.getRiapBase()
+        + settings.getString(Consts.APP_APPLICATIONS_URL) + "/" + this.getId());
     org.restlet.Response r = getContext().getClientDispatcher().handle(reqDELETE);
 
     if (r == null) {
@@ -312,7 +316,8 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
    */
   public final DelegatedAuthorizer getAuthorizer(String objectUUID) {
 
-    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase() + settings.getString(Consts.APP_AUTHORIZATIONS_URL) + "/" + objectUUID + "/authorizer");
+    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase()
+        + settings.getString(Consts.APP_AUTHORIZATIONS_URL) + "/" + objectUUID + "/authorizer");
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
     reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
@@ -344,10 +349,11 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
    *          ConcurrentHashMap of Role objects to be used in the Authorizer.
    * @return Authorizer
    */
-  public final DelegatedAuthorizer getAuthorizer(Context context, ConcurrentHashMap<String, org.restlet.security.Role> reference) {
+  public final DelegatedAuthorizer getAuthorizer(Context context,
+      ConcurrentHashMap<String, org.restlet.security.Role> reference) {
 
-    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase() + settings.getString(Consts.APP_AUTHORIZATIONS_URL) + "/" + this.wrapToResource().getId()
-        + "/authorizer");
+    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase()
+        + settings.getString(Consts.APP_AUTHORIZATIONS_URL) + "/" + this.wrapToResource().getId() + "/authorizer");
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
     reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
@@ -387,33 +393,32 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       return addSecurityFilter(getContext(), restlet);
     }
 
-    Authorizer author = this
-        .getUserAuthorizer(restlet.getContext(), this.authenticationRealm.getReferenceRoles(), userRequestAttribute, this, methodsForPublic);
+    Authorizer author = this.getUserAuthorizer(restlet.getContext(), this.authenticationRealm.getReferenceRoles(),
+        userRequestAttribute, this, methodsForPublic);
     if ((author == null) || (author == Authorizer.ALWAYS)) {
       this.getLogger().warning("No security configuration for " + this.getName());
       this.authorizationSecure = false;
-      
+
       // attach a filter to block bad authentication
       NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
       notAuthenticatedFilter.setNext(restlet);
-      
-      
+
       return addSecurityFilter(getContext(), notAuthenticatedFilter);
     }
     else {
       // Authentication is mandatory ? (optional - sinon fenetre login navigateur...)
-      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(restlet.getContext(), true, getSettings().getAuthenticationDOMAIN(),
-          authenticationRealm);
+      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(restlet.getContext(), true, getSettings()
+          .getAuthenticationDOMAIN(), authenticationRealm);
 
       auth.setNext(author);
-      
+
       // attach a filter to block bad authentication
       NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
       // register with secure ...
       author.setNext(notAuthenticatedFilter);
-      
+
       notAuthenticatedFilter.setNext(restlet);
-      
+
       return addSecurityFilter(getContext(), auth);
     }
   }
@@ -433,12 +438,13 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
    *          the List of methods allowed for public user
    * @return Authorizer
    */
-  public final Authorizer getUserAuthorizer(Context context, ConcurrentHashMap<String, org.restlet.security.Role> reference, String userRequestAttribute,
+  public final Authorizer getUserAuthorizer(Context context,
+      ConcurrentHashMap<String, org.restlet.security.Role> reference, String userRequestAttribute,
       Application application, List<Method> methodsForPublic) {
     authorizer = null;
 
-    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase() + settings.getString(Consts.APP_AUTHORIZATIONS_URL) + "/" + this.wrapToResource().getId()
-        + "/authorizer");
+    Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase()
+        + settings.getString(Consts.APP_AUTHORIZATIONS_URL) + "/" + this.wrapToResource().getId() + "/authorizer");
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
     reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
@@ -576,26 +582,44 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       return filter;
     }
     catch (ClassNotFoundException e) {
-      getLogger().log(Level.WARNING, "Security filter not attached on application : " + this.getName() + " ClassNotFoundException :" + classname, e);
+      getLogger().log(Level.WARNING,
+          "Security filter not attached on application : " + this.getName() + " ClassNotFoundException :" + classname,
+          e);
 
     }
     catch (InstantiationException e) {
-      getLogger().log(Level.WARNING, "Security filter not attached on application : " + this.getName() + " InstantiationException :" + classname, e);
+      getLogger().log(Level.WARNING,
+          "Security filter not attached on application : " + this.getName() + " InstantiationException :" + classname,
+          e);
     }
     catch (IllegalAccessException e) {
-      getLogger().log(Level.WARNING, "Security filter not attached on application : " + this.getName() + " IllegalAccessException :" + classname, e);
+      getLogger().log(Level.WARNING,
+          "Security filter not attached on application : " + this.getName() + " IllegalAccessException :" + classname,
+          e);
     }
     catch (SecurityException e) {
-      getLogger().log(Level.WARNING, "Security filter not attached on application : " + this.getName() + " SecurityException :" + classname, e);
+      getLogger().log(Level.WARNING,
+          "Security filter not attached on application : " + this.getName() + " SecurityException :" + classname, e);
     }
     catch (NoSuchMethodException e) {
-      getLogger().log(Level.WARNING, "Security filter not attached on application : " + this.getName() + " NoSuchMethodException :" + classname, e);
+      getLogger()
+          .log(
+              Level.WARNING,
+              "Security filter not attached on application : " + this.getName() + " NoSuchMethodException :"
+                  + classname, e);
     }
     catch (IllegalArgumentException e) {
-      getLogger().log(Level.WARNING, "Security filter not attached on application : " + this.getName() + " IllegalArgumentException :" + classname, e);
+      getLogger()
+          .log(
+              Level.WARNING,
+              "Security filter not attached on application : " + this.getName() + " IllegalArgumentException :"
+                  + classname, e);
     }
     catch (InvocationTargetException e) {
-      getLogger().log(Level.WARNING, "Security filter not attached on application : " + this.getName() + " InvocationTargetException :" + classname, e);
+      getLogger().log(
+          Level.WARNING,
+          "Security filter not attached on application : " + this.getName() + " InvocationTargetException :"
+              + classname, e);
     }
 
     return restlet;
@@ -617,15 +641,20 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       return addSecurityFilter(getContext(), application);
     }
 
+    if (!application.isUserAuthenticationNeeded()) {
+      authorizationSecure = false;
+      return addSecurityFilter(getContext(), application);
+    }
+
     Authorizer localAuthorizer = getAuthorizer(application.getContext(), authenticationRealm.getReferenceRoles());
     if ((localAuthorizer == null) || (localAuthorizer == Authorizer.ALWAYS)) {
       getLogger().warning("No security configuration for " + this.getName());
       authorizationSecure = false;
 
       // optional authenticator
-      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true, settings.getAuthenticationDOMAIN(),
-          authenticationRealm);
-      
+      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true,
+          settings.getAuthenticationDOMAIN(), authenticationRealm);
+
       if (!Category.PUBLIC.equals(application.getCategory())) {
         // attach a filter to block bad authentication
         NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
@@ -644,8 +673,8 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       authorizationSecure = true;
 
       // optional authenticator
-      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true, settings.getAuthenticationDOMAIN(),
-          authenticationRealm);
+      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true,
+          settings.getAuthenticationDOMAIN(), authenticationRealm);
 
       auth.setNext(localAuthorizer);
 
@@ -811,6 +840,25 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
    */
   public final ArrayList<String> getRepresentationInfoReferences() {
     return new ArrayList<String>(representationInfos.keySet());
+  }
+
+  /**
+   * Gets the isUserAuthenticationNeeded value
+   * 
+   * @return the isUserAuthenticationNeeded
+   */
+  public boolean isUserAuthenticationNeeded() {
+    return isUserAuthenticationNeeded;
+  }
+
+  /**
+   * Sets the value of isUserAuthenticationNeeded
+   * 
+   * @param isUserAuthenticationNeeded
+   *          the isUserAuthenticationNeeded to set
+   */
+  public void setUserAuthenticationNeeded(boolean isUserAuthenticationNeeded) {
+    this.isUserAuthenticationNeeded = isUserAuthenticationNeeded;
   }
 
   // /**

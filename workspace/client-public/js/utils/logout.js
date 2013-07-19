@@ -17,10 +17,16 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext,window*/
-function utils_logout() {
-
-	Ext.util.Cookies.set('userLogin', '');
-	Ext.util.Cookies.set('hashCode', '');
-	Ext.Ajax.defaultHeaders.Authorization = '';
-	window.location.reload();
+function utils_logout(reload) {
+    if (Ext.isEmpty(reload)) {
+        reload = true;
+    }
+    Ext.util.Cookies.set('userLogin', '');
+    Ext.util.Cookies.clear('userLogin');
+    Ext.util.Cookies.set('hashCode', '');
+    Ext.Ajax.defaultHeaders.Authorization = '';
+    if (reload) {
+        window.location.reload();
+    }	
+	    
 }

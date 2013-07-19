@@ -77,7 +77,8 @@
 	<script type="text/javascript" src="${appUrl}/common/js/utils/reference.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/sliderRange/js/ux/SliderRange.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/userProfile/loginUtils.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>	
     <script type="text/javascript" src="${appUrl}/common/js/widgets/actionlink.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/highlighttext.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/checkcolumn.js"></script>
@@ -312,10 +313,14 @@
 		      		Ext.MessageBox.buttonText.no = i18n.get('label.no');
 						Ext.QuickTips.init();
 						if (Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-							new sitools.userProfile.Login({
+							/*new sitools.userProfile.Login({
 			        			url:'${appUrl}/login',
 			        			handler : initAppli
-			        		}).show();
+			        		}).show();*/
+							sitools.userProfile.LoginUtils.connect({
+								url:'${appUrl}/login',
+			        			handler : initAppli
+							});
 						}
 						else {
 							initAppli();

@@ -375,19 +375,19 @@ sitools.user.desktop.App = function () {
 	 * Show a {sitools.userProfile.Login} window
 	 */
 	function _onLogin() {
-        var tmp = new sitools.userProfile.Login({
+	    sitools.userProfile.LoginUtils.connect({
             closable : true,
             url : loadUrl.get('APP_URL') + '/login',
             register : loadUrl.get('APP_URL') + '/inscriptions/user',
             reset : loadUrl.get('APP_URL') + '/resetPassword'
-        }).show();
+        });
 	}
 
 	/**
 	 * Called when logout is pressed.
 	 */
 	function _onLogout() {
-		utils_logout();
+	    sitools.userProfile.LoginUtils.logout();
 	}
 
 	/**

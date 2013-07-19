@@ -189,7 +189,7 @@ var clientAdmin = {
 	        itemId : 'menu_logout',
 	        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/logout.png',
 	        handler : function () {
-	            utils_logout();
+	            sitools.userProfile.LoginUtils.logout();
 	        }
 	    };
 	    // var menuList = { xtype: 'tbbutton', text: 'Menu 2', itemId:'menu_list',

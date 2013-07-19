@@ -95,6 +95,7 @@ public final class ClientUserApplication extends StaticWebApplication {
     if (projectIndexFile == null || !projectIndexFile.exists()) {
       getLogger().severe("Template file for Project/index.html file not found :" + projectIndexUrl);
     }
+    setUserAuthenticationNeeded(false);
 
   }
 

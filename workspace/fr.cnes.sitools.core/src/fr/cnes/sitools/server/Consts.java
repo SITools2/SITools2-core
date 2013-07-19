@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -383,8 +383,6 @@ public interface Consts {
   /** url orders files */
   String APP_ADMINSTORAGE_ORDERS_URL = "Starter.APP_ADMINSTORAGE_ORDERS_URL";
 
-
-  
   /** Minimum threads waiting to service requests. */
   String MIN_THREADS = "Starter.MIN_THREADS";
   /** Maximum threads that will service requests. */
@@ -412,9 +410,6 @@ public interface Consts {
   /** The time (in ms) to wait for existing requests to complete before fully stopping the server. */
   String GRACEFUL_SHUTDOWN = "Starter.GRACEFUL_SHUTDOWN";
 
-
-  
-  
   /** Consts for Task management */
 
   String APP_TASK_STORE_DIR = "Starter.APP_TASK_STORE_DIR";
@@ -487,5 +482,13 @@ public interface Consts {
   String APP_SERVICES_STORE_DIR = "Starter.APP_SERVICES_STORE_DIR";
   /** Gui service store */
   String APP_STORE_SERVICES = "APP_STORE_SERVICES";
+
+  String SECURITY_DELEGATE_LOGIN = "Starter.SECURITY.DELEGATE_LOGIN";
+  String SECURITY_DELEGATE_LOGIN_URL = "Starter.SECURITY.DELEGATE_LOGIN_URL";
+  String SECURITY_DELEGATE_LOGOUT = "Starter.SECURITY.DELEGATE_LOGOUT";
+  String SECURITY_DELEGATE_LOGOUT_URL = "Starter.SECURITY.DELEGATE_LOGOUT_URL";
+
+  String SECURITY_DELEGATE_USER_MANAGMENT = "Starter.SECURITY.DELEGATE_USER_MANAGMENT";
+  String SECURITY_DELEGATE_USER_MANAGMENT_URL = "Starter.SECURITY.DELEGATE_USER_MANAGMENT_URL";
 
 }
