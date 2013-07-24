@@ -65,25 +65,51 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         
         this.removeAll(true);
 
-        var totalHeight = 0;
+        var totalHeight = 300;
+        
+        if (this.action!='modify'){
+	        var mainPanel = new sitools.admin.forms.advancedFormPanel({
+		    	containerPanelId: 'main',
+	        	title: 'main',
+		    	height: 300,
+				border: true,
+				id : 'mainpanel',
+				 ddGroup : 'gridComponentsList',
+	             border: true,
+	             collapsible : false,
+	             datasetColumnModel : this.datasetColumnModel,
+	             formComponentsStore : this.formComponentsStore,
+	             storeConcepts : this.storeConcepts,
+	             context : 'dataset',
+	             absoluteLayout : this
+		      });
+	        //this.add(mainPanel);
+        }
+	        
+	     if (this.zoneStore.getCount() == 0){
+	        this.zoneStore.add(new Ext.data.Record(mainPanel));
+    	} 
+
         if (this.zoneStore.getCount() > 0) {
             this.zoneStore.each(function (rec) {
                 totalHeight += rec.data.height;
-                var zonePanel = new sitools.admin.forms.advancedFormPanel({
-                    containerPanelId : rec.data.containerPanelId,
-                    title: rec.data.title,
-                    height: rec.data.height,
-                    position : rec.data.position,
-                    collapsible : rec.data.collapsible,
-                    border: true,
-                    ddGroup : 'gridComponentsList',
-                    datasetColumnModel : this.datasetColumnModel,
-                    formComponentsStore : this.formComponentsStore,
-                    storeConcepts : this.storeConcepts,
-                    context : 'dataset',
-                    absoluteLayout : this
-                });
-                this.add(zonePanel);
+                //if (rec.data.id!='mainpanel'){
+	                var zonePanel = new sitools.admin.forms.advancedFormPanel({
+	                    containerPanelId : rec.data.containerPanelId,
+	                    title: rec.data.title,
+	                    height: rec.data.height,
+	                    position : rec.data.position,
+	                    collapsible : rec.data.collapsible,
+	                    border: true,
+	                    ddGroup : 'gridComponentsList',
+	                    datasetColumnModel : this.datasetColumnModel,
+	                    formComponentsStore : this.formComponentsStore,
+	                    storeConcepts : this.storeConcepts,
+	                    context : 'dataset',
+	                    absoluteLayout : this
+	                });
+	                this.add(zonePanel);
+                //}
             }, this);
         }
         

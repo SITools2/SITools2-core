@@ -127,7 +127,11 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
         };
         
         if (this.action === 'modify') {
-            var zoneToRemove = this.parentContainer.zoneStore.find('containerPanelId', this.zone.containerPanelId);
+            if (!Ext.isEmpty(this.zone.containerPanelId)){
+            	var zoneToRemove = this.parentContainer.zoneStore.find('containerPanelId', this.zone.containerPanelId);
+            } else {
+            	var zoneToRemove = this.parentContainer.zoneStore.find('position', 0);
+            }
             var zoneRec = this.parentContainer.zoneStore.getAt(zoneToRemove);
             
             Ext.apply(zoneRec.data, rec, {containerPanelId : this.zone.containerPanelId});
