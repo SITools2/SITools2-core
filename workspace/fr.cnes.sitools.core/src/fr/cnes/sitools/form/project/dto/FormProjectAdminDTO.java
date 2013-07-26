@@ -20,8 +20,8 @@ package fr.cnes.sitools.form.project.dto;
 
 import java.util.List;
 
-import fr.cnes.sitools.collections.model.Collection;
-import fr.cnes.sitools.dictionary.model.Dictionary;
+
+import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParametersDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
@@ -33,27 +33,34 @@ import fr.cnes.sitools.form.project.model.FormProject;
  * 
  * @author m.gond
  */
-public class FormProjectDTO extends FormDTO {
+public class FormProjectAdminDTO extends FormDTO {
 
   /**
    * the Dictionnary
    */
-  private Dictionary dictionary = null;
+  private Resource dictionary = null;
 
   /**
    * The collection of dataset of the Form
    */
-  private Collection collection = null;
+  private Resource collection;
 
   /** List of dataset properties to use in searchs */
-  private List<FormPropertyParameterDTO> properties = null;
+  private List<FormPropertyParameterDTO> properties;
 
   /** The url of the service returning a list of dataset corresponding to some properties */
-  private String urlServicePropertiesSearch = null;
+  private String urlServicePropertiesSearch;
   /** The url of the service performing the multidataset search */
-  private String urlServiceDatasetSearch = null;
+  private String urlServiceDatasetSearch;
+  
+  /** The id of the resource for the searchPropertiesSearch service */
+  private String idServicePropertiesSearch;
+  /** The id of the resource for the DatasetSearch service */
+  private String idServiceDatasetSearch;
+  
+  
   /** Maximal number of datasets authorized for the search request */
-  private Integer nbDatasetsMax = null;
+  private Integer nbDatasetsMax;
   
   
   
@@ -61,7 +68,7 @@ public class FormProjectDTO extends FormDTO {
   /**
    * Constructor
    */
-  public FormProjectDTO() {
+  public FormProjectAdminDTO() {
     super();
     // TODO Auto-generated constructor stub
   }
@@ -123,80 +130,8 @@ public class FormProjectDTO extends FormDTO {
     this.urlServiceDatasetSearch = urlServiceDatasetSearch;
   }
 
-  /**
-   * Gets the dictionary value
-   * 
-   * @return the dictionary
-   */
-  public Dictionary getDictionary() {
-    return dictionary;
-  }
 
-  /**
-   * Sets the value of dictionary
-   * 
-   * @param dictionary
-   *          the dictionary to set
-   */
-  public void setDictionary(Dictionary dictionary) {
-    this.dictionary = dictionary;
-  }
 
-  /**
-   * Gets the collection value
-   * 
-   * @return the collection
-   */
-  public Collection getCollection() {
-    return collection;
-  }
-
-  /**
-   * Sets the value of collection
-   * 
-   * @param collection
-   *          the collection to set
-   */
-  public void setCollection(Collection collection) {
-    this.collection = collection;
-  }
-
-  /**
-   * Create a FormProjectDTO from a FormProject
-   * 
-   * 
-   * @param formProject
-   *          the {@link FormProject}
-   * @param dictionary
-   *          the {@link Dictionary} to use
-   * @param collection
-   *          the {@link Collection} to use
-   * @return a new FormProjectDTO
-   */
-  public static FormProjectDTO fromObjectToDto(FormProject formProject, Dictionary dictionary, Collection collection) {
-    FormProjectDTO dto = new FormProjectDTO();
-    dto.setId(formProject.getId());
-    dto.setParent(formProject.getParent());
-    dto.setName(formProject.getName());
-    dto.setDescription(formProject.getDescription());
-    dto.setParameters(ParametersDTO.parametersToDTO(formProject.getParameters()));
-    dto.setWidth(formProject.getWidth());
-    dto.setHeight(formProject.getHeight());
-    dto.setCss(formProject.getCss());
-    dto.setParentUrl(formProject.getParentUrl());
-
-    dto.setProperties(FormPropertyParameterDTO.propertiesToDTO(formProject.getProperties()));
-    dto.setUrlServicePropertiesSearch(formProject.getUrlServicePropertiesSearch());
-    dto.setUrlServiceDatasetSearch(formProject.getUrlServiceDatasetSearch());
-
-    dto.setDictionary(dictionary);
-    dto.setCollection(collection);
-
-    dto.setNbDatasetsMax(formProject.getNbDatasetsMax());
-
-    return dto;
-
-  }
 
   /**
    * Sets the value of nbDatasetsMax
@@ -217,6 +152,64 @@ public class FormProjectDTO extends FormDTO {
     return nbDatasetsMax;
   }
 
+  public Resource getDictionary() {
+    return dictionary;
+  }
+
+  public void setDictionary(Resource dictionary) {
+    this.dictionary = dictionary;
+  }
+
+  public Resource getCollection() {
+    return collection;
+  }
+
+  public void setCollection(Resource collection) {
+    this.collection = collection;
+  }
+  
+  public static FormProject dtoToFormProject(FormProjectAdminDTO formProjectDTOInput) {
+    FormProject form = new FormProject();
+    
+    form.setDictionary(formProjectDTOInput.getDictionary());
+    form.setCollection(formProjectDTOInput.getCollection());
+    form.setIdServicePropertiesSearch(formProjectDTOInput.getIdServicePropertiesSearch());
+    form.setIdServiceDatasetSearch(formProjectDTOInput.getIdServiceDatasetSearch());
+    form.setUrlServicePropertiesSearch(formProjectDTOInput.getUrlServicePropertiesSearch());
+    form.setUrlServiceDatasetSearch(formProjectDTOInput.getUrlServiceDatasetSearch());
+    form.setNbDatasetsMax(formProjectDTOInput.getNbDatasetsMax());
+    
+    form.setId(formProjectDTOInput.getId());
+    form.setParent(formProjectDTOInput.getParent());
+    form.setName(formProjectDTOInput.getName());
+    form.setDescription(formProjectDTOInput.getDescription());
+    form.setParameters(ParametersDTO.dtoToParameters(formProjectDTOInput.getParameters()));
+    form.setZones(dtoToZones(formProjectDTOInput.getZones()));
+    form.setWidth(formProjectDTOInput.getWidth());
+    form.setHeight(formProjectDTOInput.getHeight());
+    form.setCss(formProjectDTOInput.getCss());
+    return form;
+    
+  }
+
+  public String getIdServicePropertiesSearch() {
+    return idServicePropertiesSearch;
+  }
+
+  public void setIdServicePropertiesSearch(String idServicePropertiesSearch) {
+    this.idServicePropertiesSearch = idServicePropertiesSearch;
+  }
+
+  public String getIdServiceDatasetSearch() {
+    return idServiceDatasetSearch;
+  }
+
+  public void setIdServiceDatasetSearch(String idServiceDatasetSearch) {
+    this.idServiceDatasetSearch = idServiceDatasetSearch;
+  }
+
+  
+  
 
   
 }

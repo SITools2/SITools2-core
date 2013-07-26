@@ -31,6 +31,11 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.form.dataset.dto.FormDTO;
+import fr.cnes.sitools.form.dataset.model.Form;
+import fr.cnes.sitools.form.dataset.model.Zone;
+import fr.cnes.sitools.form.project.dto.FormProjectAdminDTO;
+import fr.cnes.sitools.form.project.dto.FormProjectDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
 
 /**
@@ -111,7 +116,11 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
    * @return FormProject
    */
   public final FormProject getObject(Representation representation, Variant variant) {
-    FormProject formComponentInput = null;
+    
+    FormProject formProjectInput = null;
+    
+    FormProjectAdminDTO formProjectDTOInput = null;
+    
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the FormProject bean
       XstreamRepresentation<FormProject> repXML = new XstreamRepresentation<FormProject>(representation);
@@ -119,13 +128,21 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
       xstream.autodetectAnnotations(false);
       xstream.alias("formComponent", FormProject.class);
       repXML.setXstream(xstream);
-      formComponentInput = repXML.getObject();
+      formProjectInput = repXML.getObject();
     }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      formComponentInput = new JacksonRepresentation<FormProject>(representation, FormProject.class).getObject();
+      //formComponentInput = new JacksonRepresentation<FormProject>(representation, FormProject.class).getObject();
+      formProjectDTOInput = new JacksonRepresentation<FormProjectAdminDTO>(representation, FormProjectAdminDTO.class).getObject();
     }
-    return formComponentInput;
+    
+    formProjectInput = FormProjectAdminDTO.dtoToFormProject(formProjectDTOInput);
+//    if (formProjectInput.getParent() == null) {
+//      formProjectInput.setParent(getDatasetId());
+//    }
+
+    
+    return formProjectInput;
   }
 
   /**

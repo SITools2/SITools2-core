@@ -32,7 +32,7 @@ import fr.cnes.sitools.form.model.Value;
  * 
  * @author d.arpin (AKKA Technologies)
  */
-public final class FormDTO {
+public class FormDTO {
 
   /**
    * Form identifier

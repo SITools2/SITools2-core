@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -31,6 +31,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
+import fr.cnes.sitools.form.dataset.model.SimpleParameter;
 import fr.cnes.sitools.form.project.model.FormProject;
 
 /**
@@ -99,6 +100,9 @@ public final class FormProjectStoreXML extends SitoolsStoreXML<FormProject> {
         current.setHeight(formProject.getHeight());
         current.setCss(formProject.getCss());
         current.setParentUrl(formProject.getParentUrl());
+        
+        current.setZones(formProject.getZones());
+        
 
         it.remove();
 
@@ -143,6 +147,9 @@ public final class FormProjectStoreXML extends SitoolsStoreXML<FormProject> {
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("FormProject", FormProject.class);
+    aliases.put("SimpleParameter", SimpleParameter.class);
+    /* for compatibility matters */
+    aliases.put("FormParameter", SimpleParameter.class);
     this.init(location, aliases);
   }
 
