@@ -190,11 +190,14 @@ var data = {
 };
 userLogin = Ext.util.Cookies.get('userLogin');
 var userStorage = {
-	set : function (filename, filepath, content, callback) {
+	set : function (filename, filepath, content, callback, scope) {
+	    if (!scope) {
+	        scope = this;
+	    }
         Ext.Ajax.request({
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files",
             method : 'POST',
-            scope : this,
+            scope : scope,
             params : {
                 filepath : filepath,
                 filename : filename
@@ -220,11 +223,12 @@ var userStorage = {
                 Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.warning.savepreference.error'));
                 return;
             },
-            callback : function () {
-                if (!Ext.isEmpty(callback)) {
-                    callback.call();
-                }
-            }
+            callback : callback
+//            callback : function () {
+//                if (!Ext.isEmpty(callback)) {
+//                    callback.call();
+//                }
+//            }
         });
 
     },

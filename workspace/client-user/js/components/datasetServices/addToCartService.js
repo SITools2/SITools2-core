@@ -25,10 +25,10 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @required datasetId
  * @required datasetUrl
  * @cfg {Ext.data.JsonStore} the store where nodes are saved
- * @class sitools.user.component.dataviews.services.addSelectionService
+ * @class sitools.user.component.dataviews.services.addToCartService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.addSelectionService = Ext.extend(Ext.Window, {
+sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Window, {
     width : 300,
     modal : true,
     initComponent : function () {
@@ -37,23 +37,20 @@ sitools.user.component.dataviews.services.addSelectionService = Ext.extend(Ext.W
 
         this.items = [ {
             xtype : 'form',
-            labelWidth : 75,
             padding : '5px 5px 5px 5px',
             items : [ {
                 xtype : 'textfield',
-                fieldLabel : i18n.get('label.name'),
+                fieldLabel : i18n.get('label.selectionName'),
                 name : 'selectionName',
-                anchor : '100%'
+                anchor : '90%'
             } ]
         } ];
         
-
         this.buttons = [{
             text : i18n.get('label.ok'),
             scope : this,
             handler : function () {
-                var selectionName = this.findByType('form')[0].getForm().getFieldValues().selectionName;
-                this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId, selectionName);
+                this.addToCart();
                 this.close();
             }
         }, {
@@ -63,10 +60,33 @@ sitools.user.component.dataviews.services.addSelectionService = Ext.extend(Ext.W
                 this.close();
             }
         } ];
-
-        sitools.user.component.dataviews.services.addSelectionService.superclass.initComponent.call(this);
+        
+        sitools.user.component.dataviews.services.addToCartService.superclass.initComponent.call(this);
     },
 
+    getCartSelectionFile : function (response) {
+        if (Ext.isEmpty(response.responseText)) {
+            return;
+        }
+        try {
+            var json = Ext.decode(response.responseText);
+            this.cartSelectionFile = json;
+        } catch (err) {
+            return;
+        }
+    },
+    
+    addToCart : function () {
+        this.selectionName = this.findByType('form')[0].getForm().getFieldValues().selectionName;
+        
+        userStorage.get(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this,
+                this.getCartSelectionFile, Ext.emptyFn, this.saveSelection);
+    },
+    
+    saveSelection : function () {
+        this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId);
+    },
+    
     /**
      * Create an entry in the user storage with all the selected records.
      * @param {Array} selections An array of selected {Ext.data.Record} records 
@@ -74,7 +94,7 @@ sitools.user.component.dataviews.services.addSelectionService = Ext.extend(Ext.W
      * @param {string} datasetId
      * @param {string} orderName the name of the future file.
      */
-    _addSelection : function (selections, grid, datasetId, orderName) {
+    _addSelection : function (selections, grid, datasetId) {
         var primaryKey = "";
         var rec = selections[0];
         Ext.each(rec.fields.items, function (field) {
@@ -86,10 +106,11 @@ sitools.user.component.dataviews.services.addSelectionService = Ext.extend(Ext.W
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noPrimaryKey'));
             return;
         }
+        
         var putObject = {};
-        putObject.orderRecord = {};
-
-        putObject.orderRecord.records = [];
+        var orderRecord = {};
+        orderRecord.records = [];
+        
         var colModel = extColModelToStorage(grid.getColumnModel());
         Ext.each(selections, function (rec) {
             var data = {};
@@ -98,22 +119,38 @@ sitools.user.component.dataviews.services.addSelectionService = Ext.extend(Ext.W
                     data[column.columnAlias] = rec.get(column.columnAlias);
                 }
             });
-            putObject.orderRecord.records.push(data);
+            orderRecord.records.push(data);
         });
-        putObject.orderRecord.colModel = colModel;
-        putObject.orderRecord.datasetId = this.dataview.datasetId;
-        putObject.orderRecord.projectId = this.dataview.projectId;
-        putObject.orderRecord.dataUrl = this.dataview.dataUrl;
-        putObject.orderRecord.datasetName = this.dataview.datasetName;
-        putObject.orderRecord.nbRecords = putObject.orderRecord.records.length;
-
-        userStorage.set(orderName + ".json", "/" + DEFAULT_ORDER_FOLDER + "/records", putObject);
+        orderRecord.colModel = colModel;
+        
+        orderRecord.selectionName = this.selectionName;
+        orderRecord.datasetId = this.dataview.datasetId;
+        orderRecord.projectId = this.dataview.projectId;
+        orderRecord.dataUrl = this.dataview.dataUrl;
+        orderRecord.datasetName = this.dataview.datasetName;
+        orderRecord.nbRecords = orderRecord.records.length;
+        
+        var now = new Date();
+        var orderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
+        orderDate = orderDate.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+//        var orderDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+        orderRecord.orderDate = orderDate;
+        
+        if (this.cartSelectionFile) {
+            this.cartSelectionFile.cartSelections.push(orderRecord);
+            Ext.apply(putObject, this.cartSelectionFile);
+        }
+        else {
+            putObject.cartSelections = [];
+            putObject.cartSelections.push(orderRecord);
+        }
+        
+        userStorage.set(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", putObject);
     }
-    
 });
-Ext.reg('sitools.user.component.dataviews.services.addSelectionService', sitools.user.component.dataviews.services.addSelectionService);
+Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
 
-sitools.user.component.dataviews.services.addSelectionService.getParameters = function () {
+sitools.user.component.dataviews.services.addToCartService.getParameters = function () {
     return [];
 };
 /**
@@ -121,13 +158,13 @@ sitools.user.component.dataviews.services.addSelectionService.getParameters = fu
  * Implementation of the method executeAsService to be able to launch this window as a service.
  * @param {Object} config contains all the service configuration 
  */
-sitools.user.component.dataviews.services.addSelectionService.executeAsService = function (config) {
+sitools.user.component.dataviews.services.addToCartService.executeAsService = function (config) {
     var selections = config.dataview.getSelections();
     var rec = selections[0];
     if (Ext.isEmpty(rec)) {
         Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noRecordsSelected'));
         return;
     }
-    var addSelectionService = new sitools.user.component.dataviews.services.addSelectionService(config);
+    var addSelectionService = new sitools.user.component.dataviews.services.addToCartService(config);
     addSelectionService.show();
 };
