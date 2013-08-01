@@ -151,7 +151,87 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
 
 sitools.user.component.dataviews.services.addToCartService.getParameters = function () {
-    return [];
+    return [
+        {
+        	jsObj : "Ext.grid.GridPanel",
+            config : {
+            	fieldLabel : i18n.get('label.exportcolumns'),
+            	height:300,
+            	store : new Ext.data.JsonStore({
+            		fields : [ 'columnAlias' ],
+   						url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
+   						root : "dataset.columnModel",
+   						autoLoad : true,
+   						listeners : {
+   							load : function(store) {
+   								store.add(new Ext.data.Record({
+   									'columnAlias' : ""
+   								}));
+   							}
+   						}
+   					}),
+   					
+   	                listeners : {
+   	                	viewReady : function() {
+   	                		if (!Ext.isEmpty(this.value)){
+   	                			var rows = [];
+   	                			var array = this.value.split(',');
+   	                			Ext.each(array, function(param, index){
+   		                			var column = param;
+   		                			rows[index] = this.getStore().indexOf(column);
+   		                			//rows[index] = index;
+   		                		} , this);
+   		                		this.getSelectionModel().selectRows(rows);
+   	                		}
+   	                	},
+   	                    render : function (c) {
+   	                        Ext.QuickTips.register({
+   	                            target : c,
+   	                            text : i18n.get('label.sizeLimitWidthTooltip')
+   	                        });
+   	                    }
+   	                },
+
+   					viewConfig:{forceFit:true},
+   					colModel : new Ext.grid.ColumnModel({
+   	        			columns : [{
+   	        		        header : i18n.get('label.selectColumns'),
+   	        		        dataIndex : 'columnAlias',
+   	        		        sortable : true
+   	        		    }]
+   	        		}),
+   	        		selModel : new Ext.grid.CheckboxSelectionModel({
+   	        			 handleMouseDown : function(g, rowIndex, e){
+   	        				var view = this.grid.getView();
+           				    var isSelected = this.isSelected(rowIndex);
+           				    if(isSelected) {
+           				      this.deselectRow(rowIndex);
+           				    } 
+           				    else if(!isSelected || this.getCount() > 1) {
+           				      this.selectRow(rowIndex, true);
+           				      view.focusRow(rowIndex);
+           				    }
+           				  },
+           				  singleSelect: false
+   	        	    }),
+   	        	    getValue : function(){
+   	        	    	var concatvalue = '';
+   	        	    	Ext.each(this.getSelectionModel().getSelections(), function(object, index) {
+   	        	    		if (Ext.isEmpty(concatvalue))
+   	        	    			concatvalue = object.data.columnAlias  ;
+   	        	    		else
+   	        	    			concatvalue =  concatvalue + ',' + object.data.columnAlias;
+   	        	    	});
+   	        	    	return concatvalue;
+   	        	    },
+   	        	    setValue : function(value){
+   	        	    	this.value = value;
+   	        	    },
+   	        	    name : "exportcolumns",
+   	        	    value : ""
+   	           }
+           }
+    		];
 };
 /**
  * @static
