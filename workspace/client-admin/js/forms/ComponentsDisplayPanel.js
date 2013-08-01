@@ -67,24 +67,24 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 
         var totalHeight = 300;
         
-        if (this.action!='modify'){
-	        var mainPanel = new sitools.admin.forms.advancedFormPanel({
-		    	containerPanelId: 'main',
-	        	title: 'main',
-		    	height: 300,
-				border: true,
+
+		if (this.action != 'modify') {
+			var mainPanel = new sitools.admin.forms.advancedFormPanel({
+				containerPanelId : 'main',
+				title : 'main',
+				height : 300,
+				border : true,
 				id : 'mainpanel',
-				 ddGroup : 'gridComponentsList',
-	             border: true,
-	             collapsible : false,
-	             datasetColumnModel : this.datasetColumnModel,
-	             formComponentsStore : this.formComponentsStore,
-	             storeConcepts : this.storeConcepts,
-	             context : 'dataset',
-	             absoluteLayout : this
-		      });
-	        //this.add(mainPanel);
-        }
+				ddGroup : 'gridComponentsList',
+				collapsible : false,
+				datasetColumnModel : this.datasetColumnModel,
+				formComponentsStore : this.formComponentsStore,
+				storeConcepts : this.storeConcepts,
+				context : this.context,
+				absoluteLayout : this
+			});
+			// this.add(mainPanel);
+		}
 	        
 	     if (this.zoneStore.getCount() == 0){
 	        this.zoneStore.add(new Ext.data.Record(mainPanel));
@@ -94,7 +94,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
             this.zoneStore.each(function (rec) {
                 totalHeight += rec.data.height;
                 //if (rec.data.id!='mainpanel'){
-	                var zonePanel = new sitools.admin.forms.advancedFormPanel({
+				var zonePanel = new sitools.admin.forms.advancedFormPanel({
 	                    containerPanelId : rec.data.containerPanelId,
 	                    title: rec.data.title,
 	                    height: rec.data.height,
@@ -105,10 +105,10 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 	                    datasetColumnModel : this.datasetColumnModel,
 	                    formComponentsStore : this.formComponentsStore,
 	                    storeConcepts : this.storeConcepts,
-	                    context : 'dataset',
+	                    context : this.context,
 	                    absoluteLayout : this
 	                });
-	                this.add(zonePanel);
+				this.add(zonePanel);
                 //}
             }, this);
         }
