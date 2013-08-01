@@ -1,0 +1,22 @@
+<guiService>
+  <id>10c6b9ff-0ae0-4e48-8183-d63de3c0fc41</id>
+  <name>Add Cart Service</name>
+  <description>Order a selection of records and add it to the selection file</description>
+  <label>label.addToCartService</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <icon>/sitools/common/res/images/icons/tree_orders.png</icon>
+  <xtype>sitools.user.component.dataviews.services.addToCartService</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/components/datasetServices/addToCartService.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>1</priority>
+  <dataSetSelection>MULTIPLE</dataSetSelection>
+  <defaultGuiService>false</defaultGuiService>
+  <defaultVisibility>true</defaultVisibility>
+</guiService>
