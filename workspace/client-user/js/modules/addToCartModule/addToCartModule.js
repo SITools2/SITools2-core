@@ -27,15 +27,25 @@ Ext.namespace('sitools.user.modules');
 sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     initComponent : function () {
         
-        this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";
-        this.urlCartFile = loadUrl.get('APP_URL') + this.AppUserStorage + "/" + DEFAULT_ORDER_FOLDER + "/records/" + userLogin + "_CartSelections.json";
+        (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
         
-        this.tbar = [ {
-            text : i18n.get('label.detail'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_details.png',
-            tooltip : i18n.get('label.selectionDetails'),
+        this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', this.user) + "/files";
+        this.urlCartFile = loadUrl.get('APP_URL') + this.AppUserStorage + "/" + DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_CartSelections.json";
+        
+        this.tbar = [{
+            text : i18n.get('label.selectAll'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+            tooltip : i18n.get('label.selectAll'),
             scope : this,
-            handler : this.onDetail
+            handler : function () {
+                this.gridPanel.selModel.selectAll();
+            }
+        }, {
+            text : i18n.get('label.downloadSelection'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
+            tooltip : i18n.get('label.downloadSelection'),
+            scope : this,
+            handler : this.downloadSelection
         }, '->', {
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
             tooltip : i18n.get('label.refreshResource'),
@@ -58,10 +68,11 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                     }
                 });
             }
-        } ];
+        }];
         
         this.store = new Ext.data.JsonStore({
             root : 'cartSelections',
+            idProperty : 'orderDate',
             autoLoad : true,
             url : this.urlCartFile,
             fields : [{
@@ -83,7 +94,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             }, {
                 name : 'records'
             }]
-                
         });
         
         this.columnModel = new Ext.grid.ColumnModel({
@@ -94,7 +104,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 dataIndex : 'selectionName'
             }, {
                 header : i18n.get('label.datasetName'),
-                width : 200,
+                width : 150,
                 sortable : true,
                 dataIndex : 'datasetName'
             }, {
@@ -104,7 +114,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 dataIndex : 'orderDate'
             }, {
                 header : i18n.get('label.nbRecords'),
-                width : 100,
+                width : 150,
                 sortable : true,
                 dataIndex : 'nbRecords'
             }]
@@ -112,14 +122,22 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         
         this.layout = 'fit';
         
-        this.gridPanel = new Ext.grid.GridPanel({
+        this.gridPanel = new Ext.ux.PersistantSelectionGridPanel({
+//        this.gridPanel = new Ext.grid.GridPanel({
             region : 'center',
             colModel : this.columnModel,
             store : this.store,
-            viewConfig : {
-              forceFit : true,
-              autoFill : true
-            },
+            view : new  Ext.grid.GridView({
+                forceFit : true,
+                autoFill : true,
+                preserveScrollOnRefresh : true,
+                listeners : {
+                    scope : this,
+                    refresh : function (view) {
+                        var select = view.grid.selModel.getSelections()[0];
+                    }
+                }
+            }),
             listeners : {
                 scope : this,
                 rowdblclick : function (grid, ind) {
@@ -127,13 +145,13 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                     this.onDetail();
                 } 
             }
-            
         });
         
         this.containerDetailsSelectionPanel = new Ext.Panel({
-            title : i18n.get('label.selectionDetails'),
             region : 'south',
             height : 300,
+            frame : true,
+            bodyBorder : false,
             collapsible : true,
             collapsed : true,
             forceLayout : true
@@ -147,17 +165,28 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         
         this.items = [ this.hboxPanel ];
         
-        this.bbar = {
-                xtype : 'paging',
-                pageSize : 10,
-                store : this.store,
-                displayInfo : true,
-                displayMsg : i18n.get('paging.display'),
-                emptyMsg : i18n.get('paging.empty')
-            };
+//        this.bbar = {
+//                xtype : 'paging',
+//                pageSize : 10,
+//                store : this.store,
+//                displayInfo : true,
+//                displayMsg : i18n.get('paging.display'),
+//                emptyMsg : i18n.get('paging.empty')
+//            };
+        
+        this.addListener('onDetail', this.onDetail, this);
         
 		sitools.user.modules.addToCartModule.superclass.initComponent.call(this);
     }, 
+    
+    afterRender : function () {
+        sitools.user.modules.addToCartModule.superclass.afterRender.apply(this, arguments);
+        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile);
+    },
+    
+    downloadSelection : function () {
+        
+    },
     
     onDetail : function () {
         var selected = this.gridPanel.getSelectionModel().getSelections()[0];
@@ -165,24 +194,28 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         this.containerDetailsSelectionPanel.removeAll();
         var detailsSelectionPanel = new sitools.user.modules.cartSelectionDetails({
             height : this.containerDetailsSelectionPanel.getInnerHeight(),
+            selection : selected,
             columnModel : selected.data.colModel,
-            records : selected.data.records
+            records : selected.data.records,
+            cartSelectionFile : this.cartSelectionFile,
+            cartModule : this
+            
         });
         
         this.containerDetailsSelectionPanel.add(detailsSelectionPanel);
-        this.containerDetailsSelectionPanel.setTitle(String.format(i18n.get('label.selectionDetails'),selected.data.selectionName));
-        
+        this.containerDetailsSelectionPanel.setTitle(String.format(i18n.get('label.selectionDetails'), selected.data.selectionName));
         this.containerDetailsSelectionPanel.doLayout();
-        
     },
     
     onRefresh : function () {
         this.store.reload();
+        this.containerDetailsSelectionPanel.collapse(true);
+        this.containerDetailsSelectionPanel.setTitle('');
+        this.containerDetailsSelectionPanel.removeAll();
     },
     
     onDelete : function () {
-        userStorage.get(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this,
-                this.getCartSelectionFile, Ext.emptyFn, this.deleteSelection);
+        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn, this.deleteSelection);
     },
     
     getCartSelectionFile : function (response) {
@@ -222,7 +255,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         });
         this.cartSelectionFile.cartSelections = collCartSelections.items;
         
-        userStorage.set(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartSelectionFile, this.onRefresh, this);
+        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartSelectionFile, this.onRefresh, this);
     },
     
     /**
@@ -238,4 +271,4 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     }
 });
 
-Ext.reg('sitools.user.modules.addToCartModule',sitools.user.modules.addToCartModule);
+Ext.reg('sitools.user.modules.addToCartModule', sitools.user.modules.addToCartModule);

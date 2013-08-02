@@ -582,8 +582,10 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                     var data = json.data;
                     Ext.each(data, function (pluginFromServer) {
                         var plugin = store.getById(pluginFromServer.id);
-                        plugin.set("definitionVersion", pluginFromServer.currentClassVersion);
-                        plugin.set("modelVersion", pluginFromServer.classVersion);
+                        if (plugin){
+                            plugin.set("definitionVersion", pluginFromServer.currentClassVersion);
+                            plugin.set("modelVersion", pluginFromServer.classVersion);
+                        }
                     }, this);
                     this.loadGuiPluginModelDescription(store, records, options);
                 }

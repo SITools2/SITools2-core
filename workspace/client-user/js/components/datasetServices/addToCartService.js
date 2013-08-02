@@ -32,7 +32,19 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
     width : 300,
     modal : true,
     initComponent : function () {
+
+        (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
         
+        Ext.each(this.parameters, function (config) {
+            if (!Ext.isEmpty(config.value)) {
+                switch (config.name) {
+                case "exportcolumns":
+                    this.selectionColumns = config.value.split(',');
+                    break;
+                }
+            }
+        }, this);
+
         this.title = "Selection Order for : " + this.dataview.datasetName;
 
         this.items = [ {
@@ -45,8 +57,8 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
                 anchor : '90%'
             } ]
         } ];
-        
-        this.buttons = [{
+
+        this.buttons = [ {
             text : i18n.get('label.ok'),
             scope : this,
             handler : function () {
@@ -60,7 +72,7 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
                 this.close();
             }
         } ];
-        
+
         sitools.user.component.dataviews.services.addToCartService.superclass.initComponent.call(this);
     },
 
@@ -75,18 +87,18 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
             return;
         }
     },
-    
+
     addToCart : function () {
         this.selectionName = this.findByType('form')[0].getForm().getFieldValues().selectionName;
-        
-        userStorage.get(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this,
-                this.getCartSelectionFile, Ext.emptyFn, this.saveSelection);
+
+        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn,
+                this.saveSelection);
     },
-    
+
     saveSelection : function () {
         this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId);
     },
-    
+
     /**
      * Create an entry in the user storage with all the selected records.
      * @param {Array} selections An array of selected {Ext.data.Record} records 
@@ -106,12 +118,22 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noPrimaryKey'));
             return;
         }
-        
+
         var putObject = {};
         var orderRecord = {};
         orderRecord.records = [];
-        
-        var colModel = extColModelToStorage(grid.getColumnModel());
+
+        var colModelTmp = extColModelToStorage(grid.getColumnModel());
+        var colModel = [];
+
+        Ext.each(colModelTmp, function (col) {
+            Ext.each(this.selectionColumns, function (selectCol) {
+                if (col.dataIndex == selectCol) {
+                    colModel.push(col);
+                }
+            }, this);
+        }, this);
+
         Ext.each(selections, function (rec) {
             var data = {};
             Ext.each(colModel, function (column) {
@@ -122,116 +144,109 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
             orderRecord.records.push(data);
         });
         orderRecord.colModel = colModel;
-        
+
         orderRecord.selectionName = this.selectionName;
         orderRecord.datasetId = this.dataview.datasetId;
         orderRecord.projectId = this.dataview.projectId;
         orderRecord.dataUrl = this.dataview.dataUrl;
         orderRecord.datasetName = this.dataview.datasetName;
         orderRecord.nbRecords = orderRecord.records.length;
-        
+
         var now = new Date();
         var orderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
         orderDate = orderDate.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
-//        var orderDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+        //        var orderDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
         orderRecord.orderDate = orderDate;
-        
+
         if (this.cartSelectionFile) {
             this.cartSelectionFile.cartSelections.push(orderRecord);
             Ext.apply(putObject, this.cartSelectionFile);
-        }
-        else {
+        } else {
             putObject.cartSelections = [];
             putObject.cartSelections.push(orderRecord);
         }
-        
-        userStorage.set(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", putObject);
+
+        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", putObject);
     }
 });
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
 
 sitools.user.component.dataviews.services.addToCartService.getParameters = function () {
-    return [
-        {
-        	jsObj : "Ext.grid.GridPanel",
-            config : {
-            	fieldLabel : i18n.get('label.exportcolumns'),
-            	height:300,
-            	store : new Ext.data.JsonStore({
-            		fields : [ 'columnAlias' ],
-   						url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
-   						root : "dataset.columnModel",
-   						autoLoad : true,
-   						listeners : {
-   							load : function(store) {
-   								store.add(new Ext.data.Record({
-   									'columnAlias' : ""
-   								}));
-   							}
-   						}
-   					}),
-   					
-   	                listeners : {
-   	                	viewReady : function() {
-   	                		if (!Ext.isEmpty(this.value)){
-   	                			var rows = [];
-   	                			var array = this.value.split(',');
-   	                			Ext.each(array, function(param, index){
-   		                			var column = param;
-   		                			rows[index] = this.getStore().indexOf(column);
-   		                			//rows[index] = index;
-   		                		} , this);
-   		                		this.getSelectionModel().selectRows(rows);
-   	                		}
-   	                	},
-   	                    render : function (c) {
-   	                        Ext.QuickTips.register({
-   	                            target : c,
-   	                            text : i18n.get('label.sizeLimitWidthTooltip')
-   	                        });
-   	                    }
-   	                },
-
-   					viewConfig:{forceFit:true},
-   					colModel : new Ext.grid.ColumnModel({
-   	        			columns : [{
-   	        		        header : i18n.get('label.selectColumns'),
-   	        		        dataIndex : 'columnAlias',
-   	        		        sortable : true
-   	        		    }]
-   	        		}),
-   	        		selModel : new Ext.grid.CheckboxSelectionModel({
-   	        			 handleMouseDown : function(g, rowIndex, e){
-   	        				var view = this.grid.getView();
-           				    var isSelected = this.isSelected(rowIndex);
-           				    if(isSelected) {
-           				      this.deselectRow(rowIndex);
-           				    } 
-           				    else if(!isSelected || this.getCount() > 1) {
-           				      this.selectRow(rowIndex, true);
-           				      view.focusRow(rowIndex);
-           				    }
-           				  },
-           				  singleSelect: false
-   	        	    }),
-   	        	    getValue : function(){
-   	        	    	var concatvalue = '';
-   	        	    	Ext.each(this.getSelectionModel().getSelections(), function(object, index) {
-   	        	    		if (Ext.isEmpty(concatvalue))
-   	        	    			concatvalue = object.data.columnAlias  ;
-   	        	    		else
-   	        	    			concatvalue =  concatvalue + ',' + object.data.columnAlias;
-   	        	    	});
-   	        	    	return concatvalue;
-   	        	    },
-   	        	    setValue : function(value){
-   	        	    	this.value = value;
-   	        	    },
-   	        	    name : "exportcolumns",
-   	        	    value : ""
-   	           }
-           }
-    		];
+    return [ {
+        jsObj : "Ext.grid.GridPanel",
+        config : {
+            fieldLabel : i18n.get('label.exportcolumns'),
+            height : 300,
+            store : new Ext.data.JsonStore({
+                fields : [ 'dataIndex' ],
+                idProperty : 'dataIndex',
+                url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
+                root : "dataset.columnModel",
+                autoLoad : true
+            }),
+            listeners : {
+                render : function (c) {
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : i18n.get('label.sizeLimitWidthTooltip')
+                    });
+                }
+            },
+            view : new Ext.grid.GridView({
+                forceFit : true,
+                listeners : {
+                    refresh : function (view) {
+                        if (!Ext.isEmpty(view.grid.value)) {
+                            var recordsToSelect = [];
+                            var arrayOfColumns = view.grid.value.split(',');
+                            
+                            Ext.each(arrayOfColumns, function (column, index) {
+                                var rec = this.store.getById(column);
+                                recordsToSelect.push(rec);
+                            }, view.grid);
+                            
+                            view.grid.selModel.selectRecords(recordsToSelect);
+                        }
+                    }
+                }
+            }),
+            colModel : new Ext.grid.ColumnModel({
+                columns : [ {
+                    header : i18n.get('label.selectColumns'),
+                    dataIndex : 'dataIndex',
+                    sortable : true
+                } ]
+            }),
+            selModel : new Ext.grid.CheckboxSelectionModel({
+                handleMouseDown : function (g, rowIndex, e) {
+                    var view = this.grid.getView();
+                    var isSelected = this.isSelected(rowIndex);
+                    if (isSelected) {
+                        this.deselectRow(rowIndex);
+                    } else if (!isSelected || this.getCount() > 1) {
+                        this.selectRow(rowIndex, true);
+                        view.focusRow(rowIndex);
+                    }
+                },
+                singleSelect : false
+            }),
+            getValue : function () {
+                var concatvalue = '';
+                Ext.each(this.getSelectionModel().getSelections(), function (object, index) {
+                    if (Ext.isEmpty(concatvalue))
+                        concatvalue = object.data.dataIndex;
+                    else
+                        concatvalue = concatvalue + ',' + object.data.dataIndex;
+                });
+                return concatvalue;
+            },
+            setValue : function (value) {
+                this.value = value;
+            },
+            name : "exportcolumns",
+            value : ""
+        }
+    } ];
 };
 /**
  * @static

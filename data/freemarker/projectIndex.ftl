@@ -131,7 +131,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/multiSelect/Ext.ux.multiselect.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.stateFullWindow.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/notification/Ext.ux.Notification.js"></script>
-	
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.PersistantSelectionGridPanel.js"></script>
 	
 
     <script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsFilters/sitoolsFilter.js"></script>    
