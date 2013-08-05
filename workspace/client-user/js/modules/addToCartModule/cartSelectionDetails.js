@@ -32,6 +32,12 @@ Ext.namespace('sitools.user.modules');
 sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
     initComponent : function () {
 
+        this.selectionId = this.selection.data.selectionId;
+        
+        this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";
+        this.recordsFileUrl = loadUrl.get('APP_URL') + this.AppUserStorage + "/"
+            + DEFAULT_ORDER_FOLDER + "/records/" + userLogin + "_" + this.selectionId + "_records.json";
+        
         this.viewConfig = {
                 autoFill : true
         };
@@ -77,8 +83,7 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
         }, this);
         
         this.store = new Ext.data.JsonStore({
-            autoLoad : true,
-            data : this.records,
+            root : 'records',
             fields : fields
         });
         
@@ -88,48 +93,68 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
         sitools.user.modules.cartSelectionDetails.superclass.initComponent.call(this);
     },
     
+    onRender : function () {
+        sitools.user.modules.cartSelectionDetails.superclass.onRender.apply(this, arguments);
+        this.loadRecordsFile();
+    },
+    
+    loadRecordsFile : function () {
+        userStorage.get(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.loadRecordsInStore);
+    },
+    
+    loadRecordsInStore : function (response) {
+        if (Ext.isEmpty(response.responseText)) {
+            return;
+        }
+        try {
+            var json = Ext.decode(response.responseText);
+            this.records = json;
+            this.store.loadData(this.records);
+        } catch (err) {
+            return;
+        }
+    },
+    
     onDelete : function () {
         if (!this.cartSelectionFile) {
             return;
         }
-        var selections = this.getSelectionModel().getSelections();
+        var recordsToRemove = this.getSelectionModel().getSelections();
         
-        if (selections.length == 0) {
+        if (recordsToRemove.length == 0) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         
-        var collRecordsSelected = new Ext.util.MixedCollection();
-        collRecordsSelected.addAll(selections);
-        
-        var collAllRecords = new Ext.util.MixedCollection();
-
-        collAllRecords.addAll(this.records);
-        
-        collAllRecords.each(function (record, indRec) {
-            collRecordsSelected.each(function (selectRec, indSelect) {
-                if (record[this.primaryKey] == selectRec.get(this.primaryKey)) {
-                    collAllRecords.removeAt(indSelect);
-                }
-            }, this);
+        Ext.each(recordsToRemove, function (record) {
+           this.store.remove(record); 
         }, this);
         
-        var recSelection = this.cartModule.store.getById(this.selection.data.orderDate);
+        var recordsOrder = {};
+        recordsOrder.records = [];
+        
+        this.store.each(function (rec) {
+            recordsOrder.records.push(rec.data);
+        }, this);
+        recordsOrder.selectionId = this.selectionId;
+        
+        var recSelection = this.cartModule.store.getById(this.selection.data.selectionId);
         var indexSelection = this.cartModule.store.indexOf(recSelection);
         
         var selectionFromFile = this.cartSelectionFile.cartSelections[indexSelection];
-        selectionFromFile.records = collAllRecords.items;
-        selectionFromFile.nbRecords = collAllRecords.items.length;
-        
-        this.records = collAllRecords.items;
+        selectionFromFile.nbRecords = this.store.getCount();
         
         this.cartSelectionFile.cartSelections[indexSelection] = selectionFromFile;
         
+        userStorage.set(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", recordsOrder, this.updateGlobalSelection, this);
+    },
+    
+    updateGlobalSelection : function () {
         userStorage.set(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartSelectionFile, this.onRefresh, this);
     },
     
     onRefresh : function () {
-        this.store.removeAll();
-        this.store.loadData(this.records);
+//        this.store.removeAll();
+//        this.store.loadData(this.records);
 //        this.cartModule.fireEvent('onDetail');
         this.cartModule.store.reload();
     },

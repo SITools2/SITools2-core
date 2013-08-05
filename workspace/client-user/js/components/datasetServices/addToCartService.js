@@ -120,8 +120,9 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
         }
 
         var putObject = {};
-        var orderRecord = {};
-        orderRecord.records = [];
+        var globalOrder = {};
+        var recordsOrder = {};
+        recordsOrder.records = [];
 
         var colModelTmp = extColModelToStorage(grid.getColumnModel());
         var colModel = [];
@@ -134,6 +135,18 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
             }, this);
         }, this);
 
+        globalOrder.selectionName = this.selectionName;
+        globalOrder.selectionId = Ext.id();
+        globalOrder.datasetId = this.dataview.datasetId;
+        globalOrder.projectId = this.dataview.projectId;
+        globalOrder.dataUrl = this.dataview.dataUrl;
+        globalOrder.datasetName = this.dataview.datasetName;
+        
+        var now = new Date();
+        var orderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
+        orderDate = orderDate.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+        globalOrder.orderDate = orderDate;
+        
         Ext.each(selections, function (rec) {
             var data = {};
             Ext.each(colModel, function (column) {
@@ -141,33 +154,30 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
                     data[column.columnAlias] = rec.get(column.columnAlias);
                 }
             });
-            orderRecord.records.push(data);
+            recordsOrder.records.push(data);
         });
-        orderRecord.colModel = colModel;
-
-        orderRecord.selectionName = this.selectionName;
-        orderRecord.datasetId = this.dataview.datasetId;
-        orderRecord.projectId = this.dataview.projectId;
-        orderRecord.dataUrl = this.dataview.dataUrl;
-        orderRecord.datasetName = this.dataview.datasetName;
-        orderRecord.nbRecords = orderRecord.records.length;
-
-        var now = new Date();
-        var orderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
-        orderDate = orderDate.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
-        //        var orderDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
-        orderRecord.orderDate = orderDate;
+        
+        globalOrder.nbRecords = recordsOrder.records.length;
+        recordsOrder.selectionId = globalOrder.selectionId;
+        
+        globalOrder.colModel = colModel;
 
         if (this.cartSelectionFile) {
-            this.cartSelectionFile.cartSelections.push(orderRecord);
+            this.cartSelectionFile.cartSelections.push(globalOrder);
             Ext.apply(putObject, this.cartSelectionFile);
         } else {
             putObject.cartSelections = [];
-            putObject.cartSelections.push(orderRecord);
+            putObject.cartSelections.push(globalOrder);
         }
 
-        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", putObject);
+        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
+                putObject, this.createRecordsSelectionFile(recordsOrder));
+    },
+    
+    createRecordsSelectionFile : function (recordsOrder) {
+        userStorage.set(this.user + "_" + recordsOrder.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", recordsOrder);
     }
+    
 });
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
 
@@ -178,35 +188,38 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
             fieldLabel : i18n.get('label.exportcolumns'),
             height : 300,
             store : new Ext.data.JsonStore({
-                fields : [ 'dataIndex' ],
+                fields : [ 'dataIndex', 'primaryKey' ],
                 idProperty : 'dataIndex',
                 url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
                 root : "dataset.columnModel",
                 autoLoad : true
             }),
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : i18n.get('label.sizeLimitWidthTooltip')
-                    });
-                }
-            },
             view : new Ext.grid.GridView({
                 forceFit : true,
                 listeners : {
                     refresh : function (view) {
-                        if (!Ext.isEmpty(view.grid.value)) {
-                            var recordsToSelect = [];
-                            var arrayOfColumns = view.grid.value.split(',');
-                            
-                            Ext.each(arrayOfColumns, function (column, index) {
-                                var rec = this.store.getById(column);
-                                recordsToSelect.push(rec);
-                            }, view.grid);
-                            
-                            view.grid.selModel.selectRecords(recordsToSelect);
-                        }
+                        var grid = view.grid;
+                        grid.store.each(function (col) {
+                            if (col.data.primaryKey) {
+                                if (Ext.isEmpty(grid.value)) {
+                                    grid.value = col.data.dataIndex;
+                                }
+                                else {
+                                    grid.value += "," + col.data.dataIndex;
+                                }
+                                return false;
+                            }
+                        }, grid);
+                        
+                        var recordsToSelect = [];
+                        var arrayOfColumns = grid.value.split(',');
+                        
+                        Ext.each(arrayOfColumns, function (column, index) {
+                            var rec = this.store.getById(column);
+                            recordsToSelect.push(rec);
+                        }, grid);
+                        
+                        grid.selModel.selectRecords(recordsToSelect);
                     }
                 }
             }),
