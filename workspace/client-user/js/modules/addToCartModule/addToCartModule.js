@@ -202,15 +202,23 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     
     downloadSelection : function () {
         var selections = this.gridPanel.getSelectionModel().getSelections();
+        var putObject = {};
+        putObject.selections = [];
+        
         
         Ext.each(selections , function (selection) {
-           selection.data.colModel = undefined;
+        	var tmpSelection = {};
+        	delete selection.data['colModel'];
+            delete selection.data['records'];
+           Ext.apply(tmpSelection, selection.data);
+           putObject.selections.push(tmpSelection);
         });
+        
         
         Ext.Ajax.request({
             url : loadUrl.get('APP_URL') + "/orders/cart/",
             method : 'PUT',
-            jsonData : selections,
+            jsonData : putObject,
             scope : this,
             success : function (ret) {
                 var Json = Ext.decode(ret.responseText);

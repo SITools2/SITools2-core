@@ -315,6 +315,8 @@ public interface Consts {
   /** application url */
   String APP_ORDERS_USER_URL = "Starter.APP_ORDERS_USER_URL";
   /** application url */
+  String APP_ORDERS_CART_URL = "Starter.APP_ORDERS_CART_URL";
+  /** application url */
   String APP_USERSTORAGE_URL = "Starter.APP_USERSTORAGE_URL";
   /** application url */
   String APP_USERSTORAGE_USER_URL = "Starter.APP_USERSTORAGE_USER_URL";

@@ -48,6 +48,7 @@ import fr.cnes.sitools.applications.OrdersFilesApplication;
 import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.applications.TemporaryFolderApplication;
 import fr.cnes.sitools.applications.UploadApplication;
+import fr.cnes.sitools.cart.CartOrderApplication;
 import fr.cnes.sitools.collections.CollectionsApplication;
 import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.SitoolsComponent;
@@ -1489,14 +1490,35 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeOrd);
+    
     // Application
     UserOrderApplication userOrderApplication = new UserOrderApplication(appContext);
-
     // Attachment
     appManager.attachApplication(userOrderApplication);
-
     component.getInternalRouter().attach(settings.getString(Consts.APP_ORDERS_USER_URL), userOrderApplication);
 
+    
+    // ===========================================================================
+    // Cart order application
+
+    // Cart order reference
+    appReference = baseUrl + settings.getString(Consts.APP_ORDERS_CART_URL);
+    
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    appContext.getAttributes().put(ContextAttributes.APP_STORE, storeOrd);
+    appContext.getAttributes().put("USER_STORAGE_ROOT", settings.getVariableStoreDIR(Consts.USERSTORAGE_ROOT));
+    
+    // Cart order application
+    CartOrderApplication cartOrderApplication = new CartOrderApplication(appContext);
+    // Cart order attachment
+    appManager.attachApplication(cartOrderApplication);
+    component.getInternalRouter().attach(settings.getString(Consts.APP_ORDERS_CART_URL), cartOrderApplication);
+    
+    
     // ===========================================================================
     // Administration des espaces de stockage
 
