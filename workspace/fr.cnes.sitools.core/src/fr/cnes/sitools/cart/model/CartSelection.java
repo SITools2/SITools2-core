@@ -3,10 +3,8 @@ package fr.cnes.sitools.cart.model;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import fr.cnes.sitools.common.model.IResource;
+
 
 public class CartSelection implements IResource, Serializable {
 

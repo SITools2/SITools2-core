@@ -25,8 +25,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -99,6 +103,7 @@ public final class CartOrderResource extends AbstractCartOrderResource {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
       String date = sdf.format(cal.getTime());
       
+      File ordersdir = new File(rootdir + "/resources_orders");
       File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
       
       for ( CartSelection sel : cartSelections.getSelections() ){
@@ -111,7 +116,8 @@ public final class CartOrderResource extends AbstractCartOrderResource {
         
         // serialize to XML
         XStream xstream = new XStream();
-        xstream.alias("root", Map.class);
+        xstream.alias("cartSelection", CartSelection.class);
+        xstream.alias("record", LinkedHashMap.class);
         xstream.registerConverter(new MapEntryConverter());
   
         if (xml == null){
@@ -122,6 +128,7 @@ public final class CartOrderResource extends AbstractCartOrderResource {
         
       }
       
+      ordersdir.mkdir();
       outputdir.mkdir();
       
       writeToFile(outputdir + "/metadata.xml", xml);  
@@ -129,6 +136,7 @@ public final class CartOrderResource extends AbstractCartOrderResource {
     }
      
     catch (Exception e) {
+      getLogger().log(Level.SEVERE, null, e);
       return new JsonRepresentation("label.download_ko");
     }
 
@@ -174,8 +182,8 @@ public final class CartOrderResource extends AbstractCartOrderResource {
    * */
 public static class MapEntryConverter implements Converter {
 
-    public boolean canConvert(Class clazz) {
-        return AbstractMap.class.isAssignableFrom(clazz);
+    public boolean canConvert(Class cls) {
+        return AbstractMap.class.isAssignableFrom(cls);
     }
 
     public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
