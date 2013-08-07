@@ -43,10 +43,25 @@ sitools.user.component.entete.userProfile.viewTextPanel = Ext.extend(Ext.Panel, 
             }
         }
         else {
-            this.html = this.text;            
+            if (this.isOpenable(this.url)) {
+                this.items = [{
+                    xtype : 'textarea',
+                    readOnly : true,
+                    value : this.text
+                    
+                }];
+            } else {
+                this.html = this.text;            
+            }
+            
         }
         
         sitools.user.component.entete.userProfile.viewTextPanel.superclass.initComponent.call(this);
+    },
+    
+    isOpenable : function (text) {
+        var textRegex = /\.(txt|json|css|xml)$/;
+        return text.match(textRegex);            
     },
 
     /**

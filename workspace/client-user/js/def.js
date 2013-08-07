@@ -737,6 +737,7 @@ function viewFileContent(url, title) {
                             };
                             var jsObj = sitools.user.component.entete.userProfile.viewTextPanel;
                             var componentCfg = {
+                                url : url,
                                 text : ret.responseText,
                                 formatJson : (ret.getResponseHeader("Content-Type").indexOf("application/json") >= 0)
 						    };

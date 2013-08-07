@@ -129,7 +129,7 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
 
         Ext.each(colModelTmp, function (col) {
             Ext.each(this.selectionColumns, function (selectCol) {
-                if (col.dataIndex == selectCol) {
+                if (col.dataIndex == selectCol || col.dataIndexSitools == selectCol) {
                     colModel.push(col);
                 }
             }, this);

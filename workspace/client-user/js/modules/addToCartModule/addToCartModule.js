@@ -16,7 +16,7 @@
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin*/
+/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin, DEFAULT_ORDER_FOLDER, userStorage*/
 
 Ext.namespace('sitools.user.modules');
 /**
@@ -33,6 +33,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         
         this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', this.user) + "/files";
         this.urlCartFile = loadUrl.get('APP_URL') + this.AppUserStorage + "/" + DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_CartSelections.json";
+        
+        this.broadcastMode = "User Storage Priv�";
         
         this.tbar = [{
             text : i18n.get('label.selectAll'),
@@ -55,14 +57,42 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 
             }
         }, {
+            xtype : 'splitbutton',
             text : i18n.get('label.downloadSelection'),
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
             tooltip : i18n.get('label.downloadSelection'),
             scope : this,
-            handler : this.downloadSelection
+            handler : this.downloadSelection,
+            menu : new Ext.menu.Menu({
+                items : [ '<b class="menu-title">Broadcast Mode</b>', {
+                    text : 'User Storage Privé',
+                    group : 'broadcast',
+                    checked : true,
+                    scope : this,
+                    handler : this.setBroadcastMode
+                }, {
+                    text : 'User Storage Public',
+                    group : 'broadcast',
+                    checked : false,
+                    scope : this,
+                    handler : this.setBroadcastMode
+                }, {
+                    text : 'Streaming',
+                    group : 'broadcast',
+                    checked : false,
+                    scope : this,
+                    handler : this.setBroadcastMode
+                }, {
+                    text : 'FTP',
+                    group : 'broadcast',
+                    checked : false,
+                    scope : this,
+                    handler : this.setBroadcastMode
+                } ]
+            })
         }, '->', {
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-            tooltip : i18n.get('label.refreshResource'),
+            tooltip : i18n.get('label.refreshSelection'),
             scope : this,
             handler : this.onRefresh
         }, {
@@ -202,16 +232,20 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     
     downloadSelection : function () {
         var selections = this.gridPanel.getSelectionModel().getSelections();
+        
+        if (selections.length == 0) {
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+        }
+        
         var putObject = {};
         putObject.selections = [];
         
-        
-        Ext.each(selections , function (selection) {
-        	var tmpSelection = {};
-        	delete selection.data['colModel'];
-            delete selection.data['records'];
-           Ext.apply(tmpSelection, selection.data);
-           putObject.selections.push(tmpSelection);
+        Ext.each(selections, function (selection) {
+            var tmpSelection = {};
+            delete selection.data.colModel;
+            delete selection.data.records;
+            Ext.apply(tmpSelection, selection.data);
+            putObject.selections.push(tmpSelection);
         });
         
         
@@ -221,10 +255,18 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             jsonData : putObject,
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
-                if (showResponse(ret)) {
-                    this.store.reload();
-                }
+                var notify = new Ext.ux.Notification({
+                    iconCls : 'x-icon-information',
+                    title : i18n.get('label.information'),
+                    html : i18n.get(ret.responseText),
+                    autoDestroy : true,
+                    hideDelay : 1000
+                });
+                notify.show(document);
+//                var Json = Ext.decode(ret.responseText);
+//                if (showResponse(ret)) {
+//                    this.store.reload();
+//                }
             },
             failure : alertFailure
         });
@@ -236,9 +278,13 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_remove.png');
         }
         else {
-            button.setText(i18n.get('label.selectAll'));
-            button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png');
+            this.resetSelectButton();
         }
+    },
+    
+    resetSelectButton : function () {
+        button.setText(i18n.get('label.selectAll'));
+        button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png');
     },
     
     onDetail : function () {
@@ -261,13 +307,10 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     
     onRefresh : function () {
         this.store.reload();
+        this.resetSelectButton();
         this.containerDetailsSelectionPanel.collapse(true);
         this.containerDetailsSelectionPanel.setTitle('');
         this.containerDetailsSelectionPanel.removeAll();
-    },
-    
-    onDelete : function () {
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn, this.deleteSelection);
     },
     
     getCartSelectionFile : function (response) {
@@ -281,6 +324,46 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             return;
         }
     },
+    
+    onDelete : function () {
+        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn, this.deleteSelection);
+    },
+    
+    deleteRecordsSelection : function (listRecordsFilesToRemove) {
+        var fileToRemove = listRecordsFilesToRemove[0];
+        
+        if (Ext.isEmpty(fileToRemove)){
+            return;
+        }
+        var urlRecords = loadUrl.get('APP_URL') + this.AppUserStorage + "/" + 
+            DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_" + fileToRemove + "_" + "records.json";
+        
+        Ext.Ajax.request({
+//            url : deleteUrl + "?recursive=true",
+            url : urlRecords,
+            method : 'DELETE',
+            scope : this,
+            success : function (ret) {
+                listRecordsFilesToRemove.shift();
+                
+                new Ext.ux.Notification({
+                    iconCls : 'x-icon-information',
+                    title : i18n.get('label.information'),
+                    html : i18n.get('label.fileDeleted'),
+                    autoDestroy : true,
+                    hideDelay : 1000
+                }).show(document);
+            },
+            callback : function () {
+                this.deleteRecordsSelection(listRecordsFilesToRemove);
+            },
+            failure : function (response, opts) {
+                Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
+            }
+        });
+
+    },
+    
     
     deleteSelection : function () {
         if (!this.cartSelectionFile) {
@@ -298,16 +381,24 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         var collCartSelections = new Ext.util.MixedCollection();
         collCartSelections.addAll(this.cartSelectionFile.cartSelections);
         
+        var recordsToRemove = [];
         collCartSelections.each(function (cartSelection, indCart) {
             collSelections.each(function (delSelection, indDel) {
                 if (cartSelection.selectionId == delSelection.data.selectionId) {
+                    recordsToRemove.push(cartSelection.selectionId);
                     collCartSelections.remove(cartSelection);
                 }
             });
         });
         this.cartSelectionFile.cartSelections = collCartSelections.items;
         
+        this.deleteRecordsSelection(recordsToRemove);
+        
         userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartSelectionFile, this.onRefresh, this);
+    },
+    
+    setBroadcastMode : function (btn, e) {
+        this.broadcastMode = btn.text;
     },
     
     /**
