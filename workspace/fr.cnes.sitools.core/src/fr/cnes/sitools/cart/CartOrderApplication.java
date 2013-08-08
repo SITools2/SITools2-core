@@ -25,14 +25,11 @@ import org.restlet.Restlet;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.DocumentationInfo;
 import org.restlet.routing.Router;
-
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.order.AbstractOrderApplication;
+
 
 /**
- * API for User Orders
- * 
- * @author JP BOIGNARD
+ *  Application for cart orders
  * 
  */
 public final class CartOrderApplication extends AbstractCartOrderApplication {

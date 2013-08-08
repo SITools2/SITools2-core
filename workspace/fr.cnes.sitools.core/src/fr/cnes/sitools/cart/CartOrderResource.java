@@ -20,17 +20,23 @@ package fr.cnes.sitools.cart;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 
+import org.apache.commons.io.FilenameUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -51,10 +57,11 @@ import fr.cnes.sitools.cart.model.CartSelection;
 import fr.cnes.sitools.cart.model.CartSelections;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.XStreamFactory;
+import fr.cnes.sitools.server.Consts;
 
 /**
- * Resource for POSTing new orders
- * 
+ *  Resource for downloading cart selections
+ *  
  */
 public final class CartOrderResource extends AbstractCartOrderResource {
 
@@ -83,28 +90,45 @@ public final class CartOrderResource extends AbstractCartOrderResource {
     return new JsonRepresentation("");
   }
 
+
+  /**
+   * action
+   *    - iterate on cart selections provided in json representation 
+   *    - download data found into dedicated directory 
+   *    - serialize metadata to XML file 
+   * @param representation
+   * @param variant
+   * @return
+   */
   @Put
   public Representation action(Representation representation, Variant variant) {
     
     CartSelections cartSelections = getObject(representation, variant);
     StringBuffer xml = null;
 
+    // make directories
+    
+    Calendar cal = Calendar.getInstance();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    String date = sdf.format(cal.getTime());
+    
     String user = this.getRequest().getClientInfo().getUser().getIdentifier();
     String root = settings.getString("Starter.ROOT_DIRECTORY");
     String rootdir = getContext().getAttributes().get("USER_STORAGE_ROOT").
         toString().replace("${ROOT_DIRECTORY}", root) + "/" + user ;
     
     String inputdir = rootdir + "/dataSelection/records/";
-
+    
+    File ordersdir = new File(rootdir + "/resources_orders");
+    File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
+    File datadir = new File(outputdir + "/data");
+    
+    ordersdir.mkdir();
+    outputdir.mkdir();
+    datadir.mkdir();
+    
     
     try {
-      
-      Calendar cal = Calendar.getInstance();
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-      String date = sdf.format(cal.getTime());
-      
-      File ordersdir = new File(rootdir + "/resources_orders");
-      File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
       
       for ( CartSelection sel : cartSelections.getSelections() ){
         
@@ -115,6 +139,7 @@ public final class CartOrderResource extends AbstractCartOrderResource {
         sel.setRecords(cartSelection.getRecords());
         
         // serialize to XML
+        
         XStream xstream = new XStream();
         xstream.alias("cartSelection", CartSelection.class);
         xstream.alias("record", LinkedHashMap.class);
@@ -125,12 +150,36 @@ public final class CartOrderResource extends AbstractCartOrderResource {
         } else {
           xml.append(xstream.toXML(sel));
         }
+
+        // download data from URLs 
         
+        Set<String> filesUrlSet = new HashSet(); 
+        
+        for ( Map<String, String> records : sel.getRecords() ) {
+          for (Object obj : records.entrySet()) {
+            Entry entry = (Entry)obj;
+            if (entry.getValue().toString().startsWith("http://") || entry.getValue().toString().startsWith("https://")){
+              filesUrlSet.add(entry.getValue().toString());
+            }
+            if (settings.getString(Consts.APP_URL)!=null){
+              if (entry.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
+                String urlReturn = settings.getPublicHostDomain() ;
+                filesUrlSet.add(urlReturn + entry.getValue().toString());
+              }
+            }
+          }
+        }
+
+        for ( String strUrl : filesUrlSet ){
+          ReadableByteChannel rbc = Channels.newChannel(new URL(strUrl).openStream());
+          File file = new File(datadir + "/" + FilenameUtils.getName(strUrl));
+          FileOutputStream fos = new FileOutputStream(file);
+          fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        }
+ 
       }
-      
-      ordersdir.mkdir();
-      outputdir.mkdir();
-      
+    
+      // write to XML file
       writeToFile(outputdir + "/metadata.xml", xml);  
       
     }
@@ -141,9 +190,7 @@ public final class CartOrderResource extends AbstractCartOrderResource {
     }
 
     return new JsonRepresentation("label.download_ok");
-    
 
-    
   }
   
   

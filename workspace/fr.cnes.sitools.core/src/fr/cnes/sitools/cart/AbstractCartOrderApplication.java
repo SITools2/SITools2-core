@@ -26,9 +26,7 @@ import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.order.model.Order;
 
 /**
- * Abstract application for Serialization
- * 
- * @author jp.boignard (AKKA Technologies)
+ * Abstract application for cart orders
  * 
  */
 public abstract class AbstractCartOrderApplication extends SitoolsApplication {

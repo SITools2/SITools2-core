@@ -40,9 +40,7 @@ import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.order.model.Order;
 
 /**
- * Abstract order resource
- * 
- * @author m.marseille (AKKA Technologies)
+ * Abstract resource for cart orders 
  * 
  */
 public abstract class AbstractCartOrderResource extends SitoolsResource {
