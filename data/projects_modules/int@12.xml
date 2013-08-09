@@ -2,12 +2,12 @@
   <id>83bb0c8d-106f-427f-aedd-e2c34531f51e</id>
   <name>AddToCartModule</name>
   <description>Display all data selections ordered by an user</description>
-  <label>My Cart</label>
+  <label>label.myCart</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <title>My Cart</title>
-  <defaultWidth>800</defaultWidth>
-  <defaultHeight>600</defaultHeight>
+  <title>label.myCart</title>
+  <defaultWidth>850</defaultWidth>
+  <defaultHeight>550</defaultHeight>
   <x>20</x>
   <y>20</y>
   <icon>addToCartModule</icon>

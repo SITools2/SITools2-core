@@ -25,7 +25,7 @@ Ext.namespace('sitools.user.modules');
  * @param {Ext.data.Record} selection : the current selection
  * @param {columnModel} columnModel : the column model of the dataset
  * @param {Array} records : the records of the current selection
- * @param {File} cartSelectionFile : the all Cart Selection file
+ * @param {File} cartOrderFile : the all Cart Selection file
  * @param {sitools.user.modules.addToCartModule} cartModule : the cart Module
  * @extends grid.GridPanel
  */
@@ -39,23 +39,30 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             + DEFAULT_ORDER_FOLDER + "/records/" + userLogin + "_" + this.selectionId + "_records.json";
         
         this.viewConfig = {
-                autoFill : true
+            autoFill : true,
+            listeners : {
+                scope : this,
+                refresh : function (view) {
+                    this.getEl().unmask();
+                }
+            }
         };
         
         this.contextMenu = new Ext.menu.Menu({
             items : [{
-                text : i18n.get('label.deleteRecordSelection'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/delete.png',
+                text : i18n.get('label.deleteOrderArticle'),
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 tooltip : i18n.get('label.deleteResource'),
                 scope : this,
                 handler : function () {
                     Ext.Msg.show({
                         title : i18n.get('label.delete'),
                         buttons : Ext.Msg.YESNO,
-                        msg : i18n.get('label.deleteRecordSelectionConfirm'),
+                        msg : i18n.get('label.deleteOrderArticleConfirm'),
                         scope : this,
                         fn : function (btn, text) {
                             if (btn == 'yes') {
+                                this.getEl().mask('Deleting articles...');
                                 this.onDelete();
                             }
                         }
@@ -76,19 +83,35 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             }
         };
         
+        
         var fields = [];
         Ext.each(this.columnModel, function (col) {
             var field = {name : col.dataIndex};
             fields.push(field);
         }, this);
         
+//        this.store = new Ext.data.JsonStore({
+//            root : 'records',
+//            fields : fields
+//        });
+        
+        
+        this.colModel = getColumnModel(this.columnModel);
+        this.primaryKey = this.getPrimaryKeyFromCm(this.colModel);
+        
         this.store = new Ext.data.JsonStore({
             root : 'records',
             fields : fields
         });
-        
-        this.colModel = getColumnModel(this.columnModel);
-        this.primaryKey = this.getPrimaryKeyFromCm(this.colModel);
+
+//        this.bbar = {
+//            xtype : 'paging',
+//            pageSize : 10,
+//            store : this.store,
+//            displayInfo : true,
+//            displayMsg : i18n.get('paging.display'),
+//            emptyMsg : i18n.get('paging.empty')
+//        };
         
         sitools.user.modules.cartSelectionDetails.superclass.initComponent.call(this);
     },
@@ -97,6 +120,12 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
         sitools.user.modules.cartSelectionDetails.superclass.onRender.apply(this, arguments);
         this.loadRecordsFile();
     },
+    
+    afterRender : function () {
+        sitools.user.modules.cartSelectionDetails.superclass.afterRender.apply(this, arguments);
+        this.getEl().mask(i18n.get('label.loadingArticles'));
+    },
+    
     
     loadRecordsFile : function () {
         userStorage.get(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.loadRecordsInStore);
@@ -116,40 +145,49 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
     },
     
     onDelete : function () {
-        if (!this.cartSelectionFile) {
+        if (!this.cartOrderFile) {
             return;
         }
+        
+        this.getEl().mask(i18n.get('label.loadingArticles'));
+        
         var recordsToRemove = this.getSelectionModel().getSelections();
         
         if (recordsToRemove.length == 0) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         
-        Ext.each(recordsToRemove, function (record) {
-           this.store.remove(record); 
-        }, this);
+        this.store.remove(recordsToRemove); 
+        
+//        Ext.each(recordsToRemove, function (record) {
+//            this.store.remove(record); 
+//        }, this);
         
         var recordsOrder = {};
         recordsOrder.records = [];
         
         this.store.each(function (rec) {
             recordsOrder.records.push(rec.data);
-        }, this);
+        });
         recordsOrder.selectionId = this.selectionId;
         
+        // get the order corresponding to the removed articles
         var recSelection = this.cartModule.store.getById(this.selection.data.selectionId);
         var indexSelection = this.cartModule.store.indexOf(recSelection);
         
-        var selectionFromFile = this.cartSelectionFile.cartSelections[indexSelection];
+        var selectionFromFile = this.cartOrderFile.cartSelections[indexSelection];
         selectionFromFile.nbRecords = this.store.getCount();
         
-        this.cartSelectionFile.cartSelections[indexSelection] = selectionFromFile;
+        // set the current order with new nbRecords information
+        this.cartOrderFile.cartSelections[indexSelection] = selectionFromFile;
         
+        // save all the articles first before the global order
         userStorage.set(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", recordsOrder, this.updateGlobalSelection, this);
     },
     
     updateGlobalSelection : function () {
-        userStorage.set(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartSelectionFile, this.onRefresh, this);
+        // save the global order
+        userStorage.set(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartOrderFile, this.onRefresh, this);
     },
     
     onRefresh : function () {
@@ -157,6 +195,7 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
 //        this.store.loadData(this.records);
 //        this.cartModule.fireEvent('onDetail');
         this.cartModule.store.reload();
+        this.getEl().unmask();
     },
     
     getPrimaryKeyFromCm : function (colModel) {

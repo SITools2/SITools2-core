@@ -34,9 +34,10 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', this.user) + "/files";
         this.urlCartFile = loadUrl.get('APP_URL') + this.AppUserStorage + "/" + DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_CartSelections.json";
         
-        this.broadcastMode = "User Storage Priv�";
+        // Default broadcast mode
+        this.broadcastMode = "uspr";
         
-        this.tbar = [{
+        this.selectAllButton = new Ext.Button({
             text : i18n.get('label.selectAll'),
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
             tooltip : i18n.get('label.selectAll'),
@@ -54,36 +55,41 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                     sm.unlock();
                     this.gridPanel.selModel.clearSelections();
                 }
-                
             }
-        }, {
+        });
+        
+        this.tbar = [ this.selectAllButton, {
             xtype : 'splitbutton',
-            text : i18n.get('label.downloadSelection'),
+            text : i18n.get('label.downloadOrder'),
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
-            tooltip : i18n.get('label.downloadSelection'),
+            tooltip : i18n.get('label.downloadOrder'),
             scope : this,
             handler : this.downloadSelection,
             menu : new Ext.menu.Menu({
-                items : [ '<b class="menu-title">Broadcast Mode</b>', {
-                    text : 'User Storage Privé',
+                items : [ '<b class="menu-title"><i>' + i18n.get('label.broadcastMode') + '</i></b>', '-', {
+                    text : i18n.get('label.userStoragePrivate'),
+                    broadcastMode : 'uspr',
                     group : 'broadcast',
                     checked : true,
                     scope : this,
                     handler : this.setBroadcastMode
                 }, {
-                    text : 'User Storage Public',
+                    text : i18n.get('label.userStoragePublic'),
+                    broadcastMode : 'usp',
                     group : 'broadcast',
                     checked : false,
                     scope : this,
                     handler : this.setBroadcastMode
                 }, {
-                    text : 'Streaming',
+                    text : i18n.get('label.streaming'),
+                    broadcastMode : 'stream',
                     group : 'broadcast',
                     checked : false,
                     scope : this,
                     handler : this.setBroadcastMode
                 }, {
-                    text : 'FTP',
+                    text : i18n.get('label.ftp'),
+                    broadcastMode : 'ftp',
                     group : 'broadcast',
                     checked : false,
                     scope : this,
@@ -92,18 +98,20 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             })
         }, '->', {
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-            tooltip : i18n.get('label.refreshSelection'),
+            tooltip : i18n.get('label.refreshOrder'),
+            cls : 'button-transition',
             scope : this,
             handler : this.onRefresh
         }, {
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/delete.png',
-            tooltip : i18n.get('label.deleteResource'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+            tooltip : i18n.get('label.deleteOrder'),
+            cls : 'button-transition',
             scope : this,
             handler : function () {
                 Ext.Msg.show({
                     title : i18n.get('label.delete'),
                     buttons : Ext.Msg.YESNO,
-                    msg : i18n.get('label.deleteCartSelection'),
+                    msg : i18n.get('label.deleteCartOrder'),
                     scope : this,
                     fn : function (btn, text) {
                         if (btn == 'yes') {
@@ -144,7 +152,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         
         this.columnModel = new Ext.grid.ColumnModel({
             columns : [{
-                header : i18n.get('label.selectionName'),
+                header : i18n.get('label.orderName'),
                 width : 150,
                 sortable : true,
                 dataIndex : 'selectionName'
@@ -187,13 +195,13 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             listeners : {
                 scope : this,
                 rowdblclick : function (grid, ind) {
-                    this.containerDetailsSelectionPanel.expand();
-                    this.onDetail();
+                    this.containerArticlesDetailsPanel.expand();
+                    this.viewArticlesDetails();
                 } 
             }
         });
         
-        this.containerDetailsSelectionPanel = new Ext.Panel({
+        this.containerArticlesDetailsPanel = new Ext.Panel({
             region : 'south',
             height : 300,
             frame : true,
@@ -206,7 +214,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         this.hboxPanel = new Ext.Panel({
             layout : 'border',
             region : 'center',
-            items : [this.gridPanel, this.containerDetailsSelectionPanel]
+            items : [this.gridPanel, this.containerArticlesDetailsPanel]
         });
         
         this.items = [ this.hboxPanel ];
@@ -220,19 +228,41 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
 //                emptyMsg : i18n.get('paging.empty')
 //            };
         
-        this.addListener('onDetail', this.onDetail, this);
-        
 		sitools.user.modules.addToCartModule.superclass.initComponent.call(this);
     }, 
     
     afterRender : function () {
         sitools.user.modules.addToCartModule.superclass.afterRender.apply(this, arguments);
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile);
+        this.loadOrderFile();
     },
     
+    loadOrderFile : function () {
+        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.setCartOrdersFile);
+    },
+    
+    /**
+     * Set the file order for the current user from responseText
+     * @param response the responseText to use as cartOrder
+     */
+    setCartOrdersFile : function (response) {
+        if (Ext.isEmpty(response.responseText)) {
+            return;
+        }
+        try {
+            var json = Ext.decode(response.responseText);
+            this.cartOrderFile = json;
+        } catch (err) {
+            return;
+        }
+    },
+    
+    /**
+     * Download orders (metadata + records)
+     * @returns
+     */
     downloadSelection : function () {
-        var selections = this.gridPanel.getSelectionModel().getSelections();
         
+        var selections = this.gridPanel.getSelectionModel().getSelections();
         if (selections.length == 0) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
@@ -247,7 +277,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             Ext.apply(tmpSelection, selection.data);
             putObject.selections.push(tmpSelection);
         });
-        
         
         Ext.Ajax.request({
             url : loadUrl.get('APP_URL') + "/orders/cart/",
@@ -278,68 +307,60 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_remove.png');
         }
         else {
-            this.resetSelectButton();
+            this.resetSelectButton(button);
         }
     },
     
-    resetSelectButton : function () {
+    resetSelectButton : function (button) {
         button.setText(i18n.get('label.selectAll'));
         button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png');
     },
     
-    onDetail : function () {
+    viewArticlesDetails : function () {
         var selected = this.gridPanel.getSelectionModel().getSelections()[0];
         
-        this.containerDetailsSelectionPanel.removeAll();
+        this.containerArticlesDetailsPanel.removeAll();
         var detailsSelectionPanel = new sitools.user.modules.cartSelectionDetails({
-            height : this.containerDetailsSelectionPanel.getInnerHeight(),
+            height : this.containerArticlesDetailsPanel.getInnerHeight(),
             selection : selected,
             columnModel : selected.data.colModel,
-            cartSelectionFile : this.cartSelectionFile,
+            cartOrderFile : this.cartOrderFile,
             cartModule : this
-            
         });
         
-        this.containerDetailsSelectionPanel.add(detailsSelectionPanel);
-        this.containerDetailsSelectionPanel.setTitle(String.format(i18n.get('label.selectionDetails'), selected.data.selectionName));
-        this.containerDetailsSelectionPanel.doLayout();
+        this.containerArticlesDetailsPanel.add(detailsSelectionPanel);
+        this.containerArticlesDetailsPanel.setTitle(String.format(i18n.get('label.orderDetails'), selected.data.selectionName));
+        this.containerArticlesDetailsPanel.doLayout();
     },
     
     onRefresh : function () {
         this.store.reload();
-        this.resetSelectButton();
-        this.containerDetailsSelectionPanel.collapse(true);
-        this.containerDetailsSelectionPanel.setTitle('');
-        this.containerDetailsSelectionPanel.removeAll();
-    },
-    
-    getCartSelectionFile : function (response) {
-        if (Ext.isEmpty(response.responseText)) {
-            return;
-        }
-        try {
-            var json = Ext.decode(response.responseText);
-            this.cartSelectionFile = json;
-        } catch (err) {
-            return;
-        }
+        this.resetSelectButton(this.selectAllButton);
+        this.containerArticlesDetailsPanel.collapse(true);
+        this.containerArticlesDetailsPanel.setTitle('');
+        this.containerArticlesDetailsPanel.removeAll();
     },
     
     onDelete : function () {
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn, this.deleteSelection);
+        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.setCartOrdersFile, Ext.emptyFn, this.deleteOrder);
     },
     
-    deleteRecordsSelection : function (listRecordsFilesToRemove) {
+    /**
+     * Delete articles file(s) for the selected order(s)
+     * @param listRecordsFilesToRemove the list all order selectionID to remove
+     */
+    deleteArticlesOrder : function (listRecordsFilesToRemove) {
         var fileToRemove = listRecordsFilesToRemove[0];
         
         if (Ext.isEmpty(fileToRemove)){
             return;
         }
+        
+        // gettings url file to remove
         var urlRecords = loadUrl.get('APP_URL') + this.AppUserStorage + "/" + 
             DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_" + fileToRemove + "_" + "records.json";
         
         Ext.Ajax.request({
-//            url : deleteUrl + "?recursive=true",
             url : urlRecords,
             method : 'DELETE',
             scope : this,
@@ -355,18 +376,19 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 }).show(document);
             },
             callback : function () {
-                this.deleteRecordsSelection(listRecordsFilesToRemove);
+                this.deleteArticlesOrder(listRecordsFilesToRemove);
             },
             failure : function (response, opts) {
                 Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
             }
         });
-
     },
     
-    
-    deleteSelection : function () {
-        if (!this.cartSelectionFile) {
+    /**
+     * Delete selected orders
+     */
+    deleteOrder : function () {
+        if (!this.cartOrderFile) {
             return;
         }
         var selections = this.gridPanel.getSelectionModel().getSelections();
@@ -379,7 +401,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         collSelections.addAll(selections);
         
         var collCartSelections = new Ext.util.MixedCollection();
-        collCartSelections.addAll(this.cartSelectionFile.cartSelections);
+        collCartSelections.addAll(this.cartOrderFile.cartSelections);
         
         var recordsToRemove = [];
         collCartSelections.each(function (cartSelection, indCart) {
@@ -390,15 +412,18 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 }
             });
         });
-        this.cartSelectionFile.cartSelections = collCartSelections.items;
+        this.cartOrderFile.cartSelections = collCartSelections.items;
+        this.deleteArticlesOrder(recordsToRemove);
         
-        this.deleteRecordsSelection(recordsToRemove);
-        
-        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartSelectionFile, this.onRefresh, this);
+        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartOrderFile, this.onRefresh, this);
     },
     
-    setBroadcastMode : function (btn, e) {
-        this.broadcastMode = btn.text;
+    /**
+     * Set the download mode
+     * @param btn the broadcast mode chosen
+     */
+    setBroadcastMode : function (btn) {
+        this.broadcastMode = btn.broadcastMode;
     },
     
     /**

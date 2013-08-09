@@ -350,15 +350,20 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 }
 
 .sitools_footer {
-background: #ffffff; /* Old browsers */
-background: -moz-linear-gradient(-45deg,  #ffffff 0%, #050301 46%, #356aa0 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(46%,#050301), color-stop(100%,#356aa0)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); /* IE10+ */
-background: linear-gradient(135deg,  #ffffff 0%,#050301 46%,#356aa0 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#356aa0',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	background-image: url(../images/bottom_cnes2.png);
+	background-size: 100% 100%;
 }
+
+/* .sitools_footer {
+background: #ffffff; Old browsers
+background: -moz-linear-gradient(-45deg,  #ffffff 0%, #050301 46%, #356aa0 100%); FF3.6+
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(46%,#050301), color-stop(100%,#356aa0)); Chrome,Safari4+
+background: -webkit-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); Chrome10+,Safari5.1+
+background: -o-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); Opera 11.10+
+background: -ms-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); IE10+
+background: linear-gradient(135deg,  #ffffff 0%,#050301 46%,#356aa0 100%); W3C
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#356aa0',GradientType=1 ); IE6-9 fallback on horizontal gradient
+} */
 
 
 

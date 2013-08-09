@@ -24,7 +24,8 @@
  * http://www.extjs.com/license
  */
 html, body {
-	background:#3d71b8 url(../wallpapers/desktop_large.jpg) no-repeat left top;
+	/*background:#3d71b8 url(../wallpapers/desktop_large.jpg) no-repeat left top;*/
+	background:#3d71b8 url(../wallpapers/desktop2.jpg) no-repeat left top;
 	background-size : 100%;
     font: normal 12px tahoma, arial, verdana, sans-serif;
 	margin: 0;
@@ -1394,4 +1395,28 @@ td.ux-taskButtons-edge {
 
 .menu-title {
 	color : white;
+}
+
+.button-transition {
+	-webkit-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+	-moz-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+	-ms-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+	-o-transition: width .5s cubic-bezier( .4, 1, .4, 1);
+	transition: width .5s cubic-bezier( .4, 1, .4, 1);
+}
+
+.button-transition:HOVER {
+	-webkit-transform: scale(1.09);
+	-moz-transform: scale(1.09);
+	-ms-transform: scale(1.09);
+	-o-transform: scale(1.09);
+	transform: scale(1.09);
+	z-index:5;
+	opacity: .7;
+    -moz-opacity: .7;
+    filter:alpha(opacity=70);
+}
+
+.button-transition:ACTIVE {
+	opacity : .6;
 }

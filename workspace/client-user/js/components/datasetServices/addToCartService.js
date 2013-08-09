@@ -45,14 +45,14 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
             }
         }, this);
 
-        this.title = "Selection Order for : " + this.dataview.datasetName;
+        this.title = i18n.get('label.orderForDataset') + this.dataview.datasetName;
 
         this.items = [ {
             xtype : 'form',
             padding : '5px 5px 5px 5px',
             items : [ {
                 xtype : 'textfield',
-                fieldLabel : i18n.get('label.selectionName'),
+                fieldLabel : i18n.get('label.orderName'),
                 name : 'selectionName',
                 anchor : '90%'
             } ]
@@ -96,7 +96,17 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
     },
 
     saveSelection : function () {
-        this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId);
+        if (this.dataview.getSelections().length <= 300 && this.dataview.selModel.getAllSelections().length <= 300) {
+            this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId);
+        } else {
+            return Ext.Msg.show({
+                title : i18n.get('label.warning'),
+                msg : i18n.get('warning.tooMuchRecords'),
+                buttons : Ext.MessageBox.OK,
+                icon : Ext.MessageBox.WARNING
+            });
+        }
+        
     },
 
     /**
@@ -127,6 +137,7 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
         var colModelTmp = extColModelToStorage(grid.getColumnModel());
         var colModel = [];
 
+        // On stocke seulement les colonnes configurées dans le Gui service
         Ext.each(colModelTmp, function (col) {
             Ext.each(this.selectionColumns, function (selectCol) {
                 if (col.dataIndex == selectCol || col.dataIndexSitools == selectCol) {

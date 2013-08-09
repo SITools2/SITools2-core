@@ -56,7 +56,7 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 	                scope : this,
 	                afterRender : function () {
 	                    Ext.get("sitools_logo").on('load', function () {
-	                        Ext.get("sitools_logo").alignTo(this.panelLeft.getEl(), "c-c");
+	                        Ext.get("sitools_logo").alignTo(this.panelLeft.getEl(), "c-c", [-60, 2]);
 	                    }, this);
 	                }
 	            }
