@@ -175,6 +175,7 @@ public final class CartOrderResource extends AbstractCartOrderResource {
           File file = new File(datadir + "/" + FilenameUtils.getName(strUrl));
           FileOutputStream fos = new FileOutputStream(file);
           fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+          fos.close();
         }
  
       }
