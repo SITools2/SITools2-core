@@ -111,19 +111,6 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    // Context
-    Context ctx = this.component.getContext().createChildContext();
-    ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
-    if (ds == null) {
-      ds = SitoolsSQLDataSourceFactory
-          .getInstance()
-          .setupDataSource(
-              settings.getString("Tests.PGSQL_DATABASE_DRIVER"), settings.getString("Tests.PGSQL_DATABASE_URL"), settings.getString("Tests.PGSQL_DATABASE_USER"), settings.getString("Tests.PGSQL_DATABASE_PASSWORD"), settings.getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
-
-    if (store == null) {
-      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
-    }
 
     if (this.component == null) {
       this.component = new Component();
@@ -131,6 +118,20 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
       this.component.getClients().add(Protocol.HTTP);
       this.component.getClients().add(Protocol.FILE);
       this.component.getClients().add(Protocol.CLAP);
+
+      // Context
+      Context ctx = this.component.getContext().createChildContext();
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
+      if (ds == null) {
+        ds = SitoolsSQLDataSourceFactory
+            .getInstance()
+            .setupDataSource(
+                settings.getString("Tests.PGSQL_DATABASE_DRIVER"), settings.getString("Tests.PGSQL_DATABASE_URL"), settings.getString("Tests.PGSQL_DATABASE_USER"), settings.getString("Tests.PGSQL_DATABASE_PASSWORD"), settings.getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+      }
+      
+      if (store == null) {
+        store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
+      }
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 

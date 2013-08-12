@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -108,19 +108,6 @@ public class UsersAndGroupsMySQLTestCase extends AbstractSitoolsTestCase {
    */
   public void setUp() throws Exception {
     SitoolsSettings settings = SitoolsSettings.getInstance();
-    // Context
-    Context ctx = this.component.getContext().createChildContext();
-    ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
-    if (ds == null) {
-      ds = SitoolsSQLDataSourceFactory
-          .getInstance()
-          .setupDataSource(
-              settings.getString("Tests.MYSQL_DATABASE_DRIVER"), settings.getString("Tests.MYSQL_DATABASE_URL"), settings.getString("Tests.MYSQL_DATABASE_USER"), settings.getString("Tests.MYSQL_DATABASE_PASSWORD"), null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
-
-    if (store == null) {
-      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
-    }
 
     if (this.component == null) {
       this.component = new Component();
@@ -128,6 +115,20 @@ public class UsersAndGroupsMySQLTestCase extends AbstractSitoolsTestCase {
       this.component.getClients().add(Protocol.HTTP);
       this.component.getClients().add(Protocol.FILE);
       this.component.getClients().add(Protocol.CLAP);
+
+      // Context
+      Context ctx = this.component.getContext().createChildContext();
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
+      if (ds == null) {
+        ds = SitoolsSQLDataSourceFactory
+            .getInstance()
+            .setupDataSource(
+                settings.getString("Tests.MYSQL_DATABASE_DRIVER"), settings.getString("Tests.MYSQL_DATABASE_URL"), settings.getString("Tests.MYSQL_DATABASE_USER"), settings.getString("Tests.MYSQL_DATABASE_PASSWORD"), null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+      }
+
+      if (store == null) {
+        store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
+      }
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -111,18 +111,6 @@ public class UsersAndGroupsPgSQLTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    Context ctx = this.component.getContext().createChildContext();
-    ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
-    if (ds == null) {
-      ds = SitoolsSQLDataSourceFactory
-          .getInstance()
-          .setupDataSource(
-              settings.getString("Tests.PGSQL_DATABASE_DRIVER"), settings.getString("Tests.PGSQL_DATABASE_URL"), settings.getString("Tests.PGSQL_DATABASE_USER"), settings.getString("Tests.PGSQL_DATABASE_PASSWORD"), settings.getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
-
-    if (store == null) {
-      store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
-    }
 
     if (this.component == null) {
       this.component = new Component();
@@ -130,6 +118,19 @@ public class UsersAndGroupsPgSQLTestCase extends AbstractSitoolsTestCase {
       this.component.getClients().add(Protocol.HTTP);
       this.component.getClients().add(Protocol.FILE);
       this.component.getClients().add(Protocol.CLAP);
+
+      Context ctx = this.component.getContext().createChildContext();
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, settings);
+      if (ds == null) {
+        ds = SitoolsSQLDataSourceFactory
+            .getInstance()
+            .setupDataSource(
+                settings.getString("Tests.PGSQL_DATABASE_DRIVER"), settings.getString("Tests.PGSQL_DATABASE_URL"), settings.getString("Tests.PGSQL_DATABASE_USER"), settings.getString("Tests.PGSQL_DATABASE_PASSWORD"), settings.getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+      }
+
+      if (store == null) {
+        store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
+      }
 
       // Context
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
@@ -146,7 +147,7 @@ public class UsersAndGroupsPgSQLTestCase extends AbstractSitoolsTestCase {
       component.getInternalRouter().attach(settings.getString(Consts.APP_MAIL_ADMIN_URL), mailAdministration);
 
     }
-
+    
     if (!this.component.isStarted()) {
       this.component.start();
     }
