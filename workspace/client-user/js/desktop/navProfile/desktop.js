@@ -617,7 +617,8 @@ sitools.user.desktop.navProfile.desktop = {
 			            urlServicePropertiesSearch : pref.componentSettings.urlServicePropertiesSearch, 
 			            urlServiceDatasetSearch : pref.componentSettings.urlServiceDatasetSearch, 
 		                preferencesPath : pref.componentSettings.preferencesPath, 
-		                preferencesFileName : pref.componentSettings.preferencesFileName
+		                preferencesFileName : pref.componentSettings.preferencesFileName,
+		                formZones : pref.componentSettings.formZones
 			        };
 			        windowSettings = {
 			            type : "formProject", 

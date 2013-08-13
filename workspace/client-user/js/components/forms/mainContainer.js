@@ -73,7 +73,6 @@ sitools.user.component.forms.mainContainer = function (config) {
     
     Ext.iterate(panelIdObject, function(key, formParams){
     	var componentList = new  sitools.user.component.formComponentsPanel({
-            height : 200,
             border: true,
             css : config.formCss, 
             formId : config.formId,
@@ -92,11 +91,12 @@ sitools.user.component.forms.mainContainer = function (config) {
 		items.push(componentList);
     }, this);
     
-    this.componentList = new sitools.user.component.formComponentsPanel({
+    this.zonesPanel = new Ext.Panel({
         width : config.formWidth,
         height : config.formHeight,
         css : config.formCss, 
-        formId : config.formId
+        formId : config.formId,
+        items : [items]
     });
     
     if (Ext.isEmpty(config.dataset)) {
@@ -134,7 +134,7 @@ sitools.user.component.forms.mainContainer = function (config) {
         autoScroll : true,
         bodyBorder : false,
         border : false,
-        items : items ,
+        items : [this.zonesPanel],
         buttons : [ {
             text : i18n.get('label.search'),
             scope : this,
@@ -145,8 +145,8 @@ sitools.user.component.forms.mainContainer = function (config) {
         listeners : {
 			scope : this, 
 			resize : function () {
-				if (!Ext.isEmpty(this.componentList.getEl())) {
-					var cmpChildSize = this.componentList.getSize();
+				if (!Ext.isEmpty(this.zonesPanel.getEl())) {
+					var cmpChildSize = this.zonesPanel.getSize();
 					var size = this.body.getSize();
 					var xpos = 0, ypos = 0;
 					if (size.height > cmpChildSize.height) {
@@ -155,7 +155,7 @@ sitools.user.component.forms.mainContainer = function (config) {
 					if (size.width > cmpChildSize.width) {
 						xpos = (size.width - cmpChildSize.width) / 2;
 					}
-					this.componentList.setPosition(xpos, ypos);
+					this.zonesPanel.setPosition(xpos, ypos);
 				}
 				
 			}
@@ -170,7 +170,13 @@ sitools.user.component.forms.mainContainer = function (config) {
 };
 Ext.extend(sitools.user.component.forms.mainContainer, Ext.Panel, {
     onSearch : function (config) {
-        var valid = this.componentList.isComponentsValid();
+        
+        var valid = true;
+        
+        this.zonesPanel.items.each(function(componentList){
+            valid = valid && componentList.isComponentsValid();            
+        },this);
+        
         if (!valid) {
             this.getBottomToolbar().setStatus({
                 text : i18n.get('label.checkformvalue'),

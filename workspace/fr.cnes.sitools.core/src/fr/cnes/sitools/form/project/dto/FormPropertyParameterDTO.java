@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,8 +21,6 @@ package fr.cnes.sitools.form.project.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
-import fr.cnes.sitools.form.model.AbstractParameter;
 import fr.cnes.sitools.form.project.model.FormPropertyParameter;
 
 /**
@@ -96,28 +94,49 @@ public class FormPropertyParameterDTO {
   }
 
   public static List<FormPropertyParameterDTO> propertiesToDTO(List<FormPropertyParameter> properties) {
-
+    if (properties == null) {
+      return null;
+    }
     List<FormPropertyParameterDTO> propertiesDTO = new ArrayList<FormPropertyParameterDTO>();
-    
-    for (FormPropertyParameter fp : properties){
+
+    for (FormPropertyParameter fp : properties) {
       propertiesDTO.add(formPropertyToDTO(fp));
     }
-    
+
     return propertiesDTO;
   }
 
   private static FormPropertyParameterDTO formPropertyToDTO(FormPropertyParameter fp) {
 
-    
     FormPropertyParameterDTO formpropDTO = new FormPropertyParameterDTO();
-    
+
     formpropDTO.setName(fp.getName());
     formpropDTO.setType(fp.getType());
-    
+
     return formpropDTO;
   }
-  
 
-  
+  public static List<FormPropertyParameter> dtoToproperties(List<FormPropertyParameterDTO> propertiesDTO) {
+    if (propertiesDTO == null) {
+      return null;
+    }
+    List<FormPropertyParameter> properties = new ArrayList<FormPropertyParameter>();
+
+    for (FormPropertyParameterDTO fp : propertiesDTO) {
+      properties.add(dtoToformProperty(fp));
+    }
+
+    return properties;
+  }
+
+  private static FormPropertyParameter dtoToformProperty(FormPropertyParameterDTO fpDTO) {
+
+    FormPropertyParameter formprop = new FormPropertyParameter();
+
+    formprop.setName(fpDTO.getName());
+    formprop.setType(fpDTO.getType());
+
+    return formprop;
+  }
 
 }

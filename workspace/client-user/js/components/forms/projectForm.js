@@ -44,32 +44,80 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
     initComponent : function () {
         var config = this; 
         this.componentType = "formProject";
-    
+        
+        var panelIdObject = {};
+        
+        // New Form model with zones
+        if (!Ext.isEmpty(this.formZones)){
+            Ext.each(this.formZones, function(formParam) { 
+                var containerId = formParam.containerPanelId;
+                if (Ext.isEmpty(panelIdObject[containerId])){
+                    panelIdObject[containerId] = [];
+                }
+                panelIdObject[containerId].push(formParam);
+            });
+        } else { // old form model
+            Ext.each(config.formParameters, function(formParam) { 
+                var containerId = formParam.containerPanelId;
+                if (Ext.isEmpty(panelIdObject[containerId])){
+                    panelIdObject[containerId] = [];
+                }
+                panelIdObject[containerId].push(formParam);
+            });
+        }
+        
+        var items = [];
+        var globalParams = {};
+        
+        Ext.iterate(panelIdObject, function(key, formParams){
+            var componentList = new  sitools.user.component.formComponentsPanel({
+                border: true,
+                css : config.formCss, 
+                formId : config.formId,
+                id : key
+            });
+
+            if (!Ext.isEmpty(this.formZones)) {
+                globalParams.formZones = formParams;
+            } else {
+                globalParams.oldParameters = formParams;
+            }
+
+//            componentList.datasetCm = config.dataset.columnModel;
+            componentList.loadParameters(globalParams, config.dataUrl, "dataset");
+
+            items.push(componentList);
+        }, this);
+        
+        
+        
         /**
          * The panel that displays all form components as defined by the administrator. 
          */
-        this.componentList = new sitools.user.component.formComponentsPanel({
+        this.zonesPanel = new Ext.Panel({
             width : config.formWidth,
             height : config.formHeight, 
             css : config.formCss, 
-            formId : config.formId
+            formId : config.formId,
+            items : [items]
         });
-        if (!Ext.isEmpty(config.formParameters)) {
-            this.componentList.loadParameters(config.formParameters, config.dataUrl, "project");
-        }
+//        
+//        if (!Ext.isEmpty(config.formParameters)) {
+//            this.componentList.loadParameters(config.formParameters, config.dataUrl, "project");
+//        }
     
         var displayComponentPanel = new Ext.Panel({
             title : i18n.get('label.formConcepts'), 
             region : "center", 
             flex : 2, 
             autoScroll : true,
-            items : [ this.componentList ],
+            items : this.zonesPanel,
             layout : "absolute",
             listeners : {
                 scope : this, 
                 resize : function () {
-                    if (!Ext.isEmpty(this.componentList.getEl())) {
-                        var cmpChildSize = this.componentList.getSize();
+                    if (!Ext.isEmpty(this.zonesPanel.getEl())) {
+                        var cmpChildSize = this.zonesPanel.getSize();
                         var size = this.body.getSize();
                         var xpos = 0, ypos = 0;
                         if (size.height > cmpChildSize.height) {
@@ -78,7 +126,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                         if (size.width > cmpChildSize.width) {
                             xpos = (size.width - cmpChildSize.width) / 2;
                         }
-                        this.componentList.setPosition(xpos, ypos);
+                        this.zonesPanel.setPosition(xpos, ypos);
                         
                     }
                 }
@@ -110,7 +158,6 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                 this.propertyPanel.add(field);
             }, this);
         }
-        
         
         var storeDatasets = new Ext.data.JsonStore({
             restful  : true, 
@@ -262,8 +309,12 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
             button.setDisabled(false);
             return;
         }
+        var valid = true;
         
-        var valid = this.componentList.isComponentsValid();
+        this.zonesPanel.items.each(function(componentList){
+            valid = valid && componentList.isComponentsValid();            
+        },this);
+        
         if (!valid) {
             this.getBottomToolbar().setStatus({
                 text : i18n.get('label.checkformvalue'),
@@ -370,7 +421,8 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
             componentType : this.componentType, 
             dictionaryName : this.dictionaryName,
             preferencesPath : this.preferencesPath, 
-            preferencesFileName : this.preferencesFileName
+            preferencesFileName : this.preferencesFileName,
+            formZones : this.zones
             
         };
     }, 

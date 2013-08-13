@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -20,12 +20,10 @@ package fr.cnes.sitools.form.project.dto;
 
 import java.util.List;
 
-
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParametersDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
-
 
 /**
  * DTO object from FormProjects
@@ -52,18 +50,14 @@ public class FormProjectAdminDTO extends FormDTO {
   private String urlServicePropertiesSearch;
   /** The url of the service performing the multidataset search */
   private String urlServiceDatasetSearch;
-  
+
   /** The id of the resource for the searchPropertiesSearch service */
   private String idServicePropertiesSearch;
   /** The id of the resource for the DatasetSearch service */
   private String idServiceDatasetSearch;
-  
-  
+
   /** Maximal number of datasets authorized for the search request */
   private Integer nbDatasetsMax;
-  
-  
-  
 
   /**
    * Constructor
@@ -130,9 +124,6 @@ public class FormProjectAdminDTO extends FormDTO {
     this.urlServiceDatasetSearch = urlServiceDatasetSearch;
   }
 
-
-
-
   /**
    * Sets the value of nbDatasetsMax
    * 
@@ -167,10 +158,10 @@ public class FormProjectAdminDTO extends FormDTO {
   public void setCollection(Resource collection) {
     this.collection = collection;
   }
-  
+
   public static FormProject dtoToFormProject(FormProjectAdminDTO formProjectDTOInput) {
     FormProject form = new FormProject();
-    
+
     form.setDictionary(formProjectDTOInput.getDictionary());
     form.setCollection(formProjectDTOInput.getCollection());
     form.setIdServicePropertiesSearch(formProjectDTOInput.getIdServicePropertiesSearch());
@@ -178,7 +169,7 @@ public class FormProjectAdminDTO extends FormDTO {
     form.setUrlServicePropertiesSearch(formProjectDTOInput.getUrlServicePropertiesSearch());
     form.setUrlServiceDatasetSearch(formProjectDTOInput.getUrlServiceDatasetSearch());
     form.setNbDatasetsMax(formProjectDTOInput.getNbDatasetsMax());
-    
+
     form.setId(formProjectDTOInput.getId());
     form.setParent(formProjectDTOInput.getParent());
     form.setName(formProjectDTOInput.getName());
@@ -188,8 +179,9 @@ public class FormProjectAdminDTO extends FormDTO {
     form.setWidth(formProjectDTOInput.getWidth());
     form.setHeight(formProjectDTOInput.getHeight());
     form.setCss(formProjectDTOInput.getCss());
+    form.setProperties(FormPropertyParameterDTO.dtoToproperties(formProjectDTOInput.getProperties()));
     return form;
-    
+
   }
 
   public String getIdServicePropertiesSearch() {
@@ -208,8 +200,4 @@ public class FormProjectAdminDTO extends FormDTO {
     this.idServiceDatasetSearch = idServiceDatasetSearch;
   }
 
-  
-  
-
-  
 }

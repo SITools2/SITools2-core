@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -25,7 +25,6 @@ import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParametersDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
-
 
 /**
  * DTO object from FormProjects
@@ -54,9 +53,6 @@ public class FormProjectDTO extends FormDTO {
   private String urlServiceDatasetSearch = null;
   /** Maximal number of datasets authorized for the search request */
   private Integer nbDatasetsMax = null;
-  
-  
-  
 
   /**
    * Constructor
@@ -194,6 +190,8 @@ public class FormProjectDTO extends FormDTO {
 
     dto.setNbDatasetsMax(formProject.getNbDatasetsMax());
 
+    dto.setZones(FormDTO.zonesToDTO(formProject.getZones()));
+
     return dto;
 
   }
@@ -217,6 +215,4 @@ public class FormProjectDTO extends FormDTO {
     return nbDatasetsMax;
   }
 
-
-  
 }
