@@ -31,11 +31,7 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.form.dataset.dto.FormDTO;
-import fr.cnes.sitools.form.dataset.model.Form;
-import fr.cnes.sitools.form.dataset.model.Zone;
 import fr.cnes.sitools.form.project.dto.FormProjectAdminDTO;
-import fr.cnes.sitools.form.project.dto.FormProjectDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
 
 /**
