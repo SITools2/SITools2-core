@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.logging.Logger;
 
@@ -128,7 +129,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
             .setupDataSource(
                 settings.getString("Tests.PGSQL_DATABASE_DRIVER"), settings.getString("Tests.PGSQL_DATABASE_URL"), settings.getString("Tests.PGSQL_DATABASE_USER"), settings.getString("Tests.PGSQL_DATABASE_PASSWORD"), settings.getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
       }
-      
+
       if (store == null) {
         store = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctx);
       }
@@ -254,6 +255,18 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
     assertTrue(response.getTotal() > 0);
   }
 
+  /**
+   * Test CRUD Users with JSon format exchanges.
+   * 
+   * @throws InterruptedException
+   */
+  @Test
+  public synchronized void testCRUDUsersErrors() throws InterruptedException {
+    wait(10000);
+    createUserWrongUserName();
+    createUserWrongPassword();
+  }
+
   // ----------------------------------------------------------------
   // CRUD USER
 
@@ -261,21 +274,29 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    * Invoke POST
    */
   public void createUser() {
+
     User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
     ClientResource crUsers = new ClientResource(getBaseUrl() + "/users");
-
-    Representation result = crUsers.post(getRepresentationJSON(myUser));
-    assertTrue(crUsers.getStatus().isSuccess());
-    assertNotNull(result);
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
-    assertTrue(response.getSuccess());
-    assertNotNull(response.getItem());
-    User resultUser = (User) response.getItem();
-    assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
-    assertEquals(resultUser.getFirstName(), myUser.getFirstName());
-    assertEquals(resultUser.getLastName(), myUser.getLastName());
-    assertNull(resultUser.getSecret()); // secret is private
-    assertEquals(resultUser.getEmail(), myUser.getEmail());
+    Representation result = null;
+    try {
+      result = crUsers.post(getRepresentationJSON(myUser));
+      assertTrue(crUsers.getStatus().isSuccess());
+      assertNotNull(result);
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
+      User resultUser = (User) response.getItem();
+      assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
+      assertEquals(resultUser.getFirstName(), myUser.getFirstName());
+      assertEquals(resultUser.getLastName(), myUser.getLastName());
+      assertNull(resultUser.getSecret()); // secret is private
+      assertEquals(resultUser.getEmail(), myUser.getEmail());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   /**
@@ -284,19 +305,27 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
   public void retrieveUser() {
     User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
     ClientResource cr = new ClientResource(getBaseUrl() + "/users/" + myUser.getIdentifier());
-    Representation result = cr.get(MediaType.APPLICATION_JSON);
-    assertNotNull(result);
-    assertTrue(cr.getStatus().isSuccess());
+    Representation result = null;
+    try {
+      result = cr.get(MediaType.APPLICATION_JSON);
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
-    assertTrue(response.getSuccess());
-    assertNotNull(response.getItem());
-    User resultUser = (User) response.getItem();
-    assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
-    assertEquals(resultUser.getFirstName(), myUser.getFirstName());
-    assertEquals(resultUser.getLastName(), myUser.getLastName());
-    assertNull(resultUser.getSecret()); // secret is private
-    assertEquals(resultUser.getEmail(), myUser.getEmail());
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
+      User resultUser = (User) response.getItem();
+      assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
+      assertEquals(resultUser.getFirstName(), myUser.getFirstName());
+      assertEquals(resultUser.getLastName(), myUser.getLastName());
+      assertNull(resultUser.getSecret()); // secret is private
+      assertEquals(resultUser.getEmail(), myUser.getEmail());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   /**
@@ -307,20 +336,27 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
         "modified-prenom.nom@societe.fr");
 
     ClientResource crUsers = new ClientResource(getBaseUrl() + "/users/" + myUser.getIdentifier());
+    Representation result = null;
+    try {
+      result = crUsers.put(getRepresentationJSON(myUser));
+      assertNotNull(result);
+      assertTrue(crUsers.getStatus().isSuccess());
 
-    Representation result = crUsers.put(getRepresentationJSON(myUser));
-    assertNotNull(result);
-    assertTrue(crUsers.getStatus().isSuccess());
-
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
-    assertTrue(response.getSuccess());
-    assertNotNull(response.getItem());
-    User resultUser = (User) response.getItem();
-    assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
-    assertEquals(resultUser.getFirstName(), myUser.getFirstName());
-    assertEquals(resultUser.getLastName(), myUser.getLastName());
-    assertNull(resultUser.getSecret()); // secret is private
-    assertEquals(resultUser.getEmail(), myUser.getEmail());
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
+      User resultUser = (User) response.getItem();
+      assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
+      assertEquals(resultUser.getFirstName(), myUser.getFirstName());
+      assertEquals(resultUser.getLastName(), myUser.getLastName());
+      assertNull(resultUser.getSecret()); // secret is private
+      assertEquals(resultUser.getEmail(), myUser.getEmail());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   /**
@@ -329,12 +365,65 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
   public void deleteUser() {
     User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "prenom.nom@societe.fr");
     ClientResource cr = new ClientResource(getBaseUrl() + "/users/" + myUser.getIdentifier());
-    Representation resultRepresentation = cr.delete(MediaType.APPLICATION_JSON);
-    assertNotNull(resultRepresentation);
-    assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, resultRepresentation, User.class);
-    assertTrue(response.getSuccess());
+    Representation result = null;
+    try {
+      result = cr.delete(MediaType.APPLICATION_JSON);
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
+      assertTrue(response.getSuccess());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
+  }
+
+  /**
+   * Create a User with a username less than 4 characters long, expect an error
+   */
+  public void createUserWrongUserName() {
+    User myUser = new User("te", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
+    createUserWithError(myUser, "WRONG_USER_LOGIN");
+  }
+
+  /**
+   * Create a User with a password less than 4 characters long, expect an error
+   */
+  public void createUserWrongPassword() {
+    User myUser = new User("test-identifier", "m", "Prénom", "Nom", "m.gond@akka.eu");
+    createUserWithError(myUser, "WRONG_USER_PASSWORD");
+  }
+
+  /**
+   * Create a User an expect an error with the following message
+   * 
+   * @param myUser
+   *          the {@link User} to create
+   * @param expectedMessage
+   *          the message expected
+   */
+  private void createUserWithError(User myUser, String expectedMessage) {
+    ClientResource crUsers = new ClientResource(getBaseUrl() + "/users");
+
+    Representation result = null;
+    try {
+      result = crUsers.post(getRepresentationJSON(myUser));
+      assertTrue(crUsers.getStatus().isSuccess());
+      assertNotNull(result);
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
+      assertFalse(response.getSuccess());
+      assertNull(response.getItem());
+      assertEquals(expectedMessage, response.getMessage());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   // ----------------------------------------------------------------
@@ -389,18 +478,25 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
     Group myGroup = new Group("test-groupName", "test-groupDescription");
     ClientResource crGroups = new ClientResource(getBaseUrl() + "/groups");
 
-    Representation result = crGroups.post(getRepresentationJSON(myGroup));
-    assertTrue(crGroups.getStatus().isSuccess());
-    assertNotNull(result);
+    Representation result = null;
+    try {
+      result = crGroups.post(getRepresentationJSON(myGroup));
+      assertTrue(crGroups.getStatus().isSuccess());
+      assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
-    assertTrue(response.getSuccess());
-    assertNotNull(response.getItem());
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
 
-    Group group = (Group) response.getItem();
-    assertEquals(group.getName(), myGroup.getName());
-    assertEquals(group.getDescription(), myGroup.getDescription());
-
+      Group group = (Group) response.getItem();
+      assertEquals(group.getName(), myGroup.getName());
+      assertEquals(group.getDescription(), myGroup.getDescription());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   /**
@@ -409,17 +505,25 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
   public void retrieveGroup() {
     Group myGroup = new Group("test-groupName", "test-groupDescription");
     ClientResource cr = new ClientResource(getBaseUrl() + "/groups/" + myGroup.getName());
-    Representation result = cr.get(MediaType.APPLICATION_JSON);
-    assertNotNull(result);
-    assertTrue(cr.getStatus().isSuccess());
+    Representation result = null;
+    try {
+      result = cr.get(MediaType.APPLICATION_JSON);
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
-    assertTrue(response.getSuccess());
-    assertNotNull(response.getItem());
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
 
-    Group group = (Group) response.getItem();
-    assertEquals(group.getName(), myGroup.getName());
-    assertEquals(group.getDescription(), myGroup.getDescription());
+      Group group = (Group) response.getItem();
+      assertEquals(group.getName(), myGroup.getName());
+      assertEquals(group.getDescription(), myGroup.getDescription());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   /**
@@ -429,17 +533,25 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
     Group myGroup = new Group("test-groupName", "modified-test-groupDescription");
     ClientResource crGroup = new ClientResource(getBaseUrl() + "/groups/" + myGroup.getName());
 
-    Representation result = crGroup.put(getRepresentationJSON(myGroup));
-    assertTrue(crGroup.getStatus().isSuccess());
-    assertNotNull(result);
+    Representation result = null;
+    try {
+      result = crGroup.put(getRepresentationJSON(myGroup));
+      assertTrue(crGroup.getStatus().isSuccess());
+      assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
-    assertTrue(response.getSuccess());
-    assertNotNull(response.getItem());
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
+      assertTrue(response.getSuccess());
+      assertNotNull(response.getItem());
 
-    Group group = (Group) response.getItem();
-    assertEquals(group.getName(), myGroup.getName());
-    assertEquals(group.getDescription(), myGroup.getDescription());
+      Group group = (Group) response.getItem();
+      assertEquals(group.getName(), myGroup.getName());
+      assertEquals(group.getDescription(), myGroup.getDescription());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   /**
@@ -448,12 +560,20 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
   public void deleteGroup() {
     Group myGroup = new Group("test-groupName", "test-groupDescription");
     ClientResource cr = new ClientResource(getBaseUrl() + "/groups/" + myGroup.getName());
-    Representation resultRepresentation = cr.delete(MediaType.APPLICATION_JSON);
-    assertNotNull(resultRepresentation);
-    assertTrue(cr.getStatus().isSuccess());
+    Representation result = null;
+    try {
+      result = cr.delete(MediaType.APPLICATION_JSON);
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, resultRepresentation, Group.class);
-    assertTrue(response.getSuccess());
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
+      assertTrue(response.getSuccess());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
   }
 
   // ----------------------------------------------------------------

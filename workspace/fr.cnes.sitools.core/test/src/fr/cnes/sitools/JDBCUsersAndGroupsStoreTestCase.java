@@ -240,12 +240,13 @@ public class JDBCUsersAndGroupsStoreTestCase extends AbstractSitoolsTestCase {
     deleteGroup();
   }
 
+
   /**
    * Test Exceptions dans les CRUDs
    */
   @Test
   public void testCRUDUsersExceptions() {
-    createBadUser();
+    createBadUserWrongLogin();
   }
 
   /**
@@ -341,18 +342,18 @@ public class JDBCUsersAndGroupsStoreTestCase extends AbstractSitoolsTestCase {
     }
   }
 
+
   /**
-   * Create badly formed user to check exception throwing identifier and secret must have at least 4 characters.
+   * Create badly formed user to check exception throwing identifier must have at least 4 characters.
    */
-  public void createBadUser() {
-    User myUser = new User("test", "", "Prénom", "Nom", "prenom.nom@societe.fr");
+  public void createBadUserWrongLogin() {
+    User myUser = new User("te", "", "Prénom", "Nom", "prenom.nom@societe.fr");
     try {
       store.createUser(myUser);
       fail("La création d'un tel user devrait lever une exception.");
     }
     catch (SitoolsException se) {
-      assertEquals(se.getMessage().startsWith("CREATE_USER_MALFORMED"), true);
+      assertEquals(se.getMessage().startsWith("WRONG_USER_LOGIN"), true);
     }
   }
-
 }

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -56,6 +56,7 @@ import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
 import fr.cnes.sitools.form.dataset.dto.ValueDTO;
+import fr.cnes.sitools.form.dataset.dto.ZoneDTO;
 import fr.cnes.sitools.form.project.dto.FormProjectDTO;
 import fr.cnes.sitools.form.project.model.FormParameter;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
@@ -128,7 +129,7 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
 
       getProjectModulesDetailsList(projectAttach, "admin", "admin");
       getProjectModulesDetailsList(projectAttach, "", "");
-      
+
       getDatasetViewsList(projectAttach);
       getGuiServicesList(projectAttach);
 
@@ -146,8 +147,6 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       e.printStackTrace();
     }
   }
-
-  
 
   /**
    * Test
@@ -186,7 +185,7 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
 
       docAPI.appendSubChapter("Get the project description", "projectModules");
       getProjectModulesList(projectAttach, "", "");
-      
+
       docAPI.appendSubChapter("Get the list of project modules", "projectModulesList");
       getProjectModulesDetailsList(projectAttach, "", "");
     }
@@ -419,7 +418,7 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
     }
 
   }
-  
+
   /**
    * Get the list of datasetViews of the project corresponding to the following attachment
    * 
@@ -444,13 +443,13 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       Representation result = cr.get(getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      
+
       Response response = getResponse(getMediaTest(), result, DatasetView.class, true);
       assertNotNull(response.getData());
-      
+
       List<Object> datasetViews = response.getData();
       assertNotNull(datasetViews);
-      
+
       RIAPUtils.exhaust(result);
     }
   }
@@ -502,7 +501,7 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       RIAPUtils.exhaust(result);
     }
   }
-  
+
   private void getGuiServicesList(String projectAttach) {
     String url = getBaseUrl() + projectAttach + "/guiServices";
     if (docAPI.isActive()) {
@@ -515,16 +514,16 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       Representation result = cr.get(getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      
+
       Response response = getResponse(getMediaTest(), result, GuiServiceModel.class, true);
       assertNotNull(response.getData());
-      
+
       List<Object> guiServices = response.getData();
       assertNotNull(guiServices);
-      
+
       RIAPUtils.exhaust(result);
     }
-    
+
   }
 
   // ------------------------------------------------------------
@@ -598,12 +597,12 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
       xstream.alias("dictionary", Dictionary.class);
       xstream.alias("collection", Collection.class);
       xstream.alias("conceptTemplate", ConceptTemplate.class);
-      
-      //for projectModules
+
+      // for projectModules
       xstream.alias("ProjectModuleModel", ProjectModuleModel.class);
       xstream.alias("dependencies", Dependencies.class);
-      
-      //for guiServices
+
+      // for guiServices
       xstream.alias("guiService", GuiServiceModel.class);
 
       if (isArray) {
@@ -614,8 +613,12 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
 
           // Sans []
           xstream.addImplicitCollection(FormDTO.class, "parameters", "parameters", ParameterDTO.class);
+          xstream.addImplicitCollection(FormDTO.class, "zones", "zones", ZoneDTO.class);
+          xstream.addImplicitCollection(ZoneDTO.class, "params", "params", ParameterDTO.class);
+
           xstream.addImplicitCollection(ParameterDTO.class, "values", "values", ValueDTO.class);
-          xstream.addImplicitCollection(ParameterDTO.class, "defaultValues", String.class);
+          xstream.addImplicitCollection(ParameterDTO.class, "defaultValues", "defaultValues", String.class);
+          xstream.addImplicitCollection(ParameterDTO.class, "code", "code", String.class);
 
           // Avec []
           xstream.aliasField("parameters", FormDTO.class, "parameters");
@@ -633,13 +636,12 @@ public abstract class AbstractProjectListObjectTestCase extends AbstractSitoolsS
           // for FormProject
           xstream.addImplicitCollection(FormProjectDTO.class, "parameters", FormParameter.class);
           xstream.addImplicitCollection(FormProjectDTO.class, "properties", String.class);
-          
-          //for projectModules
+
+          // for projectModules
           xstream.addImplicitCollection(ProjectModuleModel.class, "listRoles", Role.class);
           xstream.addImplicitCollection(Dependencies.class, "js", Url.class);
           xstream.addImplicitCollection(Dependencies.class, "css", Url.class);
-          
-          
+
         }
       }
       else {
