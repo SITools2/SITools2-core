@@ -46,14 +46,13 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Resource;
-import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.converter.dto.ConverterChainedModelDTO;
-import fr.cnes.sitools.form.model.AbstractParameter;
+import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
+import fr.cnes.sitools.form.project.dto.FormProjectAdminDTO;
+import fr.cnes.sitools.form.project.dto.FormPropertyParameterDTO;
 import fr.cnes.sitools.form.project.model.FormParameter;
 import fr.cnes.sitools.form.project.model.FormProject;
-import fr.cnes.sitools.form.project.model.FormPropertyParameter;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.dto.ResourcePluginDescriptionDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
@@ -122,7 +121,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     docAPI.setActive(false);
     assertNone();
     // create a new formProject
-    FormProject formProject = createFormProjectObject("100000");
+    FormProjectAdminDTO formProject = createFormProjectObject("100000");
     // add it to the server
     create(formProject);
 
@@ -148,7 +147,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     docAPI.appendChapter("Manipulating FormProject Collection");
     assertNone();
     // create a new formProject
-    FormProject formProject = createFormProjectObject("100000");
+    FormProjectAdminDTO formProject = createFormProjectObject("100000");
     // add it to the server
     docAPI.appendSubChapter("Create a new FormProject", "create");
     create(formProject);
@@ -178,7 +177,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
 
-      Response response = getResponse(getMediaTest(), result, FormProject.class, true);
+      Response response = getResponse(getMediaTest(), result, FormProjectAdminDTO.class, true);
       assertTrue(response.getSuccess());
       assertEquals(new Integer(0), response.getTotal());
       RIAPUtils.exhaust(result);
@@ -186,8 +185,8 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
 
   }
 
-  private FormProject createFormProjectObject(String id) {
-    FormProject formProject = new FormProject();
+  private FormProjectAdminDTO createFormProjectObject(String id) {
+    FormProjectAdminDTO formProject = new FormProjectAdminDTO();
     formProject.setName("A form project");
     formProject.setId(id);
     formProject.setDescription("A form project description");
@@ -210,17 +209,17 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     formProject.setUrlServiceDatasetSearch("/searchOnDataset");
     formProject.setUrlServicePropertiesSearch("/searchOnProperties");
 
-    List<FormPropertyParameter> properties = new ArrayList<FormPropertyParameter>();
-    properties.add(new FormPropertyParameter("prop1", "textField"));
-    properties.add(new FormPropertyParameter("prop2", "textField"));
+    List<FormPropertyParameterDTO> properties = new ArrayList<FormPropertyParameterDTO>();
+    properties.add(new FormPropertyParameterDTO("prop1", "textField"));
+    properties.add(new FormPropertyParameterDTO("prop2", "textField"));
     formProject.setProperties(properties);
 
     // parameters
-    List<AbstractParameter> parameters = new ArrayList<AbstractParameter>();
-    FormParameter param1 = new FormParameter();
+    List<ParameterDTO> parameters = new ArrayList<ParameterDTO>();
+    ParameterDTO param1 = new ParameterDTO();
     param1.setLabel("param1");
     parameters.add(param1);
-    FormParameter param2 = new FormParameter();
+    ParameterDTO param2 = new ParameterDTO();
     param2.setLabel("param2");
     parameters.add(param2);
 
@@ -230,7 +229,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     return formProject;
   }
 
-  private void create(FormProject formProject) {
+  private void create(FormProjectAdminDTO formProject) {
     String url = getBaseUrl();
     Representation rep = getRepresentation(formProject, getMediaTest());
     if (docAPI.isActive()) {
@@ -244,9 +243,9 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       Representation result = cr.post(rep, getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      Response response = getResponse(getMediaTest(), result, FormProject.class);
+      Response response = getResponse(getMediaTest(), result, FormProjectAdminDTO.class);
       assertTrue(response.getSuccess());
-      FormProject formProjectOut = (FormProject) response.getItem();
+      FormProjectAdminDTO formProjectOut = (FormProjectAdminDTO) response.getItem();
       assertEquals(formProject.getName(), formProjectOut.getName());
 
       RIAPUtils.exhaust(result);
@@ -254,7 +253,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
 
   }
 
-  private void retrieve(FormProject formProject) {
+  private void retrieve(FormProjectAdminDTO formProject) {
     String url = getBaseUrl() + "/" + formProject.getId();
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
@@ -266,9 +265,9 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       Representation result = cr.get(getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      Response response = getResponse(getMediaTest(), result, FormProject.class);
+      Response response = getResponse(getMediaTest(), result, FormProjectAdminDTO.class);
       assertTrue(response.getSuccess());
-      FormProject formProjectOut = (FormProject) response.getItem();
+      FormProjectAdminDTO formProjectOut = (FormProjectAdminDTO) response.getItem();
       assertEquals(formProject.getName(), formProjectOut.getName());
 
       assertServices(formProjectOut);
@@ -277,7 +276,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     }
   }
 
-  private void retrieveByName(FormProject formProject) {
+  private void retrieveByName(FormProjectAdminDTO formProject) {
     String url = getBaseUrl();
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
@@ -293,7 +292,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
 
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      Response response = getResponse(getMediaTest(), result, FormProject.class, true);
+      Response response = getResponse(getMediaTest(), result, FormProjectAdminDTO.class, true);
       assertTrue(response.getSuccess());
       assertEquals(new Integer(1), response.getTotal());
 
@@ -301,7 +300,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     }
   }
 
-  private void update(FormProject formProject) {
+  private void update(FormProjectAdminDTO formProject) {
     String url = getBaseUrl() + "/" + formProject.getId();
     formProject.setName(formProject.getName() + "_updated");
     Representation rep = getRepresentation(formProject, getMediaTest());
@@ -316,9 +315,9 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       Representation result = cr.put(rep, getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      Response response = getResponse(getMediaTest(), result, FormProject.class);
+      Response response = getResponse(getMediaTest(), result, FormProjectAdminDTO.class);
       assertTrue(response.getSuccess());
-      FormProject formProjectOut = (FormProject) response.getItem();
+      FormProjectAdminDTO formProjectOut = (FormProjectAdminDTO) response.getItem();
       assertEquals(formProject.getName(), formProjectOut.getName());
       assertServices(formProjectOut);
 
@@ -326,7 +325,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     }
   }
 
-  private void delete(FormProject formProject) {
+  private void delete(FormProjectAdminDTO formProject) {
     String url = getBaseUrl() + "/" + formProject.getId();
     if (docAPI.isActive()) {
       Map<String, String> parameters = new LinkedHashMap<String, String>();
@@ -338,7 +337,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
       Representation result = cr.delete(getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
-      Response response = getResponse(getMediaTest(), result, FormProject.class);
+      Response response = getResponse(getMediaTest(), result, FormProjectAdminDTO.class);
       assertTrue(response.getSuccess());
       RIAPUtils.exhaust(result);
     }
@@ -350,7 +349,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
    * @param formProjectOut
    *          the FormProject
    */
-  private void assertServices(FormProject formProjectOut) {
+  private void assertServices(FormProjectAdminDTO formProjectOut) {
     // SEARCH SERVICE
     String idServiceSearch = formProjectOut.getIdServiceDatasetSearch();
     ResourceModelDTO dtoServiceSearch = getResourceModelDTO(idServiceSearch);
@@ -460,11 +459,11 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
 
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
       xstream.alias("response", Response.class);
-      xstream.alias("formProject", FormProject.class);
+      xstream.alias("formProject", FormProjectAdminDTO.class);
 
       if (media.equals(MediaType.APPLICATION_JSON)) {
-        xstream.addImplicitCollection(FormProject.class, "parameters", FormParameter.class);
-        xstream.addImplicitCollection(FormProject.class, "properties", String.class);
+        xstream.addImplicitCollection(FormProjectAdminDTO.class, "parameters", FormParameter.class);
+        xstream.addImplicitCollection(FormProjectAdminDTO.class, "properties", String.class);
 
       }
 
@@ -510,13 +509,13 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
    *          APPLICATION_XML or APPLICATION_JSON
    * @return XML or JSON Representation
    */
-  public static Representation getRepresentation(FormProject item, MediaType media) {
+  public static Representation getRepresentation(FormProjectAdminDTO item, MediaType media) {
     if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JacksonRepresentation<FormProject>(item);
+      return new JacksonRepresentation<FormProjectAdminDTO>(item);
     }
     else if (media.equals(MediaType.APPLICATION_XML)) {
       XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
-      XstreamRepresentation<FormProject> rep = new XstreamRepresentation<FormProject>(media, item);
+      XstreamRepresentation<FormProjectAdminDTO> rep = new XstreamRepresentation<FormProjectAdminDTO>(media, item);
       configure(xstream);
       rep.setXstream(xstream);
       return rep;

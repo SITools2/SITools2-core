@@ -119,12 +119,12 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
     
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the FormProject bean
-      XstreamRepresentation<FormProject> repXML = new XstreamRepresentation<FormProject>(representation);
+      XstreamRepresentation<FormProjectAdminDTO> repXML = new XstreamRepresentation<FormProjectAdminDTO>(representation);
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
       xstream.autodetectAnnotations(false);
-      xstream.alias("formComponent", FormProject.class);
+      xstream.alias("formComponent", FormProjectAdminDTO.class);
       repXML.setXstream(xstream);
-      formProjectInput = repXML.getObject();
+      formProjectDTOInput = repXML.getObject();
     }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean

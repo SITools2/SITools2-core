@@ -149,7 +149,7 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
 
     String userRegExp = settings.getString("STARTER.SECURITY.USER_LOGIN_REGEX", null);
     if (user.getIdentifier() != null && (userRegExp != null && !user.getIdentifier().matches(userRegExp))) {
-      throw new SitoolsException("WRONG USER LOGIN");
+      throw new SitoolsException("WRONG_USER_LOGIN");
     }
     //at that point, the password is encoded, so no verification can be done
     //    String passwordRegExp = settings.getString("STARTER.SECURITY.USER_PASSWORD_REGEX", null);

@@ -20,7 +20,6 @@
       <jsUserObject>sitools.component.users.SubSelectionParameters.SingleSelection.NumericBetween</jsUserObject>
       <defaultValues>
         <string></string>
-        <string></string>
       </defaultValues>
       <autoComplete>false</autoComplete>
       <type>NUMERIC_BETWEEN</type>
