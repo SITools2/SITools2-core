@@ -27,6 +27,9 @@ Ext.namespace('sitools.user.component.entete');
  * @extends Ext.Window
  */
 sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
+	
+	width : 450,
+	
 	initComponent : function () {
 	    
 		this.header = false;
@@ -56,7 +59,6 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 		}];
 		
 		this.height =  this.user.identifier === "public" ? 140 : 220; 
-		this.width = 400;
 		
 		if (this.user.identifier !== "public") {
 			data.push({
@@ -77,6 +79,11 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 				url : "/sitools/common/res/images/icons/menu/applications2.png", 
 				action : "showTasks", 
 				comment : String.format(i18n.get("label.taskRunning"), userTasksRunning, userTotalTasks)
+			}, {
+				identifier : "orders", 
+				name: i18n.get("label.orders"), 
+				url : "/sitools/common/res/images/icons/menu/order.png", 
+				action : "showOrders"
 			});
 			
 		}
@@ -99,9 +106,10 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 	        cls : "userButtonsDataview", 
 	        tpl: tpl,
 	        autoHeight : true,
-	        width : this.userPublic ? 100 : 400, 
+	        width : this.userPublic ? 100 : this.width, 
 	        multiSelect: true,
 	        overClass: 'x-view-over',
+	        overCls : 'userButtonsPointer',
 	        emptyText: 'No images to display', 
 	        itemSelector: 'div.userButtons',
 	        listeners : {
@@ -215,7 +223,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			border : false, 
 			hideBorders : true, 
 			closable : false, 
-			x : Ext.getBody().getWidth() - 400, 
+			x : Ext.getBody().getWidth() - this.width, 
 			y : SitoolsDesk.getEnteteEl().getHeight(), 
 			resizable : false, 
 			bodyBorder : false, 
@@ -398,6 +406,24 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
             title : i18n.get('label.userSpace'),
             saveToolbar : false, 
             iconCls : "diskSpace"
+        };
+        SitoolsDesk.addDesktopWindow(windowConfig, {}, jsObj, true);
+		this.destroy();
+	}, 
+	
+	/**
+	 * Open a window in the desktop with the sitools.user.component.entete.userProfile.diskSpace object. 
+	 * @param {Ext.DataView} dataView the clicked Dataview
+	 * @param {numeric} index the index of the clicked node
+	 * @param {Html Element} node the clicked html element 
+	 * @param {Ext.event} e The click event
+	 */
+	showOrders : function () {
+		var jsObj = sitools.user.component.entete.userProfile.viewOrderPanel;
+		var windowConfig = {
+            title : i18n.get('label.ordersHistory'),
+            saveToolbar : false, 
+//            iconCls : "orders"
         };
         SitoolsDesk.addDesktopWindow(windowConfig, {}, jsObj, true);
 		this.destroy();

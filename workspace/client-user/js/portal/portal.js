@@ -44,6 +44,8 @@ sitools.Portal = function (projectsList, languages, preferences) {
                         });
                     }
                 });
+                
+                
             }
 
         };
@@ -274,7 +276,17 @@ sitools.Portal = function (projectsList, languages, preferences) {
 						alertWindow.show();
 					}
                 } else {
-					this.connect();
+                	sitools.userProfile.LoginUtils.connect({
+                        closable : true,
+                        url : loadUrl.get('APP_URL') + '/login',
+                        register : loadUrl.get('APP_URL') + '/inscriptions/user',
+                        reset : loadUrl.get('APP_URL') + '/resetPassword',
+                        handler : function () {
+                        	if (!maintenance) {
+                        		window.open(projectName + "/project-index.html");
+                        	}
+                        }
+                    });
 					//Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.unauthorized'));
                 }
                 // create the new url with the given projectId

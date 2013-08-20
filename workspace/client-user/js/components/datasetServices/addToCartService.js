@@ -153,10 +153,9 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
         globalOrder.dataUrl = this.dataview.dataUrl;
         globalOrder.datasetName = this.dataview.datasetName;
         
-        var now = new Date();
-        var orderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
-        orderDate = orderDate.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
-        globalOrder.orderDate = orderDate;
+        var orderDate = new Date();
+        var orderDateStr = orderDate.format(SITOOLS_DATE_FORMAT);
+        globalOrder.orderDate = orderDateStr;
         
         Ext.each(selections, function (rec) {
             var data = {};
@@ -241,19 +240,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                     sortable : true
                 } ]
             }),
-            selModel : new Ext.grid.CheckboxSelectionModel({
-                handleMouseDown : function (g, rowIndex, e) {
-                    var view = this.grid.getView();
-                    var isSelected = this.isSelected(rowIndex);
-                    if (isSelected) {
-                        this.deselectRow(rowIndex);
-                    } else if (!isSelected || this.getCount() > 1) {
-                        this.selectRow(rowIndex, true);
-                        view.focusRow(rowIndex);
-                    }
-                },
-                singleSelect : false
-            }),
+            selModel : new Ext.grid.RowSelectionModel(),
             getValue : function () {
                 var concatvalue = '';
                 Ext.each(this.getSelectionModel().getSelections(), function (object, index) {

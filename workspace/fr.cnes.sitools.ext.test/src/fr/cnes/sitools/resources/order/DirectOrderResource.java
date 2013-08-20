@@ -25,12 +25,12 @@ import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 
+import fr.cnes.sitools.cart.utils.ListReferencesAPI;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.resources.order.representations.TarOutputRepresentation;
 import fr.cnes.sitools.resources.order.representations.ZipOutputRepresentation;
-import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
 import fr.cnes.sitools.tasks.business.Task;
 
 /**

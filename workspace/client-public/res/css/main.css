@@ -310,6 +310,10 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 	margin: auto;
 }
 
+.userButtonsPointer {
+	cursor : pointer;
+}
+
 .userButtons-name {
 	display: block;
 }
@@ -516,5 +520,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	color : blue;
 	text-align: center;
 	display : inline !important;
+}
+
+.smallLogo {
+	background-image: url('../images/logo_fav_icone.png');
 }
 

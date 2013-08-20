@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.order.utils;
+package fr.cnes.sitools.cart.utils;
 
 import java.io.File;
 import java.util.Date;
@@ -89,7 +89,7 @@ public final class OrderResourceUtils {
   public static Reference addFile(Representation repr, Reference refDest, ClientInfo clientInfo, Context context)
     throws SitoolsException {
 
-//    context.getLogger().info("ADD FILE TO : " + refDest);
+    //context.getLogger().info("ADD FILE TO : " + refDest);
     
     Request reqPOST = new Request(Method.PUT, refDest, repr);
     reqPOST.setClientInfo(clientInfo);

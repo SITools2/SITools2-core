@@ -207,7 +207,8 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/diskSpace.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/tasks.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/viewTextPanel.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/modules/userSpace/dependencies/orderProp.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/viewOrder.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/components/entete/userProfile/orderProp.js"></script>
 	
 
 	<script type="text/javascript" src="${appUrl}/client-user/js/components/help/help.js"></script>

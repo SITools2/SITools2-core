@@ -88,6 +88,7 @@ sitools.user.component.dataviews.dataviewUtils = {
                             str = String.format(html, value);
                         }
                     }
+                    console.log(str);
                     return str;
                 } else {
                     return value;
@@ -188,7 +189,6 @@ sitools.user.component.dataviews.dataviewUtils = {
                     tplString += String.format('<span class="dataview_columnValue"><div class=x-view-entete style="{2}">{0} </div> {{1}}</span>', col.header, col.columnAlias, style);
                 }
             }
-            
             return tplString;
         },
     
@@ -238,6 +238,7 @@ sitools.user.component.dataviews.dataviewUtils = {
                 break;
             }
         } 
+
         return html;
     },
     

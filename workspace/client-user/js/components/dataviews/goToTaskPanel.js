@@ -209,7 +209,7 @@ sitools.user.component.dataviews.goToTaskPanel = Ext.extend(Ext.Panel, {
 
     },
     /**
-     * Open a sitools.user.modules.userSpaceDependencies.orderProp window. 
+     * Open a sitools.user.component.entete.userProfile.orderProp window. 
      * @param {String} url the Url to request the task. 
      */
     _showOrderDetails : function (url) {
@@ -224,7 +224,7 @@ sitools.user.component.dataviews.goToTaskPanel = Ext.extend(Ext.Panel, {
                     return false;
                 }
                 var rec = new Ext.data.Record(data.order);
-                var jsObj = sitools.user.modules.userSpaceDependencies.orderProp;
+                var jsObj = sitools.user.component.entete.userProfile.orderProp;
                 var componentCfg = {
                     action : 'detail',
                     orderRec : rec

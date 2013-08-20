@@ -120,8 +120,10 @@ sitools.user.component.entete.userProfile.tasks = Ext.extend(Ext.grid.GridPanel,
 
         this.tbar = {
             xtype : 'toolbar',
+            cls : 'services-toolbar',
             defaults : {
-                scope : this
+                scope : this,
+                cls : 'services-toolbar-btn'
             },
             items : [ {
                 text : i18n.get('label.delete'),
@@ -305,7 +307,7 @@ sitools.user.component.entete.userProfile.tasks = Ext.extend(Ext.grid.GridPanel,
                     return false;
                 }
                 var rec = new Ext.data.Record(data.order);
-                var jsObj = sitools.user.modules.userSpaceDependencies.orderProp;
+                var jsObj = sitools.user.component.entete.userProfile.orderProp;
                 var componentCfg = {
                     action : 'detail',
                     orderRec : rec

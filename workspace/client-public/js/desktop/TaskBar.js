@@ -529,8 +529,14 @@ Ext.ux.TaskButtonsPanel = Ext.extend(Ext.BoxComponent, {
  */
 Ext.ux.TaskBar.TaskButton = function (win, el) {
 	this.win = win;
+	var iconCls = win.iconCls;
+	if(Ext.isEmpty(iconCls)){
+		iconCls = 'smallLogo';
+	}
+	
+	
 	Ext.ux.TaskBar.TaskButton.superclass.constructor.call(this, {
-	    iconCls : win.iconCls,
+	    iconCls : iconCls,
 //	    text : Ext.util.Format.ellipsis(win.title, 12),
 	    renderTo : el,
 	    handler : function (btn) {

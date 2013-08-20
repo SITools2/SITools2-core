@@ -90,6 +90,10 @@ html, body {
 	background-image: url(/sitools/common/res/images/icons/tree_user_storage.png);
 }
 
+.orders {
+	background-image: url(/sitools/common/res/images/icons/tree_orders.png);
+}
+
 .dataviews {
 	background-image: url(/sitools/common/res/images/icons/tree_datasets.png);	
 }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.order.utils;
+package fr.cnes.sitools.cart.utils;
 
 import java.io.IOException;
 import java.util.ArrayList;

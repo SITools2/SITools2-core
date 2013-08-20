@@ -31,15 +31,15 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
+import fr.cnes.sitools.cart.utils.ListReferencesAPI;
+import fr.cnes.sitools.cart.utils.OrderAPI;
+import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.dataset.database.DatabaseRequest;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
-import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
-import fr.cnes.sitools.resources.order.utils.OrderAPI;
-import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 

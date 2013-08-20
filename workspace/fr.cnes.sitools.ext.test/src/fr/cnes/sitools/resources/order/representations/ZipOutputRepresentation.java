@@ -34,8 +34,8 @@ import org.restlet.data.Reference;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
 
+import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.exception.SitoolsException;
-import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 
 /**
  * Representation used to create a Zip Archive from a List of {@link Reference} pointing to some files

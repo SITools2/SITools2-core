@@ -41,11 +41,11 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.security.User;
 
 import fr.cnes.sitools.applications.TemporaryFolderApplication;
+import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.ext.test.common.AbstractExtSitoolsTestCase;
-import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.RIAPUtils;

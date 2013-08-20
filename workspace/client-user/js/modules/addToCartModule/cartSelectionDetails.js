@@ -39,7 +39,6 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             + DEFAULT_ORDER_FOLDER + "/records/" + userLogin + "_" + this.selectionId + "_records.json";
         
         this.viewConfig = {
-            autoFill : true,
             listeners : {
                 scope : this,
                 refresh : function (view) {
@@ -96,22 +95,38 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
 //        });
         
         
-        this.colModel = getColumnModel(this.columnModel);
+//        this.colModel = getColumnModel(this.columnModel);
+        
+        var columns = [];
+        
+        Ext.each(this.columnModel, function (item, index, totalItems) {
+            if (Ext.isEmpty(item.columnRenderer) ||  ColumnRendererEnum.NO_CLIENT_ACCESS != item.columnRenderer.behavior) {
+                columns.push(new Ext.grid.Column(
+                    item
+                ));
+            }
+        });
+        
+        this.colModel = new Ext.grid.ColumnModel({
+            columns : columns
+        });
         this.primaryKey = this.getPrimaryKeyFromCm(this.colModel);
+        
+        
         
         this.store = new Ext.data.JsonStore({
             root : 'records',
             fields : fields
         });
 
-//        this.bbar = {
-//            xtype : 'paging',
-//            pageSize : 10,
-//            store : this.store,
-//            displayInfo : true,
-//            displayMsg : i18n.get('paging.display'),
-//            emptyMsg : i18n.get('paging.empty')
-//        };
+        this.bbar = {
+            xtype : 'paging',
+            pageSize : 300,
+            store : this.store,
+            displayInfo : true,
+            displayMsg : i18n.get('paging.display'),
+            emptyMsg : i18n.get('paging.empty')
+        };
         
         sitools.user.modules.cartSelectionDetails.superclass.initComponent.call(this);
     },
