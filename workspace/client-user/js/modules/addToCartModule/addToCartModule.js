@@ -94,14 +94,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         checked : false,
                         scope : this,
                         handler : this.setBroadcastMode
-                    }, {
-                        text : i18n.get('label.ftp'),
-                        broadcastMode : 'ftp',
-                        group : 'broadcast',
-                        checked : false,
-                        scope : this,
-                        handler : this.setBroadcastMode
-                    } ]
+                    }]
                 })
             }, '->', {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
@@ -171,7 +164,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 sortable : true,
                 dataIndex : 'datasetName'
             }, {
-                header : i18n.get('label.orderDate'),
+                header : i18n.get('label.orderAddToCart'),
                 width : 150,
                 sortable : true,
                 dataIndex : 'orderDate',
@@ -318,6 +311,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     
     resetSelectButton : function (button) {
         button.setText(i18n.get('label.selectAll'));
+        button.toggle(false);
         button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png');
     },
     

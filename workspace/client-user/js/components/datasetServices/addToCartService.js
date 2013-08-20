@@ -96,17 +96,16 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
     },
 
     saveSelection : function () {
-        if (this.dataview.getSelections().length <= 300 && this.dataview.selModel.getAllSelections().length <= 300) {
-            this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId);
-        } else {
-            return Ext.Msg.show({
-                title : i18n.get('label.warning'),
-                msg : i18n.get('warning.tooMuchRecords'),
-                buttons : Ext.MessageBox.OK,
-                icon : Ext.MessageBox.WARNING
-            });
-        }
-        
+//        if (this.dataview.getSelections().length <= 300 && this.dataview.selModel.getAllSelections().length <= 300) {
+        this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId);
+//        } else {
+//            return Ext.Msg.show({
+//                title : i18n.get('label.warning'),
+//                msg : i18n.get('warning.tooMuchRecords'),
+//                buttons : Ext.MessageBox.OK,
+//                icon : Ext.MessageBox.WARNING
+//            });
+//        }
     },
 
     /**
