@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -142,7 +142,7 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
         cleanDirectory(storeDirectory);
         store = new UserStorageStoreXML(storeDirectory, ctx);
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
       ctx.getAttributes().put("USER_STORAGE_ROOT",
           TEST_FILES_REPOSITORY + settings.getString("Starter.USERSTORAGE_ROOT"));
@@ -159,9 +159,7 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
       // Context
       Context appContext = this.component.getContext().createChildContext();
       appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
-      
-      
-      
+
       appContext.getAttributes().put(ContextAttributes.APP_STORE, store);
       appContext.getAttributes().put("USER_STORAGE_ROOT",
           TEST_FILES_REPOSITORY + settings.getString("Starter.USERSTORAGE_ROOT"));
@@ -175,8 +173,6 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
           userStorageApplication);
 
     }
-
-    
 
     if (!this.component.isStarted()) {
       this.component.start();
@@ -222,6 +218,8 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
     getFiles("show", challenge);
 
     postJSONFile("show", challenge);
+
+    postXMLFile("show", challenge);
 
     getUserStorageStatusForUser("show", challenge);
 
@@ -385,6 +383,55 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
         + "/files?filepath=%2FdataSelection%2Frecords&filename=file.json";
     String json = "{'orderRecord':{'records':[]}}";
     JsonRepresentation repr = new JsonRepresentation(json);
+
+    ClientResource cr = new ClientResource(url);
+    cr.setChallengeResponse(challenge);
+
+    Representation result = null;
+
+    result = cr.post(repr, getMediaTest());
+
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+
+    try {
+      // Always returns some JSON so we can deserialise it with a Simple
+      // JSONObject
+      String txt = result.getText();
+      assertNotNull(txt);
+      JSONObject jsonResponse = new JSONObject(txt);
+
+      boolean success = jsonResponse.getBoolean("success");
+      assertNotNull(success);
+      assertTrue(success);
+
+    }
+    catch (JSONException e) {
+      e.printStackTrace();
+      fail(e.getMessage());
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+      fail(e.getMessage());
+    }
+
+  }
+
+  /**
+   * Post some XML to the userstorage to create a folder and a file
+   * 
+   * @param userId
+   *          the user identifier
+   * @param challenge
+   *          ChallengeResponse to pass with the request
+   */
+  private void postXMLFile(String userId, ChallengeResponse challenge) {
+    // TODO Auto-generated method stub
+    String url = userReference.replace("{identifier}", userId)
+        + "/files?filepath=%2FdataSelection%2Frecords&filename=file.xml";
+    String xml = "<xml><orderRecord><records></records></orderRecord></xml>";
+
+    StringRepresentation repr = new StringRepresentation(xml, MediaType.TEXT_XML);
 
     ClientResource cr = new ClientResource(url);
     cr.setChallengeResponse(challenge);
