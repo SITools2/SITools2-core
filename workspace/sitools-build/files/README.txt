@@ -15,6 +15,15 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (2.0)
 
 2/ Changes
+
+___________________
+-2.1.2
+
+	* API changes :
+		- Data folder 
+			- Mutli dataset forms definition changed. XML files must be edited and <fr.cnes.sitools.form.dataset.model.SimpleParameter> tags must be changed to <SimpleParameter> tags  
+		
+
 ___________________
 -2.1.1 (2013-07-02)
 	* New feature

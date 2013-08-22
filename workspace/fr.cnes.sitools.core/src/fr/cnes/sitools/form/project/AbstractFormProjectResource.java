@@ -31,11 +31,7 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.form.dataset.dto.FormDTO;
-import fr.cnes.sitools.form.dataset.model.Form;
-import fr.cnes.sitools.form.dataset.model.Zone;
 import fr.cnes.sitools.form.project.dto.FormProjectAdminDTO;
-import fr.cnes.sitools.form.project.dto.FormProjectDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
 
 /**
@@ -123,12 +119,12 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
     
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the FormProject bean
-      XstreamRepresentation<FormProject> repXML = new XstreamRepresentation<FormProject>(representation);
+      XstreamRepresentation<FormProjectAdminDTO> repXML = new XstreamRepresentation<FormProjectAdminDTO>(representation);
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
       xstream.autodetectAnnotations(false);
-      xstream.alias("formComponent", FormProject.class);
+      xstream.alias("formComponent", FormProjectAdminDTO.class);
       repXML.setXstream(xstream);
-      formProjectInput = repXML.getObject();
+      formProjectDTOInput = repXML.getObject();
     }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean

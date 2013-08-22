@@ -70,6 +70,8 @@ sitools.user.modules.formsModule = function () {
         }, {
             name : 'parentUrl',
             type : 'string'
+        }, {
+            name : 'zones'            
         }], 
         autoLoad : true
     });
@@ -192,6 +194,8 @@ sitools.user.modules.formsModule = function () {
         }, {
             name : 'nbDatasetsMax', 
             type : 'numeric'
+        }, {
+            name : 'zones'
         }], 
         autoLoad : true
     });
@@ -298,7 +302,8 @@ Ext.extend(sitools.user.modules.formsModule, Ext.Panel, {
                         formHeight : rec.data.height, 
                         formCss : rec.data.css, 
                         preferencesPath : "/" + dataset.name + "/forms", 
-                        preferencesFileName : rec.data.name
+                        preferencesFileName : rec.data.name,
+                        formZones : rec.data.zones
                     };
 
                     SitoolsDesk.navProfile.addSpecificFormParameters(componentCfg, dataset);
@@ -346,7 +351,8 @@ Ext.extend(sitools.user.modules.formsModule, Ext.Panel, {
             dictionaryName : rec.data.dictionary.name,
             nbDatasetsMax : rec.data.nbDatasetsMax, 
             preferencesPath : "/formProjects", 
-            preferencesFileName : rec.data.name
+            preferencesFileName : rec.data.name,
+            formZones : rec.data.zones
         };
         var windowSettings = {
             type : "formProject", 

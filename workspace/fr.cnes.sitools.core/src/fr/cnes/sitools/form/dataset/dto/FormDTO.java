@@ -22,10 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.cnes.sitools.form.dataset.model.Form;
-import fr.cnes.sitools.form.dataset.model.SimpleParameter;
 import fr.cnes.sitools.form.dataset.model.Zone;
-import fr.cnes.sitools.form.model.AbstractParameter;
-import fr.cnes.sitools.form.model.Value;
 
 /**
  * FormDTO class to store Form definition

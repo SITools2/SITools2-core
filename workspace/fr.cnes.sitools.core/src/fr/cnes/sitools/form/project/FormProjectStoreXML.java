@@ -33,6 +33,7 @@ import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
 import fr.cnes.sitools.form.dataset.model.SimpleParameter;
 import fr.cnes.sitools.form.project.model.FormProject;
+import fr.cnes.sitools.form.project.model.FormPropertyParameter;
 
 /**
  * Implementation of CollectionStore with XStream FilePersistenceStrategy
@@ -100,9 +101,8 @@ public final class FormProjectStoreXML extends SitoolsStoreXML<FormProject> {
         current.setHeight(formProject.getHeight());
         current.setCss(formProject.getCss());
         current.setParentUrl(formProject.getParentUrl());
-        
+
         current.setZones(formProject.getZones());
-        
 
         it.remove();
 
@@ -148,6 +148,7 @@ public final class FormProjectStoreXML extends SitoolsStoreXML<FormProject> {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("FormProject", FormProject.class);
     aliases.put("SimpleParameter", SimpleParameter.class);
+    aliases.put("FormPropertyParameter", FormPropertyParameter.class);
     /* for compatibility matters */
     aliases.put("FormParameter", SimpleParameter.class);
     this.init(location, aliases);

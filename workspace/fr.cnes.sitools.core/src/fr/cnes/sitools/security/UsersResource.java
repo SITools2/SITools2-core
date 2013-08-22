@@ -216,6 +216,8 @@ public final class UsersResource extends UsersAndGroupsResource {
 
       String passwordUnecoded = input.getSecret();
 
+      checkUser(input);
+
       // CRYPTAGE DU MOT DE PASSE SI NECESSAIRE
       SecurityUtil.encodeUserPassword(getSitoolsApplication().getSettings(), input);
 
@@ -280,6 +282,29 @@ public final class UsersResource extends UsersAndGroupsResource {
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
+  }
+
+  /**
+   * Check that the user is correct corresponding to some rules defined on the properties file
+   * 
+   * @param user
+   *          the User to check
+   * @throws SitoolsException
+   *           if the user is unvalid
+   */
+  private void checkUser(User user) throws SitoolsException {
+    SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
+
+    String userRegExp = settings.getString("STARTER.SECURITY.USER_LOGIN_REGEX", null);
+    if (user.getIdentifier() != null && (userRegExp != null && !user.getIdentifier().matches(userRegExp))) {
+      throw new SitoolsException("WRONG_USER_LOGIN");
+    }
+
+    String passwordRegExp = settings.getString("STARTER.SECURITY.USER_PASSWORD_REGEX", null);
+    if (user.getSecret() != null && (passwordRegExp != null && !user.getSecret().matches(passwordRegExp))) {
+      throw new SitoolsException("WRONG_USER_PASSWORD");
+    }
+
   }
 
   @Override

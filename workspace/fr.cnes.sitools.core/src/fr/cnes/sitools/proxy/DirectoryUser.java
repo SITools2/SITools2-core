@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -34,6 +34,8 @@ import org.restlet.data.Reference;
 import org.restlet.data.ReferenceList;
 import org.restlet.data.Status;
 import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.ext.xml.XmlRepresentation;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.userstorage.UserStorageApplication;
@@ -94,7 +96,7 @@ public final class DirectoryUser extends DirectoryProxy {
   }
 
   /**
-   * To manage the POST JSON representation (command/preferences/...) as a file into the user directory (creates the
+   * To manage the POST JSON or XML representation (command/preferences/...) as a file into the user directory (creates the
    * directories path if needed).
    * 
    * @param request
@@ -112,39 +114,77 @@ public final class DirectoryUser extends DirectoryProxy {
     // TODO RESTLET OPTIMISATION - cache
     UserStorage storage = application.getStore().retrieve(identifier);
     if ((storage != null) && storage.getStatus().equals(UserStorageStatus.ACTIVE)
-        && request.getMethod().equals(Method.POST) && (request.getEntity() != null)
-        && MediaType.APPLICATION_JSON.toString().equals(request.getEntity().getMediaType().toString())) {
-      Form form = request.getResourceRef().getQueryAsForm();
-      try {
-        JsonRepresentation json = new JsonRepresentation(request.getEntity());
-        String filename = form.getFirstValue("filename");
-        String filepath = form.getFirstValue("filepath");
-        String pathRootUser = this.getRootRef().getPath(true) + File.separator + identifier;
+        && request.getMethod().equals(Method.POST) && (request.getEntity() != null)) {
 
-        if (filepath == null) {
-          filepath = "";
+      String mediaTypeEntity = request.getEntity().getMediaType().toString();
+      if (MediaType.APPLICATION_JSON.toString().equals(mediaTypeEntity)) {
+        Form form = request.getResourceRef().getQueryAsForm();
+        try {
+          JsonRepresentation json = new JsonRepresentation(request.getEntity());
+          String filename = form.getFirstValue("filename");
+          String filepath = form.getFirstValue("filepath");
+          String pathRootUser = this.getRootRef().getPath(true) + File.separator + identifier;
+
+          if (filepath == null) {
+            filepath = "";
+          }
+          else {
+            mkdirPath(pathRootUser, filepath);
+          }
+          if (filename == null) {
+            filename = UUID.randomUUID().toString() + ".json";
+          }
+          File cible = new File(pathRootUser + filepath, filename);
+          if (cible.exists()) {
+            cible.delete();
+          }
+          if (cible.createNewFile()) {
+            FileOutputStream fos = new FileOutputStream(cible);
+            fos.write(json.getText().getBytes());
+            fos.flush();
+            fos.close();
+          }
+          response.setEntity(new JsonRepresentation(new fr.cnes.sitools.common.model.Response(true, "Saved")));
         }
-        else {
-          mkdirPath(pathRootUser, filepath);
+        catch (IOException e) {
+          getLogger().log(Level.INFO, null, e);
         }
-        if (filename == null) {
-          filename = UUID.randomUUID().toString() + ".json";
-        }
-        File cible = new File(pathRootUser + filepath, filename);
-        if (cible.exists()) {
-          cible.delete();
-        }
-        if (cible.createNewFile()) {
-          FileOutputStream fos = new FileOutputStream(cible);
-          fos.write(json.getText().getBytes());
-          fos.flush();
-          fos.close();
-        }
-        response.setEntity(new JsonRepresentation(new fr.cnes.sitools.common.model.Response(true, "Saved")));
       }
-      catch (IOException e) {
-        getLogger().log(Level.INFO, null, e);
+      else if (MediaType.APPLICATION_XML.toString().equals(mediaTypeEntity)
+          || MediaType.TEXT_XML.toString().equals(mediaTypeEntity)) {
+        Form form = request.getResourceRef().getQueryAsForm();
+        try {
+          XmlRepresentation json = new DomRepresentation(request.getEntity());
+          String filename = form.getFirstValue("filename");
+          String filepath = form.getFirstValue("filepath");
+          String pathRootUser = this.getRootRef().getPath(true) + File.separator + identifier;
+
+          if (filepath == null) {
+            filepath = "";
+          }
+          else {
+            mkdirPath(pathRootUser, filepath);
+          }
+          if (filename == null) {
+            filename = UUID.randomUUID().toString() + ".xml";
+          }
+          File cible = new File(pathRootUser + filepath, filename);
+          if (cible.exists()) {
+            cible.delete();
+          }
+          if (cible.createNewFile()) {
+            FileOutputStream fos = new FileOutputStream(cible);
+            fos.write(json.getText().getBytes());
+            fos.flush();
+            fos.close();
+          }
+          response.setEntity(new JsonRepresentation(new fr.cnes.sitools.common.model.Response(true, "Saved")));
+        }
+        catch (IOException e) {
+          getLogger().log(Level.INFO, null, e);
+        }
       }
+
     }
     else {
       if ((storage != null) && storage.getStatus().equals(UserStorageStatus.ACTIVE)) {
@@ -209,6 +249,5 @@ public final class DirectoryUser extends DirectoryProxy {
   protected JsonRepresentation getJsonRepresentation(ReferenceList reference) {
     return getAdvancedJsonRepresentation(reference);
   }
-
 
 }

@@ -609,7 +609,8 @@ sitools.admin.multiDs.MultiDsPropPanel = Ext.extend(Ext.Window, {
         	formComponentsStore : this.formComponentsStore, 
 			storeConcepts : this.gridConcepts.getStore(), 
 			context : "project",
-			formSize : this.formSize
+			formSize : this.formSize,
+			action : this.action
         });
         
         var absContainer = new Ext.Panel({
@@ -656,43 +657,43 @@ sitools.admin.multiDs.MultiDsPropPanel = Ext.extend(Ext.Window, {
 				activate : function () {
 					this.absoluteLayout.fireEvent('activate');
 					var absoluteLayout = this.absoluteLayout;
-					var displayPanelDropTargetEl =  absoluteLayout.body.dom;
-					var formComponentsStore = this.formComponentsStore;
-					var storeConcepts = this.storeConcepts;
-					var gridConcepts = this.gridConcepts;
-					var displayPanelDropTarget = new Ext.dd.DropTarget(displayPanelDropTargetEl, {
-						ddGroup     : 'gridComponentsList',
-						notifyDrop  : function (ddSource, e, data) {
-							var xyDrop = e.xy;
-							var xyRef = Ext.get(absoluteLayout.body).getXY();
-							
-							var xyOnCreate = {
-								x : xyDrop[0] - xyRef[0], 
-								y : xyDrop[1] - xyRef[1]
-							};
-							// Reference the record (single selection) for readability
-							var rec = ddSource.dragData.selections[0];
-					        var ComponentWin = new sitools.admin.forms.componentPropPanel({
-					            urlAdmin : rec.data.jsonDefinitionAdmin,
-					            ctype : rec.data.type,
-					            action : "create",
-					            componentDefaultHeight : rec.data.componentDefaultHeight,
-					            componentDefaultWidth : rec.data.componentDefaultWidth,
-					            dimensionId : rec.data.dimensionId,
-					            unit : rec.data.unit,
-					            extraParams : rec.data.extraParams, 
-					            jsAdminObject : rec.data.jsAdminObject, 
-					            jsUserObject : rec.data.jsUserObject, 
-					            context : "project", 
-					            storeConcepts : gridConcepts.getStore(), 
-					            absoluteLayout : absoluteLayout, 
-					            record : rec, 
-					            formComponentsStore : formComponentsStore, 
-					            xyOnCreate : xyOnCreate
-					        });
-					        ComponentWin.show();
-						}
-					});
+//					var displayPanelDropTargetEl =  absoluteLayout.body.dom;
+//					var formComponentsStore = this.formComponentsStore;
+//					var storeConcepts = this.storeConcepts;
+//					var gridConcepts = this.gridConcepts;
+//					var displayPanelDropTarget = new Ext.dd.DropTarget(displayPanelDropTargetEl, {
+//						ddGroup     : 'gridComponentsList',
+//						notifyDrop  : function (ddSource, e, data) {
+//							var xyDrop = e.xy;
+//							var xyRef = Ext.get(absoluteLayout.body).getXY();
+//							
+//							var xyOnCreate = {
+//								x : xyDrop[0] - xyRef[0], 
+//								y : xyDrop[1] - xyRef[1]
+//							};
+//							// Reference the record (single selection) for readability
+//							var rec = ddSource.dragData.selections[0];
+//					        var ComponentWin = new sitools.admin.forms.componentPropPanel({
+//					            urlAdmin : rec.data.jsonDefinitionAdmin,
+//					            ctype : rec.data.type,
+//					            action : "create",
+//					            componentDefaultHeight : rec.data.componentDefaultHeight,
+//					            componentDefaultWidth : rec.data.componentDefaultWidth,
+//					            dimensionId : rec.data.dimensionId,
+//					            unit : rec.data.unit,
+//					            extraParams : rec.data.extraParams, 
+//					            jsAdminObject : rec.data.jsAdminObject, 
+//					            jsUserObject : rec.data.jsUserObject, 
+//					            context : "project", 
+//					            storeConcepts : gridConcepts.getStore(), 
+//					            absoluteLayout : absoluteLayout, 
+//					            record : rec, 
+//					            formComponentsStore : formComponentsStore, 
+//					            xyOnCreate : xyOnCreate
+//					        });
+//					        ComponentWin.show();
+//						}
+//					});
 					
 				}
 			}

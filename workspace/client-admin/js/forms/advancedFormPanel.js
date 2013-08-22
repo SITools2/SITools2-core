@@ -182,6 +182,8 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
         var advPanelDropTargetEl =  this.body.dom;
 		var bodyEl = this.body;
 		
+		var context = this.context;
+		
 		var advPanelDropTargetEl = new Ext.dd.DropTarget(advPanelDropTargetEl, {
 			ddGroup : ddGroup,
             notifyDrop : function (ddSource, e, data) {
@@ -207,7 +209,7 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 		            extraParams : rec.data.extraParams, 
 		            jsAdminObject : rec.data.jsAdminObject, 
 		            jsUserObject : rec.data.jsUserObject, 
-		            context : "dataset", 
+		            context : context, 
 		            xyOnCreate : xyOnCreate, 
 		            storeConcepts : storeConcepts, 
 		            absoluteLayout : absoluteLayout, 
