@@ -30,7 +30,7 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
     initComponent : function () {
         
         this.storeFeeds = new Ext.data.JsonStore({
-            fields : [ 'id', 'feedType', 'title', 'feedSource', 'name' ],
+            fields : [ 'id', 'feedType', 'title', 'feedSource', 'name', 'url' ],
             url : projectGlobal.sitoolsAttachementForUsers + "/feeds",
             root : "data",
             autoLoad : true
@@ -40,7 +40,7 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
             // all of your config options
             store : this.storeFeeds,
             displayField : 'name',
-            valueField : 'id',
+            valueField : 'name',
             typeAhead : true,
             mode : 'local',
             forceSelection : true,
@@ -51,9 +51,9 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
             listeners : {
                 scope : this,
                 select : this.selectProject,
-                render : function (cb){
-                    this.storeFeeds.on('load', function (store){
-                        if (this.storeFeeds.getTotalCount() > 0){
+                render : function (cb) {
+                    this.storeFeeds.on('load', function (store) {
+                        if (this.storeFeeds.getTotalCount() > 0) {
                             var firstRec = store.getAt(0);
                             cb.setValue(firstRec.data.name);
                             this.selectProject(cb, firstRec, 0);
@@ -70,12 +70,18 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
             }
         });
         
+        this.btnSubscribeRss = new Ext.Button({
+           tooltip : i18n.get('label.subscribeRss'),
+           icon : loadUrl.get('APP_URL') + '/common/res/images/icons/rss.png',
+           handler : this.subscribeRss
+        });
+        
         this.tbar = {
             xtype : 'toolbar',
             defaults : {
                 scope : this
             },
-            items : [ this.cb, this.buttonDate ]
+            items : [ this.cb, '-' , this.buttonDate, '->', this.btnSubscribeRss ]
         };
 
         /**/
@@ -165,6 +171,13 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
         
         return sorters;
     }, 
+    
+    subscribeRss : function () {
+        var feedName = this.cb.getValue();
+        var url = projectGlobal.sitoolsAttachementForUsers + "/clientFeeds/" + feedName;
+        window.open(url, '_blank');
+    },
+    
     /**
      * method called when trying to save preference
      * @returns

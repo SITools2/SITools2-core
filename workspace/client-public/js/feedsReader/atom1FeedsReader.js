@@ -181,7 +181,7 @@ Ext.extend(sitools.widget.atom1FeedReader, Ext.grid.GridPanel, {
         if (this.showPreview) {
             var xf = Ext.util.Format;
             if (record.data.summary != "" && record.data.summary != undefined){
-                p.body = '<p class=sous-titre-flux>' + xf.ellipsis(xf.stripTags(record.data.summary), 200) + '</p>';
+                p.body = '<p class=sous-titre-flux>' + xf.ellipsis(xf.stripTags(record.data.summary), 300) + '</p>';
                 return 'x-grid3-row-expanded';
             }
         }
@@ -232,9 +232,9 @@ Ext.extend(sitools.widget.atom1FeedReader, Ext.grid.GridPanel, {
         var res = "";
         if (link !== undefined && link !== "") {
             res = String.format('<div class="topic"><a href="{0}" title="{1}" target="_blank"><span class="rss_feed_title">{2}</span></a><br/><span class="author">{3}</span></div>', link, value, 
-                    xf.ellipsis(xf.stripTags(value), 30), author);
+                    xf.ellipsis(xf.stripTags(value), 50), author);
         } else {
-            res = String.format('<div class="topic"><span class="rss_feed_title">{0}</span><br/><span class="author">{1}</span></div>', xf.ellipsis(xf.stripTags(value), 30), author);
+            res = String.format('<div class="topic"><span class="rss_feed_title">{0}</span><br/><span class="author">{1}</span></div>', xf.ellipsis(xf.stripTags(value), 50), author);
         }
         if (dateFormat != "" && dateFormat != undefined ){
             res += String.format('<p id="feeds-date">{0}</p>', dateFormat);

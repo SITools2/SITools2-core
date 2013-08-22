@@ -12,31 +12,36 @@
 						"nodeAnchor" : "SauvegardeDuBureau",
 						"leaf" : true,
                         "id" : "SauvegardeDuBureau"						
+					},{
+						"text" : "Espace Personnel",
+						"nodeAnchor" : "Fenetre_Utilisateur",
+                        "id" : "Fenetre_Utilisateur",
+                        children : [{
+                        	"text" : "Espace Disque",
+							"nodeAnchor" : "Espace_Disque",
+							"leaf" : true,
+	                        "id" : "Espace_Disque",
+                        }, {
+                        	"text" : "Tâches",
+							"nodeAnchor" : "Taches",
+							"leaf" : true,
+	                        "id" : "Taches",
+                        }, {
+                        	"text" : "Commandes",
+							"nodeAnchor" : "Commandes",
+							"leaf" : true,
+	                        "id" : "Commandes",
+                        }]					
 					}, {
 						"text" : "Explorateur de jeux de données",
 						"nodeAnchor" : "Explorateur_de_jeux_de_donnees",
 						"leaf" : true,
                         "id" : "Explorateur_de_jeux_de_donnees"						
 					}, {
-						"text" : "Espace personnel",
-						"nodeAnchor" : "Espace_personnel",
-						"leaf" : true,
-                        "id" : "Espace_personnel"						
-					}, {
-						"text" : "Graphe du projet",
-						"nodeAnchor" : "Graphe_du_projet",
-						"leaf" : true,
-                        "id" : "Graphe_du_projet"
-					}, {
 						"text" : "Flux de projet",
 						"nodeAnchor" : "Flux_de_projet",
 						"leaf" : true,
                         "id" : "Flux_de_projet"
-					}, {
-						"text" : "Gestionnaire de bureau",
-						"nodeAnchor" : "Gestionnaire_de_bureau",
-						"leaf" : true,
-                        "id" : "Gestionnaire_de_bureau"
 					}]
 
 		}, {
