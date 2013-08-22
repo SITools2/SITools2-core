@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -100,8 +100,16 @@ public final class RoleResource extends AbstractRoleResource {
     try {
       Role roleInput = null;
       if (representation != null) {
+        Role roleFromStore = getStore().retrieve(getRoleId());
+        if (roleFromStore == null) {
+          Response response = new Response(false, "Can find existing role with id " + getRoleId());
+          return getRepresentation(response, variant);
+        }
+
         // Parse object representation
         roleInput = getObject(representation, variant);
+        roleInput.setUsers(roleFromStore.getUsers());
+        roleInput.setGroups(roleFromStore.getGroups());
 
         // Business service
         roleOutput = getStore().update(roleInput);
@@ -131,7 +139,7 @@ public final class RoleResource extends AbstractRoleResource {
 
   @Override
   public void describePut(MethodInfo info) {
-    info.setDocumentation("Method to modify a role sending its new representation.");
+    info.setDocumentation("Method to modify a role sending its new representation. Users and Groups can't be modified that way");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo paramRoleId = new ParameterInfo("roleId", false, "xs:string", ParameterStyle.TEMPLATE,
         "Identifier of the role to modify.");
