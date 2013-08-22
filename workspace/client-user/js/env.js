@@ -190,43 +190,54 @@ var data = {
 };
 userLogin = Ext.util.Cookies.get('userLogin');
 var userStorage = {
-	set : function (filename, filepath, content, callback) {
-        Ext.Ajax.request({
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files",
-            method : 'POST',
-            scope : this,
-            params : {
-                filepath : filepath,
-                filename : filename
-            },
-            jsonData : content,
-            success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
-                if (!Json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+	set : function (filename, filepath, content, callback, scope) {
+	    userStorage.setData(filename, filepath, content, callback, scope, "json");
+    },
+    setXML : function (filename, filepath, content, callback, scope) {
+        userStorage.setData(filename, filepath, content, callback, scope, "xml");
+    },
+    //private
+    setData : function (filename, filepath, content, callback, scope, type) {
+        var config = {
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files",
+                method : 'POST',
+                scope : scope,
+                params : {
+                    filepath : filepath,
+                    filename : filename
+                },
+                jsonData : content,
+                success : function (ret) {
+                    var Json = Ext.decode(ret.responseText);
+                    if (!Json.success) {
+                        Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+                        return;
+                    } else {
+                        var notify = new Ext.ux.Notification({
+                            iconCls : 'x-icon-information',
+                            title : i18n.get('label.information'),
+                            html : Json.message,
+                            autoDestroy : true,
+                            hideDelay : 1000
+                        });
+                        notify.show(document);
+                    }
+                },
+                failure : function () {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.warning.savepreference.error'));
                     return;
-                } else {
-                    var notify = new Ext.ux.Notification({
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : Json.message,
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    });
-                    notify.show(document);
-                }
-            },
-            failure : function () {
-                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.warning.savepreference.error'));
-                return;
-            },
-            callback : function () {
-                if (!Ext.isEmpty(callback)) {
-                    callback.call();
-                }
-            }
-        });
+                },
+                callback : callback
+            };
+        
 
+        if (type === "xml") {
+            config.xmlData = content;
+        } else {
+            config.jsonData = content;
+        }
+        
+        Ext.Ajax.request(config);
     },
     get : function (fileName, filePath, scope, success, failure, callback) {
         Ext.Ajax.request({
