@@ -127,6 +127,9 @@ sitools.admin.datasets.columnsPropPanel = Ext.extend(Ext.Window, {
             value : "String"
         });
         
+        var columnsItems = [this.comboColumnType, this.columnAlias, this.sqlDef];
+        (this.datasourceUtils.isMongoDb) ? columnsItems.push(this.sqlColumnType) : null;
+        
         this.items = [ {
             xtype : 'panel',
             height : 250,
@@ -138,7 +141,7 @@ sitools.admin.datasets.columnsPropPanel = Ext.extend(Ext.Window, {
                 defaults : {
                     disabled : false
                 },
-                items : [ this.comboColumnType, this.columnAlias, this.sqlDef, this.sqlColumnType]
+                items : columnsItems
             } ],
             buttons : [ {
                 text : i18n.get('label.ok'),
@@ -183,7 +186,11 @@ sitools.admin.datasets.columnsPropPanel = Ext.extend(Ext.Window, {
             this.recordColumn.set('specificColumnType', this.comboColumnType.getValue());
             this.recordColumn.set('columnAlias', this.columnAlias.getValue());
             this.recordColumn.set('dataIndex', this.sqlDef.getValue());
-            this.recordColumn.set('sqlColumnType', this.sqlColumnType.getValue());
+            
+            if (this.sqlColumnType) {
+                this.recordColumn.set('sqlColumnType', this.sqlColumnType.getValue());    
+            }
+            
         } else {
             var rec;
             if (this.comboColumnType.getValue() == 'DATABASE') {
@@ -197,7 +204,7 @@ sitools.admin.datasets.columnsPropPanel = Ext.extend(Ext.Window, {
                     sortable : true, 
                     tableName : "", 
                     tableAlias : "", 
-                    sqlColumnType : this.sqlColumnType.getValue()
+                    sqlColumnType : (this.sqlColumnType) ? this.sqlColumnType.getValue() : null
                 });
             } 
             
@@ -212,7 +219,7 @@ sitools.admin.datasets.columnsPropPanel = Ext.extend(Ext.Window, {
                     sortable : true, 
                     tableName : "", 
                     tableAlias : "", 
-                    sqlColumnType : this.sqlColumnType.getValue()
+                    sqlColumnType : (this.sqlColumnType) ? this.sqlColumnType.getValue() : null
                 });
             } 
             
@@ -223,7 +230,7 @@ sitools.admin.datasets.columnsPropPanel = Ext.extend(Ext.Window, {
                     columnAlias : this.columnAlias.getValue(),
                     width : 100,
                     visible : true,
-                    sortable : true, 
+                    sortable : false, 
                     tableName : "", 
                     tableAlias : ""
                 });

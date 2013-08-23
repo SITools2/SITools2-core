@@ -134,12 +134,23 @@ sitools.admin.datasets.gridFieldSetup = function (config) {
         dataIndex : 'visible',
         width : 55,
         helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/visible.html"
+		
     });
     var sortable = new Ext.grid.CheckColumn({
         header : i18n.get('headers.sortable'),
         dataIndex : 'sortable',
         width : 55,
-        helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/sortable.html"
+        helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/sortable.html",
+		onMouseDown : function (e, t) {
+			if(t.className && t.className.indexOf('x-grid3-cc-'+this.id) != -1){
+                e.stopEvent();
+                var index = this.grid.getView().findRowIndex(t);
+                var record = this.grid.store.getAt(index);
+				if (record.data.specificColumnType != "VIRTUAL") {
+					record.set(this.dataIndex, !record.data[this.dataIndex]);	
+				}
+            }
+		}
     });
     var primaryKey = new Ext.grid.CheckColumn({
         header : i18n.get('headers.primaryKey'),
@@ -217,7 +228,17 @@ sitools.admin.datasets.gridFieldSetup = function (config) {
         header : i18n.get('headers.filter'),
         dataIndex : 'filter',
         width : 55,
-        helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/filters.html"
+        helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/filters.html",
+		onMouseDown : function (e, t) {
+			if(t.className && t.className.indexOf('x-grid3-cc-'+this.id) != -1){
+                e.stopEvent();
+                var index = this.grid.getView().findRowIndex(t);
+                var record = this.grid.store.getAt(index);
+				if (record.data.specificColumnType != "VIRTUAL") {
+					record.set(this.dataIndex, !record.data[this.dataIndex]);	
+				}
+            }
+		}
     });
 
     var cmColumn = new Ext.ux.grid.LockingColumnModel({
