@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -74,7 +74,7 @@ public class RoleUsersResource extends AbstractRoleResource {
     Response response = getUsersResponse();
     return getRepresentation(response, MediaType.APPLICATION_XML);
   }
-  
+
   @Override
   public void describeGet(MethodInfo info) {
     info.setDocumentation("Method to get users that belongs to this role.");
@@ -123,8 +123,8 @@ public class RoleUsersResource extends AbstractRoleResource {
       if (userRes != null) {
         for (Resource res : userRes) {
           // Prepare request
-          Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase() + settings.getString(Consts.APP_SECURITY_URL)
-              + "/users/" + res.getId());
+          Request reqGET = new Request(Method.GET, RIAPUtils.getRiapBase()
+              + settings.getString(Consts.APP_SECURITY_URL) + "/users/" + res.getId());
           ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
           objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
           reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
@@ -180,14 +180,15 @@ public class RoleUsersResource extends AbstractRoleResource {
     Role roleInput = null;
     try {
       if (representation != null) {
-        if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-          // Parse the XML representation to get the bean
-          roleInput = new XstreamRepresentation<Role>(representation).getObject();
+        roleInput = getObject(representation, variant);
+        Role roleFromStore = getStore().retrieve(getRoleId());
+
+        if (roleFromStore == null) {
+          Response response = new Response(false, "Can find existing role with id " + getRoleId());
+          return getRepresentation(response, variant);
         }
-        else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-          // Parse the JSON representation to get the bean
-          roleInput = new JacksonRepresentation<Role>(representation, Role.class).getObject();
-        }
+
+        roleInput.setGroups(roleFromStore.getGroups());
       }
       // Business service
       roleOutput = getStore().update(roleInput);
@@ -200,7 +201,8 @@ public class RoleUsersResource extends AbstractRoleResource {
         Notification notification = new Notification();
         notification.setEvent("ROLE_USERS_UPDATED");
 
-        // TODO OPTIMISATION POSSIBLE : passer le name dans l'observable evite de serializer l'objet Role ensuite si pas utile dans le trigger / observers
+        // TODO OPTIMISATION POSSIBLE : passer le name dans l'observable evite de serializer l'objet Role ensuite si pas
+        // utile dans le trigger / observers
         notification.setObservable(roleOutput.getId());
         notification.setEventSource(roleOutput);
         getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
@@ -223,7 +225,7 @@ public class RoleUsersResource extends AbstractRoleResource {
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public void describePut(MethodInfo info) {
     info.setDocumentation("Method to modify the role with modfied users.");
