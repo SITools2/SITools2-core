@@ -16,11 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.cart;
+package fr.cnes.sitools.resources.order.cart;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -28,10 +26,7 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -45,12 +40,9 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
 import fr.cnes.sitools.dataset.DataSetApplication;
 import fr.cnes.sitools.dataset.database.DatabaseRequest;

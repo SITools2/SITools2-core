@@ -277,23 +277,32 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         });
         
         Ext.Ajax.request({
-            url : loadUrl.get('APP_URL') + "/orders/cart/",
-            method : 'PUT',
+            url : projectGlobal.sitoolsAttachementForUsers + "/plugin/cart",
+            method : 'POST',
             jsonData : putObject,
             scope : this,
-            success : function (ret) {
-                var notify = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get(ret.responseText),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                });
-                notify.show(document);
-//                var Json = Ext.decode(ret.responseText);
-//                if (showResponse(ret)) {
-//                    this.store.reload();
-//                }
+            success : function (response) {
+            	var json = Ext.decode(response.responseText);
+                if (!json.success) {
+                    Ext.Msg.alert(i18n.get('label.error'), json.message);
+                    return;
+                }
+                var task = json.TaskModel;
+                if (!Ext.isEmpty(task.urlResult)) {
+                    window.open(task.urlResult);
+                } else {
+                    var componentCfg = {
+                        task : task
+                    };
+                    var jsObj = sitools.user.component.dataviews.goToTaskPanel;
+        
+                    var windowConfig = {
+                        title : i18n.get('label.info'),
+                        saveToolbar : false, 
+                        iconCls : "datasetRessource"                    
+                    };
+                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
+                }
             },
             failure : alertFailure
         });

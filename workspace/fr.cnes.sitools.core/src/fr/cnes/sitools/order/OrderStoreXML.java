@@ -183,22 +183,91 @@ public final class OrderStoreXML extends SitoolsStoreXML<Order> {
    */
   public void sort(List<Order> result, ResourceCollectionFilter filter) {
     if ((filter != null) && (filter.getSort() != null) && !filter.getSort().equals("")) {
-      Collections.sort(result, new ResourceComparator<Order>(filter) {
-        @Override
-        public int compare(Order arg0, Order arg1) {
-          if (arg0.getUserId() == null) {
-            return 1;
-          }
-          if (arg1.getUserId() == null) {
-            return -1;
-          }
-          String s1 = (String) arg0.getUserId();
-          String s2 = (String) arg1.getUserId();
+      
+      if (filter.getSort().equals("dateOrder")) {
 
-          return super.compare(s1, s2);
+        Collections.sort(result, new ResourceComparator<Order>(filter) {
+          @Override
+          public int compare(Order arg0, Order arg1) {
 
-        }
-      });
+            if (arg0.getDateOrder() != null && arg1.getDateOrder() != null ){
+              Date d1 =  arg0.getDateOrder();
+              Date d2 =  arg1.getDateOrder();
+              if ((getFilter() != null) && (getFilter().getOrder() != null) && (getFilter().getOrder().equals(DESC))) {
+                return d1.compareTo(d2);
+              }
+              else {
+                return d2.compareTo(d1);
+              }
+              
+            } else {
+              return -1;
+            }
+          }
+        });
+        
+      } else if (filter.getSort().equals("description")) {
+      
+        Collections.sort(result, new ResourceComparator<Order>(filter) {
+          @Override
+          public int compare(Order arg0, Order arg1) {
+
+            if (arg0.getDescription() == null) {
+              return 1;
+            }
+            if (arg1.getDescription() == null) {
+              return -1;
+            }
+            String s1 = (String) arg0.getDescription();
+            String s2 = (String) arg1.getDescription();
+  
+            return super.compare(s1, s2);
+            
+          }
+        });
+        
+      }  else if (filter.getSort().equals("status")) {
+      
+        Collections.sort(result, new ResourceComparator<Order>(filter) {
+          @Override
+          public int compare(Order arg0, Order arg1) {
+
+            if (arg0.getStatus() == null) {
+              return 1;
+            }
+            if (arg1.getStatus() == null) {
+              return -1;
+            }
+            String s1 = (String) arg0.getStatus();
+            String s2 = (String) arg1.getStatus();
+  
+            return super.compare(s1, s2);
+            
+          }
+        });
+        
+      } else {
+        
+        Collections.sort(result, new ResourceComparator<Order>(filter) {
+          @Override
+          public int compare(Order arg0, Order arg1) {
+
+            if (arg0.getUserId() == null) {
+              return 1;
+            }
+            if (arg1.getUserId() == null) {
+              return -1;
+            }
+            String s1 = (String) arg0.getUserId();
+            String s2 = (String) arg1.getUserId();
+  
+            return super.compare(s1, s2);
+            
+          }
+        });
+
+      }
+
     }
   }
 
