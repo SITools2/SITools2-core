@@ -30,7 +30,8 @@ sitools.user.component.help = Ext.extend(Ext.Panel, {
 	 */
     activeNode : null,
     initComponent : function () {
-        this.url = loadUrl.get('APP_URL') + "/client-user/res/help/fr/Client-userUG.html";
+//        this.url = loadUrl.get('APP_URL') + "/client-user/res/help/fr/Client-userUG.html";
+        this.url = loadUrl.get('APP_URL') + "/client-user/res/help/fr/User_Guide.html";
         this.layout = "border";
         var htmlReaderCfg = {
             defaults : {

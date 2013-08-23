@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -177,14 +177,15 @@ public class RoleGroupsResource extends AbstractRoleResource {
     Role roleInput = null;
     try {
       if (representation != null) {
-        if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-          // Parse the XML representation to get the bean
-          roleInput = new XstreamRepresentation<Role>(representation).getObject();
+        roleInput = getObject(representation, variant);
+        Role roleFromStore = getStore().retrieve(getRoleId());
+
+        if (roleFromStore == null) {
+          Response response = new Response(false, "Can find existing role with id " + getRoleId());
+          return getRepresentation(response, variant);
         }
-        else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-          // Parse the JSON representation to get the bean
-          roleInput = new JacksonRepresentation<Role>(representation, Role.class).getObject();
-        }
+
+        roleInput.setUsers(roleFromStore.getUsers());
       }
       // Business service
       roleOutput = getStore().update(roleInput);

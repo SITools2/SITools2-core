@@ -1,0 +1,518 @@
+<!--
+-- Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+-- 
+-- This file is part of SITools2.
+-- 
+-- SITools2 is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- SITools2 is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+-- 
+-- You should have received a copy of the GNU General Public License
+-- along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<title>User Help</title>
+
+<style type="text/css">
+body {
+	text-align: left;
+	color: #333;
+	text-shadow: 0.1em 0.1em #FFF0F0;
+	width: 900px;
+	background: #cfe3f1;
+}
+
+.title {
+	margin-top: 45px;
+}
+
+.icon {
+	float: left;
+	padding: 5px 8px 5px 5px;
+}
+
+.paragraph {
+	margin-bottom: 20px;
+	text-align: justify;
+	font-family: serif;
+	padding: 8px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #F5FCFF;
+	border: 1px solid #E4E4E4;
+	-moz-box-shadow: 1px 1px 3px 0px #999;
+	-webkit-box-shadow: 1px 1px 3px 0px #999;
+	-o-box-shadow: 1px 1px 3px 0px #999;
+	box-shadow: 1px 1px 3px 0px #999;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#656565,
+		Direction=134, Strength=5);
+}
+
+.screenshot_effect {
+	margin: auto;
+	display: block;
+	-moz-box-shadow: 0px 0px 10px 2px #999;
+	-webkit-box-shadow: 0px 0px 10px 2px #999;
+	-o-box-shadow: 0px 0px 10px 2px #999;
+	box-shadow: 0px 0px 10px 2px #999;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#656565,
+		Direction=134, Strength=5);
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+hr {
+	width : 80%;
+	height : 5px;
+	background-color: #cfe3f2;
+}
+
+ol {
+	padding-left: 20px;
+	margin: 0px;
+}
+</style>
+
+</head>
+<body>
+	<h1 class="title">
+		<a name="LePortail">1.1 Le portail</a>
+	</h1>
+	<p class="paragraph">
+		Le portail donne accès aux diffèrents projets visible par
+		l'utilisateur. Il contient plusieurs «&nbsp;portlets&nbsp;» que l'on
+		peut déplacer sur la page. Il est possible de choisir quels
+		«&nbsp;portlets&nbsp;» sont affichés en les cochant ou en les
+		décochant sur la partie <strong>Components</strong> à gauche. On peut
+		consulter la liste des projets dans le «&nbsp; portlets &nbsp;» <strong>Projects</strong>
+		ainsi que différents flux RSS définis au niveau du portail dans le
+		portlet <strong>Portal feeds</strong>. On accède à un projet en
+		cliquant dessus.
+	</p>
+	<p>
+		<img class="screenshot_effect" width="800" height="600"
+			src="./images/portal.png" />
+	</p>
+
+	<hr />
+
+	<h2 class="title">
+		<a name="LeBureau">1.2 Le bureau utilisateur</a>
+	</h2>
+
+	<p class="paragraph">Le bureau représente l'espace de travail de
+		l'utilisateur. Depuis cette interface, l'utilisateur accède aux
+		différents modules présents dans la barre de navigation de SITools 2.
+	</p>
+
+	<p>
+		<img class="screenshot_effect" width="800" height="600"
+			src="./images/desktop.png" />
+	</p>
+
+	<div class="paragraph">
+		<img class="icon" src="./images/button-home.png" /> Recharge le
+		bureau avec les préférences sauvegardés par l'utilisateur
+
+		<p style="clear: both;" />
+		<img class="icon" src="./images/user-icon.png" /> Affiche la fenêtre
+		personnelle de l'utilisateur
+
+		<p style="clear: both;" />
+		<img class="icon" src="./images/version-icon.png" /> Affiche la
+		version ainsi que la licence de SITools 2
+
+		<p style="clear: both;" />
+		<img class="icon" src="./images/save-icon.png" /> Affiche une fenêtre
+		pour sauvegarder les préférences du bureau
+
+		<p style="clear: both;" />
+		<img class="icon" src="./images/help-icon.png" /> Affiche la
+		documentation utilisateur
+
+		<p style="clear: both;" />
+		<img class="icon" src="./images/maxi-icon.png" /> Etend le bureau
+		utilisateur en masquant l'entête et le pied de page
+
+		<p style="clear: both;" />
+		<img class="icon" src="./images/display_desktop.png" /> Affiche le
+		bureau (masque toutes les fenêtres actives)
+
+	</div>
+	<hr />
+
+	<h3 class="title">
+		<a name="SauvegardeDuBureau">1.2.1 Sauvegarde du bureau</a>
+	</h3>
+
+	<p class="paragraph">
+		SITools 2 permet de sauvegarder son bureau (position/tailler des
+		fenêtres, mode du bureau : étendu/normal) afin qu’elles s’ouvrent
+		automatiquement lors d’une prochaine connexion. Pour cela il suffit de
+		s’enregistrer, de posséder un espace utilisateur et de cliquer sur
+		l'icone <strong>Sauvegarder</strong> de la barre de navigation. La
+		sauvegarde des fenêtres est aussi disponible depuis l'icone
+		Sauvegarder des fenêtres de jeux de données.
+	</p>
+
+	<p>
+		<img class="screenshot_effect" width="217" height="132"
+			src="./images/save_desktop.png" />
+	</p>
+
+	<strong> <br clear="all" />
+	</strong>
+
+	<hr />
+	<h3 class="title">
+		<a name="Fenetre_Utilisateur">1.2.2 Espace Personnel</a>
+	</h3>
+
+	<p>
+		<img class="screenshot_effect " width="400" height="180"
+			src="./images/user_information.png" />
+	</p>
+
+	<p class="paragraph">Depuis cette fenêtre, l'utilisateur peut
+		changer la langue, modifier ses informations, consulter son espace de
+		stockage, le status des tâches qu'il a lancé ou encore les commandes
+		qu'il a passé.</p>
+
+	<h4 class="title">
+		<a name="Espace_Disque">1.2.2.1 Espace Disque</a>
+	</h4>
+	<p class="paragraph">L'espace personnel est une zone de stockage
+		privé dédiée à l'utilisateur. A cet endroit seront sauvegardés ses
+		préférences du projet, ses sélections et ses commandes. Il sera
+		également possible de consulter et supprimer ces fichiers.</p>
+	<p>
+		<img class="screenshot_effect" width="370" height="390"
+			src="./images/user_storage.png" />
+	</p>
+
+	<h4 class="title">
+		<a name="Taches">1.2.2.2 Tâches</a>
+	</h4>
+	<p class="paragraph">L'interface des tâches permet de consulter le
+		status les actions (services) qui ont été exécutées par l'utilisateur.
+		Une action peut être par exemple un téléchargement, une commande...</p>
+
+	<p>
+		<img class="screenshot_effect" width="660" height="230"
+			src="./images/taches.png" />
+	</p>
+
+	<h4 class="title">
+		<a name="Commandes">1.2.2.3 Commandes</a>
+	</h4>
+
+	<p class="paragraph">Cette interface répertorie toutes les
+		commandes qui ont été passées par l'utilisateur. Exemple : Une
+		commande est la sélection et le téléchargement d'enregistrement
+		choisis par l'utilisateur.</p>
+
+	<p>
+		<img class="screenshot_effect" width="570" height="540"
+			src="./images/order_cart.png" />
+	</p>
+
+	<hr />
+
+	<h3 class="title">
+		<a name="Explorateur_de_jeux_de_donnees">1.2.3 Explorateur de jeux
+			de données</a>
+	</h3>
+
+	<p class="paragraph">Ce module donne accès à l'ensemble des jeux de
+		données du projet (visible pour l'utilisateur) et aux différents
+		services de jeux de données (Recherche formulaire, RSS, OpenSearch...)</p>
+	<p>
+		<img class="screenshot_effect " width="212" height="331"
+			src="./images/dataset_explorer.png" />
+	</p>
+
+	<h3 class="title">
+		<a name="Flux_de_projet">1.2.4 Flux de projet</a>
+	</h3>
+	
+	<p class="paragraph">Depuis le module Projet RSS, il est possible
+		de visualiser toutes les actualités d'un flux. Le détail de chaque
+		actualité est disponible en double cliquant sur l'article. Sous
+		Mozilla Firefox, il est également possible de s'abonner à ces flux en
+		cliquant sur l'icône RSS à droite de la barre d'adresse.</p>
+	<p>
+		<img class="screenshot_effect" width="680" height="400"
+			src="./images/feeds.png" />
+	</p>
+
+	<hr />
+
+	<h2 class="title">
+		<a name="Services_sur_les_jeux_de_donnees">1.3 Services sur les
+			jeux de données</a>
+	</h2>
+	<h3>
+		<a name="Visualisation_des_donnees">1.3.1 Visualisation des
+			données</a>
+	</h3>
+	<p>
+		<img class="screenshot_effect" width="800" height="380"
+			src="./images/dataset_livegrid.png" />
+	</p>
+
+	<p class="paragraph">
+		Cette fenêtre est accessible via <strong>Afficher les données</strong>
+		de l'explorateur de jeux de données. Elle affiche l'ensemble des
+		données contenues dans le jeu de données. On peut appliquer des
+		services sur une sélection de données.
+	</p>
+
+	<h4>1.3.1.1 Ajouter à mes sélections</h4>
+	<div class="paragraph">
+		<ol style="padding-left: 20px;" start="1" type="1">
+			<li>Sélectionner une ou plusieurs lignes (utiliser shift et ctrl
+				pour en sélectionner plusieurs)</li>
+			<li>Cliquer droit sur une des lignes</li>
+			<li>Cliquer sur <strong>Ajouter à mes sélections</strong></li>
+		</ol>
+	</div>
+
+	<h4>1.3.1.2 Ajouter toutes les données à ma sélection</h4>
+
+	<div class="paragraph">
+		<ol style="padding-left: 20px;" start="1" type="1">
+			<li>Cliquer droit sur une des lignes</li>
+			<li>Cliquer sur <strong>Télécharger le jeu de données</strong></li>
+		</ol>
+	</div>
+
+	<h4>1.3.1.3 Consulter les détails d'une donnée</h4>
+
+	<div class="paragraph">
+		<ol style="padding-left: 20px;" start="1" type="1">
+			<li>Avec menu contextuel</li>
+			<ol start="1" type="a">
+				<li>Sélectionner une ligne</li>
+				<li>Cliquer droit sur cette ligne</li>
+				<li>Cliquer sur <strong>Détails</strong></li>
+			</ol>
+			<li>Sans menu contextuel</li>
+			<ol start="1" type="a">
+				<li>Double cliquer sur la ligne</li>
+			</ol>
+		</ol>
+	</div>
+
+	<h4>1.3.1.4 Sauvegarde des paramètres de la fenêtre</h4>
+
+	<p class="paragraph">
+		Il est possible de sauvegarder les paramètres de cette fenêtre en
+		cliquant sur <strong>Enr. configuration</strong>. Dans ce cas, sont
+		sauvegardés la position et la taille de la fenétre, la position et la
+		taille des colonnes ainsi que leurs visibilitées.
+	</p>
+
+	<hr />
+
+	<h3 class="title">
+		<a name="Visualisation_des_details_dune_donnee">1.3.2
+			Visualisation des détails d'une donnée</a>
+	</h3>
+
+	<p class="paragraph">
+		Cette fenêtre représente la vue détaillé d'un enregistrement. Elle
+		donne accès à tout les attributs, liens et images d'un enregistrement.
+		Pour accéder à cette vue, il suffit de cliquer sur le service <strong>Détails</strong>
+		dans la barre d'outils.
+	</p>
+
+	<p>
+		<img class="screenshot_effect" width="700" height="450"
+			src="./images/record_details.png" />
+	</p>
+
+	<hr />
+
+	<h3 class="title">
+		<a
+			name="Visualisation_des_definitions_des_colonnes_dun_jeu_de_donnees">1.3.3
+			Visualisation des définitions des colonnes d'un jeu de données</a>
+	</h3>
+	<p>
+		<img class="screenshot_effect" width="520" height="270"
+			src="./images/dataset_definition.png" />
+	</p>
+
+	<p class="paragraph">
+		Cette fenêtre est accessible via le menu <strong>Voir les
+			définitions</strong> de l'explorateur de jeux de données.
+	</p>
+	<h4>1.3.3.1 Sauvegarde des paramètres de la fenêtre</h4>
+	<p class="paragraph">
+		Il est possible de sauvegarder les paramètres de cette fenêtre en
+		cliquant sur <strong>Enr. configuration</strong>. Dans ce cas, sont
+		sauvegardés la position et la taille de la fenêtre.
+	</p>
+
+	<p>
+		<img class="screenshot_effect" width="760" height="120"
+			src="./images/save_dataset.png" />
+	</p>
+
+	<hr />
+	<h3>
+		<a name="Visualisation_dun_formulaire_de_recherche">1.3.4
+			Visualisation d'un formulaire de recherche</a>
+	</h3>
+
+	<h4>1.3.4.1 Rechercher des données</h4>
+	<div class="paragraph">
+
+		Cette fenêtre est accessible via la liste des formulaires sous le
+		dossier <strong>Formulaires</strong> de l'explorateur de jeux de
+		données.<br> Un formulaire peut disposer de plusieurs composants
+		(recherche textuelle, cartographique, numérique...).
+		<ol start="1" type="1">
+			<li>Remplir les champs du formulaire</li>
+			<li>Cliquer sur <strong>Recherche</strong>, les données
+				retournées sont affichées dans une fenêtre similaire à la
+				visualisation des données.
+			</li>
+		</ol>
+	</div>
+
+	<p>
+		<img style="float: left;" class="screenshot_effect" width="400"
+			height="410" src="./images/form_advanced.png" />
+	</p>
+	<p>
+		<img style="margin: none;" class="screenshot_effect" width="400"
+			height="410" src="./images/form_geo_search.png" />
+	</p>
+
+	<hr />
+
+	<h3 class="title">
+		<a name="Visualisation_des_flux_sur_les_jeux_de_donnees">1.3.5
+			Visualisation des flux sur les jeux de données</a>
+	</h3>
+	<p class="paragraph">
+		Cette fenêtre est accessible via la liste des formulaires sous le
+		dossier <strong>Actualités</strong> de l'explorateur de jeux de
+		données.
+	</p>
+	<p>
+		<img class="screenshot_effect" width="410" height="420"
+			src="./images/dataset_rss.png" />
+	</p>
+
+	<hr />
+
+	<h3 class="title">
+		<a name="Recherche_OpenSearch">1.3.6 Recherche OpenSearch</a>
+	</h3>
+
+	<p class="paragraph">
+		Cette fenêtre est accessible via le menu <strong>OpenSearch</strong>
+		de l'explorateur de jeux de données.
+	</p>
+
+	<p>
+		<img class="screenshot_effect" width="590" height="380"
+			src="./images/opensearch.png" />
+	</p>
+
+	<h4>1.3.6.1 Effectuer une recherche</h4>
+	<div class="paragraph">
+		<ol start="1" type="1">
+			<li>Saisir la recherche dans le champ <strong>Recherche</strong></li>
+			<ol start="1" type="a">
+				<li>Un mécanisme d'auto complétion permet d'être guidé pour la
+					requête. Est affiché le terme, la colonne qui contient le terme
+					ainsi que le nombre de résultats dans cette colonne.</li>
+			</ol>
+		</ol>
+		<ol start="1" type="1">
+			<ol start="2" type="a">
+				<li>La syntaxe utilisée est la syntaxe OpenSearch utilisée par
+					«&nbsp;Apache Lucene&nbsp;».</li>
+			</ol>
+		</ol>
+		<ol start="1" type="1">
+			<ol start="1" type="a">
+			</ol>
+		</ol>
+		<ul type="circle">
+			<li>Recherche sur une colonne particulière : <em>nomColonne</em>
+				: <em>recherche</em></li>
+			<li>Récupération de tous les résultats : * :*</li>
+			<li>Méta caractères : * pour un ensemble de lettre, ? pour une
+				seule lettre (ne peut pas être utilisé comme premier caractère.<em></em>
+			</li>
+			<li>Plus d'informations sur la syntaxe Lucene :<em></em></li>
+		</ul>
+		<p>
+			<a href="http://lucene.apache.org/java/2_3_2/queryparsersyntax.html">http://lucene.apache.org/java/2_3_2/queryparsersyntax.html</a>
+			<em></em>
+		</p>
+		<ol start="1" type="1">
+			<ol start="1" type="a">
+			</ol>
+		</ol>
+		<ul type="circle">
+			<li>Plus d'informations sur la syntaxe OpenSearch :</li>
+		</ul>
+		<p>
+			<a
+				href="http://www.opensearch.org/Specifications/OpenSearch/1.1%23Template_grammar">
+				http://www.opensearch.org/Specifications/OpenSearch/1.1#Template_grammar
+			</a>
+		</p>
+		<ol start="2" type="1">
+			<li>Cliquer sur le bouton <strong>Recherche</strong></li>
+		</ol>
+	</div>
+	<p>
+		<img class="screenshot_effect" width="500" height="440"
+			src="./images/opensearch_result.png" />
+	</p>
+
+
+	<h4>1.3.6.2 Consulter les détails d'une donnée</h4>
+	
+	<p class="paragraph">Double cliquer sur la ligne de la donnée. (cf 1.3.2)</p>
+	
+	<h4>1.3.6.3 Ajouter l'index à ses moteurs de recherche</h4>
+	
+	<div class="paragraph">
+	Sous Mozilla Firefox, il est possible d'utiliser cet index
+		OpenSearch comme moteur de recherche en l'ajoutant à la liste des
+		moteurs de recherche.<br>
+		
+	<ol start="1" type="1">
+		<li>Cliquer sur l'icône à gauche de la barre des moteurs de
+			recherche</li>
+		<li>Choisir l'index à ajouter (ici : <strong>Header_OpenS</strong> )
+		</li>
+		<li>Effectuer ses recherches avec la même syntaxe OpenSearch.</li>
+	</ol>
+	</div>
+	
+	<p>
+		<img class="screenshot_effect" width="260" height="210"
+			src="./images/opensearch_firefox.png" />
+	</p>
+
+</body>
+</html>
