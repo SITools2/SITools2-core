@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.cart;
+package fr.cnes.sitools.resources.order.cart;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class CartResourceModel extends ResourceModel {
     setDescription("export of datasets");
     setClassName("fr.cnes.sitools.resources.cart.CartResourceModel");
     /** Resource Facade */
-    setResourceClassName(fr.cnes.sitools.resources.cart.CartResource.class.getName());
+    setResourceClassName(fr.cnes.sitools.resources.order.cart.CartResource.class.getName());
     /** Paramètres */
     ResourceParameter param1 = new ResourceParameter("title", "htmlTitle", ResourceParameterType.PARAMETER_INTERN);
     ResourceParameter param2 = new ResourceParameter("max_rows", "Set max_rows=-1 to export everything",
