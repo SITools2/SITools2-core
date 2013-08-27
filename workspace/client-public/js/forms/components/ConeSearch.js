@@ -81,6 +81,7 @@ sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.f
 	        value : defaultRa, 
 	        flex : 1, 
 	        labelSeparator : ""
+	        
 	    });
 	    this.decParam = new Ext.form.NumberField({
 	        fieldLabel : "DEC", 
@@ -111,21 +112,29 @@ sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.f
 		//build the resolver Name
 		this.targetName = new Ext.form.TextField({
 			flex : 1, 
-			fieldLabel : i18n.get("label.targetName")
+			fieldLabel : i18n.get("label.targetName"),
+			listeners : {
+			    scope : this,
+			    change : function (field, newValue, oldValue) {
+			        this.nameResolverButton.setDisabled(Ext.isEmpty(newValue));
+			    }
+			}
 		});
+		
+		this.nameResolverButton = new Ext.Button({
+            scope : this,
+            id : 'resolveNameBtn',
+            handler : this.resolveTargetName, 
+            text : i18n.get('label.resolveName'), 
+            width : 100,
+            disabled : true
+        });
 		
 		var targetCmp = new Ext.form.FieldSet({
 			title : i18n.get('label.resolverName'), 
 			items : [
 				new Ext.form.CompositeField ({
-					items : [this.targetName, {
-						xtype : "button", 
-						scope : this,
-						id : 'resolveNameBtn',
-						handler : this.resolveTargetName, 
-						text : i18n.get('label.resolveName'), 
-						width : 100
-					}]
+					items : [this.targetName, this.nameResolverButton]
 				})
 			]
 		});
@@ -303,7 +312,34 @@ sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.f
     fillUpRADEC : function (coord){
     	this.raParam.setValue(coord[0]);
     	this.decParam.setValue(coord[1]);
+    },
+    
+    isValid : function () {
+        if(!this.isEmpty(this.raParam) || !this.isEmpty(this.decParam) || !this.isEmpty(this.decParam)) {
+            var valid = true;
+            valid &= this.checkTextFieldIsNotEmpty(this.raParam);
+            valid &= this.checkTextFieldIsNotEmpty(this.decParam);
+            valid &= this.checkTextFieldIsNotEmpty(this.thirdParam);
+            return valid;
+        } else {
+            return true;
+        }
+    },
+    
+    //private
+    checkTextFieldIsNotEmpty : function (field){
+        var valid = true;
+        if(this.isEmpty(field)){
+            field.markInvalid();
+            valid = false;
+        }
+        return valid;        
+    },
+    
+    isEmpty : function (field) {
+        return Ext.isEmpty(field.getValue())
     }
+    
 	
 });
 

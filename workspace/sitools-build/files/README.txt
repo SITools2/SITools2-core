@@ -12,18 +12,27 @@ Project page                         : http://sitools2.sourceforge.net/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (2.0)
+Reference tag                        : (2.1)
 
 2/ Changes
 
 ___________________
 -2.1.2
-
+	* New feature
+		- New "advanced query" form component to organize dataset forms
+		- New "advanced query" form component to organize multi dataset forms
+		
+	* Bugs fixed : 
+		- Groups and Users were not allocated to a role properly
+		
+	* Enhancements :
+		- Regular expressions to check username and password for user
+	
 	* API changes :
 		- Data folder 
 			- Mutli dataset forms definition changed. XML files must be edited and <fr.cnes.sitools.form.dataset.model.SimpleParameter> tags must be changed to <SimpleParameter> tags  
-		
-
+		- Upgrade to Guava version 14
+	
 ___________________
 -2.1.1 (2013-07-02)
 	* New feature
