@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -56,8 +56,6 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
 
   /** Users and Groups store */
   private UsersAndGroupsStore storeUsersAndGroups = null;
-  
-
 
   /**
    * Constructor
@@ -69,9 +67,10 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
    * @param settings
    *          the SitoolsSettings object where to find realm name, ...
    */
-  public SitoolsMemoryRealm(UsersAndGroupsStore storeUsersAndGroups, SitoolsStore<fr.cnes.sitools.role.model.Role> storeRoles, SitoolsSettings settings) {
+  public SitoolsMemoryRealm(UsersAndGroupsStore storeUsersAndGroups,
+      SitoolsStore<fr.cnes.sitools.role.model.Role> storeRoles, SitoolsSettings settings) {
     super(storeRoles, settings);
-    
+
     this.rootGroups = new CopyOnWriteArrayList<Group>();
     this.users = new CopyOnWriteArrayList<User>();
     this.storeUsersAndGroups = storeUsersAndGroups;
@@ -153,7 +152,6 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     return result;
   }
 
-
   /**
    * Finds a user in the organization based on its identifier.
    * 
@@ -187,15 +185,15 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     return rootGroups;
   }
 
-///**
-//* Get the groups
-//* 
-//* @return a list of groups
-//*/
-//public List<Group> getReferenceGroups() {
-// return this.getRootGroups();
-//}
-  
+  // /**
+  // * Get the groups
+  // *
+  // * @return a list of groups
+  // */
+  // public List<Group> getReferenceGroups() {
+  // return this.getRootGroups();
+  // }
+
   /**
    * Sets the modifiable list of root groups. This method clears the current list and adds all entries in the parameter
    * list.
@@ -214,7 +212,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
       }
     }
   }
-  
+
   /**
    * Returns the modifiable list of users.
    * 
@@ -224,15 +222,15 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     return users;
   }
 
-//  /**
-//   * Get users
-//   * 
-//   * @return a list of users
-//   */
-//  public List<User> getReferenceUsers() {
-//    return this.getUsers();
-//  }
-  
+  // /**
+  // * Get users
+  // *
+  // * @return a list of users
+  // */
+  // public List<User> getReferenceUsers() {
+  // return this.getUsers();
+  // }
+
   /**
    * Sets the modifiable list of users. This method clears the current list and adds all entries in the parameter list.
    * 
@@ -274,7 +272,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   private void map(User user, Role role) {
     getRoleMappings().add(new RoleMapping(user, role));
   }
-  
+
   /**
    * Unmaps a group defined in a component from a role defined in the application.
    * 
@@ -335,6 +333,18 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
       List<fr.cnes.sitools.security.model.Group> allGroups = storeUsersAndGroups.getGroups();
       for (fr.cnes.sitools.security.model.Group group : allGroups) {
         Group g = group.wrap();
+
+        // Ajout des utilisateurs associes au groupe
+        List<fr.cnes.sitools.security.model.User> usersByGroup = storeUsersAndGroups.getUsersByGroup(g.getName());
+        if (usersByGroup != null) {
+          for (fr.cnes.sitools.security.model.User userGroup : usersByGroup) {
+            User existingUserGroup = usersMap.get(userGroup.getIdentifier());
+            if (null != existingUserGroup) {
+              g.getMemberUsers().add(existingUserGroup);
+            }
+          }
+        }
+
         groupsMap.put(group.getName(), g);
         this.getRootGroups().add(g);
       }
@@ -371,17 +381,6 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
               this.map(existingGroup, role);
             }
 
-            // Ajout des utilisateurs associes au groupe
-            List<fr.cnes.sitools.security.model.User> usersByGroup = storeUsersAndGroups.getUsersByGroup(groupResource
-                .getId());
-            if (usersByGroup != null) {
-              for (fr.cnes.sitools.security.model.User userGroup : usersByGroup) {
-                User existingUserGroup = usersMap.get(userGroup.getIdentifier());
-                if (null != existingUserGroup) {
-                  existingGroup.getMemberUsers().add(existingUserGroup);
-                }
-              }
-            }
           }
         }
       }
@@ -492,9 +491,9 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   @Override
   public void refreshRoleMappings(fr.cnes.sitools.role.model.Role roleStore) {
     super.refreshRoleMappings(roleStore);
-    
+
     Role role = getReferenceRoles().get(roleStore.getName());
-    
+
     List<Resource> groupsStore = roleStore.getGroups();
     if (groupsStore != null) {
       for (Iterator<Resource> iterator = roleStore.getGroups().iterator(); iterator.hasNext();) {
@@ -541,7 +540,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     Group result = null;
     Group group;
 
-    for (int i = 0; (result == null) && (i < getUsers().size()); i++) {
+    for (int i = 0; (result == null) && (i < getRootGroups().size()); i++) {
       group = getRootGroups().get(i);
 
       if (group.getName().equals(name)) {
@@ -552,7 +551,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
 
     return result;
   }
-  
+
   @Override
   public boolean onVerify(boolean result, fr.cnes.sitools.security.model.User user) {
     if (!result) {
@@ -566,7 +565,5 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   protected UsersAndGroupsStore getStoreUsersAndGroups() {
     return storeUsersAndGroups;
   }
-  
-  
-  
+
 }
