@@ -70,6 +70,8 @@ sitools.widget.FeedGridFlux = function (config) {
 
     Ext.apply(this);
     this.layout = "fit";
+    this.urlFeed = config.urlFeed;
+    
     var gridPanel;
     if (config.feedSource !== undefined && config.feedSource === "OPENSEARCH") {
         gridPanel = new sitools.user.component.openSearchResultFeed(config);
@@ -84,6 +86,22 @@ sitools.widget.FeedGridFlux = function (config) {
         }
     }
 
+    this.btnSubscribeRss = new Ext.Button({
+        text : i18n.get('label.subscribeRss'),
+        cls : 'services-toolbar-btn',
+        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/rss.png',
+        handler : this.subscribeRss
+     });
+     
+     this.bbar = {
+         xtype : 'toolbar',
+         cls : "services-toolbar", 
+         defaults : {
+             scope : this
+         },
+         items : [ this.btnSubscribeRss ]
+     };
+    
     this.items = [ gridPanel ];
 
     sitools.widget.FeedGridFlux.superclass.constructor.call(this);
@@ -95,6 +113,10 @@ Ext.extend(sitools.widget.FeedGridFlux, Ext.Panel, {
         return {
         	objectName : "feedsReader"
         };
+    },
+    
+    subscribeRss : function () {
+        window.open(this.urlFeed, '_blank');
     },
     border : false
 

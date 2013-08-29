@@ -70,18 +70,12 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
             }
         });
         
-        this.btnSubscribeRss = new Ext.Button({
-           tooltip : i18n.get('label.subscribeRss'),
-           icon : loadUrl.get('APP_URL') + '/common/res/images/icons/rss.png',
-           handler : this.subscribeRss
-        });
-        
         this.tbar = {
             xtype : 'toolbar',
             defaults : {
                 scope : this
             },
-            items : [ this.cb, '-' , this.buttonDate, '->', this.btnSubscribeRss ]
+            items : [ this.cb, '-' , this.buttonDate ]
         };
 
         /**/
@@ -171,12 +165,6 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
         
         return sorters;
     }, 
-    
-    subscribeRss : function () {
-        var feedName = this.cb.getValue();
-        var url = projectGlobal.sitoolsAttachementForUsers + "/clientFeeds/" + feedName;
-        window.open(url, '_blank');
-    },
     
     /**
      * method called when trying to save preference
