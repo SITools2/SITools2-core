@@ -88,7 +88,6 @@ sitools.user.component.dataviews.dataviewUtils = {
                             str = String.format(html, value);
                         }
                     }
-                    console.log(str);
                     return str;
                 } else {
                     return value;

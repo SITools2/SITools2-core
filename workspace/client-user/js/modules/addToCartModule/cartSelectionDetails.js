@@ -47,28 +47,6 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             }
         };
         
-        this.contextMenu = new Ext.menu.Menu({
-            items : [{
-                text : i18n.get('label.deleteOrderArticle'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-                tooltip : i18n.get('label.deleteResource'),
-                scope : this,
-                handler : function () {
-                    Ext.Msg.show({
-                        title : i18n.get('label.delete'),
-                        buttons : Ext.Msg.YESNO,
-                        msg : i18n.get('label.deleteOrderArticleConfirm'),
-                        scope : this,
-                        fn : function (btn, text) {
-                            if (btn == 'yes') {
-                                this.getEl().mask('Deleting articles...');
-                                this.onDelete();
-                            }
-                        }
-                    });
-                }
-            }]
-        });
         Ext.QuickTips.init();
         
         this.listeners = {
@@ -113,10 +91,21 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
         this.primaryKey = this.getPrimaryKeyFromCm(this.colModel);
         
         
+        var params = Ext.urlDecode(this.selections);
+        
+        var colModel = extColModelToSrv(this.columnModel);
+        params.colModel = Ext.util.JSON.encode(colModel);
         
         this.store = new Ext.data.JsonStore({
-            root : 'records',
+            proxy : new Ext.data.HttpProxy({
+                method : 'GET',
+                url : this.url
+            }),
+            baseParams : params,
+            restful : true,
+            root : 'data',
             fields : fields
+            
         });
 
         this.bbar = {
@@ -143,7 +132,13 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
     
     
     loadRecordsFile : function () {
-        userStorage.get(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.loadRecordsInStore);
+        this.store.load({
+            params : {
+                start : 0,
+                limit : 300
+            }
+        });
+//        userStorage.get(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.loadRecordsInStore);
     },
     
     loadRecordsInStore : function (response) {
@@ -157,52 +152,6 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
         } catch (err) {
             return;
         }
-    },
-    
-    onDelete : function () {
-        if (!this.cartOrderFile) {
-            return;
-        }
-        
-        this.getEl().mask(i18n.get('label.loadingArticles'));
-        
-        var recordsToRemove = this.getSelectionModel().getSelections();
-        
-        if (recordsToRemove.length == 0) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
-        }
-        
-        this.store.remove(recordsToRemove); 
-        
-//        Ext.each(recordsToRemove, function (record) {
-//            this.store.remove(record); 
-//        }, this);
-        
-        var recordsOrder = {};
-        recordsOrder.records = [];
-        
-        this.store.each(function (rec) {
-            recordsOrder.records.push(rec.data);
-        });
-        recordsOrder.selectionId = this.selectionId;
-        
-        // get the order corresponding to the removed articles
-        var recSelection = this.cartModule.store.getById(this.selection.data.selectionId);
-        var indexSelection = this.cartModule.store.indexOf(recSelection);
-        
-        var selectionFromFile = this.cartOrderFile.cartSelections[indexSelection];
-        selectionFromFile.nbRecords = this.store.getCount();
-        
-        // set the current order with new nbRecords information
-        this.cartOrderFile.cartSelections[indexSelection] = selectionFromFile;
-        
-        // save all the articles first before the global order
-        userStorage.set(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", recordsOrder, this.updateGlobalSelection, this);
-    },
-    
-    updateGlobalSelection : function () {
-        // save the global order
-        userStorage.set(userLogin + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartOrderFile, this.onRefresh, this);
     },
     
     onRefresh : function () {

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.database.mongodb;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,6 +32,7 @@ import com.mongodb.MongoException;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
 import fr.cnes.sitools.dataset.database.Range;
+import fr.cnes.sitools.datasource.jdbc.dbexplorer.DBResultSet;
 import fr.cnes.sitools.datasource.mongodb.business.MongoDBRequestModel;
 import fr.cnes.sitools.datasource.mongodb.business.SitoolsMongoDBDataSource;
 
@@ -59,6 +61,15 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
   /** The datasource */
   private SitoolsMongoDBDataSource datasource = null;
 
+  /** the startIndex */
+  private int startIndex = 0;
+
+  /** nb results send */
+  private int nbResultsSent = 0;
+
+  /** The nbResultsToSend */
+  private int limitParam = 0;
+
   /**
    * Create a new SQLRangeDatabaseRequest with the given {@link DatabaseRequestParameters}
    * 
@@ -69,6 +80,8 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
     super(params);
     ranges = params.getRanges();
     datasource = (SitoolsMongoDBDataSource) params.getDb();
+    limitParam = params.getPaginationExtend();
+    startIndex = params.getStartIndex();
   }
 
   @Override
@@ -77,7 +90,13 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
     int maxOffset = super.calculateTotalCountFromBase();
     clearInvalidRanges(maxOffset);
 
+    clearInvalidRanges(maxOffset);
+    setStartRange(startIndex);
     nbTotalResults = calculateTotalCount();
+
+    if (limitParam < 0) {
+      limitParam = nbTotalResults;
+    }
     // set is count done to false not to calculate the total number of records for the request
     params.setCountDone(false);
 
@@ -106,7 +125,7 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
       }
       else {
         currentRangeIndex++;
-        if (currentRangeIndex < ranges.size()) {
+        if (currentRangeIndex < ranges.size() && nbResultsSent < limitParam) {
           executeRequest(ranges.get(currentRangeIndex));
           currentObject = (BasicDBObject) rs.next();
           return true;
@@ -126,10 +145,24 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
    * 
    * @param range
    *          the range
+   * 
    */
   private void executeRequest(Range range) {
-    int limit = range.getEnd() - range.getStart() + 1;
-    int offset = range.getStart();
+    // if we are at the start of a range, startIndex = the start of the range
+    if (startIndex == -1) {
+      startIndex = range.getStart();
+    }
+    int limit = -1;
+    if (range.getEnd() - startIndex > (limitParam - nbResultsSent)) {
+      limit = (limitParam - nbResultsSent);
+    }
+    else {
+      limit = range.getEnd() - startIndex + 1;
+    }
+
+    int offset = startIndex;
+
+    nbResultsSent += limit;
 
     request.setLimit(limit);
     request.setStart(offset);
@@ -141,7 +174,8 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
     this.logger.log(Level.INFO, "START :" + request.getStart() + " LIMIT " + request.getLimit());
 
     rs = datasource.limitedQuery(request);
-
+    // lets put the startIndex at -1 to tell that we finished completely to read a range
+    startIndex = -1;
   }
 
   @Override
@@ -151,7 +185,7 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
 
   @Override
   public int getCount() {
-    return nbTotalResults;
+    return nbResultsSent;
   }
 
   /*
@@ -208,6 +242,30 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
       }
 
       if (range.getStart() > range.getEnd()) {
+        it.remove();
+        continue;
+      }
+    }
+  }
+
+  /**
+   * Set the start range depending on the start parameter Also calculate the start index in that range
+   * 
+   * @param start
+   *          the start index given by the user
+   */
+  private void setStartRange(int start) {
+    int rangedLoopSize = 0;
+    Iterator<Range> it = ranges.iterator();
+    while (it.hasNext()) {
+      Range range = it.next();
+      if (rangedLoopSize <= start && start <= rangedLoopSize + range.getSize()) {
+        startIndex += range.getStart();
+        return;
+      }
+      else {
+        rangedLoopSize += range.getSize();
+        startIndex -= range.getSize();
         it.remove();
         continue;
       }

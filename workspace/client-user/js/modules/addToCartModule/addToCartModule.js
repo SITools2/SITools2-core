@@ -148,17 +148,14 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             }, {
                 name : 'datasetId'
             }, {
-                name : 'records'
+                name : 'selections'
+            }, {
+                name : 'dataUrl'
             }]
         });
         
         this.columnModel = new Ext.grid.ColumnModel({
-            columns : [{
-                header : i18n.get('label.orderName'),
-                width : 150,
-                sortable : true,
-                dataIndex : 'selectionName'
-            }, {
+            columns : [ {
                 header : i18n.get('label.datasetName'),
                 width : 150,
                 sortable : true,
@@ -331,6 +328,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         var detailsSelectionPanel = new sitools.user.modules.cartSelectionDetails({
             selection : selected,
             columnModel : selected.data.colModel,
+            url : selected.data.dataUrl + "/records",
+            selections : selected.data.selections, 
             cartOrderFile : this.cartOrderFile,
             cartModule : this
         });

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -64,6 +64,15 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
   /** The Datasource **/
   private SitoolsSQLDataSource datasource;
 
+  /** The nbResultsToSend */
+  private int limitParam = 0;
+
+  /** the startIndex */
+  private int startIndex = 0;
+
+  /** nb results send */
+  private int nbResultsSent = 0;
+
   /**
    * Create a new SQLRangeDatabaseRequest with the given {@link DatabaseRequestParameters}
    * 
@@ -74,6 +83,8 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
     super(params);
     ranges = params.getRanges();
     datasource = (SitoolsSQLDataSource) params.getDb();
+    limitParam = params.getPaginationExtend();
+    startIndex = params.getStartIndex();
   }
 
   @Override
@@ -85,8 +96,15 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
       params.setCountDone(true);
       String sql = this.getRequestAsString();
       int maxOffset = super.getTotalCount();
+      
+
       clearInvalidRanges(maxOffset);
+      setStartRange(startIndex);
       nbTotalResults = calculateTotalCount();
+      
+      if (limitParam < 0) {
+        limitParam = nbTotalResults;
+      }
 
       sql += " LIMIT " + "?" + " OFFSET " + "?";
 
@@ -122,7 +140,7 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
       }
       else {
         currentRangeIndex++;
-        if (currentRangeIndex < ranges.size()) {
+        if (currentRangeIndex < ranges.size() && nbResultsSent < limitParam) {
           executeRequest(ranges.get(currentRangeIndex));
           rs.next();
           return true;
@@ -147,13 +165,29 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
    *           if there is an error while executing the request
    */
   private void executeRequest(Range range) throws SQLException {
-    int limit = range.getEnd() - range.getStart() + 1;
-    int offset = range.getStart();
+    // if we are at the start of a range, startIndex = the start of the range
+    if (startIndex == -1) {
+      startIndex = range.getStart();
+    }
+    int limit = -1;
+    if (range.getEnd() - startIndex > (limitParam - nbResultsSent)) {
+      limit = (limitParam - nbResultsSent);
+    }
+    else {
+      limit = range.getEnd() - startIndex + 1;
+    }
+
+    int offset = startIndex;
+
+    nbResultsSent += limit;
+
     prepStm.setInt(1, limit);
     prepStm.setInt(2, offset);
 
     logger.log(Level.INFO, "SQL WITH LIMIT = " + prepStm);
     rs = new DBResultSet(prepStm.executeQuery(), prepStm, con);
+    // lets put the startIndex at -1 to tell that we finished completely to read a range
+    startIndex = -1;
   }
 
   @Override
@@ -163,7 +197,7 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
 
   @Override
   public int getCount() {
-    return nbTotalResults;
+    return nbResultsSent;
   }
 
   /*
@@ -228,4 +262,27 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
 
   }
 
+  /**
+   * Set the start range depending on the start parameter Also calculate the start index in that range
+   * 
+   * @param start
+   *          the start index given by the user
+   */
+  private void setStartRange(int start) {
+    int rangedLoopSize = 0;
+    Iterator<Range> it = ranges.iterator();
+    while (it.hasNext()) {
+      Range range = it.next();
+      if (rangedLoopSize <= start && start <= rangedLoopSize + range.getSize()) {
+        startIndex += range.getStart();
+        return;
+      }
+      else {
+        rangedLoopSize += range.getSize();
+        startIndex -= range.getSize();
+        it.remove();
+        continue;
+      }
+    }
+  }
 }

@@ -28,55 +28,10 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.addToCartService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Window, {
-    width : 300,
-    modal : true,
-    initComponent : function () {
-
-        (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
-        
-        Ext.each(this.parameters, function (config) {
-            if (!Ext.isEmpty(config.value)) {
-                switch (config.name) {
-                case "exportcolumns":
-                    this.selectionColumns = config.value.split(',');
-                    break;
-                }
-            }
-        }, this);
-
-        this.title = i18n.get('label.orderForDataset') + this.dataview.datasetName;
-
-        this.items = [ {
-            xtype : 'form',
-            padding : '5px 5px 5px 5px',
-            items : [ {
-                xtype : 'textfield',
-                fieldLabel : i18n.get('label.orderName'),
-                name : 'selectionName',
-                anchor : '90%'
-            } ]
-        } ];
-
-        this.buttons = [ {
-            text : i18n.get('label.ok'),
-            scope : this,
-            handler : function () {
-                this.addToCart();
-                this.close();
-            }
-        }, {
-            text : i18n.get('label.cancel'),
-            scope : this,
-            handler : function () {
-                this.close();
-            }
-        } ];
-
-        sitools.user.component.dataviews.services.addToCartService.superclass.initComponent.call(this);
-    },
-
+sitools.user.component.dataviews.services.addToCartService =  {
+    
     getCartSelectionFile : function (response) {
+        
         if (Ext.isEmpty(response.responseText)) {
             return;
         }
@@ -89,7 +44,6 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
     },
 
     addToCart : function () {
-        this.selectionName = this.findByType('form')[0].getForm().getFieldValues().selectionName;
 
         userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn,
                 this.saveSelection);
@@ -128,12 +82,11 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
             return;
         }
 
-        var putObject = {};
         var globalOrder = {};
-        var recordsOrder = {};
-        recordsOrder.records = [];
+//        var recordsOrder = {};
+//        recordsOrder.records = [];
 
-        var colModelTmp = extColModelToStorage(grid.getColumnModel());
+        var colModelTmp = extColModelToJsonColModel(grid.getColumnModel());
         var colModel = [];
 
         // On stocke seulement les colonnes configurées dans le Gui service
@@ -146,48 +99,55 @@ sitools.user.component.dataviews.services.addToCartService = Ext.extend(Ext.Wind
         }, this);
 
         globalOrder.selectionName = this.selectionName;
-        globalOrder.selectionId = Ext.id();
+        globalOrder.selectionId = this.dataview.datasetName;
         globalOrder.datasetId = this.dataview.datasetId;
         globalOrder.projectId = this.dataview.projectId;
         globalOrder.dataUrl = this.dataview.dataUrl;
         globalOrder.datasetName = this.dataview.datasetName;
+
+        globalOrder.selections = this.dataview.getRecSelectedParamForLiveGrid();
+        globalOrder.nbRecords = (grid.isAllSelected()) ? this.dataview.store.getTotalCount() : this.dataview.getNbRowsSelected();
         
         var orderDate = new Date();
         var orderDateStr = orderDate.format(SITOOLS_DATE_FORMAT);
         globalOrder.orderDate = orderDateStr;
         
-        Ext.each(selections, function (rec) {
-            var data = {};
-            Ext.each(colModel, function (column) {
-                if (!column.hidden || column.primaryKey) {
-                    data[column.columnAlias] = rec.get(column.columnAlias);
-                }
-            });
-            recordsOrder.records.push(data);
-        });
-        
-        globalOrder.nbRecords = recordsOrder.records.length;
-        recordsOrder.selectionId = globalOrder.selectionId;
-        
         globalOrder.colModel = colModel;
 
-        if (this.cartSelectionFile) {
-            this.cartSelectionFile.cartSelections.push(globalOrder);
-            Ext.apply(putObject, this.cartSelectionFile);
-        } else {
-            putObject.cartSelections = [];
-            putObject.cartSelections.push(globalOrder);
+        
+        if (Ext.isEmpty(this.cartSelectionFile.cartSelections)) {
+            this.cartSelectionFile.cartSelections = [];
         }
+        
+        var index = Ext.each(this.cartSelectionFile.cartSelections, function (sel) {
+            if (sel.selectionId === this.dataview.datasetName) {
+                return false;
+            }
+        }, this);
+            
+        
+
+        if (Ext.isEmpty(index)) {
+            this.cartSelectionFile.cartSelections.push(globalOrder);
+        } else {
+            this.cartSelectionFile.cartSelections[index] = globalOrder;
+        }
+            
+        var putObject = {};
+        putObject.cartSelections = [];
+        putObject.cartSelections = this.cartSelectionFile.cartSelections; 
+       
+
 
         userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
-                putObject, this.createRecordsSelectionFile(recordsOrder));
-    },
-    
-    createRecordsSelectionFile : function (recordsOrder) {
-        userStorage.set(this.user + "_" + recordsOrder.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", recordsOrder);
+                putObject);
     }
     
-});
+//    createRecordsSelectionFile : function (recordsOrder) {
+//        userStorage.set(this.user + "_" + recordsOrder.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", recordsOrder);
+//    }
+//    
+};
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
 
 sitools.user.component.dataviews.services.addToCartService.getParameters = function () {
@@ -265,11 +225,43 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
  */
 sitools.user.component.dataviews.services.addToCartService.executeAsService = function (config) {
     var selections = config.dataview.getSelections();
+    
+    if(Ext.isEmpty(userLogin)) {
+        alert("You need to be connected");
+        return;
+    }
+    Ext.apply(this, config);
+    
+    this.cartSelectionFile = [];
+    
+    (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
+    
     var rec = selections[0];
     if (Ext.isEmpty(rec)) {
         Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noRecordsSelected'));
         return;
     }
-    var addSelectionService = new sitools.user.component.dataviews.services.addToCartService(config);
-    addSelectionService.show();
+    
+    
+    Ext.each(this.parameters, function (config) {
+        if (!Ext.isEmpty(config.value)) {
+            switch (config.name) {
+            case "exportcolumns":
+                this.selectionColumns = config.value.split(',');
+                break;
+            }
+        }
+    }, this);
+    
+    
+    this.selectionName = config.dataview.datasetName;
+    
+    this.addToCart();
+    
+
+//    var addSelectionService = new sitools.user.component.dataviews.services.addToCartService(config);
+//    addSelectionService.show();
+    
+    
+    
 };

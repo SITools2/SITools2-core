@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -88,10 +88,29 @@ public class Range implements Comparable<Range> {
     this.end = end;
   }
 
+  /**
+   * Calculate the range size
+   * 
+   * @return the rangeSize
+   */
+  public int getSize() {
+    return end - start + 1;
+  }
+
   @Override
   public int compareTo(Range o) {
     Integer currentStart = new Integer(getStart());
     Integer oStart = new Integer(o.getStart());
     return currentStart.compareTo(oStart);
   }
+
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "Range [start=" + start + ", end=" + end + "]";
+  }
+  
+  
 }
