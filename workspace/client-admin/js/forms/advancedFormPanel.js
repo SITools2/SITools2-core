@@ -352,6 +352,6 @@ sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
 
         this.destroy();
 //        parentContainer.fireEvent('activate');
-//        parentContainer.doLayout();
+        parentContainer.doLayout();
     }
 });

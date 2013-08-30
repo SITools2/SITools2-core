@@ -65,16 +65,16 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
         
         this.removeAll(true);
 
-        var totalHeight = 300;
+        var totalHeight = 0;
         
 
 		if (this.action != 'modify') {
 			var mainPanel = new sitools.admin.forms.advancedFormPanel({
 				containerPanelId : 'main',
-				title : 'main',
+				title : i18n.get('label.mainForm'),
 				height : 300,
 				border : true,
-				id : 'mainpanel',
+				//id : 'mainpanel',
 				ddGroup : 'gridComponentsList',
 				collapsible : false,
 				datasetColumnModel : this.datasetColumnModel,
@@ -86,7 +86,7 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 			// this.add(mainPanel);
 		}
 	        
-	     if (this.zoneStore.getCount() == 0){
+	     if (this.zoneStore.getCount() == 0 && mainPanel){
 	        this.zoneStore.add(new Ext.data.Record(mainPanel));
     	} 
 
@@ -113,11 +113,11 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
             }, this);
         }
         
-        this.formSize.height = totalHeight + 20;
-        this.setHeight(totalHeight + 20);
-//        if (this.action == 'create') {
-//            this.y = 250;
-//        }
+        if (this.formSize.height <= totalHeight) {
+			this.formSize.height = totalHeight + 20;
+        	this.setHeight(totalHeight + 20);	
+		}
+        
         this.doLayout();
 
         /* loop on the panels */
