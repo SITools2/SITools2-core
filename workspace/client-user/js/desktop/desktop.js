@@ -618,7 +618,7 @@ sitools.user.desktop.App = function () {
 					else {
 						Ext.Msg.alert(i18n.get('label.error'), String.format(i18n
 											.get('label.undefinedModule'),
-									config.name));		
+									projectModule.name));		
 									
 						//if all includes are done, Add 1 to the modulesCharges 
 						SitoolsDesk.modulesCharges++;

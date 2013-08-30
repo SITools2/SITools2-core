@@ -265,4 +265,15 @@ public final class User implements Serializable {
     }
   }
 
+  /* (non-Javadoc)
+   * @see java.lang.Object#toString()
+   */
+  @Override
+  public String toString() {
+    return "User [identifier=" + identifier + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
+        + email + ", properties=" + properties + ", secret=" + secret + "]";
+  }
+  
+  
+
 }

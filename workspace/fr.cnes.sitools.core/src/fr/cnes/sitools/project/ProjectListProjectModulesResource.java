@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -84,6 +84,11 @@ public final class ProjectListProjectModulesResource extends AbstractProjectReso
 
         if (authorized) {
           ProjectModuleModel module = getProjectModuleModel(projModule.getId());
+          if (module == null) {
+            // create a ProjectModuleModel to have a object on the client side
+            module = new ProjectModuleModel();
+            module.setName(projModule.getName());
+          }
           projectModuleListOutput.add(module);
         }
 
