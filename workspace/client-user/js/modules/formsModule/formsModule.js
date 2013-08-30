@@ -106,7 +106,8 @@ sitools.user.modules.formsModule = function () {
     var tbarFormDs = {
         xtype : 'toolbar',
         defaults : {
-            scope : this
+            scope : this,
+            cls : 'services-toolbar-btn'
         },
         items : [ {
             text : i18n.get('label.viewForm'),
@@ -127,8 +128,10 @@ sitools.user.modules.formsModule = function () {
 		title : i18n.get("label.datasetForm"), 
 		store : storeFormDs, 
 		cm : cmFormDs, 
-		sm : smFormDs, 
-		tbar : tbarFormDs, 
+		sm : smFormDs,
+		region : 'center',
+		tbar : tbarFormDs,
+		frame : true,
 		viewConfig : {
 			forceFit : true
 		},
@@ -228,10 +231,12 @@ sitools.user.modules.formsModule = function () {
     });
 
     var smFormsMultiDs = new Ext.grid.RowSelectionModel();
+    
     var tbarFormsMultiDs = {
         xtype : 'toolbar',
         defaults : {
-            scope : this
+            scope : this,
+            cls : 'services-toolbar-btn'
         },
         items : [ {
             text : i18n.get('label.viewForm'),
@@ -251,7 +256,10 @@ sitools.user.modules.formsModule = function () {
 		title : i18n.get("label.projectForm"), 
 		store : storeFormsMultiDs, 
 		cm : cmFormsMultiDs, 
-		sm : smFormsMultiDs, 
+		sm : smFormsMultiDs,
+		frame : true,
+		region : 'south',
+		height : 250,
 		tbar : tbarFormsMultiDs, 
 		viewConfig : {
 			forceFit : true
@@ -265,9 +273,15 @@ sitools.user.modules.formsModule = function () {
 		}, 
 		flex : 1
     });
+    
+    this.containerPanel = new Ext.Panel({
+        layout : 'border',
+        items : [ this.gridFormsDs, this.gridFormsMultiDs ]
+    });
+    
     sitools.user.modules.formsModule.superclass.constructor.call(this, Ext.apply({
-        layout : 'vbox', 
-        items : [this.gridFormsDs, this.gridFormsMultiDs]
+        layout : 'fit',
+        items : [ this.containerPanel ]
         
     }));
 

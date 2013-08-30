@@ -506,9 +506,10 @@ sitools.admin.forms.formPropPanel = Ext.extend(Ext.Window, {
         putObject.width = width;
         putObject.height = height;
 
-        if (this.zoneStore.getCount() > 0) {
-            putObject.zones = [];
+        if (this.formComponentsStore.getCount() == 0) {
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noComponentInForm'));
         }
+		putObject.zones = [];
         
 //        this.zoneStore.each(function (rec) {
 //            putObject.zones.push({
