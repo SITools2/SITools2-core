@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, loadUrl, extColModelToStorage*/
+/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE,ImageChooser, loadUrl, extColModelToStorage*/
 
 Ext.namespace('sitools.user.component.dataviews.services');
 
@@ -50,24 +50,30 @@ sitools.user.component.dataviews.services.addToCartService =  {
     },
 
     saveSelection : function () {
-//        if (this.dataview.getSelections().length <= 300 && this.dataview.selModel.getAllSelections().length <= 300) {
+        // if (this.dataview.getSelections().length <= 300 &&
+        // this.dataview.selModel.getAllSelections().length <= 300) {
         this._addSelection(this.dataview.getSelections(), this.dataview, this.datasetId);
-//        } else {
-//            return Ext.Msg.show({
-//                title : i18n.get('label.warning'),
-//                msg : i18n.get('warning.tooMuchRecords'),
-//                buttons : Ext.MessageBox.OK,
-//                icon : Ext.MessageBox.WARNING
-//            });
-//        }
+        // } else {
+        // return Ext.Msg.show({
+        // title : i18n.get('label.warning'),
+        // msg : i18n.get('warning.tooMuchRecords'),
+        // buttons : Ext.MessageBox.OK,
+        // icon : Ext.MessageBox.WARNING
+        // });
+        // }
     },
 
     /**
      * Create an entry in the user storage with all the selected records.
-     * @param {Array} selections An array of selected {Ext.data.Record} records 
-     * @param {Ext.grid.GridPanel} grid the grid  
-     * @param {string} datasetId
-     * @param {string} orderName the name of the future file.
+     * 
+     * @param {Array}
+     *            selections An array of selected {Ext.data.Record} records
+     * @param {Ext.grid.GridPanel}
+     *            grid the grid
+     * @param {string}
+     *            datasetId
+     * @param {string}
+     *            orderName the name of the future file.
      */
     _addSelection : function (selections, grid, datasetId) {
         var primaryKey = "";
@@ -151,77 +157,129 @@ sitools.user.component.dataviews.services.addToCartService =  {
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
 
 sitools.user.component.dataviews.services.addToCartService.getParameters = function () {
+    var checkColumn = new Ext.grid.CheckColumn({
+        header : i18n.get('headers.exportData'),
+        dataIndex : 'isDataExported',
+        editable : true,
+        width : 50,
+        renderer : function(v, p, record) {
+            p.css += ' x-grid3-check-col-td'; 
+            var cmp = Ext.getCmp(this.id); 
+            if (cmp.enabled &&
+                    ColumnRendererEnum.getColumnRendererCategoryFromBehavior(record.data.columnRenderer.behavior) == "Image") {
+            	return String.format('<div id="{2}" class="x-grid3-check-col{0} x-grid3-check-col-enabled {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
+            }
+            else {
+            	return String.format('<div id="{2}" class="x-grid3-check-disabled-col{0} {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
+            }
+        }
+    });
     return [ {
-        jsObj : "Ext.grid.GridPanel",
+        jsObj : "sitools.component.datasets.selectItems",
         config : {
-            fieldLabel : i18n.get('label.exportcolumns'),
-            height : 300,
-            store : new Ext.data.JsonStore({
-                fields : [ 'dataIndex', 'primaryKey' ],
-                idProperty : 'dataIndex',
-                url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
-                root : "dataset.columnModel",
-                autoLoad : true
+            height : 250,
+            layout : {
+                type : 'hbox',
+                pack : 'start',
+                align : 'stretch'
+            },
+            grid1 : new Ext.grid.GridPanel({
+                flex : 1,
+                margins : {
+                    top : 0,
+                    right : 5,
+                    bottom : 0,
+                    left : 0
+                },
+                viewConfig : {
+                    forceFit : true
+                },
+                store : new Ext.data.JsonStore({
+                    fields : [ 'dataIndex', 'columnAlias', 'primaryKey', 'columnRenderer' ],
+                    idProperty : 'columnAlias',
+                    url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
+                    root : "dataset.columnModel",
+                    autoLoad : true
+                }),
+                colModel : new Ext.grid.ColumnModel({
+                    columns : [ {
+                        header : i18n.get('label.selectColumns'),
+                        dataIndex : 'columnAlias',
+                        sortable : true
+                    } ]
+                })
             }),
-            view : new Ext.grid.GridView({
-                forceFit : true,
-                listeners : {
-                    refresh : function (view) {
-                        var grid = view.grid;
-                        grid.store.each(function (col) {
-                            if (col.data.primaryKey) {
-                                if (Ext.isEmpty(grid.value)) {
-                                    grid.value = col.data.dataIndex;
+            grid2 : new Ext.grid.GridPanel({
+                flex : 1,
+                margins : {
+                    top : 0,
+                    right : 0,
+                    bottom : 0,
+                    left : 10
+                },
+                viewConfig : {
+                    forceFit : true,
+                },
+                store : new Ext.data.JsonStore({
+                    fields : [ 'dataIndex', 'columnAlias', 'primaryKey', 'columnRenderer', 'isDataExported' ],
+                    idProperty : 'dataIndex',
+                    listeners : {
+                        add : function (store, records) {
+                            Ext.each(records, function (rec) {
+                                if (rec.data.columnRenderer) {
+                                    if (rec.data.isDataExported && ColumnRendererEnum.getColumnRendererCategoryFromBehavior(rec.data.columnRenderer.behavior) == "Image") {
+                                        rec.data.isDataExported = true;
+                                    }
+                                    else {
+                                        rec.data.isDataExported = false;
+                                    }
                                 }
-                                else {
-                                    grid.value += "," + col.data.dataIndex;
-                                }
-                                return false;
-                            }
-                        }, grid);
-                        
-                        var recordsToSelect = [];
-                        var arrayOfColumns = grid.value.split(',');
-                        
-                        Ext.each(arrayOfColumns, function (column, index) {
-                            var rec = this.store.getById(column);
-                            recordsToSelect.push(rec);
-                        }, grid);
-                        
-                        grid.selModel.selectRecords(recordsToSelect);
+                            });
+                        }
                     }
-                }
+                }),
+                colModel : new Ext.grid.ColumnModel({
+                    columns : [ {
+                        header : i18n.get('label.exportColumns'),
+                        dataIndex : 'columnAlias',
+                        sortable : true
+                    }, checkColumn ]
+                }),
+                plugins : [ checkColumn ]
             }),
-            colModel : new Ext.grid.ColumnModel({
-                columns : [ {
-                    header : i18n.get('label.selectColumns'),
-                    dataIndex : 'dataIndex',
-                    sortable : true
-                } ]
-            }),
-            selModel : new Ext.grid.RowSelectionModel(),
+            name : "exportcolumns",
+            value : [],
             getValue : function () {
-                var concatvalue = '';
-                Ext.each(this.getSelectionModel().getSelections(), function (object, index) {
-                    if (Ext.isEmpty(concatvalue))
-                        concatvalue = object.data.dataIndex;
-                    else
-                        concatvalue = concatvalue + ',' + object.data.dataIndex;
+                var columnsToExport = [];
+                var store = this.grid2.getStore();
+
+                store.each(function (record) {
+                    var rec = {};
+                    rec.columnAlias = record.data.columnAlias;
+                    rec.isDataExported = record.data.isDataExported;
+                    rec.columnRenderer = record.data.columnRenderer;
+                    columnsToExport.push(rec);
+                    
                 });
-                return concatvalue;
+                var columnsString = Ext.util.JSON.encode(columnsToExport);
+                return columnsString;
             },
             setValue : function (value) {
+                var columnsToExport = Ext.util.JSON.decode(value);
+                Ext.each(columnsToExport, function (column) {
+                    var recordColumn = new Ext.data.Record(column);
+                    this.grid2.getStore().add(recordColumn);
+                }, this);
                 this.value = value;
-            },
-            name : "exportcolumns",
-            value : ""
+            }
         }
     } ];
 };
 /**
- * @static
- * Implementation of the method executeAsService to be able to launch this window as a service.
- * @param {Object} config contains all the service configuration 
+ * @static Implementation of the method executeAsService to be able to launch
+ *         this window as a service.
+ * @param {Object}
+ *            config contains all the service configuration
  */
 sitools.user.component.dataviews.services.addToCartService.executeAsService = function (config) {
     var selections = config.dataview.getSelections();

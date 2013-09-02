@@ -60,7 +60,7 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             }
         };
         
-        
+
         var fields = [];
         Ext.each(this.columnModel, function (col) {
             var field = {name : col.dataIndex};

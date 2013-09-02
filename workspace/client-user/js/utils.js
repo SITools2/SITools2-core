@@ -153,7 +153,7 @@ var commonTreeUtils = {
                             Ext.each(feeds.data, function (feed) {
                                 node.appendChild({
                                     leaf : true,
-                                    winTitle : i18n.get('label.feeds') + " : " + dataset.name + "." + feed.title,
+                                    winTitle : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title,
                                     type : "feeds",
                                     text : feed.name,
                                     datasetId : dataset.id,

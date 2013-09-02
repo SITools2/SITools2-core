@@ -416,11 +416,12 @@ sitools.admin.rssFeed.rssFeedProps = Ext.extend(Ext.Window, {
             rec.name = data.name;
             rec.feedType = data.feedType;
             rec.feedSource = data.feedSource;
+			rec.title = data.title;
+	        rec.description = data.description;
+            
             if (data.feedSource == "EXTERNAL") {
                 rec.externalUrl = data.externalUrl;
 			} else {
-                rec.title = data.title;
-	            rec.description = data.description;
 	            rec.link = data.link;
 	            if (data.author !== undefined) {
 	                rec.authorName = data.author.name;
@@ -526,8 +527,12 @@ sitools.admin.rssFeed.rssFeedProps = Ext.extend(Ext.Window, {
             }
         }, this);
         
+        if (json.feedSource == "EXTERNAL") {
+            json.title = form.findField("title").getValue();
+            json.description = form.findField("description").getValue();
+            
+        }
                 
-        
 //        // if the id is empty (create) we assign the name to it
 //        if (Ext.isEmpty(json.id)) {
 //			json.id = json.name;
@@ -675,15 +680,19 @@ sitools.admin.rssFeed.rssFeedProps = Ext.extend(Ext.Window, {
 	            success : function (ret) {
 	                var responseXML = ret.responseXML;
 	                var isRss = false, isAtom = false;
+	                var rss = null, atom = null;
 	                if (!Ext.isEmpty(responseXML)) {
 	//                    isRss = responseXML.firstChild.localName == "rss";
 	//                    isAtom = responseXML.firstChild.localName == "feed";
-	                    isRss = !Ext.isEmpty(Ext.DomQuery.selectNode("rss", responseXML));
-	                    isAtom = !Ext.isEmpty(Ext.DomQuery.selectNode("feed", responseXML));
+	                    rss = Ext.DomQuery.selectNode("rss", responseXML);
+	                    atom = Ext.DomQuery.selectNode("feed", responseXML);
+	                    isRss = !Ext.isEmpty(rss);
+	                    isAtom = !Ext.isEmpty(atom);
 	                }
 	                
-	                var feedField = this.formPanel.getForm().findField("feedType");
-	                var externalUrlField = this.formPanel.getForm().findField("externalUrl");
+	                var form = this.formPanel.getForm();
+	                var feedField = form.findField("feedType");
+	                var externalUrlField = form.findField("externalUrl");
 	                if (isRss) {
 						feedField.setValue("rss_2.0");                    
 					} else if (isAtom) {
@@ -693,6 +702,18 @@ sitools.admin.rssFeed.rssFeedProps = Ext.extend(Ext.Window, {
 	                if (isRss || isAtom) {
                         this.boxComponent.setHtml(String.format(i18n.get("label.feedTypeDetected"), feedField.getValue().inputValue));
                         this.boxComponent.setVisible(true);
+                        
+                        var xml = (isRss) ? rss : atom;
+                        var titleNode  = Ext.DomQuery.selectNode("title", xml);
+                        var descriptionNode  = Ext.DomQuery.selectNode("description", xml);
+                        
+                        if (titleNode) {
+                            form.findField("title").setValue(titleNode.textContent);
+                        }
+                        if (descriptionNode) {
+                            form.findField("description").setValue(descriptionNode.textContent);
+                        }
+                        
 	                    externalUrlField.fireEvent("changeStatus", externalUrlField, "valid");
 	                    if (Ext.isFunction(successCallback)) {
 	                        successCallback.call(this);

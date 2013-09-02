@@ -1051,7 +1051,7 @@ sitools.user.clickDatasetIcone = function (url, type, extraCmpConfig) {
 								if (Json.total == 1) {
 						            var feed = Json.data[0];
 						            Ext.apply(windowConfig, {
-						                title : i18n.get('label.feeds') + " : " + dataset.name + "." + feed.title, 
+						                title : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title, 
 						                id : type + dataset.id + feed.id, 
 						                iconCls : "feedsModule"
 						            });
@@ -1073,7 +1073,7 @@ sitools.user.clickDatasetIcone = function (url, type, extraCmpConfig) {
 									Ext.each(Json.data, function (feed) {
 										handler = function (feed, dataset) {
 											Ext.apply(windowConfig, {
-												title : i18n.get('label.feeds') + " : " + dataset.name + "." + feed.title, 
+												title : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title, 
 												id : type + dataset.id + feed.id, 
 												iconCls : "feedsModule"
 								            });
