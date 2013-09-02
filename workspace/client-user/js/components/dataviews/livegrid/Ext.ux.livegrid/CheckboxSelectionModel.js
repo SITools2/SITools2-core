@@ -57,12 +57,26 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
     id : 'checker',
     headerCheckbox : null,
     markAll : false,
+    
+    ready : false,
 
     isColumn : true, // So that ColumnModel doesn't feed this through the
                         // Column constructor
 
     constructor : function (config) {
         Ext.apply(this, config);
+        
+        this.addEvents(
+                /**
+                 * @event selectionmodelready
+                 * Fires when the selectionmodel is ready to be selected
+                 * @param {SelectionModel} this
+                 */
+                'selectionmodelready'
+        );
+        
+        
+        
         this.headerChecked = '<div id="qtip-checker" ext:qtip="' + i18n.get('label.deselectAll') + '" class="x-grid3-hd-checker">&#160;</div>';
         this.headerUnchecked = '<div id="qtip-checker" ext:qtip="' + i18n.get('label.selectAll') + '" class="x-grid3-hd-checker">&#160;</div>';
 
@@ -246,6 +260,14 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
             this.headerCheckbox.addClass('x-grid3-hd-checker-on');
         }
         Ext.ux.grid.livegrid.CheckboxSelectionModel.superclass.selectAll.call(this, true);
-    } 
+    },
+    
+    onRefresh : function () {
+        Ext.ux.grid.livegrid.CheckboxSelectionModel.superclass.onRefresh.call(this);
+        if (!this.ready) {
+            this.ready = true;
+            this.fireEvent('selectionmodelready', this);
+        }
+    }
 
 });
