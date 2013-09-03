@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,6 +22,8 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
+import org.restlet.data.Form;
+import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.ResourceInfo;
@@ -39,6 +41,15 @@ import fr.cnes.sitools.proxy.RedirectorProxy;
  * @author m.gond
  */
 public class ProxyRestlet extends Restlet implements WadlDescribable {
+  /**
+   * Name of the rewrite_redirection parameter
+   * */
+  private static final String REWRITE_REDIRECTION_PARAM_NAME = "rewrite_redirection";
+
+  /**
+   * Name of the parameter containing the url
+   */
+  private static final String EXTERNAL_URL_PARAM_NAME = "external_url";
 
   /**
    * Default constructor
@@ -60,7 +71,8 @@ public class ProxyRestlet extends Restlet implements WadlDescribable {
   @Override
   public void handle(Request request, Response response) {
 
-    String externalUrl = request.getResourceRef().getQueryAsForm().getFirstValue("external_url");
+    Form query = request.getResourceRef().getQueryAsForm();
+    String externalUrl = query.getFirstValue(EXTERNAL_URL_PARAM_NAME);
     if (externalUrl == null || "".equals(externalUrl)) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "external_url parameter is mandatory");
     }
@@ -68,11 +80,21 @@ public class ProxyRestlet extends Restlet implements WadlDescribable {
     Redirector redirector = new RedirectorProxy(getContext(), externalUrl, Redirector.MODE_SERVER_OUTBOUND);
 
     redirector.handle(request, response);
+
+    boolean rewriteRedirection = Boolean.parseBoolean(query.getFirstValue(REWRITE_REDIRECTION_PARAM_NAME, "false"));
+
+    if (rewriteRedirection && response.getStatus().isRedirection()) {
+      Reference refReturned = new Reference(request.getResourceRef().getBaseRef());
+      refReturned.addQueryParameter(EXTERNAL_URL_PARAM_NAME, response.getLocationRef().toString());
+      response.setLocationRef(refReturned);
+    }
+
   }
 
   @Override
   public ResourceInfo getResourceInfo(ApplicationInfo applicationInfo) {
-    return new ResourceInfo();
+    ResourceInfo resourceInfo = new ResourceInfo();
+    return resourceInfo;
   }
 
   /**
