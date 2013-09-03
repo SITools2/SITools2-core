@@ -18,7 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.database.mongodb;
 
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,7 +31,6 @@ import com.mongodb.MongoException;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
 import fr.cnes.sitools.dataset.database.Range;
-import fr.cnes.sitools.datasource.jdbc.dbexplorer.DBResultSet;
 import fr.cnes.sitools.datasource.mongodb.business.MongoDBRequestModel;
 import fr.cnes.sitools.datasource.mongodb.business.SitoolsMongoDBDataSource;
 
@@ -91,8 +89,8 @@ public class MongoDBRangeDatabaseRequest extends MongoDBDatabaseRequest {
     clearInvalidRanges(maxOffset);
 
     clearInvalidRanges(maxOffset);
-    setStartRange(startIndex);
     nbTotalResults = calculateTotalCount();
+    setStartRange(startIndex);
 
     if (limitParam < 0) {
       limitParam = nbTotalResults;
