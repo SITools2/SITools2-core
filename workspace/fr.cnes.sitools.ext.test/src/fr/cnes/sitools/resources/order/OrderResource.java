@@ -51,7 +51,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond
  */
-public class OrderResource extends AbstractOrderResource {
+public class OrderResource extends AbstractDatasetOrderResource {
   /** Maximum number of file to download authorized, default to -1 => no limit */
   private int nbMaxDownload = -1;
 

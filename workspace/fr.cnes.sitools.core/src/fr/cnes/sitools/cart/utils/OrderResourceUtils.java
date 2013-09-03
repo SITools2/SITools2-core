@@ -56,12 +56,12 @@ import fr.cnes.sitools.util.RIAPUtils;
  */
 public final class OrderResourceUtils {
 
-  /** zipFilePattern name 0 = datasetName, 1 = timestamp */
-  public static final String ZIP_FILE_PATTERN = "/{datasetName}_{timestamp}";
+  /** zipFilePattern name 0 = orderName, 1 = timestamp */
+  public static final String ZIP_FILE_PATTERN = "/{orderName}_{timestamp}";
   /** zipFilePattern name */
-  public static final String DIRECTORY_PATTERN = "/{datasetName}_{timestamp}";
+  public static final String DIRECTORY_PATTERN = "/{orderName}_{timestamp}";
   /** fileListPattern name */
-  public static final String FILE_LIST_PATTERN = "/{datasetName}_{timestamp}_fileList";
+  public static final String FILE_LIST_PATTERN = "/{orderName}_{timestamp}_fileList";
 
   /**
    * OrderResourceUtils default constructor
