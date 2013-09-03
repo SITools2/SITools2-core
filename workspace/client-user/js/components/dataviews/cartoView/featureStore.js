@@ -100,7 +100,7 @@ sitools.user.component.dataviews.cartoView.featureStore = function (config) {
     sitools.user.component.dataviews.cartoView.featureStore.superclass.constructor.call(this, config);
 	this.load({
 		params : {
-			start : 0, 
+			start : 300, 
 			limit : DEFAULT_LIVEGRID_BUFFER_SIZE
 		}
 	});

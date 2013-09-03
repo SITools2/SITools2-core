@@ -49,12 +49,11 @@ sitools.user.component.dataviews.cartoView.featureSelectionModel = function (con
     if (this.checkOnly) {
         this.handleMouseDown = Ext.emptyFn;
     }
-
+    
     this.sortable = false;
     
-    
     sitools.user.component.dataviews.cartoView.featureSelectionModel.superclass.constructor.call(this, config);
-    this.addEvents('gridFeatureSelected');
+    this.addEvents('gridFeatureSelected', 'selectionmodelready');
     
 };
 
@@ -69,6 +68,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.featureSelectionModel, Geo
             if (this.markAll && forceReload === false) {
                 this.headerCheckbox.addClass('x-grid3-hd-checker-on');
             }
+            this.fireEvent('selectionmodelready');
         }, this);
         
         
@@ -230,7 +230,49 @@ Ext.extend(sitools.user.component.dataviews.cartoView.featureSelectionModel, Geo
         this.last = false;
     },
     
-  
+    getAllSelections : function (asRange) {
+        var index = 1;
+        var ranges = [];
+        var currentRange = 0;
+        var tmpArray =  [];
+        
+        this.selections.each(function (rec) {
+            var index = this.grid.getStore().indexOf(rec);
+            tmpArray.push(index);
+        }, this);
+
+        tmpArray.sort(function (o1, o2) {
+            if (o1 > o2) {
+                return 1;
+            } else if (o1 < o2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        if (!asRange) {
+            return tmpArray;
+        }
+
+        var max_i = tmpArray.length;
+
+        if (max_i === 0) {
+            return [];
+        }
+
+        ranges[currentRange] = [ tmpArray[0], tmpArray[0] ];
+        for (var i = 0, max_i = max_i - 1; i < max_i; i++) {
+            if (tmpArray[i + 1] - tmpArray[i] == 1) {
+                ranges[currentRange][1] = tmpArray[i + 1];
+            } else {
+                currentRange++;
+                ranges[currentRange] = [ tmpArray[i + 1], tmpArray[i + 1] ];
+            }
+        }
+
+        return ranges;
+    },
     
     /**
      * Selects all rows if the selection model

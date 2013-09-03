@@ -90,6 +90,15 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     this.sitoolsAttachementForUsers = config.dataUrl;
     // create map panel
     var mapPanel = new sitools.user.component.dataviews.cartoView.mapPanel(config);
+    
+    mapPanel.addListener("selectionmodelready", function () {
+        if (!Ext.isEmpty(this.ranges)) {
+            var ranges = Ext.util.JSON.decode(this.ranges);
+            Ext.each(ranges, function (range) {
+                this.getSelectionModel().selectRange(range[0], range[1], true);
+            }, this);
+        }
+    }, this);
 
     var fields = sitools.user.component.dataviews.storeUtils.getFields(config.datasetCm);
 
@@ -170,7 +179,7 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         displayInfo: true,
         displayMsg: i18n.get('paging.display'), 
         listeners : {
-            scope : this, 
+            scope : this,
 //          change : function (tb, pageData) {
                 
 //              var plotComp = Ext.getCmp("plot" + this.datasetId);
@@ -199,7 +208,6 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
                 catch (err) {
                     return;
                 }
-                
             }
         },
         isSelectionModel : true,
@@ -251,10 +259,6 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
             }
         }
     });
-    
-    
-    
-    
 
     // -- CONSTRUCTOR --
     sitools.user.component.dataviews.cartoView.cartoView.superclass.constructor.call(this, Ext.apply({
@@ -305,15 +309,7 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
             request += "&colModel=" + Ext.util.JSON.encode(colModel);
         }
     
-        // First case : no records selected: build the Query
-        if (Ext.isEmpty(this.getSelections())) {
-            request += this.getRequestParamWithoutSelection();
-        } 
-        // Second case : Records are selected
-        else {
-            var recSelected;
-            request += "&" + this.getRecSelectedParam();
-        }
+        request += this.getRequestParamWithoutColumnModel();
         return request;
     }, 
     getSelectionModel : function () {
@@ -329,6 +325,19 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     getColumnModel : function () {
         return this.gridPanel.getColumnModel();
     }, 
+    
+    getRequestParamWithoutColumnModel : function () {
+        var request = "";
+        // First case : no records selected: build the Query
+        if (Ext.isEmpty(this.getSelections())) {
+            request += this.getRequestParamWithoutSelection();
+        } 
+        // Second case : Records are selected
+        else {
+            request += "&" + this.getRecSelectedParam();
+        }
+        return request;
+    },
     
     getRequestParamWithoutSelection : function () {
         var result = "", formParams = {};
@@ -398,6 +407,11 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         return result;
     },
     
+    getSelectionsRange : function () {
+        var sm = this.getSelectionModel();
+        var ranges = sm.getAllSelections(true);
+        return Ext.util.JSON.encode(ranges);
+    },
     
     getDatasetView : function () {
         return this.gridPanel.getView();

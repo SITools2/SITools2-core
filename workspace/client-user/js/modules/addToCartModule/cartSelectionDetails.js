@@ -46,39 +46,15 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
                 }
             }
         };
-        
-        Ext.QuickTips.init();
-        
-        this.listeners = {
-            scope : this,
-            rowcontextmenu : function (grid, rowIndex, e) {
-                e.stopEvent();
-                if (!this.getSelectionModel().hasSelection()){
-                    this.getSelectionModel().selectRow(rowIndex);
-                }
-                this.contextMenu.showAt(e.getXY());
-            }
-        };
-        
-
+       
         var fields = [];
-        Ext.each(this.columnModel, function (col) {
-            var field = {name : col.dataIndex};
-            fields.push(field);
-        }, this);
-        
-//        this.store = new Ext.data.JsonStore({
-//            root : 'records',
-//            fields : fields
-//        });
-        
-        
-//        this.colModel = getColumnModel(this.columnModel);
-        
         var columns = [];
         
         Ext.each(this.columnModel, function (item, index, totalItems) {
             if (Ext.isEmpty(item.columnRenderer) ||  ColumnRendererEnum.NO_CLIENT_ACCESS != item.columnRenderer.behavior) {
+                var field = {name : item.columnAlias};
+                fields.push(field);
+                item.dataIndex = item.columnAlias;
                 columns.push(new Ext.grid.Column(
                     item
                 ));
@@ -89,24 +65,31 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             columns : columns
         });
         this.primaryKey = this.getPrimaryKeyFromCm(this.colModel);
+        this.sm = null;
         
-        
-        var params = Ext.urlDecode(this.selections);
+        this.params = Ext.urlDecode(this.selections);
         
         var colModel = extColModelToSrv(this.columnModel);
-        params.colModel = Ext.util.JSON.encode(colModel);
+        this.params.colModel = Ext.util.JSON.encode(colModel);
         
         this.store = new Ext.data.JsonStore({
             proxy : new Ext.data.HttpProxy({
                 method : 'GET',
                 url : this.url
             }),
-            baseParams : params,
+            baseParams : this.params,
             restful : true,
             root : 'data',
             fields : fields
             
         });
+
+        this.tbar = [ '->', {
+            text : i18n.get('label.modifySelection'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+            scope : this,
+            handler : this.modifySelection
+        }];
 
         this.bbar = {
             xtype : 'paging',
@@ -138,7 +121,6 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
                 limit : 300
             }
         });
-//        userStorage.get(userLogin + "_" + this.selection.data.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.loadRecordsInStore);
     },
     
     loadRecordsInStore : function (response) {
@@ -171,6 +153,11 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             }
         });
         return primaryKey;
+    },
+    
+    modifySelection : function () {
+        var url = this.selection.data.dataUrl;
+        sitools.user.clickDatasetIcone(url, 'data', {ranges : this.selection.get('ranges')});
     }
     
 });

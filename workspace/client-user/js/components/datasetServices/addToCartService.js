@@ -98,7 +98,7 @@ sitools.user.component.dataviews.services.addToCartService =  {
         // On stocke seulement les colonnes configurées dans le Gui service
         Ext.each(colModelTmp, function (col) {
             Ext.each(this.selectionColumns, function (selectCol) {
-                if (col.dataIndex == selectCol || col.dataIndexSitools == selectCol) {
+                if (col.columnAlias == selectCol.columnAlias) {
                     colModel.push(col);
                 }
             }, this);
@@ -111,7 +111,13 @@ sitools.user.component.dataviews.services.addToCartService =  {
         globalOrder.dataUrl = this.dataview.dataUrl;
         globalOrder.datasetName = this.dataview.datasetName;
 
-        globalOrder.selections = this.dataview.getRecSelectedParamForLiveGrid();
+        globalOrder.selections = this.dataview.getRequestParamWithoutColumnModel();
+        globalOrder.selections = globalOrder.selections.slice(1);
+        globalOrder.ranges = this.dataview.getSelectionsRange();
+        
+        // TODO save the start index to reload the right page
+        //this.dataview.getStore().lastOptions.params.start
+        
         globalOrder.nbRecords = (grid.isAllSelected()) ? this.dataview.store.getTotalCount() : this.dataview.getNbRowsSelected();
         
         var orderDate = new Date();
@@ -159,6 +165,7 @@ Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.us
 sitools.user.component.dataviews.services.addToCartService.getParameters = function () {
     var checkColumn = new Ext.grid.CheckColumn({
         header : i18n.get('headers.exportData'),
+        tooltip : i18n.get('headers.helpExportData'),
         dataIndex : 'isDataExported',
         editable : true,
         width : 50,
@@ -184,7 +191,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                 align : 'stretch'
             },
             grid1 : new Ext.grid.GridPanel({
-                flex : 1,
+                width : 270,
                 margins : {
                     top : 0,
                     right : 5,
@@ -199,18 +206,34 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                     idProperty : 'columnAlias',
                     url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
                     root : "dataset.columnModel",
-                    autoLoad : true
+                    autoLoad : true,
+                    listeners : {
+                        load : function (store, records) {
+                            Ext.each(records, function (rec) {
+                                if (rec.data.columnRenderer) {
+                                    if (ColumnRendererEnum.getColumnRendererCategoryFromBehavior(rec.data.columnRenderer.behavior) == "Image") {
+                                        rec.data.featureType = "IMAGE";
+                                    }
+                                }
+                            });
+                            
+                        }
+                    }
                 }),
                 colModel : new Ext.grid.ColumnModel({
                     columns : [ {
                         header : i18n.get('label.selectColumns'),
                         dataIndex : 'columnAlias',
                         sortable : true
+                    }, {
+                        header : i18n.get('label.featureType'),
+                        dataIndex : 'featureType',
+                        sortable : true
                     } ]
                 })
             }),
             grid2 : new Ext.grid.GridPanel({
-                flex : 1,
+                width : 270,
                 margins : {
                     top : 0,
                     right : 0,
@@ -222,7 +245,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                 },
                 store : new Ext.data.JsonStore({
                     fields : [ 'dataIndex', 'columnAlias', 'primaryKey', 'columnRenderer', 'isDataExported' ],
-                    idProperty : 'dataIndex',
+                    idProperty : 'columnAlias',
                     listeners : {
                         add : function (store, records) {
                             Ext.each(records, function (rec) {
@@ -305,7 +328,7 @@ sitools.user.component.dataviews.services.addToCartService.executeAsService = fu
         if (!Ext.isEmpty(config.value)) {
             switch (config.name) {
             case "exportcolumns":
-                this.selectionColumns = config.value.split(',');
+                this.selectionColumns = Ext.util.JSON.decode(config.value);
                 break;
             }
         }

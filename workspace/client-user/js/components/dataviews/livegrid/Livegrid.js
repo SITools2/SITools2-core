@@ -374,7 +374,18 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	 */
     var selModelSimple = new Ext.ux.grid.livegrid.CheckboxSelectionModel({
         checkOnly : true,
-        isSelectionModel : true
+        isSelectionModel : true,
+        listeners : {
+            scope : this,
+            selectionmodelready : function () {
+                if (!Ext.isEmpty(this.ranges)) {
+                    var ranges = Ext.util.JSON.decode(this.ranges);
+                    Ext.each(ranges, function (range) {
+                        this.getSelectionModel().selectRange(range[0], range[1], true);
+                    }, this);
+                }
+            }
+        }
     });
 
     this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
@@ -486,17 +497,24 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
             request += "&colModel=" + Ext.util.JSON.encode(colModel);
         }
     
-        // First case : no records selected: build the Query
+    	request += this.getRequestParamWithoutColumnModel();
+        
+        return request;
+    }, 
+	
+	getRequestParamWithoutColumnModel : function () {
+		var request = "";
+		// First case : no records selected: build the Query
         if (Ext.isEmpty(this.getSelections())) {
-			request += this.getRequestParamWithoutSelection();
+			request = this.getRequestParamWithoutSelection();
         } 
         // Second case : Records are selected
         else {
-            var recSelected;
             request += "&" + this.getRecSelectedParamForLiveGrid();
         }
-        return request;
-    }, 
+		return request;
+	},
+	
     getSelections : function () {
 		return this.getSelectionModel().getSelections();
     }, 
@@ -599,6 +617,12 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
         }
         return result;
     },
+	
+	getSelectionsRange : function () {
+		var sm = this.getSelectionModel();
+		var ranges = sm.getAllSelections(true);
+		return Ext.util.JSON.encode(ranges);
+	},
     
     getDatasetView : function () {
         return this.getView();

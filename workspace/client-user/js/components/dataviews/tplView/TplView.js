@@ -118,10 +118,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         this.getTopToolbar().updateContextToolbar();
 	
 	}, this);
-	
-	
-    
-    
+
 	this.store.load({
 		params : {
 			start : 0, 
@@ -217,6 +214,25 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         selectedClass : 'x-view-selected-datasetView',
         emptyText: '', 
         simpleSelect : true,
+        refresh : function() {
+            this.clearSelections(false, true);
+            var el = this.getTemplateTarget(),
+                records = this.store.getRange();
+                
+            el.update('');
+            if(records.length < 1){
+                if(!this.deferEmptyText || this.hasSkippedEmptyText){
+                    el.update(this.emptyText);
+                }
+                this.all.clear();
+            }else{
+                this.tpl.overwrite(el, this.collectData(records, 0));
+                this.all.fill(Ext.query(this.itemSelector, el.dom));
+                this.updateIndexes(0);
+            }
+            this.hasSkippedEmptyText = true;
+            this.fireEvent('selectionmodelready');
+        },
         listeners : {
 			scope : this, 
 			selectionchange : function (dataView, recNodes) {
@@ -252,9 +268,19 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				    this.select(unselectedRec);
 				}
 				
+			},
+			selectionmodelready : function () {
+		        if (!Ext.isEmpty(this.ranges)) {
+		            var ranges = Ext.util.JSON.decode(this.ranges);
+		            Ext.each(ranges, function (range) {
+		                this.getSelectionModel().selectRange(range[0], range[1], true);
+		            }, this);
+		        }
 			}
         }
 	});
+	
+	this.dataView.addEvents('selectionmodelready');
 	
 	var configDataViewPanel = {
 		autoScroll : true,
@@ -452,6 +478,86 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
             result += "&" + Ext.urlEncode(formParams);
         }
         return result;
+    },
+	
+	getRequestParamWithoutColumnModel : function () {
+		var request = "", formParams = {};
+        
+		var selections = this.getSelections();
+        // First case : no records selected: build the Query
+        if (Ext.isEmpty(selections)) {
+			request += this.getRequestParamWithoutSelection();
+            
+        } 
+        else {
+            if (this.isAllSelected()) {
+                //First Case : all the dataset is selected.
+                request = "&ranges=[[0," + (this.store.getTotalCount() - 1) + "]]";
+                //We have to re-build all the request in case we use a range selection.
+                request += this.getRequestParamWithoutSelection();
+            } else {
+            
+                var recSelected;
+                
+                recSelected = selections;
+                
+                formParams = this.dataviewUtils.getFormParamsFromRecsSelected(recSelected);
+                // use the form API to request the selected records
+                request += "&" + Ext.urlEncode(formParams);
+            }
+        
+        }
+        return request;
+	},
+	
+	getSelectionsRange : function () {
+		//var sm = this.getSelectionModel();
+//		var ranges = sm.getSelectedIndexes();
+		var ranges = this.getAllSelections(true);
+		return Ext.util.JSON.encode(ranges);
+	},
+	
+	getAllSelections : function (asRange) {
+        var index = 1;
+        var ranges = [];
+        var currentRange = 0;
+        var tmpArray =  this.getSelectionModel().getSelectedIndexes();
+
+        //for (var i in this.getSelectionModel().getSelectedIndexes()) {
+            //tmpArray.push(parseInt(i));
+        //}
+
+        tmpArray.sort(function (o1, o2) {
+            if (o1 > o2) {
+                return 1;
+            } else if (o1 < o2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+
+        if (!asRange) {
+            return tmpArray;
+        }
+
+        var max_i = tmpArray.length;
+
+        if (max_i === 0) {
+            return [];
+        }
+
+        ranges[currentRange] = [ tmpArray[0], tmpArray[0] ];
+        for (var i = 0, max_i = max_i - 1; i < max_i; i++) {
+            if (tmpArray[i + 1] - tmpArray[i] == 1) {
+                ranges[currentRange][1] = tmpArray[i + 1];
+            } else {
+                currentRange++;
+                ranges[currentRange] = [ tmpArray[i + 1], tmpArray[i + 1] ];
+            }
+        }
+
+        return ranges;
     },
     
     isColumnImage : function (columnRenderer) {

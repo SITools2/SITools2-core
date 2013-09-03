@@ -101,6 +101,10 @@ sitools.user.component.dataviews.cartoView.mapPanel = function (config) {
     // create vector layer
     this.featureLayer = new OpenLayers.Layer.Vector(config.datasetName);
     
+    this.featureLayer.events.register("featuresadded", this, function () {
+       this.fireEvent('selectionmodelready'); 
+    });
+    
     var selectCtrl = new OpenLayers.Control.SelectFeature(this.featureLayer, {
     	id : "selectCtrl", 
     	onSelect : function (feature) {

@@ -36,28 +36,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         // Default broadcast mode
         this.broadcastMode = "uspr";
         
-        this.selectAllButton = new Ext.Button({
-            text : i18n.get('label.selectAll'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
-            tooltip : i18n.get('label.selectAll'),
-            enableToggle : true,
-            pressed : false,
-            scope : this,
-            handler : function (button) {
-                this.changeSelectButton(button);
-                var sm = this.gridPanel.selModel;
-                if (button.pressed) {
-                    sm.selectAll();
-                    sm.lock();
-                }
-                else {
-                    sm.unlock();
-                    this.gridPanel.selModel.clearSelections();
-                }
-            }
-        });
-        
-
         this.tbar = {
             xtype : 'toolbar',
             cls : 'services-toolbar',
@@ -65,7 +43,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 scope : this,
                 cls : 'services-toolbar-btn'
             },
-            items : [this.selectAllButton, {
+            items : [{
                 xtype : 'splitbutton',
                 text : i18n.get('label.downloadOrder'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
@@ -151,6 +129,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 name : 'selections'
             }, {
                 name : 'dataUrl'
+            }, {
+                name : 'ranges'
             }]
         });
         
@@ -305,22 +285,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         });
     },
     
-    changeSelectButton : function (button) {
-        if (button.pressed) {
-            button.setText(i18n.get('label.deselectAll'));
-            button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_remove.png');
-        }
-        else {
-            this.resetSelectButton(button);
-        }
-    },
-    
-    resetSelectButton : function (button) {
-        button.setText(i18n.get('label.selectAll'));
-        button.toggle(false);
-        button.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png');
-    },
-    
     viewArticlesDetails : function () {
         var selected = this.gridPanel.getSelectionModel().getSelections()[0];
         
@@ -341,7 +305,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     
     onRefresh : function () {
         this.store.reload();
-        this.resetSelectButton(this.selectAllButton);
         this.containerArticlesDetailsPanel.collapse(true);
         this.containerArticlesDetailsPanel.setTitle('');
         this.containerArticlesDetailsPanel.removeAll();
@@ -409,17 +372,14 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         var collCartSelections = new Ext.util.MixedCollection();
         collCartSelections.addAll(this.cartOrderFile.cartSelections);
         
-        var recordsToRemove = [];
         collCartSelections.each(function (cartSelection, indCart) {
             collSelections.each(function (delSelection, indDel) {
                 if (cartSelection.selectionId == delSelection.data.selectionId) {
-                    recordsToRemove.push(cartSelection.selectionId);
                     collCartSelections.remove(cartSelection);
                 }
             });
         });
         this.cartOrderFile.cartSelections = collCartSelections.items;
-        this.deleteArticlesOrder(recordsToRemove);
         
         userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartOrderFile, this.onRefresh, this);
     },
