@@ -99,8 +99,8 @@ public class SQLRangeDatabaseRequest extends SQLDatabaseRequest {
       
 
       clearInvalidRanges(maxOffset);
-      setStartRange(startIndex);
       nbTotalResults = calculateTotalCount();
+      setStartRange(startIndex);     
       
       if (limitParam < 0) {
         limitParam = nbTotalResults;
