@@ -172,8 +172,9 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
         renderer : function(v, p, record) {
             p.css += ' x-grid3-check-col-td'; 
             var cmp = Ext.getCmp(this.id); 
-            if (cmp.enabled &&
-                    ColumnRendererEnum.getColumnRendererCategoryFromBehavior(record.data.columnRenderer.behavior) == "Image") {
+            var columnRenderer = record.get("columnRenderer");
+            var featureType = ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior);
+            if (cmp.enabled && (featureType === "Image" || featureType == "URL")) {
             	return String.format('<div id="{2}" class="x-grid3-check-col{0} x-grid3-check-col-enabled {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
             }
             else {
@@ -202,7 +203,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                     forceFit : true
                 },
                 store : new Ext.data.JsonStore({
-                    fields : [ 'dataIndex', 'columnAlias', 'primaryKey', 'columnRenderer' ],
+                    fields : [ 'dataIndex', 'columnAlias', 'primaryKey', 'columnRenderer' , 'featureType' ],
                     idProperty : 'columnAlias',
                     url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
                     root : "dataset.columnModel",
@@ -210,10 +211,9 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                     listeners : {
                         load : function (store, records) {
                             Ext.each(records, function (rec) {
-                                if (rec.data.columnRenderer) {
-                                    if (ColumnRendererEnum.getColumnRendererCategoryFromBehavior(rec.data.columnRenderer.behavior) == "Image") {
-                                        rec.data.featureType = "IMAGE";
-                                    }
+                                var columnRenderer = rec.get("columnRenderer"); 
+                                if (!Ext.isEmpty(columnRenderer)) {
+                                    rec.set("featureType", ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior));
                                 }
                             });
                             
@@ -249,8 +249,10 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                     listeners : {
                         add : function (store, records) {
                             Ext.each(records, function (rec) {
-                                if (rec.data.columnRenderer) {
-                                    if (rec.data.isDataExported && ColumnRendererEnum.getColumnRendererCategoryFromBehavior(rec.data.columnRenderer.behavior) == "Image") {
+                                var columnRenderer = rec.get("columnRenderer"); 
+                                if (!Ext.isEmpty(columnRenderer)) {
+                                    var featureType = ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior);
+                                    if (rec.data.isDataExported && (featureType === "Image" || featureType === "URL")) {
                                         rec.data.isDataExported = true;
                                     }
                                     else {
