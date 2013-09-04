@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -41,6 +41,8 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Directory;
 
 import fr.cnes.sitools.common.SitoolsMediaType;
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.ContextAttributes;
 
 /**
  * Directory proxy
@@ -125,19 +127,63 @@ public class DirectoryProxy extends Directory implements WadlDescribable {
   @Override
   public Representation getIndexRepresentation(Variant variant, ReferenceList indexContent) {
     Representation result = null;
+    String publicHostDomain = ((SitoolsSettings) getContext().getAttributes().get(ContextAttributes.SETTINGS))
+        .getPublicHostDomain();
+    ReferenceList refListOut = rewriteReferenceList(indexContent, publicHostDomain);
+
     if (variant.getMediaType().isCompatible(MediaType.TEXT_HTML)) {
-      result = indexContent.getWebRepresentation();
+      result = refListOut.getWebRepresentation();
     }
     else if (variant.getMediaType().isCompatible(MediaType.TEXT_URI_LIST)) {
-      result = indexContent.getTextRepresentation();
+      result = refListOut.getTextRepresentation();
     }
     else if (variant.getMediaType().isCompatible(MediaType.APPLICATION_JSON)) {
-      result = getJsonRepresentation(indexContent);
+      result = getJsonRepresentation(refListOut);
     }
     else if (variant.getMediaType().isCompatible(SitoolsMediaType.APPLICATION_SITOOLS_JSON_DIRECTORY)) {
-      result = getAdvancedJsonRepresentation(indexContent);
+      result = getAdvancedJsonRepresentation(refListOut);
     }
     return result;
+  }
+
+  /**
+   * Rewrite the given {@link ReferenceList} with the following publicHostDomain instead of the ones from the
+   * {@link Reference}
+   * 
+   * @param indexContent
+   *          the {@link ReferenceList}
+   * @param publicHostDomain
+   *          the publicHostDomain to set to all {@link Reference} in the {@link ReferenceList}
+   * @return a new {@link ReferenceList}
+   */
+  private ReferenceList rewriteReferenceList(ReferenceList indexContent, String publicHostDomain) {
+    ReferenceList out = null;
+    boolean withFile = false;
+    if (indexContent instanceof ReferenceFileList) {
+      withFile = true;
+      out = new ReferenceFileList();
+    }
+    else {
+      out = new ReferenceList();
+    }
+    out.setIdentifier(indexContent.getIdentifier());
+
+    for (Reference reference : indexContent) {
+
+      // update url to set the publicHostDomain instead of the Origin domain, which can be the apache proxy
+      Reference rightUrl = new Reference(publicHostDomain);
+      rightUrl.setPath(reference.getPath());
+      rightUrl.setQuery(reference.getQuery());
+      rightUrl.setRelativePart(reference.getRelativePart());
+      if (withFile) {
+        File file = ((ReferenceFileList) indexContent).get(reference.toString());
+        ((ReferenceFileList) out).addFileReference(rightUrl.toString(), file);
+      }
+      else {
+        out.add(rightUrl);
+      }
+    }
+    return out;
   }
 
   /**
@@ -150,7 +196,6 @@ public class DirectoryProxy extends Directory implements WadlDescribable {
   protected JsonRepresentation getJsonRepresentation(ReferenceList reference) {
 
     Collection<JSONObject> entries = new ArrayList<JSONObject>();
-
     for (Reference ref : reference) {
       File file = null;
       if (reference instanceof ReferenceFileList) {
@@ -162,6 +207,7 @@ public class DirectoryProxy extends Directory implements WadlDescribable {
           JSONObject jo = new JSONObject();
           String[] arrayPath = ref.toString().split("/");
           String path = arrayPath[arrayPath.length - 1];
+
           jo.put("name", path);
           jo.put("url", ref.toString());
 
