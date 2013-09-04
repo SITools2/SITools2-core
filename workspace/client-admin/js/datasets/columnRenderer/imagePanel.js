@@ -112,12 +112,8 @@ sitools.admin.datasets.columnRenderer.imagePanel = Ext.extend(Ext.Panel, {
                 listeners : {
                     scope : this,
                     rowselect : function (selectionModel, rowIndex, record) {
-                        this.formPanel.getForm().findField("url").disable();
                         Ext.getCmp('status_bar_column').hide();
                         this.doLayout();
-                    },
-                    rowdeselect : function (selectionModel, rowIndex, record) {
-                        this.formPanel.getForm().findField("url").enable();
                     }
                 }
 	        });
