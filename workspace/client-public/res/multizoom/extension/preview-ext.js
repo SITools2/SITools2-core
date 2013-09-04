@@ -135,14 +135,14 @@ viewer.preview = function (viewer) {
 	
 
 	self.onmouseup_or_out = function (event) {
-        if (!event) { // For IE
+	    if (!event) { // For IE
             event = window.event;
             event.returnValue = false;
         } else if (event.preventDefault) {
             event.preventDefault();
         }
         removeClassName(previewBox, "previewBox_over");
-        previewBox.onmousemove = previewBox.onmouseup = previewBox.onmouseout = null;
+        previewFrameElement.onmousemove = previewBox.onmouseup = null;
         previewBox.onmousedown = self.onmousedown;
     };
     
@@ -156,8 +156,8 @@ viewer.preview = function (viewer) {
         }
 	    addClassName(previewBox, "previewBox_over");
 		mylastMousePosition = getMouseXY(event);
-        previewBox.onmousemove = self.onmousemove;
-        previewBox.onmouseup = previewBox.onmouseout = self.onmouseup_or_out;
+		previewFrameElement.onmousemove = self.onmousemove;
+        previewBox.onmouseup = self.onmouseup_or_out;
 	};
 	
 	self.calcRealImagePosition = function (position) {
