@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.database.common;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.restlet.data.CharacterSet;
@@ -26,17 +27,23 @@ import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.xstream.XstreamRepresentation;
+import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 
 import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.common.XStreamFactory;
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.AbstractDataSetResource;
 import fr.cnes.sitools.dataset.DataSetApplication;
+import fr.cnes.sitools.dataset.database.DatabaseRequest;
+import fr.cnes.sitools.dataset.database.DatabaseRequestFactory;
 import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
 import fr.cnes.sitools.datasource.common.SitoolsDataSource;
+import fr.cnes.sitools.datasource.jdbc.model.Record;
 
 /**
  * DBExplorerResource using DataSource for pooled connections
@@ -104,6 +111,7 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
   public void doInit() {
 
     super.doInit();
+    this.setNegotiated(false);
 
     // target : database, table, record
     Map<String, Object> attributes = this.getRequest().getAttributes();
@@ -141,12 +149,52 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
     }
     if (recordSetTarget) { // RECORDS => RETOURNE LA LISTE DES RECORDS SELON LA
                            // PAGINATION
-      // Representation dédiée au RecordSet
-      Representation repr = new DBRecordSetRepresentation(media, this.datasetExplorerUtil);
-      // ajout de la date dernière modification dans la reponse
-      repr.setModificationDate(application.getDataSet().getExpirationDate());
+      
+      // CAS OBJET JAVA
+      if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+        
+        Response response = new Response();
+        ArrayList<Object> records = new ArrayList<Object>();
+        
+        DatabaseRequest databaseRequest = 
+            DatabaseRequestFactory.getDatabaseRequest(this.datasetExplorerUtil.getDatabaseParams());
+        
+        try {
+          
+          databaseRequest.createRequest();
 
-      return repr;
+          while (databaseRequest.nextResult()) {
+            Record rec = databaseRequest.getRecord();
+            records.add(rec);
+          }
+          
+          response.setData(records);
+          
+        }
+        catch (IllegalArgumentException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        catch (SitoolsException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        
+        return new ObjectRepresentation<Response>(response);
+        
+        
+      } 
+      // AUTRES CAS
+      else {
+        
+        // Representation dédiée au RecordSet
+        Representation repr = new DBRecordSetRepresentation(media, this.datasetExplorerUtil);
+        // ajout de la date dernière modification dans la reponse
+        repr.setModificationDate(application.getDataSet().getExpirationDate());
+  
+        return repr;
+      }
+      
     }
     else if (recordTarget) { // RECORD => RETOURNE LE RECORD SELON SA CLE
                              // PRIMAIRE
@@ -168,9 +216,11 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
    * 
    * @return Representation
    */
-  @Get("xml")
-  public final Representation getXML() {
-    return processConstraint(MediaType.TEXT_XML);
+  @Get
+  public final Representation get(Variant variant) {
+    MediaType defaultMediaType = this.getMediaType(variant);
+    
+    return processConstraint(defaultMediaType);
   }
 
   /**
@@ -234,37 +284,37 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
     addStandardInternalServerErrorInfo(info);
   }
 
-  /**
-   * Gets JSON representation of a DataSet
-   * 
-   * @return Representation
-   */
-  @Get("json")
-  public final Representation getJSON() {
-    return processConstraint(MediaType.APPLICATION_JSON);
-  }
-
-  /**
-   * Gets HTML representation of a DataSet
-   * 
-   * @return Representation
-   */
-  @Get("html")
-  public final Representation getHTML() {
-    // On retourne du XML si on demande du HTML pour le fonctionnement avec les navigateurs
-    // L'export HTML n'étant pas implémenté on retourne du XML
-    return processConstraint(MediaType.TEXT_XML);
-  }
-
-  /**
-   * Get the CSV representation of the DataSet
-   * 
-   * @return Representation
-   */
-  @Get("csv")
-  public Representation getCSV() {
-    return processConstraint(MediaType.TEXT_CSV);
-  }
+//  /**
+//   * Gets JSON representation of a DataSet
+//   * 
+//   * @return Representation
+//   */
+//  @Get("json")
+//  public final Representation getJSON() {
+//    return processConstraint(MediaType.APPLICATION_JSON);
+//  }
+//
+//  /**
+//   * Gets HTML representation of a DataSet
+//   * 
+//   * @return Representation
+//   */
+//  @Get("html")
+//  public final Representation getHTML() {
+//    // On retourne du XML si on demande du HTML pour le fonctionnement avec les navigateurs
+//    // L'export HTML n'étant pas implémenté on retourne du XML
+//    return processConstraint(MediaType.TEXT_XML);
+//  }
+//
+//  /**
+//   * Get the CSV representation of the DataSet
+//   * 
+//   * @return Representation
+//   */
+//  @Get("csv")
+//  public Representation getCSV() {
+//    return processConstraint(MediaType.TEXT_CSV);
+//  }
 
   /**
    * XStream aliases are personalized for each resource.

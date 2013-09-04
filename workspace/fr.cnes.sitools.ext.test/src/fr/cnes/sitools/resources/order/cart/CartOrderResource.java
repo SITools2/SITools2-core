@@ -20,20 +20,16 @@ package fr.cnes.sitools.resources.order.cart;
 
 import java.io.File;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.logging.Level;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -58,10 +54,13 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.dataset.model.Column;
+import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
+import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.order.model.Order;
-import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.DateUtils;
+import fr.cnes.sitools.util.RIAPUtils;
 
 public class CartOrderResource extends CartOrderResourceFacade {
   
@@ -98,27 +97,21 @@ public class CartOrderResource extends CartOrderResourceFacade {
   public Representation orderPost(Representation representation, Variant variant) {
     
     CartSelections cartSelections = (CartSelections)getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
-    StringBuffer xml = null;
     getContext().getAttributes().put(TaskUtils.PARENT_APPLICATION, getApplication());
-    // make directories
 
+    // make directories
+    
     String date = DateUtils.format(new Date(), TaskUtils.getTimestampPattern());
 
     ClientInfo clientInfo = this.getRequest().getClientInfo();
     User user = clientInfo.getUser();
 
     String userName = user.getIdentifier();
-    String root = settings.getString("Starter.ROOT_DIRECTORY");
-//    String rootdir = getContext().getAttributes().get("USER_STORAGE_ROOT").toString()
-//        .replace("${ROOT_DIRECTORY}", root)   + "/" + userName;
-//    
-    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") +  "/" + userName;
 
+    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") +  "/" + userName;
     String folderName = "/resources_orders/dataset_" + date;
 
     Reference userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(user, folderName, getContext());
-
-    String inputdir = rootdir + "/dataSelection/records/";
 
     File ordersdir = new File(rootdir + "/resources_orders");
     File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
@@ -132,66 +125,66 @@ public class CartOrderResource extends CartOrderResourceFacade {
       order = OrderAPI.createOrder(userName, getContext(), "ORDER_CART_" + date);
       OrderAPI.activateOrder(order, getContext());
 
+      List<Record> globalrecs = new ArrayList<Record>();
+      
       for (CartSelection sel : cartSelections.getSelections()) {
+        
         OrderAPI.createEvent(order, getContext(), "Processing record for selection : " + sel.getName() + " on dataset "
             + sel.getDatasetName());
-
-        String filepath = inputdir + userName + "_" + sel.getSelectionId() + "_records.json";
-
-        ObjectMapper mapper = new ObjectMapper();
-        CartSelection cartSelection = mapper.readValue(new File(filepath), CartSelection.class);
-        sel.setRecords(cartSelection.getRecords());
-
-        // serialize to XML
-
-        // if (xml == null) {
-        // xml = new StringBuffer(xstream.toXML(sel));
-        // }
-        // else {
-        // xml.append(xstream.toXML(sel));
-        // }
+        
+        String selections = sel.getSelections();
+        String datasetUrl = sel.getDataUrl();
+        
+        List<Column> colModel = sel.getColModel();
+        
+        
+        List<Record> recs = RIAPUtils.getListOfObjects(datasetUrl + "/records" + "?" + selections, getContext());
+        
+        globalrecs.addAll(recs);
 
         // download data from URLs
 
-        Set<String> filesUrlSet = new HashSet();
+//        Set<String> filesUrlSet = new HashSet();
+//
+//        for (Map<String, String> records : sel.getRecords()) {
+//          for (Object obj : records.entrySet()) {
+//            Entry entry = (Entry) obj;
+//            if (entry.getValue().toString().startsWith("http://") || entry.getValue().toString().startsWith("https://")) {
+//              filesUrlSet.add(entry.getValue().toString());
+//            }
+//            if (settings.getString(Consts.APP_URL) != null) {
+//              if (entry.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
+//                String urlReturn = settings.getPublicHostDomain();
+//                filesUrlSet.add(urlReturn + entry.getValue().toString());
+//              }
+//            }
+//          }
+//        }
+//
+//        for (String strUrl : filesUrlSet) {
+//          Reference ref = new Reference(strUrl);
+//          Reference destRef = new Reference(userStorageRef);
+//          destRef.addSegment("data");
+//          destRef.addSegment(ref.getLastSegment());
+//          try {
+//            OrderResourceUtils.copyFile(ref, destRef, clientInfo, getContext());
+//          }
+//          catch (SitoolsException e) {
+//            getLogger().log(Level.WARNING, "File not copied : " + ref, e);
+//          }
+//        }
 
-        for (Map<String, String> records : sel.getRecords()) {
-          for (Object obj : records.entrySet()) {
-            Entry entry = (Entry) obj;
-            if (entry.getValue().toString().startsWith("http://") || entry.getValue().toString().startsWith("https://")) {
-              filesUrlSet.add(entry.getValue().toString());
-            }
-            if (settings.getString(Consts.APP_URL) != null) {
-              if (entry.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
-                String urlReturn = settings.getPublicHostDomain();
-                filesUrlSet.add(urlReturn + entry.getValue().toString());
-              }
-            }
-          }
-        }
-
-        for (String strUrl : filesUrlSet) {
-          Reference ref = new Reference(strUrl);
-          Reference destRef = new Reference(userStorageRef);
-          destRef.addSegment("data");
-          destRef.addSegment(ref.getLastSegment());
-          try {
-            OrderResourceUtils.copyFile(ref, destRef, clientInfo, getContext());
-          }
-          catch (SitoolsException e) {
-            getLogger().log(Level.WARNING, "File not copied : " + ref, e);
-          }
-        }
       }
 
+      
       XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, getContext());
-      xstream.alias("cartSelections", CartSelections.class);
-      xstream.alias("cartSelection", CartSelection.class);
-      xstream.alias("record", LinkedHashMap.class);
-      xstream.registerConverter(new MapEntryConverter());
-
-      XstreamRepresentation<CartSelections> rep = new XstreamRepresentation<CartSelections>(MediaType.TEXT_XML,
-          cartSelections);
+      xstream.alias("record", Record.class);
+      xstream.alias("value", Object.class, String.class);
+      xstream.alias("response", Response.class);
+      xstream.alias("attributeValue", AttributeValue.class);
+      
+      XstreamRepresentation<List<Record>> rep = new XstreamRepresentation<List<Record>>(MediaType.TEXT_XML, globalrecs);
+      
       rep.setXstream(xstream);
 
       Reference destRef = new Reference(userStorageRef);

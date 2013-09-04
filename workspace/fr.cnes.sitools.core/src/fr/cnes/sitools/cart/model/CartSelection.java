@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import fr.cnes.sitools.common.model.IResource;
+import fr.cnes.sitools.dataset.model.Column;
 
 
 public class CartSelection implements IResource, Serializable {
@@ -20,6 +21,9 @@ public class CartSelection implements IResource, Serializable {
   private String datasetName;
   private String nbRecords;
   private String orderDate;
+  private String selections;
+  
+  private List<Column> colModel;
   
   private List<Map<String, String>> records;
   
@@ -103,6 +107,22 @@ public class CartSelection implements IResource, Serializable {
 
   public void setRecords(List<Map<String, String>> records) {
     this.records = records;
+  }
+
+  public String getSelections() {
+    return selections;
+  }
+
+  public void setSelections(String selections) {
+    this.selections = selections;
+  }
+
+  public List<Column> getColModel() {
+    return colModel;
+  }
+
+  public void setColModel(List<Column> colModel) {
+    this.colModel = colModel;
   }
   
 

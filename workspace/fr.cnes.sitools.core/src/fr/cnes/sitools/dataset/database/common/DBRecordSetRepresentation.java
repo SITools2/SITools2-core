@@ -307,7 +307,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
             }
           }
         }
-
+        
       }
       catch (SitoolsException sqle) {
         Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
