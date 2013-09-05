@@ -425,13 +425,13 @@
 
 	<target name="izpack-compile-core" description="Generate izpack file : compile core">
 		<subant target="build" buildpath="./tmp/workspace/fr.cnes.sitools.core/">
-			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}"/>
+			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
 		</subant>
 	</target>
 
 	<target name="izpack-compile-extension" description="Generate izpack file : compile extension">
 		<subant target="build-extensions" buildpath="./tmp/workspace/fr.cnes.sitools.extensions/">
-			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}"/>
+			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
 		</subant>
 	</target>
 
