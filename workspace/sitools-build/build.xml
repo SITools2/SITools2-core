@@ -62,15 +62,15 @@
 
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		MAIN Target 
-	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+			MAIN Target 
+		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<target name="build" depends="init, export, izpack, javadoc, file-list, tar-gz, checksum" description="Création d'une distribution" />
 
-	<target name="build-git" depends="export-git-core, izpack, javadoc, file-list-git-core, tar-gz-core, checksum-core" description="Création d'une distribution" />
+	<target name="build-git" depends="init-git-core, export-git-core, izpack, javadoc, file-list-git-core, tar-gz-core, checksum-core" description="Création d'une distribution" />
 
-	<target name="build-git-ext-astro" depends="export-git-astro, file-list-git-astro, tar-gz-astro, checksum-astro" description="Création d'une distribution" />
+	<target name="build-git-ext-astro" depends="init-git-astro, export-git-astro, file-list-git-astro, tar-gz-astro, checksum-astro" description="Création d'une distribution" />
 
-	<target name="build-git-ext-earthObservation" depends="export-git-earthObservation, file-list-git-earthObservation, tar-gz-earthObservation, checksum-earthObservation" description="Création d'une distribution" />
+	<target name="build-git-ext-earthObservation" depends="init-git-earthObservation, export-git-earthObservation, file-list-git-earthObservation, tar-gz-earthObservation, checksum-earthObservation" description="Création d'une distribution" />
 
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -84,6 +84,30 @@
 		<mkdir dir="${distribution.dir}/data"/>
 		<mkdir dir="${distribution.dir}/database"/>
 		<mkdir dir="${distribution.dir}/workspace"/>
+	</target>
+	
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+				Target for init before export
+	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<target name="init-git" description="Initiatialisation de la creation de la distribution">
+		<echo message="preparing folders ..." />
+		<delete dir="${distribution.dir}" />
+	</target>
+
+	<target name="init-git-core" description="Initiatialisation de la creation de la distribution">
+		<antcall target="init-git">
+			<param name="dir" value="${distribution.dir}" />
+		</antcall>
+	</target>
+	<target name="init-git-astro" description="Initiatialisation de la creation de la distribution">
+		<antcall target="init-git">
+			<param name="dir" value="${distribution.astro.dir}" />
+		</antcall>
+	</target>
+	<target name="init-git-earthObservation" description="Initiatialisation de la creation de la distribution">
+		<antcall target="init-git">
+			<param name="dir" value="${distribution.earthObservation.dir}" />
+		</antcall>
 	</target>
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -412,6 +436,19 @@
 	</target>
 
 	<target name="izpack-compile" description="Generate izpack file : compile">
+		
+		<subant  target="build-jars" buildpath="./tmp/workspace/sitools-install-izpack/">
+			<property name="ROOT_DIRECTORY_LOCAL" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
+		</subant>
+
+		<mkdir dir="dist"/>
+				
+		<copy todir="dist">
+			<fileset dir="./tmp/workspace/sitools-install-izpack/dist">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
 		<subant  target="build" buildpath="./tmp/workspace/sitools-install-izpack/">
 			<property name="ROOT_DIRECTORY_LOCAL" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
 			<property name="properties.Starter.VERSION" value="${sitools.project.tag}"/>
@@ -419,11 +456,12 @@
 	</target>
 
 	<target name="izpack-finish" description="Generate izpack file : copy">
-		<copy todir="./files/">
+		<copy todir="${distribution.dir}">
 			<fileset dir="./tmp/workspace/sitools-install-izpack/">
 				<include name="*.jar"/>
 			</fileset>
 		</copy>
+		<delete dir="bin"/>
 	</target>
 
 
@@ -495,7 +533,6 @@
 			</fileset>
 		</path>
 		<property name="files" refid="list.files"/>
-		<echo message="${files}"/>
 		<pathconvert property="list" refid="list.files" pathsep="&#x0A;">
 			<mapper>
 				<globmapper from='${sitools.ROOT_DIRECTORY}/workspace/sitools-build/${dir}/*' to="*" handledirsep="true"/>
