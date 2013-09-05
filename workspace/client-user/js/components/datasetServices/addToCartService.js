@@ -99,7 +99,16 @@ sitools.user.component.dataviews.services.addToCartService =  {
         Ext.each(colModelTmp, function (col) {
             Ext.each(this.selectionColumns, function (selectCol) {
                 if (col.columnAlias == selectCol.columnAlias) {
-                    colModel.push(col);
+                	var newcol = {
+                			columnAlias : col.columnAlias , 
+                			header : col.header
+                		};
+                	
+//                	Ext.destroyMembers(col, "dataIndexSitools");
+//                	Ext.destroyMembers(col, "hidden");
+                	
+                	colModel.push(newcol);
+                	
                 }
             }, this);
         }, this);

@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -137,10 +138,39 @@ public class CartOrderResource extends CartOrderResourceFacade {
         
         List<Column> colModel = sel.getColModel();
         
-        
-        List<Record> recs = RIAPUtils.getListOfObjects(datasetUrl + "/records" + "?" + selections, getContext());
-        
-        globalrecs.addAll(recs);
+        String colurl = "";
+        for ( Column column : colModel ) {
+          if (!colurl.equals(""))
+            colurl += ", " + column.getColumnAlias();
+          else
+            colurl = column.getColumnAlias();
+        }
+        String url = datasetUrl + "/records" + "?" + selections + "&colModel=\"" + colurl + "\"" ;
+        List<Record> recs = RIAPUtils.getListOfObjects(url  , getContext());
+
+        // ENLEVER LES COLONNES "NO CLIENT ACCESS" DE LA LISTE
+        List<Record> extractrecs = new ArrayList<Record>();
+        for ( Record rec : recs ) {
+
+          List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
+          Record extractrec = new Record();
+          
+          for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
+              boolean found = false; 
+            for ( Column column : colModel ){
+              if (attributeValue.getName().equals(column.getColumnAlias())){
+                found = true;
+                attributeValues.add(attributeValue);
+              } 
+            }
+            extractrec.setAttributeValues(attributeValues);
+            extractrec.setId(rec.getId());
+          }
+          extractrecs.add(extractrec);
+       }
+      
+        //globalrecs.addAll(recs);
+       globalrecs.addAll(extractrecs);
 
         // download data from URLs
 

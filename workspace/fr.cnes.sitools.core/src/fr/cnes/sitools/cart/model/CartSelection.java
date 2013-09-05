@@ -22,6 +22,7 @@ public class CartSelection implements IResource, Serializable {
   private String nbRecords;
   private String orderDate;
   private String selections;
+  private String ranges;
   
   private List<Column> colModel;
   
@@ -123,6 +124,14 @@ public class CartSelection implements IResource, Serializable {
 
   public void setColModel(List<Column> colModel) {
     this.colModel = colModel;
+  }
+
+  public String getRanges() {
+    return ranges;
+  }
+
+  public void setRanges(String ranges) {
+    this.ranges = ranges;
   }
   
 

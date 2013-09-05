@@ -247,11 +247,12 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         
         Ext.each(selections, function (selection) {
             var tmpSelection = {};
-            delete selection.data.colModel;
+           // delete selection.data.colModel;
             delete selection.data.records;
             Ext.apply(tmpSelection, selection.data);
             putObject.selections.push(tmpSelection);
         });
+        
         
         Ext.Ajax.request({
             url : projectGlobal.sitoolsAttachementForUsers + "/plugin/cart",
