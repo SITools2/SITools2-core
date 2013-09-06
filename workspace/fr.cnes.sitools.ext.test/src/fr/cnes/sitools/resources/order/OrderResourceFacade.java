@@ -36,7 +36,7 @@ import fr.cnes.sitools.tasks.TaskUtils;
  * 
  * @author m.gond
  */
-public class OrderResourceFacade extends SitoolsParameterizedResource {
+public class OrderResourceFacade extends SitoolsParameterizedResource implements IOrderResource {
   /**
    * Description de la ressource
    */
@@ -74,7 +74,6 @@ public class OrderResourceFacade extends SitoolsParameterizedResource {
    *          The {@link Variant} needed
    * @return a representation
    */
-  @Post
   public Representation orderPost(Representation represent, Variant variant) {
     processBody();
     return TaskUtils.execute(this, variant);
@@ -87,7 +86,6 @@ public class OrderResourceFacade extends SitoolsParameterizedResource {
    *          The {@link Variant} needed
    * @return a representation
    */
-  @Get
   public Representation orderGet(Variant variant) {
     return TaskUtils.execute(this, variant);
   }

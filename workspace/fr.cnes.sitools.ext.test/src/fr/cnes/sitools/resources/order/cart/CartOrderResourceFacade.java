@@ -32,6 +32,7 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.cart.model.CartSelections;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
+import fr.cnes.sitools.resources.order.OrderResourceFacade;
 import fr.cnes.sitools.tasks.TaskUtils;
 
 /**
@@ -40,7 +41,7 @@ import fr.cnes.sitools.tasks.TaskUtils;
  * 
  * @author m.gond
  */
-public class CartOrderResourceFacade extends SitoolsParameterizedResource {
+public class CartOrderResourceFacade extends OrderResourceFacade {
   /**
    * Description de la ressource
    */
@@ -49,6 +50,8 @@ public class CartOrderResourceFacade extends SitoolsParameterizedResource {
     setName("OrderResourceFacade");
     setDescription("Resource to order data");
   }
+  
+  
 
   /**
    * Description WADL de la methode POST

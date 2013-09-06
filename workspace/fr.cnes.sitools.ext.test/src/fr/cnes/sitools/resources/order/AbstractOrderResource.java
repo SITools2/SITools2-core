@@ -45,6 +45,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
+import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.server.Consts;
@@ -71,7 +72,7 @@ import fr.cnes.sitools.util.Util;
  * 
  * @author m.gond
  */
-public abstract class AbstractOrderResource extends OrderResourceFacade {
+public abstract class AbstractOrderResource extends SitoolsParameterizedResource implements IOrderResource {
 
   /** The {@link Order} model object */
   protected Order order;

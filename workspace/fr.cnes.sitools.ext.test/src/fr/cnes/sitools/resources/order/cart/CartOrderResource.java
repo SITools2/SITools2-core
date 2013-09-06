@@ -22,7 +22,6 @@ import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -33,9 +32,6 @@ import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.representation.Variant;
-import org.restlet.resource.Get;
-import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 
@@ -48,6 +44,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 import fr.cnes.sitools.cart.model.CartSelection;
 import fr.cnes.sitools.cart.model.CartSelections;
+import fr.cnes.sitools.cart.utils.ListReferencesAPI;
 import fr.cnes.sitools.cart.utils.OrderAPI;
 import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.SitoolsSettings;
@@ -63,57 +60,43 @@ import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.DateUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
-public class CartOrderResource extends CartOrderResourceFacade {
+public class CartOrderResource extends fr.cnes.sitools.resources.order.AbstractOrderResource {
   
   /** Application Settings */
   private SitoolsSettings settings;
-
-
-  @Override
-  @Get
-  public Representation orderGet(Variant variant) {
-    // TODO Auto-generated method stub
-    return super.orderGet(variant);
-  }
-
   
+  private CartSelections cartSelections;
+  private Reference userStorageRef;
+  private ClientInfo clientInfo;
+  private String date;
+  private String userName;
   
-  
+
   @Override
   public void doInit() {
     super.doInit();
     settings = ((SitoolsApplication) getApplication()).getSettings();
   }
 
-  /**
-   * action - iterate on cart selections provided in json representation - download data found into dedicated directory
-   * - serialize metadata to XML file
-   * 
-   * @param representation
-   * @param variant
-   * @return
-   */
+  
   @Override
-  @Post
-  public Representation orderPost(Representation representation, Variant variant) {
+  public void doInitialiseOrder() throws SitoolsException {
+  
+    super.doInitialiseOrder();
     
-    CartSelections cartSelections = (CartSelections)getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
+    cartSelections = (CartSelections)getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
     getContext().getAttributes().put(TaskUtils.PARENT_APPLICATION, getApplication());
+    
+    date = DateUtils.format(new Date(), TaskUtils.getTimestampPattern());
+
+    clientInfo = this.getRequest().getClientInfo();
+    User user = clientInfo.getUser();
+    userName = user.getIdentifier();
+
+    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") +  "/" + userName;
 
     // make directories
     
-    String date = DateUtils.format(new Date(), TaskUtils.getTimestampPattern());
-
-    ClientInfo clientInfo = this.getRequest().getClientInfo();
-    User user = clientInfo.getUser();
-
-    String userName = user.getIdentifier();
-
-    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") +  "/" + userName;
-    String folderName = "/resources_orders/dataset_" + date;
-
-    Reference userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(user, folderName, getContext());
-
     File ordersdir = new File(rootdir + "/resources_orders");
     File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
     File datadir = new File(outputdir + "/data");
@@ -121,6 +104,53 @@ public class CartOrderResource extends CartOrderResourceFacade {
     ordersdir.mkdir();
     outputdir.mkdir();
     datadir.mkdir();
+    
+    String folderName = "/resources_orders/dataset_" + date;
+    userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(user, folderName, getContext());
+
+
+  }
+  
+
+  /**
+   * MapEntryConverter inner class
+   * */
+  public static class MapEntryConverter implements Converter {
+
+    public boolean canConvert(Class cls) {
+      return AbstractMap.class.isAssignableFrom(cls);
+    }
+
+    public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
+
+      AbstractMap map = (AbstractMap) value;
+
+      for (Object obj : map.entrySet()) {
+        Entry entry = (Entry) obj;
+        writer.startNode(entry.getKey().toString());
+        writer.setValue(entry.getValue().toString());
+        writer.endNode();
+      }
+
+    }
+
+    @Override
+    public Object unmarshal(HierarchicalStreamReader arg0, UnmarshallingContext arg1) {
+      // TODO Auto-generated method stub
+      return null;
+    }
+  }
+
+  @Override
+  public ListReferencesAPI listFilesToOrder() throws SitoolsException {
+
+    return new ListReferencesAPI("");
+
+  }
+
+  @Override
+  public Representation processOrder(ListReferencesAPI listReferences) throws SitoolsException {
+
     Order order = null;
     try {
       order = OrderAPI.createOrder(userName, getContext(), "ORDER_CART_" + date);
@@ -172,38 +202,6 @@ public class CartOrderResource extends CartOrderResourceFacade {
         //globalrecs.addAll(recs);
        globalrecs.addAll(extractrecs);
 
-        // download data from URLs
-
-//        Set<String> filesUrlSet = new HashSet();
-//
-//        for (Map<String, String> records : sel.getRecords()) {
-//          for (Object obj : records.entrySet()) {
-//            Entry entry = (Entry) obj;
-//            if (entry.getValue().toString().startsWith("http://") || entry.getValue().toString().startsWith("https://")) {
-//              filesUrlSet.add(entry.getValue().toString());
-//            }
-//            if (settings.getString(Consts.APP_URL) != null) {
-//              if (entry.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
-//                String urlReturn = settings.getPublicHostDomain();
-//                filesUrlSet.add(urlReturn + entry.getValue().toString());
-//              }
-//            }
-//          }
-//        }
-//
-//        for (String strUrl : filesUrlSet) {
-//          Reference ref = new Reference(strUrl);
-//          Reference destRef = new Reference(userStorageRef);
-//          destRef.addSegment("data");
-//          destRef.addSegment(ref.getLastSegment());
-//          try {
-//            OrderResourceUtils.copyFile(ref, destRef, clientInfo, getContext());
-//          }
-//          catch (SitoolsException e) {
-//            getLogger().log(Level.WARNING, "File not copied : " + ref, e);
-//          }
-//        }
-
       }
 
       
@@ -242,44 +240,19 @@ public class CartOrderResource extends CartOrderResourceFacade {
         }
       }
       Response response = new Response(false, "label.download_ko");
-      return getRepresentation(response, variant);
+      return getRepresentation(response, MediaType.APPLICATION_JSON);
     }
 
     Response response = new Response(true, "label.download_ok");
-    return getRepresentation(response, variant);
-
+    return getRepresentation(response, MediaType.APPLICATION_JSON);
+    
+    
   }
 
-
-
-  /**
-   * MapEntryConverter inner class
-   * */
-  public static class MapEntryConverter implements Converter {
-
-    public boolean canConvert(Class cls) {
-      return AbstractMap.class.isAssignableFrom(cls);
-    }
-
-    public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-
-      AbstractMap map = (AbstractMap) value;
-
-      for (Object obj : map.entrySet()) {
-        Entry entry = (Entry) obj;
-        writer.startNode(entry.getKey().toString());
-        writer.setValue(entry.getValue().toString());
-        writer.endNode();
-      }
-
-    }
-
-    @Override
-    public Object unmarshal(HierarchicalStreamReader arg0, UnmarshallingContext arg1) {
-      // TODO Auto-generated method stub
-      return null;
-    }
-
+  @Override
+  public String getOrderName() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 
