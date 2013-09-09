@@ -94,21 +94,20 @@ sitools.user.component.dataviews.services.addToCartService =  {
 
         var colModelTmp = extColModelToJsonColModel(grid.getColumnModel());
         var colModel = [];
+        var dataToExport = [];
 
         // On stocke seulement les colonnes configurées dans le Gui service
-        Ext.each(colModelTmp, function (col) {
-            Ext.each(this.selectionColumns, function (selectCol) {
+        Ext.each(this.selectionColumns, function (selectCol) {
+            if (selectCol.isDataExported) {
+                dataToExport.push(selectCol.columnAlias);
+            }
+            Ext.each(colModelTmp, function (col) {
                 if (col.columnAlias == selectCol.columnAlias) {
-                	var newcol = {
-                			columnAlias : col.columnAlias , 
-                			header : col.header
-                		};
-                	
-//                	Ext.destroyMembers(col, "dataIndexSitools");
-//                	Ext.destroyMembers(col, "hidden");
-                	
-                	colModel.push(newcol);
-                	
+                    var newcol = {
+                        columnAlias : col.columnAlias,
+                        header : col.header
+                    };
+                    colModel.push(newcol);
                 }
             }, this);
         }, this);
@@ -123,6 +122,7 @@ sitools.user.component.dataviews.services.addToCartService =  {
         globalOrder.selections = this.dataview.getRequestParamWithoutColumnModel();
         globalOrder.selections = globalOrder.selections.slice(1);
         globalOrder.ranges = this.dataview.getSelectionsRange();
+        globalOrder.dataToExport = Ext.util.JSON.encode(dataToExport);
         
         // TODO save the start index to reload the right page
         //this.dataview.getStore().lastOptions.params.start
@@ -163,11 +163,6 @@ sitools.user.component.dataviews.services.addToCartService =  {
         userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
                 putObject);
     }
-    
-//    createRecordsSelectionFile : function (recordsOrder) {
-//        userStorage.set(this.user + "_" + recordsOrder.selectionId + "_records.json", "/" + DEFAULT_ORDER_FOLDER + "/records", recordsOrder);
-//    }
-//    
 };
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
 

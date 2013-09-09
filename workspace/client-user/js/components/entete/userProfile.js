@@ -65,7 +65,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 				identifier : "editProfile", 
 				name: i18n.get("label.editProfile"), 
 				url : '/sitools/common/res/images/icons/menu/regcrud.png', 
-				action : "editProfile", 
+				action : "editProfile",
 				comment : ""
 			}, {
 				identifier : "userDiskSpace", 
@@ -152,7 +152,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 		
 		var register = new Ext.Button({
 			scope : this, 
-			cls : "userProfileBtn", 
+			cls : "userProfileBtn",
 			text  : i18n.get('label.register'), 
 			handler : function () {
 				var register = new sitools.userProfile.Register({
@@ -165,7 +165,8 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 		});
 		var closeBtn = new Ext.Button({
 			scope : this,
-			icon : "/sitools/common/res/images/icons/close-icon.png", 
+			icon : "/sitools/common/res/images/icons/close-icon.png",
+			cls : 'button-transition',
 			handler : function () {
 				this.destroy();
 			}, 

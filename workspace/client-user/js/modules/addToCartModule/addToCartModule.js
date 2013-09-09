@@ -131,6 +131,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 name : 'dataUrl'
             }, {
                 name : 'ranges'
+            }, {
+                name : 'dataToExport'
             }]
         });
         
@@ -237,7 +239,12 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
      */
     downloadSelection : function () {
         
-        var selections = this.gridPanel.getSelectionModel().getSelections();
+        var selections = [];
+        
+        this.gridPanel.getStore().each(function (rec) {
+           selections.push(rec); 
+        });
+        
         if (selections.length == 0) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }

@@ -1,0 +1,22 @@
+<guiService>
+  <id>3f5428ff-8f26-4508-90a7-0db4b89bfd13</id>
+  <name>Display Selection Service</name>
+  <description>Display the current dataset selection for ordering</description>
+  <label>label.displaySelectionCart</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <icon></icon>
+  <xtype>sitools.user.component.dataviews.services.displaySelectionCartService</xtype>
+  <dependencies>
+    <js>
+      <url>
+        <url>/sitools/client-user/js/components/datasetServices/displaySelectionCartService.js</url>
+      </url>
+    </js>
+    <css/>
+  </dependencies>
+  <priority>4</priority>
+  <dataSetSelection>NONE</dataSetSelection>
+  <defaultGuiService>false</defaultGuiService>
+  <defaultVisibility>false</defaultVisibility>
+</guiService>
