@@ -122,7 +122,7 @@ sitools.user.component.dataviews.services.addToCartService =  {
         globalOrder.selections = this.dataview.getRequestParamWithoutColumnModel();
         globalOrder.selections = globalOrder.selections.slice(1);
         globalOrder.ranges = this.dataview.getSelectionsRange();
-        globalOrder.dataToExport = Ext.util.JSON.encode(dataToExport);
+        globalOrder.dataToExport = dataToExport;
         
         // TODO save the start index to reload the right page
         //this.dataview.getStore().lastOptions.params.start
