@@ -23,6 +23,7 @@ public class CartSelection implements IResource, Serializable {
   private String orderDate;
   private String selections;
   private String ranges;
+  private String[] dataToExport;
   
   private List<Column> colModel;
   
@@ -133,6 +134,17 @@ public class CartSelection implements IResource, Serializable {
   public void setRanges(String ranges) {
     this.ranges = ranges;
   }
+
+  public String[] getDataToExport() {
+    return dataToExport;
+  }
+
+  public void setDataToExport(String[] dataToExport) {
+    this.dataToExport = dataToExport;
+  }
+
+
+
   
 
 

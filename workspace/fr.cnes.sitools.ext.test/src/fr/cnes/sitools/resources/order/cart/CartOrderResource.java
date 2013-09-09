@@ -22,8 +22,10 @@ import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.restlet.data.ClientInfo;
@@ -42,6 +44,7 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
+import fr.cnes.sitools.resources.order.AbstractOrderResource;
 import fr.cnes.sitools.cart.model.CartSelection;
 import fr.cnes.sitools.cart.model.CartSelections;
 import fr.cnes.sitools.cart.utils.ListReferencesAPI;
@@ -56,11 +59,13 @@ import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.order.model.Order;
+import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.DateUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
-public class CartOrderResource extends fr.cnes.sitools.resources.order.AbstractOrderResource {
+
+public class CartOrderResource extends AbstractOrderResource {
   
   /** Application Settings */
   private SitoolsSettings settings;
@@ -165,8 +170,12 @@ public class CartOrderResource extends fr.cnes.sitools.resources.order.AbstractO
         
         String selections = sel.getSelections();
         String datasetUrl = sel.getDataUrl();
-        
         List<Column> colModel = sel.getColModel();
+        
+        String[] dataCols = null;
+        if (sel.getDataToExport()!=null){
+          dataCols = sel.getDataToExport();
+        } 
         
         String colurl = "";
         for ( Column column : colModel ) {
@@ -178,32 +187,68 @@ public class CartOrderResource extends fr.cnes.sitools.resources.order.AbstractO
         String url = datasetUrl + "/records" + "?" + selections + "&colModel=\"" + colurl + "\"" ;
         List<Record> recs = RIAPUtils.getListOfObjects(url  , getContext());
 
-        // ENLEVER LES COLONNES "NO CLIENT ACCESS" DE LA LISTE
         List<Record> extractrecs = new ArrayList<Record>();
+
+        Set<String> filesUrlSet = new HashSet();
+        
         for ( Record rec : recs ) {
 
           List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
+          
+          // REMOVE "NO CLIENT ACCESS" COLUMNS FROM LIST
+          
           Record extractrec = new Record();
           
           for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
-              boolean found = false; 
             for ( Column column : colModel ){
+              
               if (attributeValue.getName().equals(column.getColumnAlias())){
-                found = true;
                 attributeValues.add(attributeValue);
-              } 
+              }
             }
             extractrec.setAttributeValues(attributeValues);
             extractrec.setId(rec.getId());
           }
+          
           extractrecs.add(extractrec);
+          
+          // DOWNLOAD DATA FROM DATA COLUMNS
+          
+          if (dataCols != null){
+            for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
+              for (int i=0; i<= (dataCols.length - 1); i++){
+                if (attributeValue.getName().equals(dataCols[i])){
+                  if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL)))
+                    filesUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
+                  else 
+                    filesUrlSet.add(attributeValue.getValue().toString());
+                }
+              }
+            }
+          }
        }
       
         //globalrecs.addAll(recs);
        globalrecs.addAll(extractrecs);
 
+       // DOWNLOAD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
+       
+       for (String strUrl : filesUrlSet) {
+         Reference ref = new Reference(strUrl);
+         Reference destRef = new Reference(userStorageRef);
+         destRef.addSegment("data");
+         destRef.addSegment(ref.getLastSegment());
+         try {
+           OrderResourceUtils.copyFile(ref, destRef, clientInfo, getContext());
+         }
+         catch (SitoolsException e) {
+           getLogger().log(Level.WARNING, "File not copied : " + ref, e);
+         }
+       }
+       
       }
 
+      // SERIALIZE RECORDS INTO METADATA.XML  
       
       XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, getContext());
       xstream.alias("record", Record.class);
@@ -219,7 +264,7 @@ public class CartOrderResource extends fr.cnes.sitools.resources.order.AbstractO
       destRef.addSegment("metadata");
       destRef.setExtensions("xml");
       OrderResourceUtils.addFile(rep, destRef, clientInfo, getContext());
-
+      
       try {
         OrderAPI.terminateOrder(order, getContext());
       }
