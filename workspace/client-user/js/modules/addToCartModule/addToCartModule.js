@@ -263,37 +263,89 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             putObject.selections.push(tmpSelection);
         });
         
+//        this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters);
         
         Ext.Ajax.request({
-            url : projectGlobal.sitoolsAttachementForUsers + "/plugin/cart",
-            method : 'POST',
-            jsonData : putObject,
+            url : projectGlobal.sitoolsAttachementForUsers + "/services",
+            method : 'GET',
             scope : this,
             success : function (response) {
-            	var json = Ext.decode(response.responseText);
+                var json = Ext.decode(response.responseText);
                 if (!json.success) {
                     Ext.Msg.alert(i18n.get('label.error'), json.message);
                     return;
                 }
-                var task = json.TaskModel;
-                if (!Ext.isEmpty(task.urlResult)) {
-                    window.open(task.urlResult);
-                } else {
-                    var componentCfg = {
-                        task : task
-                    };
-                    var jsObj = sitools.user.component.dataviews.goToTaskPanel;
-        
-                    var windowConfig = {
-                        title : i18n.get('label.info'),
-                        saveToolbar : false, 
-                        iconCls : "datasetRessource"                    
-                    };
-                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
+                var services = json.data;
+                var index = Ext.each(services, function(service){
+                   if(service.name==="StreamingOrderResourceModel"){
+                       return false;
+                   } 
+                });
+                var resource = services[index];
+                if(!Ext.isEmpty(resource)){
+                    
+                    var parameters = resource.parameters;
+                    var url = null, icon = null, method = null, runTypeUserInput = null;
+                    parameters.each(function (param) {
+                        switch (param.name) {
+                        case "methods":
+                            method = param.value;
+                            break;
+                        case "url":
+                            url = projectGlobal.sitoolsAttachementForUsers + param.value;
+                            break;
+                        case "runTypeUserInput":
+                            runTypeUserInput = param.value;
+                            break;
+                        case "image":
+                            icon = param.value;
+                            break;
+                        }
+                    }, this);
+                    
+                    this.serviceServerUtil = new sitools.user.component.dataviews.services.serverServicesUtil({
+                        datasetUrl : projectGlobal.sitoolsAttachementForUsers, 
+                        datasetId : projectGlobal.projectId, 
+                        origin : "sitools.user.modules.projectServices"
+                    });
+                    
+                    this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters, {jsonData : putObject} );
+                }else {
+                    alert("pas trouvé");
                 }
-            },
-            failure : alertFailure
+            }
         });
+        
+//        Ext.Ajax.request({
+//            url : projectGlobal.sitoolsAttachementForUsers + "/plugin/cart",
+//            method : 'POST',
+//            jsonData : putObject,
+//            scope : this,
+//            success : function (response) {
+//            	var json = Ext.decode(response.responseText);
+//                if (!json.success) {
+//                    Ext.Msg.alert(i18n.get('label.error'), json.message);
+//                    return;
+//                }
+//                var task = json.TaskModel;
+//                if (!Ext.isEmpty(task.urlResult)) {
+//                    window.open(task.urlResult);
+//                } else {
+//                    var componentCfg = {
+//                        task : task
+//                    };
+//                    var jsObj = sitools.user.component.dataviews.goToTaskPanel;
+//        
+//                    var windowConfig = {
+//                        title : i18n.get('label.info'),
+//                        saveToolbar : false, 
+//                        iconCls : "datasetRessource"                    
+//                    };
+//                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
+//                }
+//            },
+//            failure : alertFailure
+//        });
     },
     
     viewArticlesDetails : function () {

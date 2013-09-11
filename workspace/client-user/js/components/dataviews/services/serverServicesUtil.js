@@ -124,8 +124,8 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * @param {} runType The runType of the resource.
      * @param {Array} parameters An array of parameters.
      */
-    resourceClick : function (resource, url, methods, runType, parameters) {
-        this.checkResourceParameters(resource, url, methods, runType, parameters);
+    resourceClick : function (resource, url, methods, runType, parameters, postParameter) {
+        this.checkResourceParameters(resource, url, methods, runType, parameters, postParameter);
     },
     
     /**
@@ -137,7 +137,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * @param {} runType The runType of the resource.
      * @param {Array} parameters An array of parameters.
      */
-    handleResourceClick : function (resource, url, methods, runType, parameters) {
+    handleResourceClick : function (resource, url, methods, runType, parameters, postParameter) {
         //check that the number of records allowed is not reached
         var showParameterBox = false;
         var params = [];
@@ -164,6 +164,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 runType : runType,
                 parameters : parameters,
                 contextMenu : this,
+                postParameter : postParameter,
                 withSelection : (this.getNbRowsSelected() !== 0)
             };
             SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
@@ -181,12 +182,13 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 runType : runType,
                 parameters : parameters,
                 contextMenu : this,
-                withSelection : false
+                withSelection : false,
+                postParameter : postParameter
             };
             SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
         }
         else {
-            this.onResourceCallClick(resource, url, methods, runType, null, params);
+            this.onResourceCallClick(resource, url, methods, runType, null, params, postParameter);
         }
     },
 
@@ -214,7 +216,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      *            a list of key/value object
      * 
      */
-    onResourceCallClick : function (resource, url, method, userSyncChoice, limit, userParameters) {
+    onResourceCallClick : function (resource, url, method, userSyncChoice, limit, userParameters, postParameter) {
         if ((method === "POST" || method === "PUT" || method === "DELETE") && userSyncChoice === "TASK_RUN_SYNC") {
             Ext.Msg.alert(i18n.get('label.error'), String.format(i18n.get("error.invalidMethodOrSyncRessourceCall"), method, userSyncChoice));
             return;
@@ -313,7 +315,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
             }
             return;
         } else {
-            this._executeRequestForResource(url, method);
+            this._executeRequestForResource(url, method, postParameter);
         }
     },
     /**
@@ -389,7 +391,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * @param {Array} parameters An array of parameters.
      * 
      */
-    checkResourceParameters : function (resource, url, methods, runType, parameters) {
+    checkResourceParameters : function (resource, url, methods, runType, parameters, postParameter) {
         //in the case of a OrderResource, let's check that the number of records is not superior to too_many_selected_threshold => stop the resource execution
         var maxThreshold = this.getParameterFromName(parameters, "too_many_selected_threshold");
         var nbRows;
@@ -425,14 +427,14 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                     scope : this,
                     fn : function (btn, text) {
                         if (btn === 'yes') {
-                            this.handleResourceClick(resource, url, methods, runType, parameters);
+                            this.handleResourceClick(resource, url, methods, runType, parameters, postParameter);
                         }
                     }
                 }); 
                 return;     
             }
         }
-        this.handleResourceClick(resource, url, methods, runType, parameters);
+        this.handleResourceClick(resource, url, methods, runType, parameters, postParameter);
     },
     /**
      * get the parameter with the given name from the given list of parameter

@@ -142,6 +142,9 @@ public final class ProjectAdministration extends AbstractProjectApplication {
     appContext.getAttributes().put(ContextAttributes.APP_STORE, getStore());
     appContext.getAttributes().put(Consts.APP_STORE_GRAPH, getGraphStore());
     appContext.getAttributes().put(ContextAttributes.LOG_TO_APP_LOGGER, Boolean.TRUE);
+    
+ // to allow SVA to request the Dataset with cookie authentification.
+    appContext.getAttributes().put(ContextAttributes.COOKIE_AUTHENTICATION, Boolean.TRUE);
 
     ProjectApplication proja = new ProjectApplication(appContext, proj.getId());
 
