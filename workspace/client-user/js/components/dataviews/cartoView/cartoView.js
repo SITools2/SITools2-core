@@ -92,11 +92,12 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     var mapPanel = new sitools.user.component.dataviews.cartoView.mapPanel(config);
     
     mapPanel.addListener("selectionmodelready", function () {
+        this.sm.locked = false;
+        this.sm.clearSelections(true);
         if (!Ext.isEmpty(this.ranges)) {
             var ranges = Ext.util.JSON.decode(this.ranges);
-            Ext.each(ranges, function (range) {
-                this.getSelectionModel().selectRange(range[0], range[1], true);
-            }, this);
+                this.selectRangeDataview(ranges);
+                delete this.ranges;
         }
     }, this);
 
@@ -109,7 +110,9 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         datasetCm : config.datasetCm,
         userPreference : config.userPreference, 
         bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
-        formParams : config.formParams, 
+        formParams : config.formParams,
+        ranges : config.ranges,
+        startIndex : config.startIndex,
         formMultiDsParams : config.formMultiDsParams, 
         datasetId : config.datasetId,
         remoteSort: true, 
@@ -169,29 +172,16 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         origin : this.origin,
         columnModel : config.datasetCm
     });
-   
 
-    
     var bbar = new Ext.PagingToolbar({
-        pageSize: 300,
-        store: this.store,
-        refreshText : i18n.get('label.refreshText'), 
-        displayInfo: true,
-        displayMsg: i18n.get('paging.display'), 
-        listeners : {
-            scope : this,
-//          change : function (tb, pageData) {
-                
-//              var plotComp = Ext.getCmp("plot" + this.datasetId);
-//              if (plotComp) {
-//                  var rightPanel = plotComp.findById('plot-right-panel');
-//                  var success = rightPanel.fireEvent('buffer', tb.store, pageData.activePage, pageData.activePage, pageData.pages);
-//              }
-//          }
-        }
+        pageSize : DEFAULT_LIVEGRID_BUFFER_SIZE,
+        store : this.store,
+        refreshText : i18n.get('label.refreshText'),
+        displayInfo : true,
+        displayMsg : i18n.get('paging.display')
     });
     
-    var sm = new sitools.user.component.dataviews.cartoView.featureSelectionModel({
+    this.sm = new sitools.user.component.dataviews.cartoView.featureSelectionModel({
         listeners : {
             scope : this, 
             gridFeatureSelected : function (g, rowIndex, e) {
@@ -216,10 +206,9 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     
     var gridWidth = 100 - dataviewConfig.mapWidth;
     
-    
     //create a new columnModel with the selectionModel
     var configCol = cm.config;
-    configCol.unshift(sm);
+    configCol.unshift(this.sm);
     cm = new Ext.grid.ColumnModel({
         columns : configCol
     });
@@ -235,7 +224,7 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
 //        plugins : [ gridFilters ],
         width : "" + gridWidth + "%",
         cm : cm,
-        sm : sm,
+        sm : this.sm,
         bbar : bbar,
         view : new Ext.ux.sitoolsGridView({
             nearLimit : DEFAULT_NEAR_LIMIT_SIZE, 
@@ -409,8 +398,14 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     
     getSelectionsRange : function () {
         var sm = this.getSelectionModel();
-        var ranges = sm.getAllSelections(true);
-        return Ext.util.JSON.encode(ranges);
+        var dirtyRanges = sm.getAllSelections(true);
+        var cleanedRanges = [];
+        Ext.each(dirtyRanges, function (range) {
+            if (range[0] != -1 || range[1] != -1) {
+                cleanedRanges.push(range);
+            }
+        })
+        return Ext.util.JSON.encode(cleanedRanges);
     },
     
     getDatasetView : function () {
@@ -467,8 +462,25 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
     
     isAllSelected : function () {
         return this.getSelectionModel().markAll;
-    }
+    },
     
+    changePage : function (startIndex, callback) {
+        if (startIndex != this.store.lastOptions.params.start) {
+            this.store.load({
+                start : startIndex,
+                limit : DEFAULT_LIVEGRID_BUFFER_SIZE
+            }, 
+            function () {
+                callback();
+            }, this);
+        }
+    },
+    
+    selectRangeDataview : function (ranges) {
+        Ext.each(ranges, function (range) {
+            this.getSelectionModel().selectRange(range[0], range[1], true);
+        }, this);
+    }
 });
 
 /**

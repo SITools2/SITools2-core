@@ -124,8 +124,7 @@ sitools.user.component.dataviews.services.addToCartService =  {
         globalOrder.ranges = this.dataview.getSelectionsRange();
         globalOrder.dataToExport = dataToExport;
         
-        // TODO save the start index to reload the right page
-        //this.dataview.getStore().lastOptions.params.start
+        globalOrder.startIndex = this.dataview.getStore().lastOptions.params.start;
         
         globalOrder.nbRecords = (grid.isAllSelected()) ? this.dataview.store.getTotalCount() : this.dataview.getNbRowsSelected();
         

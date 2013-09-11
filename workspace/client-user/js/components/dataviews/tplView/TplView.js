@@ -74,7 +74,6 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         //set the nocount param to false.
         //before load is called only when a new action (sort, filter) is applied
         var noCount;
-        
         if (!store.isFirstCountDone || store.isNewFilter) {
             options.params.nocount = false;
         } else {
@@ -82,7 +81,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         }
 
         if (store.isNewFilter) {
-			options.params.start = 0;
+			options.params.start = (config.startIndex) ? config.startIndex : 0;
 			options.params.limit = DEFAULT_LIVEGRID_BUFFER_SIZE;
 		}
         
@@ -102,7 +101,6 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
     }, this);
     
-    
 	this.store.on('load', function (store, records, options) {
 		if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
 			this._loadMaskAnchor.unmask();
@@ -116,33 +114,14 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         
         
         this.getTopToolbar().updateContextToolbar();
-	
+        this.processFeatureType();
 	}, this);
 
 	this.store.load({
 		params : {
-			start : 0, 
+//			start : 0, 
+			start : (config.startIndex) ? config.startIndex : 0, 
 			limit : DEFAULT_LIVEGRID_BUFFER_SIZE
-		},
-		callback : function () {
-		    var nodes = this.dataView.getNodes();
-		    var controller = this.getTopToolbar().guiServiceController;
-		    Ext.each(nodes, function (node) {
-                var record = this.dataView.getRecord(node);
-                var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", node);
-                Ext.each(featureTypeNodes, function (featureTypeNode) {
-                    var featureTypeNodeElement = Ext.get(featureTypeNode);
-
-                    var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
-                    var column = this.getColumnFromColumnModel(columnAlias);
-
-                    featureTypeNodeElement.addListener("click", this.callbackClickFeatureType, this, {
-                        record : record,
-                        controller : controller,
-                        column : column
-                    });
-                }, this);
-            }, this);
 		},
 		scope : this
 	});
@@ -214,6 +193,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         selectedClass : 'x-view-selected-datasetView',
         emptyText: '', 
         simpleSelect : true,
+        ready : false,
         refresh : function() {
             this.clearSelections(false, true);
             var el = this.getTemplateTarget(),
@@ -221,17 +201,28 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
                 
             el.update('');
             if(records.length < 1){
-                if(!this.deferEmptyText || this.hasSkippedEmptyText){
+                if(!this.deferEmptyText || this.hasSkippedEmptyText) {
                     el.update(this.emptyText);
                 }
                 this.all.clear();
-            }else{
+            }else {
                 this.tpl.overwrite(el, this.collectData(records, 0));
                 this.all.fill(Ext.query(this.itemSelector, el.dom));
                 this.updateIndexes(0);
+                
+                if (this.newDataLoaded) {
+                    this.newDataLoaded = false;
+                    this.fireEvent('newdataloaded');
+                }
             }
+			console.log('refresh');
             this.hasSkippedEmptyText = true;
-            this.fireEvent('selectionmodelready');
+        },
+        onDataChanged: function() {
+            this.newDataLoaded = true;
+            if (this.blockRefresh !== true) {
+                this.refresh.apply(this, arguments);
+            }
         },
         listeners : {
 			scope : this, 
@@ -267,20 +258,23 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				    var unselectedRec = this.getUnselectedRow(recs, this.store.data.items);
 				    this.select(unselectedRec);
 				}
-				
 			},
-			selectionmodelready : function () {
+			newdataloaded : function () {
+				console.log('newdataloaded');
 		        if (!Ext.isEmpty(this.ranges)) {
-		            var ranges = Ext.util.JSON.decode(this.ranges);
-		            Ext.each(ranges, function (range) {
-		                this.getSelectionModel().selectRange(range[0], range[1], true);
-		            }, this);
+		                var ranges = Ext.util.JSON.decode(this.ranges);
+		                this.selectRangeDataview(ranges);
+						delete this.ranges;
+//						this.ready = false;
+//						var bbar = this.getBottomToolbar();
+//						var newPage = Math.ceil((this.startIndex + bbar.pageSize) / bbar.pageSize);
+//						bbar.changePage(newPage);
 		        }
 			}
         }
 	});
 	
-	this.dataView.addEvents('selectionmodelready');
+	this.dataView.addEvents('newdataloaded');
 	
 	var configDataViewPanel = {
 		autoScroll : true,
@@ -290,8 +284,6 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 
 	var panelWest = new Ext.Panel(configDataViewPanel);
 	
-	
-
 	this.panelDetail = new sitools.user.component.viewDataDetail({
 		fromWhere : "dataView",
 		grid : this, 
@@ -685,8 +677,34 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
         var controller = o.controller;        
         var column = o.column;
         sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);
-    }
+    },
 
+    selectRangeDataview : function (ranges) {
+        Ext.each(ranges, function (range) {
+            this.getSelectionModel().selectRange(range[0], range[1], true);
+        }, this);
+    },
+    
+    processFeatureType : function () {
+        var nodes = this.dataView.getNodes();
+        var controller = this.getTopToolbar().guiServiceController;
+        Ext.each(nodes, function (node) {
+            var record = this.dataView.getRecord(node);
+            var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", node);
+            Ext.each(featureTypeNodes, function (featureTypeNode) {
+                var featureTypeNodeElement = Ext.get(featureTypeNode);
+
+                var columnAlias = featureTypeNodeElement.getAttribute("column", "sitools");
+                var column = this.getColumnFromColumnModel(columnAlias);
+
+                featureTypeNodeElement.addListener("click", this.callbackClickFeatureType, this, {
+                    record : record,
+                    controller : controller,
+                    column : column
+                });
+            }, this);
+        }, this);
+    }
 });
 
 /**
