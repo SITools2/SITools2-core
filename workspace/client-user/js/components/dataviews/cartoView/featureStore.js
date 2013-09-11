@@ -98,9 +98,11 @@ sitools.user.component.dataviews.cartoView.featureStore = function (config) {
     });
     
     sitools.user.component.dataviews.cartoView.featureStore.superclass.constructor.call(this, config);
+	var sIndex;
+	(config.startIndex) ? sIndex = config.startIndex : sIndex = 0;
 	this.load({
 		params : {
-			start : 300, 
+			start : sIndex, 
 			limit : DEFAULT_LIVEGRID_BUFFER_SIZE
 		}
 	});

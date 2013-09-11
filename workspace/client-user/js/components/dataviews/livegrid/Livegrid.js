@@ -380,9 +380,8 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
             selectionmodelready : function () {
                 if (!Ext.isEmpty(this.ranges)) {
                     var ranges = Ext.util.JSON.decode(this.ranges);
-                    Ext.each(ranges, function (range) {
-                        this.getSelectionModel().selectRange(range[0], range[1], true);
-                    }, this);
+                    this.selectRangeDataview(ranges);
+                   
                 }
             }
         }
@@ -648,9 +647,13 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
     isAllSelected : function () {
         var nbRowsSelected = this.getNbRowsSelected();
         return nbRowsSelected === this.getStore().getTotalCount() || this.getSelectionModel().markAll;
+    },
+    
+    selectRangeDataview : function (ranges) {
+        Ext.each(ranges, function (range) {
+            this.getSelectionModel().selectRange(range[0], range[1], true);
+        }, this);
     }
-    
-    
 });
 
 /**

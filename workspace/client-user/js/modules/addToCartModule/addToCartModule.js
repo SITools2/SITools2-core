@@ -133,6 +133,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 name : 'ranges'
             }, {
                 name : 'dataToExport'
+            }, {
+                name : 'startIndex'
             }]
         });
         
@@ -256,6 +258,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             var tmpSelection = {};
            // delete selection.data.colModel;
             delete selection.data.records;
+            delete selection.data.startIndex;
             Ext.apply(tmpSelection, selection.data);
             putObject.selections.push(tmpSelection);
         });

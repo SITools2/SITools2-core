@@ -50,23 +50,28 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
     },
 
     displaySelectionCart : function () {
-        
         var ranges = null;
+        var startIndex = 0;
         
         if(this.cartSelectionFile) {
             Ext.each(this.cartSelectionFile.cartSelections, function (sel) {
                 if (sel.selectionName === this.dataview.datasetName) {
                     ranges = sel.ranges;
+                    startIndex = sel.startIndex;
                     return false;
                 }
             }, this);
         }
-        
-        var url = this.dataview.dataUrl;
-        sitools.user.clickDatasetIcone(url, 'data', {
-            ranges : ranges
+        this.dataview.getSelectionModel().clearSelections();
+        this.dataview.ranges = ranges;
+        this.dataview.startIndex = startIndex;
+        this.dataview.store.load({
+            params : {
+                start : startIndex,
+                limit : DEFAULT_LIVEGRID_BUFFER_SIZE
+            },
+            scope : this.dataview
         });
-        this.dataview.ownerCt.close();
     }
 };
 Ext.reg('sitools.user.component.dataviews.services.displaySelectionCartService', sitools.user.component.dataviews.services.displaySelectionCartService);
