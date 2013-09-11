@@ -75,7 +75,7 @@ public class CartOrderResource extends AbstractOrderResource {
   private ClientInfo clientInfo;
   private String date;
   private String userName;
-  
+
 
   @Override
   public void doInit() {
@@ -149,15 +149,12 @@ public class CartOrderResource extends AbstractOrderResource {
   @Override
   public ListReferencesAPI listFilesToOrder() throws SitoolsException {
 
-    return new ListReferencesAPI("");
-
-  }
-
-  @Override
-  public Representation processOrder(ListReferencesAPI listReferences) throws SitoolsException {
+    ListReferencesAPI listRef = new ListReferencesAPI(settings.getPublicHostDomain() + settings.getString(Consts.APP_URL));
+    List<Reference> list = new ArrayList<Reference>();
 
     Order order = null;
     try {
+      
       order = OrderAPI.createOrder(userName, getContext(), "ORDER_CART_" + date);
       OrderAPI.activateOrder(order, getContext());
 
@@ -172,10 +169,10 @@ public class CartOrderResource extends AbstractOrderResource {
         String datasetUrl = sel.getDataUrl();
         List<Column> colModel = sel.getColModel();
         
-        String[] dataCols = null;
-        if (sel.getDataToExport()!=null){
-          dataCols = sel.getDataToExport();
-        } 
+//        String[] dataCols = null;
+//        if (sel.getDataToExport()!=null){
+//          dataCols = sel.getDataToExport();
+//        }         
         
         String colurl = "";
         for ( Column column : colModel ) {
@@ -186,9 +183,8 @@ public class CartOrderResource extends AbstractOrderResource {
         }
         String url = datasetUrl + "/records" + "?" + selections + "&colModel=\"" + colurl + "\"" ;
         List<Record> recs = RIAPUtils.getListOfObjects(url  , getContext());
-
+        
         List<Record> extractrecs = new ArrayList<Record>();
-
         Set<String> filesUrlSet = new HashSet();
         
         for ( Record rec : recs ) {
@@ -212,9 +208,11 @@ public class CartOrderResource extends AbstractOrderResource {
           
           extractrecs.add(extractrec);
           
-          // DOWNLOAD DATA FROM DATA COLUMNS
-          
-          if (dataCols != null){
+          // DOWNLOAD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
+
+          if (sel.getDataToExport() != null){
+            
+            String[] dataCols = sel.getDataToExport();            
             for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
               for (int i=0; i<= (dataCols.length - 1); i++){
                 if (attributeValue.getName().equals(dataCols[i])){
@@ -225,30 +223,22 @@ public class CartOrderResource extends AbstractOrderResource {
                 }
               }
             }
+            
           }
        }
       
-        //globalrecs.addAll(recs);
        globalrecs.addAll(extractrecs);
-
+       
        // DOWNLOAD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
        
        for (String strUrl : filesUrlSet) {
          Reference ref = new Reference(strUrl);
-         Reference destRef = new Reference(userStorageRef);
-         destRef.addSegment("data");
-         destRef.addSegment(ref.getLastSegment());
-         try {
-           OrderResourceUtils.copyFile(ref, destRef, clientInfo, getContext());
-         }
-         catch (SitoolsException e) {
-           getLogger().log(Level.WARNING, "File not copied : " + ref, e);
-         }
+         listRef.addReferenceSource(ref);
        }
-       
+ 
       }
 
-      // SERIALIZE RECORDS INTO METADATA.XML  
+      // INITIALIZE XSTREAM REPRESENTATION FOR FURTHER PROCESSING  
       
       XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, getContext());
       xstream.alias("record", Record.class);
@@ -256,24 +246,18 @@ public class CartOrderResource extends AbstractOrderResource {
       xstream.alias("response", Response.class);
       xstream.alias("attributeValue", AttributeValue.class);
       
-      XstreamRepresentation<List<Record>> rep = new XstreamRepresentation<List<Record>>(MediaType.TEXT_XML, globalrecs);
-      
-      rep.setXstream(xstream);
+      XstreamRepresentation<List<Record>> metadataXmlRepresentation = new XstreamRepresentation<List<Record>>(MediaType.TEXT_XML, globalrecs);
+      metadataXmlRepresentation.setXstream(xstream);
 
-      Reference destRef = new Reference(userStorageRef);
-      destRef.addSegment("metadata");
-      destRef.setExtensions("xml");
-      OrderResourceUtils.addFile(rep, destRef, clientInfo, getContext());
-      
-      try {
-        OrderAPI.terminateOrder(order, getContext());
-      }
-      catch (SitoolsException e) {
-        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-      }
+      Reference metadataSourceRef = new Reference(userStorageRef);
+      metadataSourceRef.addSegment("metadata");
+      metadataSourceRef.setExtensions("xml");
 
-    }
+      OrderResourceUtils.addFile(metadataXmlRepresentation, metadataSourceRef, clientInfo, getContext());
 
+      listRef.addReferenceSource(metadataSourceRef);
+
+    }  
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);
       if (order != null) {
@@ -284,13 +268,17 @@ public class CartOrderResource extends AbstractOrderResource {
           throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
       }
-      Response response = new Response(false, "label.download_ko");
-      return getRepresentation(response, MediaType.APPLICATION_JSON);
     }
-
-    Response response = new Response(true, "label.download_ok");
-    return getRepresentation(response, MediaType.APPLICATION_JSON);
     
+    
+    return listRef;
+
+  }
+
+  @Override
+  public Representation processOrder(ListReferencesAPI listReferences) throws SitoolsException {
+    
+    return null;
     
   }
 
