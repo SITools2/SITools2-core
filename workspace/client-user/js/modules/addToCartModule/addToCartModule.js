@@ -31,10 +31,37 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
         
         this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', this.user) + "/files";
-        this.urlCartFile = loadUrl.get('APP_URL') + this.AppUserStorage + "/" + DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_CartSelections.json";
+        this.urlCartFileForServer = this.AppUserStorage + "/" + DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_CartSelections.json";
+        this.urlCartFile = loadUrl.get('APP_URL') + this.urlCartFileForServer;
         
-        // Default broadcast mode
-        this.broadcastMode = "uspr";
+        
+        Ext.each(this.listProjectModulesConfig, function (config) {
+            if (!Ext.isEmpty(config.value)) {
+                switch (config.name) {
+                case "orderServices" :
+                    this.orderServices = Ext.util.JSON.decode(config.value);
+                    break;
+                }
+            }
+        }, this);
+        
+        this.tbarMenu = new Ext.menu.Menu();
+        this.tbarMenu.add('<b class="menu-title"><i>' + i18n.get('label.broadcastMode') + '</i></b>', '-');
+        
+        Ext.each(this.orderServices, function (service) {
+            this.tbarMenu.add({
+                text : service.label,
+                serviceName : service.name,
+                serviceId : service.id,
+                serviceUrl : service.url,
+                scope : this,
+                handler : function (btn) {
+                    this.setCurrentServiceName(btn);
+                    this.downloadSelection();
+                    
+                }
+            });
+        }, this);
         
         this.tbar = {
             xtype : 'toolbar',
@@ -44,37 +71,15 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 cls : 'services-toolbar-btn'
             },
             items : [{
-                xtype : 'splitbutton',
+                xtype : 'button',
                 text : i18n.get('label.downloadOrder'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
                 tooltip : i18n.get('label.downloadOrder'),
                 scope : this,
-                handler : this.downloadSelection,
-                menu : new Ext.menu.Menu({
-                    items : [ '<b class="menu-title"><i>' + i18n.get('label.broadcastMode') + '</i></b>', '-', {
-                        text : i18n.get('label.userStoragePrivate'),
-                        broadcastMode : 'uspr',
-                        group : 'broadcast',
-                        checked : true,
-                        scope : this,
-                        handler : this.setBroadcastMode
-                    }, {
-                        text : i18n.get('label.userStoragePublic'),
-                        broadcastMode : 'usp',
-                        group : 'broadcast',
-                        checked : false,
-                        scope : this,
-                        handler : this.setBroadcastMode
-                    }, {
-                        text : i18n.get('label.streaming'),
-                        broadcastMode : 'stream',
-                        group : 'broadcast',
-                        checked : false,
-                        scope : this,
-                        handler : this.setBroadcastMode
-                    }]
-                })
-            }, '->', {
+//                handler : this.downloadSelection,
+                menu : this.tbarMenu
+                }, '->', 
+            {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
                 tooltip : i18n.get('label.refreshOrder'),
                 cls : 'button-transition',
@@ -276,14 +281,13 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                     return;
                 }
                 var services = json.data;
-                var index = Ext.each(services, function(service){
-                   if(service.name==="StreamingOrderResourceModel"){
-                       return false;
-                   } 
-                });
+                var index = Ext.each(services, function (service) {
+                    if (service.name === this.currentServiceName) {
+                        return false;
+                    }
+                }, this);
                 var resource = services[index];
-                if(!Ext.isEmpty(resource)){
-                    
+                if(!Ext.isEmpty(resource)) {
                     var parameters = resource.parameters;
                     var url = null, icon = null, method = null, runTypeUserInput = null;
                     parameters.each(function (param) {
@@ -303,15 +307,21 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         }
                     }, this);
                     
+                    // add a parameter with the cart File URL
+                    parameters.push({
+                        description : "cart file URL",
+                        name : "cartFile",
+                        type: "PARAMETER_IN_QUERY",
+                        value : this.urlCartFileForServer
+                    });
+                    
                     this.serviceServerUtil = new sitools.user.component.dataviews.services.serverServicesUtil({
                         datasetUrl : projectGlobal.sitoolsAttachementForUsers, 
                         datasetId : projectGlobal.projectId, 
                         origin : "sitools.user.modules.projectServices"
                     });
                     
-                    this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters, {jsonData : putObject} );
-                }else {
-                    alert("pas trouvé");
+                    this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters);
                 }
             }
         });
@@ -451,8 +461,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
      * Set the download mode
      * @param btn the broadcast mode chosen
      */
-    setBroadcastMode : function (btn) {
-        this.broadcastMode = btn.broadcastMode;
+    setCurrentServiceName : function (btn) {
+        this.currentServiceName = btn.serviceName;
     },
     
     /**
@@ -469,3 +479,120 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
 });
 
 Ext.reg('sitools.user.modules.addToCartModule', sitools.user.modules.addToCartModule);
+
+sitools.user.modules.addToCartModule.getParameters = function () {
+    var projectProp = Ext.getCmp(ID.COMPONENT_SETUP.PROJECT);
+    var projectId = projectProp.formProject.find('name', 'id')[0].getValue();
+    
+    this.urlParents = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
+    this.resourcesUrlPart = loadUrl.get('APP_RESOURCES_URL');
+    this.urlResources = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes';
+    this.appClassName = "fr.cnes.sitools.project.ProjectApplication" ;
+    
+//    var url = this.urlParents + "/" + projectId + this.resourcesUrlPart + this.urlParentsParams;
+    var url = this.urlParents + "/" + projectId + this.resourcesUrlPart;
+    
+    return [{
+        jsObj : "sitools.component.datasets.selectItems",
+        config : {
+            height : 200,
+            layout : {
+                type : 'hbox',
+                pack : 'start',
+                align : 'stretch'
+            },
+            grid1 : new Ext.grid.GridPanel({
+                width : 200,
+                margins : {
+                    top : 0,
+                    right : 2,
+                    bottom : 0,
+                    left : 0
+                },
+                viewConfig : {
+                    forceFit : true
+                },
+                store : new Ext.data.JsonStore({
+                    fields : [ 'id', 'name', 'description', 'parameters' ],
+                    idProperty : 'id',
+                    url : url,
+                    root : "data",
+                    autoLoad : true
+                }),
+                colModel : new Ext.grid.ColumnModel({
+                    columns : [{
+                        header : i18n.get('Project Services'),
+                        dataIndex : 'name',
+                        sortable : true
+                    }]
+                })
+            }),
+            grid2 : new Ext.grid.EditorGridPanel({
+                width : 200,
+                margins : {
+                    top : 0,
+                    right : 0,
+                    bottom : 0,
+                    left : 2
+                },
+                viewConfig : {
+                    forceFit : true,
+                },
+                store : new Ext.data.JsonStore({
+                    fields : [ 'id', 'name', 'description', 'url', 'label' ],
+                    idProperty : 'id',
+                    listeners : {
+                        add : function (store, records) {
+                            Ext.each(records, function (rec) {
+                                Ext.each(rec.data.parameters, function (param) {
+                                    if (param.name == "url") {
+                                        rec.data.url = param.value;
+                                    }
+                                });
+                            });
+                        }
+                    }
+                }),
+                colModel : new Ext.grid.ColumnModel({
+                    columns : [{
+                        header : i18n.get('Order Services'),
+                        dataIndex : 'name',
+                        width : 80,
+                        sortable : true
+                    }, {
+                        header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                        dataIndex : 'label',
+                        width : 80,
+                        editor : new Ext.form.TextField()
+                    },]
+                })
+            }),
+            name : "orderServices",
+            value : [],
+            getValue : function () {
+                var orderServices = [];
+                var store = this.grid2.getStore();
+
+                store.each(function (srv) {
+                    var service = {};
+                    service.id = srv.data.id;
+                    service.name = srv.data.name;
+                    service.url = srv.data.url;
+                    service.label = (!Ext.isEmpty(srv.data.label)) ? srv.data.label : srv.data.name;
+                    orderServices.push(service);
+                });
+                var orderServicesString = Ext.util.JSON.encode(orderServices);
+                return orderServicesString;
+            },
+            setValue : function (value) {
+                var orderServices = Ext.util.JSON.decode(value);
+                Ext.each(orderServices, function (service) {
+                    var serviceRecord = new Ext.data.Record(service);
+                    this.grid2.getStore().add(serviceRecord);
+                }, this);
+                this.value = value;
+            }
+        }
+    } ];
+};
+

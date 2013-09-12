@@ -159,7 +159,8 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
         var url = this.selection.data.dataUrl;
         var params = {
             ranges : this.selection.get('ranges'),
-            startIndex : this.selection.get('startIndex')
+            startIndex : this.selection.get('startIndex'),
+            nbRecordsSelection : this.selection.get('nbRecords')
         };
         sitools.user.clickDatasetIcone(url, 'data', params);
     }

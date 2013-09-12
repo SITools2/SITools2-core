@@ -379,9 +379,14 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
             scope : this,
             selectionmodelready : function () {
                 if (!Ext.isEmpty(this.ranges)) {
-                    var ranges = Ext.util.JSON.decode(this.ranges);
-                    this.selectRangeDataview(ranges);
-                   
+                    if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
+                        this.getSelectionModel().selectAll();
+                        delete this.nbRecordsSelection;
+                    } else {
+                        var ranges = Ext.util.JSON.decode(this.ranges);
+                        this.selectRangeDataview(ranges);
+                        delete this.ranges;
+                    }
                 }
             }
         }
@@ -395,8 +400,6 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         columnModel : config.datasetCm
     });
     
-
-    
     /**
      * {Ext.ux.grid.livegrid.Toolbar} Bottom bar of the liveGrid
      */
@@ -407,14 +410,12 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         refreshText : i18n.get('label.refreshText')
     });
     
-    
     //create a new columnModel with the selectionModel
     var configCol = cm.config;
     configCol.unshift(selModelSimple);
     cm = new Ext.grid.ColumnModel({
         columns : configCol
     }); 
-    
     
     // -- CONSTRUCTOR --
 	sitools.user.component.dataviews.livegrid.LiveGrid.superclass.constructor.call(this, Ext.apply({
@@ -448,7 +449,6 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	        }
 //	        plugins : [ filtersSimple ]
 	    }, config));    
-
 };
 
 Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.livegrid.EditorGridPanel, {
@@ -633,13 +633,13 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
      */
     getCustomToolbarButtons : function () {
         var array = [];
-        array.push(new Ext.Toolbar.Separator());
         array.push({
             name : "columnsButton",
             tooltip : i18n.get('label.addOrDeleteColumns'),
             iconCls: 'x-cols-icon',
             menu : sitools.user.component.dataviews.dataviewUtils.createColMenu(this.getDatasetView(), this.getColumnModel())
         });
+        array.push(new Ext.Toolbar.Separator());
         this.getDatasetView().hdCtxIndex = 0;
         return array;
     },

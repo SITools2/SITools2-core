@@ -112,7 +112,6 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         }
         store.isFirstCountDone = true;
         
-        
         this.getTopToolbar().updateContextToolbar();
         this.processFeatureType();
 	}, this);
@@ -215,7 +214,6 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
                     this.fireEvent('newdataloaded');
                 }
             }
-			console.log('refresh');
             this.hasSkippedEmptyText = true;
         },
         onDataChanged: function() {
@@ -260,15 +258,16 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 				}
 			},
 			newdataloaded : function () {
-				console.log('newdataloaded');
 		        if (!Ext.isEmpty(this.ranges)) {
-		                var ranges = Ext.util.JSON.decode(this.ranges);
-		                this.selectRangeDataview(ranges);
-						delete this.ranges;
-//						this.ready = false;
-//						var bbar = this.getBottomToolbar();
-//						var newPage = Math.ceil((this.startIndex + bbar.pageSize) / bbar.pageSize);
-//						bbar.changePage(newPage);
+					if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
+					    this.getCustomToolbarButtons();
+					    this.selectAllRows.toggle(true);
+                        delete this.nbRecordsSelection;
+                    } else {
+                        var ranges = Ext.util.JSON.decode(this.ranges);
+                        this.selectRangeDataview(ranges);
+                        delete this.ranges;
+                    }
 		        }
 			}
         }
@@ -596,7 +595,6 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
         var iconCls = (this.isAllSelected()) ? "checkbox-icon-on" : "checkbox-icon-off";
         var pressed = this.isAllSelected();
         
-        array.push(new Ext.Toolbar.Separator());
         
         this.selectAllRows = new Ext.Button({
             name : "selectAll",
@@ -623,6 +621,7 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
             
         });
         array.push(this.selectAllRows);
+        array.push(new Ext.Toolbar.Separator());
         return array;
     },
     

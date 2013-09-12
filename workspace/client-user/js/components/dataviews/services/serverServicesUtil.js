@@ -140,12 +140,13 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
     handleResourceClick : function (resource, url, methods, runType, parameters, postParameter) {
         //check that the number of records allowed is not reached
         var showParameterBox = false;
-        var params = [];
+        var params = {};
         Ext.each(parameters, function (parameter) {
             if (parameter.type === "PARAMETER_USER_INPUT" && parameter.userUpdatable) {
                 showParameterBox = true;
+            } else if (parameter.type == "PARAMETER_IN_QUERY") {
+                params[parameter.name] = parameter.value;   
             }
-            params[parameter.name] = parameter.value;   
         });
         if (methods.split("|") && methods.split("|").length > 1) {
             showParameterBox = true;

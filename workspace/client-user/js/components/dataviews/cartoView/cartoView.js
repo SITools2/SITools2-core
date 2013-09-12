@@ -93,11 +93,16 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
     
     mapPanel.addListener("selectionmodelready", function () {
         this.sm.locked = false;
-        this.sm.clearSelections(true);
         if (!Ext.isEmpty(this.ranges)) {
-            var ranges = Ext.util.JSON.decode(this.ranges);
+            if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
+                this.getSelectionModel().onHdMouseDown(Ext.EventObject, this.getSelectionModel().headerCheckbox.dom.childNodes[1]);
+                delete this.nbRecordsSelection;
+                delete this.ranges;
+            } else {
+                var ranges = Ext.util.JSON.decode(this.ranges);
                 this.selectRangeDataview(ranges);
                 delete this.ranges;
+            }
         }
     }, this);
 
@@ -449,13 +454,13 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
      */
     getCustomToolbarButtons : function () {
         var array = [];
-        array.push(new Ext.Toolbar.Separator());
         array.push({
             name : "columnsButton",
             tooltip : i18n.get('label.addOrDeleteColumns'),
             iconCls: 'x-cols-icon',
             menu : sitools.user.component.dataviews.dataviewUtils.createColMenu(this.getDatasetView(), this.getColumnModel())
         });
+        array.push(new Ext.Toolbar.Separator());
         this.getDatasetView().hdCtxIndex = 0;
         return array;
     },

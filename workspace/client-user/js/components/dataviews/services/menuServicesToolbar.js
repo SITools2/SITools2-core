@@ -202,7 +202,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
                 menu : new Ext.menu.Menu({
                     showSeparator : false
                 }),
-                iconAlign : "left",
+                iconAlign : "right",
                 clickEvent : 'mousedown'
             });
             this.add(button);
@@ -221,16 +221,17 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
      */
     sortServices : function (records) {
         var tbRight = [], tb = [];
+        tb.push(this.addAdditionalButton());
         Ext.each(records, function (item) {
-            if (item.get('position') === 'right') {
-                tbRight.push(item);
-            } else {
+            if (item.get('position') === 'left') {
                 tb.push(item);
+            } else {
+                tbRight.push(item);
             }
         });
         tb.push(new Ext.Toolbar.Fill());
         
-        return tb.concat(tbRight, this.addAdditionalButton());
+        return tb.concat(tbRight);
     },
     
     

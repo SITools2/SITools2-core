@@ -52,25 +52,33 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
     displaySelectionCart : function () {
         var ranges = null;
         var startIndex = 0;
+        var selection = {};
         
         if(this.cartSelectionFile) {
             Ext.each(this.cartSelectionFile.cartSelections, function (sel) {
                 if (sel.selectionName === this.dataview.datasetName) {
-                    ranges = sel.ranges;
-                    startIndex = sel.startIndex;
+                    selection = sel;
                     return false;
                 }
             }, this);
         }
         this.dataview.getSelectionModel().clearSelections();
-        this.dataview.ranges = ranges;
-        this.dataview.startIndex = startIndex;
+        this.dataview.ranges = selection.ranges;
+        this.dataview.startIndex = selection.startIndex;
+        this.dataview.nbRecordsSelection = selection.nbRecords;
+        
+        this.dataview.getSelectionModel().ready = false;
+        
+        var firstRange = Ext.util.JSON.decode(selection.ranges)[0][0];
+        var startLoad = (firstRange) - ((firstRange % DEFAULT_LIVEGRID_BUFFER_SIZE) % DEFAULT_LIVEGRID_BUFFER_SIZE);
+        
         this.dataview.store.load({
             params : {
                 start : startIndex,
+//                start : startLoad,
                 limit : DEFAULT_LIVEGRID_BUFFER_SIZE
             },
-            scope : this.dataview
+            scope : this
         });
     }
 };
