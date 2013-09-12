@@ -19,14 +19,12 @@
 package fr.cnes.sitools.resources.order.cart;
 
 import java.io.File;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -42,11 +40,6 @@ import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 import fr.cnes.sitools.cart.model.CartSelection;
 import fr.cnes.sitools.cart.model.CartSelections;
@@ -85,44 +78,6 @@ public class CartOrderResource extends AbstractOrderResource {
     settings = ((SitoolsApplication) getApplication()).getSettings();
   }
 
-	public final CartSelections getObject(Representation representation, Variant variant) {
-
-    CartSelections selections = null;
-
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      XstreamRepresentation<CartSelections> repXML = new XstreamRepresentation<CartSelections>(representation);
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-      repXML.setXstream(xstream);
-      selections = repXML.getObject();
-
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-      // Parse the JSON representation to get the bean
-      selections = new JacksonRepresentation<CartSelections>(representation, CartSelections.class).getObject();
-    }
-
-    return selections;
-  }
-
-
-	public final CartSelections getObject(Representation representation, Variant variant) {
-
-	    CartSelections selections = null;
-	
-	    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-	      XstreamRepresentation<CartSelections> repXML = new XstreamRepresentation<CartSelections>(representation);
-	      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
-	      repXML.setXstream(xstream);
-	      selections = repXML.getObject();
-	
-	    }
-	    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-	      // Parse the JSON representation to get the bean
-	      selections = new JacksonRepresentation<CartSelections>(representation, CartSelections.class).getObject();
-	    }
-	
-	    return selections;
-	}
   @Override
   public void doInitialiseOrder() throws SitoolsException {
 
@@ -168,35 +123,6 @@ public class CartOrderResource extends AbstractOrderResource {
 
     userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(user, folderName, getContext());
 
-  }
-
-  /**
-   * MapEntryConverter inner class
-   * */
-  public static class MapEntryConverter implements Converter {
-
-    public boolean canConvert(Class cls) {
-      return AbstractMap.class.isAssignableFrom(cls);
-    }
-
-    public void marshal(Object value, HierarchicalStreamWriter writer, MarshallingContext context) {
-
-      AbstractMap map = (AbstractMap) value;
-
-      for (Object obj : map.entrySet()) {
-        Entry entry = (Entry) obj;
-        writer.startNode(entry.getKey().toString());
-        writer.setValue(entry.getValue().toString());
-        writer.endNode();
-      }
-
-    }
-
-    @Override
-    public Object unmarshal(HierarchicalStreamReader arg0, UnmarshallingContext arg1) {
-      // TODO Auto-generated method stub
-      return null;
-    }
   }
 
   @Override
@@ -333,6 +259,25 @@ public class CartOrderResource extends AbstractOrderResource {
   public String getOrderName() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  public final CartSelections getObject(Representation representation, Variant variant) {
+
+    CartSelections selections = null;
+
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      XstreamRepresentation<CartSelections> repXML = new XstreamRepresentation<CartSelections>(representation);
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
+      repXML.setXstream(xstream);
+      selections = repXML.getObject();
+
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      selections = new JacksonRepresentation<CartSelections>(representation, CartSelections.class).getObject();
+    }
+
+    return selections;
   }
 
 }

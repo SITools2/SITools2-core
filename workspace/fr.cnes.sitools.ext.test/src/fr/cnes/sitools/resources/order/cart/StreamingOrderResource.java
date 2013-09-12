@@ -21,12 +21,9 @@
  */
 package fr.cnes.sitools.resources.order.cart;
 
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
-import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
@@ -66,8 +63,6 @@ public class StreamingOrderResource extends CartOrderResource {
 
   @Override
   public Representation processOrder(ListReferencesAPI listReferences) throws SitoolsException {
-
-    super.processOrder(listReferences);
 
     try {
 
