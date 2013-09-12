@@ -144,7 +144,8 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
         Ext.each(parameters, function (parameter) {
             if (parameter.type === "PARAMETER_USER_INPUT" && parameter.userUpdatable) {
                 showParameterBox = true;
-            } else if (parameter.type == "PARAMETER_IN_QUERY") {
+            } 
+            if (parameter.type == "PARAMETER_IN_QUERY") {
                 params[parameter.name] = parameter.value;   
             }
         });
