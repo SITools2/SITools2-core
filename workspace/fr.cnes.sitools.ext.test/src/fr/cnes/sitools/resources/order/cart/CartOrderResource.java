@@ -22,8 +22,10 @@ import java.io.File;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
@@ -64,18 +66,16 @@ import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.DateUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
-
 public class CartOrderResource extends AbstractOrderResource {
-  
+
   /** Application Settings */
   private SitoolsSettings settings;
-  
+
   private CartSelections cartSelections;
   private Reference userStorageRef;
   private ClientInfo clientInfo;
   private String date;
   private String userName;
-
 
   @Override
   public void doInit() {
@@ -83,39 +83,37 @@ public class CartOrderResource extends AbstractOrderResource {
     settings = ((SitoolsApplication) getApplication()).getSettings();
   }
 
-  
   @Override
   public void doInitialiseOrder() throws SitoolsException {
-  
+
     super.doInitialiseOrder();
-    
-    cartSelections = (CartSelections)getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
+
+    cartSelections = (CartSelections) getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
     getContext().getAttributes().put(TaskUtils.PARENT_APPLICATION, getApplication());
-    
+
     date = DateUtils.format(new Date(), TaskUtils.getTimestampPattern());
 
     clientInfo = this.getRequest().getClientInfo();
     User user = clientInfo.getUser();
     userName = user.getIdentifier();
 
-    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") +  "/" + userName;
+    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") + "/" + userName;
 
     // make directories
-    
+
     File ordersdir = new File(rootdir + "/resources_orders");
     File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
     File datadir = new File(outputdir + "/data");
 
-    ordersdir.mkdir();
-    outputdir.mkdir();
-    datadir.mkdir();
-    
+    // ordersdir.mkdir();
+    // outputdir.mkdir();
+    // datadir.mkdir();
+
     String folderName = "/resources_orders/dataset_" + date;
+
     userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(user, folderName, getContext());
 
-
   }
-  
 
   /**
    * MapEntryConverter inner class
@@ -149,71 +147,75 @@ public class CartOrderResource extends AbstractOrderResource {
   @Override
   public ListReferencesAPI listFilesToOrder() throws SitoolsException {
 
-    ListReferencesAPI listRef = new ListReferencesAPI(settings.getPublicHostDomain() + settings.getString(Consts.APP_URL));
+    ListReferencesAPI listRef = new ListReferencesAPI(settings.getPublicHostDomain()
+        + settings.getString(Consts.APP_URL));
 
     Order order = null;
     try {
-      
+
       order = OrderAPI.createOrder(userName, getContext(), "ORDER_CART_" + date);
       OrderAPI.activateOrder(order, getContext());
 
       List<Record> globalrecs = new ArrayList<Record>();
-      
+
+      Map<Reference, String> refMap = new HashMap<Reference, String>();
+      listRef.setRefSourceTarget(refMap);
+
       for (CartSelection sel : cartSelections.getSelections()) {
-        
+
         OrderAPI.createEvent(order, getContext(), "Processing record for selection : " + sel.getName() + " on dataset "
             + sel.getDatasetName());
-        
+
         String colurl = "";
-        for ( Column column : sel.getColModel() ) {
+        for (Column column : sel.getColModel()) {
           if (!colurl.equals(""))
             colurl += ", " + column.getColumnAlias();
           else
             colurl = column.getColumnAlias();
         }
-        String url = sel.getDataUrl() + "/records" + "?" + sel.getSelections() + "&colModel=\"" + colurl + "\"" ;
-        List<Record> recs = RIAPUtils.getListOfObjects(url  , getContext());
-        
-        // ** ADD DATA TO SOURCE REFERENCES 
+        String url = sel.getDataUrl() + "/records" + "?" + sel.getSelections() + "&colModel=\"" + colurl + "\"";
+        List<Record> recs = RIAPUtils.getListOfObjects(url, getContext());
+
+        // ** ADD DATA TO SOURCE REFERENCES
 
         Set<String> noDuplicateUrlSet = new HashSet();
-        
-        for ( Record rec : recs ) {
+
+        for (Record rec : recs) {
 
           List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
 
           // ADD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
-          if (sel.getDataToExport() != null){
-            String[] dataColToExport = sel.getDataToExport();  
-            for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
-              for (int i=0; i<= (dataColToExport.length - 1); i++){
-                if (attributeValue.getName().equals(dataColToExport[i])){
+          if (sel.getDataToExport() != null) {
+            String[] dataColToExport = sel.getDataToExport();
+            for (AttributeValue attributeValue : rec.getAttributeValues()) {
+              for (int i = 0; i <= (dataColToExport.length - 1); i++) {
+                if (attributeValue.getName().equals(dataColToExport[i])) {
                   if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL)))
                     noDuplicateUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
-                  else 
+                  else
                     noDuplicateUrlSet.add(attributeValue.getValue().toString());
                 }
               }
             }
           }
-        
+
         }
-        
-        // USE STAGING SET TO REMOVE DUPLICATE REFERENCES
-        listRef.addNoDuplicateSourceRef(noDuplicateUrlSet);
-        
-        // ** PREPARE LIST FOR METADATA.XML 
-        
+
+        // REMOVE DUPLICATE REFERENCES AND ADD TARGET NAME TO REFERENCE MAP
+        listRef.addNoDuplicateSourceRef(noDuplicateUrlSet, sel.getSelectionId());
+
+        // ** PREPARE LIST FOR METADATA.XML
+
         List<Record> extractrecs = new ArrayList<Record>();
-        
-        for ( Record rec : recs ) {
+
+        for (Record rec : recs) {
 
           // REMOVE "NO CLIENT ACCESS" COLUMNS FROM LIST
           List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
           Record extractrec = new Record();
-          for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
-            for ( Column column : sel.getColModel() ){
-              if (attributeValue.getName().equals(column.getColumnAlias())){
+          for (AttributeValue attributeValue : rec.getAttributeValues()) {
+            for (Column column : sel.getColModel()) {
+              if (attributeValue.getName().equals(column.getColumnAlias())) {
                 attributeValues.add(attributeValue);
               }
             }
@@ -221,24 +223,25 @@ public class CartOrderResource extends AbstractOrderResource {
             extractrec.setId(rec.getId());
           }
           extractrecs.add(extractrec);
-       }
-       globalrecs.addAll(extractrecs);
- 
+        }
+        globalrecs.addAll(extractrecs);
+
       }
 
       // ** SERIALIZE RECORD LIST TO METADATA REPRESENTATION
-      
+
       XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, getContext());
       xstream.alias("record", Record.class);
       xstream.alias("value", Object.class, String.class);
       xstream.alias("response", Response.class);
       xstream.alias("attributeValue", AttributeValue.class);
-      
-      XstreamRepresentation<List<Record>> metadataXmlRepresentation = new XstreamRepresentation<List<Record>>(MediaType.TEXT_XML, globalrecs);
+
+      XstreamRepresentation<List<Record>> metadataXmlRepresentation = new XstreamRepresentation<List<Record>>(
+          MediaType.TEXT_XML, globalrecs);
       metadataXmlRepresentation.setXstream(xstream);
 
       // ** ADD METADATA TO SOURCE REFERENCES
-      
+
       Reference metadataSourceRef = new Reference(userStorageRef);
       metadataSourceRef.addSegment("metadata");
       metadataSourceRef.setExtensions("xml");
@@ -247,7 +250,7 @@ public class CartOrderResource extends AbstractOrderResource {
 
       listRef.addReferenceSource(metadataSourceRef);
 
-    }  
+    }
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);
       if (order != null) {
@@ -259,17 +262,16 @@ public class CartOrderResource extends AbstractOrderResource {
         }
       }
     }
-    
-    
+
     return listRef;
 
   }
 
   @Override
   public Representation processOrder(ListReferencesAPI listReferences) throws SitoolsException {
-    
+
     return null;
-    
+
   }
 
   @Override
@@ -277,9 +279,5 @@ public class CartOrderResource extends AbstractOrderResource {
     // TODO Auto-generated method stub
     return null;
   }
-
-
-  
-  
 
 }

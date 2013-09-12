@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -34,11 +35,13 @@ import org.restlet.data.Reference;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
 
+import fr.cnes.sitools.cart.utils.ListReferencesAPI;
 import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.exception.SitoolsException;
 
 /**
- * Representation used to create a Zip Archive from a List of {@link Reference} pointing to some files
+ * Representation used to create a Zip Archive from a List of {@link Reference}
+ * pointing to some files
  * 
  * 
  * @author m.gond
@@ -52,12 +55,15 @@ public class ZipOutputRepresentation extends OutputRepresentation {
   private ClientInfo clientInfo;
   /** The Context */
   private Context context;
+  /** The source reference map */
+  private Map<Reference, String> refMap;
 
   /**
    * Create a new {@link ZipOutputRepresentation}
    * 
    * @param referencesSource
-   *          the list of {@link Reference} pointing the file to add to the zip archive
+   *          the list of {@link Reference} pointing the file to add to the zip
+   *          archive
    * @param clientInfo
    *          the clientInfo of the current user
    * @param context
@@ -77,12 +83,31 @@ public class ZipOutputRepresentation extends OutputRepresentation {
     this.setDisposition(disp);
   }
 
+  /**
+   * 
+   * @param refListAPI
+   * @param clientInfo
+   * @param context
+   * @param fileName
+   */
+  public ZipOutputRepresentation(ListReferencesAPI refListAPI, ClientInfo clientInfo, Context context, String fileName) {
+    super(MediaType.APPLICATION_ZIP);
+    references = refListAPI.getReferencesSource();
+    refMap = refListAPI.getRefSourceTarget();
+    this.clientInfo = clientInfo;
+    this.context = context;
+
+    Disposition disp = new Disposition(Disposition.TYPE_ATTACHMENT);
+    disp.setFilename(fileName);
+    this.setDisposition(disp);
+  }
+
   @Override
   public void write(OutputStream outputStream) throws IOException {
     // create a new ZipOutputStream
     ZipOutputStream zipOutput = new ZipOutputStream(outputStream);
     // loop through the References
-    
+
     long totalArchiveSize = 0;
     int buffersize = 1024;
     byte[] buf = new byte[buffersize];
@@ -92,11 +117,21 @@ public class ZipOutputRepresentation extends OutputRepresentation {
           // try to get the file
           Representation repr = OrderResourceUtils.getFile(reference, clientInfo, context);
           // create a new ZipEntry with the name of the entry
-          ZipEntry zipEntry = new ZipEntry(reference.getLastSegment());
+
+          ZipEntry zipEntry;
+          if (refMap != null) {
+            if (refMap.get(reference) != null)
+              zipEntry = new ZipEntry("data/" + (String) refMap.get(reference) + "/" + reference.getLastSegment());
+            else
+              zipEntry = new ZipEntry(reference.getLastSegment());
+          }
+          else {
+            zipEntry = new ZipEntry(reference.getLastSegment());
+          }
           zipOutput.putNextEntry(zipEntry);
           InputStream stream = null;
           totalArchiveSize += zipEntry.getSize();
-          
+
           try {
             // get the stream of the File, read it and write it to
             // the Zip stream
@@ -104,8 +139,8 @@ public class ZipOutputRepresentation extends OutputRepresentation {
             int count = 0;
             while ((count = stream.read(buf, 0, buffersize)) != -1) {
               zipOutput.write(buf, 0, count);
-            }            
-            
+            }
+
           }
           finally {
 
@@ -123,7 +158,7 @@ public class ZipOutputRepresentation extends OutputRepresentation {
         }
       }
     }
-    //Log the zip estimated size
+    // Log the zip estimated size
     context.getLogger().info("Total size (estimated) : " + totalArchiveSize + "kB");
     // close the zip stream
     zipOutput.close();

@@ -43,18 +43,19 @@ import fr.cnes.sitools.resources.order.representations.ZipOutputRepresentation;
  * @author tx.chevallier
  * 
  * @project fr.cnes.sitools.ext.test
- * @version 
- *
+ * @version
+ * 
  */
 public class StreamingOrderResource extends CartOrderResource {
-  
+
   /** The type of archive to create */
   private String archiveType;
 
   @Override
   public void doInit() {
     super.doInit();
-    // initialise the archiveType, first let's get it from the request parameters
+    // initialise the archiveType, first let's get it from the request
+    // parameters
     archiveType = getRequest().getResourceRef().getQueryAsForm().getFirstValue("archiveType");
     if (archiveType == null || "".equals(archiveType)) {
       // if it is not in the request parameters, let's get from the model
@@ -62,41 +63,36 @@ public class StreamingOrderResource extends CartOrderResource {
       archiveType = param.getValue();
     }
   }
-  
 
-  
   @Override
   public Representation processOrder(ListReferencesAPI listReferences) throws SitoolsException {
-  
+
     super.processOrder(listReferences);
-    
+
     try {
-      
+
       String fileName = getFileName();
       Representation repr = null;
-      
+
       if ("zip".equals(archiveType)) {
-        repr = new ZipOutputRepresentation(listReferences.getReferencesSource(), getClientInfo(), getContext(), fileName
-            + ".zip");
+        repr = new ZipOutputRepresentation(listReferences, getClientInfo(), getContext(), fileName + ".zip");
       }
       else if ("tar.gz".equals(archiveType)) {
-        repr = new TarOutputRepresentation(listReferences.getReferencesSource(), getClientInfo(), getContext(), fileName
-            + ".tar.gz", true);
+        repr = new TarOutputRepresentation(listReferences, getClientInfo(), getContext(), fileName + ".tar.gz", true);
       }
       else if ("tar".equals(archiveType)) {
-        repr = new TarOutputRepresentation(listReferences.getReferencesSource(), getClientInfo(), getContext(), fileName
-            + ".tar", false);
+        repr = new TarOutputRepresentation(listReferences, getClientInfo(), getContext(), fileName + ".tar", false);
       }
       else {
         getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
         return repr;
       }
-      
+
       OrderAPI.terminateOrder(order, getContext());
-      
+
       return repr;
-      
-    }    
+
+    }
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);
       if (order != null) {
@@ -111,9 +107,6 @@ public class StreamingOrderResource extends CartOrderResource {
       return getRepresentation(response, MediaType.APPLICATION_JSON);
     }
 
-
   }
-  
-  
 
 }
