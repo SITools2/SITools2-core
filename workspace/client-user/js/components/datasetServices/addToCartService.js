@@ -135,11 +135,11 @@ sitools.user.component.dataviews.services.addToCartService =  {
         globalOrder.colModel = colModel;
 
         
-        if (Ext.isEmpty(this.cartSelectionFile.cartSelections)) {
-            this.cartSelectionFile.cartSelections = [];
+        if (Ext.isEmpty(this.cartSelectionFile.selections)) {
+            this.cartSelectionFile.selections = [];
         }
         
-        var index = Ext.each(this.cartSelectionFile.cartSelections, function (sel) {
+        var index = Ext.each(this.cartSelectionFile.selections, function (sel) {
             if (sel.selectionId === this.dataview.datasetName) {
                 return false;
             }
@@ -148,16 +148,14 @@ sitools.user.component.dataviews.services.addToCartService =  {
         
 
         if (Ext.isEmpty(index)) {
-            this.cartSelectionFile.cartSelections.push(globalOrder);
+            this.cartSelectionFile.selections.push(globalOrder);
         } else {
-            this.cartSelectionFile.cartSelections[index] = globalOrder;
+            this.cartSelectionFile.selections[index] = globalOrder;
         }
             
         var putObject = {};
-        putObject.cartSelections = [];
-        putObject.cartSelections = this.cartSelectionFile.cartSelections; 
-       
-
+        putObject.selections = [];
+        putObject.selections = this.cartSelectionFile.selections; 
 
         userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
                 putObject);

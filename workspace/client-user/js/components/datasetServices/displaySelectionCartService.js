@@ -55,13 +55,18 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
         var selection = {};
         
         if(this.cartSelectionFile) {
-            Ext.each(this.cartSelectionFile.cartSelections, function (sel) {
+            Ext.each(this.cartSelectionFile.selections, function (sel) {
                 if (sel.selectionName === this.dataview.datasetName) {
                     selection = sel;
                     return false;
                 }
             }, this);
         }
+        
+        if (Ext.isEmpty(selection.ranges)) {
+            return Ext.Msg.alert(i18n.get('label.information'), i18n.get('label.noSelectionArticles'));
+        }
+        
         this.dataview.getSelectionModel().clearSelections();
         this.dataview.ranges = selection.ranges;
         this.dataview.startIndex = selection.startIndex;
@@ -69,8 +74,8 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
         
         this.dataview.getSelectionModel().ready = false;
         
-        var firstRange = Ext.util.JSON.decode(selection.ranges)[0][0];
-        var startLoad = (firstRange) - ((firstRange % DEFAULT_LIVEGRID_BUFFER_SIZE) % DEFAULT_LIVEGRID_BUFFER_SIZE);
+//        var firstRange = Ext.util.JSON.decode(selection.ranges)[0][0];
+//        var startLoad = (firstRange) - ((firstRange % DEFAULT_LIVEGRID_BUFFER_SIZE) % DEFAULT_LIVEGRID_BUFFER_SIZE);
         
         this.dataview.store.load({
             params : {

@@ -107,7 +107,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         };
         
         this.store = new Ext.data.JsonStore({
-            root : 'cartSelections',
+            root : 'selections',
             idProperty : 'selectionId',
             autoLoad : true,
             url : this.urlCartFile,
@@ -443,7 +443,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         collSelections.addAll(selections);
         
         var collCartSelections = new Ext.util.MixedCollection();
-        collCartSelections.addAll(this.cartOrderFile.cartSelections);
+        collCartSelections.addAll(this.cartOrderFile.selections);
         
         collCartSelections.each(function (cartSelection, indCart) {
             collSelections.each(function (delSelection, indDel) {
@@ -452,7 +452,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 }
             });
         });
-        this.cartOrderFile.cartSelections = collCartSelections.items;
+        this.cartOrderFile.selections = collCartSelections.items;
         
         userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartOrderFile, this.onRefresh, this);
     },
