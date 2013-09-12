@@ -84,9 +84,6 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
 	        this.items.push(this.formParams);			
         }
         
-        
-        
-        
         var userInputParams = [];
         Ext.each(this.resource.parameters, function (value, index) {
             if (value.type == "PARAMETER_USER_INPUT" && value.userUpdatable) {
@@ -95,12 +92,8 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
 		        if (value.name == "runTypeUserInput") {
 					this.showRunType = true;
 				}
-               
             }
-            
         }, this);
-        
-        
 
         if (!Ext.isEmpty(userInputParams)) {
             this.formParamsUserInput = new Ext.form.FormPanel({
@@ -114,7 +107,6 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
             });  
             this.items.push(this.formParamsUserInput);
         }
-       
         
         this.buttons = [{
             text : i18n.get('label.submit'),
@@ -127,9 +119,7 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
                 this.ownerCt.close();
             }
         }];
-        
         sitools.user.component.dataviews.resourcePluginParamsPanel.superclass.initComponent.call(this);
-    
     },
     
     onCall : function () {        
@@ -141,7 +131,6 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
         else {
 			method = this.defaultMethod;	
         }
-        
 		
         var runTypeUserInput;
         if (this.showRunType) {
@@ -159,6 +148,13 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
                 userParameters[key] = value;                
             });
         }
+        
+        Ext.each(this.parameters, function (param) {
+            if (param.type == "PARAMETER_IN_QUERY") {
+                userParameters[param.name] = param.value;
+            }
+        });
+        
         this.contextMenu.onResourceCallClick(this.resource, this.url, method, runTypeUserInput, limit, userParameters, this.postParameter);
         this.ownerCt.close();
     }, 
@@ -190,7 +186,6 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
                 valueField : 'value', 
                 displayField : 'text'
             });
-
 			
 			if (multiple) {
 				item = {
@@ -221,7 +216,6 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
 					tooltip : value.description
 				};
 			}
-			
         }
         else {
 			item = {

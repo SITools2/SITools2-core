@@ -528,6 +528,7 @@ sitools.user.modules.addToCartModule.getParameters = function () {
                 })
             }),
             grid2 : new Ext.grid.EditorGridPanel({
+                sm : new Ext.grid.RowSelectionModel(),
                 width : 200,
                 margins : {
                     top : 0,
