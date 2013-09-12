@@ -34,8 +34,10 @@ import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 
@@ -46,7 +48,6 @@ import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
-import fr.cnes.sitools.resources.order.AbstractOrderResource;
 import fr.cnes.sitools.cart.model.CartSelection;
 import fr.cnes.sitools.cart.model.CartSelections;
 import fr.cnes.sitools.cart.utils.ListReferencesAPI;
@@ -61,6 +62,7 @@ import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.order.model.Order;
+import fr.cnes.sitools.resources.order.AbstractOrderResource;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.DateUtils;
@@ -83,17 +85,70 @@ public class CartOrderResource extends AbstractOrderResource {
     settings = ((SitoolsApplication) getApplication()).getSettings();
   }
 
+	public final CartSelections getObject(Representation representation, Variant variant) {
+
+    CartSelections selections = null;
+
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      XstreamRepresentation<CartSelections> repXML = new XstreamRepresentation<CartSelections>(representation);
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
+      repXML.setXstream(xstream);
+      selections = repXML.getObject();
+
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      selections = new JacksonRepresentation<CartSelections>(representation, CartSelections.class).getObject();
+    }
+
+    return selections;
+  }
+
+
+	public final CartSelections getObject(Representation representation, Variant variant) {
+
+	    CartSelections selections = null;
+	
+	    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+	      XstreamRepresentation<CartSelections> repXML = new XstreamRepresentation<CartSelections>(representation);
+	      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
+	      repXML.setXstream(xstream);
+	      selections = repXML.getObject();
+	
+	    }
+	    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+	      // Parse the JSON representation to get the bean
+	      selections = new JacksonRepresentation<CartSelections>(representation, CartSelections.class).getObject();
+	    }
+	
+	    return selections;
+	}
   @Override
   public void doInitialiseOrder() throws SitoolsException {
 
     super.doInitialiseOrder();
 
-    cartSelections = (CartSelections) getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
+    String cartFileUrl = getRequest().getResourceRef().getQueryAsForm().getFirstValue("cartFile");
+    if (cartFileUrl == null || cartFileUrl.isEmpty()) {
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Missing cartFile parameter");
+    }
+
+    clientInfo = this.getRequest().getClientInfo();
+
+    Reference ref = new Reference(RIAPUtils.getRiapBase() + cartFileUrl);
+    Representation repr = OrderResourceUtils.getFile(ref, clientInfo, getContext());
+
+    // cartSelections = (CartSelections)
+    // getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
+    cartSelections = getObject(repr, new Variant(MediaType.APPLICATION_JSON));
+
+    if (cartSelections == null) {
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Cannot find cartSelections file");
+    }
     getContext().getAttributes().put(TaskUtils.PARENT_APPLICATION, getApplication());
 
     date = DateUtils.format(new Date(), TaskUtils.getTimestampPattern());
 
-    clientInfo = this.getRequest().getClientInfo();
     User user = clientInfo.getUser();
     userName = user.getIdentifier();
 

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -31,7 +31,6 @@ import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.cart.model.CartSelections;
 import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
 import fr.cnes.sitools.resources.order.OrderResourceFacade;
 import fr.cnes.sitools.tasks.TaskUtils;
 
@@ -50,8 +49,6 @@ public class CartOrderResourceFacade extends OrderResourceFacade {
     setName("OrderResourceFacade");
     setDescription("Resource to order data");
   }
-  
-  
 
   /**
    * Description WADL de la methode POST
@@ -100,16 +97,15 @@ public class CartOrderResourceFacade extends OrderResourceFacade {
    * process the body and save the request entity {@link Representation}
    */
   public void processBody(Variant variant) {
-    Representation body = this.getRequest().getEntity();
-    if (body != null && body.isAvailable() && body.getSize() > 0) {
-       getContext().getAttributes().put(TaskUtils.BODY_CONTENT, getObject(body, variant));
-    }
-    else {
-      getContext().getAttributes().remove(TaskUtils.BODY_CONTENT);
-    }
+//    Representation body = this.getRequest().getEntity();
+//    if (body != null && body.isAvailable() && body.getSize() > 0) {
+//      getContext().getAttributes().put(TaskUtils.BODY_CONTENT, getObject(body, variant));
+//    }
+//    else {
+//      getContext().getAttributes().remove(TaskUtils.BODY_CONTENT);
+//    }
   }
-  
-  
+
   public final CartSelections getObject(Representation representation, Variant variant) {
 
     CartSelections selections = null;
