@@ -150,7 +150,6 @@ public class CartOrderResource extends AbstractOrderResource {
   public ListReferencesAPI listFilesToOrder() throws SitoolsException {
 
     ListReferencesAPI listRef = new ListReferencesAPI(settings.getPublicHostDomain() + settings.getString(Consts.APP_URL));
-    List<Reference> list = new ArrayList<Reference>();
 
     Order order = null;
     try {
@@ -165,39 +164,55 @@ public class CartOrderResource extends AbstractOrderResource {
         OrderAPI.createEvent(order, getContext(), "Processing record for selection : " + sel.getName() + " on dataset "
             + sel.getDatasetName());
         
-        String selections = sel.getSelections();
-        String datasetUrl = sel.getDataUrl();
-        List<Column> colModel = sel.getColModel();
-        
-//        String[] dataCols = null;
-//        if (sel.getDataToExport()!=null){
-//          dataCols = sel.getDataToExport();
-//        }         
-        
         String colurl = "";
-        for ( Column column : colModel ) {
+        for ( Column column : sel.getColModel() ) {
           if (!colurl.equals(""))
             colurl += ", " + column.getColumnAlias();
           else
             colurl = column.getColumnAlias();
         }
-        String url = datasetUrl + "/records" + "?" + selections + "&colModel=\"" + colurl + "\"" ;
+        String url = sel.getDataUrl() + "/records" + "?" + sel.getSelections() + "&colModel=\"" + colurl + "\"" ;
         List<Record> recs = RIAPUtils.getListOfObjects(url  , getContext());
         
-        List<Record> extractrecs = new ArrayList<Record>();
-        Set<String> filesUrlSet = new HashSet();
+        // ** ADD DATA TO SOURCE REFERENCES 
+
+        Set<String> noDuplicateUrlSet = new HashSet();
         
         for ( Record rec : recs ) {
 
           List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
-          
+
+          // ADD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
+          if (sel.getDataToExport() != null){
+            String[] dataColToExport = sel.getDataToExport();  
+            for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
+              for (int i=0; i<= (dataColToExport.length - 1); i++){
+                if (attributeValue.getName().equals(dataColToExport[i])){
+                  if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL)))
+                    noDuplicateUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
+                  else 
+                    noDuplicateUrlSet.add(attributeValue.getValue().toString());
+                }
+              }
+            }
+          }
+        
+        }
+        
+        // USE STAGING SET TO REMOVE DUPLICATE REFERENCES
+        listRef.addNoDuplicateSourceRef(noDuplicateUrlSet);
+        
+        // ** PREPARE LIST FOR METADATA.XML 
+        
+        List<Record> extractrecs = new ArrayList<Record>();
+        
+        for ( Record rec : recs ) {
+
           // REMOVE "NO CLIENT ACCESS" COLUMNS FROM LIST
-          
+          List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
           Record extractrec = new Record();
-          
           for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
-            for ( Column column : colModel ){
-              
+            for ( Column column : sel.getColModel() ){
               if (attributeValue.getName().equals(column.getColumnAlias())){
                 attributeValues.add(attributeValue);
               }
@@ -205,40 +220,13 @@ public class CartOrderResource extends AbstractOrderResource {
             extractrec.setAttributeValues(attributeValues);
             extractrec.setId(rec.getId());
           }
-          
           extractrecs.add(extractrec);
-          
-          // DOWNLOAD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
-
-          if (sel.getDataToExport() != null){
-            
-            String[] dataCols = sel.getDataToExport();            
-            for ( AttributeValue attributeValue : rec.getAttributeValues() ) {
-              for (int i=0; i<= (dataCols.length - 1); i++){
-                if (attributeValue.getName().equals(dataCols[i])){
-                  if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL)))
-                    filesUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
-                  else 
-                    filesUrlSet.add(attributeValue.getValue().toString());
-                }
-              }
-            }
-            
-          }
        }
-      
        globalrecs.addAll(extractrecs);
-       
-       // DOWNLOAD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
-       
-       for (String strUrl : filesUrlSet) {
-         Reference ref = new Reference(strUrl);
-         listRef.addReferenceSource(ref);
-       }
  
       }
 
-      // INITIALIZE XSTREAM REPRESENTATION FOR FURTHER PROCESSING  
+      // ** SERIALIZE RECORD LIST TO METADATA REPRESENTATION
       
       XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, getContext());
       xstream.alias("record", Record.class);
@@ -249,6 +237,8 @@ public class CartOrderResource extends AbstractOrderResource {
       XstreamRepresentation<List<Record>> metadataXmlRepresentation = new XstreamRepresentation<List<Record>>(MediaType.TEXT_XML, globalrecs);
       metadataXmlRepresentation.setXstream(xstream);
 
+      // ** ADD METADATA TO SOURCE REFERENCES
+      
       Reference metadataSourceRef = new Reference(userStorageRef);
       metadataSourceRef.addSegment("metadata");
       metadataSourceRef.setExtensions("xml");
