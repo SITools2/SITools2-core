@@ -72,11 +72,9 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             },
             items : [{
                 xtype : 'button',
-                text : i18n.get('label.downloadOrder'),
+                text : '<b>' + i18n.get('label.downloadOrder') + '</b>',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
                 tooltip : i18n.get('label.downloadOrder'),
-                scope : this,
-//                handler : this.downloadSelection,
                 menu : this.tbarMenu
                 }, '->', 
             {
@@ -184,7 +182,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             }),
             listeners : {
                 scope : this,
-                rowdblclick : function (grid, ind) {
+                rowclick : function (grid, ind) {
                     this.containerArticlesDetailsPanel.expand();
                     this.viewArticlesDetails();
                 } 
@@ -253,7 +251,11 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         });
         
         if (selections.length == 0) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return Ext.Msg.show({
+                title : i18n.get('label.warning'),
+                msg : i18n.get('warning.noSelectionToOrder'),
+                icon : Ext.MessageBox.INFO
+            });
         }
         
         var putObject = {};

@@ -39,6 +39,7 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             + DEFAULT_ORDER_FOLDER + "/records/" + userLogin + "_" + this.selectionId + "_records.json";
         
         this.viewConfig = {
+            autoFill : (this.columnModel.length > 8) ? false : true,
             listeners : {
                 scope : this,
                 refresh : function (view) {
@@ -55,6 +56,12 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
                 var field = {name : item.columnAlias};
                 fields.push(field);
                 item.dataIndex = item.columnAlias;
+                item.renderer = function (value, metadata, record, rowIndex, colIndex, store) {
+                    if(value.length > 10) {
+                        metadata.attr = 'ext:qtip="' + value + '" ext:qwidth="auto"';
+                    }
+                    return value;
+                };
                 columns.push(new Ext.grid.Column(
                     item
                 ));
@@ -87,9 +94,10 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
         this.tbar = [ '->', {
             text : i18n.get('label.modifySelection'),
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+            cls : 'services-toolbar-btn',
             scope : this,
             handler : this.modifySelection
-        }];
+        } ];
 
         this.bbar = {
             xtype : 'paging',

@@ -42,10 +42,16 @@ sitools.user.component.dataviews.services.addToCartService =  {
             return;
         }
     },
+    
+    checkCartSelectionFile : function () {
+        if (Ext.isEmpty(this.cartSelectionFile)) {
+            this.cartSelectionFile = {};
+        }
+    },
 
     addToCart : function () {
 
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn,
+        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, this.checkCartSelectionFile,
                 this.saveSelection);
     },
 
@@ -149,16 +155,33 @@ sitools.user.component.dataviews.services.addToCartService =  {
 
         if (Ext.isEmpty(index)) {
             this.cartSelectionFile.selections.push(globalOrder);
+            var putObject = {};
+            putObject.selections = [];
+            putObject.selections = this.cartSelectionFile.selections; 
+            
+            userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
+                    putObject);
         } else {
-            this.cartSelectionFile.selections[index] = globalOrder;
+            Ext.Msg.show({
+                title : i18n.get('label.warning'),
+                buttons : Ext.Msg.YESNO,
+                icon: Ext.MessageBox.WARNING,
+                msg : i18n.get('warning.selectionAlreadyExist'),
+                scope : this,
+                fn : function (btn, text) {
+                    if (btn == 'yes') {
+                        this.cartSelectionFile.selections[index] = globalOrder;
+                        var putObject = {};
+                        putObject.selections = [];
+                        putObject.selections = this.cartSelectionFile.selections; 
+                        
+                        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
+                                putObject);
+                    }
+                }
+            });
         }
             
-        var putObject = {};
-        putObject.selections = [];
-        putObject.selections = this.cartSelectionFile.selections; 
-
-        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
-                putObject);
     }
 };
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
