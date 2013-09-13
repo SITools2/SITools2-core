@@ -284,38 +284,6 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
     addStandardInternalServerErrorInfo(info);
   }
 
-//  /**
-//   * Gets JSON representation of a DataSet
-//   * 
-//   * @return Representation
-//   */
-//  @Get("json")
-//  public final Representation getJSON() {
-//    return processConstraint(MediaType.APPLICATION_JSON);
-//  }
-//
-//  /**
-//   * Gets HTML representation of a DataSet
-//   * 
-//   * @return Representation
-//   */
-//  @Get("html")
-//  public final Representation getHTML() {
-//    // On retourne du XML si on demande du HTML pour le fonctionnement avec les navigateurs
-//    // L'export HTML n'étant pas implémenté on retourne du XML
-//    return processConstraint(MediaType.TEXT_XML);
-//  }
-//
-//  /**
-//   * Get the CSV representation of the DataSet
-//   * 
-//   * @return Representation
-//   */
-//  @Get("csv")
-//  public Representation getCSV() {
-//    return processConstraint(MediaType.TEXT_CSV);
-//  }
-
   /**
    * XStream aliases are personalized for each resource.
    * 

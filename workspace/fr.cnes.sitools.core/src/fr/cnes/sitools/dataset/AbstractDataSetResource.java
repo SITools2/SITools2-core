@@ -67,6 +67,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
     // Declares the two variants supported
     getVariants().add(new Variant(MediaType.APPLICATION_XML));
     getVariants().add(new Variant(MediaType.APPLICATION_JSON));
+    getVariants().add(new Variant(MediaType.TEXT_CSV));
 
     application = (AbstractDataSetApplication) getApplication();
     store = application.getStore();
