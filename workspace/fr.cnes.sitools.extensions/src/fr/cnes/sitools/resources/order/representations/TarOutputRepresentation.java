@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,9 +22,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.tools.tar.TarEntry;
+import org.apache.tools.tar.TarOutputStream;
 import org.restlet.Context;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Disposition;
@@ -33,14 +36,16 @@ import org.restlet.data.Reference;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
 
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarOutputStream;
+//import com.ice.tar.TarEntry;
+//import com.ice.tar.TarOutputStream;
 
+import fr.cnes.sitools.cart.utils.ListReferencesAPI;
 import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.exception.SitoolsException;
 
 /**
- * Representation used to create a tar or a tar.gz Archive from a List of {@link Reference} pointing to some files
+ * Representation used to create a tar or a tar.gz Archive from a List of
+ * {@link Reference} pointing to some files
  * 
  * 
  * @author m.gond
@@ -54,12 +59,15 @@ public class TarOutputRepresentation extends OutputRepresentation {
   private Context context;
   /** Whether or not to use gzip compression on the tar */
   private boolean gzip;
+  /** The source reference map */
+  private Map<Reference, String> refMap;
 
   /**
    * Create a new {@link TarOutputRepresentation}
    * 
    * @param referencesSource
-   *          the list of {@link Reference} pointing the file to add to the zip archive
+   *          the list of {@link Reference} pointing the file to add to the zip
+   *          archive
    * @param clientInfo
    *          the clientInfo of the current user
    * @param context
@@ -80,16 +88,43 @@ public class TarOutputRepresentation extends OutputRepresentation {
     this.setDisposition(disp);
   }
 
+  /**
+   * TarOutputRepresentation
+   * 
+   * @param refListAPI
+   * @param clientInfo
+   * @param context
+   * @param fileName
+   * @param gzip
+   */
+  public TarOutputRepresentation(ListReferencesAPI refListAPI, ClientInfo clientInfo, Context context, String fileName,
+      boolean gzip) {
+    super(MediaType.APPLICATION_TAR);
+    references = refListAPI.getReferencesSource();
+    refMap = refListAPI.getRefSourceTarget();
+    this.clientInfo = clientInfo;
+    this.context = context;
+    this.gzip = gzip;
+
+    Disposition disp = new Disposition(Disposition.TYPE_ATTACHMENT);
+    disp.setFilename(fileName);
+    this.setDisposition(disp);
+  }
+
   @Override
   public void write(OutputStream outputStream) throws IOException {
-    // create a new TarOutputStream, if gzip, the stream is also compressed with GZIPOutputStream
+    // create a new TarOutputStream, if gzip, the stream is also compressed with
+    // GZIPOutputStream
     TarOutputStream tarOutput;
+     
     if (gzip) {
       tarOutput = new TarOutputStream(new GZIPOutputStream(outputStream));
     }
     else {
       tarOutput = new TarOutputStream(outputStream);
     }
+    
+    tarOutput.setLongFileMode(TarOutputStream.LONGFILE_GNU);
     // loop through the References
     long totalArchiveSize = 0;
     int buffersize = 1024;
@@ -103,7 +138,17 @@ public class TarOutputRepresentation extends OutputRepresentation {
           totalArchiveSize += fileSize;
 
           // create a new TarEntry with the name of the entry
-          TarEntry tarEntry = new TarEntry(reference.getLastSegment());
+          TarEntry tarEntry;
+          if (refMap != null) {
+            if (refMap.get(reference) != null)
+              tarEntry = new TarEntry("data/" + (String) refMap.get(reference) + "/" + reference.getLastSegment());
+            else
+              tarEntry = new TarEntry(reference.getLastSegment());
+          }
+          else {
+            tarEntry = new TarEntry(reference.getLastSegment());
+          }
+          
           // Set the tarEntry size with the same size as the file got before
           tarEntry.setSize(fileSize);
           tarOutput.putNextEntry(tarEntry);
@@ -111,7 +156,8 @@ public class TarOutputRepresentation extends OutputRepresentation {
 
           try {
             int count = 0;
-            // get the stream of the File, read it and write it to the Tar stream
+            // get the stream of the File, read it and write it to the Tar
+            // stream
             stream = repr.getStream();
             while ((count = stream.read(buf, 0, buffersize)) != -1) {
               tarOutput.write(buf, 0, count);
@@ -121,7 +167,7 @@ public class TarOutputRepresentation extends OutputRepresentation {
             // close the entry and the file stream
             tarOutput.closeEntry();
             if (stream != null) {
-              stream.close();              
+              stream.close();
             }
           }
         }

@@ -37,5 +37,5 @@ Require-Bundle: org.restlet.patched;bundle-version="1.0.1",
  org.restlet.ext.xstream;bundle-version="2.0.5",
  org.json;bundle-version="2.0.0",
  org.restlet;bundle-version="2.0.5",
- com.ice.tar_2.5;bundle-version="2.5.0",
- com.mongodb;bundle-version="2.9.1"
+ com.mongodb;bundle-version="2.9.1",
+ apache-ant-1.8.1;bundle-version="1.0.0"

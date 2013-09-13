@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.tools.tar.TarEntry;
+import org.apache.tools.tar.TarOutputStream;
 import org.restlet.Context;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Disposition;
@@ -34,8 +36,8 @@ import org.restlet.data.Reference;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
 
-import com.ice.tar.TarEntry;
-import com.ice.tar.TarOutputStream;
+//import com.ice.tar.TarEntry;
+//import com.ice.tar.TarOutputStream;
 
 import fr.cnes.sitools.cart.utils.ListReferencesAPI;
 import fr.cnes.sitools.cart.utils.OrderResourceUtils;
@@ -114,12 +116,15 @@ public class TarOutputRepresentation extends OutputRepresentation {
     // create a new TarOutputStream, if gzip, the stream is also compressed with
     // GZIPOutputStream
     TarOutputStream tarOutput;
+     
     if (gzip) {
       tarOutput = new TarOutputStream(new GZIPOutputStream(outputStream));
     }
     else {
       tarOutput = new TarOutputStream(outputStream);
     }
+    
+    tarOutput.setLongFileMode(TarOutputStream.LONGFILE_GNU);
     // loop through the References
     long totalArchiveSize = 0;
     int buffersize = 1024;
@@ -133,7 +138,17 @@ public class TarOutputRepresentation extends OutputRepresentation {
           totalArchiveSize += fileSize;
 
           // create a new TarEntry with the name of the entry
-          TarEntry tarEntry = new TarEntry(reference.getLastSegment());
+          TarEntry tarEntry;
+          if (refMap != null) {
+            if (refMap.get(reference) != null)
+              tarEntry = new TarEntry("data/" + (String) refMap.get(reference) + "/" + reference.getLastSegment());
+            else
+              tarEntry = new TarEntry(reference.getLastSegment());
+          }
+          else {
+            tarEntry = new TarEntry(reference.getLastSegment());
+          }
+          
           // Set the tarEntry size with the same size as the file got before
           tarEntry.setSize(fileSize);
           tarOutput.putNextEntry(tarEntry);
