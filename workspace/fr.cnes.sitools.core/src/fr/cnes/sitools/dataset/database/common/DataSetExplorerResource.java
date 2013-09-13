@@ -163,11 +163,16 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
           
           databaseRequest.createRequest();
 
+          int count = 0;
           while (databaseRequest.nextResult()) {
             Record rec = databaseRequest.getRecord();
             records.add(rec);
+            count++;
           }
           
+          response.setOffset(databaseRequest.getStartIndex());
+          response.setCount(count);
+          response.setTotal(databaseRequest.getTotalCount());
           response.setData(records);
           
         }

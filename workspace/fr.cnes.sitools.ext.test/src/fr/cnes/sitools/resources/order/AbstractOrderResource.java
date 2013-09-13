@@ -341,32 +341,15 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     if (userAdd != null && !userAdd.equals("")) {
       // System.out.println("EMAIL ADDRESS = " + userAdd);
       toList.add(userAdd);
+
       Mail mailToUser = new Mail();
       mailToUser.setToList(toList);
 
       // TODO EVOL : email subject should be a parameter
-      mailToUser.setSubject("Sitools order system : order completed");
+      mailToUser.setSubject(getMailSubject());
 
       // default body
-      mailToUser.setBody("Your command is complete \n" + "Name : " + order.getName() + "\n" + "Description : "
-          + order.getDescription() + "\n" + "Check the status at :" + task.getStatusUrl() + "\n"
-          + "Get the result at :" + task.getUrlResult());
-
-      // use a freemarker template for email body with Mail object
-      String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
-          + "mail.order.complete.ftl";
-      Map<String, Object> root = new HashMap<String, Object>();
-      root.put("mail", mailToUser);
-      root.put("order", order);
-
-      TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
-
-      root.put("context", getContext());
-
-      String body = TemplateUtils.toString(templatePath, root);
-      if (Util.isNotEmpty(body)) {
-        mailToUser.setBody(body);
-      }
+      mailToUser.setBody(getMailBody(mailToUser));
 
       org.restlet.Response sendMailResponse = null;
       try {
@@ -389,6 +372,37 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     else {
       throw new SitoolsException("NO EMAIL ADDRESS DEFINED");
     }
+  }
+
+  protected String getMailBody(Mail mailToUser) {
+    //default body
+    String mailBody = "Your command is complete <br/>" + "Name : " + order.getName() + "<br/>" + "Description : "
+        + order.getDescription() + "<br/>" + "Check the status at :" + task.getStatusUrl() + "<br/>" + "Get the result at :"
+        + task.getUrlResult();
+
+    // use a freemarker template for email body with Mail object
+    String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+        + "mail.order.complete.ftl";
+
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("mail", mailToUser);
+    root.put("order", order);
+
+    TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
+
+    root.put("context", getContext());
+
+    String body = TemplateUtils.toString(templatePath, root);
+    if (Util.isNotEmpty(body)) {
+      return body;
+    }
+    else {
+      return mailBody;
+    }
+  }
+
+  protected String getMailSubject() {
+    return "Sitools order system : order completed";
   }
 
   /**

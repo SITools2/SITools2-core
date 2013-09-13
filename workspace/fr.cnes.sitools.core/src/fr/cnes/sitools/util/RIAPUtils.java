@@ -183,6 +183,42 @@ public final class RIAPUtils {
     }
 
   }
+  
+  
+  /**
+   * Get an Object of class <T> with the specified <code>id</code>, at the specified <code>url</code> using the RIAP
+   * protocol. The <code>context</code> is required in order to make an RIAP call
+   * 
+   * @param url
+   *          the url of the object
+   * @param context
+   *          the context
+   * @return an List<T> object
+   */
+  public static Response getResponse(String url, Context context) {
+    Request reqGET = new Request(Method.GET, getRiapBase() + url);
+    ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
+    objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
+    reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
+    org.restlet.Response response = null;
+
+    response = context.getClientDispatcher().handle(reqGET);
+
+    if (response == null || Status.isError(response.getStatus().getCode())) {
+      RIAPUtils.exhaust(response);
+      return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    ObjectRepresentation<Response> or = (ObjectRepresentation<Response>) response.getEntity();
+    try {
+      Response resp = or.getObject();
+      return resp;
+    }
+    catch (IOException e) { // marshalling error
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+    }
+  }
 
   /**
    * Get an Object of class <T> with the specified <code>id</code>, at the specified <code>url</code> using the RIAP

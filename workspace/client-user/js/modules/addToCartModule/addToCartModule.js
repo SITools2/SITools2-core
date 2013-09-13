@@ -138,7 +138,26 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 name : 'dataToExport'
             }, {
                 name : 'startIndex'
-            }]
+            }], 
+            listeners : {
+                scope : this,
+                exception : function (dataProxy, type, action, options, response, arg) {
+                    if (response.status === 404) {
+                        this.store.removeAll();
+                        return;
+                    }
+                    
+                    if (response.status === 403) {
+                        return Ext.Msg.show({
+                            title : i18n.get('label.warning'),
+                            msg : i18n.get('label.needToBeLogged'),
+                            icon : Ext.MessageBox.WARNING,
+                            buttons : Ext.MessageBox.OK
+                        });
+                    }                    
+                }
+                
+            }
         });
         
         this.columnModel = new Ext.grid.ColumnModel({
@@ -247,14 +266,15 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         var selections = [];
         
         this.gridPanel.getStore().each(function (rec) {
-           selections.push(rec); 
+            selections.push(rec); 
         });
         
-        if (selections.length == 0) {
+        if (selections.length === 0) {
             return Ext.Msg.show({
                 title : i18n.get('label.warning'),
                 msg : i18n.get('warning.noSelectionToOrder'),
-                icon : Ext.MessageBox.INFO
+                icon : Ext.MessageBox.INFO,
+                buttons : Ext.MessageBox.OK
             });
         }
         
@@ -269,8 +289,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             Ext.apply(tmpSelection, selection.data);
             putObject.selections.push(tmpSelection);
         });
-        
-//        this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters);
         
         Ext.Ajax.request({
             url : projectGlobal.sitoolsAttachementForUsers + "/services",
@@ -328,36 +346,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             }
         });
         
-//        Ext.Ajax.request({
-//            url : projectGlobal.sitoolsAttachementForUsers + "/plugin/cart",
-//            method : 'POST',
-//            jsonData : putObject,
-//            scope : this,
-//            success : function (response) {
-//            	var json = Ext.decode(response.responseText);
-//                if (!json.success) {
-//                    Ext.Msg.alert(i18n.get('label.error'), json.message);
-//                    return;
-//                }
-//                var task = json.TaskModel;
-//                if (!Ext.isEmpty(task.urlResult)) {
-//                    window.open(task.urlResult);
-//                } else {
-//                    var componentCfg = {
-//                        task : task
-//                    };
-//                    var jsObj = sitools.user.component.dataviews.goToTaskPanel;
-//        
-//                    var windowConfig = {
-//                        title : i18n.get('label.info'),
-//                        saveToolbar : false, 
-//                        iconCls : "datasetRessource"                    
-//                    };
-//                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
-//                }
-//            },
-//            failure : alertFailure
-//        });
     },
     
     viewArticlesDetails : function () {

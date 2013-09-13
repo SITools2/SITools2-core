@@ -23,8 +23,10 @@ package fr.cnes.sitools.resources.order.cart.wget;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.restlet.data.Reference;
@@ -33,11 +35,14 @@ import org.restlet.representation.Representation;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
+import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.resources.order.cart.common.AbstractCartOrderResource;
 import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
 import fr.cnes.sitools.resources.order.utils.OrderAPI;
 import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.TemplateUtils;
+import fr.cnes.sitools.util.Util;
 
 /**
  * @author tx.chevallier
@@ -128,6 +133,34 @@ public class WgetListFileOrderResource extends AbstractCartOrderResource {
     }
     return null;
 
+  }
+
+  protected String getMailBody(Mail mailToUser) {
+    // default body
+    String mailBody = "Your command is complete <br/>" + "Name : " + order.getName() + "<br/>" + "Description : "
+        + order.getDescription() + "<br/>" + "Check the status at :" + task.getStatusUrl() + "<br/>" + "Get the result at :"
+        + task.getUrlResult();
+
+    // use a freemarker template for email body with Mail object
+    String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+        + "mail.order.complete.wget.ftl";
+
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("mail", mailToUser);
+    root.put("order", order);    
+    root.put("task", task);
+
+    TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
+
+    root.put("context", getContext());
+
+    String body = TemplateUtils.toString(templatePath, root);
+    if (Util.isNotEmpty(body)) {
+      return body;
+    }
+    else {
+      return mailBody;
+    }
   }
 
 }
