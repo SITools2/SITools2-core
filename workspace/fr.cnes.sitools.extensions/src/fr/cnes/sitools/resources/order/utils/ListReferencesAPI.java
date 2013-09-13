@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,6 +21,8 @@ package fr.cnes.sitools.resources.order.utils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.restlet.Context;
 import org.restlet.data.ClientInfo;
@@ -29,7 +31,6 @@ import org.restlet.data.ReferenceList;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 
-import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
@@ -64,6 +65,11 @@ public class ListReferencesAPI {
    * The rootPath of the server to add to have absolute uri instead of relative. If the url are absolute, set it to null
    */
   private String rootPath;
+
+  /**
+   * The map of reference and target
+   */
+  private Map<Reference, String> refSourceTarget;
 
   /**
    * Default constructor
@@ -131,6 +137,24 @@ public class ListReferencesAPI {
   }
 
   /**
+   * Get the source reference target map
+   * 
+   * @return the map
+   */
+  public Map<Reference, String> getRefSourceTarget() {
+    return refSourceTarget;
+  }
+
+  /**
+   * Set the reference sourcre target map
+   * 
+   * @param refSourceTarget
+   */
+  public void setRefSourceTarget(Map<Reference, String> refSourceTarget) {
+    this.refSourceTarget = refSourceTarget;
+  }
+
+  /**
    * Copy the list of Reference destination to the given rootRef {@link Reference}
    * 
    * @param rootRef
@@ -146,7 +170,7 @@ public class ListReferencesAPI {
    *           if there is an error while creating the file
    */
   public Reference copyToUserStorage(Reference rootRef, Context context, ClientInfo clientInfo)
-    throws SitoolsException, IOException {
+      throws SitoolsException, IOException {
     Reference refReturn = createAndCopyIndexFile(getReferencesDest(), true, context, rootRef, clientInfo);
 
     SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
@@ -177,7 +201,7 @@ public class ListReferencesAPI {
    *           if there is an error while creating the file
    */
   public Reference copyToAdminStorage(Context context, String folderName, String fileName, ClientInfo clientInfo)
-    throws SitoolsException, IOException {
+      throws SitoolsException, IOException {
     Reference rootRef = new Reference(RIAPUtils.getRiapBase() + OrderResourceUtils.getResourceOrderStorageUrl(context));
     rootRef.addSegment(folderName);
     rootRef.addSegment(fileName);
@@ -246,4 +270,31 @@ public class ListReferencesAPI {
     }
     return refList.getTextRepresentation().getText();
   }
+
+  /**
+   * addNoDuplicateSourceRef
+   * 
+   * @param noDuplicateUrlSet
+   */
+  public void addNoDuplicateSourceRef(Set<String> noDuplicateUrlSet) {
+    for (String strUrl : noDuplicateUrlSet) {
+      Reference ref = new Reference(strUrl);
+      this.addReferenceSource(ref);
+    }
+  }
+
+  /**
+   * addNoDuplicateSourceRef
+   * 
+   * @param noDuplicateUrlSet
+   * @param selectionId
+   */
+  public void addNoDuplicateSourceRef(Set<String> noDuplicateUrlSet, String selectionId) {
+    for (String strUrl : noDuplicateUrlSet) {
+      Reference ref = new Reference(strUrl);
+      this.addReferenceSource(ref);
+      this.refSourceTarget.put(ref, selectionId);
+    }
+  }
+
 }
