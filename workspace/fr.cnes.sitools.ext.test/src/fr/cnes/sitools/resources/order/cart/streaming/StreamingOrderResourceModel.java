@@ -19,7 +19,7 @@
 /**
  * 
  */
-package fr.cnes.sitools.resources.order.cart;
+package fr.cnes.sitools.resources.order.cart.streaming;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -28,29 +28,27 @@ import java.util.Set;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
 import fr.cnes.sitools.common.validator.Validator;
-import fr.cnes.sitools.dataset.DataSetApplication;
-import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
 import fr.cnes.sitools.project.ProjectApplication;
+import fr.cnes.sitools.resources.order.cart.common.AbstractCartOrderResourceModel;
 import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.tasks.model.TaskRunTypeAdministration;
 
 /**
  * @author tx.chevallier
  * 
- * @project fr.cnes.sitools.ext.test
- * @version 
- *
+ * @version
+ * 
  */
-public class StreamingOrderResourceModel extends CartOrderResourceModel {
-  
-  public StreamingOrderResourceModel(){
-    
+public class StreamingOrderResourceModel extends AbstractCartOrderResourceModel {
+
+  public StreamingOrderResourceModel() {
+
     super();
-    
-    setResourceImplClassName("fr.cnes.sitools.resources.order.cart.StreamingOrderResource");
+
+    setResourceImplClassName("fr.cnes.sitools.resources.order.cart.streaming.StreamingOrderResource");
 
     setClassAuthor("Akka Technologies");
     setClassOwner("CNES");
@@ -60,16 +58,15 @@ public class StreamingOrderResourceModel extends CartOrderResourceModel {
     this.setApplicationClassName(ProjectApplication.class.getName());
     this.getParameterByName("methods").setValue("GET");
     this.getParameterByName(TaskResourceModel.RUN_TYPE_PARAM_NAME_ADMINISTATION).setValue(
-        TaskRunTypeAdministration.TASK_FORCE_RUN_ASYNC.toString());
-    
+        TaskRunTypeAdministration.TASK_FORCE_RUN_SYNC.toString());
+
     ResourceParameter archiveType = new ResourceParameter("archiveType", "The type of archive needed",
         ResourceParameterType.PARAMETER_USER_INPUT);
     archiveType.setValueType("xs:enum[zip,tar.gz,tar]");
     this.addParam(archiveType);
-    
+
   }
-  
-  
+
   @Override
   public Validator<ResourceModel> getValidator() {
 

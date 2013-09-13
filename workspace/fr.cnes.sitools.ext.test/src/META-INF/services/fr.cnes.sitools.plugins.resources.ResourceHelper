@@ -4,11 +4,11 @@ fr.cnes.sitools.resources.programs.SitoolsAnalogServiceModel
 fr.cnes.sitools.resources.programs.UlisseTalendJobResourceModel
 fr.cnes.sitools.resources.html.HtmlResourceModel
 fr.cnes.sitools.resources.order.OrderResourceModel
-fr.cnes.sitools.resources.order.cart.CartOrderResourceModel
 fr.cnes.sitools.resources.test.TestParameterizedResourceModel
 fr.cnes.sitools.resources.tasks.test.MyTaskResourceFacadeModel
 fr.cnes.sitools.resources.order.DirectOrderResourceModel
 fr.cnes.sitools.resources.geojson.JeoSearchResourcePostGisModel
 fr.cnes.sitools.resources.geojson.JeoSearchResourceMongoDBModel
 fr.cnes.sitools.resources.csv.CsvResourceModel
-fr.cnes.sitools.resources.order.cart.StreamingOrderResourceModel
+fr.cnes.sitools.resources.order.cart.streaming.StreamingOrderResourceModel
+fr.cnes.sitools.resources.order.cart.wget.WgetListFileOrderResourceModel

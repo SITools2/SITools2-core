@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.order.cart;
+package fr.cnes.sitools.resources.order.cart.common;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,11 +40,6 @@ import org.restlet.security.User;
 
 import com.thoughtworks.xstream.XStream;
 
-import fr.cnes.sitools.cart.model.CartSelection;
-import fr.cnes.sitools.cart.model.CartSelections;
-import fr.cnes.sitools.cart.utils.ListReferencesAPI;
-import fr.cnes.sitools.cart.utils.OrderAPI;
-import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
@@ -56,12 +50,25 @@ import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.resources.order.AbstractOrderResource;
+import fr.cnes.sitools.resources.order.cart.common.model.CartSelection;
+import fr.cnes.sitools.resources.order.cart.common.model.CartSelections;
+import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
+import fr.cnes.sitools.resources.order.utils.OrderAPI;
+import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.DateUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
-public class CartOrderResource extends AbstractOrderResource {
+/**
+ * Abstract class to override for your own CartOrder process
+ * 
+ * @author m.gond/tx.chevallier
+ * 
+ * @version
+ * 
+ */
+public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
   /** Application Settings */
   private SitoolsSettings settings;
@@ -71,6 +78,8 @@ public class CartOrderResource extends AbstractOrderResource {
   private ClientInfo clientInfo;
   private String date;
   private String userName;
+
+  private Reference cartFileReference;
 
   @Override
   public void doInit() {
@@ -90,8 +99,8 @@ public class CartOrderResource extends AbstractOrderResource {
 
     clientInfo = this.getRequest().getClientInfo();
 
-    Reference ref = new Reference(RIAPUtils.getRiapBase() + cartFileUrl);
-    Representation repr = OrderResourceUtils.getFile(ref, clientInfo, getContext());
+    cartFileReference = new Reference(RIAPUtils.getRiapBase() + cartFileUrl);
+    Representation repr = OrderResourceUtils.getFile(cartFileReference, clientInfo, getContext());
 
     // cartSelections = (CartSelections)
     // getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
@@ -107,21 +116,12 @@ public class CartOrderResource extends AbstractOrderResource {
     User user = clientInfo.getUser();
     userName = user.getIdentifier();
 
-    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") + "/" + userName;
-
     // make directories
 
-    File ordersdir = new File(rootdir + "/resources_orders");
-    File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
-    File datadir = new File(outputdir + "/data");
+    String folderName = "/resources_orders/" + getOrderName();
 
-    // ordersdir.mkdir();
-    // outputdir.mkdir();
-    // datadir.mkdir();
-
-    String folderName = "/resources_orders/dataset_" + date;
-
-    userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(user, folderName, getContext());
+    // use no user to get a directory in the temporary folder
+    userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(null, folderName, getContext());
 
   }
 
@@ -134,7 +134,7 @@ public class CartOrderResource extends AbstractOrderResource {
     Order order = null;
     try {
 
-      order = OrderAPI.createOrder(userName, getContext(), "ORDER_CART_" + date);
+      order = OrderAPI.createOrder(userName, getContext(), getOrderName());
       OrderAPI.activateOrder(order, getContext());
 
       List<Record> globalrecs = new ArrayList<Record>();
@@ -149,21 +149,21 @@ public class CartOrderResource extends AbstractOrderResource {
 
         String colurl = "";
         for (Column column : sel.getColModel()) {
-          if (!colurl.equals(""))
+          if (!colurl.equals("")) {
             colurl += ", " + column.getColumnAlias();
-          else
+          }
+          else {
             colurl = column.getColumnAlias();
+          }
         }
         String url = sel.getDataUrl() + "/records" + "?" + sel.getSelections() + "&colModel=\"" + colurl + "\"";
         List<Record> recs = RIAPUtils.getListOfObjects(url, getContext());
 
         // ** ADD DATA TO SOURCE REFERENCES
 
-        Set<String> noDuplicateUrlSet = new HashSet();
+        Set<String> noDuplicateUrlSet = new HashSet<String>();
 
         for (Record rec : recs) {
-
-          List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
 
           // ADD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
           if (sel.getDataToExport() != null) {
@@ -171,10 +171,12 @@ public class CartOrderResource extends AbstractOrderResource {
             for (AttributeValue attributeValue : rec.getAttributeValues()) {
               for (int i = 0; i <= (dataColToExport.length - 1); i++) {
                 if (attributeValue.getName().equals(dataColToExport[i])) {
-                  if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL)))
+                  if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
                     noDuplicateUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
-                  else
+                  }
+                  else {
                     noDuplicateUrlSet.add(attributeValue.getValue().toString());
+                  }
                 }
               }
             }
@@ -183,7 +185,7 @@ public class CartOrderResource extends AbstractOrderResource {
         }
 
         // REMOVE DUPLICATE REFERENCES AND ADD TARGET NAME TO REFERENCE MAP
-        listRef.addNoDuplicateSourceRef(noDuplicateUrlSet, sel.getSelectionId());
+        listRef.addNoDuplicateSourceRef(noDuplicateUrlSet, sel.getDatasetName());
 
         // ** PREPARE LIST FOR METADATA.XML
 
@@ -249,18 +251,30 @@ public class CartOrderResource extends AbstractOrderResource {
   }
 
   @Override
-  public Representation processOrder(ListReferencesAPI listReferences) throws SitoolsException {
-
-    return null;
-
-  }
-
-  @Override
   public String getOrderName() {
-    // TODO Auto-generated method stub
-    return null;
+    return "order_" + date;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.resources.order.AbstractOrderResource#terminateOrder()
+   */
+  @Override
+  public void terminateOrder() throws SitoolsException {
+    super.terminateOrder();
+    OrderResourceUtils.deleteFile(cartFileReference, clientInfo, getContext());
+  }
+
+  /**
+   * Parse a {@link CartSelections} object from the given representation
+   * 
+   * @param representation
+   *          the representation
+   * @param variant
+   *          the variant
+   * @return a {@link CartSelections} object
+   */
   public final CartSelections getObject(Representation representation, Variant variant) {
 
     CartSelections selections = null;

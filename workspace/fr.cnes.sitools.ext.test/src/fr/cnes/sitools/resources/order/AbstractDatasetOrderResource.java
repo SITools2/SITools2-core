@@ -30,7 +30,6 @@ import org.restlet.data.Status;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.cart.utils.ListReferencesAPI;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.DataSetApplication;
@@ -40,6 +39,7 @@ import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
 import fr.cnes.sitools.dataset.database.common.DataSetExplorerUtil;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 

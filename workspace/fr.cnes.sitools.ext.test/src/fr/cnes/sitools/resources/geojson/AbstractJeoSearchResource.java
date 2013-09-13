@@ -18,8 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.resources.geojson;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -37,9 +35,7 @@ import fr.cnes.sitools.dataset.converter.business.ConverterChained;
 import fr.cnes.sitools.dataset.database.DatabaseRequestParameters;
 import fr.cnes.sitools.dataset.database.common.DataSetExplorerUtil;
 import fr.cnes.sitools.dataset.dto.DictionaryMappingDTO;
-import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.dataset.model.SpecificColumnType;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 
 /**

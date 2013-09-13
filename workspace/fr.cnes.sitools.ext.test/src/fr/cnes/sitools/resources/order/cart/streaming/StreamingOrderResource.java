@@ -19,7 +19,7 @@
 /**
  * 
  */
-package fr.cnes.sitools.resources.order.cart;
+package fr.cnes.sitools.resources.order.cart.streaming;
 
 import java.util.logging.Level;
 
@@ -28,13 +28,14 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.cart.utils.ListReferencesAPI;
-import fr.cnes.sitools.cart.utils.OrderAPI;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+import fr.cnes.sitools.resources.order.cart.common.AbstractCartOrderResource;
 import fr.cnes.sitools.resources.order.representations.TarOutputRepresentation;
 import fr.cnes.sitools.resources.order.representations.ZipOutputRepresentation;
+import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
+import fr.cnes.sitools.resources.order.utils.OrderAPI;
 
 /**
  * @author tx.chevallier
@@ -43,7 +44,7 @@ import fr.cnes.sitools.resources.order.representations.ZipOutputRepresentation;
  * @version
  * 
  */
-public class StreamingOrderResource extends CartOrderResource {
+public class StreamingOrderResource extends AbstractCartOrderResource {
 
   /** The type of archive to create */
   private String archiveType;

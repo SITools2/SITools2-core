@@ -16,57 +16,60 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.order.cart;
+/**
+ * 
+ */
+package fr.cnes.sitools.resources.order.cart.wget;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.Validator;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
-import fr.cnes.sitools.tasks.TaskUtils;
+import fr.cnes.sitools.project.ProjectApplication;
+import fr.cnes.sitools.resources.order.cart.common.AbstractCartOrderResourceModel;
 import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.tasks.model.TaskRunTypeAdministration;
 
-public class CartOrderResourceModel extends TaskResourceModel {
-  
-  
+/**
+ * @author tx.chevallier
+ * 
+ * @version
+ * 
+ */
+public class WgetListFileOrderResourceModel extends AbstractCartOrderResourceModel {
 
-  /**
-   * Constructor
-   */
-  public CartOrderResourceModel() {
+  public WgetListFileOrderResourceModel() {
 
     super();
-    setClassAuthor("AKKA Technologies");
+
+    setResourceImplClassName("fr.cnes.sitools.resources.order.cart.wget.WgetListFileOrderResource");
+
+    setClassAuthor("Akka Technologies");
     setClassOwner("CNES");
     setClassVersion("0.1");
-    setName("CartOrderResourceModel");
-    setDescription("Cart Order resources associated to metadata and save it in user storage. (Can also create a ZIP, TAR or TAR.GZ 'on the fly')");
-    /** Resource facade */
-    setResourceClassName("fr.cnes.sitools.resources.order.cart.CartOrderResourceFacade");
-    /** Resource d'implémentation */
-    setResourceImplClassName("fr.cnes.sitools.resources.order.cart.CartOrderResource");
+    setName("WgetListFileOrderResourceModel");
+    setDescription("Order resources associated to metadata, copying all files to a userstorage");
 
-    setRunTypeAdministration(TaskRunTypeAdministration.TASK_DEFAULT_RUN_ASYNC);
-
+    this.setApplicationClassName(ProjectApplication.class.getName());
     this.getParameterByName("methods").setValue("POST");
 
-    this.getParameterByName("fileName").setValue("cart_order_" + "${date:" + TaskUtils.getTimestampPattern()+"}");
+    this.getParameterByName(TaskResourceModel.RUN_TYPE_PARAM_NAME_ADMINISTATION).setValue(
+        TaskRunTypeAdministration.TASK_FORCE_RUN_ASYNC.toString());
 
   }
 
   @Override
   public Validator<ResourceModel> getValidator() {
-    return new Validator<ResourceModel>() {
 
+    final Validator<ResourceModel> parent = super.getValidator();
+
+    return new Validator<ResourceModel>() {
       @Override
       public Set<ConstraintViolation> validate(ResourceModel item) {
-        Set<ConstraintViolation> constraints = new HashSet<ConstraintViolation>();
-        return constraints;
+        return parent.validate(item);
       }
     };
   }
-
 
 }

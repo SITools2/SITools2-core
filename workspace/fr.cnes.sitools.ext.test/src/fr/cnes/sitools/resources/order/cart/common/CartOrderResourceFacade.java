@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.order.cart;
+package fr.cnes.sitools.resources.order.cart.common;
 
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -29,9 +29,9 @@ import org.restlet.resource.Post;
 
 import com.thoughtworks.xstream.XStream;
 
-import fr.cnes.sitools.cart.model.CartSelections;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.resources.order.OrderResourceFacade;
+import fr.cnes.sitools.resources.order.cart.common.model.CartSelections;
 import fr.cnes.sitools.tasks.TaskUtils;
 
 /**

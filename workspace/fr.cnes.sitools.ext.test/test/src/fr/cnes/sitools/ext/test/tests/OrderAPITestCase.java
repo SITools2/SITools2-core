@@ -32,7 +32,6 @@ import org.restlet.data.ClientInfo;
 import org.restlet.data.Protocol;
 import org.restlet.security.User;
 
-import fr.cnes.sitools.cart.utils.OrderAPI;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
@@ -40,6 +39,7 @@ import fr.cnes.sitools.ext.test.common.AbstractExtSitoolsTestCase;
 import fr.cnes.sitools.order.OrderAdministration;
 import fr.cnes.sitools.order.OrderStoreXML;
 import fr.cnes.sitools.order.model.Order;
+import fr.cnes.sitools.resources.order.utils.OrderAPI;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
 

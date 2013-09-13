@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -103,7 +103,7 @@ public class CartResource extends SitoolsParameterizedResource {
    * Execute the request and return a Representation
    */
   private Representation execute() {
-    
+
     // Get context
     Context context = getContext();
 
@@ -129,87 +129,86 @@ public class CartResource extends SitoolsParameterizedResource {
     else {
       params.setPaginationExtend(Integer.valueOf(maxRowsStr));
     }
-    
+
     DatabaseRequest databaseRequest = DatabaseRequestFactory.getDatabaseRequest(params);
     Record rec = null;
-    
+
     SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
-    
-    // make directories    
+
+    // make directories
     Calendar cal = Calendar.getInstance();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     String date = sdf.format(cal.getTime());
-    
+
     String user = this.getRequest().getClientInfo().getUser().getIdentifier();
-    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") + "/" + user  ;
-    
+    String rootdir = settings.getStoreDIR("Starter.USERSTORAGE_ROOT") + "/" + user;
+
     File ordersdir = new File(rootdir + "/resources_orders");
     File outputdir = new File(rootdir + "/resources_orders/dataset_" + date);
     File datadir = new File(outputdir + "/data");
-    
+
     ordersdir.mkdir();
     outputdir.mkdir();
     datadir.mkdir();
-    
+
     try {
-        if (params.getDistinct()) {
-          databaseRequest.createDistinctRequest();
-        }
-        else {
-          databaseRequest.createRequest();
-        }
-                
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); 
-        DocumentBuilder builder = dbf.newDocumentBuilder();  
-        
-        Document document = builder.newDocument();
-        
-        Element rootElement = document.createElement("root");
-        Element recordsElement = document.createElement("records");
-        rootElement.appendChild(recordsElement);
-        document.appendChild(rootElement);
-        
-        while (databaseRequest.nextResult()) {
-      
-          rec = databaseRequest.getRecord();
+      if (params.getDistinct()) {
+        databaseRequest.createDistinctRequest();
+      }
+      else {
+        databaseRequest.createRequest();
+      }
 
-          List<AttributeValue> list = rec.getAttributeValues();
-          AttributeValue obj;
-          
-          // set record element
-          Element recordElement = document.createElement("record");
-          
-          for (Iterator<AttributeValue> it = list.iterator(); it.hasNext();) {
-            obj = it.next();
-            if (Util.isSet(obj)) {
-  
-              String columnAlias = obj.getName();
-              Element columnElement = document.createElement(columnAlias);
-              columnElement.setTextContent(String.valueOf(obj.getValue()));
-              recordElement.appendChild(columnElement);
-            }
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = dbf.newDocumentBuilder();
+
+      Document document = builder.newDocument();
+
+      Element rootElement = document.createElement("root");
+      Element recordsElement = document.createElement("records");
+      rootElement.appendChild(recordsElement);
+      document.appendChild(rootElement);
+
+      while (databaseRequest.nextResult()) {
+
+        rec = databaseRequest.getRecord();
+
+        List<AttributeValue> list = rec.getAttributeValues();
+        AttributeValue obj;
+
+        // set record element
+        Element recordElement = document.createElement("record");
+
+        for (Iterator<AttributeValue> it = list.iterator(); it.hasNext();) {
+          obj = it.next();
+          if (Util.isSet(obj)) {
+
+            String columnAlias = obj.getName();
+            Element columnElement = document.createElement(columnAlias);
+            columnElement.setTextContent(String.valueOf(obj.getValue()));
+            recordElement.appendChild(columnElement);
           }
-          
-          recordsElement.appendChild(recordElement);
-        
-      }  
+        }
 
-        // Writing out the DOM to an XML File
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        
-        DOMSource source = new DOMSource(document);
-        StreamResult result = new StreamResult(new File(outputdir + "/metadata.xml"));
-        transformer.transform(source, result);
-        
-        
-    } catch (Exception e) {
+        recordsElement.appendChild(recordElement);
+
+      }
+
+      // Writing out the DOM to an XML File
+      TransformerFactory transformerFactory = TransformerFactory.newInstance();
+      Transformer transformer = transformerFactory.newTransformer();
+
+      DOMSource source = new DOMSource(document);
+      StreamResult result = new StreamResult(new File(outputdir + "/metadata.xml"));
+      transformer.transform(source, result);
+
+    }
+    catch (Exception e) {
       e.printStackTrace();
       return new JsonRepresentation("label.download_ko");
     }
 
     return new JsonRepresentation("label.download_ok");
-    
 
   }
 

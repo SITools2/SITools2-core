@@ -39,9 +39,9 @@ import org.restlet.representation.Representation;
 //import com.ice.tar.TarEntry;
 //import com.ice.tar.TarOutputStream;
 
-import fr.cnes.sitools.cart.utils.ListReferencesAPI;
-import fr.cnes.sitools.cart.utils.OrderResourceUtils;
 import fr.cnes.sitools.common.exception.SitoolsException;
+import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
+import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 
 /**
  * Representation used to create a tar or a tar.gz Archive from a List of
