@@ -215,11 +215,13 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
       } while (count + offset < nbTotalResult);
 
+
     }
 
     // ** SERIALIZE RECORD LIST TO METADATA REPRESENTATION
 
     XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, getContext());
+    xstream.setMode(XStream.NO_REFERENCES);
     xstream.alias("record", Record.class);
     xstream.alias("value", Object.class, String.class);
     xstream.alias("response", Response.class);
