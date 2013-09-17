@@ -101,11 +101,11 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
                     
                     var version = info.version;
                     var buildDate = info.buildDate;
-                    var copyrightYear = info.copyrightYear;
+                    var copyright = info.copyright;
                     
                     this.versionLabel.setText("<h3>Version : " + version + "</h3>", false);                    
                     this.buildDateLabel.setText("<h3>Build date : " + buildDate + "</h3>", false);                    
-                    this.credits.setText(String.format("<p>Copyright {0} CNES</p><br>", copyrightYear), false);
+                    this.credits.setText(String.format("<p>{0}</p><br>", copyright), false);
                     //this.doLayout();
                     
                 },

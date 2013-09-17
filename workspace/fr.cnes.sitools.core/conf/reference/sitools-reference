@@ -5,7 +5,7 @@
 # ---------
 
 version() {
-	echo " SITools2 v.${version} Copyright ${copyright_year} CNES"
+	echo " SITools2 v.${version} ${copyright}"
 }
 
 usage() {
@@ -137,7 +137,7 @@ myPid=${$}
 
 # Version de sitools
 version="@VERSION@"
-copyright_year="@COPYRIGHT_YEAR@"
+copyright="@COPYRIGHT@"
 
 # Parametrage de l'environnement
 [ -f ${HOME}/.bash_profile ] && . ${HOME}/.bash_profile

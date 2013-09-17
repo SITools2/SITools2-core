@@ -29,8 +29,8 @@ public class VersionBuildDateDTO {
   private String version;
   /** The build date */
   private String buildDate;
-  /** The copyright year */
-  private String copyrightYear;
+  /** The copyright */
+  private String copyright;
 
   /**
    * Gets the version value
@@ -70,12 +70,23 @@ public class VersionBuildDateDTO {
     this.buildDate = buildDate;
   }
 
-  public String getCopyrightYear() {
-    return copyrightYear;
+  /**
+   * Gets the copyright value
+   * 
+   * @return the copyright
+   */
+  public String getCopyright() {
+    return copyright;
   }
 
-  public void setCopyrightYear(String copyrightYear) {
-    this.copyrightYear = copyrightYear;
+  /**
+   * Sets the value of copyright
+   * 
+   * @param copyright
+   *          the copyright to set
+   */
+  public void setCopyright(String copyright) {
+    this.copyright = copyright;
   }
 
 }
