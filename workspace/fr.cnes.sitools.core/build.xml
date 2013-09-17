@@ -196,7 +196,7 @@
 					<token key="ROOT_DIRECTORY" value="${ROOT_DIRECTORY}" />
 					<token key="VERSION" value="${properties.Starter.VERSION}" />
 					<token key="PORT" value="${HOST_PORT}" />
-					<token key="COPYRIGHT_YEAR" value="${properties.Starter.COPYRIGHT_YEAR}" />
+					<token key="COPYRIGHT" value="${properties.Starter.COPYRIGHT}" />
 				</replacetokens>
 			</filterchain>
 		</copy>

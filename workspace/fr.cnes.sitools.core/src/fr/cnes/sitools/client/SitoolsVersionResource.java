@@ -58,12 +58,12 @@ public final class SitoolsVersionResource extends SitoolsResource {
   protected Representation get(Variant variant) {
     String version = getSitoolsSetting("Starter.VERSION");
     String buildDate = getSitoolsSetting("Starter.BUILD_DATE");
-    String copyrightYear = getSitoolsSetting("Starter.COPYRIGHT_YEAR");
+    String copyright = getSitoolsSetting("Starter.COPYRIGHT");
 
     VersionBuildDateDTO dto = new VersionBuildDateDTO();
     dto.setVersion(version);
     dto.setBuildDate(buildDate);
-    dto.setCopyrightYear(copyrightYear);
+    dto.setCopyright(copyright);
 
     Response resp = new Response(true, dto, VersionBuildDateDTO.class, "info");
 

@@ -150,9 +150,9 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
                                 }
                                 var info = json.info;
                                 
-                                var copyrightYear = info.copyrightYear;
+                                var copyright = info.copyright;
                         
-                                this.credits.setText(String.format(i18n.get("label.build_by_sitools2"), copyrightYear), false);
+                                this.credits.setText(String.format(i18n.get("label.build_by_sitools2"), copyright), false);
                         
                                 var bottomEl = SitoolsDesk.getBottomEl();
                                 me.fillLinks();

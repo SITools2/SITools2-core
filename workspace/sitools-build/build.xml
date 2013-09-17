@@ -768,10 +768,10 @@
 	
 	<!-- Supprime le texte de licence au début de chaque fichier -->
 	<target name="change_copyright" description="Change the copyright year values in all the files of the workspace">
-		<echo message="Replace 'Copyright 2010- 2013 CNES' with 'Copyright 2010-2013 CNES'"></echo>
+		<echo message="Replace 'Copyright 2011-2012 CNES' with 'Copyright 2010-2013 CNES'"></echo>
 			<replace 
 	    		value="Copyright 2010-2013 CNES"
-				token="Copyright 2010- 2013 CNES"
+				token="Copyright 2011-2012 CNES"
 	    		failOnNoReplacements="true"
 	    		summary="true"
 	    		encoding="ISO-8859-1">
@@ -780,6 +780,7 @@
 					<include name="**/*.js" />
 					<include name="**/*.css" />
 					<include name="**/*.xml" />
+					<include name="**/*.properties" />
 				</fileset>
 			</replace>
 	</target>
