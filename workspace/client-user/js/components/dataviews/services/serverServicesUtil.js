@@ -39,9 +39,8 @@ Ext.namespace('sitools.user.component.dataviews.services');
 sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.util.Observable, {
 
     constructor : function (config) {
-        this.grid = config.grid;
-        this.origin = config.origin;
-        this.datasetUrl = config.datasetUrl;
+        /** apply datasetUrl, grid, origin **/
+        Ext.apply(this, config);
         
         this.urlDatasetServiceServer = this.datasetUrl + "/services" + '/server/{idService}';
     },
@@ -57,6 +56,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 if (!json.success) {
                     Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.resource.not.found"));
                 }
+                this.grid.getEl().mask(i18n.get('label.executingService'), "x-mask-loading");
                 
                 var resource = json.resourcePlugin;
                 var parameters = resource.parameters;
@@ -76,6 +76,9 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 }, this);
                 
                 this.resourceClick(resource, url, methods, runTypeUserInput, parameters);        
+            },
+            callback : function () {
+                this.grid.getEl().unmask();
             }
         });
         
@@ -296,7 +299,6 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                     }, 
                     failure : alertFailure
                 });
-                
                 break;
             case "DOWNLOAD" :
                 //générer un panel caché
@@ -313,6 +315,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 else {
                     iFrame.setSrc(url); 
                 }
+                
                 break;
             }
             return;
@@ -333,6 +336,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
             scope : this,
             success : function (response, opts) {
                 // try {
+                
                 var json = Ext.decode(response.responseText);
                 if (!json.success) {
                     Ext.Msg.show({
@@ -364,6 +368,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
 
             },
             failure : function (response, opts) {
+                this.grid.getEl().unmask();
                 Ext.Msg.show({
                         title : i18n.get('label.error'),
                         msg : response.responseText,
@@ -372,6 +377,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                     });
             },
             callback : function () {
+                
                 if (Ext.getBody().isMasked()) {
                     Ext.getBody().unmask();
                 }
@@ -454,4 +460,5 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
         return paramOut;
 
     }
+    
 });

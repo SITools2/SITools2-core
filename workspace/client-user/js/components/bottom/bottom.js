@@ -41,9 +41,12 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
     },
     bodyCssClass : 'sitools_footer',
 	initComponent : function () {
-		this.defaultBottom = Ext.get('x-bottom').dom.children.length === 0 ;
+	    
+	    this.versionUrl = loadUrl.get('APP_URL') + '/version';
 		
-		if (this.defaultBottom){
+	    this.defaultBottom = Ext.get('x-bottom').dom.children.length === 0 ;
+		
+		if (this.defaultBottom) {
 			
 			this.renderTo = 'x-bottom';
 			
@@ -62,16 +65,23 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 	            }
 			});
 			
+
+			this.credits = new Ext.form.Label({
+			    style : 'color:white'
+			});
+			
+
+			
 			this.panelMiddle = new Ext.Panel({
 				border : false,
 				flex : 1,
 				bodyCssClass : 'no-background',
 				items : [{
 				    xtype : "panel",
-			        html : "<span style='color:white'>" + i18n.get("label.build_by_sitools2") + "</span>",
 				    id : 'sitools_build_by',
 				    cls : "sitools_footer_build_by",
-				    bodyCssClass : 'no-background'
+				    bodyCssClass : 'no-background',
+				    items : [this.credits]
 
 				}]	
 			});
@@ -124,22 +134,43 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
             listeners : {
                 scope : this,
                 afterRender : function (me) {
-
+                    
                     if (!this.defaultBottom) {
                         me.setHeight(0);
                     } else {
-                        var bottomEl = SitoolsDesk.getBottomEl();
-                        me.fillLinks();
-                        me.setHeight(bottomEl.getHeight());
-                        me.heightNormalMode = bottomEl.getHeight();
-                        me.doLayout();
-                        Ext.get("sitools_build_by").alignTo(this.panelMiddle.getEl(), "bl-bl");
-
-                        var fr = Ext.get("sitools_footer_right");
-                        if (Ext.isDefined(fr) && !Ext.isEmpty(fr)) {
-                            fr.alignTo(this.panelRight.getEl(), "c-c");
-                        }
+                        Ext.Ajax.request({
+                            url : this.versionUrl,
+                            method : 'GET',
+                            scope : this,
+                            success : function (ret) {
+                                var json = Ext.decode(ret.responseText);
+                                if (!json.success) {
+                                    Ext.Msg.alert(i18n.get('label.warning'), json.message);
+                                    return false;
+                                }
+                                var info = json.info;
+                                
+                                var copyrightYear = info.copyrightYear;
+                        
+                                this.credits.setText(String.format(i18n.get("label.build_by_sitools2"), copyrightYear), false);
+                        
+                                var bottomEl = SitoolsDesk.getBottomEl();
+                                me.fillLinks();
+                                me.setHeight(bottomEl.getHeight());
+                                me.heightNormalMode = bottomEl.getHeight();
+                                me.doLayout();
+                                Ext.get("sitools_build_by").alignTo(this.panelMiddle.getEl(), "bl-bl");
+        
+                                var fr = Ext.get("sitools_footer_right");
+                                if (Ext.isDefined(fr) && !Ext.isEmpty(fr)) {
+                                    fr.alignTo(this.panelRight.getEl(), "c-c");
+                                }
+                            }
+                        });
                     }
+                    
+    
+                
                 },
                 resize : function (me) {
                     if (!this.defaultBottom) {

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -58,10 +58,12 @@ public final class SitoolsVersionResource extends SitoolsResource {
   protected Representation get(Variant variant) {
     String version = getSitoolsSetting("Starter.VERSION");
     String buildDate = getSitoolsSetting("Starter.BUILD_DATE");
+    String copyrightYear = getSitoolsSetting("Starter.COPYRIGHT_YEAR");
 
     VersionBuildDateDTO dto = new VersionBuildDateDTO();
     dto.setVersion(version);
     dto.setBuildDate(buildDate);
+    dto.setCopyrightYear(copyrightYear);
 
     Response resp = new Response(true, dto, VersionBuildDateDTO.class, "info");
 

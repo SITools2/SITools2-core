@@ -5,7 +5,7 @@
 # ---------
 
 version() {
-	echo " SITools2 v.${version} Copyright 2010, 2011, 2012 CNES"
+	echo " SITools2 v.${version} Copyright ${copyright_year} CNES"
 }
 
 usage() {
@@ -13,6 +13,7 @@ usage() {
     echo "  ${prog} <start|stop|restart|status> [-migration]"
     echo "PARAMETERS:"
     echo " -migration : used to start Sitools2 in migration mode to skip XML fields that are not in the models anymore"
+    echo " --version : display the version"    
     echo " "
 }
 
@@ -136,6 +137,7 @@ myPid=${$}
 
 # Version de sitools
 version="@VERSION@"
+copyright_year="@COPYRIGHT_YEAR@"
 
 # Parametrage de l'environnement
 [ -f ${HOME}/.bash_profile ] && . ${HOME}/.bash_profile
