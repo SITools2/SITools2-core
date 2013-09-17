@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
+import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -149,12 +150,13 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
       int count;
       int offset;
       int nbTotalResult;
-
+      int nbRequests = 0;
       do {
 
         String url = urlTemplate.replace("{start}", start.toString()).replace("{limit}", limit.toString());
 
-        Response response = RIAPUtils.getResponse(url, getContext());
+        Response response = RIAPUtils.handleParseResponse(url, Method.GET, MediaType.APPLICATION_JAVA_OBJECT,
+            getContext());
         nbTotalResult = response.getTotal();
         count = response.getCount();
         offset = response.getOffset();
@@ -238,9 +240,13 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
         start = offset + limit;
 
+        nbRequests++;
+        System.out.println("NB REQUEsT : " + nbRequests);
+
       } while (count + offset < nbTotalResult);
 
     }
+    System.out.println("AFTER WHILE");
 
     // ** SERIALIZE RECORD LIST TO METADATA REPRESENTATION
 

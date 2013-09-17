@@ -22,23 +22,29 @@
 package fr.cnes.sitools.resources.order.cart.wget;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.zip.ZipEntry;
+import java.util.Map;
 
 import org.restlet.data.Reference;
+import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
+import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.resources.order.cart.common.AbstractCartOrderResource;
+import fr.cnes.sitools.resources.order.representations.TarOutputRepresentation;
+import fr.cnes.sitools.resources.order.representations.ZipOutputRepresentation;
 import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
 import fr.cnes.sitools.resources.order.utils.OrderAPI;
 import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.util.TemplateUtils;
+import fr.cnes.sitools.util.Util;
 
 /**
  * @author tx.chevallier
@@ -76,16 +82,27 @@ public class WgetArchiveOrderResource extends AbstractCartOrderResource {
     OrderAPI.createEvent(order, getContext(), "PROCESSING ORDER");
 
     String fileName = getFileName();
-    Representation repr = null;
 
     List<Reference> listOfFilesToOrder = listReferences.getReferencesSource();
 
     Reference zipRef = new Reference(RIAPUtils.getRiapBase() + settings.getString(Consts.APP_TMP_FOLDER_URL));
     zipRef.addSegment(fileName);
-    zipRef.setExtensions("zip");
+    zipRef.setExtensions(archiveType);
 
-    OrderResourceUtils.zipFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), settings.getTmpFolderUrl()
-        + "/" + fileName + ".zip", getRequest().getClientInfo(), getContext());
+    String archiveDir = settings.getTmpFolderUrl() + "/" + fileName + "." + archiveType;
+
+    if ("zip".equals(archiveType)) {
+      OrderResourceUtils.zipFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, getRequest()
+          .getClientInfo(), getContext());
+    }
+    else if ("tar.gz".equals(archiveType)) {
+      OrderResourceUtils.tarFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, getRequest()
+          .getClientInfo(), getContext(), true);
+    }
+    else if ("tar".equals(archiveType)) {
+      OrderResourceUtils.tarFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, getRequest()
+          .getClientInfo(), getContext(), false);
+    }
 
     Reference destRef = OrderResourceUtils.getUserAvailableFolderPath(task.getUser(),
         settings.getString(Consts.USERSTORAGE_RESOURCE_ORDER_DIR) + folderName, getContext());
@@ -102,7 +119,8 @@ public class WgetArchiveOrderResource extends AbstractCartOrderResource {
     task.setUrlResult(settings.getString(Consts.APP_URL) + settings.getString(Consts.APP_ORDERS_USER_URL) + "/"
         + order.getId());
 
-    OrderResourceUtils.addFile(repr, destRef, getRequest().getClientInfo(), getContext());
+    destRef = OrderResourceUtils.riapToExternal(destRef, settings);
+
     // add it the order
     ArrayList<String> orderedResource = new ArrayList<String>();
     orderedResource.add(destRef.toString());
@@ -111,6 +129,35 @@ public class WgetArchiveOrderResource extends AbstractCartOrderResource {
 
     return null;
 
+  }
+  
+  protected String getMailBody(Mail mailToUser) {
+    // default body
+    String mailBody = "Your command is complete <br/>" + "Name : " + order.getName() + "<br/>" + "Description : "
+        + order.getDescription() + "<br/>" + "Check the status at :" + task.getStatusUrl() + "<br/>"
+        + "Get the result at :" + task.getUrlResult();
+
+    // use a freemarker template for email body with Mail object
+    String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+        + "mail.order.complete.wget.archive.ftl";
+
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("mail", mailToUser);
+    root.put("order", order);
+    root.put("task", task);
+    root.put("user", getClientInfo().getUser());
+
+    TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
+
+    root.put("context", getContext());
+
+    String body = TemplateUtils.toString(templatePath, root);
+    if (Util.isNotEmpty(body)) {
+      return body;
+    }
+    else {
+      return mailBody;
+    }
   }
 
 }

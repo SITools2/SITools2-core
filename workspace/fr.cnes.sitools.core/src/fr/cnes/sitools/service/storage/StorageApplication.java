@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -77,6 +77,7 @@ public final class StorageApplication extends SitoolsApplication {
 
     // Par défaut .html car restlet remplace sur un POST tout les .html en .htm
     this.getMetadataService().addExtension("html", MediaType.TEXT_HTML, true);
+    // this.getMetadataService().addExtension("gz", MediaType.APPLICATION_GNU_ZIP, true);
 
     this.store = (DataStorageStore) context.getAttributes().get(ContextAttributes.APP_STORE);
     if (this.store == null) {

@@ -90,7 +90,7 @@ public class WgetListFileOrderResource extends AbstractCartOrderResource {
 
         String folder = listReferences.getRefSourceTarget().get(sourceRef);
         if (folder != null) {
-          ref.addSegment("data/" + folder);
+          ref.addSegment(folder);
         }
         ref.addSegment(sourceRef.getLastSegment());
         OrderResourceUtils.copyFile(sourceRef, ref, getRequest().getClientInfo(), getContext());
@@ -138,17 +138,18 @@ public class WgetListFileOrderResource extends AbstractCartOrderResource {
   protected String getMailBody(Mail mailToUser) {
     // default body
     String mailBody = "Your command is complete <br/>" + "Name : " + order.getName() + "<br/>" + "Description : "
-        + order.getDescription() + "<br/>" + "Check the status at :" + task.getStatusUrl() + "<br/>" + "Get the result at :"
-        + task.getUrlResult();
+        + order.getDescription() + "<br/>" + "Check the status at :" + task.getStatusUrl() + "<br/>"
+        + "Get the result at :" + task.getUrlResult();
 
     // use a freemarker template for email body with Mail object
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
-        + "mail.order.complete.wget.ftl";
+        + "mail.order.complete.wget.filelist.ftl";
 
     Map<String, Object> root = new HashMap<String, Object>();
     root.put("mail", mailToUser);
-    root.put("order", order);    
+    root.put("order", order);
     root.put("task", task);
+    root.put("user", getClientInfo().getUser());
 
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 

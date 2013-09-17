@@ -84,8 +84,6 @@ public class StreamingOrderResource extends AbstractCartOrderResource {
         return repr;
       }
 
-      OrderAPI.terminateOrder(order, getContext());
-
       return repr;
 
     }
@@ -93,7 +91,7 @@ public class StreamingOrderResource extends AbstractCartOrderResource {
       getLogger().log(Level.SEVERE, null, e);
       if (order != null) {
         try {
-          OrderAPI.orderFailed(order, getContext(), e.getMessage());
+          order = OrderAPI.orderFailed(order, getContext(), e.getMessage());
         }
         catch (SitoolsException e1) {
           throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);

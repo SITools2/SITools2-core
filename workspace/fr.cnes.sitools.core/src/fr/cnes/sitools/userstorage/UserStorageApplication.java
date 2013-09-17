@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.restlet.Context;
 import org.restlet.Restlet;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.routing.Router;
 
@@ -58,6 +59,7 @@ public final class UserStorageApplication extends SitoolsApplication {
     super(context);
     this.store = (UserStorageStore) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.rootDirectory = (String) context.getAttributes().get("USER_STORAGE_ROOT");
+    // this.getMetadataService().addExtension("gz", MediaType.APPLICATION_GNU_ZIP, true);
   }
 
   @Override

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -62,6 +62,7 @@ public final class TemporaryFolderApplication extends SitoolsApplication {
       file.setReadable(true);
       file.mkdir();
     }
+    // this.getMetadataService().addExtension("gz", MediaType.APPLICATION_GNU_ZIP, true);
   }
 
   @Override

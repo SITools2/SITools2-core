@@ -116,14 +116,14 @@ public class TarOutputRepresentation extends OutputRepresentation {
     // create a new TarOutputStream, if gzip, the stream is also compressed with
     // GZIPOutputStream
     TarOutputStream tarOutput;
-     
+
     if (gzip) {
       tarOutput = new TarOutputStream(new GZIPOutputStream(outputStream));
     }
     else {
       tarOutput = new TarOutputStream(outputStream);
     }
-    
+
     tarOutput.setLongFileMode(TarOutputStream.LONGFILE_GNU);
     // loop through the References
     long totalArchiveSize = 0;
@@ -140,15 +140,17 @@ public class TarOutputRepresentation extends OutputRepresentation {
           // create a new TarEntry with the name of the entry
           TarEntry tarEntry;
           if (refMap != null) {
-            if (refMap.get(reference) != null)
+            if (refMap.get(reference) != null) {
               tarEntry = new TarEntry((String) refMap.get(reference) + "/" + reference.getLastSegment());
-            else
+            }
+            else {
               tarEntry = new TarEntry(reference.getLastSegment());
+            }
           }
           else {
             tarEntry = new TarEntry(reference.getLastSegment());
           }
-          
+
           // Set the tarEntry size with the same size as the file got before
           tarEntry.setSize(fileSize);
           tarOutput.putNextEntry(tarEntry);

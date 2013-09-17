@@ -139,11 +139,7 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     settings = (SitoolsSettings) getContext().getAttributes().get(ContextAttributes.SETTINGS);
     checkUser();
 
-    fileName = getRequest().getResourceRef().getQueryAsForm().getFirstValue("fileName");
-    if (fileName == null || "".equals(fileName)) {
-      // if it is not in the request parameters, let's get from the model
-      fileName = getParameterValue("fileName");
-    }
+    fileName = getFileName();
 
     doInitialiseOrder();
 
@@ -208,7 +204,7 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     task.setCustomStatus("CREATING ORDER MODEL OBJECT");
     Date startDate = task.getStartDate();
     formatedDate = DateUtils.format(startDate, TaskUtils.getTimestampPattern());
-    String orderDescription = "ORDER_" + getOrderName() + "_" + formatedDate;
+    String orderDescription = fileName;
     order = OrderAPI.createOrder(task.getUserId(), getContext(), orderDescription);
 
     // folderName =
@@ -257,8 +253,10 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
    *           is there is any error
    */
   public void doTerminateOrder() throws SitoolsException {
-    OrderAPI.updateOrder(order, getContext());
-    OrderAPI.terminateOrder(order, getContext());
+    order = OrderAPI.updateOrder(order, getContext());
+    if (!"failed".equals(order.getStatus())) {
+      order = OrderAPI.terminateOrder(order, getContext());
+    }
     // task.setCustomStatus(null);
   }
 
@@ -374,11 +372,18 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     }
   }
 
+  /**
+   * Get the mail body
+   * 
+   * @param mailToUser
+   *          the mail
+   * @return the mail body
+   */
   protected String getMailBody(Mail mailToUser) {
-    //default body
+    // default body
     String mailBody = "Your command is complete <br/>" + "Name : " + order.getName() + "<br/>" + "Description : "
-        + order.getDescription() + "<br/>" + "Check the status at :" + task.getStatusUrl() + "<br/>" + "Get the result at :"
-        + task.getUrlResult();
+        + order.getDescription() + "<br/>" + "Check the status at :" + task.getStatusUrl() + "<br/>"
+        + "Get the result at :" + task.getUrlResult();
 
     // use a freemarker template for email body with Mail object
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
@@ -387,6 +392,8 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     Map<String, Object> root = new HashMap<String, Object>();
     root.put("mail", mailToUser);
     root.put("order", order);
+    String adminmail = settings.getString("Starter.StatusService.CONTACT_MAIL");
+    root.put("adminmail", adminmail);
 
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 
@@ -401,8 +408,13 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     }
   }
 
+  /**
+   * Get mail subject
+   * 
+   * @return the mail subject
+   */
   protected String getMailSubject() {
-    return "Sitools order system : order completed";
+    return "[SITools order] " + order.getDescription() + " " + order.getStatus();
   }
 
   /**
@@ -419,7 +431,8 @@ public abstract class AbstractOrderResource extends SitoolsParameterizedResource
     else {
       localFileName = getParameterValue("fileName");
       if (localFileName == null || "".equals(localFileName)) {
-        localFileName = "defaultFileName";
+        localFileName = OrderResourceUtils.FILE_LIST_PATTERN.replace("{orderName}", getOrderName()).replace(
+            "{timestamp}", formatedDate);
       }
     }
     return localFileName;

@@ -104,63 +104,76 @@ public class ZipOutputRepresentation extends OutputRepresentation {
 
   @Override
   public void write(OutputStream outputStream) throws IOException {
-    // create a new ZipOutputStream
-    ZipOutputStream zipOutput = new ZipOutputStream(outputStream);
-    // loop through the References
 
-    long totalArchiveSize = 0;
-    int buffersize = 1024;
-    byte[] buf = new byte[buffersize];
-    for (Reference reference : references) {
-      if (reference.getLastSegment() != null) {
-        try {
-          // try to get the file
-          Representation repr = OrderResourceUtils.getFile(reference, clientInfo, context);
-          // create a new ZipEntry with the name of the entry
+    try {
+      // create a new ZipOutputStream
 
-          ZipEntry zipEntry;
-          if (refMap != null) {
-            if (refMap.get(reference) != null)
-              zipEntry = new ZipEntry((String) refMap.get(reference) + "/" + reference.getLastSegment());
-            else
-              zipEntry = new ZipEntry(reference.getLastSegment());
-          }
-          else {
-            zipEntry = new ZipEntry(reference.getLastSegment());
-          }
-          zipOutput.putNextEntry(zipEntry);
-          InputStream stream = null;
-          totalArchiveSize += zipEntry.getSize();
+      ZipOutputStream zipOutput = new ZipOutputStream(outputStream);
+      // loop through the References
 
+      long totalArchiveSize = 0;
+      int buffersize = 1024;
+      byte[] buf = new byte[buffersize];
+      for (Reference reference : references) {
+        if (reference.getLastSegment() != null) {
           try {
-            // get the stream of the File, read it and write it to
-            // the Zip stream
-            stream = repr.getStream();
-            int count = 0;
-            while ((count = stream.read(buf, 0, buffersize)) != -1) {
-              zipOutput.write(buf, 0, count);
-            }
+            System.out.println("WRITE : " + reference + " into zip file");
+            // try to get the file
+            Representation repr = OrderResourceUtils.getFile(reference, clientInfo, context);
+            // create a new ZipEntry with the name of the entry
 
-          }
-          finally {
+            ZipEntry zipEntry;
+            if (refMap != null) {
+              if (refMap.get(reference) != null) {
+                zipEntry = new ZipEntry((String) refMap.get(reference) + "/" + reference.getLastSegment());
+              }
+              else {
+                zipEntry = new ZipEntry(reference.getLastSegment());
+              }
+            }
+            else {
+              zipEntry = new ZipEntry(reference.getLastSegment());
+            }
+            zipOutput.putNextEntry(zipEntry);
+            InputStream stream = null;
+            totalArchiveSize += zipEntry.getSize();
 
-            // close the entry and the file stream
-            zipOutput.closeEntry();
-            if (stream != null) {
-              stream.close();
+            try {
+              // get the stream of the File, read it and write it to
+              // the Zip stream
+              stream = repr.getStream();
+              int count = 0;
+              while ((count = stream.read(buf, 0, buffersize)) != -1) {
+                zipOutput.write(buf, 0, count);
+              }
+
+            }
+            catch (Exception e) {
+              System.out.println("TA MERE");
+              e.printStackTrace();
+            }
+            finally {
+              // close the entry and the file stream
+              zipOutput.closeEntry();
+              if (stream != null) {
+                stream.close();
+              }
             }
           }
-        }
-        catch (SitoolsException ex) {
-          // if the file canno't be found, log the error and go to the
-          // next file
-          context.getLogger().log(Level.INFO, "File " + reference + "canno't be found", ex);
+          catch (SitoolsException ex) {
+            // if the file canno't be found, log the error and go to the
+            // next file
+            context.getLogger().log(Level.INFO, "File " + reference + "canno't be found", ex);
+          }
         }
       }
+      // Log the zip estimated size
+      context.getLogger().info("Total size (estimated) : " + totalArchiveSize + "kB");
+      // close the zip stream
+      zipOutput.close();
     }
-    // Log the zip estimated size
-    context.getLogger().info("Total size (estimated) : " + totalArchiveSize + "kB");
-    // close the zip stream
-    zipOutput.close();
+    catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
