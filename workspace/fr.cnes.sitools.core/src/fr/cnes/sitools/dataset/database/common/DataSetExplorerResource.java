@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -20,6 +20,7 @@ package fr.cnes.sitools.dataset.database.common;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
@@ -31,6 +32,7 @@ import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -149,18 +151,18 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
     }
     if (recordSetTarget) { // RECORDS => RETOURNE LA LISTE DES RECORDS SELON LA
                            // PAGINATION
-      
+
       // CAS OBJET JAVA
       if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
-        
+
         Response response = new Response();
         ArrayList<Object> records = new ArrayList<Object>();
-        
-        DatabaseRequest databaseRequest = 
-            DatabaseRequestFactory.getDatabaseRequest(this.datasetExplorerUtil.getDatabaseParams());
-        
+
+        DatabaseRequest databaseRequest = DatabaseRequestFactory.getDatabaseRequest(this.datasetExplorerUtil
+            .getDatabaseParams());
+
         try {
-          
+
           databaseRequest.createRequest();
 
           int count = 0;
@@ -169,37 +171,44 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
             records.add(rec);
             count++;
           }
-          
+
           response.setOffset(databaseRequest.getStartIndex());
           response.setCount(count);
           response.setTotal(databaseRequest.getTotalCount());
           response.setData(records);
-          
+
         }
         catch (IllegalArgumentException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
         catch (SitoolsException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
-        
+        finally {
+          if (databaseRequest != null) {
+            try {
+              databaseRequest.close();
+            }
+            catch (SitoolsException e) {
+              Logger.getLogger(this.getClass().getName()).severe(e.getMessage());
+            }
+          }
+        }
+
         return new ObjectRepresentation<Response>(response);
-        
-        
-      } 
+
+      }
       // AUTRES CAS
       else {
-        
+
         // Representation dédiée au RecordSet
         Representation repr = new DBRecordSetRepresentation(media, this.datasetExplorerUtil);
         // ajout de la date dernière modification dans la reponse
         repr.setModificationDate(application.getDataSet().getExpirationDate());
-  
+
         return repr;
       }
-      
+
     }
     else if (recordTarget) { // RECORD => RETOURNE LE RECORD SELON SA CLE
                              // PRIMAIRE
@@ -224,7 +233,7 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
   @Get
   public final Representation get(Variant variant) {
     MediaType defaultMediaType = this.getMediaType(variant);
-    
+
     return processConstraint(defaultMediaType);
   }
 
