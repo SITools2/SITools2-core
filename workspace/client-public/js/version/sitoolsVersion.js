@@ -34,8 +34,9 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
             html : '<img src='+loadUrl.get('APP_URL')+'/res/images/logo_02_tailleMoyenne.png>'
         });
         
-        var credits = new Ext.form.Label({
-            html : '<p>Copyright 2010-2013 CNES</p>'
+        
+        
+        this.credits = new Ext.form.Label({            
         });
         
         var website = new Ext.form.Label({
@@ -61,7 +62,7 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
             
         });
         
-        panelVersion.add([logo, title, this.versionLabel, this.buildDateLabel, credits, website]);
+        panelVersion.add([logo, title, this.versionLabel, this.buildDateLabel, this.credits, website]);
         
         this.tabs = new Ext.TabPanel({
             activeTab: 0,
@@ -100,10 +101,11 @@ sitools.component.version.sitoolsVersion = Ext.extend(Ext.Panel, {
                     
                     var version = info.version;
                     var buildDate = info.buildDate;
+                    var copyrightYear = info.copyrightYear;
                     
                     this.versionLabel.setText("<h3>Version : " + version + "</h3>", false);                    
                     this.buildDateLabel.setText("<h3>Build date : " + buildDate + "</h3>", false);                    
-                    
+                    this.credits.setText(String.format("<p>Copyright {0} CNES</p><br>", copyrightYear), false);
                     //this.doLayout();
                     
                 },

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -29,6 +29,8 @@ public class VersionBuildDateDTO {
   private String version;
   /** The build date */
   private String buildDate;
+  /** The copyright year */
+  private String copyrightYear;
 
   /**
    * Gets the version value
@@ -66,6 +68,14 @@ public class VersionBuildDateDTO {
    */
   public void setBuildDate(String buildDate) {
     this.buildDate = buildDate;
+  }
+
+  public String getCopyrightYear() {
+    return copyrightYear;
+  }
+
+  public void setCopyrightYear(String copyrightYear) {
+    this.copyrightYear = copyrightYear;
   }
 
 }
