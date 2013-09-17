@@ -266,6 +266,17 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         
         this.items = [this.tree, this.contentPanel];
         
+        this.tbar = {
+                xtype : 'toolbar',
+                cls : 'services-toolbar',
+                height : 15,
+                defaults : {
+                    scope : this,
+                    cls : 'services-toolbar-btn'
+                },
+                items : [ ]
+        };
+        
         sitools.user.modules.contentEditorModule.superclass.initComponent.call(this);
     },
     

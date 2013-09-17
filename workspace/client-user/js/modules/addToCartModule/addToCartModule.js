@@ -75,6 +75,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 text : '<b>' + i18n.get('label.downloadOrder') + '</b>',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
                 tooltip : i18n.get('label.downloadOrder'),
+                cls : 'sitools-btn-green',
                 menu : this.tbarMenu
                 }, '->', 
             {
@@ -146,7 +147,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         this.store.removeAll();
                         return;
                     }
-                    
                     if (response.status === 403) {
                         return Ext.Msg.show({
                             title : i18n.get('label.warning'),
@@ -156,7 +156,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         });
                     }                    
                 }
-                
             }
         });
         
@@ -174,7 +173,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 format : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
                 xtype : 'datecolumn'
             }, {
-                header : i18n.get('label.nbRecords'),
+                header : i18n.get('label.nbArticles'),
                 width : 150,
                 sortable : true,
                 dataIndex : 'nbRecords'
@@ -183,9 +182,12 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         
         this.layout = 'fit';
         
-        this.gridPanel = new Ext.ux.PersistantSelectionGridPanel({
-//        this.gridPanel = new Ext.grid.GridPanel({
+        this.gridPanel = new Ext.grid.GridPanel({
+//        this.gridPanel = new Ext.ux.PersistantSelectionGridPanel({
             region : 'center',
+            sm : new Ext.grid.RowSelectionModel({
+                singleSelect : true
+            }),
             colModel : this.columnModel,
             store : this.store,
             view : new  Ext.grid.GridView({
@@ -202,8 +204,29 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             listeners : {
                 scope : this,
                 rowclick : function (grid, ind) {
-                    this.containerArticlesDetailsPanel.expand();
-                    this.viewArticlesDetails();
+                    var selected = grid.selModel.getSelections()[0];
+                    var modifyBtn = this.getTopToolbar().find('name', 'modifySelectionBtn')[0];
+                    if (Ext.isEmpty(selected)) {
+                        if (!Ext.isEmpty(modifyBtn)) {
+                            this.getTopToolbar().remove(modifyBtn);
+                        }
+                        return;
+                    } else {
+                        if (Ext.isEmpty(modifyBtn)) {
+                            this.getTopToolbar().insert(1, {
+                                text : i18n.get('label.modifySelection'),
+                                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                                name : 'modifySelectionBtn',
+                                cls : 'services-toolbar-btn',
+                                scope : this,
+                                handler : this.modifySelection
+                            });
+                        }
+                        this.getTopToolbar().doLayout();
+                        this.containerArticlesDetailsPanel.expand();
+                        this.viewArticlesDetails();
+                    }
+                    
                 } 
             }
         });
@@ -336,12 +359,25 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                     });
                     
                     this.serviceServerUtil = new sitools.user.component.dataviews.services.serverServicesUtil({
-                        datasetUrl : projectGlobal.sitoolsAttachementForUsers, 
+                        datasetUrl : projectGlobal.sitoolsAttachementForUsers,
                         datasetId : projectGlobal.projectId, 
                         origin : "sitools.user.modules.projectServices"
                     });
                     
-                    this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters);
+                    var cb = function () {
+                        this.ownerCt.close();
+                        Ext.Msg.show({
+                            title : i18n.get('label.info'),
+                            buttons : Ext.Msg.OK,
+                            icon : Ext.MessageBox.INFO,
+                            msg : i18n.get('label.orderWasRun')
+                        });
+                    };
+                    var callback = cb.createDelegate(this);
+                    
+                    this.getTopToolbar().disable();
+                    this.getEl().mask("Executing Service...", 'x-mask-loading');
+                    this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters, null, callback);
                 }
             }
         });
@@ -368,9 +404,16 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     
     onRefresh : function () {
         this.store.reload();
+        this.gridPanel.getSelectionModel().clearSelections();
         this.containerArticlesDetailsPanel.collapse(true);
         this.containerArticlesDetailsPanel.setTitle('');
         this.containerArticlesDetailsPanel.removeAll();
+        
+        var modifySelBtn = this.getTopToolbar().find('name', 'modifySelectionBtn')[0];
+        if (!Ext.isEmpty(modifySelBtn)) {
+            this.getTopToolbar().remove(modifySelBtn);
+            this.getTopToolbar().doLayout();
+        }
     },
     
     onDelete : function () {
@@ -465,6 +508,17 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             preferencesFileName : this.id
         };
 
+    },
+    
+    modifySelection : function () {
+        var selected = this.gridPanel.getSelectionModel().getSelections()[0];
+        var url = selected.data.dataUrl;
+        var params = {
+            ranges : selected.get('ranges'),
+            startIndex : selected.get('startIndex'),
+            nbRecordsSelection : selected.get('nbRecords')
+        };
+        sitools.user.clickDatasetIcone(url, 'data', params);
     }
 });
 

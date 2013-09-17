@@ -171,6 +171,12 @@ sitools.user.modules.datasetExplorerDataView = Ext.extend(Ext.Panel, {
         
         
         this.tbar = new Ext.Toolbar({
+            xtype : 'toolbar',
+            cls : 'services-toolbar',
+            defaults : {
+                scope : this,
+                cls : 'services-toolbar-btn'
+            },
             items : [''],
 	        plugins: [new Ext.ux.ToolbarReorderer()],	        
 	        listeners: {
@@ -191,7 +197,7 @@ sitools.user.modules.datasetExplorerDataView = Ext.extend(Ext.Panel, {
                             this.openProjectGraph();                    
                         }
                     }
-                }, '-');
+                }, '->', '-');
         }
         
         this.tbar.add(i18n.get("label.sortOnTheseFields"), buttonName, buttonNbRecords);

@@ -279,6 +279,17 @@ sitools.user.modules.formsModule = function () {
         items : [ this.gridFormsDs, this.gridFormsMultiDs ]
     });
     
+    this.tbar = {
+            xtype : 'toolbar',
+            cls : 'services-toolbar',
+            height : 15,
+            defaults : {
+                scope : this,
+                cls : 'services-toolbar-btn'
+            },
+            items : [ ]
+    };
+    
     sitools.user.modules.formsModule.superclass.constructor.call(this, Ext.apply({
         layout : 'fit',
         items : [ this.containerPanel ]

@@ -91,13 +91,7 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             
         });
 
-        this.tbar = [ '->', {
-            text : i18n.get('label.modifySelection'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
-            cls : 'services-toolbar-btn',
-            scope : this,
-            handler : this.modifySelection
-        } ];
+//        this.tbar = [ '->',  ];
 
         this.bbar = {
             xtype : 'paging',
@@ -161,16 +155,6 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             }
         });
         return primaryKey;
-    },
-    
-    modifySelection : function () {
-        var url = this.selection.data.dataUrl;
-        var params = {
-            ranges : this.selection.get('ranges'),
-            startIndex : this.selection.get('startIndex'),
-            nbRecordsSelection : this.selection.get('nbRecords')
-        };
-        sitools.user.clickDatasetIcone(url, 'data', params);
     }
     
 });

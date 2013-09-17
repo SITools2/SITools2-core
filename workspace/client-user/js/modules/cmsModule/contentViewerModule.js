@@ -192,6 +192,17 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
         this.htmlReader = new Ext.ux.ManagedIFrame.Panel(htmlReaderCfg);
 
         this.items = [ this.tree, this.htmlReader ];
+        
+        this.tbar = {
+                xtype : 'toolbar',
+                cls : 'services-toolbar',
+                height : 15,
+                defaults : {
+                    scope : this,
+                    cls : 'services-toolbar-btn'
+                },
+                items : [ ]
+        };
 
         sitools.user.modules.contentViewerModule.superclass.initComponent.call(this);
     },

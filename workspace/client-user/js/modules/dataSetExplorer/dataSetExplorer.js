@@ -141,6 +141,17 @@ sitools.user.modules.datasetExplorer = function (config) {
             }
         }
     });
+    
+    this.tbar = {
+            xtype : 'toolbar',
+            cls : 'services-toolbar',
+            height : 15,
+            defaults : {
+                scope : this,
+                cls : 'services-toolbar-btn'
+            },
+            items : [ ]
+        };
 
     sitools.user.modules.datasetExplorer.superclass.constructor.call(this, Ext.apply({
         expanded : true,

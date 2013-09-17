@@ -928,6 +928,7 @@ td.ux-taskButtons-edge {
 #shortcuts {
 	height : 50%;
 	width : 100%;
+/* 	border-top: 1px solid #A3A3A3; */
 }
 
 #x-bottom {
@@ -1047,7 +1048,7 @@ td.ux-taskButtons-edge {
 }
 
 .sitools-module-panel .x-panel-body{
-	background-color: #D9DCDF;	
+/* 	background-color: #D9DCDF;	 */
 }
 
 <!-- Tree node selected for xtheme-gray -->

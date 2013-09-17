@@ -29,12 +29,10 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
     id : 'winLogin',
     layout : 'hbox',
     width : 392,
-    height : 200,
+    height : 220,
     resizable : false,
     closable : false,
     modal : true,
-    
-
     initComponent : function () {
         this.title = i18n.get('label.login');
         this.bbar = new Ext.ux.StatusBar({
@@ -83,7 +81,8 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
             this.combo.hideLabel = false;
         } else {
             this.combo.setVisible(false);
-            this.setSize(392, 160);
+//            this.setSize(392, 160);
+            this.setSize(392, 175);
         }
         this.items = [ {
             xtype : 'form',

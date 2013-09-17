@@ -98,10 +98,13 @@
 }
 
 ul.x-tab-strip-top{
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/title3_02.png") !important;
+	background-position: 0 -26px !important;
+	background-color : transparent; 
 	border : none;
-    background-color:#dbdbdb;
-	background-image: url(../images/gray/tabs/tab-strip-bg.gif);
 	border-bottom-color:#d0d0d0;
+    /*background-color:#dbdbdb;
+	background-image: url(../images/gray/tabs/tab-strip-bg.gif);*/
 }
 
 ul.x-tab-strip-bottom{
@@ -1681,7 +1684,7 @@ a.x-menu-item {
 }
 
 .x-panel-body, .x-tab-panel-body, .x-tab-panel-footer, .x-window-plain .x-window-mc {
-	background-color : #F3F3F3;
+	background-color : #FFF;
 }
 
 .x-window-mc,
@@ -2064,8 +2067,10 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .x-btn-ml, .x-btn-mr, .x-btn-mc {
-	background-image: url(../images/gray-custom/bt_b.png);
-	height: 22px;
+	/**background-image: url(../images/gray-custom/bt_b.png);*/
+	background-image: url(../images/gray-custom/bt_grey.png);
+	/**height: 22px;*/
+	height: 30px;
 }
 
 .x-btn-ml {
@@ -2073,11 +2078,13 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .x-btn-mc {
-	background-position: 0 -22px  !important;
+	/**background-position: 0 -22px  !important;*/
+	background-position: 0 -30px  !important;
 }
 
 .x-btn-mr {
-	background-position: right -44px  !important;
+	/**background-position: right -44px  !important;*/
+	background-position: right -60px  !important;
 }
 
 /** SPECIAL NAVBAR BUTTON WITHOUT BORDER **/
@@ -2091,6 +2098,11 @@ body.x-body-masked .x-window-plain .x-window-mc {
 
 .x-btn-mr-navBar {
 	background-position: right -44px ;
+}
+
+.x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
+	padding-left : 20px;
+	padding-right: 2px;
 }
 
 #ux-staticbuttons-panel {
@@ -2169,53 +2181,54 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaebf2', end
  /** END NAVBAR **/
 
 .x-btn-over .x-btn-ml {
-	background-position: 0 -66px  !important;
+	background-position: 0 -90px  !important;
 }
 
 .x-btn-over .x-btn-mc {
-	background-position: 0 -88px  !important;
+	/**background-position: 0 -88px  !important;*/
+	background-position: 0 -120px  !important;
 }
 
 .x-btn-over .x-btn-mr {
-	background-position: right -110px  !important;
+	background-position: right -150px  !important;
 }
 
 .x-btn-click .x-btn-ml {
-	background-position: 0 -132px  !important;
+	background-position: 0 -180px  !important;
 }
 
 .x-btn-click .x-btn-mc {
-	background-position: 0 -154px  !important;
+	background-position: 0 -210px  !important;
 }
 
 .x-btn-click .x-btn-mr {
-	background-position: right -176px  !important;
+	background-position: right -240px  !important;
 }
 
 /**start x-btn-pressed **/
 .x-btn-pressed .x-btn-ml {
-	background-position: 0 -132px  !important;
+	background-position: 0 -180px  !important;
 }
 
 .x-btn-pressed .x-btn-mc {
-	background-position: 0 -154px  !important;
+	background-position: 0 -210px  !important;
 }
 
 .x-btn-pressed .x-btn-mr {
-	background-position: right -176px  !important;
+	background-position: right -240px  !important;
 }
 /** end x-btn-pressed **/
 
 .x-item-disabled .x-btn-ml {
-	background-position: 0 -198px  !important;
+	background-position: 0 -180px  !important;
 }
 
 .x-item-disabled .x-btn-mc {
-	background-position: 0 -220px  !important;
+	background-position: 0 -210px  !important;
 }
 
 .x-item-disabled .x-btn-mr {
-	background-position: right -242px  !important;
+	background-position: right -240px  !important;
 }
 
 .x-btn-text {
@@ -2272,7 +2285,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaebf2', end
 
 .x-panel-tbar-noheader .x-toolbar, .x-panel-mc .x-panel-tbar .x-toolbar {
 	border : none;	
-	height: 21px;
+	height: 35px;
 }
 
 .x-form-field-wrap .x-form-trigger {
@@ -2521,8 +2534,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaebf2', end
 .x-window-tc {
 	background-image: url("../images/gray-custom/title3_02.png");
 }
-
-
 
 .x-toolbar{
 border-color:#d0d0d0;

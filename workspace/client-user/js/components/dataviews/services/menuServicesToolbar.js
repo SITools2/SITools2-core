@@ -38,9 +38,6 @@ Ext.namespace('sitools.user.component.dataviews.services');
  */
 sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.Toolbar, {
     enableOverflow: true,
-    height: 30,
-    
-//    width : "97%",
     initComponent : function () {
         this.cls = "services-toolbar"; 
         
