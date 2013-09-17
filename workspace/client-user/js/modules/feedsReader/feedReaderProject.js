@@ -72,8 +72,10 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
         
         this.tbar = {
             xtype : 'toolbar',
+            cls : 'services-toolbar',
             defaults : {
-                scope : this
+                scope : this,
+                cls : 'services-toolbar-btn'
             },
             items : [ this.cb, '-' , this.buttonDate ]
         };

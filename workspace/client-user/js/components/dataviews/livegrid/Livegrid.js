@@ -638,6 +638,28 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
             tooltip : i18n.get('label.addOrDeleteColumns'),
             iconCls: 'x-cols-icon',
             menu : sitools.user.component.dataviews.dataviewUtils.createColMenu(this.getDatasetView(), this.getColumnModel())
+        }, {
+            name : "tipsLivegrid",
+            icon : loadUrl.get('APP_URL') + '/common/js/widgets/notification/images/information.gif',
+            handler : this.displayTipsLivegrid,
+            listeners : {
+                click : function (btn, e) {
+                    var tip = new Ext.ToolTip({
+                        target : this.getEl(),
+                        autoWidth : true,
+                        autoLoad : {
+                            url : loadUrl.get('APP_URL') + "/common/html/"+ locale.getLocale() + "/tips.html",
+                        },
+                        anchor : 'left',
+                        autoHide : false,
+                        closable : true
+                    });
+                    tip.show();
+                },
+                mouseover : function (btn, e) {
+                    btn.tTip = null;
+                }
+            }
         });
         array.push(new Ext.Toolbar.Separator());
         this.getDatasetView().hdCtxIndex = 0;
@@ -653,6 +675,10 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
         Ext.each(ranges, function (range) {
             this.getSelectionModel().selectRange(range[0], range[1], true);
         }, this);
+    },
+    
+    displayTipsLivegrid : function (btn , e) {
+//        btn.tTip.show();
     }
 });
 

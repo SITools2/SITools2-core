@@ -127,8 +127,8 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * @param {} runType The runType of the resource.
      * @param {Array} parameters An array of parameters.
      */
-    resourceClick : function (resource, url, methods, runType, parameters, postParameter) {
-        this.checkResourceParameters(resource, url, methods, runType, parameters, postParameter);
+    resourceClick : function (resource, url, methods, runType, parameters, postParameter, callback) {
+        this.checkResourceParameters(resource, url, methods, runType, parameters, postParameter, callback);
     },
     
     /**
@@ -140,7 +140,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * @param {} runType The runType of the resource.
      * @param {Array} parameters An array of parameters.
      */
-    handleResourceClick : function (resource, url, methods, runType, parameters, postParameter) {
+    handleResourceClick : function (resource, url, methods, runType, parameters, postParameter, callback) {
         //check that the number of records allowed is not reached
         var showParameterBox = false;
         var params = {};
@@ -170,6 +170,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 parameters : parameters,
                 contextMenu : this,
                 postParameter : postParameter,
+                callback : callback,
                 withSelection : (this.getNbRowsSelected() !== 0)
             };
             SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
@@ -188,12 +189,13 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 parameters : parameters,
                 contextMenu : this,
                 withSelection : false,
-                postParameter : postParameter
+                postParameter : postParameter,
+                callback : callback
             };
             SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
         }
         else {
-            this.onResourceCallClick(resource, url, methods, runType, null, params, postParameter);
+            this.onResourceCallClick(resource, url, methods, runType, null, params, postParameter, callback);
         }
     },
 
@@ -221,7 +223,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      *            a list of key/value object
      * 
      */
-    onResourceCallClick : function (resource, url, method, userSyncChoice, limit, userParameters, postParameter) {
+    onResourceCallClick : function (resource, url, method, userSyncChoice, limit, userParameters, postParameter, callback) {
         if ((method === "POST" || method === "PUT" || method === "DELETE") && userSyncChoice === "TASK_RUN_SYNC") {
             Ext.Msg.alert(i18n.get('label.error'), String.format(i18n.get("error.invalidMethodOrSyncRessourceCall"), method, userSyncChoice));
             return;
@@ -289,7 +291,12 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                                     defaultSrc: url, 
                                     autoScroll : true, 
                                     renderTo : Ext.getBody(), 
-                                    id : "tempMifDownload"
+                                    id : "tempMifDownload",
+                                    listeners : {
+                                        activate : function () {
+                                            callback.call();
+                                        }
+                                    }
                                 });
                             }
                             else {
@@ -309,7 +316,13 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                         defaultSrc: url, 
                         autoScroll : true, 
                         renderTo : Ext.getBody(), 
-                        id : "tempMifDownload"
+                        id : "tempMifDownload",
+                        listeners : {
+                            afterrender : function () {
+//                              callback.call();
+                              console.log('afterrender 2');
+                          }
+                        }
                     });
                 }
                 else {
@@ -320,7 +333,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
             }
             return;
         } else {
-            this._executeRequestForResource(url, method, postParameter);
+            this._executeRequestForResource(url, method, postParameter, callback);
         }
     },
     /**
@@ -329,7 +342,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * @param {string} method The method (GET, POST, PUT, DELETE)
      * @param {} postObject The object that will be passed with the request.
      */
-    _executeRequestForResource : function (url, method, postObject) {
+    _executeRequestForResource : function (url, method, postObject, callback) {
         var config = {
             method : method,
             url : url,
@@ -381,6 +394,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 if (Ext.getBody().isMasked()) {
                     Ext.getBody().unmask();
                 }
+                callback.call();
             }
 
         };
@@ -399,7 +413,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
      * @param {Array} parameters An array of parameters.
      * 
      */
-    checkResourceParameters : function (resource, url, methods, runType, parameters, postParameter) {
+    checkResourceParameters : function (resource, url, methods, runType, parameters, postParameter, callback) {
         //in the case of a OrderResource, let's check that the number of records is not superior to too_many_selected_threshold => stop the resource execution
         var maxThreshold = this.getParameterFromName(parameters, "too_many_selected_threshold");
         var nbRows;
@@ -435,14 +449,14 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                     scope : this,
                     fn : function (btn, text) {
                         if (btn === 'yes') {
-                            this.handleResourceClick(resource, url, methods, runType, parameters, postParameter);
+                            this.handleResourceClick(resource, url, methods, runType, parameters, postParameter, callback);
                         }
                     }
                 }); 
                 return;     
             }
         }
-        this.handleResourceClick(resource, url, methods, runType, parameters, postParameter);
+        this.handleResourceClick(resource, url, methods, runType, parameters, postParameter, callback);
     },
     /**
      * get the parameter with the given name from the given list of parameter

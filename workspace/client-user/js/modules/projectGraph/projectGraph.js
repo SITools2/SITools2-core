@@ -179,8 +179,10 @@ sitools.user.modules.projectGraphTree = Ext.extend(Ext.ux.tree.TreeGrid, {
         
         this.tbar = {
             xtype : 'toolbar',
+            cls : 'services-toolbar',
             defaults : {
-                scope : this
+                scope : this,
+                cls : 'services-toolbar-btn'
             },
             items : [ {
                 scope : this,

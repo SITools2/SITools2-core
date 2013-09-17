@@ -143,7 +143,6 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
 
         this.tbar = new Ext.Toolbar({
             cls : "services-toolbar",
-            height : 30,
             items : [ '->']
         });
 

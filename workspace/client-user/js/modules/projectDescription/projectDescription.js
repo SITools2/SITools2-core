@@ -36,7 +36,7 @@ sitools.user.modules.projectDescription = Ext.extend(Ext.Panel, {
 	            var config = Ext.decode(response.responseText);
 	            this.add({
 					xtype : "panel", 
-					style : 'border-top : 2px solid #8C8F96;',
+//					style : 'border-top : 2px solid #8C8F96;',
 					html : Ext.util.Format.htmlDecode(config.project.htmlDescription), 
 					autoScroll : true
 				});
@@ -45,6 +45,18 @@ sitools.user.modules.projectDescription = Ext.extend(Ext.Panel, {
 			failure : alertFailure, 
 			scope : this
 		});
+		
+		this.tbar = {
+	            xtype : 'toolbar',
+	            cls : 'services-toolbar',
+	            height : 15,
+	            defaults : {
+	                scope : this,
+	                cls : 'services-toolbar-btn'
+	            },
+	            items : [ ]
+	        };
+		
         sitools.user.modules.projectDescription.superclass.initComponent.call(this);
     }, 
     /**

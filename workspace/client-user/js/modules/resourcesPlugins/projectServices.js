@@ -36,7 +36,6 @@ sitools.user.modules.projectServices = function () {
 
 	this.url = projectGlobal.sitoolsAttachementForUsers + "/services";
 	this.layout = 'fit';
-	this.padding = '15px 20px 15px 20px';
 	
 	this.store = new Ext.data.JsonStore({
         idProperty : 'id',
@@ -141,6 +140,17 @@ sitools.user.modules.projectServices = function () {
 			forceFit : true
 		}
     });
+    
+    this.tbar = {
+            xtype : 'toolbar',
+            cls : 'services-toolbar',
+            height : 15,
+            defaults : {
+                scope : this,
+                cls : 'services-toolbar-btn'
+            },
+            items : [ ]
+    };
     
     this.serviceServerUtil = new sitools.user.component.dataviews.services.serverServicesUtil({
 		grid : this.grid, 

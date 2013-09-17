@@ -155,7 +155,7 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
             }
         });
         
-        this.contextMenu.onResourceCallClick(this.resource, this.url, method, runTypeUserInput, limit, userParameters, this.postParameter);
+        this.contextMenu.onResourceCallClick(this.resource, this.url, method, runTypeUserInput, limit, userParameters, this.postParameter, this.callback);
         this.ownerCt.close();
     }, 
     buildFormItemFromParam : function (value, userInputParams) {

@@ -23,8 +23,36 @@
 	background-color : transparent; 
 }
 
-.services-toolbar-btn .x-btn-mc {
+.services-toolbar-btn .x-btn-mc .sitools-btn-green .sitools-btn-blue .sitools-btn-green{
 	padding : 0px  10px 0px 10px !important;
+}
+
+.sitools-btn-green button {
+	color: 3F3F3F !important;
+	text-shadow: 0.07em 0.09em #D5D5D5;
+}
+
+.sitools-btn-blue button {
+	color: 3F3F3F !important;
+	text-shadow: 0.07em 0.09em #D5D5D5;
+}
+
+.sitools-btn-green .x-btn-ml,
+.sitools-btn-green .x-btn-mr,
+.sitools-btn-green .x-btn-mc {
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/bt_green.png");
+}
+
+.sitools-btn-blue .x-btn-ml,
+.sitools-btn-blue .x-btn-mr,
+.sitools-btn-blue .x-btn-mc {
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/bt_blue.png");
+}
+
+.sitools-btn-red .x-btn-ml,
+.sitools-btn-red .x-btn-mr,
+.sitools-btn-red .x-btn-mc {
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/bt_red.png");
 }
 
 
