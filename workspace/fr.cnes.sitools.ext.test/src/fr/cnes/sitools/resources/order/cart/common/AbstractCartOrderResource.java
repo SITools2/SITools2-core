@@ -162,53 +162,79 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
         List<Record> recs = getRecordListFromResponse(response);
 
         // ** ADD DATA TO SOURCE REFERENCES
-
         Set<String> noDuplicateUrlSet = new HashSet<String>();
+        
+        // ** PREPARE LIST FOR METADATA.XML
+        List<Record> extractrecs = new ArrayList<Record>();
+        
+        String[] dataColToExport = sel.getDataToExport();
+        
+        List<Column> exportableColumns = new ArrayList<Column>();
+        List<Column> simpleColumns = new ArrayList<Column>();
+
+        // ** PREPARE COLUMNS LIST 
+        //  - TO REMOVE "NO CLIENT ACCESS" COLUMNS 
+        //  - TO IDENTIFY EXPORTABLE COLUMNS
+
+        for (Column column : sel.getColModel()) {
+          boolean exportable = false;
+          for (int i = 0; i <= (dataColToExport.length - 1); i++) {
+            if (column.getColumnAlias().equals(dataColToExport[i])){
+              exportableColumns.add(column);
+              exportable = true;
+            } 
+          }
+          if (!exportable){
+            simpleColumns.add(column);
+          }
+        }
 
         for (Record rec : recs) {
+          
+          List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
+          Record extractrec = new Record();
 
-          // ADD DATA FILES FROM COLUMNS SPECIFIED AS "DATA" TYPE
-          if (sel.getDataToExport() != null) {
-            String[] dataColToExport = sel.getDataToExport();
-            for (AttributeValue attributeValue : rec.getAttributeValues()) {
-              for (int i = 0; i <= (dataColToExport.length - 1); i++) {
-                if (attributeValue.getName().equals(dataColToExport[i])) {
-                  if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
-                    noDuplicateUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
-                  }
-                  else {
-                    noDuplicateUrlSet.add(attributeValue.getValue().toString());
-                  }
-                }
+          for (AttributeValue attributeValue : rec.getAttributeValues()) {
+
+            /* (1°) : SIMPLE COLUMNS ==> METADATA */
+            for (Column simpleColumn : simpleColumns) {
+              if (attributeValue.getName().equals(simpleColumn.getColumnAlias())) {
+                attributeValues.add(attributeValue);
               }
             }
+            
+            /* (2°) : EXPORTABLE COLUMNS => DATA and METADATA */
+            for (Column exportableColumn : exportableColumns){
+              
+              if (attributeValue.getName().equals(exportableColumn.getColumnAlias())) {
+                
+                if (attributeValue.getValue().toString().startsWith(settings.getString(Consts.APP_URL))) {
+                  noDuplicateUrlSet.add(settings.getPublicHostDomain() + attributeValue.getValue().toString());
+                } 
+                else {
+                  noDuplicateUrlSet.add(attributeValue.getValue().toString());
+                }
+                
+                String[] segments = attributeValue.getValue().toString().split("/");
+                String lastsegment = segments[segments.length-1];
+                
+                attributeValue.setValue("data/" + sel.getDatasetName() + "/" + lastsegment);
+                attributeValues.add(attributeValue);
+                  
+              }
+            }
+            
+            extractrec.setAttributeValues(attributeValues);
+            
           }
 
-        }
+          extractrecs.add(extractrec);
+
+       }
 
         // REMOVE DUPLICATE REFERENCES AND ADD TARGET NAME TO REFERENCE MAP
         listRef.addNoDuplicateSourceRef(noDuplicateUrlSet, sel.getDatasetName());
 
-        // ** PREPARE LIST FOR METADATA.XML
-
-        List<Record> extractrecs = new ArrayList<Record>();
-
-        for (Record rec : recs) {
-
-          // REMOVE "NO CLIENT ACCESS" COLUMNS FROM LIST
-          List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
-          Record extractrec = new Record();
-          for (AttributeValue attributeValue : rec.getAttributeValues()) {
-            for (Column column : sel.getColModel()) {
-              if (attributeValue.getName().equals(column.getColumnAlias())) {
-                attributeValues.add(attributeValue);
-              }
-            }
-            extractrec.setAttributeValues(attributeValues);
-            extractrec.setId(rec.getId());
-          }
-          extractrecs.add(extractrec);
-        }
         globalrecs.addAll(extractrecs);
 
         start = offset + limit;

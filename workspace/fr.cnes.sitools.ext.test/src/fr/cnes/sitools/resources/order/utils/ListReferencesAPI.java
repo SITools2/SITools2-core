@@ -293,7 +293,7 @@ public class ListReferencesAPI {
     for (String strUrl : noDuplicateUrlSet) {
       Reference ref = new Reference(strUrl);
       this.addReferenceSource(ref);
-      this.refSourceTarget.put(ref, selectionId);
+      this.refSourceTarget.put(ref, "data/" + selectionId);
     }
   }
 

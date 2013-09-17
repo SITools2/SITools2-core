@@ -141,7 +141,7 @@ public class TarOutputRepresentation extends OutputRepresentation {
           TarEntry tarEntry;
           if (refMap != null) {
             if (refMap.get(reference) != null)
-              tarEntry = new TarEntry("data/" + (String) refMap.get(reference) + "/" + reference.getLastSegment());
+              tarEntry = new TarEntry((String) refMap.get(reference) + "/" + reference.getLastSegment());
             else
               tarEntry = new TarEntry(reference.getLastSegment());
           }

@@ -121,7 +121,7 @@ public class ZipOutputRepresentation extends OutputRepresentation {
           ZipEntry zipEntry;
           if (refMap != null) {
             if (refMap.get(reference) != null)
-              zipEntry = new ZipEntry("data/" + (String) refMap.get(reference) + "/" + reference.getLastSegment());
+              zipEntry = new ZipEntry((String) refMap.get(reference) + "/" + reference.getLastSegment());
             else
               zipEntry = new ZipEntry(reference.getLastSegment());
           }
