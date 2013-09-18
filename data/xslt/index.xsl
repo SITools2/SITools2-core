@@ -23,7 +23,7 @@
 							
 								<li>
 								<xsl:choose>
-									<xsl:when test="substring(value,1,4)='data'">
+									<xsl:when test="substring(value,1,5)='data/'">
 										<xsl:value-of select="name"/> : 
 										<xsl:element name="a">
 										<xsl:attribute name="href">

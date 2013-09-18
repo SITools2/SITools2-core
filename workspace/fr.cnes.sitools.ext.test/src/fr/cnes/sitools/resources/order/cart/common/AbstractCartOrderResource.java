@@ -289,7 +289,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
     
     // ** GENERATE INDEX.HTML
     
-    String xmlDir = settings.getRootDirectory() + settings.getStoreDIR() + userStorageUrl ;
+    String xmlDir = settings.getRootDirectory() + settings.getStoreDIR() + userStorageUrl + "/";
     String xsltDir = settings.getRootDirectory() + settings.getStoreDIR() + "/xslt/" ;
     
     File xmlFile = new File(xmlDir + "metadata.xml");
