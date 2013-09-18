@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.resources.order.cart.common;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,13 +27,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.restlet.data.CharacterSet;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.ext.xml.Transformer;
 import org.restlet.ext.xstream.XstreamRepresentation;
+import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
@@ -72,6 +84,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
   private CartSelections cartSelections;
   private Reference userStorageRef;
+  private String userStorageUrl;
   private ClientInfo clientInfo;
 
   private Reference cartFileReference;
@@ -113,7 +126,8 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     // use no user to get a directory in the temporary folder
     userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(null, folderName, getContext());
-
+    userStorageUrl = OrderResourceUtils.getUserAvailableFolderUrl(null, folderName, getContext());
+    
   }
 
   @Override
@@ -270,10 +284,30 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
     OrderResourceUtils.addFile(metadataXmlRepresentation, metadataSourceRef, clientInfo, getContext());
 
     listRef.addReferenceSource(metadataSourceRef);
+    
 
+    
+    // ** GENERATE INDEX.HTML
+    
+    String xmlDir = settings.getRootDirectory() + settings.getStoreDIR() + userStorageUrl ;
+    String xsltDir = settings.getRootDirectory() + settings.getStoreDIR() + "/xslt/" ;
+    
+    File xmlFile = new File(xmlDir + "metadata.xml");
+    File xsltFile = new File(xsltDir + "index.xsl");
+    File resultFile = new File(xmlDir + "index.html");
+    
+    Reference htmlIndexRef = new Reference(userStorageRef);
+    htmlIndexRef.addSegment("index");
+    htmlIndexRef.setExtensions("html");
+    
+    createHtmlIndex(xmlFile, xsltFile, resultFile);
+
+    listRef.addReferenceSource(htmlIndexRef);
+    
     return listRef;
 
   }
+
 
   /**
    * Get the records for the response object
@@ -335,6 +369,37 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
     }
 
     return selections;
+  }
+  
+  
+  /**
+   * createHtmlIndex
+   * @param xmlFile
+   * @param xsltFile
+   * @param resultFile
+   */
+  private void createHtmlIndex(File xmlFile, File xsltFile, File resultFile) {
+    
+    Source xmlSource = new StreamSource(xmlFile);
+    Source xsltSource =  new StreamSource(xsltFile);
+    Result result = new StreamResult(resultFile);
+    
+    // create an instance of TransformerFactory
+    TransformerFactory transFact = TransformerFactory.newInstance( );
+    javax.xml.transform.Transformer trans;
+
+    try {
+      trans = transFact.newTransformer(xsltSource);
+      trans.transform(xmlSource, result);
+    }
+    catch (TransformerConfigurationException e) {
+      e.printStackTrace();
+    }
+    catch (TransformerException e) {
+      e.printStackTrace();
+    }
+
+
   }
 
 }

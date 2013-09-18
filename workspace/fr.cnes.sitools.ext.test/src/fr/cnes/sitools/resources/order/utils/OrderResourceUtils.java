@@ -246,6 +246,31 @@ public final class OrderResourceUtils {
     Reference reference = new Reference(RIAPUtils.getRiapBase() + url);
     return reference;
   }
+  
+  
+  /**
+   * getUserAvailableFolderUrl
+   * @param user
+   * @param folderName
+   * @param context
+   * @return
+   */
+  public static String getUserAvailableFolderUrl(User user, String folderName, Context context) {
+
+    String url = "";
+    if (user != null) {
+      String identifier = user.getIdentifier();
+      url += getUserStorageUrl(identifier, context);
+      url += folderName;
+    }
+    else {
+      url += getTemporaryStorageUrl(context);
+      url += folderName;
+    }
+
+    return url;
+  }
+
 
   /**
    * Gets the representation of a File
