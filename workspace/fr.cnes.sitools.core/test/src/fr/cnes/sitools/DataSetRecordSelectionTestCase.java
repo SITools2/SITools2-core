@@ -21,6 +21,8 @@
  */
 package fr.cnes.sitools;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.data.MediaType;
@@ -35,28 +37,31 @@ import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
 
 /**
- * Test case for querying a range of records 
- * via RIAP and JAVA_OBJECT media type 
+ * Test case for querying a range of records via RIAP and JAVA_OBJECT media type
  * 
  * @author tx.chevallier
  * 
  * @project fr.cnes.sitools.core
- * @version 
- *
+ * @version
+ * 
  */
 public class DataSetRecordSelectionTestCase extends AbstractDataSetManagerTestCase {
-  
+
   private String urlAttachDatasetHeaders = "/dataset/headers";
-  
+
   private static DataSet datasetHeaders = null;
-  
+
+  private static final int START_INDEX = 0;
+  private static final int LIMIT = 500;
+  private static final int MIN_RANGE = 0;
+  private static final int MAX_RANGE = 1000;
+
   static {
     setMediaTest(MediaType.APPLICATION_JSON);
     docAPI = new DocAPI(DataSetRecordSelectionTestCase.class, "record selection");
     docAPI.setMediaTest(MediaType.APPLICATION_JAVA_OBJECT);
   }
-  
-  
+
   @Before
   @Override
   /**
@@ -67,9 +72,10 @@ public class DataSetRecordSelectionTestCase extends AbstractDataSetManagerTestCa
     super.setUp();
     docAPI.setActive(false);
   }
-  
+
   /**
    * getRecordsCount
+   * 
    * @throws InterruptedException
    * @throws SitoolsException
    */
@@ -81,43 +87,49 @@ public class DataSetRecordSelectionTestCase extends AbstractDataSetManagerTestCa
     setDatasetHeaders(createDatasetHeaders(id));
 
     String colurl = "dataset, targname";
-    
-    String params = "/records" + "?ranges=[[1,1000]]"  + "&colModel=\"" + colurl
-        + "\"&start=0&limit=500";
 
-    //String uri = getHostUrl() + urlAttachDatasetHeaders + params;
-    String url = urlAttachDatasetHeaders + params;
-    
+    String params = "/records" + "?ranges=[[{min},{max}]]" + "&colModel=\"" + colurl + "\"&start={start}&limit={limit}";
+
+    Integer min = MIN_RANGE;
+    Integer max = MAX_RANGE;
+    Integer start = START_INDEX;
+    Integer limit = LIMIT;
+
+    String urlTemplate = urlAttachDatasetHeaders + params;
+
+    String url = urlTemplate.replace("{min}", min.toString()).replace("{max}", max.toString())
+        .replace("{start}", start.toString()).replace("{limit}", limit.toString());
+
     ClientResource cr = new ClientResource(url);
-    
-    Response response = RIAPUtils.handleParseResponse(url,
-        Method.GET, MediaType.APPLICATION_JAVA_OBJECT, cr.getContext());
 
-    int nbTotalResult = response.getTotal();
-    
-    if (nbTotalResult!=1000)
-      throw new SitoolsException("wrong number of results");
+    Response response = RIAPUtils.handleParseResponse(url, Method.GET, MediaType.APPLICATION_JAVA_OBJECT,
+        cr.getContext());
+
+    // check total number of records
+    assertEquals(Integer.valueOf(max - min + 1), response.getTotal());
+
+    // check count (take limit into account)
+    assertEquals(Integer.valueOf(limit - start), response.getCount());
 
     deleteDataset(id);
 
-    
   }
-  
+
   /**
    * createDatasetHeaders
+   * 
    * @param id
    * @return
    * @throws InterruptedException
    */
   private DataSet createDatasetHeaders(String id) throws InterruptedException {
-    
+
     DataSet item = CreateDatasetUtil.createDatasetHeadersSimplePG(id, urlAttachDatasetHeaders);
     persistDataset(item);
     changeStatus(item.getId(), "/start");
-    
+
     return item;
-  
-  
+
   }
 
   public static DataSet getDatasetHeaders() {
