@@ -164,7 +164,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
 
     // FIXME faire en XML aussi
     setMediaTest(MediaType.APPLICATION_JSON);
-    createUserStorage(userLogin);
+    //createUserStorage(userLogin);
     assertNoneTasks(userLogin, password);
     assertNoneOrder();
     ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);

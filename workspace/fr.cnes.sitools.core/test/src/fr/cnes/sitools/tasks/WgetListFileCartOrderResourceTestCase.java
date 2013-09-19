@@ -169,8 +169,8 @@ public class WgetListFileCartOrderResourceTestCase extends AbstractTaskResourceT
     Order order = getOrder(url);
     // assert if the order is done
     assertOrderDone(order);
-    //6 files expected (5 files from the database et the metadata.xml file)
-    assertFileOrderedExists(order, 6);
+    //7 files expected (5 files from the database +  metadata.xml / index.html file)
+    assertFileOrderedExists(order, 7);
     deleteTask(userLogin, taskModel.getId(), password, false);
     assertNoneTasks(userLogin, password);
     deleteOrder(order);
