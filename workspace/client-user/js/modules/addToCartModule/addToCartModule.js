@@ -364,19 +364,31 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         origin : "sitools.user.modules.projectServices"
                     });
                     
-                    var cb = function () {
-                        this.ownerCt.close();
-                        Ext.Msg.show({
-                            title : i18n.get('label.info'),
-                            buttons : Ext.Msg.OK,
-                            icon : Ext.MessageBox.INFO,
-                            msg : i18n.get('label.orderWasRun')
-                        });
+                    var cb = function (success) {
+                        if (!Ext.isEmpty(success) && !success) {
+                            this.getTopToolbar().enable();
+                        } else {
+                            this.ownerCt.close();
+//                            Ext.Msg.show({
+//                                title : i18n.get('label.info'),
+//                                buttons : Ext.Msg.OK,
+//                                icon : Ext.MessageBox.INFO,
+//                                msg : i18n.get('label.orderWasRun')
+//                            });
+                            var notify = new Ext.ux.Notification({
+                                iconCls : 'x-icon-information',
+                                title : i18n.get('label.info'),
+                                html : i18n.get('label.orderWasRun'),
+                                autoDestroy : true,
+                                hideDelay : 1000
+                            });
+                            notify.show(document);
+                            
+                        }
                     };
                     var callback = cb.createDelegate(this);
                     
                     this.getTopToolbar().disable();
-                    this.getEl().mask("Executing Service...", 'x-mask-loading');
                     this.serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters, null, callback);
                 }
             }

@@ -55,8 +55,8 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 var json = Ext.decode(ret.responseText);
                 if (!json.success) {
                     Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.resource.not.found"));
+                    return;
                 }
-                this.grid.getEl().mask(i18n.get('label.executingService'), "x-mask-loading");
                 
                 var resource = json.resourcePlugin;
                 var parameters = resource.parameters;
@@ -75,10 +75,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                     }
                 }, this);
                 
-                this.resourceClick(resource, url, methods, runTypeUserInput, parameters);        
-            },
-            callback : function () {
-                this.grid.getEl().unmask();
+                this.resourceClick(resource, url, methods, runTypeUserInput, parameters);
             }
         });
         
@@ -252,7 +249,10 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
 
         if (method === "GET") {
             switch (resource.behavior) {
-            case "DISPLAY_IN_NEW_TAB" : 
+            case "DISPLAY_IN_NEW_TAB" :
+                if (!Ext.isEmpty(callback)) {
+                    callback.call();
+                }
                 window.open(url);
                 Ext.getBody().unmask();
                 break;
@@ -284,6 +284,9 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                             SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
                         }
                         else {
+                            if (!Ext.isEmpty(callback)) {
+                                callback.call();
+                            }
                             var iFrame = Ext.getCmp("tempMifDownload");
                             if (Ext.isEmpty(iFrame)) {
                                 iFrame  = new Ext.ux.ManagedIFrame.Panel({
@@ -294,7 +297,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                                     id : "tempMifDownload",
                                     listeners : {
                                         activate : function () {
-                                            callback.call();
+                                            
                                         }
                                     }
                                 });
@@ -308,6 +311,9 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 });
                 break;
             case "DOWNLOAD" :
+                if (!Ext.isEmpty(callback)) {
+                    callback.call();
+                }
                 //générer un panel caché
                 var iFrame = Ext.getCmp("tempMifDownload");
                 if (Ext.isEmpty(iFrame)) {
@@ -320,7 +326,7 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                         listeners : {
                             afterrender : function () {
 //                              callback.call();
-                              console.log('afterrender 2');
+//                              console.log('afterrender 2');
                           }
                         }
                     });

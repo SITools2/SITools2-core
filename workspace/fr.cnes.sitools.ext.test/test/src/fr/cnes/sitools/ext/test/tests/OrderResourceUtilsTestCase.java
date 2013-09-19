@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -34,6 +34,7 @@ import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.ClientInfo;
+import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.representation.Representation;
@@ -102,6 +103,7 @@ public class OrderResourceUtilsTestCase extends AbstractExtSitoolsTestCase {
       this.component.getClients().add(Protocol.HTTP);
       this.component.getClients().add(Protocol.FILE);
       this.component.getClients().add(Protocol.CLAP);
+      this.component.getClients().add(Protocol.ZIP);
 
       File tmpDirectory = new File(tempAppDIR);
       tmpDirectory.mkdirs();
@@ -162,17 +164,21 @@ public class OrderResourceUtilsTestCase extends AbstractExtSitoolsTestCase {
 
     copyFile(ref, refCopy);
 
+    tarFiles(ref, refCopy);
+    tarGzFiles(ref, refCopy);
+
     // ?????
-    // zipFiles(ref, refCopy);
+    zipFiles(ref, refCopy);
 
     deleteFile(ref);
+    deleteFile(refCopy);
 
     getAvailableUserPath();
 
   }
 
   private Reference addFile() throws SitoolsException {
-    StringRepresentation repr = new StringRepresentation(fileText);
+    StringRepresentation repr = new StringRepresentation(fileText, MediaType.TEXT_PLAIN);
     Reference refDestination = new Reference(RIAPUtils.getRiapBase() + getAppUrl());
     refDestination.addSegment("test.txt");
 
@@ -223,18 +229,57 @@ public class OrderResourceUtilsTestCase extends AbstractExtSitoolsTestCase {
 
   }
 
+  private void tarFiles(Reference ref1, Reference ref2) throws SitoolsException {
+    List<Reference> refs = new ArrayList<Reference>();
+    refs.add(ref1);
+    refs.add(ref2);
+
+    String destFilePath = SitoolsSettings.getInstance().getStoreDIR(Consts.APP_TMP_FOLDER_DIR);
+    String destFileName = "testZip.tar";
+
+    OrderResourceUtils.tarFiles(refs, destFilePath, destFileName, clientInfo, context, false);
+
+    Reference ref = new Reference(RIAPUtils.getRiapBase() + getAppUrl() + "/" + destFileName);
+    Representation repr = OrderResourceUtils.getFile(ref, clientInfo, context);
+    assertNotNull(repr);
+
+    OrderResourceUtils.deleteFile(ref, clientInfo, context);
+
+  }
+  
+  private void tarGzFiles(Reference ref1, Reference ref2) throws SitoolsException {
+    List<Reference> refs = new ArrayList<Reference>();
+    refs.add(ref1);
+    refs.add(ref2);
+
+    String destFilePath = SitoolsSettings.getInstance().getStoreDIR(Consts.APP_TMP_FOLDER_DIR);
+    String destFileName = "testZip.tar.gz";
+
+    OrderResourceUtils.tarFiles(refs, destFilePath, destFileName, clientInfo, context, true);
+
+    Reference ref = new Reference(RIAPUtils.getRiapBase() + getAppUrl() + "/" + destFileName);
+    Representation repr = OrderResourceUtils.getFile(ref, clientInfo, context);
+    assertNotNull(repr);
+
+    OrderResourceUtils.deleteFile(ref, clientInfo, context);
+
+  }
+
   private void zipFiles(Reference ref1, Reference ref2) throws SitoolsException {
     List<Reference> refs = new ArrayList<Reference>();
     refs.add(ref1);
     refs.add(ref2);
 
-    String destFilePath = SitoolsSettings.getInstance().getStoreDIR(Consts.APP_TMP_FOLDER_DIR) + "/testZip.zip";
+    String destFilePath = SitoolsSettings.getInstance().getStoreDIR(Consts.APP_TMP_FOLDER_DIR);
+    String destFileName = "testArchive.zip";
 
-    OrderResourceUtils.zipFiles(refs, destFilePath, clientInfo, context);
+    OrderResourceUtils.zipFiles(refs, destFilePath + "/" + destFileName, clientInfo, context);
 
-    Reference ref = new Reference(destFilePath);
+    Reference ref = new Reference(RIAPUtils.getRiapBase() + getAppUrl() + "/" + destFileName);
     Representation repr = OrderResourceUtils.getFile(ref, clientInfo, context);
     assertNotNull(repr);
+
+    OrderResourceUtils.deleteFile(ref, clientInfo, context);
 
   }
 

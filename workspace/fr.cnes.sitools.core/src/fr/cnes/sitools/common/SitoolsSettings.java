@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -881,4 +881,14 @@ public final class SitoolsSettings {
     this.startWithMigration = startWithMigration;
   }
 
+  /**
+   * Get the userstorage directory for a particular username
+   * 
+   * @param username
+   *          the username
+   * @return userstorage directory for a particular username
+   */
+  public String getUserStorageDir(String username) {
+    return getRootDirectory() + getStoreDIR() + getString(Consts.USERSTORAGE_ROOT) + "/" + username;
+  }
 }

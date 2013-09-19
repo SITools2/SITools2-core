@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.restlet.data.Reference;
-import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 
 import fr.cnes.sitools.common.SitoolsSettings;
@@ -36,13 +35,10 @@ import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.resources.order.cart.common.AbstractCartOrderResource;
-import fr.cnes.sitools.resources.order.representations.TarOutputRepresentation;
-import fr.cnes.sitools.resources.order.representations.ZipOutputRepresentation;
 import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
 import fr.cnes.sitools.resources.order.utils.OrderAPI;
 import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
 
@@ -85,35 +81,40 @@ public class WgetArchiveOrderResource extends AbstractCartOrderResource {
 
     List<Reference> listOfFilesToOrder = listReferences.getReferencesSource();
 
-    Reference zipRef = new Reference(RIAPUtils.getRiapBase() + settings.getString(Consts.APP_TMP_FOLDER_URL));
-    zipRef.addSegment(fileName);
-    zipRef.setExtensions(archiveType);
+    // Reference zipRef = new Reference(settings.getStoreDIR());
+    // zipRef.addSegment(fileName);
+    // zipRef.setExtensions(archiveType);
 
-    String archiveDir = settings.getTmpFolderUrl() + "/" + fileName + "." + archiveType;
+    String username = getClientInfo().getUser().getIdentifier();
+
+    String archiveDir = settings.getUserStorageDir(username)
+        + settings.getString(Consts.USERSTORAGE_RESOURCE_ORDER_DIR) + "/" + folderName;
+
+    String archiveName = fileName + "." + archiveType;
 
     if ("zip".equals(archiveType)) {
-      OrderResourceUtils.zipFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, getRequest()
-          .getClientInfo(), getContext());
+      OrderResourceUtils.zipFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir + "/",
+          archiveName, getRequest().getClientInfo(), getContext());
     }
     else if ("tar.gz".equals(archiveType)) {
-      OrderResourceUtils.tarFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, getRequest()
-          .getClientInfo(), getContext(), true);
+      OrderResourceUtils.tarFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, archiveName,
+          getRequest().getClientInfo(), getContext(), true);
     }
     else if ("tar".equals(archiveType)) {
-      OrderResourceUtils.tarFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, getRequest()
-          .getClientInfo(), getContext(), false);
+      OrderResourceUtils.tarFiles(listOfFilesToOrder, listReferences.getRefSourceTarget(), archiveDir, archiveName,
+          getRequest().getClientInfo(), getContext(), false);
     }
 
     Reference destRef = OrderResourceUtils.getUserAvailableFolderPath(task.getUser(),
         settings.getString(Consts.USERSTORAGE_RESOURCE_ORDER_DIR) + folderName, getContext());
-
+    //
     destRef.addSegment(fileName);
     destRef.setExtensions(archiveType);
-
-    OrderResourceUtils.copyFile(zipRef, destRef, getRequest().getClientInfo(), getContext());
-    OrderResourceUtils.deleteFile(zipRef, getRequest().getClientInfo(), getContext());
-
-    // System.out.println(destRef.toString());
+    //
+    // OrderResourceUtils.copyFile(zipRef, destRef,
+    // getRequest().getClientInfo(), getContext());
+    // OrderResourceUtils.deleteFile(zipRef, getRequest().getClientInfo(),
+    // getContext());
 
     // set the result in the task
     task.setUrlResult(settings.getString(Consts.APP_URL) + settings.getString(Consts.APP_ORDERS_USER_URL) + "/"
@@ -130,7 +131,7 @@ public class WgetArchiveOrderResource extends AbstractCartOrderResource {
     return null;
 
   }
-  
+
   protected String getMailBody(Mail mailToUser) {
     // default body
     String mailBody = "Your command is complete <br/>" + "Name : " + order.getName() + "<br/>" + "Description : "

@@ -11,7 +11,7 @@ your <i>${order.description}</i> order is <i>${order.status!}</i>.<br/>
 <br/>
 <br/>
 In order to retrieve the ordered files, use the following command :<br/>
-<i>wget --auth-no-challenge --http-user=${user.identifier!} --http-password=<password> -i ${order.resourceCollection[0]!}</i>
+<i>wget --auth-no-challenge --http-user=${user.identifier!} --http-password=[password] -i ${order.resourceCollection[0]!}</i>
 </p>
 <p>
 For further information, please contact the administrator <a href="mailto:${mail.from!}">${mail.from!}</a>.

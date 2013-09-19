@@ -164,7 +164,6 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
       int count;
       int offset;
       int nbTotalResult;
-      int nbRequests = 0;
       do {
 
         String url = urlTemplate.replace("{start}", start.toString()).replace("{limit}", limit.toString());
@@ -254,13 +253,9 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
         start = offset + limit;
 
-        nbRequests++;
-        System.out.println("NB REQUEsT : " + nbRequests);
-
       } while (count + offset < nbTotalResult);
 
     }
-    System.out.println("AFTER WHILE");
 
     // ** SERIALIZE RECORD LIST TO METADATA REPRESENTATION
 

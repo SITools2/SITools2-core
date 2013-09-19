@@ -25,9 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -59,6 +56,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.proxy.ProxySettings;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
+import fr.cnes.sitools.util.FileUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -147,7 +145,6 @@ public final class OrderResourceUtils {
    */
   public static Reference copyFile(Reference fileUrl, Reference destUrl, ClientInfo clientInfo, Context context)
       throws SitoolsException {
-    // context.getLogger().info("COPY FILE FROM " + fileUrl + " to " + destUrl);
     Representation repr = getFile(fileUrl, clientInfo, context);
     return addFile(repr, destUrl, clientInfo, context);
   }
@@ -335,7 +332,10 @@ public final class OrderResourceUtils {
    */
   public static void zipFiles(List<Reference> listOfFiles, String destFilePath, ClientInfo clientInfo, Context context)
       throws SitoolsException {
-    zipFiles(listOfFiles, null, destFilePath, clientInfo, context);
+    int lastSlash = destFilePath.lastIndexOf("/");
+    String fileName = destFilePath.substring(lastSlash + 1);
+    String filePath = destFilePath.substring(0, lastSlash);
+    zipFiles(listOfFiles, null, filePath, fileName, clientInfo, context);
   }
 
   /**
@@ -354,10 +354,12 @@ public final class OrderResourceUtils {
    *           If something is wrong
    */
   public static void zipFiles(List<Reference> listOfFiles, Map<Reference, String> refMap, String destFilePath,
-      ClientInfo clientInfo, Context context) throws SitoolsException {
+      String destFileName, ClientInfo clientInfo, Context context) throws SitoolsException {
 
+    File zipDir = new File(destFilePath);
+    zipDir.mkdirs();
     // create the zip file
-    File zipFile = new File(destFilePath);
+    File zipFile = new File(destFilePath + "/" + destFileName);
     // create a localReference to access it
     LocalReference fr = LocalReference.createFileReference(zipFile);
     // create a reference to the zip file with the restlet zip protocol
@@ -379,6 +381,7 @@ public final class OrderResourceUtils {
         context.getLogger().info("Adding to zip : " + fileUrl);
         // get the file using REST call
         Representation fileRepr = getFile(reference, clientInfo, context);
+        
         // create a clientResource into the zip file
         crFile = new ClientResource(fileRef + "!/" + fileName);
         crFile.setClientInfo(clientInfo);
@@ -404,9 +407,9 @@ public final class OrderResourceUtils {
    * @throws SitoolsException
    *           If something is wrong
    */
-  public static void tarFiles(List<Reference> listOfFiles, String destFilePath, ClientInfo clientInfo, Context context,
-      boolean gzip) throws SitoolsException {
-    tarFiles(listOfFiles, null, destFilePath, clientInfo, context, gzip);
+  public static void tarFiles(List<Reference> listOfFiles, String destFilePath, String archiveFileName,
+      ClientInfo clientInfo, Context context, boolean gzip) throws SitoolsException {
+    tarFiles(listOfFiles, null, destFilePath, archiveFileName, clientInfo, context, gzip);
   }
 
   /**
@@ -425,13 +428,16 @@ public final class OrderResourceUtils {
    *           If something is wrong
    */
   public static void tarFiles(List<Reference> listOfFiles, Map<Reference, String> refMap, String destFilePath,
-      ClientInfo clientInfo, Context context, boolean gzip) throws SitoolsException {
+      String archiveFileName, ClientInfo clientInfo, Context context, boolean gzip) throws SitoolsException {
     OutputStream outputStream = null;
     FileOutputStream tarFile = null;
     TarOutputStream tarOutput = null;
     try {
+      File fileDir = new File(destFilePath);
+      fileDir.mkdirs();
+      File fileArchive = new File(destFilePath + "/" + archiveFileName);
       // create the zip file
-      tarFile = new FileOutputStream(destFilePath);
+      tarFile = new FileOutputStream(fileArchive);
       outputStream = new BufferedOutputStream(tarFile);
 
       // create a new TarOutputStream, if gzip, the stream is also compressed
@@ -465,7 +471,7 @@ public final class OrderResourceUtils {
           // create a new TarEntry with the name of the entry
           TarEntry tarEntry = new TarEntry(fileName);
 
-          context.getLogger().info("Adding to zip : " + fileName);
+          context.getLogger().info("Adding to tar : " + fileName);
 
           // Set the tarEntry size with the same size as the file got before
           tarEntry.setSize(fileSize);
@@ -660,7 +666,5 @@ public final class OrderResourceUtils {
     rightUrl.setRelativePart(reference.getRelativePart());
     return rightUrl;
   }
-  
-  
-  
+
 }

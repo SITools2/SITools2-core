@@ -117,6 +117,7 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
             scope : this,
             handler : function () {
                 this.ownerCt.close();
+                this.callback.call(undefined, false);
             }
         }];
         sitools.user.component.dataviews.resourcePluginParamsPanel.superclass.initComponent.call(this);

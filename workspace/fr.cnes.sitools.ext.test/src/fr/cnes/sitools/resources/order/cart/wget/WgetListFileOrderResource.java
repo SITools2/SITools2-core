@@ -75,6 +75,7 @@ public class WgetListFileOrderResource extends AbstractCartOrderResource {
         Level.INFO,
         "FILE in progress for user : " + task.getUser().getIdentifier() + " -> ip :"
             + getClientInfo().getUpstreamAddress());
+
     task.getLogger().info("List of files ordered :");
     for (Reference r : listReferences.getReferencesSource()) {
       task.getLogger().info(" - " + r.getIdentifier().substring(16));
@@ -84,14 +85,14 @@ public class WgetListFileOrderResource extends AbstractCartOrderResource {
     Reference ref;
     for (Iterator<Reference> iterator = listOfFilesToOrder.iterator(); iterator.hasNext();) {
       Reference sourceRef = iterator.next();
-      task.getLogger().log(Level.WARNING, "{0}", sourceRef);
+      task.getLogger().log(Level.FINE, "{0}", sourceRef);
       try {
-        ref = new Reference(destRef);
-
+        String destRefString = destRef.toString();
         String folder = listReferences.getRefSourceTarget().get(sourceRef);
         if (folder != null) {
-          ref.addSegment(folder);
+          destRefString += "/" + folder;
         }
+        ref = new Reference(destRefString);
         ref.addSegment(sourceRef.getLastSegment());
         OrderResourceUtils.copyFile(sourceRef, ref, getRequest().getClientInfo(), getContext());
         listReferences.addReferenceDest(ref);
