@@ -19,7 +19,10 @@
 package fr.cnes.sitools.resources.order.cart.common;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -67,6 +70,8 @@ import fr.cnes.sitools.resources.order.utils.OrderAPI;
 import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
+import fr.cnes.sitools.util.DateUtils;
+import fr.cnes.sitools.util.FileUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -85,6 +90,9 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
   private CartSelections cartSelections;
   private Reference userStorageRef;
   private String userStorageUrl;
+  private Reference tempDateStorageRef;
+  private String tempDateStorageUrl;
+  private File tempdir;
   private ClientInfo clientInfo;
 
   private Reference cartFileReference;
@@ -127,7 +135,15 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
     // use no user to get a directory in the temporary folder
     userStorageRef = OrderResourceUtils.getUserAvailableFolderPath(null, folderName, getContext());
     userStorageUrl = OrderResourceUtils.getUserAvailableFolderUrl(null, folderName, getContext());
-    
+
+    // use a temporary folder to manage concurrent access
+    String date = DateUtils.format(new Date(), TaskUtils.getTimestampPattern());
+    tempDateStorageUrl = userStorageUrl + "/" + date;
+    tempDateStorageRef = new Reference(userStorageRef + "/" + date);
+
+    tempdir = new File(settings.getString("Starter.ROOT_DIRECTORY") + settings.getStoreDIR() + tempDateStorageUrl);
+    tempdir.mkdir();
+
   }
 
   @Override
@@ -272,37 +288,34 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     // ** ADD METADATA TO SOURCE REFERENCES
 
-    Reference metadataSourceRef = new Reference(userStorageRef);
+    Reference metadataSourceRef = new Reference(tempDateStorageRef);
     metadataSourceRef.addSegment("metadata");
     metadataSourceRef.setExtensions("xml");
 
     OrderResourceUtils.addFile(metadataXmlRepresentation, metadataSourceRef, clientInfo, getContext());
 
     listRef.addReferenceSource(metadataSourceRef);
-    
 
-    
     // ** GENERATE INDEX.HTML
-    
-    String xmlDir = settings.getRootDirectory() + settings.getStoreDIR() + userStorageUrl + "/";
-    String xsltDir = settings.getRootDirectory() + settings.getStoreDIR() + "/xslt/" ;
-    
+
+    String xmlDir = settings.getRootDirectory() + settings.getStoreDIR() + tempDateStorageUrl + "/";
+    String xsltDir = settings.getRootDirectory() + settings.getStoreDIR() + "/xslt/";
+
     File xmlFile = new File(xmlDir + "metadata.xml");
     File xsltFile = new File(xsltDir + "index.xsl");
     File resultFile = new File(xmlDir + "index.html");
-    
-    Reference htmlIndexRef = new Reference(userStorageRef);
+
+    Reference htmlIndexRef = new Reference(tempDateStorageRef);
     htmlIndexRef.addSegment("index");
     htmlIndexRef.setExtensions("html");
-    
+
     createHtmlIndex(xmlFile, xsltFile, resultFile);
 
     listRef.addReferenceSource(htmlIndexRef);
-    
+
     return listRef;
 
   }
-
 
   /**
    * Get the records for the response object
@@ -334,8 +347,6 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
   @Override
   public void terminateOrder() throws SitoolsException {
     super.terminateOrder();
-    // OrderResourceUtils.deleteFile(cartFileReference, clientInfo,
-    // getContext());
   }
 
   /**
@@ -365,22 +376,22 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     return selections;
   }
-  
-  
+
   /**
    * createHtmlIndex
+   * 
    * @param xmlFile
    * @param xsltFile
    * @param resultFile
    */
   private void createHtmlIndex(File xmlFile, File xsltFile, File resultFile) {
-    
+
     Source xmlSource = new StreamSource(xmlFile);
-    Source xsltSource =  new StreamSource(xsltFile);
+    Source xsltSource = new StreamSource(xsltFile);
     Result result = new StreamResult(resultFile);
-    
+
     // create an instance of TransformerFactory
-    TransformerFactory transFact = TransformerFactory.newInstance( );
+    TransformerFactory transFact = TransformerFactory.newInstance();
     javax.xml.transform.Transformer trans;
 
     try {
@@ -394,7 +405,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
       e.printStackTrace();
     }
 
-
   }
+
 
 }
