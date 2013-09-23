@@ -344,6 +344,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
   @Override
   public void terminateOrder() throws SitoolsException {
     super.terminateOrder();
+    OrderResourceUtils.deleteFile(cartFileReference, clientInfo, getContext());
   }
 
   /**
