@@ -164,7 +164,7 @@ public class StreamingCartOrderResourceTestCase extends AbstractTaskResourceTest
    *           if there is an error while Instantiating a new TaskResourceModel
    * 
    */
-  // @Test
+  @Test
   public void testOrderResourceTar() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
     testOrder(MediaType.APPLICATION_TAR, "tar");
 
@@ -181,7 +181,7 @@ public class StreamingCartOrderResourceTestCase extends AbstractTaskResourceTest
    *           if there is an error while Instantiating a new TaskResourceModel
    * 
    */
-  // @Test
+  @Test
   public void testOrderResourceTarGz() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
     testOrder(MediaType.APPLICATION_TAR, "tar.gz");
   }
