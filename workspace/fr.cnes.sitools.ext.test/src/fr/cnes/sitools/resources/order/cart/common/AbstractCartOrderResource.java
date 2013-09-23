@@ -19,6 +19,9 @@
 package fr.cnes.sitools.resources.order.cart.common;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -297,10 +300,10 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     File xmlFile = new File(xmlDir + "metadata.xml");
     File xsltFile = new File(xsltDir + "index.xsl");
-    File resultFile = new File(xmlDir + "index.html");
+    File resultFile = new File(xmlDir + "metadata.html");
 
     Reference htmlIndexRef = new Reference(tempDateStorageRef);
-    htmlIndexRef.addSegment("index");
+    htmlIndexRef.addSegment("metadata");
     htmlIndexRef.setExtensions("html");
 
     createHtmlIndex(xmlFile, xsltFile, resultFile);
@@ -384,18 +387,46 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
     Source xsltSource = new StreamSource(xsltFile);
     Result result = new StreamResult(resultFile);
 
-    // create an instance of TransformerFactory
     TransformerFactory transFact = TransformerFactory.newInstance();
     javax.xml.transform.Transformer trans;
 
     try {
-      trans = transFact.newTransformer(xsltSource);
-      trans.transform(xmlSource, result);
+
+      // SIZE RESTRICTION REGARDING XSLT PROCESSING OF THE METADATA XML FILE
+
+      // XSLT uses XPath and this requires that the whole XML document is
+      // maintained in memory. This may lead to insufficient memory problems,
+      // so a specific control is required
+      // This control is based on a simple rule to approximate XML document
+      // max size related to the memory allocated to Java :
+      // size of XML document < max memory / 5
+
+      if (Runtime.getRuntime().maxMemory() / xmlFile.length() > 5) {
+        trans = transFact.newTransformer(xsltSource);
+        trans.transform(xmlSource, result);
+
+      }
+      else {
+
+        FileOutputStream stream = new FileOutputStream(resultFile);
+        stream
+            .write(new String("<html><body>WARNING: metadata.xml file is too large for being processed</body></html>")
+                .getBytes());
+        stream.close();
+
+      }
+
     }
     catch (TransformerConfigurationException e) {
       e.printStackTrace();
     }
     catch (TransformerException e) {
+      e.printStackTrace();
+    }
+    catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+    catch (IOException e) {
       e.printStackTrace();
     }
 
