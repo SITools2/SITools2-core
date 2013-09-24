@@ -57,8 +57,6 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dataset.DataSetApplication;
-import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
@@ -128,20 +126,20 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     // control if the dataset is activated
     for (CartSelection sel : cartSelections.getSelections()) {
-      //String dsReq = sel.getDataUrl();
+      // String dsReq = sel.getDataUrl();
       String dsReq = "/datasets";
-      
-      
+
       Response resp = RIAPUtils.handleParseResponse(dsReq, Method.GET, MediaType.APPLICATION_JAVA_OBJECT, getContext());
-      for (Object obj : resp.getData()){
-        DataSet dataset = (DataSet)obj;
-        if (dataset.getId().equals(sel.getDatasetId())){
+      for (Object obj : resp.getData()) {
+        DataSet dataset = (DataSet) obj;
+        if (dataset.getId().equals(sel.getDatasetId())) {
           if (!dataset.getStatus().equals("ACTIVE"))
-            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Dataset [" + sel.getDatasetName() + "] is inactive");
+            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Dataset [" + sel.getDatasetName()
+                + "] is inactive");
         }
       }
     }
-  
+
     super.doInitialiseOrder();
 
     String folderName = "/resources_orders/" + getOrderName();
