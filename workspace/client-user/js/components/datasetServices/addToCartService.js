@@ -140,6 +140,7 @@ sitools.user.component.dataviews.services.addToCartService =  {
         
         globalOrder.colModel = colModel;
 
+        this.createFilters(globalOrder, this.dataview);
         
         if (Ext.isEmpty(this.cartSelectionFile.selections)) {
             this.cartSelectionFile.selections = [];
@@ -176,12 +177,53 @@ sitools.user.component.dataviews.services.addToCartService =  {
                         putObject.selections = this.cartSelectionFile.selections; 
                         
                         userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
-                                putObject);
+                                putObject, this.closeDataviewIfModify, this);
                     }
                 }
             });
         }
-            
+    },
+    
+    /**
+     * Add filters, sort, formParams to the current order selection
+     * 
+     * @param {Object}
+     *            order
+     * @param {Ext.grid.GridPanel}
+     *            grid The current grid.
+     * 
+     */
+    createFilters : function (order, grid) {
+        var filters = grid.getFilters();
+        if (!Ext.isEmpty(filters)) {
+            order.filters = filters.getFilterData(filters);
+        }
+        
+        var storeSort = grid.getStore().getSortState();
+        if (!Ext.isEmpty(storeSort)) {
+            order.storeSort = storeSort;
+        }
+        
+//        var filtersCfg = grid.getStore().filtersCfg;
+//        if (!Ext.isEmpty(filtersCfg)) {
+//            order.filtersCfg = filtersCfg;
+//        }
+        
+        
+        var formParams = grid.getStore().getFormParams();
+        if (!Ext.isEmpty(formParams)) {
+            order.formParams = formParams;
+        }
+    },
+    
+    closeDataviewIfModify : function () {
+        if (this.dataview.isModifySelection) {
+            this.dataview.ownerCt.close();
+            var cartModule = Ext.getCmp("cartModuleHBox");
+            if (!Ext.isEmpty(cartModule)) {
+                cartModule.ownerCt.onRefresh();
+            }
+        }
     }
 };
 Ext.reg('sitools.user.component.dataviews.services.addToCartService', sitools.user.component.dataviews.services.addToCartService);
@@ -250,7 +292,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                         dataIndex : 'columnAlias',
                         sortable : true
                     }, {
-                        header : i18n.get('label.featureType'),
+                        header : i18n.get('headers.previewUrl'),
                         dataIndex : 'featureType',
                         sortable : true
                     } ]

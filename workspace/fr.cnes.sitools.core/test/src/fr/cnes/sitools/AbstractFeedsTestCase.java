@@ -49,7 +49,7 @@ import fr.cnes.sitools.feeds.model.FeedAuthorModel;
 import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.feeds.model.FeedSource;
-import fr.cnes.sitools.feeds.model.SitoolsDateConverter;
+import fr.cnes.sitools.feeds.model.SitoolsFeedDateConverter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.DateUtils;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -668,7 +668,7 @@ public abstract class AbstractFeedsTestCase extends AbstractSitoolsServerTestCas
       xstream.aliasField("data", Response.class, "data");
 
       // Convertisseur String // Date
-      xstream.registerConverter(new SitoolsDateConverter());
+      xstream.registerConverter(new SitoolsFeedDateConverter());
 
       SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
       rep.setXstream(xstream);
@@ -703,7 +703,7 @@ public abstract class AbstractFeedsTestCase extends AbstractSitoolsServerTestCas
       configure(xstream);
 
       // Convertisseur Date / TimeStamp
-      xstream.registerConverter(new SitoolsDateConverter());
+      xstream.registerConverter(new SitoolsFeedDateConverter());
 
       XstreamRepresentation<FeedModel> rep = new XstreamRepresentation<FeedModel>(media, response);
       rep.setXstream(xstream);

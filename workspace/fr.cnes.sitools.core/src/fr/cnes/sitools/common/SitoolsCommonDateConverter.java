@@ -16,30 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.feeds.model;
+package fr.cnes.sitools.common;
 
+import java.text.ParseException;
 import java.util.Date;
-
-import org.restlet.engine.util.DateUtils;
 
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 
+import fr.cnes.sitools.util.DateUtils;
+
 /**
  * Date converte for tests
+ * See also SitoolsCommonDateConverter
  * @author m.marseille
  */
-public final class SitoolsDateConverter extends DateConverter {
+public final class SitoolsCommonDateConverter extends DateConverter {
   
   
   @Override
   public Object fromString(String arg0) {
-    return DateUtils.parse(arg0, DateUtils.FORMAT_RFC_3339);
+    Date dateFormat = null;
+    try {
+      dateFormat = DateUtils.parse(arg0, DateUtils.SITOOLS_DATE_FORMAT);
+    }
+    catch (ParseException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return dateFormat;
   }
   
   @Override
   public String toString(Object obj) {
     if ((obj != null) && (obj instanceof Date)) {
-      return DateUtils.format((Date) obj, DateUtils.FORMAT_RFC_3339.get(0));
+      return DateUtils.format((Date) obj, DateUtils.SITOOLS_DATE_FORMAT);
     }
     return super.toString(obj);
   }

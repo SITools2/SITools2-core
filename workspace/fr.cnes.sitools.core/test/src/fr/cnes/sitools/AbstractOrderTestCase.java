@@ -49,7 +49,7 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Event;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.feeds.model.SitoolsDateConverter;
+import fr.cnes.sitools.feeds.model.SitoolsFeedDateConverter;
 import fr.cnes.sitools.order.OrderAdministration;
 import fr.cnes.sitools.order.OrderStoreXML;
 import fr.cnes.sitools.order.UserOrderApplication;
@@ -760,7 +760,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
 
       if (media.equals(MediaType.APPLICATION_JSON)) {
         // Convertisseur Date / TimeStamp
-        xstream.registerConverter(new SitoolsDateConverter());
+        xstream.registerConverter(new SitoolsFeedDateConverter());
       }
 
       XstreamRepresentation<Order> rep = new XstreamRepresentation<Order>(media, order);

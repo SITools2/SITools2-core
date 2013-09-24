@@ -127,7 +127,7 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
             totalProperty : "totalResults",
             url : config.dataUrl + dataviewConfig.jeoResourceUrl
         }),
-        autoLoad: false
+        autoLoad: true
     });
     
     this.store.filters = new sitools.widget.FiltersCollection({

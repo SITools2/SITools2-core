@@ -19,6 +19,7 @@
 package fr.cnes.sitools.dataset.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -76,6 +77,10 @@ public final class DataSetExpositionDTO {
    */
   private int nbRecords;
 
+  /** Date d'expiration */
+  @XStreamAlias("expirationDate")
+  private Date expirationDate;
+  
   /**
    * Gets the id value
    * 
@@ -304,4 +309,19 @@ public final class DataSetExpositionDTO {
     this.nbRecords = nbRecords;
   }
 
+  /**
+   * Gets the expirationDate value
+   * @return the expirationDate
+   */
+  public Date getExpirationDate() {
+    return expirationDate;
+  }
+
+  /**
+   * Sets the value of expirationDate
+   * @param expirationDate the expirationDate to set
+   */
+  public void setExpirationDate(Date expirationDate) {
+    this.expirationDate = expirationDate;
+  }
 }

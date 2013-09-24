@@ -27,7 +27,6 @@ Ext.namespace('sitools.user.modules');
 sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     bodyBorder : false,
     initComponent : function () {
-        
         (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
         
         this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', this.user) + "/files";
@@ -73,6 +72,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             items : [{
                 xtype : 'button',
                 text : '<b>' + i18n.get('label.downloadOrder') + '</b>',
+                name : 'orderBtn',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/download.png',
                 tooltip : i18n.get('label.downloadOrder'),
                 cls : 'sitools-btn-green',
@@ -90,9 +90,19 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 cls : 'button-transition',
                 scope : this,
                 handler : function () {
+                    var selected = this.gridPanel.getSelectionModel().getSelected()
+                    if (Ext.isEmpty(selected)) {
+                        return Ext.Msg.show({
+                            title : i18n.get('label.warning'),
+                            msg : i18n.get('warning.selectionToRemove'),
+                            icon : Ext.MessageBox.INFO,
+                            buttons : Ext.MessageBox.OK
+                        });
+                    };
                     Ext.Msg.show({
                         title : i18n.get('label.delete'),
                         buttons : Ext.Msg.YESNO,
+                        icon : Ext.MessageBox.WARNING,
                         msg : i18n.get('label.deleteCartOrder'),
                         scope : this,
                         fn : function (btn, text) {
@@ -108,7 +118,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         this.store = new Ext.data.JsonStore({
             root : 'selections',
             idProperty : 'selectionId',
-            autoLoad : true,
             url : this.urlCartFile,
             fields : [{
                 name : 'selectionName',
@@ -139,6 +148,12 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 name : 'dataToExport'
             }, {
                 name : 'startIndex'
+            }, {
+                name : 'filters'
+            }, {
+                name : 'storeSort'
+            }, {
+                name : 'formParams'
             }], 
             listeners : {
                 scope : this,
@@ -197,7 +212,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 listeners : {
                     scope : this,
                     refresh : function (view) {
-                        var select = view.grid.selModel.getSelections()[0];
+                        this.callbackOrderFile();
                     }
                 }
             }),
@@ -226,8 +241,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         this.containerArticlesDetailsPanel.expand();
                         this.viewArticlesDetails();
                     }
-                    
-                } 
+                }
             }
         });
         
@@ -244,6 +258,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         });
         
         this.hboxPanel = new Ext.Panel({
+            id : 'cartModuleHBox',
             layout : 'border',
             items : [this.gridPanel, this.containerArticlesDetailsPanel]
         });
@@ -275,9 +290,99 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         try {
             var json = Ext.decode(response.responseText);
             this.cartOrderFile = json;
+            this.store.loadData(json);
         } catch (err) {
             return;
         }
+    },
+    
+    callbackOrderFile : function () {
+        var selectionsToCheck = new Ext.util.MixedCollection();
+        var arraySelections = [];
+        this.store.each(function (record) {
+            arraySelections.push(record); 
+        });
+        selectionsToCheck.addAll(arraySelections);
+        
+        var isDatasetUpdated = this.checkDatasetExpirationDate(selectionsToCheck, false);
+        
+        if (!isDatasetUpdated) {
+            var warningLabel = this.getTopToolbar().find('name', 'warningDateLabel')[0];
+            if (!Ext.isEmpty(warningLabel)) {
+                this.getTopToolbar().remove(warningLabel);
+                this.getTopToolbar().doLayout();
+            }
+        }
+    },
+    
+    checkDatasetExpirationDate : function (selectionsToCheck, isDatasetUpdated) {
+        if (selectionsToCheck.itemAt(0)) {
+            this.compareDate(selectionsToCheck, selectionsToCheck.itemAt(0), isDatasetUpdated);
+        }
+        return isDatasetUpdated;
+    },
+    
+    compareDate : function (allSelectionsToCheck, selectionToCheck, isDatasetUpdated) {
+        if (Ext.isEmpty(selectionToCheck)) {
+            return;
+        }
+        
+        var dataSelection = selectionToCheck.data;
+        Ext.Ajax.request({
+            url : dataSelection.dataUrl,
+            method : 'GET',
+            scope : this,
+            success : function (response) {
+                var json = Ext.decode(response.responseText);
+                if (!json.success) {
+                    Ext.Msg.alert(i18n.get('label.error'), json.message);
+                    return;
+                }
+                
+                var rowInd = this.store.indexOf(this.store.getById(dataSelection.selectionId));
+                var htmlRow = this.gridPanel.getView().getRow(rowInd);
+                
+                var dateDataset = Date.parseDate(json.dataset.expirationDate, SITOOLS_DATE_FORMAT);
+                if (dateDataset > dataSelection.orderDate) {
+                    isDatasetUpdated = true;
+                    htmlRow.className += " x-grid3-row-warningDate";
+                    var labelWarning = new Ext.form.Label({
+                        name : 'warningDateLabel',
+                        html : "<img src='/sitools/common/res/images/ux/warning.gif'/> " + i18n.get('warning.datasetUptated') + ""
+                    });
+                    if (!this.getTopToolbar().find('name', 'warningDateLabel')[0]) {
+                        this.getTopToolbar().insert(1, labelWarning);
+                        this.getTopToolbar().doLayout();
+                    }
+                } else {
+                    htmlRow.className = htmlRow.className.replace('x-grid3-row-warningDate', '');
+                }
+            },
+            callback : function (opts, success, response) {
+                if (!success) {
+                    var indRecToDisable = this.store.find('dataUrl', opts.url);
+                    var htmlRow = this.gridPanel.getView().getRow(indRecToDisable);
+                    var elRow = Ext.get(htmlRow);
+                    elRow.setVisible(false, true);
+                    elRow.mask();
+                }
+                
+                allSelectionsToCheck.remove(selectionToCheck);
+                this.checkDatasetExpirationDate(allSelectionsToCheck, isDatasetUpdated);
+            },
+            failure : function (response, opts) {
+                if (response.status == 404) {
+                    var orderBtn = this.getTopToolbar().find('name', 'orderBtn')[0];
+                    orderBtn.setDisabled(true);
+                    return Ext.Msg.show({
+                        title : i18n.get('label.warning'),
+                        msg : i18n.get('label.orderCancelDatasetInactive'),
+                        icon : Ext.MessageBox.ERROR,
+                        buttons : Ext.MessageBox.OK
+                    });
+                }
+            }
+        });
     },
     
     /**
@@ -528,7 +633,11 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         var params = {
             ranges : selected.get('ranges'),
             startIndex : selected.get('startIndex'),
-            nbRecordsSelection : selected.get('nbRecords')
+            nbRecordsSelection : selected.get('nbRecords'),
+            filters : selected.get('filters'),
+            storeSort : selected.get('storeSort'),
+            formParams : selected.get('formParams'),
+            isModifySelection : true
         };
         sitools.user.clickDatasetIcone(url, 'data', params);
     }

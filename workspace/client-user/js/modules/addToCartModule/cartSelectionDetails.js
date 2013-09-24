@@ -30,6 +30,7 @@ Ext.namespace('sitools.user.modules');
  * @extends grid.GridPanel
  */
 sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
+    disableSelection : true,
     initComponent : function () {
 
         this.selectionId = this.selection.data.selectionId;
@@ -90,8 +91,6 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
             fields : fields
             
         });
-
-//        this.tbar = [ '->',  ];
 
         this.bbar = {
             xtype : 'paging',

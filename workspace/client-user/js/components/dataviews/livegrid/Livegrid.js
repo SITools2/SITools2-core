@@ -314,7 +314,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
         store.isInSort = false;
         store.isNewFilter = false;
 	    
-        if (!Ext.isEmpty(store.filters)) {
+        if (!Ext.isEmpty(store.filters) && Ext.isFunction(store.filters.getFilterData)) {
             var params = store.buildQuery(store.filters.getFilterData());
             Ext.apply(options.params, params);
         }

@@ -357,6 +357,7 @@ sitools.admin.datasets.datasetsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             method : 'PUT',
             scope : this,
             success : function (ret) {
+                Ext.Msg.alert(i18n.get('label.info'), i18n.get('dataset.refresh.needReactive'));
                 if (showResponse(ret)) {
                     this.store.reload();
                 }

@@ -37,6 +37,10 @@
 	text-shadow: 0.07em 0.09em #D5D5D5;
 }
 
+.sitools-btn-red button {
+	text-shadow: 0.07em 0.09em #D5D5D5;
+}
+
 .sitools-btn-green .x-btn-ml,
 .sitools-btn-green .x-btn-mr,
 .sitools-btn-green .x-btn-mc {

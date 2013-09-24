@@ -33,6 +33,7 @@ import org.restlet.resource.ResourceException;
 
 import com.thoughtworks.xstream.XStream;
 
+import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
@@ -163,6 +164,7 @@ public final class DataSetExpositionResource extends AbstractDataSetResource {
     dsExp.setDatasetViewConfig(ds.getDatasetViewConfig());
     dsExp.setImage(ds.getImage());
     dsExp.setNbRecords(ds.getNbRecords());
+    dsExp.setExpirationDate(ds.getExpirationDate());
 
     // set the dictionary mapping
     DataSetApplication app = (DataSetApplication) getApplication();
@@ -206,6 +208,8 @@ public final class DataSetExpositionResource extends AbstractDataSetResource {
     xstream.alias("structure", Structure.class);
     xstream.setMode(XStream.NO_REFERENCES);
 
+    xstream.registerConverter(new SitoolsCommonDateConverter());
+    
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);
     return rep;

@@ -41,7 +41,7 @@ import fr.cnes.sitools.feeds.model.FeedAuthorModel;
 import fr.cnes.sitools.feeds.model.FeedCollectionModel;
 import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
-import fr.cnes.sitools.feeds.model.SitoolsDateConverter;
+import fr.cnes.sitools.feeds.model.SitoolsFeedDateConverter;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.server.Consts;
@@ -128,7 +128,7 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
 
     // Convertisseur Date / String ( de EEE MMM dd HH:mm:ss zzz yyyy (
     // date.toString) à DateUtils.FORMAT_RFC_3339 (avec T) )
-    xstream.registerConverter(new SitoolsDateConverter());
+    xstream.registerConverter(new SitoolsFeedDateConverter());
 
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);
@@ -157,7 +157,7 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
 
       // Convertisseur String / date ( de DateUtils.FORMAT_RFC_3339 à EEE MMM dd
       // HH:mm:ss zzz yyyy )
-      xstream.registerConverter(new SitoolsDateConverter());
+      xstream.registerConverter(new SitoolsFeedDateConverter());
 
       repXML.setXstream(xstream);
       feedsInput = repXML.getObject();
@@ -192,7 +192,7 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
 
       // Convertisseur String / date ( de DateUtils.FORMAT_RFC_3339 à EEE MMM dd
       // HH:mm:ss zzz yyyy )
-      xstream.registerConverter(new SitoolsDateConverter());
+      xstream.registerConverter(new SitoolsFeedDateConverter());
 
       repXML.setXstream(xstream);
       feedsInput = repXML.getObject();

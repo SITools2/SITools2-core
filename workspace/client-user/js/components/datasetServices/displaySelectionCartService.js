@@ -50,8 +50,6 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
     },
 
     displaySelectionCart : function () {
-        var ranges = null;
-        var startIndex = 0;
         var selection = {};
         
         if(this.cartSelectionFile) {
@@ -67,24 +65,25 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
             return Ext.Msg.alert(i18n.get('label.information'), i18n.get('label.noSelectionArticles'));
         }
         
-        this.dataview.getSelectionModel().clearSelections();
-        this.dataview.ranges = selection.ranges;
-        this.dataview.startIndex = selection.startIndex;
-        this.dataview.nbRecordsSelection = selection.nbRecords;
+        this.dataview.ownerCt.close();
+        var params = {
+            ranges : selection.ranges,
+            startIndex : selection.startIndex,
+            nbRecordsSelection : selection.nbRecords,
+            filters : selection.filters,
+            storeSort : selection.storeSort,
+            formParams : selection.formParams,
+            isModifySelection : true
+        };
+        sitools.user.clickDatasetIcone(selection.dataUrl, 'data', params);
         
-        this.dataview.getSelectionModel().ready = false;
-        
-//        var firstRange = Ext.util.JSON.decode(selection.ranges)[0][0];
-//        var startLoad = (firstRange) - ((firstRange % DEFAULT_LIVEGRID_BUFFER_SIZE) % DEFAULT_LIVEGRID_BUFFER_SIZE);
-        
-        this.dataview.store.load({
-            params : {
-                start : startIndex,
-//                start : startLoad,
-                limit : DEFAULT_LIVEGRID_BUFFER_SIZE
-            },
-            scope : this
-        });
+//        this.dataview.store.load({
+//            params : {
+//                start : startIndex,
+//                limit : DEFAULT_LIVEGRID_BUFFER_SIZE
+//            },
+//            scope : this
+//        });
     }
 };
 Ext.reg('sitools.user.component.dataviews.services.displaySelectionCartService', sitools.user.component.dataviews.services.displaySelectionCartService);

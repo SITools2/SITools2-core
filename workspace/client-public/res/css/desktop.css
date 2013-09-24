@@ -1425,3 +1425,7 @@ td.ux-taskButtons-edge {
 .button-transition:ACTIVE {
 	opacity : .6;
 }
+
+.x-grid3-row-warningDate {
+	color : #F63E3E !important;
+}
