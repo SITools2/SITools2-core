@@ -53,7 +53,13 @@ sitools.user.component.dataviews.services.filterService = Ext.extend(Ext.Window,
         });
 
         this.f = new Ext.Panel();
+        
         this.filters = this.store.filtersCfg;
+        
+        if (Ext.isEmpty(this.filters) && !Ext.isEmpty(this.dataview.filtersCfg)) {
+            this.filters = this.dataview.filtersCfg;
+        }
+        
         var len;
         if (! Ext.isEmpty(this.filters)) {
             len = this.filters.length;

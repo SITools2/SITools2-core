@@ -204,10 +204,10 @@ sitools.user.component.dataviews.services.addToCartService =  {
             order.storeSort = storeSort;
         }
         
-//        var filtersCfg = grid.getStore().filtersCfg;
-//        if (!Ext.isEmpty(filtersCfg)) {
-//            order.filtersCfg = filtersCfg;
-//        }
+        var filtersCfg = grid.getStore().filtersCfg;
+        if (!Ext.isEmpty(filtersCfg)) {
+            order.filtersCfg = filtersCfg;
+        }
         
         
         var formParams = grid.getStore().getFormParams();
@@ -376,8 +376,12 @@ sitools.user.component.dataviews.services.addToCartService.executeAsService = fu
     var selections = config.dataview.getSelections();
     
     if(Ext.isEmpty(userLogin)) {
-        alert("You need to be connected");
-        return;
+        return Ext.Msg.show({
+            title : i18n.get('label.info'),
+            msg : i18n.get('label.needToBeLogged'),
+            buttons : Ext.MessageBox.OK,
+            icon : Ext.MessageBox.INFO
+        });
     }
     Ext.apply(this, config);
     

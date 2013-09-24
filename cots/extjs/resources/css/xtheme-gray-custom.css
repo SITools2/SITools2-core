@@ -2101,8 +2101,9 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 
 .x-btn-text-icon .x-btn-icon-small-left .x-btn-text {
-	padding-left : 20px;
-	padding-right: 2px;
+	/*padding-left : 20px;
+	padding-right: 2px;*/
+	padding: 0px 8px 0px 23px;
 }
 
 #ux-staticbuttons-panel {

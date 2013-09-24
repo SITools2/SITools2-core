@@ -154,6 +154,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 name : 'storeSort'
             }, {
                 name : 'formParams'
+            }, {
+                name : 'filtersCfg'
             }], 
             listeners : {
                 scope : this,
@@ -637,6 +639,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             filters : selected.get('filters'),
             storeSort : selected.get('storeSort'),
             formParams : selected.get('formParams'),
+            filtersCfg : selected.get('filtersCfg'),
             isModifySelection : true
         };
         sitools.user.clickDatasetIcone(url, 'data', params);

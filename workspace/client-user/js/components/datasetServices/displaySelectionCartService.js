@@ -71,6 +71,7 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
             startIndex : selection.startIndex,
             nbRecordsSelection : selection.nbRecords,
             filters : selection.filters,
+            filtersCfg : selection.filtersCfg,
             storeSort : selection.storeSort,
             formParams : selection.formParams,
             isModifySelection : true
