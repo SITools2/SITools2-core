@@ -57,7 +57,10 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.dataset.DataSetApplication;
+import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
 import fr.cnes.sitools.dataset.model.Column;
+import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.resources.order.AbstractOrderResource;
@@ -106,8 +109,6 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
   @Override
   public void doInitialiseOrder() throws SitoolsException {
 
-    super.doInitialiseOrder();
-
     String cartFileUrl = getRequest().getResourceRef().getQueryAsForm().getFirstValue("cartFile");
     if (cartFileUrl == null || cartFileUrl.isEmpty()) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Missing cartFile parameter");
@@ -118,14 +119,30 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
     cartFileReference = new Reference(RIAPUtils.getRiapBase() + cartFileUrl);
     Representation repr = OrderResourceUtils.getFile(cartFileReference, clientInfo, getContext());
 
-    // cartSelections = (CartSelections)
-    // getContext().getAttributes().get(TaskUtils.BODY_CONTENT);
     cartSelections = getObject(repr, new Variant(MediaType.APPLICATION_JSON));
 
     if (cartSelections == null) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Cannot find cartSelections file");
     }
     getContext().getAttributes().put(TaskUtils.PARENT_APPLICATION, getApplication());
+
+    // control if the dataset is activated
+    for (CartSelection sel : cartSelections.getSelections()) {
+      //String dsReq = sel.getDataUrl();
+      String dsReq = "/datasets";
+      
+      
+      Response resp = RIAPUtils.handleParseResponse(dsReq, Method.GET, MediaType.APPLICATION_JAVA_OBJECT, getContext());
+      for (Object obj : resp.getData()){
+        DataSet dataset = (DataSet)obj;
+        if (dataset.getId().equals(sel.getDatasetId())){
+          if (!dataset.getStatus().equals("ACTIVE"))
+            throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Dataset [" + sel.getDatasetName() + "] is inactive");
+        }
+      }
+    }
+  
+    super.doInitialiseOrder();
 
     String folderName = "/resources_orders/" + getOrderName();
 
@@ -293,7 +310,7 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
 
     listRef.addReferenceSource(metadataSourceRef);
 
-    // ** GENERATE INDEX.HTML
+    // ** GENERATE INDEX.HTML (namely metadata.html)
 
     String xmlDir = settings.getRootDirectory() + settings.getStoreDIR() + tempDateStorageUrl + "/";
     String xsltDir = settings.getRootDirectory() + settings.getStoreDIR() + "/xslt/";
