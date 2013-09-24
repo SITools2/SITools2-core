@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.dataset.model.Column;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class CartSelection implements IResource, Serializable {
 
   /**
