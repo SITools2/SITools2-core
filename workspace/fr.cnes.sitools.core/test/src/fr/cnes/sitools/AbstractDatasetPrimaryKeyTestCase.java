@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -52,6 +52,7 @@ import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.AttributeValueConverter;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
+import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
  * TESTS the datasets primary key access with all the possible types It also tests the links between 2 datasets using
@@ -219,7 +220,7 @@ public abstract class AbstractDatasetPrimaryKeyTestCase extends AbstractDataSetM
    * 
    * @throws InterruptedException
    */
-//  @Test
+  // @Test
   public void testMongoDB() throws InterruptedException {
     docAPI.setActive(false);
 
@@ -313,7 +314,7 @@ public abstract class AbstractDatasetPrimaryKeyTestCase extends AbstractDataSetM
         // query with GET
         String params = "/records?limit=300&start=0&p[0]=RADIO|" + entry.getKey() + "|"
             + URLEncoder.encode(entry.getValue(), "UTF-8");
-        queryDatasetRequestUrl(urlAttachMongoDB, params, expectedMongoDBRecord, true);        
+        queryDatasetRequestUrl(urlAttachMongoDB, params, expectedMongoDBRecord, true);
       }
       deleteDataset(new Integer(i).toString());
     }
@@ -388,7 +389,7 @@ public abstract class AbstractDatasetPrimaryKeyTestCase extends AbstractDataSetM
    *           if something is wrong
    */
   private DataSet createDatasetMongoDB(String id, String primaryKey, boolean withDatasetUrl)
-    throws InterruptedException {
+      throws InterruptedException {
     DataSet item = CreateDatasetUtil.createDatasetTestMongoDB(id, primaryKey, withDatasetUrl, urlAttachMongoDB);
 
     item.setDirty(false);
@@ -433,64 +434,7 @@ public abstract class AbstractDatasetPrimaryKeyTestCase extends AbstractDataSetM
    * @return Response
    */
   public Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("dataset", DataSet.class);
-      xstream.alias("column", Column.class);
-      xstream.alias("structure", Structure.class);
-
-      xstream.addImplicitCollection(Response.class, "data", dataClass);
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-
-        if (dataClass == DataSet.class) {
-          xstream.aliasField("dataset", Response.class, "item");
-        }
-
-        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-          xstream.addImplicitCollection(DataSet.class, "columnModel", "columnModel", Column.class);
-          xstream.addImplicitCollection(DataSet.class, "structures", "structures", Structure.class);
-          xstream.addImplicitCollection(DataSet.class, "predicat", "predicat", Predicat.class);
-        }
-      }
-      xstream.aliasField("data", Response.class, "data");
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-        // Response response = rep.getObject();
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
-        return null; // TODO complete test for XML, Object representation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-      try {
-        representation.getText();
-      }
-      catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
+    return GetResponseUtils.getResponseDataset(media, representation, dataClass, isArray);
   }
 
   /**

@@ -41,6 +41,7 @@ import org.restlet.resource.ClientResource;
 import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.api.DocAPI;
+import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
@@ -659,6 +660,7 @@ public class DataSetFilterTestCase extends AbstractDataSetManagerTestCase {
       xstream.alias("dataset", DataSet.class);
       xstream.alias("column", Column.class);
       xstream.alias("structure", Structure.class);
+      xstream.registerConverter(new SitoolsCommonDateConverter());
 
       if (dataClass == FilterChainedModelDTO.class) {
         xstream.alias("filterChainedModel", FilterChainedModelDTO.class);
