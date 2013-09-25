@@ -116,9 +116,9 @@ public class CsvResource extends SitoolsParameterizedResource {
     }
 
     String limitStr = getQuery().getFirstValue("limit");
-    int limit = params.getPaginationExtend();
+    long limit = params.getPaginationExtend();
     if (limitStr != null && !limitStr.isEmpty()) {
-      limit = new Integer(limitStr).intValue();
+      limit = new Long(limitStr).longValue();
     }
 
     repr = new CsvExportRepresentation(MediaType.TEXT_CSV, params, datasetApp.getConverterChained(), context,

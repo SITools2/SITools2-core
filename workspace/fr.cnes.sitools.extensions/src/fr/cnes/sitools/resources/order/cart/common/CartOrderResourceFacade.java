@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -16,16 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.resources.order;
+package fr.cnes.sitools.resources.order.cart.common;
 
-import org.restlet.data.Form;
+import org.restlet.data.MediaType;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
+import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
+import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 
-import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
-import fr.cnes.sitools.dataset.DataSetApplication;
-import fr.cnes.sitools.dataset.database.common.DataSetExplorerUtil;
+import com.thoughtworks.xstream.XStream;
+
+import fr.cnes.sitools.common.XStreamFactory;
+import fr.cnes.sitools.resources.order.OrderResourceFacade;
+import fr.cnes.sitools.resources.order.cart.common.model.CartSelections;
 import fr.cnes.sitools.tasks.TaskUtils;
 
 /**
@@ -34,7 +40,7 @@ import fr.cnes.sitools.tasks.TaskUtils;
  * 
  * @author m.gond
  */
-public class OrderResourceFacade extends SitoolsParameterizedResource implements IOrderResource {
+public class CartOrderResourceFacade extends OrderResourceFacade {
   /**
    * Description de la ressource
    */
@@ -55,9 +61,6 @@ public class OrderResourceFacade extends SitoolsParameterizedResource implements
     info.setDocumentation("Method to order data from a dataset");
     info.setIdentifier("order");
     addStandardPostOrPutRequestInfo(info);
-    DataSetExplorerUtil.addDatasetExplorerGetRequestInfo(info);
-    DataSetApplication application = (DataSetApplication) getApplication();
-    DataSetExplorerUtil.addDatasetExplorerGetFilterInfo(info, application.getFilterChained());
     addStandardResponseInfo(info);
     addStandardInternalServerErrorInfo(info);
     this.addInfo(info);
@@ -72,8 +75,9 @@ public class OrderResourceFacade extends SitoolsParameterizedResource implements
    *          The {@link Variant} needed
    * @return a representation
    */
+  @Post
   public Representation orderPost(Representation represent, Variant variant) {
-    processBody();
+    processBody(variant);
     return TaskUtils.execute(this, variant);
   }
 
@@ -84,6 +88,7 @@ public class OrderResourceFacade extends SitoolsParameterizedResource implements
    *          The {@link Variant} needed
    * @return a representation
    */
+  @Get
   public Representation orderGet(Variant variant) {
     return TaskUtils.execute(this, variant);
   }
@@ -91,15 +96,33 @@ public class OrderResourceFacade extends SitoolsParameterizedResource implements
   /**
    * process the body and save the request entity {@link Representation}
    */
-  public void processBody() {
-    Representation body = this.getRequest().getEntity();
-    if (body != null && body.isAvailable() && body.getSize() > 0) {
-      Form bodyForm = new Form(body);
-      getContext().getAttributes().put(TaskUtils.BODY_CONTENT, bodyForm);
+  public void processBody(Variant variant) {
+//    Representation body = this.getRequest().getEntity();
+//    if (body != null && body.isAvailable() && body.getSize() > 0) {
+//      getContext().getAttributes().put(TaskUtils.BODY_CONTENT, getObject(body, variant));
+//    }
+//    else {
+//      getContext().getAttributes().remove(TaskUtils.BODY_CONTENT);
+//    }
+  }
+
+  public final CartSelections getObject(Representation representation, Variant variant) {
+
+    CartSelections selections = null;
+
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      XstreamRepresentation<CartSelections> repXML = new XstreamRepresentation<CartSelections>(representation);
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
+      repXML.setXstream(xstream);
+      selections = repXML.getObject();
+
     }
-    else {
-      getContext().getAttributes().remove(TaskUtils.BODY_CONTENT);
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      selections = new JacksonRepresentation<CartSelections>(representation, CartSelections.class).getObject();
     }
+
+    return selections;
   }
 
 }

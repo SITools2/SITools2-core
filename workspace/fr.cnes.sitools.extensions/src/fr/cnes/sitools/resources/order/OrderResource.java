@@ -51,7 +51,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond
  */
-public class OrderResource extends AbstractOrderResource {
+public class OrderResource extends AbstractDatasetOrderResource {
   /** Maximum number of file to download authorized, default to -1 => no limit */
   private int nbMaxDownload = -1;
 
@@ -174,7 +174,7 @@ public class OrderResource extends AbstractOrderResource {
       // copy the indexFile to the destination reference
       String orderFileListName = fileName;
       if (orderFileListName == null || "".equals(orderFileListName)) {
-        orderFileListName = OrderResourceUtils.FILE_LIST_PATTERN.replace("{datasetName}", ds.getName());
+        orderFileListName = OrderResourceUtils.FILE_LIST_PATTERN.replace("{orderName}", ds.getName());
         orderFileListName = orderFileListName.replace("{timestamp}", formatedDate);
       }
       else {
@@ -215,7 +215,7 @@ public class OrderResource extends AbstractOrderResource {
 
     String zipFileName = fileName;
     if (zipFileName == null || "".equals(zipFileName)) {
-      zipFileName = OrderResourceUtils.ZIP_FILE_PATTERN.replace("{datasetName}", ds.getName());
+      zipFileName = OrderResourceUtils.ZIP_FILE_PATTERN.replace("{orderName}", ds.getName());
       zipFileName = zipFileName.replace("{timestamp}", formatedDate);
     }
 
@@ -238,7 +238,7 @@ public class OrderResource extends AbstractOrderResource {
 
     String orderFileListName = fileName;
     if (orderFileListName == null || "".equals(orderFileListName)) {
-      orderFileListName = OrderResourceUtils.FILE_LIST_PATTERN.replace("{datasetName}", ds.getName());
+      orderFileListName = OrderResourceUtils.FILE_LIST_PATTERN.replace("{orderName}", ds.getName());
       orderFileListName = orderFileListName.replace("{timestamp}", formatedDate);
     }
     else {
