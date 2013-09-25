@@ -130,6 +130,15 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         autoLoad: true
     });
     
+    if (!Ext.isEmpty(config.storeSort)) {
+        if (!Ext.isEmpty(config.storeSort.sorters)) {
+            this.store.hasMultiSort = true;
+            this.store.multiSortInfo = config.storeSort;
+        } else {
+            this.store.sortInfo = config.storeSort;
+        }
+    }
+    
     this.store.filters = new sitools.widget.FiltersCollection({
         filters : config.filters 
     });

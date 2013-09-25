@@ -286,18 +286,34 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 //        local : false, // defaults to false (remote filtering)
 //        filters : filters
 //    });
+    
+    var storeConfig = {
+        datasetCm : config.datasetCm,
+        urlRecords : this.urlRecords,
+        sitoolsAttachementForUsers : this.sitoolsAttachementForUsers,
+        userPreference : config.userPreference, 
+        bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
+        formParams : config.formParams, 
+        formMultiDsParams : config.formMultiDsParams, 
+        mainView : this, 
+        datasetId : config.datasetId,
+        sorters : config.storeSort,
+        isNewFilter : true
+    };
+    
+    
 
-    this.store = new sitools.user.component.dataviews.livegrid.StoreLiveGrid({
-		datasetCm : config.datasetCm,
-		urlRecords : this.urlRecords,
-		sitoolsAttachementForUsers : this.sitoolsAttachementForUsers,
-		userPreference : config.userPreference, 
-		bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
-		formParams : config.formParams, 
-		formMultiDsParams : config.formMultiDsParams, 
-		mainView : this, 
-		datasetId : config.datasetId
-	});
+    if (!Ext.isEmpty(config.storeSort)) {
+        if(!Ext.isEmpty(config.storeSort.sorters)){
+            storeConfig.hasMultiSort = true;
+            storeConfig.multiSortInfo = config.storeSort;
+        }else {
+            storeConfig.sortInfo = config.storeSort;
+        }
+    }
+    
+    
+    this.store = new sitools.user.component.dataviews.livegrid.StoreLiveGrid(storeConfig);
     
     this.store.filters = new sitools.widget.FiltersCollection({
         filters : config.filters 
@@ -434,7 +450,9 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 	            scope : this,
 	            sortchange: function (store, sortInfo) {
 	                //force to deselect every rows after the sort as changed
-	                this.getSelectionModel().clearSelections();
+	                if (this.getSelectionModel().isReady()) {
+	                    this.getSelectionModel().clearSelections();
+	                }
 	            },
 	            cellclick : function (grid, rowIndex, columnIndex, e) {
 	                var columnModel = this.getColumnModel();

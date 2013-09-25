@@ -268,6 +268,10 @@ Ext.ux.grid.livegrid.CheckboxSelectionModel = Ext.extend(Ext.ux.grid.livegrid.Ro
             this.ready = true;
             this.fireEvent('selectionmodelready', this);
         }
+    },
+    
+    isReady : function () {
+        return this.ready;
     }
 
 });

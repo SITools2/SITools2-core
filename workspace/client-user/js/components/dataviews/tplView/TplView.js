@@ -51,7 +51,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
     this.componentType = "data";
     
     this.origin = "sitools.user.component.dataviews.tplView.TplView";
-
+    
     this.store = new sitools.user.component.dataviews.tplView.StoreTplView({
 		datasetCm : config.datasetCm,
 		urlRecords : this.urlRecords,
@@ -65,6 +65,17 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
 		filtersCfg : config.filtersCfg,
         isFirstCountDone : false
 	});
+    
+    if (!Ext.isEmpty(config.storeSort)) {
+        if(!Ext.isEmpty(config.storeSort.sorters)){
+            this.store.hasMultiSort = true;
+            this.store.multiSortInfo = config.storeSort;
+        }else {
+            this.store.sortInfo = config.storeSort;
+        }
+    }
+    
+    
     
     this.store.filters = new sitools.widget.FiltersCollection({
         filters : config.filters 

@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2013-07-02
-Version                              : 2.1.1
+Date                                 : 2013-10-01
+Version                              : 2.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -17,16 +17,29 @@ Reference tag                        : (2.1)
 2/ Changes
 
 ___________________
--2.1.2
+-2.2
 	* New feature
+		- Cart order
+			- Add records to the cart as an authenticated user on every dataset
+			- Visualize the cart with the selections for each dataset
+			- Modify the selection
+			- Order the selected records
+				- Archive streaming
+				- Copy the ordered records to the userstorage
+				- Create an archive and copy it to the userstorage
 		- New "advanced query" form component to organize dataset forms
 		- New "advanced query" form component to organize multi dataset forms
+		- Security extension with LDAP and OpenAM support
 		
 	* Bugs fixed : 
 		- Groups and Users were not allocated to a role properly
+		- Javascript error when adding a FeatureType image on a dataset column
 		
 	* Enhancements :
 		- Regular expressions to check username and password for user
+		- PublicHostDomain is used for host in the directory's list files (no more problems when Sitools is behind an Apache Proxy)
+		- Proxy resource (/proxy) can be used with "rewrite_redirection=true" parameter to rewrite redirection urls
+		- RSS link to add it to your favorite feed reader
 	
 	* API changes :
 		- Data folder 
@@ -38,7 +51,7 @@ ___________________
 	* New feature
 		- IP blacklist and Intranet/Extranet filtering available when SITools2 is configured behind an Apache Proxy
 		- Direct authentication on project page when project is private
-		- New Quicklook GUI service to zoom into images
+		- Quicklook GUI service to zoom into images
 		
 	* Bugs fixed : 
 		- Bad resize when zooming with the browser

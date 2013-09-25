@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -184,7 +184,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
 
         ds.setStatus("ACTIVE"); // TODO dans le start application.
 
-        ds.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
+        // ds.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
 
         DataSet dsResult = store.update(ds);
 
@@ -308,20 +308,20 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
    *           throws SitoolsException
    */
   protected int getTotalResults(DataSet ds, List<Structure> structures, List<Column> columns, List<Predicat> predicats)
-    throws SitoolsException {
+      throws SitoolsException {
 
     int totalResults;
 
     SitoolsDataSource datasource = SitoolsDataSourceFactory.getDataSource(ds.getDatasource().getId());
     switch (datasource.getDataSourceType()) {
-      case SQL:
-        totalResults = getSQLTotalResults(ds, structures, columns, predicats);
-        break;
-      case MONGODB:
-        totalResults = getMongoDBTotalResults(ds, structures, columns, predicats);
-        break;
-      default:
-        throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Datasource not supported");
+    case SQL:
+      totalResults = getSQLTotalResults(ds, structures, columns, predicats);
+      break;
+    case MONGODB:
+      totalResults = getMongoDBTotalResults(ds, structures, columns, predicats);
+      break;
+    default:
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Datasource not supported");
 
     }
 
@@ -439,14 +439,14 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
 
     SitoolsDataSource datasource = SitoolsDataSourceFactory.getDataSource(ds.getDatasource().getId());
     switch (datasource.getDataSourceType()) {
-      case SQL:
-        ok = testSqlRequest(ds, datasource);
-        break;
-      case MONGODB:
-        ok = testMongoDBRequest(ds, datasource);
-        break;
-      default:
-        throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Datasource not supported");
+    case SQL:
+      ok = testSqlRequest(ds, datasource);
+      break;
+    case MONGODB:
+      ok = testMongoDBRequest(ds, datasource);
+      break;
+    default:
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Datasource not supported");
 
     }
 
@@ -464,14 +464,14 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
     String request = "";
     SitoolsDataSource datasource = SitoolsDataSourceFactory.getDataSource(ds.getDatasource().getId());
     switch (datasource.getDataSourceType()) {
-      case SQL:
-        request = getSqlRequest(ds, datasource);
-        break;
-      case MONGODB:
-        request = getMongoDBRequest(ds, datasource).toStringRequest();
-        break;
-      default:
-        throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Datasource not supported");
+    case SQL:
+      request = getSqlRequest(ds, datasource);
+      break;
+    case MONGODB:
+      request = getMongoDBRequest(ds, datasource).toStringRequest();
+      break;
+    default:
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Datasource not supported");
 
     }
     return request;

@@ -310,6 +310,8 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     },
     
     callbackOrderFile : function () {
+        var orderBtn = this.getTopToolbar().find('name', 'orderBtn')[0];
+        orderBtn.setDisabled(false);
         var selectionsToCheck = new Ext.util.MixedCollection();
         var arraySelections = [];
         this.store.each(function (record) {
