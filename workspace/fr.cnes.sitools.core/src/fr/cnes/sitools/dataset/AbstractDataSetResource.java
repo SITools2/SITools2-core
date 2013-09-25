@@ -30,6 +30,7 @@ import org.restlet.representation.Variant;
 
 import com.thoughtworks.xstream.XStream;
 
+import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ExtensionModel;
@@ -97,6 +98,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
     xstream.alias("structure", Structure.class);
 
     xstream.omitField(ExtensionModel.class, "parametersMap");
+    xstream.registerConverter(new SitoolsCommonDateConverter());
 
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);

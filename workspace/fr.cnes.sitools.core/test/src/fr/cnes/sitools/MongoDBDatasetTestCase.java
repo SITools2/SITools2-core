@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -24,7 +24,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -35,31 +34,21 @@ import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
-import com.thoughtworks.xstream.XStream;
-
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
-import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
 import fr.cnes.sitools.dataset.model.Column;
-import fr.cnes.sitools.dataset.model.ColumnConceptMapping;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.dataset.model.DictionaryMapping;
-import fr.cnes.sitools.dataset.model.Predicat;
 import fr.cnes.sitools.dataset.model.SpecificColumnType;
 import fr.cnes.sitools.dataset.model.structure.SitoolsStructure;
-import fr.cnes.sitools.dataset.model.structure.StructureNodeComplete;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.datasource.jdbc.model.Table;
 import fr.cnes.sitools.properties.model.SitoolsProperty;
 import fr.cnes.sitools.properties.model.SitoolsPropertyType;
-import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
-import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
  * 
@@ -92,7 +81,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
   /**
    * Absolute path location for data set store files
    * 
-   * @return path
+   * @return path     
    */
   protected String getTestRepository() {
     return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_STORE_DIR);
@@ -153,7 +142,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class, true);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class, true);
     assertTrue(response.getSuccess());
     assertEquals(11, response.getTotal().intValue());
     RIAPUtils.exhaust(result);
@@ -173,7 +162,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertTrue(response.getSuccess());
     assertNotNull(response.getItem());
 
@@ -271,7 +260,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertTrue(response.getSuccess());
     assertNotNull(response.getItem());
     DataSet rs = (DataSet) response.getItem();
@@ -293,7 +282,8 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSetExpositionDTO.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result,
+        DataSetExpositionDTO.class);
     assertTrue(response.getSuccess());
     assertNotNull(response.getItem());
     DataSetExpositionDTO rs = (DataSetExpositionDTO) response.getItem();
@@ -315,7 +305,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertTrue(response.getSuccess());
     assertNotNull(response.getItem());
     DataSet rs = (DataSet) response.getItem();
@@ -334,7 +324,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertNotNull(response);
     assertTrue(response.getSuccess());
     assertNotNull(response.getItem());
@@ -353,7 +343,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertNotNull(response);
     assertTrue(response.getSuccess());
     assertNotNull(response.getItem());
@@ -372,7 +362,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertTrue(response.getSuccess());
     RIAPUtils.exhaust(result);
     cr.release();
@@ -387,7 +377,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertTrue(cr.getStatus().isSuccess());
     assertNotNull(result);
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertTrue(response.getSuccess());
     assertEquals("dataset.refresh.success", response.getMessage());
     RIAPUtils.exhaust(result);
@@ -425,7 +415,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, Response.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, Response.class);
     assertEquals(ok, response.getSuccess());
     RIAPUtils.exhaust(result);
     cr.release();
@@ -479,183 +469,10 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
-    Response response = getResponse(MediaType.APPLICATION_JSON, result, DataSet.class);
+    Response response = GetResponseUtils.getResponseDataset(MediaType.APPLICATION_JSON, result, DataSet.class);
     assertTrue(response.getSuccess());
     RIAPUtils.exhaust(result);
     cr.release();
   }
 
-  // ------------------------------------------------------------
-  // RESPONSE REPRESENTATION WRAPPING
-
-  /**
-   * REST API Response wrapper for single item expected.
-   * 
-   * @param media
-   *          MediaType expected
-   * @param representation
-   *          service response representation
-   * @param dataClass
-   *          class expected in the item property of the Response object
-   * @return Response the response.
-   */
-  public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass) {
-    return getResponse(media, representation, dataClass, false);
-  }
-
-  /**
-   * REST API Response Representation wrapper for single or multiple items expexted
-   * 
-   * @param media
-   *          MediaType expected
-   * @param representation
-   *          service response representation
-   * @param dataClass
-   *          class expected for items of the Response object
-   * @param isArray
-   *          if true wrap the data property else wrap the item property
-   * @return Response
-   */
-  public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("column", Column.class);
-      xstream.alias("structure", Structure.class);
-
-      if (dataClass == DataSet.class) {
-        xstream.alias("dataset", DataSet.class);
-
-        xstream.addImplicitCollection(DataSet.class, "columnModel", "columnModel", Column.class);
-        xstream.addImplicitCollection(DataSet.class, "structures", "structures", Structure.class);
-        xstream.addImplicitCollection(DataSet.class, "predicat", "predicat", Predicat.class);
-
-        xstream.addImplicitCollection(SitoolsStructure.class, "nodeList", "nodeList", StructureNodeComplete.class);
-        xstream.addImplicitCollection(StructureNodeComplete.class, "children", "children", StructureNodeComplete.class);
-
-        xstream.addImplicitCollection(DataSet.class, "properties", SitoolsProperty.class);
-
-        xstream.addImplicitCollection(DataSet.class, "dictionaryMappings", DictionaryMapping.class);
-        xstream.addImplicitCollection(DictionaryMapping.class, "mapping", ColumnConceptMapping.class);
-        xstream.addImplicitCollection(SitoolsStructure.class, "nodeList", StructureNodeComplete.class);
-        xstream.addImplicitCollection(StructureNodeComplete.class, "children", StructureNodeComplete.class);
-
-        
-        xstream.addImplicitCollection(DataSet.class, "datasetViewConfig", Property.class);
-        
-        
-      }
-
-      if (dataClass == DataSetExpositionDTO.class) {
-        xstream.alias("dataset", DataSetExpositionDTO.class);
-        xstream.addImplicitCollection(DataSetExpositionDTO.class, "columnModel", "columnModel", Column.class);
-      }
-      xstream.addImplicitCollection(Response.class, "data", dataClass);
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-
-        if (dataClass == DataSet.class) {
-          xstream.aliasField("dataset", Response.class, "item");
-        }
-        if (dataClass == DataSetExpositionDTO.class) {
-          xstream.aliasField("dataset", Response.class, "item");
-        }
-      }
-      xstream.aliasField("data", Response.class, "data");
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-        Response response = rep.getObject("response");
-        // Response response = rep.getObject();
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
-        return null; // TODO complete test for XML, Object representation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-    }
-  }
-
-  /**
-   * REST API Response Representation wrapper for single or multiple items expexted
-   * 
-   * @param media
-   *          MediaType expected
-   * @param representation
-   *          service response representation
-   * @param dataClass
-   *          class expected for items of the Response object
-   * @param isArray
-   *          if true wrap the data property else wrap the item property
-   * @return Response
-   */
-  public static Response getResponseAuthorization(MediaType media, Representation representation, Class<?> dataClass,
-      boolean isArray) {
-    try {
-      if (!media.isCompatible(getMediaTest()) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("authorization", ResourceAuthorization.class);
-      xstream.alias("resourceAuthorization", ResourceAuthorization.class);
-      xstream.alias("authorize", RoleAndMethodsAuthorization.class);
-
-      // Parce que les annotations ne sont apparemment prises en compte
-      xstream.omitField(Response.class, "itemName");
-      xstream.omitField(Response.class, "itemClass");
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-        if (media.equals(MediaType.APPLICATION_JSON)) {
-          xstream.addImplicitCollection(ResourceAuthorization.class, "authorizations",
-              RoleAndMethodsAuthorization.class);
-        }
-
-        if (dataClass == ResourceAuthorization.class) {
-          xstream.aliasField("authorization", Response.class, "item");
-        }
-      }
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null; // TODO complete test with ObjectRepresentation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-    }
-  }
 }

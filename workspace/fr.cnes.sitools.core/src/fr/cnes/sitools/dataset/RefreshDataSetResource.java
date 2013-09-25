@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -102,7 +102,7 @@ public final class RefreshDataSetResource extends AbstractDataSetResource {
         // ds.refreshNotion(getContext(), getSitoolsSetting(Consts.APP_DICTIONARIES_URL));
 
         DataSet dsResult = store.update(ds);
-        response = new Response(true, dsResult, DataSet.class);
+        response = new Response(true, dsResult, DataSet.class, "dataset");
         response.setMessage("dataset.refresh.success");
       }
       catch (Exception e) {
@@ -120,7 +120,7 @@ public final class RefreshDataSetResource extends AbstractDataSetResource {
     info.setIdentifier("update_dataset");
     addStandardGetRequestInfo(info);
     ParameterInfo pic = new ParameterInfo("datasetId", true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the dataset");
+        "Identifier of the dataset");
     info.getRequest().getParameters().add(pic);
     addStandardSimpleResponseInfo(info);
   }

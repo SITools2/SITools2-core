@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -38,22 +37,17 @@ import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
-import com.thoughtworks.xstream.XStream;
-
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
-import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.DataSetAdministration;
 import fr.cnes.sitools.dataset.DataSetStoreXML;
-import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
  * 
@@ -136,8 +130,8 @@ public class DataSetApplicationTestCase extends AbstractSitoolsTestCase {
       stores.put(Consts.APP_STORE_DATASET, store);
 
       SitoolsSettings.getInstance().setStores(stores);
-      
-      //Create dataset
+
+      // Create dataset
       Resource res = new Resource();
       res.setId(dataSourceId);
       res.setType("datasource");
@@ -296,51 +290,6 @@ public class DataSetApplicationTestCase extends AbstractSitoolsTestCase {
    * @return Response
    */
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("dataset", DataSet.class);
-      xstream.alias("column", Column.class);
-      xstream.alias("structure", Structure.class);
-
-      xstream.addImplicitCollection(DataSet.class, "columnModel", "columnModel", Column.class);
-      xstream.addImplicitCollection(DataSet.class, "structures", "structures", Structure.class);
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-
-        if (dataClass == DataSet.class) {
-          xstream.aliasField("dataset", Response.class, "item");
-        }
-      }
-      xstream.aliasField("data", Response.class, "data");
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-        Response response = rep.getObject("response");
-        // Response response = rep.getObject();
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
-        return null; // TODO complete test for XML, Object representation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-    }
+    return GetResponseUtils.getResponseDataset(media, representation, dataClass, isArray);
   }
 }

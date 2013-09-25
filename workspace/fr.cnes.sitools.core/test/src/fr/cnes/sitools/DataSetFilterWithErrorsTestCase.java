@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,9 +22,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,18 +32,9 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
-import org.restlet.representation.Representation;
-
-import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.api.DocAPI;
-import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
-import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.dataset.model.Predicat;
-import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
 
@@ -159,8 +147,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
   @Test
   public void testConeSearchCartesienFilter() {
     // CONE_SEARCH_CARTESIEN
-    String params = "p[0]=CONE_SEARCH_CARTESIEN|y_pos,x_pos,z_pos|" + sqlInjectionStr + "|" + sqlInjectionStr + "|" + sqlInjectionStr
-        + "&start=0&limit=300&media=json";
+    String params = "p[0]=CONE_SEARCH_CARTESIEN|y_pos,x_pos,z_pos|" + sqlInjectionStr + "|" + sqlInjectionStr + "|"
+        + sqlInjectionStr + "&start=0&limit=300&media=json";
     String url = datasetHeadersPG.getSitoolsAttachementForUsers();
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
@@ -172,8 +160,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
   @Test
   public void testConeSearchPgSphereFilter() {
     // CONE_SEARCH_PG_SPHERE
-    String params = "p[0]=CONE_SEARCH_PG_SPHERE|y_pos,x_pos,z_pos|" + sqlInjectionStr + "|" + sqlInjectionStr + "|" + sqlInjectionStr
-        + "&start=0&limit=300&media=json";
+    String params = "p[0]=CONE_SEARCH_PG_SPHERE|y_pos,x_pos,z_pos|" + sqlInjectionStr + "|" + sqlInjectionStr + "|"
+        + sqlInjectionStr + "&start=0&limit=300&media=json";
     String url = datasetHeadersPG.getSitoolsAttachementForUsers();
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
@@ -209,7 +197,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
    */
   public void testDateBetweenFilterPG(DataSet item, String colName) {
     // DATE_BETWEEN
-    String params = "p[0]=DATE_BETWEEN|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr + "&start=0&limit=300&media=json";
+    String params = "p[0]=DATE_BETWEEN|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr
+        + "&start=0&limit=300&media=json";
     String url = item.getSitoolsAttachementForUsers();
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
@@ -225,7 +214,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
    */
   public void testDateBetweenFilterMySql(DataSet item, String colName) {
     // DATE_BETWEEN
-    String params = "p[0]=DATE_BETWEEN|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr + "&start=0&limit=300&media=json";
+    String params = "p[0]=DATE_BETWEEN|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr
+        + "&start=0&limit=300&media=json";
     String url = item.getSitoolsAttachementForUsers();
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
@@ -261,7 +251,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
    */
   public void testGridFilterString(DataSet item, String colName) {
     // String filter on targname
-    String params = "filter[0][columnAlias]=" + colName + "&filter[0][data][type]=string&filter[0][data][comparison]=LIKE" + "&filter[0][data][value]="
+    String params = "filter[0][columnAlias]=" + colName
+        + "&filter[0][data][type]=string&filter[0][data][comparison]=LIKE" + "&filter[0][data][value]="
         + sqlInjectionStr + "&start=0&limit=300&media=json";
     String expectedRecords = "0";
     String url = item.getSitoolsAttachementForUsers();
@@ -276,13 +267,13 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
   public void testGridFilterOthers() {
     // numeric filter on ra_targ
     String url = datasetHeadersPG.getSitoolsAttachementForUsers();
-    String params = "filter[0][columnAlias]=ra_targ&filter[0][data][type]=numeric&filter[0][data][comparison]=eq" + "&filter[0][data][value]="
-        + sqlInjectionStr + "&start=0&limit=300&media=json";
+    String params = "filter[0][columnAlias]=ra_targ&filter[0][data][type]=numeric&filter[0][data][comparison]=eq"
+        + "&filter[0][data][value]=" + sqlInjectionStr + "&start=0&limit=300&media=json";
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
 
     // date filter on dateobs
-    params = "filter[0][columnAlias]=dateobs&filter[0][data][type]=date&filter[0][data][comparison]=eq" + "&filter[0][data][value]=" + sqlInjectionStr
-        + "&start=0&limit=300&media=json";
+    params = "filter[0][columnAlias]=dateobs&filter[0][data][type]=date&filter[0][data][comparison]=eq"
+        + "&filter[0][data][value]=" + sqlInjectionStr + "&start=0&limit=300&media=json";
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
 
   }
@@ -316,13 +307,15 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
    */
   public void testMultipleValueFilter(DataSet item, String colName) {
     // LISTBOXMULTIPLE
-    String params = "p[0]=LISTBOXMULTIPLE|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr + "&start=0&limit=300&media=json";
+    String params = "p[0]=LISTBOXMULTIPLE|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr
+        + "&start=0&limit=300&media=json";
     String url = item.getSitoolsAttachementForUsers();
     String expectedRecords = "0";
     testFilter(params, expectedRecords, url, expectedRecords, "0");
 
     // CHECKBOX
-    params = "p[0]=CHECKBOX|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr + "&start=0&limit=300&media=json";
+    params = "p[0]=CHECKBOX|" + colName + "|" + sqlInjectionStr + "|" + sqlInjectionStr
+        + "&start=0&limit=300&media=json";
     testFilter(params, expectedRecords, url, expectedRecords, "0");
   }
 
@@ -345,7 +338,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
   @Test
   public void testNumericBetweenFilter() {
     // NUMERIC_BETWEEN
-    String params = "p[0]=NUMERIC_BETWEEN|y_pos|" + sqlInjectionStr + "|" + sqlInjectionStr + "&start=0&limit=300&media=json";
+    String params = "p[0]=NUMERIC_BETWEEN|y_pos|" + sqlInjectionStr + "|" + sqlInjectionStr
+        + "&start=0&limit=300&media=json";
     String url = datasetHeadersPG.getSitoolsAttachementForUsers();
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
@@ -455,7 +449,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
   @Test
   public void testDateBetweenFilterWrongDateSyntax() {
     // DATE_BETWEEN
-    String params = "p[0]=DATE_BETWEEN|" + "dateobs" + "|" + wrongDateString + "|" + wrongDateString + "&start=0&limit=300&media=json";
+    String params = "p[0]=DATE_BETWEEN|" + "dateobs" + "|" + wrongDateString + "|" + wrongDateString
+        + "&start=0&limit=300&media=json";
     String url = datasetHeadersPG.getSitoolsAttachementForUsers();
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
@@ -467,7 +462,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
   @Test
   public void testDateBetweenFilterBadRequest() {
     // DATE_BETWEEN
-    String params = "p[0]=DATE_BETWEEN|" + "dateobs" + "|" + dateStringFrom + "|" + dateStringTo + "&start=0&limit=300&media=json";
+    String params = "p[0]=DATE_BETWEEN|" + "dateobs" + "|" + dateStringFrom + "|" + dateStringTo
+        + "&start=0&limit=300&media=json";
     String url = datasetHeadersPG.getSitoolsAttachementForUsers();
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
@@ -482,8 +478,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
     String url = datasetHeadersPG.getSitoolsAttachementForUsers();
 
     // date filter on dateobs
-    String params = "filter[0][columnAlias]=dateobs&filter[0][data][type]=date&filter[0][data][comparison]=eq" + "&filter[0][data][value]=" + wrongDateString
-        + "&start=0&limit=300&media=json";
+    String params = "filter[0][columnAlias]=dateobs&filter[0][data][type]=date&filter[0][data][comparison]=eq"
+        + "&filter[0][data][value]=" + wrongDateString + "&start=0&limit=300&media=json";
     testFilterExpectError(params, url, Status.CLIENT_ERROR_BAD_REQUEST);
   }
 
@@ -518,7 +514,8 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
    * @param offset
    *          the offset expected
    */
-  public void testFilter(String params, String expectedCountTotalCount, String datasetUrl, String expectedCount, String offset) {
+  public void testFilter(String params, String expectedCountTotalCount, String datasetUrl, String expectedCount,
+      String offset) {
     String result = retrieve(params, datasetUrl);
     String expected = "{\"success\": true,\r\n" + "\"total\":" + expectedCountTotalCount + ",\r\n";
     String expectedEnd = "\"count\":" + expectedCount + ",\r\n" + "\"offset\":" + offset + "}";
@@ -620,77 +617,4 @@ public class DataSetFilterWithErrorsTestCase extends AbstractDataSetManagerTestC
     deleteDataset(id);
   }
 
-  /**
-   * REST API Response Representation wrapper for single or multiple items expexted
-   * 
-   * @param media
-   *          MediaType expected
-   * @param representation
-   *          service response representation
-   * @param dataClass
-   *          class expected for items of the Response object
-   * @param isArray
-   *          if true wrap the data property else wrap the item property
-   * @return Response
-   */
-  public Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("dataset", DataSet.class);
-      xstream.alias("column", Column.class);
-      xstream.alias("structure", Structure.class);
-
-      xstream.addImplicitCollection(Response.class, "data", dataClass);
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-
-        if (dataClass == DataSet.class) {
-          xstream.aliasField("dataset", Response.class, "item");
-        }
-
-        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-          xstream.addImplicitCollection(DataSet.class, "columnModel", "columnModel", Column.class);
-          xstream.addImplicitCollection(DataSet.class, "structures", "structures", Structure.class);
-          xstream.addImplicitCollection(DataSet.class, "predicat", "predicat", Predicat.class);
-        }
-      }
-      xstream.aliasField("data", Response.class, "data");
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-        // Response response = rep.getObject();
-
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
-        return null; // TODO complete test for XML, Object representation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-      try {
-        representation.getText();
-      }
-      catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    }
-  }
 }

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -26,6 +26,7 @@ import org.restlet.representation.Representation;
 import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.AbstractSitoolsTestCase;
+import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Dependencies;
@@ -319,6 +320,7 @@ public class GetResponseUtils {
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
       xstream.autodetectAnnotations(false);
       xstream.alias("response", Response.class);
+      xstream.registerConverter(new SitoolsCommonDateConverter());
 
       if (dataClass == DataSet.class) {
         xstream.alias("dataset", DataSet.class);
