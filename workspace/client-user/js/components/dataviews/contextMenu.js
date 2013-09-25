@@ -818,7 +818,10 @@ sitools.user.component.dataviews.ctxMenu = Ext.extend(Ext.menu.Menu, {
 				} 
 	            Ext.Msg.show({
 		            title : i18n.get('label.warning'),
-		            buttons : Ext.Msg.YESNO,
+		            buttons : {
+                        yes : i18n.get('label.yes'),
+                        no : i18n.get('label.no')
+                    },
 		            msg : warningTresholdText,
 		            scope : this,
 		            fn : function (btn, text) {

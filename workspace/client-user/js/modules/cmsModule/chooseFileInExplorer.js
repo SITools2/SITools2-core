@@ -160,7 +160,11 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
             Ext.Msg.show({
                 title : i18n.get('label.warning'),
                 msg : i18n.get('label.noLinkDefineCreateFile'),
-                buttons : Ext.Msg.YESNOCANCEL,
+                buttons : {
+                    yes : i18n.get('label.yes'),
+                    no : i18n.get('label.no'),
+                    cancel : i18n.get('label.cancel')
+                },
                 fn : function (btnId, textButton, opt) {
                     if (btnId === "yes") {
                         var language = this.cms.getChosenLanguage();
@@ -195,7 +199,10 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
                 Ext.Msg.show({
 	                title : i18n.get('label.info'),
 	                msg : i18n.get('label.refreshNeededBeforeCreate'),
-	                buttons : Ext.Msg.YESNO,
+	                buttons : {
+	                    yes : i18n.get('label.yes'),
+	                    no : i18n.get('label.no')
+	                },
 	                fn : function (btnId, textButton, opt) {
 	                    if (btnId === "yes") {
 	                        this.performSave(link, createFile);

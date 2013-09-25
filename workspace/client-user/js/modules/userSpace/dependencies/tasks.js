@@ -177,7 +177,10 @@ sitools.user.modules.userSpaceDependencies.tasks = Ext.extend(Ext.grid.GridPanel
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : Ext.Msg.YESNO,
+            buttons : {
+                yes : i18n.get('label.yes'),
+                no : i18n.get('label.no')
+            },
             msg : i18n.get('tasks.delete'),
             scope : this,
             fn : function (btn, text) {
@@ -244,7 +247,10 @@ sitools.user.modules.userSpaceDependencies.tasks = Ext.extend(Ext.grid.GridPanel
     _onClean : function () {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : Ext.Msg.YESNO,
+            buttons : {
+                yes : i18n.get('label.yes'),
+                no : i18n.get('label.no')
+            },
             msg : i18n.get('tasks.delete.all'),
             scope : this,
             fn : function (btn, text) {

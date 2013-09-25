@@ -31,7 +31,7 @@ sitools.userProfile.Register = Ext.extend(Ext.Window, {
     id: 'winRegister',
 	layout: 'hbox',
 	width: 420,
-	height: 490,
+	height: 480,
 	resizable: false,
 	closable: false,
 	modal: true,
@@ -66,7 +66,7 @@ sitools.userProfile.Register = Ext.extend(Ext.Window, {
 			id: 'frmRegister',
 			bodyStyle: 'padding:10px 10px 0px 60px; background:url("'+loadUrl.get('APP_URL')+'/common/res/images/ux/register-big.gif") no-repeat;',
 			width: 400,
-			height : 420,
+			height : 430,
 			labelWidth: 120,
 			items: [{
 				xtype: 'textfield',

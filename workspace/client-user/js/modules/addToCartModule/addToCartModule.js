@@ -77,7 +77,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 tooltip : i18n.get('label.downloadOrder'),
                 cls : 'sitools-btn-green',
                 menu : this.tbarMenu
-                }, '->', 
+            }, '->', 
             {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
                 tooltip : i18n.get('label.refreshOrder'),
@@ -90,7 +90,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                 cls : 'button-transition',
                 scope : this,
                 handler : function () {
-                    var selected = this.gridPanel.getSelectionModel().getSelected()
+                    var selected = this.gridPanel.getSelectionModel().getSelected();
                     if (Ext.isEmpty(selected)) {
                         return Ext.Msg.show({
                             title : i18n.get('label.warning'),
@@ -98,10 +98,13 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                             icon : Ext.MessageBox.INFO,
                             buttons : Ext.MessageBox.OK
                         });
-                    };
+                    }
                     Ext.Msg.show({
                         title : i18n.get('label.delete'),
-                        buttons : Ext.Msg.YESNO,
+                        buttons : {
+                            yes : i18n.get('label.yes'),
+                            no : i18n.get('label.no')
+                        },
                         icon : Ext.MessageBox.WARNING,
                         msg : i18n.get('label.deleteCartOrder'),
                         scope : this,
@@ -202,9 +205,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         this.gridPanel = new Ext.grid.GridPanel({
 //        this.gridPanel = new Ext.ux.PersistantSelectionGridPanel({
             region : 'center',
-            sm : new Ext.grid.RowSelectionModel({
-                singleSelect : true
-            }),
+            sm : new Ext.grid.RowSelectionModel(),
             colModel : this.columnModel,
             store : this.store,
             view : new  Ext.grid.GridView({
@@ -274,7 +275,17 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     
     afterRender : function () {
         sitools.user.modules.addToCartModule.superclass.afterRender.apply(this, arguments);
-        this.loadOrderFile();
+        if (this.user == "public") {
+            var orderBtn = this.getTopToolbar().find('name', 'orderBtn')[0];
+            orderBtn.setDisabled(true);
+            this.getTopToolbar().insert(1, {
+                xtype : 'label',
+                html : "<img src='/sitools/common/res/images/ux/warning.gif'/> <b>" + i18n.get('label.needToBeLogged') + "</b>"
+            });
+            
+        } else {
+            this.loadOrderFile();
+        }
     },
     
     loadOrderFile : function () {

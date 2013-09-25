@@ -450,7 +450,10 @@ sitools.user.component.dataviews.services.serverServicesUtil =  Ext.extend(Ext.u
                 } 
                 Ext.Msg.show({
                     title : i18n.get('label.warning'),
-                    buttons : Ext.Msg.YESNO,
+                    buttons : {
+                        yes : i18n.get('label.yes'),
+                        no : i18n.get('label.no')
+                    },
                     msg : warningTresholdText,
                     scope : this,
                     fn : function (btn, text) {

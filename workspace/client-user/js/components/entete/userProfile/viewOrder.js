@@ -86,8 +86,12 @@ sitools.user.component.entete.userProfile.viewOrderPanel = Ext.extend(Ext.grid.G
             // columns are not sortable by default
             },
             columns : [ {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
+                header : i18n.get('label.orderNumber'),
+                dataIndex : 'id',
+                width : 200
+            }, {
+                header : i18n.get('label.orderDate'),
+                dataIndex : 'dateOrder',
                 width : 200
             }, {
                 header : i18n.get('label.status'),
@@ -178,7 +182,10 @@ sitools.user.component.entete.userProfile.viewOrderPanel = Ext.extend(Ext.grid.G
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : Ext.Msg.YESNO,
+            buttons : {
+                yes : i18n.get('label.yes'),
+                no : i18n.get('label.no')
+            },
             msg : i18n.get('orderCrud.delete'),
             scope : this,
             fn : function (btn, text) {

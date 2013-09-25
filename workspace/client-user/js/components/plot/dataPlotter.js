@@ -415,7 +415,10 @@ sitools.user.component.dataPlotter = function (config) {
                     Ext.Msg.show({
 						title: i18n.get("label.warning"),
 						msg : String.format(i18n.get("label.plot.toManyRecordsAsked"), pageSize, this.maxWarningRecords),
-						buttons: Ext.Msg.YESNO,
+						buttons : {
+                            yes : i18n.get('label.yes'),
+                            no : i18n.get('label.no')
+                        },
 						icon: Ext.MessageBox.WARNING,
 						scope : this,
 						fn : function (buttonId) {

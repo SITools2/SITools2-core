@@ -55,6 +55,9 @@ sitools.user.component.dataviews.services.sorterService = Ext.extend(Ext.Window,
             padding : 5
         });
         var sorters = this.store.getSortState(), len;
+        if (Ext.isEmpty(sorters) && !Ext.isEmpty(this.dataview.storeSort)) {
+            this.sorters = (!Ext.isEmpty(this.dataview.storeSort.sorters)) ? this.dataview.storeSort.sorters : this.dataview.storeSort;
+        }
         if (! Ext.isEmpty(sorters)) {
             if (Ext.isArray(sorters.sorters)) {
                 this.sorters = sorters.sorters;

@@ -220,7 +220,7 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
         var tbRight = [], tb = [];
         tb.push(this.addAdditionalButton());
         Ext.each(records, function (item) {
-            if (item.get('position') === 'left') {
+            if (item.get('position') === 'left' || Ext.isEmpty(item.get('position'))) {
                 tb.push(item);
             } else {
                 tbRight.push(item);

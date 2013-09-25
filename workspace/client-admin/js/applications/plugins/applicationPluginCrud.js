@@ -287,7 +287,10 @@ sitools.admin.applications.plugins.ApplicationPluginCrudPanel = Ext.extend(Ext.g
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : Ext.Msg.YESNO,
+            buttons : {
+                yes : i18n.get('label.yes'),
+                no : i18n.get('label.no')
+            },
             msg : i18n.get('applicationPluginCrud.delete'),
             scope : this,
             fn : function (btn, text) {

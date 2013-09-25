@@ -181,7 +181,11 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         Ext.Msg.show({
 							title : i18n.get('label.warning'),
 							msg : i18n.get('label.noJsonFileFound'),
-							buttons : Ext.Msg.YESNOCANCEL,
+							buttons : {
+			                    yes : i18n.get('label.yes'),
+			                    no : i18n.get('label.no'),
+			                    cancel : i18n.get('label.cancel')
+			                },
 							fn : function (btnId, text, opt) {
 								if (btnId === "yes") {
 									this.createEmptyJson(loader.url);
@@ -310,7 +314,10 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             Ext.Msg.show({
                 title : i18n.get('label.warning'),
                 msg : i18n.get('label.noLinkDefineEditNode'),
-                buttons : Ext.Msg.YESNO,
+                buttons : {
+                    yes : i18n.get('label.yes'),
+                    no : i18n.get('label.no')
+                },
                 scope : this,
                 fn : function (btnId, textButton, opt) {
                     if (btnId === "yes") {
@@ -790,7 +797,11 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 Ext.Msg.show({
                     title : i18n.get('label.warning'),
                     msg : i18n.get('label.noJsonFileFound'),
-                    buttons : Ext.Msg.YESNOCANCEL,
+                    buttons : {
+                        yes : i18n.get('label.yes'),
+                        no : i18n.get('label.no'),
+                        cancel : i18n.get('label.cancel')
+                    },
                     fn : function (btnId, text, opt) {
                         if (btnId === "yes") {
                             this.createEmptyJson(jsonUrl);

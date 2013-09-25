@@ -165,7 +165,10 @@ sitools.user.component.dataviews.services.addToCartService =  {
         } else {
             Ext.Msg.show({
                 title : i18n.get('label.warning'),
-                buttons : Ext.Msg.YESNO,
+                buttons : {
+                    yes : i18n.get('label.yes'),
+                    no : i18n.get('label.no')
+                },
                 icon: Ext.MessageBox.WARNING,
                 msg : i18n.get('warning.selectionAlreadyExist'),
                 scope : this,
@@ -249,6 +252,24 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
         }
     });
     return [ {
+        jsObj : "Ext.form.Label",
+        config : {
+            name : "descriptionLabel",
+            listeners : {
+                render : function (label) {
+                    label.setText(label.value);
+                }
+            },
+            getValue : function () {
+                return this.value;
+            },
+            setValue : function (value) {
+                this.setText(value);
+            },
+            value : "Select columns you want to export in the cart module. All columns with a Feature Type can be downloadable (download the real data and not the link) by checking 'Export Data' column."
+            
+        }
+    },{
         jsObj : "sitools.component.datasets.selectItems",
         config : {
             height : 250,
@@ -364,7 +385,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
                 this.value = value;
             }
         }
-    } ];
+    }];
 };
 /**
  * @static Implementation of the method executeAsService to be able to launch
