@@ -1264,3 +1264,12 @@ Ext.override(Ext.Button, {
 		return;
 	}
 });
+
+/**
+ * Get the folder name to store the cart file name depending on the project name
+ * @param projectName the project name
+ * @returns {String} the folder name to store the cart file
+ */
+function getCartFolder (projectName) {
+    return "/" + DEFAULT_ORDER_FOLDER + "/cart/" + projectName;
+}

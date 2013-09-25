@@ -50,8 +50,8 @@ sitools.user.component.dataviews.services.addToCartService =  {
     },
 
     addToCart : function () {
-
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, this.checkCartSelectionFile,
+        
+        userStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.getCartSelectionFile, this.checkCartSelectionFile,
                 this.saveSelection);
     },
 
@@ -160,7 +160,7 @@ sitools.user.component.dataviews.services.addToCartService =  {
             putObject.selections = [];
             putObject.selections = this.cartSelectionFile.selections; 
             
-            userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
+            userStorage.set(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName),
                     putObject);
         } else {
             Ext.Msg.show({
@@ -179,7 +179,7 @@ sitools.user.component.dataviews.services.addToCartService =  {
                         putObject.selections = [];
                         putObject.selections = this.cartSelectionFile.selections; 
                         
-                        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records",
+                        userStorage.set(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName),
                                 putObject, this.closeDataviewIfModify, this);
                     }
                 }

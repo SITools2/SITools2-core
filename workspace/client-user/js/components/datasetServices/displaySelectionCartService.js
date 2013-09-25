@@ -46,7 +46,7 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
     },
 
     getCart : function () {
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.getCartSelectionFile, Ext.emptyFn, this.displaySelectionCart);
+        userStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.getCartSelectionFile, Ext.emptyFn, this.displaySelectionCart);
     },
 
     displaySelectionCart : function () {

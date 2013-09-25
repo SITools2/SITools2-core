@@ -30,7 +30,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
         
         this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', this.user) + "/files";
-        this.urlCartFileForServer = this.AppUserStorage + "/" + DEFAULT_ORDER_FOLDER + "/records/" + this.user + "_CartSelections.json";
+        this.urlCartFileForServer = this.AppUserStorage + getCartFolder(projectGlobal.projectName) + "/" + this.user + "_CartSelections.json";
         this.urlCartFile = loadUrl.get('APP_URL') + this.urlCartFileForServer;
         
         
@@ -289,7 +289,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     },
     
     loadOrderFile : function () {
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.setCartOrdersFile);
+        userStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.setCartOrdersFile);
     },
     
     /**
@@ -549,7 +549,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     },
     
     onDelete : function () {
-        userStorage.get(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this, this.setCartOrdersFile, Ext.emptyFn, this.deleteOrder);
+        userStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.setCartOrdersFile, Ext.emptyFn, this.deleteOrder);
     },
     
     /**
@@ -619,7 +619,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         });
         this.cartOrderFile.selections = collCartSelections.items;
         
-        userStorage.set(this.user + "_CartSelections.json", "/" + DEFAULT_ORDER_FOLDER + "/records", this.cartOrderFile, this.onRefresh, this);
+        userStorage.set(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this.cartOrderFile, this.onRefresh, this);
     },
     
     /**
