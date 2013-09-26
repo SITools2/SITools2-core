@@ -5,7 +5,7 @@
   <label>label.displaySelectionCart</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <icon></icon>
+  <icon>/sitools/common/res/images/icons/tree_orders_selections.png</icon>
   <xtype>sitools.user.component.dataviews.services.displaySelectionCartService</xtype>
   <dependencies>
     <js>
