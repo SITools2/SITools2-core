@@ -17,7 +17,7 @@ Reference tag                        : (2.1)
 2/ Changes
 
 ___________________
--2.2
+-2.2 (2013-10-01)
 	* New feature
 		- Cart order
 			- Add records to the cart as an authenticated user on every dataset
@@ -40,6 +40,7 @@ ___________________
 		- PublicHostDomain is used for host in the directory's list files (no more problems when Sitools is behind an Apache Proxy)
 		- Proxy resource (/proxy) can be used with "rewrite_redirection=true" parameter to rewrite redirection urls
 		- RSS link to add it to your favorite feed reader
+		- New button look and feel
 	
 	* API changes :
 		- Data folder 
