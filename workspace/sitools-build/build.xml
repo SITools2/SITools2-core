@@ -545,16 +545,16 @@
 	<target name="file-list-git-core" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
 		<antcall target="file-list-git">
 			<param name="reference" value="${sitools.Version.reference}" />
+			<param name="tag" value="${sitools.Version.tag}" />
 			<param name="dir" value="${distribution.dir}" />
-			<param name="version" value="${sitools.Version.tag}" />
 		</antcall>
 	</target>
 
 	<target name="file-list-git-astro" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
 		<antcall target="file-list-git">
 			<param name="reference" value="${sitools.Version.reference}" />
+			<param name="tag" value="${sitools.Version.tag}" />
 			<param name="dir" value="${distribution.astro.dir}" />
-			<param name="version" value="${sitools.Version.tag}" />
 		</antcall>
 	</target>
 
