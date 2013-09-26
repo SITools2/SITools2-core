@@ -488,7 +488,11 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         if (!Ext.isEmpty(success) && !success) {
                             this.getTopToolbar().enable();
                         } else {
-                            this.ownerCt.close();
+                            if (Ext.isFunction(this.dataview.ownerCt.close)) {
+                                this.ownerCt.close();
+                            } else {
+                                this.ownerCt.destroy();
+                            }
 //                            Ext.Msg.show({
 //                                title : i18n.get('label.info'),
 //                                buttons : Ext.Msg.OK,

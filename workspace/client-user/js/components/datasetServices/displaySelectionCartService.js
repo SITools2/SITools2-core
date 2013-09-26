@@ -65,7 +65,11 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
             return Ext.Msg.alert(i18n.get('label.information'), i18n.get('label.noSelectionArticles'));
         }
         
-        this.dataview.ownerCt.close();
+        if (Ext.isFunction(this.dataview.ownerCt.close)) {
+            this.dataview.ownerCt.close();
+        } else {
+            this.dataview.ownerCt.ownerCt.destroy();
+        }
         var params = {
             ranges : selection.ranges,
             startIndex : selection.startIndex,
