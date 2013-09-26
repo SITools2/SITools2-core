@@ -514,7 +514,7 @@
 
 
 	<target name="file-list-git" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
-		<!--<exec executable="scripts/diff-files.bat" osfamily="windows">
+		<exec executable="scripts/diff-files.bat" osfamily="windows">
 			<arg value="${reference}"/>
 			<arg value="${tag}"/>
 			<arg value="${dir}"/>
@@ -524,7 +524,7 @@
 			<arg value="${reference}"/>
 			<arg value="${tag}"/>
 			<arg value="${dir}"/>
-		</exec>-->
+		</exec>
 
 		<path id="list.files">
 			<fileset dir="${dir}">
