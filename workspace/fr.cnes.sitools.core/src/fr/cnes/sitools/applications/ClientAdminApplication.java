@@ -90,7 +90,6 @@ public final class ClientAdminApplication extends StaticWebApplication {
     if (portalIndexFile == null || !portalIndexFile.exists()) {
       getLogger().severe("Template file for Admin/index.html not found :" + adminIndexUrl);
     }
-    setUserAuthenticationNeeded(false);
   }
 
   // Unavailable
