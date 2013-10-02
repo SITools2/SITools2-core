@@ -225,18 +225,19 @@ sitools.admin.multiDs.MultiDsPropPanel = Ext.extend(Ext.Window, {
                 anchor : '100%',
                 maxLength : 30,
                 allowBlank : false,  
-                vtype : "nameWithoutSpace",
+                vtype : "name",
                 listeners : {
 					scope : this, 
 					blur : function (field) {
 						if (field.isValid()) {
+						    var name = field.getValue().replace(/\s/g, "_");
 							var urlPropField = field.ownerCt.getForm().findField("urlServicePropertiesSearch");
 							if (Ext.isEmpty(urlPropField.getValue())) {
-								urlPropField.setValue("/" + field.getValue() + this.propServiceDefaultUrl);
+								urlPropField.setValue("/" + name + this.propServiceDefaultUrl);
 							}
 							var urlMultiDsField = field.ownerCt.getForm().findField("urlServiceDatasetSearch");
 							if (Ext.isEmpty(urlMultiDsField.getValue())) {
-								urlMultiDsField.setValue("/" + field.getValue() + this.multiDSServiceDefaultUrl);
+								urlMultiDsField.setValue("/" + name + this.multiDSServiceDefaultUrl);
 							}
 						}
 					}
