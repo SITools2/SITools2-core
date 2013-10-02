@@ -44,9 +44,11 @@ ___________________
 	
 	* API changes :
 		- Data folder 
-			- Mutli dataset forms definition changed. XML files must be edited and <fr.cnes.sitools.form.dataset.model.SimpleParameter> tags must be changed to <SimpleParameter> tags  
+			- Mutli dataset forms definition changed. XML files must be edited and <fr.cnes.sitools.form.project.model.FormParameter> tags must be changed to <SimpleParameter> tags  
 		- Upgrade to Guava version 14
 	
+	* Known limitations
+		 - Cart selections cannot be changed in the fixed mode
 ___________________
 -2.1.1 (2013-07-02)
 	* New feature
