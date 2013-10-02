@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -117,7 +117,7 @@ public class TaskCollectionResource extends AbstractTaskResource {
     Response response = null;
 
     ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
-    List<TaskModel> list = this.getListTasks(getUserId());
+    List<TaskModel> list = this.getListTasks(getUserId(), filter);
     if (list != null) {
       int total = list.size();
       Collection<TaskModel> taskModelsCollection = TaskManager.getInstance().getTaskModelsPage(filter, list);
@@ -155,6 +155,26 @@ public class TaskCollectionResource extends AbstractTaskResource {
         taskModels.add(task.getTaskModel());
       }
     }
+    return taskModels;
+  }
+
+  /**
+   * 
+   * @param userId
+   * @param filter
+   * @return
+   */
+  private List<TaskModel> getListTasks(String userId, ResourceCollectionFilter filter) {
+    List<Task> tasks = TaskManager.getInstance().getTasks();
+    List<TaskModel> taskModels = new ArrayList<TaskModel>();
+    for (Task task : tasks) {
+      if (task.isPersist() && (userId == null || (userId != null && userId.equals(task.getUserId())))) {
+        taskModels.add(task.getTaskModel());
+      }
+    }
+
+    TaskManager.getInstance().getStore().sort(taskModels, filter);
+
     return taskModels;
   }
 

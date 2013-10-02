@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,6 +19,8 @@
 package fr.cnes.sitools.tasks;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.common.model.ResourceCollectionFilter;
+import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.common.store.SitoolsSynchronizedStoreXML;
 import fr.cnes.sitools.tasks.model.TaskModel;
 
@@ -133,6 +137,65 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
      * xstream.omitField(DatabaseRequestParameters.class, "dataset"); xstream.omitField(DatabaseRequestParameters.class,
      * "baseRef");
      */
+
+  }
+
+  @Override
+  public void sort(List<TaskModel> result, ResourceCollectionFilter filter) {
+
+    if ((filter != null) && (filter.getSort() != null) && !filter.getSort().equals("")) {
+
+      if (filter.getSort().equals("startDate")) {
+
+        Collections.sort(result, new ResourceComparator<TaskModel>(filter) {
+
+          @Override
+          public int compare(TaskModel arg0, TaskModel arg1) {
+
+            if (arg0.getStartDate() != null && arg1.getStartDate() != null) {
+              Date d1 = arg0.getStartDate();
+              Date d2 = arg1.getStartDate();
+              if ((getFilter() != null) && (getFilter().getOrder() != null) && (getFilter().getOrder().equals(DESC))) {
+                return d1.compareTo(d2);
+              }
+              else {
+                return d2.compareTo(d1);
+              }
+
+            }
+            else {
+              return -1;
+            }
+          }
+        });
+      }
+
+      if (filter.getSort().equals("endDate")) {
+
+        Collections.sort(result, new ResourceComparator<TaskModel>(filter) {
+
+          @Override
+          public int compare(TaskModel arg0, TaskModel arg1) {
+
+            if (arg0.getEndDate() != null && arg1.getEndDate() != null) {
+              Date d1 = arg0.getEndDate();
+              Date d2 = arg1.getEndDate();
+              if ((getFilter() != null) && (getFilter().getOrder() != null) && (getFilter().getOrder().equals(DESC))) {
+                return d1.compareTo(d2);
+              }
+              else {
+                return d2.compareTo(d1);
+              }
+
+            }
+            else {
+              return -1;
+            }
+          }
+        });
+      }
+
+    }
 
   }
 

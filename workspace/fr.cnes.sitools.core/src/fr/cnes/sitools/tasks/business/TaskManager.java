@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -290,4 +290,14 @@ public final class TaskManager {
   public List<TaskModel> getTaskModelsPage(ResourceCollectionFilter filter, List<TaskModel> result) {
     return this.storeTaskModel.getPage(filter, result);
   }
+
+  /**
+   * getStore
+   * 
+   * @return
+   */
+  public TaskStoreXML getStore() {
+    return storeTaskModel;
+  }
+
 }
