@@ -397,7 +397,7 @@
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Targets for IzPack 
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<target name="izpack" depends="izpack-init, izpack-compile-core, izpack-compile-extension, izpack-compile, izpack-finish" description="Generate izpack"/>
+	<target name="izpack" depends="izpack-init, izpack-compile-core, izpack-compile-extension, izpack-minify-js, izpack-compile, izpack-finish" description="Generate izpack"/>
 
 	<target name="izpack-init" description="Generate izpack file : prepare">
 		<!-- Creating temporary folder for compilation -->
@@ -425,6 +425,18 @@
 
 	<target name="izpack-compile-core" description="Generate izpack file : compile core">
 		<subant target="build" buildpath="./tmp/workspace/fr.cnes.sitools.core/">
+			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
+		</subant>
+	</target>
+	
+	<target name="izpack-minify-js" description="Minify javascript client sources">
+		<subant target="js.jsMinifyProject" buildpath="./tmp/workspace/client-user/">
+			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
+		</subant>
+		<subant target="js.jsMinifyPortal" buildpath="./tmp/workspace/client-user/">
+			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
+		</subant>
+		<subant target="js.minify" buildpath="./tmp/workspace/client-admin/">
 			<property name="ROOT_DIRECTORY" value="${sitools.ROOT_DIRECTORY}/workspace/sitools-build/tmp"/>
 		</subant>
 	</target>

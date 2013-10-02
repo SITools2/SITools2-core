@@ -50,6 +50,7 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/xtheme-gray-custom.css">
 	
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/services/servicesToolbar.css">
+
 	
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
@@ -62,7 +63,7 @@
     <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>
-
+	
 <!-- BEGIN_JS_DEV_INCLUDES -->
 
     <script type="text/javascript" src="${appUrl}/common/js/fileSaver/BlobBuilder.js"></script>
@@ -89,11 +90,7 @@
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/htmlEditorAdvanced/src/datasetLink.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/htmlEditorAdvanced/src/datasetBrowser.js"></script>
 	
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
-	<!--<link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/ckeditor/contents.css">-->
-
-
-
+	
 
     <script type="text/javascript" src="${appUrl}/client-user/js/overrides/openLayers.js"></script>
     <script type="text/javascript" src="${appUrl}/client-user/js/overrides/geoExt.js"></script>
@@ -249,7 +246,8 @@
  						A INCLURE POUR LA VERSION DE DEBUG
 --------------------------------------------------------------------------------------------------- -->
 <!--	
-    <script type="text/javascript" src="${appUrl}/common/js/plot/flotr/lib/prototype-1.6.0.2.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/prototype.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/prototype/ext-prototype-adapter-debug.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base-debug.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
@@ -267,7 +265,8 @@
 --------------------------------------------------------------------------------------------------- -->
 	
  <!--
- <script type="text/javascript" src="${appUrl}/common/js/plot/flotr/lib/prototype-1.6.0.2.js"></script>
+ 	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/prototype.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/prototype/ext-prototype-adapter.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script>

@@ -57,6 +57,8 @@
 
 	<script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>
+	
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
 
 	
     <!-- Need in debug mode, to remove in production version. -->
@@ -106,7 +108,6 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/vtype.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsDatePicker.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
 	
     
     <script type="text/javascript" src="js/def.js"></script>
@@ -182,7 +183,6 @@
     <script type="text/javascript" src="js/datasource/mongoDb/databaseExplorer.js"></script>
     <script type="text/javascript" src="js/datasource/mongoDb/collectionExplorer.js"></script>
     <script type="text/javascript" src="js/datasource/mongoDb/recordsPanel.js"></script>
-<!--    <script type="text/javascript" src="js/datasource/mongoDb/documentExplorer.js"></script>-->
     <script type="text/javascript" src="js/forms/componentsAdminDef/DatasetContext.js"></script>
     <script type="text/javascript" src="js/forms/componentsAdminDef/ProjectContext.js"></script>
     <script type="text/javascript" src="js/forms/componentsAdminDef/ComponentFactory.js"></script>
