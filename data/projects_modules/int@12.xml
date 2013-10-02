@@ -1,24 +1,21 @@
 <projectModule>
-  <id>83bb0c8d-106f-427f-aedd-e2c34531f51e</id>
-  <name>AddToCartModule</name>
+  <id>45bb0c8d-106f-427f-aedd-e2c34531f51e</id>
+  <name>CartoModule</name>
   <description>Display all data selections ordered by an user</description>
-  <label>label.myCart</label>
+  <label>label.cartoModule</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <title>label.myCart</title>
+  <title>label.cartoModule</title>
   <defaultWidth>850</defaultWidth>
   <defaultHeight>550</defaultHeight>
   <x>20</x>
   <y>20</y>
-  <icon>addToCartModule</icon>
-  <xtype>sitools.user.modules.addToCartModule</xtype>
+  <icon>cartoModule</icon>
+  <xtype>sitools.user.modules.cartoModule</xtype>
   <dependencies>
     <js>
       <url>
-        <url>/sitools/client-user/js/modules/addToCartModule/cartSelectionDetails.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/addToCartModule/addToCartModule.js</url>
+        <url>/sitools/client-user/js/modules/cartoModule/cartoModule.js</url>
       </url>
     </js>
     <css/>

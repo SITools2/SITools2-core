@@ -260,14 +260,33 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
             split : true
         });
         
+        var cartModuleItems = [this.gridPanel, this.containerArticlesDetailsPanel]
+        
+        var description = i18n.get('label.descriptionAddToCartModule');
+        
+        if (description !== "label.descriptionAddToCartModule") {
+            var descriptionPanel = new Ext.Panel({
+                height : 80,
+                html : description, 
+                padding : "10px", 
+                region : "north", 
+                collapsible : true, 
+                autoScroll : true, 
+                title : i18n.get('label.information')
+            });
+            cartModuleItems.push(descriptionPanel);
+        }
+        
+        
         this.hboxPanel = new Ext.Panel({
             id : 'cartModuleHBox',
             layout : 'border',
-            items : [this.gridPanel, this.containerArticlesDetailsPanel]
+            items : cartModuleItems
         });
         
         this.items = [ this.hboxPanel ];
         
+       
        
         
 		sitools.user.modules.addToCartModule.superclass.initComponent.call(this);
@@ -488,17 +507,9 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
                         if (!Ext.isEmpty(success) && !success) {
                             this.getTopToolbar().enable();
                         } else {
-                            if (Ext.isFunction(this.dataview.ownerCt.close)) {
-                                this.ownerCt.close();
-                            } else {
-                                this.ownerCt.destroy();
-                            }
-//                            Ext.Msg.show({
-//                                title : i18n.get('label.info'),
-//                                buttons : Ext.Msg.OK,
-//                                icon : Ext.MessageBox.INFO,
-//                                msg : i18n.get('label.orderWasRun')
-//                            });
+                            //close the module
+                            SitoolsDesk.navProfile.taskbar.closeWin(null, null, this.ownerCt);
+                            
                             var notify = new Ext.ux.Notification({
                                 iconCls : 'x-icon-information',
                                 title : i18n.get('label.info'),
