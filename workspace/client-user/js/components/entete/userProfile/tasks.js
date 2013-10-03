@@ -83,7 +83,7 @@ sitools.user.component.entete.userProfile.tasks = Ext.extend(Ext.grid.GridPanel,
         this.cm = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
-                sortable : false
+                sortable : true
             },
             columns : [ {
                 header : i18n.get('label.taskId'),
