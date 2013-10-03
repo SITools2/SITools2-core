@@ -2,7 +2,7 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2013-10-01
+Date                                 : 2013-10-03
 Version                              : 2.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
@@ -17,7 +17,7 @@ Reference tag                        : (2.1)
 2/ Changes
 
 ___________________
--2.2 (2013-10-01)
+-2.2 (2013-10-03)
 	* New feature
 		- Cart order
 			- Add records to the cart as an authenticated user on every dataset
@@ -41,6 +41,7 @@ ___________________
 		- Proxy resource (/proxy) can be used with "rewrite_redirection=true" parameter to rewrite redirection urls
 		- RSS link to add it to your favorite feed reader
 		- New button look and feel
+		- Tasks can be sorted by start and end dates		
 	
 	* API changes :
 		- Data folder 
