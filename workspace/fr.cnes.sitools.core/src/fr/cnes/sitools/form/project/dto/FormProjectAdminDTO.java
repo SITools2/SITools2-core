@@ -143,22 +143,51 @@ public class FormProjectAdminDTO extends FormDTO {
     return nbDatasetsMax;
   }
 
+  /**
+   * Gets the dictionary value
+   * 
+   * @return the dictionary
+   */
   public Resource getDictionary() {
     return dictionary;
   }
 
+  /**
+   * Sets the value of dictionary
+   * 
+   * @param dictionary
+   *          the dictionary to set
+   */
   public void setDictionary(Resource dictionary) {
     this.dictionary = dictionary;
   }
 
+  /**
+   * Gets the collection value
+   * 
+   * @return the collection
+   */
   public Resource getCollection() {
     return collection;
   }
 
+  /**
+   * Sets the value of collection
+   * 
+   * @param collection
+   *          the collection to set
+   */
   public void setCollection(Resource collection) {
     this.collection = collection;
   }
 
+  /**
+   * Wrap a {@link FormProjectAdminDTO} into a {@link FormProject} object
+   * 
+   * @param formProjectDTOInput
+   *          the {@link FormProjectAdminDTO} to wrap
+   * @return the {@link FormProject} wrapped for a {@link FormProjectAdminDTO}
+   */
   public static FormProject dtoToFormProject(FormProjectAdminDTO formProjectDTOInput) {
     FormProject form = new FormProject();
 
@@ -184,18 +213,40 @@ public class FormProjectAdminDTO extends FormDTO {
 
   }
 
+  /**
+   * Gets the idServicePropertiesSearch value
+   * 
+   * @return the idServicePropertiesSearch
+   */
   public String getIdServicePropertiesSearch() {
     return idServicePropertiesSearch;
   }
 
+  /**
+   * Sets the value of idServicePropertiesSearch
+   * 
+   * @param idServicePropertiesSearch
+   *          the idServicePropertiesSearch to set
+   */
   public void setIdServicePropertiesSearch(String idServicePropertiesSearch) {
     this.idServicePropertiesSearch = idServicePropertiesSearch;
   }
 
+  /**
+   * Gets the idServiceDatasetSearch value
+   * 
+   * @return the idServiceDatasetSearch
+   */
   public String getIdServiceDatasetSearch() {
     return idServiceDatasetSearch;
   }
 
+  /**
+   * Sets the value of idServiceDatasetSearch
+   * 
+   * @param idServiceDatasetSearch
+   *          the idServiceDatasetSearch to set
+   */
   public void setIdServiceDatasetSearch(String idServiceDatasetSearch) {
     this.idServiceDatasetSearch = idServiceDatasetSearch;
   }

@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -59,7 +59,6 @@ public final class ParameterDTO {
    * Comment for <code>nextParameter</code>
    */
   private String nextParameter;
-
 
   /**
    * Comment for <code>geoWKTSelection</code>
@@ -154,7 +153,7 @@ public final class ParameterDTO {
   private boolean autoComplete;
 
   /**
-   * parentParam : The Parent parameter 
+   * parentParam : The Parent parameter
    */
   private String parentParam;
 
@@ -172,7 +171,7 @@ public final class ParameterDTO {
    * Extra Params
    */
   private List<Property> extraParams;
-  
+
   /**
    * Constructor
    */
@@ -591,7 +590,8 @@ public final class ParameterDTO {
   /**
    * set the autoComplete
    * 
-   * @param autoComplete the autoComplete to set
+   * @param autoComplete
+   *          the autoComplete to set
    */
   public void setAutoComplete(boolean autoComplete) {
     this.autoComplete = autoComplete;
@@ -609,7 +609,8 @@ public final class ParameterDTO {
   /**
    * set the parentParam
    * 
-   * @param parentParam the parentParam to set
+   * @param parentParam
+   *          the parentParam to set
    */
   public void setParentParam(String parentParam) {
     this.parentParam = parentParam;
@@ -617,6 +618,7 @@ public final class ParameterDTO {
 
   /**
    * Gets the jsUserObject value
+   * 
    * @return the jsUserObject
    */
   public String getJsUserObject() {
@@ -625,7 +627,9 @@ public final class ParameterDTO {
 
   /**
    * Sets the value of jsUserObject
-   * @param jsUserObject the jsUserObject to set
+   * 
+   * @param jsUserObject
+   *          the jsUserObject to set
    */
   public void setJsUserObject(String jsUserObject) {
     this.jsUserObject = jsUserObject;
@@ -633,6 +637,7 @@ public final class ParameterDTO {
 
   /**
    * Gets the jsAdminObject value
+   * 
    * @return the jsAdminObject
    */
   public String getJsAdminObject() {
@@ -641,22 +646,36 @@ public final class ParameterDTO {
 
   /**
    * Sets the value of jsAdminObject
-   * @param jsAdminObject the jsAdminObject to set
+   * 
+   * @param jsAdminObject
+   *          the jsAdminObject to set
    */
   public void setJsAdminObject(String jsAdminObject) {
     this.jsAdminObject = jsAdminObject;
   }
 
+  /**
+   * Gets the containerPanelId value
+   * 
+   * @return the containerPanelId
+   */
   public String getContainerPanelId() {
     return containerPanelId;
   }
 
+  /**
+   * Sets the value of containerPanelId
+   * 
+   * @param containerPanelId
+   *          the containerPanelId to set
+   */
   public void setContainerPanelId(String containerPanelId) {
     this.containerPanelId = containerPanelId;
   }
 
   /**
    * Gets the dimensionId value
+   * 
    * @return the dimensionId
    */
   public String getDimensionId() {
@@ -665,7 +684,9 @@ public final class ParameterDTO {
 
   /**
    * Sets the value of dimensionId
-   * @param dimensionId the dimensionId to set
+   * 
+   * @param dimensionId
+   *          the dimensionId to set
    */
   public void setDimensionId(String dimensionId) {
     this.dimensionId = dimensionId;
@@ -673,6 +694,7 @@ public final class ParameterDTO {
 
   /**
    * Gets the extraParams value
+   * 
    * @return the extraParams
    */
   public List<Property> getExtraParams() {
@@ -681,7 +703,9 @@ public final class ParameterDTO {
 
   /**
    * Sets the value of extraParams
-   * @param extraParams the extraParams to set
+   * 
+   * @param extraParams
+   *          the extraParams to set
    */
   public void setExtraParams(List<Property> extraParams) {
     this.extraParams = extraParams;
@@ -689,6 +713,7 @@ public final class ParameterDTO {
 
   /**
    * Gets the unit value
+   * 
    * @return the unit
    */
   public SitoolsUnit getUnit() {
@@ -697,13 +722,12 @@ public final class ParameterDTO {
 
   /**
    * Sets the value of unit
-   * @param unit the unit to set
+   * 
+   * @param unit
+   *          the unit to set
    */
   public void setUnit(SitoolsUnit unit) {
     this.unit = unit;
   }
-  
-  
-
 
 }

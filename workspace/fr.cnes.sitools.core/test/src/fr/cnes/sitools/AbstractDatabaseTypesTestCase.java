@@ -152,7 +152,7 @@ public abstract class AbstractDatabaseTypesTestCase extends AbstractDataSetManag
     recDetail2MySQL.put("field_int", "-10");
     recDetail2MySQL.put("field_big_int", "22");
     recDetail2MySQL.put("field_float", "1.31612");
-    recDetail2MySQL.put("field_double", "5.91603873396269");
+    recDetail2MySQL.put("field_double", "5.916038733962689");
     recDetail2MySQL.put("field_decimal", "-250.15200");
     recDetail2MySQL.put("field_varchar", "varchar 2");
     recDetail2MySQL.put("field_text", "Ceci est un enregistrement de test 2");

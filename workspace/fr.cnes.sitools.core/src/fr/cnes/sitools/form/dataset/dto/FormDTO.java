@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -60,12 +60,11 @@ public class FormDTO {
    * Comment for <code>parametersDTO</code>
    */
   private List<ParameterDTO> parameters;
-  
+
   /**
    * Comment for <code>zoneDTO</code>
    */
   private List<ZoneDTO> zones;
-
 
   /**
    * width
@@ -329,6 +328,7 @@ public class FormDTO {
 
   /**
    * Gets the zones value
+   * 
    * @return the zones
    */
   public List<ZoneDTO> getZones() {
@@ -337,7 +337,9 @@ public class FormDTO {
 
   /**
    * Sets the value of zones
-   * @param zones the zones to set
+   * 
+   * @param zones
+   *          the zones to set
    */
   public void setZones(List<ZoneDTO> zones) {
     this.zones = zones;
@@ -346,7 +348,8 @@ public class FormDTO {
   /**
    * Convert a list of Zone to a ZoneDTO
    * 
-   * @param zones a list of zones
+   * @param zones
+   *          a list of zones
    * @return {@link ZoneDTO}
    */
   public static List<ZoneDTO> zonesToDTO(List<Zone> zones) {
@@ -358,15 +361,16 @@ public class FormDTO {
         zonesDTO.add(zoneToDTO(myzone));
       }
     }
-  
+
     return zonesDTO;
 
   }
-  
+
   /**
    * Convert A Zone To a ZoneDTO
    * 
-   * @param zone A zone
+   * @param zone
+   *          A zone
    * @return {@link ZoneDTO}
    */
   private static ZoneDTO zoneToDTO(Zone zone) {
@@ -381,18 +385,19 @@ public class FormDTO {
     zoneDTO.setWidth(zone.getWidth());
     zoneDTO.setCollapsible(zone.isCollapsible());
     zoneDTO.setCollapsed(zone.isCollapsed());
-    if (!zone.getParams().isEmpty()){
+    if (!zone.getParams().isEmpty()) {
       zoneDTO.setParams(ParametersDTO.parametersToDTO(zone.getParams()));
     }
     return zoneDTO;
-    
+
   }
-  
-  
+
   /**
    * dtoToZones
+   * 
    * @param dtos
-   * @return
+   *          the list of ZoneDTO
+   * @return the list of Zone from the zoneDTO
    */
   public static List<Zone> dtoToZones(List<ZoneDTO> dtos) {
 
@@ -404,11 +409,13 @@ public class FormDTO {
     }
     return zones;
   }
-  
+
   /**
-   * dtoToZone
+   * Transform a ZoneDTO to a Zone Object
+   * 
    * @param zoneDTO
-   * @return
+   *          the zoneDTO to transform
+   * @return the Zone Object for the ZoneDTO given
    */
   private static Zone dtoToZone(ZoneDTO zoneDTO) {
 
@@ -427,8 +434,5 @@ public class FormDTO {
     }
     return zone;
   }
-
-  
-  
 
 }

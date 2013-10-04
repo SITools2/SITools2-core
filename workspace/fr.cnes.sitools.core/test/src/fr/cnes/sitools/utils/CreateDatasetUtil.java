@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -551,8 +551,6 @@ public class CreateDatasetUtil {
     c5.setFilter(true);
     c5.setPrimaryKey(c5.getColumnAlias().equals(primaryKey));
     c5.setOrderBy(c5.getColumnAlias().equals(primaryKey) ? "ASC" : null);
-    
-    
 
     Column c7 = new Column("7", "text", "text", 6, true, true, String.class.getSimpleName());
     c7.setColumnAlias("text");

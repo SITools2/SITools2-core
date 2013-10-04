@@ -93,6 +93,13 @@ public class FormPropertyParameterDTO {
     this.type = type;
   }
 
+  /**
+   * Wrap List of FormPropertyParameter to List of {@link FormPropertyParameterDTO}
+   * 
+   * @param properties
+   *          the list of objects
+   * @return the list of dtos
+   */
   public static List<FormPropertyParameterDTO> propertiesToDTO(List<FormPropertyParameter> properties) {
     if (properties == null) {
       return null;
@@ -106,6 +113,13 @@ public class FormPropertyParameterDTO {
     return propertiesDTO;
   }
 
+  /**
+   * Wrap a FormPropertyParameter to a FormPropertyParameterDTO
+   * 
+   * @param fp
+   *          the object
+   * @return the dto
+   */
   private static FormPropertyParameterDTO formPropertyToDTO(FormPropertyParameter fp) {
 
     FormPropertyParameterDTO formpropDTO = new FormPropertyParameterDTO();
@@ -116,6 +130,13 @@ public class FormPropertyParameterDTO {
     return formpropDTO;
   }
 
+  /**
+   * Wrap List of FormPropertyParameterDTO to List of {@link FormPropertyParameter}
+   * 
+   * @param propertiesDTO
+   *          the list of dtos
+   * @return the list of objects
+   */
   public static List<FormPropertyParameter> dtoToproperties(List<FormPropertyParameterDTO> propertiesDTO) {
     if (propertiesDTO == null) {
       return null;
@@ -129,6 +150,13 @@ public class FormPropertyParameterDTO {
     return properties;
   }
 
+  /**
+   * Wrap a FormPropertyParameterDTO to a FormPropertyParameter
+   * 
+   * @param fpDTO
+   *          the dto
+   * @return the object
+   */
   private static FormPropertyParameter dtoToformProperty(FormPropertyParameterDTO fpDTO) {
 
     FormPropertyParameter formprop = new FormPropertyParameter();

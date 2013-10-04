@@ -63,7 +63,7 @@ public final class SQLUtils {
     cleanString = cleanString.replaceAll("\\r", "\\\\r");
     cleanString = cleanString.replaceAll("\\t", "\\\\t");
     cleanString = cleanString.replaceAll("\\00", "\\\\0");
-    cleanString = cleanString.replaceAll("'", "\\\\'");
+    cleanString = cleanString.replaceAll("'", "''");
     cleanString = cleanString.replaceAll("\\\"", "\\\\\"");
 
     if (cleanString.replaceAll("[a-zA-Z0-9_!@#$%^&*()-=+~.;:,\\Q[\\E\\Q]\\E<>{}\\/?\\\\\"' ]", "").length() < 1) {
