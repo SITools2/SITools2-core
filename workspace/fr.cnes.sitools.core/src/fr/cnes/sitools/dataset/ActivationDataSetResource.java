@@ -21,6 +21,8 @@ package fr.cnes.sitools.dataset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -182,7 +184,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
 
         ds.setStatus("ACTIVE"); // TODO dans le start application.
 
-        // ds.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
+        ds.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
 
         DataSet dsResult = store.update(ds);
 
@@ -306,7 +308,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
    *           throws SitoolsException
    */
   protected int getTotalResults(DataSet ds, List<Structure> structures, List<Column> columns, List<Predicat> predicats)
-    throws SitoolsException {
+      throws SitoolsException {
 
     int totalResults;
 
