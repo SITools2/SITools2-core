@@ -63,6 +63,7 @@
     <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
 	
 <!-- BEGIN_JS_DEV_INCLUDES -->
 
