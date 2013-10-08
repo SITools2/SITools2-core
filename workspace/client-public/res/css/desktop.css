@@ -1001,11 +1001,11 @@ td.ux-taskButtons-edge {
 }
 
 .taskbarButtons-icon:HOVER {
-	-webkit-transform: scale(1.09);
-	-moz-transform: scale(1.09);
-	-ms-transform: scale(1.09);
-	-o-transform: scale(1.09);
-	transform: scale(1.09);
+	-webkit-transform: scale(1.07);
+	-moz-transform: scale(1.07);
+	-ms-transform: scale(1.07);
+	-o-transform: scale(1.07);
+	transform: scale(1.07);
 	opacity: .7;
     -moz-opacity: .7;
     filter:alpha(opacity=70);
@@ -1341,6 +1341,8 @@ td.ux-taskButtons-edge {
 .taskbar-previewbox-win {
 	position: absolute;
 	left : 16px;
+	height : 10px;
+	width : 10px;
 }
 .taskbar-previewbox-win-transform {
 	transform-origin: 0% 0%;
