@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -23,8 +23,10 @@ import java.net.URI;
 import java.util.logging.Level;
 
 import org.apache.solr.common.params.CommonParams;
+import org.apache.solr.core.ConfigSolr;
 import org.apache.solr.core.CoreContainer;
 import org.apache.solr.core.SolrCore;
+import org.apache.solr.core.SolrResourceLoader;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrRequestHandler;
 import org.apache.solr.response.SolrQueryResponse;
@@ -59,141 +61,135 @@ import org.restlet.ext.solr.internal.SolrRestletQueryRequest;
  * </pre>
  * 
  * <br>
- * The helper handles "solr://" requests. There is one additional parameter :
- * "DefaultCore" which gives default core for "solr:///..." requests.
+ * The helper handles "solr://" requests. There is one additional parameter : "DefaultCore" which gives default core for
+ * "solr:///..." requests.
  * 
  * @author Remi Dewitte <remi@gide.net>
  */
 public class SolrClientHelper extends ClientHelper {
 
-	public static Protocol SOLR_PROTOCOL = new Protocol("solr", "Solr",
-			"Solr indexer helper", Protocol.UNKNOWN_PORT);
+  public static Protocol SOLR_PROTOCOL = new Protocol("solr", "Solr", "Solr indexer helper", Protocol.UNKNOWN_PORT);
 
-	/** The core Solr container. */
-	protected CoreContainer coreContainer;
+  /** The core Solr container. */
+  protected CoreContainer coreContainer;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param client
-	 *            The client connector.
-	 */
-	public SolrClientHelper(Client client) {
-		super(client);
-		getProtocols().add(SOLR_PROTOCOL);
-	}
+  /**
+   * Constructor.
+   * 
+   * @param client
+   *          The client connector.
+   */
+  public SolrClientHelper(Client client) {
+    super(client);
+    getProtocols().add(SOLR_PROTOCOL);
+  }
 
-	@Override
-	public void handle(Request request, Response response) {
-		super.handle(request, response);
+  @Override
+  public void handle(Request request, Response response) {
+    super.handle(request, response);
 
-		Reference resRef = request.getResourceRef();
-		String path = resRef.getPath();
+    Reference resRef = request.getResourceRef();
+    String path = resRef.getPath();
 
-		if (path != null) {
-			path = resRef.getPath(true);
-		}
+    if (path != null) {
+      path = resRef.getPath(true);
+    }
 
-		String coreName = request.getResourceRef().getHostDomain();
+    String coreName = request.getResourceRef().getHostDomain();
 
-		if (coreName == null || "".equals(coreName)) {
-			coreName = getContext().getParameters()
-					.getFirstValue("DefaultCore");
-		}
+    if (coreName == null || "".equals(coreName)) {
+      coreName = getContext().getParameters().getFirstValue("DefaultCore");
+    }
 
-		SolrCore core = coreContainer.getCore(coreName);
+    SolrCore core = coreContainer.getCore(coreName);
 
-		if (core == null) {
-			response.setStatus(Status.SERVER_ERROR_INTERNAL, "No such core: "
-					+ coreName);
-			return;
-		}
+    if (core == null) {
+      response.setStatus(Status.SERVER_ERROR_INTERNAL, "No such core: " + coreName);
+      return;
+    }
 
-		// Extract the handler from the path or params
-		SolrRequestHandler handler = core.getRequestHandler(path);
+    // Extract the handler from the path or params
+    SolrRequestHandler handler = core.getRequestHandler(path);
 
-		if (handler == null) {
-			if ("/select".equals(path) || "/select/".equalsIgnoreCase(path)) {
-				String qt = request.getResourceRef().getQueryAsForm()
-						.getFirstValue(CommonParams.QT);
-				handler = core.getRequestHandler(qt);
-				if (handler == null) {
-					response.setStatus(Status.CLIENT_ERROR_BAD_REQUEST,
-							"unknown handler: " + qt);
-					return;
-				}
-			}
-			// Perhaps the path is to manage the cores
-			if (handler == null && coreContainer != null
-					&& path.equals(coreContainer.getAdminPath())) {
-				handler = coreContainer.getMultiCoreHandler();
-			}
-		}
+    if (handler == null) {
+      if ("/select".equals(path) || "/select/".equalsIgnoreCase(path)) {
+        String qt = request.getResourceRef().getQueryAsForm().getFirstValue(CommonParams.QT);
+        handler = core.getRequestHandler(qt);
+        if (handler == null) {
+          response.setStatus(Status.CLIENT_ERROR_BAD_REQUEST, "unknown handler: " + qt);
+          return;
+        }
+      }
+      // Perhaps the path is to manage the cores
+      if (handler == null && coreContainer != null && path.equals(coreContainer.getAdminPath())) {
+        handler = coreContainer.getMultiCoreHandler();
+      }
+    }
 
-		if (handler == null) {
-			core.close();
-			response.setStatus(Status.CLIENT_ERROR_BAD_REQUEST,
-					"unknown handler: " + path);
-			return;
-		}
+    if (handler == null) {
+      core.close();
+      response.setStatus(Status.CLIENT_ERROR_BAD_REQUEST, "unknown handler: " + path);
+      return;
+    }
 
-		try {
-			SolrQueryRequest solrReq = new SolrRestletQueryRequest(request,
-					core);
+    try {
+      SolrQueryRequest solrReq = new SolrRestletQueryRequest(request, core);
 
-			SolrQueryResponse solrResp = new SolrQueryResponse();
-			core.execute(handler, solrReq, solrResp);
+      SolrQueryResponse solrResp = new SolrQueryResponse();
+      core.execute(handler, solrReq, solrResp);
 
-			if (solrResp.getException() != null) {
-				response.setStatus(Status.SERVER_ERROR_INTERNAL,
-						solrResp.getException());
-			} else {
-				response.setEntity(new SolrRepresentation(solrReq, solrResp,
-						core));
-				response.setStatus(Status.SUCCESS_OK);
-			}
-		} catch (Exception e) {
-			getLogger().log(Level.WARNING,
-					"Unable to evaluate " + resRef.toString(), e);
-			response.setStatus(Status.SERVER_ERROR_INTERNAL, e);
-		} finally {
-			core.close();
-		}
-	}
+      if (solrResp.getException() != null) {
+        response.setStatus(Status.SERVER_ERROR_INTERNAL, solrResp.getException());
+      }
+      else {
+        response.setEntity(new SolrRepresentation(solrReq, solrResp, core));
+        response.setStatus(Status.SUCCESS_OK);
+      }
+    }
+    catch (Exception e) {
+      getLogger().log(Level.WARNING, "Unable to evaluate " + resRef.toString(), e);
+      response.setStatus(Status.SERVER_ERROR_INTERNAL, e);
+    }
+    finally {
+      core.close();
+    }
+  }
 
-	@Override
-	public void start() {
-		try {
-			coreContainer = (CoreContainer) getHelped().getContext()
-					.getAttributes().get("CoreContainer");
+  @Override
+  public void start() {
+    try {
+      coreContainer = (CoreContainer) getHelped().getContext().getAttributes().get("CoreContainer");
 
-			if (coreContainer == null) {
-				String directory = getHelped().getContext().getParameters()
-						.getFirstValue("directory");
-				String configFile = getHelped().getContext().getParameters()
-						.getFirstValue("configFile");
+      if (coreContainer == null) {
+        String directory = getHelped().getContext().getParameters().getFirstValue("directory");
+        String configFile = getHelped().getContext().getParameters().getFirstValue("configFile");
 
-				if (directory != null && configFile != null) {
-					File config = new File(configFile);
-					if (!config.exists()) {
-						config = new File(new URI(configFile));
-					}
-					coreContainer = new CoreContainer(directory, config);
-				}
-			}
+        if (directory != null && configFile != null) {
 
-			if (coreContainer == null) {
-				throw new RuntimeException(
-						"Could not initialize core container");
-			}
-		} catch (Exception e) {
-			throw new RuntimeException("Could not initialize core container", e);
-		}
-	}
+          SolrResourceLoader resourceLoader = new SolrResourceLoader(directory);
+          File config = new File(configFile);
+          if (!config.exists()) {
+            config = new File(new URI(configFile));
+          }
+          ConfigSolr configSolr = ConfigSolr.fromFile(resourceLoader, config);
+          coreContainer = new CoreContainer(resourceLoader, configSolr);
+          coreContainer.load();
 
-	@Override
-	public void stop() throws Exception {
-		super.stop();
-	}
+        }
+      }
+
+      if (coreContainer == null) {
+        throw new RuntimeException("Could not initialize core container");
+      }
+    }
+    catch (Exception e) {
+      throw new RuntimeException("Could not initialize core container", e);
+    }
+  }
+
+  @Override
+  public void stop() throws Exception {
+    super.stop();
+  }
 
 }

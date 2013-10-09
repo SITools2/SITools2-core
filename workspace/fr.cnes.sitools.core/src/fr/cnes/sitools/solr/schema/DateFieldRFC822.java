@@ -23,8 +23,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.lucene.document.Fieldable;
-import org.apache.solr.schema.DateField;
+import org.apache.lucene.index.IndexableField;
+import org.apache.solr.schema.TrieDateField;
 import org.restlet.engine.util.DateUtils;
 
 /**
@@ -32,7 +32,7 @@ import org.restlet.engine.util.DateUtils;
  * 
  * @author m.gond
  */
-public class DateFieldRFC822 extends DateField {
+public class DateFieldRFC822 extends TrieDateField {
 
   /** Valid RFC_822 format */
   private static final String RFC_882_FORMAT = "EEE, d MMM yyyy HH:mm:ss Z";
@@ -88,7 +88,7 @@ public class DateFieldRFC822 extends DateField {
    * @see org.apache.solr.schema.DateField#toExternal(org.apache.lucene.document.Fieldable)
    */
   @Override
-  public String toExternal(Fieldable f) {
+  public String toExternal(IndexableField f) {
     Date date = DateUtils.parse(f.stringValue() + "Z", DateUtils.FORMAT_RFC_3339);
 
     if (date == null) {

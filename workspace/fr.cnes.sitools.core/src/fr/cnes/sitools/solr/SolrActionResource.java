@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.Request;
 import org.restlet.data.LocalReference;
@@ -36,7 +37,6 @@ import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
-import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Post;
@@ -109,7 +109,7 @@ public final class SolrActionResource extends AbstractSolrResource {
     setDescription("Resource to handle all Solr requests");
     setNegotiated(false);
   }
-  
+
   @Override
   @Post
   public Representation post(Representation entity, Variant variant) {
@@ -144,33 +144,16 @@ public final class SolrActionResource extends AbstractSolrResource {
       // unload the index
       if (this.getReference().toString().endsWith("delete")) {
         org.restlet.Response responseSolr = null;
-        StringRepresentation xmlDeleteText = new StringRepresentation("<delete><query>*:*</query></delete>");
-        Request reqPOST = new Request(Method.POST, "solr://" + osId
-            + "/update?commit=true&optimize=true&waitFlush=true&waitSearcher=true", xmlDeleteText);
+        Request reqGET = new Request(Method.GET, "solr://default/admin/cores?action=UNLOAD&core=" + osId
+            + "&deleteInstanceDir=true");
         try {
-          responseSolr = getContext().getClientDispatcher().handle(reqPOST);
-
+          responseSolr = getContext().getClientDispatcher().handle(reqGET);
           if (responseSolr == null || Status.isError(responseSolr.getStatus().getCode())) {
             response = new Response(false, "BAD_SOLR_DELETE");
-            log.warning("BAD_SOLR_DELETE_DATA " + responseSolr);
+            log.warning("BAD_SOLR_UNLOAD_CORE " + responseSolr);
           }
-
           else {
-
-            Request reqGET = new Request(Method.GET, "solr://default/admin/cores?action=UNLOAD&core=" + osId);
-            try {
-              responseSolr = getContext().getClientDispatcher().handle(reqGET);
-              if (responseSolr == null || Status.isError(responseSolr.getStatus().getCode())) {
-                response = new Response(false, "BAD_SOLR_DELETE");
-                log.warning("BAD_SOLR_UNLOAD_CORE " + responseSolr);
-              }
-              else {
-                response = new Response(true, "GOOD_SOLR_DELETE");
-              }
-            }
-            finally {
-              RIAPUtils.exhaust(responseSolr);
-            }
+            response = new Response(true, "GOOD_SOLR_DELETE");
           }
         }
         finally {
@@ -200,18 +183,25 @@ public final class SolrActionResource extends AbstractSolrResource {
 
     return getRepresentation(response, variant);
   }
-  
+
   @Override
   public void describePost(MethodInfo info) {
     info.setDocumentation("Main resource of the Solr core activities on Sitools. Allows to create, update, delete solr indexes.");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo parameterOsId = new ParameterInfo("osId", false, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the opensearch to deal with.");
-    ParameterInfo parameterCreate = new ParameterInfo("create", false, "xs:string", ParameterStyle.TEMPLATE, "indicates that the Solr object must be created according to the representation sent.");
-    ParameterInfo parameterUpdate = new ParameterInfo("update", false, "xs:string", ParameterStyle.TEMPLATE, "indicates that the Solr object must be modified according to the new representation sent.");
-    ParameterInfo parameterRefresh = new ParameterInfo("refresh", false, "xs:string", ParameterStyle.TEMPLATE, "indicates that the Solr core must be refreshed according to the opensearch ID.");
-    ParameterInfo parameterDelete = new ParameterInfo("delete", false, "xs:string", ParameterStyle.TEMPLATE, "indicates that the Solr object must be deleted according to the opensearch ID.");
-    ParameterInfo parameterCancel = new ParameterInfo("cancel", false, "xs:string", ParameterStyle.TEMPLATE, "indicates that the Solr index creation must be cancelled.");
-    ParameterInfo parameterRefreshXSLT = new ParameterInfo("refreshXSLT", false, "xs:string", ParameterStyle.TEMPLATE, "NOT USED YET.");
+    ParameterInfo parameterOsId = new ParameterInfo("osId", false, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the opensearch to deal with.");
+    ParameterInfo parameterCreate = new ParameterInfo("create", false, "xs:string", ParameterStyle.TEMPLATE,
+        "indicates that the Solr object must be created according to the representation sent.");
+    ParameterInfo parameterUpdate = new ParameterInfo("update", false, "xs:string", ParameterStyle.TEMPLATE,
+        "indicates that the Solr object must be modified according to the new representation sent.");
+    ParameterInfo parameterRefresh = new ParameterInfo("refresh", false, "xs:string", ParameterStyle.TEMPLATE,
+        "indicates that the Solr core must be refreshed according to the opensearch ID.");
+    ParameterInfo parameterDelete = new ParameterInfo("delete", false, "xs:string", ParameterStyle.TEMPLATE,
+        "indicates that the Solr object must be deleted according to the opensearch ID.");
+    ParameterInfo parameterCancel = new ParameterInfo("cancel", false, "xs:string", ParameterStyle.TEMPLATE,
+        "indicates that the Solr index creation must be cancelled.");
+    ParameterInfo parameterRefreshXSLT = new ParameterInfo("refreshXSLT", false, "xs:string", ParameterStyle.TEMPLATE,
+        "NOT USED YET.");
     info.getRequest().getParameters().add(parameterOsId);
     info.getRequest().getParameters().add(parameterCreate);
     info.getRequest().getParameters().add(parameterUpdate);
@@ -248,7 +238,7 @@ public final class SolrActionResource extends AbstractSolrResource {
         String solRIndexConfDir = solRIndexDir + "/conf";
         SchemaConfigDTO scConfig = solR.getSchemaConfigDTO();
         DBConfigDTO dataConfig = (DBConfigDTO) solR.getDataConfigDTO();
-        
+
         RssXSLTDTO rssXSLT = solR.getRssXSLTDTO();
 
         // then we create the config files
@@ -268,7 +258,14 @@ public final class SolrActionResource extends AbstractSolrResource {
                   response = new Response(true, "SOLR_INDEX_CREATED");
                 }
                 else {
-                  response = new Response(false, "ERROR_CREATING_CORE : " + getCauseMsg(resp));
+                  // try to reload the index
+                  resp = reloadCore(solR.getIndexName());
+                  if (resp != null && !Status.isError(resp.getStatus().getCode())) {
+                    response = new Response(true, "SOLR_INDEX_CREATED");
+                  }
+                  else {
+                    response = new Response(false, "ERROR_CREATING_CORE : " + getCauseMsg(resp));
+                  }
                 }
               }
               finally {
@@ -301,18 +298,17 @@ public final class SolrActionResource extends AbstractSolrResource {
    * 
    * @param indexName
    *          the name of the core to create
-   * @return a representation representing the result of the creation or null if
-   *         there is a failure
+   * @return a representation representing the result of the creation or null if there is a failure
    */
   private org.restlet.Response createCore(String indexName) {
     Request reqGET = new Request(Method.GET, "solr://default/admin/cores?action=CREATE&name=" + indexName
-        + "&instanceDir=" + indexName);
+        + "&instanceDir=" + indexName + "&persist=true");
     org.restlet.Response response = null;
 
     response = getContext().getClientDispatcher().handle(reqGET);
 
     if (response == null || Status.isError(response.getStatus().getCode())) {
-      log.warning(indexName + " : creating core failure" + response);
+      log.log(Level.WARNING, indexName + " : creating core failure" + response, response.getStatus().getThrowable());
       return response;
     }
 
@@ -321,6 +317,29 @@ public final class SolrActionResource extends AbstractSolrResource {
 
   }
 
+  /**
+   * reload a core
+   * 
+   * @param indexName
+   *          the name of the core to create
+   * @return a representation representing the result of the creation or null if there is a failure
+   */
+  private org.restlet.Response reloadCore(String indexName) {
+    Request reqGET = new Request(Method.GET, "solr://default/admin/cores?action=RELOAD&core=" + indexName
+        + "&instanceDir=" + indexName);
+    org.restlet.Response response = null;
+
+    response = getContext().getClientDispatcher().handle(reqGET);
+
+    if (response == null || Status.isError(response.getStatus().getCode())) {
+      log.log(Level.WARNING, indexName + " : reload core failure" + response, response.getStatus().getThrowable());
+      return response;
+    }
+
+    log.info(indexName + " : creating core");
+    return response;
+
+  }
 
   /**
    * Create the custom xslt file
@@ -371,13 +390,15 @@ public final class SolrActionResource extends AbstractSolrResource {
   private org.restlet.Response doFullImport(String indexName) {
     org.restlet.Response response = null;
     try {
-      Request reqGET = new Request(Method.GET, "solr://" + indexName + "/dataimport?command=full-import");
+      Request reqGET = new Request(Method.GET, "solr://" + indexName
+          + "/dataimport?command=full-import&config=data-config.xml");
       log.info("START IMPORTING");
       response = getContext().getClientDispatcher().handle(reqGET);
       log.info("IMPORTING SUCCESSFULL");
 
       if (response == null || Status.isError(response.getStatus().getCode())) {
-        log.warning(indexName + " : doFullInput core failure" + response);
+        log.log(Level.WARNING, indexName + " : doFullInput core failure" + response, response.getStatus()
+            .getThrowable());
         return response;
       }
       log.info(indexName + " : full import");
@@ -452,8 +473,7 @@ public final class SolrActionResource extends AbstractSolrResource {
   }
 
   /**
-   * Create the db-data-config.xml file using the db-data-config.ftl freemaker
-   * template
+   * Create the db-data-config.xml file using the db-data-config.ftl freemaker template
    * 
    * 
    * @param dataConfig
@@ -473,7 +493,7 @@ public final class SolrActionResource extends AbstractSolrResource {
         entityDTO.setQuery(entityDTO.getQuery().replace("\"", "&quot;"));
         entityDTO.setQuery(entityDTO.getQuery().replace("<", "&lt;"));
         entityDTO.setQuery(entityDTO.getQuery().replace(">", "&gt;"));
-        
+
       }
 
       Representation dataConfigFtl = new ClientResource(LocalReference.createClapReference(getClass().getPackage())
@@ -502,8 +522,6 @@ public final class SolrActionResource extends AbstractSolrResource {
       return false;
     }
   }
-
-
 
   /**
    * Get the clause message of the throwable object in the given response

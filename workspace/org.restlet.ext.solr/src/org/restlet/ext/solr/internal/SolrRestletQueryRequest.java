@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,6 +18,7 @@
  ******************************************************************************/
 package org.restlet.ext.solr.internal;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.solr.common.util.ContentStream;
@@ -32,20 +33,20 @@ import org.restlet.Request;
  */
 public class SolrRestletQueryRequest extends SolrQueryRequestBase {
 
-    /**
-     * Constructor.
-     * 
-     * @param request
-     *            The Restlet request to wrap.
-     * @param core
-     *            The Solr core.
-     */
-    public SolrRestletQueryRequest(Request request, SolrCore core) {
-        super(core, new SolrRestletParams(request));
-        getContext().put("path", request.getResourceRef().getPath());
-        ArrayList<ContentStream> _streams = new ArrayList<ContentStream>(1);
-        _streams.add(new SolrRepresentationContentStream(request.getEntity()));
-        setContentStreams(_streams);
-    }
+  /**
+   * Constructor.
+   * 
+   * @param request
+   *          The Restlet request to wrap.
+   * @param core
+   *          The Solr core.
+   */
+  public SolrRestletQueryRequest(Request request, SolrCore core) {
+    super(core, new SolrRestletParams(request));
+    getContext().put("path", request.getResourceRef().getPath());
+    ArrayList<ContentStream> _streams = new ArrayList<ContentStream>(1);
+    _streams.add(new SolrRepresentationContentStream(request.getEntity()));
+    setContentStreams(_streams);
+  }
 
 }

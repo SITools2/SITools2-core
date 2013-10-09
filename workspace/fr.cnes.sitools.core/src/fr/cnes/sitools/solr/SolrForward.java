@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -17,6 +17,8 @@
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package fr.cnes.sitools.solr;
+
+import java.io.IOException;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -61,6 +63,15 @@ public class SolrForward extends Restlet implements WadlDescribable {
   @Override
   public void handle(Request request, Response response) {
     super.handle(request, response);
+
+    try {
+      System.out.println("REQUEST : " + request.getEntity().getText());
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     if (!Method.OPTIONS.equals(request.getMethod())) {
       String path = request.getResourceRef().getRemainingPart();
       Reference solrRef = new Reference("solr:/" + path);
