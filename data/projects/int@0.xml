@@ -152,12 +152,7 @@ espace de stockage sur le serveur de données) et permet de sécuriser l&apos;en
 des ressources en fonction du rôle de chaque utilisateur.&lt;/p&gt;&lt;/div&gt;</htmlDescription>
   <maintenance>false</maintenance>
   <maintenanceText></maintenanceText>
-  <links>
-    <fr.cnes.sitools.project.model.LinkModel>
-      <name>AKKA Technologies</name>
-      <url>http://www.akka.eu</url>
-    </fr.cnes.sitools.project.model.LinkModel>
-  </links>
+  <links></links>
   <ftlTemplateFile>default.project.ftl</ftlTemplateFile>
   <navigationMode>fixed</navigationMode>
 </project>
