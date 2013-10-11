@@ -58,6 +58,21 @@
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.jdom_1.1/org.jdom.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.codec_1.4/org.apache.commons.codec.jar"/>
     </library>
+    <library name="solrj-4.5" systemlibrary="false">
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/commons-io-2.1.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/httpclient-4.2.3.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/httpcore-4.2.2.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/httpmime-4.2.3.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/jcl-over-slf4j-1.6.6.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/jul-to-slf4j-1.6.6.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/log4j-1.2.16.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/noggit-0.5.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/slf4j-api-1.6.6.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/slf4j-log4j12-1.6.6.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/wstx-asl-3.2.7.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/zookeeper-3.4.5.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solrJ_4_5_0/solr-solrj-4.5.0.jar"/>
+    </library>
     <library name="sitools_libraries" systemlibrary="false">
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.xalan_2.7.1/xml-apis.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.xalan_2.7.1/serializer.jar"/>
