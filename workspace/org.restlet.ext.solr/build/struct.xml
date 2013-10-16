@@ -14,7 +14,7 @@
 	<!-- Informations generales sur le projet -->
 	<property name="project.name" value="org.restlet.ext.solr" />
 	<property name="project.fullname" value="org.restlet.ext.solr" />
-	<property name="project.version" value="3.6.1" />
+	<property name="project.version" value="4.5.0" />
 		
 	<!-- Nom de l'application WEB -->
 	<property name="webapps.name" value="org.restlet.ext.solr" />
