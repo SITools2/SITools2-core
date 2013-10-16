@@ -193,6 +193,9 @@
 
          Note: For faster range queries, consider the tdate type
       -->
+      
+	<fieldType name="rss_date" class="fr.cnes.sitools.solr.schema.DateFieldRFC822" sortMissingLast="true" omitNorms="true"/>
+      
     <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
 
     <!-- A Trie based date field for faster date range queries and date faceting. -->

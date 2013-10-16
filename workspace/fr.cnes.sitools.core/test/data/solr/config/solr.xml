@@ -1,7 +1,3 @@
-<?xml version='1.0' encoding='UTF-8'?><solr sharedLib="lib" persistent="true">
-<cores adminPath="/admin/cores">
-  <core name="bf77955a-2cec-4fc3-b95d-7397025fb299" instanceDir="bf77955a-2cec-4fc3-b95d-7397025fb299/"/>
-  <core name="e6892ea4-680a-47d5-af82-c72908dea319" instanceDir="e6892ea4-680a-47d5-af82-c72908dea319/"/>
-  <core name="default" instanceDir="default/"/>
-</cores>
+<?xml version='1.0' encoding='UTF-8'?>
+<solr>  
 </solr>

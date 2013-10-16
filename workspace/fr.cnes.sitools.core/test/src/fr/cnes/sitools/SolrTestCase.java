@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -47,6 +47,7 @@ import fr.cnes.sitools.solr.model.RssXSLTDTO;
 import fr.cnes.sitools.solr.model.SchemaConfigDTO;
 import fr.cnes.sitools.solr.model.SchemaFieldDTO;
 import fr.cnes.sitools.solr.model.SolRConfigDTO;
+import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * TestCase Solr - Lucene
@@ -71,6 +72,10 @@ public class SolrTestCase extends AbstractSitoolsServerTestCase {
    */
   private String indexName = "indexName";
   /**
+   * The index name
+   */
+  private String indexName2 = "indexName2";
+  /**
    * SolrDirectory
    */
   private String solrDirectory = settings.getStoreDIR(Consts.APP_SOLR_STORE_DIR) + "/config";
@@ -92,9 +97,11 @@ public class SolrTestCase extends AbstractSitoolsServerTestCase {
 
   /**
    * Test CRUD Solr configuration with JSon format exchanges.
+   * 
+   * @throws InterruptedException
    */
   @Test
-  public void testCRUD() {
+  public void testCRUD() throws InterruptedException {
     docAPI.setActive(false);
     String query = "fuse";
     SolRConfigDTO solrConf = getSolRConfig(indexName);
@@ -121,16 +128,16 @@ public class SolrTestCase extends AbstractSitoolsServerTestCase {
     docAPI.appendChapter("Manipulating Solr indexes");
 
     docAPI.appendSubChapter("Create solr index", "create");
-    SolRConfigDTO solrConf = getSolRConfig(indexName);
+    SolRConfigDTO solrConf = getSolRConfig(indexName2);
     create(solrConf);
 
     docAPI.appendSubChapter("Query solr index", "query");
-    query(indexName, query);
+    query(indexName2, query);
 
     docAPI.appendSubChapter("Refresh solr index", "refresh");
-    refresh(indexName);
+    refresh(indexName2);
     docAPI.appendSubChapter("Delete solr index", "delete");
-    delete(indexName);
+    delete(indexName2);
   }
 
   /**
@@ -197,10 +204,11 @@ public class SolrTestCase extends AbstractSitoolsServerTestCase {
   private void query(String indexName, String query) {
     ClientResource cr = new ClientResource("riap://component/solr/" + indexName + "/execute?q=" + query);
     docAPI.appendRequest(Method.GET, cr);
-
+    
     Representation result = cr.get(getMediaTest());
     if (!docAPI.appendResponse(result)) {
       assertNotNull(result);
+      RIAPUtils.exhaust(result);
       // assertSuccess(result);
     }
   }
