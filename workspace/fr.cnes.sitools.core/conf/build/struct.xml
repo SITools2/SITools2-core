@@ -178,11 +178,9 @@
 -->
 	<!-- Classpath pour la compilation -->
 	<path id="compile.classpath">
-		<path refid="solrj-4.5"/>
 		<path refid="sitools_libraries"/>
 		<path refid="restlet_jse_2_0_5_patched"/>
 		<path refid="osgi_equinox"/>
-		
 		<!-- <path refid="fr_cnes_sitools_extensions"/>-->
 <!--		<pathelement location="${java.class.path}"/>-->
 		<!-- libs de l'application converties en plugins dans libraries
