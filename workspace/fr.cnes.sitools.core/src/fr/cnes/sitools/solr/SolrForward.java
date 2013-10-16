@@ -63,15 +63,6 @@ public class SolrForward extends Restlet implements WadlDescribable {
   @Override
   public void handle(Request request, Response response) {
     super.handle(request, response);
-
-    try {
-      System.out.println("REQUEST : " + request.getEntity().getText());
-    }
-    catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
     if (!Method.OPTIONS.equals(request.getMethod())) {
       String path = request.getResourceRef().getRemainingPart();
       Reference solrRef = new Reference("solr:/" + path);
