@@ -156,7 +156,7 @@
         <archive path="D:/CNES-ULISSE/cots/audit/cobertura/lib/asm-tree-3.0.jar"/>
         <archive path="D:/CNES-ULISSE/cots/audit/cobertura/lib/jakarta-oro-2.0.8.jar"/>
         <archive path="D:/CNES-ULISSE/cots/audit/cobertura/lib/asm-3.0.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/audit/cobertura/lib/log4j-1.2.9.jar"/>
+        <archive path="D:/CNES-ULISSE/cots/audit/cobertura/lib/log4j-1.2.16.jar"/>
         <archive path="D:/CNES-ULISSE/cots/audit/emma/emma.jar"/>
         <archive path="D:/CNES-ULISSE/cots/audit/emma/emma_ant.jar"/>
     </library>
