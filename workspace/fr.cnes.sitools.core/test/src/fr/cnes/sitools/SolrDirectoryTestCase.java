@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -74,10 +74,7 @@ public class SolrDirectoryTestCase extends AbstractSitoolsServerTestCase {
   public void setUp() throws Exception {
     // TODO Auto-generated method stub
     super.setUp();
-    /*
-     * String filePath = super.TEST_FILES_REPOSITORY + "/solr/config/" + this.indexName; FileUtils.cleanDirectory(new
-     * File(filePath));
-     */
+
   }
 
   /**
@@ -88,15 +85,19 @@ public class SolrDirectoryTestCase extends AbstractSitoolsServerTestCase {
     docAPI.setActive(false);
     String query = "postel";
     SolRConfigDTO solrConf = getSolRConfig(indexName);
-    create(solrConf);
 
-    query(indexName, query);
+    try {
+      create(solrConf);
 
-    refresh(indexName);
+      query(indexName, query);
 
-    query(indexName, query);
+      refresh(indexName);
 
-    delete(indexName);
+      query(indexName, query);
+    }
+    finally {
+      delete(indexName);
+    }
 
     // TODO clean and cancel
   }
@@ -223,7 +224,7 @@ public class SolrDirectoryTestCase extends AbstractSitoolsServerTestCase {
    *          file name
    */
   private void assertDirDeleted(String indexName) {
-    File fileTest = new File(solrDirectory + "/"+indexName);
+    File fileTest = new File(solrDirectory + "/" + indexName);
     assertFalse(fileTest.exists());
   }
 
@@ -352,19 +353,18 @@ public class SolrDirectoryTestCase extends AbstractSitoolsServerTestCase {
     // creation Dataconfig DTO
     DirectoryConfigDTO dcDTO = new DirectoryConfigDTO();
 
-//    dcDTO.setBaseDir( getTestRepository() );
-    dcDTO.setBaseDir("G://FTP_POSTEL");
-        
+    // dcDTO.setBaseDir( getTestRepository() );
+    dcDTO.setBaseDir(settings.getRootDirectory() + settings.getStoreDIR() + "/test-solr-tika");
+
     dcDTO.setDocument("document");
 
     String fileName = ".*\\.(DOC)|(PDF)|(pdf)|(doc)|(docx)|(ppt)";
     dcDTO.setFileName(fileName);
 
-    String newerThan = "'NOW-365DAYS'";
+    String newerThan = "'NOW-1095DAYS'";
     dcDTO.setNewerThan(newerThan);
-        
+
     return dcDTO;
   }
-
 
 }

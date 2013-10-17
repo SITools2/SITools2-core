@@ -288,12 +288,6 @@
  
     <field name="id" type="string" indexed="true" stored="true" required="true" /> 
  
-  <!-- Common metadata fields, named specifically to match up with
-     SolrCell metadata when parsing rich documents such as Word, PDF.
-     Some fields are multiValued only because Tika currently may return
-     multiple values for them.
-   -->
-   <field name="id" type="text_general" indexed="true" stored="true" multiValued="true"/>
    
    <field name="title" type="text_general" indexed="true" stored="true" multiValued="true"/><!-- OK -->
    <field name="subject" type="text_general" indexed="true" stored="true"/>
@@ -315,7 +309,9 @@
    <field name="created" type="date" indexed="true" stored="true" />
    <field name="creator" type="string" indexed="true" stored="true" />		
    <field name="resourceName" type="string" indexed="true" stored="true" />	   
-
+	
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+	
  </fields>
 	 
 	 <!-- Field to use to determine and enforce document uniqueness. 

@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -184,7 +184,8 @@ public final class SolrDirectoryActionResource extends AbstractSolrResource {
   private Response deleteIndex() {
     Response response;
     org.restlet.Response responseSolr = null;
-    StringRepresentation xmlDeleteText = new StringRepresentation("<delete><query>*:*</query></delete>");
+    StringRepresentation xmlDeleteText = new StringRepresentation("<delete><query>*:*</query></delete>",
+        MediaType.APPLICATION_XML);
     Request reqPOST = new Request(Method.POST, "solr://" + osId
         + "/update?commit=true&optimize=true&waitFlush=true&waitSearcher=true", xmlDeleteText);
     try {
@@ -393,7 +394,8 @@ public final class SolrDirectoryActionResource extends AbstractSolrResource {
   private org.restlet.Response doFullImport(String indexName) {
     org.restlet.Response response = null;
     try {
-      Request reqGET = new Request(Method.GET, "solr://" + indexName + "/dataimport?command=full-import");
+      Request reqGET = new Request(Method.GET, "solr://" + indexName
+          + "/dataimport?command=full-import&config=data-config.xml");
       log.info("START IMPORTING");
       response = getContext().getClientDispatcher().handle(reqGET);
       log.info("IMPORTING SUCCESSFULL");
