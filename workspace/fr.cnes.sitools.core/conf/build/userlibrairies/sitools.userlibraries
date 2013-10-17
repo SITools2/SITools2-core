@@ -43,10 +43,6 @@
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.rome.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/org.restlet.ext.wadl/org.restlet.ext.wadl_2.0.1.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.wadl.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.httpclient.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.httpclient_4.0/org.apache.httpclient.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.httpcore_4.0/org.apache.httpcore.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.httpmime_4.0/org.apache.httpmime.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.continuations.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.http.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.eclipse.jetty_7.1/org.eclipse.jetty.io.jar"/>
