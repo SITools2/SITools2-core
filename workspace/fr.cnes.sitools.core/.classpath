@@ -7,6 +7,5 @@
 	<classpathentry kind="src" path="test/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/audit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/test"/>
-	<classpathentry kind="lib" path="D:/CNES-ULISSE-2.0-GIT/extensions/metacatalogue/workspace/fr.cnes.sitools.metacatalogue.libraries/jts-1.10.jar"/>
 	<classpathentry kind="output" path="out/classes"/>
 </classpath>
