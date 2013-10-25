@@ -284,7 +284,9 @@ public final class StoreHelper {
       migrateStores(stores);
     }
 
-    readStores(stores);
+    if (settings.isCheckStores()) {
+      readStores(stores);
+    }
 
     return stores;
   }

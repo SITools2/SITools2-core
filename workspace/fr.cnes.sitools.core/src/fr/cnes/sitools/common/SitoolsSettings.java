@@ -155,6 +155,11 @@ public final class SitoolsSettings {
   private boolean startWithMigration = false;
 
   /**
+   * Whether or not to check stores at startup
+   */
+  private boolean checkStores = false;
+
+  /**
    * Private constructor for utility class
    */
   private SitoolsSettings() {
@@ -199,12 +204,14 @@ public final class SitoolsSettings {
 
     initUserStorageRefreshDelay();
 
+    setCheckStores(Boolean.parseBoolean(getString("Starter.CHECK_STORES_AT_STARTUP", "true")));
+
   }
 
   // PUBLIC ---------------------------------------------------------------
 
   /**
-   * Settings constructor
+   * Settings constructors
    * 
    * @param bundle
    *          String name of resource bundle
@@ -891,4 +898,24 @@ public final class SitoolsSettings {
   public String getUserStorageDir(String username) {
     return getRootDirectory() + getStoreDIR() + getString(Consts.USERSTORAGE_ROOT) + "/" + username;
   }
+
+  /**
+   * Gets the checkStores value
+   * 
+   * @return the checkStores
+   */
+  public boolean isCheckStores() {
+    return checkStores;
+  }
+
+  /**
+   * Sets the value of checkStores
+   * 
+   * @param checkStores
+   *          the checkStores to set
+   */
+  public void setCheckStores(boolean checkStores) {
+    this.checkStores = checkStores;
+  }
+
 }
