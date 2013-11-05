@@ -1862,6 +1862,9 @@ public final class Starter {
     };
 
     appManager.attachApplication(taskAppAdmin);
+    
+    component.getInternalRouter().attach(settings.getString(Consts.APP_TASK_URL), taskAppAdmin);
+
 
     // ==========================================
     // JAVAX MEASURE
