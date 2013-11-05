@@ -104,8 +104,9 @@ sitools.component.users.portal.feedsReaderPortal = Ext.extend(Ext.Panel, {
      * Tells the store to sort itself according to our sort data
      */
     doSort : function () {
-        
-        this.feedsReader.items.items[0].sortByDate(this.buttonDate.sortData.direction);
+        if (Ext.isFunction(this.feedsReader.items.items[0].sortByDate)) {
+            this.feedsReader.items.items[0].sortByDate(this.buttonDate.sortData.direction);
+        }
     },
     
     /**
