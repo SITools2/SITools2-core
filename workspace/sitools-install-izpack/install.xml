@@ -158,9 +158,8 @@
 			</description>
 			<fileset override="update" dir="../libraries" targetdir="$INSTALL_PATH/$libraries"
 				includes="**/*.jar" />
-			<file override="update"
-				src="../org.restlet.ext.solr/org.restlet.ext.solr_3.6.1.jar"
-				targetdir="$INSTALL_PATH/workspace/org.restlet.ext.solr" />
+			<fileset override="update" dir="../org.restlet.ext.solr/" targetdir="$INSTALL_PATH/$workspacePath/org.restlet.ext.solr"
+				includes="**/*.jar" />
 			<file override="update"
 				src="../org.restlet.patched/org.restlet.patched_1.0.3.jar"
 				targetdir="$INSTALL_PATH/workspace/org.restlet.patched" />
