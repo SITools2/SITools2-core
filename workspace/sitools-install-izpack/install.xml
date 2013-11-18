@@ -235,8 +235,7 @@
 		<!-- DATA -->
 		<pack name="data" preselected="yes" required="yes" parent="Server">
 			<description>Init data</description>
-			<fileset override="update" dir="../../data" targetdir="$INSTALL_PATH/data"
-				excludes="**/TESTS/**" />
+			<fileset override="update" dir="../../data" targetdir="$INSTALL_PATH/data"/>
 			<!-- ADD A USERSTORAGE FOR USER ADMIN TODO remove it in future version -->
 			<file override="true" src="$resPath/data/userstorage/int@0.xml"
 				targetdir="$INSTALL_PATH/data/userstorage" />

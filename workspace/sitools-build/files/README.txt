@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2013-10-03
-Version                              : 2.2
+Date                                 : 2013-11-06
+Version                              : 2.2.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,9 +12,28 @@ Project page                         : http://sitools2.sourceforge.net/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (2.1)
+Reference tag                        : (2.2)
 
 2/ Changes
+
+
+__________________
+-2.2.1 (2013-11-06)
+
+	* Enhancements :
+		- Update Solr version to 4.5
+		- Possibility to disable XML model files check at startup to improve startup speed (Warning it will start even if there are errors in the files)
+			- Set Starter.CHECK_STORES_AT_STARTUP to false to disable model files check			
+		
+	* API changes :
+		- Update Solr version to 4.5
+		- Update Solr Restlet extension version to 4.5
+		- Update Log4j in cobertura version (for tests only) to 1.2.16
+		- Solr version 3.1 and 3.6.1 removed
+		- HTTP client libraries updated to version 4.2.3
+			- httpclient-4.2.3
+			- httpcore-4.2.2
+			- httpmime-4.2.3		  
 
 ___________________
 -2.2 (2013-10-03)
