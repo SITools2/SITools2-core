@@ -17,16 +17,18 @@
  ******************************************************************************/
 /* global Ext, sitools, i18n, loadUrl */
 
-Ext.namespace('sitools.widget.HtmlEditor');
+Ext.namespace('sitools.widget.sitoolsEditorPlugins');
 /**
  * datasetLink widget
  * 
- * @class sitools.widget.HtmlEditor.datasetBrowser
+ * @class sitools.widget.sitoolsEditorPlugins.datasetBrowser
  * @extends Ext.util.Observable
  */
-sitools.widget.HtmlEditor.datasetBrowser = function(config) {
+sitools.widget.sitoolsEditorPlugins.datasetBrowser = function(config) {
 	this.datasets = [];
 	this.browseField = config.field;
+	this.textField = config.textField;
+	
 	/**
 	 * INDEX JPB var projectId = Ext.util.Cookies.get('projectId'); if
 	 * (Ext.isEmpty(projectId)){ Ext.Msg.alert(i18n.get ('warning.noProject'));
@@ -145,7 +147,7 @@ sitools.widget.HtmlEditor.datasetBrowser = function(config) {
 				}
 			});
 			
-	sitools.widget.HtmlEditor.datasetBrowser.superclass.constructor.call(this,
+	sitools.widget.sitoolsEditorPlugins.datasetBrowser.superclass.constructor.call(this,
 			Ext.apply({
 						expanded : true,
 						useArrows : true,
@@ -173,12 +175,7 @@ sitools.widget.HtmlEditor.datasetBrowser = function(config) {
 
 };
 
-Ext.extend(sitools.widget.HtmlEditor.datasetBrowser, Ext.tree.TreePanel, {
-			/**
-			 * method called when trying to save preference
-			 * 
-			 * @returns
-			 */
+Ext.extend(sitools.widget.sitoolsEditorPlugins.datasetBrowser, Ext.tree.TreePanel, {
 			_getSettings : function() {
 				return {
 					preferencesPath : "/modules",
@@ -188,31 +185,33 @@ Ext.extend(sitools.widget.HtmlEditor.datasetBrowser, Ext.tree.TreePanel, {
 
 			onValidate : function() {
 				var selNode = this.selModel.getSelectedNode();
-				if (selNode.isLeaf() && selNode.attributes.type != "defi"){
-					var urlLink, displayValue;
-					
+				if (Ext.isEmpty(selNode)) {
+				    return Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.noDatasetSelected'));
+				}
+				
+				if (selNode.isLeaf() && selNode.attributes.type != "defi") {
+					    var urlLink, displayValue;
 						urlLink = selNode.attributes.dataUrl;
 						displayValue = selNode.attributes.winTitle;
 //						this.browseField.setValue(displayValue);
 						
-					if (selNode.attributes.type == "data"){
+						this.browseField.datasetName = selNode.attributes.datasetName;
+						
+					if (selNode.attributes.type == "data") {
 					    this.browseField.setValue('Data : ' + selNode.attributes.datasetName);
-//						this.browseField.dataLinkComponent = String.format("<a href='#' onclick='parent.sitools.user.component.dataviews.dataviewUtils.showDetailsData(\"\",\"\",\"{0}\"); return false;'>", urlLink);
-						this.browseField.dataLinkComponent = String.format("parent.sitools.user.component.dataviews.dataviewUtils.showDetailsData(\"\",\"\",\"{0}\"); return false;", urlLink);
+					    this.textField.setValue(selNode.attributes.datasetName);
+					    
+						this.browseField.dataLinkComponent = String.format("parent.sitools.user.clickDatasetIcone(\"{0}\", 'data'); return false;", urlLink);
 					}
 					else if (selNode.attributes.type == "form"){
 					    this.browseField.setValue('Form : ' + selNode.attributes.datasetName);
-//						this.browseField.dataLinkComponent = String.format('<a href="#" onclick="parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;">', urlLink);
+					    this.textField.setValue(selNode.attributes.datasetName);
 						this.browseField.dataLinkComponent = String.format('parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;', urlLink);
 					}
 					this.ownerCt.close();
-				}
-				else {
-					Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.selectNode'));
 				}
 			}
 
 		});
 
-Ext.reg('sitools.widget.HtmlEditor.datasetBrowser',
-		sitools.widget.HtmlEditor.datasetBrowser);
+Ext.reg('sitools.widget.sitoolsEditorPlugins.datasetBrowser', sitools.widget.sitoolsEditorPlugins.datasetBrowser);

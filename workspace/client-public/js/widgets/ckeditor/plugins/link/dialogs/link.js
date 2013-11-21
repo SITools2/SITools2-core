@@ -44,7 +44,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 	// Handles the event when the "Type" selection box is changed.
 	var linkTypeChanged = function() {
 			var dialog = this.getDialog(),
-				partIds = [ 'urlOptions', 'anchorOptions', 'emailOptions', 'datasetLinkOptions' ],
+				partIds = [ 'urlOptions', 'anchorOptions', 'emailOptions', 'datasetLinkOptions', 'moduleLinkOptions' ],
 				typeValue = this.getValue(),
 				uploadTab = dialog.definition.getContents( 'upload' ),
 				uploadInitiallyHidden = uploadTab && uploadTab.hidden;
@@ -55,7 +55,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 				if ( !uploadInitiallyHidden )
 					dialog.showPage( 'upload' );
 				
-			} else if (typeValue == 'datasetLink') {
+			} else if (typeValue == 'datasetLink' || typeValue == 'moduleLink') {
 			    dialog.hidePage( 'target' );
 			    dialog.hidePage( 'advanced' );
             } else {
@@ -338,9 +338,11 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 					[linkLang.toEmail, 'email']];
 			
 	if (editor.config.displayDatasetLink == true || !Ext.isDefined(editor.config.displayDatasetLink)){
-		itemsCombo.push([ 'Dataset Link', 'datasetLink' ]);
+		itemsCombo.push([ i18n.get('label.datasetLink'), 'datasetLink' ]);
 	}
 		
+	itemsCombo.push([ i18n.get('label.moduleLink'), 'moduleLink' ]);
+	
 	return {
 		title: linkLang.title,
 		minWidth: 350,
@@ -508,10 +510,15 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                             if ( dialog.getContentElement( 'info', 'linkType' ) && dialog.getValueOf( 'info', 'linkType' ) != 'datasetLink' )
 								return true;
                             
-                            var url = dialog.getContentElement('info','datasetTextId');
+                            var datasetText = dialog.getContentElement('info','datasetTextId');
                             
-                            if (!this.dataLinkComponent || !this.getValue() || !url.getValue()){
-                                alert(i18n.get('label.datasetLinkTextNeeded'));
+                            if (Ext.isEmpty(datasetText.getValue())) {
+                            	datasetText.setValue(this.datasetName);
+                            }
+                            
+                            if (!this.dataLinkComponent || !this.getValue()){
+                            	var text = i18n.get('label.noDatasetChoosen');
+                                alert(text);
                                 return false;
                             }
                             return true;
@@ -528,13 +535,15 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                     }, {
                         type: 'button',
                         id: 'btnDatasetId',
-                        label: 'Dataset...',
-                        title: 'Select a dataset...',
+                        label: i18n.get('label.dataset'),
                         onClick: function() {
                             var dialog = CKEDITOR.dialog.getCurrent();
                             var datasetField = dialog.getContentElement('info','datasetFieldId');
-                            var browser = new sitools.widget.HtmlEditor.datasetBrowser({
-                                field : datasetField
+                            var datasetText = dialog.getContentElement('info','datasetTextId');
+                            
+                            var browser = new sitools.widget.sitoolsEditorPlugins.datasetBrowser({
+                                field : datasetField,
+                                textField :datasetText
                             });
                             var win = new Ext.Window({
                                 title : i18n.get('label.selectDatasetLink'),
@@ -610,8 +619,149 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                         }
                     }
                 ]
-            },
-				{
+            }, {
+                type: 'vbox',
+                id: 'moduleLinkOptions',
+                children: [
+                    {
+                    type: 'hbox',
+                    widths: [ '75%', '25%' ],
+                    children: [
+                        {
+                        id: 'moduleFieldId',
+                        type: 'text',
+                        disabled : true,
+                        setup: function( data ) {
+                            this.getElement().unselectable();
+                        },
+                        onKeyUp: function() {
+                            this.allowOnChange = true;
+                        },
+                        onChange: function() {
+                            // reset the moduleComponent value
+                            if (this.getValue() == ""){
+                                this.moduleComponent = null;
+                            }
+                            if ( this.allowOnChange ) // Dont't call on dialog load.
+                            this.onKeyUp();
+                        },
+                        validate: function() {
+                            var dialog = this.getDialog();
+                            
+                            if ( dialog.getContentElement( 'info', 'linkType' ) && dialog.getValueOf( 'info', 'linkType' ) != 'moduleLink' )
+                                return true;
+                            
+                            var moduleText = dialog.getContentElement('info','moduleTextId');
+                            
+                            if (Ext.isEmpty(moduleText.getValue())) {
+                            	moduleText.setValue(this.moduleTitle);
+                            }
+                            
+                            if (!this.moduleComponent || !this.getValue()){
+                            	var text = i18n.get('label.noModuleChoosen'); 
+                               	alert(text);
+                                return false;
+                            }
+                            return true;
+                            
+                        },
+                        commit: function( data ) {
+                            
+                            
+                            data.moduleLink.link = this.moduleComponent;
+                            
+                            // reset the moduleComponent value
+                            this.moduleComponent = null;
+                        }
+                    }, {
+                        type: 'button',
+                        id: 'btnModuleId',
+                        label: i18n.get('label.module'),
+                        title: 'Select a module...',
+                        onClick: function() {
+                            var dialog = CKEDITOR.dialog.getCurrent();
+                            var moduleField = dialog.getContentElement('info','moduleFieldId');
+                            var textField = dialog.getContentElement('info','moduleTextId');
+                            
+                            var browser = new sitools.widget.sitoolsEditorPlugins.moduleBrowser({
+                                browseField : moduleField,
+                                textField : textField
+                            });
+                            var win = new Ext.Window({
+                                title : i18n.get('label.selectModuleTitle'),
+                                iconCls : 'x-edit-datasetLink',
+                                layout : 'fit',
+                                height : 300,
+                                width : 300,
+                                dialog : dialog,
+                                autoScroll : true,
+                                items : [browser],
+                                listeners : {
+                                    render : function (win){
+                                        //SitoolsDesk.getDesktop().getManager().bringToFront(this);
+                                    }
+                                }
+                            });
+                            win.show();
+                            win.setZIndex(20000);
+                        }
+                        }
+                    ],
+                    setup: function( data ) {
+                        if ( !this.getDialog().getContentElement( 'info', 'linkType' ) )
+                            this.getElement().show();
+                    }
+                },
+                {
+                        type: 'text',
+                        id: 'moduleTextId',
+                        label: 'Texte',
+                        required: true,
+                        onLoad: function() {
+                            this.allowOnChange = true;
+                        },
+                        onKeyUp: function() {
+                            this.allowOnChange = true;
+                        },
+                        onChange: function() {
+                            if ( this.allowOnChange ) // Dont't call on dialog load.
+                            this.onKeyUp();
+                        },
+                        /*validate: function() {
+                            var dialog = this.getDialog();
+
+                            var datasetField = dialog.getContentElement('info','datasetFieldId');
+//                            var urlField = dialog.getContentElement('info','url');
+                            
+                            if (!datasetField.moduleComponent || !this.getValue()){
+                                alert(i18n.get('label.datasetLinkTextNeeded'));
+                                return false;
+                            }
+                            return true;
+                            
+                        },*/
+                        setup: function( data ) {
+                            this.allowOnChange = false;
+                            if ( data.url )
+                                this.setValue( data.url.url );
+                            this.allowOnChange = true;
+
+                        },
+                        commit: function( data ) {
+                            // IE will not trigger the onChange event if the mouse has been used
+                            // to carry all the operations #4724
+                            this.onChange();
+
+                            if (!data.moduleLink){
+                                data.moduleLink = {};
+                            }
+                            
+                            data.moduleLink.text = this.getValue();
+                            this.allowOnChange = false;
+                        }
+                    }
+                ]
+            }, {
 				type: 'vbox',
 				id: 'anchorOptions',
 				width: 260,
@@ -1236,6 +1386,10 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                     attributes[ 'data-cke-saved-href' ] = '#';
                     attributes[ 'data-cke-pa-onclick' ] = data.datasetLink.link;
                     break;
+                case 'moduleLink':
+                    attributes[ 'data-cke-saved-href' ] = '#';
+                    attributes[ 'data-cke-pa-onclick' ] = data.moduleLink.link;
+                    break;
 				case 'email':
 
 					var linkHref,
@@ -1257,7 +1411,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 
 								if ( emailProtection == 'encode' ) {
 									linkHref = [ 'javascript:void(location.href=\'mailto:\'+',
-																															protectEmailAddressAsEncodedString( address ) ];
+									protectEmailAddressAsEncodedString( address ) ];
 									// parameters are optional.
 									argList && linkHref.push( '+\'', escapeSingleQuote( argList ), '\'' );
 
@@ -1285,10 +1439,8 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 			// Popups and target.
 			if ( data.target ) {
 				if ( data.target.type == 'popup' ) {
-					var onclickList = [ 'window.open(this.href, \'',
-																			data.target.name || '', '\', \'' ];
-					var featureList = [ 'resizable', 'status', 'location', 'toolbar', 'menubar', 'fullscreen',
-																			'scrollbars', 'dependent' ];
+					var onclickList = [ 'window.open(this.href, \'', data.target.name || '', '\', \'' ];
+					var featureList = [ 'resizable', 'status', 'location', 'toolbar', 'menubar', 'fullscreen', 'scrollbars', 'dependent' ];
 					var featureLength = featureList.length;
 					var addFeature = function( featureName ) {
 							if ( data.target[ featureName ] )
@@ -1364,6 +1516,8 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
 				    }
 				    else if (data.type == 'datasetLink'){
 				        textString = data.datasetLink.text;
+				    } else if (data.type == 'moduleLink') {
+				        textString = data.moduleLink.text;
 				    }
 				    else {
 				        textString = attributes[ 'data-cke-saved-href' ];

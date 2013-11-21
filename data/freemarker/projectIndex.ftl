@@ -89,7 +89,8 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/htmlEditorAdvanced/src/Ext.ux.form.HtmlEditor.Plugins.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/htmlEditorAdvanced/src/imageExplorer.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/htmlEditorAdvanced/src/datasetLink.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/htmlEditorAdvanced/src/datasetBrowser.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/sitoolsPlugins/datasetBrowser.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/sitoolsPlugins/moduleBrowser.js"></script>
 	
 	
 
@@ -233,7 +234,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/spinnerfield.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsDatePicker.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/imageChooser/imageChooser.js"></script>
-	
+	<script type="text/javascript" src="${appUrl}/client-user/js/utils/moduleUtils.js"></script>
 		
     <script type="text/javascript" src="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.js"></script>
 	
