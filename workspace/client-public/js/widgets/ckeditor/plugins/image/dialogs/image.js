@@ -512,7 +512,8 @@
                                 title: i18n.get('label.chooseImage'),
                                 onClick: function() {
                                     var chooser = new ImageChooser({
-                                        url : loadUrl.get('APP_URL') + '/upload/?media=json',
+                                        url : CKEDITOR.datastorageUrl + '/images/?media=json',
+                                        urlToUpload : CKEDITOR.datastorageUrl + '/images/',
                                         width : 515,
                                         height : 450,
                                         fieldUrl : this,

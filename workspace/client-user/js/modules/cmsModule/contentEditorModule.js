@@ -357,6 +357,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     var contentType = ret.getResponseHeader("content-type");
                     if (Ext.isEmpty(CKEDITOR.instances[this.idTextarea])) {
                         var height = this.contentPanel.getHeight() - this.contentPanel.getBottomToolbar().getHeight();
+                        CKEDITOR.datastorageUrl = this.dynamicUrlDatastorage; // use to upload file in datastorage
                         CKEDITOR.replace(this.idTextarea, {
                             baseHref : this.dynamicUrlDatastorage + "/",
                             language : locale.getLocale(),

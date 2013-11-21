@@ -123,12 +123,20 @@ ImageChooser.prototype = {
 		            }
 		        }],
 		        buttons: [{
-		            text: 'upload',
+		            text: i18n.get('label.uploadFile'),
 		            scope : this, 
 		            handler: function(){
 		                if(fp.getForm().isValid()){
+		                    
+		                    var urlUpload;
+		                    if (!Ext.isEmpty(this.config.urlToUpload)) {
+		                        urlUpload = this.config.urlToUpload;
+		                    } else {
+		                        urlUpload = loadUrl.get('APP_URL') + '/upload/?media=json';
+		                    }
+		                    
 		                	Ext.Ajax.request ({
-		                		url : loadUrl.get('APP_URL') + '/upload/?media=json',
+		                		url : urlUpload,
 		                		form : 'formUploadId', 
 //		                		isUpload : true, 
 		                		waitMsg : "wait...", 
@@ -227,7 +235,7 @@ ImageChooser.prototype = {
 					maxWidth: 250
 				},{
 					id: 'img-upload-panel', 
-					title : i18n.get('label.upload'),
+					title : i18n.get('label.uploadFile'),
 					region: 'south', 
 					collapsible : true, 
 					autoHeight : true, 
