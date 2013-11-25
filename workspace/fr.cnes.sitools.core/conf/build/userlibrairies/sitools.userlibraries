@@ -104,9 +104,10 @@
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/concurrentlinkedhashmap-lru-1.2.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/dom4j-1.6.1.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/guava-14.0.1.jar"/>
-        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/httpclient-4.2.3.jar"/>
-        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/httpcore-4.2.2.jar"/>
-        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/httpmime-4.2.3.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/httpclient-4.3.1.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/httpcore-4.3.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/httpmime-4.3.1.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/httpclient-cache-4.3.1.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/jcl-over-slf4j-1.6.6.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/joda-time-2.2.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/jul-to-slf4j-1.6.6.jar"/>
