@@ -61,7 +61,7 @@ ImageChooser.prototype = {
 			});
 			
 			// S'il y a une exception et que c'est une datatstorage, on essaye de créer le dossier de l'url
-			if (!Ext.isEmpty(this.config.urlToUpload) && this.isDatastorage == true) {
+			if (!Ext.isEmpty(this.config.urlToUpload) && this.config.isDatastorage == true) {
 			    this.store.addListener('exception', function (misc) {
 			        Ext.Ajax.request({
                         url : this.config.urlToUpload,
