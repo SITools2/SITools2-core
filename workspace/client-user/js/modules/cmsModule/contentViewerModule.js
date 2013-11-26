@@ -294,21 +294,40 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
 sitools.user.modules.contentViewerModule.getParameters = function () {
     
     return [{
-        jsObj : "Ext.form.TextField", 
+        jsObj : "Ext.form.ComboBox", 
         config : {
             fieldLabel : i18n.get("label.urlDatastorage"),
             allowBlank : false,
+            typeAhead : true,
+            editable : false,
+            triggerAction : 'all',
             width : 200,
+            valueField : 'attachUrl',
+            displayField : 'name',
+            store : new Ext.data.JsonStore({
+                root : 'data',
+                restful : true,
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories',
+                remoteSort : true,
+                idProperty : 'id',
+                fields : [ {
+                    name : 'id',
+                    type : 'string'
+                }, {
+                    name : 'name',
+                    type : 'string'
+                }]
+            }),
             listeners: {
-				render: function (c) {
-				  Ext.QuickTips.register({
-				    target: c,
-				    text: "the datastorage url attachment (cf. Storage)"
-				  });
-				}
+                render : function (c) {
+                    Ext.QuickTips.register({
+                        target : c,
+                        text : "the datastorage url attachment (cf. Storage)"
+                    });
+                }
             },
             name : "dynamicUrlDatastorage",
-            value : ""
+            value : undefined
         }
     }];
 };

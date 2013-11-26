@@ -11,6 +11,10 @@ CKEDITOR.editorConfig = function( config ) {
 	
 	config.toolbar = 'SITools_Advanced';
 	
+	config.extraPlugins = 'documentimport';
+	
+	config.allowedContent = true;
+	
 	//config.baseFloatZIndex = 9001;
 	
 	config.toolbar_SITools_Advanced = [
@@ -21,7 +25,7 @@ CKEDITOR.editorConfig = function( config ) {
         '/',
         { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
         { name: 'paragraph',   items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] },
-        { name: 'links',       items : [ 'Link','Unlink','Anchor' ] },
+        { name: 'links',       items : [ 'Link','Unlink','Anchor', 'documentimport' ] },
         { name: 'insert',      items : [ 'Image','Table','HorizontalRule','SpecialChar', 'Iframe' ] },
         '/',
         { name: 'styles',      items : [ 'Styles','Format','Font','FontSize' ] },

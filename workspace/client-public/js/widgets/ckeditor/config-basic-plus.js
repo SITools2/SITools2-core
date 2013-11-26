@@ -22,7 +22,5 @@ CKEDITOR.editorConfig = function( config ) {
        { name: 'colors',      items : [ 'TextColor','BGColor' ] },
        { name: 'insert',      items : [ 'Image','Table','HorizontalRule','SpecialChar', 'Iframe' ] }
        ];
-	
-  
 
 };

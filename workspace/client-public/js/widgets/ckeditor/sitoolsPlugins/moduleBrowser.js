@@ -103,6 +103,7 @@ sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPane
             xtype : 'button',
             name : 'selectButton',
             text : i18n.get('label.select'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/valid.png',
             scope : this,
             disabled : true,
             handler : this.onValidate

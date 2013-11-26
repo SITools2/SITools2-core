@@ -30,7 +30,10 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
      * @type Ext.tree.TreeNode
      */
     activeNode : null,
+    
     initComponent : function () {
+        
+        this.id = 'contentEditorID';
         
         this.templateHtmlFile = "<html><head><title>{text}</title></head><body></body></html>";
         
@@ -201,9 +204,32 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             listeners : {
                 scope : this,
                 click : function (node) {
-//                    if (node.isLeaf()){
-                    this.treeAction(node);
-//                    }
+                    var labelSaving = this.saveLabelInfo.getEl().dom;
+                    if (labelSaving.isTextModified) {
+                        Ext.Msg.show({
+                            title : i18n.get('label.warning'),
+                            buttons : {
+                                yes : i18n.get('label.yes'),
+                                no : i18n.get('label.no')
+                            },
+                            icon : Ext.MessageBox.WARNING,
+                            msg : i18n.get('label.confirmQuitEditor'),
+                            scope : this,
+                            fn : function (btn, text) {
+                                if (btn == 'no') {
+                                    return false;
+                                } else {
+                                    labelSaving.innerHTML = "<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "";
+                                    labelSaving.isTextModified = false;
+                                    
+                                    this.treeAction(node);
+                                }
+                            }
+                        });
+                    } else {
+                        this.treeAction(node);
+                    }
+                    
                 },
                 contextmenu : function (node, e) {
                     this.tree.getSelectionModel().select(node, e, true);
@@ -234,7 +260,14 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
                 scope : this,
                 handler : this.onSave
-            });
+        });
+        
+        this.saveLabelInfo = new Ext.form.Label({
+            name : 'saveInfoLabel',
+            id : 'saveInfoLabelID',
+            isTextModified : false,
+            html : "<img src='/sitools/common/res/images/icons/valid.png'/> <b>" + i18n.get('label.textUpToDate') + "</b>"
+        });
         
         this.idTextarea = Ext.id();
         this.htmlEditor = new Ext.form.TextArea({
@@ -251,12 +284,20 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             autoScroll : true,
             hidden : true
         });
-            
+        
+        var toolbar = null;
+        if (Ext.isEmpty(userLogin)) {
+            toolbar = new Ext.Toolbar({
+                name : 'warningDateLabel',
+                html : "<img src='/sitools/common/res/images/ux/warning.gif'/> " + i18n.get('warning.warnPublicEditor') + ""
+            });
+        }
+        
         this.contentPanel = new Ext.Panel({
             id: 'content-editor',
             layout : 'border',
             region : 'center',
-            bbar : ['->', this.saveButton],
+            bbar : [this.saveLabelInfo, '->', this.saveButton],
             items : [this.htmlEditor, this.viewerEditorPanel],
             listeners : {
                 scope : this,
@@ -265,8 +306,10 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         CKEDITOR.instances[this.idTextarea].resize(newWidth, newHeight - panel.getBottomToolbar().getHeight());
                     }
                 }
-            }
+            },
+            tbar : toolbar
         });
+        
         
         this.items = [this.tree, this.contentPanel];
         
@@ -278,7 +321,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     scope : this,
                     cls : 'services-toolbar-btn'
                 },
-                items : [ ]
+                items : []
         };
         
         sitools.user.modules.contentEditorModule.superclass.initComponent.call(this);
@@ -300,6 +343,32 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         }
     },
     
+    afterRender : function () {
+        sitools.user.modules.contentEditorModule.superclass.afterRender.apply(this, arguments);
+        this.ownerCt.addListener('beforeclose', function (panel) {
+            var labelSaving = this.saveLabelInfo.getEl().dom;
+            if (!labelSaving.isTextModified) {
+                return;
+            }
+            Ext.Msg.show({
+                title : i18n.get('label.delete'),
+                buttons : {
+                    yes : i18n.get('label.yes'),
+                    no : i18n.get('label.no')
+                },
+                icon : Ext.MessageBox.WARNING,
+                msg : i18n.get('label.confirmQuitEditor'),
+                scope : this,
+                fn : function (btn, text) {
+                    if (btn == 'yes') {
+                        this.ownerCt.doClose();
+                    }
+                }
+            });
+            return false;
+        }, this);
+    },
+    
     /**
      * Action executed ; 'this' refers to this component
      * 
@@ -307,6 +376,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
      * @returns
      */
     treeAction : function (node) {
+        
         // Getting node urlArticle
         var nodeLink = node.attributes.link;
 
@@ -345,7 +415,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             this.setEditable(false);
         }
         
-        if (this.isDisplayable(nodeLink) && nodeLink.indexOf("http://") == -1){
+        if (this.isDisplayable(nodeLink) && nodeLink.indexOf("http://") == -1) {
             Ext.Ajax.request({
                 url : this.newUrl,
                 method : 'GET',
@@ -361,13 +431,15 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         CKEDITOR.replace(this.idTextarea, {
                             baseHref : this.dynamicUrlDatastorage + "/",
                             language : locale.getLocale(),
+                            manageSaving : this.manageSaving,
+//                            saveInfoLabel : this.saveLabelInfo,
                             fullPage : true,
-                            on :
-                            {
-                                instanceReady : function()
-                                {
+                            on : {
+                                instanceReady : function() {
                                     this.resize("100%", height);
-                                    
+                                },
+                                key: function() {
+                                    this.config.manageSaving(true);
                                 }
                             }
                         });
@@ -443,7 +515,10 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     hideDelay : 1000
                 }).show(document);
             },
-            failure : alertFailure
+            failure : alertFailure,
+            callback : function () {
+                this.manageSaving(false);
+            }
         });
     },
     /**
@@ -786,7 +861,18 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         });
     },
     
-    
+    manageSaving : function (isSaved) {
+        this.isTextModified = isSaved;
+        
+        var label = Ext.getDoc('saveInfoLabelID');
+        if (isSaved == false) {
+            label.dom.innerHTML = "<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "";
+            label.dom.isTextModified = false;
+        } else {
+            label.dom.innerHTML = "<img src='/sitools/common/res/images/ux/warning.gif'/> " + i18n.get('label.textNotUpToDate') + "";
+            label.dom.isTextModified = true;
+        }
+    },
 
     checkJsonUrlValidation : function () {
         var jsonUrl = this.tree.getLoader().url;
@@ -898,14 +984,14 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
     return [{
         jsObj : "Ext.form.Label", 
         config : {
-            html : "This module needs 2 datastorages. " +
-            "All files are edited in the development datastorage, and then copied to the production datastorage<br/>"            
+            html : "This module can manage 2 datastorages. " +
+            "All files are edited in the development datastorage (Datastorage Source), and then copied to the production datastorage (Datastorage Destination)<br/>"            
         }
     }, {
         jsObj : "Ext.form.TextField", 
         config : {
             fieldLabel : i18n.get("label.siteName"),
-            allowBlank : false,
+            allowBlank : true,
             width : 200,
             listeners : {
                 render : function (c) {
@@ -916,7 +1002,7 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
                 }
             },
             name : "siteName",
-            value : ""
+            value : undefined
         }
     }, {
         jsObj : "Ext.form.TextField", 

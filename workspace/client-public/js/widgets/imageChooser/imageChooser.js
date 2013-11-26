@@ -59,6 +59,20 @@ ImageChooser.prototype = {
 			    	}
 			    }
 			});
+			
+			// S'il y a une exception et que c'est une datatstorage, on essaye de créer le dossier de l'url
+			if (!Ext.isEmpty(this.config.urlToUpload) && this.isDatastorage == true) {
+			    this.store.addListener('exception', function (misc) {
+			        Ext.Ajax.request({
+                        url : this.config.urlToUpload,
+                        method : 'PUT',
+                        success : function (ret) {
+                        },
+                        failure : alertFailure
+                    });
+			    }, this);
+			}
+			
 			this.store.load();
 
 			var formatSize = function(data){
@@ -132,15 +146,15 @@ ImageChooser.prototype = {
 		                    if (!Ext.isEmpty(this.config.urlToUpload)) {
 		                        urlUpload = this.config.urlToUpload;
 		                    } else {
-		                        urlUpload = loadUrl.get('APP_URL') + '/upload/?media=json';
+		                        urlUpload = loadUrl.get('APP_URL') + '/upload/';
 		                    }
 		                    
 		                	Ext.Ajax.request ({
 		                		url : urlUpload,
 		                		form : 'formUploadId', 
-//		                		isUpload : true, 
+		                		isUpload : true,
 		                		waitMsg : "wait...", 
-		                		method : 'PUT', 
+		                		method : 'POST', 
 		                		scope : this,
 		                		success : function (response) {
 			                		new Ext.ux.Notification({

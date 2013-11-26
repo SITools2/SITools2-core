@@ -169,6 +169,7 @@ sitools.widget.sitoolsEditorPlugins.datasetBrowser = function(config) {
 							xtype : 'button',
 							text : i18n.get('label.select'),
 							scope : this,
+			                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/valid.png',
 							handler : this.onValidate
 						}]
 					}));

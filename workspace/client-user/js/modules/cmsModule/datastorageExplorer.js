@@ -616,41 +616,60 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
  */
 sitools.user.modules.datastorageExplorer.getParameters = function () {
 
-    return [ {
-        jsObj : "Ext.form.TextField",
-        config : {
-            fieldLabel : i18n.get("label.urlDatastorage"),
-            allowBlank : false,
-            width : 200,
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : "the datastorage url (cf. Storage)"
-                    });
-                }
-            },
-            name : "dynamicUrlDatastorage",
-            value : undefined
-        }
-    }, {
-        jsObj : "Ext.form.TextField",
-        config : {
-            fieldLabel : i18n.get("label.nameDatastorage"),
-            allowBlank : false,
-            width : 200,
-            listeners : {
-                render : function (c) {
-                    Ext.QuickTips.register({
-                        target : c,
-                        text : "the label NAME of the datastorage to display (cf. Storage)"
-                    });
-                }
-            },
-            name : "nameDatastorage",
-            value : undefined
-        }
-    } ];
+    return [{
+            jsObj : "Ext.form.ComboBox", 
+            config : {
+                fieldLabel : i18n.get("label.urlDatastorage"),
+                allowBlank : false,
+                typeAhead : true,
+                editable : false,
+                triggerAction : 'all',
+                width : 200,
+                valueField : 'attachUrl',
+                displayField : 'name',
+                store : new Ext.data.JsonStore({
+                    root : 'data',
+                    restful : true,
+                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories',
+                    remoteSort : true,
+                    idProperty : 'id',
+                    fields : [ {
+                        name : 'id',
+                        type : 'string'
+                    }, {
+                        name : 'name',
+                        type : 'string'
+                    }]
+                }),
+                listeners: {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : "the datastorage url (cf. Storage)"
+                        });
+                    }
+                },
+                name : "dynamicUrlDatastorage",
+                value : undefined
+            }
+        }, {
+            jsObj : "Ext.form.TextField",
+            config : {
+                fieldLabel : i18n.get("label.nameDatastorage"),
+                allowBlank : true,
+                width : 200,
+                listeners : {
+                    render : function (c) {
+                        Ext.QuickTips.register({
+                            target : c,
+                            text : "the label NAME of the datastorage to display (cf. Storage)"
+                        });
+                    }
+                },
+                name : "nameDatastorage",
+                value : undefined
+            }
+        } ];
 };
 
 Ext.reg('sitools.user.modules.datastorageExplorer', sitools.user.modules.datastorageExplorer);
