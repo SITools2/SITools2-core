@@ -10,6 +10,12 @@ extensions/
 build.num
 /data/
 .settings/
+data-emtpy/
+ingeoclouds/
+workspace/client-user/js/modules/metacatalog/
+workspace/client-user/js/modules/igcsSmartQueriesModule/
+workspace/client-user/js/modules/cartoModule/
+
 
 # OS generated files #
 ######################
