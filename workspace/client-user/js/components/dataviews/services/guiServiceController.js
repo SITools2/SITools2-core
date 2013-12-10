@@ -1,4 +1,5 @@
 /***************************************
+
 * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
@@ -133,10 +134,13 @@ Ext.extend(sitools.user.component.dataviews.services.GuiServiceController, Ext.u
             }).show(document);
             return;
         }
-        var guiServicePlugin = service.data;
+        
+        var guiServicePlugin = {};
+        Ext.apply(guiServicePlugin, service.data);
+        
         var JsObj = eval(guiServicePlugin.xtype);
-
-        var config = Ext.applyIf(guiServicePlugin, {
+        
+        var config = Ext.apply(guiServicePlugin, {
             columnModel : this.dataview.getColumnModel(),
             store : this.dataview.getStore(),
             dataview : this.dataview,
