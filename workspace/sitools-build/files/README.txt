@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2013-11-06
-Version                              : 2.2.1
+Date                                 : 2013-12-10
+Version                              : 2.2.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -15,7 +15,26 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (2.2)
 
 2/ Changes
-
+_________________
+-2.2.2 (2013-12-10)
+	
+	* Enhancements :
+		- Wiki   
+			- Upload of documents with automatic link creation in HTML page
+			- Upload of images in wiki datastorage (instead of SITools2 standard upload directory).			
+			- HTML Link to project module
+			- Page modification indicator
+		
+	* API changes :
+		- HTTP client libraries updated to version 4.3.1
+			- httpclient-4.3.1
+			- httpcore-4.3
+			- httpmime-4.3.1
+		- Add library
+			- httpclient-cache-4.3.1.jar
+			
+	* Bug fixed :
+		- Problem with image zoomer when configured on multiple image columns
 
 __________________
 -2.2.1 (2013-11-06)
