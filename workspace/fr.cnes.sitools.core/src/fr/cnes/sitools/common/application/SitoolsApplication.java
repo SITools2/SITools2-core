@@ -636,7 +636,7 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
   public final Restlet addSecurity(SitoolsApplication application) {
     authorizer = null;
 
-    if (authenticationRealm == null) {
+    if (authenticationRealm == null && !isContextAuthorization()) {
       authorizationSecure = false;
       return addSecurityFilter(getContext(), application);
     }
@@ -646,14 +646,15 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       return addSecurityFilter(getContext(), application);
     }
 
-    Authorizer localAuthorizer = getAuthorizer(application.getContext(), authenticationRealm.getReferenceRoles());
+    
+    Authorizer localAuthorizer = getAuthorizer(application);
+    
     if ((localAuthorizer == null) || (localAuthorizer == Authorizer.ALWAYS)) {
       getLogger().warning("No security configuration for " + this.getName());
       authorizationSecure = false;
 
       // optional authenticator
-      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true,
-          settings.getAuthenticationDOMAIN(), authenticationRealm);
+      ChallengeAuthenticator auth = getChallengeAuthenticator(application);
 
       if (!Category.PUBLIC.equals(application.getCategory())) {
         // attach a filter to block bad authentication
@@ -673,8 +674,7 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       authorizationSecure = true;
 
       // optional authenticator
-      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true,
-          settings.getAuthenticationDOMAIN(), authenticationRealm);
+      ChallengeAuthenticator auth = getChallengeAuthenticator(application);
 
       auth.setNext(localAuthorizer);
 
@@ -693,6 +693,46 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       return addSecurityFilter(getContext(), auth);
     }
 
+  }
+
+  private boolean isContextAuthorization() {
+
+    return ( getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_AUTHORIZER) || 
+        getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR) );
+    
+  }
+
+  private Authorizer getAuthorizer(SitoolsApplication application) {
+    Authorizer localAuthorizer;
+    if (getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_AUTHORIZER)){
+      try {
+        localAuthorizer = (Authorizer) getContext().getAttributes().get(ContextAttributes.CUSTOM_AUTHORIZER);
+      }
+      catch (Exception e) {
+        localAuthorizer = getAuthorizer(application.getContext(), authenticationRealm.getReferenceRoles());
+        getLogger().log(Level.WARNING, "Cannot cast ContextAttributes.CUSTOM_AUTHORIZER to Authorizer", e);
+      }
+    } else {
+      localAuthorizer = getAuthorizer(application.getContext(), authenticationRealm.getReferenceRoles());
+    }
+    return localAuthorizer;
+  }
+
+  private ChallengeAuthenticator getChallengeAuthenticator(SitoolsApplication application) {
+    ChallengeAuthenticator auth;
+    
+    if (getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR)){
+      try {
+        auth = (ChallengeAuthenticator) getContext().getAttributes().get(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR);
+      }
+      catch (Exception e) {
+        auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true, settings.getAuthenticationDOMAIN(), authenticationRealm);
+        getLogger().log(Level.WARNING, "Cannot cast ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR to ChallengeAuthenticator", e);
+      }
+    } else {
+      auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true, settings.getAuthenticationDOMAIN(), authenticationRealm);
+    }
+    return auth;
   }
 
   /**

@@ -94,5 +94,10 @@ public interface ContextAttributes {
   
   /** Attribute to store jetty server properties */
   String JETTY_PROPERTIES = "JETTY_PROPERTIES";
+  
+  String CUSTOM_CHALLENGE_AUTHENTICATOR = "CUSTOM_CHALLENGE_AUTHENTICATOR";
+  
+  String CUSTOM_AUTHORIZER = "CUSTOM_AUTHORIZER";
+  
 
 }
