@@ -211,7 +211,7 @@ var BinaryAjax = (function() {
 				oHTTP.setRequestHeader("Range", "bytes=" + aRange[0] + "-" + aRange[1]);
 			}
 
-			oHTTP.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 1970 00:00:00 GMT");
+//			oHTTP.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 1970 00:00:00 GMT");
 
 			oHTTP.send(null);
 		} else {

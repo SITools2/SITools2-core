@@ -42,8 +42,8 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
         };
     
         this.tree = new Ext.tree.TreePanel({
-            region : 'west',
-            width : 220,
+            region : 'center',
+            layout : 'fit',
             expanded : true,
             useArrows : true,
             autoScroll : true,
@@ -53,9 +53,65 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
             //split : true,
             //collapsible : true,
             root : rootNode,
+            listeners : {
+                scope : this,
+                click : function (node, e) {
+                    if (!node.attributes.leaf) {
+                        return;
+                    }
+
+                    if (node.attributes.text == "TABLE") {
+                        this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+                        this.doLayout();
+                        
+                        Ext.defer(function () {
+                            this.sitoolsFitsTable = new sitools.user.modules.sitoolsFitsTable({
+                                headerData : node.attributes.header,
+                                data : node.attributes.data,
+                                fits : this.fits,
+                                fitsMainPanel : this
+                            });
+                            
+                            this.centerPanel.removeAll(false);
+                            this.centerPanel.add(this.sitoolsFitsTable);
+                            this.centerPanel.doLayout();
+                        }, 5, this);
+
+                    } else if (node.attributes.text == "IMAGE") {
+                        this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+                        
+                        Ext.defer(function () {
+                            this.sitoolsFitsViewer = new sitools.user.modules.sitoolsFitsViewer({
+                                urlFits : this.url,
+                                headerData : node.attributes.header,
+                                fits : this.fits,
+                                fitsArray : this.fitsArray,
+                                fitsMainPanel : this
+                            });
+                            this.centerPanel.removeAll(false);
+                            this.centerPanel.add(this.sitoolsFitsViewer);
+                            this.centerPanel.doLayout();
+                        }, 5, this);
+                    }
+                }
+            }
+        });
+        
+
+        this.pbar = new Ext.ProgressBar({
+            region : 'north',
+            value : 0,
+        });
+        
+        this.treeContainer = new Ext.Panel({
+            layout : 'border',
+            region : 'west',
+            width : 220,
+            bodyStyle : 'background-color:white;',
+            items : [this.tree, this.pbar],
             tbar : {
                 cls : 'services-toolbar',
-                height : 58,
+                height : 34,
                 defaults : {
                     scope : this
                 },
@@ -68,7 +124,6 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
                 }, '->', {
                     name : 'collapseIcon',
                     icon : '/sitools/common/res/images/icons/toolbar_remove.png',
-                    tooltip : "Collapse tree",
                     scope : this,
                     handler : function () {
                         if (this.tree.collapsed) {
@@ -82,48 +137,6 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
                         }
                     }
                 }]
-            },
-            listeners : {
-                scope : this,
-                beforeclick : function (node, e) {
-                  if (node.attributes.text == "TABLE" || node.attributes.text == "IMAGE") {
-                      this.tree.getEl().mask("loading");  
-                  }
-                },
-                click : function (node, e) {
-                    if (!node.attributes.leaf) {
-                        return;
-                    }
-
-                    if (node.attributes.text == "TABLE") {
-                        
-                        this.sitoolsFitsTable = new sitools.user.modules.sitoolsFitsTable({
-                            headerData : node.attributes.header,
-                            data : node.attributes.data,
-                            fits : this.fits,
-                            fitsMainPanel : this
-                        });
-
-                        this.centerPanel.removeAll(false);
-                        this.centerPanel.add(this.sitoolsFitsTable);
-                        this.centerPanel.doLayout();
-
-                    } else if (node.attributes.text == "IMAGE") {
-
-                        this.sitoolsFitsViewer = new sitools.user.modules.sitoolsFitsViewer({
-                            urlFits : this.url,
-                            headerData : node.attributes.header,
-                            fits : this.fits,
-                            fitsArray : this.fitsArray,
-                            fitsMainPanel : this
-                        });
-
-                        this.centerPanel.removeAll(false);
-                        this.centerPanel.add(this.sitoolsFitsViewer);
-                        this.centerPanel.doLayout();
-                    }
-                    this.tree.getEl().unmask();  
-                }
             }
         });
         
@@ -139,7 +152,7 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
             layout : 'border',
             width : 800,
             height : 600,
-            items : [ this.tree, this.centerPanel ]
+            items : [this.treeContainer, this.centerPanel ]
         });
 
         this.items = [this.panel];
@@ -195,13 +208,18 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
     },
     
     loadFits : function (url) {
+        
         this.url = url;
         this.fits = this.loader.loadFits(url, function (fits) {
 
             this.fits = fits;
             
-            this.fitsName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
-//            this.fitsName = fits.getHDU().header.cards.FILENAME[1];
+            if (Ext.isEmpty(fits.getHDU().header.cards.FILENAME)) {
+                this.fitsName = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
+            } else {
+                this.fitsName = fits.getHDU().header.cards.FILENAME[1];
+            }
+            
             this.fits = fits;
             this.url = url;
             this.fitsArray = fits.view.buffer;
@@ -240,16 +258,27 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
             this.tree.setRootNode(rootNode);
             this.centerPanel.removeAll();
             this.centerPanel.doLayout();
-//            this.tree.getEl().unmask();
-//            this.getEl().unmask();
-        }.bind(this), function (resp) {
-            Ext.Msg.show({
-                title : i18n.get('label.error'),
-                msg : resp.status + " : " + resp.statusText,
-                icon : Ext.MessageBox.ERROR,
-                buttons : Ext.MessageBox.OK
-            });
+        }.bind(this), this.failLoadFits, this.onprogressFits.bind(this));
+    },
+    
+    failLoadFits : function (resp) {
+        Ext.Msg.show({
+            title : i18n.get('label.error'),
+            msg : resp.status + " : " + resp.statusText,
+            icon : Ext.MessageBox.ERROR,
+            buttons : Ext.MessageBox.OK
         });
+    },
+    
+    onprogressFits : function (prog) {
+        var total = Ext.util.Format.fileSize(prog.totalSize);
+        var current = Ext.util.Format.fileSize(prog.loaded);
+        
+        if (prog.loaded == prog.totalSize) {
+            this.pbar.updateProgress(1, i18n.get('label.done'));
+        } else {
+            this.pbar.updateProgress(prog.loaded / prog.totalSize, current + "/" + total);
+        }
     }
 });
 Ext.reg('sitools.user.modules.sitoolsFitsMain', sitools.user.modules.sitoolsFitsMain);

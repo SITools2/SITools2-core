@@ -30,37 +30,6 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
     id : 'sitoolsFitsViewer',
     initComponent : function () {
         
-        // library to display image
-        this.jsFits = new FITS();
-        
-        this.jsFits.bind("click", function (e) {
-            e.y = this.height - e.y;
-            var value = this.image[e.y * this.width + e.x];
-            document.getElementById('status').innerHTML = 'click=(' + e.x + ',' + e.y + ')=' + value;
-        }).bind("mousemove", function (e) {
-            e.y = this.height - e.y;
-            var value = this.image[e.y * this.width + e.x];
-            document.getElementById('status').innerHTML = 'move=(' + e.x + ',' + e.y + ')=' + value;
-        }).bind("load", function () {
-            // diplaying frame selector if multi-frame
-            
-            if (this.jsFits.depth > 1) {
-                this.sliderFrameGroupBtn.setVisible(true);
-            }
-            this.sliderFrame.setMaxValue(this.jsFits.depth - 1);
-            
-            var result = this.jsFits.draw("FITSimage");
-            
-            if (result != true) {
-                Ext.Msg.show({
-                    title : i18n.get('label.warning'),
-                    msg : result,
-                    icon : Ext.MessageBox.ERROR,
-                    buttons : Ext.MessageBox.OK
-                });
-            }
-        }.bind(this));
-        
         this.sliderTip = new Ext.slider.Tip({
             getText: function(thumb){
                 return String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
@@ -259,6 +228,27 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
     afterRender : function () {
         sitools.user.modules.sitoolsFitsViewer.superclass.afterRender.apply(this, arguments);
         
+     // library to display image
+        this.jsFits = new FITS();
+        
+        this.jsFits.bind("load", function () {
+            if (this.jsFits.depth > 1) {
+                this.sliderFrameGroupBtn.setVisible(true);
+            }
+            this.sliderFrame.setMaxValue(this.jsFits.depth - 1);
+            
+            var result = this.jsFits.draw("FITSimage");
+            
+            if (result != true) {
+                Ext.Msg.show({
+                    title : i18n.get('label.warning'),
+                    msg : result,
+                    icon : Ext.MessageBox.ERROR,
+                    buttons : Ext.MessageBox.OK
+                });
+            }
+        }.bind(this));
+        
         var btnLinear = this.functionsGroupBtn.find('value', 'linear')[0];
         btnLinear.pressed = true;
         btnLinear.addClass('sitools-btn-green-bold');
@@ -326,9 +316,9 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
             }
             
             this.initHistogram(this.fits);
+            this.fitsMainPanel.getEl().unmask();
         }.bind(this));
         
-        this.fitsMainPanel.getEl().unmask();
             
     },
     
