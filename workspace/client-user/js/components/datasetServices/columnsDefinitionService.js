@@ -15,7 +15,10 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, loadUrl, extColModelToStorage, SitoolsDesk*/
+/*
+ * global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE,
+ * ImageChooser, loadUrl, extColModelToStorage, SitoolsDesk
+ */
 
 Ext.namespace('sitools.user.component.dataviews.services');
 
@@ -31,34 +34,36 @@ Ext.namespace('sitools.user.component.dataviews.services');
 
 sitools.user.component.dataviews.services.columnsDefinitionService = {};
 
-sitools.user.component.dataviews.services.columnsDefinitionService.getParameters = function () {
-    return [];
+sitools.user.component.dataviews.services.columnsDefinitionService.getParameters = function() {
+	return [];
 };
 
-sitools.user.component.dataviews.services.columnsDefinitionService.executeAsService = function (config) {
-    var windowConfig = {
-        title : i18n.get('label.definitionTitle') + " : " + config.dataview.datasetName,
-        datasetName : config.dataview.datasetName,
-        iconCls : "semantic",
-        datasetDescription : config.datasetDescription,
-        type : "defi",
-        saveToolbar : true,
-        toolbarItems : []
-    };
+sitools.user.component.dataviews.services.columnsDefinitionService.executeAsService = function(
+		config) {
+	var windowConfig = {
+		title : i18n.get('label.definitionTitle') + " : "
+				+ config.dataview.datasetName,
+		datasetName : config.dataview.datasetName,
+		iconCls : "semantic",
+		datasetDescription : config.datasetDescription,
+		type : "defi",
+		saveToolbar : true,
+		toolbarItems : []
+	};
 
-    var javascriptObject = sitools.user.component.columnsDefinition;
+	var javascriptObject = sitools.user.component.columnsDefinition;
 
-    Ext.apply(windowConfig, {
-        id : "defi" + config.dataview.datasetId
-    });
-    var componentCfg = {
-        datasetId : config.dataview.datasetId,
-        datasetCm : config.dataview.datasetCm,
-        datasetName : config.dataview.datasetName,
-        dictionaryMappings : config.dataview.dictionaryMappings,
-        preferencesPath : "/" + config.dataview.datasetName,
-        preferencesFileName : "semantic"
-    };
+	Ext.apply(windowConfig, {
+				id : "defi" + config.dataview.datasetId
+			});
+	var componentCfg = {
+		datasetId : config.dataview.datasetId,
+		datasetCm : config.dataview.datasetCm,
+		datasetName : config.dataview.datasetName,
+		dictionaryMappings : config.dataview.dictionaryMappings,
+		preferencesPath : "/" + config.dataview.datasetName,
+		preferencesFileName : "semantic"
+	};
 
-    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+	SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
 };

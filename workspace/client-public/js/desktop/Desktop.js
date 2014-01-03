@@ -202,6 +202,9 @@ Ext.Desktop = function (app) {
 		    },
 		    'deactivate' : {
 			    fn : markInactive
+		    },
+		    'destroy' : {
+		        fn : removeWin
 		    }
 		});
 		layout();

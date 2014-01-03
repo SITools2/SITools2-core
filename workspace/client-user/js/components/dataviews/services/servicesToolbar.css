@@ -28,12 +28,12 @@
 }
 
 .sitools-btn-green button {
-	color: 3F3F3F !important;
+	color: #3F3F3F !important;
 	text-shadow: 0.07em 0.09em #D5D5D5;
 }
 
 .sitools-btn-blue button {
-	color: 3F3F3F !important;
+	color: #3F3F3F !important;
 	text-shadow: 0.07em 0.09em #D5D5D5;
 }
 
@@ -58,6 +58,3 @@
 .sitools-btn-red .x-btn-mc {
 	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/bt_red.png");
 }
-
-
-

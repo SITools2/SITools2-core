@@ -1,0 +1,69 @@
+
+.fitsService {
+	background-image:url( /sitools/client-user/js/modules/sitoolsFitsViewer/images/stars.png) !important;
+}
+
+.fitsModule {
+	background-image:url( /sitools/client-user/js/modules/sitoolsFitsViewer/images/moon.png) !important;
+    background-size: 18px 18px;
+	background-position: left !important;
+	background-repeat: no-repeat;
+}
+
+.histogram-background {
+	background: #6b6b6b; /* Old browsers */
+	background: -moz-linear-gradient(top,  #6b6b6b 0%, #0e0e0e 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6b6b6b), color-stop(100%,#0e0e0e)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #6b6b6b 0%,#0e0e0e 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #6b6b6b 0%,#0e0e0e 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #6b6b6b 0%,#0e0e0e 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #6b6b6b 0%,#0e0e0e 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6b6b6b', endColorstr='#0e0e0e',GradientType=0 ); /* IE6-9 */
+}
+
+.canvas-background {
+	background: rgb(246,248,249); /* Old browsers */
+	background: -moz-linear-gradient(-45deg,  rgba(246,248,249,1) 0%, rgba(229,235,238,1) 50%, rgba(215,222,227,1) 84%, rgba(245,247,249,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(246,248,249,1)), color-stop(50%,rgba(229,235,238,1)), color-stop(84%,rgba(215,222,227,1)), color-stop(100%,rgba(245,247,249,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg,  rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 84%,rgba(245,247,249,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg,  rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 84%,rgba(245,247,249,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg,  rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 84%,rgba(245,247,249,1) 100%); /* IE10+ */
+	background: linear-gradient(135deg,  rgba(246,248,249,1) 0%,rgba(229,235,238,1) 50%,rgba(215,222,227,1) 84%,rgba(245,247,249,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f8f9', endColorstr='#f5f7f9',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.shadow-canvas {
+	-moz-box-shadow: 1px 1px 11px 3px #656565;
+	-webkit-box-shadow: 1px 1px 11px 3px #656565;
+	-o-box-shadow: 1px 1px 11px 3px #656565;
+	box-shadow: 1px 1px 11px 3px #656565;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=135, Strength=8);
+}
+
+.x-window-bwrap .services-toolbar {
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/title3_02.png") !important;
+	background-position: 0 -26px !important;
+	background-color : transparent; 
+}
+
+.services-toolbar-btn .x-btn-mc .sitools-btn-green-bold {
+	padding : 0px  10px 0px 10px !important;
+}
+
+.sitools-btn-green-bold button {
+	color: #3F3F3F !important;
+	text-shadow: 0.07em 0.09em #D5D5D5;
+	font-weight: bold;
+}
+
+.sitools-btn-green-bold .x-btn-ml,
+.sitools-btn-green-bold .x-btn-mr,
+.sitools-btn-green-bold .x-btn-mc {
+	background-image: url("/sitools/cots/extjs/resources/images/gray-custom/bt_green.png") !important;
+}
+
+.link-style button {
+	font-style: italic; 
+	text-decoration: underline; 
+	color: blue;
+}

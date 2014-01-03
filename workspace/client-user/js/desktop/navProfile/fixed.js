@@ -115,7 +115,7 @@ sitools.user.desktop.navProfile.fixed = {
             panelToOpen.setSize(SitoolsDesk.getDesktop().getDesktopEl().getSize());
             SitoolsDesk.getDesktop().activePanel = panelToOpen;
             panelToOpen.show();
-            return;
+            return panelToOpen;
         }
         
         desktop.activePanel = desktop.createPanel({
@@ -516,6 +516,13 @@ sitools.user.desktop.navProfile.fixed = {
         Ext.each(btns, function (btn) {
             SitoolsDesk.navProfile.taskbar.closeWin(null, null, btn.win);
         });
+    },
+    
+    /**
+     * Close the passed window in desktop mode. 
+     */
+    removeWindow : function (win) {
+        win.destroy();
     }
     
 };

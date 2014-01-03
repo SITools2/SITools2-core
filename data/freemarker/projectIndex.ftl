@@ -56,7 +56,7 @@
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
 
-    <script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/prototype.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/plot/flotr2/lib/prototyp.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/prototype/ext-prototype-adapter-debug.js"></script>
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base-debug.js"></script>
 	
@@ -242,6 +242,25 @@
 	<script type="text/javascript" src="${appUrl}/client-user/js/sitoolsProject.js"></script>
 	
 	<script type="text/javascript" src="${appUrl}/common/js/columnRenderer/behaviorEnum.js"></script>
+	
+	
+	<!-- INCLUDES FITS -->
+	<!--<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/fits.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/binaryajax.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/excanvas.compiled.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/astroFits.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/FitsLoader.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/flotr2.min.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/Histogram.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/vec3.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/wcs.min.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/ColorMap.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/ImageProcessing.js"></script>-->
+	
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/fits.css">
+	<!--<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/modules/sitoolsFitsViewer/lib/histogram.css">-->
+	
+	
 	
 <!-- END_JS_DEV_INCLUDES -->
  

@@ -15,8 +15,11 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, DEFAULT_ORDER_FOLDER, ImageChooser, loadUrl, extColModelToStorage, userStorage*/
-
+/*
+ * global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE,
+ * DEFAULT_ORDER_FOLDER, ImageChooser, loadUrl, extColModelToStorage,
+ * userStorage
+ */
 
 Ext.namespace('sitools.user.component.dataviews.services');
 
@@ -29,89 +32,101 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.downloadService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.downloadService = Ext.extend(Ext.Window, {
-    width : 300,
-    modal : true,
-    initComponent : function () {
-        this.title = "Download Order for : " + this.dataview.datasetName;
+sitools.user.component.dataviews.services.downloadService = Ext.extend(
+		Ext.Window, {
+			width : 300,
+			modal : true,
+			initComponent : function() {
+				this.title = "Download Order for : "
+						+ this.dataview.datasetName;
 
-        this.items = [ {
-            xtype : 'form',
-            labelWidth : 75,
-            padding : '5px 5px 5px 5px',
-            items : [ {
-                xtype : 'textfield',
-                fieldLabel : i18n.get('label.name'),
-                name : 'downloadName',
-                anchor : '100%'
-            } ]
-        } ];
+				this.items = [{
+							xtype : 'form',
+							labelWidth : 75,
+							padding : '5px 5px 5px 5px',
+							items : [{
+										xtype : 'textfield',
+										fieldLabel : i18n.get('label.name'),
+										name : 'downloadName',
+										anchor : '100%'
+									}]
+						}];
 
-        this.buttons = [{
-            text : i18n.get('label.ok'),
-            scope : this,
-            handler : function () {
-                var downloadName = this.findByType('form')[0].getForm().getFieldValues().downloadName;
-                this._onDownload(this.datasetId, this.dataview, downloadName);
-                this.close();
-            }
-        }, {
-            text : i18n.get('label.cancel'),
-            scope : this,
-            handler : function () {
-                this.close();
-            }
-        }];
-        
-        sitools.user.component.dataviews.services.downloadService.superclass.initComponent.call(this);
-    },
-    
-    /**
-     * Create an entry in the userSpace with the request of the current grid.
-     * 
-     * @param {string}
-     *            datasetId
-     * @param {Ext.grid.GridPanel}
-     *            grid The current grid.
-     * @param {string}
-     *            orderName the future file name
-     */
-    _onDownload : function (datasetId, grid, orderName) {
-        var putObject = {};
-        putObject.orderRequest = {};
-        putObject.orderRequest.datasetId = datasetId;
-        putObject.orderRequest.datasetUrl = grid.dataUrl;
+				this.buttons = [{
+					text : i18n.get('label.ok'),
+					scope : this,
+					handler : function() {
+						var downloadName = this.findByType('form')[0].getForm()
+								.getFieldValues().downloadName;
+						this._onDownload(this.datasetId, this.dataview,
+								downloadName);
+						this.close();
+					}
+				}, {
+					text : i18n.get('label.cancel'),
+					scope : this,
+					handler : function() {
+						this.close();
+					}
+				}];
 
-        var filters = grid.getFilters();
-        if (!Ext.isEmpty(filters)) {
-            putObject.orderRequest.filters = filters.getFilterData(filters);
-        }
+				sitools.user.component.dataviews.services.downloadService.superclass.initComponent
+						.call(this);
+			},
 
-        var storeSort = grid.getStore().getSortState();
-        if (!Ext.isEmpty(storeSort)) {
-            putObject.orderRequest.sort = storeSort;
-        }
+			/**
+			 * Create an entry in the userSpace with the request of the current
+			 * grid.
+			 * 
+			 * @param {string}
+			 *            datasetId
+			 * @param {Ext.grid.GridPanel}
+			 *            grid The current grid.
+			 * @param {string}
+			 *            orderName the future file name
+			 */
+			_onDownload : function(datasetId, grid, orderName) {
+				var putObject = {};
+				putObject.orderRequest = {};
+				putObject.orderRequest.datasetId = datasetId;
+				putObject.orderRequest.datasetUrl = grid.dataUrl;
 
-        var filtersCfg = grid.getStore().filtersCfg;
-        if (!Ext.isEmpty(filtersCfg)) {
-            putObject.orderRequest.filtersCfg = filtersCfg;
-        }
+				var filters = grid.getFilters();
+				if (!Ext.isEmpty(filters)) {
+					putObject.orderRequest.filters = filters
+							.getFilterData(filters);
+				}
 
-        var colModel = Ext.util.JSON.encode(extColModelToStorage(grid.getColumnModel()));
-        putObject.orderRequest.colModel = colModel;
-        putObject.orderRequest.datasetId = datasetId;
-        putObject.orderRequest.projectId = this.dataview.projectId;
-        putObject.orderRequest.formParams = grid.getStore().getFormParams();
-        userStorage.set(orderName + ".json", "/" + DEFAULT_ORDER_FOLDER + "/request", putObject);
-    }
-});
-Ext.reg('sitools.user.component.dataviews.services.downloadService', sitools.user.component.dataviews.services.downloadService);
+				var storeSort = grid.getStore().getSortState();
+				if (!Ext.isEmpty(storeSort)) {
+					putObject.orderRequest.sort = storeSort;
+				}
 
-sitools.user.component.dataviews.services.downloadService.getParameters = function () {
-    return [];
+				var filtersCfg = grid.getStore().filtersCfg;
+				if (!Ext.isEmpty(filtersCfg)) {
+					putObject.orderRequest.filtersCfg = filtersCfg;
+				}
+
+				var colModel = Ext.util.JSON.encode(extColModelToStorage(grid
+						.getColumnModel()));
+				putObject.orderRequest.colModel = colModel;
+				putObject.orderRequest.datasetId = datasetId;
+				putObject.orderRequest.projectId = this.dataview.projectId;
+				putObject.orderRequest.formParams = grid.getStore()
+						.getFormParams();
+				userStorage.set(orderName + ".json", "/" + DEFAULT_ORDER_FOLDER
+								+ "/request", putObject);
+			}
+		});
+Ext.reg('sitools.user.component.dataviews.services.downloadService',
+		sitools.user.component.dataviews.services.downloadService);
+
+sitools.user.component.dataviews.services.downloadService.getParameters = function() {
+	return [];
 };
 
-sitools.user.component.dataviews.services.downloadService.executeAsService = function (config) {
-    var downloadService = new sitools.user.component.dataviews.services.downloadService(config);
-    downloadService.show();
+sitools.user.component.dataviews.services.downloadService.executeAsService = function(
+		config) {
+	var downloadService = new sitools.user.component.dataviews.services.downloadService(config);
+	downloadService.show();
 };

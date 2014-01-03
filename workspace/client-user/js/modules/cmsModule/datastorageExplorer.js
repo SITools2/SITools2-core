@@ -290,6 +290,13 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                     }
                     tb.doLayout();
 
+                    if ((node.text.match(/\.(fits)$/))) {
+                        var sitoolsFitsViewer = new sitools.user.component.dataviews.services.sitoolsFitsViewer({
+                            nodeFits : node
+                        });
+                        sitoolsFitsViewer.show();
+                    }
+                    
                     if (this.isOpenable(node.text)) {
                         var rec = this.dataview.getStore().getById(node.id);
                         if (!Ext.isEmpty(rec)) {

@@ -33,68 +33,75 @@ Ext.namespace('sitools.user.component.dataviews.services');
  */
 sitools.user.component.dataviews.services.displaySelectionCartService = {
 
-    getCartSelectionFile : function (response) {
-        if (Ext.isEmpty(response.responseText)) {
-            return;
-        }
-        try {
-            var json = Ext.decode(response.responseText);
-            this.cartSelectionFile = json;
-        } catch (err) {
-            return;
-        }
-    },
+	getCartSelectionFile : function(response) {
+		if (Ext.isEmpty(response.responseText)) {
+			return;
+		}
+		try {
+			var json = Ext.decode(response.responseText);
+			this.cartSelectionFile = json;
+		} catch (err) {
+			return;
+		}
+	},
 
-    getCart : function () {
-        userStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.getCartSelectionFile, Ext.emptyFn, this.displaySelectionCart);
-    },
+	getCart : function() {
+		userStorage.get(this.user + "_CartSelections.json",
+				getCartFolder(projectGlobal.projectName), this,
+				this.getCartSelectionFile, Ext.emptyFn,
+				this.displaySelectionCart);
+	},
 
-    displaySelectionCart : function () {
-        var selection = {};
-        
-        if(this.cartSelectionFile) {
-            Ext.each(this.cartSelectionFile.selections, function (sel) {
-                if (sel.selectionName === this.dataview.datasetName) {
-                    selection = sel;
-                    return false;
-                }
-            }, this);
-        }
-        
-        if (Ext.isEmpty(selection.ranges)) {
-            return Ext.Msg.alert(i18n.get('label.information'), i18n.get('label.noSelectionArticles'));
-        }
-        
-        if (Ext.isFunction(this.dataview.ownerCt.close)) {
-            this.dataview.ownerCt.close();
-        } else {
-            this.dataview.ownerCt.ownerCt.destroy();
-        }
-        var params = {
-            ranges : selection.ranges,
-            startIndex : selection.startIndex,
-            nbRecordsSelection : selection.nbRecords,
-            filters : selection.filters,
-            filtersCfg : selection.filtersCfg,
-            storeSort : selection.storeSort,
-            formParams : selection.formParams,
-            isModifySelection : true
-        };
-        sitools.user.clickDatasetIcone(selection.dataUrl, 'data', params);
-        
-//        this.dataview.store.load({
-//            params : {
-//                start : startIndex,
-//                limit : DEFAULT_LIVEGRID_BUFFER_SIZE
-//            },
-//            scope : this
-//        });
-    }
+	displaySelectionCart : function() {
+		var selection = {};
+
+		if (this.cartSelectionFile) {
+			Ext.each(this.cartSelectionFile.selections, function(sel) {
+						if (sel.selectionName === this.dataview.datasetName) {
+							selection = sel;
+							return false;
+						}
+					}, this);
+		}
+
+		if (Ext.isEmpty(selection.ranges)) {
+			return Ext.Msg.alert(i18n.get('label.information'), i18n
+							.get('label.noSelectionArticles'));
+		}
+
+		if (Ext.isFunction(this.dataview.ownerCt.close)) {
+			this.dataview.ownerCt.close();
+		} else {
+			this.dataview.ownerCt.ownerCt.destroy();
+		}
+		var params = {
+			ranges : selection.ranges,
+			startIndex : selection.startIndex,
+			nbRecordsSelection : selection.nbRecords,
+			filters : selection.filters,
+			filtersCfg : selection.filtersCfg,
+			storeSort : selection.storeSort,
+			formParams : selection.formParams,
+			isModifySelection : true
+		};
+		sitools.user.clickDatasetIcone(selection.dataUrl, 'data', params);
+
+		// this.dataview.store.load({
+		// params : {
+		// start : startIndex,
+		// limit : DEFAULT_LIVEGRID_BUFFER_SIZE
+		// },
+		// scope : this
+		// });
+	}
 };
-Ext.reg('sitools.user.component.dataviews.services.displaySelectionCartService', sitools.user.component.dataviews.services.displaySelectionCartService);
+Ext
+		.reg(
+				'sitools.user.component.dataviews.services.displaySelectionCartService',
+				sitools.user.component.dataviews.services.displaySelectionCartService);
 
-sitools.user.component.dataviews.services.displaySelectionCartService.getParameters = function () {
-    return [];
+sitools.user.component.dataviews.services.displaySelectionCartService.getParameters = function() {
+	return [];
 };
 /**
  * @static Implementation of the method executeAsService to be able to launch
@@ -102,17 +109,18 @@ sitools.user.component.dataviews.services.displaySelectionCartService.getParamet
  * @param {Object}
  *            config contains all the service configuration
  */
-sitools.user.component.dataviews.services.displaySelectionCartService.executeAsService = function (config) {
+sitools.user.component.dataviews.services.displaySelectionCartService.executeAsService = function(
+		config) {
 
-    if (Ext.isEmpty(userLogin)) {
-        alert("You need to be connected");
-        return;
-    }
-    
-    Ext.apply(this, config);
+	if (Ext.isEmpty(userLogin)) {
+		alert("You need to be connected");
+		return;
+	}
 
-    (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
+	Ext.apply(this, config);
 
-    this.getCart();
+	(Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
+
+	this.getCart();
 
 };

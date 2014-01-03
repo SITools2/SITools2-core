@@ -655,14 +655,20 @@ sitools.user.desktop.navProfile.desktop = {
         }, scope);
 
     },
-
-    /**
-     * Close every window in desktop mode.
+    
+	/**
+	 * Close every window in desktop mode. 
+	 */
+	removeAllWindows : function() {
+		SitoolsDesk.getDesktop().getManager().each(function(win) {
+			win.close();
+		});
+	},
+	
+	/**
+     * Close the passed window in desktop mode. 
      */
-    removeAllWindows : function () {
-        SitoolsDesk.getDesktop().getManager().each(function (win) {
-            win.close();
-        });
-    }
-
+	removeWindow : function (win) {
+	    win.close();
+	}
 };
