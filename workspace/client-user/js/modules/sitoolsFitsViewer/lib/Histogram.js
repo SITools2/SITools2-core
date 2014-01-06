@@ -292,17 +292,22 @@ Histogram = {
 
                  if ( self.updateThreshold )
                  {
-                     var min = self.getHistValue(self.minThreshold.a);
-                     var max = self.getHistValue(self.maxThreshold.a);
 
-                     self.minThreshold.reset();
-                     self.maxThreshold.reset();
+                     this.viewer.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
 
-                     self.updateThreshold(min,max);
+                     Ext.defer(function () {
+                         var min = self.getHistValue(self.minThreshold.a);
+                         var max = self.getHistValue(self.maxThreshold.a);
+                         
+                         self.minThreshold.reset();
+                         self.maxThreshold.reset();
+                         
+                         self.updateThreshold(min,max);
+                     }, 5, this);
                  }
 
 
-             });
+             }.bind(this));
 
          /**
           *  Get histogram value from the given X-position on canvas
@@ -397,7 +402,7 @@ Histogram = {
 
                  if ( !this.image.inverse )
                  {
-                     scaledValue = originY - scaledValue
+                     scaledValue = originY - scaledValue;
                  }
 
                  this.ctx.fillRect( posX, scaledValue, 1, 1);
@@ -474,6 +479,7 @@ Histogram = {
 
              this.compute();
              this.draw();
+             
              this.jsFits.update({
                  max : max,
                  min : min

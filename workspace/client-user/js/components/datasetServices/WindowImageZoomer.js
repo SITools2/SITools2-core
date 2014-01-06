@@ -43,8 +43,7 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(
 				};
 
 				if (Ext.isEmpty(this.parameters)) {
-					this.parameters = sitools.user.component.dataviews.services.WindowImageZoomer
-							.getDefaultParameters();
+					this.parameters = sitools.user.component.dataviews.services.WindowImageZoomer.getDefaultParameters();
 				}
 
 				Ext.each(this.parameters, function(config) {
@@ -398,8 +397,7 @@ sitools.user.component.dataviews.services.WindowImageZoomer.getDefaultParameters
 			}];
 };
 
-sitools.user.component.dataviews.services.WindowImageZoomer.executeAsService = function(
-		config) {
+sitools.user.component.dataviews.services.WindowImageZoomer.executeAsService = function(config) {
 	var windowImageZoomer = new sitools.user.component.dataviews.services.WindowImageZoomer(config);
 	windowImageZoomer.show();
 };

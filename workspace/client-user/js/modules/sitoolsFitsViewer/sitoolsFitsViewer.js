@@ -216,7 +216,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
             title : i18n.get('label.headerData'),
             headerData : this.headerData,
             region : 'south',
-            height : 400,
+            height : 260,
             collapsible : true
         });
         
@@ -326,38 +326,53 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
         
         if (pressed) {
             btn.addClass("sitools-btn-green-bold");
+            this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+            
+            Ext.defer(function () {
+                this.jsFits.update({
+                    stretch : btn.value,
+                    min : this.min,
+                    max : this.max
+                });
+                
+                this.histogram.image.transferFn = btn.value;
+                this.histogram.compute();
+                this.histogram.draw();
+                this.canvasPanel.getEl().unmask();
+                
+            }, 5, this);
+            
         } else {
             btn.removeClass("sitools-btn-green-bold");
         }
         
-        this.jsFits.update({
-            stretch : btn.value,
-            min : this.min,
-            max : this.max
-        });
-        
-        this.histogram.image.transferFn = btn.value;
-        this.histogram.compute();
-        this.histogram.draw();
     },
     
     manageColors : function (btn, pressed) {
-        
         if (pressed) {
             btn.addClass("sitools-btn-green-bold");
+            this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+            
+            Ext.defer(function () {
+                this.jsFits.update({
+                    color:btn.value,
+                    min : this.min,
+                    max : this.max
+                }, function () {
+                    this.canvasPanel.getEl().unmask();
+                }.bind(this));
+            }, 5, this);
+            
         } else {
             btn.removeClass("sitools-btn-green-bold");
         }
         
-        this.jsFits.update({
-            color:btn.value,
-            min : this.min,
-            max : this.max
-        });
+        
     },
     
     manageFrames : function (slider, newValue, thumb) {
-        var arrayData = this.jsFits.update({index:newValue});
+        this.jsFits.update({index:newValue});
+        var arrayData = this.jsFits.ctx.getImageData();
         
         if (!Ext.isEmpty(this.histogram)) {
             
@@ -390,13 +405,17 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
     },
     
     manageThresholds : function (slider, newValue, thumb) {
-        this.canvasPanel.getEl().mask("Applying...");
+        this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
         
-        var values = slider.getValues();
-        this.min = values[0];
-        this.max = values[1];
-        
-        this.histogram.updateThreshold(this.min, this.max);
+        Ext.defer(function () {
+            var values = slider.getValues();
+            this.min = values[0];
+            this.max = values[1];
+            
+            this.histogram.updateThreshold(this.min, this.max);
+            this.canvasPanel.getEl().unmask();
+            
+        }, 5, this);
     },
     
     manageHistogram : function (btn, pressed) {

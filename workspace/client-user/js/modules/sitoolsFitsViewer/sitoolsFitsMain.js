@@ -29,7 +29,7 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
     id : 'fitsMain',
     initComponent : function () {
 
-        this.url = "/sitools/datastorage/user/fits_viewer/images/new4.fits";
+//        this.url = "/sitools/datastorage/user/fits_viewer/images/new4.fits";
         
 //        this.fitsName = this.url.substring(this.url.lastIndexOf('/') + 1, this.url.lastIndexOf('.'));
 
@@ -126,14 +126,12 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
                     icon : '/sitools/common/res/images/icons/toolbar_remove.png',
                     scope : this,
                     handler : function () {
-                        if (this.tree.collapsed) {
-                            this.tree.expand();
-                            this.tree.getTopToolbar().find('name', 'collapseIcon')[0].setTooltip('Collapse Tree');
-                            this.tree.getTopToolbar().find('name', 'collapseIcon')[0].setIcon('/sitools/common/res/images/icons/toolbar_remove.png');
+                        if (this.treeContainer.collapsed) {
+                            this.treeContainer.expand();
+                            this.treeContainer.getTopToolbar().find('name', 'collapseIcon')[0].setIcon('/sitools/common/res/images/icons/toolbar_remove.png');
                         } else {
-                            this.tree.collapse(true);                
-                            this.tree.getTopToolbar().find('name', 'collapseIcon')[0].setTooltip('Anchor Tree');
-                            this.tree.getTopToolbar().find('name', 'collapseIcon')[0].setIcon('/sitools/common/res/images/icons/toolbar_create.png');
+                            this.treeContainer.collapse();                
+                            this.treeContainer.getTopToolbar().find('name', 'collapseIcon')[0].setIcon('/sitools/common/res/images/icons/toolbar_create.png');
                         }
                     }
                 }]
@@ -256,6 +254,8 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
             }, this);
             
             this.tree.setRootNode(rootNode);
+            this.tree.expandAll();
+            
             this.centerPanel.removeAll();
             this.centerPanel.doLayout();
         }.bind(this), this.failLoadFits, this.onprogressFits.bind(this));

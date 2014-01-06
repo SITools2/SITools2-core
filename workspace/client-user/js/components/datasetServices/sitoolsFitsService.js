@@ -27,6 +27,34 @@ Ext.namespace('sitools.user.component.dataviews.services');
 sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Panel, {
     initComponent : function () {
 
+//        if (Ext.isEmpty(this.parameters)) {
+//            this.parameters = sitools.user.component.dataviews.services.sitoolsFitsService.getDefaultParameters();
+//        }
+//        
+//        Ext.each(this.parameters, function(config) {
+//            if (!Ext.isEmpty(config.value)) {
+//                switch (config.name) {
+//                    case "columnAlias" :
+//                        this.columnImage = config.value;
+//                        break;
+//                }
+//            }
+//        }, this);
+//        
+//        var rec;
+//        if (Ext.isEmpty(this.record)) {
+//            rec = this.dataview.getSelections()[0];
+//        } else {
+//            rec = this.record;
+//        }
+//
+//        if (Ext.isEmpty(this.columnImage)) {
+//            this.columnImage = this.columnAlias;
+//        }
+//
+//        this.src = rec.get(this.columnImage);
+        
+        
         this.bodyCssClass = 'canvas-background';
         this.urlFits = this.record.data.fits;
         this.autoScroll = true;
@@ -62,6 +90,8 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
                 this.sliderFrameGroupBtn.setVisible(true);
                 this.sliderFrame.setMaxValue(this.jsFits.depth - 1);
             }
+            
+            this.getEl().unmask();
             
         }.bind(this));
         
@@ -174,12 +204,6 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
 //            }]
 //        });
         
-        var openModuleFitsLabel = new Ext.Button({
-            cls : 'link-style',
-            text : 'Open FITS in Advanced Mode',
-            scope : this,
-            handler : this.openAdvancedMode
-        });
         
         this.tbar = {
             xtype : 'toolbar',
@@ -189,8 +213,27 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
             defaults : {
                 scope : this
             },
-            items : [this.functionsGroupBtn, '-' , this.colorsGroupBtn, '-', this.sliderFrameGroupBtn, '->' , openModuleFitsLabel /*this.histoGroupBtn*/]
+            items : [this.functionsGroupBtn, '-' , this.colorsGroupBtn, '-', this.sliderFrameGroupBtn, '->'  /*this.histoGroupBtn*/]
         };
+        
+        var advancedModeAvailable = false;
+        Ext.each(SitoolsDesk.app.getModules(), function(module) {
+            if (module.xtype == "sitools.user.modules.sitoolsFitsMain") {
+                advancedModeAvailable = true;
+                this.fitsModule = module;
+            }
+        },this);
+        
+        if (advancedModeAvailable) {
+            var openModuleFitsLabel = new Ext.Button({
+                cls : 'link-style',
+                text : 'Open FITS in Advanced Mode',
+                scope : this,
+                handler : this.openAdvancedMode
+            });
+            this.tbar.items.push(openModuleFitsLabel);
+        }
+        
         
         this.canvasPanel = new Ext.Panel({
             layout :  'fit',
@@ -274,80 +317,25 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
         btnGray.pressed = true;
         btnGray.addClass('sitools-btn-green-bold');
         
-        // Load an initial FITS file
-//        this.jsFits.viewer = this;
+        this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
         
-        this.jsFits.load(this.urlFits, null, function (fits) {
-//            var allWcsCards = this.fits.hdus[0].header.cards;
-//            var wcsCards = {
-////                NAXIS : allWcsCards.NAXIS[1],
-//                    NAXIS : 2,
-//                    NAXIS1 : allWcsCards.NAXIS1[1],
-//                    NAXIS2 : allWcsCards.NAXIS2[1],
-//                    CRPIX1 : allWcsCards.CRPIX1[1],
-//                    CRPIX2 : allWcsCards.CRPIX2[1],
-//                    CRVAL1 : allWcsCards.CRVAL1[1],
-//                    CRVAL2 : allWcsCards.CRVAL2[1],
-//                    CD1_1 : allWcsCards.CD1_1[1],
-//                    CD1_2 : allWcsCards.CD1_2[1],
-//                    CD2_1 : allWcsCards.CD2_1[1],
-//                    CD2_2 : allWcsCards.CD2_2[1],
-//                    CTYPE1 : allWcsCards.CTYPE1[1],
-//                    CTYPE2 : allWcsCards.CTYPE2[1]
-//            };
-//            var header = this.toHeader(wcsCards);
-//            
-//            this.w = new wcs();
-//            this.w.init(header);
-//            this.world = this.w.pix2sky(0, 0);
-            
-//            this.tipRaDec = new Ext.ToolTip({
-//                target : this.jsFits.canvas,
-//                dismissDelay : 0,
-//                hideDelay : 0,
-//                showDelay : 0,
-//                trackMouse : true,
-//                autoShow : true,
-//                minWidth : 110,
-//                text : 'Ra :  Dec :',
-//                templ : 'Ra : <b>{0}</b> <br> Dec : <b>{1}</b>',
-//                html: 'Ra :  Dec :'
-//            });
-            
-            // Scope = canvas
-//            if (!Ext.isEmpty(this.jsFits.canvas)) {
-//                this.addEvent(this.jsFits.canvas, "mousemove", function(e) {
-//                    var world = this.w.pix2sky(e.offsetX, this.jsFits.canvas.height - e.offsetY);
-//                    
-//                    this.tipRaDec.update(String.format(this.tipRaDec.templ, world[0].toFixed(6), world[1].toFixed(6)));
-//                        this.tipRaDec.doLayout();
-//                    
-//                }.bind(this));
-//            }
-            
-//            this.initHistogram(this.fits);
-//            this.setWidth(this.jsFits.width + 50);
-//            this.setHeight(this.jsFits.height + this.getTopToolbar().getHeight() + 10);
-            
-//            this.onImageLoad();
-        }.bind(this), function (resp) {
-            Ext.Msg.show({
-              title : i18n.get('label.error'),
-              msg : i18n.get('label.errorFitsLoading'),
-              icon : Ext.MessageBox.ERROR,
-              buttons : Ext.MessageBox.OK
-          });
-        });
-        
-        
+        Ext.defer(function () {
+            this.jsFits.load(this.urlFits, null, null, function (resp) {
+                this.getEl().unmask();
+                Ext.Msg.show({
+                    title : i18n.get('label.error'),
+                    msg : i18n.get('label.errorFitsLoading'),
+                    icon : Ext.MessageBox.ERROR,
+                    buttons : Ext.MessageBox.OK,
+                    scope : this,
+                    fn : function () {
+//                        SitoolsDesk.navProfile.removeWindow(this.ownerCt);
+                    }
+                });
+            }.bind(this));
+        }, 5, this);
     },
     
-//    onRender : function () {
-//        sitools.user.component.dataviews.services.sitoolsFitsService.superclass.onRender.apply(this, arguments);
-//        this.on('load', this.onImageLoad, this, {
-//            single : true
-//        });
-//    },
     /**
      * Method called when the image is loaded. It is in charge of resizing the image according to the desktop size
      */
@@ -401,15 +389,23 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
         
         if (pressed) {
             btn.addClass("sitools-btn-green-bold");
+            
+            this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+            
+            Ext.defer(function () {
+                this.jsFits.update({
+                    stretch : btn.value,
+                    min : this.min,
+                    max : this.max
+                }, function () {
+                    this.canvasPanel.getEl().unmask();
+                }.bind(this));
+            }, 5, this);
+            
         } else {
             btn.removeClass("sitools-btn-green-bold");
         }
         
-        this.jsFits.update({
-            stretch : btn.value,
-            min : this.min,
-            max : this.max
-        });
 //        
 //        this.histogram.image.transferFn = btn.value;
 //        this.histogram.compute();
@@ -420,15 +416,22 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
         
         if (pressed) {
             btn.addClass("sitools-btn-green-bold");
+            this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+            
+            Ext.defer(function () {
+                this.jsFits.update({
+                    color:btn.value,
+                    min : this.min,
+                    max : this.max
+                }, function () {
+                    this.canvasPanel.getEl().unmask();
+                }.bind(this));
+            }, 5, this);
+            
         } else {
             btn.removeClass("sitools-btn-green-bold");
         }
         
-        this.jsFits.update({
-            color:btn.value,
-            min : this.min,
-            max : this.max
-        });
     },
     
     manageFrames : function (slider, newValue, thumb) {
@@ -602,29 +605,10 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
     },
     
     openAdvancedMode : function () {
+        var instanceFitsModule = this.fitsModule.openModule().items.items[0];
+        instanceFitsModule.url = this.urlFits;
+        instanceFitsModule.loadFits(this.urlFits);
         
-        Ext.each(SitoolsDesk.app.getModules(), function(module) {
-            if (module.xtype == "sitools.user.modules.sitoolsFitsMain") {
-                var fitsModule = module.openModule().items.items[0];
-                fitsModule.url = this.urlFits;
-                fitsModule.loadFits(this.urlFits);
-            }
-        },this);
-//        
-//        var jsObj = sitools.user.modules.sitoolsFitsMain;
-//        
-//        var config = {
-//            url : this.urlFits
-//        };
-//        
-//        var windowConfig = {
-//            layout : 'fit',
-//            title : i18n.get('label.FitsModule'),
-//            autoScroll : true,
-//            saveToolbar : true
-//        };
-//        
-//        SitoolsDesk.addDesktopWindow(windowConfig, config, jsObj);
         SitoolsDesk.navProfile.removeWindow(this.ownerCt);
     }
     
@@ -632,13 +616,97 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
 
 Ext.reg('sitools.user.component.dataviews.services.sitoolsFitsService', sitools.user.component.dataviews.services.sitoolsFitsService);
 
+sitools.user.component.dataviews.services.sitoolsFitsService.getDefaultParameters = function() {
+    return [{
+                name : "featureType",
+                value : "Image"
+            }, {
+                name : "columnAlias",
+                value : ""
+    }];
+};
+
 sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = function() {
-    return [];
+    return [{
+        jsObj : "Ext.form.ComboBox",
+        config : {
+            fieldLabel : i18n.get('headers.previewUrl'),
+            width : 200,
+            typeAhead : true,
+            mode : 'local',
+            forceSelection : true,
+            triggerAction : 'all',
+            valueField : 'display',
+            displayField : 'display',
+            value : 'Image',
+            store : new Ext.data.ArrayStore({
+                        autoLoad : true,
+                        fields : ['value', 'display', 'tooltip'],
+                        data : [
+                                ['', ''],
+                                ['Image', 'Image',
+                                        i18n.get("label.image.tooltip")],
+                                ['URL', 'URL', i18n.get("label.url.tooltip")],
+                                ['DataSetLink', 'DataSetLink',
+                                        i18n.get("label.datasetlink.tooltip")]]
+                    }),
+            listeners : {
+                scope : this,
+                change : function(combo, newValue, oldValue) {
+                }
+            },
+            name : "featureType",
+            id : "featureType"
+        }
+    }, {
+        jsObj : "Ext.form.ComboBox",
+        config : {
+            fieldLabel : i18n.get('label.columnImage'),
+            width : 200,
+            typeAhead : true,
+            mode : 'local',
+            forceSelection : true,
+            triggerAction : 'all',
+            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{columnAlias}</div></tpl>',
+            store : new Ext.data.JsonStore({
+                        fields : ['columnAlias'],
+                        url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
+                        root : "dataset.columnModel",
+                        autoLoad : true,
+                        listeners : {
+                            load : function(store) {
+                                store.add(new Ext.data.Record({
+                                            'columnAlias' : ""
+                                        }));
+                            }
+
+                        }
+                    }),
+            valueField : 'columnAlias',
+            displayField : 'columnAlias',
+            listeners : {
+                render : function(c) {
+                    Ext.QuickTips.register({
+                                target : c,
+                                text : i18n.get('label.columnImageTooltip')
+                            });
+                }
+            },
+            name : "columnAlias",
+            id : "columnAlias",
+            value : ""
+        }
+    }];
 };
 
 sitools.user.component.dataviews.services.sitoolsFitsService.executeAsService = function(config) {
     
-    var selected = config.dataview.getSelectionModel().getSelected();
+    var selected;
+    if (Ext.isEmpty(config.record)) {
+        selected = config.dataview.getSelections()[0];
+    } else {
+        selected = config.record;
+    }
     
     if (Ext.isEmpty(selected.data.fits)) {
         return Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.noFitsFile'));

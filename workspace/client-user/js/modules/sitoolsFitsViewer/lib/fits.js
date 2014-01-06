@@ -238,7 +238,7 @@ FITS.prototype.draw = function (id, type) {
 
 // Calculate the pixel values using a defined stretch type and draw onto the
 // canvas
-FITS.prototype.update = function (inp) {
+FITS.prototype.update = function (inp, callback) {
     if (typeof inp == "object") {
         this.stretch = (typeof inp.stretch == "string") ? inp.stretch : this.stretch;
         if (typeof inp.index != "number" && this.z)
@@ -377,7 +377,11 @@ FITS.prototype.update = function (inp) {
     // put pixel data on canvas
     this.ctx.putImageData(imageData, 0, 0);
     
-    return imageData;
+    if (typeof callback == "function") {
+        callback();
+    }
+    
+//    return imageData;
 };
 
 FITS.prototype.getCursor = function (e) {
