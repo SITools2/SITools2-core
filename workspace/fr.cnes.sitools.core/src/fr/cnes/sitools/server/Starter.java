@@ -345,6 +345,7 @@ public final class Starter {
     component.getClients().add(Protocol.HTTP);
     component.getClients().add(Protocol.CLAP);
     component.getClients().add(Protocol.ZIP);
+    component.getClients().add(Protocol.HTTPS);
 
     // component.getContext().getAttributes().put("ROOT_DIRECTORY",
     // ROOT_DIRECTORY );
