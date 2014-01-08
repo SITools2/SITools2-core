@@ -23,7 +23,6 @@ import java.util.List;
 
 import org.restlet.Context;
 import org.restlet.Restlet;
-import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.routing.Router;
 

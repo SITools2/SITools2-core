@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -318,11 +318,11 @@ public final class Starter {
     // Protocols
 
     // HTTP
-    
+
     // if IP address is specified for the HTTP protocol (useful when multiple
     // address available)
     String ipAddress = settings.getString("Starter.component.protocol.HTTP.address");
-   
+
     Server serverHTTP = null;
     if ((ipAddress != null) && !ipAddress.equals("")) {
       serverHTTP = component.getServers().add(Protocol.HTTP, ipAddress, Integer.parseInt(hostPort));
@@ -330,17 +330,18 @@ public final class Starter {
     else {
       serverHTTP = component.getServers().add(Protocol.HTTP, Integer.parseInt(hostPort));
     }
-    
+
     JettyProperties jettyProps = new JettyProperties();
     jettyProps.setValues(settings);
     jettyProps.addParamsToServerContext(serverHTTP);
-    
-    serverHTTP.getContext().getParameters().add("useForwardedForHeader", settings.getString(Consts.USE_FORWARDED_FOR_HEADER));
-    
+
+    serverHTTP.getContext().getParameters()
+        .add("useForwardedForHeader", settings.getString(Consts.USE_FORWARDED_FOR_HEADER));
+
     serverHTTP.getContext().getAttributes().put("maxThreads", DEFAULT_CONNECTIONS);
     serverHTTP.getContext().getAttributes().put("maxTotalConnections", DEFAULT_CONNECTIONS);
     serverHTTP.getContext().getAttributes().put("maxConnectionsPerHost", DEFAULT_CONNECTIONS);
-    
+
     component.getClients().add(Protocol.FILE);
     component.getClients().add(Protocol.HTTP);
     component.getClients().add(Protocol.CLAP);
@@ -1490,14 +1491,13 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeOrd);
-    
+
     // Application
     UserOrderApplication userOrderApplication = new UserOrderApplication(appContext);
     // Attachment
     appManager.attachApplication(userOrderApplication);
     component.getInternalRouter().attach(settings.getString(Consts.APP_ORDERS_USER_URL), userOrderApplication);
 
-    
     // ===========================================================================
     // Administration des espaces de stockage
 
@@ -1863,9 +1863,8 @@ public final class Starter {
     };
 
     appManager.attachApplication(taskAppAdmin);
-    
-    component.getInternalRouter().attach(settings.getString(Consts.APP_TASK_URL), taskAppAdmin);
 
+    component.getInternalRouter().attach(settings.getString(Consts.APP_TASK_URL), taskAppAdmin);
 
     // ==========================================
     // JAVAX MEASURE
@@ -2010,21 +2009,31 @@ public final class Starter {
     notificationApplication.attachTrigger("STORAGE_DELETED", DataStorageTrigger.class);
     notificationApplication.attachTrigger("DATASET_CREATED", DefaultGuiServicesTrigger.class);
 
-
     // ============================
     // START SERVER
 
     component.getHosts().add(host);
 
     component.start();
-    
+
     serverHTTP.getContext().getAttributes().get("org.restlet.engine.helper");
-    
+
     server = component;
   }
 
-  private static void startServerFailed(SitoolsSettings settings, Component component, Exception e)
-      throws Exception {
+  /**
+   * Start the server when the the classic server starts failed
+   * 
+   * @param settings
+   *          The SitoolsSettings
+   * @param component
+   *          the Component
+   * @param e
+   *          the Exception that made the server start fail
+   * @throws Exception
+   *           if there is an exception
+   */
+  private static void startServerFailed(SitoolsSettings settings, Component component, Exception e) throws Exception {
     // If there is an error while creating the stores, we attach an error page to the server and stop the starting
     // process
     final Exception sitoolsException = e;

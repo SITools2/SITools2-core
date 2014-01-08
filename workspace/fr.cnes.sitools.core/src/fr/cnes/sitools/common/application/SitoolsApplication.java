@@ -646,9 +646,8 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       return addSecurityFilter(getContext(), application);
     }
 
-    
     Authorizer localAuthorizer = getAuthorizer(application);
-    
+
     if ((localAuthorizer == null) || (localAuthorizer == Authorizer.ALWAYS)) {
       getLogger().warning("No security configuration for " + this.getName());
       authorizationSecure = false;
@@ -695,16 +694,29 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
 
   }
 
+  /**
+   * Checks if there is custom authorization in the context.
+   * 
+   * @return true, if there is custom authorization in the context, false otherwise
+   */
   private boolean isContextAuthorization() {
 
-    return ( getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_AUTHORIZER) || 
-        getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR) );
-    
+    return (getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_AUTHORIZER) || getContext()
+        .getAttributes().containsKey(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR));
+
   }
 
+  /**
+   * Gets the authorizer of the given {@link SitoolsApplication} from its context or the default one
+   * 
+   * 
+   * @param application
+   *          the application
+   * @return the authorizer for the application
+   */
   private Authorizer getAuthorizer(SitoolsApplication application) {
     Authorizer localAuthorizer;
-    if (getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_AUTHORIZER)){
+    if (getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_AUTHORIZER)) {
       try {
         localAuthorizer = (Authorizer) getContext().getAttributes().get(ContextAttributes.CUSTOM_AUTHORIZER);
       }
@@ -712,25 +724,39 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
         localAuthorizer = getAuthorizer(application.getContext(), authenticationRealm.getReferenceRoles());
         getLogger().log(Level.WARNING, "Cannot cast ContextAttributes.CUSTOM_AUTHORIZER to Authorizer", e);
       }
-    } else {
+    }
+    else {
       localAuthorizer = getAuthorizer(application.getContext(), authenticationRealm.getReferenceRoles());
     }
     return localAuthorizer;
   }
 
+  /**
+   * Gets the ChallengeAuthenticator of the given {@link SitoolsApplication} from its context or the default one
+   * 
+   * 
+   * @param application
+   *          the application
+   * @return the ChallengeAuthenticator for the application
+   */
   private ChallengeAuthenticator getChallengeAuthenticator(SitoolsApplication application) {
     ChallengeAuthenticator auth;
-    
-    if (getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR)){
+
+    if (getContext().getAttributes().containsKey(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR)) {
       try {
-        auth = (ChallengeAuthenticator) getContext().getAttributes().get(ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR);
+        auth = (ChallengeAuthenticator) getContext().getAttributes().get(
+            ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR);
       }
       catch (Exception e) {
-        auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true, settings.getAuthenticationDOMAIN(), authenticationRealm);
-        getLogger().log(Level.WARNING, "Cannot cast ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR to ChallengeAuthenticator", e);
+        auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true,
+            settings.getAuthenticationDOMAIN(), authenticationRealm);
+        getLogger().log(Level.WARNING,
+            "Cannot cast ContextAttributes.CUSTOM_CHALLENGE_AUTHENTICATOR to ChallengeAuthenticator", e);
       }
-    } else {
-      auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true, settings.getAuthenticationDOMAIN(), authenticationRealm);
+    }
+    else {
+      auth = AuthenticatorFactory.getAuthenticator(application.getContext(), true, settings.getAuthenticationDOMAIN(),
+          authenticationRealm);
     }
     return auth;
   }

@@ -18,10 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.form.dataset.model;
 
-import java.util.List;
-
 import fr.cnes.sitools.form.model.AbstractFormModel;
-import fr.cnes.sitools.form.model.AbstractParameter;
 
 /**
  * Define a DataSet Form

@@ -42,7 +42,7 @@ public final class SitoolsAttributeValueConverter implements Converter {
    * 
    */
   @Override
-  public boolean canConvert(Class arg0) {
+  public boolean canConvert(@SuppressWarnings("rawtypes") Class arg0) {
     return arg0.equals(AttributeValue.class);
   }
 

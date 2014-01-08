@@ -93,6 +93,8 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
    *          Store name
    * @param ds
    *          DataSource
+   * @param context
+   *          The Context
    * @throws SitoolsException
    *           if the connection fail
    */
@@ -142,6 +144,9 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
   /**
    * Checks Users modification
    * 
+   * @param user
+   *          The User
+   * 
    * @throws SitoolsException
    *           if users are not modifiable
    */
@@ -151,11 +156,11 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     if (user.getIdentifier() != null && (userRegExp != null && !user.getIdentifier().matches(userRegExp))) {
       throw new SitoolsException("WRONG_USER_LOGIN");
     }
-    //at that point, the password is encoded, so no verification can be done
-    //    String passwordRegExp = settings.getString("STARTER.SECURITY.USER_PASSWORD_REGEX", null);
-//    if (user.getSecret() != null && (passwordRegExp != null && !user.getSecret().matches(passwordRegExp))) {
-//      throw new SitoolsException("WRONG USER PASSWORD");
-//    }
+    // at that point, the password is encoded, so no verification can be done
+    // String passwordRegExp = settings.getString("STARTER.SECURITY.USER_PASSWORD_REGEX", null);
+    // if (user.getSecret() != null && (passwordRegExp != null && !user.getSecret().matches(passwordRegExp))) {
+    // throw new SitoolsException("WRONG USER PASSWORD");
+    // }
 
   }
 

@@ -76,9 +76,6 @@ public class SQLDatabaseRequest implements DatabaseRequest {
   /** The nbResultsToSend */
   private int nbResultsToSend = 0;
 
-  /** The maxResultsToSend */
-  private int maxResultsToSend = 500;
-
   /** The Datasource **/
   private SitoolsSQLDataSource datasource = null;
 
@@ -92,7 +89,6 @@ public class SQLDatabaseRequest implements DatabaseRequest {
     this.params = params;
     primaryKeys = this.getPrimaryKeys();
     nbResultsToSend = params.getPaginationExtend();
-    maxResultsToSend = params.getMaxrows();
     datasource = (SitoolsSQLDataSource) this.params.getDb();
   }
 
@@ -481,16 +477,6 @@ public class SQLDatabaseRequest implements DatabaseRequest {
    */
   public final int getPageSize() {
     return Integer.parseInt(SitoolsSettings.getInstance().getString("AbstractDatabaseRequest.PAGE_SIZE"));
-  }
-
-  /**
-   * Sets the value of maxResultsToSend
-   * 
-   * @param maxResultsToSend
-   *          the maxResultsToSend to set
-   */
-  public final void setMaxResultsToSend(int maxResultsToSend) {
-    this.maxResultsToSend = maxResultsToSend;
   }
 
   @Override

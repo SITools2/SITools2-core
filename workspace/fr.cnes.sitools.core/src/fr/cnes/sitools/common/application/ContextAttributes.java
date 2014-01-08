@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,85 +19,85 @@
 package fr.cnes.sitools.common.application;
 
 /**
- * Commons attributes for SitoolsApplications
+ * Commons attributes for SitoolsApplications.
  * 
  * @author jp.boignard (AKKA Technologies)
- * 
  */
 public interface ContextAttributes {
 
-  /** ----------------------------------- */
+  /** -----------------------------------. */
   /** Context attributes for applications */
 
   /** Attribute String for SitoolsSettings object */
   String SETTINGS = "SETTINGS";
 
-  /** Attribute String for application attachment to host component */
+  /** Attribute String for application attachment to host component. */
   String APP_ATTACH_REF = "APP_ATTACH_REF";
 
-  /** Attribute boolean for application registering in AppManager */
+  /** Attribute boolean for application registering in AppManager. */
   String APP_REGISTER = "APP_REGISTER";
 
-  /** Attribute String for Application ID - must be set specially for dynamic applications */
+  /** Attribute String for Application ID - must be set specially for dynamic applications. */
   String APP_ID = "APP_ID";
 
-  /** Attribute object for specific application Store */
+  /** Attribute object for specific application Store. */
   String APP_STORE = "APP_STORE";
 
-  /** Attribute object for SitoolsRealm */
+  /** Attribute object for SitoolsRealm. */
   String APP_REALM = "APP_REALM";
 
-  /** Host name */
+  /** Host name. */
   String HOST_NAME = "HOST_NAME";
 
-  /** Host port */
+  /** Host port. */
   String HOST_PORT = "HOST_PORT";
 
-  /** Public host name */
+  /** Public host name. */
   String PUBLIC_HOST_NAME = "PUBLIC_HOST_NAME";
 
-  /** Proxy host */
+  /** Proxy host. */
   String PROXY_HOST = "PROXY_HOST";
 
-  /** Proxy port */
+  /** Proxy port. */
   String PROXY_PORT = "PROXY_PORT";
 
-  /** Proxy user name */
+  /** Proxy user name. */
   String PROXY_USER = "PROXY_USER";
 
-  /** Proxy user password */
+  /** Proxy user password. */
   String PROXY_PASSWORD = "PROXY_PASSWORD";
 
-  /** Proxy host */
+  /** Proxy host. */
   String NONPROXY_HOSTS = "NONPROXY_HOSTS";
 
-  /** Attribute for temporary folder */
+  /** Attribute for temporary folder. */
   String TEMPORARY_FOLDER = "TEMPORARY_FOLDER";
 
-  /** Attribute for authorizing or not cookie authentication */
+  /** Attribute for authorizing or not cookie authentication. */
   String COOKIE_AUTHENTICATION = "COOKIE_AUTHENTICATION";
 
-  /** Attribute for plugins resources to retrieve model by attachment */
+  /** Attribute for plugins resources to retrieve model by attachment. */
   String RESOURCE_ATTACHMENT = "RES_ATTACH_REF";
 
-  /** Attribute for a list of SitoolsProperty */
+  /** Attribute for a list of SitoolsProperty. */
   String LIST_SITOOLS_PROPERTIES = "LIST_SITOOLS_PROPERTIES";
 
-  /** True to Log to the Application Logger, false otherwise */
+  /** True to Log to the Application Logger, false otherwise. */
   String LOG_TO_APP_LOGGER = "LOG_TO_APP_LOGGER";
 
-  /** True not to use the status service when the response is an error, false otherwise */
+  /** True not to use the status service when the response is an error, false otherwise. */
   String NO_STATUS_SERVICE = "NO_STATUS_SERVICE";
-  
-  /** True to start in migration mode, false otherwise */
+
+  /** True to start in migration mode, false otherwise. */
   String START_WITH_MIGRATION = "START_WITH_MIGRATION";
-  
-  /** Attribute to store jetty server properties */
+
+  /** Attribute to store jetty server properties. */
   String JETTY_PROPERTIES = "JETTY_PROPERTIES";
-  
+
+  /** Attribute to store the custom challenge authenticator for an application. */
   String CUSTOM_CHALLENGE_AUTHENTICATOR = "CUSTOM_CHALLENGE_AUTHENTICATOR";
-  
+
+  /** Attribute to store the custom authorizer for an application. */
   String CUSTOM_AUTHORIZER = "CUSTOM_AUTHORIZER";
-  
 
 }

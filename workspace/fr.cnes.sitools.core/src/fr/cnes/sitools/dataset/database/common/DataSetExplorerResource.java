@@ -226,7 +226,10 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
   }
 
   /**
-   * Gets XML representation of a DataSet
+   * Gets the result of a DataSet query with a given {@link Variant}
+   * 
+   * @param variant
+   *          The variant needed
    * 
    * @return Representation
    */
@@ -249,48 +252,6 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
     info.setDocumentation("Method to retrieve records of a dataset");
     addStandardGetRequestInfo(info);
 
-    //
-    //
-    //
-    // ParameterInfo startInfo = new ParameterInfo("start", false, "xs:int", ParameterStyle.QUERY,
-    // "Starting index for SQL request.");
-    // ParameterInfo limitInfo = new ParameterInfo("limit", false, "xs:int", ParameterStyle.QUERY,
-    // "Maximal number of records returned.");
-    // ParameterInfo queryInfo = new ParameterInfo("query", false, "xs:string", ParameterStyle.QUERY,
-    // "Request sent by filters and forms.");
-    // ParameterInfo colModelInfo = new ParameterInfo("colModel", false, "xs:string", ParameterStyle.QUERY,
-    // "Column model description used for getting back records.");
-    // ParameterInfo sortInfo = new ParameterInfo("sort", false, "xs:string", ParameterStyle.QUERY,
-    // "Column name to sort by.");
-    // ParameterInfo dirInfo = new ParameterInfo("dir", false, "xs:string", ParameterStyle.QUERY,
-    // "(ASC or DESC) Sorting order.");
-    // ParameterInfo distinctInfo = new ParameterInfo("distinct", false, "xs:boolean", ParameterStyle.QUERY,
-    // "If true then creates a DISTINCT SQL request.");
-    //
-    // FilterChained filterChained = application.getFilterChained();
-    // List<AbstractFilter> filters = new ArrayList<AbstractFilter>();
-    // if (filterChained != null) {
-    // filters = application.getFilterChained().getFilters();
-    // }
-    //
-    // info.getRequest().getParameters().add(colModelInfo);
-    // info.getRequest().getParameters().add(startInfo);
-    // info.getRequest().getParameters().add(limitInfo);
-    // info.getRequest().getParameters().add(queryInfo);
-    // info.getRequest().getParameters().add(sortInfo);
-    // info.getRequest().getParameters().add(dirInfo);
-    // info.getRequest().getParameters().add(distinctInfo);
-    //
-    // for (AbstractFilter abstractFilter : filters) {
-    // HashMap<String, ParameterInfo> rpd = abstractFilter.getRequestParamsDescription();
-    // if (rpd != null) {
-    // for (Entry<String, ParameterInfo> paramDescription : rpd.entrySet()) {
-    // ParameterInfo paramInfo = paramDescription.getValue();
-    // info.getRequest().getParameters().add(paramInfo);
-    // }
-    // }
-    //
-    // }
     DataSetExplorerUtil.addDatasetExplorerGetRequestInfo(info);
     DataSetExplorerUtil.addDatasetExplorerGetFilterInfo(info, application.getFilterChained());
 

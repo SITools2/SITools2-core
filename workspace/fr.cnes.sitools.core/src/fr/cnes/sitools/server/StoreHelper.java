@@ -297,7 +297,7 @@ public final class StoreHelper {
    * @param stores
    *          the Map of stores
    */
-  @SuppressWarnings({"resource", "unchecked"})
+  @SuppressWarnings({"resource", "unchecked" })
   private static void migrateStores(Map<String, Object> stores) {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -352,7 +352,7 @@ public final class StoreHelper {
    * @throws SitoolsException
    *           if there are errors
    */
-  @SuppressWarnings({"resource", "unchecked"})
+  @SuppressWarnings({"resource", "unchecked" })
   private static void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {

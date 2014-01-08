@@ -84,9 +84,6 @@ public class MongoDBDatabaseRequest implements DatabaseRequest {
   /** The datasource */
   private SitoolsMongoDBDataSource datasource = null;
 
-  /** The maxResultsToSend */
-  private int maxResultsToSend = 500;
-
   /**
    * Create a {@code SQLDatabaseRequest}
    * 
@@ -97,7 +94,6 @@ public class MongoDBDatabaseRequest implements DatabaseRequest {
     this.params = params;
     primaryKeys = this.getPrimaryKeys();
     nbResultsToSend = params.getPaginationExtend();
-    maxResultsToSend = params.getMaxrows();
     datasource = (SitoolsMongoDBDataSource) params.getDb();
   }
 
@@ -438,16 +434,6 @@ public class MongoDBDatabaseRequest implements DatabaseRequest {
    */
   public final int getPageSize() {
     return Integer.parseInt(SitoolsSettings.getInstance().getString("AbstractDatabaseRequest.PAGE_SIZE"));
-  }
-
-  /**
-   * Sets the value of maxResultsToSend
-   * 
-   * @param maxResultsToSend
-   *          the maxResultsToSend to set
-   */
-  public final void setMaxResultsToSend(int maxResultsToSend) {
-    this.maxResultsToSend = maxResultsToSend;
   }
 
   @Override

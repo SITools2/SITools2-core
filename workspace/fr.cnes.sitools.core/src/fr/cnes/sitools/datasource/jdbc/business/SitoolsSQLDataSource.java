@@ -649,7 +649,7 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
    * 
    * @return the parent Logger for this data source
    * @throws SQLFeatureNotSupportedException
-   *           if the data source does not use <code>java.util.logging<code>.
+   *           if the data source does not use java.util.logging.
    */
   public Logger getParentLogger() throws SQLFeatureNotSupportedException {
     return LOG;

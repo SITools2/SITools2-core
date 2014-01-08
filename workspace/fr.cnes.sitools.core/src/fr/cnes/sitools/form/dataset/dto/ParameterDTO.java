@@ -140,6 +140,7 @@ public final class ParameterDTO {
    */
   private String jsUserObject;
 
+  /** The container panel id. */
   private String containerPanelId;
 
   /**

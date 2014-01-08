@@ -78,6 +78,9 @@ public final class UsersResource extends UsersAndGroupsResource {
   /**
    * Get an XML representation
    * 
+   * @param variant
+   *          The variant needed
+   * 
    * @return an XML representation of the user
    */
   @Get

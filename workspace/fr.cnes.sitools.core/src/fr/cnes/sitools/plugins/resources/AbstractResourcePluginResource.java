@@ -19,11 +19,7 @@
 package fr.cnes.sitools.plugins.resources;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -40,7 +36,6 @@ import fr.cnes.sitools.common.AbstractPluginResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.ExtensionModel;
-import fr.cnes.sitools.common.model.ExtensionParameter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;

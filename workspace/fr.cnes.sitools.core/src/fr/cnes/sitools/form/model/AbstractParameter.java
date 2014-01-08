@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -81,9 +81,10 @@ public abstract class AbstractParameter {
    */
   private String jsUserObject;
 
+  /**
+   * The id of the container panel
+   */
   private String containerPanelId;
-
-
 
   /**
    * Default Values of the parameter
@@ -124,7 +125,7 @@ public abstract class AbstractParameter {
    * The Extra params
    */
   private List<Property> extraParams;
-  
+
   /**
    * Constructor
    */
@@ -333,6 +334,7 @@ public abstract class AbstractParameter {
 
   /**
    * get the valueSelection
+   * 
    * @return the valueSelection
    */
   public final String getValueSelection() {
@@ -341,7 +343,9 @@ public abstract class AbstractParameter {
 
   /**
    * Set the valueSelection
-   * @param valueSelection the valueSelection to set
+   * 
+   * @param valueSelection
+   *          the valueSelection to set
    */
   public final void setValueSelection(String valueSelection) {
     this.valueSelection = valueSelection;
@@ -359,12 +363,13 @@ public abstract class AbstractParameter {
   /**
    * set the autoComplete
    * 
-   * @param autoComplete the autoComplete to set
+   * @param autoComplete
+   *          the autoComplete to set
    */
   public final void setAutoComplete(boolean autoComplete) {
     this.autoComplete = autoComplete;
   }
-  
+
   /**
    * Get the parentParam
    * 
@@ -386,6 +391,7 @@ public abstract class AbstractParameter {
 
   /**
    * Gets the jsUserObject value
+   * 
    * @return the jsUserObject
    */
   public String getJsUserObject() {
@@ -394,7 +400,9 @@ public abstract class AbstractParameter {
 
   /**
    * Sets the value of jsUserObject
-   * @param jsUserObject the jsUserObject to set
+   * 
+   * @param jsUserObject
+   *          the jsUserObject to set
    */
   public void setJsUserObject(String jsUserObject) {
     this.jsUserObject = jsUserObject;
@@ -402,7 +410,9 @@ public abstract class AbstractParameter {
 
   /**
    * Sets the value of jsAdminObject
-   * @param jsAdminObject the jsAdminObject to set
+   * 
+   * @param jsAdminObject
+   *          the jsAdminObject to set
    */
   public void setJsAdminObject(String jsAdminObject) {
     this.jsAdminObject = jsAdminObject;
@@ -410,6 +420,7 @@ public abstract class AbstractParameter {
 
   /**
    * Gets the dimensionId value
+   * 
    * @return the dimensionId
    */
   public String getDimensionId() {
@@ -418,7 +429,9 @@ public abstract class AbstractParameter {
 
   /**
    * Sets the value of dimensionId
-   * @param dimensionId the dimensionId to set
+   * 
+   * @param dimensionId
+   *          the dimensionId to set
    */
   public void setDimensionId(String dimensionId) {
     this.dimensionId = dimensionId;
@@ -426,6 +439,7 @@ public abstract class AbstractParameter {
 
   /**
    * Gets the extraParams value
+   * 
    * @return the extraParams
    */
   public List<Property> getExtraParams() {
@@ -434,7 +448,9 @@ public abstract class AbstractParameter {
 
   /**
    * Sets the value of extraParams
-   * @param extraParams the extraParams to set
+   * 
+   * @param extraParams
+   *          the extraParams to set
    */
   public void setExtraParams(List<Property> extraParams) {
     this.extraParams = extraParams;
@@ -442,6 +458,7 @@ public abstract class AbstractParameter {
 
   /**
    * Gets the unit value
+   * 
    * @return the unit
    */
   public SitoolsUnit getUnit() {
@@ -450,19 +467,31 @@ public abstract class AbstractParameter {
 
   /**
    * Sets the value of unit
-   * @param unit the unit to set
+   * 
+   * @param unit
+   *          the unit to set
    */
   public void setUnit(SitoolsUnit unit) {
     this.unit = unit;
   }
-  
+
+  /**
+   * Gets the containerPanelId value
+   * 
+   * @return the containerPanelId
+   */
   public String getContainerPanelId() {
     return containerPanelId;
   }
 
+  /**
+   * Sets the value of containerPanelId
+   * 
+   * @param containerPanelId
+   *          the containerPanelId to set
+   */
   public void setContainerPanelId(String containerPanelId) {
     this.containerPanelId = containerPanelId;
   }
-  
 
 }

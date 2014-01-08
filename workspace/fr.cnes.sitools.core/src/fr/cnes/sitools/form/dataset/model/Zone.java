@@ -5,62 +5,60 @@ import java.util.List;
 import fr.cnes.sitools.form.model.AbstractParameter;
 
 /**
+ * Zone model object
  * 
- *
  * @author b.fiorito
  */
 public class Zone {
-  
-  
+
   /**
    * Zone Id
    */
   private String id;
-  
+
   /**
    * Zone title
    */
   private String title;
-  
+
   /**
    * Associated CSS
    */
   private String css;
-  
+
   /**
    * Zone Width
    */
   private int width;
-  
+
   /**
    * Zone height
    */
   private int height;
-  
+
   /**
    * Zone position in parent form
    */
   private int position;
-  
+
   /**
    * Zone collapsible property
    */
   private boolean collapsible;
-  
+
   /**
-   * 
+   * Zone collapsed property
    */
   private boolean collapsed;
-  
 
   /**
    * The list of parameters in the zone
    */
   private List<AbstractParameter> params;
-  
 
   /**
    * Gets the id value
+   * 
    * @return the id
    */
   public String getId() {
@@ -69,7 +67,9 @@ public class Zone {
 
   /**
    * Sets the value of id
-   * @param id the id to set
+   * 
+   * @param id
+   *          the id to set
    */
   public void setId(String id) {
     this.id = id;
@@ -77,6 +77,7 @@ public class Zone {
 
   /**
    * Gets the title value
+   * 
    * @return the title
    */
   public String getTitle() {
@@ -85,7 +86,9 @@ public class Zone {
 
   /**
    * Sets the value of title
-   * @param title the title to set
+   * 
+   * @param title
+   *          the title to set
    */
   public void setTitle(String title) {
     this.title = title;
@@ -93,6 +96,7 @@ public class Zone {
 
   /**
    * Gets the css value
+   * 
    * @return the css
    */
   public String getCss() {
@@ -101,7 +105,9 @@ public class Zone {
 
   /**
    * Sets the value of css
-   * @param css the css to set
+   * 
+   * @param css
+   *          the css to set
    */
   public void setCss(String css) {
     this.css = css;
@@ -109,6 +115,7 @@ public class Zone {
 
   /**
    * Gets the width value
+   * 
    * @return the width
    */
   public int getWidth() {
@@ -117,7 +124,9 @@ public class Zone {
 
   /**
    * Sets the value of width
-   * @param width the width to set
+   * 
+   * @param width
+   *          the width to set
    */
   public void setWidth(int width) {
     this.width = width;
@@ -125,6 +134,7 @@ public class Zone {
 
   /**
    * Gets the height value
+   * 
    * @return the height
    */
   public int getHeight() {
@@ -133,7 +143,9 @@ public class Zone {
 
   /**
    * Sets the value of height
-   * @param height the height to set
+   * 
+   * @param height
+   *          the height to set
    */
   public void setHeight(int height) {
     this.height = height;
@@ -141,6 +153,7 @@ public class Zone {
 
   /**
    * Gets the position value
+   * 
    * @return the position
    */
   public int getPosition() {
@@ -149,7 +162,9 @@ public class Zone {
 
   /**
    * Sets the value of position
-   * @param position the position to set
+   * 
+   * @param position
+   *          the position to set
    */
   public void setPosition(int position) {
     this.position = position;
@@ -157,6 +172,7 @@ public class Zone {
 
   /**
    * Gets the params value
+   * 
    * @return the params
    */
   public List<AbstractParameter> getParams() {
@@ -165,7 +181,9 @@ public class Zone {
 
   /**
    * Sets the value of params
-   * @param params the params to set
+   * 
+   * @param params
+   *          the params to set
    */
   public void setParams(List<AbstractParameter> params) {
     this.params = params;
@@ -173,6 +191,7 @@ public class Zone {
 
   /**
    * Gets the collapsible value
+   * 
    * @return the collapsible
    */
   public boolean isCollapsible() {
@@ -181,7 +200,9 @@ public class Zone {
 
   /**
    * Sets the value of collapsible
-   * @param collapsible the collapsible to set
+   * 
+   * @param collapsible
+   *          the collapsible to set
    */
   public void setCollapsible(boolean collapsible) {
     this.collapsible = collapsible;
@@ -189,6 +210,7 @@ public class Zone {
 
   /**
    * Gets the collapsed value
+   * 
    * @return the collapsed
    */
   public boolean isCollapsed() {
@@ -197,7 +219,9 @@ public class Zone {
 
   /**
    * Sets the value of collapsed
-   * @param collapsed the collapsed to set
+   * 
+   * @param collapsed
+   *          the collapsed to set
    */
   public void setCollapsed(boolean collapsed) {
     this.collapsed = collapsed;

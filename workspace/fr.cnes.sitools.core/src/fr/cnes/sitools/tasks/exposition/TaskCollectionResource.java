@@ -159,10 +159,13 @@ public class TaskCollectionResource extends AbstractTaskResource {
   }
 
   /**
+   * Get the list of task for a particular user and ResourceCollectionFilter
    * 
    * @param userId
+   *          the user identifier
    * @param filter
-   * @return
+   *          the filter
+   * @return the list of task for a particular user and ResourceCollectionFilter
    */
   private List<TaskModel> getListTasks(String userId, ResourceCollectionFilter filter) {
     List<Task> tasks = TaskManager.getInstance().getTasks();

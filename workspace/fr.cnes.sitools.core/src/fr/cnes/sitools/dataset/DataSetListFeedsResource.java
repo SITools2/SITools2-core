@@ -30,13 +30,9 @@ import org.restlet.resource.Get;
 
 import com.thoughtworks.xstream.XStream;
 
-import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;

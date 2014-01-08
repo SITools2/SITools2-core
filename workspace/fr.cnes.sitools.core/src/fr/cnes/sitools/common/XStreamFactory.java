@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -175,7 +175,7 @@ public final class XStreamFactory {
         xstream = new XStream(new DomDriver("UTF-8")) {
           protected MapperWrapper wrapMapper(MapperWrapper next) {
             return new MapperWrapper(next) {
-              public boolean shouldSerializeMember(Class definedIn, String fieldName) {
+              public boolean shouldSerializeMember(@SuppressWarnings("rawtypes") Class definedIn, String fieldName) {
                 try {
                   return definedIn != Object.class || realClass(fieldName) != null;
                 }

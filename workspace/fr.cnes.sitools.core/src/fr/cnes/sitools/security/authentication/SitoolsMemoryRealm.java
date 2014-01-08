@@ -562,6 +562,11 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     return result;
   }
 
+  /**
+   * Gets the store users and groups.
+   * 
+   * @return the store users and groups
+   */
   protected UsersAndGroupsStore getStoreUsersAndGroups() {
     return storeUsersAndGroups;
   }

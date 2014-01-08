@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,7 +22,6 @@ import java.util.List;
 
 import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.form.dataset.model.Zone;
-
 
 /**
  * Abstract model class for FormModel
@@ -64,7 +63,7 @@ public abstract class AbstractFormModel implements IResource {
    * Parent url attachment DataSet
    */
   private String parentUrl;
-  
+
   /**
    * The list of parameters of the Form
    */
@@ -75,7 +74,6 @@ public abstract class AbstractFormModel implements IResource {
    */
   private List<Zone> zones;
 
-  
   /**
    * Default constructor
    */
@@ -234,9 +232,10 @@ public abstract class AbstractFormModel implements IResource {
   public void setParentUrl(String parentUrl) {
     this.parentUrl = parentUrl;
   }
-  
+
   /**
    * Gets the parameters value
+   * 
    * @return the parameters
    */
   public List<AbstractParameter> getParameters() {
@@ -245,17 +244,29 @@ public abstract class AbstractFormModel implements IResource {
 
   /**
    * Sets the value of parameters
+   * 
    * @param parameters
    *          the parameters to set
    */
   public void setParameters(List<AbstractParameter> parameters) {
     this.parameters = parameters;
   }
-  
+
+  /**
+   * Gets the zones value
+   * 
+   * @return the zones
+   */
   public List<Zone> getZones() {
     return zones;
   }
 
+  /**
+   * Sets the value of zones
+   * 
+   * @param zones
+   *          the zones to set
+   */
   public void setZones(List<Zone> zones) {
     this.zones = zones;
   }

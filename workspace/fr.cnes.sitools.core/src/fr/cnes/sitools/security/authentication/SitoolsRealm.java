@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -26,7 +26,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-import org.junit.rules.Verifier;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.ClientInfo;
 import org.restlet.engine.security.RoleMapping;
@@ -41,7 +40,6 @@ import org.restlet.security.User;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.security.SecurityUtil;
-
 
 /**
  * SitoolsRealm based on a memory Role management
@@ -64,7 +62,7 @@ public abstract class SitoolsRealm extends Realm {
 
   /** Scheme */
   private String scheme;
-  
+
   /** SitoolsSettings */
   private SitoolsSettings settings;
 
@@ -86,7 +84,7 @@ public abstract class SitoolsRealm extends Realm {
 
     setVerifier(new SitoolsDefaultVerifier());
     setEnroler(new SitoolsDefaultEnroler());
-    
+
     this.settings = settings;
   }
 
@@ -132,7 +130,6 @@ public abstract class SitoolsRealm extends Realm {
     }
   }
 
-  
   /**
    * Only verify if user exists in realm.
    */
@@ -147,10 +144,9 @@ public abstract class SitoolsRealm extends Realm {
     public boolean verify(String identifier, char[] secret) {
       return (findUser(identifier) != null);
     }
-    
+
   }
-    
-  
+
   /**
    * Verifier based on the default security model. It looks up users in the mapped organizations.
    */
@@ -430,16 +426,25 @@ public abstract class SitoolsRealm extends Realm {
    * </p>
    */
   public abstract void refreshUsersAndGroups();
-  
+
   /**
-   * Verifiers can call this event
+   * Verifiers can call this event after the verification is done
+   * 
+   * @param result
+   *          the result
+   * @param user
+   *          the user
+   * @return true if the verification is successful, false otherwise
    */
   public abstract boolean onVerify(boolean result, fr.cnes.sitools.security.model.User user);
 
+  /**
+   * Gets the settings.
+   * 
+   * @return the settings
+   */
   public SitoolsSettings getSettings() {
     return settings;
   }
 
-  
-  
 }

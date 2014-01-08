@@ -294,7 +294,7 @@ public final class TaskManager {
   /**
    * getStore
    * 
-   * @return
+   * @return the TaskStoreXML
    */
   public TaskStoreXML getStore() {
     return storeTaskModel;
