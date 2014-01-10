@@ -22,6 +22,8 @@ sitools.widget.DateFilter = Ext.extend(sitools.widget.Filter, {
     /**
      * @cfg {String} iconCls
      * The iconCls to be applied to the menu item.
+     * @cfg {String} format
+     * The date format to use
      * Defaults to <tt>'ux-gridfilter-text-icon'</tt>.
      */
     iconCls : 'ux-gridfilter-text-icon',
@@ -40,18 +42,18 @@ sitools.widget.DateFilter = Ext.extend(sitools.widget.Filter, {
      */
     init : function (config) {
         config = config || {};
-        
+        this.dateFormat = Ext.isEmpty(config.format)?SITOOLS_DEFAULT_IHM_DATE_FORMAT:config.format; 
         this.inputFrom = new Ext.form.DateField({
         	anchor : "100%", 
         	fieldLabel : "ux-rangemenu-gte", 
-        	format : SITOOLS_DEFAULT_IHM_DATE_FORMAT, 
+        	format : this.dateFormat, 
         	labelStyle : "height: 10px", 
         	width : 150
         }); 
         this.inputTo = new Ext.form.DateField({
         	anchor : "100%", 
         	fieldLabel : "ux-rangemenu-lte", 
-        	format : SITOOLS_DEFAULT_IHM_DATE_FORMAT, 
+        	format : this.dateFormat, 
         	labelStyle : "height: 10px", 
         	width : 150
             

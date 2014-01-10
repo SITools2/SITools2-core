@@ -42,13 +42,15 @@ sitools.user.component.dataviews.services.filterService = Ext.extend(Ext.Window,
                 dataCombo.push({
                     columnAlias : column.columnAlias, 
                     columnHeader : column.header, 
-                    columnType : sql2ext.get(column.sqlColumnType)
+                    columnType : sql2ext.get(column.sqlColumnType),
+                    //add the date format
+                    format : column.format
                 });
             }
         });
 
         this.storeCombo = new Ext.data.JsonStore({
-            fields : [ "columnAlias", "columnHeader", "columnType" ],
+            fields : [ "columnAlias", "columnHeader", "columnType", "format" ],
             data : dataCombo
         });
 
@@ -223,7 +225,8 @@ sitools.user.component.dataviews.services.filterService = Ext.extend(Ext.Window,
                         break;
                     case ("dateAsString") :
                         filter = new sitools.widget.DateFilter({
-                            columnAlias : rec.data.columnAlias
+                            columnAlias : rec.data.columnAlias,
+                            format : rec.data.format
                         });
                         
                         containerFilter.add(filter);

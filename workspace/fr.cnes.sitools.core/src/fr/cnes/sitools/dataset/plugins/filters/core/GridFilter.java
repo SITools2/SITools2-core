@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -136,9 +136,7 @@ public final class GridFilter extends AbstractFilter {
             throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Wrong date syntax", e);
           }
           // Specific Filter for date equality.
-          if (comparison.equals("eq")) {
-            value = valueQuoted;
-          }
+          value = valueQuoted;
         }
 
         // Default : build the right value as a String
@@ -190,6 +188,11 @@ public final class GridFilter extends AbstractFilter {
 
           }
           else {
+            // BUG fix for date filtering
+            if ("date".equals(params.getFirstValue(prefix + Param.TYPE.value()))) {
+              value = DateUtils.parse((String) value);
+            }
+
             Predicat predicat = new Predicat();
             predicat.setLeftAttribute(column);
             predicat.setRightValue(value);

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -313,6 +313,29 @@ public class DataSetFilterTestCase extends AbstractDataSetManagerTestCase {
 
     queryDatasetRequestUrl(urlAttachMySQL, params, expectedMySQLRecord, false);
   }
+  
+  /**
+   * Test dataset for querying by date filter with an operator < and >
+   */
+  @Test
+  public void testDataSetGridQueryingFilterDateBetween() {
+    String params = "/records?limit=300&start=0&filter[0][columnAlias]=field_timestamp&filter[0][data][type]=date&filter[0][data][comparison]=gte"
+        + "&filter[0][data][value]=2011-04-25T00:00:00.000&filter[1][columnAlias]=field_timestamp&filter[1][data][type]=date&filter[1][data][comparison]=lte"
+        + "&filter[1][data][value]=2011-04-27T00:00:00.000&media=json";
+
+    queryDatasetRequestUrl(urlAttachMySQL, params, expectedMySQLRecord, false);
+  }
+
+  /**
+   * Test dataset for querying by date filter with an operator < and >
+   */
+  @Test
+  public void testDataSetGridQueryingFilterDateEq() {
+    String params = "/records?limit=300&start=0&filter[0][columnAlias]=field_timestamp&filter[0][data][type]=date&filter[0][data][comparison]=eq"
+        + "&filter[0][data][value]=2011-04-27T11:23:36.0&media=json";
+    
+    queryDatasetRequestUrl(urlAttachMySQL, params, expectedMySQLRecord, false);
+  }
 
   /**
    * Test dataset for querying by multiple filters
@@ -554,6 +577,29 @@ public class DataSetFilterTestCase extends AbstractDataSetManagerTestCase {
     else {
       queryDatasetRequestUrl(urlAttachPostgreSQL, params, expectedPgRecord, false);
     }
+  }
+
+  /**
+   * Test dataset for querying by date filter with an operator < and >
+   */
+  @Test
+  public void testDataSetGridQueryingFilterDateBetweenPG() {
+    String params = "/records?limit=300&start=0&filter[0][columnAlias]=timestamp_with_time_zone&filter[0][data][type]=date&filter[0][data][comparison]=gte"
+        + "&filter[0][data][value]=2011-01-01T00:00:00.000&filter[1][columnAlias]=timestamp_with_time_zone&filter[1][data][type]=date&filter[1][data][comparison]=lte"
+        + "&filter[1][data][value]=2011-07-01T00:00:00.000&media=json";
+
+    queryDatasetRequestUrl(urlAttachPostgreSQL, params, expectedPgRecord, false);
+  }
+
+  /**
+   * Test dataset for querying by date filter with an operator < and >
+   */
+  @Test
+  public void testDataSetGridQueryingFilterDateEqPG() {
+    String params = "/records?limit=300&start=0&filter[0][columnAlias]=timestamp_with_time_zone&filter[0][data][type]=date&filter[0][data][comparison]=eq"
+        + "&filter[0][data][value]=2011-04-21T14:01:13.047794+02&media=json";
+    
+    queryDatasetRequestUrl(urlAttachPostgreSQL, params, expectedPgRecord, false);
   }
 
   /**
