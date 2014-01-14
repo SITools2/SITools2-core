@@ -126,8 +126,7 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         proxy: new sitools.user.data.ProtocolProxy({
             totalProperty : "totalResults",
             url : config.dataUrl + dataviewConfig.jeoResourceUrl
-        }),
-        autoLoad: true
+        })
     });
     
     if (!Ext.isEmpty(config.storeSort)) {
@@ -138,6 +137,11 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
             this.store.sortInfo = config.storeSort;
         }
     }
+    
+    //list of events to consider that everything is loaded
+    this.allIsLoadedEvent = new Ext.util.MixedCollection();
+    this.allIsLoadedEvent.add("load", false);
+    this.allIsLoadedEvent.add("allservicesloaded", false);
     
     this.store.filters = new sitools.widget.FiltersCollection({
         filters : config.filters 
@@ -166,17 +170,15 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
             Ext.apply(options.params, params);
         }
         
-        if (!Ext.isEmpty(this.dataView)) {
-            this._loadMaskAnchor = Ext.get(this.el.dom);
         
-            this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-        }
+        
         this.store.storeOptions(options);
         //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
     }, this);
     
     this.store.on("load", function (store, records, options) {
         this.topBar.updateContextToolbar();
+        this.removeLoadMask("load");
     }, this);
     
     this.topBar =  new sitools.user.component.dataviews.services.menuServicesToolbar({
@@ -184,7 +186,13 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
         datasetId : this.datasetId,
         dataview : this,
         origin : this.origin,
-        columnModel : config.datasetCm
+        columnModel : config.datasetCm,
+        listeners : {
+            scope : this,
+            allservicesloaded : function () {
+                this.removeLoadMask("allservicesloaded");
+            }
+        }  
     });
 
     var bbar = new Ext.PagingToolbar({
@@ -262,6 +270,8 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
             }
         }
     });
+    
+    this.store.load();
 
     // -- CONSTRUCTOR --
     sitools.user.component.dataviews.cartoView.cartoView.superclass.constructor.call(this, Ext.apply({
@@ -275,6 +285,16 @@ sitools.user.component.dataviews.cartoView.cartoView = function (config) {
 };
 
 Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
+    
+    
+    afterRender : function () {
+        sitools.user.component.dataviews.cartoView.cartoView.superclass.afterRender.apply(this, arguments);
+        
+        this._loadMaskAnchor = Ext.get(this.el.dom);
+        this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
+    },
+    
+    
     /**
      * @private
      * @returns the JsonColModel used to store the userPreferences.
@@ -494,6 +514,19 @@ Ext.extend(sitools.user.component.dataviews.cartoView.cartoView, Ext.Panel, {
         Ext.each(ranges, function (range) {
             this.getSelectionModel().selectRange(range[0], range[1], true);
         }, this);
+    },
+    
+    removeLoadMask : function (eventName) {
+        this.allIsLoadedEvent.add(eventName, true);
+        var removeLoadMask = true;
+        this.allIsLoadedEvent.each(function (value) {
+            removeLoadMask &= value;
+        });
+        if (removeLoadMask) {
+            if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
+                this._loadMaskAnchor.unmask();
+            }
+        }
     }
 });
 

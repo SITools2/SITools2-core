@@ -43,6 +43,7 @@ sitools.user.component.dataviews.services.GuiServiceController =  function (conf
     
     Ext.apply(this, config);
     
+    this.addEvents("guiServicesLoaded");
     
     //Map<Colonne, Service> with colonne = columnAlias and Service = the service object
     this.guiServiceMap = new Ext.util.MixedCollection();
@@ -85,7 +86,9 @@ sitools.user.component.dataviews.services.GuiServiceController =  function (conf
                             this.guiServiceMap.add(column.columnAlias, guiServiceWithoutColumn);
                         }
                     }
-                }, this);                 
+                }, this);
+                
+                this.fireEvent("guiServicesLoaded");
                                     
             }
             

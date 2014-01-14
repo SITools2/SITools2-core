@@ -287,6 +287,12 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
 //        filters : filters
 //    });
     
+    //list of events to consider that everything is loaded
+    this.allIsLoadedEvent = new Ext.util.MixedCollection();
+    this.allIsLoadedEvent.add("load", false);
+    this.allIsLoadedEvent.add("allservicesloaded", false);
+    
+    
     var storeConfig = {
         datasetCm : config.datasetCm,
         urlRecords : this.urlRecords,
@@ -344,10 +350,8 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
     }, this);
     
     this.store.addListener("load", function (store, records, options) {
-		if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
-			this._loadMaskAnchor.unmask();
-		}
 		this.topBar.updateContextToolbar();
+		this.removeLoadMask("load");
     }, this);    
     
    
@@ -407,13 +411,19 @@ sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
             }
         }
     });
-
+    
     this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
         datasetUrl : this.sitoolsAttachementForUsers,
         datasetId : this.datasetId,
         dataview : this,
         origin : this.origin,
-        columnModel : config.datasetCm
+        columnModel : config.datasetCm,
+        listeners : {
+            scope : this,
+            allservicesloaded : function () {
+                this.removeLoadMask("allservicesloaded");
+            }
+        }        
     });
     
     /**
@@ -697,6 +707,19 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
     
     displayTipsLivegrid : function (btn , e) {
 //        btn.tTip.show();
+    },
+    
+    removeLoadMask : function (eventName) {
+        this.allIsLoadedEvent.add(eventName, true);
+        var removeLoadMask = true;
+        this.allIsLoadedEvent.each(function (value) {
+            removeLoadMask &= value;
+        });
+        if (removeLoadMask) {
+            if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
+                this._loadMaskAnchor.unmask();
+            }
+        }
     }
 });
 
