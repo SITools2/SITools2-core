@@ -77,6 +77,9 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         if (this.action === 'create') {
             this.title = i18n.get('label.createProject');
         }
+        if (this.action === 'duplicate') {
+            this.title = i18n.get('label.duplicateProject');
+        }
 
         var storeDataSets = new Ext.data.JsonStore({
             id : 'storeDataSets',
@@ -814,8 +817,6 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             putObject.modules = [];
             var i = 0;
             storeModule.each(function (record) {
-                
-                
                 if (record.data.attached) {
                     
                     if (Ext.isEmpty(record.data.listRoles)) {
@@ -942,10 +943,15 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
     afterRender : function () {
         sitools.component.projects.ProjectsPropPanel.superclass.afterRender.apply(this, arguments);
         if (this.url) {
+            var url = this.url;
+            if (this.action == 'duplicate') {
+                url = this.projectUrlToCopy;
+            }
+            
             // var gs = this.groupStore, qs = this.quotaStore;
-            if (this.action == 'modify' || this.action == "view") {
+            if (this.action == 'modify' || this.action == "view" || this.action == "duplicate") {
                 Ext.Ajax.request({
-                    url : this.url,
+                    url : url,
                     method : 'GET',
                     scope : this,
                     success : function (ret) {
@@ -974,10 +980,16 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                         // ceuw attaches au projet
 
                         var rec = {};
-                        rec.id = data.id;
-                        rec.name = data.name;
+                        
+                        if (this.action == "duplicate") {
+                            rec.name = data.name + "_copy";
+                        } else {
+                            rec.id = data.id;
+                            rec.name = data.name;
+                            rec.sitoolsAttachementForUsers = data.sitoolsAttachementForUsers;
+                        }
+                        
                         rec.description = data.description;
-                        rec.sitoolsAttachementForUsers = data.sitoolsAttachementForUsers;
                         rec.image = data.image.url;
                         rec.visible = data.visible;
                         rec.htmlDescription = data.htmlDescription;

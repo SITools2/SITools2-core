@@ -29,9 +29,9 @@ var seeAlsoMenu = null;
 var dataViewWin = null;
 var mainPanel = null;
 var seeAlsoPanel = null;
-// var helpPanel = null;
 var helpUrl = null;
 var componentsPanel = null;
+SHOW_HELP = true;
 
 function onMenuSelect(but) {
     if (Ext.isEmpty(but.getItemId())) {
@@ -185,7 +185,8 @@ var clientAdmin = {
 	    
 	    var menuLogout = {
 	        xtype : 'tbbutton',
-	        text : i18n.get('label.logout'),
+//	        text : i18n.get('label.logout'),
+	        tooltip : i18n.get('label.logout'),
 	        itemId : 'menu_logout',
 	        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/logout.png',
 	        handler : function () {
@@ -209,39 +210,74 @@ var clientAdmin = {
 	            html : '<img src=res/images/cnes.png width=92 height=28>'
 	        }, {
 	            xtype : 'label',
+	            style : "text-shadow: 1px 1px #D5D5D5;font-size: 12px;color: #15428B;font-weight: bold;",
 	            text : i18n.get('label.title')
 	        }, '->', {
 	            xtype : 'label',
-	            text : i18n.get('label.welcome') + ' ' + Ext.util.Cookies.get('userLogin')
+	            html : i18n.get('label.welcome') + ' <b>' + Ext.util.Cookies.get('userLogin') + '</b>'
 	        }, '-', {
-                text : 'Version',
+	            id : 'quickStart',
+	            tooltip : 'Quick Start',
+	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/quick_start.png',
+                style : 'padding:2px',
+                handler : function () {
+                    mainPanel.removeAll();
+                    
+                    var quickStartPanel = new sitools.admin.quickStart.qs({
+                        id : ID.PANEL.QUICKSTART,
+                        width : "100%",
+                        flex : 1
+                    });
+                    
+                    var containerPanel = new Ext.Panel({
+                        name : 'containerPanel',
+                        width : "100%",
+                        layout : 'fit',
+                        flex : 1
+                    }); 
+                    mainPanel.add(containerPanel);
+                    mainPanel.add(quickStartPanel);
+                    mainPanel.doLayout();
+                    
+                }
+	        }, {
+//                text : 'Version',
                 id : 'versionButtonId',
-                // scope : this,
+                tooltip : 'Version',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/version.png',
+                style : 'padding:2px',
                 handler : function () {
                     showVersion();
-                },
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/version.png'
-            }, '-', {
-		        text: 'Show Help',
+                }
+            }, {
+//		        text: 'Show Help',
+		        tooltip: 'Show Help',
 		        enableToggle: true,
+                style : 'padding:2px',
 		        toggleHandler: function (item, checked) {
 					var helpPanel = Ext.getCmp(ID.PANEL.HELP);
-					if (!checked) {
-						helpPanel.toggleCollapse(false);
-						SHOW_HELP = false;
+					SHOW_HELP = checked;
+					if (helpPanel == undefined) {
+					    return;
 					}
-					else {
-						helpPanel.toggleCollapse(true);
-						SHOW_HELP = true;
-					}
+				    if (!checked) {
+				        helpPanel.toggleCollapse(checked);
+				    }
+				    else {
+				        helpPanel.toggleCollapse(checked);
+				    }
+				    mainPanel.doLayout();
 			    },
-		        pressed: true, 
+		        pressed: true,
 		        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png'
-		    }, "-", {
-		        text : 'Advanced Mode',
+		    }, {
+//		        text : 'Advanced Mode',
+		        tooltip : 'Advanced Mode',
 		        id : 'switchModeId',
+		        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/maintenance.png',
 		        enableToggle: true,
 		        pressed : true,
+                style : 'padding:2px',
 		        toggleHandler : function (item, checked) {
 		            var main = Ext.getCmp(ID.PANEL.MAIN);
 		            var tree = Ext.getCmp(ID.PANEL.TREE);
@@ -323,7 +359,7 @@ var clientAdmin = {
 		            }
 		            viewport.doLayout();
 		        }
-		    }, menuLogout
+		    }, "-", menuLogout
 	
 	        // menuList,
 	        // '-',
@@ -335,7 +371,7 @@ var clientAdmin = {
 	        id : ID.PANEL.MENU,
 	        region : 'north',
 	        layout : 'fit',
-	        height : 28,
+	        height : 30,
 	        items : [ toolbar ]
 	    });
 	
@@ -352,20 +388,6 @@ var clientAdmin = {
 	        }
 	    });
 	
-	    var helpPanel = new Ext.ux.ManagedIFrame.Panel({
-	        // {xtype:'iframepanel',
-	        id : ID.PANEL.HELP,
-	        // region: 'east',
-	        title : i18n.get('label.help'),
-	        split : true,
-	        collapsible : true,
-	        autoScroll : true,
-	        // width : 200,
-	        layout : 'fit',
-	        defaults : {
-	            padding : 10
-	        }
-	    });
         var pan_config = new sitools.admin.menu.dataView();
 	
 	    mainPanel = new Ext.Panel({

@@ -160,6 +160,10 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png',
                 handler : this._onStopMaintenance,
                 xtype : 's-menuButton'
+            }, {
+                text : i18n.get('label.duplicate'),
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                handler : this.onDuplicate
             },
             // { text: i18n.get('label.members'), icon:
             // 'res/images/icons/toolbar_group_add.png', handler: this.onMembers
@@ -332,6 +336,20 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             },
             failure : alertFailure
         });
+    },
+    
+    onDuplicate : function () {
+        var rec = this.getSelectionModel().getSelected();
+        if (!rec) {
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+        }
+        var up = new sitools.component.projects.ProjectsPropPanel({
+            projectUrlToCopy : this.url + "/" + rec.id,
+            url : this.url,
+            action : 'duplicate',
+            store : this.getStore()
+        });
+        up.show(ID.BOX.DATASETS);
     }
 
 });

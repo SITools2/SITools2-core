@@ -990,8 +990,10 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
     }, {
         jsObj : "Ext.form.TextField", 
         config : {
+            id : "nameDatastorageId",
             fieldLabel : i18n.get("label.siteName"),
             allowBlank : true,
+            hidden : true,
             width : 200,
             listeners : {
                 render : function (c) {
@@ -1052,7 +1054,9 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
                 },
                 select : function (combo, rec, ind) {
                     var urlAttachField = this.ownerCt.getComponent("urlDatastorageId");
+                    var siteName = this.ownerCt.getComponent("nameDatastorageId");
                     urlAttachField.setValue(rec.data.attachUrl);
+                    siteName.setValue(rec.data.name);
                 }
             },
             name : "nameDatastorageSrc",
@@ -1062,7 +1066,7 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
         jsObj : "Ext.form.Checkbox", 
         config : {
             fieldLabel : i18n.get("label.allowDataPublish"),
-            checked : true,
+            checked : false,
             id : "allowDataPublishId",
             listeners : {
                 render : function (c) {
@@ -1096,6 +1100,7 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
             allowBlank : false,
             typeAhead : true,
             editable : false,
+            disabled : true,
             triggerAction : 'all',
             width : 200,
             valueField : 'name',

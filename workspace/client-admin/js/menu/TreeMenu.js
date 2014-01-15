@@ -156,21 +156,13 @@ sitools.admin.menu.TreeMenu = Ext.extend(Object, {
 	            }
 	        });
 //        }
-        
-        
-        
-        
-        
-        
+
         var helpPanel = new Ext.ux.ManagedIFrame.Panel({
             id : ID.PANEL.HELP,
             width : "100%", 
             flex : 1,
             // autoScroll:true,
-            defaultSrc : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html",
-            defaults : {
-                padding : 10
-            }
+            defaultSrc : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html"
         });
         mainPanel.add(
             helpPanel

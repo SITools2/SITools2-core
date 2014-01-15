@@ -45,6 +45,9 @@
     <link rel="stylesheet" type="text/css" href="res/css/animated-seeAlso.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/main.css"></link>
    	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css"></link>
+	
+	<link rel="stylesheet" type="text/css" href="res/css/quickStart.css"></link>
+	<link rel="stylesheet" type="text/css" href="/sitools/client-user/js/components/dataviews/services/servicesToolbar.css"></link>
   
 <!-- --------------------------------------------------------------------------------------------------------------------------
 					IMPORT DES LIBRAIRIES JS
@@ -116,6 +119,13 @@
     <script type="text/javascript" src="js/tools.js"></script>
 	<script type="text/javascript" src="js/menu/dataView.js"></script>
 	<script type="text/javascript" src="js/menu/seeAlso.js"></script>
+	<script type="text/javascript" src="js/quickstart/qs.js"></script>
+	<script type="text/javascript" src="js/quickstart/qsStart.js"></script>
+	<script type="text/javascript" src="js/quickstart/qsProject.js"></script>
+	<script type="text/javascript" src="js/quickstart/qsDatasource.js"></script>
+	<script type="text/javascript" src="js/quickstart/qsDataset.js"></script>
+	<script type="text/javascript" src="js/quickstart/qsSecurity.js"></script>
+	<script type="text/javascript" src="js/quickstart/qsForm.js"></script>
 
 	<script type="text/javascript" src="js/commonUtils/FormParametersConfigUtil.js"></script>
 	

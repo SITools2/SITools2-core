@@ -1,0 +1,77 @@
+.quickStart {
+   background: -moz-linear-gradient(-45deg,  rgba(184,225,252,0.77) 0%, rgba(169,210,243,0.76) 10%, rgba(144,186,228,0.75) 25%, rgba(144,188,234,0.74) 37%, rgba(144,191,240,0.73) 50%, rgba(162,218,245,0.69) 83%, rgba(107,168,229,0.68) 89%, rgba(189,243,253,0.67) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(184,225,252,0.77)), color-stop(10%,rgba(169,210,243,0.76)), color-stop(25%,rgba(144,186,228,0.75)), color-stop(37%,rgba(144,188,234,0.74)), color-stop(50%,rgba(144,191,240,0.73)), color-stop(83%,rgba(162,218,245,0.69)), color-stop(89%,rgba(107,168,229,0.68)), color-stop(100%,rgba(189,243,253,0.67))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg,  rgba(184,225,252,0.77) 0%,rgba(169,210,243,0.76) 10%,rgba(144,186,228,0.75) 25%,rgba(144,188,234,0.74) 37%,rgba(144,191,240,0.73) 50%,rgba(162,218,245,0.69) 83%,rgba(107,168,229,0.68) 89%,rgba(189,243,253,0.67) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg,  rgba(184,225,252,0.77) 0%,rgba(169,210,243,0.76) 10%,rgba(144,186,228,0.75) 25%,rgba(144,188,234,0.74) 37%,rgba(144,191,240,0.73) 50%,rgba(162,218,245,0.69) 83%,rgba(107,168,229,0.68) 89%,rgba(189,243,253,0.67) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg,  rgba(184,225,252,0.77) 0%,rgba(169,210,243,0.76) 10%,rgba(144,186,228,0.75) 25%,rgba(144,188,234,0.74) 37%,rgba(144,191,240,0.73) 50%,rgba(162,218,245,0.69) 83%,rgba(107,168,229,0.68) 89%,rgba(189,243,253,0.67) 100%); /* IE10+ */
+	background: linear-gradient(135deg,  rgba(184,225,252,0.77) 0%,rgba(169,210,243,0.76) 10%,rgba(144,186,228,0.75) 25%,rgba(144,188,234,0.74) 37%,rgba(144,191,240,0.73) 50%,rgba(162,218,245,0.69) 83%,rgba(107,168,229,0.68) 89%,rgba(189,243,253,0.67) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c4b8e1fc', endColorstr='#abbdf3fd',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.quickStart-tb {
+	background: -moz-linear-gradient(-45deg,  rgba(208,228,247,0.58) 0%, rgba(115,177,231,0.53) 24%, rgba(98,168,228,0.46) 53%, rgba(83,159,225,0.53) 79%, rgba(135,188,234,0.58) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(208,228,247,0.58)), color-stop(24%,rgba(115,177,231,0.53)), color-stop(53%,rgba(98,168,228,0.46)), color-stop(79%,rgba(83,159,225,0.53)), color-stop(100%,rgba(135,188,234,0.58))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg,  rgba(208,228,247,0.58) 0%,rgba(115,177,231,0.53) 24%,rgba(98,168,228,0.46) 53%,rgba(83,159,225,0.53) 79%,rgba(135,188,234,0.58) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg,  rgba(208,228,247,0.58) 0%,rgba(115,177,231,0.53) 24%,rgba(98,168,228,0.46) 53%,rgba(83,159,225,0.53) 79%,rgba(135,188,234,0.58) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg,  rgba(208,228,247,0.58) 0%,rgba(115,177,231,0.53) 24%,rgba(98,168,228,0.46) 53%,rgba(83,159,225,0.53) 79%,rgba(135,188,234,0.58) 100%); /* IE10+ */
+	background: linear-gradient(135deg,  rgba(208,228,247,0.58) 0%,rgba(115,177,231,0.53) 24%,rgba(98,168,228,0.46) 53%,rgba(83,159,225,0.53) 79%,rgba(135,188,234,0.58) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#94d0e4f7', endColorstr='#9487bcea',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.qs-h1 {
+	width: 600px;
+	margin: auto;
+	text-shadow: 1px 1px #575757;
+	color: #F1F1F1;
+	font-size: 26px;
+	font-family: verdana !important;
+	padding : 5px;
+}
+
+.qs-div {
+	width: 700px;
+	margin: auto;
+	font-size: 18px;
+	font-family: verdana !important;
+	padding : 5px;
+	color: #303030;
+	text-shadow: #CECECE 1px 1px;
+}
+
+.qs-image {
+	border-radius:6px;
+	-moz-box-shadow: 2px 2px 5px 0px #656565;
+	-webkit-box-shadow: 2px 2px 5px 0px #656565;
+	-o-box-shadow: 2px 2px 5px 0px #656565;
+	box-shadow: 2px 2px 5px 0px #656565;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=134, Strength=5);
+
+}
+
+.bouton_action{
+}
+.bouton_action:hover{
+	cursor : pointer;
+}
+
+.dot {
+	margin-top: 4px;
+	width: 16px;
+	height: 16px;
+	background-image: url(/sitools/client-admin/res/images/icons/dot.png);
+	background-position: 0 0;
+	background-repeat: no-repeat;
+}
+.dot button {
+	width: 16px;
+	height: 16px;
+	border: none;
+	outline: none;
+	background-color: transparent;
+}
+.dot.x-btn-over{
+	background-position: 0 -16px;
+}
+.dot.current {
+	background-position: 0 -32px;
+}

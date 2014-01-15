@@ -22,7 +22,8 @@ var ID = {
         TREE : 'treePanelId',
         MAIN : 'mainPanelId',
         HELP : 'helpPanelId',
-        DATAVIEW : 'dataviewPanelId'
+        DATAVIEW : 'dataviewPanelId',
+        QUICKSTART : 'quickStartId'
     },
     CMP : {
         TOOLBAR : 'toolbarId',

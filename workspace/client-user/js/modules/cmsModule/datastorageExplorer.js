@@ -647,6 +647,10 @@ sitools.user.modules.datastorageExplorer.getParameters = function () {
                             target : c,
                             text : "the datastorage url (cf. Storage)"
                         });
+                    },
+                    select : function (combo, rec, ind) {
+                        var dsName = this.ownerCt.getComponent("nameDatastorageId");
+                        dsName.setValue(rec.data.name);
                     }
                 },
                 name : "dynamicUrlDatastorage",
@@ -655,8 +659,10 @@ sitools.user.modules.datastorageExplorer.getParameters = function () {
         }, {
             jsObj : "Ext.form.TextField",
             config : {
+                id : "nameDatastorageId",
                 fieldLabel : i18n.get("label.nameDatastorage"),
                 allowBlank : true,
+                hidden : true,
                 width : 200,
                 listeners : {
                     render : function (c) {
