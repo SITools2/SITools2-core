@@ -75,7 +75,10 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         }
     }
     
-    
+    //list of events to consider that everything is loaded
+    this.allIsLoadedEvent = new Ext.util.MixedCollection();
+    this.allIsLoadedEvent.add("load", false);
+    this.allIsLoadedEvent.add("allservicesloaded", false);
     
     this.store.filters = new sitools.widget.FiltersCollection({
         filters : config.filters 
@@ -103,38 +106,24 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
             Ext.apply(options.params, params);
         }
         
-	    if (!Ext.isEmpty(this.dataView)) {
-			this._loadMaskAnchor = Ext.get(this.el.dom);
 	    
-			this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-	    }
         this.store.storeOptions(options);
         //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
     }, this);
     
 	this.store.on('load', function (store, records, options) {
-		if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
-			this._loadMaskAnchor.unmask();
-		}
         var plotComp = Ext.getCmp("plot" + config.datasetId);
         if (plotComp) {
             var rightPanel = plotComp.findById('plot-right-panel');
             var success = rightPanel.fireEvent('buffer', store);
         }
         store.isFirstCountDone = true;
-        
         this.getTopToolbar().updateContextToolbar();
         this.processFeatureType();
+        this.removeLoadMask("load");
 	}, this);
 
-	this.store.load({
-		params : {
-//			start : 0, 
-			start : (config.startIndex) ? config.startIndex : 0, 
-			limit : DEFAULT_LIVEGRID_BUFFER_SIZE
-		},
-		scope : this
-	});
+	
     
     
 	var tplString = '<tpl for="."><div class="thumb-wrap">';
@@ -280,6 +269,12 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
                         delete this.ranges;
                     }
 		        }
+			},
+			afterrender : function () {
+			    if (!Ext.isEmpty(this.dataView)) {
+		            this._loadMaskAnchor = Ext.get(this.el.dom);
+		            this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
+		        }   
 			}
         }
 	});
@@ -319,7 +314,13 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         datasetId : this.datasetId,
         dataview : this,
         origin : this.origin,
-        columnModel : config.datasetCm
+        columnModel : config.datasetCm,
+        listeners : {
+            scope : this,
+            allservicesloaded : function () {
+                this.removeLoadMask("allservicesloaded");
+            }
+        }  
     });
     
 	this.items = [panelWest, this.panelDetail];
@@ -339,6 +340,16 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
             }
         } 
     });
+	
+	this.store.load({
+        params : {
+//          start : 0, 
+            start : (config.startIndex) ? config.startIndex : 0, 
+            limit : DEFAULT_LIVEGRID_BUFFER_SIZE
+        },
+        scope : this
+    });
+	
 	Ext.apply(config, this);
 	sitools.user.component.dataviews.tplView.TplView.superclass.constructor.call(this, config);
 };
@@ -714,6 +725,19 @@ Ext.extend(sitools.user.component.dataviews.tplView.TplView, Ext.Panel, {
                 });
             }, this);
         }, this);
+    },
+    
+    removeLoadMask : function (eventName) {
+        this.allIsLoadedEvent.add(eventName, true);
+        var removeLoadMask = true;
+        this.allIsLoadedEvent.each(function (value) {
+            removeLoadMask &= value;
+        });
+        if (removeLoadMask) {
+            if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
+                this._loadMaskAnchor.unmask();
+            }
+        }
     }
 });
 

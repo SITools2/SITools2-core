@@ -41,6 +41,8 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
     initComponent : function () {
         this.cls = "services-toolbar"; 
         
+        this.addEvents("allServicesLoaded");
+        
         this.urlDatasetServiceIHM = this.datasetUrl + "/services" + '/gui/{idService}';
 
         this.store = new Ext.data.JsonStore({
@@ -66,8 +68,15 @@ sitools.user.component.dataviews.services.menuServicesToolbar = Ext.extend(Ext.T
             datasetUrl : this.datasetUrl,
             columnModel : this.columnModel,
             dataview : this.dataview,
-            origin : this.origin
+            origin : this.origin,
+            listeners : {
+                scope : this,
+                guiservicesloaded : function () {
+                    this.fireEvent("allServicesLoaded");
+                }
+            }
         });
+        
         
         sitools.user.component.dataviews.services.menuServicesToolbar.superclass.initComponent.call(this);
     },

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -121,9 +121,13 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     // attach dynamic resources
     attachParameterizedResources(router);
 
-    DirectoryProxy dpTemplate = new DirectoryProxy(getContext(), "file:///" + templateDir, getAttachementRef());
+    String templateAttachment = "/ftl";
+    String cssAttachment = "/css";
 
-    DirectoryProxy dpCss = new DirectoryProxy(getContext(), "file:///" + cssDir, getAttachementRef());
+    DirectoryProxy dpTemplate = new DirectoryProxy(getContext(), "file:///" + templateDir, getAttachementRef()
+        + templateAttachment);
+
+    DirectoryProxy dpCss = new DirectoryProxy(getContext(), "file:///" + cssDir, getAttachementRef() + cssAttachment);
 
     DirectoryProxy dpLicence = new DirectoryProxy(getContext(), "file:///" + licenceDir, getAttachementRef());
 
@@ -149,8 +153,8 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     this.getTunnelService().setMethodTunnel(true);
     this.getTunnelService().setMethodParameter("method");
 
-    router.attach("/ftl", dpTemplate);
-    router.attach("/css", dpCss);
+    router.attach(templateAttachment, dpTemplate);
+    router.attach(cssAttachment, dpCss);
     router.attach("/cgu.html", dpLicence);
 
     router.attach("/settings/{PARAMETER}", SitoolsSettingsResource.class);
@@ -158,7 +162,7 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
 
     // Create a directory with no-cache parameter to true to
     DirectoryProxy analogDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + analogReportsDir,
-      getAttachementRef() + analogReportsDir);
+        getAttachementRef() + analogReportsDir);
 
     analogDir.setDeeplyAccessible(true);
     analogDir.setListingAllowed(true);
