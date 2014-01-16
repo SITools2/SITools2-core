@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -216,7 +216,7 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
         // Parse the JSON representation to get the bean
         resourceInput = new JacksonRepresentation<Resource>(representation, Resource.class).getObject();
       }
-      
+
       // BAD REQUEST
       if (resourceInput == null) {
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "Resource representation required");
@@ -363,10 +363,16 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
         String value = param.getValue();
 
         if ("start".equals(value)) {
-          getAppRegistryApplication().attachApplication(app);
-          app.start();
-          response = new Response(true, "APPLICATION_STARTED");
-          break;
+          synchronized (app) {
+            if (app.isStarted()) {
+              response = new Response(false, "APPLICATION_ALREADY_STARTED");
+              break;
+            }
+            getAppRegistryApplication().attachApplication(app);
+            app.start();
+            response = new Response(true, "APPLICATION_STARTED");
+            break;
+          }
         }
 
         if ("stop".equals(value)) {

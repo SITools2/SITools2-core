@@ -73,6 +73,24 @@ public class GetResponseUtils {
    * @return Response
    */
   public static Response getResponse(MediaType media, Representation representation, MediaType mediaTest) {
+    return getResponse(media, representation, mediaTest, null);
+  }
+
+  /**
+   * REST API Response Representation wrapper for simple Response
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param mediaTest
+   *          The MediaType used in the test
+   * @param fieldToOmit
+   *          The field in the response that has to be omited during deserialization
+   * @return Response
+   */
+  public static Response getResponse(MediaType media, Representation representation, MediaType mediaTest,
+      String fieldToOmit) {
     try {
       if (!media.isCompatible(mediaTest) && !media.isCompatible(MediaType.APPLICATION_XML)) {
         Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
@@ -82,6 +100,9 @@ public class GetResponseUtils {
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
       xstream.alias("response", Response.class);
       xstream.aliasField("data", Response.class, "data");
+      if (fieldToOmit != null) {
+        xstream.omitField(Response.class, fieldToOmit);
+      }
 
       SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
       rep.setXstream(xstream);
@@ -561,6 +582,81 @@ public class GetResponseUtils {
         if (dataClass == TaskModel.class) {
           xstream.aliasField("TaskModel", Response.class, "item");
         }
+      }
+
+      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
+      rep.setXstream(xstream);
+
+      if (media.isCompatible(MediaType.APPLICATION_JSON) || media.isCompatible(MediaType.APPLICATION_XML)) {
+        Response response = rep.getObject("response");
+
+        return response;
+      }
+      else {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+        // TODO complete test with ObjectRepresentation
+      }
+    }
+    finally {
+      RIAPUtils.exhaust(representation);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // RESOURCE MODEL
+
+  /**
+   * REST API Response wrapper for single item expected.
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected in the item property of the Response object
+   * @return Response the response.
+   */
+  public static Response getResponseResponseModel(MediaType media, Representation representation, Class<?> dataClass) {
+    return getResponseResponseModel(media, representation, dataClass, false);
+  }
+
+  /**
+   * REST API Response Representation wrapper for single or multiple items expexted
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected for items of the Response object
+   * @param isArray
+   *          if true wrap the data property else wrap the item property
+   * @return Response
+   */
+  public static Response getResponseResponseModel(MediaType media, Representation representation, Class<?> dataClass,
+      boolean isArray) {
+    try {
+      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+      }
+
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
+      xstream.autodetectAnnotations(false);
+      xstream.alias("response", Response.class);
+
+      if (isArray) {
+        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(Response.class, "data", dataClass);
+        }
+        else {
+          // xstream.alias("resourcePlugin", Object.class, ResourceModelDTO.class);
+        }
+      }
+      else {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
       }
 
       SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);

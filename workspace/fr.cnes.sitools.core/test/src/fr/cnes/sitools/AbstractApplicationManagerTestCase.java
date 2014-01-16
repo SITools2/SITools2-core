@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -20,6 +20,7 @@ package fr.cnes.sitools;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -176,6 +177,17 @@ public abstract class AbstractApplicationManagerTestCase extends AbstractSitools
     assertTrue(response.getMessage().equals("APPLICATION_STARTED"));
     RIAPUtils.exhaust(result);
 
+    // START AGAIN EXPECT AN ERROR
+    cr = new ClientResource(getBaseUrl() + "/" + appId + "?action=start");
+    result = cr.put(getMediaTest());
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+    response = getResponse(getMediaTest(), result, Resource.class, false);
+    assertNotNull(response);
+    assertFalse(response.getSuccess());
+    assertTrue(response.getMessage().equals("APPLICATION_ALREADY_STARTED"));
+    RIAPUtils.exhaust(result);
+
     // Resource unknown
     cr = new ClientResource(getBaseUrl() + "/wqazsx");
     result = cr.put(getMediaTest());
@@ -229,6 +241,17 @@ public abstract class AbstractApplicationManagerTestCase extends AbstractSitools
     assertNotNull(response);
     assertTrue(response.getSuccess());
     assertTrue(response.getMessage().equals("APPLICATION_STARTED"));
+    RIAPUtils.exhaust(result);
+
+    // START AGAIN, EXPECT
+    cr = new ClientResource(getBaseUrl() + "/" + appId + "/start");
+    result = cr.put(getMediaTest());
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+    response = getResponse(getMediaTest(), result, Resource.class, false);
+    assertNotNull(response);
+    assertFalse(response.getSuccess());
+    assertTrue(response.getMessage().equals("APPLICATION_ALREADY_STARTED"));
     RIAPUtils.exhaust(result);
 
     // Restart
