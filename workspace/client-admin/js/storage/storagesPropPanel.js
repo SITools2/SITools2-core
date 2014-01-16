@@ -136,6 +136,10 @@ sitools.admin.storages.storagesPropPanel = Ext.extend(Ext.Window, {
             putObject[key] = value;
         }, this);
 
+        if (putObject.localPath.match("file:///") == null) {
+            putObject.localPath = "file:///" + putObject.localPath;
+        }
+
         if (this.action == 'modify') {
 
             Ext.Ajax.request({

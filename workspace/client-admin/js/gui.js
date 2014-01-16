@@ -233,6 +233,7 @@ var clientAdmin = {
                         name : 'containerPanel',
                         width : "100%",
                         layout : 'fit',
+                        bodyCssClass : 'admin-bg',
                         flex : 1
                     }); 
                     mainPanel.add(containerPanel);
@@ -391,6 +392,7 @@ var clientAdmin = {
         var pan_config = new sitools.admin.menu.dataView();
 	
 	    mainPanel = new Ext.Panel({
+	        bodyCssClass : 'admin-bg',
 	        layout : 'vbox',
 	        layoutConfig: {
 			    align : 'stretch',

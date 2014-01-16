@@ -25,6 +25,15 @@ overflow:hidden;
 padding:0;
 }
 
+.admin-bg {
+	background:url(../images/bg.jpg) no-repeat left top;
+	background-size : 100%;
+}
+
+.admin-bg-transparent {
+	background-color: rgba(253, 253, 253, 0.52);
+}
+
 a {
 color:blue;
 text-decoration:none;

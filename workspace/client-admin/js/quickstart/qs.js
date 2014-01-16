@@ -208,7 +208,7 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     xtype : 's-box',
                     label : i18n.get('label.' + node.attributes.nodeName),
                     items : [ {
-                        xtype : 's-' + node.attributes.nodeName, 
+                        xtype : 's-' + node.attributes.nodeName,
                         sitoolsType : "mainAdminPanel"
                     } ],
                     idItem : node.attributes.nodeId

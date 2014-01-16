@@ -132,7 +132,8 @@ sitools.admin.menu.TreeMenu = Ext.extend(Object, {
 //        } else {
             mainPanel.add(
 	        {
-	            width: "100%", 
+	            width: "100%",
+	            bodyCssClass : 'admin-bg',
 	            items : [ {
 	                xtype : 's-box',
 	                label : i18n.get('label.' + nodeName),
@@ -158,6 +159,7 @@ sitools.admin.menu.TreeMenu = Ext.extend(Object, {
 //        }
 
         var helpPanel = new Ext.ux.ManagedIFrame.Panel({
+            bodyCssClass : 'admin-bg-transparent',
             id : ID.PANEL.HELP,
             width : "100%", 
             flex : 1,

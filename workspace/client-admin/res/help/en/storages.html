@@ -34,7 +34,12 @@
 <ul>
 <li>A name</li>
 <li>A description</li>
-<li>A local path : must start with the protocol (eg:file:// ), some variable can be used as shortcuts (file://{$ROOT_DIRECTORY})</li>
+<li>A local path depending on your operating system : 
+	<ol>
+		<li><b><i>Windows</i></b> : "D:/myStorage"</li>
+		<li><b><i>Linux</i></b> : "/home/data/myStorage"</li>
+	</ol>
+Some variable can be used as shortcuts ({$ROOT_DIRECTORY})</li>
 <li>A public url</li>
 <li>An Url attachment (urlAttach) : must start with /, the url to access the storage will be (/sitools/datastorage/user/<span style="font-style: italic;">urlAttach</span>)&nbsp;</li>
 <li>Recursive Access : if the subdirectories can be accessed or not</li>
@@ -48,6 +53,7 @@
 <ol start="3">
 <li>Click on <span style="font-weight: bold;">Ok</span></li>
 </ol>
+<p><i>NB : the protocol "file:///" will be automatically added in front of your local path</i></p>
 
 <br>
 <h2>Edit an archival storage</h2><br>

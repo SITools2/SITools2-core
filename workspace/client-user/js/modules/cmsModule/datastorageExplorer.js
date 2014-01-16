@@ -639,6 +639,9 @@ sitools.user.modules.datastorageExplorer.getParameters = function () {
                     }, {
                         name : 'name',
                         type : 'string'
+                    }, {
+                        name : 'attachUrl',
+                        type : 'string'
                     }]
                 }),
                 listeners: {
