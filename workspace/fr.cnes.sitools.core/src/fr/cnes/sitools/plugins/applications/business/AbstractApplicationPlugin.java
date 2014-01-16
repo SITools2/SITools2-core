@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,9 +21,11 @@ package fr.cnes.sitools.plugins.applications.business;
 import org.restlet.Context;
 import org.restlet.representation.Representation;
 
+import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.validator.Validable;
 import fr.cnes.sitools.common.validator.Validator;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginParameter;
 
@@ -104,6 +106,56 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
     }
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.common.application.SitoolsApplication#start()
+   */
+  @Override
+  public synchronized void start() throws Exception {
+    super.start();
+    if (isStarted()) {
+      if (model != null) {
+        model.setStatus("ACTIVE");
+        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+            ContextAttributes.APP_STORE);
+        store.update(model);
+      }
+    }
+    else {
+      getLogger().warning("ApplicationPlugin should be started.");
+      if (model != null) {
+        model.setStatus("INACTIVE");
+        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+            ContextAttributes.APP_STORE);
+        store.update(model);
+      }
+    }
+  }
+
+  @Override
+  public synchronized void stop() throws Exception {
+    super.stop();
+    if (isStopped()) {
+      if (model != null) {
+        model.setStatus("INACTIVE");
+        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+            ContextAttributes.APP_STORE);
+        store.update(model);
+      }
+    }
+    else {
+      getLogger().warning("ApplicationPlugin should be stopped.");
+      if (model != null) {
+        model.setStatus("ACTIVE");
+        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+            ContextAttributes.APP_STORE);
+        store.update(model);
+      }
+    }
+
+  }
+
   /**
    * Gets the model value
    * 
@@ -124,7 +176,7 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   }
 
   /**
-   * Add the given parameter to the Model. 
+   * Add the given parameter to the Model.
    * 
    * @param param
    *          the parameter
