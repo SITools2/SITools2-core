@@ -127,6 +127,8 @@ public abstract class AbstractApplicationPluginTestCase extends AbstractSitoolsS
       checkAppRunning(model);
       // delete ApplicationPluginModelDTO
       delete(model.getId());
+      // CRUD APPLICATION
+      assertNone();
       // create WADL
       createWadl(getBaseUrl(), "applications_plugins");
     }

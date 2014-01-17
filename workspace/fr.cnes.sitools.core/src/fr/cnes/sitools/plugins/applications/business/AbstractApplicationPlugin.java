@@ -25,6 +25,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.validator.Validable;
 import fr.cnes.sitools.common.validator.Validator;
+import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginParameter;
@@ -115,20 +116,22 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   public synchronized void start() throws Exception {
     super.start();
     if (isStarted()) {
-      if (model != null) {
+      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+          ContextAttributes.APP_STORE);
+      ApplicationPluginModel appModel = store.get(getId());
+      if (appModel != null) {
         model.setStatus("ACTIVE");
-        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
-            ContextAttributes.APP_STORE);
-        store.update(model);
+        store.update(appModel);
       }
     }
     else {
+      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+          ContextAttributes.APP_STORE);
+      ApplicationPluginModel appModel = store.get(getId());
       getLogger().warning("ApplicationPlugin should be started.");
-      if (model != null) {
-        model.setStatus("INACTIVE");
-        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
-            ContextAttributes.APP_STORE);
-        store.update(model);
+      if (appModel != null) {
+        appModel.setStatus("INACTIVE");
+        store.update(appModel);
       }
     }
   }
@@ -137,20 +140,22 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   public synchronized void stop() throws Exception {
     super.stop();
     if (isStopped()) {
-      if (model != null) {
-        model.setStatus("INACTIVE");
-        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
-            ContextAttributes.APP_STORE);
-        store.update(model);
+      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+          ContextAttributes.APP_STORE);
+      ApplicationPluginModel appModel = store.get(getId());
+      if (appModel != null) {
+        appModel.setStatus("INACTIVE");
+        store.update(appModel);
       }
     }
     else {
+      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+          ContextAttributes.APP_STORE);
+      ApplicationPluginModel appModel = store.get(getId());
       getLogger().warning("ApplicationPlugin should be stopped.");
-      if (model != null) {
-        model.setStatus("ACTIVE");
-        ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
-            ContextAttributes.APP_STORE);
-        store.update(model);
+      if (appModel != null) {
+        appModel.setStatus("ACTIVE");
+        store.update(appModel);
       }
     }
 
