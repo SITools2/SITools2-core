@@ -68,7 +68,7 @@ sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel = Ext.extend(Ext.grid.G
     
     initComponent : function () {
         //LIST OF PARENTS
-        var storeParents = new Ext.data.JsonStore({
+        this.storeParents = new Ext.data.JsonStore({
             fields : [ 'id', 'name', 'type' ],
             url : this.urlParents + this.urlParentsParams,
             root : "data",
@@ -76,7 +76,7 @@ sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel = Ext.extend(Ext.grid.G
         });
         
         this.comboParents = new Ext.form.ComboBox({
-            store : storeParents,
+            store : this.storeParents,
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
@@ -228,7 +228,12 @@ sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel = Ext.extend(Ext.grid.G
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
-            } ]
+            }, {
+                text : i18n.get('label.duplicate'),
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/presentation1.png',
+                handler : this.onDuplicate,
+                xtype : 's-menuButton'
+            }]
         };
 
         this.bbar = {
@@ -313,6 +318,32 @@ sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel = Ext.extend(Ext.grid.G
         });
         up.show();
 
+    },
+    
+    onDuplicate : function () {
+        if (Ext.isEmpty(this.comboParents.getValue())) {
+            return;
+        }
+        
+        var parentId = this.comboParents.getValue();
+        
+        var arrayRecords = this.getSelectionModel().getSelections();
+        
+        if (Ext.isEmpty(arrayRecords)) {
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+        }
+        
+        var projectServicesCopy = new sitools.admin.resourcesPlugins.resourcesServicesCopyProp({
+            storeCombo : this.storeParents,
+            services : arrayRecords,
+            parentProjectId : parentId,
+            urlParents : this.urlParents,
+            resourcesUrlPart : this.resourcesUrlPart,
+            parentType : this.parentType,
+        });
+        projectServicesCopy.show();
+        
+        
     },
 
     /**

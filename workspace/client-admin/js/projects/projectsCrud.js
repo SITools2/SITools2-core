@@ -162,7 +162,7 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.duplicate'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/presentation1.png',
                 handler : this.onDuplicate
             },
             // { text: i18n.get('label.members'), icon:

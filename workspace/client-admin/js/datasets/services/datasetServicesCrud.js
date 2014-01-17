@@ -85,7 +85,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         
 
         // LIST OF PARENTS
-        var storeParents = new Ext.data.JsonStore({
+        this.storeParents = new Ext.data.JsonStore({
             fields : [ 'id', 'name', 'type', 'sitoolsAttachementForUsers' ],
             url : this.urlDatasets,
             root : "data",
@@ -93,7 +93,7 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         });
         
         this.comboParents = new Ext.form.ComboBox({
-            store : storeParents,
+            store : this.storeParents,
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
@@ -315,7 +315,13 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
-            }, this.savePropertiesBtn, '-' ]
+            }, this.savePropertiesBtn, '-',
+            {
+                text : i18n.get('label.duplicate'),
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/presentation1.png',
+                handler : this.onDuplicate,
+                xtype : 's-menuButton'
+            }]
         };
 
         this.bbar = {
@@ -408,6 +414,29 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
         
     },
 
+    onDuplicate : function () {
+        if (Ext.isEmpty(this.comboParents.getValue())) {
+            return;
+        }
+        
+        var parentId = this.comboParents.getValue();
+        
+        var arrayRecords = this.getSelectionModel().getSelections();
+        
+        if (Ext.isEmpty(arrayRecords)) {
+            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+        }
+        
+        var datasetServicesCopy = new sitools.admin.datasets.services.datasetServicesCopyProp({
+            storeCombo : this.storeParents,
+            services : arrayRecords,
+            parentDatasetId : parentId,
+            urlDatasetServiceSERVER : this.urlDatasetAllServicesSERVER,
+            urlDatasetServiceGUI : this.urlDatasetAllServicesIHM
+        });
+        datasetServicesCopy.show();
+    },
+    
     /**
      * Diplay confirm delete Msg box and call the method doDelete
      */

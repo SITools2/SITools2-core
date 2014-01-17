@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import fr.cnes.sitools.common.dto.ExtensionModelDTO;
 import fr.cnes.sitools.plugins.resources.model.DataSetSelectionType;
 import fr.cnes.sitools.plugins.resources.model.ResourceBehaviorType;
@@ -35,6 +37,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
  * 
  * @author m.gond
  */
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ResourceModelDTO extends ExtensionModelDTO<ResourceParameter> {
 
   /** serialVersionUID */

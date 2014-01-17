@@ -391,6 +391,35 @@ var clientAdmin = {
 	
         var pan_config = new sitools.admin.menu.dataView();
 	
+        var mainPanelItems = [];
+        
+        if (Ext.util.Cookies.get('showQuickStart') == "true") {
+            var quickStartPanel = new sitools.admin.quickStart.qs({
+                id : ID.PANEL.QUICKSTART,
+                width : "100%",
+                flex : 1
+            });
+            
+            var containerPanel = new Ext.Panel({
+                name : 'containerPanel',
+                autoLoad : 'res/html/' + LOCALE + '/welcome.html',
+                width : "100%",
+                layout : 'fit',
+                bodyCssClass : 'admin-bg',
+                flex : 1
+            }); 
+            mainPanelItems.push(containerPanel);
+            mainPanelItems.push(quickStartPanel);
+        } else {
+            var welcomePanel = new Ext.Panel({
+                xtype : 'panel', 
+                layout : 'fit', 
+                height : 1200, 
+                autoLoad : 'res/html/' + LOCALE + '/welcome.html'
+            }); 
+            mainPanelItems.push(welcomePanel);
+        }
+        
 	    mainPanel = new Ext.Panel({
 	        bodyCssClass : 'admin-bg',
 	        layout : 'vbox',
@@ -405,12 +434,7 @@ var clientAdmin = {
                 id : 'idConfig'
             },
 	        title : i18n.get('label.main'),
-	        items : [{
-				xtype : 'panel', 
-				layout : 'fit', 
-				height : 1200, 
-				autoLoad : 'res/html/' + LOCALE + '/welcome.html'
-	        }],
+	        items : mainPanelItems,
 	        region : 'center'
 	    });
 	
@@ -463,6 +487,9 @@ var clientAdmin = {
 function initAppli() {
     
     //loadUrl.load('/sitools/client-admin/siteMap', clientAdmin.initGui());
+    if (Ext.isEmpty(Ext.util.Cookies.get('showQuickStart'))) {
+        Ext.util.Cookies.set('showQuickStart', true);
+    }
     
 	Ext.Ajax.request({
         url : loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL'),

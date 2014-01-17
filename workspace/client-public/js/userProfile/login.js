@@ -102,7 +102,12 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
                 name : 'login',
                 id : 'logId',
                 allowBlank : false,
-                anchor : '80%'
+                anchor : '80%',
+                listeners : {
+                    afterrender : function (login) {
+                        login.focus(false, 100);
+                    }
+                }
             }, {
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.password'),

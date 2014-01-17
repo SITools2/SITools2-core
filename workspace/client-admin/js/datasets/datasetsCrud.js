@@ -160,7 +160,7 @@ sitools.admin.datasets.datasetsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
                 handler : this._onEditSemantic
             }, {
 	            text : i18n.get('label.duplicate'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/presentation1.png',
 	            handler : this.onDuplicate
 	        }, '->', {
                 xtype : 's-filter',

@@ -248,8 +248,10 @@
     <script type="text/javascript" src="js/datasets/services/datasetServicesCrud.js"></script>
 	<script type="text/javascript" src="js/datasets/services/datasetServicesProp.js"></script>
 	<script type="text/javascript" src="js/datasets/services/datasetServicesConfig.js"></script>
+	<script type="text/javascript" src="js/datasets/services/datasetServicesCopyProp.js"></script>
 	
     <script type="text/javascript" src="js/resourcesPlugins/resourcesPluginsCrudPanel.js"></script>
+    <script type="text/javascript" src="js/resourcesPlugins/resourcesServicesCopyProp.js"></script>
     <script type="text/javascript" src="js/resourcesPlugins/resourcesPluginsProp.js"></script>
     <script type="text/javascript" src="js/resourcesPlugins/enumerationValueTypeSelector.js"></script>
     

@@ -145,6 +145,17 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     });
                 }
             }
+        }, '->', {xtype : 'label', html : '<i>Show QuickStart on startup<i>'},
+        {
+           xtype : 'checkbox',
+           listeners : {
+               check : function (combo, checked) {
+                   Ext.util.Cookies.set('showQuickStart', checked);
+               },
+               afterrender : function (cb) {
+                   cb.setValue(Ext.util.Cookies.get('showQuickStart'));
+               }
+           }
         }];
         
         this.currentPanel = new sitools.admin.quickStart.qsStart({
