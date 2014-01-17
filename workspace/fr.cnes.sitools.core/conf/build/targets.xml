@@ -357,6 +357,15 @@
 		propertyValue="${Tests.MYSQL_DATABASE_USER}" />
 	<fill_properties_for_test propertyName="Tests.MYSQL_DATABASE_PASSWORD"
 		propertyValue="${Tests.MYSQL_DATABASE_PASSWORD}" />
+	<!-- HSQLDB -->
+	<fill_properties_for_test propertyName="Tests.HSQLDB_DATABASE_DRIVER"
+		propertyValue="${Tests.HSQLDB_DATABASE_DRIVER}" />
+	<fill_properties_for_test propertyName="Tests.HSQLDB_DATABASE_URL"
+		propertyValue="${Tests.HSQLDB_DATABASE_URL}" />
+	<fill_properties_for_test propertyName="Tests.HSQLDB_DATABASE_USER"
+		propertyValue="${Tests.HSQLDB_DATABASE_USER}" />
+	<fill_properties_for_test propertyName="Tests.HSQLDB_DATABASE_PASSWORD"
+		propertyValue="${Tests.HSQLDB_DATABASE_PASSWORD}" />
 	<!-- MongoDB -->
 	<fill_properties_for_test propertyName="Tests.MONGODB_DATABASE_DRIVER"
 		propertyValue="${Tests.MONGODB_DATABASE_DRIVER}" />
