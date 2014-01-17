@@ -117,6 +117,9 @@ public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
     else if (ds.getDsModel().getDriverClass().equals("org.gjt.mm.mysql.Driver")) {
       jdbcStoreResource = new MYSQLUsersAndGroupsStoreResource();
     }
+    else if (ds.getDsModel().getDriverClass().equals("org.hsqldb.jdbcDriver")) {
+      jdbcStoreResource = new HSQLDBUsersAndGroupsStoreResource(ds);
+    }
     else {
       logger.severe("Incorrect JDBC Driver for JDBCUsersAndGroupsStore file");
     }
