@@ -214,7 +214,8 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
         containerP.removeAll();
         containerP.add(
             {
-                width: "100%", 
+                width: "100%",
+                bodyCssClass : 'admin-bg',
                 items : [ {
                     xtype : 's-box',
                     label : i18n.get('label.' + node.attributes.nodeName),
