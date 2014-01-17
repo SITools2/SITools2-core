@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -60,81 +60,84 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
   @Put
   public Representation action(Representation representation, Variant variant) {
     Response response = null;
+    ApplicationPluginStore store = getStore();
 
-    model = getStore().get(getAppId());
+    synchronized (store) {
+      model = store.get(getAppId());
 
-    do {
+      do {
 
-      if (model == null) {
-        response = new Response(false, "APP_PLUGIN_NOT_FOUND");
-        break;
-      }
-
-      if (this.getReference().toString().endsWith("start")) {
-        if ("ACTIVE".equals(model.getStatus())) {
-          response = new Response(false, "appPlugin.active");
+        if (model == null) {
+          response = new Response(false, "APP_PLUGIN_NOT_FOUND");
           break;
         }
 
-        try {
-          // we attach the application and start it
-          getResourceApplication().attachApplication(model, true);
-        }
-        catch (ClassNotFoundException e) {
-          response = new Response(false, "ClassNotFoundException");
-          break;
-        }
-        catch (NoSuchMethodException e) {
-          response = new Response(false, "NoSuchMethodException");
-          break;
-        }
-        catch (InstantiationException e) {
-          response = new Response(false, "InstantiationException");
-          break;
-        }
-        catch (IllegalAccessException e) {
-          response = new Response(false, "IllegalAccessException");
-          break;
-        }
-        catch (InvocationTargetException e) {
-          response = new Response(false, "InvocationTargetException");
-          break;
-        }
-        catch (Exception e) {
-          response = new Response(false, "app.plugin.create.error");
-          this.getLogger().warning(
-              "APPLICATION PLUGIN :" + model.getName() + " cannot be started, error while starting : "
-                  + model.getClassName() + e);
-          break;
-        }
-        if (getResourceApplication().isStarted()) {
-          model.setStatus("ACTIVE");
-          getStore().save(model);
+        if (this.getReference().toString().endsWith("start")) {
+          if ("ACTIVE".equals(model.getStatus())) {
+            response = new Response(false, "appPlugin.active");
+            break;
+          }
 
+          try {
+            // we attach the application and start it
+            getResourceApplication().attachApplication(model, true);
+          }
+          catch (ClassNotFoundException e) {
+            response = new Response(false, "ClassNotFoundException");
+            break;
+          }
+          catch (NoSuchMethodException e) {
+            response = new Response(false, "NoSuchMethodException");
+            break;
+          }
+          catch (InstantiationException e) {
+            response = new Response(false, "InstantiationException");
+            break;
+          }
+          catch (IllegalAccessException e) {
+            response = new Response(false, "IllegalAccessException");
+            break;
+          }
+          catch (InvocationTargetException e) {
+            response = new Response(false, "InvocationTargetException");
+            break;
+          }
+          catch (Exception e) {
+            response = new Response(false, "app.plugin.create.error");
+            this.getLogger().warning(
+                "APPLICATION PLUGIN :" + model.getName() + " cannot be started, error while starting : "
+                    + model.getClassName() + e);
+            break;
+          }
+          if (getResourceApplication().isStarted()) {
+            model.setStatus("ACTIVE");
+            store.save(model);
+
+            ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
+            response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
+            response.setMessage("appPlugin.start.success");
+          }
+          else {
+            response = new Response(false, "appPlugin.start.error");
+          }
+
+        }
+
+        if (this.getReference().toString().endsWith("stop")) {
+          if ("INACTIVE".equals(model.getStatus())) {
+            response = new Response(false, "appPlugin.inactive");
+            break;
+          }
+
+          getResourceApplication().detachApplication(model);
+          model.setStatus("INACTIVE");
+          store.save(model);
           ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
           response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
-          response.setMessage("appPlugin.start.success");
+          response.setMessage("appPlugin.stop.success");
         }
-        else {
-          response = new Response(false, "appPlugin.start.error");
-        }
-
-      }
-
-      if (this.getReference().toString().endsWith("stop")) {
-        if ("INACTIVE".equals(model.getStatus())) {
-          response = new Response(false, "appPlugin.inactive");
-          break;
-        }
-
-        getResourceApplication().detachApplication(model);
-        model.setStatus("INACTIVE");
-        getStore().save(model);
-        ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
-        response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
-        response.setMessage("appPlugin.stop.success");
-      }
-    } while (false);
+      } while (false);
+    }
 
     return getRepresentation(response, variant);
   }

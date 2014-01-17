@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -28,6 +28,7 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.project.model.Project;
 
@@ -58,140 +59,143 @@ public final class ActivationProjectResource extends AbstractProjectResource {
   public Representation action(Representation representation, Variant variant) {
     Response response = null;
     Representation rep = null;
-    try {
-      do {
-        // on charge le project
-        Project proj = getStore().retrieve(getProjectId());
-        if (proj == null) {
-          response = new Response(false, "PROJECT_NOT_FOUND");
-          break;
-        }
-
-        if (this.getReference().toString().endsWith("start")) {
-          if ("ACTIVE".equals(proj.getStatus())) {
-            response = new Response(true, "project.update.blocked");
+    SitoolsStore<Project> store = getStore();
+    synchronized (store) {
+      try {
+        do {
+          // on charge le project
+          Project proj = store.retrieve(getProjectId());
+          if (proj == null) {
+            response = new Response(false, "PROJECT_NOT_FOUND");
             break;
           }
-          try {
-            getProjectApplication().attachProject(proj);
 
-            proj.setStatus("ACTIVE"); // TODO dans le start application.
+          if (this.getReference().toString().endsWith("start")) {
+            if ("ACTIVE".equals(proj.getStatus())) {
+              response = new Response(true, "project.update.blocked");
+              break;
+            }
+            try {
+              getProjectApplication().attachProject(proj);
 
-            Project projResult = getStore().update(proj);
+              proj.setStatus("ACTIVE"); // TODO dans le start application.
 
-            response = new Response(true, projResult, Project.class, "project");
-            response.setMessage("project.update.success");
+              Project projResult = store.update(proj);
 
-            // Notify observers
-            Notification notification = new Notification();
-            notification.setObservable(projResult.getId());
-            notification.setStatus(projResult.getStatus());
-            notification.setMessage("project.update.success");
-            getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+              response = new Response(true, projResult, Project.class, "project");
+              response.setMessage("project.update.success");
 
+              // Notify observers
+              Notification notification = new Notification();
+              notification.setObservable(projResult.getId());
+              notification.setStatus(projResult.getStatus());
+              notification.setMessage("project.update.success");
+              getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+
+            }
+            catch (Exception e) {
+              response = new Response(false, "project.update.error");
+              throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+            }
+            break;
           }
-          catch (Exception e) {
-            response = new Response(false, "project.update.error");
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-          }
-          break;
-        }
 
-        if (this.getReference().toString().endsWith("stop")) {
-          if (!"ACTIVE".equals(proj.getStatus())) {
+          if (this.getReference().toString().endsWith("stop")) {
+            if (!"ACTIVE".equals(proj.getStatus())) {
 
-            // Par mesure de securite
+              // Par mesure de securite
+              try {
+                getProjectApplication().detachProject(proj);
+                proj.setStatus("INACTIVE"); // TODO dans le stop application.
+                store.update(proj);
+              }
+              catch (Exception e) {
+                throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+              }
+
+              response = new Response(true, "project.stop.blocked");
+              break;
+            }
+
+            // FIXME Transaction de desactivation d'un project
             try {
               getProjectApplication().detachProject(proj);
               proj.setStatus("INACTIVE"); // TODO dans le stop application.
-              getStore().update(proj);
+              Project projResult = store.update(proj);
+
+              response = new Response(true, projResult, Project.class, "project");
+              response.setMessage("project.stop.success");
+
+              // Notify observers
+              Notification notification = new Notification();
+              notification.setObservable(projResult.getId());
+              notification.setStatus(projResult.getStatus());
+              notification.setMessage("project.stop.success");
+              getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
             }
             catch (Exception e) {
+              response = new Response(false, "project.stop.error");
               throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
             }
+            break;
+          }
+          if (this.getReference().toString().endsWith("startmaintenance")) {
+            try {
+              if (proj.isMaintenance()) {
+                response = new Response(true, "project.maintenance.on.blocked");
+                break;
+              }
 
-            response = new Response(true, "project.stop.blocked");
+              getProjectApplication().detachProject(proj);
+              proj.setMaintenance(true);
+              Project projResult = store.update(proj);
+
+              getProjectApplication().attachProject(proj);
+
+              response = new Response(true, projResult, Project.class, "project");
+              response.setMessage("project.maintenance.on.success");
+
+            }
+            catch (Exception e) {
+              response = new Response(false, "project.update.error");
+              throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+            }
+            break;
+          }
+          if (this.getReference().toString().endsWith("stopmaintenance")) {
+            try {
+              if (!proj.isMaintenance()) {
+                response = new Response(true, "project.maintenance.off.blocked");
+                break;
+              }
+
+              getProjectApplication().detachProject(proj);
+              proj.setMaintenance(false);
+              Project projResult = store.update(proj);
+
+              getProjectApplication().attachProject(proj);
+
+              response = new Response(true, projResult, Project.class, "project");
+              response.setMessage("project.maintenance.off.success");
+
+            }
+            catch (Exception e) {
+              response = new Response(false, "project.update.error");
+              throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+            }
             break;
           }
 
-          // FIXME Transaction de desactivation d'un project
-          try {
-            getProjectApplication().detachProject(proj);
-            proj.setStatus("INACTIVE"); // TODO dans le stop application.
-            Project projResult = getStore().update(proj);
+        } while (false);
 
-            response = new Response(true, projResult, Project.class, "project");
-            response.setMessage("project.stop.success");
-
-            // Notify observers
-            Notification notification = new Notification();
-            notification.setObservable(projResult.getId());
-            notification.setStatus(projResult.getStatus());
-            notification.setMessage("project.stop.success");
-            getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-          }
-          catch (Exception e) {
-            response = new Response(false, "project.stop.error");
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-          }
-          break;
+        // Response
+        if (response == null) {
+          response = new Response(false, "project.action.error");
         }
-        if (this.getReference().toString().endsWith("startmaintenance")) {
-          try {
-            if (proj.isMaintenance()) {
-              response = new Response(true, "project.maintenance.on.blocked");
-              break;
-            }
-
-            getProjectApplication().detachProject(proj);
-            proj.setMaintenance(true);
-            Project projResult = getStore().update(proj);
-
-            getProjectApplication().attachProject(proj);
-
-            response = new Response(true, projResult, Project.class, "project");
-            response.setMessage("project.maintenance.on.success");
-
-          }
-          catch (Exception e) {
-            response = new Response(false, "project.update.error");
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-          }
-          break;
-        }
-        if (this.getReference().toString().endsWith("stopmaintenance")) {
-          try {
-            if (!proj.isMaintenance()) {
-              response = new Response(true, "project.maintenance.off.blocked");
-              break;
-            }
-
-            getProjectApplication().detachProject(proj);
-            proj.setMaintenance(false);
-            Project projResult = getStore().update(proj);
-
-            getProjectApplication().attachProject(proj);
-
-            response = new Response(true, projResult, Project.class, "project");
-            response.setMessage("project.maintenance.off.success");
-
-          }
-          catch (Exception e) {
-            response = new Response(false, "project.update.error");
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-          }
-          break;
-        }
-
-      } while (false);
-
-      // Response
-      if (response == null) {
-        response = new Response(false, "project.action.error");
       }
-    }
-    finally {
-      rep = getRepresentation(response, variant);
+      finally {
+        rep = getRepresentation(response, variant);
+      }
     }
     return rep;
   }

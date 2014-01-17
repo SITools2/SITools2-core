@@ -82,63 +82,64 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
   public Representation action(Representation representation, Variant variant) {
     Response response = null;
     Representation rep = null;
-    try {
-      do {
-
-        // on charge le dataset
-        DataSet ds = store.retrieve(datasetId);
-        if (ds == null) {
-          response = new Response(false, "DATASET_NOT_FOUND");
-          break;
-        }
-
-        if (this.getReference().toString().endsWith("start")) {
-          response = this.startDataset(ds);
-          break;
-        }
-
-        if (this.getReference().toString().endsWith("stop")) {
-          response = this.stopDataset(ds);
-          break;
-        }
-
-        if (this.getReference().toString().endsWith("getSqlString")) {
-          try {
-            response = new Response(true, getRequestString(ds));
+    synchronized (store) {
+      try {
+        do {
+          // on charge le dataset
+          DataSet ds = store.retrieve(datasetId);
+          if (ds == null) {
+            response = new Response(false, "DATASET_NOT_FOUND");
+            break;
           }
-          catch (Exception e) {
-            getLogger().log(Level.INFO, null, e);
-            response = new Response(false, "dataset.stop.error");
+
+          if (this.getReference().toString().endsWith("start")) {
+            response = this.startDataset(ds);
+            break;
           }
-          break;
-        }
-        if (this.getReference().toString().endsWith("refreshNotion")) {
-          try {
-            if (ds.getDirty()) {
-              store.update(ds);
-              response = new Response(true, ds, DataSet.class, "dataset");
+
+          if (this.getReference().toString().endsWith("stop")) {
+            response = this.stopDataset(ds);
+            break;
+          }
+
+          if (this.getReference().toString().endsWith("getSqlString")) {
+            try {
+              response = new Response(true, getRequestString(ds));
             }
-            else {
-              response = new Response(false, "dataset.not.dirty");
+            catch (Exception e) {
+              getLogger().log(Level.INFO, null, e);
+              response = new Response(false, "dataset.stop.error");
             }
+            break;
+          }
+          if (this.getReference().toString().endsWith("refreshNotion")) {
+            try {
+              if (ds.getDirty()) {
+                store.update(ds);
+                response = new Response(true, ds, DataSet.class, "dataset");
+              }
+              else {
+                response = new Response(false, "dataset.not.dirty");
+              }
 
+            }
+            catch (Exception e) {
+              getLogger().log(Level.INFO, null, e);
+              response = new Response(false, "dataset.stop.error");
+            }
+            break;
           }
-          catch (Exception e) {
-            getLogger().log(Level.INFO, null, e);
-            response = new Response(false, "dataset.stop.error");
-          }
-          break;
+
+        } while (false);
+
+        // Response
+        if (response == null) {
+          response = new Response(false, "dataset.action.error");
         }
-
-      } while (false);
-
-      // Response
-      if (response == null) {
-        response = new Response(false, "dataset.action.error");
       }
-    }
-    finally {
-      rep = getRepresentation(response, variant);
+      finally {
+        rep = getRepresentation(response, variant);
+      }
     }
 
     return rep;
@@ -308,7 +309,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
    *           throws SitoolsException
    */
   protected int getTotalResults(DataSet ds, List<Structure> structures, List<Column> columns, List<Predicat> predicats)
-    throws SitoolsException {
+      throws SitoolsException {
 
     int totalResults;
 

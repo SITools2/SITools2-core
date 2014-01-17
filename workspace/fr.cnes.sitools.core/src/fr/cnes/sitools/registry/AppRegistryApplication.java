@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,6 +19,8 @@
 package fr.cnes.sitools.registry;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,6 +36,7 @@ import org.restlet.routing.VirtualHost;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
+import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
@@ -223,9 +226,19 @@ public final class AppRegistryApplication extends SitoolsApplication {
     }
     addApplication(app);
 
-    // REGISTER MYSELF
+    // REGISTER MYSELF BUT REMOVE ALL PREVIOUSlY REGISTERED ONES
     if (app == this) {
-      resourceManager.getResources().add(this.wrapToResource());
+      Resource appRegisteryAppWrapedToResource = this.wrapToResource();
+      List<Resource> resources = resourceManager.getResources();
+      for (Iterator<Resource> iterator = resources.iterator(); iterator.hasNext();) {
+        Resource resource = (Resource) iterator.next();
+        if ((resource.getId() != null) && (resource.getId().equals(appRegisteryAppWrapedToResource.getId()))) {
+          // Mise a jour d'un element deja existant
+          iterator.remove();
+        }
+        // Ou ajout d'un nouvel element avec son identifiant
+      }
+      resourceManager.getResources().add(appRegisteryAppWrapedToResource);
       resourceManager.setLastUpdate(new Date().toString());
       getStore().update(resourceManager);
     }
