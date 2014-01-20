@@ -107,6 +107,7 @@ sitools.admin.quickStart.qsProject = Ext.extend(Ext.Panel, {
                                             target : 'qs-projet-logo',
                                             anchor: 'left',
                                             autoShow : true,
+                                            showDelay : 0,
                                             html : "<b>Open Project</b>"
                                         });
                                         

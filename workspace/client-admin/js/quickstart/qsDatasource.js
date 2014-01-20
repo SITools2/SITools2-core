@@ -105,6 +105,7 @@ sitools.admin.quickStart.qsDatasource = Ext.extend(Ext.Panel, {
                                         target : 'qs-datasource-logo',
                                         anchor: 'left',
                                         autoShow : true,
+                                        showDelay : 0,
                                         html : "<b>Open Datasource</b>"
                                     });
                                     

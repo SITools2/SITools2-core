@@ -104,6 +104,7 @@ sitools.admin.quickStart.qsDataset = Ext.extend(Ext.Panel, {
                                             target : 'qs-dataset-logo',
                                             anchor: 'left',
                                             autoShow : true,
+                                            showDelay : 0,
                                             html : "<b>Open Dataset</b>"
                                         });
                                         

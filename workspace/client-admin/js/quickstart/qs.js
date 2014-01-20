@@ -41,6 +41,8 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     new Ext.ToolTip({
                         target : 'qsStart',
                         anchor: 'top',
+                        showDelay : 0,
+                        hideDelay : 0,
                         html : "Start"
                     });
                 }
@@ -61,6 +63,8 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     new Ext.ToolTip({
                         target : 'qsProject',
                         anchor: 'top',
+                        showDelay : 0,
+                        hideDelay : 0,
                         html : "Project"
                     });
                 }
@@ -81,6 +85,8 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     new Ext.ToolTip({
                         target : 'qsDatasource',
                         anchor: 'top',
+                        showDelay : 0,
+                        hideDelay : 0,
                         html : "Datasource"
                     });
                 }
@@ -101,6 +107,8 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     new Ext.ToolTip({
                         target : 'qsDataset',
                         anchor: 'top',
+                        showDelay : 0,
+                        hideDelay : 0,
                         html : "Dataset"
                     });
                 }
@@ -121,6 +129,8 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     new Ext.ToolTip({
                         target : 'qsForm',
                         anchor: 'top',
+                        showDelay : 0,
+                        hideDelay : 0,
                         html : "Form"
                     });
                 }
@@ -141,6 +151,8 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                     new Ext.ToolTip({
                         target : 'qsSecurity',
                         anchor: 'top',
+                        showDelay : 0,
+                        hideDelay : 0,
                         html : "Security"
                     });
                 }
@@ -216,6 +228,7 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
             {
                 width: "100%",
                 bodyCssClass : 'admin-bg',
+                icon : node.attributes.icon,
                 items : [ {
                     xtype : 's-box',
                     label : i18n.get('label.' + node.attributes.nodeName),
@@ -223,7 +236,7 @@ sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
                         xtype : 's-' + node.attributes.nodeName,
                         sitoolsType : "mainAdminPanel"
                     } ],
-                    idItem : node.attributes.nodeId
+                    idItem : node.attributes.id
                 } ], 
                 listeners : {
                     resize : function (panel, width, height) {

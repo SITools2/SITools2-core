@@ -107,6 +107,7 @@ sitools.admin.quickStart.qsForm = Ext.extend(Ext.Panel, {
                                             target : 'qs-form-logo',
                                             anchor: 'left',
                                             autoShow : true,
+                                            showDelay : 0,
                                             html : "<b>Open Form</b>"
                                         });
                                         

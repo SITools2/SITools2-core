@@ -227,7 +227,7 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
         if (advancedModeAvailable) {
             var openModuleFitsLabel = new Ext.Button({
                 cls : 'link-style',
-                text : 'Open FITS in Advanced Mode',
+                text : i18n.get('label.openAdvancedMode'),
                 scope : this,
                 handler : this.openAdvancedMode
             });

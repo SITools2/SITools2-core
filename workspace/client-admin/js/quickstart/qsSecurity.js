@@ -88,6 +88,7 @@ sitools.admin.quickStart.qsSecurity = Ext.extend(Ext.Panel, {
                             target : 'qs-user-logo',
                             anchor: 'right',
                             autoShow : true,
+                            showDelay : 0,
                             html : "<b>Open User</b>"
                         });
                         
@@ -110,7 +111,8 @@ sitools.admin.quickStart.qsSecurity = Ext.extend(Ext.Panel, {
                 },
                 afterrender : function (group) {
                     Ext.get("qs-share-logo").on('load', function () {
-                        group.getEl().alignTo("qs-user-logo", "tr",  [82, 50]);
+//                        group.getEl().alignTo("qs-user-logo", "tr",  [82, 50]);
+                        group.getEl().alignTo(this.getEl(), "c-c", [-10, -25]);
                     }, this);
                 }
             }
@@ -141,12 +143,14 @@ sitools.admin.quickStart.qsSecurity = Ext.extend(Ext.Panel, {
                             this.qs.openFeature("grpNodeId");
                         }, this);
                         
-                        group.getEl().alignTo("qs-share-logo", "bl",  [-35, 28]);
-                        
+//                        group.getEl().alignTo("qs-share-logo", "bl",  [-35, 28]);
+                        group.getEl().alignTo(this.getEl(), "c-b", [-6, -60]);
+
                         new Ext.ToolTip({
                             target : 'qs-group-logo',
                             anchor: 'bottom',
                             autoShow : true,
+                            showDelay : 0,
                             html : "<b>Open Group</b>"
                         });
                         
@@ -186,6 +190,7 @@ sitools.admin.quickStart.qsSecurity = Ext.extend(Ext.Panel, {
                             target : 'qs-role-logo',
                             anchor: 'left',
                             autoShow : true,
+                            showDelay : 0,
                             html : "<b>Open Role</b>"
                         });
                         
@@ -199,47 +204,6 @@ sitools.admin.quickStart.qsSecurity = Ext.extend(Ext.Panel, {
         this.items = [title, desc, imgUser, imgShare, imgGroup, imgRole];
         
         sitools.admin.quickStart.qsSecurity.superclass.initComponent.call(this);
-    },
-    
-    openUser : function () {
-        var containerP = mainPanel.find('name', 'containerPanel')[0];
-        var tree = treePanel.items.items[0];
-        
-        var node = tree.getNodeById("datasetsSqlNodeId");
-        tree.getSelectionModel().select(node);
-        
-        containerP.removeAll();
-        containerP.add(
-            {
-                width: "100%", 
-                items : [ {
-                    xtype : 's-box',
-                    label : i18n.get('label.' + node.attributes.nodeName),
-                    items : [ {
-                        xtype : 's-' + node.attributes.nodeName, 
-                        sitoolsType : "mainAdminPanel"
-                    } ],
-                    idItem : node.attributes.nodeId
-                } ], 
-                listeners : {
-                    resize : function (panel, width, height) {
-                        var size = panel.items.items[0].body.getSize();
-                        var sBoxTitle = panel.items.items[0].items.items[0].getEl();
-                        size = {
-                            height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargins("t") + sBoxTitle.getMargins("b")), 
-                            width : size.width - 8
-                        };
-                        var mainAdminPanel = panel.find("sitoolsType", "mainAdminPanel");
-                        mainAdminPanel[0].setSize(size);
-                    }
-                }
-            });
-        containerP.doLayout();
-    },
-    
-    openGroup : function () {
-        
-    }
-    
+    }    
 });
 

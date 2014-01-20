@@ -58,7 +58,7 @@ sitools.admin.quickStart.qsStart = Ext.extend(Ext.Panel, {
         });
         
         var img = new Ext.form.Label({
-            html : '<img id="qs-logo" src="/sitools/client-admin/res/html/quickStart/icons/quick_start_logo.png"/>',
+            html : '<img id="qs-logo" class="bouton_action" src="/sitools/client-admin/res/html/quickStart/icons/quick_start_logo.png"/>',
             listeners : {
                 render : function (img) {
                     img.getEl().fadeIn({
@@ -86,10 +86,13 @@ sitools.admin.quickStart.qsStart = Ext.extend(Ext.Panel, {
                              target : 'qs-logo',
                              anchor: 'right',
                              autoShow : true,
+                             showDelay : 0,
+                             floating : true,
                              html : "<b>Begin</b>"
                          });
                          
                          sitools.getEl().alignTo("start-desc", "tr-br");
+                         
                     }, this);
                 }
             }
@@ -101,8 +104,3 @@ sitools.admin.quickStart.qsStart = Ext.extend(Ext.Panel, {
     }
     
 });
-
-sitools.admin.quickStart.qsStart.openProject = function () {
-    alert('toto');
-};
-
