@@ -110,16 +110,21 @@
 				<choice txt="mysql" id="input.mysql.label" value="mysql" />
 				<choice txt="postgresql" id="input.postgresql.label" value="postgresql"
 					set="true" />
+				<choice txt="hsqldb" id="input.hsqldb.label" value="hsqldb"
+					set="false" />
 			</spec>
 		</field>
-		<field type="text" variable="input.database.hostname">
+	</panel>
+	<panel order="2">
+		<field type="text" variable="input.database.hostname"
+			conditionid="NotHsqldbSelected">
 			<spec txt="Database host name: " set="localhost"
 				id="input.database.hostname.label" size="15" />
 			<validator class="com.izforge.izpack.util.NotEmptyValidator"
 				id="catalog.database.name.validator" txt="hostname is a required field" />
 		</field>
 
-		<field type="text" variable="input.database.port">
+		<field type="text" variable="input.database.port" conditionid="NotHsqldbSelected">
 			<spec txt="Database port: " id="input.database.port.label" size="15"
 				set="5432" />
 			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
@@ -127,6 +132,15 @@
 				<param name="pattern" value="\d+" />
 			</validator>
 		</field>
+		
+		<field type="text" variable="input.database.filepath"
+			conditionid="hsqldbSelected">
+			<spec txt="Database file path: " set="${INSTALL_PATH}/data/HSQLDB"
+				id="input.database.hostname.label" size="15" />
+			<validator class="com.izforge.izpack.util.NotEmptyValidator"
+				id="catalog.database.name.validator" txt="Database filePath is a required field" />
+		</field>
+		
 		<field type="text" variable="input.database.name">
 			<spec txt="Database name: " id="input.database.name.label" size="15"
 				set="CNES" />
@@ -152,14 +166,15 @@
 		</field>
 		
 		<field type="radio" variable="dbInstallSelected">
-			<description align="left" txt="Do you want to install the SITools2 User Database ?"
-				id="input.db_installed"/>
+			<description align="left"
+				txt="Do you want to install the SITools2 User Database ?" id="input.db_installed" />
 			<spec>
 				<choice txt="Yes" id="input.db_installed.yes" value="true" />
-				<choice txt="No" id="input.db_installed.no" value="false" set="true" />
+				<choice txt="No" id="input.db_installed.no" value="false"
+					set="true" />
 			</spec>
 		</field>
-		
+
 	</panel>
 	<!-- END OF DATABASE PROPERTIES -->
 

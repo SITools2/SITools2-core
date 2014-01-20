@@ -30,6 +30,7 @@ import com.izforge.izpack.installer.AutomatedInstallData;
 import com.izforge.izpack.installer.DataValidator;
 
 import fr.cnes.sitools.izpack.model.JDBCConnectionModel;
+import fr.cnes.sitools.izpack.model.JDBCConnectionModelFactory;
 
 /**
  * IzPackValidator for JDBCConnexion Validate that the connection settings
@@ -62,6 +63,9 @@ public class JDBCConnectionValidator implements DataValidator {
   public Status validateData(AutomatedInstallData aid) {
     trace = new ArrayList<String>();
     this.mapParams(aid);
+    if (jdbcModel.getDbType().equals("hsqldb")) {
+      return Status.OK;
+    }
     return testDatasource();
 
   }
@@ -174,7 +178,7 @@ public class JDBCConnectionValidator implements DataValidator {
    *          the data
    */
   private void mapParams(AutomatedInstallData aid) {
-    jdbcModel = new JDBCConnectionModel(aid);
+    jdbcModel = JDBCConnectionModelFactory.getModel(aid);
 
   }
 }

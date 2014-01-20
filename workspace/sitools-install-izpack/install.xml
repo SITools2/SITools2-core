@@ -24,6 +24,7 @@
 	<!-- JDBC database drivers -->
 	<jar src="lib/postgresql-8.3-603.jdbc3.jar" />
 	<jar src="lib/mysql-connector-java-5.1.7-bin.jar" />
+	<jar src="lib/hsqldb.jar" />
 	<info>
 		<appname>Sitools2</appname>
 		<appversion>2.2.2</appversion>
@@ -83,6 +84,13 @@
 			<name>input.database.driver</name>
 			<value>mysql</value>
 		</condition>
+		<condition type="variable" id="hsqldbSelected">
+			<name>input.database.driver</name>
+			<value>hsqldb</value>
+		</condition>
+		<condition type="not" id="NotHsqldbSelected">
+		    <condition type="ref" refid="hsqldbSelected" />
+		</condition>
 
 	</conditions>
 
@@ -99,7 +107,13 @@
 			condition="postgresqlSelected" />
 		<variable name="db_driver" value="org.postgresql.Driver"
 			condition="postgresqlSelected" />
-			<variable name="smtpUrl" value="${smtpServer}:${smtpPort}"/>
+		<!-- HSQLDB -->
+		<variable name="db_url"
+			value="jdbc:${input.database.driver}:file://${input.database.filepath}/${input.database.name}"
+			condition="hsqldbSelected" />
+		<variable name="db_driver" value="org.hsqldb.jdbcDriver"
+			condition="hsqldbSelected" />
+		<variable name="smtpUrl" value="${smtpServer}:${smtpPort}"/>
 	</dynamicvariables>
 
 	<panels>
@@ -108,7 +122,8 @@
 		<panel classname="TreePacksPanel" />
 		<panel classname="TargetPanel" />
 		<panel classname="UserInputPanel" id="UserInputPanel.0" />
-		<panel classname="UserInputPanel" id="UserInputPanel.1">
+		<panel classname="UserInputPanel" id="UserInputPanel.1"/>
+		<panel classname="UserInputPanel" id="UserInputPanel.2">
 			<!-- Database validator -->
 			<validator classname="fr.cnes.sitools.izpack.validator.JDBCConnectionValidator" />
 		</panel>
@@ -251,11 +266,34 @@
 		<!-- DATABASE -->
 		<pack name="database" preselected="yes" required="yes" parent="Server">
 			<description>Database creation scripts</description>
-			<fileset override="true" dir="../../database" targetdir="$INSTALL_PATH/database" excludes="**/pgsql_sitools.sql"/>
+			<fileset override="true" dir="../../database" targetdir="$INSTALL_PATH/database" excludes="**/pgsql_sitools.sql">
+				<exclude name="**/pgsql_sitools.sql"/>
+				<exclude name="**/SITOOLS_CREATE_SCHEMA.sql"/>
+				<exclude name="**/SITOOLS_CREATE_TABLES.sql"/>
+				<exclude name="**/SITOOLS_INSERT_DATA.sql"/>
+			</fileset>
+			<!-- POSTGRESQL -->
 			<file override="true" src="$resPath/database/PGSQL/pgsql_sitools.sql"
 				targetdir="$INSTALL_PATH/database/PGSQL" />
 			<parsable encoding="UTF-8"
 				targetfile="$INSTALL_PATH/database/PGSQL/pgsql_sitools.sql" type="ant" />			
+
+			<!-- HSQLDB -->
+			<file override="true" src="$resPath/database/HSQLDB/SITOOLS_CREATE_SCHEMA.sql"
+				targetdir="$INSTALL_PATH/database/HSQLDB" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/database/HSQLDB/SITOOLS_CREATE_SCHEMA.sql" type="ant" />			
+
+			<file override="true" src="$resPath/database/HSQLDB/SITOOLS_CREATE_TABLES.sql"
+				targetdir="$INSTALL_PATH/database/HSQLDB" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/database/HSQLDB/SITOOLS_CREATE_TABLES.sql" type="ant" />			
+
+			<file override="true" src="$resPath/database/HSQLDB/SITOOLS_INSERT_DATA.sql"
+				targetdir="$INSTALL_PATH/database/HSQLDB" />
+			<parsable encoding="UTF-8"
+				targetfile="$INSTALL_PATH/database/HSQLDB/SITOOLS_INSERT_DATA.sql" type="ant" />
+										
 		</pack>
 		<!-- END OF SERVER PACKS SERVER EXTENSIONS -->
 		<pack name="Server extensions" preselected="yes" required="no">

@@ -18,6 +18,7 @@
 	<str id="input.database.description.label" txt="Please, fill the following form for the user database management"/>
 	<str id="input.postgresql.label" txt="PostGreSQL"/>
 	<str id="input.mysql.label" txt="MySQL"/>
+	<str id="input.hsqldb.label" txt="HSQLDB"/>
 	<str id="input.database.hostname.label" txt="Database Hostname*"/>
 	<str id="input.database.port.label" txt="Database Port*"/>
 	<str id="input.database.name.label" txt="Database name*"/>

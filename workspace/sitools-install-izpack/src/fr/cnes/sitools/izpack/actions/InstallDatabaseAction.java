@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -37,161 +37,171 @@ import com.izforge.izpack.installer.ScriptParser;
 import com.izforge.izpack.util.AbstractUIProgressHandler;
 
 import fr.cnes.sitools.izpack.model.JDBCConnectionModel;
+import fr.cnes.sitools.izpack.model.JDBCConnectionModelFactory;
 
 public class InstallDatabaseAction extends SimpleInstallerListener {
 
-	/** List of MySQL files for user database */
-	private ArrayList<String> listMySQLFiles;
+  /** List of MySQL files for user database */
+  private ArrayList<String> listMySQLFiles;
 
-	/** List of Postgresql files for user database */
-	private ArrayList<String> listPostgreSQLFiles;
+  /** List of Postgresql files for user database */
+  private ArrayList<String> listPostgreSQLFiles;
 
-	/**
-	 * The model of the connection model
-	 */
-	private JDBCConnectionModel jdbcModel;
+  /** List of HSQLDB files for user database */
+  private ArrayList<String> listHSQLDBFiles;
 
-	public InstallDatabaseAction() throws Exception {
-		super();
-		listMySQLFiles = new ArrayList<String>();
-		listMySQLFiles.add("database/MYSQL_CNES/cnes_GROUPS.sql");
-		listMySQLFiles.add("database/MYSQL_CNES/cnes_USER_GROUP.sql");
-		listMySQLFiles.add("database/MYSQL_CNES/cnes_USER_PROPERTIES.sql");
-		listMySQLFiles.add("database/MYSQL_CNES/cnes_USERS.sql");
+  /**
+   * The model of the connection model
+   */
+  private JDBCConnectionModel jdbcModel;
 
-		// List of Postgresql files for user database
-		listPostgreSQLFiles = new ArrayList<String>();
-		listPostgreSQLFiles.add("database/PGSQL/pgsql_sitools.sql");
-	}
+  public InstallDatabaseAction() throws Exception {
+    super();
+    listMySQLFiles = new ArrayList<String>();
+    listMySQLFiles.add("database/MYSQL_CNES/cnes_GROUPS.sql");
+    listMySQLFiles.add("database/MYSQL_CNES/cnes_USER_GROUP.sql");
+    listMySQLFiles.add("database/MYSQL_CNES/cnes_USER_PROPERTIES.sql");
+    listMySQLFiles.add("database/MYSQL_CNES/cnes_USERS.sql");
 
-	@Override
-	public void afterPacks(AutomatedInstallData arg0,
-			AbstractUIProgressHandler arg1) throws Exception {
-		super.afterPacks(arg0, arg1);
+    // List of Postgresql files for user database
+    listPostgreSQLFiles = new ArrayList<String>();
+    listPostgreSQLFiles.add("database/PGSQL/pgsql_sitools.sql");
 
-		boolean installDBSelected = Boolean.parseBoolean(getInstalldata()
-				.getVariable("dbInstallSelected"));
+    // List of HSQLDB files for user database
+    listHSQLDBFiles = new ArrayList<String>();
+    listHSQLDBFiles.add("database/HSQLDB/SITOOLS_CREATE_SCHEMA.sql");
+    listHSQLDBFiles.add("database/HSQLDB/SITOOLS_CREATE_TABLES.sql");
+    listHSQLDBFiles.add("database/HSQLDB/SITOOLS_INSERT_DATA.sql");
+  }
 
-		if (!installDBSelected) {
-			return;
-		}
+  @Override
+  public void afterPacks(AutomatedInstallData arg0, AbstractUIProgressHandler arg1) throws Exception {
+    super.afterPacks(arg0, arg1);
+    boolean installDBSelected = Boolean.parseBoolean(getInstalldata().getVariable("dbInstallSelected"));
 
-		ArrayList<String> fileList = prepareInstallation();
-		installDatabase(jdbcModel, fileList);
-	}
+    if (!installDBSelected) {
+      return;
+    }
 
-	/**
-	 * Map the ProcessingClient parameters to the class properties.
-	 * 
-	 * @param aid
-	 *            the data
-	 */
-	private ArrayList<String> prepareInstallation() {
+    ArrayList<String> fileList = prepareInstallation();
+    installDatabase(jdbcModel, fileList);
+  }
 
-		jdbcModel = new JDBCConnectionModel(getInstalldata());
+  /**
+   * Map the ProcessingClient parameters to the class properties.
+   * 
+   * @param aid
+   *          the data
+   */
+  private ArrayList<String> prepareInstallation() {
 
-		ArrayList<String> fileList;
+    jdbcModel = JDBCConnectionModelFactory.getModel(getInstalldata());
 
-		if (jdbcModel.getDbType().equals("mysql")) {
-			fileList = this.listMySQLFiles;
-		} else {
-			fileList = this.listPostgreSQLFiles;
-		}
+    ArrayList<String> fileList;
 
-		return fileList;
-	}
+    if (jdbcModel.getDbType().equals("mysql")) {
+      fileList = this.listMySQLFiles;
+    }
+    else if (jdbcModel.getDbType().equals("postgresql")) {
+      fileList = this.listPostgreSQLFiles;
+    }
+    else {
+      fileList = this.listHSQLDBFiles;
+    }
 
-	/**
-	 * Install database
-	 * 
-	 * @param jdbcModel
-	 *            the JDBC model
-	 * @param fileList
-	 *            the file list
-	 * @throws Exception
-	 *             when occurs
-	 */
-	private void installDatabase(JDBCConnectionModel jdbcModel,
-			ArrayList<String> fileList) throws Exception {
-		Connection cnx = null;
-		Statement stat = null;
-		PrintStream out = System.out;
-		String installPath = getInstalldata().getVariable(
-				ScriptParser.INSTALL_PATH);
-		try {
-			do {
-				out.println("Test jdbc data source connection ...");
+    return fileList;
+  }
 
-				Class.forName(jdbcModel.getDbDriverClassName());
-				out.println("Load driver class : OK");
+  /**
+   * Install database
+   * 
+   * @param jdbcModel
+   *          the JDBC model
+   * @param fileList
+   *          the file list
+   * @throws Exception
+   *           when occurs
+   */
+  private void installDatabase(JDBCConnectionModel jdbcModel, ArrayList<String> fileList) throws Exception {
+    Connection cnx = null;
+    Statement stat = null;
+    PrintStream out = System.out;
+    String installPath = getInstalldata().getVariable(ScriptParser.INSTALL_PATH);
+    try {
+      do {
+        out.println("Test jdbc data source connection ..." + jdbcModel.getDbUrl());
 
-				out.println("Get connection ");
+        Class.forName(jdbcModel.getDbDriverClassName());
+        out.println("Load driver class : OK");
 
-				cnx = DriverManager.getConnection(jdbcModel.getDbUrl(),
-						jdbcModel.getDbUser(), jdbcModel.getDbPassword());
+        out.println("Get connection ");
 
-				out.println("Loop through the files");
-				String ligne;
-				String request;
-				for (Iterator<String> iterator = fileList.iterator(); iterator
-						.hasNext();) {
+        cnx = DriverManager.getConnection(jdbcModel.getDbUrl(), jdbcModel.getDbUser(), jdbcModel.getDbConnectionPassword());
 
-					String fileName = installPath + "/" + iterator.next();
+        out.println("Loop through the files");
+        String ligne;
+        String request;
+        for (Iterator<String> iterator = fileList.iterator(); iterator.hasNext();) {
 
-					out.println("File :  " + fileName);
+          String fileName = installPath + "/" + iterator.next();
 
-					InputStream ips = new FileInputStream(fileName);
-					InputStreamReader ipsr = new InputStreamReader(ips);
-					BufferedReader br = new BufferedReader(ipsr);
-					request = "";
+          out.println("File :  " + fileName);
 
-					StringBuilder stringBuilder = new StringBuilder();
-					String ls = System.getProperty("line.separator");
-					while ((ligne = br.readLine()) != null) {
-						stringBuilder.append(ligne);
-						stringBuilder.append(ls);
-					}
-					request = stringBuilder.toString();
-					br.close();
+          InputStream ips = new FileInputStream(fileName);
+          InputStreamReader ipsr = new InputStreamReader(ips);
+          BufferedReader br = new BufferedReader(ipsr);
+          request = "";
 
-					out.flush();
-					stringBuilder = null;
+          StringBuilder stringBuilder = new StringBuilder();
+          String ls = System.getProperty("line.separator");
+          while ((ligne = br.readLine()) != null) {
+            stringBuilder.append(ligne);
+            stringBuilder.append(ls);
+          }
+          request = stringBuilder.toString();
+          br.close();
 
-					try {
+          out.flush();
+          stringBuilder = null;
 
-						// stat = cnx.prepareStatement(request);
-						cnx.setAutoCommit(false);
-						stat = cnx.createStatement();
-						stat.execute(request);
-						// stat.execute();
-						cnx.commit();
-						stat.close();
+          try {
+            // stat = cnx.prepareStatement(request);
+            cnx.setAutoCommit(false);
+            stat = cnx.createStatement();
+            stat.execute(request);
+            // stat.execute();
+            cnx.commit();
+            stat.close();
 
-					} catch (Exception e) {
-						throw new InstallerException(
-								"Warning there was an error while installing the databases :\n "
-										+ e.getLocalizedMessage(), e);
-					}
-					out.println("Execute statement on connection : OK");
-				}
-			} while (false);
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (stat != null) {
-				try {
-					stat.close();
-				} catch (SQLException e) {
-					throw e;
-				}
-			}
-			if (cnx != null) {
-				try {
-					cnx.close();
-				} catch (SQLException e) {
-					throw e;
-				}
-			}
-		}
-	}
+          }
+          catch (Exception e) {
+            throw new InstallerException("Warning there was an error while installing the databases :\n "
+                + e.getLocalizedMessage(), e);
+          }
+          out.println("Execute statement on connection : OK");
+        }
+      } while (false);
+    }
+    catch (Exception e) {
+      throw e;
+    }
+    finally {
+      if (stat != null) {
+        try {
+          stat.close();
+        }
+        catch (SQLException e) {
+          throw e;
+        }
+      }
+      if (cnx != null) {
+        try {
+          cnx.close();
+        }
+        catch (SQLException e) {
+          throw e;
+        }
+      }
+    }
+  }
 }

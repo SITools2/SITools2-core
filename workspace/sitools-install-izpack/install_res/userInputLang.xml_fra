@@ -19,6 +19,7 @@
 	<str id="input.database.description.label" txt="Remplissez les informations suivantes pour la gestion de la base des utilisateurs"/>
 	<str id="input.postgresql.label" txt="PostGreSQL"/>
 	<str id="input.mysql.label" txt="MySQL"/>
+	<str id="input.hsqldb.label" txt="HSQLDB"/>
 	<str id="input.database.hostname.label" txt="Domaine du SGBD*"/>
 	<str id="input.database.port.label" txt="Port du server SGBD*"/>
 	<str id="input.database.name.label" txt="Nom de la base de donnees*"/>

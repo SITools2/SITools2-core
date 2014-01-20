@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -16,8 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.izpack.actions;
+package fr.cnes.sitools.izpack.model;
 
-public class JDBCSitoolsTestsDBAction {
+import com.izforge.izpack.installer.AutomatedInstallData;
+
+public class JDBCConnectionModelFactory {
+
+  /** The db type */
+  public static final String ID_DB_TYPE = "input.database.driver";
+
+  private JDBCConnectionModelFactory() {
+
+  }
+
+  public static JDBCConnectionModel getModel(AutomatedInstallData aid) {
+
+    String type = aid.getVariable(ID_DB_TYPE);
+    if (type.equals("hsqldb")) {
+      return new FileJDBCConnectionModel(aid);
+    }
+    else {
+      return new RemoteJDBCConnectionModel(aid);
+    }
+
+  }
 
 }
