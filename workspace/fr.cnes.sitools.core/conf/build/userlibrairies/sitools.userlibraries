@@ -144,6 +144,7 @@
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/spatial4j-0.3.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/wstx-asl-3.2.7.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/libraries/org.apache.solr_4.5.0/zookeeper-3.4.5.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/libraries/org.hsqldb/hsqldb.jar"/>
     </library>
     <library name="test" systemlibrary="false">
         <archive path="D:/CNES-ULISSE/cots/saxon/SaxonLiaison.jar"/>
