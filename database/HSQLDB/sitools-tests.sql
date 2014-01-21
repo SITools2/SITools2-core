@@ -6,11 +6,6 @@ DROP TABLE IF EXISTS "sitools"."USER_PROPERTIES";
 DROP SCHEMA IF EXISTS "sitools";
 CREATE SCHEMA "sitools";
 
-DROP USER sitools;
-
-CREATE USER sitools PASSWORD sitools ADMIN;
-ALTER USER sitools SET INITIAL SCHEMA "sitools";
-
 CREATE TABLE IF NOT EXISTS "sitools"."USERS" (
   identifier varchar(64)  NOT NULL,
   firstname varchar(32)  DEFAULT NULL,
@@ -61,4 +56,4 @@ CREATE TABLE IF NOT EXISTS "sitools"."USER_PROPERTIES" (
   PRIMARY KEY (key)
 );
 
-DROP USER sa;
+ALTER USER "sitools" SET PASSWORD "sitools";
