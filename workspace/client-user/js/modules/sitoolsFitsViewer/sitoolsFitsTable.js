@@ -56,6 +56,15 @@ sitools.user.modules.sitoolsFitsTable = Ext.extend(Ext.Panel, {
                 scope : this,
                 afterrender : function (grid) {
                     for (var i = 0; i < this.data.rows; i++) {
+                        if (i == 300) {
+                            Ext.Msg.show({
+                                title : i18n.get('label.info'),
+                                msg : i18n.get('label.only300dataloaded'),
+                                icon : Ext.MessageBox.INFO,
+                                buttons : Ext.MessageBox.OK
+                            });
+                            break;
+                        }
                         var row = this.data.getRow(i);
                         var rec = new Ext.data.Record(row);
                         grid.getStore().add(rec);
@@ -69,7 +78,7 @@ sitools.user.modules.sitoolsFitsTable = Ext.extend(Ext.Panel, {
             headerData : this.headerData,
             region : 'south',
             height : 500,
-            collapsible : true,
+            collapsible : true
         });
 
         this.tbar = {

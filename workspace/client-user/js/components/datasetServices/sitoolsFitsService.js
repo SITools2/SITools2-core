@@ -27,34 +27,6 @@ Ext.namespace('sitools.user.component.dataviews.services');
 sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Panel, {
     initComponent : function () {
 
-//        if (Ext.isEmpty(this.parameters)) {
-//            this.parameters = sitools.user.component.dataviews.services.sitoolsFitsService.getDefaultParameters();
-//        }
-//        
-//        Ext.each(this.parameters, function(config) {
-//            if (!Ext.isEmpty(config.value)) {
-//                switch (config.name) {
-//                    case "columnAlias" :
-//                        this.columnImage = config.value;
-//                        break;
-//                }
-//            }
-//        }, this);
-//        
-//        var rec;
-//        if (Ext.isEmpty(this.record)) {
-//            rec = this.dataview.getSelections()[0];
-//        } else {
-//            rec = this.record;
-//        }
-//
-//        if (Ext.isEmpty(this.columnImage)) {
-//            this.columnImage = this.columnAlias;
-//        }
-//
-//        this.src = rec.get(this.columnImage);
-        
-        
         this.bodyCssClass = 'canvas-background';
         this.urlFits = this.record.data.fits;
         this.autoScroll = true;
@@ -184,27 +156,6 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
             }]
         });
         
-//        this.histoGroupBtn = new Ext.ButtonGroup({
-//            title: i18n.get('label.processing'),
-//            activeItem : 0,
-//            hideBorders : true,
-//            defaults: {
-//                scope : this,
-//                enableToogle: true,
-//                toggleGroup : 'histo',
-//                toggleHandler : this.manageHistogram,
-//                cls : 'services-toolbar-btn'
-//            },
-//            items : [{
-//                text : 'Histogram',
-//                id : 'histoBtnId',
-//                icon : loadUrl.get("APP_URL") + "/client-user/js/modules/sitoolsFitsViewer/images/function.png",
-//                cls : 'sitools-btn-green-bold',
-//                pressed : true
-//            }]
-//        });
-        
-        
         this.tbar = {
             xtype : 'toolbar',
             autoHeight : true,
@@ -244,61 +195,6 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
            padding : '10px 15px 10px 10px',
            html : '<canvas class="shadow-canvas" style="float:left;" id="' + this.idFitsImage + '"></canvas>'
         });
-        
-//        // Value define later
-//        this.thresoldSlider = new Ext.slider.MultiSlider({
-//            width   : 214,
-//            minValue: 0,
-//            maxValue: 0,
-//            values  : [0, 0],
-//            fieldLabel : "Thresholds",
-//            plugins : new Ext.slider.Tip(),
-//            listeners : {
-//                scope : this,
-//                changecomplete : this.manageThresholds
-//            }
-//        });
-//        
-//        this.thresoldLabel = new Ext.form.Label({
-//            text : i18n.get('label.manageThreshold'),
-//            style : 'padding : 0px 7px 0px 0px; font-weight:bold;'
-//        });
-        
-//        this.processingWindow = new Ext.Window({
-//            title : 'Histogram',
-//            padding : '30px',
-//            bodyCssClass : 'histogram-background',
-//            autoWidth : true,
-//            autoHeight : true,
-//            closable : false,
-//            name : 'processingWindow',
-//            html : '<canvas class="noSelect" style="float:left;" id="processingWindow"></canvas>',
-//            tbar : {
-//                autoHeight : true,
-//                cls : 'services-toolbar',
-//                defaults : {
-//                    scope : this
-//                },
-//                items : [this.thresoldLabel, this.thresoldSlider]
-//            },
-//            listeners : {
-//                scope : this,
-//                afterrender : function (window) {
-//                    var x = this.getInnerWidth() - window.getWidth() - 20;
-//                    this.processingWindow.setPosition(x, 20);
-//                    this.processingWindow.render(this.canvasPanel.getEl());
-//                    this.processingWindow.show();
-//                }
-//            }
-//        });
-        
-//        this.headerPanel = new sitools.user.modules.sitoolsFitsHeader({
-//            title : i18n.get('label.headerData'),
-//            headerData : this.headerData,
-//            region : 'south',
-//            height : 400,
-//            collapsible : true
-//        });
         
         this.items = [this.canvasPanel/*, this.processingWindow*/, /*this.headerPanel*/];
         
@@ -475,23 +371,7 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
         this.min = values[0];
         this.max = values[1];
         
-//        this.histogram.updateThreshold(this.min, this.max);
     },
-    
-//    manageHistogram : function (btn, pressed) {
-//        if (pressed) {
-//            btn.addClass("sitools-btn-green-bold");
-//        } else {
-//            btn.removeClass("sitools-btn-green-bold");
-//        }
-//        
-//        if (this.processingWindow.isVisible()) {
-//            var btnEl = this.histoGroupBtn.findByType('button')[0].getEl();
-//            this.processingWindow.hide(btnEl);
-//        } else {
-//            this.processingWindow.show(btnEl);
-//        }
-//    },
     
     initHistogram : function (fits) {
         this.fitsData = fits.getHDU().data;

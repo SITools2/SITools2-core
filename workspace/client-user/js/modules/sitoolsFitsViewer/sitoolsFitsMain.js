@@ -50,8 +50,6 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
             containerScroll : true,
             bodyStyle : 'background-color:white;',
             rootVisible : true,
-            //split : true,
-            //collapsible : true,
             root : rootNode,
             listeners : {
                 scope : this,
@@ -60,7 +58,7 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
                         return;
                     }
 
-                    if (node.attributes.text == "TABLE") {
+                    if (node.attributes.text == "TABLE" || node.attributes.text == "BINTABLE") {
                         this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
                         this.doLayout();
                         
@@ -240,7 +238,16 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
                 if (!isLeaf) {
                     item.children = [];
                     Ext.iterate(value, function (k, v) {
-                        var type = (k.header.extensionType == "TABLE") ? "TABLE" : "IMAGE";
+                        var type = k.header.extensionType;
+                        
+                        if (Ext.isEmpty(k.header.extensionType)) {
+                            if (!Ext.isEmpty(k.header.TFORM) || !Ext.isEmpty(k.header.TFORM1)) {
+                                type = "TABLE";
+                            } else if (!Ext.isEmpty(k.header.CRVAL1) && !Ext.isEmpty(k.header.CRPIX1)) {
+                                type = "IMAGE";
+                            }
+                        }
+
                         var node = {
                             "text" : type,
                             "data" : k.data,

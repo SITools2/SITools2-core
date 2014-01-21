@@ -34,21 +34,24 @@ function FitsLoader() {
 		// Grab the first HDU with a data unit
 		var hdu = fits.getHDU();
 		var data = hdu.data;
-
-		var uintPixels;
-		var swapPixels = new Uint8Array(data.view.buffer, data.begin,
-				data.length); // with gl.UNSIGNED_byte
-
-		var bpe = data.arrayType.BYTES_PER_ELEMENT;
-		for (var i = 0; i < swapPixels.length; i += bpe) {
-			var temp;
-			// Swap to little-endian
-			for (var j = 0; j < bpe / 2; j++) {
-				temp = swapPixels[i + j];
-				swapPixels[i + j] = swapPixels[i + bpe - 1 - j];
-				swapPixels[i + bpe - 1 - j] = temp;
-			}
+		
+		if (hdu.header.extensionType == "IMAGE" || !Ext.isEmpty(hdu.header.CRVAL1) && !Ext.isEmpty(hdu.header.CRPIX1)) {
+		    var uintPixels;
+		    var swapPixels = new Uint8Array(data.view.buffer, data.begin,
+		            data.length); // with gl.UNSIGNED_byte
+		    
+		    var bpe = data.arrayType.BYTES_PER_ELEMENT;
+		    for (var i = 0; i < swapPixels.length; i += bpe) {
+		        var temp;
+		        // Swap to little-endian
+		        for (var j = 0; j < bpe / 2; j++) {
+		            temp = swapPixels[i + j];
+		            swapPixels[i + j] = swapPixels[i + bpe - 1 - j];
+		            swapPixels[i + bpe - 1 - j] = temp;
+		        }
+		    }
 		}
+
 
 		return fits;
 	};

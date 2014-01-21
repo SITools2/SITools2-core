@@ -263,21 +263,33 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
         this.jsFits.load(this.urlFits, null, function (fits) {
             var allWcsCards = this.fits.hdus[0].header.cards;
             var wcsCards = {
-//                NAXIS : allWcsCards.NAXIS[1],
+                    SIMPLE : "T",
                     NAXIS : 2,
+                    BITPIX: (allWcsCards.BITPIX) ? allWcsCards.BITPIX[1] : null,
+                    BUNIT: (allWcsCards.BUNIT) ? allWcsCards.BUNIT[1] : null,
                     NAXIS1 : (allWcsCards.NAXIS1) ? allWcsCards.NAXIS1[1] : null,
                     NAXIS2 : (allWcsCards.NAXIS2) ? allWcsCards.NAXIS2[1] : null,
                     CRPIX1 : (allWcsCards.CRPIX1) ? allWcsCards.CRPIX1[1] : null,
                     CRPIX2 : (allWcsCards.CRPIX2) ? allWcsCards.CRPIX2[1] : null,
                     CRVAL1 : (allWcsCards.CRVAL1) ? allWcsCards.CRVAL1[1] : null,
                     CRVAL2 : (allWcsCards.CRVAL2) ? allWcsCards.CRVAL2[1] : null,
+                    CDELT1 : (allWcsCards.CDELT1) ? allWcsCards.CDELT1[1] : null,
+                    CDELT2 : (allWcsCards.CDELT2) ? allWcsCards.CDELT2[1] : null,
                     CD1_1 : (allWcsCards.CD1_1) ? allWcsCards.CD1_1[1] : null,
                     CD1_2 : (allWcsCards.CD1_2) ? allWcsCards.CD1_2[1] : null,
                     CD2_1 : (allWcsCards.CD2_1) ? allWcsCards.CD2_1[1] : null,
                     CD2_2 : (allWcsCards.CD2_2) ? allWcsCards.CD2_2[1] : null,
                     CTYPE1 : (allWcsCards.CTYPE1) ? allWcsCards.CTYPE1[1] : null,
-                    CTYPE2 : (allWcsCards.CTYPE2) ? allWcsCards.CTYPE2[1] : null
+                    CTYPE2 : (allWcsCards.CTYPE2) ? allWcsCards.CTYPE2[1] : null,
+                    LONPOLE : (allWcsCards.LONPOLE) ? allWcsCards.LONPOLE[1] : null,
+                    LATPOLE : (allWcsCards.LATPOLE) ? allWcsCards.LATPOLE[1] : null,
+                    BMAJ : (allWcsCards.BMAJ) ? allWcsCards.BMAJ[1] : null,
+                    BMIN : (allWcsCards.BMIN) ? allWcsCards.BMIN[1] : null,
+                    BPA : (allWcsCards.BPA) ? allWcsCards.BPA[1] : null,
+                    RESTFRQ : (allWcsCards.RESTFRQ) ? allWcsCards.RESTFRQ[1] : null,
+                    EQUINOX : (allWcsCards.EQUINOX) ? allWcsCards.EQUINOX[1] : null
             };
+            
             var wcsCardsSorted = {};
             Ext.iterate(wcsCards, function (key, value) {
                 if (value != null) {
