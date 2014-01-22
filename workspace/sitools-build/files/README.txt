@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2013-12-10
-Version                              : 2.2.2
+Date                                 : 2014-01-24
+Version                              : 2.3
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -15,6 +15,37 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (2.2)
 
 2/ Changes
+
+_________________
+-2.3 (2014-01-24)
+	* New features :
+		- Fits viewer
+			- New Gui service to quickly view a fits image from a dataset column
+			- New project module for complete visualisation of a Fits file
+				- headers
+				- Image threshold management
+				- ASCII table
+		- Administration Quick start guide 
+		- HSQLDB embedded database compatibility for User and Group management (no installation of PostgreSQL or MySQL needed)			
+		
+				
+	* Enhancements :	
+		- Better transaction handling when starting a dataset or a project (only one application started)
+		- Project duplication in administration
+		- Easier datastorage configuration
+		- Service duplication on dataset/project/application
+		
+					
+	* Bug fixed :
+		- FTL and CSS url exposition problem in the admin API
+		- Wait for all Gui services to be loaded before displaying dataset records
+		- Userstorage file name are correctly encoded
+		- User removed from each role when deleted
+		- group removed from each role when deleted
+		- Cannot start an application multiple times in the application administration
+		- AppRegistryApplication registered only one time
+		
+
 _________________
 -2.2.2 (2013-12-10)
 	
