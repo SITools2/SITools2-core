@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -76,6 +76,9 @@ public final class RoleApplication extends SitoolsApplication {
     router.attach("/{roleId}/users", RoleUsersResource.class);
     router.attach("/{roleId}/groups", RoleGroupsResource.class);
 
+    router.attach("/users/notify/{userId}", RoleNotifyUserResource.class);
+    router.attach("/groups/notify/{groupId}", RoleNotifyGroupResource.class);
+
     NotifierFilter filter = new NotifierFilter(getContext());
     filter.setNext(router);
     return filter;
@@ -98,5 +101,5 @@ public final class RoleApplication extends SitoolsApplication {
     result.getDocumentations().add(docInfo);
     return result;
   }
-  
+
 }

@@ -693,6 +693,9 @@ public final class Starter {
 
     // Attachment
     appManager.attachApplication(roleApplication);
+    
+    component.getInternalRouter().attach(settings.getString(Consts.APP_ROLES_URL), roleApplication);
+
 
     // ===========================================================================
     // Gestion des datasouces jdbc

@@ -53,7 +53,7 @@ public abstract class AbstractRoleResource extends SitoolsResource {
   private String roleId = null;
 
   @Override
-  public final void doInit() {
+  public void doInit() {
     super.doInit();
 
     // Declares the two variants supported

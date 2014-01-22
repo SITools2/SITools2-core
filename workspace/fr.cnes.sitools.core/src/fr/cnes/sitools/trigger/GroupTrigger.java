@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,46 +18,60 @@
  ******************************************************************************/
 package fr.cnes.sitools.trigger;
 
+import org.restlet.data.MediaType;
+import org.restlet.data.Method;
+import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 
+import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.notification.TriggerResource;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.security.authentication.SitoolsRealm;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Invoked when GROUP event notification
- *
+ * 
  * @author jp.boignard (AKKA Technologies)
  */
 public class GroupTrigger extends TriggerResource {
 
   /**
    * Method applied after POST request
-   * @param representation the representation sent by the POST
+   * 
+   * @param representation
+   *          the representation sent by the POST
    */
   @Post
   public void event(Representation representation) {
+    SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
     Notification notification = NotificationManager.getObject(representation);
     String groupName = notification.getObservable();
     SitoolsRealm realm = ((SitoolsApplication) getApplication()).getSettings().getAuthenticationRealm();
-   
-    if ((notification == null) || notification.getEvent() == null) {   
+
+    if ((notification == null) || notification.getEvent() == null) {
       getLogger().warning("Notification Event null");
       return;
     }
-    
-    if (notification.getEvent().equals("GROUP_CREATED")) {   
+
+    if (notification.getEvent().equals("GROUP_CREATED")) {
       realm.refreshUsersAndGroups();
     }
-    
-    if (notification.getEvent().equals("GROUP_UPDATED")) {   
+
+    if (notification.getEvent().equals("GROUP_UPDATED")) {
       realm.refreshUsersAndGroups();
     }
-    
-    if (notification.getEvent().equals("GROUP_DELETED")) { 
+
+    if (notification.getEvent().equals("GROUP_DELETED")) {
+
+      // remove group from the roles
+      String url = settings.getString(Consts.APP_ROLES_URL) + "/groups/notify/" + groupName;
+      RIAPUtils.handle(url, new EmptyRepresentation(), Method.PUT, MediaType.APPLICATION_JAVA_OBJECT, getContext());
+
       realm.removeGroup(groupName);
     }
 
