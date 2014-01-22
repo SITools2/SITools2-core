@@ -96,7 +96,7 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
                                     var url = reference.getFile();
                                     node.appendChild({
                                         cls : child.cls,
-                                        text : text,
+                                        text : decodeURIComponent(text),
                                         url : url,
                                         leaf : child.leaf,
                                         children : [],
