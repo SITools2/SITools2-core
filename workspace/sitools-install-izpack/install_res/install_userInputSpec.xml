@@ -101,30 +101,48 @@
 	</panel>
 	<!-- DATABASE PROPERTIES -->
 	<panel order="1">
-		<field size="2" txt="Database properties" type="title"
-			id="input.title.dbProp" />
-		<field type="combo" variable="input.database.driver">
-			<description align="left" txt="Choose a database driver"
-				id="input.database.description.label" />
-			<spec id="input.database.driver.label">
-				<choice txt="mysql" id="input.mysql.label" value="mysql" />
-				<choice txt="postgresql" id="input.postgresql.label" value="postgresql"
-					set="true" />
-				<choice txt="hsqldb" id="input.hsqldb.label" value="hsqldb"
-					set="false" />
+		<field size="2" txt="Database type" type="title"
+			id="input.title.dbType" />
+		<field type="combo" variable="input.database.dbType">
+			<description align="left" txt="Please, choose the type of user database management"
+				id="input.dbType.description.label" />
+			<spec id="input.database.type.label">
+				<choice txt="external" id="input.database.type.external" value="external" set="true" />
+				<choice txt="embedded" id="input.database.type.embedded" value="embedded"/>
 			</spec>
 		</field>
 	</panel>
 	<panel order="2">
+		
+		<field size="2" txt="Database properties" type="title"
+			id="input.title.dbProp" />
+		<field type="combo" variable="input.database.driver" conditionid="remoteDatabase">
+			<description align="left" txt="Choose a database driver"
+				id="input.database.description.label" />
+			<spec id="input.database.driver.label">
+				<choice txt="mysql" id="input.mysql.label" value="mysql" />
+				<choice txt="postgresql" id="input.postgresql.label" value="postgresql" set="true" />
+			</spec>
+		</field>
+
+		<field type="combo" variable="input.database.driver" conditionid="embeddedDatabase" >
+			<description align="left" txt="Choose a database driver"
+				id="input.database.description.label" />
+			<spec id="input.database.driver.label">
+				<choice txt="hsqldb" id="input.hsqldb.label" value="hsqldb"
+					  set="true" />
+			</spec>
+		</field>
+		
 		<field type="text" variable="input.database.hostname"
-			conditionid="NotHsqldbSelected">
+			conditionid="remoteDatabase">
 			<spec txt="Database host name: " set="localhost"
 				id="input.database.hostname.label" size="15" />
 			<validator class="com.izforge.izpack.util.NotEmptyValidator"
 				id="catalog.database.name.validator" txt="hostname is a required field" />
 		</field>
 
-		<field type="text" variable="input.database.port" conditionid="NotHsqldbSelected">
+		<field type="text" variable="input.database.port" conditionid="remoteDatabase">
 			<spec txt="Database port: " id="input.database.port.label" size="15"
 				set="5432" />
 			<validator class="com.izforge.izpack.util.RegularExpressionValidator"
@@ -134,9 +152,9 @@
 		</field>
 		
 		<field type="text" variable="input.database.filepath"
-			conditionid="hsqldbSelected">
+			conditionid="embeddedDatabase">
 			<spec txt="Database file path: " set="${INSTALL_PATH}/data/HSQLDB"
-				id="input.database.hostname.label" size="15" />
+				id="input.database.filepath.label" size="15" />
 			<validator class="com.izforge.izpack.util.NotEmptyValidator"
 				id="catalog.database.name.validator" txt="Database filePath is a required field" />
 		</field>
@@ -169,9 +187,8 @@
 			<description align="left"
 				txt="Do you want to install the SITools2 User Database ?" id="input.db_installed" />
 			<spec>
-				<choice txt="Yes" id="input.db_installed.yes" value="true" />
-				<choice txt="No" id="input.db_installed.no" value="false"
-					set="true" />
+				<choice txt="Yes" id="input.db_installed.yes" value="true" set="true"/>
+				<choice txt="No" id="input.db_installed.no" value="false"/>
 			</spec>
 		</field>
 

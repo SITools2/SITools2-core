@@ -9,6 +9,11 @@
 	<str id="input.email_address" txt="Email address:"/>  
 	<str id="input.smtp_server" txt="SMTP server:"/>  
 	
+	<str id="input.title.dbType" txt="Database type"/>  
+	<str id="input.dbType.description.label" txt="Please, choose the type of user database management"/>
+	<str id="input.database.type.label" txt="Database type"/>
+	<str id="input.database.type.external" txt="External (PostgreSQL/MySQL)"/>
+	<str id="input.database.type.embedded" txt="Embedded (HSQLDB)"/>
 	<str id="input.title.dbProp" txt="Database properties"/>  
 	<str id="input.database.driver.label" txt="Driver:"/>  
 	<str id="input.db_user.label" txt="User:*"/>  
@@ -19,15 +24,16 @@
 	<str id="input.postgresql.label" txt="PostGreSQL"/>
 	<str id="input.mysql.label" txt="MySQL"/>
 	<str id="input.hsqldb.label" txt="HSQLDB"/>
-	<str id="input.database.hostname.label" txt="Database Hostname*"/>
-	<str id="input.database.port.label" txt="Database Port*"/>
-	<str id="input.database.name.label" txt="Database name*"/>
-	<str id="input.database.schema.label" txt="Schema name"/>
+	<str id="input.database.hostname.label" txt="Database Hostname*:"/>
+	<str id="input.database.port.label" txt="Database Port*:"/>
+	<str id="input.database.name.label" txt="Database name*:"/>
+	<str id="input.database.schema.label" txt="Schema name:"/>
 	<str id="input.smtpPort" txt="SMTP Port:"/>
 	<str id="input.smtp_id" txt="SMTP login:"/>
 	<str id="input.smtpTls" txt="SMTP TLS :"/>
 	<str id="input.smtpTls.true" txt="True"/>
 	<str id="input.smtpTls.false" txt="False"/>
+	<str id="input.database.filepath.label" txt="Database file path"/>
 	
 	<str id="input.proxy.title" txt="Proxy properties:"/>
 	<str id="input.proxy_host" txt="Proxy host:"/>

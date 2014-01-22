@@ -88,10 +88,14 @@
 			<name>input.database.driver</name>
 			<value>hsqldb</value>
 		</condition>
-		<condition type="not" id="NotHsqldbSelected">
-		    <condition type="ref" refid="hsqldbSelected" />
+		<condition type="variable" id="remoteDatabase">
+			<name>input.database.dbType</name>
+			<value>external</value>
 		</condition>
-
+		<condition type="variable" id="embeddedDatabase">
+			<name>input.database.dbType</name>
+			<value>embedded</value>
+		</condition>
 	</conditions>
 
 	<dynamicvariables>
