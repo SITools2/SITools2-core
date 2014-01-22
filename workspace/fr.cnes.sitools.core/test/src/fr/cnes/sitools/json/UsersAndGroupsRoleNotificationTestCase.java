@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -20,27 +20,26 @@ package fr.cnes.sitools.json;
 
 import org.restlet.data.MediaType;
 
-import fr.cnes.sitools.AbstractUsersAndGroupsAdministrationTestCase;
+import fr.cnes.sitools.AbstractUsersAndGroupsRoleNotificationTestCase;
 import fr.cnes.sitools.api.DocAPI;
 
 /**
- *  * TestCase API JSON - Users and Groups administration
+ * TestCase API JSON - ApplicationManager
  * 
- * @author jp.boignard (AKKA Technologies) 
+ * @author jp.boignard (AKKA Technologies)
  */
-public class UsersAndGroupsAdministrationTestCase extends fr.cnes.sitools.AbstractUsersAndGroupsAdministrationTestCase {
-  
+public class UsersAndGroupsRoleNotificationTestCase extends AbstractUsersAndGroupsRoleNotificationTestCase {
+
   static {
-    AbstractUsersAndGroupsAdministrationTestCase.title = "Users and Groups management API with JSON format";
     setMediaTest(MediaType.APPLICATION_JSON);
-    docAPI = new DocAPI(UsersAndGroupsAdministrationTestCase.class, title);
+    docAPI = new DocAPI(UsersAndGroupsRoleNotificationTestCase.class, "User and group managment notification on roles");
     docAPI.setMediaTest(MediaType.APPLICATION_JSON);
   }
 
   /**
    * Default constructor
    */
-  public UsersAndGroupsAdministrationTestCase() {
+  public UsersAndGroupsRoleNotificationTestCase() {
     super();
   }
 

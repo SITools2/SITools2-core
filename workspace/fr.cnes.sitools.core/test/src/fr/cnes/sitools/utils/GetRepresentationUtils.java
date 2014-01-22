@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -39,6 +39,9 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+import fr.cnes.sitools.role.model.Role;
+import fr.cnes.sitools.security.model.Group;
+import fr.cnes.sitools.security.model.User;
 
 public class GetRepresentationUtils {
 
@@ -207,10 +210,10 @@ public class GetRepresentationUtils {
     xstream.omitField(Response.class, "itemName");
     xstream.omitField(Response.class, "itemClass");
   }
-  
+
   // ------------------------------------------------------------
   // RESOURCE MODEL
-  
+
   /**
    * Builds XML or JSON Representation of Project for Create and Update methods.
    * 
@@ -249,6 +252,128 @@ public class GetRepresentationUtils {
     xstream.alias("response", Response.class);
     xstream.alias("resourcePlugin", ResourceModel.class);
     xstream.alias("resourceParameter", ResourceParameter.class);
+  }
+
+  // ------------------------------------------------------------
+  // USER MODEL
+
+  /**
+   * Builds XML or JSON Representation of Project for Create and Update methods.
+   * 
+   * @param item
+   *          Project
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationUser(User item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JacksonRepresentation<User>(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<User> rep = new XstreamRepresentation<User>(media, item);
+      configureUser(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null; // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configures XStream mapping for Response object with Project content.
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureUser(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("response", Response.class);
+    xstream.alias("user", User.class);
+  }
+
+  // ------------------------------------------------------------
+  // GROUP MODEL
+
+  /**
+   * Builds XML or JSON Representation of Project for Create and Update methods.
+   * 
+   * @param item
+   *          Project
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationGroup(Group item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JacksonRepresentation<Group>(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<Group> rep = new XstreamRepresentation<Group>(media, item);
+      configureGroup(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null; // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configures XStream mapping for Response object with Project content.
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureGroup(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("response", Response.class);
+    xstream.alias("group", Group.class);
+  }
+
+  // -----------------------------------------------------------
+  // ROLE
+
+  /**
+   * Builds XML or JSON Representation of Role for Create and Update methods.
+   * 
+   * @param item
+   *          Role
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationRole(Role item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JsonRepresentation(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<Role> rep = new XstreamRepresentation<Role>(media, item);
+      configureRole(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null; // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configure XStream mapping of a Response object
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureRole(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("role", Role.class);
   }
 
 }

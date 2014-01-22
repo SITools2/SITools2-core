@@ -19,9 +19,9 @@
 package fr.cnes.sitools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -32,14 +32,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.junit.Test;
-import org.restlet.Client;
-import org.restlet.Request;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.MediaType;
-import org.restlet.data.Method;
-import org.restlet.data.Protocol;
-import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -99,6 +94,25 @@ public class AbstractUserRoleTestCase extends AbstractSitoolsServerTestCase {
     getUserRole(username, userpwd, expectedRoles);
 
     docAPI.close();
+  }
+  
+  /**
+   * 
+   */
+  @Test
+  public void testUserRoleCreateThenDelete() {
+    docAPI.setActive(false);
+    List<Role> expectedRoles = new ArrayList<Role>();
+    Role adminRole = new Role();
+    adminRole.setName("Administrator");
+    expectedRoles.add(adminRole);
+    Role publicRole = new Role();
+    publicRole.setName("public");
+    expectedRoles.add(publicRole);
+
+    getUserRole(username, userpwd, expectedRoles);
+
+    getUserRoleNoUserError();
   }
 
   /**

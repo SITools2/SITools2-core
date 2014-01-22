@@ -99,7 +99,6 @@ import org.junit.runners.Suite;
   fr.cnes.sitools.json.RoleTestCase.class,
   fr.cnes.sitools.json.SecurityFilterTestCase.class,
   fr.cnes.sitools.json.StorageDirectoryTestCase.class,  
-  fr.cnes.sitools.json.UsersAndGroupsAdministrationTestCase.class,
   fr.cnes.sitools.json.UserStorageManagerTestCase.class,
   fr.cnes.sitools.xml.ApplicationManagerTestCase.class,
   fr.cnes.sitools.xml.ApplicationPluginTestCase.class,
@@ -130,7 +129,6 @@ import org.junit.runners.Suite;
   fr.cnes.sitools.xml.RoleTestCase.class,
   fr.cnes.sitools.xml.SecurityFilterTestCase.class,
   fr.cnes.sitools.xml.StorageDirectoryTestCase.class,
-  fr.cnes.sitools.xml.UsersAndGroupsAdministrationTestCase.class,
   fr.cnes.sitools.xml.UserStorageManagerTestCase.class
 })
 public class AbstractAllTests {
