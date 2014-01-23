@@ -24,7 +24,7 @@ _________________
 			- New project module for complete visualisation of a Fits file
 				- headers
 				- Image threshold management
-				- ASCII table
+				- ASCII table (First 300 records)
 		- Administration Quick start guide 
 		- HSQLDB embedded database compatibility for User and Group management (no installation of PostgreSQL or MySQL needed)			
 		
@@ -44,6 +44,7 @@ _________________
 		- group removed from each role when deleted
 		- Cannot start an application multiple times in the application administration
 		- AppRegistryApplication registered only one time
+		- PUBLIC_HOST_DOMAIN property used in ".." link for datastorage HTML representation
 		
 
 _________________
