@@ -25,7 +25,6 @@
 	<classpathentry exported="true" kind="lib" path="solr-velocity-4.5.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="wstx-asl-3.2.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="zookeeper-3.4.5.jar"/>
-	<classpathentry kind="src" path="src/"/>
 	<classpathentry exported="true" kind="lib" path="commons-cli-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="commons-codec-1.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="commons-configuration-1.6.jar"/>
