@@ -166,15 +166,12 @@ public class DirectoryProxy extends Directory implements WadlDescribable {
     else {
       out = new ReferenceList();
     }
-    out.setIdentifier(indexContent.getIdentifier());
+
+    Reference identifier = rewriteReference(indexContent.getIdentifier(), publicHostDomain);
+    out.setIdentifier(identifier);
 
     for (Reference reference : indexContent) {
-
-      // update url to set the publicHostDomain instead of the Origin domain, which can be the apache proxy
-      Reference rightUrl = new Reference(publicHostDomain);
-      rightUrl.setPath(reference.getPath());
-      rightUrl.setQuery(reference.getQuery());
-      rightUrl.setRelativePart(reference.getRelativePart());
+      Reference rightUrl = rewriteReference(reference, publicHostDomain);
       if (withFile) {
         File file = ((ReferenceFileList) indexContent).get(reference.toString());
         ((ReferenceFileList) out).addFileReference(rightUrl.toString(), file);
@@ -184,6 +181,25 @@ public class DirectoryProxy extends Directory implements WadlDescribable {
       }
     }
     return out;
+  }
+
+  /**
+   * Rewrite the given reference. Basically changes the host to the given publicHostDomain given.
+   * 
+   * @param reference
+   *          the reference
+   * @param publicHostDomain
+   *          the public host domain
+   * @return the reference
+   */
+  private Reference rewriteReference(Reference reference, String publicHostDomain) {
+    // update url to set the publicHostDomain instead of the Origin domain, which can be the apache proxy
+    Reference rightUrl = new Reference(publicHostDomain);
+    rightUrl.setPath(reference.getPath());
+    rightUrl.setQuery(reference.getQuery());
+    rightUrl.setRelativePart(reference.getRelativePart());
+
+    return rightUrl;
   }
 
   /**
