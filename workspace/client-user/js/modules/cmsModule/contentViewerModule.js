@@ -294,6 +294,16 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
 sitools.user.modules.contentViewerModule.getParameters = function () {
     
     return [{
+        jsObj : "Ext.form.TextField", 
+        config : {
+            fieldLabel : i18n.get("label.urlDatastorage"),
+            allowBlank : false,
+            id : "urlDatastorageId",
+            hidden : true,
+            name : "dynamicUrlDatastorage",
+            value : ""
+        }
+    }, {
         jsObj : "Ext.form.ComboBox", 
         config : {
             fieldLabel : i18n.get("label.urlDatastorage"),
@@ -302,7 +312,7 @@ sitools.user.modules.contentViewerModule.getParameters = function () {
             editable : false,
             triggerAction : 'all',
             width : 200,
-            valueField : 'attachUrl',
+            valueField : 'name',
             displayField : 'name',
             store : new Ext.data.JsonStore({
                 root : 'data',
@@ -316,6 +326,9 @@ sitools.user.modules.contentViewerModule.getParameters = function () {
                 }, {
                     name : 'name',
                     type : 'string'
+                }, {
+                    name : 'attachUrl',
+                    type : 'string'
                 }]
             }),
             listeners: {
@@ -324,10 +337,14 @@ sitools.user.modules.contentViewerModule.getParameters = function () {
                         target : c,
                         text : "the datastorage url attachment (cf. Storage)"
                     });
+                },
+                select : function (combo, rec, ind) {
+                    var urlAttachField = this.ownerCt.getComponent("urlDatastorageId");
+                    urlAttachField.setValue(rec.data.attachUrl);
                 }
             },
-            name : "dynamicUrlDatastorage",
-            value : undefined
+            name : "nameDatastorageSrc",
+            value : ""
         }
     }];
 };

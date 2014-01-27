@@ -145,13 +145,7 @@ CKEDITOR.dialog.add( 'documentDialog', function ( editor ) {
                         this.allowOnChange = false;
                     }
                 }]
-        }, {
-            type: 'content',
-            id: 'helpLabel',
-            label: i18n.get('label.openIframe'),
-            'default': '',
-        }]
-}],
+        }],
         onOk: function() {
             var attributes = {},
                 removeAttributes = [],
