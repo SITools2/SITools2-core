@@ -1161,6 +1161,22 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         Ext.iterate(CKEDITOR.instances, function(key, instance){
             instance.updateElement();
         });
+    },
+    
+
+    beforeDestroy : function () {
+        this.destroyCkeditor();
+        sitools.component.projects.ProjectsPropPanel.superclass.beforeDestroy.apply(this, arguments);
+    },
+
+    destroyCkeditor : function () {
+        Ext.iterate(CKEDITOR.instances, function (key, instance) {
+            if (instance) {
+                instance.destroy();
+                CKEDITOR.remove(instance);
+            }
+            instance.updateElement();
+        });
     }
 });
 

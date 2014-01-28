@@ -517,6 +517,20 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
             };
         }
         return result;
+    },
+    
+    onDestroy : function () {
+        sitools.component.datasets.datasetsMultiTablesPanel.superclass.onDestroy.apply(this, arguments);
+        this.destroyCkeditor();
+    },
+
+    destroyCkeditor : function () {
+        Ext.iterate(CKEDITOR.instances, function (key, instance) {
+            if (instance) {
+                CKEDITOR.remove(instance);
+            }
+            instance.updateElement();
+        });
     }
 });
 
