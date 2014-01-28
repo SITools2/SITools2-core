@@ -169,7 +169,7 @@ sitools.admin.datasets.datasetForm = Ext.extend(Ext.Panel, {
                     maxLength : 100
                 }, {
                     xtype : 'textarea',
-                    id : 'descriptionHTML',
+                    name : 'descriptionHTML',
                     cls : 'ckeditor',
                     fieldLabel : i18n.get('label.descriptionHTML'),
                     height : 150,

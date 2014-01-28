@@ -228,7 +228,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                 maxLength : 100
             }, {
                 xtype : 'textarea',
-                id : 'htmlDescription',
+                name : 'htmlDescription',
                 cls : 'ckeditor',
                 fieldLabel : i18n.get('label.descriptionHTML'),
                 height : 150,
@@ -237,7 +237,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             }, {
                 xtype : 'textarea',
                 cls : 'ckeditor',
-                id : 'maintenanceText',
+                name : 'maintenanceText',
                 fieldLabel : i18n.get('label.maintenanceText'),
                 height : 150,
                 anchor : '95%'
@@ -284,7 +284,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                 value : this.defaultValueTpl
             }, {
                 xtype : 'textarea',
-                id : 'htmlHeader',
+                name : 'htmlHeader',
                 cls : 'ckeditor',
                 fieldLabel : i18n.get('label.htmlHeader'),
                 height : 150,
