@@ -335,7 +335,7 @@ var projectGlobal = {
     },
     getGUIServicesDependencies : function () {
         Ext.Ajax.request({
-            url : loadUrl.get('APP_URL') + "/guiServices",
+            url : this.sitoolsAttachementForUsers + "/guiServices",
             method : "GET",
             scope : this,
             success : function (ret) {
