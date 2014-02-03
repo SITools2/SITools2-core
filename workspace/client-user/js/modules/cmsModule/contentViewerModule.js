@@ -47,7 +47,7 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
         this.jsonUrlTemplate = this.CONST_URLDATASTORAGE + '/json/data_{locale}.json';
         
         var localeStr = locale.getLocale();
-        this.jsonUrl= this.jsonUrlTemplate.replace("{locale}", localeStr);         
+        this.jsonUrl = this.jsonUrlTemplate.replace("{locale}", localeStr);         
         
 //        if (SitoolsDesk.app.language == "en"){
 //            this.url = this.CONST_URLDATASTORAGE + "/en/welcome.html";
@@ -74,7 +74,8 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
             },
             tbar : new sitools.user.modules.cmsViewerTreeToolbar({
                 scope : this,
-                hidden : true,
+                hidden : false,
+                showLanguage : false,
                 callback : function (combo, rec, index) {
                     var locale = rec.data.locale;
                     this.changeLanguage(locale);

@@ -28,42 +28,60 @@ sitools.user.modules.cmsViewerTreeToolbar = Ext.extend(Ext.Toolbar, {
     
     initComponent : function () {
         
-        var storeLanguage = new Ext.data.JsonStore({
-            fields : [ 'text', 'locale'],
-            autoLoad : false
-        });
+        this.comboLanguage = null;
+        this.items = [];
         
-        var jsonLanguage = [];
-        Ext.each(projectGlobal.languages, function (language) {
-            jsonLanguage.push({
-                text : language.displayName,
-                locale : language.localName
+        if (this.showLanguage == true) {
+            var storeLanguage = new Ext.data.JsonStore({
+                fields : [ 'text', 'locale'],
+                autoLoad : false
             });
+            
+            var jsonLanguage = [];
+            Ext.each(projectGlobal.languages, function (language) {
+                jsonLanguage.push({
+                    text : language.displayName,
+                    locale : language.localName
+                });
+            });
+            
+            storeLanguage.loadData(jsonLanguage);
+            
+            this.comboLanguage = new Ext.form.ComboBox({
+                store : storeLanguage,
+                displayField : 'text',
+                valueField : 'locale',
+                typeAhead : true,
+                mode : 'local',
+                forceSelection : true,
+                triggerAction : 'all',
+                emptyText : i18n.get('label.selectLanguage'),
+                selectOnFocus : true,
+                width : 100,
+                listeners : {
+                    scope : this.scope,
+                    select : this.callback
+                }
+            });
+            
+            this.comboLanguage.setValue(locale.getLocale());
+            
+            this.items.push(i18n.get("label.langues"));
+            this.items.push(this.comboLanguage);
+        }
+        
+        this.btnReload = new Ext.Button({
+            xtype : 'button',
+            iconAlign : 'right',
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
+            tooltip : i18n.get('label.refresh'),
+            scope : this.scope,
+            handler : this.scope.refreshTree
         });
         
-        storeLanguage.loadData(jsonLanguage);
         
-        this.comboLanguage = new Ext.form.ComboBox({
-            store : storeLanguage,
-            displayField : 'text',
-            valueField : 'locale',
-            typeAhead : true,
-            mode : 'local',
-            forceSelection : true,
-            triggerAction : 'all',
-            emptyText : i18n.get('label.selectLanguage'),
-            selectOnFocus : true,
-            width : 100,
-            listeners : {
-                scope : this.scope,
-                select : this.callback
-            }
-        });
-        
-        this.comboLanguage.setValue(locale.getLocale());
-        
-        this.items = [ i18n.get("label.langues"), this.comboLanguage ];
-    
+        this.items.push('->');
+        this.items.push(this.btnReload);
     
         sitools.user.modules.cmsViewerTreeToolbar.superclass.initComponent.call(this);
     }
