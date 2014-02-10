@@ -161,7 +161,7 @@ var clientAdmin = {
 	        success : function (ret) {
 	        	
 	        	// utils.js contains commonTreeUtils from env.js
-	        	includeJs("/sitools/client-user/js/utils.js");
+//	        	includeJs("/sitools/client-user/js/utils.js");
 	        	
                 var json = Ext.decode(ret.responseText);
                 if (!json.success) {
@@ -513,7 +513,7 @@ function initAppli() {
             }
         },
         callback : function () {
-			sql2ext.load(loadUrl.get('APP_URL') + "/client-user/conf/sql2ext.properties");
+			sql2ext.load(loadUrl.get('APP_URL') + "/conf/sql2ext.properties");
             var cb = function () {
 				clientAdmin.initGui();
             };

@@ -344,7 +344,7 @@ sitools.user.desktop.App = function () {
 		SitoolsDesk.app.addListener("ready", desktopReady);
 		SitoolsDesk.app.addListener("modulesLoaded", _onModulesLoaded);
 
-        sql2ext.load(loadUrl.get('APP_URL') + "/client-user/conf/sql2ext.properties");
+        sql2ext.load(loadUrl.get('APP_URL') + "/conf/sql2ext.properties");
 
 		//handle windowResize event 
 		Ext.EventManager.onWindowResize(fireResize, SitoolsDesk);

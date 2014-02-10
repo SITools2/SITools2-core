@@ -9,6 +9,12 @@
   <dependencies>
     <js>
       <url>
+        <url>/sitools/client-user/js/components/dataviews/livegrid/Ext.ux.livegrid/Ext.ux.livegrid-all-debug.js</url>
+      </url>
+      <url>
+        <url>/sitools/client-user/js/components/dataviews/livegrid/storeLiveGrid.js</url>
+      </url>
+      <url>
         <url>/sitools/client-user/js/components/dataviews/livegrid/Livegrid.js</url>
       </url>
     </js>

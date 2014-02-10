@@ -30,7 +30,6 @@ Ext.namespace('sitools.user.modules');
  * @requires sitools.user.component.columnsDefinition
  */
 sitools.user.modules.projectGraphTree = Ext.extend(Ext.ux.tree.TreeGrid, {
-    treeUtils : commonTreeUtils,
     enableHdMenu : false,
     enableSort : false,
     expanded : true,

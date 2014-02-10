@@ -47,7 +47,6 @@
    	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css"></link>
 	
 	<link rel="stylesheet" type="text/css" href="res/css/quickStart.css"></link>
-	<link rel="stylesheet" type="text/css" href="/sitools/client-user/js/components/dataviews/services/servicesToolbar.css"></link>
   
 <!-- --------------------------------------------------------------------------------------------------------------------------
 					IMPORT DES LIBRAIRIES JS
@@ -155,9 +154,7 @@
     <script type="text/javascript" src="js/datasets/gridFieldSetup.js"></script>
     <script type="text/javascript" src="js/datasets/datasetCriteria.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsGridView.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/livegrid/Ext.ux.livegrid/Ext.ux.livegrid-all-debug.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/dataviews/livegrid/storeLiveGrid.js"></script>
-    <script type="text/javascript" src="js/datasets/datasourceUtils/datasourceFactory.js"></script>
+	<script type="text/javascript" src="js/datasets/datasourceUtils/datasourceFactory.js"></script>
     <script type="text/javascript" src="js/datasets/datasourceUtils/jdbcUtils.js"></script>
     <script type="text/javascript" src="js/datasets/datasourceUtils/mongoDbUtils.js"></script>
     <script type="text/javascript" src="js/datasets/datasetViewConfig.js"></script>
