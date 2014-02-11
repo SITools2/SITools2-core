@@ -352,7 +352,9 @@ public final class UsersResource extends UsersAndGroupsResource {
     Map<String, Object> root = new HashMap<String, Object>();
     root.put("mail", mailToUser);
     root.put("user", user);
-    root.put("pass", pass);
+    if (!SecurityUtil.isEncoded(pass)) {
+      root.put("pass", pass);
+    }
     root.put(
         "sitoolsUrl",
         getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
