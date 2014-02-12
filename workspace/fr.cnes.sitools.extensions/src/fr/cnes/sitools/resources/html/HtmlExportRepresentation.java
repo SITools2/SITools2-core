@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -126,6 +126,7 @@ public class HtmlExportRepresentation extends OutputRepresentation {
     Record rec = null;
 
     DatabaseRequest databaseRequest = DatabaseRequestFactory.getDatabaseRequest(params);
+
     try {
       if (params.getDistinct()) {
         databaseRequest.createDistinctRequest();
@@ -191,16 +192,14 @@ public class HtmlExportRepresentation extends OutputRepresentation {
             if (Util.isSet(obj)) {
 
               String columnAlias = obj.getName();
-              // if the column is visible and has to be added to the header, default to false (noClientAccess)
+              // if the column is visible and has to be added to the header,
+              // default to false (noClientAccess)
               boolean isVisible = false;
               if (Util.isSet(obj.getValue()) && !"".equals(obj.getValue())) {
-                ColumnRenderer columnRenderer = (ColumnRenderer) map.get(columnAlias)[1];
-                BehaviorEnum rendering = null;
-                if (columnRenderer != null) {
-                  rendering = columnRenderer.getBehavior();
-                }
+                BehaviorEnum rendering = getRendering(map, columnAlias);
                 if (!BehaviorEnum.noClientAccess.equals(rendering)) {
-                  // set isVisible to true, because the column will be visible and show
+                  // set isVisible to true, because the column will be visible
+                  // and show
                   isVisible = true;
                   currentLine += START_TD;
                   if (!Util.isSet(rendering)) {
@@ -221,7 +220,6 @@ public class HtmlExportRepresentation extends OutputRepresentation {
                     }
                   }
                   else {
-
                     String value = String.valueOf(obj.getValue());
                     currentLine += value;
                   }
@@ -229,6 +227,10 @@ public class HtmlExportRepresentation extends OutputRepresentation {
                 }
               }
               else {
+                BehaviorEnum rendering = getRendering(map, columnAlias);
+                if (!BehaviorEnum.noClientAccess.equals(rendering)) {
+                  isVisible = true;
+                }
                 currentLine += START_TD + "&nbsp;" + STOP_TD;
               }
 
@@ -278,5 +280,14 @@ public class HtmlExportRepresentation extends OutputRepresentation {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+  }
+
+  private BehaviorEnum getRendering(HashMap<String, Object[]> map, String columnAlias) {
+    ColumnRenderer columnRenderer = (ColumnRenderer) map.get(columnAlias)[1];
+    BehaviorEnum rendering = null;
+    if (columnRenderer != null) {
+      rendering = columnRenderer.getBehavior();
+    }
+    return rendering;
   }
 }
