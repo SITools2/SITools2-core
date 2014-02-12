@@ -9,6 +9,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.uiColor = '#AADC6E';
 	config.skin = 'moonocolor';
 	
+	config.allowedContent = true;
+	
 	config.toolbar = [
        { name: 'document',    items : [ 'Source','Preview'] },
        { name: 'clipboard',   items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },

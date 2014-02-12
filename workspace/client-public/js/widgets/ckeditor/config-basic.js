@@ -9,6 +9,10 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.uiColor = '#AADC6E';
 	config.skin = 'moonocolor';
 	
+	config.allowedContent = true;
+	
+	config.basicEntities = false;
+	
 	// The toolbar groups arrangement, optimized for two toolbar rows.
     config.toolbar = [
 		{ name: 'document',    items : [ 'Source','Preview'] },
