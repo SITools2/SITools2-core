@@ -509,7 +509,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                 items : [{
                     icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_projects_resources.png",
                     scope : this,
-                    handler : function (grid, row) {
+                    handler : function (grid, row, col, item, e) {
                         this.modulePanel.getSelectionModel().selectRow(row);
                         var rec = this.modulePanel.getSelectionModel().getSelected();
                         this._onModuleConfig(rec);
@@ -661,8 +661,10 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             resize : function (window, width, height) {
                 var size = window.body.getSize();
                 this.tabPanel.setSize(size);
+            },
+            beforedestroy : function () {
+                this.destroyCkeditor();
             }
-
         };        
         sitools.component.projects.ProjectsPropPanel.superclass.initComponent.call(this);
     },
@@ -702,7 +704,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         gp.show(ID.BOX.ROLE);
     },
     
-    _onModuleConfig : function (){
+    _onModuleConfig : function () {
         var rec = this.modulePanel.getSelectionModel().getSelected();
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
@@ -710,7 +712,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         var mc = new sitools.admin.projects.modules.ProjectModuleConfig({
             module : rec
         });
-        mc.show(ID.BOX.PROJECTMODULECONFIG);
+        mc.show();
     },
     
     onUpload : function () {
@@ -892,7 +894,6 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
                             listRoles : record.data.listRoles, 
                             categoryModule : record.data.categoryModule, 
                             divIdToDisplay : record.data.divIdToDisplay,
-                            label : record.data.label
                         });
                     }
                     
@@ -1162,16 +1163,10 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             instance.updateElement();
         });
     },
-    
-
-    beforeDestroy : function () {
-        this.destroyCkeditor();
-        sitools.component.projects.ProjectsPropPanel.superclass.beforeDestroy.apply(this, arguments);
-    },
 
     destroyCkeditor : function () {
         Ext.iterate(CKEDITOR.instances, function (key, instance) {
-            if (instance) {
+            if (!Ext.isEmpty(instance)) {
                 instance.destroy();
                 CKEDITOR.remove(instance);
             }
