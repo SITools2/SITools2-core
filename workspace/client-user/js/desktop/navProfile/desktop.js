@@ -15,7 +15,10 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, locale, ImageChooser, showHelp, loadUrl, SitoolsDesk, projectGlobal, getDesktop*/
+/*
+ * global Ext, sitools, ID, i18n, document, showResponse, alertFailure, locale,
+ * ImageChooser, showHelp, loadUrl, SitoolsDesk, projectGlobal, getDesktop
+ */
 Ext.namespace('sitools.user.desktop.navProfile');
 
 /**
@@ -194,7 +197,6 @@ sitools.user.desktop.navProfile.desktop = {
         }
 
         newwin.doLayout();
-
     },
     /**
      * method called by SitoolsDesk. It should create all modules in Sitools.
@@ -534,12 +536,16 @@ sitools.user.desktop.navProfile.desktop = {
                     var pos = pref.windowSettings.position;
                     var size = pref.windowSettings.size;
 
+                    // TODO, refactoring, set size in openmodule method.... like
+                    // for typeWindow=data (dataset window)
                     if (pos !== null && size !== null) {
                         pos = Ext.decode(pos);
                         size = Ext.decode(size);
 
                         win.setPosition(pos[0], pos[1]);
                         win.setSize(size);
+
+                        getDesktop().layout();
                     }
                 }
             }
@@ -655,20 +661,20 @@ sitools.user.desktop.navProfile.desktop = {
         }, scope);
 
     },
-    
-	/**
-	 * Close every window in desktop mode. 
-	 */
-	removeAllWindows : function() {
-		SitoolsDesk.getDesktop().getManager().each(function(win) {
-			win.close();
-		});
-	},
-	
-	/**
-     * Close the passed window in desktop mode. 
+
+    /**
+     * Close every window in desktop mode.
      */
-	removeWindow : function (win) {
-	    win.close();
-	}
+    removeAllWindows : function () {
+        SitoolsDesk.getDesktop().getManager().each(function (win) {
+            win.close();
+        });
+    },
+
+    /**
+     * Close the passed window in desktop mode.
+     */
+    removeWindow : function (win) {
+        win.close();
+    }
 };

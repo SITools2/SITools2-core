@@ -73,7 +73,7 @@ Ext.extend(Ext.app.App, Ext.util.Observable, {
     
     /**
      * Initialize application.
-     * Call the method init wich must have been override on instanciation.
+     * Call the method init which must have been override on instanciation.
      */
     initApp : function () {
 //		this.startConfig = this.startConfig || this.getStartConfig();

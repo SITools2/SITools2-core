@@ -102,6 +102,16 @@ Ext.Desktop = function (app) {
 		catch (err) {
 			return;
 		}
+		
+		windowsGroup.each(function (win) {
+            if (win.maximized) {
+                win.fitContainer();
+            }
+            else {
+                win.fitToDesktop();               
+            }
+        });
+		
 //		bureauEl.setHeight(Ext.lib.Dom.getViewHeight() - taskbarEl.getHeight() - topEl.getHeight())
 	}
 	
@@ -313,11 +323,6 @@ Ext.Desktop = function (app) {
 			SitoolsDesk.getDesktop().activePanel.fireEvent("resizeDesktop", SitoolsDesk.getDesktop().activePanel);
 		}
 		
-		this.getManager().each(function (win) {
-			if (win.maximized) {
-				win.fitContainer();
-			}
-		});
 		SitoolsDesk.getDesktop().taskbar.tbPanel.ownerCt.doLayout()
 		
 		SitoolsDesk.app.getModulesInDiv().each(function (moduleInDiv) {
