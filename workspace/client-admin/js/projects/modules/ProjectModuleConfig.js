@@ -34,23 +34,23 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
     layout : 'fit',
     initComponent : function () {
 		
-    	this.buttons = [{
-    		text : i18n.get('label.ok'),
-    		id : "btnValidateId",
-    		handler : this._onValidate,
-    		scope : this
-    	}, {
-    		text : i18n.get('label.cancel'),
-    		handler : function () {
-    			this.close();
-    		},
-    		scope : this                            
-    	}];
-    	
-		this.formPanel = new sitools.admin.common.FormParametersConfigUtil({
+        this.buttons = [ {
+            text : i18n.get('label.ok'),
+            id : "btnValidateId",
+            handler : this._onValidate,
+            scope : this
+        }, {
+            text : i18n.get('label.cancel'),
+            handler : function () {
+                this.close();
+            },
+            scope : this
+        } ];
+        
+        this.formPanel = new sitools.admin.common.FormParametersConfigUtil({
 			rec : this.module.data,
 			parametersList : this.module.data.listProjectModulesConfig,
-			parametersFieldName : 'listProjectModulesConfig',
+			parametersFieldName : 'listProjectModulesConfig'
 		});
 		
 		

@@ -49,7 +49,7 @@ sitools.admin.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.Gri
             remoteSort : true,
             autoSave : false,
             url : this.url,
-            idProperty : 'id',
+            idProperty : null,
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -206,7 +206,7 @@ sitools.admin.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.Gri
         }
 
         var dbp = new sitools.admin.projects.modules.ProjectModulePropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.get("id"),
             action : 'modify',
             store : this.store
         });
@@ -245,7 +245,7 @@ sitools.admin.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.Gri
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.get("id"),
             method : 'DELETE',
             scope : this,
             success : function (ret) {
