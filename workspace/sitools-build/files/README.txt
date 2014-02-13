@@ -2,7 +2,7 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2014-01-24
+Date                                 : 2014-02-13
 Version                              : 2.3
 Owner                                : CNES
 Developer                            : AKKA Technologies
@@ -17,7 +17,7 @@ Reference tag                        : (2.2)
 2/ Changes
 
 _________________
--2.3 (2014-01-24)
+-2.3 (2014-02-13)
 	* New features :
 		- Fits viewer
 			- New Gui service to quickly view a fits image from a dataset column
@@ -34,6 +34,7 @@ _________________
 		- Project duplication in administration
 		- Easier datastorage configuration
 		- Service duplication on dataset/project/application
+		- Windows are properly resized and positioned when resizing browser window if the window cannot fit into the desktop 
 		
 					
 	* Bug fixed :
@@ -45,6 +46,9 @@ _________________
 		- Cannot start an application multiple times in the application administration
 		- AppRegistryApplication registered only one time
 		- PUBLIC_HOST_DOMAIN property used in ".." link for datastorage HTML representation
+		- HTML export problem on headers with empty column value
+		- Double click on projectModule configuration open only one window
+		
 		
 
 _________________
