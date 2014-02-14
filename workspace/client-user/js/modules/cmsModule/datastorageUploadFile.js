@@ -34,7 +34,7 @@ sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
     initComponent : function () {
         this.title = i18n.get('label.uploadFile');
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = new Ext.form.FormPanel({
             fileUpload : true,
             formId : 'formUploadId',
             autoHeight : true,
@@ -44,7 +44,7 @@ sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
                 anchor : '100%',
                 allowBlank : false,
                 msgTarget : 'side'
-            },
+                },                
             items : [ {
                 xtype : 'fileuploadfield',
                 id : 'form-file',
@@ -54,17 +54,48 @@ sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
                 buttonText : '',
                 buttonCfg : {
                     iconCls : 'upload-icon'
-                }
-            } ],
+                },
+                listeners : {
+                	scope : this,
+                	fileselected: function (field) {
+                		     var f = this.formPanel.getForm();
+                    		 var wuf = f.findField('wantUnzipFile');
+                    		 var fileName = field.value;
+                    		 var tabTmp = fileName.split('.');
+                             var extension = tabTmp[tabTmp.length - 1];
+                             
+                    		    if (extension == "zip") {
+                    		    	wuf.setValue(false);
+                    		    	wuf.setVisible(true);
+                    		    } else {
+                    		    	wuf.setValue(false);
+                    		    	wuf.setVisible(false);
+                    		    };
+                    	    }
+                     	}
+            }
+            , {
+            	xtype : 'checkbox',
+            	name : 'wantUnzipFile',
+            	boxLabel  : 'unzip',
+            	checked : false,
+            	hidden : true, 
+            	inputValue : "unzip"
+            } 
+            ],
             buttons : [ {
                 text : i18n.get('label.uploadFile'),
                 scope : this,
                 handler : function () {
-                    if (this.formPanel.getForm().isValid()) {
-                        var f = this.formPanel.getForm();
+                	var f = this.formPanel.getForm();
+                    if (f.isValid()) {
+                       
                         var fileName = f.findField('form-file').getValue();
                         fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.lenght);
 
+                        var wantedUnzipFile = f.findField('wantUnzipFile').getValue();
+                        // var additif = (wantedUnzipFile) ? "?unzip=true" : "";
+                        
                         this.createUploadedNode(fileName);
 
                         Ext.Ajax.request({
@@ -74,6 +105,9 @@ sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
                             waitMsg : "wait...",
                             method : 'POST',
                             scope : this,
+                            extraParams : {
+                            	unzip : wantedUnzipFile
+                            },
                             success : function (response) {
                                 new Ext.ux.Notification({
                                     iconCls : 'x-icon-information',
@@ -96,7 +130,10 @@ sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
                     }
                 }
             } ]
-        });
+        }
+        
+        
+        );
 
         this.items = [ this.formPanel ];
 

@@ -27,10 +27,12 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
+import java.util.zip.ZipFile;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.io.FileUtils;
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -47,6 +49,8 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Directory;
 import org.restlet.resource.ServerResource;
+
+import fr.cnes.sitools.util.FileCopyUtils;
 
 /**
  * Base class for Sitools Directory resources
@@ -440,8 +444,8 @@ public abstract class AbstractDirectoryServerResource extends ServerResource {
    * @return Representation
    */
   public final Representation upload(Representation entity) {
-    String media = getRequest().getOriginalRef().getQueryAsForm().getFirstValue("media");
-
+    boolean unzip = false;
+    
     if (this.getDirectory().isModifiable()) {
       if ((entity != null) && (entity.getMediaType() != null)
           && (entity.getMediaType().getName().startsWith(MediaType.MULTIPART_FORM_DATA.getName()))) {
@@ -455,26 +459,50 @@ public abstract class AbstractDirectoryServerResource extends ServerResource {
         RestletFileUpload upload = new RestletFileUpload(factory);
 
         List<FileItem> items;
+        ArrayList<File> zipFiles = new ArrayList<File>();
 
         try {
           // 3/ Request is parsed by the handler which generates a
           // list of FileItems
           items = upload.parseRequest(getRequest());
 
+          String path = getDirectory().getRootRef().getPath() + getRelativePart();
+          // Prepare a classloader URI, removing the leading slash
+          if ((path != null) && path.startsWith("/")) {
+            path = path.substring(1);
+          }
+          String repertoire = Reference.decode(path);
+          
           // Process only the uploaded item called "fileToUpload" and
           // save it on disk
           for (final Iterator<FileItem> it = items.iterator(); it.hasNext();) {
             FileItem fi = (FileItem) it.next();
             if ((fi != null) && (fi.getName() != null)) {
               // Adding url relative part to post at the real url (not only root directory)
-              String path = getDirectory().getRootRef().getPath() + getRelativePart();
-              // Prepare a classloader URI, removing the leading slash
-              if ((path != null) && path.startsWith("/")) {
-                path = path.substring(1);
-              }
-              String repertoire = Reference.decode(path);
+              
               File file = new File(repertoire, fi.getName());
               fi.write(file);
+              
+              
+              if (file.getName().matches("([^\\s]+(\\.(?i)(zip|ZIP))$)")) {
+                zipFiles.add(file);
+              }
+            }
+            else {
+              if (fi.getFieldName().equals("wantUnzipFile")) {
+                unzip = true;
+              }
+            }
+          }
+          
+          // 4 unzip files if a part is wantUnzipFile
+          if (unzip) {
+            for (File file : zipFiles) {
+              String fileName = file.getName();
+              int end = fileName.lastIndexOf(".");
+              String name = fileName.substring(0, end);
+              
+              FileCopyUtils.unzipAFile(file.getAbsolutePath(), repertoire + name);
             }
           }
         }
@@ -487,14 +515,7 @@ public abstract class AbstractDirectoryServerResource extends ServerResource {
           getResponse().setStatus(Status.SERVER_ERROR_INTERNAL);
         }
 
-        if ((media != null) && !media.equals("")) {
-          media = "?media=" + media;
-        }
-        else {
-          media = "";
-        }
-
-        // String redirectUrl = getReference().toString() + media; // address of newly created resource
+        // String redirectUrl = getReference().toString(); // address of newly created resource
         // getResponse().redirectSeeOther(redirectUrl);
 
         setStatus(Status.SUCCESS_CREATED);
