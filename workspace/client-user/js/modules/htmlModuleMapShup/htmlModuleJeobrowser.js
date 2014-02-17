@@ -21,7 +21,7 @@
 Ext.namespace('sitools.component');
 
 sitools.component.htmlModuleMapShup = Ext.extend(Ext.Panel, {
-
+	alias : 'sitools.component.htmlModuleMapShup',
     initComponent : function () {
         var htmlReaderCfg = {
             defaults : {
@@ -52,4 +52,3 @@ sitools.component.htmlModuleMapShup = Ext.extend(Ext.Panel, {
 
 });
 
-Ext.reg('sitools.component.htmlModuleMapShup', sitools.component.htmlModuleMapShup);

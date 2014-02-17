@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.UserCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.usergroups.UserCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.usergroups.UserCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
+	alias : 'widget.s-usercrud',
     border : false,
     height : 300,
     id : ID.BOX.USER,
@@ -245,4 +244,3 @@ sitools.admin.usergroups.UserCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-usercrud', sitools.admin.usergroups.UserCrudPanel);

@@ -29,8 +29,8 @@ Ext.namespace('sitools.admin.projects.modules');
  * @class sitools.admin.projects.modules.ProjectModulePropPanel
  * @extends Ext.Window
  */
-//sitools.component.projects.modules.ProjectModulePropPanel = Ext.extend(Ext.Window, {
-sitools.admin.projects.modules.ProjectModulePropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : 'Ext.Window', 
+	alias : 'widget.s-projectmoduleprop',
     width : 700,
     height : 540,
     modal : true,
@@ -326,4 +326,3 @@ sitools.admin.projects.modules.ProjectModulePropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-projectmoduleprop', sitools.admin.projects.modules.ProjectModulePropPanel);

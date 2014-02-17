@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.filters');
 
-sitools.component.filters.filtersCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-filters',
     border : false,
     height : 300,
     id : ID.BOX.FILTERS,
@@ -440,4 +440,3 @@ sitools.component.filters.filtersCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-filters', sitools.component.filters.filtersCrudPanel);

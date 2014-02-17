@@ -94,6 +94,7 @@ sitools.user.modules.userSpace = function (config) {
 };
 
 Ext.extend(sitools.user.modules.userSpace, Ext.Panel, {
+	alias : 'sitools.user.modules.userSpace',
     panel : null,
     layout : 'fit',
     doOrder : function () {
@@ -167,4 +168,3 @@ Ext.extend(sitools.user.modules.userSpace, Ext.Panel, {
 
 });
 
-Ext.reg('sitools.user.modules.userSpace', sitools.user.modules.userSpace);

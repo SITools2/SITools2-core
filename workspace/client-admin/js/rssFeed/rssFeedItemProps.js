@@ -30,8 +30,7 @@ Ext.namespace('sitools.admin.rssFeed');
  * @class sitools.admin.rssFeed.rssFeedItemProps
  * @extends Ext.Window
  */
-//sitools.component.rssFeedItemProps = Ext.extend(Ext.Window, {
-sitools.admin.rssFeed.rssFeedItemProps = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,

@@ -24,9 +24,8 @@ Ext.namespace('sitools.admin.authorizations');
  * @class sitools.admin.authorizations.authorizationsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.authorizations.authorizationsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.authorizations.authorizationsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'Ext.grid.Panel', 
+	alias : 'widget.s-authorizations',
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
@@ -187,4 +186,3 @@ sitools.admin.authorizations.authorizationsCrudPanel = Ext.extend(Ext.grid.GridP
 
 });
 
-Ext.reg('s-authorizations', sitools.admin.authorizations.authorizationsCrudPanel);

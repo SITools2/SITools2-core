@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.guiServices');
 
-sitools.admin.guiServices.guiServicesStore = Ext.extend(Ext.data.JsonStore, {
+Ext.define('sitools.admin.guiServices.guiServicesStore', { extend : 'Ext.data.JsonStore',
     
     constructor : function (config) {
         

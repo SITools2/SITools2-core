@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.firewall');
 
-sitools.component.firewall.FirewallPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-firewall',
     border : false,
     height : 300,
     id : ID.BOX.FIREWALL,
@@ -156,4 +156,3 @@ sitools.component.firewall.FirewallPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-firewall', sitools.component.firewall.FirewallPanel);

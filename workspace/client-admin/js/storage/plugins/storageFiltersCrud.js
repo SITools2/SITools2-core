@@ -19,8 +19,8 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, loadUrl*/
 Ext.namespace('sitools.component.storageFilters');
 
-sitools.component.storageFilters.storageFiltersCrudPanel = Ext.extend(Ext.Panel, {
-    
+Ext.define('sitools.component.storageFilters.storageFiltersCrudPanel', { extend : 'Ext.panel.Panel',
+    alias : 'widget.s-storage_filters',
     border : false,
     height : 300,    
     layout : 'fit',
@@ -40,5 +40,3 @@ sitools.component.storageFilters.storageFiltersCrudPanel = Ext.extend(Ext.Panel,
     }
 
 });
-
-Ext.reg('s-storage_filters', sitools.component.storageFilters.storageFiltersCrudPanel);

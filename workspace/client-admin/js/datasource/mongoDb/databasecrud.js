@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @class sitools.admin.datasource.mongoDb.DataBaseCrudPanel
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.datasource.mongoDb.DataBaseCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-//sitools.admin.datasource.DataBaseCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-databaseMongoDb',
     border : false,
     height : 300,
     id : ID.BOX.DATABASE,
@@ -340,4 +339,3 @@ sitools.admin.datasource.mongoDb.DataBaseCrudPanel = Ext.extend(Ext.grid.GridPan
 
 });
 
-Ext.reg('s-databaseMongoDb', sitools.admin.datasource.mongoDb.DataBaseCrudPanel);

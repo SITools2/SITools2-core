@@ -24,15 +24,15 @@
  */
 Ext.namespace('sitools.admin.multiDs');
 
-//sitools.component.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 /**
  * A Grid to display all projects Forms 
  * @class sitools.admin.multiDs.MultiDsCrudPanel
  * @extends Ext.grid.GridPanel
  * @requires sitools.admin.multiDs.MultiDsPropPanel
  */
-sitools.admin.multiDs.MultiDsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-    border : false,
+Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel',
+    alias : 'widget.s-multiDs',
+	border : false,
     height : 300,
     id : ID.BOX.MULTIDS,
     pageSize : 10,
@@ -247,4 +247,4 @@ sitools.admin.multiDs.MultiDsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-multiDs', sitools.admin.multiDs.MultiDsCrudPanel);
+

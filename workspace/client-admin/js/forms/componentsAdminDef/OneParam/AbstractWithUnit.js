@@ -32,8 +32,7 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @class sitools.admin.forms.oneParam.abstractWithUnit
  * @extends sitools.admin.forms.oneParam.abstractForm
  */
-sitools.admin.forms.oneParam.abstractWithUnit = Ext.extend(sitools.admin.forms.oneParam.abstractForm, {
-//sitools.admin.forms.components.oneParam.abstractWithUnit = Ext.extend(sitools.admin.forms.oneParam.abstractForm, {
+Ext.define('sitools.admin.forms.oneParam.abstractWithUnit', { extend : 'sitools.admin.forms.oneParam.abstractForm',
     
     initComponent : function () {
         sitools.admin.forms.oneParam.abstractWithUnit.superclass.initComponent.call(this);

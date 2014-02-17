@@ -21,8 +21,8 @@
 
 Ext.namespace('sitools.component.fileEditor');
 
-sitools.component.fileEditor.licenceEditorProp = Ext.extend(Ext.Panel, {
-    
+Ext.define('sitools.component.fileEditor.licenceEditorProp', { extend : 'Ext.Panel',
+    alias : 'widget.s-licenceEditor',
     border : false,
     height : 480,
     id : ID.BOX.FILEEDITORLICENCE,
@@ -105,4 +105,3 @@ sitools.component.fileEditor.licenceEditorProp = Ext.extend(Ext.Panel, {
 
 });
 
-Ext.reg('s-licenceEditor', sitools.component.fileEditor.licenceEditorProp);

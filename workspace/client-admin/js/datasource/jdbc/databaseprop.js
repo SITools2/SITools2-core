@@ -33,9 +33,9 @@ Ext.namespace('sitools.admin.datasource.jdbc');
  * @class sitools.admin.datasource.jdbc.DataBasePropPanel
  * @extends Ext.Window
  */
-sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
-//sitools.admin.datasource.DataBasePropPanel = Ext.extend(Ext.Window, {
-    width : 700,
+Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-databaseprop',
+	width : 700,
     height : 480,
     modal : true,
     id : ID.COMPONENT_SETUP.DATABASE,
@@ -330,4 +330,3 @@ sitools.admin.datasource.jdbc.DataBasePropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-databaseprop', sitools.admin.datasource.jdbc.DataBasePropPanel);

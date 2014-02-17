@@ -24,6 +24,7 @@
  */
 /*global Ext, sitools*/
 Ext.ux.Portlet = Ext.extend(Ext.Panel, {
+	alias : 'widget.portlet',
     anchor : '100%',
     frame : true,
     collapsible : true,
@@ -73,4 +74,3 @@ Ext.ux.Portlet = Ext.extend(Ext.Panel, {
 
 });
 
-Ext.reg('portlet', Ext.ux.Portlet);

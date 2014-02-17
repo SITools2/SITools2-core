@@ -20,7 +20,8 @@
  showHelp*/
 Ext.namespace('sitools.component.order');
 
-sitools.component.order.orderPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-orderprop',
     width : 700,
     height : 480,
     modal : true,
@@ -190,4 +191,4 @@ sitools.component.order.orderPropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-orderprop', sitools.component.order.orderPropPanel);
+

@@ -27,8 +27,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.unitWin
  * @extends Ext.Window
  */
-sitools.admin.datasets.unitWin = Ext.extend(Ext.Window, {
-//sitools.component.datasets.unitWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
+	alias : 'widget.s-datasetsUnits',
     width : 600,
     height : 400,
     modal : true,
@@ -173,4 +173,3 @@ sitools.admin.datasets.unitWin = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-datasetsUnits', sitools.admin.datasets.unitWin);

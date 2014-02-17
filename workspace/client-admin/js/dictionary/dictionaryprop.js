@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.dictionary');
 
-sitools.component.dictionary.dictionaryPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-dictionaryprop',
     width : 700,
     height : 480,
     modal : true,
@@ -456,6 +457,3 @@ sitools.component.dictionary.dictionaryPropPanel = Ext.extend(Ext.Window, {
     }
 });    
 
-
-
-Ext.reg('s-dictionaryprop', sitools.component.dictionary.dictionaryPropPanel);

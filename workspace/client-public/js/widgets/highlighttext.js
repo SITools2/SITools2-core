@@ -22,7 +22,7 @@ Ext.namespace('sitools.widget');
  * Text component that allows Highlighting
  */
 sitools.widget.HighlightText = Ext.extend(Ext.BoxComponent,{
-
+	alias : 'widget.s-lighttext',
     /**
      * must be declared at the configuration
      */
@@ -58,5 +58,3 @@ sitools.widget.HighlightText = Ext.extend(Ext.BoxComponent,{
     }
 });
 
-//register type
-Ext.reg('s-lighttext', sitools.widget.HighlightText);

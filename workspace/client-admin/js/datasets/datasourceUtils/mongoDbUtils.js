@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.datasets.datasourceUtils');
  * @class sitools.admin.datasets.DatasourceFactory
  */
 //sitools.component.datasets.abstractDatasetWin = {
-sitools.admin.datasets.datasourceUtils.mongoDbUtils = Ext.extend(Ext.util.Observable, {
+Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ext.util.Observable', 
 	isJdbc : false,
 	isMongoDb : true, 
 	constructor : function (config) {

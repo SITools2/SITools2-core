@@ -27,7 +27,7 @@ Ext.namespace("sitools.admin.forms");
  * @class sitools.admin.forms.setupAdvancedFormPanel
  * @extends Ext.Window
  */
-sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.forms.setupAdvancedFormPanel', { extend : 'Ext.Window',
     modal : true,
     height : 210,
     width : 260,

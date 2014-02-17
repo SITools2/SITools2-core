@@ -24,6 +24,7 @@
  * http://www.extjs.com/license
  */
 Ext.ux.Portal = Ext.extend(Ext.Panel, {
+	alias : 'widget.portal',
     layout : 'column',
     autoScroll : true,
     cls : 'x-portal',
@@ -54,7 +55,7 @@ Ext.ux.Portal = Ext.extend(Ext.Panel, {
     }
 });
 
-Ext.reg('portal', Ext.ux.Portal);
+
 
 Ext.ux.Portal.DropZone = Ext.extend(Ext.dd.DropTarget, {
 

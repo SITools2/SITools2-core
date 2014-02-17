@@ -25,6 +25,7 @@ Ext.namespace('sitools.user.modules');
  * @extends Ext.Panel
  */
 sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
+	alias : 'sitools.user.modules.sitoolsFitsMain',
     layout : 'fit',
     id : 'fitsMain',
     initComponent : function () {
@@ -288,4 +289,3 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
         }
     }
 });
-Ext.reg('sitools.user.modules.sitoolsFitsMain', sitools.user.modules.sitoolsFitsMain);

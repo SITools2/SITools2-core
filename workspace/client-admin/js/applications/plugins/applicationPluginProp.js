@@ -28,8 +28,7 @@ Ext.namespace('sitools.admin.applications.plugins');
  * @class sitools.admin.applications.plugins.applicationPluginProp
  * @extends Ext.Window
  */
-//sitools.component.applicationPlugin.applicationPluginProp = Ext.extend(Ext.Window, {
-sitools.admin.applications.plugins.applicationPluginProp = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,

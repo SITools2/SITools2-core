@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.projects.modules');
  * @class sitools.admin.projects.modules.ProjectModulesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-projectmodule',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.PROJECTMODULE,
@@ -259,4 +258,3 @@ sitools.admin.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.Gri
 
 });
 
-Ext.reg('s-projectmodule', sitools.admin.projects.modules.ProjectModulesCrudPanel);

@@ -27,8 +27,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetsOpenSearch
  * @extends Ext.Window
  */
-//sitools.component.datasets.datasetsOpenSearch = Ext.extend(Ext.Window, {
-sitools.admin.datasets.datasetsOpenSearch = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
+	alias : 'widget.s-datasetsOpenSearch',
     width : 700,
     height : 480,
     modal : true,
@@ -1196,10 +1196,8 @@ sitools.admin.datasets.datasetsOpenSearch = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-datasetsOpenSearch', sitools.admin.datasets.datasetsOpenSearch);
 
-//sitools.component.datasets.datasetsOpenSearch.relativeLink = Ext.extend(Ext.Window, {
-sitools.admin.datasets.datasetsOpenSearch.relativeLink = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.datasetsOpenSearch.relativeLink', { extend : 'Ext.Window',
     modal : true,
     width : 200,
     initComponent : function () {
@@ -1250,9 +1248,6 @@ sitools.admin.datasets.datasetsOpenSearch.relativeLink = Ext.extend(Ext.Window, 
         this.selectedRecord.data.linkFieldRelative = relative;
         this.close();
     }
-    
-    
-    
     
 });
 

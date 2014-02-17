@@ -28,8 +28,7 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @class sitools.admin.forms.oneParam.abstractForm
  * @extends Ext.form.FormPanel
  */
-sitools.admin.forms.oneParam.abstractForm = Ext.extend(Ext.form.FormPanel, {
-//sitools.component.forms.oneParam.abstractForm = Ext.extend(Ext.form.FormPanel, {
+Ext.define('sitools.admin.forms.oneParam.abstractForm', { extend : 'Ext.form.Panel',
     autoScroll : true, 
     context : null, 
     

@@ -25,7 +25,7 @@ Ext.namespace('sitools.widget.HtmlEditor');
  * @extends Ext.util.Observable
  */
 sitools.widget.HtmlEditor.datasetLink = Ext.extend(Ext.util.Observable, {
-
+	alias : 'widget.sitools.widget.HtmlEditor.datasetLink',
 	init : function(cmp) {
 //        this.cmp = cmp;
 //        this.cmp.on('render', this.onRender, this);
@@ -144,5 +144,3 @@ sitools.widget.HtmlEditor.datasetLink = Ext.extend(Ext.util.Observable, {
 	
 });
 
-Ext.reg('sitools.widget.HtmlEditor.datasetLink',
-		sitools.widget.HtmlEditor.datasetLink);

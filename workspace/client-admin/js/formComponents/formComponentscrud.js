@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.formComponents');
 
-sitools.component.formComponents.FormComponentsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-formComponents',
     border : false,
     height : 300,
     id : ID.BOX.FORMCOMPONENTS,
@@ -213,5 +213,3 @@ sitools.component.formComponents.FormComponentsCrudPanel = Ext.extend(Ext.grid.G
     }
 
 });
-
-Ext.reg('s-formComponents', sitools.component.formComponents.FormComponentsCrudPanel);

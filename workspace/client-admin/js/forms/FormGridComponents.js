@@ -32,7 +32,7 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.FormGridComponents
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.forms.FormGridComponents = Ext.extend(Ext.grid.GridPanel, {
+Ext.define('sitools.admin.forms.FormGridComponents', { extend : 'Ext.grid.Panel',
 	initComponent : function () {
 		var storeComponents = new Ext.data.JsonStore({
             root : 'data',

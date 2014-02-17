@@ -4,7 +4,7 @@
  * @extends Ext.BoxComponent
  */
 Ext.SitoolsDatePicker = Ext.extend(Ext.BoxComponent, {
-    
+    alias : 'widget.datepicker',
     todayText : 'Today',
     /**
      * @cfg {String} okText
@@ -949,7 +949,5 @@ Ext.SitoolsDatePicker = Ext.extend(Ext.BoxComponent, {
 
     
 });
-
-Ext.reg('datepicker', Ext.SitoolsDatePicker);
 
 

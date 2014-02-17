@@ -30,7 +30,8 @@ Ext.namespace('sitools.component.dictionary');
  * @class sitools.component.dictionary.selectDictionary
  * @extends Ext.Window
  */
-sitools.component.dictionary.selectDictionary = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.dictionary.selectDictionary', { extend : 'Ext.Window',
+	alias : 'widget.s-selectDictionaryWin',
     width : 700,
     height : 480,
     modal : true,
@@ -133,4 +134,4 @@ sitools.component.dictionary.selectDictionary = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-selectDictionaryWin', sitools.component.dictionary.selectDictionary);
+

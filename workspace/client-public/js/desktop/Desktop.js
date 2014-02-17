@@ -108,7 +108,11 @@ Ext.Desktop = function (app) {
                 win.fitContainer();
             }
             else {
-                win.fitToDesktop();               
+            	if (win.fitToDesktop) {
+                win.fitToDesktop();    
+            	} else {
+            		console.log("NOT A WINDOW: " + win);
+            	}
             }
         });
 		

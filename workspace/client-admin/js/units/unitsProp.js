@@ -29,8 +29,7 @@ Ext.namespace('sitools.admin.units');
  * @class sitools.admin.units.unitsProp
  * @extends Ext.Window
  */
-//sitools.component.units.unitsProp = Ext.extend(Ext.Window, {
-    sitools.admin.units.unitsProp = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,

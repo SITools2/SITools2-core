@@ -33,7 +33,8 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.datasets.services.datasetServicesCopyProp
  * @extends Ext.Window
  */
-sitools.admin.datasets.services.datasetServicesCopyProp = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { extend : 'Ext.Window', 
+	alias : 'widget.s-storage_copy',
     width : 260,
     height : 230,
     modal : true,
@@ -241,4 +242,3 @@ sitools.admin.datasets.services.datasetServicesCopyProp = Ext.extend(Ext.Window,
 
 });
 
-Ext.reg('s-storage_copy', sitools.admin.datasets.services.datasetServicesCopyProp);

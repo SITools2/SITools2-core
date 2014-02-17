@@ -41,7 +41,7 @@ Ext.namespace('sitools.admin.datasets.services');
  * @class sitools.admin.datasets.services.datasetServicesProp
  * @extends Ext.Window
  */
-sitools.admin.datasets.services.datasetServicesProp = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,

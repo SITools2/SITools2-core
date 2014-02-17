@@ -29,7 +29,7 @@ Ext.namespace('sitools.admin.guiservices');
  * @class sitools.admin.projects.modules.ProjectModulePropPanel
  * @extends Ext.Window
  */
-sitools.admin.guiservices.GuiServicesPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', { extend : 'Ext.Window',
     width : 700,
     height : 540,
     modal : true,

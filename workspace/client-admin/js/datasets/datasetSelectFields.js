@@ -25,7 +25,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetSelectFields
  * @extends Ext.Panel
  */
-sitools.admin.datasets.datasetSelectFields = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.datasets.datasetSelectFields', { extend : 'Ext.Panel',
     initComponent : function () {
 		var action = this.action;
 

@@ -162,6 +162,7 @@ sitools.user.modules.formsAsMenu = function () {
 };
 
 Ext.extend(sitools.user.modules.formsAsMenu, Ext.menu.Menu, {
+	alias : 'sitools.user.modules.formsAsMenu',
     enableScrolling : true,
     id : "formAsMenu",
 	onLoadDatasetsForms : function () {
@@ -312,7 +313,6 @@ Ext.extend(sitools.user.modules.formsAsMenu, Ext.menu.Menu, {
     }
 });
 
-Ext.reg('sitools.user.modules.formsAsMenu', sitools.user.modules.formsAsMenu);
 
 
 sitools.user.modules.formsAsMenu.openModule = function (btn, event) {

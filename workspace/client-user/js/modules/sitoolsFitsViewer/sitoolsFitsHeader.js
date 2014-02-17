@@ -24,6 +24,7 @@ Ext.namespace('sitools.user.modules');
  * @extends Ext.Panel
  */
 sitools.user.modules.sitoolsFitsHeader = Ext.extend(Ext.grid.GridPanel, {
+	alias : 'sitools.user.modules.sitoolsFitsHeader',
     frame : true,
     split : true,
     resizable : true,
@@ -76,4 +77,3 @@ sitools.user.modules.sitoolsFitsHeader = Ext.extend(Ext.grid.GridPanel, {
     }
     
 });
-Ext.reg('sitools.user.modules.sitoolsFitsHeader', sitools.user.modules.sitoolsFitsHeader);

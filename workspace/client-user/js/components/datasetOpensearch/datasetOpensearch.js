@@ -199,6 +199,7 @@ sitools.user.component.datasetOpensearch = function(config) {
 };
 
 Ext.extend(sitools.user.component.datasetOpensearch, Ext.Panel, {
+		alias : 'sitools.user.component.datasetOpensearch',
 			componentType : "openSearch",
 			_getSettings : function() {
 				return {
@@ -210,5 +211,3 @@ Ext.extend(sitools.user.component.datasetOpensearch, Ext.Panel, {
 			}
 		});
 
-Ext.reg('sitools.user.component.datasetOpensearch',
-		sitools.user.component.datasetOpensearch);

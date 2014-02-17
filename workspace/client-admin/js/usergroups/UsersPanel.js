@@ -30,8 +30,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.UsersPanel
  * @extends Ext.Window
  */
-//sitools.component.usergroups.UsersPanel = Ext.extend(Ext.Window, {
-sitools.admin.usergroups.UsersPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window', 
+	alias : 'widget.s-users',
     // url + mode + storeref
     width : 350,
     modal : true,
@@ -237,4 +237,3 @@ sitools.admin.usergroups.UsersPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-users', sitools.admin.usergroups.UsersPanel);

@@ -33,6 +33,7 @@ Ext.namespace('sitools.user.component.bottom');
  * @extends Ext.Panel
  */
 sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
+	alias : 'sitools.user.component.bottom.Bottom',
 	heightNormalMode : 0,
 	heightMaximizeDesktopMode : 0,
 	forceLayout : true,
@@ -252,5 +253,3 @@ sitools.user.component.bottom.Bottom.showFooterLink = function(url, linkName) {
 
 };
 
-Ext.reg('sitools.user.component.bottom.Bottom',
-		sitools.user.component.bottom.Bottom);

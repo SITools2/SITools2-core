@@ -45,7 +45,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.columnsPropPanel
  * @extends Ext.Window
  */
-sitools.admin.datasets.columnsPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
     width : 600,
     height : 300,
     modal : true,

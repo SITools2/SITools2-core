@@ -31,6 +31,7 @@ Ext.ns('Ext.ux.form');
  * @xtype spinnerfield
  */
 Ext.ux.form.SpinnerField = Ext.extend(Ext.form.NumberField, {
+	alias : 'widget.spinnerfield',
     actionMode: 'wrap',
     deferHeight: true,
     autoSize: Ext.emptyFn,
@@ -72,8 +73,6 @@ Ext.ux.form.SpinnerField = Ext.extend(Ext.form.NumberField, {
         return true;
     }
 });
-
-Ext.reg('spinnerfield', Ext.ux.form.SpinnerField);
 
 //backwards compat
 Ext.form.SpinnerField = Ext.ux.form.SpinnerField;

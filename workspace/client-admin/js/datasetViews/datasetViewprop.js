@@ -25,8 +25,8 @@ Ext.namespace('sitools.admin.datasetView');
  * @class sitools.admin.datasetView.DatasetViewPropPanel
  * @extends Ext.Window
  */
-sitools.admin.datasetView.DatasetViewPropPanel = Ext.extend(Ext.Window, {
-//sitools.component.datasetView.DatasetViewPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasetView.DatasetViewPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-datasetViewprop',
     width : 700,
     height : 480,
     modal : true,
@@ -257,4 +257,3 @@ sitools.admin.datasetView.DatasetViewPropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-datasetViewprop', sitools.admin.datasetView.DatasetViewPropPanel);

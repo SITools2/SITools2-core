@@ -25,6 +25,7 @@ Ext.namespace('sitools.widget.sitoolsEditorPlugins');
  * @extends Ext.util.Observable
  */
 sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPanel, {
+	alias : 'widget.sitools.widget.sitoolsEditorPlugins.moduleBrowser',
     layout : 'fit',
     initComponent : function () {
         
@@ -140,4 +141,3 @@ sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPane
         this.ownerCt.close();
     }
 });
-Ext.reg('sitools.widget.sitoolsEditorPlugins.moduleBrowser', sitools.widget.sitoolsEditorPlugins.moduleBrowser);

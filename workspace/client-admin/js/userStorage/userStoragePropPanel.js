@@ -29,8 +29,8 @@ Ext.namespace('sitools.admin.userStorage');
  * @class sitools.admin.userStorage.userStoragePropPanel
  * @extends Ext.Window
  */
-//sitools.component.userStorage.userStoragePropPanel = Ext.extend(Ext.Window, {
-sitools.admin.userStorage.userStoragePropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.userStorage.userStoragePropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-userStoragesprop',
     width : 700,
     height : 480,
     modal : true,
@@ -226,4 +226,3 @@ sitools.admin.userStorage.userStoragePropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-userStoragesprop', sitools.admin.userStorage.userStoragePropPanel);

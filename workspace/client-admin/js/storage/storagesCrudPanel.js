@@ -34,9 +34,8 @@ Ext.namespace('sitools.admin.storages');
  * @class sitools.admin.storages.storagesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.storages.storagesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.storages.storagesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-storages',
     border : false,
     height : 300,
     id : ID.BOX.STORAGES,
@@ -422,4 +421,3 @@ sitools.admin.storages.storagesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-storages', sitools.admin.storages.storagesCrudPanel);

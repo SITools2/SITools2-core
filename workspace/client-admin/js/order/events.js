@@ -20,7 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.component.order');
 
-sitools.component.order.events = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.order.events', { extend : 'Ext.Window',
     width : 350,
     height : 230,
     modal : true,

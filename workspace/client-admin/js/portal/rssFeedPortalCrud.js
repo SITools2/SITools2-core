@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.portal');
 
-sitools.component.portal.rssFeedPortalCrud = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.portal.rssFeedPortalCrud', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-rssFeedPortal',
     border : false,
     height : 300,
     id : ID.BOX.RSSPORTAL,
@@ -212,4 +212,3 @@ sitools.component.portal.rssFeedPortalCrud = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-rssFeedPortal', sitools.component.portal.rssFeedPortalCrud);

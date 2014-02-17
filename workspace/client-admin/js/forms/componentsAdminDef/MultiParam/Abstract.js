@@ -25,8 +25,7 @@ Ext.namespace('sitools.admin.forms.multiParam');
  * @class sitools.admin.forms.multiParam.abstractForm
  * @extends Ext.form.FormPanel
  */
-sitools.admin.forms.multiParam.abstractForm = Ext.extend(Ext.form.FormPanel, {
-//sitools.component.forms.multiParam.abstractForm = Ext.extend(Ext.form.FormPanel, {
+Ext.define('sitools.admin.forms.multiParam.abstractForm', { extend : 'Ext.form.Panel',
     autoScroll : true, 
     initComponent : function () {
         this.context = new sitools.component.forms.componentsAdminDef.ComponentFactory(this.context);

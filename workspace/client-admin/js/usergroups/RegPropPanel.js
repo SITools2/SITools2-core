@@ -28,8 +28,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.RegPropPanel
  * @extends Ext.Window
  */
-//sitools.component.usergroups.RegPropPanel = Ext.extend(Ext.Window, {
-sitools.admin.usergroups.RegPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-regprop',
     width : 700,
     height : 480,
     modal : true,
@@ -271,5 +271,3 @@ sitools.admin.usergroups.RegPropPanel = Ext.extend(Ext.Window, {
     }
 
 });
-
-Ext.reg('s-regprop', sitools.admin.usergroups.RegPropPanel);

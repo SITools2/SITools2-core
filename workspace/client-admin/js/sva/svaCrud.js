@@ -19,8 +19,8 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, loadUrl*/
 Ext.namespace('sitools.component.sva');
 
-sitools.component.sva.svaCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-sva',
     border : false,
     height : 300,
     id : ID.BOX.SVA,
@@ -350,5 +350,3 @@ sitools.component.sva.svaCrudPanel = Ext.extend(Ext.grid.GridPanel, {
         });
     }
 });
-
-Ext.reg('s-sva', sitools.component.sva.svaCrudPanel);

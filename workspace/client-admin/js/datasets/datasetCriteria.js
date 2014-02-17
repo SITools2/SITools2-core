@@ -30,7 +30,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetForm
  * @extends Ext.Panel
  */
-sitools.admin.datasets.datasetCriteria = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.datasets.datasetCriteria', { extend: 'Ext.Panel',
 	
 
 	initComponent : function () {

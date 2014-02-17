@@ -35,8 +35,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.joinPanel
  * @extends Ext.Panel
  */
-//sitools.component.datasets.joinPanel = Ext.extend(Ext.Panel, {
-sitools.admin.datasets.joinPanel = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.datasets.joinPanel', { extend : 'Ext.Panel',
 
     border : false,
     urlJDBC : loadUrl.get('APP_URL') + "/",
@@ -163,7 +162,7 @@ sitools.admin.datasets.joinPanel = Ext.extend(Ext.Panel, {
 
 });
 
-sitools.component.datasets.joinCrudTreePanel = Ext.extend(Ext.tree.TreePanel, {
+Ext.define('sitools.component.datasets.joinCrudTreePanel', { extend : 'Ext.tree.TreePanel',
 
     loader : null,
     projectId : null,

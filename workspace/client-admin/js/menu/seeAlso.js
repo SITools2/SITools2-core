@@ -29,7 +29,7 @@ Ext.namespace('sitools.admin.menu');
  * @class sitools.admin.menu.seeAlso
  * @extends Ext.DataView
  */
-sitools.admin.menu.seeAlso = Ext.extend(Ext.DataView, {
+Ext.define('sitools.admin.menu.seeAlso', { extend : 'Ext.view.View',
     
     id: 'links',
     

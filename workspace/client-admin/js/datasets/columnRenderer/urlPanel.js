@@ -27,7 +27,7 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-sitools.admin.datasets.columnRenderer.urlPanel = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { extend : 'Ext.Panel',
 		flex : 1,
 		layout : "fit",
         initComponent : function () {

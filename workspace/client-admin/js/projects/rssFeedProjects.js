@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.projects');
 
-sitools.component.projects.rssFeedProject = Ext.extend(Ext.Panel, {
-
+Ext.define('sitools.component.projects.rssFeedProject', { extend : 'Ext.panel.Panel',
+	alias : 'widget.s-rssFeedProjects',
     border : false,
     height : 300,
     id : ID.BOX.RSSPROJECT,
@@ -42,4 +42,4 @@ sitools.component.projects.rssFeedProject = Ext.extend(Ext.Panel, {
 
 });
 
-Ext.reg('s-rssFeedProjects', sitools.component.projects.rssFeedProject);
+

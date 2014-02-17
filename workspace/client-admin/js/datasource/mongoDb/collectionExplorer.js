@@ -26,7 +26,7 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @class sitools.admin.datasource.mongoDb.CollectionExplorer
  * @extends Ext.tree.TreePanel
  */
-sitools.admin.datasource.mongoDb.CollectionExplorer = Ext.extend(Ext.tree.TreePanel, {
+Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', { extend : 'Ext.tree.Panel',
     
     initComponent : function () {
 		var url = !Ext.isEmpty(this.collection) ? this.collection.url + "/metadata" : null;

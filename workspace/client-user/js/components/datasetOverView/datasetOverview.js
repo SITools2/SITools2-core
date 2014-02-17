@@ -124,6 +124,7 @@ sitools.user.component.DatasetOverview = function(config) {
 };
 
 Ext.extend(sitools.user.component.DatasetOverview, Ext.Panel, {
+	alias : 'sitools.user.component.DatasetOverview',
 	componentType : "datasetOverview",
 	_getSettings : function() {
 		var colModel = {};
@@ -319,5 +320,3 @@ Ext.extend(sitools.user.component.DatasetOverview, Ext.Panel, {
 	}
 });
 
-Ext.reg('sitools.user.component.DatasetOverview',
-		sitools.user.component.DatasetOverview);

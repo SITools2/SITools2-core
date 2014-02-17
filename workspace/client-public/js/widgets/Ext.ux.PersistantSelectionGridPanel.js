@@ -19,6 +19,7 @@
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin*/
 
 Ext.ux.PersistantSelectionGridPanel = Ext.extend(Ext.grid.GridPanel, {
+	alias : 'widget.Ext.ux.PersistantSelectionGridPanel',
     selectedRecords: [],
     initComponent : function () {
         
@@ -54,4 +55,3 @@ Ext.ux.PersistantSelectionGridPanel = Ext.extend(Ext.grid.GridPanel, {
     }
 });
 
-Ext.reg('Ext.ux.PersistantSelectionGridPanel',Ext.ux.PersistantSelectionGridPanel);

@@ -32,8 +32,9 @@ Ext.namespace('sitools.admin.collections');
  * @class sitools.admin.collections.CollectionsPropPanel
  * @extends Ext.Window
  */
-sitools.admin.collections.CollectionsPropPanel = Ext.extend(Ext.Window, {
-    width : 700,
+Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Window', 
+	alias : 'widget.s-collectionsprop',
+	width : 700,
     height : 580,
     modal : true,
     pageSize : 10,
@@ -351,4 +352,3 @@ sitools.admin.collections.CollectionsPropPanel = Ext.extend(Ext.Window, {
     }
 });
 
-Ext.reg('s-collectionsprop', sitools.admin.collections.CollectionsPropPanel);

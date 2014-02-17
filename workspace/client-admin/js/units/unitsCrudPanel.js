@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.units');
  * @class sitools.admin.units.unitsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.units.unitsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.units.unitsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.units.unitsCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-units',
     border : false,
     height : 300,
     id : ID.BOX.UNITS,
@@ -225,5 +224,4 @@ sitools.admin.units.unitsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
     }
 });
 
-Ext.reg('s-units', sitools.admin.units.unitsCrudPanel);
 

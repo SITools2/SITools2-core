@@ -28,7 +28,7 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-sitools.admin.datasets.columnRenderer.imagePanel = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { extend: 'Ext.Panel',
         flex : 1,
         layout : {
 	        type : 'vbox',

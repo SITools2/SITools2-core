@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-sitools.admin.quickStart.qsStart = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.quickStart.qsStart', { extend : 'Ext.panel.Panel',
     forceLayout : true, 
     layout : "vbox",
     border : false,

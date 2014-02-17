@@ -32,7 +32,7 @@ Ext.namespace('sitools.component.filtersPlugins');
  * @class sitools.component.filtersPlugins.filtersPluginsProp
  * @extends Ext.Window
  */
-sitools.component.filtersPlugins.filtersPluginsSingle = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : 'Ext.Window',
     width : 700,
     height : 500,
     modal : true,

@@ -22,7 +22,8 @@
  * @class Ext.ux.sitoolsGridView
  * @extends Ext.grid.GridView
  */
-Ext.ux.sitoolsGridView = Ext.extend(Ext.grid.GridView, {
+// Ext.define('Ext.ux.sitoolsGridView', { extend : 'Ext.grid.GridView', 
+Ext.define('Ext.ux.sitoolsGridView', { extend : 'Ext.grid.View', 
 	// surcharge de la méthode pour que l'ajout d'une colonne relance une
 	// interrogation du store
 	// avec comme parametre le nouveau columnModel

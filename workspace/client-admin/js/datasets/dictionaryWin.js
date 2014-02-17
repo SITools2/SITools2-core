@@ -25,8 +25,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.dictionaryWin
  * @extends Ext.Window
  */
-//sitools.component.datasets.dictionaryWin = Ext.extend(Ext.Window, {
-sitools.admin.datasets.dictionaryWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.dictionaryWin', { extend : 'Ext.Window', 
+	alias : 'widget.s-datasetsdictionary',
     width : 700,
     height : 480,
     modal : true,
@@ -176,5 +176,3 @@ sitools.admin.datasets.dictionaryWin = Ext.extend(Ext.Window, {
     }
 
 });
-
-Ext.reg('s-datasetsdictionary', sitools.admin.datasets.dictionaryWin);

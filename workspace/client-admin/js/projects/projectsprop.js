@@ -30,7 +30,8 @@ Ext.namespace('sitools.component.projects');
  * @class sitools.component.projects.ProjectsPropPanel
  * @extends Ext.Window
  */
-sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-projectsprop',
     /** Default Width */
     width : 700,
     /** Default height */
@@ -1174,5 +1175,3 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         });
     }
 });
-
-Ext.reg('s-projectsprop', sitools.component.projects.ProjectsPropPanel);

@@ -29,8 +29,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.UserPropPanel
  * @extends Ext.Window
  */
-//sitools.component.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
-sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-userprop',
 	id: 'winCreateUser',
     width : 700,
     height : 480,
@@ -415,4 +415,3 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-userprop', sitools.admin.usergroups.UserPropPanel);

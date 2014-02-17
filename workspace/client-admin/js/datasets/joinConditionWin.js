@@ -29,8 +29,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.joinConditionWin
  * @extends Ext.Window
  */
-//sitools.component.datasets.joinConditionWin = Ext.extend(Ext.Window, {
-sitools.admin.datasets.joinConditionWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.joinConditionWin', { extend : 'Ext.Window',
     // url + mode + storeref
     width : 650,
     modal : true,

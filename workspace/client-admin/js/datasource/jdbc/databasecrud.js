@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.datasource.jdbc');
  * @class sitools.admin.datasource.jdbc.DataBaseCrudPanel
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.datasource.jdbc.DataBaseCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-//sitools.admin.datasource.DataBaseCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-databaseJDBC',
     border : false,
     height : 300,
     id : ID.BOX.DATABASE,
@@ -302,4 +301,3 @@ sitools.admin.datasource.jdbc.DataBaseCrudPanel = Ext.extend(Ext.grid.GridPanel,
 
 });
 
-Ext.reg('s-databaseJDBC', sitools.admin.datasource.jdbc.DataBaseCrudPanel);

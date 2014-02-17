@@ -25,7 +25,7 @@ Ext.namespace('sitools.component.applications');
  * @class sitools.component.applications.rolesPanel
  * @extends Ext.Window
  */
-sitools.component.applications.rolesPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
     // url + mode + storeref
     width : 350,
     modal : true,

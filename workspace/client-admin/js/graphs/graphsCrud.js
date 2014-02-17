@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.graphs');
 
-sitools.component.graphs.graphsCrudPanel = Ext.extend(Ext.Panel, {
-
+Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Panel',
+	alias : 'widget.s-graphs',
     border : false,
     height : 300,
     id : ID.BOX.GRAPHS,
@@ -271,7 +271,7 @@ sitools.component.graphs.graphsCrudPanel = Ext.extend(Ext.Panel, {
 
 });
 
-sitools.component.graphs.graphsCrudTreePanel = Ext.extend(Ext.tree.TreePanel, {
+Ext.define('sitools.component.graphs.graphsCrudTreePanel', { extend : 'Ext.tree.Panel',
 
     idGraph : null,
     loader : null,
@@ -453,10 +453,12 @@ sitools.component.graphs.graphsCrudTreePanel = Ext.extend(Ext.tree.TreePanel, {
     }
 
 });
+
 /**
  * Custom TreeLoader to deal with JSON returned from the server
  */
-sitools.component.graphs.graphTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
+// TODO ExtJS3 Ext.tree.TreeLoader > ?
+Ext.define('sitools.component.graphs.graphTreeLoader', { extend : 'Ext.tree.TreeLoader', 
 
     idGraph : null,
 
@@ -498,4 +500,3 @@ sitools.component.graphs.graphTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
     }
 });
 
-Ext.reg('s-graphs', sitools.component.graphs.graphsCrudPanel);

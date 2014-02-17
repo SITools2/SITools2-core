@@ -28,8 +28,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.RolesPanel
  * @extends Ext.Window
  */
-//sitools.component.usergroups.RolesPanel = Ext.extend(Ext.Window, {
-sitools.admin.usergroups.RolesPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.usergroups.RolesPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-roles',
     width : 350,
     modal : true,
     closable : false,
@@ -218,4 +218,3 @@ sitools.admin.usergroups.RolesPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-roles', sitools.admin.usergroups.RolesPanel);

@@ -33,8 +33,8 @@ Ext.namespace('sitools.admin.storages');
  * @class sitools.admin.storages.storagesPropPanel
  * @extends Ext.Window
  */
-//sitools.component.storages.storagesPropPanel = Ext.extend(Ext.Window, {
-sitools.admin.storages.storagesPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.storages.storagesPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-storagesprop',
     width : 700,
     height : 480,
     modal : true,
@@ -208,4 +208,3 @@ sitools.admin.storages.storagesPropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-storagesprop', sitools.admin.storages.storagesPropPanel);

@@ -32,7 +32,7 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.componentPropPanel
  * @extends Ext.Window
  */
-sitools.admin.forms.componentPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.forms.componentPropPanel', { extend : 'Ext.Window',
 
     modal : true,
     pageSize : 10,

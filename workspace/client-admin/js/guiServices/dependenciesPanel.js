@@ -28,8 +28,7 @@ Ext.namespace('sitools.admin.util');
  * @class sitools.admin.projects.modules.ProjectModulesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.util.DependenciesPanel = Ext.extend(Ext.grid.EditorGridPanel, {
+Ext.define('sitools.admin.util.DependenciesPanel', { extend : 'Ext.grid.plugin.RowEditing',
 
     height : 180,
     viewConfig : {

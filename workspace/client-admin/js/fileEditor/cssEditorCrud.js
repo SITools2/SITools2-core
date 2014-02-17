@@ -26,8 +26,8 @@
 
 Ext.namespace('sitools.component.fileEditor');
 
-sitools.component.fileEditor.cssEditorCrud = Ext.extend(Ext.grid.GridPanel, {
-    
+Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel',
+    alias : 'widget.s-cssEditor',
     border : false,
     height : 300,
     id : ID.BOX.FILEEDITORCSS,
@@ -135,4 +135,3 @@ sitools.component.fileEditor.cssEditorCrud = Ext.extend(Ext.grid.GridPanel, {
     
 });
 
-Ext.reg('s-cssEditor', sitools.component.fileEditor.cssEditorCrud);

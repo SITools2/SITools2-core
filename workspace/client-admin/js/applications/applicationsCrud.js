@@ -27,10 +27,9 @@ Ext.namespace('sitools.admin.applications');
  * @requires sitools.admin.applications.applicationsPropPanel
  * @requires sitools.admin.applications.applicationsRolePanel
  */
-sitools.admin.applications.applicationsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-//sitools.component.applications.applicationsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
-    border : false,
+Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.grid.GridPanel',
+    alias : 'widget.s-applications',
+	border : false,
     height : 300,
     id : ID.BOX.GROUP,
     sm : new Ext.grid.RowSelectionModel(),
@@ -341,6 +340,5 @@ sitools.admin.applications.applicationsCrudPanel = Ext.extend(Ext.grid.GridPanel
 
 });
 
-Ext.reg('s-applications', sitools.admin.applications.applicationsCrudPanel);
 
 

@@ -30,8 +30,7 @@ Ext.namespace('sitools.admin.applications');
  * @extends Ext.Window
  * @requires sitools.component.applications.rolesPanel
  */
-//sitools.component.applications.applicationsRolePanel = Ext.extend(Ext.Window, {
-sitools.admin.applications.applicationsRolePanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.Window', 
     width : 700,
     height : 480,
     modal : true,

@@ -28,6 +28,7 @@ Ext.namespace('sitools.userProfile');
  * @extends Ext.Window
  */
 sitools.userProfile.Register = Ext.extend(Ext.Window, {
+	alias : 'widget.s-register',
     id: 'winRegister',
 	layout: 'hbox',
 	width: 420,
@@ -303,4 +304,3 @@ sitools.userProfile.Register = Ext.extend(Ext.Window, {
    
 });
 
-Ext.reg('s-register', sitools.userProfile.Register);

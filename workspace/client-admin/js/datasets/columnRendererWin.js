@@ -34,7 +34,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.columnRendererWin
  * @extends Ext.Window
  */
-sitools.admin.datasets.columnRendererWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.columnRendererWin', { extend : 'Ext.Window',
     
     width : 400,
     height : 600,

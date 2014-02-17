@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.order');
 
-sitools.component.order.orderCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-order',
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
@@ -234,5 +234,3 @@ sitools.component.order.orderCrudPanel = Ext.extend(Ext.grid.GridPanel, {
     }
 
 });
-
-Ext.reg('s-order', sitools.component.order.orderCrudPanel);

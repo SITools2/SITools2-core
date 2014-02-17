@@ -23,7 +23,7 @@ Ext.namespace('sitools.widget');
  * Common component for creating a dynamic link
  */
 sitools.widget.ActionLink = Ext.extend(Ext.BoxComponent, {
-
+	alias : 'widget.s-actionlink',
     /**
 	 * must be declared at the configuration
 	 */
@@ -78,5 +78,3 @@ sitools.widget.ActionLink = Ext.extend(Ext.BoxComponent, {
     }
 });
 
-// register type
-Ext.reg('s-actionlink', sitools.widget.ActionLink);

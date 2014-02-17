@@ -29,8 +29,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.GroupPropPanel
  * @extends Ext.Window
  */
-//sitools.component.usergroups.GroupPropPanel = Ext.extend(Ext.Window, {
-sitools.admin.usergroups.GroupPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.usergroups.GroupPropPanel', { extend : 'Ext.Window', 
+	alias : 'widget.s-groupprop',
     width : 700,
     height : 480,
     modal : true,
@@ -191,4 +191,3 @@ sitools.admin.usergroups.GroupPropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-groupprop', sitools.admin.usergroups.GroupPropPanel);

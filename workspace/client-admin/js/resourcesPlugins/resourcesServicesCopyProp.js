@@ -33,7 +33,8 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.resourcesPlugins.resourcesServicesCopyProp
  * @extends Ext.Window
  */
-sitools.admin.resourcesPlugins.resourcesServicesCopyProp = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend : 'Ext.Window',
+	alias : 'widget.s-storage_copy',
     width : 260,
     height : 230,
     modal : true,
@@ -165,4 +166,3 @@ sitools.admin.resourcesPlugins.resourcesServicesCopyProp = Ext.extend(Ext.Window
 
 });
 
-Ext.reg('s-storage_copy', sitools.admin.resourcesPlugins.resourcesServicesCopyProp);

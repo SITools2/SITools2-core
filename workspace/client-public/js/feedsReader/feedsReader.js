@@ -108,6 +108,7 @@ sitools.widget.FeedGridFlux = function (config) {
 };
 
 Ext.extend(sitools.widget.FeedGridFlux, Ext.Panel, {
+	alias : 'widget.appfeedgridflux',
     componentType : "feeds",
     _getSettings : function () {
         return {
@@ -122,4 +123,3 @@ Ext.extend(sitools.widget.FeedGridFlux, Ext.Panel, {
 
 });
 
-Ext.reg('appfeedgridflux', sitools.widget.FeedGridFlux);

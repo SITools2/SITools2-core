@@ -24,8 +24,8 @@ Ext.namespace('sitools.admin.menu');
  * Build the sitools tree menu
  * @class sitools.admin.menu.TreeMenu
  */
-//sitools.component.tree.Menu = Ext.extend(Object, {
-sitools.admin.menu.TreeMenu = Ext.extend(Object, {
+// TODO ExtJS3 Object > Ext.Object ? 
+Ext.define('sitools.admin.menu.TreeMenu', { extend: 'Ext.Object',
 
     constructor : function (jsonUrl) {
         var tree = new Ext.tree.TreePanel({

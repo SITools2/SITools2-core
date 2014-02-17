@@ -37,7 +37,7 @@ Ext.namespace('sitools.admin.multiDs');
  * @class sitools.admin.multiDs.MultiDsPropPanel
  * @extends Ext.Window
  */
-sitools.admin.multiDs.MultiDsPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
     width : 700,
     height : 700,
     modal : true,

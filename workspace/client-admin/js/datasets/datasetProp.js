@@ -30,7 +30,8 @@ Ext.namespace('sitools.component.datasets');
  * @requires sitools.admin.datasets.PredicatsPanel
  * @extends Ext.Window
  */
-sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-datasetsMultiTablesPanel',
 	closeAction : 'close', 
     initComponent : function () {
         Ext.apply(this, sitools.admin.datasets.abstractDatasetWin);
@@ -534,4 +535,3 @@ sitools.component.datasets.datasetsMultiTablesPanel = Ext.extend(Ext.Window, {
     }
 });
 
-Ext.reg('s-datasetsMultiTablesPanel', sitools.component.datasets.datasetsMultiTablesPanel);

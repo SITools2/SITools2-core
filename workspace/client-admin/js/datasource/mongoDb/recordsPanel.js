@@ -27,7 +27,7 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @class sitools.admin.datasource.mongoDb.RecordsPanel
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.datasource.mongoDb.RecordsPanel = Ext.extend(Ext.grid.GridPanel, {
+Ext.define('sitools.admin.datasource.mongoDb.RecordsPanel', { extend : 'Ext.grid.Panel',
     initComponent : function () {
 		var tmp = this.metadatas2ExtObject(this.node) || {};
 		

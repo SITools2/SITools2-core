@@ -24,15 +24,14 @@
  */
 Ext.namespace('sitools.admin.collections');
 
-//sitools.component.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 /**
  * A GridPanel to show all collections.
  * @class sitools.admin.collections.CollectionsCrudPanel
  * @extends Ext.grid.GridPanel
  * @requires sitools.admin.collections.CollectionsPropPanel
  */
-sitools.admin.collections.CollectionsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.collections.CollectionsCrudPanel', { extend : 'Ext.grid.Panel', 
+    alias : 'widget.s-collections',
     border : false,
     height : 300,
     id : ID.BOX.COLLECTIONS,
@@ -203,4 +202,3 @@ sitools.admin.collections.CollectionsCrudPanel = Ext.extend(Ext.grid.GridPanel, 
 
 });
 
-Ext.reg('s-collections', sitools.admin.collections.CollectionsCrudPanel);

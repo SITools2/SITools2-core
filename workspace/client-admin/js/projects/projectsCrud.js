@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.projects');
 
-sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-projects',
     border : false,
     height : 300,
     id : ID.BOX.PROJECTS,
@@ -354,4 +354,3 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-projects', sitools.component.projects.projectsCrudPanel);

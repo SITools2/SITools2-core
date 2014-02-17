@@ -20,7 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.component.graphs');
 
-sitools.component.graphs.graphsDatasetWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.graphs.graphsDatasetWin', { extend : 'Ext.Window',
     // url + mode + storeref
     width : 350,
     modal : true,

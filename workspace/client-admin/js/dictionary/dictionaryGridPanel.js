@@ -29,7 +29,7 @@ Ext.namespace('sitools.component.dictionary.gridPanel');
  * @class sitools.component.dictionary.gridPanel
  * @extends Ext.grid.GridPanel
  */
-sitools.component.dictionary.gridPanel = Ext.extend(Ext.grid.EditorGridPanel, {
+Ext.define('sitools.component.dictionary.gridPanel', { extend : 'Ext.grid.plugin.RowEditing',
     template : null,
     initComponent : function () {
         this.store = this.getStoreConcepts(this.template, this.url);

@@ -54,11 +54,16 @@
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
 
     <!-- Need the Ext itself, either debug or production version. -->
-    <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
+<!--script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script-->
     <!--script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script-->
 
+	<script type="text/javascript" src="${appUrl}/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	
+	<script type="text/javascript" src="${appUrl}/cots/extjs4/compatibility/ext3-core-compat.js"></script>   
+ 	<script type="text/javascript" src="${appUrl}/cots/extjs4/compatibility/ext3-compat.js"></script>   
+
 	<script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
-    <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>
+<!-- <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script> -->
 	
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
 

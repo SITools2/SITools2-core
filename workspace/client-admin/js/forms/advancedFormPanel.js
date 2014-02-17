@@ -29,7 +29,7 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.componentsListPanel
  * @extends Ext.Window
  */
-sitools.admin.forms.advancedFormPanel = Ext.extend(Ext.form.FieldSet, {
+Ext.define('sitools.admin.forms.advancedFormPanel', { extend : 'Ext.form.FieldSet',
     border : true,
     closable : true,
     style : 'background-color : white;',

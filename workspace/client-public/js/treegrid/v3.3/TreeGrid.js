@@ -29,6 +29,7 @@
  * @xtype treegrid
  */
 Ext.ux.tree.TreeGrid = Ext.extend(Ext.tree.TreePanel, {
+	alias : 'widget.treegrid',
     rootVisible : false,
     useArrows : true,
     lines : false,
@@ -425,4 +426,3 @@ Ext.ux.tree.TreeGrid = Ext.extend(Ext.tree.TreePanel, {
     }
 });
 
-Ext.reg('treegrid', Ext.ux.tree.TreeGrid);

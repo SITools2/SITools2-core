@@ -28,8 +28,8 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @class sitools.admin.forms.oneParam.NoValuesWithProperties
  * @extends 
  */
-sitools.admin.forms.oneParam.NoValuesWithProperties = Ext.extend(sitools.admin.forms.oneParam.withoutValues, {
-//sitools.component.forms.oneParam.NoValuesWithProperties = Ext.extend(sitools.component.forms.oneParam.withoutValues, {
+Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'sitools.admin.forms.oneParam.withoutValues',
+
     height : 400,
     id : "sitools.component.forms.definitionId",
     initComponent : function () {

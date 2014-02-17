@@ -33,8 +33,7 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.resourcesPlugins.enumerationValueTypeSelector
  * @extends Ext.Window
  */
-//sitools.component.resourcesPlugins.enumerationValueTypeSelector = Ext.extend(Ext.Window, {
-sitools.admin.resourcesPlugins.enumerationValueTypeSelector = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,

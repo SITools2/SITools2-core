@@ -28,8 +28,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.joinTableWin
  * @extends Ext.Window
  */
-sitools.admin.datasets.joinTableWin = Ext.extend(Ext.Window, {
-//sitools.component.datasets.joinTableWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.joinTableWin', { extend : 'Ext.Window',
     width : 350,
     height : 300, 
     modal : true,

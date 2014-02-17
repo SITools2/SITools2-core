@@ -28,8 +28,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.selectPredicat
  * @extends Ext.Window
  */
-sitools.admin.datasets.selectPredicat = Ext.extend(Ext.Window, {
-//sitools.component.datasets.selectPredicat = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
+	alias : 'widget.s-datasetspredicat',
     width : 700,
     height : 480,
     modal : true,
@@ -128,5 +128,3 @@ sitools.admin.datasets.selectPredicat = Ext.extend(Ext.Window, {
     }
 
 });
-
-Ext.reg('s-datasetspredicat', sitools.admin.datasets.selectPredicat);

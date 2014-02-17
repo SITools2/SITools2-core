@@ -26,9 +26,8 @@ Ext.namespace('sitools.admin.applications.plugins');
  * @class sitools.admin.applications.plugins.ApplicationPluginCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.applicationPlugin.applicationPluginCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.applications.plugins.ApplicationPluginCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { extend : 'Ext.grid.GridPanel',
+	alias : 'widget.s-Application_plugins',
     border : false,
     height : 300,
     id : ID.BOX.APPLICATIONPLUGIN,
@@ -363,4 +362,3 @@ sitools.admin.applications.plugins.ApplicationPluginCrudPanel = Ext.extend(Ext.g
     }
 });
 
-Ext.reg('s-Application_plugins', sitools.admin.applications.plugins.ApplicationPluginCrudPanel);

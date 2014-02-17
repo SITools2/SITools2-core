@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.RegCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.usergroups.RegCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.usergroups.RegCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.usergroups.RegCrudPanel', { extend : 'Ext.grid.Panel', 
+	alias : 'widget.s-regcrud',
     border : false,
     height : 300,
     id : ID.BOX.REG,
@@ -252,4 +251,3 @@ sitools.admin.usergroups.RegCrudPanel = Ext.extend(Ext.grid.GridPanel, {
     }
 });
 
-Ext.reg('s-regcrud', sitools.admin.usergroups.RegCrudPanel);

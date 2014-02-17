@@ -33,8 +33,7 @@ Ext.namespace('sitools.admin.converters');
  * @class sitools.admin.converters.convertersProp
  * @extends Ext.Window
  */
-//sitools.component.converters.convertersProp = Ext.extend(Ext.Window, {
-sitools.admin.converters.convertersProp = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window', 
     width : 700,
     height : 480,
     modal : true,

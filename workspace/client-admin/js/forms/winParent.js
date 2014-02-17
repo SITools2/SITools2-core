@@ -20,8 +20,7 @@
  showHelp */
 Ext.namespace('sitools.admin.forms');
 
-sitools.admin.forms.parentParamWin = Ext.extend(Ext.Window, {
-//sitools.component.forms.parentParamWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
     modal : true,
     title : i18n.get('label.chooseParent'),
     width : 500, 

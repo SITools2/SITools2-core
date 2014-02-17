@@ -28,7 +28,9 @@ Ext.namespace('sitools.admin.datasets.services');
  * @class sitools.admin.datasets.services.datasetServicesCrud 
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.EditorGridPanel, {
+// ExtJS4.3 'Ext.grid.EditorGridPanel'
+Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ext.grid.plugin.RowEditing',
+	alias : 'widget.s-dataset_services',
     border : false,
     height : 300,
     pageSize : 10,
@@ -647,4 +649,4 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
     }
 });
 
-Ext.reg('s-dataset_services', sitools.admin.datasets.services.datasetServicesCrud);
+

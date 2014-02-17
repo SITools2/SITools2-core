@@ -29,9 +29,8 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.resourcesPlugins.resourcesPluginsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-plugins_resources',
 	urlParentsParams : '',
     border : false,
     height : 300,
@@ -393,4 +392,3 @@ sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel = Ext.extend(Ext.grid.G
     }
 });
 
-Ext.reg('s-plugins_resources', sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel);

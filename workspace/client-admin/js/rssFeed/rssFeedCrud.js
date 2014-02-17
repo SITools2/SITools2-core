@@ -30,9 +30,8 @@ Ext.namespace('sitools.admin.rssFeed');
  * @class sitools.admin.rssFeed.rssFeedCrud
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.rssFeedCrud = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.rssFeed.rssFeedCrud = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.rssFeed.rssFeedCrud', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-rssFeedCrud',
     border : false,
     pageSize : 10,
     modify : false,
@@ -279,4 +278,3 @@ sitools.admin.rssFeed.rssFeedCrud = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-rssFeedCrud', sitools.admin.rssFeed.rssFeedCrud);

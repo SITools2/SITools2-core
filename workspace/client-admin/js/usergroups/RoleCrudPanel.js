@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.RoleCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.usergroups.RoleCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.usergroups.RoleCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
+	alias : 'widget.s-rolecrud',
     border : false,
     height : 300,
     id : ID.BOX.ROLE,
@@ -252,5 +251,3 @@ sitools.admin.usergroups.RoleCrudPanel = Ext.extend(Ext.grid.GridPanel, {
         gp.show(ID.BOX.ROLE);
     }
 });
-
-Ext.reg('s-rolecrud', sitools.admin.usergroups.RoleCrudPanel);

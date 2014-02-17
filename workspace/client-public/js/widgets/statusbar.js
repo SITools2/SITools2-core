@@ -71,6 +71,7 @@ sb.clearStatus(); // once completeed
  * @param {Object/Array} config A config object
  */
 Ext.ux.StatusBar = Ext.extend(Ext.Toolbar, {
+	alias : 'widget.statusbar',
     /**
      * @cfg {String} statusAlign
      * The alignment of the status element within the overall StatusBar layout.  When the StatusBar is rendered,
@@ -433,4 +434,4 @@ statusBar.setStatus({
         return this.setStatus(o);
     }
 });
-Ext.reg('statusbar', Ext.ux.StatusBar);
+

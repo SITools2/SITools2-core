@@ -29,7 +29,7 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.componentsListPanel
  * @extends Ext.Window
  */
-sitools.admin.forms.componentsListPanel = Ext.extend(Ext.grid.GridPanel, {
+Ext.define('sitools.admin.forms.componentsListPanel', { extend : 'Ext.grid.Panel',
     width : 220,
     id: 'gridsource',
     draggable : true,

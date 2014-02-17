@@ -28,9 +28,8 @@ Ext.namespace('sitools.admin.guiservices');
  * @class sitools.admin.projects.modules.ProjectModulesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.projects.modules.ProjectModulesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.guiservices.GuiServicesCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-guiservices',
     border : false,
     height : 300,
     id : ID.BOX.GUISERVICES,
@@ -203,4 +202,3 @@ sitools.admin.guiservices.GuiServicesCrudPanel = Ext.extend(Ext.grid.GridPanel, 
 
 });
 
-Ext.reg('s-guiservices', sitools.admin.guiservices.GuiServicesCrudPanel);

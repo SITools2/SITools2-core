@@ -29,9 +29,8 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.formsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-//sitools.component.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.forms.formsCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-forms',
     border : false,
     height : 300,
     id : ID.BOX.FORMS,
@@ -247,4 +246,3 @@ sitools.admin.forms.formsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-forms', sitools.admin.forms.formsCrudPanel);

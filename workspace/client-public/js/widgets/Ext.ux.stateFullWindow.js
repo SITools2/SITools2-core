@@ -19,6 +19,7 @@
 /*global Ext, sitools, i18n,document,projectGlobal,userStorage*/
 Ext.ns('Ext.ux');
 Ext.ux.stateFullWindow = Ext.extend(Ext.Window, {
+	alias : 'widget.statewindow',
     saveSettings : function (componentSettings, forPublicUser) {
 	    if (Ext.isEmpty(userLogin)) {
 		    Ext.Msg.alert(i18n.get('label.warning', 'label.needLogin'));
@@ -122,4 +123,3 @@ Ext.ux.stateFullWindow = Ext.extend(Ext.Window, {
     }
     
 });
-Ext.reg('statewindow', Ext.ux.stateFullWindow);

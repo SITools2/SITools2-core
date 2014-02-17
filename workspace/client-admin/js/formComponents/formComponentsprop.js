@@ -20,7 +20,8 @@
  showHelp, includeJs*/
 Ext.namespace('sitools.component.formComponents');
 
-sitools.component.formComponents.FormComponentsPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.formComponents.FormComponentsPropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-formComponentsprop',
     width : 700,
     height : 480,
     modal : true,
@@ -167,4 +168,3 @@ sitools.component.formComponents.FormComponentsPropPanel = Ext.extend(Ext.Window
 
 });
 
-Ext.reg('s-formComponentsprop', sitools.component.formComponents.FormComponentsPropPanel);

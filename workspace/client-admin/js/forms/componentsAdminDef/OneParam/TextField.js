@@ -20,8 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.admin.forms.oneParam');
 
-sitools.admin.forms.oneParam.TextField = Ext.extend(sitools.admin.forms.oneParam.withoutValues, {
-//sitools.component.forms.oneParam.TextField = Ext.extend(sitools.component.forms.oneParam.withoutValues, {
+Ext.define('sitools.admin.forms.oneParam.TextField', { extend : 'sitools.admin.forms.oneParam.withoutValues', 
     initComponent : function () {
         sitools.admin.forms.oneParam.TextField.superclass.initComponent.call(this);
         this.componentAutoComplete = new Ext.form.Checkbox({

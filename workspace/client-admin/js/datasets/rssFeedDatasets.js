@@ -25,9 +25,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.rssFeedDatasets
  * @extends Ext.Panel
  */
-sitools.admin.datasets.rssFeedDatasets = Ext.extend(Ext.Panel, {
-//sitools.component.datasets.rssFeedDatasets = Ext.extend(Ext.Panel, {
-
+Ext.define('sitools.admin.datasets.rssFeedDatasets', { extend : 'Ext.Panel',
+	alias : 'widget.s-rssFeedDatasets',
     border : false,
     height : 300,
     id : ID.BOX.RSSPROJECT,
@@ -47,5 +46,3 @@ sitools.admin.datasets.rssFeedDatasets = Ext.extend(Ext.Panel, {
     }
 
 });
-
-Ext.reg('s-rssFeedDatasets', sitools.admin.datasets.rssFeedDatasets);

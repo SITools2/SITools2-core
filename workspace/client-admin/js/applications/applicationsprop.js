@@ -25,8 +25,7 @@ Ext.namespace('sitools.admin.applications');
  * @cfg {Ext.data.Record} applicationRecord the selected record 
  * @extends Ext.Window
  */
-//sitools.component.applications.applicationsPropPanel = Ext.extend(Ext.Window, {
-sitools.admin.applications.applicationsPropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.applications.applicationsPropPanel', { extend : 'Ext.Window', 
     width : 700,
     height : 480,
     modal : true,

@@ -26,8 +26,8 @@
 
 Ext.namespace('sitools.component.fileEditor');
 
-sitools.component.fileEditor.ftlEditorCrud = Ext.extend(Ext.grid.GridPanel, {
-    
+Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Panel',
+    alias : 'widget.s-ftlEditor',
     border : false,
     height : 300,
     id : ID.BOX.FILEEDITORFTL,
@@ -149,5 +149,3 @@ sitools.component.fileEditor.ftlEditorCrud = Ext.extend(Ext.grid.GridPanel, {
     }
     
 });
-
-Ext.reg('s-ftlEditor', sitools.component.fileEditor.ftlEditorCrud);

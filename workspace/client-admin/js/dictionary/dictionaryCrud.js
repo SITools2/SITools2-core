@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.dictionary');
 
-sitools.component.dictionary.dictionaryCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-dictionary',
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
@@ -188,4 +188,3 @@ sitools.component.dictionary.dictionaryCrudPanel = Ext.extend(Ext.grid.GridPanel
 
 });
 
-Ext.reg('s-dictionary', sitools.component.dictionary.dictionaryCrudPanel);

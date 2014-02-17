@@ -20,8 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.forms.oneParam');
 
-sitools.admin.forms.oneParam.NumberFieldAdmin = Ext.extend(sitools.admin.forms.oneParam.abstractWithUnit, {
-//sitools.component.forms.oneParam.NumberFieldAdmin = Ext.extend(sitools.admin.forms.components.oneParam.abstractWithUnit, {
+Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', { extend : 'sitools.admin.forms.oneParam.abstractWithUnit', 
+
     height : 250,
     id : "sitools.component.forms.definitionId",
     initComponent : function () {

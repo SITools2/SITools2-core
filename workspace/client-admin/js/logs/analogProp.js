@@ -21,8 +21,8 @@
 
 Ext.namespace('sitools.component.logs');
 
-sitools.component.logs.analogProp = Ext.extend(Ext.Panel, {
-    
+Ext.define('sitools.component.logs.analogProp', { extend : 'Ext.panel.Panel',
+    alias : 'widget.s-analog',
     border : false,
     height : 480,
     id : "analogBoxId",
@@ -95,5 +95,3 @@ sitools.component.logs.analogProp = Ext.extend(Ext.Panel, {
     
 
 });
-
-Ext.reg('s-analog', sitools.component.logs.analogProp);

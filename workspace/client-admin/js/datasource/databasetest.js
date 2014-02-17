@@ -27,8 +27,7 @@ Ext.namespace('sitools.admin.datasource');
  * @class sitools.admin.datasource.DataBaseTest
  * @extends Ext.Window
  */
-sitools.admin.datasource.DataBaseTest = Ext.extend(Ext.Window, {
-//sitools.admin.datasource.DataBaseTest = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasource.DataBaseTest', { extend : 'Ext.Window',
     width : 400,
     height : 210,
     modal : true,

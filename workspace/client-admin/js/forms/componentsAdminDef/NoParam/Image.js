@@ -25,8 +25,8 @@ Ext.namespace('sitools.admin.forms.noParam');
  * @class sitools.admin.forms.noParam.image
  * @extends Ext.form.FormPanel
  */
-sitools.admin.forms.noParam.image = Ext.extend(Ext.form.FormPanel, {
-//sitools.component.forms.noParam.image = Ext.extend(Ext.form.FormPanel, {
+Ext.define('sitools.admin.forms.noParam.image', { extend : 'Ext.form.Panel',
+
     height : 100,
     id : "sitools.component.forms.definitionId",
     initComponent : function () {

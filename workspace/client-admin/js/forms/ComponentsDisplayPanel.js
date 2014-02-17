@@ -33,7 +33,7 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.ComponentsDisplayPanel
  * @extends Ext.Panel
  */
-sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.forms.ComponentsDisplayPanel', { extend : 'Ext.panel.Panel',
 	
 	y : 0,
 	position : 0,

@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.dictionary');
 
-sitools.component.dictionary.templatePropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-templateprop',
     width : 700,
     height : 480,
     modal : true,
@@ -291,4 +292,4 @@ sitools.component.dictionary.templatePropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-templateprop', sitools.component.dictionary.templatePropPanel);
+

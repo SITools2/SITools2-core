@@ -19,7 +19,7 @@
 Ext.namespace('sitools.widget');
 
 sitools.widget.TextFilter = Ext.extend(Ext.form.TriggerField, {
-	
+	alias : 'widget.s-filter',
 	ctCls:"s-textfilter",
 	cls:"s-textfilter-text",
 	triggerConfig:{tag:"div", cls:"x-form-trigger s-textfilter-trigger"},
@@ -109,5 +109,3 @@ sitools.widget.TextFilter = Ext.extend(Ext.form.TriggerField, {
 	}
 });
 
-//register type
-Ext.reg('s-filter', sitools.widget.TextFilter);

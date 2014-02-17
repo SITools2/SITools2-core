@@ -33,8 +33,8 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @class sitools.admin.datasource.mongoDb.DataBasePropPanel
  * @extends Ext.Window
  */
-sitools.admin.datasource.mongoDb.DataBasePropPanel = Ext.extend(Ext.Window, {
-//sitools.admin.datasource.DataBasePropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { extend : 'Ext.Window',
+	alias : 'widget.s-databaseprop',
     width : 700,
     height : 480,
     modal : true,
@@ -247,4 +247,3 @@ sitools.admin.datasource.mongoDb.DataBasePropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-databaseprop', sitools.admin.datasource.mongoDb.DataBasePropPanel);

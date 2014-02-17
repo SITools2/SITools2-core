@@ -166,7 +166,7 @@ sitools.user.modules.projectServices = function () {
 };
 
 Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
-	
+	alias : 'sitools.user.modules.projectServices',
 	runJob : function (resource) {
 		var parameters = resource.parameters;
         var url = null, icon = null, method = null, runTypeUserInput = null;
@@ -207,4 +207,3 @@ Ext.extend(sitools.user.modules.projectServices, Ext.Panel, {
 	
 });
 
-Ext.reg('sitools.user.modules.projectServices', sitools.user.modules.projectServices);

@@ -27,8 +27,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.DicoMapping
  * @extends Ext.Window
  */
-//sitools.component.datasets.DicoMapping = Ext.extend(Ext.Window, {
-sitools.admin.datasets.DicoMapping = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
+	alias : 'widget.s-DicoMapping',
     width : 800,
     height : 680,
     modal : true,
@@ -732,4 +732,3 @@ sitools.admin.datasets.DicoMapping = Ext.extend(Ext.Window, {
     
 });
 
-Ext.reg('s-DicoMapping', sitools.admin.datasets.DicoMapping);

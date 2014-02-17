@@ -26,7 +26,8 @@ Ext.namespace('sitools.admin.projects.modules');
  * @class sitools.admin.projects.modules.ProjectModuleConfig
  * @extends Ext.Window
  */
-sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.projects.modules.ProjectModuleConfig', { extend : 'Ext.Window',
+	alias : 'widget.s-projectmoduleconfig',
     width : 500,
     height : 400,
     modal : true,
@@ -74,4 +75,3 @@ sitools.admin.projects.modules.ProjectModuleConfig = Ext.extend(Ext.Window, {
     
 });
 
-Ext.reg('s-projectmoduleconfig', sitools.admin.projects.modules.ProjectModuleConfig);

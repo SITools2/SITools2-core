@@ -25,7 +25,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetProperties
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.datasets.datasetProperties = Ext.extend(Ext.grid.EditorGridPanel, {
+// ExtJS4.3 'Ext.grid.EditorGridPanel'
+Ext.define('sitools.admin.datasets.datasetProperties', { extend : 'Ext.grid.plugin.RowEditing',
     initComponent : function () {
 		var action = this.action;
 		var storeProperties = new Ext.data.JsonStore({

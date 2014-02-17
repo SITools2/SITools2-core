@@ -30,8 +30,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.selectColumn
  * @extends Ext.Window
  */
-sitools.admin.datasets.selectColumn = Ext.extend(Ext.Window, {
-//sitools.component.datasets.selectColumn = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.selectColumn', { extend : 'Ext.Window',
+	alias : 'widget.s-datasetscolumnwin',
     width : 700,
     height : 480,
     modal : true,
@@ -150,4 +150,3 @@ sitools.admin.datasets.selectColumn = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-datasetscolumnwin', sitools.admin.datasets.selectColumn);

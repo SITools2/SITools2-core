@@ -25,6 +25,7 @@ Ext.namespace('sitools.widget.sitoolsEditorPlugins');
  * @extends Ext.util.Observable
  */
 sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
+	alias : 'sitools.widget.sitoolsEditorPlugins.documentBrowser',
     width : 500,
     height : 500,
     layout : 'fit',
@@ -241,4 +242,3 @@ sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
     }
     
 });
-Ext.reg('sitools.widget.sitoolsEditorPlugins.documentBrowser', sitools.widget.sitoolsEditorPlugins.documentBrowser);

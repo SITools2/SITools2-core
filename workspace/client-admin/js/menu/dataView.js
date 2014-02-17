@@ -21,8 +21,6 @@
  showHelp, ann, mainPanel, helpUrl:true, loadUrl, SHOW_HELP*/
 Ext.namespace('sitools.admin.menu');
 
-//sitools.component.dataViewNodes = Ext.extend(Ext.DataView, {
-
 /**
  * Create A Dataview from the file menu.json
  * 
@@ -31,7 +29,7 @@ Ext.namespace('sitools.admin.menu');
  * @class sitools.admin.menu.dataView
  * @extends Ext.DataView
  */
-sitools.admin.menu.dataView = Ext.extend(Ext.DataView, {
+Ext.define('sitools.admin.menu.dataView', { extend : 'Ext.view.View',
 	
     id: 'nodes',
     

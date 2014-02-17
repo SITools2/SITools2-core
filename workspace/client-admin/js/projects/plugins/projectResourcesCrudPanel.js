@@ -25,9 +25,8 @@ Ext.namespace('sitools.admin.projectResources');
  * @class sitools.admin.projectResources.projectResourcesCrudPanel
  * @extends Ext.Panel
  */
-//sitools.component.projectResources.projectResourcesCrudPanel = Ext.extend(Ext.Panel, {
-sitools.admin.projectResources.projectResourcesCrudPanel = Ext.extend(Ext.Panel, {
-    
+Ext.define('sitools.admin.projectResources.projectResourcesCrudPanel', { extend : 'Ext.panel.Panel',
+    alias : 'widget.s-project_resources',
     border : false,
     height : 300,    
     layout : 'fit',
@@ -49,4 +48,4 @@ sitools.admin.projectResources.projectResourcesCrudPanel = Ext.extend(Ext.Panel,
 
 });
 
-Ext.reg('s-project_resources', sitools.admin.projectResources.projectResourcesCrudPanel);
+

@@ -30,9 +30,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-//sitools.component.datasets.datasetsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-sitools.admin.datasets.datasetsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Panel',
+	alias : 'widget.s-datasets',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.DATASETS,
@@ -465,4 +464,3 @@ sitools.admin.datasets.datasetsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-datasets', sitools.admin.datasets.datasetsCrudPanel);

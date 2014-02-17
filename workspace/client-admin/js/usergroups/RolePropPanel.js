@@ -29,8 +29,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.RolePropPanel
  * @extends Ext.Window
  */
-//sitools.component.usergroups.RolePropPanel = Ext.extend(Ext.Window, {
-sitools.admin.usergroups.RolePropPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.usergroups.RolePropPanel', { extend : 'Ext.Window', 
+	alias : 'widget.s-roleprop',
     width : 700,
     height : 480,
     modal : true,
@@ -164,4 +164,3 @@ sitools.admin.usergroups.RolePropPanel = Ext.extend(Ext.Window, {
 
 });
 
-Ext.reg('s-roleprop', sitools.admin.usergroups.RolePropPanel);

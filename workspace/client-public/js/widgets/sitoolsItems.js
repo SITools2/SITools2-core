@@ -25,6 +25,7 @@ Ext.namespace('sitools.widget');
  * @extends Ext.Panel
  */
 sitools.widget.Box = Ext.extend(Ext.Panel, {
+	alias : 'widget.s-box',
     width : '98%',
     frame : true,
     baseCls : 'x-box',
@@ -49,8 +50,7 @@ sitools.widget.Box = Ext.extend(Ext.Panel, {
     } 
     
 });
-// register type
-Ext.reg('s-box', sitools.widget.Box);
+
 
 /**
  * A simple json store with new methods
@@ -102,6 +102,7 @@ sitools.widget.JsonStore = Ext.extend(Ext.data.JsonStore, {
  * @extends Ext.Button
  */
 sitools.widget.menuButton = Ext.extend(Ext.Button, {
+	alias : 'widget.s-menuButton',
 
 	constructor : function (config) {
 
@@ -112,7 +113,7 @@ sitools.widget.menuButton = Ext.extend(Ext.Button, {
 		sitools.widget.menuButton.superclass.constructor.call(this, config);
 	}
 });
-Ext.reg('s-menuButton', sitools.widget.menuButton);
+
 
 /**
  * @class TemplateTreeNode
@@ -153,6 +154,7 @@ Ext.tree.TreePanel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
  * @extends Ext.Toolbar
  */
 sitools.widget.GridSorterToolbar = Ext.extend(Ext.Toolbar, {
+	alias : 'sitools.widget.GridSorterToolbar',
     initComponent : function () {
         sitools.widget.GridSorterToolbar.superclass.initComponent.call(this);
         this.add('->', new sitools.widget.GridTop({
@@ -166,7 +168,6 @@ sitools.widget.GridSorterToolbar = Ext.extend(Ext.Toolbar, {
 						}));
     }
 });
-Ext.reg('sitools.widget.GridSorterToolbar', sitools.widget.GridSorterToolbar);
 
 /**
  * A RowExpander used for plugin grids to add violation informations 
@@ -177,6 +178,7 @@ Ext.reg('sitools.widget.GridSorterToolbar', sitools.widget.GridSorterToolbar);
  */
 sitools.widget.ViolationRowExpander = Ext.extend(
    Ext.ux.grid.RowExpander, {
+	   alias : 'sitools.widget.ViolationRowExpander',
         getRowClass : function (record, index, rowParams, store) {
             //call the method from the superclass
             var cls = sitools.widget.ViolationRowExpander.superclass.getRowClass.call(this,
@@ -194,7 +196,6 @@ sitools.widget.ViolationRowExpander = Ext.extend(
         }
 });
 
-Ext.reg('sitools.widget.ViolationRowExpander', sitools.widget.ViolationRowExpander);
 
 /**
  * Color picker on a triggerField * 

@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-sitools.admin.quickStart.qs = Ext.extend(Ext.Panel, {
+Ext.define('sitools.admin.quickStart.qs', { extend : 'Ext.panel.Panel',
     layout : 'border',
     bodyCssClass : 'quickStart',
     initComponent : function () {

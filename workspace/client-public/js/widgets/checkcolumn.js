@@ -73,6 +73,7 @@ Ext.ux.grid.CheckColumn = function(config){
 };
 
 Ext.ux.grid.CheckColumn = Ext.extend(Ext.Component, {
+	alias : 'widget.checkcolumn',
     enabled : true, 
     init : function(grid){
         this.grid = grid;
@@ -120,9 +121,6 @@ Ext.ux.grid.CheckColumn = Ext.extend(Ext.Component, {
     }
     
 });
-
-// register ptype
-Ext.preg('checkcolumn', Ext.ux.grid.CheckColumn);
 
 // backwards compat
 Ext.grid.CheckColumn = Ext.ux.grid.CheckColumn;

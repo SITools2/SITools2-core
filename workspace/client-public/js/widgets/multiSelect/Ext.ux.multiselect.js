@@ -39,6 +39,7 @@ Ext.ns('Ext.ux.form');
  * @xtype multiselect
  */
 Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
+	alias : 'widget.multiselect',
     /**
      * @cfg {String} legend Wraps the object with a fieldset and specified legend.
      */
@@ -356,7 +357,6 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
 });
 
 
-Ext.reg('multiselect', Ext.ux.form.MultiSelect);
 
 //backwards compat
 Ext.ux.Multiselect = Ext.ux.form.MultiSelect;

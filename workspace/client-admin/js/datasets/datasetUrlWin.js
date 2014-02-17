@@ -28,8 +28,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetUrlWin
  * @extends Ext.Window
  */
-//sitools.component.datasets.datasetUrlWin = Ext.extend(Ext.Window, {
-sitools.admin.datasets.datasetUrlWin = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
     width : 400,
     height : 400,
     modal : true,

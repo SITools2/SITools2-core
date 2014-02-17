@@ -25,8 +25,7 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @class sitools.admin.forms.oneParam.DateBetween
  * @extends sitools.admin.forms.oneParam.abstractForm
  */
-sitools.admin.forms.oneParam.DateBetween = Ext.extend(sitools.admin.forms.oneParam.abstractForm, {
-//sitools.component.forms.oneParam.DateBetween = Ext.extend(sitools.admin.forms.oneParam.abstractForm, {
+Ext.define('sitools.admin.forms.oneParam.DateBetween', { extend : 'sitools.admin.forms.oneParam.abstractForm', 
     height : 330,
     id : "sitools.component.forms.definitionId",
     initComponent : function () {

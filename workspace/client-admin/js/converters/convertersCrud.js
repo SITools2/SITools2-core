@@ -29,8 +29,8 @@ Ext.namespace('sitools.admin.converters');
  * @class sitools.admin.converters.convertersCrudPanel
  * @extends Ext.grid.GridPanel
  */
-sitools.admin.converters.convertersCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.GridPanel', 
+	alias : 'widget.s-converters',
     border : false,
     height : 300,
     id : ID.BOX.CONVERTERS,
@@ -441,4 +441,3 @@ sitools.admin.converters.convertersCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
 });
 
-Ext.reg('s-converters', sitools.admin.converters.convertersCrudPanel);

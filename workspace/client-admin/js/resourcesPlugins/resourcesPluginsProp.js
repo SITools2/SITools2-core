@@ -43,8 +43,7 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.resourcesPlugins.resourcesPluginsProp
  * @extends Ext.Window
  */
-//sitools.component.resourcesPlugins.resourcesPluginsProp = Ext.extend(Ext.Window, {
-sitools.admin.resourcesPlugins.resourcesPluginsProp = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,

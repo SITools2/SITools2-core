@@ -134,6 +134,7 @@ sitools.user.component.columnsDefinition = function(config) {
 };
 
 Ext.extend(sitools.user.component.columnsDefinition, Ext.Panel, {
+	alias : 'sitools.user.component.columnsDefinition',
 	componentType : "defi",
 	_getSettings : function() {
 		var colModel = [];
@@ -242,5 +243,3 @@ Ext.extend(sitools.user.component.columnsDefinition, Ext.Panel, {
 
 });
 
-Ext.reg('sitools.user.component.columnsDefinition',
-		sitools.user.component.columnsDefinition);

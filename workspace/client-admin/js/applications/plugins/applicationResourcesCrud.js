@@ -24,9 +24,8 @@ Ext.namespace('sitools.admin.applications.plugins');
  * @extends Ext.Panel
  * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel
  */
-//sitools.component.applicationResources.applicationResourcesCrudPanel = Ext.extend(Ext.Panel, {
-sitools.admin.applications.plugins.applicationResourcesCrudPanel = Ext.extend(Ext.Panel, {
-    
+Ext.define('sitools.admin.applications.plugins.applicationResourcesCrudPanel', { extend : 'Ext.Panel', 
+    alias : 'widget.s-application_resources',
     border : false,
     height : 300,    
     layout : 'fit',
@@ -48,4 +47,3 @@ sitools.admin.applications.plugins.applicationResourcesCrudPanel = Ext.extend(Ex
 
 });
 
-Ext.reg('s-application_resources', sitools.admin.applications.plugins.applicationResourcesCrudPanel);
