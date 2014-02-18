@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -106,6 +106,7 @@ public class SecurityFilter extends Filter {
   @Override
   protected int beforeHandle(Request request, Response response) {
     int status = STOP;
+    String ip = getIpAddress(request);
     if (isIntranet(request)) {
       status = CONTINUE;
       request.getAttributes().put("Sitools.intranet", true);
@@ -120,12 +121,16 @@ public class SecurityFilter extends Filter {
 
     if (doFilter && status == STOP) {
       response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Your IP address was blocked");
+      getLogger().log(
+          Level.INFO,
+          "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath() + " forbiden, IP address " + ip
+              + " is out of Intranet domain");
     }
     else {
       status = CONTINUE;
+      getLogger().log(Level.FINEST, "Request from " + ip + " OK = " + status);
     }
 
-    getLogger().log(Level.FINEST, "Request from " + request.getClientInfo().getAddress() + " OK = " + status);
     return status;
   }
 
@@ -139,6 +144,17 @@ public class SecurityFilter extends Filter {
   public boolean isIntranet(Request request) {
     // get the address of the Request
     String ip = getIpAddress(request);
+    return isIntranet(ip);
+  }
+
+  /**
+   * Check if the given request if from the intranet
+   * 
+   * @param ip
+   *          the ip address
+   * @return true if the request is from the intranet, false otherwise
+   */
+  public boolean isIntranet(String ip) {
     // transform this address into a long
     long lAddress = getAddress(ip);
     // loop thought all the intranet address to check if the given address match one of them
@@ -172,6 +188,17 @@ public class SecurityFilter extends Filter {
    */
   public boolean isExtranet(Request request) {
     return !isIntranet(request);
+  }
+
+  /**
+   * Check if the given request if from the extranet
+   * 
+   * @param ip
+   *          the ip address
+   * @return true if the ip is from the extranet, false otherwise
+   */
+  public boolean isExtranet(String ip) {
+    return !isIntranet(ip);
   }
 
   /**

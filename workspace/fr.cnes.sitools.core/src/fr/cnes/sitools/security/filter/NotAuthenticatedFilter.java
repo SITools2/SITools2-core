@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -17,6 +17,8 @@
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package fr.cnes.sitools.security.filter;
+
+import java.util.logging.Level;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -42,6 +44,10 @@ public class NotAuthenticatedFilter extends Filter {
       String id = request.getChallengeResponse().getIdentifier();
       if (request.getClientInfo() != null && !request.getClientInfo().isAuthenticated() && id != null && !id.isEmpty()) {
         response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Bad credentials");
+        getLogger().log(
+            Level.INFO,
+            "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath()
+                + " forbidden, bad credentials for user : " + id);
         return STOP;
       }
     }
