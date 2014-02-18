@@ -125,7 +125,7 @@
 	</patternset>
 	
 	<path id="compile.classpath">
-		<pathelement location="${comp.wp.dir}/org.restlet.patched/org.restlet.patched_1.0.3.jar"/>
+		<pathelement location="${comp.wp.dir}/org.restlet.patched/org.restlet.patched_1.0.4.jar"/>
 		<pathelement location="${comp.cp.dir}/fr.cnes.sitools.core.jar" />
 		<path refid="restlet_jse_2_0_5_patched" />
 		<path refid="sitools_libraries" />
