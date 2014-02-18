@@ -1283,7 +1283,7 @@ Ext.override(Ext.Window, {
         //resize windows to fit desktop
         var vs = this.container.getViewSize(false);
         var winSize = this.getSize();
-        var winPos = this.getPosition()
+        var winPos = this.getPosition();
         
         var outputWinSize = winSize;
         var outputWinPos = winPos;
