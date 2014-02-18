@@ -31,8 +31,9 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.addToCartService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.addToCartService = {
-
+Ext.define('sitools.user.component.dataviews.services.addToCartService', {
+    alias : 'sitools.user.component.dataviews.services.addToCartService',
+    
 	getCartSelectionFile : function(response) {
 
 		if (Ext.isEmpty(response.responseText)) {
@@ -239,9 +240,7 @@ sitools.user.component.dataviews.services.addToCartService = {
 			}
 		}
 	}
-};
-Ext.reg('sitools.user.component.dataviews.services.addToCartService',
-		sitools.user.component.dataviews.services.addToCartService);
+});
 
 sitools.user.component.dataviews.services.addToCartService.getParameters = function() {
 	var checkColumn = new Ext.grid.CheckColumn({

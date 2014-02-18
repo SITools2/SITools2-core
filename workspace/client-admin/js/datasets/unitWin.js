@@ -68,7 +68,7 @@ Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
             }
         });
 
-        this.smUnits = new Ext.grid.RowSelectionModel({
+        this.smUnits = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 
@@ -104,7 +104,7 @@ Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
             }
         });
 
-        this.smDimensions = new Ext.grid.RowSelectionModel({
+        this.smDimensions = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

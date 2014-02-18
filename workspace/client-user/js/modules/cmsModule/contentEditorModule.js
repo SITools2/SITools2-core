@@ -24,7 +24,10 @@ Ext.namespace('sitools.user.modules');
  * @cfg {Array} listProjectModulesConfig, the list of paramaters to set the module with
  * @extends Ext.Panel
  */
-sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.contentEditorModule', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.contentEditorModule',
+    
     /**
      * the node to activate
      * @type Ext.tree.TreeNode
@@ -1136,5 +1139,3 @@ sitools.user.modules.contentEditorModule.getParameters = function () {
         }
     }];
 };
-
-Ext.reg('sitools.user.modules.contentEditorModule', sitools.user.modules.contentEditorModule);

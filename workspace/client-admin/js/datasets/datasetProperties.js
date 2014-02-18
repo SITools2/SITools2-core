@@ -42,7 +42,7 @@ Ext.define('sitools.admin.datasets.datasetProperties', { extend : 'Ext.grid.plug
             } ],
             autoLoad : false
         });
-        var smProperties = new Ext.grid.RowSelectionModel({
+        var smProperties = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
         

@@ -28,7 +28,9 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.sorterService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.sorterService = Ext.extend(Ext.Window, {
+Ext.define('sitools.user.component.dataviews.services.sorterService', {
+    extend : 'Ext.window.Window',
+    alias : 'sitools.user.component.dataviews.services.sorterService',
     
     initComponent : function () {
         
@@ -213,7 +215,7 @@ sitools.user.component.dataviews.services.sorterService = Ext.extend(Ext.Window,
         }, this); 
     }
 });
-Ext.reg('sitools.user.component.dataviews.services.sorterService', sitools.user.component.dataviews.services.sorterService);
+
 sitools.user.component.dataviews.services.sorterService.getParameters = function () {
     return [];
 };

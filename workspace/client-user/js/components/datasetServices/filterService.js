@@ -24,7 +24,10 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.widget.filterTool
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.filterService = Ext.extend(Ext.Window, {
+Ext.define('sitools.user.component.dataviews.services.filterService', {
+    extend : 'Ext.window.Window',
+    alias : 'sitools.user.component.dataviews.services.filterService',
+    
     paramPrefix : 'filter', 
     
     initComponent : function () {
@@ -315,5 +318,3 @@ sitools.user.component.dataviews.services.filterService.executeAsService = funct
     var filterTool = new sitools.user.component.dataviews.services.filterService(config);
     filterTool.show();
 };
-
-Ext.reg('sitools.user.component.dataviews.services.filterService', sitools.user.component.dataviews.services.filterService);

@@ -283,7 +283,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     scope : this
                 }
             },
-            sm : new Ext.grid.RowSelectionModel(),
+            sm : Ext.create('Ext.selection.RowModel'),
             bbar : new Ext.ux.StatusBar({
                 id: 'statusBar',
                 hidden : true,

@@ -243,241 +243,244 @@ Ext.ns("sitools.user.component.dataviews.livegrid");
  * 
  * 
  */
-sitools.user.component.dataviews.livegrid.LiveGrid = function (config) {
-    Ext.apply(this, config);
+Ext.define('sitools.user.component.dataviews.livegrid.LiveGrid', {
     
-    /**
-     * {String} urlRecords the url to request the API to get the records
-     */
-    this.urlRecords = config.dataUrl + '/records';
-    /** 
-     * {String} sitoolsAttachementForUsers the attachment url of the dataset
-     */
-    this.sitoolsAttachementForUsers = config.dataUrl;
-    /** {String} datasetName the dataset Name */
-    this.datasetName = config.datasetName;
-    
-    var xg = Ext.grid;
+    constructor : function (config) {
+        Ext.apply(this, config);
+        
+        /**
+         * {String} urlRecords the url to request the API to get the records
+         */
+        this.urlRecords = config.dataUrl + '/records';
+        /** 
+         * {String} sitoolsAttachementForUsers the attachment url of the dataset
+         */
+        this.sitoolsAttachementForUsers = config.dataUrl;
+        /** {String} datasetName the dataset Name */
+        this.datasetName = config.datasetName;
+        
+        var xg = Ext.grid;
 
-    var dataviewConfig = sitoolsUtils.arrayProperties2Object(config.datasetViewConfig);
-    /*
-	 * Construction of the column Model : user preferences have priority on the
-	 * initial definition of the model column in the dataset
-	 */
-    var colModel;
+        var dataviewConfig = sitoolsUtils.arrayProperties2Object(config.datasetViewConfig);
+        /*
+         * Construction of the column Model : user preferences have priority on the
+         * initial definition of the model column in the dataset
+         */
+        var colModel;
 
-    this.origin = "Ext.ux.livegrid";
-    
-    if (!Ext.isEmpty(config.userPreference) && config.userPreference.datasetView == this.origin && !Ext.isEmpty(config.userPreference.colModel)) {
-        colModel = config.userPreference.colModel;
-    }
-    else {
-		colModel = config.datasetCm; 
-    }
-    var cm = getColumnModel(colModel, config.dictionaryMappings, dataviewConfig, this.getId());
-    
-//    /*
-//	 * the filters of the grid
-//	 */
-//    var filters = sitools.user.component.dataviews.dataviewUtils.getFilters(config.datasetCm, config.filters);
-//    // Using the extended gridFilter to filter with the columnAlias
-//    var filtersSimple = new Ext.ux.grid.GridFiltersSpe({
-//        encode : false, // json encode the filter query
-//        local : false, // defaults to false (remote filtering)
-//        filters : filters
-//    });
-    
-    //list of events to consider that everything is loaded
-    this.allIsLoadedEvent = new Ext.util.MixedCollection();
-    this.allIsLoadedEvent.add("load", false);
-    this.allIsLoadedEvent.add("allservicesloaded", false);
-    
-    
-    var storeConfig = {
-        datasetCm : config.datasetCm,
-        urlRecords : this.urlRecords,
-        sitoolsAttachementForUsers : this.sitoolsAttachementForUsers,
-        userPreference : config.userPreference, 
-        bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
-        formParams : config.formParams, 
-        formMultiDsParams : config.formMultiDsParams, 
-        mainView : this, 
-        datasetId : config.datasetId,
-        sorters : config.storeSort,
-        isNewFilter : true
-    };
-    
-    
+        this.origin = "Ext.ux.livegrid";
+        
+        if (!Ext.isEmpty(config.userPreference) && config.userPreference.datasetView == this.origin && !Ext.isEmpty(config.userPreference.colModel)) {
+            colModel = config.userPreference.colModel;
+        }
+        else {
+            colModel = config.datasetCm; 
+        }
+        var cm = getColumnModel(colModel, config.dictionaryMappings, dataviewConfig, this.getId());
+        
+//        /*
+    //   * the filters of the grid
+    //   */
+//        var filters = sitools.user.component.dataviews.dataviewUtils.getFilters(config.datasetCm, config.filters);
+//        // Using the extended gridFilter to filter with the columnAlias
+//        var filtersSimple = new Ext.ux.grid.GridFiltersSpe({
+//            encode : false, // json encode the filter query
+//            local : false, // defaults to false (remote filtering)
+//            filters : filters
+//        });
+        
+        //list of events to consider that everything is loaded
+        this.allIsLoadedEvent = new Ext.util.MixedCollection();
+        this.allIsLoadedEvent.add("load", false);
+        this.allIsLoadedEvent.add("allservicesloaded", false);
+        
+        
+        var storeConfig = {
+            datasetCm : config.datasetCm,
+            urlRecords : this.urlRecords,
+            sitoolsAttachementForUsers : this.sitoolsAttachementForUsers,
+            userPreference : config.userPreference, 
+            bufferSize : DEFAULT_LIVEGRID_BUFFER_SIZE, 
+            formParams : config.formParams, 
+            formMultiDsParams : config.formMultiDsParams, 
+            mainView : this, 
+            datasetId : config.datasetId,
+            sorters : config.storeSort,
+            isNewFilter : true
+        };
+        
+        
 
-    if (!Ext.isEmpty(config.storeSort)) {
-        if(!Ext.isEmpty(config.storeSort.sorters)){
-            storeConfig.hasMultiSort = true;
-            storeConfig.multiSortInfo = config.storeSort;
-        }else {
-            storeConfig.sortInfo = config.storeSort;
+        if (!Ext.isEmpty(config.storeSort)) {
+            if(!Ext.isEmpty(config.storeSort.sorters)){
+                storeConfig.hasMultiSort = true;
+                storeConfig.multiSortInfo = config.storeSort;
+            }else {
+                storeConfig.sortInfo = config.storeSort;
+            }
         }
-    }
-    
-    
-    this.store = new sitools.user.component.dataviews.livegrid.StoreLiveGrid(storeConfig);
-    
-    this.store.filters = new sitools.widget.FiltersCollection({
-        filters : config.filters 
-    });
-    
-    this.store.addListener("beforeload", function (store, options) {
-        //set the nocount param to false.
-        //before load is called only when a new action (sort, filter) is applied
-        if (!store.isInSort || store.isNewFilter) {
-            options.params.nocount = false;
-        } else {
-            options.params.nocount = true;
-        }
-        store.isInSort = false;
-        store.isNewFilter = false;
-	    
-        if (!Ext.isEmpty(store.filters) && Ext.isFunction(store.filters.getFilterData)) {
-            var params = store.buildQuery(store.filters.getFilterData());
-            Ext.apply(options.params, params);
-        }
-	    
-	    this._loadMaskAnchor = Ext.get(this.getView().mainBody.dom.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
-	    
-	    this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-	    
-	    this.store.storeOptions(options);
-        //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
-    }, this);
-    
-    this.store.addListener("load", function (store, records, options) {
-		this.topBar.updateContextToolbar();
-		this.removeLoadMask("load");
-    }, this);    
-    
-   
-	/*
-	 * Here is where the magic happens: BufferedGridView. The nearLimit is a
-	 * parameter for the predictive fetch algorithm within the view. If your
-	 * bufferSize is small, set this to a value around a third or a quarter of
-	 * the store's bufferSize (e.g. a value of 25 for a bufferSize of 100; a
-	 * value of 100 for a bufferSize of 300). The loadMask is optional but
-	 * should be used to provide some visual feedback for the user when the
-	 * store buffers (the loadMask from the GridPanel will only be used for
-	 * initial loading, sorting and reloading).
-	 */
-    this.view = new Ext.ux.grid.livegrid.GridView({
-        nearLimit : DEFAULT_NEAR_LIMIT_SIZE, 
-		loadMask : {
-			msg : i18n.get('label.waitMessage'),
-			msgCls : "x-mask-loading"
-        }, 
-        datasetViewConfig : dataviewConfig
-    });
-	
-    /*
-	 * BufferedRowSelectionModel introduces a different selection model and a
-	 * new <tt>selectiondirty</tt> event. You can keep selections between
-	 * <b>all</bb> ranges in the grid; records which are currently in the
-	 * buffer and are selected will be added to the selection model as usual.
-	 * Rows representing records <b>not</b> loaded in the current buffer will
-	 * be marked using a predictive index when selected. Selected rows will be
-	 * successively read into the selection store upon scrolling through the
-	 * view. However, if any records get added or removed, and selection ranges
-	 * are pending, the selectiondirty event will be triggered. It is up to the
-	 * user to either clear the pending selections or continue with requesting
-	 * the pending selection records from the data repository. To put the whole
-	 * matter in a nutshell: Selected rows which represent records <b>not</b>
-	 * in the current data store will be identified by their assumed index in
-	 * the data repository, and <b>not</b> by their id property. Events such as
-	 * <tt>versionchange</tt> or <tt>selectiondirty</tt> can help in telling
-	 * if their positions in the data repository changed.
-	 */
-    var selModelSimple = new Ext.ux.grid.livegrid.CheckboxSelectionModel({
-        checkOnly : true,
-        isSelectionModel : true,
-        listeners : {
-            scope : this,
-            selectionmodelready : function () {
-                if (!Ext.isEmpty(this.ranges)) {
-                    if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
-                        this.getSelectionModel().selectAll();
-                        delete this.nbRecordsSelection;
-                    } else {
-                        var ranges = Ext.util.JSON.decode(this.ranges);
-                        this.selectRangeDataview(ranges);
-                        delete this.ranges;
+        
+        
+        this.store = new sitools.user.component.dataviews.livegrid.StoreLiveGrid(storeConfig);
+        
+        this.store.filters = new sitools.widget.FiltersCollection({
+            filters : config.filters 
+        });
+        
+        this.store.addListener("beforeload", function (store, options) {
+            //set the nocount param to false.
+            //before load is called only when a new action (sort, filter) is applied
+            if (!store.isInSort || store.isNewFilter) {
+                options.params.nocount = false;
+            } else {
+                options.params.nocount = true;
+            }
+            store.isInSort = false;
+            store.isNewFilter = false;
+            
+            if (!Ext.isEmpty(store.filters) && Ext.isFunction(store.filters.getFilterData)) {
+                var params = store.buildQuery(store.filters.getFilterData());
+                Ext.apply(options.params, params);
+            }
+            
+            this._loadMaskAnchor = Ext.get(this.getView().mainBody.dom.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode);
+            
+            this._loadMaskAnchor.mask(i18n.get('label.waitMessage'), "x-mask-loading");
+            
+            this.store.storeOptions(options);
+            //this.el.mask(i18n.get('label.waitMessage'), "x-mask-loading");
+        }, this);
+        
+        this.store.addListener("load", function (store, records, options) {
+            this.topBar.updateContextToolbar();
+            this.removeLoadMask("load");
+        }, this);    
+        
+       
+        /*
+         * Here is where the magic happens: BufferedGridView. The nearLimit is a
+         * parameter for the predictive fetch algorithm within the view. If your
+         * bufferSize is small, set this to a value around a third or a quarter of
+         * the store's bufferSize (e.g. a value of 25 for a bufferSize of 100; a
+         * value of 100 for a bufferSize of 300). The loadMask is optional but
+         * should be used to provide some visual feedback for the user when the
+         * store buffers (the loadMask from the GridPanel will only be used for
+         * initial loading, sorting and reloading).
+         */
+        this.view = new Ext.ux.grid.livegrid.GridView({
+            nearLimit : DEFAULT_NEAR_LIMIT_SIZE, 
+            loadMask : {
+                msg : i18n.get('label.waitMessage'),
+                msgCls : "x-mask-loading"
+            }, 
+            datasetViewConfig : dataviewConfig
+        });
+        
+        /*
+         * BufferedRowSelectionModel introduces a different selection model and a
+         * new <tt>selectiondirty</tt> event. You can keep selections between
+         * <b>all</bb> ranges in the grid; records which are currently in the
+         * buffer and are selected will be added to the selection model as usual.
+         * Rows representing records <b>not</b> loaded in the current buffer will
+         * be marked using a predictive index when selected. Selected rows will be
+         * successively read into the selection store upon scrolling through the
+         * view. However, if any records get added or removed, and selection ranges
+         * are pending, the selectiondirty event will be triggered. It is up to the
+         * user to either clear the pending selections or continue with requesting
+         * the pending selection records from the data repository. To put the whole
+         * matter in a nutshell: Selected rows which represent records <b>not</b>
+         * in the current data store will be identified by their assumed index in
+         * the data repository, and <b>not</b> by their id property. Events such as
+         * <tt>versionchange</tt> or <tt>selectiondirty</tt> can help in telling
+         * if their positions in the data repository changed.
+         */
+        var selModelSimple = new Ext.ux.grid.livegrid.CheckboxSelectionModel({
+            checkOnly : true,
+            isSelectionModel : true,
+            listeners : {
+                scope : this,
+                selectionmodelready : function () {
+                    if (!Ext.isEmpty(this.ranges)) {
+                        if (!Ext.isEmpty(this.nbRecordsSelection) && (this.nbRecordsSelection == this.store.getTotalCount())) {
+                            this.getSelectionModel().selectAll();
+                            delete this.nbRecordsSelection;
+                        } else {
+                            var ranges = Ext.util.JSON.decode(this.ranges);
+                            this.selectRangeDataview(ranges);
+                            delete this.ranges;
+                        }
                     }
                 }
             }
-        }
-    });
-    
-    this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
-        datasetUrl : this.sitoolsAttachementForUsers,
-        datasetId : this.datasetId,
-        dataview : this,
-        origin : this.origin,
-        columnModel : config.datasetCm,
-        listeners : {
-            scope : this,
-            allservicesloaded : function () {
-                this.removeLoadMask("allservicesloaded");
-            }
-        }        
-    });
-    
-    /**
-     * {Ext.ux.grid.livegrid.Toolbar} Bottom bar of the liveGrid
-     */
-    this.bottomBar = new Ext.ux.grid.livegrid.Toolbar({
-        view : this.view,
-        enableOverflow: true,
-        displayInfo : true,
-        refreshText : i18n.get('label.refreshText')
-    });
-    
-    //create a new columnModel with the selectionModel
-    var configCol = cm.config;
-    configCol.unshift(selModelSimple);
-    cm = new Ext.grid.ColumnModel({
-        columns : configCol
-    }); 
-    
-    // -- CONSTRUCTOR --
-	sitools.user.component.dataviews.livegrid.LiveGrid.superclass.constructor.call(this, Ext.apply({
-	        view : this.view,
-	        store : this.store,
-	        layout : 'fit',
-	        cm : cm,
-	        sm : selModelSimple,
-	        bbar : this.bottomBar,
-	        dataviewUtils : sitools.user.component.dataviews.dataviewUtils, 
-	        tbar : this.topBar, 
-	        columnLines : true,
-	        datasetId : config.datasetId,
-	        componentType : "data",
-	        listeners : {
-	            scope : this,
-	            sortchange: function (store, sortInfo) {
-	                //force to deselect every rows after the sort as changed
-	                if (this.getSelectionModel().isReady()) {
-	                    this.getSelectionModel().clearSelections();
-	                }
-	            },
-	            cellclick : function (grid, rowIndex, columnIndex, e) {
-	                var columnModel = this.getColumnModel();
-	                var column = columnModel.columns[columnIndex];	   
-	                if (Ext.isEmpty(column.columnRenderer)) {
-	                    return;
-	                }
-	                var record = grid.getStore().getAt(rowIndex);  // Get the Record
-	                var controller = this.getTopToolbar().guiServiceController;
-	                sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);	                
-	            }
-	        }
-//	        plugins : [ filtersSimple ]
-	    }, config));    
-};
+        });
+        
+        this.topBar = new sitools.user.component.dataviews.services.menuServicesToolbar({
+            datasetUrl : this.sitoolsAttachementForUsers,
+            datasetId : this.datasetId,
+            dataview : this,
+            origin : this.origin,
+            columnModel : config.datasetCm,
+            listeners : {
+                scope : this,
+                allservicesloaded : function () {
+                    this.removeLoadMask("allservicesloaded");
+                }
+            }        
+        });
+        
+        /**
+         * {Ext.ux.grid.livegrid.Toolbar} Bottom bar of the liveGrid
+         */
+        this.bottomBar = new Ext.ux.grid.livegrid.Toolbar({
+            view : this.view,
+            enableOverflow: true,
+            displayInfo : true,
+            refreshText : i18n.get('label.refreshText')
+        });
+        
+        //create a new columnModel with the selectionModel
+        var configCol = cm.config;
+        configCol.unshift(selModelSimple);
+        cm = new Ext.grid.ColumnModel({
+            columns : configCol
+        }); 
+        
+        // -- CONSTRUCTOR --
+        sitools.user.component.dataviews.livegrid.LiveGrid.superclass.constructor.call(this, Ext.apply({
+                view : this.view,
+                store : this.store,
+                layout : 'fit',
+                cm : cm,
+                sm : selModelSimple,
+                bbar : this.bottomBar,
+                dataviewUtils : sitools.user.component.dataviews.dataviewUtils, 
+                tbar : this.topBar, 
+                columnLines : true,
+                datasetId : config.datasetId,
+                componentType : "data",
+                listeners : {
+                    scope : this,
+                    sortchange: function (store, sortInfo) {
+                        //force to deselect every rows after the sort as changed
+                        if (this.getSelectionModel().isReady()) {
+                            this.getSelectionModel().clearSelections();
+                        }
+                    },
+                    cellclick : function (grid, rowIndex, columnIndex, e) {
+                        var columnModel = this.getColumnModel();
+                        var column = columnModel.columns[columnIndex];     
+                        if (Ext.isEmpty(column.columnRenderer)) {
+                            return;
+                        }
+                        var record = grid.getStore().getAt(rowIndex);  // Get the Record
+                        var controller = this.getTopToolbar().guiServiceController;
+                        sitools.user.component.dataviews.dataviewUtils.featureTypeAction(column, record, controller);                   
+                    }
+                }
+//              plugins : [ filtersSimple ]
+            }, config));    
+    }
+});
 
 Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.livegrid.EditorGridPanel, {
     /**

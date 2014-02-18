@@ -22,7 +22,7 @@ Ext.namespace('sitools.user.modules.userSpaceDependencies');
 
 sitools.user.modules.userSpaceDependencies.viewOrderPanel = Ext.extend(Ext.grid.GridPanel, {
     border : false,
-    sm : new Ext.grid.RowSelectionModel(),
+    sm : Ext.create('Ext.selection.RowModel',),
     layout : {
         type : 'vbox',
         // flex : 1,

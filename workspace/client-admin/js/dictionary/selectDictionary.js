@@ -54,7 +54,7 @@ Ext.define('sitools.component.dictionary.selectDictionary', { extend : 'Ext.Wind
             } ]
         });
 
-        this.smselectDictionary = new Ext.grid.RowSelectionModel({
+        this.smselectDictionary = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

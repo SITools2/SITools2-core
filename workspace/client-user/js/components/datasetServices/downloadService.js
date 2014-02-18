@@ -32,94 +32,94 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.downloadService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.downloadService = Ext.extend(
-		Ext.Window, {
-			width : 300,
-			modal : true,
-			initComponent : function() {
-				this.title = "Download Order for : "
-						+ this.dataview.datasetName;
+Ext.define('sitools.user.component.dataviews.services.downloadService', {
+        extend : 'Ext.window.Window',
+        alias : 'sitools.user.component.dataviews.services.downloadService',
+        
+		width : 300,
+		modal : true,
+		initComponent : function() {
+			this.title = "Download Order for : "
+					+ this.dataview.datasetName;
 
-				this.items = [{
-							xtype : 'form',
-							labelWidth : 75,
-							padding : '5px 5px 5px 5px',
-							items : [{
-										xtype : 'textfield',
-										fieldLabel : i18n.get('label.name'),
-										name : 'downloadName',
-										anchor : '100%'
-									}]
-						}];
+			this.items = [{
+						xtype : 'form',
+						labelWidth : 75,
+						padding : '5px 5px 5px 5px',
+						items : [{
+									xtype : 'textfield',
+									fieldLabel : i18n.get('label.name'),
+									name : 'downloadName',
+									anchor : '100%'
+								}]
+					}];
 
-				this.buttons = [{
-					text : i18n.get('label.ok'),
-					scope : this,
-					handler : function() {
-						var downloadName = this.findByType('form')[0].getForm()
-								.getFieldValues().downloadName;
-						this._onDownload(this.datasetId, this.dataview,
-								downloadName);
-						this.close();
-					}
-				}, {
-					text : i18n.get('label.cancel'),
-					scope : this,
-					handler : function() {
-						this.close();
-					}
-				}];
-
-				sitools.user.component.dataviews.services.downloadService.superclass.initComponent
-						.call(this);
-			},
-
-			/**
-			 * Create an entry in the userSpace with the request of the current
-			 * grid.
-			 * 
-			 * @param {string}
-			 *            datasetId
-			 * @param {Ext.grid.GridPanel}
-			 *            grid The current grid.
-			 * @param {string}
-			 *            orderName the future file name
-			 */
-			_onDownload : function(datasetId, grid, orderName) {
-				var putObject = {};
-				putObject.orderRequest = {};
-				putObject.orderRequest.datasetId = datasetId;
-				putObject.orderRequest.datasetUrl = grid.dataUrl;
-
-				var filters = grid.getFilters();
-				if (!Ext.isEmpty(filters)) {
-					putObject.orderRequest.filters = filters
-							.getFilterData(filters);
+			this.buttons = [{
+				text : i18n.get('label.ok'),
+				scope : this,
+				handler : function() {
+					var downloadName = this.findByType('form')[0].getForm()
+							.getFieldValues().downloadName;
+					this._onDownload(this.datasetId, this.dataview,
+							downloadName);
+					this.close();
 				}
-
-				var storeSort = grid.getStore().getSortState();
-				if (!Ext.isEmpty(storeSort)) {
-					putObject.orderRequest.sort = storeSort;
+			}, {
+				text : i18n.get('label.cancel'),
+				scope : this,
+				handler : function() {
+					this.close();
 				}
+			}];
 
-				var filtersCfg = grid.getStore().filtersCfg;
-				if (!Ext.isEmpty(filtersCfg)) {
-					putObject.orderRequest.filtersCfg = filtersCfg;
-				}
+			sitools.user.component.dataviews.services.downloadService.superclass.initComponent
+					.call(this);
+		},
 
-				var colModel = Ext.util.JSON.encode(extColModelToStorage(grid
-						.getColumnModel()));
-				putObject.orderRequest.colModel = colModel;
-				putObject.orderRequest.datasetId = datasetId;
-				putObject.orderRequest.projectId = this.dataview.projectId;
-				putObject.orderRequest.formParams = grid.getStore()
-						.getFormParams();
-				userStorage.set(orderName + ".json", "/" + DEFAULT_ORDER_FOLDER
-								+ "/request", putObject);
+		/**
+		 * Create an entry in the userSpace with the request of the current
+		 * grid.
+		 * 
+		 * @param {string}
+		 *            datasetId
+		 * @param {Ext.grid.GridPanel}
+		 *            grid The current grid.
+		 * @param {string}
+		 *            orderName the future file name
+		 */
+		_onDownload : function(datasetId, grid, orderName) {
+			var putObject = {};
+			putObject.orderRequest = {};
+			putObject.orderRequest.datasetId = datasetId;
+			putObject.orderRequest.datasetUrl = grid.dataUrl;
+
+			var filters = grid.getFilters();
+			if (!Ext.isEmpty(filters)) {
+				putObject.orderRequest.filters = filters
+						.getFilterData(filters);
 			}
-		});
-Ext.reg('sitools.user.component.dataviews.services.downloadService',
-		sitools.user.component.dataviews.services.downloadService);
+
+			var storeSort = grid.getStore().getSortState();
+			if (!Ext.isEmpty(storeSort)) {
+				putObject.orderRequest.sort = storeSort;
+			}
+
+			var filtersCfg = grid.getStore().filtersCfg;
+			if (!Ext.isEmpty(filtersCfg)) {
+				putObject.orderRequest.filtersCfg = filtersCfg;
+			}
+
+			var colModel = Ext.util.JSON.encode(extColModelToStorage(grid
+					.getColumnModel()));
+			putObject.orderRequest.colModel = colModel;
+			putObject.orderRequest.datasetId = datasetId;
+			putObject.orderRequest.projectId = this.dataview.projectId;
+			putObject.orderRequest.formParams = grid.getStore()
+					.getFormParams();
+			userStorage.set(orderName + ".json", "/" + DEFAULT_ORDER_FOLDER
+							+ "/request", putObject);
+		}
+});
 
 sitools.user.component.dataviews.services.downloadService.getParameters = function() {
 	return [];

@@ -348,7 +348,7 @@ sitools.admin.datasets.gridFieldSetup = function (config) {
         }
     });
 
-    var smColumn = new Ext.grid.RowSelectionModel({
+    var smColumn = Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     });
 

@@ -25,7 +25,9 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.feedsReaderProject
  * @extends Ext.Panel
  */
-sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.feedsReaderProject', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.feedsReaderProject',
     layout : "fit",
     initComponent : function () {
         
@@ -181,5 +183,3 @@ sitools.user.modules.feedsReaderProject = Ext.extend(Ext.Panel, {
     }
 
 });
-
-Ext.reg('sitools.user.modules.feedsReaderProject', sitools.user.modules.feedsReaderProject);

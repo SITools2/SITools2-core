@@ -25,7 +25,7 @@ Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Pane
     border : false,
     height : 300,
     id : ID.BOX.FIREWALL,
-    sm : new Ext.grid.RowSelectionModel({
+    sm : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,

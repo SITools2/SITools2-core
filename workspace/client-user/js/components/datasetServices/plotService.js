@@ -28,9 +28,9 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.addSelectionService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.plotService = {};
-
-Ext.reg('sitools.user.component.dataviews.services.plotService', sitools.user.component.dataviews.services.plotService);
+Ext.define('sitools.user.component.dataviews.services.plotService', {
+    alias : 'sitools.user.component.dataviews.services.plotService'
+});
 
 sitools.user.component.dataviews.services.plotService.getParameters = function () {
     return [{

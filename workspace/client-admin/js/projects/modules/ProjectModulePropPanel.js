@@ -81,7 +81,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
                     })
                 } ]
             }),
-            sm : new Ext.grid.RowSelectionModel({
+            sm : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             }),
             viewConfig : {

@@ -184,7 +184,8 @@ var clientAdmin = {
 	initGui : function () {
 	    
 	    var menuLogout = {
-	        xtype : 'tbbutton',
+//	            xtype : 'tbbutton',
+	        xtype : 'button',
 //	        text : i18n.get('label.logout'),
 	        tooltip : i18n.get('label.logout'),
 	        itemId : 'menu_logout',

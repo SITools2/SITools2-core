@@ -41,7 +41,7 @@ sitools.user.modules.sitoolsFitsHeader = Ext.extend(Ext.grid.GridPanel, {
                 {header: i18n.get('headers.value'), width: 200, sortable: true, dataIndex: 'value'}]
         });
         
-        this.selModel = new Ext.grid.RowSelectionModel({
+        this.selModel = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
         

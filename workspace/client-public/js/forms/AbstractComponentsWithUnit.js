@@ -104,7 +104,7 @@ sitools.common.forms.AbstractWithUnit = Ext.extend(Ext.Container, {
             }
         });
 
-        var smUnits = new Ext.grid.RowSelectionModel({
+        var smUnits = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

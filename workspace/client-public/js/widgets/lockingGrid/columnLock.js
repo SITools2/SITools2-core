@@ -21,7 +21,8 @@
  */
 Ext.ns('Ext.ux.grid');
 
-Ext.ux.grid.LockingGridPanel = Ext.extend(Ext.grid.GridPanel,  {
+Ext.define('Ext.ux.grid.LockingGridPanel', {
+    extend: 'Ext.grid.Panel',
 	initComponent : function(){
 		if(!this.cm && !this.colModel && Ext.isArray(this.columns)){
 			this.colModel = new Ext.ux.grid.LockingColumnModel(this.columns);
@@ -54,7 +55,7 @@ Ext.ux.grid.LockingEditorGridPanel = Ext.extend(Ext.grid.EditorGridPanel, {
 });
 
 // Added after Ext 3.0.0
-Ext.applyIf(Ext.grid.GridView.prototype, {
+Ext.applyIf(Ext.grid.View.prototype, {
 	getScrollOffset: function(){
 		return Ext.isDefined(this.scrollOffset) ? this.scrollOffset : Ext.getScrollBarWidth();
 	}
@@ -74,7 +75,8 @@ Ext.applyIf(Ext.grid.GridView.prototype, {
  */
 Ext.ns('Ext.ux.grid');
 
-Ext.ux.grid.LockingGridView = Ext.extend(Ext.grid.GridView, {
+Ext.define('Ext.ux.grid.LockingGridView', {
+    extend : 'Ext.grid.View',
     lockText : 'Lock',
     unlockText : 'Unlock',
     rowBorderWidth : 1,

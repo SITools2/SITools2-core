@@ -126,7 +126,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
             layout : 'fit', 
             store : this.storeConvertersFromHelper,
             cm : this.cmConvertersFromHelper,
-            sm : new Ext.grid.RowSelectionModel({}),
+            sm : Ext.create('Ext.selection.RowModel',{}),
             enableDragDrop : true,
             stripeRows : true,
             title : i18n.get("title.convertersFromHelper")            
@@ -154,7 +154,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
             layout : 'fit', 
             store : this.storeConvertersForDimension,
             cm : cmConvertersForDimension,
-            sm : new Ext.grid.RowSelectionModel({}),
+            sm : Ext.create('Ext.selection.RowModel',{}),
             autoScroll : true,
             enableDragDrop : true,
             stripeRows : true,
@@ -276,7 +276,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
                 } ],
                 autoLoad : false
             }),
-            sm : new Ext.grid.RowSelectionModel({
+            sm : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             })
         });

@@ -73,7 +73,7 @@ Ext.define('sitools.admin.util.DependenciesPanel', { extend : 'Ext.grid.plugin.R
             } ]
         });
         
-        this.sm = new Ext.grid.RowSelectionModel({
+        this.sm = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
         

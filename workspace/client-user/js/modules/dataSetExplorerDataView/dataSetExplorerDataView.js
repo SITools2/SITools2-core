@@ -28,7 +28,9 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.datasetExplorerDataView
  * @extends Ext.tree.TreePanel
  */
-sitools.user.modules.datasetExplorerDataView = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.datasetExplorerDataView', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.datasetExplorerDataView',
     layout : "border",
     
     initComponent : function () {
@@ -316,5 +318,3 @@ sitools.user.modules.datasetExplorerDataView = Ext.extend(Ext.Panel, {
     }
     
 });
-
-Ext.reg('sitools.user.modules.datasetExplorerDataView', sitools.user.modules.datasetExplorerDataView);

@@ -129,7 +129,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
             }
         });
 
-        var smDataSets = new Ext.grid.RowSelectionModel({
+        var smDataSets = Ext.create('Ext.selection.RowModel',{
             singleSelect : false
         });
         var tbar = {
@@ -465,7 +465,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                 return result;
             }
         });
-        var smModules = new Ext.grid.RowSelectionModel({
+        var smModules = Ext.create('Ext.selection.RowModel',{
             singleSelect : false
         });
         var attached = new Ext.grid.CheckColumn({
@@ -619,7 +619,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                     })
                 }]
             }),
-            sm : new Ext.grid.RowSelectionModel({
+            sm : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             }),
             viewConfig : {

@@ -367,7 +367,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             }],
             autoLoad : false
         });
-        var smProperties = new Ext.grid.RowSelectionModel({
+        var smProperties = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

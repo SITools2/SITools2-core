@@ -24,7 +24,10 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.sitoolsFitsTable
  * @extends Ext.Panel
  */
-sitools.user.modules.sitoolsFitsTable = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.sitoolsFitsTable', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.sitoolsFitsTable',
+    
     layout : 'border',
     split : true,
     initComponent : function () {
@@ -49,7 +52,7 @@ sitools.user.modules.sitoolsFitsTable = Ext.extend(Ext.Panel, {
                 fields : this.data.columns // only the columns names
             }),
             colModel : new Ext.grid.ColumnModel(columns),
-            selModel : new Ext.grid.RowSelectionModel({
+            selModel : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             }),
             listeners : {
@@ -141,4 +144,3 @@ sitools.user.modules.sitoolsFitsTable = Ext.extend(Ext.Panel, {
         SitoolsDesk.addDesktopWindow(windowConfig, config, jsObj);
     }
 });
-Ext.reg('sitools.user.modules.sitoolsFitsTable', sitools.user.modules.sitoolsFitsTable);

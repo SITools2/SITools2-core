@@ -33,7 +33,10 @@ Ext.namespace('sitools.user.component.forms');
  * @class sitools.user.component.forms.resultsProjectForm
  * @extends Ext.grid.GridPanel
  */
-sitools.user.component.forms.resultsProjectForm = Ext.extend(Ext.grid.GridPanel, {
+Ext.define('sitools.user.component.forms.resultsProjectForm', {
+    extend : 'Ext.grid.Panel',
+    alias : 'sitools.user.component.forms.resultsProjectForm',
+    
     initComponent : function () {
         var params = {};
         params.datasetsList = this.datasets.join("|");
@@ -239,6 +242,3 @@ sitools.user.component.forms.resultsProjectForm = Ext.extend(Ext.grid.GridPanel,
     
 
 });
-
-Ext.reg('sitools.user.component.forms.resultsProjectForm', sitools.user.component.forms.resultsProjectForm);
-

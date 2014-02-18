@@ -85,7 +85,7 @@ Ext.define('sitools.admin.datasets.joinTableWin', { extend : 'Ext.Window',
 			layout : 'fit', 
             store : store,
             cm : cm,
-            sm : new Ext.grid.RowSelectionModel({
+            sm : Ext.create('Ext.selection.RowModel',{
 				singleSelect : true
 			}), 
 			autoScroll : true,

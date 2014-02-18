@@ -57,7 +57,7 @@ sitools.userProfile.editProfile = Ext.extend(Ext.Panel, {
             } ],
             autoLoad : false
         });
-        var smProperties = new Ext.grid.RowSelectionModel({
+        var smProperties = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

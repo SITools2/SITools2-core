@@ -26,7 +26,7 @@ Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
     width : 500, 
     initComponent : function () {
         var storeComponents = this.store;
-        var smComponents = new Ext.grid.RowSelectionModel({
+        var smComponents = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
     

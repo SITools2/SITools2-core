@@ -24,7 +24,10 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.projectDescription
  * @extends Ext.Panel
  */
-sitools.user.modules.projectDescription = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.projectDescription', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.projectDescription',
+    
     initComponent : function () {
 		Ext.Ajax.request({
 			method : "GET", 
@@ -71,5 +74,3 @@ sitools.user.modules.projectDescription = Ext.extend(Ext.Panel, {
 
     }
 });
-
-Ext.reg('sitools.user.modules.projectDescription', sitools.user.modules.projectDescription);

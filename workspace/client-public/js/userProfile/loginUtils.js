@@ -168,7 +168,8 @@ sitools.userProfile.LoginUtils = {
     },
 
     sitoolsLogin : function (config) {
-        new sitools.userProfile.Login(config).show();
+        var loginWindow = Ext.create('sitools.userProfile.Login', config);
+        loginWindow.show();
     },
 
     delegateLoginLogout : function (urlTemplate) {

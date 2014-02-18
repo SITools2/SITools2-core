@@ -73,7 +73,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
             } ],
             autoLoad : false
         });
-        var smValues = new Ext.grid.RowSelectionModel({
+        var smValues = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

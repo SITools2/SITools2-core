@@ -335,7 +335,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
                 emptyMsg : i18n.get('paging.empty')
             };
         
-        this.sm = new Ext.grid.RowSelectionModel();
+        this.sm = Ext.create('Ext.selection.RowModel');
         
         this.listeners = {
             scope : this, 

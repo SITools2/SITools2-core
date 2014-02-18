@@ -74,7 +74,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
             }
         });
 
-        var smProperty = new Ext.grid.RowSelectionModel({
+        var smProperty = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

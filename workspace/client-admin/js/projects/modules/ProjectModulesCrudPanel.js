@@ -33,7 +33,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', { extend : 
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.PROJECTMODULE,
-    sm : new Ext.grid.RowSelectionModel({
+    sm : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,

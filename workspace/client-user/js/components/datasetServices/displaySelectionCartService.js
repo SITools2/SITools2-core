@@ -31,8 +31,9 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.displaySelectionCartService
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.displaySelectionCartService = {
-
+Ext.define('sitools.user.component.dataviews.services.displaySelectionCartService', {
+    alias : 'sitools.user.component.dataviews.services.displaySelectionCartService',
+    
 	getCartSelectionFile : function(response) {
 		if (Ext.isEmpty(response.responseText)) {
 			return;
@@ -94,11 +95,7 @@ sitools.user.component.dataviews.services.displaySelectionCartService = {
 		// scope : this
 		// });
 	}
-};
-Ext
-		.reg(
-				'sitools.user.component.dataviews.services.displaySelectionCartService',
-				sitools.user.component.dataviews.services.displaySelectionCartService);
+});
 
 sitools.user.component.dataviews.services.displaySelectionCartService.getParameters = function() {
 	return [];

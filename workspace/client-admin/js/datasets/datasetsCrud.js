@@ -35,7 +35,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.DATASETS,
-    sm : new Ext.grid.RowSelectionModel(),
+    sm : Ext.create('Ext.selection.RowModel'),
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     viewConfig : {
         forceFit : true,

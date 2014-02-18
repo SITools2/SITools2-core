@@ -77,7 +77,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewPropPanel', { extend : 'Ext.Win
                     })
                 } ]
             }),
-            sm : new Ext.grid.RowSelectionModel({
+            sm : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             }),
             viewConfig : {

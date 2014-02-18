@@ -89,7 +89,7 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
             }
         });
 
-        this.smColumns = new Ext.grid.RowSelectionModel({
+        this.smColumns = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

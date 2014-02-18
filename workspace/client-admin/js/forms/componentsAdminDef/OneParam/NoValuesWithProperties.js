@@ -46,7 +46,7 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'si
             } ],
             autoLoad : false
         });
-        var smProperties = new Ext.grid.RowSelectionModel({
+        var smProperties = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

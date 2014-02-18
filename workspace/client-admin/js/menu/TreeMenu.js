@@ -25,10 +25,11 @@ Ext.namespace('sitools.admin.menu');
  * @class sitools.admin.menu.TreeMenu
  */
 // TODO ExtJS3 Object > Ext.Object ? 
-Ext.define('sitools.admin.menu.TreeMenu', { extend: 'Ext.Object',
+Ext.define('sitools.admin.menu.TreeMenu', {
+    extend: 'Ext.layout.container.Container',
 
     constructor : function (jsonUrl) {
-        var tree = new Ext.tree.TreePanel({
+        var tree = Ext.create('Ext.tree.Panel', {
             id : ID.CMP.MENU,
             component : this,
             useArrows : false,
@@ -44,16 +45,16 @@ Ext.define('sitools.admin.menu.TreeMenu', { extend: 'Ext.Object',
             rootVisible : false,
             listeners : {
                 beforeload : function (node) {
-                    node.setText(i18n.get('label.' + node.attributes.nodeName));
-                    return node.isRoot || Ext.isDefined(node.attributes.children);
+                    node.setText(i18n.get('label.' + node.raw.nodeName));
+                    return node.isRoot || Ext.isDefined(node.raw.children);
                 },
-                load : function (node) {
+                load : function (tree, node) {
                     node.eachChild(function (item) {
-                        item.setText(i18n.get('label.' + item.attributes.nodeName));
+                        item.text = i18n.get('label.' + item.raw.nodeName);
                         return true;
                     });
                 },
-                click : function (node) {
+                itemclick : function (tree, node) {
                     if (node.isLeaf()) {
                         this.component.treeAction(node);
                     }
@@ -72,18 +73,18 @@ Ext.define('sitools.admin.menu.TreeMenu', { extend: 'Ext.Object',
      */
     treeAction : function (node) {
         // Getting nodeName
-        var nodeName = node.attributes.nodeName;
-        var nodeId = node.attributes.id;
+        var nodeName = node.raw.nodeName;
+        var nodeId = node.raw.id;
 
         if (!Ext.isDefined(nodeName)) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('msg.nodeundefined'));
             return;
         }
 
-        if (!node.attributes.mvc && !Ext.ComponentMgr.isRegistered('s-' + nodeName)) {
-            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.component') + ' \'' + 's-' + nodeName + '\' ' + i18n.get('msg.undefined'));
-            return;
-        }
+//        if (!node.raw.mvc && !Ext.ComponentMgr.isRegistered('widget.s-' + nodeName)) {
+//            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.component') + ' \'' + 's-' + nodeName + '\' ' + i18n.get('msg.undefined'));
+//            return;
+//        }
 
         // Displaying Main Panel
         ann(mainPanel, "mainPanel is null");
@@ -135,10 +136,10 @@ Ext.define('sitools.admin.menu.TreeMenu', { extend: 'Ext.Object',
 	            width: "100%",
 	            bodyCssClass : 'admin-bg',
 	            items : [ {
-	                xtype : 's-box',
+	                xtype : 'widget.s-box',
 	                label : i18n.get('label.' + nodeName),
 	                items : [ {
-	                    xtype : 's-' + nodeName, 
+	                    xtype : 'widget.s-' + nodeName, 
 	                    sitoolsType : "mainAdminPanel"
 	                } ],
 	                idItem : nodeId

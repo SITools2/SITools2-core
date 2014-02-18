@@ -23,7 +23,7 @@
  * http://www.sencha.com/license
  */
 (function() {
-    Ext.override(Ext.list.Column, {
+    Ext.override(Ext.grid.column.Column, {
         init : function() {    
             var types = Ext.data.Types,
                 st = this.sortType;
@@ -50,8 +50,17 @@
     Ext.tree.DateColumn = Ext.extend(Ext.list.DateColumn, {});
     Ext.tree.BooleanColumn = Ext.extend(Ext.list.BooleanColumn, {});
 
-    Ext.reg('tgcolumn', Ext.tree.Column);
-    Ext.reg('tgnumbercolumn', Ext.tree.NumberColumn);
-    Ext.reg('tgdatecolumn', Ext.tree.DateColumn);
-    Ext.reg('tgbooleancolumn', Ext.tree.BooleanColumn);
+    Ext.define('tgcolumn',{
+        alias : 'Ext.grid.Column'
+    });
+    Ext.define('tgnumbercolumn',{
+        alias : 'Ext.grid.column.Number'
+    });
+    Ext.define('tgdatecolumn',{
+        alias : 'Ext.grid.Column.Date'
+    });
+    Ext.define('tgbooleancolumn',{
+        alias : 'Ext.grid.column.Boolean'
+    });
+    
 })();

@@ -90,7 +90,7 @@ sitools.widget.rss2FeedReader = function (config) {
         loadMask : {
             msg : i18n.get("label.loadingFeed")
         },
-        sm : new Ext.grid.RowSelectionModel({
+        sm : Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         }),
         autoExpandColumn : 'title',

@@ -159,7 +159,8 @@
         };
 
  //Add basic capabilities to the Ext.Element.Flyweight class
- Ext.override(El.Flyweight, fx.El);
+// Ext.override(El.Flyweight, fx.El);
+// Ext.override(Ext.dom.Element.Fly, fx.El);
 
  Ext.ux.plugin.VisibilityMode = function(opt) {
 

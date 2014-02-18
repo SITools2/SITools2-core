@@ -24,7 +24,9 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.user.component.dataviews.services.sitoolsFitsService
  * @extends Ext.Panel
  */
-sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.component.dataviews.services.sitoolsFitsService',
     initComponent : function () {
 
         this.bodyCssClass = 'canvas-background';
@@ -493,8 +495,6 @@ sitools.user.component.dataviews.services.sitoolsFitsService = Ext.extend(Ext.Pa
     }
     
 });
-
-Ext.reg('sitools.user.component.dataviews.services.sitoolsFitsService', sitools.user.component.dataviews.services.sitoolsFitsService);
 
 sitools.user.component.dataviews.services.sitoolsFitsService.getDefaultParameters = function() {
     return [{

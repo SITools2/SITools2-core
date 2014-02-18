@@ -74,7 +74,7 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
             title : i18n.get('label.events'),
             store : eventsStore,
             cm : eventsCm,
-            rowSelectionModel : new Ext.grid.RowSelectionModel(),
+            rowSelectionModel : Ext.create('Ext.selection.RowModel'),
             autoScroll : true,
             collapsible : false
         });
@@ -118,7 +118,7 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
             title : i18n.get('label.resourceCollection'),
             store : resourceCollectionStore,
             cm : resourceCollectionCm,
-            rowSelectionModel : new Ext.grid.RowSelectionModel(),
+            rowSelectionModel : Ext.create('Ext.selection.RowModel'),
             autoScroll : true,
             collapsible : false
         });

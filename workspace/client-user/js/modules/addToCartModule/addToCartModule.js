@@ -24,7 +24,10 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.addToCartModule
  * @extends Ext.Panel
  */
-sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.addToCartModule', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.addToCartModule',
+    
     bodyBorder : false,
     initComponent : function () {
         (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
@@ -205,7 +208,7 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
         this.gridPanel = new Ext.grid.GridPanel({
 //        this.gridPanel = new Ext.ux.PersistantSelectionGridPanel({
             region : 'center',
-            sm : new Ext.grid.RowSelectionModel(),
+            sm : Ext.create('Ext.selection.RowModel'),
             colModel : this.columnModel,
             store : this.store,
             view : new  Ext.grid.GridView({
@@ -674,8 +677,6 @@ sitools.user.modules.addToCartModule = Ext.extend(Ext.Panel, {
     }
 });
 
-Ext.reg('sitools.user.modules.addToCartModule', sitools.user.modules.addToCartModule);
-
 sitools.user.modules.addToCartModule.getParameters = function () {
     var projectProp = Ext.getCmp(ID.COMPONENT_SETUP.PROJECT);
     var projectId = projectProp.formProject.find('name', 'id')[0].getValue();
@@ -724,7 +725,7 @@ sitools.user.modules.addToCartModule.getParameters = function () {
                 })
             }),
             grid2 : new Ext.grid.EditorGridPanel({
-                sm : new Ext.grid.RowSelectionModel(),
+                sm : Ext.create('Ext.selection.RowModel'),
                 width : 200,
                 margins : {
                     top : 0,

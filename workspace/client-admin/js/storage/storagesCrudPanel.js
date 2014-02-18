@@ -39,7 +39,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
     border : false,
     height : 300,
     id : ID.BOX.STORAGES,
-    sm : new Ext.grid.RowSelectionModel(),
+    sm : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
     // loadMask: true,
 

@@ -25,7 +25,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : new Ext.grid.RowSelectionModel(),
+    sm : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
     // loadMask: true,
 

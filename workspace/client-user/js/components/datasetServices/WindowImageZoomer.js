@@ -27,8 +27,10 @@ Ext.ns('sitools.widget');
  *         with scrollbars if needed. Default to false
  * @extends Ext.Window
  */
-sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(
-		Ext.Window, {
+Ext.define('sitools.user.component.dataviews.services.WindowImageZoomer', {
+        extend : 'Ext.window.Window',
+		alias : 'sitools.user.component.dataviews.services.WindowImageZoomer',
+		
 			resizeImage : false,
 			maximizable : true,
 			modal : true,
@@ -191,9 +193,6 @@ sitools.user.component.dataviews.services.WindowImageZoomer = Ext.extend(
 			}
 
 		});
-
-Ext.reg('sitools.user.component.dataviews.services.WindowImageZoomer',
-		sitools.user.component.dataviews.services.WindowImageZoomer);
 
 sitools.user.component.dataviews.services.WindowImageZoomer.getParameters = function() {
 	return [{

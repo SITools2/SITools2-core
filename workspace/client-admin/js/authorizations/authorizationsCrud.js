@@ -29,7 +29,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : new Ext.grid.RowSelectionModel(),
+    sm : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
 
     initComponent : function () {
@@ -112,7 +112,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
                 pageSize : this.pageSize
             } ]
         };
-        this.sm = new Ext.grid.RowSelectionModel();
+        this.sm = Ext.create('Ext.selection.RowModel');
         this.view = new Ext.grid.GridView({
             forceFit : true
         });

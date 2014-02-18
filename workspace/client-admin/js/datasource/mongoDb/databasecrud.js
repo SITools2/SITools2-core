@@ -33,7 +33,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
     border : false,
     height : 300,
     id : ID.BOX.DATABASE,
-    sm : new Ext.grid.RowSelectionModel({
+    sm : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,

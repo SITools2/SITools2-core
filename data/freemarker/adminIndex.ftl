@@ -26,7 +26,7 @@
 
     <!-- Commom css -->
 	<!--  <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css" ></link> -->
-    <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs4/ext-4.2.1.883/resources/css/ext-all.css"></link>
 
    	<!--  ext.ux  -->
        
@@ -91,7 +91,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/actionlink.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/highlighttext.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/checkcolumn.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/mif.js"></script>
+    <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/mif.js"></script>-->
     <script type="text/javascript" src="${appUrl}/common/js/widgets/textfilter.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/spinner.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/spinnerfield.js"></script>

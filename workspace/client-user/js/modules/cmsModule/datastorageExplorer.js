@@ -24,7 +24,9 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.datastorageExplorer
  * @extends Ext.Panel
  */
-sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.datastorageExplorer', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.datastorageExplorer',
 
     autoScroll : true,
     id : 'datastorageExpId',
@@ -687,5 +689,3 @@ sitools.user.modules.datastorageExplorer.getParameters = function () {
             }
         } ];
 };
-
-Ext.reg('sitools.user.modules.datastorageExplorer', sitools.user.modules.datastorageExplorer);

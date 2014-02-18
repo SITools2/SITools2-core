@@ -24,7 +24,9 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.extPoster
  * @extends Ext.Panel
  */
-sitools.user.modules.extPoster = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.extPoster', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.extPoster',
     
     initComponent : function () {
     
@@ -328,12 +330,7 @@ sitools.user.modules.extPoster = Ext.extend(Ext.Panel, {
         };
 
     }
-    
-    
-
 });
-
-Ext.reg('sitools.user.modules.extPoster', sitools.user.modules.extPoster);
 
 /**
  * sitools.user.modules.extPoster.windowResult Window to display html or text
@@ -368,9 +365,6 @@ sitools.user.modules.extPoster.windowResult = Ext.extend(Ext.Window, {
             
             this.items = [ form ];
         }
-
         sitools.user.modules.extPoster.windowResult.superclass.initComponent.call(this);
-
     }
-
 });

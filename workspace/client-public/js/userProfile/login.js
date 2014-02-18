@@ -25,8 +25,10 @@ Ext.namespace('sitools.userProfile');
  * button
  */
 
-sitools.userProfile.Login = Ext.extend(Ext.Window, {
+Ext.define('sitools.userProfile.Login', {
+    extend : 'Ext.window.Window',
 	alias : 'widget.s-login',
+	
     id : 'winLogin',
     layout : 'hbox',
     width : 392,

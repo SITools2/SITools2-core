@@ -180,7 +180,7 @@ sitools.user.modules.applicationManager.dependencies.applicationManager = functi
         addAppHandler : addAppHandler,
         delAppHandler : delAppHandler,
         
-        sm : new Ext.grid.RowSelectionModel({
+        sm : Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         })
 

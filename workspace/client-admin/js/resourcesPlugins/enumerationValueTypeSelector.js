@@ -101,7 +101,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
                 xtype : 's-menuButton'
             }]
         };
-        this.smSelectColumn = new Ext.grid.RowSelectionModel({
+        this.smSelectColumn = Ext.create('Ext.selection.RowModel',{
             singleSelect : this.enumType == "E" || this.enumType == "EE"
         });
         

@@ -53,7 +53,7 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', { extend : 'Ext.Window',
         });
         this.grid = new Ext.grid.GridPanel({
             xtype : 'grid',
-            sm : new Ext.grid.RowSelectionModel(),
+            sm : Ext.create('Ext.selection.RowModel'),
             store : this.store,
             height : 200,
             columns : [ {

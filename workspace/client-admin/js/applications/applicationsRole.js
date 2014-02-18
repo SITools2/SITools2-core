@@ -143,7 +143,7 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
             }
         });
 
-        var smAuthorizations = new Ext.grid.RowSelectionModel({
+        var smAuthorizations = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

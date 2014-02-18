@@ -32,7 +32,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.g
 	border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : new Ext.grid.RowSelectionModel(),
+    sm : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
 
     initComponent : function () {

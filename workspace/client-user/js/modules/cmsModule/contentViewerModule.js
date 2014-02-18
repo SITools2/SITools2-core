@@ -23,7 +23,10 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.contentViewerModule
  * @extends Ext.Panel
  */
-sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.contentViewerModule', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.contentViewerModule',
+    
     /**
      * the node to activate
      * @type Ext.tree.TreeNode
@@ -349,5 +352,3 @@ sitools.user.modules.contentViewerModule.getParameters = function () {
         }
     }];
 };
-
-Ext.reg('sitools.user.modules.contentViewerModule', sitools.user.modules.contentViewerModule);

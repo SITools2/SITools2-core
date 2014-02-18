@@ -107,7 +107,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { extend: 'Ext.Pa
 	            }
 	        });
 	
-	        var smColumns = new Ext.grid.RowSelectionModel({
+	        var smColumns = Ext.create('Ext.selection.RowModel',{
 	            singleSelect : true,
                 listeners : {
                     scope : this,

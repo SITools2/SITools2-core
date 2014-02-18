@@ -33,7 +33,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
     border : false,
     height : 300,
     id : ID.BOX.DATABASE,
-    sm : new Ext.grid.RowSelectionModel({
+    sm : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,

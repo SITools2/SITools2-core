@@ -295,34 +295,38 @@ Ext.override(Ext.ux.Spinner, {
  * Add a tooltip on every form field: tooltip could be an object like tooltip : {
  * text : string width : number }, or a simple string
  */
-Ext.override(Ext.form.Field, {
-	tooltip : null, 
-	listeners : {
-		render: function () {
-			Ext.form.Field.superclass.render.apply(this, arguments);
-			
-			if (!Ext.isEmpty(this.tooltip)) {
-				var ttConfig = {};
-				if (Ext.isString(this.tooltip)) {
-					ttConfig = {
-						html : this.tooltip, 
-						width : 200, 
-						dismissDelay : 5000
-					};
-				} 
-				else if (Ext.isObject(this.tooltip)) {
-                    ttConfig = this.tooltip;
-                } else {
-                    return;
-                }
-                Ext.apply(ttConfig, {
-                    target : this.el
-                });
-				this.tTip = new Ext.ToolTip(ttConfig);
-			}
-		}
-	}
-});
+//TODO search to resolve bug tooltip on fields
+
+//Ext.override(Ext.form.field.Base, {
+//	tooltip : null, 
+//	listeners : {
+//		render: function () {
+////			Ext.form.Field.superclass.render.apply(this, arguments);
+//			
+//			if (!Ext.isEmpty(this.tooltip)) {
+//				var ttConfig = {};
+//				if (Ext.isString(this.tooltip)) {
+//					ttConfig = {
+//						html : this.tooltip, 
+//						width : 200, 
+//						dismissDelay : 5000
+//					};
+//				} 
+//				else if (Ext.isObject(this.tooltip)) {
+//                    ttConfig = this.tooltip;
+//                } else {
+//                    return;
+//                }
+//                Ext.apply(ttConfig, {
+//                    target : this.el
+//                });
+//				this.tTip = new Ext.ToolTip(ttConfig);
+//			}
+//			
+//			this.callParent(arguments);
+//		}
+//	}
+//});
 
 
 
@@ -584,7 +588,7 @@ Ext.override(Ext.PagingToolbar, {
     }
 });
 
-Ext.override(Ext.menu.DateMenu, {
+Ext.override(Ext.menu.DatePicker, {
     initComponent : function () {
         this.on('beforeshow', this.onBeforeShow, this);
         if (this.strict == (Ext.isIE7 && Ext.isStrict)) {

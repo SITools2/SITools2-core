@@ -49,21 +49,30 @@ var loadUrl = {
      */
     transformsPropertiesToMap : function (url, callback, scope) {
 
-        var store = new Ext.data.Store({
-            proxy : new Ext.data.HttpProxy({
+        Ext.define('maps', {     
+            extend: 'Ext.data.Model',
+            fields: [
+                {name: 'name', type: 'string'},
+                {name: 'loc', type: 'string'}
+            ]
+        }); 
+        
+        var store = Ext.create('Ext.data.Store', {
+            model : 'maps',
+            proxy : {
                 url : url,
-                restful : true
-            }),
-            reader : new Ext.data.XmlReader({
-                record : 'url'
-            }, [ {
-                name : 'name',
-                mapping : 'name'
-            }, {
-                name : 'loc',
-                mapping : 'loc'
-            } ])
+                type: 'ajax',
+                headers : {
+                    "Accept" : "application/xml"
+                },
+                reader: {
+                    type: 'xml',
+                    record : 'url',
+                    idProperty : 'name'
+                },
+            }
         });
+
         var localMap = this.map;
 
         store.load({

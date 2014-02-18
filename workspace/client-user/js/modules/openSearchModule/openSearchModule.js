@@ -112,7 +112,7 @@ sitools.user.modules.openSearchModule = function () {
             xtype : 's-menuButton'
         } ]
     };
-    this.sm = new Ext.grid.RowSelectionModel({
+    this.sm = Ext.create('Ext.selection.RowModel',{
         
     });
     sitools.user.modules.openSearchModule.superclass.constructor.call(this, Ext.apply({

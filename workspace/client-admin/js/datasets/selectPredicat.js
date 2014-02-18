@@ -58,7 +58,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
             } ]
         });
 
-        this.smSelectPredicat = new Ext.grid.RowSelectionModel({
+        this.smSelectPredicat = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

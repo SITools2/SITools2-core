@@ -92,7 +92,7 @@ Ext.define('sitools.admin.forms.FormGridComponents', { extend : 'Ext.grid.Panel'
             }],
             autoLoad : false
         });
-        var smComponents = new Ext.grid.RowSelectionModel({
+        var smComponents = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

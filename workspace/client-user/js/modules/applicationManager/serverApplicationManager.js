@@ -72,7 +72,7 @@ sitools.user.modules.serverApplicationManager = function (config) {
         store : getStore(),
         loadMask : true,
         autoExpandColumn : 'url',
-        sm : new Ext.grid.RowSelectionModel({
+        sm : Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         }),
         columns : [ {

@@ -93,7 +93,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
             data : dataScope
         });
         
-        var smProperties = new Ext.grid.RowSelectionModel({
+        var smProperties = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

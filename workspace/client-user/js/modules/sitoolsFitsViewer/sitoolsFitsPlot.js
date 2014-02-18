@@ -24,7 +24,10 @@ Ext.namespace('sitools.user.modules');
  * @class sitools.user.modules.sitoolsFitsPlot
  * @extends Ext.Panel
  */
-sitools.user.modules.sitoolsFitsPlot = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.modules.sitoolsFitsPlot', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.user.modules.sitoolsFitsPlot',
+            
     initComponent : function () {
         this.width = 605;
         this.height = 420;
@@ -148,4 +151,3 @@ sitools.user.modules.sitoolsFitsPlot = Ext.extend(Ext.Panel, {
       );
     }
 });
-Ext.reg('sitools.user.modules.sitoolsFitsPlot', sitools.user.modules.sitoolsFitsPlot);

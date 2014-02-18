@@ -94,7 +94,7 @@ Ext.define('sitools.admin.datasets.dictionaryWin', { extend : 'Ext.Window',
             }
         });
 
-        this.smNotion = new Ext.grid.RowSelectionModel({
+        this.smNotion = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
 

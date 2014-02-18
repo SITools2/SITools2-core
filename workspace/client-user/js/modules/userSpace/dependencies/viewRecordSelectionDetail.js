@@ -48,7 +48,7 @@ sitools.user.modules.userSpaceDependencies.viewRecordSelectionDetail = Ext.exten
             data : this.orderRecord.records
         });
         
-        var sm = new Ext.grid.RowSelectionModel();
+        var sm = Ext.create('Ext.selection.RowModel',);
         
         this.grid = new Ext.grid.GridPanel({
             layout : 'fit', 

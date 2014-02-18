@@ -22,7 +22,7 @@ Ext.namespace('sitools.user.component.entete.userProfile');
 
 sitools.user.component.entete.userProfile.viewOrderPanel = Ext.extend(Ext.grid.GridPanel, {
     border : false,
-    sm : new Ext.grid.RowSelectionModel(),
+    sm : Ext.create('Ext.selection.RowModel',),
 
     layout : {
         type : 'vbox',

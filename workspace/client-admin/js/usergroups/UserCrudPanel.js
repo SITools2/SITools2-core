@@ -33,7 +33,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
     border : false,
     height : 300,
     id : ID.BOX.USER,
-    sm : new Ext.grid.RowSelectionModel({
+    sm : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
@@ -54,7 +54,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
         // GET /users read
         // PUT /users/id update
         // DESTROY /users/id delete
-        this.store = new Ext.data.JsonStore({
+        this.store = Ext.create('Ext.data.JsonStore', {
             root : 'data',
             restful : true,
             autoSave : false,
@@ -76,7 +76,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.cm = Ext.create('Ext.grid.ColumnModel', {
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -137,15 +137,16 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
+//        this.view = Ext.create('Ext.grid.View', {
+//            forceFit : true
+//        });
 
         this.listeners = {
             scope : this, 
             rowDblClick : this._onModify
         };
-        sitools.admin.usergroups.UserCrudPanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
+//        sitools.admin.usergroups.UserCrudPanel.superclass.initComponent.call(this);
     },
 
     /**

@@ -24,7 +24,8 @@ Ext.namespace('sitools.widget');
  * @class sitools.widget.Box
  * @extends Ext.Panel
  */
-sitools.widget.Box = Ext.extend(Ext.Panel, {
+Ext.define('sitools.widget.Box', {
+    extend : 'Ext.panel.Panel',
 	alias : 'widget.s-box',
     width : '98%',
     frame : true,
@@ -142,7 +143,8 @@ Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
 
 });
 // add this new node to the list of nodes
-Ext.tree.TreePanel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
+// TODO Ext.tree.Panel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
+//Ext.tree.Panel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
 
 /**
  * A toolbar with buttons to move rows up or down

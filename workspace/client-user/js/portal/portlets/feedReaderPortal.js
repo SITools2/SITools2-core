@@ -20,7 +20,10 @@
 
 Ext.namespace('sitools.component.users.portal');
 
-sitools.component.users.portal.feedsReaderPortal = Ext.extend(Ext.Panel, {
+Ext.define('sitools.component.users.portal.feedsReaderPortal', {
+    extend : 'Ext.panel.Panel',
+    alias : 'sitools.component.users.portal.feedsReaderPortal',
+    
     portalId : "idPortal",
     layout : "fit",
     initComponent : function () {
@@ -167,5 +170,3 @@ sitools.component.users.portal.feedsReaderPortal = Ext.extend(Ext.Panel, {
     }
 
 });
-
-Ext.reg('sitools.component.users.portal.feedsReaderPortal', sitools.component.users.portal.feedsReaderPortal);

@@ -57,7 +57,7 @@ sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPane
             autoFill : true
         };
         
-        this.sm = new Ext.grid.RowSelectionModel({
+        this.sm = Ext.create('Ext.selection.RowModel',{
             singleSelect:true,
             listeners : {
                 scope : this,

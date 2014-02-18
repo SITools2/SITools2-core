@@ -65,7 +65,7 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', { extend : 'Ext.Window',
             } ]
         });
         this.grid = new Ext.grid.GridPanel({
-            sm : new Ext.grid.RowSelectionModel({
+            sm : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             }),
             store : this.store,

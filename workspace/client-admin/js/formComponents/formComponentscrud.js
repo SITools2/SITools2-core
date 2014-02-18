@@ -25,7 +25,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend 
     border : false,
     height : 300,
     id : ID.BOX.FORMCOMPONENTS,
-    sm : new Ext.grid.RowSelectionModel({
+    sm : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,

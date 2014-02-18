@@ -56,7 +56,7 @@ Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
             } ]
         });
         this.grid = new Ext.grid.GridPanel({
-            sm : new Ext.grid.RowSelectionModel(),
+            sm : Ext.create('Ext.selection.RowModel'),
             store : this.store,
             height : 200,
             columns : [ {

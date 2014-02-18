@@ -197,7 +197,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
             }, visible]
         });
         
-        var smDatasets = new Ext.grid.RowSelectionModel({
+        var smDatasets = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
         

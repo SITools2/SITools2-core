@@ -198,7 +198,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
             layout : 'fit', 
             store : storeTablesJDBC,
             cm : cmTablesJDBC,
-            sm : new Ext.grid.RowSelectionModel({}),
+            sm : Ext.create('Ext.selection.RowModel',{}),
             enableDragDrop : true,
             stripeRows : true,
             title : 'Tables JDBC',

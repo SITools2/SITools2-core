@@ -293,7 +293,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
         // définition des plugins nécessaires (colonnes avec checkbox )
         var plugins = [ indexed, defaultSearchField, uniqueKey, keyWords];
         
-        var smColumn = new Ext.grid.RowSelectionModel({
+        var smColumn = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
         });
         

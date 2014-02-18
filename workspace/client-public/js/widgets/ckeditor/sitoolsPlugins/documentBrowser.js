@@ -70,7 +70,7 @@ sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
             padding:'5',
             store: this.store,
             title: i18n.get('label.selectDocToImport'),
-            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
+            sm: Ext.create('Ext.selection.RowModel',{singleSelect:true}),
             colModel: new Ext.grid.ColumnModel({
                 columns: [{
                         width: 30, 

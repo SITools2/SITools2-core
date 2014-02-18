@@ -197,7 +197,7 @@ sitools.admin.datasets.PredicatsPanel = function (config) {
 	    } ],
 	    // ajout du plugin pour d�finir la drop Zone
 	    stripeRows : true,
-	    sm : new Ext.grid.RowSelectionModel(),
+	    sm : Ext.create('Ext.selection.RowModel'),
 	    // menu contextuel
 	    listeners : {
 	        // levee du traitement pour les champs de la grille

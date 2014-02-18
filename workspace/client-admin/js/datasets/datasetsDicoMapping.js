@@ -103,7 +103,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
                 }
             }
 //            ,
-//            sm : new Ext.grid.RowSelectionModel({
+//            sm : Ext.create('Ext.selection.RowModel',{
 //                listeners : {
 //                    scope : this,
 //                    rowselect : this.gridColumnRowSelectionModelListener,
@@ -296,7 +296,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
             editable : false,
             url : this.urlDictionaries + "/" + this.dictionaryId,
             id : 'gridDictionaryConcept',
-            sm : new Ext.grid.RowSelectionModel(),
+            sm : Ext.create('Ext.selection.RowModel'),
             flex : 2,
             title : i18n.get("label.dictionaryConcepts"),
             enableColumnResize : true,            
@@ -454,7 +454,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
 //                    selModel.selectRecords(records);   
 //                }
 //            },
-            sm : new Ext.grid.RowSelectionModel({
+            sm : Ext.create('Ext.selection.RowModel',{
 				listeners : {
 					scope : this,
 					rowselect : this.gridMappingRowSelectionModelListener,

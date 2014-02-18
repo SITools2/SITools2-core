@@ -408,7 +408,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
     createConceptGrid : function (template) {
         var gridConceptsSelect = new sitools.component.dictionary.gridPanel({
 			template : template,
-			sm : new Ext.grid.RowSelectionModel({
+			sm : Ext.create('Ext.selection.RowModel',{
 				singleSelect : true
 			}),
 			tbar : {

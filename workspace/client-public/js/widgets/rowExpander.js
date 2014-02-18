@@ -15,7 +15,9 @@ Ext.ns('Ext.ux.grid');
  *
  * @ptype rowexpander
  */
-Ext.ux.grid.RowExpander = Ext.extend(Ext.util.Observable, {
+Ext.define('Ext.ux.grid.RowExpander', {
+    extend : 'Ext.util.Observable',
+
     /**
      * @cfg {Boolean} expandOnEnter
      * <tt>true</tt> to toggle selected row(s) between expanded/collapsed when the enter
@@ -240,7 +242,7 @@ Ext.ux.grid.RowExpander = Ext.extend(Ext.util.Observable, {
 	}
 });
 
-Ext.preg('rowexpander', Ext.ux.grid.RowExpander);
+//Ext.preg('rowexpander', Ext.ux.grid.RowExpander);
 
 //backwards compat
 Ext.grid.RowExpander = Ext.ux.grid.RowExpander;

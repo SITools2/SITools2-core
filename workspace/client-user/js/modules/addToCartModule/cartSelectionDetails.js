@@ -29,7 +29,10 @@ Ext.namespace('sitools.user.modules');
  * @param {sitools.user.modules.addToCartModule} cartModule : the cart Module
  * @extends grid.GridPanel
  */
-sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
+Ext.define('sitools.user.modules.cartSelectionDetails', {
+    extend : 'Ext.grid.Panel',
+    alias : 'sitools.user.modules.cartSelectionDetails',
+    
     disableSelection : true,
     initComponent : function () {
 
@@ -157,5 +160,3 @@ sitools.user.modules.cartSelectionDetails = Ext.extend(Ext.grid.GridPanel, {
     }
     
 });
-
-Ext.reg('sitools.user.modules.cartSelectionDetails', sitools.user.modules.cartSelectionDetails);

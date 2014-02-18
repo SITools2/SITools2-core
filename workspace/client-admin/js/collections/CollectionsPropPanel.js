@@ -99,7 +99,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
             }
         });
 
-        var smDataSets = new Ext.grid.RowSelectionModel({
+        var smDataSets = Ext.create('Ext.selection.RowModel',{
             singleSelect : false
         });
         var tbar = {

@@ -264,4 +264,4 @@ Ext.ux.Plugin.RemoteComponent = function (config){
 		}           
     };
 };
-Ext.extend(Ext.ux.Plugin.RemoteComponent, Ext.util.Observable);
+Ext.define('Ext.ux.Plugin.RemoteComponent', {extend : 'Ext.util.Observable'});
