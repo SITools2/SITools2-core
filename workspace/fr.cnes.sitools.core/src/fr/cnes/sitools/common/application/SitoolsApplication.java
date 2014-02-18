@@ -393,9 +393,9 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       return addSecurityFilter(getContext(), restlet);
     }
 
-    Authorizer author = this.getUserAuthorizer(restlet.getContext(), this.authenticationRealm.getReferenceRoles(),
+    Authorizer authorizer = this.getUserAuthorizer(restlet.getContext(), this.authenticationRealm.getReferenceRoles(),
         userRequestAttribute, this, methodsForPublic);
-    if ((author == null) || (author == Authorizer.ALWAYS)) {
+    if ((authorizer == null) || (authorizer == Authorizer.ALWAYS)) {
       this.getLogger().warning("No security configuration for " + this.getName());
       this.authorizationSecure = false;
 
@@ -410,14 +410,15 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(restlet.getContext(), true, getSettings()
           .getAuthenticationDOMAIN(), authenticationRealm);
 
-      auth.setNext(author);
-
       // attach a filter to block bad authentication
       NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
       // register with secure ...
-      author.setNext(notAuthenticatedFilter);
+      authorizer.setNext(notAuthenticatedFilter);
 
-      notAuthenticatedFilter.setNext(restlet);
+      auth.setNext(notAuthenticatedFilter);
+      notAuthenticatedFilter.setNext(authorizer);
+
+      authorizer.setNext(restlet);
 
       return addSecurityFilter(getContext(), auth);
     }
@@ -471,7 +472,7 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       userAuthorizers.add(result);
 
       // Result is a Or Authorizer
-      authorizer = new SitoolsOrAuthorizer(userAuthorizers);
+      authorizer = new SitoolsOrAuthorizer(userAuthorizers, this.getLogger());
       return authorizer;
     }
     catch (IOException e) { // marshalling error
@@ -675,18 +676,18 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       // optional authenticator
       ChallengeAuthenticator auth = getChallengeAuthenticator(application);
 
-      auth.setNext(localAuthorizer);
-
-      if (!Category.PUBLIC.equals(application.getCategory())) {
-        // attach a filter to block bad authentication
-        NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
-        localAuthorizer.setNext(notAuthenticatedFilter);
-
-        notAuthenticatedFilter.setNext(application);
+      if (Category.PUBLIC.equals(application.getCategory())) {
+        auth.setNext(localAuthorizer);
       }
       else {
-        auth.setNext(application);
+        // attach a filter to block bad authentication
+        NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
+
+        auth.setNext(notAuthenticatedFilter);
+        notAuthenticatedFilter.setNext(localAuthorizer);
       }
+
+      localAuthorizer.setNext(application);
 
       authorizer = localAuthorizer;
       return addSecurityFilter(getContext(), auth);

@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -17,6 +17,8 @@
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package fr.cnes.sitools.security.filter;
+
+import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -59,11 +61,18 @@ public class IPBlackListFilter extends SecurityFilter {
   protected int beforeHandle(Request request, Response response) {
     int status = STOP;
 
+    if (super.beforeHandle(request, response) == STOP) {
+      return STOP;
+    }
+
     String clientip = getIpAddress(request);
-    status = ((ipContainer != null) && ipContainer.contains(clientip)) ? STOP : super.beforeHandle(request, response);
+    status = ((ipContainer != null) && ipContainer.contains(clientip)) ? STOP : CONTINUE;
     if (status == STOP) {
       response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Your IP address was blacklisted");
-      getContext().getLogger().info("Security.filter.blacklist : " + clientip);
+      getLogger().log(
+          Level.INFO,
+          "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath() + " forbidden, IP address "
+              + clientip + " is in blacklist");
     }
     return status;
   }

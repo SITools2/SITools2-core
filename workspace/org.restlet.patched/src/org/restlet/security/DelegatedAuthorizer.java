@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,6 +19,8 @@
 package org.restlet.security;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.restlet.Request;
 import org.restlet.Response;
@@ -26,8 +28,8 @@ import org.restlet.Response;
 /**
  * FIXME RESTLET
  * 
- * Classe nécessairement dans le package org.restlet.security pour rendre publique la methode authorize et pour rendre serializable un
- * Authorizer
+ * Classe nécessairement dans le package org.restlet.security pour rendre publique la methode authorize et pour rendre
+ * serializable un Authorizer
  * 
  * @author jp.boignard (AKKA Technologies)
  * 
@@ -39,6 +41,9 @@ public class DelegatedAuthorizer extends Authorizer implements Serializable {
 
   /** Delegated Restlet authorizer */
   private Authorizer authorizer = null;
+
+  /** logger */
+  private Logger logger = null;
 
   /**
    * Constructor Authorizer encapsulation
@@ -55,6 +60,19 @@ public class DelegatedAuthorizer extends Authorizer implements Serializable {
    */
   public DelegatedAuthorizer() {
     super();
+  }
+
+  /**
+   * Constructor with Authorizer and Logger to log unsuccessful authorization
+   * 
+   * @param authorizer
+   *          the authorizer
+   * @param logger
+   *          the logger
+   */
+  public DelegatedAuthorizer(Authorizer authorizer, Logger logger) {
+    this(authorizer);
+    setLogger(logger);
   }
 
   @Override
@@ -79,6 +97,24 @@ public class DelegatedAuthorizer extends Authorizer implements Serializable {
    */
   public void setAuthorizer(Authorizer authorizer) {
     this.authorizer = authorizer;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.restlet.security.Authorizer#unauthorized(org.restlet.Request, org.restlet.Response)
+   */
+  @Override
+  protected int unauthorized(Request request, Response response) {
+    if (this.logger != null) {
+      this.logger.log(Level.INFO, "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath()
+          + " forbidden, authorization failed");
+    }
+    return super.unauthorized(request, response);
+  }
+
+  protected void setLogger(Logger logger) {
+    this.logger = logger;
   }
 
 }

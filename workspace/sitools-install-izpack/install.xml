@@ -180,7 +180,7 @@
 			<fileset override="update" dir="../org.restlet.ext.solr/" targetdir="$INSTALL_PATH/$workspacePath/org.restlet.ext.solr"
 				includes="**/*.jar" />
 			<file override="update"
-				src="../org.restlet.patched/org.restlet.patched_1.0.3.jar"
+				src="../org.restlet.patched/org.restlet.patched_1.0.4.jar"
 				targetdir="$INSTALL_PATH/workspace/org.restlet.patched" />
 			<file override="update"
 				src="../org.restlet.ext.wadl/org.restlet.ext.wadl_2.0.1.jar"

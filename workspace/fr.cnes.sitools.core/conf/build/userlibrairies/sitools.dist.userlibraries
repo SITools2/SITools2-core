@@ -4,7 +4,7 @@
         <archive path="D:/CNES-ULISSE/workspace/fr.cnes.sitools.extensions/dist/fr.cnes.sitools.extensions.jar"/>
     </library>
     <library name="restlet_jse_2_0_5_patched" systemlibrary="false">
-        <archive path="D:/CNES-ULISSE/workspace/org.restlet.patched/org.restlet.patched_1.0.3.jar"/>
+        <archive path="D:/CNES-ULISSE/workspace/org.restlet.patched/org.restlet.patched_1.0.4.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.net.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.osgi_4.0/org.osgi.core.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.dbcp_1.3/org.apache.commons.dbcp.jar"/>
