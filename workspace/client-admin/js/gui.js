@@ -485,7 +485,6 @@ var clientAdmin = {
  * Init application Gui and logic
  */
 function initAppli() {
-    
     //loadUrl.load('/sitools/client-admin/siteMap', clientAdmin.initGui());
     if (Ext.isEmpty(Ext.util.Cookies.get('showQuickStart'))) {
         Ext.util.Cookies.set('showQuickStart', true);

@@ -30,7 +30,7 @@ var DEFAULT_HELP_HEIGHT = 400;
 var ADMIN_PANEL_HEIGHT = 300;
 var ADMIN_PANEL_NB_ELEMENTS = 10;
 var SHOW_HELP = true;
-var COOKIE_DURATION = 20;
+var COOKIE_DURATION = 1;
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
 var JAVA_TYPES = [{
@@ -99,11 +99,47 @@ var onBeforeRequest = function (conn, options) {
 		}
     }
     if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), date.add(Date.MINUTE, 20));
+        var expireDate = date.add(Date.MINUTE, COOKIE_DURATION);
+        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), expireDate);
+        Ext.util.Cookies.set('userSessionTimeOut', expireDate.format(SITOOLS_DATE_FORMAT), expireDate);
+        
+        taskCheckSessionExpired.cancel();
+        taskCheckSessionExpired.delay(COOKIE_DURATION * 1000 * 60);
     }
 };
 
 Ext.Ajax.on('beforerequest', onBeforeRequest, this);
+
+/**
+ * HANDLE SESSION TIMEOUT
+ */
+
+var checkSessionExpired = function () {
+    
+    console.log("checkSessionExpired");
+    taskCheckSessionExpired.cancel();
+    
+    if (Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
+     // Notify user its session timed out.
+        Ext.Msg.alert(
+                i18n.get('title.session.expired'),
+                i18n.get("label.session.expired"),
+                function (btn, text) {
+                    window.location.reload();
+                }
+        );
+    } else {
+        //extend the timer for the remaining session time
+        var expire = Ext.util.Cookies.get('userSessionTimeOut');
+        var date = new Date();
+        var expireDate = Date.parseDate(expire, SITOOLS_DATE_FORMAT);
+        
+        var sessionTimeLeftMs = (expireDate.getTime() - date.getTime()) + 1000;
+        taskCheckSessionExpired.delay(sessionTimeLeftMs);
+    }
+};
+
+var taskCheckSessionExpired = new Ext.util.DelayedTask(checkSessionExpired);
 
 /**
  * Method called if any Ajax Request has an error status.
