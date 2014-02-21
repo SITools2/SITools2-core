@@ -176,13 +176,13 @@
 	</target>
 
 	<target name="export-git" description="Tache GIT d'export de la version actuelle">
-		<exec executable="scripts/clone-tag.bat" osfamily="windows">
+		<exec executable="scripts/clone-tag.bat" osfamily="windows" failonerror="true">
 			<arg value="${url}"/>
 			<arg value="${dir}"/>
 			<arg value="${tag}"/>
 		</exec>
 
-		<exec executable="scripts/clone-tag.sh" osfamily="unix">
+		<exec executable="scripts/clone-tag.sh" osfamily="unix" failonerror="true">
 			<arg value="${url}"/>
 			<arg value="${dir}"/>
 			<arg value="${tag}"/>
