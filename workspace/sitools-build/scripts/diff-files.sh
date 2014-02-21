@@ -5,6 +5,10 @@
 
 cd ${3}
 
+#check that the tag exists
+[ "`git tag | grep ^${1}$`" != "${1}" ] && echo "TAG ${1} does not exists, aborting" && exit 1;
+[ "`git tag | grep ^${2}$`" != "${2}" ] && echo "TAG ${2} does not exists, aborting" && exit 1;
+
 #Génération des fichiers
 git diff --name-only --diff-filter=MCR ${1} ${2}> modified_list-diff.txt
 git diff --name-only --diff-filter=A  ${1} ${2}> added_list-diff.txt
