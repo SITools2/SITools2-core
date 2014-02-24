@@ -38,7 +38,7 @@ var DEFAULT_ORDER_FOLDER = "dataSelection";
 var DEFAULT_PREFERENCES_FOLDER = "preferences";
 var DEFAULT_LIVEGRID_BUFFER_SIZE = 300; 
 var URL_CGU = "/sitools/res/licences/cgu.html";
-var COOKIE_DURATION = 1;
+var COOKIE_DURATION = 20;
 var MULTIDS_TIME_DELAY = 2000;
 var SITOOLS_DEFAULT_PROJECT_IMAGE_URL = "/sitools/res/images/sitools2_logo.png";
 /**
