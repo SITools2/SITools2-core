@@ -110,8 +110,6 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/vtype.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsDatePicker.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/utils/passwordGenerator.js"></script>
-	
     
     <script type="text/javascript" src="js/def.js"></script>
     <script type="text/javascript" src="js/id.js"></script>
