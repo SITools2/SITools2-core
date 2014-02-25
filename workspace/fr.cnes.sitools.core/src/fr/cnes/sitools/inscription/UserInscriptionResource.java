@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,21 +18,34 @@
  ******************************************************************************/
 package fr.cnes.sitools.inscription;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
+import org.restlet.Request;
 import org.restlet.data.MediaType;
+import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.xstream.XstreamRepresentation;
+import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
+import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.inscription.model.Inscription;
+import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.SecurityUtil;
+import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.util.TemplateUtils;
+import fr.cnes.sitools.util.Util;
 
 /**
  * Resource for users to subscribe
@@ -86,6 +99,9 @@ public final class UserInscriptionResource extends InscriptionResource {
         SecurityUtil.encodeUserInscriptionPassword(getSitoolsApplication().getSettings(), inscriptionInput);
 
         Inscription inscriptionOutput = getStore().create(inscriptionInput);
+
+        sendMailToAdmin(inscriptionOutput);
+
         response = new Response(true, inscriptionOutput, Inscription.class, "inscription");
       }
 
@@ -98,6 +114,69 @@ public final class UserInscriptionResource extends InscriptionResource {
     catch (Exception e) {
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
+  }
+
+  /**
+   * Send the new password by mail to an user
+   * 
+   * @param inscription
+   *          the user inscription
+   */
+  private void sendMailToAdmin(Inscription inscription) {
+
+    SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
+    String adminMail = settings.getString("Starter.StatusService.CONTACT_MAIL", null);
+
+    if (adminMail == null) {
+      getLogger().info("No email address for administrator, cannot send inscription email");
+      return;
+    }
+
+    String[] toList = new String[] {adminMail};
+    Mail mailToAdmin = new Mail();
+    mailToAdmin.setToList(Arrays.asList(toList));
+
+    // Object
+    mailToAdmin.setSubject("SITOOLS2 - New user registration");
+
+    // Body
+    mailToAdmin.setBody("A new user registered on SITools2, username : " + inscription.getIdentifier());
+
+    // use a freemarker template for email body with Mail object
+    String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+        + "mail.inscription.registered.ftl";
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("mail", mailToAdmin);
+    root.put("inscription", inscription);
+    root.put(
+        "sitoolsUrl",
+        getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
+            + settings.getString(Consts.APP_CLIENT_ADMIN_URL) + "/");
+
+    TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
+
+    root.put("context", getContext());
+
+    String body = TemplateUtils.toString(templatePath, root);
+    if (Util.isNotEmpty(body)) {
+      mailToAdmin.setBody(body);
+    }
+
+    org.restlet.Response sendMailResponse = null;
+    try {
+      // riap request to MailAdministration application
+      Request request = new Request(Method.POST, RIAPUtils.getRiapBase()
+          + settings.getString(Consts.APP_MAIL_ADMIN_URL), new ObjectRepresentation<Mail>(mailToAdmin));
+
+      sendMailResponse = getContext().getClientDispatcher().handle(request);
+    }
+    catch (Exception e) {
+      getApplication().getLogger().warning("Failed to post message to user");
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
+    if (sendMailResponse.getStatus().isError()) {
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "Server Error sending email to user.");
     }
   }
 
