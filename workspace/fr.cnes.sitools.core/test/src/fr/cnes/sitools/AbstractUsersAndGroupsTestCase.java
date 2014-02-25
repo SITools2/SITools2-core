@@ -167,7 +167,7 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
    * Invoke POST
    */
   public void createUser() {
-    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
+    User myUser = new User("test-identifier", "mOtDePaSsE1", "Prénom", "Nom", "m.gond@akka.eu");
     ClientResource crUsers = new ClientResource(getBaseUrl() + "/users");
 
     Representation result = crUsers.post(getRepresentationJSON(myUser));
