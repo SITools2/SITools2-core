@@ -150,7 +150,7 @@ sitools.userProfile.editProfile = Ext.extend(Ext.Panel, {
                 name : 'secret',
                 value : '',
                 id : "passwordField",
-                vtype : 'passwordlength'
+                vtype : 'passwordComplexity'
             }, {
                 id : "confirmSecret",
                 xtype : 'textfield',

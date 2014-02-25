@@ -210,9 +210,9 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
                     anchor : '100%',
                     inputType : 'password',
                     name : 'secret',
-                    value : '', 
                     id : "passwordField", 
-                    vtype: 'passwordlength'
+                    vtype: 'passwordComplexity',
+                    allowBlank : false
                 }, {
                     id : "confirmSecret",
                     xtype : 'textfield',
@@ -223,7 +223,7 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
                     vtype: 'password',
                     name : 'confirmSecret',
                     submitValue : false,
-                    value : ''
+                    allowBlank : false
                 }, {
                     xtype : 'button',
                     name : 'generate',
@@ -400,18 +400,16 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
      * Generate a random password
      */
     generatePassword : function () {
-        var chars = "!0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-        var string_length = 6;
-        var randomstring = '';
-        for (var i = 0; i < string_length; i++) {
-            var rnum = Math.floor(Math.random() * chars.length);
-            randomstring += chars.substring(rnum, rnum + 1);
-        }
+        var generator = new PasswordGenerator();
+        var randomstring = generator.generate(10);
+        console.log(randomstring);
+        
         var f = Ext.getCmp('formCreateUser').getForm();
         f.findField('secret').setValue(randomstring);
         f.findField('confirmSecret').setValue(randomstring);
 
     }
+    
 
 });
 
