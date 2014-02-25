@@ -275,7 +275,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    */
   public void createUser() {
 
-    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
+    User myUser = new User("test-identifier", "mOtDePaSsE1", "Prénom", "Nom", "m.gond@akka.eu");
     ClientResource crUsers = new ClientResource(getBaseUrl() + "/users");
     Representation result = null;
     try {
@@ -303,7 +303,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    * Invoke GET
    */
   public void retrieveUser() {
-    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
+    User myUser = new User("test-identifier", "mOtDePaSsE1", "Prénom", "Nom", "m.gond@akka.eu");
     ClientResource cr = new ClientResource(getBaseUrl() + "/users/" + myUser.getIdentifier());
     Representation result = null;
     try {
