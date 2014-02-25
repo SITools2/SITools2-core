@@ -269,7 +269,7 @@ public abstract class AbstractUsersAndGroupsRoleNotificationTestCase extends Abs
   }
 
   private User createUserModel() {
-    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
+    User myUser = new User("test-identifier", "mOtDePaSsE1", "Prénom", "Nom", "m.gond@akka.eu");
     return myUser;
   }
 

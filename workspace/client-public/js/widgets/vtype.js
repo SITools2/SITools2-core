@@ -90,14 +90,15 @@ Ext.apply(Ext.form.VTypes, {
     },
     passwordText : 'Passwords do not match',
 
-    passwordlength : function(val) {
-        if (val.length < 6 || val.length > 40) {
-            return false;
-        } else {
+    passwordComplexity : function(val) {
+        var passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,64}$|^(?=.*[a-z])(?=.*[0-9])(?=.*\W).{8,64}$|^(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,64}$|^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,64}$/;
+        if (passwordRegExp.test(val)) {
             return true;
+        } else {
+            return false;
         }
     },
-    passwordlengthText : 'Invalid Password Length. It must be between 6 and 40'
+    passwordComplexityText : 'Invalid Password, must contains at least 8 characters containing 3 of the following categories (Special character, uppercase, lowercase and number)'
 });
 
 function resetLoginValidator(is_error) {

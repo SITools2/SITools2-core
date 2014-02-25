@@ -174,6 +174,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
                 id: 'formCreateUser',
                 border : false,
                 padding : 10,
+                labelWidth : 120,
                 items : [ {
                     xtype : 'textfield',
                     name : 'firstName',
@@ -210,9 +211,9 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
                     anchor : '100%',
                     inputType : 'password',
                     name : 'secret',
-                    value : '', 
                     id : "passwordField", 
-                    vtype: 'passwordlength'
+                    vtype: 'passwordComplexity',
+                    allowBlank : false
                 }, {
                     id : "confirmSecret",
                     xtype : 'textfield',
@@ -223,15 +224,25 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
                     vtype: 'password',
                     name : 'confirmSecret',
                     submitValue : false,
-                    value : ''
+                    allowBlank : false
                 }, {
-                    xtype : 'button',
+                    xtype : 'checkbox',
                     name : 'generate',
-                    id : 'generatePass',
-                    text : i18n.get('label.generatePassword'),
-                    anchor : '9%',
-                    handler : this.generatePassword
-                } ]
+                    fieldLabel : i18n.get('label.generatePassword'),
+                    checked : false,
+                    listeners : {
+                        scope : this,
+                        check : function (checkbox, checked) {
+                            var f = this.findByType('form')[0].getForm();
+                            f.findField('secret').setDisabled(checked);
+                            f.findField('confirmSecret').setDisabled(checked);
+                            if(checked) {
+                                f.findField('secret').setValue("");
+                                f.findField('confirmSecret').setValue("");
+                            }
+                        } 
+                    }
+                }]
             }, this.gridProperties],
             buttons : [ {
                 text : i18n.get('label.ok'),
@@ -246,59 +257,6 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
             } ]
 
         } ];
-        // ,
-        // {
-        // xtype: 'panel',
-        // title: i18n.get('label.userGroups'),
-        // items: [
-        // {
-        // xtype: 'grid',
-        // store: this.groupStore,
-        // plugins: this.joinCheck,
-        // height: 400,
-        // columns: [
-        // {header: i18n.get('label.name'), dataIndex: 'name', width: 100},
-        // {header: i18n.get('label.description'), dataIndex: 'description',
-        // width: 400},
-        // this.joinCheck
-        // ]
-        // }
-        // ]
-        // },
-        // {
-        // xtype: 'panel',
-        // title: i18n.get('label.userQuota'),
-        // items: [
-        // {
-        // xtype: 'editorgrid',
-        // store: this.quotaStore,
-        // plugins: this.quotaCheck,
-        // height: 400,
-        // columns: [
-        // {xtype: 'gridcolumn', dataIndex: 'vol', header:
-        // i18n.get('label.volume'), width: 100, editor: {xtype: 'textfield'}},
-        // {xtype: 'numbercolumn', dataIndex: 'used', header:
-        // i18n.get('label.usedcapacity'), width: 100, align: 'right', editor:
-        // {xtype: 'numberfield'}},
-        // {xtype: 'numbercolumn', dataIndex: 'quota', header:
-        // i18n.get('label.quota'), width: 100, align: 'right', format:'0',
-        // editor: {xtype: 'numberfield'}},
-        // {dataIndex: 'unit', header: i18n.get('headers.unit'), align: 'right',
-        // width: 100, editor:
-        // { xtype:'combo', mode:'local', editable:false, width:30,
-        // triggerAction:'all', lazyRender:true,
-        // store: new Ext.data.ArrayStore({fields: ['v','l'], data:
-        // [['MB','MB'],['GB','GB']] }),
-        // valueField: 'v', displayField: 'l' }
-        // },
-        // this.quotaCheck
-        // ]
-        // }
-        // ]
-        // }
-        // ],
-        // }
-        // ];
         sitools.admin.usergroups.UserPropPanel.superclass.initComponent.call(this);
     },
     
@@ -334,6 +292,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
             return;
         }
         var putObject = f.getValues();
+        Ext.destroyMembers(putObject, "generate");
         putObject.properties = [];
         this.gridProperties.getStore().each(function (item) {
 			putObject.properties.push({
@@ -400,18 +359,16 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
      * Generate a random password
      */
     generatePassword : function () {
-        var chars = "!0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-        var string_length = 6;
-        var randomstring = '';
-        for (var i = 0; i < string_length; i++) {
-            var rnum = Math.floor(Math.random() * chars.length);
-            randomstring += chars.substring(rnum, rnum + 1);
-        }
+        var generator = new PasswordGenerator();
+        var randomstring = generator.generate(10);
+        console.log(randomstring);
+        
         var f = Ext.getCmp('formCreateUser').getForm();
         f.findField('secret').setValue(randomstring);
         f.findField('confirmSecret').setValue(randomstring);
 
     }
+    
 
 });
 

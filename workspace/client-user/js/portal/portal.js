@@ -37,12 +37,7 @@ sitools.Portal = function (projectsList, languages, preferences) {
                     closable : true,
                     url : loadUrl.get('APP_URL') + '/login',
                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
-                    reset : loadUrl.get('APP_URL') + '/resetPassword',
-                    handler : function () {
-                        portal.initAppliPortal({
-                            siteMapRes : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')
-                        });
-                    }
+                    reset : loadUrl.get('APP_URL') + '/resetPassword'
                 });
                 
                 

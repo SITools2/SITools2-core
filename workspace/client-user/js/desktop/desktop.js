@@ -808,10 +808,6 @@ sitools.user.desktop.App = function () {
 					"X-User-Agent" : "Sitools"
 				};
 				taskCheckSessionExpired.delay(COOKIE_DURATION * 60 * 1000);
-//				var expire = Ext.util.Cookies.get('userSessionTimeOut');
-//				var date = new Date();
-//				var expireDate = Date.parseDate(expire, SITOOLS_DATE_FORMAT);
-//				taskSessionExpired.delay(expireDate.getTime() - date.getTime());
 				
 			} else {
 				Ext.Ajax.defaultHeaders = {

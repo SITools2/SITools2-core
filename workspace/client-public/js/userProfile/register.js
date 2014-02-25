@@ -97,7 +97,7 @@ sitools.userProfile.Register = Ext.extend(Ext.Window, {
 				name: 'password',
 				allowBlank: false,
 				inputType: 'password',
-	            vtype: 'passwordlength',
+	            vtype: 'passwordComplexity',
 	            id: 'pass1',
 	            anchor: '100%'
 			}, {

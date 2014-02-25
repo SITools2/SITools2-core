@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,6 +19,8 @@
 package fr.cnes.sitools.login;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 
@@ -36,10 +38,13 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
+import com.google.common.base.Joiner;
+
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.PasswordGenerator;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -83,7 +88,7 @@ public class ResetPasswordResource extends SitoolsResource {
 
       if (userDb != null) {
         if (userDb.getEmail().equals(user.getEmail())) {
-          String password = setRandomString(6);
+          String password = PasswordGenerator.generate(10);
           userDb.setSecret(password);
           if (updateUser(userDb, url)) {
             response = new Response(true, user.getEmail());
@@ -107,7 +112,7 @@ public class ResetPasswordResource extends SitoolsResource {
       throw e;
     }
   }
-  
+
   @Override
   public void describePut(MethodInfo info) {
     info.setDocumentation("Method to reset the password of a user");
@@ -116,7 +121,6 @@ public class ResetPasswordResource extends SitoolsResource {
     addStandardResponseInfo(info);
     addStandardInternalServerErrorInfo(info);
   }
-
 
   /**
    * Update an user
@@ -168,23 +172,6 @@ public class ResetPasswordResource extends SitoolsResource {
     }
 
     return object;
-  }
-
-  /**
-   * Generate a password
-   * 
-   * @param length
-   *          the length of password
-   * @return password
-   */
-  private static String setRandomString(int length) {
-    Random rand = new Random(System.currentTimeMillis());
-    StringBuffer sb = new StringBuffer();
-    for (int i = 0; i < length; i++) {
-      int pos = rand.nextInt(CHARSET.length());
-      sb.append(CHARSET.charAt(pos));
-    }
-    return sb.toString();
   }
 
 }

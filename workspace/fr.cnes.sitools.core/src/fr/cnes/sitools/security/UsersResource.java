@@ -53,6 +53,7 @@ import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.PasswordGenerator;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
@@ -218,7 +219,10 @@ public final class UsersResource extends UsersAndGroupsResource {
       }
 
       String passwordUnecoded = input.getSecret();
-
+      if (passwordUnecoded == null) {
+        passwordUnecoded = PasswordGenerator.generate(10);
+        input.setSecret(passwordUnecoded);
+      }
       checkUser(input);
 
       // CRYPTAGE DU MOT DE PASSE SI NECESSAIRE

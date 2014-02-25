@@ -35,12 +35,10 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
     height : 480,
     modal : true,
     pageSize : 10,
-    dataSets : "",
 
     initComponent : function () {
         this.title = i18n.get('label.authorizations') + " : " + this.applicationRecord.data.name;
-        var storeAuthorizations = new Ext.data.JsonStore({
-            id : 'storeAuthorizations',
+        this.storeAuthorizations = new Ext.data.JsonStore({
             root : 'authorization.authorizations',
             url : this.urlAuthorizations,
             idProperty : 'role',
@@ -75,7 +73,6 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
 				update : function (store, record) {
 					var grid = this.gridAuthorizations;
 					var index = store.indexOf(record);
-				
 					var value = record.get('allMethod');
 				
 					for (var i = 2; i < 8; i++) {
@@ -85,9 +82,6 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
 					}
 				}, 
 				load : function (store, records) {
-					var grid = this.gridAuthorizations;
-					var value, index, idPost, cmpPost;
-					
 					Ext.each(records, function (record) {
 						store.fireEvent("update", store, record);
 					}, this);
@@ -148,9 +142,8 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
         });
 
         this.gridAuthorizations = new Ext.grid.EditorGridPanel({
-            id : 'gridAuthorizations',
             height : 450,
-            store : storeAuthorizations,
+            store : this.storeAuthorizations,
             tbar : {
                 xtype : 'toolbar',
                 defaults : {
@@ -172,7 +165,20 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
             sm : smAuthorizations,
             plugins : [ this.cbAll, this.cbGet, this.cbPost, this.cbPut, this.cbDelete, this.cbHead, this.cbOptions ],
             viewConfig : {
-                forceFit : true
+                forceFit : true,
+                listeners : {
+                    scope : this,
+                    rowsinserted : function (view, firstRow, lastRow) {
+                        var store = this.storeAuthorizations;
+                        var i = firstRow;
+                        while (i <= lastRow) {
+                            var record = store.getAt(i);
+                            store.fireEvent("update", store, record);
+                            i++;
+                        }
+                        
+                    }
+                }
             }
             
         });
@@ -224,7 +230,7 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
         putObject.name = this.applicationRecord.data.name;
         putObject.description = this.applicationRecord.data.description;
 
-        var store = this.findById('gridAuthorizations').getStore();
+        var store = this.gridAuthorizations.getStore();
         if (store.getCount() > 0) {
             putObject.authorizations = [];
             store.each(function (record) {

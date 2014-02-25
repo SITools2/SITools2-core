@@ -67,24 +67,30 @@ Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
                 dataIndex : 'description'
             } ]
         });
-        this.items = [ {
-            xtype : 'panel',
-            title : i18n.get('label.selectRoles'),
-            items : [ this.grid ],
-            bbar : {
-                xtype : 'toolbar',
-                defaults : {
-                    scope : this
-                },
-                items : [ '->', {
-                    text : i18n.get('label.ok'),
-                    handler : this._onOK
-                }, {
-                    text : i18n.get('label.cancel'),
-                    handler : this._onCancel
-                } ]
-            }
-        } ];
+        
+        this.bbar = {
+            xtype : 'paging',
+            pageSize : this.pageSize,
+            store : this.store,
+            displayInfo : true,
+            displayMsg : i18n.get('paging.display'),
+            emptyMsg : i18n.get('paging.empty')
+        };
+        
+        this.items = [this.grid ];
+        
+        this.buttons = [{
+            text : i18n.get('label.ok'),
+            handler : this._onOK,
+            scope : this
+        }, {
+            text : i18n.get('label.cancel'),
+            handler : this._onCancel,
+            scope : this
+            
+        }];                
+        
+        
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
         sitools.component.applications.rolesPanel.superclass.initComponent.call(this);
     },
@@ -117,7 +123,7 @@ Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
             if (this.storeRolesApplication.find('role', role.data.name) == -1) {
                 this.storeRolesApplication.add(new Ext.data.Record({
                     role : role.data.name
-                }));
+                }, role.data.name));
             }
         }, this);
         this.close();
