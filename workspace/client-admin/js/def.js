@@ -95,16 +95,28 @@ var onBeforeRequest = function (conn, options) {
 		        Ext.apply(Ext.Ajax.defaultHeaders, {
 					Authorization : Ext.util.Cookies.get('hashCode')
 		        });
-		    }
+		    } else {
+                Ext.destroyMembers(Ext.Ajax.defaultHeaders, "Authorization");
+            }
 		}
     }
     if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
         var expireDate = date.add(Date.MINUTE, COOKIE_DURATION);
         Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), expireDate);
-        Ext.util.Cookies.set('userSessionTimeOut', expireDate.format(SITOOLS_DATE_FORMAT), expireDate);
         
         taskCheckSessionExpired.cancel();
         taskCheckSessionExpired.delay(COOKIE_DURATION * 1000 * 60);
+        
+        //use localstorage to store sessionsTime out
+        localStorage.setItem("userSessionTimeOut", expireDate.format(SITOOLS_DATE_FORMAT));
+        Ext.EventManager.un(window, "storage");
+        Ext.EventManager.on(window, "storage", function() {
+            if (Ext.isEmpty(localStorage.getItem("userSessionTimeOut"))) {
+                checkSessionExpired();                
+            }
+        });
+        
+        
     }
 };
 
@@ -116,7 +128,6 @@ Ext.Ajax.on('beforerequest', onBeforeRequest, this);
 
 var checkSessionExpired = function () {
     
-    console.log("checkSessionExpired");
     taskCheckSessionExpired.cancel();
     
     if (Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
@@ -130,7 +141,7 @@ var checkSessionExpired = function () {
         );
     } else {
         //extend the timer for the remaining session time
-        var expire = Ext.util.Cookies.get('userSessionTimeOut');
+        var expire = localStorage.getItem("userSessionTimeOut");
         var date = new Date();
         var expireDate = Date.parseDate(expire, SITOOLS_DATE_FORMAT);
         
