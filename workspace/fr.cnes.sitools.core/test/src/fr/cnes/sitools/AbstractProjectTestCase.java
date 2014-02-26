@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -57,6 +57,8 @@ import fr.cnes.sitools.project.graph.GraphStoreXML;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.model.ProjectModule;
+import fr.cnes.sitools.registry.AppRegistryApplication;
+import fr.cnes.sitools.registry.AppRegistryStoreXML;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -130,8 +132,8 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     File storeDirectory = new File(getTestRepository());
     File storeGraphDirectory = new File(getTestGraphRepository());
-
-    
+    File appRegistry = new File(super.getTestRepository()
+        + SitoolsSettings.getInstance().getString(Consts.APP_APPLICATIONS_STORE_DIR));
 
     if (this.component == null) {
       this.component = new Component();
@@ -144,24 +146,42 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
 
-      
       cleanDirectory(storeDirectory);
       storeGraph = new GraphStoreXML(storeGraphDirectory, ctx);
       store = new ProjectStoreXML(storeDirectory, ctx);
-      
+
       Map<String, Object> stores = new ConcurrentHashMap<String, Object>();
       stores.put(Consts.APP_STORE_PROJECT, store);
       stores.put(Consts.APP_STORE_GRAPH, storeGraph);
 
-      SitoolsSettings.getInstance().setStores(stores);
-      
+      SitoolsSettings settings = SitoolsSettings.getInstance();
+      settings.setStores(stores);
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
+
+      // ===========================================================================
+      // ApplicationManager for application registering
+
+      // Store
+      AppRegistryStoreXML storeApp = new AppRegistryStoreXML(appRegistry, ctx);
+
+      // Context
+      Context appContext = component.getContext().createChildContext();
+      String appReference = getBaseUrl() + settings.getString(Consts.APP_APPLICATIONS_URL);
+      appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+      appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+      appContext.getAttributes().put(ContextAttributes.APP_STORE, storeApp);
+
+      // Application
+      AppRegistryApplication appManager = new AppRegistryApplication(appContext);
+
+      // for applications whose attach / detach themselves other applications to
+      // the virtualhost.
+      settings.setAppRegistry(appManager);
 
       this.component.getDefaultHost().attach(getAttachUrl(),
           new ProjectAdministration(this.component.getDefaultHost(), ctx));
     }
-
-    
 
     if (!this.component.isStarted()) {
       this.component.start();
