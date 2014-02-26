@@ -1125,15 +1125,21 @@ td.ux-taskButtons-edge {
 	float: left;
 }
 
+.datastorageSelectionClass {
+	border: 0.07em outset #B3B3B3 !important;
+	box-shadow: 1px 1px 1px 1px #888 !important;
+	background: linear-gradient(135deg, #F2F2F2 0%,rgba(242, 242, 242, 0) 100%);
+}
+
 .dv-datastorage-wrap{
 	float:left;
 	margin : 10px 15px 10px 15px;
-	border-radius: 8px;
-	border: 1px outset #F8F8F8;
+	border-radius: 1px;
+	/*border: 1px outset #F8F8F8;*/
 	text-align: center;
 	width: 90px;
 	height : 88px;
-	box-shadow: 1.5px 1.5px 0.5px rgba(124, 128, 114, 0.96);
+	/*box-shadow: 1.5px 1.5px 0.5px rgba(124, 128, 114, 0.96);
 	filter:progid:DXImageTransform.Microsoft.Shadow(color='#aaaaaa', Direction=135, Strength=12);
   	zoom: 1;
 	text-shadow: 0.5px 2px 0px rgba( 255, 255, 255, 0.2);
@@ -1142,7 +1148,7 @@ td.ux-taskButtons-edge {
 	background: -webkit-radial-gradient(center, ellipse cover, #e2e2e2 0%,#d1d1d1 21%,#dbdbdb 43%,#fefefe 100%); 
 	background: -o-radial-gradient(center, ellipse cover, #e2e2e2 0%,#d1d1d1 21%,#dbdbdb 43%,#fefefe 100%); 
 	background: -ms-radial-gradient(center, ellipse cover, #e2e2e2 0%,#d1d1d1 21%,#dbdbdb 43%,#fefefe 100%); 
-	background: radial-gradient(ellipse at center, #e2e2e2 0%,#d1d1d1 21%,#dbdbdb 43%,#fefefe 100%); 
+	background: radial-gradient(ellipse at center, #e2e2e2 0%,#d1d1d1 21%,#dbdbdb 43%,#fefefe 100%);*/
 }
 
 .dv-datastorage-wrap:ACTIVE{
@@ -1155,12 +1161,12 @@ td.ux-taskButtons-edge {
 }
 
 .dv-datastorage-wrap:HOVER{
-	background: -moz-linear-gradient(-45deg, rgba(242,242,242,1) 0%, rgba(242,242,242,0) 100%);
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(242,242,242,1)), color-stop(100%,rgba(242,242,242,0))); 
-	background: -webkit-linear-gradient(-45deg, rgba(242,242,242,1) 0%,rgba(242,242,242,0) 100%); 
-	background: -o-linear-gradient(-45deg, rgba(242,242,242,1) 0%,rgba(242,242,242,0) 100%); 
-	background: -ms-linear-gradient(-45deg, rgba(242,242,242,1) 0%,rgba(242,242,242,0) 100%);
-	background: linear-gradient(135deg, rgba(242,242,242,1) 0%,rgba(242,242,242,0) 100%); 
+	background: -moz-linear-gradient(-45deg, #D5D5D5 0%, #E7E7E7 100%);
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#D5D5D5), color-stop(100%,#E7E7E7)); 
+	background: -webkit-linear-gradient(-45deg, #D5D5D5 0%,#E7E7E7 100%); 
+	background: -o-linear-gradient(-45deg, #D5D5D5 0%,#E7E7E7 100%); 
+	background: -ms-linear-gradient(-45deg,#D5D5D5 0%,#E7E7E7 100%);
+	background: linear-gradient(135deg, #D5D5D5 0%, #E7E7E7 100%); 
 }
 
 .dv-datastorage{
