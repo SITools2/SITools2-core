@@ -126,7 +126,7 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             handler : function () {
                 var node = this.tree.getSelectionModel().getSelectedNode();
                 if (!Ext.isEmpty(node)) {
-                    Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.text + " ?", function (btn) {
+                    Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.name + " ?", function (btn) {
                         if (btn === 'yes') {
                             if (!this.isRootNode(node)) {
                                 this.deleteNode(node);
@@ -162,16 +162,16 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                 requestMethod : 'GET',
                 url : this.datastorageUrl,
                 createNode : function (attr) {
-                    var isPdf = function (text) {
+                    var isPdf = function (name) {
                         var imageRegex = /\.(pdf)$/;
-                        return (text.match(imageRegex));
+                        return (name.match(imageRegex));
                     };
 
                     var listeners = {
                         scope : this,
                         beforeappend : function (tree, parent, item) {
                             if (item.attributes.leaf === "true") {
-                                if (isPdf(item.attributes.text)) {
+                                if (isPdf(item.attributes.name)) {
                                     item.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/icon-pdf-small.png');
                                 }
                             }
@@ -249,8 +249,8 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                                 // if there is a node to select prior to the expanding of the node
                                 var nodeToSelect = this.tree.getSelectionModel().getSelectedNode(); 
                                 if (nodeToSelect && nodeToSelect.leaf === "true") {
-                                    var text = nodeToSelect.attributes.text;
-                                    var callback = this.callbackForceSelectNodeOtherDirectory.bind(this, text);
+                                    var name = nodeToSelect.attributes.name;
+                                    var callback = this.callbackForceSelectNodeOtherDirectory.bind(this, name);
                                     this.tree.expandPath(node.getPath(), undefined, callback);
                                 } else {
                                     // just expand the current path
@@ -290,14 +290,14 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
                     }
                     tb.doLayout();
 
-                    if ((node.text.match(/\.(fits)$/))) {
+                    if ((node.attributes.name.match(/\.(fits)$/))) {
                         var sitoolsFitsViewer = new sitools.user.component.dataviews.services.sitoolsFitsViewer({
                             nodeFits : node
                         });
                         sitoolsFitsViewer.show();
                     }
                     
-                    if (this.isOpenable(node.text)) {
+                    if (this.isOpenable(node.attributes.name)) {
                         var rec = this.dataview.getStore().getById(node.id);
                         if (!Ext.isEmpty(rec)) {
                             this.displayFile(rec);
@@ -328,6 +328,10 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             fields : [ {
                 name : 'text',
                 mapping : 'text'
+            },
+            {
+                name : 'name',
+                mapping : 'name'
             }, {
                 name : 'lastmod',
                 mapping : 'lastmod',
@@ -355,25 +359,25 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         // this.store.load();
 
         this.tpl = new Ext.XTemplate('<tpl for=".">',
-                '<div class="dv-datastorage-wrap" id="{text}">',
+                '<div class="dv-datastorage-wrap" id="{name}">',
                 '<div class="dv-datastorage">',
                     '<tpl if="this.isLeaf(leaf)">',
                         '<tpl if="this.isImage(url)">',
-                            '<img src="{url}" alt="{text}" title="{text}" width="60" height="60"/>',
+                            '<img src="{url}" alt="{name}" title="{[this.formatTitle(values)]}" width="60" height="60"/>',
                         '</tpl>',
-                        '<tpl if="!this.isImage(text)">',
-                            '<tpl if="this.isPdf(text)">',
-                                '<img src="/sitools/common/res/images/icons/icon-pdf.png" width="60" height="60" alt="{text}" title="{text}">',
+                        '<tpl if="!this.isImage(name)">',
+                            '<tpl if="this.isPdf(name)">',
+                                '<img src="/sitools/common/res/images/icons/icon-pdf.png" width="60" height="60" alt="{name}" title="{[this.formatTitle(values)]}">',
                             '</tpl>',
-                            '<tpl if="!this.isPdf(text)">',
-                                '<img src="/sitools/common/res/images/icons/file-dv.png" width="60" height="60" alt="{text}" title="{text}">',
+                            '<tpl if="!this.isPdf(name)">',
+                                '<img src="/sitools/common/res/images/icons/file-dv.png" width="60" height="60" alt="{name}" title="{[this.formatTitle(values)]}">',
                             '</tpl>',
                         '</tpl>',
                     '</tpl>',
                     '<tpl if="!this.isLeaf(leaf)">',
-                        '<img src="/sitools/common/res/images/icons/folder-icon.png" width="60" height="60" title="{text}" title="{text}">',
+                        '<img src="/sitools/common/res/images/icons/folder-icon.png" width="60" height="60" title="{[this.formatTitle(values)]}">',
                     '</tpl>',
-                    '<span class="dv-datastorage">{text}</span>',
+                    '<span class="dv-datastorage">{name}</span>',
                 '</div>',
             '</div>',
         '</tpl>',
@@ -382,14 +386,26 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             isLeaf : function (leaf) {
                 return leaf;
             },
-            isImage : function (text) {
+            isImage : function (name) {
                 var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
-                return (text.match(imageRegex));
+                return (name.match(imageRegex));
             },
-            isPdf : function (text) {
+            isPdf : function (name) {
                 var imageRegex = /\.(pdf)$/;
-                return (text.match(imageRegex));
+                return (name.match(imageRegex));
+            },
+            formatDate : function (dateText) {
+                var date = new Date(dateText);
+                return date.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+            },
+            formatTitle : function(values) {
+                var str = values.name + "\n" + i18n.get("label.lastModif") + " : " + this.formatDate(values.lastmod);
+                if(values.leaf){
+                    str += "\n" + i18n.get("label.fileSize") + " : " + Ext.util.Format.fileSize(values.size);
+                }
+                return str;
             }
+            
 
         });
 
@@ -422,10 +438,11 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         this.detailPanel = new Ext.ux.ManagedIFrame.Panel({
             id : 'detail-view',
             region : 'south',
-            height : 325,
-            collapsible : false,
-            collapsed : false,
-            autoScroll : true,
+            collapsible : true,
+            collapsed : true,
+            height : 350,
+            autoScroll : true,            
+            split : true,
             cls : 'detail-panel-datastorage',
             title : i18n.get('label.defaultTitleDetailPanel'),
             defaultSrc : this.noPreviewAvailableUrl,
@@ -454,9 +471,18 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
     appendChild : function (child, parent) {
         var reference = new Reference(child.url);
         var url = reference.getFile();
+        
+        
+        var name = decodeURIComponent(child.text);
+        var text = name;
+        if (child.leaf) {
+            text += "<span style='font-style:italic'> (" + Ext.util.Format.fileSize(child.size) + ")</span>";
+        }
+        
         return parent.appendChild({
             cls : child.cls,
-            text : decodeURIComponent(child.text),
+            text : text,
+            name : name,
             url : url,
             leaf : child.leaf,
             size : child.size,
@@ -465,14 +491,14 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
         });
     },
 
-    isImage : function (text) {
+    isImage : function (name) {
         var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
-        return text.match(imageRegex);            
+        return name.match(imageRegex);            
     },
 
-    isOpenable : function (text) {
+    isOpenable : function (name) {
         var imageRegex = /\.(txt|json|html|css|xml|pdf|png|jpg|jpeg|gif|bmp)$/;
-        return text.match(imageRegex);            
+        return name.match(imageRegex);            
     },
 
     onUpload : function (node) {
@@ -548,9 +574,9 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
     },
 
     displayFile : function (rec) {
-        this.detailPanel.setTitle(rec.data.text);
+        this.detailPanel.setTitle(rec.data.name);
         this.detailPanel.setSrc(rec.data.url);
-        // this.detailPanel.expand(true);
+         this.detailPanel.expand(true);
         this.detailPanel.setHeight(350);
         this.detailPanel.doLayout();
     },
@@ -598,8 +624,8 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
 
     },
     
-    callbackForceSelectNodeOtherDirectory : function (text, success, parentNode) {
-        var node = parentNode.findChild("text", text);
+    callbackForceSelectNodeOtherDirectory : function (name, success, parentNode) {
+        var node = parentNode.findChild("name", name);
         this.tree.fireEvent("click", node);
     },
     
