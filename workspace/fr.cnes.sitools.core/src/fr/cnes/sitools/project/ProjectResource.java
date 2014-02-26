@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -151,10 +151,7 @@ public final class ProjectResource extends AbstractProjectResource {
       Project input = null;
       try {
         input = getStore().retrieve(getProjectId());
-
-        if ((null != input) && "ACTIVE".equals(input.getStatus())) {
-          getProjectApplication().detachProjectDefinitif(input);
-        }
+        getProjectApplication().detachProjectDefinitif(input);
       }
       catch (Exception e) {
         getLogger().log(Level.SEVERE, null, e);
