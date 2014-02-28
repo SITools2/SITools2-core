@@ -44,6 +44,7 @@ import org.restlet.service.LogService;
 import fr.cnes.sitools.applications.AdministratorApplication;
 import fr.cnes.sitools.applications.ClientAdminApplication;
 import fr.cnes.sitools.applications.ClientUserApplication;
+import fr.cnes.sitools.applications.LoginApplication;
 import fr.cnes.sitools.applications.OrdersFilesApplication;
 import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.applications.TemporaryFolderApplication;
@@ -555,6 +556,26 @@ public final class Starter {
 
     // Attachment
     appManager.attachApplication(logApp);
+
+    // -------------------------
+    // Login application (commons)
+
+    // Reference
+    appReference = baseUrl + settings.getString(Consts.APP_LOGIN_PATH);
+
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+
+    // Application
+    LoginApplication loginApp = new LoginApplication(appContext);
+
+    // Attachment
+    appManager.attachApplication(loginApp);
+
+    component.getInternalRouter().attach(settings.getString(Consts.APP_LOGIN_PATH), loginApp);
 
     // -------------------------
     // Client-public application (commons)

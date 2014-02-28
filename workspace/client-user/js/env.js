@@ -480,7 +480,7 @@ var projectGlobal = {
                         fn : function (response) {
                             if (response === 'ok') {
                                 sitools.userProfile.LoginUtils.connect({
-                                    url : loadUrl.get('APP_URL') + '/login',
+                                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH') + '/login',
                                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
                                     reset : loadUrl.get('APP_URL') + '/resetPassword'
                                 });

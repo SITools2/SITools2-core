@@ -322,11 +322,11 @@
 						Ext.QuickTips.init();
 						if (Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
 							/*new sitools.userProfile.Login({
-			        			url:'${appUrl}/login',
+			        			url:'${appUrl}/authentication/login',
 			        			handler : initAppli
 			        		}).show();*/
 							sitools.userProfile.LoginUtils.connect({
-								url:'${appUrl}/login',
+								url:'${appUrl}/authentication/login',
 			        			handler : initAppli
 							});
 						}

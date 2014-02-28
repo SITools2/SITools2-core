@@ -143,7 +143,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			handler : function () {
 			    sitools.userProfile.LoginUtils.connect({
 			        closable : true,
-                    url : loadUrl.get('APP_URL') + '/login',
+                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH') + '/login',
                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
                     reset : loadUrl.get('APP_URL') + '/resetPassword'
                 });			    
@@ -158,7 +158,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 				var register = new sitools.userProfile.Register({
 	                closable : true,
 	                url : "/sitools/inscriptions/user",
-	                login : "/sitools/login"
+	                login : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH') + '/login'
 	            });
 	            register.show();
 			}

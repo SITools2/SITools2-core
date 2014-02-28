@@ -69,7 +69,7 @@ public final class PublicApplication extends StaticWebApplication {
 
   @Override
   public void sitoolsDescribe() {
-    setCategory(Category.PUBLIC);
+    setCategory(Category.USER);
     setName("client-public");
     setDescription("web client application for public resources used by other sitools client applications "
         + "-> Administrator must have all authorizations on this application\n"
@@ -110,27 +110,6 @@ public final class PublicApplication extends StaticWebApplication {
     cotsDir.setName("Cots directoryProxy");
     cotsDir.setDescription("Exposes all the cots files");
     router.attach(getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_URL), cotsDir); // .setMatchingMode(Router.MODE_FIRST_MATCH);
-
-    if (getAuthenticationRealm() != null) {
-      // "Basic Public Login Test"
-      Authenticator authenticator = AuthenticatorFactory.getAuthenticator(getContext(), true, getSettings()
-          .getAuthenticationDOMAIN(), getAuthenticationRealm());
-      authenticator.setNext(LoginResource.class);
-      router.attach("/login", authenticator);
-
-      // "Basic Public Login Test Mandatory to return credentials"
-      Authenticator authenticatorMandatory = AuthenticatorFactory.getAuthenticator(getContext(), false, getSettings()
-          .getAuthenticationDOMAIN(), getAuthenticationRealm());
-      authenticatorMandatory.setNext(LoginResource.class);
-      router.attach("/login-mandatory", authenticatorMandatory);
-    }
-
-    else {
-      router.attach("/login", LoginResource.class);
-      router.attach("/login-mandatory", LoginResource.class);
-      router.attach("/login", LoginResource.class);
-
-    }
 
     router.attach("/login-details", LoginDetailsResource.class);
 
