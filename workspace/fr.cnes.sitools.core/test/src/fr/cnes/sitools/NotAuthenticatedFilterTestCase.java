@@ -141,7 +141,7 @@ public class NotAuthenticatedFilterTestCase extends SitoolsServerTestCase {
 
       assertNotNull(response);
       assertTrue(response.getStatus().isError());
-      assertEquals(Status.CLIENT_ERROR_FORBIDDEN, response.getStatus());
+      assertEquals(Status.CLIENT_ERROR_UNAUTHORIZED, response.getStatus());
 
     }
     finally {

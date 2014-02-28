@@ -43,7 +43,7 @@ public class NotAuthenticatedFilter extends Filter {
     if (request.getChallengeResponse() != null) {
       String id = request.getChallengeResponse().getIdentifier();
       if (request.getClientInfo() != null && !request.getClientInfo().isAuthenticated() && id != null && !id.isEmpty()) {
-        response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Bad credentials");
+        response.setStatus(Status.CLIENT_ERROR_UNAUTHORIZED, "Bad credentials");
         getLogger().log(
             Level.INFO,
             "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath()
