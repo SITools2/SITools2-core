@@ -97,6 +97,8 @@ import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.authorization.AuthorizationStore;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
+import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
 import fr.cnes.sitools.service.storage.DataStorageStore;
 import fr.cnes.sitools.service.storage.DataStorageStoreXmlImpl;
 import fr.cnes.sitools.tasks.TaskStoreXML;
@@ -280,6 +282,10 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_SERVICES, storeServices);
 
+    SitoolsStore<UserBlackListModel> storeUserBlacklist = new UserBlackListStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR)), context);
+    stores.put(Consts.APP_STORE_USER_BLACKLIST, storeUserBlacklist);
+
     if (settings.isStartWithMigration()) {
       migrateStores(stores);
     }
@@ -297,7 +303,7 @@ public final class StoreHelper {
    * @param stores
    *          the Map of stores
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void migrateStores(Map<String, Object> stores) {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -352,7 +358,7 @@ public final class StoreHelper {
    * @throws SitoolsException
    *           if there are errors
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {

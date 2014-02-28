@@ -499,4 +499,8 @@ public interface Consts {
   /** Login application */
   String APP_LOGIN_PATH = "Starter.APP_LOGIN_PATH";
 
+  /** The app user blacklist store dir. */
+  String APP_USER_BLACKLIST_STORE_DIR = "Starter.APP_USER_BLACKLIST_STORE_DIR";
+  String SECURITY_FILTER_USER_BLACKLIST_CONTAINER = "Security.filter.userBlacklist.Container";
+
 }
