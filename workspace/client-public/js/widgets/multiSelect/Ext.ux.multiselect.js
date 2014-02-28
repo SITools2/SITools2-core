@@ -38,7 +38,8 @@ Ext.ns('Ext.ux.form');
  * @param {Object} config Configuration options
  * @xtype multiselect
  */
-Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
+Ext.define('Ext.ux.form.MultiSelect', {
+    extend: 'Ext.form.field.Base',
 	alias : 'widget.multiselect',
     /**
      * @cfg {String} legend Wraps the object with a fieldset and specified legend.
@@ -181,9 +182,11 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
         });
         fs.body.addClass('ux-mselect');
 
-        this.view = new Ext.ListView({
-            multiSelect: true,
+        this.view = Ext.create('Ext.grid.Panel', {
             store: this.store,
+            selModel : {
+              mode : "MULTI"  
+            },
             columns: [{ header: 'Value', width: 1, dataIndex: this.displayField }],
             hideHeaders: true
         });
@@ -356,11 +359,8 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
     }
 });
 
-
-
 //backwards compat
 Ext.ux.Multiselect = Ext.ux.form.MultiSelect;
-
 
 Ext.ux.form.MultiSelect.DragZone = function(ms, config){
     this.ms = ms;

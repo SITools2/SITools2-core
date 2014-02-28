@@ -58,7 +58,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
         });
         this.grid = new Ext.grid.GridPanel({
             xtype : 'grid',
-            sm : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel'),
             store : this.store,
             height : 200,
             columns : [ {
@@ -72,7 +72,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
                 dataIndex : 'lastName'
             } ],
             bbar : {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,

@@ -39,9 +39,9 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
     border : false,
     height : 300,
     id : ID.BOX.STORAGES,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories';
@@ -106,7 +106,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
             tooltip : i18n.get('label.modifiable')
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : false
@@ -132,12 +132,16 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
             }, deeplyAccessible, listingAllowed, modifiable, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
-                width : 50
+                width : 50,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value;
+                    return value;
+                }
             }]
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -202,13 +206,10 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.storages.storagesCrudPanel.superclass.initComponent.call(this);
     },
@@ -308,7 +309,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.admin.storages.storagesPropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()
         });
@@ -346,7 +347,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -369,7 +370,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id + "?action=start",
+            url : this.url + "/" + rec.data.id + "?action=start",
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -391,7 +392,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id + "?action=stop",
+            url : this.url + "/" + rec.data.id + "?action=stop",
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -412,7 +413,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
         }
         var up = new sitools.admin.storages.storageCopyProp({
             urlDirectories : this.url,
-            idSrc : rec.id, 
+            idSrc : rec.data.id, 
             store : this.getStore()
         });
         up.show();

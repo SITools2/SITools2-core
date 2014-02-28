@@ -294,7 +294,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', { extend : 'sitools.admi
             componentId = componentId.toString();
 //            var componentYpos = greatY + 10;
             
-            formComponentsStore.add(new Ext.data.Record({
+            formComponentsStore.add({
                 label : f.findField('LABEL_PARAM1').getValue(),
                 type : this.ctype,
                 code : code,
@@ -311,7 +311,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', { extend : 'sitools.admi
                 extraParams : extraParams, 
                 defaultValues : [ defaultValue1, defaultValue2, defaultValue3],
                 containerPanelId : this.containerPanelId
-            }));
+            });
         }
         return true;
     }

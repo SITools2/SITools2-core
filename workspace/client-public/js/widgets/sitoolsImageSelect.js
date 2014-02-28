@@ -23,8 +23,10 @@
  * @class Ext.form.SitoolsSelectImage
  * @extends Ext.form.TriggerField
  */
-Ext.form.SitoolsSelectImage = Ext.extend(Ext.form.TriggerField, {
+Ext.define('Ext.form.SitoolsSelectImage', {
+    extend : 'Ext.form.TriggerField',
 	alias : 'widget.sitoolsSelectImage',
+	
 	onTriggerClick : function () {
         if (!this.disabled) {
 			function validate(data, config) {

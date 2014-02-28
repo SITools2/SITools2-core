@@ -31,7 +31,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
     border : false,
     height : 300,
     id : ID.BOX.FILEEDITORCSS,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 15,
@@ -66,7 +66,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
             } ]
         });
         
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             defaults : {
                 sortable : true
             },
@@ -105,7 +105,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
 
         this.listeners = {
             scope : this,
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         
         sitools.component.fileEditor.cssEditorCrud.superclass.initComponent.call(this);
@@ -123,8 +123,8 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
         }
 
         var cssProp = new sitools.component.fileEditor.fileEditorProp({
-            url : this.url + '/css/' + rec.id,
-            fileName : rec.id,
+            url : this.url + '/css/' + rec.data.id,
+            fileName : rec.data.id,
             sourceEdit : true,
             modalType : true,
             mediaType : 'text/css',

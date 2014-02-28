@@ -79,7 +79,7 @@ Ext.define('sitools.admin.forms.oneParam.TextField', { extend : 'sitools.admin.f
             var componentId = lastId + 1;
             componentId = componentId.toString();
 //            var componentYpos = greatY + 10;
-            formComponentsStore.add(new Ext.data.Record({
+            formComponentsStore.add({
                 label : f.findField('LABEL_PARAM1').getValue(),
                 type : this.ctype,
                 code : code,
@@ -95,7 +95,7 @@ Ext.define('sitools.admin.forms.oneParam.TextField', { extend : 'sitools.admin.f
                 defaultValues : [ defaultValue ], 
                 autoComplete : f.findField('autoComplete').getValue(),
                 containerPanelId : this.containerPanelId
-            }));
+            });
         }
         return true;
     }

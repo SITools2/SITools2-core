@@ -69,7 +69,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', { extend : 'Ext.grid.Panel',
             proxy : this.httpProxy
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -121,7 +121,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', { extend : 'Ext.grid.Panel',
         };
 
         this.bbar = {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
@@ -131,7 +131,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', { extend : 'Ext.grid.Panel',
         
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.units.unitsCrudPanel.superclass.initComponent.call(this);
 
@@ -210,7 +210,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', { extend : 'Ext.grid.Panel',
      */
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.urlAdmin + "/dimension/" + rec.id,
+            url : this.urlAdmin + "/dimension/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

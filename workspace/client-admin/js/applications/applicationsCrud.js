@@ -27,124 +27,58 @@ Ext.namespace('sitools.admin.applications');
  * @requires sitools.admin.applications.applicationsPropPanel
  * @requires sitools.admin.applications.applicationsRolePanel
  */
-Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.grid.GridPanel',
+Ext.define('sitools.admin.applications.applicationsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
     alias : 'widget.s-applications',
 	border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
+    forceFit : true,
     pageSize : 10,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_APPLICATIONS_URL');
         this.urlAuthorizations = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
 
-        var reader = new Ext.data.JsonReader({
-			root : 'data',
+        this.store = Ext.create('Ext.data.JsonStore', {
+            root : 'data',
             idProperty : 'id',
-            fields : [ {
-                name : 'id',
-                type : 'string'
-            }, {
-                name : 'name',
-                type : 'string'
-            }, {
-                name : 'description',
-                type : 'string'
-            }, {
-                name : 'category',
-                type : 'string'
-            }, {
-                name : 'urn',
-                type : 'string'
-            }, {
-                name : 'type',
-                type : 'string'
-            }, {
-                name : 'url',
-                type : 'string'
-            }, {
-                name : 'author',
-                type : 'string'
-            }, {
-                name : 'owner',
-                type : 'string'
-            }, {
-                name : 'lastUpdate',
-                type : 'string'
-            }, {
-                name : 'status',
-                type : 'string'
-            }, {
-                name : 'wadl',
-                type : 'string', 
-                convert : function (v, record) {
-                }
-            } ]
-        }); 
-        
-        this.store = new Ext.data.GroupingStore({
-            reader : reader, 
-            url : this.url,
             restful : true,
-            remoteSort : false,
-            sortInfo : {field : 'name', direction : "ASC"},
-            groupField : 'category'
-
+            url : this.url,
+            remoteSort : true,
+            autoLoad : true,
+            model : 'ApplicationModel',
+            sorters: ['category','name'],
+            groupField: 'category'
         });
         
-		var expander = new Ext.ux.grid.RowExpander({
-	        tpl : new Ext.XTemplate(
-				'<tpl if="this.descEmpty(description)" ><div></div></tpl>', 
-				'<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>', 
-				{
-					compiled : true, 
-					descEmpty : function (description) {
-						return Ext.isEmpty(description);
-					}
-				}), 
-			expandOnDblClick : true
-	    });
-		
-        this.cm = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [expander,  {
-                header : i18n.get('label.category'),
-                dataIndex : 'category',
-                width : 150, 
-                hidden : true
-            }, {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 500
-            }, {
-                header : i18n.get('label.status'),
-                dataIndex : 'status',
-                width : 50,
-                sortable : false
-            }, {
-                header : "",
-                dataIndex : "url",
-                width : 20,
-                sortable : false, 
-                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-                    var applicationStatus = record.get("status");
-                    if (Ext.isEmpty(applicationStatus) || "INACTIVE" == applicationStatus) {
-                        return null;
-                    } else {
-                        return String.format("<a onClick='onClickOption(\"{0}\"); return false;' href=#>{1}</a>", value, String.format(
-                                                    "<img alt={0} src='" + loadUrl.get('APP_URL') + "/common/res/images/icons/wadl.gif'>", i18n
-                                                            .get('label.wadl')));    
-                    }
-                    
-                    
+        this.columns = [{
+            text: 'Name',
+            flex: 1,
+            dataIndex: 'name'
+        },{
+            text: 'Category',
+            flex: 1,
+            dataIndex: 'category'
+        }, {
+            header : "",
+            dataIndex : "url",
+            width : 20,
+            sortable : false, 
+            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                var applicationStatus = record.get("status");
+                if (Ext.isEmpty(applicationStatus) || "INACTIVE" == applicationStatus) {
+                    return null;
+                } else {
+                    return String.format("<a onClick='onClickOption(\"{0}\"); return false;' href=#>{1}</a>", value, String.format(
+                                                "<img alt={0} src='" + loadUrl.get('APP_URL') + "/common/res/images/icons/wadl.gif'>", i18n
+                                                        .get('label.wadl')));    
                 }
-            }]
-        });
+                
+                
+            }
+        }];
 
         this.tbar = {
             xtype : 'toolbar',
@@ -182,12 +116,15 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.g
                 store : this.store
             } ]
         };
-        this.view = new Ext.grid.GroupingView({
-            forceFit : true, 
-            groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})' 
+        
+        var groupingFeature = Ext.create('Ext.grid.feature.Grouping',{
+            startCollapsed : true,
+//            groupHeaderTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+            groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})'
         });
-
-        this.plugins = expander;
+        
+        this.features = [groupingFeature];
+        
         sitools.admin.applications.applicationsCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -196,7 +133,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.g
      */
     onRender : function () {
         sitools.admin.applications.applicationsCrudPanel.superclass.onRender.apply(this, arguments);
-        this.store.load();
+//        this.store.load();
     },
 
     /**
@@ -239,7 +176,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.g
 //     */
 //    onModify : function () {
 //        var rec = this.getSelectionModel().getSelected(), up = new sitools.admin.applications.applicationsPropPanel({
-//            url : this.url + '/' + rec.id,
+//            url : this.url + '/' + rec.data.id,
 //            action : 'modify',
 //            store : this.getStore()
 //        });
@@ -284,7 +221,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.g
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -305,7 +242,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.g
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '?action=start',
+            url : this.url + '/' + rec.data.id + '?action=start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -326,7 +263,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', { extend : 'Ext.g
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '?action=stop',
+            url : this.url + '/' + rec.data.id + '?action=stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {

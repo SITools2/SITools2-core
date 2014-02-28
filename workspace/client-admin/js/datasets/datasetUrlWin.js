@@ -23,7 +23,7 @@ Ext.namespace('sitools.admin.datasets');
 /**
  * This window is used when the administrator needs to link a dataset with another.
  * @cfg {Ext.data.Record} selectedRecord (required) the selected Column
- * @cfg {Ext.grid.GridView} gridView (required) : the view to refresh when saving
+ * @cfg {Ext.grid.View} gridView (required) : the view to refresh when saving
  * @cfg {boolean} withImage : true if this link is with image
  * @class sitools.admin.datasets.datasetUrlWin
  * @extends Ext.Window
@@ -61,7 +61,7 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
             } ]
         });
         
-        this.gridViewColumns = new Ext.grid.GridView({
+        this.gridViewColumns = new Ext.grid.View({
             listeners : {
                 scope : this, 
                 refresh : function () {
@@ -102,7 +102,7 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
             autoScroll : true,
             store : this.storeColumns,
             cm : this.cmColumns,
-            sm : this.smColumns
+            selModel : this.smColumns
         });
 
         var storeDatasets = new Ext.data.JsonStore({
@@ -194,7 +194,8 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
             var rec = {};
             var form = this.formImage.getForm();
             rec.image = this.selectedRecord.data.image.url;
-            form.loadRecord(new Ext.data.Record(rec));
+            
+            form.setValues(rec);
         }
     },
     /**

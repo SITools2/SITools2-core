@@ -29,8 +29,9 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
@@ -63,7 +64,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -87,7 +88,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -112,14 +113,11 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
                 pageSize : this.pageSize
             } ]
         };
-        this.sm = Ext.create('Ext.selection.RowModel');
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
+        this.selModel = Ext.create('Ext.selection.RowModel');
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onDefineRole
+            itemdblclick : this.onDefineRole
         };
 
         sitools.admin.authorizations.authorizationsCrudPanel.superclass.initComponent.call(this);
@@ -171,7 +169,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
     },
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

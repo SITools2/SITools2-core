@@ -118,7 +118,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
             store : storeValues,
             tbar : tbar,
             cm : cmValues,
-            sm : smValues,
+            selModel : smValues,
             viewConfig : {
                 forceFit : true
             },
@@ -175,8 +175,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
         this.add(this.gridValues);
     },
     onCreate : function () {
-        var e = new Ext.data.Record();
-        this.gridValues.getStore().insert(0, e);
+        this.gridValues.getStore().insert(0, {});
     },
     onDelete : function () {
         var s = this.gridValues.getSelectionModel().getSelections();
@@ -217,12 +216,12 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
             }
             
             Ext.each(this.selectedRecord.data.values, function (value) {
-                var rec = new Ext.data.Record({
+                var rec = {
                     code : value.code,
                     defaultValue : value.defaultValue,
                     value : value.value,
                     availableFor : value.availableFor
-                });
+                };
                 this.gridValues.getStore().add(rec);
             }, this);
         }
@@ -298,7 +297,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
             
             var parentParam = (Ext.isEmpty(this.parentParam.value)) ? null:this.parentParam.value.id;
             
-            formComponentsStore.add(new Ext.data.Record({
+            formComponentsStore.add({
                 label : f.findField('LABEL_PARAM1').getValue(),
                 type : this.ctype,
                 code : code,
@@ -315,7 +314,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
                 valueSelection : valueSelection, 
                 parentParam : parentParam,
                 containerPanelId : this.containerPanelId
-            }));
+            });
         }
         return true;
     }

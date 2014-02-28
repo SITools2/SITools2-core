@@ -28,16 +28,17 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.GroupCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.usergroups.GroupCrudPanel', { extend : 'Ext.grid.Panel', 
+Ext.define('sitools.admin.usergroups.GroupCrudPanel', { 
+    extend : 'Ext.grid.Panel', 
 	alias : 'widget.s-groupcrud',
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/groups';
@@ -57,7 +58,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', { extend : 'Ext.grid.Panel
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -75,7 +76,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', { extend : 'Ext.grid.Panel
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -115,13 +116,10 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', { extend : 'Ext.grid.Panel
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.usergroups.GroupCrudPanel.superclass.initComponent.call(this);
     },
@@ -163,7 +161,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', { extend : 'Ext.grid.Panel
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.admin.usergroups.GroupPropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()
         });
@@ -202,7 +200,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', { extend : 'Ext.grid.Panel
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -226,7 +224,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', { extend : 'Ext.grid.Panel
         }
         var up = new sitools.admin.usergroups.UsersPanel({
             mode : 'list',
-            url : this.url + '/' + rec.id + '/users',
+            url : this.url + '/' + rec.data.id + '/users',
             data : rec.data
         });
         up.show(ID.BOX.GROUP);

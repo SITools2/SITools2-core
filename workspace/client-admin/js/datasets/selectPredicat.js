@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg string field the attribute of the record to edit
  * @cfg Ext.data.Record recordPredicat the record to edit
  * @cfg Ext.data.Store storePredicat the store that contains the record
- * @cfg Ext.grid.GridView the view of the parent grid 
+ * @cfg Ext.grid.View the view of the parent grid 
  * @class sitools.admin.datasets.selectPredicat
  * @extends Ext.Window
  */
@@ -68,7 +68,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
             autoScroll : true,
             store : this.storePredicat,
             cm : this.cmSelectPredicat,
-            sm : this.smSelectPredicat
+            selModel : this.smSelectPredicat
         });
 
         this.items = [ {

@@ -81,7 +81,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
                     })
                 } ]
             }),
-            sm : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             }),
             viewConfig : {
@@ -225,7 +225,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
     onRender : function () {
         sitools.admin.projects.modules.ProjectModulePropPanel.superclass.onRender.apply(this, arguments);
         if (this.action == 'modify') {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             Ext.Ajax.request({
                 url : this.url,
                 method : 'GET',
@@ -238,12 +238,12 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
                     var storeDependencies = this.gridDependencies.getStore();
                     if (!Ext.isEmpty(dependencies.js)) {
                         Ext.each(dependencies.js, function (item) {
-                            storeDependencies.add(new Ext.data.Record(item));
+                            storeDependencies.add(item);
                         }, this);
                     }
                     if (!Ext.isEmpty(dependencies.css)) {
                         Ext.each(dependencies.css, function (item) {
-                            storeDependencies.add(new Ext.data.Record(item));
+                            storeDependencies.add(item);
                         }, this);
                     }
                     
@@ -257,7 +257,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
      * Save project modules properties for a specific project module
      */
     _onValidate : function () {
-        var frm = this.findByType('form')[0].getForm();
+        var frm = this.down('form').getForm();
         if (!frm.isValid()) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.invalidForm'));
             return;
@@ -308,8 +308,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
      * Add a new Record to the dependencies property of a project module
      */
     onCreateDependencies : function () {
-        var e = new Ext.data.Record();
-        this.gridDependencies.getStore().insert(this.gridDependencies.getStore().getCount(), e);
+        this.gridDependencies.getStore().insert(this.gridDependencies.getStore().getCount(), {});
     },
     
     /**

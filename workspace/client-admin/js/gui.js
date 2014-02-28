@@ -235,6 +235,8 @@ var clientAdmin = {
                         width : "100%",
                         layout : 'fit',
                         bodyCssClass : 'admin-bg',
+                        border : false,
+                        bodyBorder : false,
                         flex : 1
                     }); 
                     mainPanel.add(containerPanel);
@@ -374,6 +376,8 @@ var clientAdmin = {
 	        region : 'north',
 	        layout : 'fit',
 	        height : 30,
+	        border : false,
+	        bodyBorder : false,
 	        items : [ toolbar ]
 	    });
 	
@@ -385,6 +389,8 @@ var clientAdmin = {
 	        autoScroll : true,
 	        width : 250,
 	        layout : 'fit',
+	        border : false,
+            bodyBorder : false,
 	        defaults : {
 	            padding : 10
 	        }
@@ -397,6 +403,8 @@ var clientAdmin = {
         if (Ext.util.Cookies.get('showQuickStart') == "true") {
             var quickStartPanel = new sitools.admin.quickStart.qs({
                 id : ID.PANEL.QUICKSTART,
+                border : false,
+                bodyBorder : false,
                 width : "100%",
                 flex : 1
             });
@@ -424,6 +432,8 @@ var clientAdmin = {
 	    mainPanel = new Ext.Panel({
 	        bodyCssClass : 'admin-bg',
 	        layout : 'vbox',
+	        border : false,
+            bodyBorder : false,
 	        layoutConfig: {
 			    align : 'stretch',
 			    pack  : 'start'

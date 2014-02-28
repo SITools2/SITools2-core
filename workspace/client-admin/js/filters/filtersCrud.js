@@ -137,7 +137,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
             }
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -236,7 +236,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         
         sitools.component.filters.filtersCrudPanel.superclass.initComponent.call(this);
@@ -276,7 +276,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
         
         for (var i = 0; i < this.store.getCount(); i++) {
             var rec = this.store.getAt(i).data;
-            jsonReturn.idOrder.push(rec.id);
+            jsonReturn.idOrder.push(rec.data.id);
         }
         var url = this.urlDatasets + "/" + datasetId + this.filterUrlPart;
         Ext.Ajax.request({

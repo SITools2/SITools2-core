@@ -121,7 +121,7 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
             store : storeProperties,
             tbar : tbar,
             cm : cmProperties,
-            sm : smProperties,
+            selModel : smProperties,
             viewConfig : {
                 forceFit : true
             }
@@ -195,8 +195,7 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
         sitools.admin.usergroups.RegPropPanel.superclass.initComponent.call(this);
     },
     onCreateProperties : function () {
-        var e = new Ext.data.Record();
-        this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), e);
+        this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), {});
     },
     onDeleteProperties : function () {
         var s = this.gridProperties.getSelectionModel().getSelections();
@@ -208,7 +207,7 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
     },
 
     onModify : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
@@ -244,7 +243,7 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
     onRender : function () {
         sitools.admin.usergroups.RegPropPanel.superclass.onRender.apply(this, arguments);
         if (this.url) {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             Ext.Ajax.request({
                 url : this.url,
                 method : 'GET',
@@ -255,11 +254,11 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
                     f.setValues(data.inscription);
 					if (!Ext.isEmpty(data.inscription.properties)) {
 						Ext.each(data.inscription.properties, function (property) {
-			                var rec = new Ext.data.Record({
+			                var rec = {
 			                    name : property.name,
 			                    value : property.value,
 			                    scope : property.scope
-			                });
+			                };
 			                this.gridProperties.getStore().add(rec);
 						}, this);
 					}

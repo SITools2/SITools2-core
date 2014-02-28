@@ -30,7 +30,8 @@ Ext.namespace('sitools.admin.applications');
  * @extends Ext.Window
  * @requires sitools.component.applications.rolesPanel
  */
-Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.applications.applicationsRolePanel', { 
+    extend : 'Ext.Window', 
     width : 700,
     height : 480,
     modal : true,
@@ -38,112 +39,21 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
 
     initComponent : function () {
         this.title = i18n.get('label.authorizations') + " : " + this.applicationRecord.data.name;
-        this.storeAuthorizations = new Ext.data.JsonStore({
-            root : 'authorization.authorizations',
+        
+        this.storeAuthorizations = Ext.create('Ext.data.JsonStore', {
+            model : 'AuthorizationModel',
             url : this.urlAuthorizations,
-            idProperty : 'role',
-            fields : [ {
-                name : 'role',
-                type : 'string'
-            }, {
-                name : 'allMethod',
-                type : 'boolean'
-            }, {
-                name : 'postMethod',
-                type : 'boolean'
-            }, {
-                name : 'getMethod',
-                type : 'boolean'
-            }, {
-                name : 'putMethod',
-                type : 'boolean'
-            }, {
-                name : 'deleteMethod',
-                type : 'boolean'
-            }, {
-                name : 'headMethod',
-                type : 'boolean'
-            }, {
-                name : 'optionsMethod',
-                type : 'boolean'
-            } ],
-            autoLoad : true, 
-            listeners : {
-				scope : this, 
-				update : function (store, record) {
-					var grid = this.gridAuthorizations;
-					var index = store.indexOf(record);
-					var value = record.get('allMethod');
-				
-					for (var i = 2; i < 8; i++) {
-						var idPost = grid.getView().getCell(index, i).firstChild.firstChild.id;
-						var cmpPost = Ext.getCmp(idPost);
-						cmpPost.setEnabled(!value);
-					}
-				}, 
-				load : function (store, records) {
-					Ext.each(records, function (record) {
-						store.fireEvent("update", store, record);
-					}, this);
-				}
-            }
+            root : 'authorization.authorizations',
+            autoLoad : true
         });
 
-        this.cbAll = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.all'),
-            dataIndex : 'allMethod',
-            width : 55
-        });
-        this.cbPost = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.post'),
-            dataIndex : 'postMethod',
-            width : 55
-        });
-        this.cbGet = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.get'),
-            dataIndex : 'getMethod',
-            width : 55
-        });
-        this.cbPut = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.put'),
-            dataIndex : 'putMethod',
-            width : 55
-        });
-        this.cbDelete = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.delete'),
-            dataIndex : 'deleteMethod',
-            width : 55
-        });
-        this.cbHead = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.head'),
-            dataIndex : 'headMethod',
-            width : 55
-        });
-        this.cbOptions = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.options'),
-            dataIndex : 'optionsMethod',
-            width : 55
-        });
-
-        var cmAuthorizations = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.role'),
-                dataIndex : 'role',
-                width : 100
-            }, this.cbAll, this.cbGet, this.cbPost, this.cbPut, this.cbDelete, this.cbHead, this.cbOptions ],
-            defaults : {
-                sortable : true,
-                width : 100
-            }
-        });
-
-        var smAuthorizations = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
-        });
-
-        this.gridAuthorizations = new Ext.grid.EditorGridPanel({
+        this.gridAuthorizations = Ext.create('Ext.grid.Panel', {
             height : 450,
             store : this.storeAuthorizations,
+            forceFit : true,
+            selModel: {
+                selType: 'cellmodel'
+            },
             tbar : {
                 xtype : 'toolbar',
                 defaults : {
@@ -161,28 +71,50 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', { extend : 'Ext.W
                     handler : this._onDeleteRole
                 } ]
             },
-            cm : cmAuthorizations,
-            sm : smAuthorizations,
-            plugins : [ this.cbAll, this.cbGet, this.cbPost, this.cbPut, this.cbDelete, this.cbHead, this.cbOptions ],
-            viewConfig : {
-                forceFit : true,
-                listeners : {
-                    scope : this,
-                    rowsinserted : function (view, firstRow, lastRow) {
-                        var store = this.storeAuthorizations;
-                        var i = firstRow;
-                        while (i <= lastRow) {
-                            var record = store.getAt(i);
-                            store.fireEvent("update", store, record);
-                            i++;
-                        }
-                        
-                    }
-                }
-            }
-            
+            columns : [{
+                header : i18n.get('headers.role'),
+                dataIndex : 'role',
+                width : 100
+            }, {
+                xtype: 'checkcolumn',
+                header: 'allMethod',
+                dataIndex: 'allMethod',
+                width: 55
+            }, {
+                xtype: 'checkcolumn',
+                header : i18n.get('headers.post'),
+                dataIndex: 'postMethod',
+                width: 55
+            }, {
+                xtype: 'checkcolumn',
+                header : i18n.get('headers.get'),
+                dataIndex: 'getMethod',
+                width: 55
+            }, {
+                xtype: 'checkcolumn',
+                header : i18n.get('headers.put'),
+                dataIndex: 'putMethod',
+                width: 55
+            }, {
+                xtype: 'checkcolumn',
+                header : i18n.get('headers.delete'),
+                dataIndex: 'deleteMethod',
+                width: 55
+            }, {
+                xtype: 'checkcolumn',
+                header : i18n.get('headers.head'),
+                dataIndex: 'headMethod',
+                width: 55
+            }, {
+                xtype: 'checkcolumn',
+                header : i18n.get('headers.options'),
+                dataIndex: 'optionsMethod',
+                width: 55
+            }],
         });
+        
         this.items = [ this.gridAuthorizations ];
+        
         this.buttons = [ {
             text : i18n.get('label.ok'),
             scope : this,

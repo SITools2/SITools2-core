@@ -213,14 +213,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
      * Save dates fields 
      */
     onValidate : function () {
-        var frm = this.findByType('form')[0].getForm();
+        var frm = this.down('form').getForm();
         if (!frm.isValid()) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.invalidForm'));
             return;
         }
         var rec;
         if (this.action == "create") {
-            rec = new Ext.data.Record();
+            rec = {};
         } else {
             rec = this.rec;
         }
@@ -304,19 +304,19 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
         var date = new Date(), form, record;
         if (button.name == "nowUpdated") {
             form = this.formPanel.getForm();
-            record = new Ext.data.Record(form.getValues());
+            record = form.getValues();
             record.set("date", date.format('m/d/Y'));
             record.set("hours", date.format('H'));
             record.set("minutes", date.format('i'));
-            form.loadRecord(record);
+            form.setValues(record);
         }
         if (button.name == "nowPublished") {
             form = this.formPanel.getForm();
-            record = new Ext.data.Record(form.getValues());
+            record = form.getValues();
             record.set("datePub", date.format('m/d/Y'));
             record.set("hoursPub", date.format('H'));
             record.set("minutesPub", date.format('i'));
-            form.loadRecord(record);
+            form.setValues(record);
         }
 
     },

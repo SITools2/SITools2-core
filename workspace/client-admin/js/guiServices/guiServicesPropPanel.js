@@ -189,12 +189,12 @@ Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', { extend : 'Ext.Win
             var storeDependencies = this.gridDependencies.getStore();
             if (!Ext.isEmpty(dependencies.js)) {
                 Ext.each(dependencies.js, function (item) {
-                    storeDependencies.add(new Ext.data.Record(item));
+                    storeDependencies.add(item);
                 }, this);
             }
             if (!Ext.isEmpty(dependencies.css)) {
                 Ext.each(dependencies.css, function (item) {
-                    storeDependencies.add(new Ext.data.Record(item));
+                    storeDependencies.add(item);
                 }, this);
             }   
         }

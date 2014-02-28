@@ -194,7 +194,7 @@ Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
         } else {
             var rec;
             if (this.comboColumnType.getValue() == 'DATABASE') {
-                rec = new Ext.data.Record({
+                rec = {
                     dataIndex : this.sqlDef.getValue(),
                     specificColumnType : this.comboColumnType.getValue(),
                     header : this.columnAlias.getValue(),
@@ -205,11 +205,11 @@ Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
                     tableName : "", 
                     tableAlias : "", 
                     sqlColumnType : (this.sqlColumnType) ? this.sqlColumnType.getValue() : null
-                });
+                };
             } 
             
             if (this.comboColumnType.getValue() == 'SQL') {
-                rec = new Ext.data.Record({
+                rec = {
                     dataIndex : this.sqlDef.getValue(),
                     specificColumnType : this.comboColumnType.getValue(),
                     header : this.columnAlias.getValue(),
@@ -220,11 +220,11 @@ Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
                     tableName : "", 
                     tableAlias : "", 
                     sqlColumnType : (this.sqlColumnType) ? this.sqlColumnType.getValue() : null
-                });
+                };
             } 
             
             if (this.comboColumnType.getValue() === "VIRTUAL") {
-                rec = new Ext.data.Record({
+                rec = {
                     specificColumnType : this.comboColumnType.getValue(),
                     header : this.columnAlias.getValue(),
                     columnAlias : this.columnAlias.getValue(),
@@ -233,7 +233,7 @@ Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
                     sortable : false, 
                     tableName : "", 
                     tableAlias : ""
-                });
+                };
             }
             this.store.add(rec);
         }

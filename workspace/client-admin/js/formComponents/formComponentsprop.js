@@ -127,7 +127,7 @@ Ext.define('sitools.component.formComponents.FormComponentsPropPanel', { extend 
     onRender : function () {
         sitools.component.formComponents.FormComponentsPropPanel.superclass.onRender.apply(this, arguments);
         if (this.action == 'modify') {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             Ext.Ajax.request({
                 url : this.url,
                 method : 'GET',
@@ -142,7 +142,7 @@ Ext.define('sitools.component.formComponents.FormComponentsPropPanel', { extend 
     },
 
     _onValidate : function () {
-        var frm = this.findByType('form')[0].getForm();
+        var frm = this.down('form').getForm();
         if (!frm.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;

@@ -102,9 +102,9 @@ sitools.widget.JsonStore = Ext.extend(Ext.data.JsonStore, {
  * @class sitools.widget.menuButton
  * @extends Ext.Button
  */
-sitools.widget.menuButton = Ext.extend(Ext.Button, {
-	alias : 'widget.s-menuButton',
-
+Ext.define('sitools.widget.menuButton', {
+    extend : 'Ext.Button',
+    alias : 'widget.s-menuButton',
 	constructor : function (config) {
 
 		config = Ext.apply({
@@ -155,8 +155,10 @@ Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
  * @class sitools.widget.GridSorterToolbar
  * @extends Ext.Toolbar
  */
-sitools.widget.GridSorterToolbar = Ext.extend(Ext.Toolbar, {
+Ext.define('sitools.widget.GridSorterToolbar', {
+    extend : 'Ext.Toolbar',
 	alias : 'sitools.widget.GridSorterToolbar',
+	
     initComponent : function () {
         sitools.widget.GridSorterToolbar.superclass.initComponent.call(this);
         this.add('->', new sitools.widget.GridTop({

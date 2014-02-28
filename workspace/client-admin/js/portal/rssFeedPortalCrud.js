@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.portal');
 
-Ext.define('sitools.component.portal.rssFeedPortalCrud', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.component.portal.rssFeedPortalCrud', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-rssFeedPortal',
     border : false,
     height : 300,
@@ -28,22 +29,21 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', { extend : 'Ext.grid.Pa
     pageSize : 10,
     label : i18n.get("label.selectPortal"),
     forceFit : "true",
-
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL');
         this.urlRef = loadUrl.get('APP_FEEDS_URL');
-        
-        this.httpProxyRss = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
+        this.dataId = "idPortal";
 
+        var urlRss = this.url + "/" + this.dataId + this.urlRef;
+        
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
             root : 'data',
-            proxy : this.httpProxyRss,
-            fields : [ {
+            url : urlRss,
+            restful : true,
+            autoLoad : true,
+            method : 'GET',
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -67,51 +67,17 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', { extend : 'Ext.grid.Pa
             }, {
                 name : 'externalUrl',
                 type : 'string'
-            } ]
+            }]
         });
 
-        // var storeCombo = new Ext.data.JsonStore({
-        // fields : [ 'id', 'name' ],
-        // url : this.url,
-        // root : "data",
-        // autoLoad : true
-        // });
-        //
-        // this.combobox = new Ext.form.ComboBox({
-        // store : storeCombo,
-        // displayField : 'name',
-        // valueField : 'id',
-        // typeAhead : true,
-        // mode : 'local',
-        // forceSelection : true,
-        // triggerAction : 'all',
-        // emptyText : this.label,
-        // selectOnFocus : true,
-        // listeners : {
-        // scope : this,
-        // select : function(combo, rec, index) {
-        // this.dataId = rec.data.id;
-        //
-        // this.loadRss();
-        //
-        // }
-        //
-        // }
-        // });
-
         // colonne avec checkbox pour choisir quelle colonne est la clé primaire
-        var visible = new Ext.grid.CheckColumn({
+        var visible = Ext.create('Ext.grid.column.CheckColumn', {
             header : i18n.get('headers.visible'),
             dataIndex : 'visible',
             width : 80
         });
 
-        this.cm = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            },
-            columns : [ {
+        this.columns = [ {
                 header : i18n.get('label.titleRss'),
                 dataIndex : 'title',
                 width : 150
@@ -127,15 +93,16 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', { extend : 'Ext.grid.Pa
                 header : i18n.get('headers.type'),
                 dataIndex : 'feedType',
                 width : 50
-            }, visible, {
+            }, {
+                xtype : 'checkcolumn',
+                header : i18n.get('headers.visible'),
+                dataIndex : 'visible',
+                width : 80
+            }, {
                 header : i18n.get('headers.feedSource'),
                 dataIndex : 'feedSource',
                 width : 100
-            } ]
-        });
-
-        // définition des plugins nécessaires (colonnes avec checkbox )
-        this.plugins = [ visible ];
+            }];
 
         this.tbar = {
             xtype : 'toolbar',
@@ -155,27 +122,11 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', { extend : 'Ext.grid.Pa
             } ]
         };
 
-        this.dataId = "idPortal";
-
-        this.loadRss();
 
         sitools.component.portal.rssFeedPortalCrud.superclass.initComponent.call(this);
-
     },
-    loadRss : function () {
-
-        var urlRss = this.url + "/" + this.dataId + this.urlRef;
-        this.httpProxyRss.setUrl(urlRss, true);
-        this.getStore().load({
-            scope : this,
-            callback : function () {
-                this.getView().refresh();
-            }
-        });
-    },
-
+    
     onSave : function () {
-
         var json = {};
         json.feeds = [];
         var i;

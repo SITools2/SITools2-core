@@ -31,7 +31,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Pa
     border : false,
     height : 300,
     id : ID.BOX.FILEEDITORFTL,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 15,
@@ -66,7 +66,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Pa
             } ]
         });
         
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             defaults : {
                 sortable : true
             },
@@ -105,7 +105,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Pa
        
         this.listeners = {
                 scope : this, 
-                rowDblClick : this.onModify
+                itemdblclick : this.onModify
             };
         
         sitools.component.fileEditor.ftlEditorCrud.superclass.initComponent.call(this);
@@ -125,10 +125,10 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Pa
         var l = rec.data.name.length;
         var from = l - 3;
         var ftlProp;
-        if (rec.id.substring(from, l) == "txt") {
+        if (rec.data.id.substring(from, l) == "txt") {
             ftlProp = new sitools.component.fileEditor.fileEditorProp({
-                url : this.url + '/ftl/' + rec.id,
-                fileName : rec.id,
+                url : this.url + '/ftl/' + rec.data.id,
+                fileName : rec.data.id,
                 sourceEdit : false,
                 modalType : false,
                 mediaType : 'text/plain',
@@ -137,8 +137,8 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Pa
             ftlProp.show();
         } else {
             ftlProp = new sitools.component.fileEditor.fileEditorProp({
-                url : this.url + '/ftl/' + rec.id,
-                fileName : rec.id,
+                url : this.url + '/ftl/' + rec.data.id,
+                fileName : rec.data.id,
                 sourceEdit : true,
                 modalType : true,
                 mediaType : 'text/freemarker',

@@ -25,9 +25,10 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
-
+    forceFit : true,
+    
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_TEMPLATES_URL');
 
@@ -49,7 +50,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -68,7 +69,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -103,13 +104,10 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.component.dictionary.templateCrudPanel.superclass.initComponent.call(this);
     },
@@ -140,7 +138,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
         }
 
         var up = new sitools.component.dictionary.templatePropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()
         });
@@ -169,7 +167,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
     },
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

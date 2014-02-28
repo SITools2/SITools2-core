@@ -37,7 +37,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
     id : ID.BOX.MULTIDS,
     pageSize : 10,
     urlMultiDs : "/tmp",
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.baseUrlMultiDs = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
@@ -96,7 +96,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             }
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -116,7 +116,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -147,12 +147,9 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             }]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.multiDs.MultiDsCrudPanel.superclass.initComponent.call(this);
 
@@ -231,7 +228,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             return;
         }
         Ext.Ajax.request({
-            url : this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL') + "/" + rec.id,
+            url : this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL') + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

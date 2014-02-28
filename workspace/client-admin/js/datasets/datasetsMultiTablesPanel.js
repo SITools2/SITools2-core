@@ -30,7 +30,8 @@ Ext.namespace('sitools.component.datasets');
  * @requires sitools.admin.datasets.PredicatsPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { extend : 'Ext.Window',
+Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-datasetsMultiTablesPanel',
 	closeAction : 'close', 
     initComponent : function () {
@@ -56,7 +57,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { extend : 'Ex
         /**
          * Construction de la grille Fields Setup
          */
-        this.gridFields = new sitools.admin.datasets.gridFieldSetup({
+        this.gridFields = Ext.create('sitools.admin.datasets.gridFieldSetup', {
 			urlDictionary : this.urlDictionary, 
 			urlDimension : this.urlDimension, 
 			action : action, 
@@ -119,21 +120,21 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { extend : 'Ex
 
         
         
-        this.panelWhere = new sitools.admin.datasets.datasetCriteria({
-			scope : this, 
-			layout : "vbox",
-			layoutConfig : {
-				align : "stretch", 
-				flex : "ratio"
-			}, 
-			title : i18n.get('label.whereClause')
-        });
+//        this.panelWhere = new sitools.admin.datasets.datasetCriteria({
+//			scope : this, 
+//			layout : "vbox",
+//			layoutConfig : {
+//				align : "stretch", 
+//				flex : "ratio"
+//			}, 
+//			title : i18n.get('label.whereClause')
+//        });
 
-		this.panelWhere.addListener('activate', function () {
-			if (action === 'view') {
-				this.getEl().mask();
-			}
-		});
+//		this.panelWhere.addListener('activate', function () {
+//			if (action === 'view') {
+//				this.getEl().mask();
+//			}
+//		});
 		
 		this.gridProperties = new sitools.admin.datasets.datasetProperties({
 			action : this.action
@@ -183,13 +184,13 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { extend : 'Ex
          * The main tabPanel of the window
          * @type Ext.TabPanel
          */
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create('Ext.tab.Panel', {
             height : 450, 
             layoutConfig : {
 				layoutOnCardChange : true
             }, 
             activeTab : 0,
-            items : [ this.formulairePrincipal, this.gridProperties, this.panelSelectTables, this.panelSelectFields, this.gridFields, this.panelWhere, this.viewConfigPanel ],
+            items : [ this.formulairePrincipal, this.gridProperties, this.panelSelectTables, this.panelSelectFields, this.gridFields, /*this.panelWhere*/, this.viewConfigPanel ],
             buttons : [ {
                 text : i18n.get('label.ok'),
                 scope : this,
@@ -312,7 +313,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { extend : 'Ex
             return;
         }
         
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
@@ -402,7 +403,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { extend : 'Ex
                 var rec = store.getAt(i).data;
 
                 var tmp = {
-                    id : rec.id,
+                    id : rec.data.id,
                     dataIndex : rec.dataIndex,
                     header : rec.header,
                     toolTip : rec.toolTip,

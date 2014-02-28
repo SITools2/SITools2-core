@@ -30,7 +30,8 @@ Ext.namespace('sitools.component.projects');
  * @class sitools.component.projects.ProjectsPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.component.projects.ProjectsPropPanel', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-projectsprop',
     /** Default Width */
     width : 700,
@@ -165,7 +166,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
             store : storeDataSets,
             tbar : tbar,
             cm : cmDataSets,
-            sm : smDataSets,
+            selModel : smDataSets,
             viewConfig : {
                 forceFit : true
             }, 
@@ -465,21 +466,19 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                 return result;
             }
         });
-        var smModules = Ext.create('Ext.selection.RowModel',{
-            singleSelect : false
-        });
-        var attached = new Ext.grid.CheckColumn({
+        
+        var attached = Ext.create('Ext.grid.column.CheckColumn', {
             header : i18n.get('headers.attached'),
             dataIndex : "attached",
             width : 55
         });
-        var visible = new Ext.grid.CheckColumn({
+        var visible = new Ext.create('Ext.grid.column.CheckColumn', {
             header : i18n.get('headers.visible'),
             dataIndex : "visible",
             width : 55
         });
         
-        var cmModules = new Ext.grid.ColumnModel({
+        var cmModules = Ext.create('Ext.grid.column.Column', {
             columns : [attached,  {
                 header : i18n.get('headers.name'),
                 dataIndex : 'name',
@@ -512,7 +511,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                     scope : this,
                     handler : function (grid, row, col, item, e) {
                         this.modulePanel.getSelectionModel().selectRow(row);
-                        var rec = this.modulePanel.getSelectionModel().getSelected();
+                        var rec = this.modulePanel.getSelectionModel().getLastSelected();
                         this._onModuleConfig(rec);
                     }
                 }],
@@ -539,18 +538,24 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
             }
         });
 
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
         /**
          * {Ext.grid.GridPanel} modulePanel The grid that displays modules
          */
-        this.modulePanel = new Ext.grid.EditorGridPanel({
+        this.modulePanel = Ext.create('Ext.grid.Panel', {
             id : 'gridModules',
             title : i18n.get('title.modules'),
             store : storeProjectModules,
             cm : cmModules,
-            sm : smModules,
+            forceFit : true,
+            selModel : {
+                selType: 'cellmodel'
+            },
             tbar : tbarModules, 
             viewConfig : {
-                forceFit : true,
                 getRowClass : function (row, index) { 
                     var cls = ''; 
                     var data = row.data; 
@@ -567,7 +572,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                     }
                 }
             }, 
-            plugins : [attached, visible]
+            plugins : [attached, visible, cellEditing]
         });
         
         var storeLinks = new Ext.data.JsonStore({
@@ -619,7 +624,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                     })
                 }]
             }),
-            sm : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
             }),
             viewConfig : {
@@ -734,7 +739,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
      * @return {Boolean}
      */
     onValidate : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
@@ -769,7 +774,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
      */        
     onSaveProject : function () {
         
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         var putObject = {};
         Ext.iterate(f.getValues(), function (key, value) {
             if (key == 'image') {
@@ -957,7 +962,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                     method : 'GET',
                     scope : this,
                     success : function (ret) {
-                        var f = this.findByType('form')[0].getForm();
+                        var f = this.down('form').getForm();
                         var grid = this.findById('gridDataSets');
                         var store = grid.getStore();
                         var data = Ext.decode(ret.responseText).project;
@@ -967,7 +972,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                         // Chargement des dataSets disponible et mise a jour de
                         Ext.each(dataSets, function (dataSet) {
                             var rec = {};
-                            rec.id = dataSet.id;
+                            rec.data.id = dataSet.id;
                             rec.name = dataSet.name;
                             rec.description = dataSet.description;
                             rec.type = dataSet.description;
@@ -977,7 +982,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                             rec.properties = dataSet.properties;
                             rec.url = dataSet.url;
 
-                            store.add(new Ext.data.Record(rec));
+                            store.add(rec);
                         });
                         // ceuw attaches au projet
 
@@ -986,7 +991,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                         if (this.action == "duplicate") {
                             rec.name = data.name + "_copy";
                         } else {
-                            rec.id = data.id;
+                            rec.data.id = data.id;
                             rec.name = data.name;
                             rec.sitoolsAttachementForUsers = data.sitoolsAttachementForUsers;
                         }
@@ -998,9 +1003,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                         rec.maintenanceText = data.maintenanceText;
                         rec.maintenance = data.maintenance;
                         
-                        var record = new Ext.data.Record(rec);
-
-                        f.loadRecord(record);
+                        f.setValues(rec);
                         
                         rec = {};
                         rec.css = data.css;
@@ -1020,9 +1023,9 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                         //Chargement manuel du store de project Module
                         if (!Ext.isEmpty(data.modules)) {
                             Ext.each(data.modules, function (module) {
-                                var rec = new Ext.data.Record(Ext.apply(module, {
+                                var rec = Ext.apply(module, {
                                     attached : true
-                                }));
+                                });
                                 
                                 this.modulePanel.getStore().add(rec);
                             }, this);
@@ -1032,7 +1035,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
                         var storeLinks = this.linksPanel.getStore();
                         if (!Ext.isEmpty(links)) {
                             Ext.each(links, function (item) {
-                                storeLinks.add(new Ext.data.Record(item));
+                                storeLinks.add(item);
                             }, this);
                         }
                         this.applyCkeditor();
@@ -1053,8 +1056,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
     }, 
     fillDefaultLinks : function () {
         Ext.each(this.defaultLinks, function (link) {
-            var rec = new Ext.data.Record(link);
-            this.linksPanel.getStore().add(rec);
+            this.linksPanel.getStore().add(link);
         }, this);
     },
     /**
@@ -1073,7 +1075,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
             Ext.each(modulesRecords, function (moduleRec) {
                 moduleRec.set("priority", modulesRecords.length + 1);
                 Ext.each(project.modules, function (projectModule) {
-                    if (moduleRec.id == projectModule.id) {
+                    if (modulerec.data.id == projectModule.id) {
                         moduleRec.set("attached", true);
                         moduleRec.set("priority", projectModule.priority);
                         moduleRec.set("listRoles", projectModule.listRoles);
@@ -1101,8 +1103,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', { extend : 'Ext.Windo
      * Add a new Record to the dependencies property of a project module
      */
     onCreateLink : function () {
-        var e = new Ext.data.Record();
-        this.linksPanel.getStore().insert(this.linksPanel.getStore().getCount(), e);
+        this.linksPanel.getStore().insert(this.linksPanel.getStore().getCount(), {});
     },
     
     /**

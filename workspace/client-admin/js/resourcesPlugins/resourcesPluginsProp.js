@@ -283,7 +283,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     scope : this
                 }
             },
-            sm : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel'),
             bbar : new Ext.ux.StatusBar({
                 id: 'statusBar',
                 hidden : true,
@@ -591,17 +591,17 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
             var form = this.fieldMappingFormPanel.getForm();
             rec.name = resourcePlugin.name;
             rec.descriptionAction = resourcePlugin.descriptionAction;
-            rec.id = resourcePlugin.id;
+            rec.data.id = resourcePlugin.id;
             rec.resourceClassName = resourcePlugin.resourceClassName;
             rec.behavior = resourcePlugin.behavior;
-            form.loadRecord(new Ext.data.Record(rec));
+            form.setValues(rec);
             
             var parameters = resourcePlugin.parameters;
             var store = this.gridFieldMapping.getStore();
             store.removeAll();
             if (!Ext.isEmpty(parameters)) {
                 for (var i = 0; i < parameters.length; i++) {
-                    var recTmp = new Ext.data.Record(parameters[i]);
+                    var recTmp = parameters[i];
                     if (action == "create" && Ext.isEmpty(parameters[i].value)) {
                         recTmp.set("value", "");
                     }

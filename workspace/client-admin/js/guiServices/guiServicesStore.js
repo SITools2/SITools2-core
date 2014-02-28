@@ -79,7 +79,7 @@ Ext.define('sitools.admin.guiServices.guiServicesStore', { extend : 'Ext.data.Js
 
     saveRecord : function (rec, action) {
         var met = action === 'modify' ? 'PUT' : 'POST';
-        var url = this.url + ((action === 'modify') ? '/' + rec.id : "");
+        var url = this.url + ((action === 'modify') ? '/' + rec.data.id : "");
 
         Ext.Ajax.request({
             url : url,
@@ -105,7 +105,7 @@ Ext.define('sitools.admin.guiServices.guiServicesStore', { extend : 'Ext.data.Js
 
     deleteRecord : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

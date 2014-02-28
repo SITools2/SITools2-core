@@ -55,7 +55,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', { extend : 'Ext.Window',
         });
         this.grid = new Ext.grid.GridPanel({
             xtype : 'grid',
-            sm : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel'),
             store : this.store,
             height : 200,
             columns : [ {
@@ -66,7 +66,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', { extend : 'Ext.Window',
                 dataIndex : 'description'
             } ],
             bbar : {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
@@ -146,8 +146,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', { extend : 'Ext.Window',
         }
         else {
             Ext.each(this.rec.data.listRoles, function (item){
-                var it = new Ext.data.Record(item);
-                this.store.add(it);
+                this.store.add(item);
             }, this);
             
         }

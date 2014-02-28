@@ -125,8 +125,8 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
         this.gridConvertersFromHelper = new Ext.grid.GridPanel({
             layout : 'fit', 
             store : this.storeConvertersFromHelper,
-            cm : this.cmConvertersFromHelper,
-            sm : Ext.create('Ext.selection.RowModel',{}),
+            columns : this.cmConvertersFromHelper,
+            selModel : Ext.create('Ext.selection.RowModel',{}),
             enableDragDrop : true,
             stripeRows : true,
             title : i18n.get("title.convertersFromHelper")            
@@ -153,8 +153,8 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
         this.gridConverters = new Ext.grid.EditorGridPanel({
             layout : 'fit', 
             store : this.storeConvertersForDimension,
-            cm : cmConvertersForDimension,
-            sm : Ext.create('Ext.selection.RowModel',{}),
+            columns : cmConvertersForDimension,
+            selModel : Ext.create('Ext.selection.RowModel',{}),
             autoScroll : true,
             enableDragDrop : true,
             stripeRows : true,
@@ -225,7 +225,12 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
             })
         });*/
         //------------------- UNITS GRID 
-        this.gridUnit = new Ext.grid.EditorGridPanel({
+        
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        this.gridUnit = new Ext.grid.Panel({
             id : 'gridUnit',
             title : i18n.get('title.gridUnit'),
             store : new Ext.data.JsonStore({
@@ -253,7 +258,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
 	                handler : this.onDeleteUnit
 	            } ]
 	        },
-            cm : new Ext.grid.ColumnModel({
+            columns : new Ext.grid.ColumnModel({
                 // specify any defaults for each column
                 defaults : {
                     sortable : true
@@ -276,9 +281,10 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
                 } ],
                 autoLoad : false
             }),
-            sm : Ext.create('Ext.selection.RowModel',{
-                singleSelect : true
-            })
+            selModel : {
+                    selType: 'cellmodel'
+            },
+            plugins : [cellEditing]
         });
 
         this.tabPanel = new Ext.TabPanel({
@@ -391,7 +397,9 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
             var rec = {};
             rec.name = unit.name;
             rec.description = unit.description;
-            form.loadRecord(new Ext.data.Record(rec));
+            
+//            form.loadRecord(new Ext.data.Record(rec));
+            form.setValues(rec);
             
             //converters 
             var converters = unit.unitConverters;
@@ -400,7 +408,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
                 for (var i = 0; i < converters.length; i++) {
                     var converter = {};
                     converter.name = converters[i];
-                    storeConverter.add(new Ext.data.Record(converter));
+                    storeConverter.add(converter);
                 }
             }
             
@@ -413,7 +421,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
                     var unitTmp = {};
                     unitTmp.label = units[j].label;
                     unitTmp.unitName = units[j].unitName;
-                    storeUnit.add(new Ext.data.Record(unitTmp));
+                    storeUnit.add(unitTmp);
                 }
             }
         }
@@ -462,7 +470,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
 	                for (var i = 0; i < converters.length; i++) {
 	                    var converter = {};
 	                    converter.name = converters[i];
-	                    storeConverter.add(new Ext.data.Record(converter));
+	                    storeConverter.add(converter);
 	                }
 	            }
                 
@@ -572,7 +580,7 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
      * Create a new {Ext.data.Record} record to add a unit property
      */
     onCreateUnit : function () {
-        this.gridUnit.getStore().add(new Ext.data.Record());
+        this.gridUnit.getStore().add({});
     },
     
     /**

@@ -30,7 +30,8 @@ Ext.namespace('sitools.admin.rssFeed');
  * @class sitools.admin.rssFeed.rssFeedCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.rssFeed.rssFeedCrud', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.rssFeed.rssFeedCrud', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-rssFeedCrud',
     border : false,
     pageSize : 10,
@@ -92,8 +93,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', { extend : 'Ext.grid.Panel',
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
-                    this.dataId = rec.data.id;
-                    this.getTopToolbar().findById("s-filter").enable();
+                    this.dataId = rec[0].data.id;
+//                    this.getDockedItems('toolbar[dock="top"]').down("s-filter").enable();
                     this.loadRss();
 
                 }
@@ -101,7 +102,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', { extend : 'Ext.grid.Panel',
             }
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -133,38 +134,35 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', { extend : 'Ext.grid.Panel',
             } ]
         });
 
-        this.tbar = {
-            xtype : 'toolbar',
-            defaults : {
-                scope : this
-            },
-            items : [ this.combobox, {
-                text : i18n.get('label.add'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
-                handler : this.onCreate,
-                xtype : 's-menuButton'
-            }, {
-                text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
-                handler : this.onModify,
-                xtype : 's-menuButton'
-            }, {
-                text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-                handler : this.onDelete,
-                xtype : 's-menuButton'
-            }, '->', {
-                xtype : 's-filter',
-                emptyText : i18n.get('label.search'),
-                store : this.store,
-                pageSize : this.pageSize,
-                disabled : true,
-                id : "s-filter"
-            } ]
-        };
+        this.tbar = [this.combobox, {
+            text : i18n.get('label.add'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+            scope : this,
+            handler : this.onCreate,
+            xtype : 's-menuButton'
+        }, {
+            text : i18n.get('label.modify'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+            scope : this,
+            handler : this.onModify,
+            xtype : 's-menuButton'
+        }, {
+            text : i18n.get('label.delete'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+            scope : this,
+            handler : this.onDelete,
+            xtype : 's-menuButton'
+        }, '->', {
+            xtype : 's-filter',
+            emptyText : i18n.get('label.search'),
+            store : this.store,
+            pageSize : this.pageSize,
+            disabled : true,
+            id : "s-filter"
+        }];
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -174,7 +172,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', { extend : 'Ext.grid.Panel',
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.rssFeed.rssFeedCrud.superclass.initComponent.call(this);
 
@@ -186,7 +184,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', { extend : 'Ext.grid.Panel',
     loadRss : function () {
 
         var urlRss = this.url + "/" + this.dataId + this.urlRef;
-        this.httpProxyRss.setUrl(urlRss, true);
+        this.httpProxyRss.url = urlRss;
         this.getStore().load({
             scope : this,
             callback : function () {

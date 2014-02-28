@@ -54,9 +54,9 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
         });
         
         Ext.each(enumeration, function (item, index) {
-            this.storeEnum.add(new Ext.data.Record({
+            this.storeEnum.add({
                 enumValue : item.trim()
-            }));
+            });
         }, this);
         
         
@@ -111,7 +111,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
             autoScroll : true,
             store : this.storeEnum,
             cm : this.cmSelectColumn,
-            sm : this.smSelectColumn, 
+            selModel : this.smSelectColumn, 
             listeners : {
 				scope : this, 
 				viewready : this.showSelectedRecords

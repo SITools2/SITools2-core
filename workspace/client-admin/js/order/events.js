@@ -68,7 +68,7 @@ Ext.define('sitools.component.order.events', { extend : 'Ext.Window',
     },
     _onValidate : function () {
         var url = this.baseUrl + "/" + this.action;
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('warning.invalidForm'));
             return;

@@ -153,7 +153,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
             store : storeProperties,
             tbar : tbar,
             cm : cmProperties,
-            sm : smProperties,
+            selModel : smProperties,
             viewConfig : {
                 forceFit : true
             }
@@ -233,7 +233,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
                     listeners : {
                         scope : this,
                         check : function (checkbox, checked) {
-                            var f = this.findByType('form')[0].getForm();
+                            var f = this.down('form').getForm();
                             f.findField('secret').setDisabled(checked);
                             f.findField('confirmSecret').setDisabled(checked);
                             if(checked) {
@@ -264,8 +264,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
      * Create a new record to add a property to the current user
      */
     onCreateProperties : function () {
-        var e = new Ext.data.Record();
-        this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), e);
+        this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), {});
     },
     
     /**
@@ -286,7 +285,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
     onModifyOrCreate : function () {
         var method = (this.action == "create") ? "POST" : "PUT";
 
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
@@ -333,18 +332,18 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
                 method : 'GET',
                 scope : this,
                 success : function (ret) {
-                    var f = this.findByType('form')[0].getForm();
+                    var f = this.down('form').getForm();
                     var data = Ext.decode(ret.responseText);
                     if (data.user !== undefined) {
                         f.setValues(data.user);
                         f.findField('identifier').setValue(data.user.identifier);
 						if (!Ext.isEmpty(data.user.properties)) {
 							Ext.each(data.user.properties, function (property) {
-				                var rec = new Ext.data.Record({
+				                var rec = {
 				                    name : property.name,
 				                    value : property.value,
 				                    scope : property.scope
-				                });
+				                };
 				                this.gridProperties.getStore().add(rec);
 							}, this);
 						}

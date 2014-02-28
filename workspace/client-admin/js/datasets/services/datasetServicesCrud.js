@@ -189,7 +189,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
             }
         });
         
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             defaults : {
                 sortable : true
             },
@@ -327,7 +327,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
         };
 
         this.bbar = {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
@@ -477,7 +477,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
         } else if (rec.data.type === "SERVER") {
             url = this.urlDatasetServiceSERVER.replace('{idDataset}', parentId);
         }
-        url = url.replace('{idService}', rec.id);
+        url = url.replace('{idService}', rec.data.id);
         
         Ext.Ajax.request({
             url : url,

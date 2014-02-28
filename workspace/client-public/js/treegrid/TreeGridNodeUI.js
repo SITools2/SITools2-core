@@ -26,7 +26,8 @@
  * @class Ext.ux.tree.TreeGridNodeUI
  * @extends Ext.tree.TreeNodeUI
  */
-Ext.ux.tree.TreeGridNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
+Ext.define('Ext.ux.tree.TreeGridNodeUI', {
+    extend : 'Ext.tree.TreeNodeUI',
     isTreeGridNodeUI: true,
 
     renderElements : function(n, a, targetNode, bulkRender){
@@ -93,7 +94,8 @@ Ext.ux.tree.TreeGridNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
     }
 });
 
-Ext.ux.tree.TreeGridRootNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
+Ext.define('Ext.ux.tree.TreeGridRootNodeUI', {
+    extend : 'Ext.tree.TreeNodeUI',
     isTreeGridNodeUI: true,
 
     // private

@@ -457,8 +457,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
                 handler : function () {
 			        var grid = this.gridProperties;
-			        var e = new Ext.data.Record();
-			        grid.getStore().insert(0, e);
+			        grid.getStore().insert(0, {});
 			    },
                 scope : this
             }, {
@@ -488,7 +487,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             store : storeProperties,
             tbar : tbar,
             cm : cmProperties,
-            sm : smProperties,
+            selModel : smProperties,
             viewConfig : {
                 forceFit : true
             }, 
@@ -869,7 +868,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
      * @return {Boolean}
      */
     onValidate : function () {
-		var f = this.findByType('form')[0].getForm();
+		var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
@@ -1044,7 +1043,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                             return;
                         }
 
-                        var f = this.findByType('form')[0].getForm();
+                        var f = this.down('form').getForm();
                         var data = Json.formProject;
                         if (!Ext.isEmpty(data.width)) {
                             this.formSize.width = data.width;
@@ -1056,18 +1055,17 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                         this.absoluteLayout.setSize(this.formSize);
                         
                         var rec = {};
-                        rec.id = data.id;
+                        rec.data.id = data.id;
                         rec.name = data.name;
                         rec.description = data.description;
                         rec.css = data.css;
                         rec.nbDatasetsMax = data.nbDatasetsMax;
                         rec.urlServicePropertiesSearch = data.urlServicePropertiesSearch;
                         rec.urlServiceDatasetSearch = data.urlServiceDatasetSearch;
-                        rec.idServiceDatasetSearch = data.idServiceDatasetSearch;
-                        rec.idServicePropertiesSearch = data.idServicePropertiesSearch;
+                        rec.data.idServiceDatasetSearch = data.idServiceDatasetSearch;
+                        rec.data.idServicePropertiesSearch = data.idServicePropertiesSearch;
                         
-                        var record = new Ext.data.Record(rec);
-                        f.loadRecord(record);
+                        f.setValues(rec);
 						
                         this.comboCollections.setValue(data.collection.name);
                         this.comboDictionnaires.setValue(data.dictionary.name);
@@ -1078,7 +1076,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 							var properties = data.properties;
 							var storeProperties = this.gridProperties.getStore();
 							Ext.each(properties, function (prop) {
-								storeProperties.add(new Ext.data.Record(prop));
+								storeProperties.add(prop);
 							});
                         }
                         
@@ -1093,7 +1091,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                         
                         if (!Ext.isEmpty(globalParameters.formZones)) {
                             Ext.each(globalParameters.formZones, function (zone) {
-                                this.zoneStore.add(new Ext.data.Record({
+                                this.zoneStore.add({
                                     containerPanelId : zone.id,
                                     title : zone.title,
                                     height : zone.height,
@@ -1102,11 +1100,11 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                                     css : zone.css,
                                     position : zone.position,
                                     params : zone.params
-                                }));
+                                });
 
                                 if (!Ext.isEmpty(zone.params)) {
                                     Ext.each(zone.params, function (param) {
-                                        this.formComponentsStore.add(new Ext.data.Record({
+                                        this.formComponentsStore.add({
                                             type : param.type,
                                             code : param.code,
                                             label : param.label,
@@ -1127,25 +1125,25 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                                             unit : param.unit,
                                             extraParams : param.extraParams,
                                             containerPanelId : param.containerPanelId
-                                        }));
+                                        });
                                     }, this);
                                 }
                             }, this);
                         } else if (!Ext.isEmpty(globalParameters.oldParams)) {
                             var idGen = Ext.id();
-                            this.zoneStore.add(new Ext.data.Record({
+                            this.zoneStore.add({
                                 containerPanelId : idGen,
                                 title : data.name,
                                 height : data.height,
                                 css : data.css,
                                 position : 0,
                                 params : globalParameters.oldParams
-                            }));
+                            });
                             
                             if (!Ext.isEmpty(globalParameters.oldParams)) {
                                 var parameters = globalParameters.oldParams;
                                 for (var i = 0; i < parameters.length; i++) {
-                                    this.formComponentsStore.add(new Ext.data.Record({
+                                    this.formComponentsStore.add({
                                         type : parameters[i].type,
                                         code : parameters[i].code,
                                         label : parameters[i].label,
@@ -1166,7 +1164,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                                         unit : parameters[i].unit, 
                                         extraParams : parameters[i].extraParams,
                                         containerPanelId : idGen
-                                    }));
+                                    });
                                 }
                             }
                         }

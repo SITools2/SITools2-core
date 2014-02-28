@@ -76,8 +76,7 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'si
 			    text : i18n.get('label.create'),
 			    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
 			    handler : function () {
-					var e = new Ext.data.Record();
-					this.gridProperties.getStore().insert(0, e);
+					this.gridProperties.getStore().insert(0, {});
 			    }
 			}, {
 				scope : this, 
@@ -101,7 +100,7 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'si
             tbar : tbar, 
             store : storeProperties,
             cm : cmProperties,
-            sm : smProperties,
+            selModel : smProperties,
             viewConfig : {
                 forceFit : true
             }
@@ -117,10 +116,10 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'si
         sitools.admin.forms.oneParam.NoValuesWithProperties.superclass.onRender.apply(this, arguments);
         if (this.action == 'modify') {
             Ext.each(this.selectedRecord.data.extraParams, function (prop) {
-                var rec = new Ext.data.Record({
+                var rec = {
                     name : prop.name,
                     value : prop.value
-                });
+                };
                 this.gridProperties.getStore().add(rec);
             }, this);
 
@@ -180,7 +179,7 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'si
 //            var componentYpos = greatY + 10;
             param1 = Ext.isEmpty(f.findField('PARAM1')) ? "" : f.findField('PARAM1').getValue();
             code = [param1];
-            formComponentsStore.add(new Ext.data.Record({
+            formComponentsStore.add({
                 label : f.findField('LABEL_PARAM1').getValue(),
                 type : this.ctype,
                 code : code,
@@ -196,7 +195,7 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'si
                 extraParams : extraParams, 
                 defaultValues : [ defaultValue ],
                 containerPanelId : this.containerPanelId
-            }));
+            });
         }
         return true;
     },
@@ -206,15 +205,15 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { extend : 'si
     addDefaultExtraParams : function () {
 		switch (this.ctype) {
 		case "MAPPANEL" : 
-			var rec = new Ext.data.Record({
+			var rec = {
 		        name : "url",
 		        value : ""
-		    });
+		    };
 		    this.gridProperties.getStore().add(rec);
-			rec = new Ext.data.Record({
+			rec = {
 		        name : "layer",
 		        value : ""
-		    });
+		    };
 		    this.gridProperties.getStore().add(rec);
 			break;
 		}

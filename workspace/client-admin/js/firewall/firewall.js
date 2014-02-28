@@ -25,7 +25,7 @@ Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Pane
     border : false,
     height : 300,
     id : ID.BOX.FIREWALL,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
@@ -60,7 +60,7 @@ Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Pane
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -78,7 +78,7 @@ Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Pane
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -138,9 +138,9 @@ Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Pane
         }
 
         // var up = new
-        // sitools.component.firewall.FirewallPanel({url:'/admin/security/firewalls/'+rec.identifier});
+        // sitools.component.firewall.FirewallPanel({url:'/admin/security/firewalls/'+rec.data.identifier});
         var up = new sitools.component.firewall.FirewallPanel({
-            url : loadUrl.get('APP_URL') + '/firewall/' + rec.id
+            url : loadUrl.get('APP_URL') + '/firewall/' + rec.data.id
         });
         up.show(ID.BOX.FIREWALL);
     },

@@ -159,7 +159,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
             proxy : this.httpProxyResources
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -236,7 +236,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
         };
 
         this.bbar = {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
@@ -246,7 +246,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
         
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel.superclass.initComponent.call(this);
 
@@ -378,7 +378,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
      */
     doDelete : function (rec, parentId) {
         Ext.Ajax.request({
-            url : this.urlParents + "/" + parentId + this.resourcesUrlPart + "/" + rec.id,
+            url : this.urlParents + "/" + parentId + this.resourcesUrlPart + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

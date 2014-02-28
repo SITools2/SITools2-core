@@ -18,7 +18,8 @@
 ***************************************/
 Ext.namespace('sitools.widget');	
 
-sitools.widget.GridUp = Ext.extend(Ext.Button, {
+Ext.define('sitools.widget.GridUp', {
+    extend: 'Ext.Button',
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-up.png';
         sitools.widget.GridUp.superclass.initComponent.call(this);
@@ -33,7 +34,7 @@ sitools.widget.GridUp = Ext.extend(Ext.Button, {
 		if (! grid) {
 			var grid = this;
 		} 
-		var rec = grid.getSelectionModel().getSelected();
+		var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
         }
@@ -55,7 +56,8 @@ sitools.widget.GridUp = Ext.extend(Ext.Button, {
 	
 });
 
-sitools.widget.GridDown = Ext.extend(Ext.Button, {
+Ext.define('sitools.widget.GridDown', {
+    extend: 'Ext.Button',
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-down.png';
         sitools.widget.GridDown.superclass.initComponent.call(this);
@@ -69,7 +71,7 @@ sitools.widget.GridDown = Ext.extend(Ext.Button, {
 		if (! grid) {
 			var grid = this;
 		} 
-		var rec = grid.getSelectionModel().getSelected();
+		var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
         }
@@ -91,7 +93,8 @@ sitools.widget.GridDown = Ext.extend(Ext.Button, {
 	
 });
 
-sitools.widget.GridTop = Ext.extend(Ext.Button, {
+Ext.define('sitools.widget.GridTop', {
+    extend: 'Ext.Button',
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-up.png';
         sitools.widget.GridTop.superclass.initComponent.call(this);
@@ -106,7 +109,7 @@ sitools.widget.GridTop = Ext.extend(Ext.Button, {
         if (! grid) {
             var grid = this;
         } 
-        var rec = grid.getSelectionModel().getSelected();
+        var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
         }
@@ -124,7 +127,9 @@ sitools.widget.GridTop = Ext.extend(Ext.Button, {
     
 });
 
-sitools.widget.GridBottom = Ext.extend(Ext.Button, {
+Ext.define('sitools.widget.GridBottom', {
+    extend: 'Ext.Button',
+    
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-down.png';
         sitools.widget.GridBottom.superclass.initComponent.call(this);
@@ -138,7 +143,7 @@ sitools.widget.GridBottom = Ext.extend(Ext.Button, {
         if (! grid) {
             var grid = this;
         } 
-        var rec = grid.getSelectionModel().getSelected();
+        var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
         }

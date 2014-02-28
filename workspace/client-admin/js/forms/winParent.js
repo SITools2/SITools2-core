@@ -50,7 +50,7 @@ Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
             height : 430,
             store : storeComponents,
             cm : cmComponents,
-            sm : smComponents,
+            selModel : smComponents,
             viewConfig : {
                 forceFit : true
             }

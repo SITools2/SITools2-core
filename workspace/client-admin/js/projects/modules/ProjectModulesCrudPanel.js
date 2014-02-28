@@ -28,16 +28,17 @@ Ext.namespace('sitools.admin.projects.modules');
  * @class sitools.admin.projects.modules.ProjectModulesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-projectmodule',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.PROJECTMODULE,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         // url = '/sitools/projectModules'
@@ -97,7 +98,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', { extend : 
             }]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -122,7 +123,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', { extend : 
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -158,12 +159,9 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', { extend : 
             } ]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onModify
+            itemdblclick : this._onModify
         };
         sitools.admin.projects.modules.ProjectModulesCrudPanel.superclass.initComponent.call(this);
     },

@@ -30,13 +30,14 @@ Ext.namespace('sitools.admin.collections');
  * @extends Ext.grid.GridPanel
  * @requires sitools.admin.collections.CollectionsPropPanel
  */
-Ext.define('sitools.admin.collections.CollectionsCrudPanel', { extend : 'Ext.grid.Panel', 
+Ext.define('sitools.admin.collections.CollectionsCrudPanel', { 
+    extend : 'Ext.grid.Panel', 
     alias : 'widget.s-collections',
     border : false,
     height : 300,
     id : ID.BOX.COLLECTIONS,
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.urlCollections = loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL');
@@ -61,7 +62,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', { extend : 'Ext.gri
         });
 
         
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -81,7 +82,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', { extend : 'Ext.gri
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -117,12 +118,9 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', { extend : 'Ext.gri
             }]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.collections.CollectionsCrudPanel.superclass.initComponent.call(this);
 
@@ -187,7 +185,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', { extend : 'Ext.gri
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.urlCollections + "/" + rec.id,
+            url : this.urlCollections + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

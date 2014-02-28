@@ -33,11 +33,11 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
     border : false,
     height : 300,
     id : ID.BOX.DATABASE,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_URL');
@@ -73,7 +73,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -98,12 +98,16 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
                 width : 90,
-                sortable : true
+                sortable : true,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value;
+                    return value;
+                }
             } ]
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -153,13 +157,10 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onModify
+            itemdblclick : this._onModify
         };
         sitools.admin.datasource.jdbc.DataBaseCrudPanel.superclass.initComponent.call(this);
     },
@@ -194,7 +195,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
             return;
         }
         var dbp = new sitools.admin.datasource.jdbc.DataBasePropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store
         });
@@ -207,7 +208,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.admin.datasource.jdbc.DataBasePropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'view',
             store : this.store
         });
@@ -238,7 +239,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -256,7 +257,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
         }
 
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/start',
+            url : this.url + '/' + rec.data.id + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -275,7 +276,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
         }
 
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/stop',
+            url : this.url + '/' + rec.data.id + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -294,7 +295,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { extend : 'Ext.gr
         }
 
         var dbt = new sitools.admin.datasource.DataBaseTest({
-            url : this.url + '/' + rec.id + '/test'
+            url : this.url + '/' + rec.data.id + '/test'
         });
         dbt.show();
     }

@@ -153,15 +153,18 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { extend : 'Ext
             } ],
             buttons : [ {
                 text : i18n.get('label.testCnx'),
+                name : 'testConnectionButton',
                 scope : this,
                 handler : this._onTest
             }, {
                 text : i18n.get('label.ok'),
+                name : 'okButton',
                 scope : this,
                 handler : this._onValidate
             },
             {
                 text : i18n.get('label.cancel'),
+                name : 'cancelButton',
                 scope : this,
                 handler : function () {
                     this.close();
@@ -173,22 +176,24 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { extend : 'Ext
 			scope : this, 
 	        resize : function (window, width, height) {
 				var size = window.body.getSize();
-				this.findByType('panel')[0].setSize(size);
+				this.down('panel').setSize(size);
 			}
         };
         sitools.admin.datasource.mongoDb.DataBasePropPanel.superclass.initComponent.call(this);
     },
-    onRender : function () {
-        sitools.admin.datasource.mongoDb.DataBasePropPanel.superclass.onRender.apply(this, arguments);
-        var frm = this.findByType('form')[0];
-        var basicFrm = this.findByType('form')[0].getForm();
+    afterRender : function () {
+        sitools.admin.datasource.mongoDb.DataBasePropPanel.superclass.afterRender.apply(this, arguments);
+        var frm = this.down('form');
+        var basicFrm = frm.getForm();
         Ext.each(frm.items.items, function (item) {
             item.disable();
         }, this);
-        this.findByType('panel')[0].buttons[1].disable();
-        this.findByType('panel')[0].buttons[0].disable();
+        
+        this.down('button[name=testConnectionButton]').disable();
+        this.down('button[name=okButton]').disable();
+        
         if (this.action === 'modify' || this.action === 'view') {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             Ext.Ajax.request({
                 url : this.url,
                 method : 'GET',
@@ -208,15 +213,16 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { extend : 'Ext
             Ext.each(frm.items.items, function (item) {
                 item.enable();
             }, this);
-            this.findByType('panel')[0].buttons[1].enable();
-            this.findByType('panel')[0].buttons[0].enable();
+            
+            this.down('button[name=testConnectionButton]').enable();
+            this.down('button[name=okButton]').enable();
         }
 		basicFrm.findField("userLogin").setVisible(basicFrm.findField("authentication").getValue());
 		basicFrm.findField("userPassword").setVisible(basicFrm.findField("authentication").getValue());
     },
     
     _onValidate : function () {
-        var frm = this.findByType('form')[0].getForm();
+        var frm = this.down('form').getForm();
         if (!frm.isValid()) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.invalidForm'));
             return;
@@ -236,7 +242,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { extend : 'Ext
     },
 
     _onTest : function () {
-        var frm = this.findByType('form')[0].getForm();
+        var frm = this.down('form').getForm();
         var vals = frm.getFieldValues();
         var dbt = new sitools.admin.datasource.DataBaseTest({
             url : this.url + '/test',

@@ -29,16 +29,17 @@ Ext.namespace('sitools.admin.datasetView');
  * @class sitools.admin.datasetView.DatasetViewsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-datasetView',
     border : false,
     height : 300,
     id : ID.BOX.DATASETVIEW,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_VIEWS_URL');
@@ -74,7 +75,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { extend : 'Ext.gr
             }]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -104,7 +105,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { extend : 'Ext.gr
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -140,12 +141,9 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { extend : 'Ext.gr
             } ]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onModify
+            itemdblclick : this._onModify
         };
         sitools.admin.datasetView.DatasetViewsCrudPanel.superclass.initComponent.call(this);
     },
@@ -176,7 +174,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { extend : 'Ext.gr
         }
 
         var dbp = new sitools.admin.datasetView.DatasetViewPropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store
         });
@@ -207,7 +205,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { extend : 'Ext.gr
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

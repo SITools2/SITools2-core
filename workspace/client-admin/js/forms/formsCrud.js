@@ -29,14 +29,15 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.formsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.forms.formsCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.forms.formsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-forms',
     border : false,
     height : 300,
     id : ID.BOX.FORMS,
     pageSize : 10,
     urlFormulaires : "/tmp",
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.baseUrlFormulaires = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
@@ -83,17 +84,18 @@ Ext.define('sitools.admin.forms.formsCrudPanel', { extend : 'Ext.grid.Panel',
             selectOnFocus : true,
             listeners : {
                 scope : this,
-                select : function (combo, rec, index) {
+                select : function (combo, records, index) {
+                    var rec = records[0];
                     this.datasetId = rec.data.id;
                     this.datasetColumnModel = rec.data.columnModel;
-                    this.httpProxyForms.setUrl(this.baseUrlFormulaires + "/" + rec.data.id + "/forms", true);
+                    this.httpProxyForms.url = this.baseUrlFormulaires + "/" + rec.data.id + "/forms";
                     this.loadFormulaires(rec.data.id);
                 }
 
             }
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -113,7 +115,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', { extend : 'Ext.grid.Panel',
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -151,12 +153,9 @@ Ext.define('sitools.admin.forms.formsCrudPanel', { extend : 'Ext.grid.Panel',
             ]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.forms.formsCrudPanel.superclass.initComponent.call(this);
 
@@ -164,7 +163,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', { extend : 'Ext.grid.Panel',
     loadFormulaires : function (datasetId) {
         // alert (dictionaryId);
         this.urlFormulaires = this.baseUrlFormulaires + "/" + datasetId + "/forms";
-        this.httpProxyForms.setUrl(this.urlFormulaires, true);
+        this.httpProxyForms.url = this.urlFormulaires;
         this.getStore().load({
             scope : this,
             callback : function () {
@@ -231,7 +230,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', { extend : 'Ext.grid.Panel',
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.baseUrlFormulaires + "/" + this.datasetId + "/forms/" + rec.id,
+            url : this.baseUrlFormulaires + "/" + this.datasetId + "/forms/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

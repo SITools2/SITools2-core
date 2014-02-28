@@ -198,7 +198,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
             layout : 'fit', 
             store : storeTablesJDBC,
             cm : cmTablesJDBC,
-            sm : Ext.create('Ext.selection.RowModel',{}),
+            selModel : Ext.create('Ext.selection.RowModel',{}),
             enableDragDrop : true,
             stripeRows : true,
             title : 'Tables JDBC',
@@ -241,7 +241,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
 //                            var store = this.panelSelectFields.getBDDPanel().getStore();
                             var columns = Json.table;
                             Ext.each(columns.attributes, function (column, index, columns) {
-                                this.panelSelectFields.getBDDPanel().getStore().add(new Ext.data.Record({
+                                this.panelSelectFields.getBDDPanel().getStore().add({
                                     dataIndex : column.name,
                                     schemaName : options.params.schemaName,
                                     tableName : options.params.tableName,
@@ -249,7 +249,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
                                     sqlColumnType : column.type,
                                     javaSqlColumnType : column.javaSqlType,
                                     columnClass : column.columnClass
-                                }));
+                                });
                             }, this);
 
                         } else {

@@ -145,7 +145,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
             }
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -244,7 +244,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
         
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
 
         sitools.admin.converters.convertersCrudPanel.superclass.initComponent.call(this);
@@ -277,7 +277,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
         
         for (var i = 0; i < this.store.getCount(); i++) {
             var rec = this.store.getAt(i).data;
-            jsonReturn.idOrder.push(rec.id);
+            jsonReturn.idOrder.push(rec.data.id);
         }
         var url = this.urlDatasets + "/" + datasetId + this.converterUrlPart;
         Ext.Ajax.request({

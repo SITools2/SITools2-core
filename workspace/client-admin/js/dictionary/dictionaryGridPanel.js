@@ -29,11 +29,25 @@ Ext.namespace('sitools.component.dictionary.gridPanel');
  * @class sitools.component.dictionary.gridPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.component.dictionary.gridPanel', { extend : 'Ext.grid.plugin.RowEditing',
+Ext.define('sitools.component.dictionary.gridPanel', {
+    extend : 'Ext.grid.Panel',
+    alias : 'widget.dictionaryGridPanel',
     template : null,
     initComponent : function () {
+        
         this.store = this.getStoreConcepts(this.template, this.url);
-        this.cm = this.getColumnModelConcepts(this.template, this.editable);
+        
+        this.columns = this.getColumnModelConcepts(this.template, this.editable);
+        
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        this.selModel = {
+            selType: 'cellmodel'
+        };
+        
+        this.plugins = [cellEditing];
         
         sitools.component.dictionary.gridPanel.superclass.initComponent.call(this);
     },
@@ -88,8 +102,7 @@ Ext.define('sitools.component.dictionary.gridPanel', { extend : 'Ext.grid.plugin
 									conceptOut[property.name] = property.value;
 								}
 			
-								var rec = new Ext.data.Record(conceptOut, conceptOut.id);
-								this.add(rec);
+								this.add(conceptOut);
 							}
                             
                         }

@@ -22,7 +22,7 @@ Ext.namespace('sitools.admin.datasets');
 
 /**
  * @cfg Ext.data.Record recordColumn The record to edit
- * @cfg Ext.grid.GridView viewColumn The grid view to refresh
+ * @cfg Ext.grid.View viewColumn The grid view to refresh
  * @cfg string urlDimension The Url of the dimension to get all the units. 
  * @class sitools.admin.datasets.unitWin
  * @extends Ext.Window
@@ -78,7 +78,7 @@ Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
             autoScroll : true,
             store : this.storeUnits,
             cm : this.cmUnits,
-            sm : this.smUnits, 
+            selModel : this.smUnits, 
             region : "center"
         });
 
@@ -115,7 +115,7 @@ Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
             autoScroll : true,
             store : storeDimensions,
             cm : this.cmDimensions,
-            sm : this.smDimensions, 
+            selModel : this.smDimensions, 
             width : 200, 
             collapsible : true, 
             resizable : true, 

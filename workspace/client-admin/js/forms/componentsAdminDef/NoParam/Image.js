@@ -97,7 +97,7 @@ Ext.define('sitools.admin.forms.noParam.image', { extend : 'Ext.form.Panel',
             componentId = componentId.toString();
             var componentYpos = greatY + 10;
 
-            formComponentsStore.add(new Ext.data.Record({
+            formComponentsStore.add({
                 label : f.findField('image').getValue(),
                 type : this.ctype,
                 width : f.findField('componentDefaultWidth').getValue(),
@@ -108,7 +108,7 @@ Ext.define('sitools.admin.forms.noParam.image', { extend : 'Ext.form.Panel',
                 jsAdminObject : this.jsAdminObject, 
                 jsUserObject : this.jsUserObject,
                 containerPanelId : this.containerPanelId
-            }));
+            });
         }
         return true;
     }

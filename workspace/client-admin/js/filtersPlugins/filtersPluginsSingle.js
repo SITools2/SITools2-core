@@ -394,16 +394,16 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
             var form = this.fieldMappingFormPanel.getForm();
             rec.name = filterPlugin.name;
             rec.descriptionAction = filterPlugin.descriptionAction;
-            rec.id = filterPlugin.id;
+            rec.data.id = filterPlugin.id;
             rec.filterClassName = filterPlugin.filterClassName;
-            form.loadRecord(new Ext.data.Record(rec));
+            form.setValues(rec);
             
             var parameters = filterPlugin.parameters;
             var store = this.gridFieldMapping.getStore();
             store.removeAll();
             if (!Ext.isEmpty(parameters)) {
                 for (var i = 0; i < parameters.length; i++) {
-                    var recTmp = new Ext.data.Record(parameters[i]);
+                    var recTmp = parameters[i];
                     if (action == "editDelete" && Ext.isEmpty(parameters[i].value)) {
                         recTmp.set("value", "");
                     }

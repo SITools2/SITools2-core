@@ -18,15 +18,16 @@
 ***************************************/
 Ext.namespace('sitools.widget');
 
-sitools.widget.TextFilter = Ext.extend(Ext.form.TriggerField, {
+Ext.define('sitools.widget.TextFilter', { 
+    extend : 'Ext.form.TriggerField',
 	alias : 'widget.s-filter',
 	ctCls:"s-textfilter",
 	cls:"s-textfilter-text",
 	triggerConfig:{tag:"div", cls:"x-form-trigger s-textfilter-trigger"},
 	enableKeyEvents:true,
 	listeners:{
-		keyup: { fn:function(tf,a) {tf.trigger.setVisible((tf.getValue()!==""));} },
-		render: { fn:function(tf) {tf.trigger.hide();} }
+		keyup: { fn:function(tf,a) {tf.setVisible((tf.getValue()!==""));} },
+		render: { fn:function(tf) {tf.hide();} }
 	},
 	queryDelay:500,
 	queryAction:"find",
@@ -55,16 +56,20 @@ sitools.widget.TextFilter = Ext.extend(Ext.form.TriggerField, {
 		this.pageSize=size;
 	},
 	
-	onBeforeLoad:function(a,b){
-		var c=this.getValue();
-		if(c){
-			b.params[this.queryParam]=c;
-			b.params.action=this.queryAction;
-		}else{
-			b.params.action=this.enumAction;
-		}
-		return true;
-	},
+
+	onBeforeLoad : function (store, operation, eOpts) {
+        var c = this.getValue();
+        if (Ext.isEmpty(operation.params)) {
+            operation.params = {};
+        }
+        if (c) {
+            operation.params[this.queryParam] = c;
+            operation.params.action = this.queryAction;
+        } else {
+            operation.params.action = this.enumAction;
+        }
+        return true;
+    },
 	
 	filter: function(){
 		var b=this.getValue();

@@ -89,7 +89,7 @@ Ext.define('sitools.admin.usergroups.RolePropPanel', { extend : 'Ext.Window',
      * Action to perform on the button handler (modify or create)
      */
     onModify : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
@@ -140,7 +140,7 @@ Ext.define('sitools.admin.usergroups.RolePropPanel', { extend : 'Ext.Window',
     onRender : function () {
         sitools.admin.usergroups.RolePropPanel.superclass.onRender.apply(this, arguments);
         if (this.url) {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             if (this.action == 'modify') {
                 Ext.Ajax.request({
                     url : this.url,

@@ -20,15 +20,17 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.formComponents');
 
-Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-formComponents',
     border : false,
     height : 300,
     id : ID.BOX.FORMCOMPONENTS,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL');
@@ -67,7 +69,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend 
             }]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -97,7 +99,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend 
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -133,12 +135,9 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend 
             } ]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onModify
+            itemdblclick : this._onModify
         };
         sitools.component.formComponents.FormComponentsCrudPanel.superclass.initComponent.call(this);
     },
@@ -169,7 +168,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend 
         }
 
         var dbp = new sitools.component.formComponents.FormComponentsPropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store
         });
@@ -200,7 +199,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { extend 
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

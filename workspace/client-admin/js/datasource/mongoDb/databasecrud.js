@@ -28,16 +28,17 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @class sitools.admin.datasource.mongoDb.DataBaseCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-databaseMongoDb',
     border : false,
     height : 300,
     id : ID.BOX.DATABASE,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_MONGODB_URL');
@@ -91,7 +92,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -116,7 +117,11 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
                 width : 90,
-                sortable : true
+                sortable : true,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value;
+                    return value;
+                }
             }, {
                 xtype: 'actioncolumn',
                 width: 30,
@@ -141,7 +146,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -191,13 +196,10 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onModify
+            itemdblclick : this._onModify
         };
         sitools.admin.datasource.mongoDb.DataBaseCrudPanel.superclass.initComponent.call(this);
     },
@@ -232,7 +234,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
             return;
         }
         var dbp = new sitools.admin.datasource.mongoDb.DataBasePropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store
         });
@@ -245,7 +247,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.admin.datasource.mongoDb.DataBasePropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'view',
             store : this.store
         });
@@ -276,7 +278,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -294,7 +296,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
         }
 
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/start',
+            url : this.url + '/' + rec.data.id + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -313,7 +315,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
         }
 
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/stop',
+            url : this.url + '/' + rec.data.id + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -332,7 +334,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', { extend : 'Ext
         }
 
         var dbt = new sitools.admin.datasource.DataBaseTest({
-            url : this.url + '/' + rec.id + '/test'
+            url : this.url + '/' + rec.data.id + '/test'
         });
         dbt.show();
     }

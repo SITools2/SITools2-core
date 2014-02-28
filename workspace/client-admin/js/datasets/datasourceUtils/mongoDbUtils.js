@@ -145,7 +145,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ex
             layout : 'fit', 
             store : storeTablesMongo,
             cm : cmTablesMongo,
-            sm : Ext.create('Ext.selection.RowModel',{}),
+            selModel : Ext.create('Ext.selection.RowModel',{}),
             enableDragDrop : true,
             stripeRows : true,
             title : 'Tables Mongo',

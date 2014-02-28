@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.dictionary');
 
-Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
+    extend : 'Ext.Window',
 	alias : 'widget.s-dictionaryprop',
     width : 700,
     height : 480,
@@ -39,10 +40,11 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
         }
         if (this.action == 'create') {
             this.title = i18n.get('label.createDictionary');
-        }        
-        this.gridTemplates = new Ext.grid.GridPanel({
+        }
+        
+        this.gridTemplates = Ext.create('Ext.grid.Panel', {
+            forceFit : true,
             viewConfig : {
-                forceFit : true
             },
             id : 'gridTemplates',
             title : i18n.get('title.conceptTemplates'),
@@ -80,25 +82,17 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
                 }
             }),
 
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.description'),
-                    dataIndex : 'description',
-                    width : 300,
-                    sortable : true
-                } ]
-            }),
-            
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.description'),
+                dataIndex : 'description',
+                width : 300,
+                sortable : true
+            }],
             listeners : {
                 scope : this,
                 rowclick :  this.onTemplateClick,
@@ -192,7 +186,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
         //create a new concept with the default values, specified in the template selected
         var templateSelected;
         if (Ext.isEmpty(this.conceptTemplate)) {
-            templateSelected = this.gridTemplates.getSelectionModel().getSelected().data;
+            templateSelected = this.gridTemplates.getSelectionModel().getLastSelected().data;
         } else {
             templateSelected = this.conceptTemplate;
         }
@@ -201,27 +195,27 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
             var property = templateSelected.properties[i];
             newConcept[property.name] = property.value; 
         }
-        this.findById('gridConceptsSelect').getStore().add(new Ext.data.Record(newConcept));
+        this.down('dictionaryGridPanel').getStore().add(newConcept);
         
-        if (this.findById('gridConceptsSelect').getStore().getCount() == 1) {
+        if (this.down('dictionaryGridPanel').getStore().getCount() == 1) {
             this.gridTemplates.getEl().mask();
         }
     },
     onDeleteConcet : function () {
-        var grid = this.findById('gridConceptsSelect');
-        var rec = grid.getSelectionModel().getSelected();
+        var grid = this.down('dictionaryGridPanel');
+        var rec = grid.getSelectionModel().getLastSelected();
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
         }
         grid.getStore().remove(rec);
-        if (this.findById('gridConceptsSelect').getStore().getCount() === 0) {
+        if (this.down('dictionaryGridPanel').getStore().getCount() === 0) {
             this.gridTemplates.getEl().unmask();
         }
 
     },   
     onValidate : function () {
-        var rec = this.gridTemplates.getSelectionModel().getSelected();
+        var rec = this.gridTemplates.getSelectionModel().getLastSelected();
         var tmp;
         if (!rec) {
             tmp = new Ext.ux.Notification({
@@ -257,7 +251,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
         
         var templateSelected;
         if (Ext.isEmpty(this.conceptTemplate)) {
-            templateSelected = this.gridTemplates.getSelectionModel().getSelected().data;
+            templateSelected = this.gridTemplates.getSelectionModel().getLastSelected().data;
         } else {
             templateSelected = this.conceptTemplate;
         }
@@ -271,9 +265,9 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
         
         
         
-        var gridConcept = this.findById('gridConceptsSelect');
+        var gridConcept = this.down('dictionaryGridPanel');
         if (!Ext.isEmpty(gridConcept) && Ext.isFunction(gridConcept.getStore)) {
-	        store = this.findById('gridConceptsSelect').getStore();
+	        store = this.down('dictionaryGridPanel').getStore();
 	        if (store.getCount() > 0) {
 	            putObject.concepts = [];
 	                           
@@ -320,8 +314,8 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
         });
     },
 
-    onRender : function () {
-        sitools.component.dictionary.dictionaryPropPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.component.dictionary.dictionaryPropPanel.superclass.afterRender.apply(this, arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             var i;
@@ -334,13 +328,13 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
                         var data = Ext.decode(ret.responseText).dictionary;
 
                         //load the form
-                        var f = this.findById('dictionaryFormPanel').getForm();
+                        var f = this.down('form').getForm();
                         var rec = {};
                         rec.id = data.id;
                         rec.name = data.name;
                         rec.description = data.description;
-                        var record = new Ext.data.Record(rec);
-                        f.loadRecord(record);
+                        
+                        f.setValues(rec);
                         
                         if (!Ext.isEmpty(data.conceptTemplate)) {
                             //save the conceptTemplate id
@@ -357,7 +351,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
                             return;
                         }
                         
-                        var store = this.findById('gridConceptsSelect').getStore();
+                        var store = this.down('dictionaryGridPanel').getStore();
                         
                         var nbConcepts = 0;
                         for (i = 0; i < data.concepts.length; i++) {
@@ -374,8 +368,8 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
                                 conceptOut[property.name] = property.value;                                
                             }
                             
-                            rec = new Ext.data.Record(conceptOut);
-                            store.add(rec);
+//                            rec = new Ext.data.Record(conceptOut);
+                            store.add(conceptOut);
                         }
                         if (nbConcepts > 0) {
                             this.gridTemplates.getEl().mask();
@@ -392,7 +386,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
     },
     
     onTemplateClick : function (self, rowIndex,  e) {
-        var rec = this.gridTemplates.getSelectionModel().getSelected();
+        var rec = this.gridTemplates.getSelectionModel().getLastSelected();
 		if (!rec) {
 			return false;
 		}
@@ -406,9 +400,9 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
     
     
     createConceptGrid : function (template) {
-        var gridConceptsSelect = new sitools.component.dictionary.gridPanel({
+        var gridConceptsSelect = Ext.create('sitools.component.dictionary.gridPanel', {
 			template : template,
-			sm : Ext.create('Ext.selection.RowModel',{
+			selModel : Ext.create('Ext.selection.RowModel', {
 				singleSelect : true
 			}),
 			tbar : {
@@ -441,7 +435,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', { extend : 'Ext.W
     beforeTabChange : function (self, newTab, currentTab) {
 //        if (this.action == "create") {
         if (newTab.id == "gridConceptsSelect" || newTab.id == "dictionaryFormPanel") {
-            var rec = this.gridTemplates.getSelectionModel().getSelected();
+            var rec = this.gridTemplates.getSelectionModel().getLastSelected();
             if (!rec && Ext.isEmpty(this.conceptTemplate)) {
                 var tmp = new Ext.ux.Notification({
                         iconCls : 'x-icon-information',

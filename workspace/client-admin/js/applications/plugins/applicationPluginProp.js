@@ -477,12 +477,13 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
             rec.label = applicationPlugin.label;
             rec.urlAttach = applicationPlugin.urlAttach;
             
-            form.loadRecord(new Ext.data.Record(rec));
+            form.setValues(rec);
+            
             var parameters = applicationPlugin.parameters;
             if (!Ext.isEmpty(parameters)) {
                 var store = this.gridFieldMapping.getStore();
                 for (var i = 0; i < parameters.length; i++) {
-                    var recTmp = new Ext.data.Record(parameters[i]);
+                    var recTmp = parameters[i];
                     store.add(recTmp);
                 }
             }

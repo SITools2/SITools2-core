@@ -395,14 +395,14 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
             var form = this.fieldMappingFormPanel.getForm();
             var rec = {};
             rec.descriptionAction = this.filter.descriptionAction;
-            form.loadRecord(new Ext.data.Record(rec));
+            form.setValues(rec);
 
             var parameters = this.filter.parameters;
             if (parameters !== null) {
                 var store = this.gridFieldMapping.getStore();
                 var i;
                 for (i = 0; i < parameters.length; i++) {
-                    rec = new Ext.data.Record(parameters[i]);
+                    rec = parameters[i];
                     store.add(rec);
                 }
                 this.gridFieldMapping.getView().refresh();

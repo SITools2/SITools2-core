@@ -33,9 +33,9 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_URL') + '/users';
@@ -75,7 +75,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
         /**
          * {Ext.grid.ColumnModel} the columns definition for the store
          */
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -133,7 +133,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -189,13 +189,9 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             } ]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
-
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.userStorage.userStorageCrudPanel.superclass.initComponent.call(this);
     },
@@ -234,7 +230,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.admin.userStorage.userStoragePropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             userStorageRec : rec,
             action : 'modify',
             store : this.getStore()
@@ -272,7 +268,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
      */
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -294,7 +290,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/start',
+            url : this.url + '/' + rec.data.id + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -315,7 +311,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/stop',
+            url : this.url + '/' + rec.data.id + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -352,7 +348,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/clean',
+            url : this.url + '/' + rec.data.id + '/clean',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -373,7 +369,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/refresh',
+            url : this.url + '/' + rec.data.id + '/refresh',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -394,7 +390,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/notify',
+            url : this.url + '/' + rec.data.id + '/notify',
             method : 'PUT',
             scope : this,
             success : function (ret) {

@@ -135,6 +135,8 @@ Ext.define('sitools.admin.menu.TreeMenu', {
 	        {
 	            width: "100%",
 	            bodyCssClass : 'admin-bg',
+	            border : false,
+	            bodyBorder : false,
 	            items : [ {
 	                xtype : 'widget.s-box',
 	                label : i18n.get('label.' + nodeName),
@@ -152,14 +154,14 @@ Ext.define('sitools.admin.menu.TreeMenu', {
 	                        height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargins("t") + sBoxTitle.getMargins("b")), 
 	                        width : size.width - 8
 	                    };
-	                    var mainAdminPanel = panel.find("sitoolsType", "mainAdminPanel");
-	                    mainAdminPanel[0].setSize(size);
+	                    var mainAdminPanel = panel.down("panel[sitoolsType=mainAdminPanel]");
+	                    mainAdminPanel.setSize(size);
 	                }
 	            }
 	        });
 //        }
 
-        var helpPanel = new Ext.ux.ManagedIFrame.Panel({
+        var helpPanel = new Ext.panel.Panel({
             bodyCssClass : 'admin-bg-transparent',
             id : ID.PANEL.HELP,
             width : "100%", 

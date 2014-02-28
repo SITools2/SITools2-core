@@ -82,7 +82,7 @@ Ext.define('sitools.admin.userStorage.userStoragePropPanel', { extend : 'Ext.Win
                                         mode : 'selectUnique',
                                         url : loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/users',
                                         displayField : field,
-                                        valueField : this.findByType('form')[0].getForm().findField('userValueFieldId')
+                                        valueField : this.down('form').getForm().findField('userValueFieldId')
 
                                     });
                                     usersWin.show();
@@ -161,7 +161,7 @@ Ext.define('sitools.admin.userStorage.userStoragePropPanel', { extend : 'Ext.Win
      * Save {sitools.admin.userStorage.userStoragePropPanel} user Storage in function of the action (create,modify)
      */
     onValidate : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
@@ -218,7 +218,7 @@ Ext.define('sitools.admin.userStorage.userStoragePropPanel', { extend : 'Ext.Win
     afterRender : function () {
         sitools.admin.userStorage.userStoragePropPanel.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             f.loadRecord(this.userStorageRec);
             f.findField("displayUser").destroy();
         }

@@ -26,23 +26,29 @@
 
     <!-- Commom css -->
 	<!--  <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css" ></link> -->
-    <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs4/ext-4.2.1.883/resources/css/ext-all.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs4/ext-4.2.1.883/resources/css/ext-all-neptune-debug.css"></link>
 
    	<!--  ext.ux  -->
        
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/spinner.css"></link>
+    <!--<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css"></link>-->
+    <!--<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/spinner.css"></link>-->
+    
+    
     <!-- Sitools specific css -->
     <link rel="stylesheet" type="text/css" href="res/css/main.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/commons.css"></link>
+    <!--
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/lockingGrid/columnLock.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/imageChooser/imageChooser.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/sliderRange/css/ux/SliderRange.css"></link>
+    -->
     <link rel="stylesheet" type="text/css" href="res/css/icons.css"></link>
+    <!--
     <link rel="stylesheet" type="text/css" href="res/css/animated-dataview.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/animated-seeAlso.css"></link>
+    -->
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/main.css"></link>
    	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css"></link>
 	
@@ -153,6 +159,7 @@
     <script type="text/javascript" src="js/datasets/predicatsPanel.js"></script>
     <script type="text/javascript" src="js/datasets/selectPredicat.js"></script>
     <script type="text/javascript" src="js/datasets/joinConditionWin.js"></script>
+    <script type="text/javascript" src="js/datasets/joinCrudTreePanel.js"></script>
     <script type="text/javascript" src="js/datasets/joinTableWin.js"></script>
     <script type="text/javascript" src="js/datasets/joinPanel.js"></script>
     <script type="text/javascript" src="js/datasets/gridFieldSetup.js"></script>
@@ -167,7 +174,7 @@
     <script type="text/javascript" src="js/datasets/datasetProperties.js"></script>
     <script type="text/javascript" src="js/datasets/datasetSelectTables.js"></script>
     <script type="text/javascript" src="js/datasets/datasetSelectFields.js"></script>
-    <script type="text/javascript" src="js/datasets/datasetProp.js"></script>
+    <script type="text/javascript" src="js/datasets/datasetsMultiTablesPanel.js"></script>
 		
     <script type="text/javascript" src="${appUrl}/common/js/columnRenderer/behaviorEnum.js"></script>
     <script type="text/javascript" src="js/datasets/columnRenderer/datasetLinkPanel.js"></script>
@@ -178,6 +185,8 @@
     <script type="text/javascript" src="js/datasets/datasetUrlWin.js"></script>
     <script type="text/javascript" src="js/datasets/columnProp.js"></script>
     <script type="text/javascript" src="js/datasets/datasetsCrud.js"></script>
+    <script type="text/javascript" src="js/datasets/DatasetModel.js"></script>
+    
     <script type="text/javascript" src="js/datasets/dictionaryWin.js"></script>
     <script type="text/javascript" src="js/datasets/unitWin.js"></script>
     <script type="text/javascript" src="js/datasets/datasetsOpenSearch.js"></script>
@@ -215,7 +224,11 @@
     <script type="text/javascript" src="js/applications/roleWin.js"></script>
     <script type="text/javascript" src="js/applications/applicationsprop.js"></script>
     <script type="text/javascript" src="js/applications/applicationsCrud.js"></script>
+    <script type="text/javascript" src="js/applications/applicationModel.js"></script>
+    
+    
     <script type="text/javascript" src="js/authorizations/authorizationsCrud.js"></script>
+    <script type="text/javascript" src="js/authorizations/AuthorizationModel.js"></script>
     <script type="text/javascript" src="js/userStorage/userStoragePropPanel.js"></script>
     <script type="text/javascript" src="js/userStorage/userStorageCrudPanel.js"></script>
     <script type="text/javascript" src="js/order/orderprop.js"></script>

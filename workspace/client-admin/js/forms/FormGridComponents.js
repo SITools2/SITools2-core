@@ -138,14 +138,14 @@ Ext.define('sitools.admin.forms.FormGridComponents', { extend : 'Ext.grid.Panel'
             height : 430,
             store : storeComponents,
             cm : cmComponents,
-            sm : smComponents,
+            selModel : smComponents,
             tbar : tbar,
             viewConfig : {
                 forceFit : true
             }, 
 			listeners : {
 	            scope : this, 
-	            rowDblClick : this.onModify, 
+	            itemdblclick : this.onModify, 
 	            dictionaryChanged : function (dictionaryId) {
 					this.dictionaryId = dictionaryId;
 	            }, 

@@ -131,7 +131,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { extend: 'Ext.Pa
 	            autoScroll : true,
 	            store : store,
 	            cm : cmColumns,
-	            sm : smColumns,
+	            selModel : smColumns,
                 flex : 1,
                 bbar : this.bbar,
                 viewConfig: {

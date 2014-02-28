@@ -28,16 +28,17 @@ Ext.namespace('sitools.admin.guiservices');
  * @class sitools.admin.projects.modules.ProjectModulesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-guiservices',
     border : false,
     height : 300,
     id : ID.BOX.GUISERVICES,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         // url = '/sitools/projectModules'
@@ -53,7 +54,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', { extend : 'Ext.gri
             width : 55
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -79,7 +80,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', { extend : 'Ext.gri
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -115,12 +116,9 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', { extend : 'Ext.gri
             } ]
         };
 
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onModify
+            itemdblclick : this._onModify
         };
         sitools.admin.guiservices.GuiServicesCrudPanel.superclass.initComponent.call(this);
     },
@@ -163,7 +161,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', { extend : 'Ext.gri
         var dbp = new sitools.admin.guiservices.GuiServicesPropPanel({
             action : 'modify',
             store : this.store,
-            recordId : rec.id
+            recordId : rec.data.id
         });
         dbp.show(ID.PROP.GUISERVICES);
     },

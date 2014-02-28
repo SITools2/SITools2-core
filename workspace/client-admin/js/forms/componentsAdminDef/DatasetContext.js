@@ -100,7 +100,7 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
 	    
 	    Ext.each(scope.datasetColumnModel, function (column) {
             if (column.specificColumnType != 'VIRTUAL') {
-                scope.storeColumn.add(new Ext.data.Record(column));
+                scope.storeColumn.add(column);
             }
         }, this);
 		return new Ext.form.ComboBox({

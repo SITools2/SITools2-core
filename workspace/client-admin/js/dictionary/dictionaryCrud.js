@@ -25,9 +25,9 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_URL');
@@ -53,7 +53,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -72,7 +72,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -107,13 +107,10 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.component.dictionary.dictionaryCrudPanel.superclass.initComponent.call(this);
     },
@@ -144,7 +141,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
         }
 
         var up = new sitools.component.dictionary.dictionaryPropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()
         });
@@ -173,7 +170,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
     },
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

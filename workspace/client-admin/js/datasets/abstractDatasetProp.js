@@ -169,15 +169,16 @@ sitools.admin.datasets.abstractDatasetWin = {
                         Ext.Msg.alert(i18n.get('label.warning'), Json.message);
                         return;
                     }
-                    var f = this.findByType('form')[0].getForm();
-                    var store = this.findById('gridColumnSelect').getStore();
+//                    var f = this.down('form').getForm();
+                    var f = this.formulairePrincipal.down('form').getForm();
+                    var store = this.down('panel[id=gridColumnSelect]').getStore();
 
                     var data = Json.dataset;
                     this.initialData = data;
 
                     var rec = {};
                     if (this.action !== "duplicate") {
-						rec.id = data.id;
+						rec.data.id = data.id;
 						rec.sitoolsAttachementForUsers = data.sitoolsAttachementForUsers;
 						rec.dirty = data.dirty;
 						rec.name = data.name;
@@ -195,8 +196,7 @@ sitools.admin.datasets.abstractDatasetWin = {
                     rec.orderBy = data.orderBy;
                     rec.descriptionHTML = data.descriptionHTML;
 					
-                    var record = new Ext.data.Record(rec);
-                    f.loadRecord(record);
+                    f.setValues(rec);
 
                     this.queryType = data.queryType;
                     Ext.getCmp('radioQueryType').setValue(this.queryType);
@@ -294,8 +294,7 @@ sitools.admin.datasets.abstractDatasetWin = {
 								    prop.value = date.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
                                 }
 							}
-                            recProp = new Ext.data.Record(prop);
-							storeProp.add(recProp);
+							storeProp.add(prop);
 						});
                     }
                     this.applyCkeditor();

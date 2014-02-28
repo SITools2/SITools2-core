@@ -25,9 +25,9 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
-    // loadMask: true,
+    forceFit : true,
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_ADMIN_URL');
@@ -64,7 +64,7 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
             }]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -90,7 +90,7 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -134,13 +134,10 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onDetail
+            itemdblclick : this._onDetail
         };
         sitools.component.order.orderCrudPanel.superclass.initComponent.call(this);
     },
@@ -220,7 +217,7 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

@@ -20,15 +20,15 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.projects');
 
-Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.component.projects.projectsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-projects',
     border : false,
     height : 300,
     id : ID.BOX.PROJECTS,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
-
-    // loadMask: true,
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
@@ -72,7 +72,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : false
@@ -94,7 +94,11 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
             }, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
-                width : 150
+                width : 150,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value;
+                    return value;
+                }
             }, {
                 header : i18n.get('label.maintenance'),
                 dataIndex : 'maintenance',
@@ -112,7 +116,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
         });
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -175,13 +179,10 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
                 pageSize : this.pageSize
             } ]
         };
-        this.view = new Ext.grid.GridView({
-            forceFit : true
-        });
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.component.projects.projectsCrudPanel.superclass.initComponent.call(this);
     },
@@ -215,7 +216,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
 //            return;
 //        }
         var up = new sitools.component.projects.ProjectsPropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : rec.data.status == 'ACTIVE' ? "view" : "modify",
             store : this.getStore(),
             projectName : rec.name, 
@@ -254,7 +255,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -273,7 +274,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/startmaintenance',
+            url : this.url + '/' + rec.data.id + '/startmaintenance',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -290,7 +291,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/stopmaintenance',
+            url : this.url + '/' + rec.data.id + '/stopmaintenance',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -308,7 +309,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/start',
+            url : this.url + '/' + rec.data.id + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -326,7 +327,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/stop',
+            url : this.url + '/' + rec.data.id + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -344,7 +345,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', { extend : 'Ext.grid.
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.component.projects.ProjectsPropPanel({
-            projectUrlToCopy : this.url + "/" + rec.id,
+            projectUrlToCopy : this.url + "/" + rec.data.id,
             url : this.url,
             action : 'duplicate',
             store : this.getStore()

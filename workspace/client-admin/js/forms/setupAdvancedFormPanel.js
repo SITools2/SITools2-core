@@ -102,8 +102,7 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', { extend : 'Ext.Window'
     onRender : function () {
         sitools.admin.forms.setupAdvancedFormPanel.superclass.onRender.apply(this, arguments);
         if (this.action === 'modify') {
-            var recZone = new Ext.data.Record(this.zone);
-            this.form.getForm().loadRecord(recZone);
+            this.form.getForm().setValues(this.zone);
         }
         
     },
@@ -138,7 +137,7 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', { extend : 'Ext.Window'
         }
         else {
             rec.containerPanelId = Ext.id();
-            this.parentContainer.zoneStore.add(new Ext.data.Record(rec));
+            this.parentContainer.zoneStore.add(rec);
         }
         
         this.destroy();

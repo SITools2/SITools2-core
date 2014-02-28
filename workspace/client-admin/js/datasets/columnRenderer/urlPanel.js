@@ -158,9 +158,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { extend : 'Ext.Pan
                     record.displayable = false;
                 }
                 
-                               
-                var rec = new Ext.data.Record(record);
-                form.loadRecord(rec);
+                form.setValues(record);
                 
                 form.findField("linkText").setVisible(!isImage);
                 form.findField("linkText").setDisabled(isImage);

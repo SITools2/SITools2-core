@@ -90,8 +90,7 @@ Ext.define('sitools.component.graphs.graphsNodeWin', { extend : 'Ext.Window',
             rec.image = node.attributes.image.url;
             rec.description = node.attributes.description;
 
-            var record = new Ext.data.Record(rec);
-            form.loadRecord(record);
+            form.setValues(rec);
         }
     },
 

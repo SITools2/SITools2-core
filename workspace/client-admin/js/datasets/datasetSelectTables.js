@@ -79,11 +79,11 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', { extend : 'Ext.Panel',
 		if (data && data.structures) {
 			var structures = data.structures;
 			for (var i = 0; i < structures.length; i++) {
-				this.storeTablesDataset.add(new Ext.data.Record({
+				this.storeTablesDataset.add({
 					name : structures[i].name,
 					alias : structures[i].alias,
 					schemaName : structures[i].schemaName
-				}));
+				});
 
 			}
 		}
@@ -127,7 +127,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', { extend : 'Ext.Panel',
             layout : 'fit', 
             store : this.storeTablesDataset,
             cm : cmTablesDataSet,
-            sm : Ext.create('Ext.selection.RowModel',{}),
+            selModel : Ext.create('Ext.selection.RowModel',{}),
             autoScroll : true,
             enableDragDrop : true,
             stripeRows : true,

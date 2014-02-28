@@ -30,7 +30,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetForm', { extend : 'Ext.Panel',
+Ext.define('sitools.admin.datasets.datasetForm', { 
+    extend : 'Ext.panel.Panel',
     
     initComponent : function () {
 		var action = this.action;
@@ -52,9 +53,6 @@ Ext.define('sitools.admin.datasets.datasetForm', { extend : 'Ext.Panel',
 				}
             }
         });
-        
-        
-        
         
         /**
          * Combo to select Datasources.
@@ -187,8 +185,6 @@ Ext.define('sitools.admin.datasets.datasetForm', { extend : 'Ext.Panel',
 				}
             }
         });
-        
-		
 		
 		sitools.admin.datasets.datasetForm.superclass.initComponent.call(this);
     }, 

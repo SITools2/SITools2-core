@@ -133,7 +133,7 @@ Ext.define('sitools.admin.usergroups.GroupPropPanel', { extend : 'Ext.Window',
      */
     onModifyOrCreate : function () {
         var jsonGroup = {};
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
@@ -174,7 +174,7 @@ Ext.define('sitools.admin.usergroups.GroupPropPanel', { extend : 'Ext.Window',
     onRender : function () {
         sitools.admin.usergroups.GroupPropPanel.superclass.onRender.apply(this, arguments);
         if (this.url) {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             Ext.Ajax.request({
                 url : this.url,
                 method : 'GET',

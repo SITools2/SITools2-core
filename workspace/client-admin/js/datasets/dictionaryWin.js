@@ -25,7 +25,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.dictionaryWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.dictionaryWin', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.datasets.dictionaryWin', { 
+    extend : 'Ext.Window', 
 	alias : 'widget.s-datasetsdictionary',
     width : 700,
     height : 480,
@@ -106,7 +107,7 @@ Ext.define('sitools.admin.datasets.dictionaryWin', { extend : 'Ext.Window',
             autoScroll : true,
             store : this.storeNotion,
             cm : this.cmNotion,
-            sm : this.smNotion
+            selModel : this.smNotion
         });
 
         var storeDictionary = new Ext.data.JsonStore({

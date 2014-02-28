@@ -29,7 +29,8 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.componentsListPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.advancedFormPanel', { extend : 'Ext.form.FieldSet',
+Ext.define('sitools.admin.forms.advancedFormPanel', { 
+    extend : 'Ext.form.FieldSet',
     border : true,
     closable : true,
     style : 'background-color : white;',
@@ -161,8 +162,8 @@ Ext.define('sitools.admin.forms.advancedFormPanel', { extend : 'Ext.form.FieldSe
                     }, this);
 
                     this.doLayout();
-                    this.addResizers(this.items.items);
-                    this.addDragDrop(this.items.items);
+                    this.addResizers(this.items.items[0]);
+                    this.addDragDrop(this.items.items[0]);
                 }
             }
         });
@@ -196,7 +197,8 @@ Ext.define('sitools.admin.forms.advancedFormPanel', { extend : 'Ext.form.FieldSe
 					y : xyDrop[1] - xyRef[1]
 				};
 				// Reference the record (single selection) for readability
-				var rec = ddSource.dragData.selections[0];
+				var rec = ddSource.dragData.records[0];
+				
 		        var ComponentWin = new sitools.admin.forms.componentPropPanel({
 		            urlAdmin : rec.data.jsonDefinitionAdmin,
 		            datasetColumnModel : datasetColumnModel,
@@ -247,7 +249,10 @@ Ext.define('sitools.admin.forms.advancedFormPanel', { extend : 'Ext.form.FieldSe
      */
     addResizers : function (components) {
         Ext.each(components, function (container) {
-            var resizer = new Ext.Resizable(container.getId(), {
+            
+//            var resizer = new Ext.Resizable(container.getId(), {
+            var resizer = Ext.create('Ext.resizer.Resizer', {
+                id : container.getId(),
                 handles : 's e',
                 minWidth : 150,
                 maxWidth : 1000,

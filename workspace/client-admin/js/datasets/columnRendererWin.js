@@ -27,7 +27,7 @@ Ext.namespace('sitools.admin.datasets');
  * This window is used when the administrator needs to configure a columnRenderer 
  * (aka featureType) on a particular column.
  * @cfg {Ext.data.Record} selectedRecord (required) the selected Column
- * @cfg {Ext.grid.GridView} gridView (required) : the view to refresh when saving
+ * @cfg {Ext.grid.View} gridView (required) : the view to refresh when saving
  * @cfg {Ext.data.JsonStore} datasetColumnStore (required) : the store of the column chosen for the current dataset 
  * @cfg {String} columnRendererType (required) : the type of the columnRenderer (Image, URL or datasetLink)
  * @cfg {String} lastColumnRendererType (required) : the type of columnRenderer configured before calling this window

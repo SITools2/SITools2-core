@@ -82,7 +82,7 @@ Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
             } ]
         });
         this.grid = new Ext.grid.GridPanel({
-            sm : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel'),
             store : this.store,
             height : 200,
             columns : [ {
@@ -98,7 +98,7 @@ Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
             title : i18n.get('label.selectDataset'),
             items : [ this.grid ],
             bbar : {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
 				pageSize : this.pageSize,
 	            store : this.store,
 	            displayInfo : true,
@@ -163,7 +163,7 @@ Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
                     });
                 
                 }
-                this.storeDatasets.add(new Ext.data.Record({
+                this.storeDatasets.add({
                     id : dataset.data.id,
                     name : dataset.data.name,
                     description : dataset.data.description,
@@ -173,7 +173,7 @@ Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
                     status : dataset.data.status, 
                     properties : properties,
                     url : dataset.data.sitoolsAttachementForUsers
-                }));
+                });
             }
         }, this);
         this.close();

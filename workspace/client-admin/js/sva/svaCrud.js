@@ -135,7 +135,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
         });
         
         this.bbar = {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
@@ -143,7 +143,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
                 emptyMsg : i18n.get('paging.empty')
             };
         
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -232,7 +232,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.component.sva.svaCrudPanel.superclass.initComponent.call(this);
 
@@ -301,7 +301,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
 
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.id,
+            url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -320,7 +320,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.id + "/start",
+            url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.data.id + "/start",
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -338,7 +338,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.id + "/stop",
+            url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.data.id + "/stop",
             method : 'PUT',
             scope : this,
             success : function (ret) {

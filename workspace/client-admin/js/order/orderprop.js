@@ -185,7 +185,7 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
 
     onRender : function () {
         sitools.component.order.orderPropPanel.superclass.onRender.apply(this, arguments);
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         f.loadRecord(this.orderRec);
     }
 

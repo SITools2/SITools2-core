@@ -63,7 +63,7 @@ Ext.define('sitools.admin.util.DependenciesPanel', { extend : 'Ext.grid.plugin.R
         };
         
        
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             columns : [ {
                 header : i18n.get('label.url'),
                 dataIndex : 'url',
@@ -84,8 +84,7 @@ Ext.define('sitools.admin.util.DependenciesPanel', { extend : 'Ext.grid.plugin.R
      * Add a new Record to the dependencies property of a guiservice
      */
     onCreateDependencies : function () {
-        var e = new Ext.data.Record();
-        this.getStore().insert(this.getStore().getCount(), e);
+        this.getStore().insert(this.getStore().getCount(), {});
     },
     
     /**

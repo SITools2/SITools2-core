@@ -33,7 +33,8 @@ Ext.namespace('sitools.admin.datasource.jdbc');
  * @class sitools.admin.datasource.jdbc.DataBasePropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
+    extend : 'Ext.Window',
 	alias : 'widget.s-databaseprop',
 	width : 700,
     height : 480,
@@ -210,15 +211,18 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', { extend : 'Ext.Wi
             }],
             buttons : [ {
                 text : i18n.get('label.testCnx'),
+                name : 'testConnectionButton',
                 scope : this,
                 handler : this._onTest
             }, {
                 text : i18n.get('label.ok'),
+                name : 'okButton',
                 scope : this,
                 handler : this._onValidate
             },
             {
                 text : i18n.get('label.cancel'),
+                name : 'cancelButton',
                 scope : this,
                 handler : function () {
                     this.close();
@@ -229,20 +233,22 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', { extend : 'Ext.Wi
 			scope : this, 
 	        resize : function (window, width, height) {
 				var size = window.body.getSize();
-				this.findByType('panel')[0].setSize(size);
+				this.down('panel').setSize(size);
 			}
         };
         sitools.admin.datasource.jdbc.DataBasePropPanel.superclass.initComponent.call(this);
     },
-    onRender : function () {
-        sitools.admin.datasource.jdbc.DataBasePropPanel.superclass.onRender.apply(this, arguments);
-        Ext.each(this.findByType('form')[0].items.items, function (item) {
+    afterRender : function () {
+        sitools.admin.datasource.jdbc.DataBasePropPanel.superclass.afterRender.apply(this, arguments);
+        Ext.each(this.down('form').items.items, function (item) {
             item.disable();
         }, this);
-        this.findByType('panel')[0].buttons[1].disable();
-        this.findByType('panel')[0].buttons[0].disable();
+        
+        this.down('button[name=testConnectionButton]').disable();
+        this.down('button[name=okButton]').disable();
+        
         if (this.action == 'modify' || this.action == 'view') {
-            var f = this.findByType('form')[0].getForm();
+            var f = this.down('form').getForm();
             Ext.Ajax.request({
                 url : this.url,
                 method : 'GET',
@@ -264,17 +270,18 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', { extend : 'Ext.Wi
             });
         }
         if (this.action == 'modify' || this.action == "create") {
-            Ext.each(this.findByType('form')[0].items.items, function (item) {
+            Ext.each(this.down('form').items.items, function (item) {
                 item.enable();
             }, this);
-            this.findByType('panel')[0].buttons[1].enable();
-            this.findByType('panel')[0].buttons[0].enable();
+            
+            this.down('button[name=testConnectionButton]').enable();
+            this.down('button[name=okButton]').enable();
         }
         
     },
     
     _onValidate : function () {
-        var frm = this.findByType('form')[0].getForm();
+        var frm = this.down('form').getForm();
         if (!frm.isValid()) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.invalidForm'));
             return;
@@ -298,7 +305,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', { extend : 'Ext.Wi
     },
 
     _onTest : function () {
-        var frm = this.findByType('form')[0].getForm();
+        var frm = this.down('form').getForm();
         var vals = frm.getFieldValues();
         vals.url = this._createUrl(vals);
         Ext.destroyMembers(vals, "host", "port", "database");

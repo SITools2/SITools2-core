@@ -91,7 +91,7 @@ Ext.define('sitools.admin.forms.multiParam.abstractForm', { extend : 'Ext.form.P
         });
         Ext.each(this.datasetColumnModel, function (column) {
             if (column.specificColumnType != 'VIRTUAL') {
-                this.storeColumn.add(new Ext.data.Record(column));
+                this.storeColumn.add(column);
             }
         }, this);
 

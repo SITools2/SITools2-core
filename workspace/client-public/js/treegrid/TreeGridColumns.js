@@ -45,11 +45,24 @@
         }
     });
 
-    Ext.tree.Column = Ext.extend(Ext.list.Column, {});
-    Ext.tree.NumberColumn = Ext.extend(Ext.list.NumberColumn, {});
-    Ext.tree.DateColumn = Ext.extend(Ext.list.DateColumn, {});
-    Ext.tree.BooleanColumn = Ext.extend(Ext.list.BooleanColumn, {});
-
+    // TO CHECK
+    
+    Ext.tree.Column = Ext.define('Ext.tree.Column', {
+        extend : 'Ext.grid.Column'
+    });
+    
+    Ext.tree.NumberColumn = Ext.define('Ext.tree.NumberColumn', {
+        extend : 'Ext.grid.column.Number'
+    });
+    
+    Ext.tree.DateColumn = Ext.define('Ext.tree.DateColumn', {
+        extend : 'Ext.grid.Column.Date'
+    });
+    
+    Ext.tree.BooleanColumn = Ext.define('Ext.tree.BooleanColumn', {
+        extend : 'Ext.grid.column.Boolean'
+    });
+    
     Ext.define('tgcolumn',{
         alias : 'Ext.grid.Column'
     });

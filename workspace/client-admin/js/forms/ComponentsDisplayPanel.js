@@ -33,8 +33,8 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.ComponentsDisplayPanel
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.forms.ComponentsDisplayPanel', { extend : 'Ext.panel.Panel',
-	
+Ext.define('sitools.admin.forms.ComponentsDisplayPanel', { 
+    extend : 'Ext.panel.Panel',
 	y : 0,
 	position : 0,
 	padding : 5,
@@ -55,12 +55,31 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', { extend : 'Ext.panel.P
 	            activate : this._activeDisposition
 	        }        
         });
+        
         sitools.admin.forms.ComponentsDisplayPanel.superclass.initComponent.call(this);
-		
-	}, 
+	},
+	
+	afterRender : function () {
+	    sitools.admin.forms.ComponentsDisplayPanel.superclass.afterRender.call(this);
+	 // This will make sure we only drop to the view container
+//	    var formPanelDropTargetEl =  this.getEl().dom;
+//
+//	    var formPanelDropTarget = Ext.create('Ext.dd.DropTarget', this.getEl(), {
+//	        ddGroup: 'gridComponentsList',
+//	        notifyEnter: function(ddSource, e, data) {
+//	            console.log('enter');
+//	            
+//	        },
+//	        notifyDrop  : function(ddSource, e, data){
+//	            console.log('drop');
+//	            return true;
+//	        }
+//	    });
+	},
 	
     _activeDisposition : function () {
-        this.body.addClass(Ext.getCmp("formMainFormId").find('name', 'css')[0].getValue());
+        var formPincipal = this.up('window').down('form > textfield[name=css]');
+        this.body.addClass(formPincipal.getValue());
         this.setWidth(this.formSize.width);
         
         this.removeAll(true);
@@ -87,7 +106,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', { extend : 'Ext.panel.P
 		}
 	        
 	     if (this.zoneStore.getCount() == 0 && mainPanel){
-	        this.zoneStore.add(new Ext.data.Record(mainPanel));
+	        this.zoneStore.add(mainPanel);
     	} 
 
         if (this.zoneStore.getCount() > 0) {

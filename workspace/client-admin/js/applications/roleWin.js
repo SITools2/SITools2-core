@@ -56,7 +56,7 @@ Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
             } ]
         });
         this.grid = new Ext.grid.GridPanel({
-            sm : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel'),
             store : this.store,
             height : 200,
             columns : [ {
@@ -69,7 +69,7 @@ Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
         });
         
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -121,9 +121,14 @@ Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
     _onOK : function () {
         Ext.each(this.grid.getSelectionModel().getSelections(), function (role) {
             if (this.storeRolesApplication.find('role', role.data.name) == -1) {
-                this.storeRolesApplication.add(new Ext.data.Record({
+                var record = Ext.create('AuthorizationModel', {
                     role : role.data.name
-                }, role.data.name));
+                });
+
+                this.storeRolesApplication.add(record);
+//                this.storeRolesApplication.add(new Ext.data.Record({
+//                    role : role.data.name
+//                }, role.data.name));
             }
         }, this);
         this.close();

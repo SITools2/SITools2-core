@@ -412,13 +412,13 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
             var form = this.fieldMappingFormPanel.getForm();
             var rec = {};
             rec.descriptionAction = this.converter.descriptionAction;
-            form.loadRecord(new Ext.data.Record(rec));
+            form.setValues(rec);
 
             var parameters = this.converter.parameters;
             if (parameters !== null) {
                 var store = this.gridFieldMapping.getStore();
                 for (var i = 0; i < parameters.length; i++) {
-                    var recTmp = new Ext.data.Record(parameters[i]);
+                    var recTmp = parameters[i];
                     store.add(recTmp);
                 }
                 this.gridFieldMapping.getView().refresh();

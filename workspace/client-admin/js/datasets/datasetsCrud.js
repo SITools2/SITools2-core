@@ -30,28 +30,25 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.datasets.datasetsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-datasets',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.DATASETS,
-    sm : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
-    viewConfig : {
-        forceFit : true,
-        autoFill : true, 
-		getRowClass : function (row, index) { 
-			var cls = ''; 
-			var data = row.data; 
-			if (data.dirty == "true") {
-				cls = "red-row";
-			}
-			return cls; 
-		} 
-		
-	},
-
-    // loadMask: true,
+    forceFit : true,
+//    viewConfig : {
+//		getRowClass : function (row, index) { 
+//			var cls = ''; 
+//			var data = row.data; 
+//			if (data.dirty == "true") {
+//				cls = "red-row";
+//			}
+//			return cls; 
+//		} 
+//	},
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
@@ -81,31 +78,28 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             } ]
         });
 
-        this.cm = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : false
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 100,
-                sortable : true
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 350
-            }, {
-                header : i18n.get('label.status'),
-                dataIndex : 'status',
-                width : 90,
-                sortable : true
-            } ]
-        });
+        this.columns = [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 100,
+            sortable : true
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 350
+        }, {
+            header : i18n.get('label.status'),
+            dataIndex : 'status',
+            width : 90,
+            sortable : true,
+            renderer : function (value, meta, record, index, colIndex, store) {
+                meta.tdCls += value;
+                return value;
+            }
+        }];
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -113,15 +107,13 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             emptyMsg : i18n.get('paging.empty')
         };
 
-        var buttons = [];
-        
         this.tbar = {
             xtype : 'toolbar',
             defaults : {
                 scope : this, 
                 xtype : 's-menuButton'
             },
-            items : [ {
+            items : [{
 	            text : i18n.get('label.create'),
 	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
 	            handler : this.onCreate
@@ -166,12 +158,12 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
                 emptyText : i18n.get('label.search'),
                 store : this.store,
                 pageSize : this.pageSize
-            } ]
+            }]
         };
 
 		this.listeners = {
             scope : this, 
-            rowDblClick : this.onEdit
+            itemdblclick : this.onEdit
         };
         
         sitools.admin.datasets.datasetsCrudPanel.superclass.initComponent.call(this);
@@ -206,7 +198,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.component.datasets.datasetsMultiTablesPanel({
-            datasetUrlToCopy : this.url + "/" + rec.id,
+            datasetUrlToCopy : this.url + "/" + rec.data.id,
             action : 'duplicate',
             store : this.getStore(), 
             url : this.url
@@ -217,8 +209,8 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
      * Load the store of the datasets when rendering the grid
      * @method
      */
-    onRender : function () {
-        sitools.admin.usergroups.GroupCrudPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.usergroups.GroupCrudPanel.superclass.afterRender.apply(this, arguments);
         this.store.load({
             params : {
                 start : 0,
@@ -249,10 +241,10 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.component.datasets.datasetsMultiTablesPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'view',
             store : this.getStore(), 
-            datasetId : rec.id
+            datasetId : rec.data.id
         });
         up.show(ID.BOX.DATASETS);
     },
@@ -270,10 +262,10 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.component.datasets.datasetsMultiTablesPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore(), 
-            datasetId : rec.id
+            datasetId : rec.data.id
         });
         up.show(ID.BOX.DATASETS);
     },
@@ -309,7 +301,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -331,7 +323,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.admin.datasets.datasetsOpenSearch({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'edit',
             store : this.getStore()
         });
@@ -352,7 +344,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return;
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/refresh',
+            url : this.url + '/' + rec.data.id + '/refresh',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -374,7 +366,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/start',
+            url : this.url + '/' + rec.data.id + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -395,7 +387,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/stop',
+            url : this.url + '/' + rec.data.id + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -416,7 +408,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.id + '/getSqlString',
+            url : this.url + '/' + rec.data.id + '/getSqlString',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -456,7 +448,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', { extend : 'Ext.grid.Pane
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         } 
         var up = new sitools.admin.datasets.DicoMapping({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             masked : (rec.data.status == "ACTIVE")
         });
         up.show(ID.BOX.DATASETS);

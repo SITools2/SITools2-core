@@ -266,10 +266,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ex
                 }
                 
 
-                if (rec.id === this.currentRecordId) {
+                if (rec.data.id === this.currentRecordId) {
                     return;
                 }
-                this.currentRecordId = rec.id;
+                this.currentRecordId = rec.data.id;
                 
                 this.centerPanel.remove(this.formParametersPanel);
                 

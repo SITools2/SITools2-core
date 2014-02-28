@@ -26,7 +26,8 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', { extend : 'Ext.Panel', 
+Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', { 
+    extend : 'Ext.Panel', 
     flex : 1,
     layout : {
         type : 'vbox',
@@ -60,8 +61,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', { extend : 
             } ]
         });
         
-        this.gridViewColumns = new Ext.grid.GridView({
-            forceFit: true,
+        this.gridViewColumns = new Ext.grid.View({
             listeners : {
                 scope : this, 
                 refresh : function () {
@@ -157,11 +157,12 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', { extend : 
             title : i18n.get('title.datasetLinkDetails'),
             layout : 'fit',
             flex : 1,
+            forceFit: true,
             view : this.gridViewColumns, 
             autoScroll : true,
             store : this.storeColumns,
             cm : this.cmColumns,
-            sm : this.smColumns,
+            selModel : this.smColumns,
             bbar : this.bbar,
             tbar : {
                 xtype : 'toolbar',

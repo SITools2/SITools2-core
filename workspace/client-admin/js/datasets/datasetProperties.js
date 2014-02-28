@@ -108,7 +108,7 @@ Ext.define('sitools.admin.datasets.datasetProperties', { extend : 'Ext.grid.plug
             height : 180,
             store : storeProperties,
             cm : cmProperties,
-            sm : smProperties,
+            selModel : smProperties,
             viewConfig : {
                 forceFit : true
             }, 
@@ -192,9 +192,9 @@ Ext.define('sitools.admin.datasets.datasetProperties', { extend : 'Ext.grid.plug
      * Creates a new record with a String default type 
      */
     onCreateProperty : function () {
-        var e = new Ext.data.Record({
+        var e = {
 			type : "String"
-        });
+        };
         this.getStore().insert(0, e);
     },
     /**

@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.dictionary');
 
-Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.component.dictionary.templatePropPanel', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-templateprop',
     width : 700,
     height : 480,
@@ -48,31 +49,31 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
             } ]
         });
 
-        var cmProperty = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.name'),
-                dataIndex : 'name',
-                width : 100,
-                editor : new Ext.form.TextField({
-                    allowBlank : false
-                })
-            },  {
-                header : i18n.get('headers.value'),
-                dataIndex : 'value',
-                width : 150,
-                editor : new Ext.form.TextField({
-                    allowBlank : true
-                })
-
-            } ],
-            defaults : {
-                sortable : true,
-                width : 100,
-                editor : new Ext.form.TextField({
-                    allowBlank : false
-                })
-            }
-        });
+//        var cmProperty = Ext.create('Ext.grid.column.Column', {
+//            columns : [ {
+//                header : i18n.get('headers.name'),
+//                dataIndex : 'name',
+//                width : 100,
+//                editor : new Ext.form.TextField({
+//                    allowBlank : false
+//                })
+//            },  {
+//                header : i18n.get('headers.value'),
+//                dataIndex : 'value',
+//                width : 150,
+//                editor : new Ext.form.TextField({
+//                    allowBlank : true
+//                })
+//
+//            } ],
+//            defaults : {
+//                sortable : true,
+//                width : 100,
+//                editor : new Ext.form.TextField({
+//                    allowBlank : false
+//                })
+//            }
+//        });
 
         var smProperty = Ext.create('Ext.selection.RowModel',{
             singleSelect : true
@@ -94,14 +95,38 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
             } ]
         };
 
-        var gridProperty = new Ext.grid.EditorGridPanel({
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        var gridProperty = Ext.create('Ext.grid.Panel', {
             id : 'gridPropertySelect',
             title : i18n.get('title.gridProperty'),
             store : storeProperty,
             tbar : tbar,
-            cm : cmProperty,
-            sm : smProperty
+            columns :  [{
+                header : i18n.get('headers.name'),
+                dataIndex : 'name',
+                width : 100,
+                editor : new Ext.form.TextField({
+                    allowBlank : false
+                })
+            }, {
+                header : i18n.get('headers.value'),
+                dataIndex : 'value',
+                width : 150,
+                editor : new Ext.form.TextField({
+                    allowBlank : true
+                })
+    
+            }],
+            selModel : smProperty,
+            plugins : [cellEditing],
+            selModel: {
+                selType: 'cellmodel'
+            }
         });
+        
         this.items = [ {
             xtype : 'tabpanel',
             height : 450,
@@ -153,11 +178,11 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
         Ext.Msg.alert('upload non impl&eacute;ment&eacute;');
     },
     onCreateProperty : function () {
-        this.findById('gridPropertySelect').getStore().add(new Ext.data.Record());
+        this.down('gridpanel').getStore().add({});
     },
     onDeleteProperty : function () {
-        var grid = this.findById('gridPropertySelect');
-        var rec = grid.getSelectionModel().getSelected();
+        var grid = this.down('gridpanel');
+        var rec = grid.getSelectionModel().getLastSelected();
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
@@ -167,7 +192,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
     },
     onValidate : function () {
         var f, putObject = {}, store, tmp = [], i;
-        f = this.findByType('form')[0].getForm();
+        f = this.down('form').getForm();
 		if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
@@ -185,7 +210,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
                 }
             }, this);
 
-            store = this.findById('gridPropertySelect').getStore();
+            store = this.down('gridpanel').getStore();
             if (store.getCount() > 0) {
                 putObject.properties = [];
                 
@@ -219,7 +244,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
                 }
             }, this);
 
-            store = this.findById('gridPropertySelect').getStore();
+            store = this.down('gridpanel').getStore();
             if (store.getCount() > 0) {
                 putObject.properties = [];
                 for (i = 0; i < store.getCount(); i++) {
@@ -254,16 +279,16 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
                     method : 'GET',
                     scope : this,
                     success : function (ret) {
-                        var f = this.findByType('form')[0].getForm();
-                        var store = this.findById('gridPropertySelect').getStore();
+                        var f = this.down('form').getForm();
+                        var store = this.down('gridpanel').getStore();
 
                         var data = Ext.decode(ret.responseText).template;
                         var rec = {};
                         rec.id = data.id;
                         rec.name = data.name;
                         rec.description = data.description;
-                        var record = new Ext.data.Record(rec);
-                        f.loadRecord(record);
+                        
+                        f.setValues(rec);
 
                         if (!data.properties) {
                             return;
@@ -276,8 +301,9 @@ Ext.define('sitools.component.dictionary.templatePropPanel', { extend : 'Ext.Win
                             properties = data.properties;
                         }
                         for (i = 0; i < properties.length; i++) {
-                            rec = new Ext.data.Record(properties[i]);
-                            store.add(rec);
+//                            rec = new Ext.data.Record(properties[i]);
+//                            store.add(rec);
+                            store.add(properties[i]);
                         }
 
                     },

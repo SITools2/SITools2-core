@@ -103,7 +103,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
                 }
             }
 //            ,
-//            sm : Ext.create('Ext.selection.RowModel',{
+//            selModel : Ext.create('Ext.selection.RowModel',{
 //                listeners : {
 //                    scope : this,
 //                    rowselect : this.gridColumnRowSelectionModelListener,
@@ -296,7 +296,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
             editable : false,
             url : this.urlDictionaries + "/" + this.dictionaryId,
             id : 'gridDictionaryConcept',
-            sm : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel'),
             flex : 2,
             title : i18n.get("label.dictionaryConcepts"),
             enableColumnResize : true,            
@@ -454,7 +454,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
 //                    selModel.selectRecords(records);   
 //                }
 //            },
-            sm : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel',{
 				listeners : {
 					scope : this,
 					rowselect : this.gridMappingRowSelectionModelListener,
@@ -669,7 +669,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
                 Ext.iterate(concept.data, function (key, value) {
                     rec[key] = value;
                 });
-                storeGridMapping.add(new Ext.data.Record(rec, rec.idMapping));                     
+                storeGridMapping.add(rec, rec.data.idMapping);                     
                 
             });
             storeGridMapping.sort();
@@ -703,7 +703,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
                         rec[key] = value;
                     });
                     this.isModified = true;
-                    storeGridMapping.add(new Ext.data.Record(rec, rec.idMapping));
+                    storeGridMapping.add(rec, rec.data.idMapping);
                 }
             }, this);
         }, this);

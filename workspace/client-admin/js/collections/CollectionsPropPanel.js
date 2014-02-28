@@ -130,7 +130,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
             store : storeDataSets,
             tbar : tbar,
             cm : cmDataSets,
-            sm : smDataSets,
+            selModel : smDataSets,
             viewConfig : {
                 forceFit : true
             }, 
@@ -234,7 +234,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
      * @return {Boolean}
      */
     onValidate : function () {
-		var f = this.findByType('form')[0].getForm();
+		var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
@@ -246,7 +246,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
      * Then call a PUT or POST request (depending on action) to save collection.
      */        
     onSaveCollection : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         var putObject = {};
         Ext.iterate(f.getValues(), function (key, value) {
             putObject[key] = value;
@@ -307,7 +307,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
                     method : 'GET',
                     scope : this,
                     success : function (ret) {
-                        var f = this.findByType('form')[0].getForm();
+                        var f = this.down('form').getForm();
                         var grid = this.findById('gridDataSets');
                         var store = grid.getStore();
                         var data = Ext.decode(ret.responseText).collection;
@@ -317,7 +317,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
                         // Chargement des dataSets disponible et mise a jour de
                         Ext.each(dataSets, function (dataSet) {
                             var rec = {};
-                            rec.id = dataSet.id;
+                            rec.data.id = dataSet.id;
                             rec.name = dataSet.name;
                             rec.description = dataSet.description;
                             rec.type = dataSet.description;
@@ -327,19 +327,16 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
                             rec.properties = dataSet.properties;
                             rec.url = dataSet.url;
 
-                            store.add(new Ext.data.Record(rec));
+                            store.add(rec);
                         });
                         // ceuw attaches au projet
 
                         var rec = {};
-                        rec.id = data.id;
+                        rec.data.id = data.id;
                         rec.name = data.name;
                         rec.description = data.description;
                          
-                        var record = new Ext.data.Record(rec);
-
-                        f.loadRecord(record);
-                        
+                        f.setValues(rec);
                     },
                     failure : function (ret) {
                         var data = Ext.decode(ret.responseText);

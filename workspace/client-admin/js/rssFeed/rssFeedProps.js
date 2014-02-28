@@ -112,10 +112,9 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
 		            } ],
 		            listeners : {
 		                scope : this,
-		                change : function (radioGroup, radioChecked) {
-		                    var name = radioChecked.getGroupValue();
-		                    this.toogleSpecificForm(name);
-		                    if (name == "CLASSIC") {                        
+		                change : function (radioGroup, newValue, oldValue, opts) {
+		                    this.toogleSpecificForm(newValue);
+		                    if (newValue == "CLASSIC") {                        
 		                        this.gridPanel.setDisabled(false);
 		                    } else {
 		                        this.gridPanel.setDisabled(true);
@@ -411,7 +410,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
             var form = this.formPanel.getForm();
             
             var rec = {};
-            rec.id = data.id;
+            rec.data.id = data.id;
             rec.name = data.name;
             rec.feedType = data.feedType;
             rec.feedSource = data.feedSource;
@@ -428,8 +427,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
 	            }
             }
 
-            var record = new Ext.data.Record(rec);
-            form.loadRecord(record);
+            form.setValues(rec);
             
         }
     },
@@ -447,8 +445,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
                 var entry = data.entries[i];
                 var date = new Date(entry.updatedDate);
                 entry.updatedDate = date;
-                var rec = new Ext.data.Record(entry);
-                this.storeItem.add(rec);
+                this.storeItem.add(entry);
 
             }
         }

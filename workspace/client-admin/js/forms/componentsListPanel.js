@@ -29,14 +29,24 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.componentsListPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.componentsListPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.forms.componentsListPanel', { 
+    extend : 'Ext.grid.Panel',
     width : 220,
     id: 'gridsource',
     draggable : true,
+    layout : "fit",
+    title : i18n.get('title.componentList'),
+    autoScroll : true, 
+    ddGroup : 'gridComponentsList',
+    enableDragDrop : true,
+    forceFit : true,
+    stripeRows: true,
 
     initComponent : function () {
+        
         this.title = i18n.get('label.chooseComponent');
-        var storeComponents = new Ext.data.JsonStore({
+        
+        this.store = new Ext.data.JsonStore({
             root : 'data',
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL'),
             fields : [ {
@@ -76,81 +86,48 @@ Ext.define('sitools.admin.forms.componentsListPanel', { extend : 'Ext.grid.Panel
 			}
            
         });
-        var smComponents = Ext.create('Ext.selection.RowModel',{
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
             singleSelect : true
         });
 
-        var cmComponents = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.type'),
-                dataIndex : 'type', 
-                width : 150
-            }, {
-                header : i18n.get('headers.image'),
-                dataIndex : 'imageUrl',
-                renderer : function (value) {
-                    return "<a href='#' onClick='sitools.admin.forms.componentsListPanel.showPreview(\"" + value + "\"); return false;'>" + i18n.get('label.preview') + "</a>";
-                }, 
-                width : 70
-            } ],
-            defaults : {
-                sortable : true,
-                width : 100
+        this.columns = [{
+            header : i18n.get('headers.type'),
+            dataIndex : 'type', 
+            width : 150
+        }, {
+            header : i18n.get('headers.image'),
+            dataIndex : 'imageUrl',
+            renderer : function (value) {
+                return "<a href='#' onClick='sitools.admin.forms.componentsListPanel.showPreview(\"" + value + "\"); return false;'>" + i18n.get('label.preview') + "</a>";
+            }, 
+            width : 70
+        }];
+
+        
+        this.viewConfig = {
+            plugins: {
+                ddGroup: 'gridComponentsList',
+                ptype: 'gridviewdragdrop',
+                enableDrop: false
             }
-        });
-//        this.gridComponents = new Ext.grid.GridPanel({
-//            layout : "fit",
-//            title : i18n.get('title.componentList'),
-//            autoScroll : true, 
-//            store : storeComponents,
-//            cm : cmComponents,
-//            sm : smComponents,
-//            viewConfig : {
-//                forceFit : true
-//            }, 
-//            buttons : [ {
-//                text : i18n.get('label.ok'),
-//                scope : this,
-//                handler : this.onValidate
-//            }, {
-//                text : i18n.get('label.cancel'),
-//                scope : this,
-//                handler : function () {
-//                    this.close();
-//                }
-//            } ]
-//        });
-////        this.items = [ this.gridComponents ];
-        Ext.apply(this, {
-            layout : "fit",
-            title : i18n.get('title.componentList'),
-            autoScroll : true, 
-            store : storeComponents,
-            cm : cmComponents,
-            sm : smComponents,
-            ddGroup : 'gridComponentsList',
-            enableDragDrop : true,
-            viewConfig : {
-                forceFit : true
-            }
-//            , 
-//            buttons : [ {
-//                text : i18n.get('label.ok'),
-//                scope : this,
-//                handler : this.onValidate
-//            }, {
-//                text : i18n.get('label.cancel'),
-//                scope : this,
-//                handler : function () {
-//                    this.close();
-//                }
-//            } ]
-        });
+        };
+
         sitools.admin.forms.componentsListPanel.superclass.initComponent.call(this);
     },
+    
+    
     afterRender : function () {
         sitools.admin.forms.componentsListPanel.superclass.afterRender.apply(this, arguments);
-        this.dd.addToGroup('gridComponentsTest');
+        this.dd = new Ext.dd.DragDrop(this.getId(), 'gridComponentsTest', {});
+        
+        var panelDropTarget = new Ext.dd.DragZone(this.getEl(), {
+            notifyDrag: function(dragsource, event, data) {
+                Ext.example.msg("drag target");
+            }
+        });
+        
+//        this.dd.addToGroup('gridComponentsTest');
 //        this.gridComponents.setSize(this.body.getSize());
     },
 //    onValidate : function () {

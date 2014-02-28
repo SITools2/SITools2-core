@@ -32,11 +32,10 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.componentPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.componentPropPanel', { extend : 'Ext.Window',
-
+Ext.define('sitools.admin.forms.componentPropPanel', { 
+    extend : 'Ext.Window',
     modal : true,
     pageSize : 10,
-    
 
     initComponent : function () {
         this.title = i18n.get('label.componentProperties');

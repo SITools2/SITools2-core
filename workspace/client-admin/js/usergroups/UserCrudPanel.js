@@ -33,7 +33,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
     border : false,
     height : 300,
     id : ID.BOX.USER,
-    sm : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
     pageSize : 10,
@@ -58,6 +58,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
             root : 'data',
             restful : true,
             autoSave : false,
+            autoLoad : true,
             url : this.url,
             idProperty : 'identifier',
             remoteSort : true,
@@ -76,13 +77,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
             } ]
         });
 
-        this.cm = Ext.create('Ext.grid.ColumnModel', {
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
+        this.columns = [{
                 header : i18n.get('label.login'),
                 dataIndex : 'identifier',
                 width : 100
@@ -98,11 +93,10 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
                 header : i18n.get('label.email'),
                 dataIndex : 'email',
                 width : 200
-            } ]
-        });
+            }];
 
         this.bbar = {
-            xtype : 'paging',
+            xtype : 'pagingtoolbar',
             pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
@@ -143,7 +137,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this._onModify
+            itemdblclick : this._onModify
         };
         this.callParent(arguments);
 //        sitools.admin.usergroups.UserCrudPanel.superclass.initComponent.call(this);
@@ -154,12 +148,12 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
      */
     onRender : function () {
         sitools.admin.usergroups.UserCrudPanel.superclass.onRender.apply(this, arguments);
-        this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
-        });
+//        this.store.load({
+//            params : {
+//                start : 0,
+//                limit : this.pageSize
+//            }
+//        });
     },
 
     /**
@@ -185,7 +179,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         var up = new sitools.admin.usergroups.UserPropPanel({
-            url : this.url + '/' + rec.id,
+            url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()
         });
@@ -220,7 +214,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
      */
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.id,
+            url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {

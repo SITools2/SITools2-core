@@ -99,7 +99,7 @@ Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', { extend : 'sitools.
 //            var componentYpos = greatY + 10;
             param1 = Ext.isEmpty(f.findField('PARAM1')) ? "" : f.findField('PARAM1').getValue();
             code = [param1];
-            formComponentsStore.add(new Ext.data.Record({
+            formComponentsStore.add({
                 label : f.findField('LABEL_PARAM1').getValue(),
                 type : this.ctype,
                 code : code,
@@ -117,7 +117,7 @@ Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', { extend : 'sitools.
                 unit : unitObject, 
                 extraParams : extraParams,
                 containerPanelId : this.containerPanelId
-            }));
+            });
         }
         return true;
     }

@@ -32,7 +32,8 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.formPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.forms.formPropPanel', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 580,
     modal : true,
@@ -87,6 +88,7 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
                 }
             }
         });
+        
         this.formComponentsStore = new Ext.data.JsonStore({
             root : 'data',
             autoLoad : false,
@@ -196,31 +198,25 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
 	        }]
 	    });	
         
-	    var cmColumns = new Ext.grid.ColumnModel({
-			columns : [{
-				header : i18n.get("label.tableName"), 
-				dataIndex : 'tableName', 
-				type : 'string'
-			}, {
-				header : i18n.get("label.columnAlias"), 
-				dataIndex : 'columnAlias', 
-				type : 'string'
-			}]
-	    });
-	    
 	    this.gridColumns = new Ext.grid.GridPanel({
+	        forceFit : true,
 			store : storeColumns, 
-			cm : cmColumns, 
+			columns : [{
+                header : i18n.get("label.tableName"), 
+                dataIndex : 'tableName', 
+                type : 'string'
+            }, {
+                header : i18n.get("label.columnAlias"), 
+                dataIndex : 'columnAlias', 
+                type : 'string'
+            }], 
 			title : i18n.get('label.datasetColumns'), 
-			flex : 1, 
-			viewConfig : {
-				forceFit : true
-			}
+			flex : 1
 	    });
 	    
 		Ext.each(this.datasetColumnModel, function (column) {
             if (column.specificColumnType != 'VIRTUAL') {
-                this.gridColumns.getStore().add(new Ext.data.Record(column));
+                this.gridColumns.getStore().add(column);
             }
         }, this);
         
@@ -346,7 +342,7 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
                             return;
                         }
                         
-                        var f = this.findByType('form')[0].getForm();
+                        var f = this.down('form').getForm();
                         var data = Json.form;
                         if (!Ext.isEmpty(data.width)) {
                             this.formSize.width = data.width;
@@ -363,8 +359,7 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
                         rec.description = data.description;
                         rec.css = data.css;
                         
-                        var record = new Ext.data.Record(rec);
-                        f.loadRecord(record);
+                        f.setValues(rec);
                         
                         var globalParameters = {};
                         if (!Ext.isEmpty(data.parameters)) {
@@ -376,7 +371,7 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
                         
                         if (!Ext.isEmpty(globalParameters.formZones)) {
                             Ext.each(globalParameters.formZones, function (zone) {
-                                this.zoneStore.add(new Ext.data.Record({
+                                this.zoneStore.add({
                                     containerPanelId : zone.id,
                                     title : zone.title,
                                     height : zone.height,
@@ -385,11 +380,11 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
                                     css : zone.css,
                                     position : zone.position,
                                     params : zone.params
-                                }));
+                                });
 
                                 if (!Ext.isEmpty(zone.params)) {
                                     Ext.each(zone.params, function (param) {
-                                        this.formComponentsStore.add(new Ext.data.Record({
+                                        this.formComponentsStore.add({
                                             type : param.type,
                                             code : param.code,
                                             label : param.label,
@@ -410,25 +405,25 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
                                             unit : param.unit,
                                             extraParams : param.extraParams,
                                             containerPanelId : param.containerPanelId
-                                        }));
+                                        });
                                     }, this);
                                 }
                             }, this);
                         } else if (!Ext.isEmpty(globalParameters.oldParams)) {
                             var idGen = Ext.id();
-                            this.zoneStore.add(new Ext.data.Record({
+                            this.zoneStore.add({
                                 containerPanelId : idGen,
                                 title : data.name,
                                 height : data.height,
                                 css : data.css,
                                 position : 0,
                                 params : globalParameters.oldParams
-                            }));
+                            });
                             
                             if (!Ext.isEmpty(globalParameters.oldParams)) {
                                 var parameters = globalParameters.oldParams;
                                 for (var i = 0; i < parameters.length; i++) {
-                                    this.formComponentsStore.add(new Ext.data.Record({
+                                    this.formComponentsStore.add({
                                         type : parameters[i].type,
                                         code : parameters[i].code,
                                         label : parameters[i].label,
@@ -449,7 +444,7 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
                                         unit : parameters[i].unit, 
                                         extraParams : parameters[i].extraParams,
                                         containerPanelId : idGen
-                                    }));
+                                    });
                                 }
                             }
                         }
@@ -489,7 +484,7 @@ Ext.define('sitools.admin.forms.formPropPanel', { extend : 'Ext.Window',
     },
     
     onValidate : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;

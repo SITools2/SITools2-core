@@ -30,7 +30,8 @@ Ext.namespace("sitools.admin.forms");
  * @class sitools.admin.forms.absoluteLayoutProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.absoluteLayoutProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.forms.absoluteLayoutProp', { 
+    extend : 'Ext.Window',
     modal : true,
     initComponent : function () {
         var width = this.formSize.width;
@@ -71,7 +72,7 @@ Ext.define('sitools.admin.forms.absoluteLayoutProp', { extend : 'Ext.Window',
 
     },
     _onValidate : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         var width = parseInt(f.findField('absolutePanelWidth').getValue(), 10);
         var height = parseInt(f.findField('absolutePanelHeight').getValue(), 10);
         var size = {

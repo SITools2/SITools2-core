@@ -304,7 +304,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             pageSize : 10,
             urlDatasets : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
             cm : cm,
-            sm : smColumn,
+            selModel : smColumn,
             store : store,
             plugins : plugins,
             autoExpandColumn : "dataIndex",
@@ -497,7 +497,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                     // on stocke l'ensemble des colonnes d'un dataset de
                     // specificColumnType DATABASE
                     if (dataIndexList[i].specificColumnType === "DATABASE" || dataIndexList[i].specificColumnType === "SQL") {
-                        store.add(new Ext.data.Record(dataIndexList[i]));
+                        store.add(dataIndexList[i]);
                     }
                 }
                 // on charge les valeurs de l'index s'il y en a déjà un
@@ -662,9 +662,8 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             if (data.lastImportDate !== undefined) {
                 rec.lastImportDate = data.lastImportDate;
             }
-            var record = new Ext.data.Record(rec);
 
-            form.loadRecord(record);
+            form.setValues(rec);
         }
     },
 
@@ -903,7 +902,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             var rec = storeGrid.getAt(i).data;
             if (rec.indexed) {
                 var indexColumn = {};
-                indexColumn.idColumn = rec.id;
+                indexColumn.idColumn = rec.data.id;
                 if (!Ext.isEmpty(rec.solrType) && rec.solrType !== "") {
                     indexColumn.type = rec.solrType;
                 }
@@ -913,14 +912,14 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                 keywordIndex.push(rec.columnAlias);
             }
             if (rec.defaultSearchField) {
-                returnedJSON.defaultSearchField = rec.id;
+                returnedJSON.defaultSearchField = rec.data.id;
             }
             if (rec.uniqueKey) {
-                returnedJSON.uniqueKey = rec.id;
+                returnedJSON.uniqueKey = rec.data.id;
             }
             var tmp = rec.returned;
             if (!Ext.isEmpty(rec.returned)) {
-                returnedJSON[rec.returned] = rec.id;
+                returnedJSON[rec.returned] = rec.data.id;
                 if (!rec.indexed) {
                     colReturnedButNotIndex = true;
                 }
@@ -1238,7 +1237,8 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch.relativeLink', { extend : 
             var rec = {};
             var form = this.formRelative.getForm();
             rec.relative = this.selectedRecord.data.linkFieldRelative;
-            form.loadRecord(new Ext.data.Record(rec));
+            
+            form.setValues(rec);
         }
     },
     

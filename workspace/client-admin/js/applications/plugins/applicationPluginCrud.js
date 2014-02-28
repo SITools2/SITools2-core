@@ -115,7 +115,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
             proxy : this.httpProxyForms
         });
 
-        this.cm = new Ext.grid.ColumnModel({
+        this.columns = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
                 sortable : true
@@ -208,7 +208,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
         };
 
         this.bbar = {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
@@ -218,7 +218,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
         
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+            itemdblclick : this.onModify
         };
         sitools.admin.applications.plugins.ApplicationPluginCrudPanel.superclass.initComponent.call(this);
 
@@ -306,7 +306,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
      */
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.urlAdmin + "/" + rec.id,
+            url : this.urlAdmin + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -328,7 +328,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.urlAdmin + "/" + rec.id + "/start",
+            url : this.urlAdmin + "/" + rec.data.id + "/start",
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -349,7 +349,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
         Ext.Ajax.request({
-            url : this.urlAdmin + "/" + rec.id + "/stop",
+            url : this.urlAdmin + "/" + rec.data.id + "/stop",
             method : 'PUT',
             scope : this,
             success : function (ret) {

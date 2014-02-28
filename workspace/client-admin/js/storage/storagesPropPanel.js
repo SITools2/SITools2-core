@@ -126,7 +126,7 @@ Ext.define('sitools.admin.storages.storagesPropPanel', { extend : 'Ext.Window',
      * @return {Boolean}
      */
     onValidate : function () {
-        var f = this.findByType('form')[0].getForm();
+        var f = this.down('form').getForm();
         if (!f.isValid()) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return false;
@@ -189,13 +189,10 @@ Ext.define('sitools.admin.storages.storagesPropPanel', { extend : 'Ext.Window',
                     method : 'GET',
                     scope : this,
                     success : function (ret) {
-                        var f = this.findByType('form')[0].getForm();
+                        var f = this.down('form').getForm();
                         var data = Ext.decode(ret.responseText).directory;
 
-                        
-                        var record = new Ext.data.Record(data);
-
-                        f.loadRecord(record);
+                        f.setValues(data);
                     },
                     failure : function (ret) {
                         var data = Ext.decode(ret.responseText);
