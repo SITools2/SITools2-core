@@ -59,6 +59,7 @@ import fr.cnes.sitools.properties.model.SitoolsProperty;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
+import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.tasks.model.TaskStatus;
 import fr.cnes.sitools.util.Property;
@@ -821,6 +822,70 @@ public class GetResponseUtils {
         xstream.aliasField("groups", Role.class, "groups");
 
         xstream.aliasField("role", Response.class, "item");
+      }
+      xstream.aliasField("data", Response.class, "data");
+
+      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
+      rep.setXstream(xstream);
+
+      Response response = rep.getObject("response");
+
+      return response;
+    }
+    finally {
+      RIAPUtils.exhaust(representation);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // USER BLACKLIST MODEL
+
+  /**
+   * REST API Response wrapper for single item expected.
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected in the item property of the Response object
+   * @return Response the response.
+   */
+  public static Response getResponseUserBlacklist(MediaType media, Representation representation, Class<?> dataClass) {
+    return getResponseUserBlacklist(media, representation, dataClass, false);
+  }
+
+  /**
+   * REST API Response Representation wrapper for single or multiple items expexted
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected for items of the Response object
+   * @param isArray
+   *          if true wrap the data property else wrap the item property
+   * @return Response
+   */
+  public static Response getResponseUserBlacklist(MediaType media, Representation representation, Class<?> dataClass,
+      boolean isArray) {
+    try {
+      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
+        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+      }
+
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
+      xstream.autodetectAnnotations(false);
+      xstream.alias("response", Response.class);
+
+      if (isArray) {
+        xstream.addImplicitCollection(Response.class, "data", dataClass);
+      }
+      else {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
       }
       xstream.aliasField("data", Response.class, "data");
 

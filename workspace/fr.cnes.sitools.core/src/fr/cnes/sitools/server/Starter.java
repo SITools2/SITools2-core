@@ -133,6 +133,8 @@ import fr.cnes.sitools.security.authorization.AuthorizationApplication;
 import fr.cnes.sitools.security.authorization.AuthorizationStore;
 import fr.cnes.sitools.security.captcha.CaptchaContainer;
 import fr.cnes.sitools.security.ssl.SslFactory;
+import fr.cnes.sitools.security.userblacklist.UserBlackListApplication;
+import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.service.storage.DataStorageStore;
 import fr.cnes.sitools.service.storage.StorageAdministration;
 import fr.cnes.sitools.service.storage.StorageApplication;
@@ -258,7 +260,9 @@ public final class Starter {
       System.err.println("SERVER ALREADY STARTED");
       System.exit(-1);
     }
-
+    // Engine.getInstance().setLoggerFacade(new Slf4jLoggerFacade());
+    // System.setProperty("org.restlet.engine.loggerFacadeClass", "org.restlet.ext.slf4j.Slf4jLoggerFacade");
+    //
     // ============================
     // Sitools settings
     SitoolsSettings settings = SitoolsSettings.getInstance(BUNDLE, Starter.class.getClassLoader(), Locale.FRANCE, true);
@@ -714,9 +718,8 @@ public final class Starter {
 
     // Attachment
     appManager.attachApplication(roleApplication);
-    
-    component.getInternalRouter().attach(settings.getString(Consts.APP_ROLES_URL), roleApplication);
 
+    component.getInternalRouter().attach(settings.getString(Consts.APP_ROLES_URL), roleApplication);
 
     // ===========================================================================
     // Gestion des datasouces jdbc
@@ -2012,6 +2015,33 @@ public final class Starter {
         settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}" + settings.getString(Consts.APP_SERVICES_URL),
         servicesApplication);
 
+    // ===========================================================================
+    // Gestion des utilisateurs blacklistés
+
+    // Store
+    SitoolsStore<UserBlackListModel> storeUserBlackListModel = (SitoolsStore<UserBlackListModel>) settings.getStores()
+        .get(Consts.APP_STORE_USER_BLACKLIST);
+
+    // Reference
+    appReference = baseUrl + settings.getString(Consts.APP_USER_BLACKLIST_URL);
+
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    appContext.getAttributes().put(ContextAttributes.APP_STORE, storeUserBlackListModel);
+
+    // Application
+    UserBlackListApplication userBlackListApplication = new UserBlackListApplication(appContext);
+
+    // Attachment
+    appManager.attachApplication(userBlackListApplication);
+
+
+    // END OF APPLICATION ATTACHMENT 
+    // ===========================================================================
+    
     // Attachement of the appManager to have the security configured properly
     appManager.attachApplication(appManager);
 

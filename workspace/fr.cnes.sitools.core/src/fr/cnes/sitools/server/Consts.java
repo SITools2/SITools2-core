@@ -501,6 +501,13 @@ public interface Consts {
 
   /** The app user blacklist store dir. */
   String APP_USER_BLACKLIST_STORE_DIR = "Starter.APP_USER_BLACKLIST_STORE_DIR";
+
+  /** The app user blacklist store. */
+  String APP_STORE_USER_BLACKLIST = "APP_STORE_USER_BLACKLIST";
+
+  /** The app user blacklist url. */
+  String APP_USER_BLACKLIST_URL = "Starter.APP_USER_BLACKLIST_URL";
+  
   String SECURITY_FILTER_USER_BLACKLIST_CONTAINER = "Security.filter.userBlacklist.Container";
 
 }
