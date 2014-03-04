@@ -158,3 +158,11 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 	color : #43c2db;
 	font-weight: bold;
 }
+
+/* .x-panel-body-default {
+	border: none !important;
+} */
+
+.x-toolbar-footer {
+	background: #FFF;
+}

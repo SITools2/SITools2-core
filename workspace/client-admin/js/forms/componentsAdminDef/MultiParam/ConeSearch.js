@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.forms.multiParam');
  * @class sitools.admin.forms.multiParam.coneSearch
  * @extends sitools.admin.forms.multiParam.abstractForm
  */
-Ext.define('sitools.admin.forms.multiParam.coneSearch', { extend : 'sitools.admin.forms.multiParam.abstractForm',
+Ext.define('sitools.admin.forms.multiParam.coneSearch', { 
+    extend : 'sitools.admin.forms.multiParam.abstractForm',
     height : 400,
     id : 'sitools.component.forms.definitionId',
     columnUnitName : "°", 

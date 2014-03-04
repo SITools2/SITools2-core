@@ -40,6 +40,8 @@ Ext.define('sitools.admin.forms.absoluteLayoutProp', {
         var form = new Ext.form.FormPanel({
             labelWidth : 75,
             padding : 5,
+            border : false,
+            bodyBorder : false,
             items : [ {
                 xtype : 'textfield',
                 id : "absolutePanelWidth",
@@ -52,22 +54,25 @@ Ext.define('sitools.admin.forms.absoluteLayoutProp', {
                 value : height,
                 fieldLabel : i18n.get('label.height'),
                 anchor : "100%"
-            } ],
-            buttons : [ {
-                scope : this,
-                text : i18n.get('label.ok'),
-                handler : this._onValidate
-            }, {
-                scope : this,
-                text : i18n.get('label.cancel'),
-                handler : this._onCancel
             } ]
         });
+        
         this.height = 130;
         this.width = 260;
 
         this.title = i18n.get('label.setSize');
-        this.items = [ form ];
+        this.items = [form];
+        
+        this.bbar = ['->', {
+            scope : this,
+            text : i18n.get('label.ok'),
+            handler : this._onValidate
+        }, {
+            scope : this,
+            text : i18n.get('label.cancel'),
+            handler : this._onCancel
+        }];
+        
         sitools.admin.forms.absoluteLayoutProp.superclass.initComponent.call(this);
 
     },

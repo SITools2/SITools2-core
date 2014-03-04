@@ -55,7 +55,7 @@ ImageChooser.prototype = {
 			    			var recordUrl = url.getFile();
 			    			record.set("url", recordUrl);
 			    		});
-			    		this.view.select(0);
+			    		this.view.getSelectionModel().select(0);
 			    	}
 			    }
 			});
@@ -91,7 +91,7 @@ ImageChooser.prototype = {
 		    	return data;
 		    };
 
-		    this.view = new Ext.DataView({
+		    this.view = new Ext.view.View({
 				tpl: this.thumbTemplate,
 				id : 'imageChooserDataViewId', 
 				singleSelect: true,
@@ -341,13 +341,13 @@ ImageChooser.prototype = {
 	filter : function(){
 		var filter = Ext.getCmp('filter');
 		this.view.store.filter('name', filter.getValue());
-		this.view.select(0);
+		this.view.getSelectionModel().select(0);
 	},
 
 	sortImages : function(){
 		var v = Ext.getCmp('sortSelect').getValue();
     	this.view.store.sort(v, v == 'name' ? 'asc' : 'desc');
-    	this.view.select(0);
+    	this.view.getSelectionModel().select(0);
     },
 
 	reset : function(){
@@ -356,7 +356,7 @@ ImageChooser.prototype = {
 			this.view.getEl().dom.scrollTop = 0;
 		}
 	    this.view.store.clearFilter();
-		this.view.select(0);
+		this.view.getSelectionModel().select(0);
 	},
 
 	doCallback : function(){

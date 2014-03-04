@@ -30,7 +30,7 @@ Ext.namespace('sitools.admin.forms');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.forms.advancedFormPanel', { 
-    extend : 'Ext.form.FieldSet',
+    extend : 'Ext.ux.form.ToolFieldSet',
     border : true,
     closable : true,
     style : 'background-color : white;',
@@ -39,27 +39,36 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
         Ext.apply(this, config);
         
         this.padding = '0 0 5 0';
+        this.iconCls = 'icon-properties';
+        
         this.tools = [{
-            id : 'close',
-            qtip: i18n.get('label.remove'),
-            handler : function (event, toolEl, panel) {
+            type : 'close',
+            tooltip: i18n.get('label.remove'),
+            shrinkWrap : true,
+            autoShow : true,
+            scope : this,
+            handler : function (event, toolEl, header, tool) {
                 Ext.Msg.show({
                     title : i18n.get('label.delete'),
                     buttons : Ext.Msg.YESNO,
+                    icon: Ext.window.MessageBox.QUESTION,
                     msg : i18n.get('fieldset.delete'),
                     scope : this,
-                    fn : function (btn, text) {
+                    fn : function (btn, text, opts) {
                         if (btn == 'yes') {
-                            panel.deletePanel();
+                            this.deletePanel();
                         }
                     }
                 });
             }
         }, {
-            id : 'gear',
-            qtip: i18n.get('label.editFieldsetProps'),
+            type : 'gear',
+            tooltip : i18n.get('label.editFieldsetProps'),
+            shrinkWrap : true,
+            autoShow : true,
+            scope : this,
             handler : function (event, toolEl, panel) {
-                panel.editPanel();
+                this.editPanel();
             }
         }];
         
@@ -102,6 +111,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                             var containerItems = [ sitools.common.forms.formParameterToComponent(component.data, null, null, this.datasetColumnModel,
                                     this.context).component ];
                             containerItems[0].setDisabled(true);
+                            containerItems[0].maskOnDisable = false;
                             // containerItems[0].initialConfig.overCls =
                             // 'over-form-component';
 
@@ -118,6 +128,13 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                                 items : containerItems,
                                 displayPanel : this,
                                 record : component,
+                                listeners : {
+                                    scope : this,
+                                    afterrender : function (container) {
+                                        this.addResizers(container);
+                                        this.addDragDrop(container);
+                                    }
+                                },
                                 onEdit : function () {
                                     var rec = this.record;
                                     if (!rec) {
@@ -157,13 +174,14 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                                     this.displayPanel.fireEvent("activate");
                                 }
                             });
+                            
                             this.add(container);
                         }
                     }, this);
 
                     this.doLayout();
-                    this.addResizers(this.items.items[0]);
-                    this.addDragDrop(this.items.items[0]);
+//                    this.addResizers(this.items.items);
+//                    this.addDragDrop(this.items.items);
                 }
             }
         });
@@ -251,15 +269,15 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
         Ext.each(components, function (container) {
             
 //            var resizer = new Ext.Resizable(container.getId(), {
-            var resizer = Ext.create('Ext.resizer.Resizer', {
-                id : container.getId(),
-                handles : 's e',
-                minWidth : 150,
-                maxWidth : 1000,
-                // minHeight : 30,
-                // maxHeight : 200,
-                constrainTo : this.body,
-                resizeChild : true,
+            Ext.create('Ext.resizer.Resizer', {
+                el : container.getEl(),
+//                handles : 's e',
+//                minWidth : 150,
+//                maxWidth : 1000,
+//                constrainTo : this.body,
+                constrainTo : this.getEl(),
+//                resizeChild : true,
+                pinned : true,
                 listeners : {
                     scope : this,
                     resize : function (resizable, width, height, e) {
@@ -355,7 +373,8 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
             }
         }, this);
 
-        this.destroy();
+        parentContainer.remove(this, true);
+//        this.destroy();
 //        parentContainer.fireEvent('activate');
         parentContainer.doLayout();
     }

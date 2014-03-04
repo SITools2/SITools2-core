@@ -274,7 +274,7 @@ Ext.define('Ext.ux.form.MultiSelect', {
     setValue: function(values) {
         var index;
         var selections = [];
-        this.view.clearSelections();
+        this.view.getSelectionModel().deselectAll();
         this.hiddenField.dom.value = '';
 
         if (!values || (values == '')) { return; }

@@ -25,7 +25,8 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @class sitools.admin.forms.oneParam.withValues
  * @extends sitools.admin.forms.oneParam.abstractForm
  */
-Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.forms.oneParam.abstractForm', 
+Ext.define('sitools.admin.forms.oneParam.withValues', { 
+    extend : 'sitools.admin.forms.oneParam.abstractForm', 
     height : 450,
     id : "sitools.component.forms.definitionId",
     initComponent : function () {
@@ -77,24 +78,6 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
             singleSelect : true
         });
 
-        var cbDefaultValues = new Ext.grid.CheckColumn({
-            header : i18n.get('headers.defaultValue'),
-            dataIndex : 'defaultValue',
-            width : 55
-        });
-        var cmValues = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.value'),
-                dataIndex : 'value',
-                editor : new Ext.form.TextField({
-                    allowBlank : false
-                })
-            }, cbDefaultValues ],
-            defaults : {
-                sortable : false,
-                width : 100
-            }
-        });
         var tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
             defaults : {
@@ -111,18 +94,32 @@ Ext.define('sitools.admin.forms.oneParam.withValues', { extend : 'sitools.admin.
             } ]
         };
 
-        this.gridValues = new Ext.grid.EditorGridPanel({
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        this.gridValues = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.values'),
             id : 'componentGridValues',
             height : 180,
             store : storeValues,
             tbar : tbar,
-            cm : cmValues,
+            columns : [{
+                header : i18n.get('headers.value'),
+                dataIndex : 'value',
+                editor : new Ext.form.TextField({
+                    allowBlank : false
+                })
+            }, { 
+                xtype : 'checkcolumn',
+                header : i18n.get('headers.defaultValue'),
+                dataIndex : 'defaultValue'
+            }],
             selModel : smValues,
             viewConfig : {
                 forceFit : true
             },
-            plugins : [ cbDefaultValues ]
+            plugins : [cellEditing]
         });
 
         this.radio = new Ext.form.RadioGroup({

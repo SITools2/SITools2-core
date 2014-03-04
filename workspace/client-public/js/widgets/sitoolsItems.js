@@ -246,7 +246,9 @@ sitools.widget.colorField = Ext.extend(
 	}
 )
 
-sitools.widget.DateFieldWithToday = Ext.extend(Ext.form.DateField, {
+Ext.define('sitools.widget.DateFieldWithToday', {
+    extend : 'Ext.form.field.Date',
+    
 	regToday : new RegExp("^\{\\$TODAY\}"), 
     invalidTextWithToday : "Impossible to make a date with {0}. A valid example is {$TODAY} + 1", 
     parseDate : function (value) {
@@ -273,7 +275,7 @@ sitools.widget.DateFieldWithToday = Ext.extend(Ext.form.DateField, {
     getErrors : function (value) {
         var errors = Ext.form.DateField.superclass.getErrors.apply(this, arguments);
 
-        value = this.formatDate(value || this.processValue(this.getRawValue()));
+        value = this.formatDate(value || this.processRawValue(this.getRawValue()));
 
         if (value.length < 1) { // if it's blank and textfield didn't flag it then it's valid
              return errors;

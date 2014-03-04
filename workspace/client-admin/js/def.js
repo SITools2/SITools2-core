@@ -641,60 +641,61 @@ Ext.override(Ext.menu.DatePicker, {
         if (this.strict == (Ext.isIE7 && Ext.isStrict)) {
             this.on('show', this.onShow, this, {single: true, delay: 20});
         }
-        Ext.apply(this, {
-            plain: true,
-            showSeparator: false,
-            items: this.picker = new Ext.SitoolsDatePicker(Ext.applyIf({
-                internalRender: this.strict || !Ext.isIE,
-                ctCls: 'x-menu-date-item',
-                id: this.pickerId
-            }, this.initialConfig))
-        });
-        this.picker.purgeListeners();
-        Ext.menu.DateMenu.superclass.initComponent.call(this);
+//        Ext.apply(this, {
+//            plain: true,
+//            showSeparator: false,
+//            items: this.picker = new Ext.SitoolsDatePicker(Ext.applyIf({
+//                internalRender: this.strict || !Ext.isIE,
+//                ctCls: 'x-menu-date-item',
+//                id: this.pickerId
+//            }, this.initialConfig))
+//        });
+//        
+//        this.picker.clearListeners();
+        Ext.menu.DatePicker.superclass.initComponent.call(this);
         
-        this.relayEvents(this.picker, ['select']);
-        this.on('show', this.picker.focus, this.picker);
-        this.on('select', this.menuHide, this);
-        if (this.handler) {
-            this.on('select', this.handler, this.scope || this);
-        }
+//        this.relayEvents(this.picker, ['select']);
+//        this.on('show', this.picker.focus, this.picker);
+//        this.on('select', this.menuHide, this);
+//        if (this.handler) {
+//            this.on('select', this.handler, this.scope || this);
+//        }
     }
 });
 
-Ext.override(Ext.form.DateField,  {
-    
-    showTime : false,
-    
-    onTriggerClick : function () {
-        if (this.disabled) {
-            return;
-        }
-        if (Ext.isEmpty(this.menu)) {
-            this.menu = new Ext.menu.DateMenu({
-                hideOnClick: false,
-                showTime : this.showTime, 
-                focusOnSelect: false
-            });
-        }
-        this.onFocus();
-        Ext.apply(this.menu.picker,  {
-            minDate : this.minValue,
-            maxDate : this.maxValue,
-            disabledDatesRE : this.disabledDatesRE,
-            disabledDatesText : this.disabledDatesText,
-            disabledDays : this.disabledDays,
-            disabledDaysText : this.disabledDaysText,
-            format : this.format,
-            showToday : this.showToday,
-            minText : String.format(this.minText, this.formatDate(this.minValue)),
-            maxText : String.format(this.maxText, this.formatDate(this.maxValue))
-        });
-        this.menu.picker.setValue(this.getValue() || new Date());
-        this.menu.show(this.el, "tl-bl?");
-        this.menuEvents('on');
-    }
-});
+//Ext.override(Ext.form.DateField,  {
+//    
+//    showTime : false,
+//    
+//    onTriggerClick : function () {
+//        if (this.disabled) {
+//            return;
+//        }
+//        if (Ext.isEmpty(this.menu)) {
+//            this.menu = new Ext.menu.DatePicker({
+//                hideOnClick: false,
+//                showTime : this.showTime, 
+//                focusOnSelect: false
+//            });
+//        }
+//        this.onFocus();
+//        Ext.apply(this.menu.picker,  {
+//            minDate : this.minValue,
+//            maxDate : this.maxValue,
+//            disabledDatesRE : this.disabledDatesRE,
+//            disabledDatesText : this.disabledDatesText,
+//            disabledDays : this.disabledDays,
+//            disabledDaysText : this.disabledDaysText,
+//            format : this.format,
+//            showToday : this.showToday,
+//            minText : String.format(this.minText, this.formatDate(this.minValue)),
+//            maxText : String.format(this.maxText, this.formatDate(this.maxValue))
+//        });
+//        this.menu.picker.setValue(this.getValue() || new Date());
+//        this.menu.show(this.el, "tl-bl?");
+//        this.menuEvents('on');
+//    }
+//});
 
 Ext.override(Ext.slider.SingleSlider, {
 	listeners : {

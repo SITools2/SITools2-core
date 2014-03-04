@@ -38,11 +38,11 @@ Ext.define('sitools.userProfile.Login', {
     modal : true,
     initComponent : function () {
         this.title = i18n.get('label.login');
-        this.bbar = new Ext.ux.StatusBar({
+        this.bbar = Ext.create('Ext.ux.StatusBar', {
             text : i18n.get('label.ready'),
             id : 'sbWinLogin',
-            iconCls : 'x-status-valid',
-            items : [ {
+            iconCls : 'ready-icon',
+            items : [{
                 text : i18n.get('label.passwordLost'),
                 hidden : !this.reset,
                 scope : this,
@@ -58,7 +58,7 @@ Ext.define('sitools.userProfile.Login', {
                     reset.show();
                 }
 
-            } ]
+            }]
         });
         this.combo = new Ext.form.ComboBox({
             typeAhead : true,
@@ -91,6 +91,7 @@ Ext.define('sitools.userProfile.Login', {
             xtype : 'form',
             frame : true,
             border : false,
+            bodyBorder : false,
             buttonAlign : 'center',
             id : 'frmLogin',
             width : 392,

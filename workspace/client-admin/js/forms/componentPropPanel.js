@@ -87,6 +87,8 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
         this.componentPropPanel = new Ext.Panel({
             layout : 'fit',
             padding : 10,
+            border : false,
+            bodyBorder : false,
             autoScroll : true,
             items : [ specificComponent ],
             buttons : [ {
@@ -116,7 +118,8 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
     },
 
     onValidate : function () {
-        var component = this.findById('sitools.component.forms.definitionId');
+//        var component = this.findById('sitools.component.forms.definitionId');
+        var component = this.componentPropPanel.down();
         if (component._onValidate(this.action, this.formComponentsStore)) {
             this.close();
         }
