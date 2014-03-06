@@ -377,7 +377,7 @@ sitools.user.desktop.App = function () {
 	function _onLogin() {
 	    sitools.userProfile.LoginUtils.connect({
             closable : true,
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH') + '/login',
+            url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
             register : loadUrl.get('APP_URL') + '/inscriptions/user',
             reset : loadUrl.get('APP_URL') + '/resetPassword'
         });

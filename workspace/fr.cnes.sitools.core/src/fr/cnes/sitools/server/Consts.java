@@ -497,7 +497,7 @@ public interface Consts {
   /** SECURITY_DELEGATE_USER_MANAGMENT_URL */
   String SECURITY_DELEGATE_USER_MANAGMENT_URL = "Starter.SECURITY.DELEGATE_USER_MANAGMENT_URL";
   /** Login application */
-  String APP_LOGIN_PATH = "Starter.APP_LOGIN_PATH";
+  String APP_LOGIN_PATH_URL = "Starter.APP_LOGIN_PATH_URL";
 
   /** The app user blacklist store dir. */
   String APP_USER_BLACKLIST_STORE_DIR = "Starter.APP_USER_BLACKLIST_STORE_DIR";
