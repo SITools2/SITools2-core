@@ -2,8 +2,22 @@ package fr.cnes.sitools.security.userblacklist;
 
 import java.util.List;
 
+import org.restlet.data.MediaType;
+import org.restlet.ext.xstream.XstreamRepresentation;
+import org.restlet.representation.ObjectRepresentation;
+import org.restlet.representation.Representation;
+
+import com.thoughtworks.xstream.XStream;
+
+import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.SitoolsResource;
+import fr.cnes.sitools.common.XStreamFactory;
+import fr.cnes.sitools.common.model.ExtensionModel;
+import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.dataset.model.Column;
+import fr.cnes.sitools.dataset.model.DataSet;
+import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -69,5 +83,28 @@ public abstract class AbstractUserBlackListResource extends SitoolsResource {
     return user != null;
   }
 
-  
+  /**
+   * Encode a response into a Representation according to the given media type.
+   * 
+   * @param response
+   *          Response
+   * @param media
+   *          Response
+   * @return Representation
+   */
+  public Representation getRepresentation(Response response, MediaType media) {
+    getLogger().info(media.toString());
+    if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      return new ObjectRepresentation<Response>(response);
+    }
+
+    XStream xstream = XStreamFactory.getInstance().getXStream(media, getContext());
+    configure(xstream, response);
+    xstream.registerConverter(new SitoolsCommonDateConverter());
+
+    XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
+    rep.setXstream(xstream);
+    return rep;
+  }
+
 }

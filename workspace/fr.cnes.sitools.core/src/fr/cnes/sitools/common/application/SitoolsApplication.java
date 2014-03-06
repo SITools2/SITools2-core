@@ -664,11 +664,12 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       // optional authenticator
       ChallengeAuthenticator auth = getChallengeAuthenticator(application);
       
-      // attach a filter to block bad authentication
-      UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
-      auth.setNext(userBlackListFilter);
 
       if (!Category.PUBLIC.equals(application.getCategory())) {
+        // attach a filter to block bad authentication
+        UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
+        auth.setNext(userBlackListFilter);
+
         // attach a filter to block bad authentication
         NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
         userBlackListFilter.setNext(notAuthenticatedFilter);
@@ -676,7 +677,7 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
         notAuthenticatedFilter.setNext(application);
       }
       else {
-        userBlackListFilter.setNext(application);
+        auth.setNext(application);
       }
 
       return addSecurityFilter(getContext(), auth);
@@ -688,15 +689,14 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       // optional authenticator
       ChallengeAuthenticator auth = getChallengeAuthenticator(application);
       
-      // attach a filter to block bad authentication
-      UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
-      auth.setNext(userBlackListFilter);
-      
-
       if (Category.PUBLIC.equals(application.getCategory())) {
-        userBlackListFilter.setNext(localAuthorizer);
+        auth.setNext(localAuthorizer);
       }
       else {
+        // attach a filter to block bad authentication
+        UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
+        auth.setNext(userBlackListFilter);
+
         // attach a filter to block bad authentication
         NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
 

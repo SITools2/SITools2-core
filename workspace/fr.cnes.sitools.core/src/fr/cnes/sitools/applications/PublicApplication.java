@@ -30,19 +30,17 @@ import org.restlet.resource.Directory;
 import org.restlet.routing.Extractor;
 import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
-import org.restlet.security.Authenticator;
 
 import fr.cnes.sitools.client.ProxyRestlet;
 import fr.cnes.sitools.client.SitoolsVersionResource;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.login.LoginDetailsResource;
-import fr.cnes.sitools.login.LoginResource;
 import fr.cnes.sitools.login.ResetPasswordResource;
+import fr.cnes.sitools.login.UnBlacklistResource;
 import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.security.EditUserProfileResource;
 import fr.cnes.sitools.security.FindRoleResource;
-import fr.cnes.sitools.security.authentication.AuthenticatorFactory;
 import fr.cnes.sitools.server.Consts;
 
 /**
@@ -128,6 +126,9 @@ public final class PublicApplication extends StaticWebApplication {
 
     // Attach the resetPasswordResource to reset an user password
     router.attach("/resetPassword", ResetPasswordResource.class);
+
+    // Attach the resetPasswordResource to reset an user password
+    router.attach("/unblacklist", UnBlacklistResource.class);
 
     // Attach the EditUserProfileResource to modified an user properties
     router.attach("/editProfile/{user}", EditUserProfileResource.class);

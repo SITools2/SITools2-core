@@ -290,6 +290,9 @@
 	<script type="text/javascript" src="js/guiServices/guiServicesStore.js"></script>
 	
 	
+	<script type="text/javascript" src="js/usergroups/BlacklistedUsersPanel.js"></script>	
+	
+	
 	
 	
 <!-- END_JS_DEV_INCLUDES -->

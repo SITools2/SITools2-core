@@ -37,7 +37,8 @@ sitools.Portal = function (projectsList, languages, preferences) {
                     closable : true,
                     url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
-                    reset : loadUrl.get('APP_URL') + '/resetPassword'
+                    reset : loadUrl.get('APP_URL') + '/resetPassword',
+                    unblacklist : loadUrl.get('APP_URL') + '/unblacklist'
                 });
                 
                 
@@ -276,6 +277,7 @@ sitools.Portal = function (projectsList, languages, preferences) {
                         url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
                         register : loadUrl.get('APP_URL') + '/inscriptions/user',
                         reset : loadUrl.get('APP_URL') + '/resetPassword',
+                        unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
                         handler : function () {
                         	if (!maintenance) {
                         		window.open(projectName + "/project-index.html");

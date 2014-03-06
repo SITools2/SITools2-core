@@ -18,9 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.login;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 import org.restlet.Request;
 import org.restlet.data.MediaType;
@@ -37,10 +35,10 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.SitoolsResource;
+import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.util.PasswordGenerator;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -49,7 +47,7 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author AKKA Technologies
  * 
  */
-public class ResetPasswordResource extends SitoolsResource {
+public class UnBlacklistResource extends SitoolsResource {
 
   @Override
   public void sitoolsDescribe() {
@@ -67,45 +65,43 @@ public class ResetPasswordResource extends SitoolsResource {
    * @return Representation if success
    */
   @Put
-  public Representation resetPass(Representation representation, Variant variant) {
+  public Representation unBlacklistUser(Representation representation, Variant variant) {
     if (representation == null) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "USER_REPRESENTATION_REQUIRED");
     }
-    try {
-      User user = getObject(representation);
-      Response response = null;
-      String url = getSitoolsSetting(Consts.APP_SECURITY_URL) + "/users";
-      User userDb = RIAPUtils.getObject(user.getIdentifier(), url, getContext());
 
-      if (userDb != null) {
-        if (userDb.getEmail().equals(user.getEmail())) {
-          String password = PasswordGenerator.generate(10);
-          userDb.setSecret(password);
-          if (updateUser(userDb, url)) {
-            response = new Response(true, user.getEmail());
-          }
-          else {
-            response = new Response(false, "ERROR UPDATING USER ");
-          }
+    SitoolsSettings settings = getSettings();
+
+    // reset new password
+    User user = getObject(representation);
+    Response response = null;
+    String url = getSitoolsSetting(Consts.APP_SECURITY_URL) + "/users";
+    User userDb = RIAPUtils.getObject(user.getIdentifier(), url, getContext());
+
+    if (userDb != null) {
+      if (userDb.getEmail().equals(user.getEmail())) {
+        // Unblacklist user
+        String unblacklistUrl = settings.getString(Consts.APP_USER_BLACKLIST_URL) + "/" + userDb.getIdentifier();
+        boolean result = RIAPUtils.deleteObject(unblacklistUrl, getContext());
+        if (result) {
+          String resetPasswwordUrl = settings.getString(Consts.APP_CLIENT_PUBLIC_PATH) + "/resetPassword";
+          return RIAPUtils.handle(resetPasswwordUrl, new ObjectRepresentation<User>(userDb), Method.PUT,
+              MediaType.APPLICATION_JAVA_OBJECT, getContext());
         }
         else {
-          response = new Response(false, "Invalid fields : email doesn't match the correct login ");
+          response = new Response(false, "Cannot unblacklistuser");
         }
+
       }
       else {
-        response = new Response(false, "User not found. ");
+        response = new Response(false, "Invalid fields : email doesn't match the correct login ");
       }
+    }
+    else {
+      response = new Response(false, "User not found. ");
+    }
 
-      return getRepresentation(response, variant);
-    }
-    catch (ResourceException e) {
-      getLogger().log(Level.INFO, null, e);
-      throw e;
-    }
-    catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-    }
+    return getRepresentation(response, variant);
   }
 
   @Override
@@ -147,21 +143,15 @@ public class ResetPasswordResource extends SitoolsResource {
   }
 
   /**
-   * Gets User object from Representation
+   * Get a user object
    * 
    * @param representation
-   *          of a User
-   * @return DataSet
-   * @throws IOException
-   *           if there is an error while deserializing Java Object
+   *          to use
+   * @return user object
    */
-  private User getObject(Representation representation) throws IOException {
+  private User getObject(Representation representation) {
     User object = null;
-    if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
-      @SuppressWarnings("unchecked")
-      ObjectRepresentation<User> obj = (ObjectRepresentation<User>) representation;
-      object = obj.getObject();
-    }
+
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the dataset bean
       object = new XstreamRepresentation<User>(representation).getObject();

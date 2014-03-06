@@ -12,6 +12,7 @@ import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.login.LoginResource;
 import fr.cnes.sitools.security.authentication.AuthenticatorFactory;
+import fr.cnes.sitools.security.filter.UserBlackListFilter;
 
 /**
  * The Class LoginApplication. Used to handle login
@@ -57,12 +58,20 @@ public class LoginApplication extends SitoolsApplication {
       Authenticator authenticatorMandatory = AuthenticatorFactory.getAuthenticator(getContext(), false, getSettings()
           .getAuthenticationDOMAIN(), getAuthenticationRealm());
       authenticatorMandatory.setNext(LoginResource.class);
-      router.attach("/login-mandatory", authenticatorMandatory);
+      
+      // Manually attach a new UserBlackListFilter only to the login-mandatory Resource
+      UserBlackListFilter filter = new UserBlackListFilter(getContext());
+      filter.setNext(authenticatorMandatory);
+      router.attach("/login-mandatory", filter);
     }
 
     else {
       router.attach("/login", LoginResource.class);
-      router.attach("/login-mandatory", LoginResource.class);
+      // Manually attach a new UserBlackListFilter only to the login-mandatory Resource
+      UserBlackListFilter filter = new UserBlackListFilter(getContext());
+      filter.setNext(LoginResource.class);
+      router.attach("/login-mandatory", filter);
+
       router.attach("/login", LoginResource.class);
     }
 

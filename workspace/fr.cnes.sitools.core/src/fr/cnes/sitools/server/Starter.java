@@ -2038,10 +2038,11 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(userBlackListApplication);
 
+    component.getInternalRouter().attach(settings.getString(Consts.APP_USER_BLACKLIST_URL), userBlackListApplication);
 
-    // END OF APPLICATION ATTACHMENT 
+    // END OF APPLICATION ATTACHMENT
     // ===========================================================================
-    
+
     // Attachement of the appManager to have the security configured properly
     appManager.attachApplication(appManager);
 

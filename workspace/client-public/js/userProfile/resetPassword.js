@@ -35,7 +35,7 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
     modal : true,
 
     initComponent : function () {
-        this.title = i18n.get('label.resetPassword');
+        this.title = (!Ext.isEmpty(this.unblacklist) && this.unblacklist) ? i18n.get("label.unBlacklistUser") : i18n.get('label.resetPassword');
         this.bbar = new Ext.ux.StatusBar({
             text : i18n.get('label.ready'),
             id : 'sbWinPassword',
@@ -77,7 +77,7 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                 anchor : '100%'
             } ],
             buttons : [ {
-                text : i18n.get('label.resetPassword'),
+                text : (!Ext.isEmpty(this.unblacklist) && this.unblacklist) ? i18n.get("label.unBlacklistUser") : i18n.get('label.resetPassword'),
                 handler : this.reset,
                 scope : this
             }, {

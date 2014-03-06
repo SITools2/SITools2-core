@@ -24,9 +24,11 @@ import org.restlet.resource.ClientResource;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 
 public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServerTestCase {
@@ -42,10 +44,13 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
   private static SitoolsStore<UserBlackListModel> store = null;
 
   /** userId */
-  private String userId = "admin";
+  private String userId = "admin_test";
 
   /** userId */
-  private String userPwd = "admin";
+  private String userPwd = "Vz0x2CbXj3";
+
+  /** userId */
+  private String userEmail = "admin_test@test.eu";
 
   /**
    * absolute url for dataset management REST API
@@ -54,6 +59,15 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
    */
   protected String getBaseUrl() {
     return super.getBaseUrl() + settings.getString(Consts.APP_USER_BLACKLIST_URL);
+  }
+
+  /**
+   * absolute url for dataset management REST API
+   * 
+   * @return url
+   */
+  protected String getBaseUserUrl() {
+    return super.getBaseUrl() + settings.getString(Consts.APP_SECURITY_URL);
   }
 
   /**
@@ -84,22 +98,98 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
    */
   @Test
   public void test() {
+    User user = createUser(userId, userEmail, userPwd);
+    try {
+
+      persistUser(user);
+      docAPI.setActive(false);
+      assertNone();
+
+      blacklistUser(userId, userPwd);
+
+      checkUserBlacklisted(userId, userPwd);
+
+      retrieveAll(userId);
+
+      delete(userId);
+
+      checkUserNotBlacklisted(userId, userPwd);
+
+      assertNone();
+    }
+    finally {
+      deleteUser(user);
+    }
+  }
+
+  /**
+   * Test UserBlackListModel
+   */
+  @Test
+  public void testUnBlacklist() {
 
     docAPI.setActive(false);
-    assertNone();
+    User user = createUser(userId, userEmail, userPwd);
+    try {
 
-    blacklistUser(userId, userPwd);
+      persistUser(user);
 
-    checkUserBlacklisted(userId, userPwd);
+      assertNone();
 
-    retrieveAll(userId);
+      blacklistUser(userId, userPwd);
 
-    delete(userId);
+      checkUserBlacklisted(userId, userPwd);
 
-    checkUserNotBlacklisted(userId, userPwd);
+      retrieveAll(userId);
 
-    assertNone();
+      unblacklistUserFail(userId, userEmail + "___");
 
+      unblacklistUserFail(userId + "___", userEmail);
+
+      unblacklistUser(userId, userEmail);
+
+      assertNone();
+
+    }
+    finally {
+      deleteUser(user);
+    }
+
+  }
+
+  private User createUser(String userId2, String userEmail2, String userPwd2) {
+    return new User(userId2, userPwd2, "", "", userEmail2);
+  }
+
+  private void persistUser(User user) {
+    String url = getBaseUserUrl() + "/users";
+    ClientResource cr = new ClientResource(url);
+
+    Representation result = cr.post(GetRepresentationUtils.getRepresentationUser(user, getMediaTest()));
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+
+    Response response = GetResponseUtils.getResponseUserOrGroup(getMediaTest(), result, User.class);
+    assertTrue(response.getMessage(), response.getSuccess());
+    RIAPUtils.exhaust(result);
+  }
+
+  private void deleteUser(User user) {
+    String url = getBaseUserUrl() + "/users/" + user.getIdentifier();
+    ClientResource cr = new ClientResource(url);
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      retrieveDocAPI(url, "", parameters, url);
+    }
+    else {
+      Representation result = cr.delete(getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+
+      Response response = GetResponseUtils.getResponseUserOrGroup(getMediaTest(), result, User.class);
+      assertTrue(response.getSuccess());
+      RIAPUtils.exhaust(result);
+    }
   }
 
   /**
@@ -183,6 +273,34 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
   private void blacklistUser(String user, String password) {
     for (int i = 0; i < NB_ALLOWED_REQ_BEFORE_BLACKLIST; i++) {
       request(getBaseUrl(), Status.CLIENT_ERROR_UNAUTHORIZED, user, password + "+++");
+    }
+  }
+
+  private void unblacklistUser(String user, String email) {
+    unblacklistUser(user, email, true);
+  }
+
+  private void unblacklistUserFail(String user, String email) {
+    unblacklistUser(user, email, false);
+  }
+
+  private void unblacklistUser(String user, String email, boolean status) {
+    String url = super.getBaseUrl() + "/unblacklist";
+    User myUser = new User(user, "", "", "", email);
+    ClientResource cr = new ClientResource(url);
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      retrieveDocAPI(url, "", parameters, url);
+    }
+    else {
+      Representation result = cr.put(GetRepresentationUtils.getRepresentationUser(myUser, getMediaTest()),
+          getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+
+      Response response = GetResponseUtils.getResponseUserOrGroup(getMediaTest(), result, User.class);
+      assertEquals(response.getMessage(), status, response.getSuccess());
+      RIAPUtils.exhaust(result);
     }
   }
 

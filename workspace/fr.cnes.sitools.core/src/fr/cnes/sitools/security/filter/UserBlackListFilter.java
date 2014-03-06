@@ -79,6 +79,7 @@ public class UserBlackListFilter extends Filter {
         counter.remove(id);
       }
       if (userNotAuthenticated(id, request)) {
+        System.out.println("ADD BLACKLIST FOR URL : " + request.getResourceRef().getPath());
         counter.addRequest(id);
       }
     }

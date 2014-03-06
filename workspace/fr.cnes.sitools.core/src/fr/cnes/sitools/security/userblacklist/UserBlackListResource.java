@@ -87,7 +87,7 @@ public final class UserBlackListResource extends AbstractUserBlackListResource {
    * @return Representation
    */
   @Delete
-  public Representation deleteProject(Variant variant) {
+  public Representation deleteUserFromBlacklist(Variant variant) {
     try {
       UserBlackListModel input = null;
       try {
