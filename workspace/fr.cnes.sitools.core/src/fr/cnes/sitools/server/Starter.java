@@ -579,7 +579,7 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(loginApp);
 
-    component.getInternalRouter().attach(settings.getString(Consts.APP_LOGIN_PATH), loginApp);
+    component.getInternalRouter().attach(settings.getString(Consts.APP_LOGIN_PATH_URL), loginApp);
 
     // -------------------------
     // Client-public application (commons)
