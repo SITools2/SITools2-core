@@ -565,7 +565,7 @@ public final class Starter {
     // Login application (commons)
 
     // Reference
-    appReference = baseUrl + settings.getString(Consts.APP_LOGIN_PATH);
+    appReference = baseUrl + settings.getString(Consts.APP_LOGIN_PATH_URL);
 
     // Context
     appContext = host.getContext().createChildContext();
