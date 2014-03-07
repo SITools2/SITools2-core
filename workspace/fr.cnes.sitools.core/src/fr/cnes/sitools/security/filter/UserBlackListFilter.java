@@ -15,14 +15,30 @@ import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.server.Consts;
 
+/**
+ * The Class UserBlackListFilter.
+ * 
+ * Blacklist users when too many requests with bad credentials are performed
+ * 
+ * @author m.gond
+ */
 public class UserBlackListFilter extends Filter {
 
+  /** The counter. */
   private RequestCounter counter;
 
+  /** The nb of allowed requests before blacklist. */
   private int nbAllowedRequestBeforeBlacklist;
 
+  /** The store. */
   private SitoolsStore<UserBlackListModel> store;
 
+  /**
+   * Instantiates a new user black list filter.
+   * 
+   * @param context
+   *          the context
+   */
   @SuppressWarnings("unchecked")
   public UserBlackListFilter(Context context) {
     super(context);
@@ -46,6 +62,16 @@ public class UserBlackListFilter extends Filter {
 
   }
 
+  /**
+   * Initialize the counter.
+   * 
+   * @param theStore
+   *          the store containing the already blacklisted users
+   * @param theCounter
+   *          the counter to initialize
+   * @param nbRequests
+   *          the number of requests to initialize each blacklisted user found in the store
+   */
   private void initCounter(SitoolsStore<UserBlackListModel> theStore, RequestCounter theCounter, int nbRequests) {
     List<UserBlackListModel> list = theStore.getList();
     for (UserBlackListModel userBlackListModel : list) {
@@ -79,13 +105,21 @@ public class UserBlackListFilter extends Filter {
         counter.remove(id);
       }
       if (userNotAuthenticated(id, request)) {
-        System.out.println("ADD BLACKLIST FOR URL : " + request.getResourceRef().getPath());
         counter.addRequest(id);
       }
     }
     return CONTINUE;
   }
 
+  /**
+   * Wrap an id and some request information into a {@link UserBlackListModel} object.
+   * 
+   * @param id
+   *          the identifier of the User
+   * @param request
+   *          the {@link Request}
+   * @return a {@link UserBlackListModel}
+   */
   private UserBlackListModel wrapUserBlacklist(String id, Request request) {
 
     UserBlackListModel model = new UserBlackListModel();
