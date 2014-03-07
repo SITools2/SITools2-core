@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -42,6 +42,7 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.login.SitoolsAuthenticationInfo;
+import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -50,6 +51,10 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author jp.boignard (AKKA Technologies)
  */
 public class SecurityDigestTestCase extends AbstractSitoolsServerTestCase {
+  @Override
+  protected String getBaseUrl() {
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_LOGIN_PATH_URL);
+  }
 
   /**
    * Executed once before all test methods

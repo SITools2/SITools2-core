@@ -23,7 +23,6 @@ import org.restlet.resource.ClientResource;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.server.Consts;
@@ -37,11 +36,6 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
 
   /** NB_ALLOWED_REQ_BEFORE_BLACKLIST */
   private static final int NB_ALLOWED_REQ_BEFORE_BLACKLIST = settings.getInt("Starter.NB_ALLOWED_REQ_BEFORE_BLACKLIST");
-
-  /**
-   * static xml store instance for the test
-   */
-  private static SitoolsStore<UserBlackListModel> store = null;
 
   /** userId */
   private String userId = "admin_test";
@@ -87,10 +81,8 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    if (store == null) {
-      File storeDirectory = new File(getTestRepository());
-      cleanDirectory(storeDirectory);
-    }
+    File storeDirectory = new File(getTestRepository());
+    cleanDirectory(storeDirectory);
   }
 
   /**
@@ -170,6 +162,7 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
     assertTrue(cr.getStatus().isSuccess());
 
     Response response = GetResponseUtils.getResponseUserOrGroup(getMediaTest(), result, User.class);
+    assertNotNull(response);
     assertTrue(response.getMessage(), response.getSuccess());
     RIAPUtils.exhaust(result);
   }
@@ -185,8 +178,15 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
       Representation result = cr.delete(getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
+      // try {
+      // System.out.println(result.getText());
+      // }
+      // catch (IOException e) {
+      // // TODO Auto-generated catch block
+      // e.printStackTrace();
+      // }
 
-      Response response = GetResponseUtils.getResponseUserOrGroup(getMediaTest(), result, User.class);
+      Response response = GetResponseUtils.getResponse(getMediaTest(), result, getMediaTest());
       assertTrue(response.getSuccess());
       RIAPUtils.exhaust(result);
     }
@@ -230,6 +230,7 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
 
       Response response = GetResponseUtils.getResponseUserBlacklist(getMediaTest(), result, UserBlackListModel.class,
           true);
+
       assertTrue(response.getSuccess());
       assertEquals(new Integer(1), response.getTotal());
       assertNotNull(response.getData());
@@ -299,6 +300,8 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
       assertTrue(cr.getStatus().isSuccess());
 
       Response response = GetResponseUtils.getResponseUserOrGroup(getMediaTest(), result, User.class);
+
+      assertNotNull(response);
       assertEquals(response.getMessage(), status, response.getSuccess());
       RIAPUtils.exhaust(result);
     }

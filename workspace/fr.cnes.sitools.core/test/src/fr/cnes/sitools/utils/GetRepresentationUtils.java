@@ -292,7 +292,7 @@ public class GetRepresentationUtils {
   private static void configureUser(XStream xstream) {
     xstream.autodetectAnnotations(false);
     xstream.alias("response", Response.class);
-    xstream.alias("user", User.class);
+//    xstream.alias("user", User.class);
   }
 
   // ------------------------------------------------------------

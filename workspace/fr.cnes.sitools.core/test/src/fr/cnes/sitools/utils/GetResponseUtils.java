@@ -746,17 +746,11 @@ public class GetResponseUtils {
       SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
       rep.setXstream(xstream);
 
-      if (media.isCompatible(MediaType.APPLICATION_JSON)) {
-        Response response = rep.getObject("response");
-        // TODO MEMO usage of SitoolsXStreamRepresentation.getObject("response") instead of standard signature Response
-        // response = rep.getObject();
+      Response response = rep.getObject("response");
+      // TODO MEMO usage of SitoolsXStreamRepresentation.getObject("response") instead of standard signature Response
+      // response = rep.getObject();
 
-        return response;
-      }
-      else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON supported in tests");
-        return null; // TODO complete test for XML, Object
-      }
+      return response;
     }
     finally {
       RIAPUtils.exhaust(representation);
@@ -809,7 +803,9 @@ public class GetResponseUtils {
       // xstream.alias("dataset", Resource.class);
 
       if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
+        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(Response.class, "data", dataClass);
+        }
       }
       else {
         xstream.alias("item", dataClass);
@@ -877,16 +873,19 @@ public class GetResponseUtils {
       }
 
       XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
+      xstream.registerConverter(new SitoolsCommonDateConverter());
       xstream.autodetectAnnotations(false);
       xstream.alias("response", Response.class);
+      xstream.alias("userBlackListModel", UserBlackListModel.class);
 
       if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
+        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(Response.class, "data", dataClass);
+        }
       }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-      }
+      xstream.alias("item", dataClass);
+      xstream.alias("item", Object.class, dataClass);
+
       xstream.aliasField("data", Response.class, "data");
 
       SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);

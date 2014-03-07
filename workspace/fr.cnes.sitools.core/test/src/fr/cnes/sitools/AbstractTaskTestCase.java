@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -73,6 +73,8 @@ import fr.cnes.sitools.security.authorization.AuthorizationApplication;
 import fr.cnes.sitools.security.authorization.AuthorizationStore;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
+import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskStoreXML;
 import fr.cnes.sitools.tasks.TaskUtils;
@@ -95,6 +97,11 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
    * static xml store instance for the test
    */
   private static ResourcePluginStoreXML storeResource = null;
+  /**
+   * static xml store instance for the test
+   */
+  private static SitoolsStore<UserBlackListModel> storeBlacklist = null;
+
   /** The SitoolsMemoryRealm */
   private static SitoolsMemoryRealm smr = null;
   /** AuthorizationStore */
@@ -173,7 +180,8 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
             .setupDataSource(
                 settings.getString("Starter.DATABASE_DRIVER"), settings.getString("Starter.DATABASE_URL"), settings.getString("Starter.DATABASE_USER"), settings.getString("Starter.DATABASE_PASSWORD"), settings.getString("Starter.DATABASE_SCHEMA")); //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-        JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity, appContextAuthorization);
+        JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity,
+            appContextAuthorization);
 
         SitoolsStore<Role> storeRole = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)),
             appContextAuthorization);
@@ -203,26 +211,33 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
 
       // Attachement
       component.getInternalRouter().attach(settings.getString(Consts.APP_AUTHORIZATIONS_URL), appAuthorization);
-      
+
       settings.setStores(new HashMap<String, Object>());
-      
+
       // Context
       Context appContext = this.component.getContext().createChildContext();
       appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
 
       if (store == null) {
-        File storeDirectory = new File(getTestRepository()
-            + settings.getString(Consts.APP_TASK_STORE_DIR));
+        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_TASK_STORE_DIR));
         cleanDirectory(storeDirectory);
         store = new TaskStoreXML(storeDirectory, appContext);
       }
 
       if (storeResource == null) {
-        File storeDirectory = new File(getTestRepository()
-            + settings.getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR));
+        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR));
         cleanDirectory(storeDirectory);
         storeResource = new ResourcePluginStoreXML(storeDirectory, appContext);
       }
+
+      if (storeBlacklist == null) {
+        File storeBlacklistDirectory = new File(getTestRepository()
+            + settings.getString(Consts.APP_USER_BLACKLIST_STORE_DIR));
+        cleanDirectory(storeBlacklistDirectory);
+        storeBlacklist = new UserBlackListStoreXML(storeBlacklistDirectory, appContext);
+      }
+
+      settings.getStores().put(Consts.APP_STORE_USER_BLACKLIST, storeBlacklist);
 
       appContext.getAttributes().put(ContextAttributes.APP_STORE, store);
       appContext.getAttributes().put(Consts.APP_STORE_PLUGINS_RESOURCES, storeResource);

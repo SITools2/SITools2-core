@@ -86,7 +86,7 @@ public class UnBlacklistResource extends SitoolsResource {
         if (result) {
           String resetPasswwordUrl = settings.getString(Consts.APP_CLIENT_PUBLIC_PATH) + "/resetPassword";
           return RIAPUtils.handle(resetPasswwordUrl, new ObjectRepresentation<User>(userDb), Method.PUT,
-              MediaType.APPLICATION_JAVA_OBJECT, getContext());
+              getMediaType(variant), getContext());
         }
         else {
           response = new Response(false, "Cannot unblacklistuser");

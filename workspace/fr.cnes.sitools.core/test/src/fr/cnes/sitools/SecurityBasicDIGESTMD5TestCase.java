@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -57,6 +57,11 @@ import fr.cnes.sitools.util.RIAPUtils;
  */
 public class SecurityBasicDIGESTMD5TestCase extends AbstractSitoolsServerTestCase {
 
+  @Override
+  protected String getBaseUrl() {
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_LOGIN_PATH_URL);
+  }
+
   /**
    * Executed once before all test methods
    */
@@ -77,8 +82,8 @@ public class SecurityBasicDIGESTMD5TestCase extends AbstractSitoolsServerTestCas
     }
 
     try {
-      User user2 = new User("adminMD5", "MD5://bc799c4a24f33391c72035955a366e09",
-          "MD5://+md5(login:realm:password)", "DIGEST-MD5", "");
+      User user2 = new User("adminMD5", "MD5://bc799c4a24f33391c72035955a366e09", "MD5://+md5(login:realm:password)",
+          "DIGEST-MD5", "");
       store.createUser(user2);
     }
     catch (SitoolsException e) {
@@ -87,8 +92,8 @@ public class SecurityBasicDIGESTMD5TestCase extends AbstractSitoolsServerTestCas
     }
 
     try {
-      User user3 = new User("admin{MD5}", "{MD5}21232f297a57a5a743894a0e4a801fc3", "{MD5}+md5(password)", "OPENLDAP-MD5",
-          "");
+      User user3 = new User("admin{MD5}", "{MD5}21232f297a57a5a743894a0e4a801fc3", "{MD5}+md5(password)",
+          "OPENLDAP-MD5", "");
       store.createUser(user3);
     }
     catch (SitoolsException e) {
@@ -98,7 +103,7 @@ public class SecurityBasicDIGESTMD5TestCase extends AbstractSitoolsServerTestCas
 
     SitoolsSettings.getInstance().getAuthenticationRealm().refreshUsersAndGroups();
   }
-  
+
   /**
    * Executed once after all test methods
    */
@@ -126,7 +131,7 @@ public class SecurityBasicDIGESTMD5TestCase extends AbstractSitoolsServerTestCas
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
+
     Starter.stop();
     Engine.clearThreadLocalVariables();
 
