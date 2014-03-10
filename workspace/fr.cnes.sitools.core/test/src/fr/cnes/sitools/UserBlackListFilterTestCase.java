@@ -21,6 +21,9 @@ package fr.cnes.sitools;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Client;
 import org.restlet.Request;
@@ -31,6 +34,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 
+import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -44,15 +48,35 @@ public class UserBlackListFilterTestCase extends AbstractSitoolsServerTestCase {
   private static final String URL_ADMIN = getHostUrl() + "/sitools/datasets";
   /** The url to query */
   private static final String URL_USER_STORAGE = getHostUrl() + "/sitools/userstorage/admin/files/";
-  /** NB_ALLOWED_REQ_BEFORE_BLACKLIST */
-  private static final int NB_ALLOWED_REQ_BEFORE_BLACKLIST = settings.getInt("Starter.NB_ALLOWED_REQ_BEFORE_BLACKLIST");
+
+  @Before
+  @Override
+  /**
+   * Init and Start a server with GraphApplication
+   * 
+   * @throws java.lang.Exception
+   */
+  public void setUp() throws Exception {
+    super.setUp();
+    File storeDirectory = new File(getTestRepository());
+    cleanDirectory(storeDirectory);
+  }
+
+  /**
+   * Absolute path location for project store files
+   * 
+   * @return path
+   */
+  protected String getTestRepository() {
+    return settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR);
+  }
 
   /**
    * Test
    */
   @Test
   public void testAdmin() {
-    testBlocking(URL_ADMIN, NB_ALLOWED_REQ_BEFORE_BLACKLIST, "admin1", "admin1");
+    testBlocking(URL_ADMIN, getNbAllowReqBeforeBlacklist(), "admin1", "admin1");
   }
 
   /**
@@ -60,8 +84,17 @@ public class UserBlackListFilterTestCase extends AbstractSitoolsServerTestCase {
    */
   @Test
   public void testSecurityUser() {
-    testBlocking(URL_USER_STORAGE, NB_ALLOWED_REQ_BEFORE_BLACKLIST, "admin2", "admin2");
+    testBlocking(URL_USER_STORAGE, getNbAllowReqBeforeBlacklist(), "admin2", "admin2");
 
+  }
+
+  /**
+   * Gets the number allowed requests before blacklist.
+   * 
+   * @return the number allowed requests before blacklist.
+   */
+  private int getNbAllowReqBeforeBlacklist() {
+    return settings.getInt("Starter.NB_ALLOWED_REQ_BEFORE_BLACKLIST");
   }
 
   /**
@@ -73,7 +106,7 @@ public class UserBlackListFilterTestCase extends AbstractSitoolsServerTestCase {
     String password = "admin";
     String badPassword = "admin1";
 
-    int nbRequests = NB_ALLOWED_REQ_BEFORE_BLACKLIST - 2;
+    int nbRequests = getNbAllowReqBeforeBlacklist() - 2;
 
     // Try 3 bad requests
     for (int i = 0; i < nbRequests; i++) {
@@ -99,7 +132,7 @@ public class UserBlackListFilterTestCase extends AbstractSitoolsServerTestCase {
     String badPassword = "akka1";
 
     // Try 3 bad requests
-    for (int i = 0; i < NB_ALLOWED_REQ_BEFORE_BLACKLIST; i++) {
+    for (int i = 0; i < getNbAllowReqBeforeBlacklist(); i++) {
       request(URL_ADMIN, Status.CLIENT_ERROR_UNAUTHORIZED, user, badPassword);
     }
 

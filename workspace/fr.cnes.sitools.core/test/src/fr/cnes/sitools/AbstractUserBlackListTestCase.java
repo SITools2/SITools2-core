@@ -44,7 +44,7 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
   private String userPwd = "Vz0x2CbXj3";
 
   /** userId */
-  private String userEmail = "admin_test@test.eu";
+  private String userEmail = "m.gond@akka.eu";
 
   /**
    * absolute url for dataset management REST API
@@ -81,6 +81,7 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
+    super.setUp();
     File storeDirectory = new File(getTestRepository());
     cleanDirectory(storeDirectory);
   }
