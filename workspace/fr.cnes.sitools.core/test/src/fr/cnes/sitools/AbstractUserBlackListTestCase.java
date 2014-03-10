@@ -105,8 +105,9 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
       retrieveAll(userId);
 
       delete(userId);
-
-      checkUserNotBlacklisted(userId, userPwd);
+      // check that the user is not blacklisted but with bad password because a new password has been generated for the
+      // user when removing it from blacklist
+      checkUserNotBlacklistedBadPassword(userId, userPwd);
 
       assertNone();
     }
@@ -264,8 +265,16 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
     }
   }
 
-  private void checkUserNotBlacklisted(String user, String password) {
-    request(getBaseUrl(), Status.SUCCESS_OK, user, password);
+  /**
+   * Check that a user is not blacklisted with a request with a bad password
+   * 
+   * @param user
+   *          the user
+   * @param password
+   *          the password
+   */
+  private void checkUserNotBlacklistedBadPassword(String user, String password) {
+    request(getBaseUrl(), Status.CLIENT_ERROR_UNAUTHORIZED, user, password);
   }
 
   private void checkUserBlacklisted(String user, String password) {
@@ -274,6 +283,7 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
 
   private void blacklistUser(String user, String password) {
     for (int i = 0; i < NB_ALLOWED_REQ_BEFORE_BLACKLIST; i++) {
+      System.out.println("REQ : " + i);
       request(getBaseUrl(), Status.CLIENT_ERROR_UNAUTHORIZED, user, password + "+++");
     }
   }

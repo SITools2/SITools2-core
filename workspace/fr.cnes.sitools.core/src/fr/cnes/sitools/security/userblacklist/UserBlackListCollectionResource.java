@@ -89,6 +89,12 @@ public final class UserBlackListCollectionResource extends AbstractUserBlackList
     this.addStandardResourceCollectionFilterInfo(info);
   }
 
+  /**
+   * Loop through the list of blacklisted users and set whether or not a user exist
+   * 
+   * @param blacklistedUsers
+   *          the list of blacklisted users
+   */
   private void setUsersExists(List<UserBlackListModel> blacklistedUsers) {
     String url = getSettings().getString(Consts.APP_SECURITY_URL) + "/users";
     List<User> users = RIAPUtils.getListOfObjects(url, getContext());

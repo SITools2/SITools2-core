@@ -20,10 +20,12 @@ package fr.cnes.sitools.security.userblacklist;
 
 import java.util.logging.Level;
 
+import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
+import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
@@ -32,7 +34,9 @@ import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.filter.RequestCounter;
+import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * UserBlackListModel resource
@@ -109,6 +113,14 @@ public final class UserBlackListResource extends AbstractUserBlackListResource {
             Consts.SECURITY_FILTER_USER_BLACKLIST_CONTAINER);
         counter.remove(getUserId());
 
+        // if the user exists, generate a new password
+        User user = getUserObject(getUserId());
+        if (user != null) {
+          String resetPasswwordUrl = getSettings().getString(Consts.APP_CLIENT_PUBLIC_PATH) + "/resetPassword";
+          RIAPUtils.handle(resetPasswwordUrl, new ObjectRepresentation<User>(user), Method.PUT, getMediaType(variant),
+              getContext());
+        }
+
         response = new Response(true, "userBlackListModel.delete.success");
       }
       else {
@@ -135,6 +147,30 @@ public final class UserBlackListResource extends AbstractUserBlackListResource {
         "Identifier of the userBlackListModel");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardSimpleResponseInfo(info);
+  }
+
+  /**
+   * Check whether or not a User exists.
+   * 
+   * @param userId
+   *          the user id
+   * @return true, if the user exists, false otherwise
+   */
+  private boolean userExists(String userId) {
+    return getUserObject(userId) != null;
+  }
+
+  /**
+   * Gets the user object corresponding to the following userId
+   * 
+   * @param userId
+   *          the user id
+   * @return the user object
+   */
+  private User getUserObject(String userId) {
+    String url = getSettings().getString(Consts.APP_SECURITY_URL) + "/users";
+    User user = RIAPUtils.getObject(userId, url, getContext());
+    return user;
   }
 
 }

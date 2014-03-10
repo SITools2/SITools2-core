@@ -167,32 +167,14 @@ sitools.userProfile.Register = Ext.extend(Ext.Window, {
 			}],
 			buttons: [
 				{ text: i18n.get('label.register'), handler: this.register, scope: this },
-				{ text: i18n.get('label.reset'), reloadUrl : this.captchaUrl, handler: function () {
-						Ext.getCmp('frmRegister').getForm().reset();
-						Ext.getCmp('sbWinRegister').setStatus({
-							text: i18n.get('label.ready'),
-				        	iconCls: 'x-status-valid'
-						});
-						Ext.util.Cookies.clear('captcha');
-	                    var box = Ext.get('captchaBox');
-	                    box.dom.src = this.reloadUrl + '&_dc=' + new Date().getTime();
-	                    box.slideIn('l');
-					}
-				},
-					{ text: i18n.get('label.login'), hidden: !this.register, scope: this,
-					icon: loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-					handler: function () {
-		        		Ext.getCmp('winRegister').close();
-		        		var login = new sitools.userProfile.Login({
-		        			closable: this.closable,
-		        			url: this.login,
-		        			register: this.url,
-		        			handler: this.handler
-		        		});
-		        		login.show();
-					}
+				{ text: i18n.get('label.back'), hidden: !this.register, scope: this,
+				icon: loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
+				handler: function () {
+	        		Ext.getCmp('winRegister').close();
+	        		var login = new sitools.userProfile.Login(this.back);
+	        		login.show();
 				}
-				]
+			}]
 	    	}];
         sitools.userProfile.Register.superclass.initComponent.call(this);
 	},

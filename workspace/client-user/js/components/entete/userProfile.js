@@ -139,7 +139,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 		var login = new Ext.Button({
 			scope : this, 
 			cls : "userProfileBtn", 
-			text  : i18n.get('label.login'), 
+			text  : i18n.get('label.back'), 
 			handler : function () {
 			    sitools.userProfile.LoginUtils.connect({
 			        closable : true,

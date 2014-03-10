@@ -15,6 +15,11 @@ import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.business.NotifierFilter;
 
+/**
+ * The Class UserBlackListApplication.
+ * 
+ * @author m.gond
+ */
 public class UserBlackListApplication extends SitoolsApplication {
 
   /** store */
@@ -26,6 +31,7 @@ public class UserBlackListApplication extends SitoolsApplication {
    * @param context
    *          parent context
    */
+  @SuppressWarnings("unchecked")
   public UserBlackListApplication(Context context) {
     super(context);
 

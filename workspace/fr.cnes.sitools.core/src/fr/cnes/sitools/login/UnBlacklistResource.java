@@ -18,17 +18,11 @@
  ******************************************************************************/
 package fr.cnes.sitools.login;
 
-import java.util.ArrayList;
-
-import org.restlet.Request;
 import org.restlet.data.MediaType;
-import org.restlet.data.Method;
-import org.restlet.data.Preference;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.xstream.XstreamRepresentation;
-import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
@@ -51,8 +45,8 @@ public class UnBlacklistResource extends SitoolsResource {
 
   @Override
   public void sitoolsDescribe() {
-    setName("ResetPasswordResource");
-    setDescription("Resource for reset and generate a new user password");
+    setName("UnBlacklistResource");
+    setDescription("Resource to unblacklist a user and reset and generate a new user password");
   }
 
   /**
@@ -84,12 +78,10 @@ public class UnBlacklistResource extends SitoolsResource {
         String unblacklistUrl = settings.getString(Consts.APP_USER_BLACKLIST_URL) + "/" + userDb.getIdentifier();
         boolean result = RIAPUtils.deleteObject(unblacklistUrl, getContext());
         if (result) {
-          String resetPasswwordUrl = settings.getString(Consts.APP_CLIENT_PUBLIC_PATH) + "/resetPassword";
-          return RIAPUtils.handle(resetPasswwordUrl, new ObjectRepresentation<User>(userDb), Method.PUT,
-              getMediaType(variant), getContext());
+          response = new Response(true, "User account unlocked");
         }
         else {
-          response = new Response(false, "Cannot unblacklistuser");
+          response = new Response(false, "Cannot unlock user account");
         }
 
       }
@@ -111,35 +103,6 @@ public class UnBlacklistResource extends SitoolsResource {
     addStandardPostOrPutRequestInfo(info);
     addStandardResponseInfo(info);
     addStandardInternalServerErrorInfo(info);
-  }
-
-  /**
-   * Update an user
-   * 
-   * @param user
-   *          the user to update
-   * @param url
-   *          the url to use
-   * @return boolean
-   */
-  private boolean updateUser(User user, String url) {
-    Request reqPUT = new Request(Method.PUT, RIAPUtils.getRiapBase() + url + "/" + user.getIdentifier(),
-        new ObjectRepresentation<User>(user));
-
-    ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
-    objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
-    reqPUT.getClientInfo().setAcceptedMediaTypes(objectMediaType);
-    org.restlet.Response response = getContext().getClientDispatcher().handle(reqPUT);
-
-    if (response == null || Status.isError(response.getStatus().getCode())) {
-      RIAPUtils.exhaust(response);
-      return false;
-    }
-    else {
-      RIAPUtils.exhaust(response);
-      return true;
-    }
-
   }
 
   /**

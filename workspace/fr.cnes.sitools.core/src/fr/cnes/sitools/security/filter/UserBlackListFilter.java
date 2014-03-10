@@ -15,6 +15,7 @@ import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.server.Consts;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class UserBlackListFilter.
  * 
@@ -101,14 +102,42 @@ public class UserBlackListFilter extends Filter {
         return STOP;
       }
 
-      if (userAuthenticated(id, request)) {
-        counter.remove(id);
-      }
-      if (userNotAuthenticated(id, request)) {
-        counter.addRequest(id);
-      }
     }
     return CONTINUE;
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.restlet.routing.Filter#afterHandle(org.restlet.Request, org.restlet.Response)
+   */
+  @Override
+  protected void afterHandle(Request request, Response response) {
+    super.afterHandle(request, response);
+
+    if (request.getChallengeResponse() != null) {
+      String id = request.getChallengeResponse().getIdentifier();
+
+      if (userNotAuthenticated(id, request) || statusError(response)) {
+        counter.addRequest(id);
+      }
+      else {
+        counter.remove(id);
+      }
+    }
+
+  }
+
+  /**
+   * Return true if the status of the response is an authentication error.
+   * 
+   * @param response
+   *          the response
+   * @return true, if true if the status of the response is an authentication error, false otherwise
+   */
+  private boolean statusError(Response response) {
+    return response.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN)
+        || response.getStatus().equals(Status.CLIENT_ERROR_UNAUTHORIZED);
   }
 
   /**

@@ -11,6 +11,11 @@ import org.restlet.Context;
 
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
 
+/**
+ * The Class UserBlackListStoreXML.
+ * 
+ * @author m.gond
+ */
 public class UserBlackListStoreXML extends SitoolsStoreXML<UserBlackListModel> {
 
   /** default location for file persistence */

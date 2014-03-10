@@ -136,7 +136,7 @@ sitools.admin.usergroups.UserCrudPanel = Ext.extend(Ext.grid.GridPanel, {
                 text : i18n.get('title.blacklistedUsers'),
                 handler : this._onBlacklistedUsers,
                 xtype : 's-menuButton',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png'                
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/locked_user.png.png'                
             }, '->', {
                 xtype : 's-filter',
                 emptyText : i18n.get('label.search'),

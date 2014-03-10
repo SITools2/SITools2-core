@@ -86,7 +86,16 @@ sitools.admin.usergroups.BlacklistedUsersPanel = Ext.extend(Ext.Window, {
                 xtype : 'datecolumn'
             }, {
                 header : i18n.get('label.userExists'),
-                dataIndex : 'userExists'
+                dataIndex : 'userExists',
+                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                    if (value) {
+                        metadata.style += "font-weight:bold; color:green;";
+                    } else {
+                        metadata.style += "font-weight:bold; color:red;";
+                    }
+                    return value;
+                }
+                    
             } ],
             bbar : {
                 xtype : 'paging',
@@ -104,8 +113,8 @@ sitools.admin.usergroups.BlacklistedUsersPanel = Ext.extend(Ext.Window, {
                     scope : this
                 },
                 items : [ {
-                    text : i18n.get('label.unBlacklistUser'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                    text : i18n.get('label.unlockAccount'),
+                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/unlocked_user.png',
                     handler : this._onRemoveFromBlacklist
                 }, '->', {
                     xtype : 's-filter',

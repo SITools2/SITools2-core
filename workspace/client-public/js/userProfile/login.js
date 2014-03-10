@@ -37,49 +37,7 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
     modal : true,
     initComponent : function () {
         this.title = i18n.get('label.login');
-        this.bbar = new Ext.ux.StatusBar({
-            text : i18n.get('label.ready'),
-            id : 'sbWinLogin',
-            iconCls : 'x-status-valid',
-            items : [ {
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
-                iconAlign : 'right',
-                text : i18n.get("label.passwordLost&blacklisted"),
-                hidden : (!this.reset || !this.unblacklist),
-                menu: new Ext.menu.Menu({
-                    items : [{
-                       text : i18n.get('label.passwordLost'),
-                       hidden : !this.reset, 
-                       icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
-                       scope : this,                       
-                       handler : function () {
-                            Ext.getCmp('winLogin').close();
-                            var reset = new sitools.userProfile.resetPassword({
-                                closable : this.closable,
-                                url : this.reset,
-                                handler : this.handler
-                            });
-                            reset.show();
-                       }
-                    }, {
-                       text : i18n.get('label.unBlacklistUser'),
-                       hidden : !this.unblacklist, 
-                       icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
-                       scope : this,                       
-                       handler : function () {
-                            Ext.getCmp('winLogin').close();
-                            var reset = new sitools.userProfile.resetPassword({
-                                closable : this.closable,
-                                url : this.unblacklist,
-                                handler : this.handler,
-                                unblacklist : true
-                            });
-                            reset.show();
-                       }
-                    }]
-                })
-            } ]
-        });
+        
         this.combo = new Ext.form.ComboBox({
             typeAhead : true,
             triggerAction : 'all',
@@ -153,22 +111,6 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
                 handler : this.getAuth,
                 scope : this
             }, {
-                text : i18n.get('label.reset'),
-                handler : function () {
-                    Ext.getCmp('frmLogin').getForm().reset();
-                    Ext.getCmp('sbWinLogin').setStatus({
-                        text : i18n.get('label.ready'),
-                        iconCls : 'x-status-valid'
-                    });
-                }
-            }, {
-                text : i18n.get('label.cancel'),
-                hidden : !this.defurl,
-                scope : this,
-                handler : function () {
-                    window.location.href = this.defurl;
-                }
-            }, {
                 text : i18n.get('label.register'),
                 hidden : !this.register,
                 scope : this,
@@ -179,12 +121,37 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
                         closable : this.closable,
                         url : this.register,
                         login : this.url,
-                        handler : this.handler
+                        handler : this.handler,
+                        back : this
                     });
                     register.show();
                 }
             } ]
         } ];
+        
+        this.bbar = new Ext.ux.StatusBar({
+            text : i18n.get('label.ready'),
+            id : 'sbWinLogin',
+            iconCls : 'x-status-valid',
+            items : [ {
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
+                iconAlign : 'right',
+                text : i18n.get("label.needHelp"),
+                hidden : (!this.reset || !this.unblacklist),
+                scope : this,
+                handler : function () {
+                    Ext.getCmp('winLogin').close();
+                    var reset = new sitools.userProfile.resetPassword({
+                        closable : this.closable,
+                        urlResetPassword : this.reset,
+                        urlUnblacklist : this.unblacklist,
+                        handler : this.handler,
+                        back : this
+                    });
+                    reset.show();
+                }                
+            } ]
+        });
 
         sitools.userProfile.Login.superclass.initComponent.call(this);
     },
@@ -269,6 +236,7 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
             url : this.url,
             method : 'GET',
             scope : this,
+            doNotHandleRequestexception : true,
             success : function (response, opts) {
                 try {
                     var Json = Ext.decode(response.responseText);
@@ -325,7 +293,10 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
                 if (response.status == 200) {
                     var ret = Ext.decode(response.responseText).error;
                     txt = i18n.get('msg.error') + ': ' + ret;
-                } else {
+                } else if (response.status == 403) {
+                    txt = i18n.get('warning.accountLocked');
+                }
+                else {
                     txt = i18n.get('warning.serverError') + ': ' + response.statusText;
                 }
                 Ext.getCmp('winLogin').body.unmask();

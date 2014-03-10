@@ -4,24 +4,36 @@ import java.util.Date;
 
 import fr.cnes.sitools.common.model.IResource;
 
+/**
+ * The Class UserBlackListModel.
+ * 
+ * @author m.gond
+ */
 public class UserBlackListModel implements IResource {
-  /** The userblacklist identifier */
+
+  /** The userblacklist identifier. */
   private String id;
-  /** The name of the user which is blacklisted */
+
+  /** The name of the user which is blacklisted. */
   private String username;
-  /** The IP address which blacklisted the user */
+
+  /** The IP address which blacklisted the user. */
   private String ipAddress;
-  /** The date when the user was blacklisted */
+
+  /** The date when the user was blacklisted. */
   private Date date;
-  /** If the user exists in the database or not */
+
+  /** If the user exists in the database or not. */
   private Boolean userExists;
 
+  /** The name. */
   private String name;
 
+  /** The description. */
   private String description;
 
   /**
-   * Gets the id value
+   * Gets the id value.
    * 
    * @return the id
    */
@@ -30,7 +42,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Sets the value of id
+   * Sets the value of id.
    * 
    * @param id
    *          the id to set
@@ -40,7 +52,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Gets the username value
+   * Gets the username value.
    * 
    * @return the username
    */
@@ -49,7 +61,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Sets the value of username
+   * Sets the value of username.
    * 
    * @param username
    *          the username to set
@@ -59,7 +71,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Gets the ip value
+   * Gets the ip value.
    * 
    * @return the ip
    */
@@ -68,7 +80,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Sets the value of ip
+   * Sets the value of ip.
    * 
    * @param ipAddress
    *          the ip to set
@@ -78,7 +90,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Gets the date value
+   * Gets the date value.
    * 
    * @return the date
    */
@@ -87,7 +99,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Sets the value of date
+   * Sets the value of date.
    * 
    * @param date
    *          the date to set
@@ -97,7 +109,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Gets the userExists value
+   * Gets the userExists value.
    * 
    * @return the userExists
    */
@@ -106,7 +118,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Sets the value of userExists
+   * Sets the value of userExists.
    * 
    * @param userExists
    *          the userExists to set
@@ -116,7 +128,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Gets the name value
+   * Gets the name value.
    * 
    * @return the name
    */
@@ -125,7 +137,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Sets the value of name
+   * Sets the value of name.
    * 
    * @param name
    *          the name to set
@@ -135,7 +147,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Gets the description value
+   * Gets the description value.
    * 
    * @return the description
    */
@@ -144,7 +156,7 @@ public class UserBlackListModel implements IResource {
   }
 
   /**
-   * Sets the value of description
+   * Sets the value of description.
    * 
    * @param description
    *          the description to set

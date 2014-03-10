@@ -48,21 +48,27 @@ public class LoginApplication extends SitoolsApplication {
     Router router = new Router(getContext());
 
     if (getAuthenticationRealm() != null) {
+      // Manually attach a new UserBlackListFilter only to the login-mandatory Resource
+      UserBlackListFilter filter = new UserBlackListFilter(getContext());
+
       // "Basic Public Login Test"
       Authenticator authenticator = AuthenticatorFactory.getAuthenticator(getContext(), true, getSettings()
           .getAuthenticationDOMAIN(), getAuthenticationRealm());
       authenticator.setNext(LoginResource.class);
+      
+      filter.setNext(LoginResource.class);
+      authenticator.setNext(filter);
+
       router.attach("/login", authenticator);
+
 
       // "Basic Public Login Test Mandatory to return credentials"
       Authenticator authenticatorMandatory = AuthenticatorFactory.getAuthenticator(getContext(), false, getSettings()
           .getAuthenticationDOMAIN(), getAuthenticationRealm());
+
       authenticatorMandatory.setNext(LoginResource.class);
-      
-      // Manually attach a new UserBlackListFilter only to the login-mandatory Resource
-      UserBlackListFilter filter = new UserBlackListFilter(getContext());
-      filter.setNext(authenticatorMandatory);
-      router.attach("/login-mandatory", filter);
+
+      router.attach("/login-mandatory", authenticatorMandatory);
     }
 
     else {
