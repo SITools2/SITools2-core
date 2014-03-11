@@ -23,6 +23,7 @@ import org.restlet.resource.ClientResource;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.security.filter.RequestCounter;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.server.Consts;
@@ -84,6 +85,9 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
     super.setUp();
     File storeDirectory = new File(getTestRepository());
     cleanDirectory(storeDirectory);
+
+    RequestCounter counter = (RequestCounter) settings.getStores().get(Consts.SECURITY_FILTER_USER_BLACKLIST_CONTAINER);
+    counter.remove(userId);
   }
 
   /**
@@ -105,15 +109,19 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
       retrieveAll(userId);
 
       delete(userId);
-      // check that the user is not blacklisted but with bad password because a new password has been generated for the
-      // user when removing it from blacklist
-      checkUserNotBlacklistedBadPassword(userId, userPwd);
+
+      checkRequestCounter(userId, 0);
 
       assertNone();
     }
     finally {
       deleteUser(user);
     }
+  }
+
+  private void checkRequestCounter(String userId2, int i) {
+    RequestCounter counter = (RequestCounter) settings.getStores().get(Consts.SECURITY_FILTER_USER_BLACKLIST_CONTAINER);
+    assertEquals(i, counter.getNumberOfRequests(userId2));
   }
 
   /**
@@ -141,6 +149,8 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
       unblacklistUserFail(userId + "___", userEmail);
 
       unblacklistUser(userId, userEmail);
+
+      checkRequestCounter(userId, 0);
 
       assertNone();
 
@@ -265,25 +275,12 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
     }
   }
 
-  /**
-   * Check that a user is not blacklisted with a request with a bad password
-   * 
-   * @param user
-   *          the user
-   * @param password
-   *          the password
-   */
-  private void checkUserNotBlacklistedBadPassword(String user, String password) {
-    request(getBaseUrl(), Status.CLIENT_ERROR_UNAUTHORIZED, user, password);
-  }
-
   private void checkUserBlacklisted(String user, String password) {
     request(getBaseUrl(), Status.CLIENT_ERROR_FORBIDDEN, user, password);
   }
 
   private void blacklistUser(String user, String password) {
     for (int i = 0; i < NB_ALLOWED_REQ_BEFORE_BLACKLIST; i++) {
-      System.out.println("REQ : " + i);
       request(getBaseUrl(), Status.CLIENT_ERROR_UNAUTHORIZED, user, password + "+++");
     }
   }

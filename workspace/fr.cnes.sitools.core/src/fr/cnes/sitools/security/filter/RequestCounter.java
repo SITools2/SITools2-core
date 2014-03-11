@@ -14,7 +14,7 @@ public interface RequestCounter {
    *          the id
    * @return the number of requests
    */
-  public int getNumberOfRequests(String id);
+  int getNumberOfRequests(String id);
 
   /**
    * Adds the request.
@@ -22,7 +22,7 @@ public interface RequestCounter {
    * @param id
    *          the id
    */
-  public void addRequest(String id);
+  void addRequest(String id);
 
   /**
    * Removes the.
@@ -30,7 +30,7 @@ public interface RequestCounter {
    * @param id
    *          the id
    */
-  public void remove(String id);
+  void remove(String id);
 
   /**
    * Inits the number of request.
@@ -40,6 +40,6 @@ public interface RequestCounter {
    * @param nbRequests
    *          the nb requests
    */
-  public void initNumberOfRequest(String id, int nbRequests);
+  void initNumberOfRequest(String id, int nbRequests);
 
 }
