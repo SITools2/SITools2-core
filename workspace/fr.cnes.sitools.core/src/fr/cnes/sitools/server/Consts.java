@@ -507,7 +507,7 @@ public interface Consts {
 
   /** The app user blacklist url. */
   String APP_USER_BLACKLIST_URL = "Starter.APP_USER_BLACKLIST_URL";
-  
-  String SECURITY_FILTER_USER_BLACKLIST_CONTAINER = "Security.filter.userBlacklist.Container";
 
+  /** The security filter user blacklist container. */
+  String SECURITY_FILTER_USER_BLACKLIST_CONTAINER = "Security.filter.userBlacklist.Container";
 }

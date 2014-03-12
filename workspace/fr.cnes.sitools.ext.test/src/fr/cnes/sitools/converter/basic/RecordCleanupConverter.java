@@ -18,9 +18,13 @@
  ******************************************************************************/
 package fr.cnes.sitools.converter.basic;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
@@ -30,8 +34,6 @@ import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
  * Exemple de convertisseur pour supprimer les caractères spéciaux de chaines de caracteres dans XML et remplacer une
@@ -43,7 +45,7 @@ import java.util.Map;
 public class RecordCleanupConverter extends AbstractConverter {
 
   /** Class logger */
-  private static final Logger LOGGER = Logger.getLogger(RecordCleanupConverter.class.getName());
+  private static final Logger LOGGER = Engine.getLogger(RecordCleanupConverter.class.getName());
 
   /**
    * Constructor.

@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Logger;
 
+import org.restlet.engine.Engine;
 import org.restlet.engine.security.RoleMapping;
 import org.restlet.security.Group;
 import org.restlet.security.Role;
@@ -386,7 +386,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
       }
     }
     catch (SitoolsException e) {
-      Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+      Engine.getLogger(this.getClass().getName()).warning(e.getMessage());
     }
   }
 
@@ -506,7 +506,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
           }
         }
         catch (SitoolsException e) {
-          Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+          Engine.getLogger(this.getClass().getName()).warning(e.getMessage());
         }
       }
     }
@@ -523,7 +523,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
           }
         }
         catch (SitoolsException e) {
-          Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+          Engine.getLogger(this.getClass().getName()).warning(e.getMessage());
         }
       }
     }

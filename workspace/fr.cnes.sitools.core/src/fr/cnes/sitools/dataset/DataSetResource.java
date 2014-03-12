@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -78,9 +78,11 @@ public final class DataSetResource extends AbstractDataSetResource {
         Response response = null;
         if (dataset != null) {
           response = new Response(true, dataset, DataSet.class, "dataset");
+          trace(Level.INFO, "Dataset " + datasetId + " retrieved ");
         }
         else {
           response = new Response(false, "NOT_FOUND");
+          trace(Level.INFO, "Dataset " + datasetId + " not found ");
         }
         return getRepresentation(response, variant);
       }

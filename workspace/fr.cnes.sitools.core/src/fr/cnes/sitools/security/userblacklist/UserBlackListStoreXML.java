@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import org.restlet.Context;
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
 
@@ -22,7 +23,7 @@ public class UserBlackListStoreXML extends SitoolsStoreXML<UserBlackListModel> {
   private static final String COLLECTION_NAME = "userBlacklist";
 
   /** static logger for this store implementation */
-  private static Logger log = Logger.getLogger(UserBlackListStoreXML.class.getName());
+  private static Logger log = Engine.getLogger(UserBlackListStoreXML.class.getName());
 
   /**
    * Constructor with the XML file location

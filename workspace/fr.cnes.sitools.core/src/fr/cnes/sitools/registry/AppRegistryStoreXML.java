@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import org.restlet.Context;
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
@@ -46,7 +47,7 @@ public final class AppRegistryStoreXML extends SitoolsStoreXML<AppRegistry> {
   private static final String COLLECTION_NAME = "applications";
 
   /** static logger for this store implementation */
-  private static Logger log = Logger.getLogger(AppRegistryStoreXML.class.getName());
+  private static Logger log = Engine.getLogger(AppRegistryStoreXML.class.getName());
 
   /**
    * Constructor with the XML file location

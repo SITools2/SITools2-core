@@ -40,6 +40,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.routing.Filter;
 import org.restlet.routing.VirtualHost;
 import org.restlet.service.LogService;
+import org.restlet.service.Service;
 
 import fr.cnes.sitools.applications.AdministratorApplication;
 import fr.cnes.sitools.applications.ClientAdminApplication;
@@ -154,6 +155,7 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
 import fr.cnes.sitools.userstorage.UserStorageStore;
+import fr.cnes.sitools.util.SitoolsLogFilter;
 
 /**
  * Server Starting class.
@@ -271,11 +273,11 @@ public final class Starter {
     hostPort = ((hostPort != null) && !hostPort.equals("")) ? hostPort : SitoolsSettings.DEFAULT_HOST_PORT;
 
     // ============================
-    // Create a component
-    Component component = new SitoolsComponent(settings);
-
-    // ============================
     // Logging configuration
+    String loggerFacade = settings.getString("Starter.org.restlet.engine.loggerFacadeClass", null);
+    if (loggerFacade != null) {
+      System.setProperty("org.restlet.engine.loggerFacadeClass", loggerFacade);
+    }
 
     String logConfigFile = settings.getRootDirectory() + settings.getString("Starter.Logging.configFile");
     File loggingConfigFile = new File(logConfigFile);
@@ -285,6 +287,10 @@ public final class Starter {
     else {
       System.setProperty("java.util.logging.config.file", logConfigFile);
     }
+
+    // ============================
+    // Create a component
+    Component component = new SitoolsComponent(settings);
 
     // ============================
     // Logs access
@@ -318,6 +324,22 @@ public final class Starter {
       }
     };
     component.getServices().add(logServiceApplication);
+
+    
+    final String securityLoggerName = settings.getString("Starter.SecurityLogName");
+    
+    Service logServiceSecurity = new LogService(true) {
+      /*
+       * (non-Javadoc)
+       * 
+       * @see org.restlet.service.LogService#createInboundFilter(org.restlet.Context)
+       */
+      @Override
+      public Filter createInboundFilter(Context context) {
+        return new SitoolsLogFilter(securityLoggerName);
+      }
+    };
+    component.getServices().add(logServiceSecurity);
 
     // ============================
     // Protocols

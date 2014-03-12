@@ -412,18 +412,18 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
     }
     else {
       // Authentication is mandatory ? (optional - sinon fenetre login navigateur...)
-      ChallengeAuthenticator authenticator = AuthenticatorFactory.getAuthenticator(restlet.getContext(), true, getSettings()
-          .getAuthenticationDOMAIN(), authenticationRealm);
+      ChallengeAuthenticator authenticator = AuthenticatorFactory.getAuthenticator(restlet.getContext(), true,
+          getSettings().getAuthenticationDOMAIN(), authenticationRealm);
 
       // attach a filter to block bad authentication
       NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
       // attach a filter to block bad authentication
       UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
-      
+
       authenticator.setNext(userBlackListFilter);
-      
+
       userBlackListFilter.setNext(notAuthenticatedFilter);
-      
+
       notAuthenticatedFilter.setNext(authorizer);
 
       authorizer.setNext(restlet);
@@ -480,7 +480,7 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       userAuthorizers.add(result);
 
       // Result is a Or Authorizer
-      authorizer = new SitoolsOrAuthorizer(userAuthorizers, this.getLogger());
+      authorizer = new SitoolsOrAuthorizer(userAuthorizers);
       return authorizer;
     }
     catch (IOException e) { // marshalling error
@@ -663,7 +663,6 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
 
       // optional authenticator
       ChallengeAuthenticator auth = getChallengeAuthenticator(application);
-      
 
       if (!Category.PUBLIC.equals(application.getCategory())) {
         // attach a filter to block bad authentication
@@ -688,7 +687,7 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
 
       // optional authenticator
       ChallengeAuthenticator auth = getChallengeAuthenticator(application);
-      
+
       if (Category.PUBLIC.equals(application.getCategory())) {
         auth.setNext(localAuthorizer);
       }
@@ -944,7 +943,6 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
   public void setUserAuthenticationNeeded(boolean isUserAuthenticationNeeded) {
     this.isUserAuthenticationNeeded = isUserAuthenticationNeeded;
   }
-
   // /**
   // * Create a new authorization for administrator on the given {@link SitoolsApplication}. If the application have
   // * already an application it does nothing.

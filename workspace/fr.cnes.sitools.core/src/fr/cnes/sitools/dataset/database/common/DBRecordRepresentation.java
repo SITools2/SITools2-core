@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.OutputRepresentation;
@@ -144,7 +145,7 @@ public final class DBRecordRepresentation extends OutputRepresentation {
           databaseRequest.close();
         }
         catch (SitoolsException e) {
-          Logger.getLogger(this.getClass().getName()).severe(e.getMessage());
+          Engine.getLogger(this.getClass().getName()).severe(e.getMessage());
         }
       }
     }
@@ -273,7 +274,7 @@ public final class DBRecordRepresentation extends OutputRepresentation {
       return json;
     }
     catch (JSONException ejson) {
-      Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, ejson);
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, ejson);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.json", ejson);
     }
   }

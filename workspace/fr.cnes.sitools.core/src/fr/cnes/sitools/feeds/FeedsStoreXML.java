@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 import org.restlet.Context;
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
 import fr.cnes.sitools.feeds.model.FeedAuthorModel;
@@ -44,7 +45,7 @@ public final class FeedsStoreXML extends SitoolsStoreXML<FeedModel> {
   private static final String COLLECTION_NAME = "feeds";
 
   /** static logger for this store implementation */
-  private static Logger log = Logger.getLogger(FeedsStoreXML.class.getName());
+  private static Logger log = Engine.getLogger(FeedsStoreXML.class.getName());
 
   /**
    * Constructor with the XML file location

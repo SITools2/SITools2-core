@@ -24,6 +24,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.restlet.engine.Engine;
+
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.Validator;
 import fr.cnes.sitools.dataset.converter.business.AbstractConverter;
@@ -40,7 +42,7 @@ import fr.cnes.sitools.datasource.jdbc.model.Record;
 public class ExponentialConverter extends AbstractConverter {
 
   /** TODO Utiliser le logger du context ? ... */
-  private static Logger logger = Logger.getLogger(LinearConverter.class.getName());
+  private static Logger logger = Engine.getLogger(LinearConverter.class.getName());
 
   /**
    * Constructor.

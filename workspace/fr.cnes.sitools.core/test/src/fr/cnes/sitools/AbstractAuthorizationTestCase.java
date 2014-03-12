@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +35,7 @@ import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
+import org.restlet.engine.Engine;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
@@ -166,7 +166,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
       assertNone();
     }
     catch (IOException e) {
-      Logger.getLogger(this.getClass().getName()).warning(e.getMessage());
+      Engine.getLogger(this.getClass().getName()).warning(e.getMessage());
     }
   }
 
@@ -384,7 +384,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(getMediaTest()) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -424,7 +424,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null; // TODO complete test with ObjectRepresentation
       }
     }
@@ -454,7 +454,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
       return rep;
     }
     else {
-      Logger.getLogger(ResourceAuthorization.class.getName()).warning("Only JSON or XML supported in tests");
+      Engine.getLogger(ResourceAuthorization.class.getName()).warning("Only JSON or XML supported in tests");
       return null; // TODO complete test with ObjectRepresentation
     }
   }

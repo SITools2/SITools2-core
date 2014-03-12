@@ -20,7 +20,8 @@ package fr.cnes.sitools.security;
 
 import java.lang.reflect.Field;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
+
+import org.restlet.engine.Engine;
 
 /**
  * SQL Request
@@ -82,10 +83,10 @@ public abstract class JDBCUsersAndGroupsStoreResource {
         field.set(properties, bundle.getString(field.getName()));
       }
       catch (IllegalArgumentException e) {
-        Logger.getLogger("JDBCUsersAndGroupsStoreResource").severe(e.getMessage());
+        Engine.getLogger("JDBCUsersAndGroupsStoreResource").severe(e.getMessage());
       }
       catch (IllegalAccessException e) {
-        Logger.getLogger("JDBCUsersAndGroupsStoreResource").severe(e.getMessage());
+        Engine.getLogger("JDBCUsersAndGroupsStoreResource").severe(e.getMessage());
       }
     }
   }

@@ -18,11 +18,10 @@
  ******************************************************************************/
 package fr.cnes.sitools.units.dimension.model;
 
-import java.util.logging.Logger;
-
 import javax.measure.unit.Unit;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.restlet.engine.Engine;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -69,7 +68,7 @@ public final class SitoolsUnit {
       return Unit.valueOf(sequence);
     }
     catch (Exception e) {
-      Logger.getLogger("SitoolsUnit").info(sequence + " : not a valid unit");
+      Engine.getLogger("SitoolsUnit").info(sequence + " : not a valid unit");
     }
     return null;
   }

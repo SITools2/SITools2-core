@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Logger;
 
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.ClientInfo;
+import org.restlet.engine.Engine;
 import org.restlet.engine.security.RoleMapping;
 import org.restlet.ext.crypto.DigestUtils;
 import org.restlet.security.Enroler;
@@ -176,7 +176,7 @@ public abstract class SitoolsRealm extends Realm {
     @Override
     public boolean verify(String identifier, char[] secret) {
       if ((identifier == null) || identifier.equals("null")) {
-        Logger.getLogger(this.getClass().getName()).info("Authentication with NO identifier failed");
+        Engine.getLogger(this.getClass().getName()).info("Authentication with NO identifier failed");
         return false;
       }
       char[] localSecret = getLocalSecret(identifier);
@@ -225,7 +225,7 @@ public abstract class SitoolsRealm extends Realm {
       }
 
       // scheme inconnu ...
-      Logger.getLogger(this.getClass().getName()).warning("AUTHENTIFICATION SCHEME UNKNOWN : " + scheme);
+      Engine.getLogger(this.getClass().getName()).warning("AUTHENTIFICATION SCHEME UNKNOWN : " + scheme);
       return false;
     }
 

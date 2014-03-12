@@ -19,12 +19,12 @@
 package fr.cnes.sitools.applications;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
+import org.restlet.engine.Engine;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Extractor;
@@ -86,7 +86,7 @@ public final class PublicApplication extends StaticWebApplication {
     // FILES
     String commonPath = new File(getAppPath() + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COMMON_PATH))
         .getAbsolutePath().replace("\\", "/");
-    Logger.getLogger(this.getName()).info(Consts.APP_CLIENT_PUBLIC_COMMON_PATH + ":" + commonPath);
+    Engine.getLogger(this.getClass().getName()).info(Consts.APP_CLIENT_PUBLIC_COMMON_PATH + ":" + commonPath);
     Directory commonDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + commonPath, getBaseUrl()
         + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COMMON_URL));
     commonDir.setDeeplyAccessible(true);
@@ -98,7 +98,7 @@ public final class PublicApplication extends StaticWebApplication {
 
     String cotsPath = new File(getAppPath() + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_PATH))
         .getAbsolutePath().replace("\\", "/");
-    Logger.getLogger(this.getName()).info(Consts.APP_CLIENT_PUBLIC_COTS_PATH + ":" + cotsPath);
+    Engine.getLogger(this.getClass().getName()).info(Consts.APP_CLIENT_PUBLIC_COTS_PATH + ":" + cotsPath);
     Directory cotsDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + cotsPath, getBaseUrl()
         + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_URL));
 

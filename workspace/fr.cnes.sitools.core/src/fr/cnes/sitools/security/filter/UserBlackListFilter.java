@@ -2,6 +2,7 @@ package fr.cnes.sitools.security.filter;
 
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -98,7 +99,7 @@ public class UserBlackListFilter extends Filter {
         }
 
         response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Blacklisted user");
-        log(request, id);
+        log(request, response, id);
         return STOP;
       }
 
@@ -169,11 +170,14 @@ public class UserBlackListFilter extends Filter {
    * @param id
    *          the id
    */
-  private void log(Request request, String id) {
-    getLogger().log(
-        Level.INFO,
-        "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath() + " forbidden, user : " + id
-            + "blacklisted for too many requests with bad credentials");
+  private void log(Request request, Response response, String id) {
+
+    String message = "Request to: " + request.getResourceRef().getPath()
+        + " forbidden, user: " + id + " blacklisted for too many requests with bad credentials";
+
+    LogRecord record = new LogRecord(Level.WARNING, message);
+    response.getAttributes().put("LOG_RECORD", record);
+
   }
 
   /**

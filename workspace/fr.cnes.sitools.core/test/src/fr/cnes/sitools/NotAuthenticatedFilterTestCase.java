@@ -32,6 +32,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 
+import fr.cnes.sitools.security.filter.NotAuthenticatedFilter;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

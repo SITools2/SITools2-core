@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.engine.Engine;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -41,7 +42,7 @@ import org.restlet.resource.ClientResource;
 public class DocAPI {
   
   /** Class logger */
-  private static Logger logger = Logger.getLogger(DocAPI.class.getName());
+  private static Logger logger = Engine.getLogger(DocAPI.class.getName());
 
   /** output stream */
   private PrintStream stream = System.out;

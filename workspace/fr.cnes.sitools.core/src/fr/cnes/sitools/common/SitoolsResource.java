@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,6 +21,7 @@ package fr.cnes.sitools.common;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
@@ -153,7 +154,7 @@ public abstract class SitoolsResource extends AbstractSitoolsResource {
 
     }
     catch (IOException e) {
-      getLogger().log(Level.WARNING, "Bad representation of resource updating notification", e);      
+      getLogger().log(Level.WARNING, "Bad representation of resource updating notification", e);
     }
     return null;
   }
@@ -381,4 +382,13 @@ public abstract class SitoolsResource extends AbstractSitoolsResource {
     return settings;
   }
 
+  public void trace(Level level, String message, Throwable throwable) {
+    LogRecord record = new LogRecord(level, message);
+    record.setThrown(throwable);
+    getResponse().getAttributes().put("LOG_RECORD", record);
+  }
+
+  public void trace(Level level, String message) {
+    trace(level, message, null);
+  }
 }

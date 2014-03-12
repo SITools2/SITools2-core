@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.persistence.FilePersistenceStrategy;
@@ -52,7 +53,7 @@ public final class UserStorageStoreXML implements UserStorageStore {
   private static final String COLLECTION_NAME = "userStorages";
 
   /** static logger for this store implementation */
-  private static Logger log = Logger.getLogger(UserStorageStoreXML.class.getName());
+  private static Logger log = Engine.getLogger(UserStorageStoreXML.class.getName());
 
   /** Persistent list of userStorages */
   private List<UserStorage> list = null;
