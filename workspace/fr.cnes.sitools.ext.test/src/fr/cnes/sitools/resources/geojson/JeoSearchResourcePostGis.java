@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -65,7 +65,7 @@ public class JeoSearchResourcePostGis extends AbstractJeoSearchResource {
         geoCol.setColumnAlias(column.getColumnAlias());
         // Ne doit pas servir normalement
         // geoCol.setColumnAliasDetail(column.getColumnAliasDetail());
-        geoCol.setDataIndex("St_asgeojson(" + column.getDataIndex() + ")");
+        geoCol.setDataIndex("St_asgeojson(" + column.getTableName() + "." + column.getDataIndex() + ")");
         geoCol.setSpecificColumnType(SpecificColumnType.SQL);
         geoCol.setJavaSqlColumnType(column.getJavaSqlColumnType());
         geoCol.setVisible(true);
