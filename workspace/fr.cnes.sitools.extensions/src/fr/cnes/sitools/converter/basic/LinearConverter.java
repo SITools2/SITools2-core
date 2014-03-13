@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,10 +21,14 @@ package fr.cnes.sitools.converter.basic;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
@@ -34,8 +38,6 @@ import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
  * Example of converter
@@ -45,7 +47,7 @@ import java.util.Map;
 public class LinearConverter extends AbstractConverter {
 
   /** Class logger */
-  private static final Logger LOGGER = Logger.getLogger(LinearConverter.class.getName());
+  private final Logger logger = Engine.getLogger(LinearConverter.class.getName());
 
   /**
    * Constructor.
@@ -82,7 +84,7 @@ public class LinearConverter extends AbstractConverter {
     this.addParam(y);
     this.addParam(x);
 
-    LOGGER.log(Level.INFO, "Converter :{0} version {1}", new Object[] { this.getName(), this.getClassVersion() });
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override

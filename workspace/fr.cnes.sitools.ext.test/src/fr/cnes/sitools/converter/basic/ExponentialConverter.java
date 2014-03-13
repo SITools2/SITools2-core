@@ -79,7 +79,7 @@ public class ExponentialConverter extends AbstractConverter {
     this.addParam(precision);    
     this.addParam(x);
 
-    logger.log(Level.INFO, "Converter :" + this.getName() + " version " + this.getClassVersion());
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override

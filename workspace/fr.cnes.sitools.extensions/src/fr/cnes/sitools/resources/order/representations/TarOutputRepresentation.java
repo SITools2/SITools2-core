@@ -38,7 +38,6 @@ import org.restlet.representation.Representation;
 
 //import com.ice.tar.TarEntry;
 //import com.ice.tar.TarOutputStream;
-
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.resources.order.utils.ListReferencesAPI;
 import fr.cnes.sitools.resources.order.utils.OrderResourceUtils;

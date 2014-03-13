@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -83,7 +83,7 @@ public class LinearInOutConverter extends AbstractConverter {
     this.addParam(b);
     this.addParam(x);
 
-    logger.log(Level.INFO, "Converter :{0} version {1}", new Object[] { this.getName(), this.getClassVersion() });
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override
@@ -97,7 +97,7 @@ public class LinearInOutConverter extends AbstractConverter {
     Double b = new Double(this.getInternParam("b").getValue());
 
     AttributeValue attrIntOut = this.getInOutParam("x", rec);
-    logger.log(Level.FINEST, "x={0} a={1} b={2}", new Object[] { attrIntOut.getValue(), a, b });
+    logger.log(Level.FINEST, String.format("x=%s a=%s b=%s", attrIntOut.getValue(), a, b));
 
     if (!isNull(attrIntOut)) {
       try {

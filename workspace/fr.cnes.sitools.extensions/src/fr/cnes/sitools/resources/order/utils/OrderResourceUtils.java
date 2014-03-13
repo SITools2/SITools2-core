@@ -56,7 +56,6 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.proxy.ProxySettings;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskUtils;
-import fr.cnes.sitools.util.FileUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**

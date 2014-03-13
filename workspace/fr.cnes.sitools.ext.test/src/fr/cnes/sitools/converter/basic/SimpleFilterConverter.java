@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -36,7 +36,8 @@ import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
 
 /**
- * Example of a converter to investigate on possible Filter usage of a converter.
+ * Example of a converter to investigate on possible Filter usage of a
+ * converter.
  * 
  * To be continued...
  * 
@@ -44,7 +45,7 @@ import fr.cnes.sitools.datasource.jdbc.model.Record;
  */
 public class SimpleFilterConverter extends AbstractConverter {
   /** The logger */
-  private static final Logger LOGGER = Engine.getLogger(SimpleFilterConverter.class.getName());
+  private final Logger logger = Engine.getLogger(SimpleFilterConverter.class.getName());
 
   /**
    * Constructor.
@@ -71,6 +72,8 @@ public class SimpleFilterConverter extends AbstractConverter {
 
     this.addParam(field);
     this.addParam(seuil);
+
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override
@@ -80,7 +83,7 @@ public class SimpleFilterConverter extends AbstractConverter {
 
     AttributeValue field = this.getInOutParam("field", rec);
 
-    LOGGER.log(Level.FINEST, "value={0} threshold={1}", new Object[] {field.getValue(), threshold});
+    logger.log(Level.FINEST, String.format("value=%s threshold=%s", field.getValue(), threshold));
     Double valueField = new Double(String.valueOf(field.getValue()));
 
     if (valueField <= threshold) {

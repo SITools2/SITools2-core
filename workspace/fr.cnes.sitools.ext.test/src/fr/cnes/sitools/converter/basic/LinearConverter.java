@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -47,7 +47,7 @@ import fr.cnes.sitools.datasource.jdbc.model.Record;
 public class LinearConverter extends AbstractConverter {
 
   /** Class logger */
-  private static final Logger LOGGER = Engine.getLogger(LinearConverter.class.getName());
+  private final Logger logger = Engine.getLogger(LinearConverter.class.getName());
 
   /**
    * Constructor.
@@ -84,7 +84,7 @@ public class LinearConverter extends AbstractConverter {
     this.addParam(y);
     this.addParam(x);
 
-    LOGGER.log(Level.INFO, "Converter :{0} version {1}", new Object[] { this.getName(), this.getClassVersion() });
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override
