@@ -139,9 +139,9 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             } ],
             listeners : {
                 scope : this,
-                change : function (rg, selRadio) {
+                change : function (rg, newValue, oldValue, opts) {
                     var gridEl;
-                    if (selRadio.inputValue == 'D') {
+                    if (newValue.valuesType == 'D') {
                         gridEl = Ext.get('componentGridValues');
                         gridEl.mask();
                         // this.mask = this.gridValues().loadMask();
@@ -290,7 +290,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
 //            var componentYpos = greatY + 10;
             param1 = Ext.isEmpty(f.findField('PARAM1')) ? "" : f.findField('PARAM1').getValue();
             code = [param1];
-            valueSelection = this.radio.getValue().inputValue;
+            valueSelection = this.radio.getValue().valuesType;
             
             var parentParam = (Ext.isEmpty(this.parentParam.value)) ? null:this.parentParam.value.id;
             

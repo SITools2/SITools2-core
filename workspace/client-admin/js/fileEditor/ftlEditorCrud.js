@@ -26,7 +26,8 @@
 
 Ext.namespace('sitools.component.fileEditor');
 
-Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.component.fileEditor.ftlEditorCrud', { 
+    extend : 'Ext.grid.Panel',
     alias : 'widget.s-ftlEditor',
     border : false,
     height : 300,
@@ -66,29 +67,24 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', { extend : 'Ext.grid.Pa
             } ]
         });
         
-        this.columns = new Ext.grid.ColumnModel({
-            defaults : {
-                sortable : true
-            },
-            columns : [{
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 500,
-                sortable : true
-            },
-            {
-                header : i18n.get('label.size'),
-                dataIndex : 'size',
-                width : 100,
-                sortable : true
-            },
-            {
-                header : i18n.get('label.lastModif'),
-                dataIndex : 'lastModif',
-                width : 360,
-                sortable : true
-            }]
-        });
+        this.columns = [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 500,
+            sortable : true
+        },
+        {
+            header : i18n.get('label.size'),
+            dataIndex : 'size',
+            width : 100,
+            sortable : true
+        },
+        {
+            header : i18n.get('label.lastModif'),
+            dataIndex : 'lastModif',
+            width : 360,
+            sortable : true
+        }];
 
         this.tbar = {
             xtype : 'toolbar',

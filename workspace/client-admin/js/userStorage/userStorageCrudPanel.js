@@ -84,7 +84,11 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             columns : [ {
                 header : i18n.get('label.userLogin'),
                 dataIndex : 'userId',
-                width : 100
+                width : 100,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.userStoragePath'),
                 dataIndex : 'userStoragePath',

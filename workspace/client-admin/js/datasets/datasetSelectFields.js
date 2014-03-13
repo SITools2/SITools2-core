@@ -25,13 +25,12 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetSelectFields
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetSelectFields', { extend : 'Ext.Panel',
+Ext.define('sitools.admin.datasets.datasetSelectFields', { 
+    extend : 'Ext.Panel',
     initComponent : function () {
 		var action = this.action;
-
         
         Ext.apply(this, {
-             
             title : i18n.get('label.selectFields'), 
             layout : 'fit', 
             id : "selectTablesFields",
@@ -39,7 +38,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', { extend : 'Ext.Panel',
                 scope : this,
                 activate : function (panel) {
                     //instanciate the panels if not yet done
-					if (Ext.isEmpty(this.items) || this.items.getCount() === 0) {
+					if (Ext.isEmpty(this.items.items) || this.items.getCount() === 0) {
 						this.buildPanel();	
 						this.loadInitialData();
 					}
@@ -57,7 +56,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', { extend : 'Ext.Panel',
 					this.gridTablesBDD.getStore().load();
                 }, 
                 initializeDatasource : function () {
-					if (Ext.isEmpty(this.items) || this.items.getCount() === 0) {
+					if (Ext.isEmpty(this.items.items) || this.items.getCount() === 0) {
 						this.buildPanel();	
 						this.loadInitialData();
 					}
@@ -81,19 +80,23 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', { extend : 'Ext.Panel',
 		
         var cmFieldsDataset = this.datasourceUtils.getCmFieldsDataset();
         
-
         /**
          * The grid that displays the Fields of a dataset.
          * @type Ext.grid.ColumnModel
          */
-        this.gridFieldsDataset = new Ext.grid.GridPanel({
+        this.gridFieldsDataset = Ext.create('Ext.grid.Panel', {
 			layout : 'fit', 
             store : this.gridFieldsDataset,
-            cm : cmFieldsDataset,
+            columns : cmFieldsDataset,
             autoScroll : true,
             enableDragDrop : true,
             stripeRows : true,
-            title : 'Columns Dataset'
+            forceFit : true,
+            title : 'Columns Dataset',
+            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+                pluginId : 'fieldAliasEditing',
+                clicksToEdit: 2
+            })]
         });
 
         var defaultRecord = [ {

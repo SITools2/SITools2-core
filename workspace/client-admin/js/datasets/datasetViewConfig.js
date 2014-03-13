@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetViewConfig', { extend : 'Ext.form.Panel',
+Ext.define('sitools.admin.datasets.datasetViewConfig', { 
+    extend : 'Ext.form.Panel',
     padding : 10, 
     initComponent : function () {
         this.title = i18n.get('label.viewConfig');

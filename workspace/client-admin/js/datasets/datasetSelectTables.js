@@ -30,11 +30,11 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetSelectTables', { extend : 'Ext.Panel',
+Ext.define('sitools.admin.datasets.datasetSelectTables', { 
+    extend : 'Ext.Panel',
     initComponent : function () {
 		var action = this.action;
 
-        
         Ext.apply(this, {
              
             title : i18n.get('label.selectTables'), // "select Tables",
@@ -44,7 +44,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', { extend : 'Ext.Panel',
                 scope : this,
                 activate : function (panel) {
                     //instanciate the panels at the first passage
-					if (Ext.isEmpty(this.items)) {
+					if (Ext.isEmpty(this.items.items)) {
 						this.buildPanel();	
 						this.loadInitialData();
 					}
@@ -62,15 +62,13 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', { extend : 'Ext.Panel',
 					this.gridTablesBDD.getStore().load();
                 }, 
                 initializeDatasource : function () {
-					if (Ext.isEmpty(this.items)) {
+					if (Ext.isEmpty(this.items.items)) {
 						this.buildPanel();	
 						this.loadInitialData();
 					}
                 }
             }
         });
-        
-		
 		
 		sitools.admin.datasets.datasetSelectTables.superclass.initComponent.call(this);
     }, 
@@ -87,7 +85,8 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', { extend : 'Ext.Panel',
 
 			}
 		}
-    }, 
+    },
+    
     buildPanel : function () {
 		this.datasourceUtils = this.scope.datasourceUtils;
 		
@@ -114,24 +113,27 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', { extend : 'Ext.Panel',
             }, {
                 name : 'schemaName',
                 type : 'string'
-            }
-
-            ]
+            }]
         });
 
         /**
          * The grid that displays the tables of a dataset.
          * @type Ext.grid.ColumnModel
          */
-        this.gridTablesDataset = new Ext.grid.EditorGridPanel({
+        this.gridTablesDataset = Ext.create('Ext.grid.Panel', {
             layout : 'fit', 
             store : this.storeTablesDataset,
-            cm : cmTablesDataSet,
+            columns : cmTablesDataSet,
             selModel : Ext.create('Ext.selection.RowModel',{}),
             autoScroll : true,
             enableDragDrop : true,
             stripeRows : true,
-            title : 'Tables Dataset'
+            forceFit : true,
+            title : 'Tables Dataset',
+            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+                pluginId : 'tableAliasEditing',
+                clicksToEdit: 2
+            })]
         });
 
         this.displayPanelTables = new sitools.component.datasets.selectItems({

@@ -21,7 +21,8 @@
 
 Ext.namespace('sitools.component.fileEditor');
 
-Ext.define('sitools.component.fileEditor.fileEditorProp', { extend : 'Ext.Window',
+Ext.define('sitools.component.fileEditor.fileEditorProp', { 
+    extend : 'Ext.Window',
     alias : 'widget.s-fileEditorProp',
     width : 700,
     height : 480,

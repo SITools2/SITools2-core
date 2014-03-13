@@ -16,117 +16,147 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-html, body {
-border:0 none;
-font:9pt arial,tahoma,verdana,helvetica,sans-serif;
-height:100%;
-margin:0;
-overflow:hidden;
-padding:0;
+html,body {
+	border: 0 none;
+	font: 9pt arial, tahoma, verdana, helvetica, sans-serif;
+	height: 100%;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
 }
 
 .admin-bg {
-	background:url(../images/bg.jpg) no-repeat left top;
-	background-size : 100%;
+	/*background:url(../images/bg.jpg) no-repeat left top;*/
+	background-size: 100%;
+	background: rgb(21,127,204); /* Old browsers */
+	background: -moz-linear-gradient(-45deg,  rgba(21,127,204,1) 0%, rgba(165,208,239,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(21,127,204,1)), color-stop(100%,rgba(165,208,239,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* IE10+ */
+	background: linear-gradient(135deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#157fcc', endColorstr='#a5d0ef',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 
 .admin-bg-transparent {
-	background-color: rgba(253, 253, 253, 0.52);
+	background-color: rgba(253, 253, 253, 0);
 }
 
 a {
-color:blue;
-text-decoration:none;
+	color: blue;
+	text-decoration: none;
 }
 
 .module-root {
-margin-bottom:10px;
-margin-top:30px;
-text-align:center;
+	margin-bottom: 10px;
+	/*margin-top: 30px;*/
+	text-align: center;
 }
+
 .centering {
-margin-left:auto;
-margin-right:auto;
-text-align:left;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
 }
 
 .subtitle {
-color:#1B40A7;
-font-size:12pt;
-margin-bottom:5px;
+	color: #1B40A7;
+	font-size: 12pt;
+	margin-bottom: 5px;
 }
 
 div.subtitle {
-height:20px;
-width:100%;
+	height: 13px;
+	width: 100%;
 }
 
 .s-textfilter .x-form-field-wrap {
-	background-color:#FFFFFF;
-	border:1px solid #99BBE8;
+	background-color: #FFFFFF;
+	border: 1px solid #99BBE8;
 }
+
 .s-textfilter .x-form-field-wrap .s-textfilter-text {
-	background-color:transparent;
-	background-image:url("/sitools/common/res/images/icons/search-icon.png");
-	background-position:0 0;
-	background-repeat:no-repeat;
-	border:medium none;
-	font-size:11px;
-	height:18px !important;
-	line-height:14px;
-	padding-left:18px;
+	background-color: transparent;
+	background-image:
+		url("/sitools/common/res/images/icons/search-icon.png");
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	border: medium none;
+	font-size: 11px;
+	height: 18px !important;
+	line-height: 14px;
+	padding-left: 18px;
 }
+
 .s-textfilter .x-form-field-trigger-wrap .s-textfilter-trigger {
-	background-color:transparent;
-	background-image:url("/sitools/common/res/images/icons/search-cancel.png");
-	background-position:0 0;
-	background-repeat:no-repeat;
-	border:medium none;
-	height:20px;
-	right:0;
+	background-color: transparent;
+	background-image:
+		url("/sitools/common/res/images/icons/search-cancel.png");
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	border: medium none;
+	height: 20px;
+	right: 0;
 }
 
 .x-tree-node-leaf .x-tree-node-icon {
-	width:16px;
-	height:16px;
+	width: 16px;
+	height: 16px;
 }
 
 .x-button-dataSet {
-	margin:10px 30px 10px 50px;
+	margin: 10px 30px 10px 50px;
 }
 
-
-	
-.subtitle{
-	padding-left:20px;
+.subtitle {
+	padding-left: 20px;
 }
 
-.menu-button{
-	padding-right:10px !important;
+.menu-button {
+	padding-right: 10px !important;
 }
-
-
-
 
 .x-tree-node-folder {
-	background-image : url("/sitools/cots/extjs/resources/images/default/tree/folder.gif") !important;
+	background-image:
+		url("/sitools/cots/extjs/resources/images/default/tree/folder.gif")
+		!important;
 }
 
 .sitools-explore-datasource {
-	background-image: url("/sitools/common/res/images/icons/tree_databases.png") !important;
+	background-image:
+		url("/sitools/common/res/images/icons/tree_databases.png") !important;
 	height: 16px;
 	width: 16px;
 }
 
-pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-.string { color: black; }
-.number { color: darkorange; }
-.boolean { color: blue; }
-.null { color: magenta; }
-.key { color: #A20000; }
+pre {
+	outline: 1px solid #ccc;
+	padding: 5px;
+	margin: 5px;
+}
+
+.string {
+	color: black;
+}
+
+.number {
+	color: darkorange;
+}
+
+.boolean {
+	color: blue;
+}
+
+.null {
+	color: magenta;
+}
+
+.key {
+	color: #A20000;
+}
 
 .uneditable-cell {
-	background-color: #ccc;	
+	background-color: #ccc;
 	opacity: .60;
 }
 
@@ -145,17 +175,17 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 }
 
 .INACTIVE {
-	color : #157FCC;
+	color: #157FCC;
 	font-weight: bold;
 }
 
 .ACTIVE {
-	color : #14BD12;
+	color: #14BD12;
 	font-weight: bold;
 }
 
 .NEW {
-	color : #43c2db;
+	color: #43c2db;
 	font-weight: bold;
 }
 
@@ -163,6 +193,28 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 	border: none !important;
 } */
 
-.x-toolbar-footer {
+/*.x-toolbar-footer {
 	background: #FFF;
+}*/
+
+/* .x-toolbar-text {
+	color : #fff;
+}
+
+.x-toolbar-default {
+	background-color: #3892D3;
+} */
+.x-tool-img-fieldset {
+	background-image:
+		url("/sitools/cots/extjs4/ext-4.2.1.883/resources/ext-theme-neptune/images/tools/tool-sprites-dark.png");
+}
+
+.row-error .x-grid-cell {
+	background-color: #e2ffe2;
+	color: #090;
+}
+
+.adminPanel {
+	border-radius : 1px !important;
+	-webkit-box-shadow: 1px 1px 6px 2px #EDF4FF !important;
 }

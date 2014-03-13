@@ -1,6 +1,6 @@
 [
    {
-      "text":"Users & Groups",
+      "text":"<b><i>Users & Groups</i></b>",
       "nodeName":"usersandgroups",
       "id":"usrgrpNodeId",
       "iconMenu":"/sitools/common/res/images/icons/menu/usersGroups.png",
@@ -56,7 +56,7 @@
       ]
    },
    {
-      "text":"Security Management",
+      "text":"<b><i>Security Management</i></b>",
       "nodeName":"security",
       "id":"SecurityNodeId",
       "iconMenu":"/sitools/common/res/images/icons/menu/security.png",
@@ -80,7 +80,7 @@
       ]
    },
    {
-      "text":"Data Management",
+      "text":"<b><i>Data Management</i></b>",
       "id":"DataManagementId",
       "nodeName":"datamanagement",
       "iconMenu":"/sitools/common/res/images/icons/menu/dataMgt.png",
@@ -176,7 +176,7 @@
       ]
    },
    {
-      "text":"Access Management",
+      "text":"<b><i>Access Management</i></b>",
       "id":"DataAccessNodeId",
       "nodeName":"dataaccess",
       "iconMenu":"/sitools/common/res/images/icons/menu/dataAccess.png",
@@ -190,7 +190,7 @@
             "id":"rssPortalNodeId",
          },
          {
-            "text":"Projects Management",
+            "text":"<i>Projects Management</i>",
             "nodeName":"projectsManagement",
             "id":"ProjectsManagementNodeId",
             "links":[
@@ -261,7 +261,7 @@
             ]
          },
          {
-            "text":"Dataset | Multi-Datasets Management",
+            "text":"<i>Dataset | Multi-Datasets Management</i>",
             "nodeName":"multiDataset",
             "id":"multiDatasetsNodeId",
             "iconMenu":"/sitools/common/res/images/icons/menu/multiDs.png",
@@ -294,7 +294,7 @@
             ]
          },
          {
-            "text":"DataSets Management",
+            "text":"<i>DataSets Management</i>",
             "nodeName":"datasetsManagement",
             "id":"dataSetsManagementNodeId",
             "children":[
@@ -357,7 +357,7 @@
             ]
          },
          {
-            "text":"Applications plugins",
+            "text":"<i>Applications plugins</i>",
             "nodeName":"appPluginsNode",
             "id":"AppPluginsNodeId",
             "links":[
@@ -399,7 +399,7 @@
       ]
    },
    {
-      "text":"Utilities",
+      "text":"<b><i>Utilities</i></b>",
       "nodeName":"extraFeaturesNode",
       "id":"extraFeaturesId",
       "iconMenu":"/sitools/common/res/images/icons/menu/extraFeatures.png",

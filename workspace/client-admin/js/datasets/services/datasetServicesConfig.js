@@ -54,7 +54,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', { extend : 'Ext.form.Pane
                                     minPriorityRec = recs[i];
                                 }                                
                             }
-                            this.comboDatasetViews.setValue(minPriorityrec.data.id);
+                            this.comboDatasetViews.setValue(minPriorityRec.data.id);
                             this.comboDatasetViews.fireEvent("select", this.comboDatasetViews, minPriorityRec);
                         }
                     }

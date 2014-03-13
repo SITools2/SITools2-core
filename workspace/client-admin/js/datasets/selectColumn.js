@@ -30,7 +30,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.selectColumn
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.selectColumn', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.selectColumn', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-datasetscolumnwin',
     width : 700,
     height : 480,
@@ -40,22 +41,14 @@ Ext.define('sitools.admin.datasets.selectColumn', { extend : 'Ext.Window',
     initComponent : function () {
         this.title = i18n.get('title.selectColumn');
 
-        this.cmSelectColumn = new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                sortable : true,
-                dataIndex : 'columnAlias'
-            } ]
-        });
-
-        this.smSelectColumn = Ext.create('Ext.selection.RowModel',{
+        this.smSelectColumn = Ext.create('Ext.selection.RowModel', {
             singleSelect : true
         });
 
         this.gridSelectColumn = new Ext.grid.GridPanel({
             height : 380,
             autoScroll : true,
+            forceFit : true,
             store : new Ext.data.JsonStore({
                 root : 'dataset.columnModel',
                 restful : true,
@@ -98,7 +91,12 @@ Ext.define('sitools.admin.datasets.selectColumn', { extend : 'Ext.Window',
                     }
                 }
             }),
-            cm : this.cmSelectColumn,
+            columns : [{
+                id : 'name',
+                header : i18n.get('headers.name'),
+                sortable : true,
+                dataIndex : 'columnAlias'
+            }],
             selModel : this.smSelectColumn
         });
 

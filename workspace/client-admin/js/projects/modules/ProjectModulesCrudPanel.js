@@ -104,11 +104,15 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
                 sortable : true
             // columns are not sortable by default
             },
-            columns : [ {
+            columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 150,
-                sortable : true
+                sortable : true,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
@@ -119,7 +123,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
                 dataIndex : 'xtype',
                 width : 350,
                 sortable : false
-            } ]
+            }]
         });
 
         this.bbar = {

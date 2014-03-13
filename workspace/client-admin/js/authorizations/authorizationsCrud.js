@@ -78,7 +78,11 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
             }, {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 150
+                width : 150,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',

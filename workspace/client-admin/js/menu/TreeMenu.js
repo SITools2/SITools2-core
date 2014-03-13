@@ -137,14 +137,15 @@ Ext.define('sitools.admin.menu.TreeMenu', {
 	            bodyCssClass : 'admin-bg',
 	            border : false,
 	            bodyBorder : false,
-	            items : [ {
+	            items : [{
 	                xtype : 'widget.s-box',
-	                label : i18n.get('label.' + nodeName),
-	                items : [ {
-	                    xtype : 'widget.s-' + nodeName, 
-	                    sitoolsType : "mainAdminPanel"
-	                } ],
-	                idItem : nodeId
+//	                label : i18n.get('label.' + nodeName),
+	                items : [{
+	                    xtype : 'widget.s-' + nodeName,
+	                    sitoolsType : "mainAdminPanel",
+	                    cls : "adminPanel"
+	                }]
+//	                idItem : nodeId
 	            } ], 
 	            listeners : {
 	                resize : function (panel, width, height) {
@@ -159,23 +160,30 @@ Ext.define('sitools.admin.menu.TreeMenu', {
 	                }
 	            }
 	        });
+            
+            mainPanel.setIconCls('icon-' + nodeId);
+            mainPanel.setTitle(i18n.get('label.' + nodeName));
 //        }
 
-        var helpPanel = new Ext.panel.Panel({
+        var helpPanel = Ext.create('Ext.Component', {
             bodyCssClass : 'admin-bg-transparent',
             id : ID.PANEL.HELP,
             width : "100%", 
             flex : 1,
-            // autoScroll:true,
-            defaultSrc : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html"
+            autoEl : {
+                tag : 'iframe',
+                src : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html"
+            }
+//            defaultSrc : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html"
         });
+        
         mainPanel.add(
             helpPanel
         );
         mainPanel.doLayout();
         helpPanel.setVisible(SHOW_HELP);
         
-        helpUrl = loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html";
+//        helpUrl = loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html";
     }
 
 });

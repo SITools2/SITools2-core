@@ -79,7 +79,7 @@ sitools.admin.datasets.abstractDatasetWin = {
 	 * @cfg id
 	 * @inheritdoc
 	 */
-    id : 'datasetsMultiTablesPanel',
+//    id : 'datasetsMultiTablesPanel',
 	/**
 	 * @cfg resizable
 	 * @inheritdoc
@@ -178,7 +178,7 @@ sitools.admin.datasets.abstractDatasetWin = {
 
                     var rec = {};
                     if (this.action !== "duplicate") {
-						rec.data.id = data.id;
+						rec.id = data.id;
 						rec.sitoolsAttachementForUsers = data.sitoolsAttachementForUsers;
 						rec.dirty = data.dirty;
 						rec.name = data.name;
@@ -205,7 +205,7 @@ sitools.admin.datasets.abstractDatasetWin = {
                     this.formulairePrincipal.loadDatasources(
                         function () {
                             if (data.datasource) {
-                                var combo = this.findByType('form')[0].getComponent('comboDataSource');
+                                var combo = this.down('form').getComponent('comboDataSource');
                                 var oldValue = combo.getValue();
                                 combo.setValue(data.datasource.id);
                                 combo.fireEvent("initValue", combo, data.datasource.id);
@@ -277,7 +277,7 @@ sitools.admin.datasets.abstractDatasetWin = {
                         return;
                     }
                     var columnModel = data.columnModel;
-                    this.findById('gridColumnSelect').getData(columnModel);
+                    this.down('panel[id=gridColumnSelect]').getData(columnModel);
                     if (! Ext.isEmpty(data.structure)) {
 						this.panelWhere.getWizardJoinCondition().items.items[0].loadTree(data);
                     }
@@ -317,7 +317,8 @@ sitools.admin.datasets.abstractDatasetWin = {
         // Selectively replace <textarea> elements, based on
         // custom assertions.
         CKEDITOR.replaceAll(function (textarea, config) {
-            if (!Ext.isEmpty(textarea.classList) && textarea.classList.contains("ckeditor")) {
+            var tableArea = Ext.get(textarea).up('table').dom;
+            if (!Ext.isEmpty(tableArea.classList) && tableArea.classList.contains("ckeditor")) {
                 config.customConfig = 'config-basic.js';
                 config.width = "95%";
                 config.displayDatasetLink = false;

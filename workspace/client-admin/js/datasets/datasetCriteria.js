@@ -30,9 +30,9 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetCriteria', { extend: 'Ext.Panel',
-	
-
+Ext.define('sitools.admin.datasets.datasetCriteria', { 
+    extend: 'Ext.Panel',
+    
 	initComponent : function () {
 		/**
          * The panel that displays the join conditions.

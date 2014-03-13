@@ -362,7 +362,7 @@ Ext.define('Ext.ux.form.MultiSelect', {
 //backwards compat
 Ext.ux.Multiselect = Ext.ux.form.MultiSelect;
 
-Ext.ux.form.MultiSelect.DragZone = function(ms, config){
+Ext.ux.form.MultiSelect.DragZone = function(ms, config) {
     this.ms = ms;
     this.view = ms.view;
     var ddGroup = config.ddGroup || 'MultiselectDD';

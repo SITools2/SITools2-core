@@ -29,13 +29,14 @@ Ext.namespace('sitools.admin.projects');
  * @class sitools.admin.projects.datasetsWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
+Ext.define('sitools.admin.projects.datasetsWin', { 
+    extend : 'Ext.Window',
     // url + mode + storeref
-    width : 350,
+    width : 500,
     modal : true,
     closable : false,
     pageSize : 10,
-    id : 'projectsDatasetWinId',
+//    id : 'projectsDatasetWinId',
 
     initComponent : function () {
         this.title = i18n.get('label.datasets');
@@ -85,6 +86,7 @@ Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
             selModel : Ext.create('Ext.selection.RowModel'),
             store : this.store,
             height : 200,
+            forceFit : true,
             columns : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name'
@@ -93,6 +95,7 @@ Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
                 dataIndex : 'description'
             } ]
         });
+        
         this.items = [ {
             xtype : 'panel',
             title : i18n.get('label.selectDataset'),
@@ -176,7 +179,7 @@ Ext.define('sitools.admin.projects.datasetsWin', { extend : 'Ext.Window',
                 });
             }
         }, this);
-        this.close();
+        this.destroy();
     },
 
     /**

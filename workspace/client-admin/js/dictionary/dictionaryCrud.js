@@ -62,7 +62,11 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { extend : 'Ext.g
             columns : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 100
+                width : 100,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',

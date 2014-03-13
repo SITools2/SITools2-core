@@ -91,7 +91,13 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
         
         // Correction bug Table alias KO - ID: 3566683
         this.panelSelectTables.addListener('activate', function (panel) {
-			var indexAlias = panel.datasourceUtils.getCmTablesDataset().getIndexById('alias');
+            var indexAlias = -1;
+            Ext.Array.findBy(this.datasourceUtils.getCmTablesDataset(), function (item, index) {
+                if (item.id == "alias") {
+                    indexAlias = index;
+                }
+            });
+            
 			if (indexAlias !== -1) {
 				if (this.gridFields.getStore().getCount() > 0) {
 				    panel.gridTablesDataset.getColumnModel().setEditable(indexAlias, false);
@@ -105,13 +111,15 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 		
 		// Permet de prendre en compte la nouvelle valeur
 		// d'une cellule qui a le focus en changeant de tabPanel
+		
 		this.panelSelectTables.addListener('deactivate', function (panel) {
-			panel.gridTablesDataset.stopEditing(false);
+			panel.gridTablesDataset.getPlugin('tableAliasEditing').completeEdit();
 		});
 
         // Creation de la grid des columns d'une table
         // !!! le store de cette grille est le meme que celui de fields
         // setup....
+		
         this.panelSelectFields = new sitools.admin.datasets.datasetSelectFields({
 			scope : this, 
 			gridFieldsDataset : this.gridFields.getStore(),
@@ -120,21 +128,21 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 
         
         
-//        this.panelWhere = new sitools.admin.datasets.datasetCriteria({
-//			scope : this, 
-//			layout : "vbox",
-//			layoutConfig : {
-//				align : "stretch", 
-//				flex : "ratio"
-//			}, 
-//			title : i18n.get('label.whereClause')
-//        });
+        this.panelWhere = new sitools.admin.datasets.datasetCriteria({
+			scope : this, 
+			layout : "vbox",
+			layoutConfig : {
+				align : "stretch", 
+				flex : "ratio"
+			}, 
+			title : i18n.get('label.whereClause')
+        });
 
-//		this.panelWhere.addListener('activate', function () {
-//			if (action === 'view') {
-//				this.getEl().mask();
-//			}
-//		});
+		this.panelWhere.addListener('activate', function () {
+			if (action === 'view') {
+				this.getEl().mask();
+			}
+		});
 		
 		this.gridProperties = new sitools.admin.datasets.datasetProperties({
 			action : this.action
@@ -190,7 +198,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 				layoutOnCardChange : true
             }, 
             activeTab : 0,
-            items : [ this.formulairePrincipal, this.gridProperties, this.panelSelectTables, this.panelSelectFields, this.gridFields, /*this.panelWhere*/, this.viewConfigPanel ],
+            items : [ this.formulairePrincipal, this.gridProperties, this.panelSelectTables, this.panelSelectFields, this.gridFields, this.panelWhere, this.viewConfigPanel ],
             buttons : [ {
                 text : i18n.get('label.ok'),
                 scope : this,
@@ -201,6 +209,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                 text : i18n.get('label.cancel'),
                 scope : this,
                 handler : function () {
+                    this.destroyCkeditor();
                     this.close();
                 }
             } ], 
@@ -403,7 +412,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                 var rec = store.getAt(i).data;
 
                 var tmp = {
-                    id : rec.data.id,
+                    id : rec.id,
                     dataIndex : rec.dataIndex,
                     header : rec.header,
                     toolTip : rec.toolTip,
@@ -424,7 +433,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                     columnAliasDetail : rec.columnAliasDetail, 
                     javaSqlColumnType : rec.javaSqlColumnType,
                     format : rec.format,
-                    columnClass : rec.columnClass,
+                    columnClass : rec.columnClass || undefined,
                     image : rec.image, 
                     dimensionId : rec.dimensionId, 
                     unit : rec.unit
@@ -447,7 +456,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noStructure'));
 			return;
         }
-        var mainTable = mainTableNode.attributes.table;
+        var mainTable = mainTableNode.data.table;
         
 		var tree = [];
 

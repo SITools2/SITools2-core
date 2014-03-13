@@ -244,6 +244,7 @@ Ext.ns("sitools.user.component.dataviews.livegrid");
  * 
  */
 Ext.define('sitools.user.component.dataviews.livegrid.LiveGrid', {
+    alias : 'widget.sitoolsLiveGrid',
     
     constructor : function (config) {
         Ext.apply(this, config);
@@ -746,7 +747,3 @@ sitools.user.component.dataviews.livegrid.LiveGrid.getParameters = function () {
 		}
 	}];
 };
-
- 
-
-Ext.reg('sitoolsLiveGrid', sitools.user.component.dataviews.livegrid.LiveGrid);

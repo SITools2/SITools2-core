@@ -328,10 +328,9 @@ sitools.admin.datasets.PredicatsPanel = function (config) {
 		        e.stopEvent();
 	        }
 	    }
-
 	}));
 
 };
 
-Ext.extend(sitools.admin.datasets.PredicatsPanel, Ext.grid.EditorGridPanel, {});
+Ext.extend(sitools.admin.datasets.PredicatsPanel, Ext.grid.Panel, {});
 

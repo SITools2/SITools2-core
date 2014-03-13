@@ -9,14 +9,25 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
     enableDD: false,
     initComponent : function () {
             
-        this.root = Ext.create('Ext.data.NodeInterface', {
-            text : this.name, 
-            leaf : false, 
-            expanded : true
-        }); 
+//        this.root = Ext.create('Ext.data.NodeInterface', {
+//            text : this.name, 
+//            leaf : false, 
+//            expanded : true
+//        }); 
         
+
         this.store = Ext.create('Ext.data.TreeStore', {
-            root : this.root
+            root : {
+                text : this.name,
+                leaf : false,
+                expanded : true
+            },
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json'
+                }
+            }
         });
         
         Ext.apply(this, {
@@ -65,7 +76,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                     scope : this,
                     itemclick : this._cxtMenuHandler
                 }
-            }), 
+            }),
             contextMenuNode : new Ext.menu.Menu({
                 items : [ {
                     id : 'add-joinCondition',
@@ -270,7 +281,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
     buildDefault : function () {
         //load the first table as main table and the others as children
         var storeTables = this.scope.panelSelectTables.getStoreSelectedTables();
-        if (storeTables.getCount() !== 0 && Ext.isEmpty(this.getRootNode().attributes.table)) {
+        if (storeTables.getCount() !== 0 && Ext.isEmpty(this.getRootNode().data.table)) {
             var rec = storeTables.getAt(0);
             var rootNode = this.getRootNode();
             Ext.apply(rootNode, {
@@ -279,7 +290,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 children : [], 
                 type : "table"
             });
-            rootNode.setText(rec.data.name);
+            rootNode.text = rec.data.name;
             Ext.apply(rootNode.attributes, {
                 table : {
                     name : rec.data.name,

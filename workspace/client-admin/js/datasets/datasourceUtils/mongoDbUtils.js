@@ -24,7 +24,8 @@ Ext.namespace('sitools.admin.datasets.datasourceUtils');
  * @class sitools.admin.datasets.DatasourceFactory
  */
 //sitools.component.datasets.abstractDatasetWin = {
-Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ext.util.Observable', 
+Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { 
+    extend : 'Ext.util.Observable', 
 	isJdbc : false,
 	isMongoDb : true, 
 	constructor : function (config) {
@@ -59,7 +60,6 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ex
 		return metadataPanel;
 
 	}, 
-	
 	
 	/**
 	 * Creates the real object 
@@ -107,7 +107,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ex
         var storeTablesMongo = new Ext.data.JsonStore({
             root : "mongodbdatabase.collections",
             datasourceUtils : this, 
-            fields : [ {
+            fields : [{
                 name : 'url'
             }, {
                 name : 'name'
@@ -116,7 +116,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ex
             listeners : {
                 beforeload : function () {
                     var dataSourceUrl = this.datasourceUtils.getDataSourceUrl();
-                    this.proxy.setUrl(dataSourceUrl);
+                    this.proxy.url = dataSourceUrl;
                     //TODO : changer ça
 //                    this.httpProxyColumns.setUrl(dataSourceUrl);
                 }
@@ -127,25 +127,26 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ex
          * The columnModel of the grid that displays the tables of a datasource.
          * @type Ext.grid.ColumnModel
          */
-        var cmTablesMongo = new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                width : 160,
-                sortable : true,
-                dataIndex : 'name'
-            } ]
-        });
+        var cmTablesMongo =  [{
+            id : 'name',
+            header : i18n.get('headers.name'),
+            width : 160,
+            sortable : true,
+            dataIndex : 'name'
+        }];
 
         /**
          * The grid that displays the tables of a datasource.
          * @type Ext.grid.ColumnModel
          */
-        return new Ext.grid.GridPanel({
+        return Ext.create('Ext.grid.Panel', {
             layout : 'fit', 
             store : storeTablesMongo,
-            cm : cmTablesMongo,
-            selModel : Ext.create('Ext.selection.RowModel',{}),
+            columns : cmTablesMongo,
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : 'MULTI'
+            }),
+            forceFit : true,
             enableDragDrop : true,
             stripeRows : true,
             title : 'Tables Mongo',
@@ -172,34 +173,30 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { extend : 'Ex
      * @returns {Ext.grid.ColumnModel} columnModel
      */
     getCmTablesDataset : function () {
-        return new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                width : 160,
-                sortable : true,
-                dataIndex : 'name'
-            }]
-        });
+        return  [{
+            id : 'name',
+            header : i18n.get('headers.name'),
+            width : 160,
+            sortable : true,
+            dataIndex : 'name'
+        }];
     }, 
     /**
      * Returns the column Model for Dataset Fields grid
      * @returns {Ext.grid.ColumnModel} columnModel
      */
     getCmFieldsDataset : function () {
-        return new Ext.grid.ColumnModel({
-	        columns : [{
-	            id : 'tableName',
-	            header : i18n.get('headers.tableName'),
-	            sortable : true,
-	            dataIndex : 'tableName'
-	        }, {
-	            id : 'name',
-	            header : i18n.get('headers.name'),
-	            sortable : true,
-	            dataIndex : 'dataIndex'
-	        } ]
-	    });
+        return  [{
+            id : 'tableName',
+            header : i18n.get('headers.tableName'),
+            sortable : true,
+            dataIndex : 'tableName'
+        }, {
+            id : 'name',
+            header : i18n.get('headers.name'),
+            sortable : true,
+            dataIndex : 'dataIndex'
+        }];
     }, 
     /**
      * Returns an array of possible types for dataset Columns

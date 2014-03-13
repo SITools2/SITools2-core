@@ -375,7 +375,7 @@ var clientAdmin = {
 	        id : ID.PANEL.MENU,
 	        region : 'north',
 	        layout : 'fit',
-	        height : 30,
+	        height : 36,
 	        border : false,
 	        bodyBorder : false,
 	        items : [ toolbar ]
@@ -387,7 +387,7 @@ var clientAdmin = {
 	        title : i18n.get('label.menu'),
 	        split : true,
 	        autoScroll : true,
-	        width : 250,
+	        width : 330,
 	        layout : 'fit',
 	        border : false,
             bodyBorder : false,
@@ -409,22 +409,35 @@ var clientAdmin = {
                 flex : 1
             });
             
-            var containerPanel = new Ext.Panel({
+            var containerPanel = Ext.create('Ext.Component', {
                 name : 'containerPanel',
-                autoLoad : 'res/html/' + LOCALE + '/welcome.html',
-                width : "100%",
+//                autoLoad : 'res/html/' + LOCALE + '/welcome.html',
+//                width : "100%",
                 layout : 'fit',
                 bodyCssClass : 'admin-bg',
-                flex : 1
+                autoScroll : false,
+                border : false,
+                flex : 1,
+                autoEl: {
+                    tag: 'iframe',
+                    border : false,
+                    src: 'res/html/' + LOCALE + '/welcome.html'
+                }
             }); 
             mainPanelItems.push(containerPanel);
             mainPanelItems.push(quickStartPanel);
         } else {
-            var welcomePanel = new Ext.Panel({
+            var welcomePanel = Ext.create('Ext.Component', {
                 xtype : 'panel', 
                 layout : 'fit', 
-                height : 1200, 
-                autoLoad : 'res/html/' + LOCALE + '/welcome.html'
+                height : 1200,
+                autoEl: {
+                    tag: 'iframe',
+                    border : false,
+                    autoScroll : false,
+                    src: 'res/html/' + LOCALE + '/welcome.html'
+                }
+//                autoLoad : 'res/html/' + LOCALE + '/welcome.html'
             }); 
             mainPanelItems.push(welcomePanel);
         }
@@ -440,11 +453,7 @@ var clientAdmin = {
 			},
 	        xtype : 'panel',
 	        id : ID.PANEL.MAIN,
-	        tbar : {
-                cls : 'root-toolbar',
-                id : 'idConfig'
-            },
-	        title : i18n.get('label.main'),
+//	        title : i18n.get('label.main'),
 	        items : mainPanelItems,
 	        region : 'center'
 	    });

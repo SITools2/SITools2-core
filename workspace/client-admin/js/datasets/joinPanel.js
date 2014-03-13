@@ -37,7 +37,6 @@ Ext.namespace('sitools.admin.datasets');
  */
 Ext.define('sitools.admin.datasets.joinPanel', { 
     extend : 'Ext.Panel',
-
     border : false,
     urlJDBC : loadUrl.get('APP_URL') + "/",
     autoScroll: true,
@@ -163,6 +162,6 @@ Ext.define('sitools.admin.datasets.joinPanel', {
 
 });
 
-Ext.apply(Ext.tree.TreePanel.nodeTypes, {
-	"sync" : Ext.tree.TreeNode
-});
+//Ext.apply(Ext.tree.TreePanel.nodeTypes, {
+//	"sync" : Ext.tree.TreeNode
+//});

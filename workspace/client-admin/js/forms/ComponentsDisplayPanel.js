@@ -100,7 +100,8 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 				formComponentsStore : this.formComponentsStore,
 				storeConcepts : this.storeConcepts,
 				context : this.context,
-				absoluteLayout : this
+				absoluteLayout : this,
+				position : "0"
 			});
 			// this.add(mainPanel);
 		}

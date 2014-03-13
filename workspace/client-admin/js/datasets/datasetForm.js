@@ -37,7 +37,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 		var action = this.action;
 
         //Datasource Store
-        var storeDataSource = new Ext.data.JsonStore({
+        var storeDataSource = Ext.create('Ext.data.JsonStore', {
             fields : [ 'id', 'name', 'sitoolsAttachementForUsers', 'jdbc', 'mongoDb' ],
             root : "data",            
             listeners : {
@@ -45,8 +45,8 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 				load : function (store, recs) {
 					if (this.action === "create") {
                         if (!Ext.isEmpty(recs) && Ext.isArray(recs)	&& recs.length > 0) {
-                            this.comboDataSource.setValue(recs[0].id);
-						    this.comboDataSource.fireEvent("initValue", this.comboDataSource, recs[0].id);
+                            this.comboDataSource.setValue(recs[0].data.id);
+						    this.comboDataSource.fireEvent("initValue", this.comboDataSource, recs[0].data.id);
                         }
 					}
 					
@@ -66,7 +66,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             name : 'comboDataSource',
             forceSelection : true,
             triggerAction : 'all',
@@ -81,7 +81,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
                     this.getBubbleTarget().fireEvent("datasourceChanged", field, newValue, oldValue);
                 }, 
                 select : function (field, rec, index) {
-					var newValue = rec.get("id");
+					var newValue = rec[0].get("id");
 					field.fireEvent("change", newValue, field.getValue());
                 }, 
                 initValue : function (field, newValue) {
@@ -167,10 +167,10 @@ Ext.define('sitools.admin.datasets.datasetForm', {
                 }, {
                     xtype : 'textarea',
                     name : 'descriptionHTML',
-                    cls : 'ckeditor',
                     fieldLabel : i18n.get('label.descriptionHTML'),
                     height : 150,
-                    width : '94%'
+                    width : '95%',
+                    cls : 'ckeditor'
                 }, {
                     xtype : 'hidden',
                     name : 'dirty', 
@@ -238,6 +238,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 					data.jdbc = true;
                 });
                 store.loadData(Json);
+                
                 Ext.Ajax.request({
 		            url : urlDatasourcesMongoDB,
 		            method : 'GET',
@@ -257,7 +258,8 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 //                        });
 		                //var records = Json.data;
 		                
-                        store.fireEvent("load", store, store.getRange(0, store.getTotalCount()));
+                        store.lastOptions = {};
+                        store.fireEvent("load", store, store.getRange(0, store.getTotalCount()), Json.success, {});
 		                
 		            },
 		            failure : alertFailure, 

@@ -26,7 +26,9 @@ Ext.namespace('sitools.admin.datasets');
  * @extends Ext.grid.GridPanel
  */
 // ExtJS4.3 'Ext.grid.EditorGridPanel'
-Ext.define('sitools.admin.datasets.datasetProperties', { extend : 'Ext.grid.plugin.RowEditing',
+Ext.define('sitools.admin.datasets.datasetProperties', { 
+    extend : 'Ext.grid.Panel',
+    
     initComponent : function () {
 		var action = this.action;
 		var storeProperties = new Ext.data.JsonStore({
@@ -62,29 +64,28 @@ Ext.define('sitools.admin.datasets.datasetProperties', { extend : 'Ext.grid.plug
 	        listClass : 'x-combo-list-small',
 	        valueField : 'name',
 	        displayField : 'name',
-	        tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{name}</div></tpl>', 
+//	        tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{name}</div></tpl>', 
 	        width : 55
 	    });
 
-        var cmProperties = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.name'),
-                dataIndex : 'name',
-                editor : new Ext.form.TextField()
-            }, {
-                header : i18n.get('headers.type'),
-                dataIndex : 'type', 
-                editor : comboTypesProperties
-            }, {
-                header : i18n.get('headers.value'),
-                dataIndex : 'value',
-                editor : new Ext.form.TextField()
-            }],
-            defaults : {
-                sortable : false,
-                width : 100
+        var columns = [{
+            header : i18n.get('headers.name'),
+            dataIndex : 'name',
+            editor : {
+                xtype : 'textfield'
             }
-        });
+        }, {
+            header : i18n.get('headers.type'),
+            dataIndex : 'type', 
+            editor : comboTypesProperties
+        }, {
+            header : i18n.get('headers.value'),
+            dataIndex : 'value',
+            editor : {
+                xtype : 'textfield'
+            }
+        }];
+        
         var tbar = {
             defaults : {
                 scope : this
@@ -107,11 +108,12 @@ Ext.define('sitools.admin.datasets.datasetProperties', { extend : 'Ext.grid.plug
             anchor : "95%", 
             height : 180,
             store : storeProperties,
-            cm : cmProperties,
+            columns : columns,
             selModel : smProperties,
-            viewConfig : {
-                forceFit : true
-            }, 
+            forceFit : true,
+            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+                clicksToEdit: 2
+            })], 
             listeners : {
 				scope : this, 
 				activate : function (panel) {

@@ -29,7 +29,8 @@ Ext.namespace('sitools.admin.converters');
  * @class sitools.admin.converters.convertersCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.GridPanel', 
+Ext.define('sitools.admin.converters.convertersCrudPanel', { 
+    extend : 'Ext.grid.GridPanel', 
 	alias : 'widget.s-converters',
     border : false,
     height : 300,
@@ -40,29 +41,29 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
     converterChainedId : {},
     // loadMask: true,
     conflictWarned : false,
+    forceFit : true,
     viewConfig : {
-        forceFit : true,
-        autoFill : true, 
-		getRowClass : function (row, index) { 
-			var cls = ''; 
-			var data = row.data;
-			if (data.classVersion !== data.currentClassVersion 
-				&& data.currentClassVersion !== null 
-				&& data.currentClassVersion !== undefined) {
-				if (!this.conflictWarned) {
-					Ext.Msg.alert("warning.version.conflict", "Converter " 
-					+ data.name 
-					+ " definition (v" 
-					+ data.classVersion 
-					+ ") may conflict with current class version : " 
-					+ data.currentClassVersion);
-					this.conflictWarned = true;
-				}
-				cls = "red-row";
-			}
-			return cls; 
-		} 
-		
+        autoFill : true,
+        // TODO doesn't works with Neptune Theme...
+//		getRowClass : function (record, rowIndex, rowParams, store) { 
+//			var cls = ''; 
+//			var data = record.data;
+//			if (data.classVersion !== data.currentClassVersion 
+//				&& data.currentClassVersion !== null 
+//				&& data.currentClassVersion !== undefined) {
+//				if (!this.conflictWarned) {
+//					Ext.Msg.alert("warning.version.conflict", "Converter " 
+//					+ data.name 
+//					+ " definition (v" 
+//					+ data.classVersion 
+//					+ ") may conflict with current class version : " 
+//					+ data.currentClassVersion);
+//					this.conflictWarned = true;
+//				}
+//				cls = "red-row";
+//			}
+//			return cls; 
+//		} 
 	},
 
     initComponent : function () {
@@ -74,8 +75,10 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
             restful : true,
             method : 'GET'
         });
+        
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
+            proxy : this.httpProxyForms,
             root : "converterChainedModel.converters",
             fields : [ {
                 name : 'id',
@@ -112,8 +115,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
             }, {
                 name : 'classOwner',
                 type : 'string'
-            }],
-            proxy : this.httpProxyForms
+            }]
         });
 
         var storeDatasets = new Ext.data.JsonStore({
@@ -122,6 +124,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
             root : "data",
             autoLoad : true
         });
+        
         this.comboDatasets = new Ext.form.ComboBox({
             store : storeDatasets,
             displayField : 'name',
@@ -135,8 +138,8 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
-                    this.datasetId = rec.data.id;
-                    this.httpProxyForms.setUrl(this.urlDatasets + "/" + this.datasetId + this.converterUrlPart, true);
+                    this.datasetId = rec[0].data.id;
+                    this.httpProxyForms.url = this.urlDatasets + "/" + this.datasetId + this.converterUrlPart;
                     this.getStore().removeAll();
                     this.getStore().load();
 
@@ -170,7 +173,11 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
                 width : 50,
-                sortable : false
+                sortable : false,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value;
+                    return value;
+                }
             }, {
                 header : i18n.get('label.className'),
                 dataIndex : 'className',
@@ -277,7 +284,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
         
         for (var i = 0; i < this.store.getCount(); i++) {
             var rec = this.store.getAt(i).data;
-            jsonReturn.idOrder.push(rec.data.id);
+            jsonReturn.idOrder.push(rec.id);
         }
         var url = this.urlDatasets + "/" + datasetId + this.converterUrlPart;
         Ext.Ajax.request({
@@ -311,7 +318,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
             return;
         }
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getLastSelected();
         var index = this.getStore().indexOf(rec);
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
@@ -331,14 +338,14 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
     },
 
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getLastSelected();
         if (Ext.isEmpty(rec)) {
             return false;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('label.convertersCrud.deleteConverter'),
+            msg : String.format(i18n.get('label.convertersCrud.deleteConverter'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -404,7 +411,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
         });
     },
     _onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getLastSelected();
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
@@ -422,7 +429,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', { extend : 'Ext.grid.
     },
 
     _onDisactive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getLastSelected();
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }

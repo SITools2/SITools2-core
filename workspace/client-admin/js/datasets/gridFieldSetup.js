@@ -34,7 +34,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
     id : 'gridColumnSelect',
     title : i18n.get('title.gridColumn'),
     layout : 'fit', 
-    
+    enableLocking : true,
     initComponent : function () {
 
         var storeColumn = new Ext.data.JsonStore({
@@ -51,7 +51,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                                 record.data.header = record.data.dataIndex;
                             }
                             if (Ext.isEmpty(record.data.columnAlias)) {
-                                record.data.columnAlias = record.data.dataIndex.toLowerCase();
+                                record.data.columnAlias = record.data.dataName.toLowerCase();
                             }
                             if (sql2ext.get(record.get("sqlColumnType")) == "dateAsString" && Ext.isEmpty(record.data.format)) {
                                 record.data.format = SITOOLS_DEFAULT_IHM_DATE_FORMAT;
@@ -63,14 +63,18 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             }
         });
         
-        var visible = new Ext.grid.CheckColumn({
+
+        var visible = {
+            xtype : 'checkcolumn',
             header : i18n.get('headers.visible'),
             dataIndex : 'visible',
             width : 55,
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/visible.html"
-            
-        });
-        var sortable = new Ext.grid.CheckColumn({
+
+        };
+        
+        var sortable = {
+            xtype : 'checkcolumn',
             header : i18n.get('headers.sortable'),
             dataIndex : 'sortable',
             width : 55,
@@ -85,17 +89,20 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                     }
                 }
             }
-        });
-        var primaryKey = new Ext.grid.CheckColumn({
+        };
+        var primaryKey = {
+            xtype : 'checkcolumn',
             header : i18n.get('headers.primaryKey'),
             dataIndex : 'primaryKey',
             width : 55,
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/primaryKey.html"
-        });
+        };
+        
         var comboStoreOrderBy = new Ext.data.ArrayStore({
-                fields : [ 'value', 'display' ],
-                data : [ [ '', '' ], [ 'ASC', 'ASC' ], [ 'DESC', 'DESC' ] ]
-            });
+            fields : [ 'value', 'display' ],
+            data : [ [ '', '' ], [ 'ASC', 'ASC' ], [ 'DESC', 'DESC' ] ]
+        });
+        
         var comboOrderBy = new Ext.form.ComboBox({
             header : i18n.get('headers.orderBy'),
             store : comboStoreOrderBy, 
@@ -136,7 +143,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             listClass : 'x-combo-list-small',
             valueField : 'value',
             displayField : 'display',
-            tpl : '<tpl for="."><div ext:qtip="{tooltip}" class="x-combo-list-item comboItem">{display}</div></tpl>',
+//            tpl : '<tpl for="."><div ext:qtip="{tooltip}" class="x-combo-list-item comboItem">{display}</div></tpl>',
             listeners : {
                 scope : this, 
                 select : function (combo, record) {
@@ -158,7 +165,8 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             }
         });
 
-        var filterColumn = new Ext.grid.CheckColumn({
+        var filterColumn = {
+            xtype : 'checkcolumn',
             header : i18n.get('headers.filter'),
             dataIndex : 'filter',
             width : 55,
@@ -173,12 +181,11 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                     }
                 }
             }
-        });
+        };
 
-        var cmColumn = new Ext.ux.grid.LockingColumnModel({
-            columns : [ {
+        var cmColumn = [{
                 header : i18n.get('headers.sqlDefinition'),
-                dataIndex : 'dataIndex',
+                dataIndex : 'dataName',
                 width : 120,
                 locked : true,
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/sqlDefinition.html"
@@ -194,7 +201,8 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                 header : i18n.get('headers.columnAlias'),
                 dataIndex : 'columnAlias',
                 width : 80,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     disabled : this.action == 'view' ? true : false, 
                     allowBlank : false,
                     maxLength : 50, 
@@ -208,18 +216,19 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                         }
                         
                     }
-                }),
+                },
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/columnAlias.html"
             }, {
                 header : i18n.get('headers.format'),
                 dataIndex : 'format',
                 width : 80,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     disabled : this.action == 'view' ? true : false, 
                     allowBlank : true,
                     maxLength : 50, 
                     value : "Y-m-d\\TH:i:s.u"
-                }),
+                },
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/format.html"
             }, {
                 header : i18n.get('headers.unit'),
@@ -238,21 +247,23 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                 header : i18n.get('headers.header'),
                 dataIndex : 'header',
                 width : 80,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     disabled : this.action == 'view' ? true : false, 
                     allowBlank : false,
                     maxLength : 50
-                }),
+                },
                 helpUrl : loadUrl.get('APP_URL') + "client-admin/res/help/" + LOCALE + "/dataset/headers.html"
             }, {
                 header : i18n.get('headers.width'),
                 dataIndex : 'width',
                 width : 40,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     disabled : this.action == 'view' ? true : false, 
                     allowBlank : false,
                     maxLength : 50
-                })
+                }
             }, sortable, visible, filterColumn, {
                 header : i18n.get('headers.orderBy'),
                 dataIndex : 'orderBy',
@@ -271,18 +282,14 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                 dataIndex : 'toolTip',
                 width : 80,
                 helpUrl : loadUrl.get('APP_URL') + "client-admin/res/help/" + LOCALE + "/dataset/tooltip.html",
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     disabled : this.action == 'view' ? true : false, 
                     maxLength : 50
-                })
-            }],
-            defaults : {
-                sortable : false,
-                width : 80
-            }
-        });
+                }
+            }];
 
-        var smColumn = Ext.create('Ext.selection.RowModel',{
+        var smColumn = Ext.create('Ext.selection.RowModel', {
             singleSelect : true
         });
 
@@ -328,6 +335,10 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         this.columns = cmColumn;
         this.selModel = smColumn;
 //        this.plugins = [ sortable, visible, filterColumn, primaryKey ];
+        
+        this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        })];
         
         this.listeners = {
             scope : this, 

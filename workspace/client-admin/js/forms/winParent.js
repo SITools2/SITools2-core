@@ -80,9 +80,13 @@ Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
         sitools.admin.forms.parentParamWin.superclass.onRender.apply(this, arguments);
     }, 
     onValidate : function () {
-        this.parentParamField.setValue(this.gridFormComponents.getSelectionModel().getSelected().data);
-        this.parentParamFieldDisplay.setValue(this.gridFormComponents.getSelectionModel().getSelected().data.label);
-        this.close();
+        if (!Ext.isEmpty(this.gridFormComponents.getSelectionModel().getSelected())) {
+            var selected = this.gridFormComponents.getSelectionModel().getSelected(); 
+            this.parentParamField.setValue(selected.data);
+            this.parentParamFieldDisplay.setValue(selected.data.label);
+            this.close();
+        }
+        
     }, 
     _close : function () {
         this.close();

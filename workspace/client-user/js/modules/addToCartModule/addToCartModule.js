@@ -679,7 +679,7 @@ Ext.define('sitools.user.modules.addToCartModule', {
 
 sitools.user.modules.addToCartModule.getParameters = function () {
     var projectProp = Ext.getCmp(ID.COMPONENT_SETUP.PROJECT);
-    var projectId = projectProp.formProject.find('name', 'id')[0].getValue();
+    var projectId = projectProp.formProject.down('hidden[name=id]').getValue();
     
     this.urlParents = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
     this.resourcesUrlPart = loadUrl.get('APP_RESOURCES_URL');
@@ -700,14 +700,12 @@ sitools.user.modules.addToCartModule.getParameters = function () {
             },
             grid1 : new Ext.grid.GridPanel({
                 width : 200,
+                forceFit : true,
                 margins : {
                     top : 0,
                     right : 2,
                     bottom : 0,
                     left : 0
-                },
-                viewConfig : {
-                    forceFit : true
                 },
                 store : new Ext.data.JsonStore({
                     fields : [ 'id', 'name', 'description', 'parameters' ],
@@ -716,25 +714,21 @@ sitools.user.modules.addToCartModule.getParameters = function () {
                     root : "data",
                     autoLoad : true
                 }),
-                colModel : new Ext.grid.ColumnModel({
-                    columns : [{
-                        header : i18n.get('Project Services'),
-                        dataIndex : 'name',
-                        sortable : true
-                    }]
-                })
+                columns : [{
+                    header : i18n.get('Project Services'),
+                    dataIndex : 'name',
+                    sortable : true
+                }]
             }),
-            grid2 : new Ext.grid.EditorGridPanel({
-                sm : Ext.create('Ext.selection.RowModel'),
+            grid2 : Ext.create('Ext.grid.Panel', {
+                selModel : Ext.create('Ext.selection.RowModel'),
                 width : 200,
+                forceFit : true,
                 margins : {
                     top : 0,
                     right : 0,
                     bottom : 0,
                     left : 2
-                },
-                viewConfig : {
-                    forceFit : true,
                 },
                 store : new Ext.data.JsonStore({
                     fields : [ 'id', 'name', 'description', 'url', 'label' ],
@@ -751,19 +745,19 @@ sitools.user.modules.addToCartModule.getParameters = function () {
                         }
                     }
                 }),
-                colModel : new Ext.grid.ColumnModel({
-                    columns : [{
-                        header : i18n.get('Order Services'),
-                        dataIndex : 'name',
-                        width : 80,
-                        sortable : true
-                    }, {
-                        header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
-                        dataIndex : 'label',
-                        width : 80,
-                        editor : new Ext.form.TextField()
-                    },]
-                })
+                columns : [{
+                    header : i18n.get('Order Services'),
+                    dataIndex : 'name',
+                    width : 80,
+                    sortable : true
+                }, {
+                    header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                    dataIndex : 'label',
+                    width : 80,
+                    editor :{
+                        xtype : 'textfield'
+                    }
+                }]
             }),
             name : "orderServices",
             value : [],

@@ -23,7 +23,8 @@ Ext.namespace('sitools.admin.datasets.datasourceUtils');
 /**
  * @class sitools.admin.datasets.DatasourceFactory
  */
-Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.util.Observable', 
+Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { 
+    extend: 'Ext.util.Observable', 
 	isJdbc : true,
 	isMongoDb : false, 
 	constructor : function (config) {
@@ -66,8 +67,10 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
             datasourceUtils : this, 
             root : "table.attributes",
             autoLoad : false,
-            fields : [ {
+            fields : [{
                 name : 'name'
+            }, {
+                name : 'dataName'
             }, {
                 name : 'tableName'
             }, {
@@ -92,7 +95,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
 	                if (!this.dataSourceUrl) {
                         return false;
                     }
-                    this.proxy.setUrl(dataSourceUrl);
+                    this.proxy.url = dataSourceUrl;
                 },
                 add : function (store, records) {
                     Ext.each(records, function (record) {
@@ -100,10 +103,10 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
                             tableName : record.data.tableName,
                             tableAlias : record.data.tableAlias,
                             schemaName : record.data.schemaName,
-                            dataIndex : record.data.dataIndex                            
+                            dataIndex : record.data.dataName                            
                         };
                         var tmp = record.data.tableAlias ? record.data.tableAlias : record.data.tableName;
-                        tmp += "." + record.data.dataIndex;
+                        tmp += "." + record.data.dataName;
                         record.data.nomAffiche = tmp;
                     });
                 }
@@ -111,31 +114,33 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
 
         });
 
-        var cmFields = new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'tableName',
-                header : i18n.get('headers.tableName'),
-                sortable : true,
-                dataIndex : 'tableName'
-            }, {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                sortable : true,
-                dataIndex : 'dataIndex'
-            } ]
-        });
+        var columnsSelectedtables = [{
+            id : 'tableName',
+            header : i18n.get('headers.tableName'),
+            sortable : true,
+            dataIndex : 'tableName'
+        }, {
+            id : 'name',
+            header : i18n.get('headers.name'),
+            sortable : true,
+            dataIndex : 'dataName'
+        }];
 
 
         /**
          * The grid used to display the columns of selected tables
          * @type Ext.grid.GridPanel
          */
-        return new Ext.grid.GridPanel({
+        return Ext.create('Ext.grid.Panel', {
 			layout : 'fit', 
             store : storeFields,
-            cm : cmFields,
+            columns : columnsSelectedtables,
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : 'MULTI'
+            }),
             enableDragDrop : true,
             stripeRows : true,
+            forceFit : true,
             title : 'Columns Table'
         });
 
@@ -159,19 +164,19 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
         var storeTablesJDBC = new Ext.data.JsonStore({
             root : "database.tables",
             datasourceUtils : this, 
-            fields : [ {
+            fields : [{
                 name : 'url'
             }, {
                 name : 'schemaName',
                 mapping : 'schema'
             }, {
                 name : 'name'
-            } ],
+            }],
             proxy : httpProxyJDBC,
             listeners : {
                 beforeload : function () {
                     var dataSourceUrl = this.datasourceUtils.getDataSourceUrl();
-                    this.proxy.setUrl(dataSourceUrl);
+                    this.proxy.url = dataSourceUrl;
                 }
             }
         });
@@ -180,27 +185,28 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
          * The columnModel of the grid that displays the tables of a datasource.
          * @type Ext.grid.ColumnModel
          */
-        var cmTablesJDBC = new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                width : 160,
-                sortable : true,
-                dataIndex : 'name'
-            } ]
-        });
+        var columnsTablesJDBC = [{
+            id : 'name',
+            header : i18n.get('headers.name'),
+            width : 160,
+            sortable : true,
+            dataIndex : 'name'
+        }];
 
         /**
          * The grid that displays the tables of a datasource.
          * @type Ext.grid.ColumnModel
          */
-        return new Ext.grid.GridPanel({
+        return Ext.create('Ext.grid.Panel', {
             layout : 'fit', 
             store : storeTablesJDBC,
-            cm : cmTablesJDBC,
-            selModel : Ext.create('Ext.selection.RowModel',{}),
+            columns : columnsTablesJDBC,
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : 'MULTI'
+            }),
             enableDragDrop : true,
             stripeRows : true,
+            forceFit : true,
             title : 'Tables JDBC',
             id : 'Tables_JDBC'
         });
@@ -242,7 +248,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
                             var columns = Json.table;
                             Ext.each(columns.attributes, function (column, index, columns) {
                                 this.panelSelectFields.getBDDPanel().getStore().add({
-                                    dataIndex : column.name,
+                                    dataName : column.name,
                                     schemaName : options.params.schemaName,
                                     tableName : options.params.tableName,
                                     tableAlias : options.params.tableAlias,
@@ -277,31 +283,32 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
      * @returns {Ext.grid.ColumnModel} columnModel
      */
     getCmTablesDataset : function () {
-        return new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                width : 160,
-                sortable : true,
-                dataIndex : 'name'
-            }, {
-                id : 'alias',
-                header : i18n.get('headers.tableAlias'),
-                width : 80,
-                sortable : true,
-                dataIndex : 'alias',
-                editor : new Ext.form.TextField({
-		            disabled : this.action === 'view' ? true : false
-                }),
-                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-                    if (!this.editable) {
-                        metadata.css = 'uneditable-cell';
-                        metadata.attr = 'ext:qtip="'+i18n.get("label.cannotChangeTableAlias")+'"';
-                    }
-                    return value;
+        return  [{
+            xtype : 'gridcolumn',
+            id : 'name',
+            header : i18n.get('headers.name'),
+            width : 160,
+            sortable : true,
+            dataIndex : 'name'
+        }, {
+            xtype : 'gridcolumn',
+            id : 'alias',
+            header : i18n.get('headers.tableAlias'),
+            width : 80,
+            sortable : true,
+            dataIndex : 'alias',
+            editor : {
+                xtype : 'textfield',
+	            disabled : this.action === 'view' ? true : false
+            },
+            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                if (!this.editable) {
+                    metadata.css = 'uneditable-cell';
+                    metadata.attr = 'ext:qtip="'+i18n.get("label.cannotChangeTableAlias")+'"';
                 }
-            } ]
-        });
+                return value;
+            }
+        }];
     }, 
     
     /**
@@ -309,24 +316,28 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  { extend: 'Ext.u
      * @returns {Ext.grid.ColumnModel} columnModel
      */
     getCmFieldsDataset : function () {
-        return new Ext.grid.ColumnModel({
-	        columns : [ {
-	            id : 'tableAlias',
-	            header : i18n.get('headers.tableAlias'),
-	            sortable : true,
-	            dataIndex : 'tableAlias'
-	        }, {
-	            id : 'tableName',
-	            header : i18n.get('headers.tableName'),
-	            sortable : true,
-	            dataIndex : 'tableName'
-	        }, {
-	            id : 'name',
-	            header : i18n.get('headers.name'),
-	            sortable : true,
-	            dataIndex : 'dataIndex'
-	        } ]
-	    });
+        return [{
+            xtype : 'gridcolumn',
+            id : 'tableAlias',
+            header : i18n.get('headers.tableAlias'),
+            sortable : true,
+            dataIndex : 'tableAlias',
+            editor : {
+                xtype : 'textfield'
+            }
+        }, {
+            xtype : 'gridcolumn',
+            id : 'tableName',
+            header : i18n.get('headers.tableName'),
+            sortable : true,
+            dataIndex : 'tableName'
+        }, {
+            xtype : 'gridcolumn',
+            id : 'name',
+            header : i18n.get('headers.name'),
+            sortable : true,
+            dataIndex : 'dataName'
+        }];
     }, 
     /**
      * Returns an array of possible types for dataset Columns

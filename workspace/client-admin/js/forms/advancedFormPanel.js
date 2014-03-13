@@ -179,7 +179,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                         }
                     }, this);
 
-                    this.doLayout();
+//                    this.doLayout();
 //                    this.addResizers(this.items.items);
 //                    this.addDragDrop(this.items.items);
                 }
@@ -235,7 +235,8 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 		            absoluteLayout : absoluteLayout, 
 		            record : rec, 
 		            formComponentsStore : formComponentsStore,
-		            containerPanelId : mypanel.containerPanelId
+		            containerPanelId : mypanel.containerPanelId,
+		            ddSource : ddSource
 		        });
 		        ComponentWin.show();
 			},
@@ -368,14 +369,16 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
         parentContainer.zoneStore.removeAt(zoneToRemove);
 
         this.formComponentsStore.each(function (component) {
-            if (component.data.containerPanelId == this.containerPanelId) {
-                this.formComponentsStore.remove(component);
+            if (!Ext.isEmpty(component)) {
+                if (component.data.containerPanelId == this.containerPanelId) {
+                    this.formComponentsStore.remove(component);
+                }
             }
         }, this);
 
         parentContainer.remove(this, true);
 //        this.destroy();
 //        parentContainer.fireEvent('activate');
-        parentContainer.doLayout();
+//        parentContainer.doLayout();
     }
 });

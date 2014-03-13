@@ -116,7 +116,11 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 50,
-                sortable : true
+                sortable : true,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',

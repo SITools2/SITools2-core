@@ -33,7 +33,8 @@ Ext.namespace('sitools.admin.converters');
  * @class sitools.admin.converters.convertersProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.converters.convertersProp', {
+    extend : 'Ext.Window', 
     width : 700,
     height : 480,
     modal : true,
@@ -44,7 +45,7 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
 		
         this.title = this.action == "create" ? i18n.get('label.createConverter') : i18n.get('label.modifyConverter'); 
         
-        var expander = new Ext.ux.grid.RowExpander({
+        var expander = new Ext.grid.plugin.RowExpander({
             tpl : new Ext.XTemplate(
                 '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
                 '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
@@ -57,55 +58,51 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
             expandOnDblClick : true
         });
 
-        this.gridConverter = new Ext.grid.GridPanel({
+        this.storeGridConverter = Ext.create('Ext.data.JsonStore', {
+            root : 'data',
+            restful : true,
+            proxy : new Ext.data.HttpProxy ({
+                url : this.convertersPluginUrl,
+                restful : true,
+                method : 'GET'
+            }),
+            remoteSort : false,
+            idProperty : 'id',
+            fields : [ {
+                name : 'id',
+                type : 'string'
+            }, {
+                name : 'name',
+                type : 'string'
+            }, {
+                name : 'description',
+                type : 'string'
+            }, {
+                name : 'className',
+                type : 'string'
+            }, {
+                name : 'classAuthor',
+                type : 'string'
+            }, {
+                name : 'classVersion',
+                type : 'string'
+            }, {
+                name : 'classOwner',
+                type : 'string'
+            }],
+            autoLoad : true
+        
+        });
+        
+        this.gridConverter = Ext.create('Ext.grid.Panel', {
             viewConfig : {
                 forceFit : true
             },
             id : 'gridConverter',
             title : i18n.get('title.converterClass'),
-            store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
-                    url : this.convertersPluginUrl,
-                    restful : true,
-                    method : 'GET'
-                }),
-                remoteSort : false,
-                idProperty : 'id',
-                fields : [ {
-                    name : 'id',
-                    type : 'string'
-                }, {
-                    name : 'name',
-                    type : 'string'
-                }, {
-                    name : 'description',
-                    type : 'string'
-                }, {
-                    name : 'className',
-                    type : 'string'
-                }, {
-                    name : 'classAuthor',
-                    type : 'string'
-                }, {
-                    name : 'classVersion',
-                    type : 'string'
-                },
-                {
-                    name : 'classOwner',
-                    type : 'string'
-                }],
-                autoLoad : true
-            }),
-
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ expander, {
+            selModel : Ext.create('Ext.selection.RowModel'),
+            store : this.storeGridConverter,
+            columns : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
                     width : 100,
@@ -131,23 +128,15 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
                     dataIndex : 'classOwner',
                     width : 100,
                     sortable : true
-                }]
-            }),
-            
+            }],
             listeners : {
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
-            plugins : expander
+//            plugins : [expander]
         });
 
-        this.proxyFieldMapping = new Ext.data.HttpProxy({
-            url : '/tmp',
-            restful : true,
-            method : 'GET'
-        });
         
-    
         var expanderGridFieldMapping = new sitools.widget.ViolationRowExpander({
             tpl : new Ext.XTemplate(
                 '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
@@ -160,49 +149,91 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
                 }),
             expandOnDblClick : false
         });
-
         
-        this.gridFieldMapping = new Ext.grid.EditorGridPanel({
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        this.proxyFieldMapping = Ext.create('Ext.data.proxy.Ajax', {
+            url : '/tmp',
+            restful : true,
+            method : 'GET'
+        });
+        
+        this.storeFieldMapping = Ext.create('Ext.data.JsonStore', {
+            root : 'converter.parameters',
+            proxy : this.proxyFieldMapping,
+            remoteSort : true,
+            idProperty : 'name',
+            fields : [{
+                name : 'name',
+                type : 'string'
+            }, {
+                name : 'description',
+                type : 'string'
+            }, {
+                name : 'parameterType',
+                type : 'string'
+            }, {
+                name : 'attachedColumn',
+                type : 'string'
+            }, {
+                name : 'value',
+                type : 'string'
+            }, {
+                name : 'valueType',
+                type : 'string'
+            }, {
+                name : 'violation'
+            }]
+        });
+        
+        this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
+            forceFit : true,
             viewConfig : {
-                forceFit : true,
                 scope : this,
-                getRowClass : function (record, index, rowParams, store) {
-                    var cls = ''; 
-                    var violation = record.get("violation");
-                    if (!Ext.isEmpty(violation)) {
-                        if (violation.level == "CRITICAL") {
-                            cls = "red-row";
-                        } else if (violation.level == "WARNING") {
-                            cls = "orange-row";
-                        }
-                    }
-                    return cls;
-                }, 
+//                getRowClass : function (record, index, rowParams, store) {
+//                    var cls = ''; 
+//                    var violation = record.get("violation");
+//                    if (!Ext.isEmpty(violation)) {
+//                        if (violation.level == "CRITICAL") {
+//                            cls = "red-row";
+//                        } else if (violation.level == "WARNING") {
+//                            cls = "orange-row";
+//                        }
+//                    } else {
+//                        cls = "row-valid";
+//                    }
+//                    return cls;
+//                }, 
                 listeners : {
                     scope : this,
                     refresh : function (view) {
-                        
                         var grid = this.gridFieldMapping;
                         var store = grid.getStore();
                         store.each(function (record) {
                             var violation = record.get("violation");
                             if (!Ext.isEmpty(violation)) {
                                 var index = store.indexOf(record);
-                                //var view = this.scope.gridFieldMapping.getView();
-                                var htmlLineEl = view.getRow(index);
+                                // var view =
+                                // this.scope.gridFieldMapping.getView();
+                                var htmlLineEl = view.getNode(index);
                                 var el = Ext.get(htmlLineEl);
-                                
-                                var cls = (violation.level == "CRITICAL")
-                                        ? "x-form-invalid-tip"
-                                        : "x-form-invalid-tip x-form-warning-tip";
-                                
+
+                                if (violation.level == "CRITICAL") {
+                                    el.addCls('red-row');
+                                } else if (violation.level == "WARNING") {
+                                    el.addCls('orange-row');
+                                }
+
+                                var cls = (violation.level == "CRITICAL") ? "x-form-invalid-tip" : "x-form-invalid-tip x-form-warning-tip";
+
                                 var ttConfig = {
                                     html : violation.message,
                                     dismissDelay : 0,
                                     target : el,
                                     cls : cls
                                 };
-        
                                 var ttip = new Ext.ToolTip(ttConfig);
                             }
                         });
@@ -211,41 +242,8 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
             },
             layout : 'fit',
             region : 'center',
-            store : new Ext.data.JsonStore({
-                root : 'converter.parameters',
-                proxy : this.proxyFieldMapping,
-                restful : true,
-                remoteSort : false,
-                idProperty : 'name',
-                fields : [ {
-                    name : 'name',
-                    type : 'string'
-                }, {
-                    name : 'description',
-                    type : 'string'
-                }, {
-                    name : 'parameterType',
-                    type : 'string'
-                }, {
-                    name : 'attachedColumn',
-                    type : 'string'
-                }, {
-                    name : 'value',
-                    type : 'string'
-                }, {
-                    name : 'valueType',
-                    type : 'string'
-                }, {
-                    name : 'violation'
-                } ]
-            }),
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [expanderGridFieldMapping, {
+            store : this.storeFieldMapping,
+            columns : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
                     width : 100,
@@ -265,10 +263,10 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
                     dataIndex : 'value',
                     width : 80,
                     sortable : false,
-                    editable : true,
-                    editor : new Ext.form.TextField()
-                } ]
-            }),
+                    editor: {
+                        xtype: 'textfield'
+                    }
+            }],
             bbar : new Ext.ux.StatusBar({
                 id: 'statusBar',
                 hidden : true,
@@ -277,10 +275,10 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
             }),
             listeners : {
                 scope : this,
-                celldblclick : function (grid, rowIndex, columnIndex, e) {
+                celldblclick : function (grid, td, columnIndex, record, tr, rowIndex) {
                     var storeRecord = grid.getStore().getAt(rowIndex);
                     var rec = storeRecord.data;
-                    if (columnIndex == 3 && rec.parameterType != "CONVERTER_PARAMETER_INTERN") {
+                    if (columnIndex == 2 && rec.parameterType != "CONVERTER_PARAMETER_INTERN") {
                         var selectColumnWin = new sitools.admin.datasets.selectColumn({
                             field : "attachedColumn",
                             record : storeRecord,
@@ -289,25 +287,25 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
                             url : this.urlDatasets + "/" + this.datasetId
                         });
                         selectColumnWin.show(ID.BOX.DATASETS);
-                    } else if (columnIndex == 4 && rec.parameterType == "CONVERTER_PARAMETER_INTERN") {
+                    } else if (columnIndex == 3 && rec.parameterType == "CONVERTER_PARAMETER_INTERN") {
                         return true;
                     } else {
                         return false;
                     }
                 }
             },
-            plugins : expanderGridFieldMapping
+            plugins : [/*expanderGridFieldMapping,*/ cellEditing],
         });
 
         // set the search form
-        this.fieldMappingFormPanel = new Ext.FormPanel({
+        this.fieldMappingFormPanel = Ext.create('Ext.form.Panel', {
             height : 40,
-            frame : true,
             defaultType : 'textfield',
-            items : [ {
+            padding : 5,
+            items : [{
                 fieldLabel : i18n.get('label.descriptionAction'),
                 name : 'descriptionAction',
-                anchor : '100%'
+                anchor : '90%'
             } ],
             region : 'north'
 
@@ -392,8 +390,7 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
 				return false;
 			}
 			var className = rec.data.className;
-			this.proxyFieldMapping.setUrl(this.convertersPluginUrl + "/" + className
-					+ "/" + this.datasetId);
+			this.proxyFieldMapping.url = this.convertersPluginUrl + "/" + className + "/" + this.datasetId;
 			var store = this.gridFieldMapping.getStore();
 			store.removeAll();
 			store.load();
@@ -475,6 +472,7 @@ Ext.define('sitools.admin.converters.convertersProp', { extend : 'Ext.Window',
         for (var i = 0; i < storeField.getCount(); i++) {
             var recTmp = storeField.getAt(i).data;
             recTmp.violation = undefined;
+            delete recTmp.id;
             parameters.push(recTmp);
         }
         

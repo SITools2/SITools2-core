@@ -27,8 +27,9 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.ListBox
  * @extends Ext.Container
  */
-sitools.common.forms.components.ListBox = Ext.extend(Ext.Container, {
 //sitools.component.users.SubSelectionParameters.MultipleSelection.ListBox = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.ListBox', {
+    extend : 'Ext.container.Container',
 
     initComponent : function () {
 		this.context = new sitools.common.forms.ComponentFactory(this.context);
@@ -72,23 +73,52 @@ sitools.common.forms.components.ListBox = Ext.extend(Ext.Container, {
                 displayField : 'text'
             });
         }   
-        this.multiSelect = new Ext.ux.form.MultiSelect ({
-	        store : store,
-	        width : this.width,
-	        height : this.height - 10,
-	        flex : 1, 
-	        delimiter : '|', 
-			stype : "sitoolsFormItem", 
+//        this.multiSelect = new Ext.ux.form.MultiSelect ({
+//	        store : store,
+//	        width : this.width,
+//	        height : this.height - 10,
+//	        flex : 1, 
+//	        delimiter : '|', 
+//			stype : "sitoolsFormItem", 
+//            listeners : {
+//                scope : this, 
+//                'click' : function () {
+//                    this.form.fireEvent('componentChanged', this.form, this);
+//                },
+//                'afterRender' : function () {
+//				    //this.setSelectedValue(this.defaultValues);
+//			    }
+//            }
+//	    });
+        
+
+        this.multiSelect =  new Ext.ux.form.MultiSelect({
+            anchor : '100%',
+            msgTarget : 'side',
+            fieldLabel : 'Multiselect',
+            name : 'multiselect',
+            id : 'multiselect-field',
+            allowBlank : false,
+            store : store,
+            width : this.width,
+            height : this.height - 10,
+            flex : 1,
+            delimiter : '|',
+            stype : "sitoolsFormItem",
+            ddReorder: true,
+            valueField : 'value', 
+            displayField : 'text',
             listeners : {
-                scope : this, 
-                'click' : function () {
-                    this.form.fireEvent('componentChanged', this.form, this);
-                },
-                'afterRender' : function () {
-				    this.setSelectedValue(this.defaultValues);
-			    }
+              scope : this, 
+              'click' : function () {
+                  this.form.fireEvent('componentChanged', this.form, this);
+              },
+              'afterRender' : function () {
+                this.setSelectedValue(this.defaultValues);
             }
-	    });
+          }
+        });
+        
         Ext.apply(this, {
 	    	height : this.height, 
 	        width : this.width,

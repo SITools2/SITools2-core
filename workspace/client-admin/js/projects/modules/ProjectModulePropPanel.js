@@ -72,6 +72,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
             height : 180,
             store : storeDependencies,
             tbar : tbar,
+            forceFit : true,
             cm : new Ext.grid.ColumnModel({
                 columns : [ {
                     header : i18n.get('label.url'),
@@ -83,10 +84,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
             }),
             selModel : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
-            }),
-            viewConfig : {
-                forceFit : true
-            }
+            })
         });
         
         

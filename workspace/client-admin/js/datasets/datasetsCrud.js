@@ -82,7 +82,11 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             header : i18n.get('label.name'),
             dataIndex : 'name',
             width : 100,
-            sortable : true
+            sortable : true,
+            renderer : function (value, meta, record) {
+                meta.style = "font-weight: bold;";
+                return value;
+            }
         }, {
             header : i18n.get('label.description'),
             dataIndex : 'description',

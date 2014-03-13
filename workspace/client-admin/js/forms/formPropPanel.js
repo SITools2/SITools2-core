@@ -526,12 +526,12 @@ Ext.define('sitools.admin.forms.formPropPanel', {
             if (paramstore.getCount() > 0) {
                 paramObject = [];
                 paramstore.each(function (param) {
-                    if (param.data.containerPanelId == component.data.containerPanelId){
+                    if (param.data.containerPanelId == component.data.containerPanelId) {
                         paramObject.push({
                             type : param.data.type,
-                            code : param.data.code,
+                            code : param.data.code || [],
                             label : param.data.label,
-                            values : param.data.values,
+                            values : param.data.values || [],
                             width : param.data.width,
                             height : param.data.height,
                             xpos : param.data.xpos,
@@ -540,13 +540,13 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                             css : param.data.css,
                             jsAdminObject : param.data.jsAdminObject,
                             jsUserObject : param.data.jsUserObject,
-                            defaultValues : param.data.defaultValues,
+                            defaultValues : param.data.defaultValues || [],
                             valueSelection : param.data.valueSelection, 
                             autoComplete : param.data.autoComplete, 
                             parentParam : param.data.parentParam, 
                             dimensionId : param.data.dimensionId, 
                             unit : param.data.unit, 
-                            extraParams : param.data.extraParams,
+                            extraParams : param.data.extraParams || [],
                             containerPanelId : param.data.containerPanelId
                         });
                     }

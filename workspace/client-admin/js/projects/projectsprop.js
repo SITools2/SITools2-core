@@ -36,7 +36,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     /** Default Width */
     width : 700,
     /** Default height */
-    height : 580,
+    height : 600,
     /** Default modal */
     modal : true,
     /** Default pageSize for Dataset Store */
@@ -114,23 +114,19 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             } ]
         });
 
-        var cmDataSets = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.name'),
-                dataIndex : 'name',
-                width : 100
-            }, {
-                header : i18n.get('headers.description'),
-                dataIndex : 'description',
-                width : 100
-            } ],
-            defaults : {
-                sortable : true,
-                width : 100
-            }
-        });
+        var cmDataSets = [{
+            header : i18n.get('headers.name'),
+            dataIndex : 'name',
+            width : 100,
+            sortable : true
+        }, {
+            header : i18n.get('headers.description'),
+            dataIndex : 'description',
+            width : 100,
+            sortable : true
+        }];
 
-        var smDataSets = Ext.create('Ext.selection.RowModel',{
+        var smDataSets = Ext.create('Ext.selection.RowModel', {
             singleSelect : false
         });
         var tbar = {
@@ -160,16 +156,14 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         /**
          * {Ext.grid.EditorGridPanel} gridDataSets The grid that displays datasets
          */
-        this.gridDataSets = new Ext.grid.EditorGridPanel({
-            id : 'gridDataSets',
+        this.gridDataSets = Ext.create('Ext.grid.Panel', {
+            name : 'gridDataSets',
             title : i18n.get('title.gridDataSets'),
             store : storeDataSets,
             tbar : tbar,
-            cm : cmDataSets,
+            columns : cmDataSets,
             selModel : smDataSets,
-            viewConfig : {
-                forceFit : true
-            }, 
+            forceFit : true,
             listeners : {
                 "activate" : function () {
                     if (action === 'view') {
@@ -184,6 +178,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
          */
         this.formProject = new Ext.FormPanel({
             title : i18n.get('label.projectInfo'),
+            name : 'formProperties',
             xtype : 'form',
             border : false,
             autoScroll : true, 
@@ -290,7 +285,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 cls : 'ckeditor',
                 fieldLabel : i18n.get('label.htmlHeader'),
                 height : 150,
-                anchor : '95%', 
+                anchor : '100%', 
                 value : this.defaultHeader
             } ], 
             listeners : {
@@ -387,7 +382,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         });
         
         // The store that contains modules for this project. 
-        var storeProjectModules  = new Ext.data.JsonStore({
+        this.storeProjectModules = new Ext.data.JsonStore({
             autoLoad : false, 
             idProperty : 'id',
             fields : [ {
@@ -422,8 +417,8 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 type : 'boolean'
             }], 
             listeners : {
-                scope : this, 
-                add : function (store) {
+                scope : this,
+                add : function (store, records, index) {
                     if (store.allAttached()) {
                         this.allModulesAttachedBtn.setText(i18n.get("label.Detached"));
                         this.allModulesDetached = true;
@@ -472,75 +467,76 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             dataIndex : "attached",
             width : 55
         });
-        var visible = new Ext.create('Ext.grid.column.CheckColumn', {
+        var visible = {
+            xtype : 'checkcolumn',
             header : i18n.get('headers.visible'),
             dataIndex : "visible",
             width : 55
-        });
+        };
         
-        var cmModules = Ext.create('Ext.grid.column.Column', {
-            columns : [attached,  {
-                header : i18n.get('headers.name'),
-                dataIndex : 'name',
-                width : 100
-            }, {
-                header : i18n.get('headers.description'),
-                dataIndex : 'description',
-                width : 100
-            }, {
-                header : i18n.get('headers.label'),
-                dataIndex : 'label',
-                width : 100, 
-                editor : new Ext.form.TextField()
-            }, {
-                header : i18n.get('headers.category') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
-                dataIndex : 'categoryModule',
-                width : 100, 
-                editor : new Ext.form.TextField()
-            }, {
-                header : i18n.get('headers.divIdToDisplay') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
-                dataIndex : 'divIdToDisplay',
-                width : 100, 
-                editor : new Ext.form.TextField()
-            }, {
-                xtype : 'actioncolumn',
-                header : i18n.get('headers.projectModuleParameters'),
-                width : 100,
-                items : [{
-                    icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_projects_resources.png",
-                    scope : this,
-                    handler : function (grid, row, col, item, e) {
-                        this.modulePanel.getSelectionModel().selectRow(row);
-                        var rec = this.modulePanel.getSelectionModel().getLastSelected();
-                        this._onModuleConfig(rec);
-                    }
-                }],
-                scope : this,
-                renderer : function (value, metadata, record, rowInd,
-                        colInd, store) {
-                    if (record.data.xtype) {
-                        try {
-                            var getParametersMethod = eval(record.data.xtype + ".getParameters");
-                            if (!Ext.isFunction(getParametersMethod)) {
-                                metadata.attr += 'style="display:none;"';
-                            }
-                        }
-                        catch (err) {
-                            metadata.attr += 'style="display:none;"';
-                            return;
-                        }
-                    }
-                }
-            }],
-            defaults : {
-                sortable : true,
-                width : 100
-            }
-        });
-
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 2
         });
+        
+        var columnsProjectModules = [/*visible,*/ {
+            header : i18n.get('headers.name'),
+            dataIndex : 'name',
+            width : 100
+        }, {
+            header : i18n.get('headers.description'),
+            dataIndex : 'description',
+            width : 100
+        }, {
+            header : i18n.get('headers.label'),
+            dataIndex : 'label',
+            width : 100, 
+            editor : {
+                xtype : 'textfield'
+            }
+        }, {
+            header : i18n.get('headers.category') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            dataIndex : 'categoryModule',
+            width : 100, 
+            editor : {
+                xtype : 'textfield'
+            }
+        }, {
+            header : i18n.get('headers.divIdToDisplay') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            dataIndex : 'divIdToDisplay',
+            width : 100, 
+            editor : {
+                xtype : 'textfield'
+            }
+        }, {
+            xtype : 'actioncolumn',
+            header : i18n.get('headers.projectModuleParameters'),
+            width : 100,
+            items : [{
+                icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_projects_resources.png",
+                scope : this,
+                handler : function (grid, row, col, item, e) {
+                    this.modulePanel.getSelectionModel().selectRow(row);
+                    var rec = this.modulePanel.getSelectionModel().getLastSelected();
+                    this._onModuleConfig(rec);
+                }
+            }],
+            scope : this,
+            renderer : function (value, metadata, record, rowInd, colInd, store) {
+                if (record.data.xtype) {
+                    try {
+                        var getParametersMethod = eval(record.data.xtype + ".getParameters");
+                        if (!Ext.isFunction(getParametersMethod)) {
+                            metadata.style = 'display:none;';
+                        }
+                    }
+                    catch (err) {
+                        metadata.style = 'display:none;';
+                        return;
+                    }
+                }
+                return;
+            }
+        }];
         
         /**
          * {Ext.grid.GridPanel} modulePanel The grid that displays modules
@@ -548,22 +544,30 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         this.modulePanel = Ext.create('Ext.grid.Panel', {
             id : 'gridModules',
             title : i18n.get('title.modules'),
-            store : storeProjectModules,
-            cm : cmModules,
+            store : this.storeProjectModules,
+            columns : columnsProjectModules,
             forceFit : true,
-            selModel : {
-                selType: 'cellmodel'
-            },
+            selModel : Ext.create('Ext.selection.CheckboxModel', {
+                listeners : {
+                    select : function (selModel, record, index) {
+                        record.data.attached = true;
+                    },
+                    deselect : function (selModel, record, index) {
+                        record.data.attached = false;
+                    }
+                }
+            }),
+            columnLines: true,
             tbar : tbarModules, 
             viewConfig : {
-                getRowClass : function (row, index) { 
-                    var cls = ''; 
-                    var data = row.data; 
-                    if (data.dirty) {
-                        cls = "red-row";
-                    }
-                    return cls; 
-                } 
+//                getRowClass : function (row, index) { 
+//                    var cls = ''; 
+//                    var data = row.data; 
+//                    if (data.dirty) {
+//                        cls = "red-row";
+//                    }
+//                    return cls; 
+//                } 
             }, 
             listeners : {
                 "activate" : function () {
@@ -572,7 +576,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                     }
                 }
             }, 
-            plugins : [attached, visible, cellEditing]
+            plugins : [cellEditing]
         });
         
         var storeLinks = new Ext.data.JsonStore({
@@ -602,34 +606,36 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 }]
             };
         
-        this.linksPanel = new Ext.grid.EditorGridPanel({
+        this.linksPanel = Ext.create('Ext.grid.Panel', {
             title : i18n.get('label.links'),
             store : storeLinks,
             tbar : linksPanelTbar, 
             id : "linksPanelGrid",
-            cm : new Ext.grid.ColumnModel({
-                columns : [{            
+            forceFit : true,
+            plugins : [
+               Ext.create('Ext.grid.plugin.CellEditing', {
+                   clicksToEdit: 2
+            })],
+            columns : [{            
                     header : i18n.get('headers.name'),
                     dataIndex : 'name',
                     width : 100,
-                    editor : new Ext.form.TextField({
+                    editor : {
+                        xtype : 'textfield',
                         allowBlank : false
-                    })
+                    }
                 }, {
                     header : i18n.get('headers.url'),
                     dataIndex : 'url',
                     width : 100,
-                    editor : new Ext.form.TextField({
+                    editor : {
+                        xtype : 'textfield',
                         allowBlank : false
-                    })
-                }]
-            }),
-            selModel : Ext.create('Ext.selection.RowModel',{
+                    }
+            }],
+            selModel : Ext.create('Ext.selection.RowModel', {
                 singleSelect : true
             }),
-            viewConfig : {
-                forceFit : true
-            }, 
             listeners : {
                 "activate" : function () {
                     if (action == 'view') {
@@ -637,7 +643,6 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                     }
                 }
             }
-        
         });
         
         /**
@@ -661,7 +666,9 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 }
             } ]        
         });
+        
         this.items = [this.tabPanel];
+        
         this.listeners = {
             scope : this, 
             resize : function (window, width, height) {
@@ -802,7 +809,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
 //        putObject.visible = visibleField.getValue();
 
         
-        var store = this.findById('gridDataSets').getStore();
+        var store = this.down('grid[name=gridDataSets]').getStore();
         if (store.getCount() > 0) {
             putObject.dataSets = [];
             store.each(function (record) {
@@ -872,6 +879,10 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                                 record.set('dirty', true);
                                 Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.needToParamModule'));
                                 correctlyParamModule = false;
+                                
+                                var htmlLineEl = this.modulePanel.getView().getNode(record);
+                                var el = Ext.get(htmlLineEl);
+                                el.addCls('red-row');
                             }
                             
                         }
@@ -963,7 +974,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                     scope : this,
                     success : function (ret) {
                         var f = this.down('form').getForm();
-                        var grid = this.findById('gridDataSets');
+                        var grid = this.down('grid[name=gridDataSets]');
                         var store = grid.getStore();
                         var data = Ext.decode(ret.responseText).project;
                         var dataSets = data.dataSets;
@@ -972,7 +983,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                         // Chargement des dataSets disponible et mise a jour de
                         Ext.each(dataSets, function (dataSet) {
                             var rec = {};
-                            rec.data.id = dataSet.id;
+                            rec.id = dataSet.id;
                             rec.name = dataSet.name;
                             rec.description = dataSet.description;
                             rec.type = dataSet.description;
@@ -991,7 +1002,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                         if (this.action == "duplicate") {
                             rec.name = data.name + "_copy";
                         } else {
-                            rec.data.id = data.id;
+                            rec.id = data.id;
                             rec.name = data.name;
                             rec.sitoolsAttachementForUsers = data.sitoolsAttachementForUsers;
                         }
@@ -1029,6 +1040,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                                 
                                 this.modulePanel.getStore().add(rec);
                             }, this);
+                            this.modulePanel.getSelectionModel().select(this.modulePanel.getStore().data.items);
                         }
                         
                         var links = data.links;
@@ -1095,8 +1107,13 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     _onAllModulesAttached : function () {
         var attach = this.allModulesDetached;
         this.modulePanel.getStore().each(function (rec) {
-            rec.set("attached", ! attach);
+            rec.set("attached", !attach);
         }, this);
+        if (!attach) {
+            this.modulePanel.getSelectionModel().selectAll();
+        } else {
+            this.modulePanel.getSelectionModel().deselectAll();
+        }
     }, 
     
     /**
@@ -1120,25 +1137,21 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     loadNonAvailableProjects : function (store) {
         var listDependencies = [];
         store.each(function (rec) {
-            
             // Chargement des dependances pour permettre le parametrage du module dans le projet 
             // pour eviter de recharger la page
-           
             
                 if (!Ext.isEmpty(rec.get('dependencies') && !Ext.isEmpty(rec.get('dependencies').js))) {
                     listDependencies = listDependencies.concat(rec.get('dependencies').js);
                 }
-            
-            
-                var storeModules = this.modulePanel.getStore();
-                if (storeModules.findExact("name", rec.get('name')) === -1) {
-                    storeModules.add(rec);
+                
+                if (this.storeProjectModules.findExact("name", rec.get('name')) === -1) {
+                    this.storeProjectModules.add(rec);
                 }
             }, this);
         
         if (!Ext.isEmpty(listDependencies)) {
             includeJsForceOrder(listDependencies, 0, function () {
-                this.modulePanel.getView().refresh();
+//                this.modulePanel.getView().refresh();
             }, this);
         }
     },

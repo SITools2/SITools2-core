@@ -67,7 +67,11 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
             columns : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 200
+                width : 200,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',

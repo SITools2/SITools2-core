@@ -30,17 +30,18 @@
 
    	<!--  ext.ux  -->
        
-    <!--<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css"></link>-->
+    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css"></link>
     <!--<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/spinner.css"></link>-->
     
     
     <!-- Sitools specific css -->
     <link rel="stylesheet" type="text/css" href="res/css/main.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/commons.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/imageChooser/imageChooser.css"></link>
+    
     <!--
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/lockingGrid/columnLock.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/imageChooser/imageChooser.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/sliderRange/css/ux/SliderRange.css"></link>
     -->
@@ -72,6 +73,7 @@
 <!-- <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script> -->
 	
 	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.form.MultiSelect.js"></script>
 
 	
     <!-- Need in debug mode, to remove in production version. -->
@@ -106,7 +108,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.Plugin.RemoteComponent.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/lockingGrid/columnLock.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/notification/Ext.ux.Notification.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/multiSelect/Ext.ux.multiselect.js"></script>
+    <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/multiSelect/Ext.ux.multiselect.js"></script>-->
     <script type="text/javascript" src="${appUrl}/common/js/forms/formParameterToComponent.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/forms/DatasetContext.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/forms/ProjectContext.js"></script>

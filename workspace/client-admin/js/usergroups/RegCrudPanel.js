@@ -34,6 +34,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
     border : false,
     height : 300,
     id : ID.BOX.REG,
+    forceFit : true,
     selModel : Ext.create('Ext.selection.RowModel', {
         singleSelect : true
     }),
@@ -76,35 +77,30 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
             }, {
                 name : 'email',
                 type : 'string'
+            }]
+        });
+
+        this.columns = [{
+            header : i18n.get('label.login'),
+            dataIndex : 'identifier',
+            width : 100,
+            renderer : function (value, meta, record) {
+                meta.style = "font-weight: bold;";
+                return value;
             }
-
-            ]
-        });
-
-        this.columns = new Ext.grid.column.Column({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.login'),
-                dataIndex : 'identifier',
-                width : 100
-            }, {
-                header : i18n.get('label.firstName'),
-                dataIndex : 'firstName',
-                width : 100
-            }, {
-                header : i18n.get('label.lastName'),
-                dataIndex : 'lastName',
-                width : 100
-            }, {
-                header : i18n.get('label.email'),
-                dataIndex : 'email',
-                width : 100
-            } ]
-        });
+        }, {
+            header : i18n.get('label.firstName'),
+            dataIndex : 'firstName',
+            width : 100
+        }, {
+            header : i18n.get('label.lastName'),
+            dataIndex : 'lastName',
+            width : 100
+        }, {
+            header : i18n.get('label.email'),
+            dataIndex : 'email',
+            width : 100
+        }];
 
         this.bbar = {
             xtype : 'pagingtoolbar',

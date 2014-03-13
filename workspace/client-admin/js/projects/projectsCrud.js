@@ -82,7 +82,11 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 100,
-                sortable : true
+                sortable : true,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.image'),
                 dataIndex : 'image',
@@ -236,7 +240,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('projectCrud.delete'),
+            msg : String.format(i18n.get('projectCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

@@ -110,7 +110,11 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             columns : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 100
+                width : 100,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.titleRss'),
                 dataIndex : 'title',

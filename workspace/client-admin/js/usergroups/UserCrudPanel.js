@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.UserCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
+Ext.define('sitools.admin.usergroups.UserCrudPanel', {
+    extend :'Ext.grid.Panel',
 	alias : 'widget.s-usercrud',
     border : false,
     height : 300,
@@ -36,8 +37,8 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
     selModel : Ext.create('Ext.selection.RowModel',{
         singleSelect : true
     }),
+    forceFit : true,
     pageSize : 10,
-    // loadMask: true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/users';
@@ -80,7 +81,11 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
         this.columns = [{
                 header : i18n.get('label.login'),
                 dataIndex : 'identifier',
-                width : 100
+                width : 100,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.firstName'),
                 dataIndex : 'firstName',
@@ -131,9 +136,6 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', { extend :'Ext.grid.Panel',
                 pageSize : this.pageSize
             } ]
         };
-//        this.view = Ext.create('Ext.grid.View', {
-//            forceFit : true
-//        });
 
         this.listeners = {
             scope : this, 
