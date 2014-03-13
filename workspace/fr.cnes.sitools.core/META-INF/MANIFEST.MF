@@ -48,7 +48,6 @@ Require-Bundle: javax.servlet;bundle-version="2.5.0",
  org.apache.commons.codec;bundle-version="1.4.0",
  apache-ant-1.8.1;bundle-version="1.0.0",
  org.hsqldb;bundle-version="2.3.1",
- slf4j.api;bundle-version="1.7.2",
  org.restlet.ext.slf4j;bundle-version="2.0.5"
 Export-Package: fr.cnes.sitools,
  fr.cnes.sitools.api,
