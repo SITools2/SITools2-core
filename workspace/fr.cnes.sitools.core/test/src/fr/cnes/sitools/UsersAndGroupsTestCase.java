@@ -484,7 +484,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
       assertNotNull(result);
 
       Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
-      assertTrue(response.getSuccess());
+      assertTrue(response.getMessage(), response.getSuccess());
       assertNotNull(response.getItem());
 
       Group group = (Group) response.getItem();

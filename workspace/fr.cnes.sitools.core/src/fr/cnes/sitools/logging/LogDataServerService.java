@@ -31,7 +31,7 @@ import org.restlet.resource.ResourceException;
 import org.restlet.routing.Filter;
 import org.restlet.service.LogService;
 
-import fr.cnes.sitools.util.SitoolsLogFilter;
+import fr.cnes.sitools.util.logging.SitoolsLogFilter;
 
 /**
  * Custom log service
@@ -61,30 +61,30 @@ public class LogDataServerService extends LogService {
    *          True to make enable the service. False to make disable the service
    * @see http://java.sun.com/javase/6/docs/api/java/util/logging/Level.html
    */
-  public LogDataServerService(String outputFile, String levelName, String logFormat, String logName, boolean enabled) {
+  public LogDataServerService(String logName, boolean enabled) {
     super(enabled);
     try {
-      if (logFormat != null && !logFormat.equals("")) {
-        this.setLogFormat(logFormat);
-      }
+//      if (logFormat != null && !logFormat.equals("")) {
+//        this.setLogFormat(logFormat);
+//      }
       this.setLoggerName(logName);
 
-      Level level = Level.parse(levelName);
-
-      AccessLogFileHandler accessLogFileHandler = new AccessLogFileHandler(outputFile, true);
-      accessLogFileHandler.setFormatter(new LogAccessFormatter());
-      accessLogFileHandler.setLevel(level);
+//      Level level = Level.parse(levelName);
+//
+//      AccessLogFileHandler accessLogFileHandler = new AccessLogFileHandler(outputFile, true);
+//      accessLogFileHandler.setFormatter(new LogAccessFormatter());
+//      accessLogFileHandler.setLevel(level);
 
       if ((logName != null) && !logName.equals("")) {
         logger = Engine.getLogger(logName);
       }
-      logger.setLevel(level);
-      logger.setUseParentHandlers(false);
-      logger.addHandler(accessLogFileHandler);
+//      logger.setLevel(level);
+//      logger.setUseParentHandlers(false);
+//      logger.addHandler(accessLogFileHandler);
     }
-    catch (IOException ex) {
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
-    }
+    // catch (IOException ex) {
+    // throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
+    // }
     catch (SecurityException ex) {
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
     }

@@ -1,4 +1,4 @@
-package fr.cnes.sitools.util;
+package fr.cnes.sitools.util.logging;
 
 import java.util.Iterator;
 import java.util.List;
