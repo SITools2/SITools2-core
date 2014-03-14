@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.login;
 
+import java.util.logging.Level;
+
 import org.restlet.Request;
 import org.restlet.data.ChallengeRequest;
 import org.restlet.data.Method;
@@ -56,7 +58,9 @@ public final class LoginResource extends SitoolsResource {
   @Get
   public Representation login(Variant variant) {
     Response response = null;
+    String referenceString = this.getReference().getBaseRef().toString();
     if (this.getRequest().getClientInfo().isAuthenticated()) {
+      trace(Level.INFO, "User connected");
       response = new Response(true, "User authenticated.");
       return getRepresentation(response, variant.getMediaType());
     }
@@ -69,17 +73,18 @@ public final class LoginResource extends SitoolsResource {
 
     // SOLUTION A PARTIR DE LA LOGIN MANDATORY HTTP
 
-    if (this.getReference().getBaseRef().toString().endsWith("login")) {
-      Request request = new Request(Method.GET, this.getReference().getBaseRef().toString() + "-mandatory");
+    if (referenceString.endsWith("login")) {
+      Request request = new Request(Method.GET, referenceString + "-mandatory");
       request.setChallengeResponse(this.getRequest().getChallengeResponse());
       org.restlet.Response responseMandatory = null;
       try {
         responseMandatory = this.getContext().getClientDispatcher().handle(request);
-        if (responseMandatory.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN)) {
-          response = new Response(false, "User blacklisted.");
-        }
-        else if ((responseMandatory.getChallengeRequests() != null)
-            && (responseMandatory.getChallengeRequests().size() > 0)) {
+        if ((responseMandatory.getChallengeRequests() != null) && (responseMandatory.getChallengeRequests().size() > 0)) {
+          
+          if (responseMandatory.getStatus().isError() && this.getRequest().getChallengeResponse() != null) {
+            trace(Level.INFO, "Can not connect the user: " + this.getRequest().getChallengeResponse().getIdentifier());
+          }
+
           ChallengeRequest challengeRequest = responseMandatory.getChallengeRequests().get(0);
 
           SitoolsAuthenticationInfo sai = new SitoolsAuthenticationInfo();
