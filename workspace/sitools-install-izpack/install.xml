@@ -250,6 +250,8 @@
 			<parsable encoding="UTF-8"
 				targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/sitools.properties"
 				type="javaprop" />
+			<file override="true" src="../fr.cnes.sitools.core/conf/properties/log4j.properties"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath" />
 		</pack>
 		<!-- DATA -->
 		<pack name="data" preselected="yes" required="yes" parent="Server">

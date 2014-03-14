@@ -52,7 +52,7 @@
 
 	<!-- TARGET par defaut : mise à jour du classpath, generation shell et build 
 		du projet. -->
-	<target name="build" depends="refresh-properties, refresh-userlibraries, build-shell, build-project, build-tests" />
+	<target name="build" depends="refresh-properties, refresh-userlibraries, build-shell, build-project, build-tests, copy-log4j-properties" />
 
 
 
@@ -236,6 +236,10 @@
 	<target name="jar" description="target to refresh the core jar">
 		<subant target="jar" buildpath="./conf/build" />
 		<subant target="deploy-jar" buildpath="./conf/build" />
+	</target>
+
+	<target name="copy-log4j-properties" description="Copy the log4j properties to the root folder">
+		<copy outputencoding="UTF-8" tofile="log4j.properties" file="${conf.properties.dir}/log4j.properties" overwrite="true" />
 	</target>
 
 
