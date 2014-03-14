@@ -30,7 +30,8 @@ Ext.namespace('sitools.admin.rssFeed');
  * @class sitools.admin.rssFeed.rssFeedItemProps
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
+Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -239,7 +240,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
         var dateStrPub = null;
 
         var author = {};
-        rec.set("author", author);
+        rec.author = author;
+        
         Ext.iterate(form.getValues(), function (key, value) {
             if (key == "date") {
                 dateStr = value;
@@ -256,15 +258,15 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
             } else if (key == "name" || key == "email") {
                 author[key] = value;
             } else if (key == "image") {
-				if (! Ext.isEmpty(value)) {
+				if (!Ext.isEmpty(value)) {
 					var type = this.getTypeFromUrl(value);
-					rec.set(key, {
+					rec[key] = {
 						url : value, 
 						type : type
-					});
+					};
 				}
             } else {
-                rec.set(key, value);
+                rec[key] = value;
             }
 
         }, this);
@@ -275,7 +277,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
                 dateStr += " " + hours + ":" + mins;
             }
             date = new Date(dateStr);
-            rec.set("updatedDate", date);
+            rec.updatedDate = date;
         }
         if (dateStrPub !== null && dateStrPub !== "") {
 
@@ -283,7 +285,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
                 dateStrPub += " " + hoursPub + ":" + minsPub;
             }
             date = new Date(dateStrPub);
-            rec.set("publishedDate", date);
+            rec.publishedDate = date;
         }
 
         if (this.action == "create") {
@@ -305,17 +307,19 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', { extend : 'Ext.Window',
         if (button.name == "nowUpdated") {
             form = this.formPanel.getForm();
             record = form.getValues();
-            record.set("date", date.format('m/d/Y'));
-            record.set("hours", date.format('H'));
-            record.set("minutes", date.format('i'));
+            
+            record.date = date.format('m/d/Y');
+            record.hours = date.format('H');
+            record.minutes = date.format('i');
             form.setValues(record);
         }
         if (button.name == "nowPublished") {
             form = this.formPanel.getForm();
             record = form.getValues();
-            record.set("datePub", date.format('m/d/Y'));
-            record.set("hoursPub", date.format('H'));
-            record.set("minutesPub", date.format('i'));
+            
+            record.datePub = date.format('m/d/Y');
+            record.hoursPub = date.format('H');
+            record.minutesPub = date.format('i');
             form.setValues(record);
         }
 

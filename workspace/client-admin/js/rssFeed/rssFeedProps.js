@@ -113,8 +113,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
 		            listeners : {
 		                scope : this,
 		                change : function (radioGroup, newValue, oldValue, opts) {
-		                    this.toogleSpecificForm(newValue);
-		                    if (newValue == "CLASSIC") {                        
+		                    this.toogleSpecificForm(newValue.feedSource);
+		                    if (newValue.feedSource == "CLASSIC") {                        
 		                        this.gridPanel.setDisabled(false);
 		                    } else {
 		                        this.gridPanel.setDisabled(true);
@@ -222,7 +222,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
                                         break;
                                     
                                     }
-                                    this.buttonValidUrl.setIconClass(imgClass);
+                                    this.buttonValidUrl.setIconCls(imgClass);
                                 }
                             }
                         }, this.buttonValidUrl                            
@@ -663,7 +663,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
 	        var url = "/sitools/proxy";
 	        this.saveButton.disable();
 	        this.buttonValidUrl.disable();
-	        this.buttonValidUrl.setIconClass("img-loading");
+	        this.buttonValidUrl.setIconCls("img-loading");
 	        Ext.Ajax.request({
 	            url : url,
 	            method : "GET",
