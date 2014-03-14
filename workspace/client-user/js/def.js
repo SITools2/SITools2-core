@@ -23,7 +23,7 @@
  * http://www.extjs.com/license
  */
 
-/*global Ext, i18n, date, Digest, sql2ext, SitoolsDesk, loadUrl, sitools, showResponse, ColumnRendererEnum, document*/
+/*global Ext, i18n, date, Digest, sql2ext, SitoolsDesk, loadUrl, sitools, showResponse, ColumnRendererEnum, document, localStorage, SITOOLS_DATE_FORMAT, window*/
 
 // GLOBAL BEHAVIOUR
 var DEFAULT_NATIVEJSON = false; //must be set to false to constrain Ext.doEncode (if true, doesn't work with prototype library)

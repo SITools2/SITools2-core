@@ -52,7 +52,7 @@ public class SitoolsServerStartWithProxyTest {
   /**
    * common logger for all tests
    */
-  public static final Logger LOGGER = Logger.getLogger(AbstractSitoolsServerTestCase.class.getName());
+  public static final Logger LOGGER = Engine.getLogger(AbstractSitoolsServerTestCase.class.getName());
 
   /**
    * BASE URL of global Sitools application
@@ -141,7 +141,7 @@ public class SitoolsServerStartWithProxyTest {
       FileUtils.cleanDirectory(dir, new String[] {"xml"}, false);
     }
     catch (IOException e) {
-      Logger.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
+      Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
           "Unable to clean " + dir.getPath() + "\n cause:" + e.getMessage());
     }
   }
@@ -163,7 +163,7 @@ public class SitoolsServerStartWithProxyTest {
       FileUtils.cleanDirectory(dir, new String[] {}, false);
     }
     catch (IOException e) {
-      Logger.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
+      Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
           "Unable to clean " + dir.getPath() + "\n cause:" + e.getMessage());
     }
   }

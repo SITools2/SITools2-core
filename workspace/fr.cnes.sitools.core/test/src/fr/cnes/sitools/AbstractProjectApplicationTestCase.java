@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,16 +21,16 @@ package fr.cnes.sitools;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
@@ -44,6 +44,7 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.project.model.Project;
+import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -75,7 +76,7 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
    * @return url
    */
   protected String getBaseAppUrl() {
-    return super.getBaseUrl() + "/applications";
+    return super.getBaseUrl() + settings.getString(Consts.APP_APPLICATIONS_URL);
   }
 
   /*
@@ -104,6 +105,8 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
       assertApplicationDontExists(proj.getId());
       // activate project
       activateProject(proj);
+      // check application is active
+      assertApplicationActive(proj.getId());
       // activate project but get an error
       activateProjectFail(proj);
       // assertNoneApplication
@@ -120,10 +123,42 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
       stopProject(proj);
       // disactivate project but get an error
       stopProjectFail(proj);
-      // assertNoneApplication
-      assertApplicationDontExists(proj.getId());
+      // assert application INACTIVE
+      assertApplicationInactive(proj.getId());
       // delete project
       deleteProject(proj);
+      // assertNoneApplication
+      assertApplicationDontExists(proj.getId());
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+
+  /**
+   * Test
+   */
+  @Test
+  public void testDeleteActiveProject() {
+    docAPI.setActive(false);
+    // create project
+    Project proj = createObject(projectId);
+
+    try {
+      // add the project
+      createProject(proj);
+      // assertNoneApplication
+      assertApplicationDontExists(proj.getId());
+      // activate project
+      activateProject(proj);
+      // check application is active
+      assertApplicationActive(proj.getId());
+      // delete project
+      deleteProject(proj);
+      // assertNoneApplication
+      assertApplicationDontExists(proj.getId());
     }
     catch (IOException e) {
       // TODO Auto-generated catch block
@@ -355,6 +390,60 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
   }
 
   /**
+   * Assert if there is an application with the given id is defined and INACTIVE
+   * 
+   * @param id
+   *          the application id
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
+   */
+  private void assertApplicationInactive(String id) throws IOException {
+    assertApplicationStatus(id, "INACTIVE");
+  }
+
+  /**
+   * Assert if there is an application with the given id defined on the server
+   * 
+   * @param id
+   *          the application id
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
+   */
+  private void assertApplicationActive(String id) throws IOException {
+    assertApplicationStatus(id, "ACTIVE");
+  }
+
+  /**
+   * Assert if there is an application with the given id defined on the server
+   * 
+   * @param id
+   *          the application id
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
+   */
+  private void assertApplicationStatus(String id, String status) throws IOException {
+    String url = getBaseAppUrl() + "/" + id;
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("identifier", "The application id");
+      String template = getBaseAppUrl() + "/%identifier";
+      retrieveDocAPI(url, "", parameters, template);
+    }
+    else {
+      ClientResource cr = new ClientResource(url);
+      Representation result = cr.get(getMediaTest());
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = getResponse(getMediaTest(), result, Resource.class);
+      assertTrue(response.getSuccess());
+      Resource app = (Resource) response.getItem();
+      assertEquals(status, app.getStatus());
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  /**
    * Assert if there is an application with the given id defined on the server
    * 
    * @param id
@@ -376,14 +465,8 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
       Response response = getResponse(getMediaTest(), result, Resource.class);
-      if (response.getSuccess()) {
-        Resource app = (Resource) response.getItem();
-        assertEquals("INACTIVE", app.getStatus());
-      }
-      else {
-        assertFalse(response.getSuccess());
-        assertEquals("application.notfound", response.getMessage());
-      }
+      assertFalse(response.getSuccess());
+      assertEquals("application.notfound", response.getMessage());
       RIAPUtils.exhaust(result);
     }
 
@@ -601,7 +684,7 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(getMediaTest()) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -649,7 +732,7 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null; // TODO complete test with ObjectRepresentation
       }
     }
@@ -679,7 +762,7 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
       return rep;
     }
     else {
-      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
       return null; // TODO complete test with ObjectRepresentation
     }
   }

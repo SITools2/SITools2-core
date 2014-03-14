@@ -124,7 +124,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
                 }, {
                     text : i18n.get('label.cancel'),
                     handler : this._onCancel
-                } ]
+                }]
             }
         } ];
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);

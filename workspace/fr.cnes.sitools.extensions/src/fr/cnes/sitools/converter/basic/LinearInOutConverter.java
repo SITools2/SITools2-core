@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,10 +21,14 @@ package fr.cnes.sitools.converter.basic;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
@@ -34,8 +38,6 @@ import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
  * Example of converter
@@ -45,7 +47,7 @@ import java.util.Map;
 public class LinearInOutConverter extends AbstractConverter {
 
   /** Class logger */
-  private static Logger logger = Logger.getLogger(LinearInOutConverter.class.getName());
+  private static Logger logger = Engine.getLogger(LinearInOutConverter.class.getName());
 
   /**
    * Constructor.
@@ -81,7 +83,7 @@ public class LinearInOutConverter extends AbstractConverter {
     this.addParam(b);
     this.addParam(x);
 
-    logger.log(Level.INFO, "Converter :{0} version {1}", new Object[] { this.getName(), this.getClassVersion() });
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override
@@ -95,7 +97,7 @@ public class LinearInOutConverter extends AbstractConverter {
     Double b = new Double(this.getInternParam("b").getValue());
 
     AttributeValue attrIntOut = this.getInOutParam("x", rec);
-    logger.log(Level.FINEST, "x={0} a={1} b={2}", new Object[] { attrIntOut.getValue(), a, b });
+    logger.log(Level.FINEST, String.format("x=%s a=%s b=%s", attrIntOut.getValue(), a, b));
 
     if (!isNull(attrIntOut)) {
       try {

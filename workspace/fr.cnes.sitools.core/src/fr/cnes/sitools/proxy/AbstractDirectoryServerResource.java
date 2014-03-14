@@ -27,12 +27,10 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
-import java.util.zip.ZipFile;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.io.FileUtils;
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.Response;

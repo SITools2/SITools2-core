@@ -20,12 +20,12 @@ package fr.cnes.sitools.dataset.database.common;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.ObjectRepresentation;
@@ -190,7 +190,7 @@ public class DataSetExplorerResource extends AbstractDataSetResource {
               databaseRequest.close();
             }
             catch (SitoolsException e) {
-              Logger.getLogger(this.getClass().getName()).severe(e.getMessage());
+              Engine.getLogger(this.getClass().getName()).severe(e.getMessage());
             }
           }
         }

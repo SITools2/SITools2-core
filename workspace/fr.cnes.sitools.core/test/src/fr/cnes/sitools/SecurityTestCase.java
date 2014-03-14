@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,14 +21,13 @@ package fr.cnes.sitools;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.logging.Logger;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.data.ChallengeRequest;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
@@ -40,6 +39,7 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.login.SitoolsAuthenticationInfo;
+import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -49,6 +49,10 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  */
 public class SecurityTestCase extends AbstractSitoolsServerTestCase {
+  @Override
+  protected String getBaseUrl() {
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_LOGIN_PATH_URL);
+  }
 
   /**
    * Executed once before all test methods
@@ -209,7 +213,7 @@ public class SecurityTestCase extends AbstractSitoolsServerTestCase {
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -235,7 +239,7 @@ public class SecurityTestCase extends AbstractSitoolsServerTestCase {
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null; // TODO complete test for XML, Object
       }
     }

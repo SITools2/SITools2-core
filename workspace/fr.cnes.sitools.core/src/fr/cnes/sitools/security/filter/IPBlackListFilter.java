@@ -19,6 +19,7 @@
 package fr.cnes.sitools.security.filter;
 
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -69,12 +70,27 @@ public class IPBlackListFilter extends SecurityFilter {
     status = ((ipContainer != null) && ipContainer.contains(clientip)) ? STOP : CONTINUE;
     if (status == STOP) {
       response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Your IP address was blacklisted");
-      getLogger().log(
-          Level.INFO,
-          "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath() + " forbidden, IP address "
-              + clientip + " is in blacklist");
+      log(request, response, clientip);
     }
     return status;
+  }
+
+  /**
+   * Log.
+   * 
+   * @param request
+   *          the request
+   * @param clientip
+   *          the client ip
+   */
+  private void log(Request request, Response response, String clientip) {
+
+    String message = "Request to : " + request.getResourceRef().getPath()
+        + " forbidden, IP address:" + clientip + " is in blacklist";
+
+    LogRecord record = new LogRecord(Level.WARNING, message);
+    response.getAttributes().put("LOG_RECORD", record);
+
   }
 
   /**

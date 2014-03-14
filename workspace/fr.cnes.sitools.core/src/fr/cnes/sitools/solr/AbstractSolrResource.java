@@ -20,6 +20,8 @@ package fr.cnes.sitools.solr;
 
 import java.util.logging.Logger;
 
+import org.restlet.engine.Engine;
+
 import fr.cnes.sitools.common.SitoolsResource;
 
 /**
@@ -53,7 +55,7 @@ public abstract class AbstractSolrResource extends SitoolsResource {
   @Override
   public final void doInit() {
     // TODO verify logger 
-    log = Logger.getLogger(getApplication().getClass().getName());
+    log = Engine.getLogger(getApplication().getClass().getName());
     application = (SolrApplication) getApplication();
     if (this.getRequest().getAttributes().get("osId") != null) {
       osId = (String) this.getRequest().getAttributes().get("osId");

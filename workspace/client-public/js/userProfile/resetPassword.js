@@ -29,13 +29,12 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
     id : 'winPassword',
     layout : 'hbox',
     width : 420,
-    height : 183,
     resizable : false,
     // closable: true,
     modal : true,
 
     initComponent : function () {
-        this.title = i18n.get('label.resetPassword');
+        this.title = i18n.get("label.needHelp");
         this.bbar = new Ext.ux.StatusBar({
             text : i18n.get('label.ready'),
             id : 'sbWinPassword',
@@ -50,7 +49,23 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
             bodyStyle : 'padding:10px 10px 0px 60px; background:url("'+loadUrl.get('APP_URL')+'/common/res/images/ux/login-big.gif") no-repeat;',
             width : 400,
             labelWidth : 120,
-            items : [ {
+            items : [
+              {
+                xtype : 'radiogroup',
+                // Put all controls in a single column with width 100%
+                columns : 1,
+                items : [ {
+                    boxLabel : i18n.get("label.resetPassword"),
+                    inputValue : 'password',
+                    name : 'action',
+                    checked : true
+                }, {
+                    boxLabel : i18n.get('label.unlockAccount'),
+                    name : 'action',
+                    inputValue : 'blacklist',
+                } ]
+            },
+            {
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.login'),
                 name : 'identifier',
@@ -77,18 +92,14 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                 anchor : '100%'
             } ],
             buttons : [ {
-                text : i18n.get('label.resetPassword'),
+                text : i18n.get("label.ok"),
                 handler : this.reset,
                 scope : this
             }, {
-                text : i18n.get('label.reset'),
-                handler : function () {
-                    Ext.getCmp('frmResetPassword').getForm().reset();
-                    Ext.getCmp('sbWinPassword').setStatus({
-                        text : i18n.get('label.ready'),
-                        iconCls : 'x-status-valid'
-                    });
-                }
+                text : i18n.get("label.back"),
+                scope : this,
+                icon: loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
+                handler : this.openLoginWindow
             } ]
         } ];
         sitools.userProfile.resetPassword.superclass.initComponent.call(this);
@@ -112,8 +123,14 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
         }
         var putObject = new Object();
         Ext.iterate(f.getValues(), function (key, value) {
-            if (key != 'emailConfirm') {
+            if (key != 'emailConfirm' && key!='action') {
                 putObject[key] = value;
+            }
+            if (key == 'action' && value == "password") {
+                this.url = this.urlResetPassword;
+            }
+            if (key == 'action' && value == "blacklist") {
+                this.url = this.urlUnblacklist;
             }
         }, this);
 
@@ -132,7 +149,6 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                         text : json.message,
                         iconCls : 'x-status-valid'
                     });
-                    Ext.getCmp('winPassword').close();
                     
                     var notify = new Ext.ux.Notification({
                         iconCls : 'x-icon-information',
@@ -142,6 +158,10 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                         hideDelay : 1300
                     });
                     notify.show(document);
+//                    if (this.handler !== null && this.handler !== undefined) {
+//                        this.handler.call(this.scope || this);
+//                    }
+                    this.openLoginWindow();
                 } else {
                     Ext.getCmp('winPassword').body.unmask();
                     Ext.getCmp('sbWinPassword').setStatus({
@@ -149,9 +169,6 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                         iconCls : 'x-status-error'
                     });
 
-                }
-                if (this.handler !== null && this.handler !== undefined) {
-                    this.handler.call(this.scope || this);
                 }
             },
             failure : function (response, opts) {
@@ -169,5 +186,10 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                 });
             }
         });
+    },
+    openLoginWindow : function () {
+        Ext.getCmp('winPassword').close();
+        var login = new sitools.userProfile.Login(this.back);
+        login.show();
     }
 });

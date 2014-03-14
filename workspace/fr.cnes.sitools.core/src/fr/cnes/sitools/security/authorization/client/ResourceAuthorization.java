@@ -350,12 +350,12 @@ public final class ResourceAuthorization implements Serializable, IResource {
     }
 
     if (rama.size() == 1) {
-      return new DelegatedAuthorizer(rama.get(0), application.getLogger());
+      return new DelegatedAuthorizer(rama.get(0));
     }
     if (rama.size() == 0) {
       return new DelegatedAuthorizer(Authorizer.ALWAYS);
     }
-    return new SitoolsOrAuthorizer(rama, application.getLogger());
+    return new SitoolsOrAuthorizer(rama);
   }
 
 }

@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 import org.restlet.Context;
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
@@ -55,7 +56,7 @@ import fr.cnes.sitools.util.Property;
  */
 public final class JDBCUsersAndGroupsStore implements UsersAndGroupsStore {
   /** Logger */
-  private static Logger logger = Logger.getLogger(JDBCUsersAndGroupsStore.class.getName());
+  private static Logger logger = Engine.getLogger(JDBCUsersAndGroupsStore.class.getName());
 
   // TODO important : ehCACHE des users, au moins (id, password) pour
   // Authentication - Verifier

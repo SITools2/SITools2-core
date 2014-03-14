@@ -25,10 +25,10 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
@@ -234,7 +234,7 @@ public class AbstractEditUserProfileTestCase extends AbstractSitoolsServerTestCa
       return rep;
     }
     else {
-      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
       return null; // TODO complete test with ObjectRepresentation
     }
   }
@@ -288,7 +288,7 @@ public class AbstractEditUserProfileTestCase extends AbstractSitoolsServerTestCa
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -323,7 +323,7 @@ public class AbstractEditUserProfileTestCase extends AbstractSitoolsServerTestCa
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON and XML are supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON and XML are supported in tests");
         return null;
       }
     }

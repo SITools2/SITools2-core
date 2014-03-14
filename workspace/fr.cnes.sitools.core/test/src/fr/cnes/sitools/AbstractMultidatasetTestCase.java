@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,6 +32,7 @@ import org.junit.Test;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ClientResource;
@@ -463,7 +463,7 @@ public class AbstractMultidatasetTestCase extends AbstractTaskResourceTestCase {
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
 
       }
@@ -531,7 +531,7 @@ public class AbstractMultidatasetTestCase extends AbstractTaskResourceTestCase {
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
         // TODO complete test with ObjectRepresentation
       }

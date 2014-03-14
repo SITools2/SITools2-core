@@ -29,6 +29,7 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.engine.util.DateUtils;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
@@ -139,7 +140,7 @@ public final class Task implements Runnable {
     }
 
     // create a logger for the Task
-    logger = Logger.getLogger(id);
+    logger = Engine.getLogger(id);
     loggerLvl = (loggerLvl == null) ? Level.INFO : loggerLvl;
 
     logger.setLevel(loggerLvl);

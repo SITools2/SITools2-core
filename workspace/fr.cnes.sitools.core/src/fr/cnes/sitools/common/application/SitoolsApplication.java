@@ -59,6 +59,7 @@ import fr.cnes.sitools.security.authorization.business.SitoolsOrAuthorizer;
 import fr.cnes.sitools.security.authorization.business.SitoolsUserAuthorizer;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.filter.NotAuthenticatedFilter;
+import fr.cnes.sitools.security.filter.UserBlackListFilter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -403,24 +404,31 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
       notAuthenticatedFilter.setNext(restlet);
 
-      return addSecurityFilter(getContext(), notAuthenticatedFilter);
+      // attach a filter to block bad authentication
+      UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
+      userBlackListFilter.setNext(notAuthenticatedFilter);
+
+      return addSecurityFilter(getContext(), userBlackListFilter);
     }
     else {
       // Authentication is mandatory ? (optional - sinon fenetre login navigateur...)
-      ChallengeAuthenticator auth = AuthenticatorFactory.getAuthenticator(restlet.getContext(), true, getSettings()
-          .getAuthenticationDOMAIN(), authenticationRealm);
+      ChallengeAuthenticator authenticator = AuthenticatorFactory.getAuthenticator(restlet.getContext(), true,
+          getSettings().getAuthenticationDOMAIN(), authenticationRealm);
 
       // attach a filter to block bad authentication
       NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
-      // register with secure ...
-      authorizer.setNext(notAuthenticatedFilter);
+      // attach a filter to block bad authentication
+      UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
 
-      auth.setNext(notAuthenticatedFilter);
+      authenticator.setNext(userBlackListFilter);
+
+      userBlackListFilter.setNext(notAuthenticatedFilter);
+
       notAuthenticatedFilter.setNext(authorizer);
 
       authorizer.setNext(restlet);
 
-      return addSecurityFilter(getContext(), auth);
+      return addSecurityFilter(getContext(), authenticator);
     }
   }
 
@@ -472,7 +480,7 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       userAuthorizers.add(result);
 
       // Result is a Or Authorizer
-      authorizer = new SitoolsOrAuthorizer(userAuthorizers, this.getLogger());
+      authorizer = new SitoolsOrAuthorizer(userAuthorizers);
       return authorizer;
     }
     catch (IOException e) { // marshalling error
@@ -658,8 +666,12 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
 
       if (!Category.PUBLIC.equals(application.getCategory())) {
         // attach a filter to block bad authentication
+        UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
+        auth.setNext(userBlackListFilter);
+
+        // attach a filter to block bad authentication
         NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
-        auth.setNext(notAuthenticatedFilter);
+        userBlackListFilter.setNext(notAuthenticatedFilter);
 
         notAuthenticatedFilter.setNext(application);
       }
@@ -681,9 +693,13 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
       }
       else {
         // attach a filter to block bad authentication
+        UserBlackListFilter userBlackListFilter = new UserBlackListFilter(getContext());
+        auth.setNext(userBlackListFilter);
+
+        // attach a filter to block bad authentication
         NotAuthenticatedFilter notAuthenticatedFilter = new NotAuthenticatedFilter();
 
-        auth.setNext(notAuthenticatedFilter);
+        userBlackListFilter.setNext(notAuthenticatedFilter);
         notAuthenticatedFilter.setNext(localAuthorizer);
       }
 
@@ -927,7 +943,6 @@ public abstract class SitoolsApplication extends ExtendedWadlApplication {
   public void setUserAuthenticationNeeded(boolean isUserAuthenticationNeeded) {
     this.isUserAuthenticationNeeded = isUserAuthenticationNeeded;
   }
-
   // /**
   // * Create a new authorization for administrator on the given {@link SitoolsApplication}. If the application have
   // * already an application it does nothing.

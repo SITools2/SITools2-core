@@ -18,29 +18,17 @@
  ******************************************************************************/
 package fr.cnes.sitools;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.data.MediaType;
-import org.restlet.representation.Representation;
-
-import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.api.DocAPI;
-import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
-import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.dataset.model.Predicat;
-import fr.cnes.sitools.datasource.jdbc.model.Structure;
-import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.CreateDatasetUtil;
 
 /**

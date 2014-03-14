@@ -19,14 +19,16 @@
 package fr.cnes.sitools.common.resource;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+
 import org.restlet.data.Parameter;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.util.Series;
-import java.util.List;
+
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Response;

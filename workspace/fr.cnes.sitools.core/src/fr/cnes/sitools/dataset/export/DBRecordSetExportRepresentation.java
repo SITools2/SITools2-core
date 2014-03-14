@@ -24,10 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.restlet.data.Form;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.exception.SitoolsException;
@@ -204,11 +204,11 @@ public final class DBRecordSetExportRepresentation {
       return isExport;
     }
     catch (SitoolsException sqle) {
-      Logger.getLogger(this.getClass().getName()).severe(sqle.getMessage());
+      Engine.getLogger(this.getClass().getName()).severe(sqle.getMessage());
       return false;
     }
     catch (IOException ioe) {
-      Logger.getLogger(this.getClass().getName()).severe(ioe.getMessage());
+      Engine.getLogger(this.getClass().getName()).severe(ioe.getMessage());
       return false;
     }
   }
@@ -276,7 +276,7 @@ public final class DBRecordSetExportRepresentation {
       out.flush();
     }
     catch (SitoolsException sqle) {
-      Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.sql.error", sqle);
     }
 
@@ -299,7 +299,7 @@ public final class DBRecordSetExportRepresentation {
       out.flush();
     }
     catch (SitoolsException sqle) {
-      Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.sql", sqle);
     }
   }
@@ -346,7 +346,7 @@ public final class DBRecordSetExportRepresentation {
 
     }
     catch (SitoolsException sqle) {
-      Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.sql", sqle);
     }
     return line.getBytes();

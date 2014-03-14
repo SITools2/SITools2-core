@@ -40,10 +40,12 @@ import org.restlet.resource.ResourceException;
 import org.restlet.routing.Filter;
 import org.restlet.routing.VirtualHost;
 import org.restlet.service.LogService;
+import org.restlet.service.Service;
 
 import fr.cnes.sitools.applications.AdministratorApplication;
 import fr.cnes.sitools.applications.ClientAdminApplication;
 import fr.cnes.sitools.applications.ClientUserApplication;
+import fr.cnes.sitools.applications.LoginApplication;
 import fr.cnes.sitools.applications.OrdersFilesApplication;
 import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.applications.TemporaryFolderApplication;
@@ -132,6 +134,8 @@ import fr.cnes.sitools.security.authorization.AuthorizationApplication;
 import fr.cnes.sitools.security.authorization.AuthorizationStore;
 import fr.cnes.sitools.security.captcha.CaptchaContainer;
 import fr.cnes.sitools.security.ssl.SslFactory;
+import fr.cnes.sitools.security.userblacklist.UserBlackListApplication;
+import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.service.storage.DataStorageStore;
 import fr.cnes.sitools.service.storage.StorageAdministration;
 import fr.cnes.sitools.service.storage.StorageApplication;
@@ -151,6 +155,7 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
 import fr.cnes.sitools.userstorage.UserStorageStore;
+import fr.cnes.sitools.util.SitoolsLogFilter;
 
 /**
  * Server Starting class.
@@ -257,7 +262,9 @@ public final class Starter {
       System.err.println("SERVER ALREADY STARTED");
       System.exit(-1);
     }
-
+    // Engine.getInstance().setLoggerFacade(new Slf4jLoggerFacade());
+    // System.setProperty("org.restlet.engine.loggerFacadeClass", "org.restlet.ext.slf4j.Slf4jLoggerFacade");
+    //
     // ============================
     // Sitools settings
     SitoolsSettings settings = SitoolsSettings.getInstance(BUNDLE, Starter.class.getClassLoader(), Locale.FRANCE, true);
@@ -266,11 +273,11 @@ public final class Starter {
     hostPort = ((hostPort != null) && !hostPort.equals("")) ? hostPort : SitoolsSettings.DEFAULT_HOST_PORT;
 
     // ============================
-    // Create a component
-    Component component = new SitoolsComponent(settings);
-
-    // ============================
     // Logging configuration
+    String loggerFacade = settings.getString("Starter.org.restlet.engine.loggerFacadeClass", null);
+    if (loggerFacade != null) {
+      System.setProperty("org.restlet.engine.loggerFacadeClass", loggerFacade);
+    }
 
     String logConfigFile = settings.getRootDirectory() + settings.getString("Starter.Logging.configFile");
     File loggingConfigFile = new File(logConfigFile);
@@ -280,6 +287,10 @@ public final class Starter {
     else {
       System.setProperty("java.util.logging.config.file", logConfigFile);
     }
+
+    // ============================
+    // Create a component
+    Component component = new SitoolsComponent(settings);
 
     // ============================
     // Logs access
@@ -313,6 +324,22 @@ public final class Starter {
       }
     };
     component.getServices().add(logServiceApplication);
+
+    
+    final String securityLoggerName = settings.getString("Starter.SecurityLogName");
+    
+    Service logServiceSecurity = new LogService(true) {
+      /*
+       * (non-Javadoc)
+       * 
+       * @see org.restlet.service.LogService#createInboundFilter(org.restlet.Context)
+       */
+      @Override
+      public Filter createInboundFilter(Context context) {
+        return new SitoolsLogFilter(securityLoggerName);
+      }
+    };
+    component.getServices().add(logServiceSecurity);
 
     // ============================
     // Protocols
@@ -557,6 +584,26 @@ public final class Starter {
     appManager.attachApplication(logApp);
 
     // -------------------------
+    // Login application (commons)
+
+    // Reference
+    appReference = baseUrl + settings.getString(Consts.APP_LOGIN_PATH_URL);
+
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+
+    // Application
+    LoginApplication loginApp = new LoginApplication(appContext);
+
+    // Attachment
+    appManager.attachApplication(loginApp);
+
+    component.getInternalRouter().attach(settings.getString(Consts.APP_LOGIN_PATH_URL), loginApp);
+
+    // -------------------------
     // Client-public application (commons)
 
     // Directory
@@ -693,9 +740,8 @@ public final class Starter {
 
     // Attachment
     appManager.attachApplication(roleApplication);
-    
-    component.getInternalRouter().attach(settings.getString(Consts.APP_ROLES_URL), roleApplication);
 
+    component.getInternalRouter().attach(settings.getString(Consts.APP_ROLES_URL), roleApplication);
 
     // ===========================================================================
     // Gestion des datasouces jdbc
@@ -1990,6 +2036,34 @@ public final class Starter {
     component.getInternalRouter().attach(
         settings.getString(Consts.APP_DATASETS_URL) + "/{parentId}" + settings.getString(Consts.APP_SERVICES_URL),
         servicesApplication);
+
+    // ===========================================================================
+    // Gestion des utilisateurs blacklistés
+
+    // Store
+    SitoolsStore<UserBlackListModel> storeUserBlackListModel = (SitoolsStore<UserBlackListModel>) settings.getStores()
+        .get(Consts.APP_STORE_USER_BLACKLIST);
+
+    // Reference
+    appReference = baseUrl + settings.getString(Consts.APP_USER_BLACKLIST_URL);
+
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    appContext.getAttributes().put(ContextAttributes.APP_STORE, storeUserBlackListModel);
+
+    // Application
+    UserBlackListApplication userBlackListApplication = new UserBlackListApplication(appContext);
+
+    // Attachment
+    appManager.attachApplication(userBlackListApplication);
+
+    component.getInternalRouter().attach(settings.getString(Consts.APP_USER_BLACKLIST_URL), userBlackListApplication);
+
+    // END OF APPLICATION ATTACHMENT
+    // ===========================================================================
 
     // Attachement of the appManager to have the security configured properly
     appManager.attachApplication(appManager);

@@ -25,12 +25,12 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.resource.ResourceException;
 
@@ -198,11 +198,11 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
             }
           }
           catch (SitoolsException esql) {
-            Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, esql);
+            Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, esql);
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.sql", esql);
           }
           catch (IOException exml) {
-            Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, exml);
+            Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, exml);
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.xml", exml);
           }
           finally {
@@ -279,7 +279,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
           }
 
           catch (SitoolsException esql) {
-            Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, esql);
+            Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, esql);
             throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.sql", esql);
           }
           finally {
@@ -310,7 +310,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
         
       }
       catch (SitoolsException sqle) {
-        Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
+        Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, sqle);
 
         throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.sql", sqle);
       }
@@ -320,7 +320,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
             databaseRequest.close();
           }
           catch (SitoolsException e) {
-            Logger.getLogger(this.getClass().getName()).severe(e.getMessage());
+            Engine.getLogger(this.getClass().getName()).severe(e.getMessage());
           }
         }
       }
@@ -363,7 +363,7 @@ public final class DBRecordSetRepresentation extends OutputRepresentation {
       return json;
     }
     catch (JSONException ejson) {
-      Logger.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, ejson);
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, ejson);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.json", ejson);
     }
   }

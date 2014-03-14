@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,10 +22,16 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.restlet.Context;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.engine.log.AccessLogFileHandler;
+import org.restlet.engine.log.LogFilter;
 import org.restlet.resource.ResourceException;
+import org.restlet.routing.Filter;
 import org.restlet.service.LogService;
+
+import fr.cnes.sitools.util.SitoolsLogFilter;
 
 /**
  * Custom log service
@@ -38,7 +44,7 @@ import org.restlet.service.LogService;
 public class LogDataServerService extends LogService {
 
   /** Logger for DataServerService */
-  private Logger logger = Logger.getLogger("fr.cnes.sitools");
+  private Logger logger = Engine.getLogger("fr.cnes.sitools");
 
   /**
    * Constructor
@@ -70,7 +76,7 @@ public class LogDataServerService extends LogService {
       accessLogFileHandler.setLevel(level);
 
       if ((logName != null) && !logName.equals("")) {
-        logger = Logger.getLogger(logName);
+        logger = Engine.getLogger(logName);
       }
       logger.setLevel(level);
       logger.setUseParentHandlers(false);
@@ -83,5 +89,4 @@ public class LogDataServerService extends LogService {
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
     }
   }
-
 }

@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,6 +35,7 @@ import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
+import org.restlet.engine.Engine;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -696,7 +696,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -735,7 +735,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null; // TODO complete test for XML, Object
       }
     }
@@ -768,7 +768,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
       return rep;
     }
     else {
-      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
       return null; // TODO complete test with ObjectRepresentation
 
     }
@@ -804,7 +804,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
       return rep;
     }
     else {
-      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
       return null; // TODO complete test with ObjectRepresentation
 
     }

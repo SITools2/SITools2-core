@@ -32,6 +32,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 
+import fr.cnes.sitools.security.filter.NotAuthenticatedFilter;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -141,7 +142,7 @@ public class NotAuthenticatedFilterTestCase extends SitoolsServerTestCase {
 
       assertNotNull(response);
       assertTrue(response.getStatus().isError());
-      assertEquals(Status.CLIENT_ERROR_FORBIDDEN, response.getStatus());
+      assertEquals(Status.CLIENT_ERROR_UNAUTHORIZED, response.getStatus());
 
     }
     finally {

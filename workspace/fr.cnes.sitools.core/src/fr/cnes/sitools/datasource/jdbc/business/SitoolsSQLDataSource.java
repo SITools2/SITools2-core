@@ -34,6 +34,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.restlet.Restlet;
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.datasource.common.DataSourceType;
@@ -57,7 +58,7 @@ public class SitoolsSQLDataSource implements DataSource, SitoolsDataSource {
   /**
    * Logger
    */
-  static final Logger LOG = Logger.getLogger(SitoolsSQLDataSource.class.getName());
+  static final Logger LOG = Engine.getLogger(SitoolsSQLDataSource.class.getName());
 
   /**
    * Encapsulated model.JDBCDataSource object

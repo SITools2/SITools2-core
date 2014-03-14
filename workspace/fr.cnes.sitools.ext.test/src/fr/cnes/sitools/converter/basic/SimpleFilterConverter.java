@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,7 +18,13 @@
  ******************************************************************************/
 package fr.cnes.sitools.converter.basic;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
@@ -28,13 +34,10 @@ import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- * Example of a converter to investigate on possible Filter usage of a converter.
+ * Example of a converter to investigate on possible Filter usage of a
+ * converter.
  * 
  * To be continued...
  * 
@@ -42,7 +45,7 @@ import java.util.logging.Logger;
  */
 public class SimpleFilterConverter extends AbstractConverter {
   /** The logger */
-  private static final Logger LOGGER = Logger.getLogger(SimpleFilterConverter.class.getName());
+  private final Logger logger = Engine.getLogger(SimpleFilterConverter.class.getName());
 
   /**
    * Constructor.
@@ -69,6 +72,8 @@ public class SimpleFilterConverter extends AbstractConverter {
 
     this.addParam(field);
     this.addParam(seuil);
+
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override
@@ -78,7 +83,7 @@ public class SimpleFilterConverter extends AbstractConverter {
 
     AttributeValue field = this.getInOutParam("field", rec);
 
-    LOGGER.log(Level.FINEST, "value={0} threshold={1}", new Object[] {field.getValue(), threshold});
+    logger.log(Level.FINEST, String.format("value=%s threshold=%s", field.getValue(), threshold));
     Double valueField = new Double(String.valueOf(field.getValue()));
 
     if (valueField <= threshold) {

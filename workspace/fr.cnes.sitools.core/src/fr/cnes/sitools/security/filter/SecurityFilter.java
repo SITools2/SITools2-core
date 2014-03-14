@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 
 import org.apache.http.conn.util.InetAddressUtils;
 import org.restlet.Context;
@@ -121,10 +122,7 @@ public class SecurityFilter extends Filter {
 
     if (doFilter && status == STOP) {
       response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Your IP address was blocked");
-      getLogger().log(
-          Level.INFO,
-          "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath() + " forbiden, IP address " + ip
-              + " is out of Intranet domain");
+      log(request, response, ip);
     }
     else {
       status = CONTINUE;
@@ -266,6 +264,24 @@ public class SecurityFilter extends Filter {
    */
   public void setApplication(SitoolsApplication application) {
     this.application = application;
+  }
+
+  /**
+   * Log.
+   * 
+   * @param request
+   *          the request
+   * @param id
+   *          the id
+   */
+  private void log(Request request, Response response, String ip) {
+
+    String message = "Request to: " + request.getResourceRef().getPath()
+        + " forbiden, IP address: " + ip + " is out of Intranet domain";
+
+    LogRecord record = new LogRecord(Level.WARNING, message);
+    response.getAttributes().put("LOG_RECORD", record);
+
   }
 
 }

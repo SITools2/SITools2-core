@@ -20,6 +20,7 @@ package org.restlet.security;
 
 import java.io.Serializable;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import org.restlet.Request;
@@ -62,19 +63,6 @@ public class DelegatedAuthorizer extends Authorizer implements Serializable {
     super();
   }
 
-  /**
-   * Constructor with Authorizer and Logger to log unsuccessful authorization
-   * 
-   * @param authorizer
-   *          the authorizer
-   * @param logger
-   *          the logger
-   */
-  public DelegatedAuthorizer(Authorizer authorizer, Logger logger) {
-    this(authorizer);
-    setLogger(logger);
-  }
-
   @Override
   public boolean authorize(Request request, Response response) {
     return authorizer.authorize(request, response);
@@ -106,15 +94,13 @@ public class DelegatedAuthorizer extends Authorizer implements Serializable {
    */
   @Override
   protected int unauthorized(Request request, Response response) {
-    if (this.logger != null) {
-      this.logger.log(Level.INFO, "SECURTIY ACCESS ERROR : Request to : " + request.getResourceRef().getPath()
-          + " forbidden, authorization failed");
-    }
+    String message = "Request to: " + request.getResourceRef().getPath()
+          + " forbidden, authorization failed";
+
+    LogRecord record = new LogRecord(Level.WARNING, message);
+    response.getAttributes().put("LOG_RECORD", record);
     return super.unauthorized(request, response);
   }
 
-  protected void setLogger(Logger logger) {
-    this.logger = logger;
-  }
 
 }

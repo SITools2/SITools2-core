@@ -26,7 +26,7 @@ function utils_logout(reload) {
     Ext.util.Cookies.set('hashCode', '');
     var date = new Date();
     localStorage.removeItem("userSessionTimeOut");
-    Ext.Ajax.defaultHeaders.Authorization = '';
+    Ext.destroyMembers(Ext.Ajax.defaultHeaders, "Authorization");
     if (reload) {
         window.location.reload();
     }	

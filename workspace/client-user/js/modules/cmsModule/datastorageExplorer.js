@@ -54,12 +54,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         // this.nameDatastorage;
         this.layout = 'border';
 
-        this.uplLabel = {
-            xtype : 'label',
-            id : 'uplLabel',
-            text : i18n.get('label.uploadFile') + ' :'
-        };
-
         this.uplButton = {
             xtype : 'button',
             id : 'uplButton',
@@ -78,17 +72,11 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             }
         };
 
-        this.dwlLabel = {
-            xtype : 'label',
-            id : 'dwlLabel',
-            text : i18n.get('label.downloadFile') + ' :'
-        };
-
         this.dwlButton = {
             xtype : 'button',
             id : 'dwlButton',
             // iconAlign : 'right',
-            iconCls : 'download-icon',
+            icon : loadUrl.get('APP_URL') + '/client-user/js/modules/cmsModule/res/icons/download.png',
             text : i18n.get('label.downloadFile'),
             tooltip : i18n.get('label.downloadFile'),
             scope : this,
@@ -112,11 +100,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             }
         };
 
-        this.delLabel = {
-            xtype : 'label',
-            text : i18n.get('label.delete') + ' :'
-        };
-
         this.delButton = {
             xtype : 'button',
             id : 'delButton',
@@ -128,7 +111,7 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             handler : function () {
                 var node = this.tree.getSelectionModel().getSelectedNode();
                 if (!Ext.isEmpty(node)) {
-                    Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.text + " ?", function (btn) {
+                    Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.name + " ?", function (btn) {
                         if (btn === 'yes') {
                             if (!this.isRootNode(node)) {
                                 this.deleteNode(node);
@@ -142,6 +125,22 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
                 }
             }
         };
+        
+        this.createFolderButton = {
+                xtype : 'button',
+                id : 'createFolderButton',
+                icon : loadUrl.get('APP_URL') + '/client-user/js/modules/cmsModule/res/icons/createFolder.png',
+                text : i18n.get('label.createFolder'),
+                scope : this,
+                handler : function () {
+                    var node = this.tree.getSelectionModel().getSelectedNode();
+                    if (!Ext.isEmpty(node)) {
+                        this.onCreateFolder(node);
+                    } else {
+                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+                    }
+                } 
+            };
 
         this.tbar = new Ext.Toolbar({
             cls : "services-toolbar",
@@ -164,16 +163,16 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
                 requestMethod : 'GET',
                 url : this.datastorageUrl,
                 createNode : function (attr) {
-                    var isPdf = function (text) {
+                    var isPdf = function (name) {
                         var imageRegex = /\.(pdf)$/;
-                        return (text.match(imageRegex));
+                        return (name.match(imageRegex));
                     };
 
                     var listeners = {
                         scope : this,
                         beforeappend : function (tree, parent, item) {
                             if (item.attributes.leaf === "true") {
-                                if (isPdf(item.attributes.text)) {
+                                if (isPdf(item.attributes.name)) {
                                     item.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/icon-pdf-small.png');
                                 }
                             }
@@ -251,8 +250,8 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
                                 // if there is a node to select prior to the expanding of the node
                                 var nodeToSelect = this.tree.getSelectionModel().getSelectedNode(); 
                                 if (nodeToSelect && nodeToSelect.leaf === "true") {
-                                    var text = nodeToSelect.attributes.text;
-                                    var callback = this.callbackForceSelectNodeOtherDirectory.bind(this, text);
+                                    var name = nodeToSelect.attributes.name;
+                                    var callback = this.callbackForceSelectNodeOtherDirectory.bind(this, name);
                                     this.tree.expandPath(node.getPath(), undefined, callback);
                                 } else {
                                     // just expand the current path
@@ -269,38 +268,21 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
                     });
                     return true;
                 },
-                contextmenu : function (node, e) {
-                    this.tree.getSelectionModel().select(node, e, true);
-                    var c = node.getOwnerTree().contextMenu;
-                    c.contextNode = node;
-                    c.showAt(e.getXY());
-                },
                 click : function (node, e) {
-                    var tb = this.getTopToolbar();
-                    tb.remove('uplButton');
-                    tb.remove('dwlButton');
-                    tb.remove('delButton');
-                    if (node.leaf !== "true") {
-                        tb.insert(1, this.uplButton);
-                        if (!this.isRootNode(node)) {
-                            tb.insert(2, this.delButton);
-                        }
-                        this.reloadNode(node);
-                    } else {
-                        tb.insert(1, this.dwlButton);
-                        tb.insert(2, this.delButton);
-                    }
-                    tb.doLayout();
-
-                    if ((node.text.match(/\.(fits)$/))) {
+                    
+                    this.manageToolbar(node);
+                    
+                    if ((node.attributes.name.match(/\.(fits)$/))) {
                         var sitoolsFitsViewer = new sitools.user.component.dataviews.services.sitoolsFitsViewer({
                             nodeFits : node
                         });
                         sitoolsFitsViewer.show();
                     }
                     
-                    if (this.isOpenable(node.text)) {
-                        var rec = this.dataview.getStore().getById(node.id);
+                    var rec = this.dataview.getStore().getById(node.id);
+                    this.dataview.select(rec, false);
+                    
+                    if (this.isOpenable(node.attributes.name)) {
                         if (!Ext.isEmpty(rec)) {
                             this.displayFile(rec);
                         } else {
@@ -330,6 +312,10 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             fields : [ {
                 name : 'text',
                 mapping : 'text'
+            },
+            {
+                name : 'name',
+                mapping : 'name'
             }, {
                 name : 'lastmod',
                 mapping : 'lastmod',
@@ -357,25 +343,20 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         // this.store.load();
 
         this.tpl = new Ext.XTemplate('<tpl for=".">',
-                '<div class="dv-datastorage-wrap" id="{text}">',
+                '<div class="dv-datastorage-wrap" id="{name}">',
                 '<div class="dv-datastorage">',
                     '<tpl if="this.isLeaf(leaf)">',
                         '<tpl if="this.isImage(url)">',
-                            '<img src="{url}" alt="{text}" title="{text}" width="60" height="60"/>',
+                            '<img src="{url}" alt="{name}" title="{[this.formatTitle(values)]}" width="60" height="60"/>',
                         '</tpl>',
-                        '<tpl if="!this.isImage(text)">',
-                            '<tpl if="this.isPdf(text)">',
-                                '<img src="/sitools/common/res/images/icons/icon-pdf.png" width="60" height="60" alt="{text}" title="{text}">',
-                            '</tpl>',
-                            '<tpl if="!this.isPdf(text)">',
-                                '<img src="/sitools/common/res/images/icons/file-dv.png" width="60" height="60" alt="{text}" title="{text}">',
-                            '</tpl>',
+                        '<tpl if="!this.isImage(name)">',
+                            '<img src="/sitools/client-user/js/modules/cmsModule/res/icons/{[this.getIcon(values.name)]}" width="60" height="60" alt="{name}" title="{[this.formatTitle(values)]}">',
                         '</tpl>',
                     '</tpl>',
                     '<tpl if="!this.isLeaf(leaf)">',
-                        '<img src="/sitools/common/res/images/icons/folder-icon.png" width="60" height="60" title="{text}" title="{text}">',
+                        '<img src="/sitools/client-user/js/modules/cmsModule/res/icons/folder.png" width="60" height="60" title="{[this.formatTitle(values)]}">',
                     '</tpl>',
-                    '<span class="dv-datastorage">{text}</span>',
+                    '<span class="dv-datastorage">{name}</span>',
                 '</div>',
             '</div>',
         '</tpl>',
@@ -384,33 +365,92 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             isLeaf : function (leaf) {
                 return leaf;
             },
-            isImage : function (text) {
+            isImage : function (name) {
                 var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
+                return (name.match(imageRegex));
+            },
+            isPdf : function (name) {
+                var imageRegex = /\.(pdf)$/;
+                return (name.match(imageRegex));
+            },
+            formatDate : function (dateText) {
+                var date = new Date(dateText);
+                return date.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+            },
+            formatTitle : function(values) {
+                var str = values.name + "\n" + i18n.get("label.lastModif") + " : " + this.formatDate(values.lastmod);
+                if(values.leaf){
+                    str += "\n" + i18n.get("label.fileSize") + " : " + Ext.util.Format.fileSize(values.size);
+                }
+                return str;
+            },
+            isPpt : function (text) {
+                var imageRegex = /\.(ppt|pptx)$/;
                 return (text.match(imageRegex));
             },
-            isPdf : function (text) {
-                var imageRegex = /\.(pdf)$/;
+            isWord : function (text) {
+                var imageRegex = /\.(doc|docx)$/;
                 return (text.match(imageRegex));
+            },
+            isExcel : function (text) {
+                var imageRegex = /\.(xls|xlsx)$/;
+                return (text.match(imageRegex));
+            },
+            isHtml : function (text) {
+                var imageRegex = /\.(html)$/;
+                return (text.match(imageRegex));
+            },
+            isTxt : function (text) {
+                var imageRegex = /\.(txt)$/;
+                return (text.match(imageRegex));
+            },
+            isLink : function (type) {
+                return (type == "LINK");
+            },
+            isFile : function (type) {
+                return (type == "FILE");
+            },
+            getIcon : function (name) {
+                var icon = "file-dv.png";
+                if (!Ext.isEmpty(name)) {
+                    if (this.isPdf(name)) {
+                        icon = "pdf.png";
+                    } else if (this.isPpt(name)) {
+                        icon = "powerpoint.png";
+                    } else if (this.isWord(name)) {
+                        icon = "word.png";
+                    } else if (this.isExcel(name)) {
+                        icon = "excel.png";
+                    }
+                    else if (this.isHtml(name)) {
+                        icon = "html.png";
+                    }
+                    else if (this.isTxt(name)) {
+                        icon = "text.png";
+                    }
+                }
+                return icon;
             }
-
         });
 
         this.dataview = new Ext.DataView({
             id : 'file-view',
-            // autoHeight:true,
             autoScroll : true,
             height : 350,
-            // layout: 'fit',
             region : 'center',
             store : this.store,
+            singleSelect : true,
             tpl : this.tpl,
-            // overClass:'x-view-over-ds',
+            selectedClass : "datastorageSelectionClass",
+//            overClass:'x-view-over-ds',
             itemSelector : 'div.dv-datastorage-wrap',
             emptyText : i18n.get('label.nothingToDisplay'),
             listeners : {
                 scope : this,
                 click : function (dv, ind, node, e) {
                     var rec = dv.getStore().getAt(ind);
+                    dv.select(rec, false);
+                    
                     var treeNode = this.tree.getNodeById(rec.data.id);
                     // if (rec.data.cls){
                     // this.tree.fireEvent('beforeexpandnode', treeNode);
@@ -424,10 +464,11 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         this.detailPanel = new Ext.ux.ManagedIFrame.Panel({
             id : 'detail-view',
             region : 'south',
-            height : 325,
-            collapsible : false,
-            collapsed : false,
-            autoScroll : true,
+            collapsible : true,
+            collapsed : true,
+            height : 350,
+            autoScroll : true,            
+            split : true,
             cls : 'detail-panel-datastorage',
             title : i18n.get('label.defaultTitleDetailPanel'),
             defaultSrc : this.noPreviewAvailableUrl,
@@ -456,9 +497,18 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
     appendChild : function (child, parent) {
         var reference = new Reference(child.url);
         var url = reference.getFile();
+        
+        
+        var name = decodeURIComponent(child.text);
+        var text = name;
+        if (child.leaf) {
+            text += "<span style='font-style:italic'> (" + Ext.util.Format.fileSize(child.size) + ")</span>";
+        }
+        
         return parent.appendChild({
             cls : child.cls,
-            text : decodeURIComponent(child.text),
+            text : text,
+            name : name,
             url : url,
             leaf : child.leaf,
             size : child.size,
@@ -467,14 +517,14 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         });
     },
 
-    isImage : function (text) {
+    isImage : function (name) {
         var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
-        return text.match(imageRegex);            
+        return name.match(imageRegex);            
     },
 
-    isOpenable : function (text) {
+    isOpenable : function (name) {
         var imageRegex = /\.(txt|json|html|css|xml|pdf|png|jpg|jpeg|gif|bmp)$/;
-        return text.match(imageRegex);            
+        return name.match(imageRegex);            
     },
 
     onUpload : function (node) {
@@ -502,6 +552,30 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         uploadWin.show();
 
     },
+    
+    onCreateFolder : function (node) {
+
+        var url = null;
+        if (node.attributes.leaf == true) {
+            url = node.parentNode.attributes.url;
+        } else if (node.attributes.cls) {
+            url = node.attributes.url;
+        } else if (node.isRoot) {
+            url = this.datastorageUrl;
+            if (url.charAt(url.length - 1) != "/") {
+                url = url + "/";
+            }
+        }
+        
+        var createFolderWin = new sitools.user.modules.datastorageCreateFolder({
+            url : url,
+            scope : this,
+            callback : function () {
+                this.reloadNode(node);
+            }
+        });
+        createFolderWin.show();
+    },
 
     deleteNode : function (node) {
 
@@ -511,6 +585,7 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         } else if (node.attributes.cls) {
             deleteUrl = node.attributes.url;
         }
+        
         Ext.Ajax.request({
             url : deleteUrl + "?recursive=true",
             method : 'DELETE',
@@ -550,9 +625,9 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
     },
 
     displayFile : function (rec) {
-        this.detailPanel.setTitle(rec.data.text);
+        this.detailPanel.setTitle(rec.data.name);
         this.detailPanel.setSrc(rec.data.url);
-        // this.detailPanel.expand(true);
+         this.detailPanel.expand(true);
         this.detailPanel.setHeight(350);
         this.detailPanel.doLayout();
     },
@@ -576,9 +651,8 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             modal : true,
             iconCls : 'dataDetail'
         };
-
+    
         sitools.user.component.dataviews.dataviewUtils.showDisplayableUrl(panel.frameEl.src, true, customConfig);
-
     },
     
     reloadNode : function (node) {
@@ -600,8 +674,8 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
 
     },
     
-    callbackForceSelectNodeOtherDirectory : function (text, success, parentNode) {
-        var node = parentNode.findChild("text", text);
+    callbackForceSelectNodeOtherDirectory : function (name, success, parentNode) {
+        var node = parentNode.findChild("name", name);
         this.tree.fireEvent("click", node);
     },
     
@@ -612,8 +686,25 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
     
     isRootNode : function (node) { 
         return this.tree.getRootNode() === node;        
+    },
+    
+    manageToolbar : function (node) {
+        var tb = this.getTopToolbar();
+        tb.removeAll();
+        tb.add(this.createFolderButton);
+        
+        if (node.leaf !== "true") {
+            tb.insert(1, this.uplButton);
+            if (!this.isRootNode(node)) {
+                tb.insert(2, this.delButton);
+            }
+            this.reloadNode(node);
+        } else {
+            tb.insert(1, this.dwlButton);
+            tb.insert(2, this.delButton);
+        }
+        tb.doLayout();
     }
-
 });
 
 

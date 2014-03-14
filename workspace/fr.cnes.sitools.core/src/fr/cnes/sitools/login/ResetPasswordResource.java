@@ -18,10 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.login;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 
 import org.restlet.Request;
@@ -38,8 +36,6 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import com.google.common.base.Joiner;
-
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.model.User;
@@ -54,11 +50,6 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  */
 public class ResetPasswordResource extends SitoolsResource {
-
-  /**
-   * charset String used to produce a random password
-   */
-  private static final String CHARSET = "!0123456789abcdefghijklmnopqrstuvwxyz";
 
   @Override
   public void sitoolsDescribe() {
@@ -111,6 +102,10 @@ public class ResetPasswordResource extends SitoolsResource {
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
+    catch (Exception e) {
+      getLogger().log(Level.SEVERE, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
   }
 
   @Override
@@ -152,15 +147,21 @@ public class ResetPasswordResource extends SitoolsResource {
   }
 
   /**
-   * Get a user object
+   * Gets User object from Representation
    * 
    * @param representation
-   *          to use
-   * @return user object
+   *          of a User
+   * @return DataSet
+   * @throws IOException
+   *           if there is an error while deserializing Java Object
    */
-  private User getObject(Representation representation) {
+  private User getObject(Representation representation) throws IOException {
     User object = null;
-
+    if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<User> obj = (ObjectRepresentation<User>) representation;
+      object = obj.getObject();
+    }
     if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
       // Parse the XML representation to get the dataset bean
       object = new XstreamRepresentation<User>(representation).getObject();

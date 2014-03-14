@@ -26,14 +26,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -46,7 +45,6 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXML;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
-import fr.cnes.sitools.plugins.applications.dto.ApplicationPluginModelDTO;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -638,7 +636,7 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -674,7 +672,7 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null; // TODO complete test for XML, Object
       }
     }
@@ -704,7 +702,7 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
       return rep;
     }
     else {
-      Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
       return null; // TODO complete test with ObjectRepresentation
     }
   }

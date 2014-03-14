@@ -496,5 +496,18 @@ public interface Consts {
   String SECURITY_DELEGATE_USER_MANAGMENT = "Starter.SECURITY.DELEGATE_USER_MANAGMENT";
   /** SECURITY_DELEGATE_USER_MANAGMENT_URL */
   String SECURITY_DELEGATE_USER_MANAGMENT_URL = "Starter.SECURITY.DELEGATE_USER_MANAGMENT_URL";
+  /** Login application */
+  String APP_LOGIN_PATH_URL = "Starter.APP_LOGIN_PATH_URL";
 
+  /** The app user blacklist store dir. */
+  String APP_USER_BLACKLIST_STORE_DIR = "Starter.APP_USER_BLACKLIST_STORE_DIR";
+
+  /** The app user blacklist store. */
+  String APP_STORE_USER_BLACKLIST = "APP_STORE_USER_BLACKLIST";
+
+  /** The app user blacklist url. */
+  String APP_USER_BLACKLIST_URL = "Starter.APP_USER_BLACKLIST_URL";
+
+  /** The security filter user blacklist container. */
+  String SECURITY_FILTER_USER_BLACKLIST_CONTAINER = "Security.filter.userBlacklist.Container";
 }

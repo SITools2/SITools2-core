@@ -19,16 +19,15 @@
 Ext.namespace('sitools.userProfile');
 
 /*
- * defurl: default page url to load if click on Cancel button url: url to
- * request if click on Login button handler: if request is OK then is called
- * register: url to set to Register button reset: url to set to Reset Password
- * button
+ * defurl: default page url to load if click on Cancel button 
+ * url: url to request if click on Login button 
+ * handler: if request is OK then is called
+ * register: url to set to Register button 
+ * reset: url to set to Reset Password button
+ * unblacklist : url to set to UnBlacklist button
  */
 
-Ext.define('sitools.userProfile.Login', {
-    extend : 'Ext.window.Window',
-	alias : 'widget.s-login',
-	
+sitools.userProfile.Login = Ext.extend(Ext.Window, {
     id : 'winLogin',
     layout : 'hbox',
     width : 392,
@@ -38,28 +37,7 @@ Ext.define('sitools.userProfile.Login', {
     modal : true,
     initComponent : function () {
         this.title = i18n.get('label.login');
-        this.bbar = Ext.create('Ext.ux.StatusBar', {
-            text : i18n.get('label.ready'),
-            id : 'sbWinLogin',
-            iconCls : 'ready-icon',
-            items : [{
-                text : i18n.get('label.passwordLost'),
-                hidden : !this.reset,
-                scope : this,
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
-                iconAlign : 'right',
-                handler : function () {
-                    Ext.getCmp('winLogin').close();
-                    var reset = new sitools.userProfile.resetPassword({
-                        closable : this.closable,
-                        url : this.reset,
-                        handler : this.handler
-                    });
-                    reset.show();
-                }
-
-            }]
-        });
+        
         this.combo = new Ext.form.ComboBox({
             typeAhead : true,
             triggerAction : 'all',
@@ -91,7 +69,6 @@ Ext.define('sitools.userProfile.Login', {
             xtype : 'form',
             frame : true,
             border : false,
-            bodyBorder : false,
             buttonAlign : 'center',
             id : 'frmLogin',
             width : 392,
@@ -134,22 +111,6 @@ Ext.define('sitools.userProfile.Login', {
                 handler : this.getAuth,
                 scope : this
             }, {
-                text : i18n.get('label.reset'),
-                handler : function () {
-                    Ext.getCmp('frmLogin').getForm().reset();
-                    Ext.getCmp('sbWinLogin').setStatus({
-                        text : i18n.get('label.ready'),
-                        iconCls : 'x-status-valid'
-                    });
-                }
-            }, {
-                text : i18n.get('label.cancel'),
-                hidden : !this.defurl,
-                scope : this,
-                handler : function () {
-                    window.location.href = this.defurl;
-                }
-            }, {
                 text : i18n.get('label.register'),
                 hidden : !this.register,
                 scope : this,
@@ -160,12 +121,37 @@ Ext.define('sitools.userProfile.Login', {
                         closable : this.closable,
                         url : this.register,
                         login : this.url,
-                        handler : this.handler
+                        handler : this.handler,
+                        back : this
                     });
                     register.show();
                 }
             } ]
         } ];
+        
+        this.bbar = new Ext.ux.StatusBar({
+            text : i18n.get('label.ready'),
+            id : 'sbWinLogin',
+            iconCls : 'x-status-valid',
+            items : [ {
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
+                iconAlign : 'right',
+                text : i18n.get("label.needHelp"),
+                hidden : (!this.reset || !this.unblacklist),
+                scope : this,
+                handler : function () {
+                    Ext.getCmp('winLogin').close();
+                    var reset = new sitools.userProfile.resetPassword({
+                        closable : this.closable,
+                        urlResetPassword : this.reset,
+                        urlUnblacklist : this.unblacklist,
+                        handler : this.handler,
+                        back : this
+                    });
+                    reset.show();
+                }                
+            } ]
+        });
 
         sitools.userProfile.Login.superclass.initComponent.call(this);
     },
@@ -250,6 +236,7 @@ Ext.define('sitools.userProfile.Login', {
             url : this.url,
             method : 'GET',
             scope : this,
+            doNotHandleRequestexception : true,
             success : function (response, opts) {
                 try {
                     var Json = Ext.decode(response.responseText);
@@ -283,10 +270,8 @@ Ext.define('sitools.userProfile.Login', {
                         }
 
                     } else {
-                        Ext.util.Cookies.set('userLogin', "", new Date().add(Date.MINUTE, COOKIE_DURATION * -1));
-                        Ext.util.Cookies.set('scheme', "", new Date().add(Date.MINUTE, COOKIE_DURATION * -1));
-                        Ext.util.Cookies.set('hashCode', "", new Date().add(Date.MINUTE, COOKIE_DURATION * -1));
-
+                        utils_logout(false);
+                        
                         var txt = i18n.get('warning.serverError') + ': ' + Json.message;
                         Ext.getCmp('winLogin').body.unmask();
                         Ext.getCmp('sbWinLogin').setStatus({
@@ -302,15 +287,16 @@ Ext.define('sitools.userProfile.Login', {
                 }
             },
             failure : function (response, opts) {
-                Ext.util.Cookies.set('userLogin', "", new Date().add(Date.MINUTE, COOKIE_DURATION * -1));
-                Ext.util.Cookies.set('scheme', "", new Date().add(Date.MINUTE, COOKIE_DURATION * -1));
-                Ext.util.Cookies.set('hashCode', "", new Date().add(Date.MINUTE, COOKIE_DURATION * -1));
+                utils_logout(false);
 
                 var txt;
                 if (response.status == 200) {
                     var ret = Ext.decode(response.responseText).error;
                     txt = i18n.get('msg.error') + ': ' + ret;
-                } else {
+                } else if (response.status == 403) {
+                    txt = i18n.get('warning.accountLocked');
+                }
+                else {
                     txt = i18n.get('warning.serverError') + ': ' + response.statusText;
                 }
                 Ext.getCmp('winLogin').body.unmask();
@@ -326,3 +312,4 @@ Ext.define('sitools.userProfile.Login', {
 
 });
 
+Ext.reg('s-login', sitools.userProfile.Login);

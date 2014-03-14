@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -30,6 +29,7 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Preference;
 import org.restlet.data.Status;
+import org.restlet.engine.Engine;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.resource.ResourceException;
 
@@ -144,13 +144,13 @@ public final class ClientFilter {
 
       }
       catch (ClassNotFoundException e) {
-        Logger.getLogger(ClientFilter.class.getName()).severe(e.getMessage());
+        Engine.getLogger(ClientFilter.class.getName()).severe(e.getMessage());
       }
       catch (InstantiationException e) {
-        Logger.getLogger(ClientFilter.class.getName()).severe(e.getMessage());
+        Engine.getLogger(ClientFilter.class.getName()).severe(e.getMessage());
       }
       catch (IllegalAccessException e) {
-        Logger.getLogger(ClientFilter.class.getName()).severe(e.getMessage());
+        Engine.getLogger(ClientFilter.class.getName()).severe(e.getMessage());
       }
     }
 

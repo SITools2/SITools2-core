@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -142,7 +142,7 @@ public final class ProjectAdministration extends AbstractProjectApplication {
     appContext.getAttributes().put(ContextAttributes.APP_STORE, getStore());
     appContext.getAttributes().put(Consts.APP_STORE_GRAPH, getGraphStore());
     appContext.getAttributes().put(ContextAttributes.LOG_TO_APP_LOGGER, Boolean.TRUE);
-    
+
     appContext.getAttributes().put(ContextAttributes.COOKIE_AUTHENTICATION, Boolean.TRUE);
 
     ProjectApplication proja = new ProjectApplication(appContext, proj.getId());
@@ -170,8 +170,10 @@ public final class ProjectAdministration extends AbstractProjectApplication {
    */
   public void detachProjectDefinitif(Project proj) {
     ProjectApplication proja = (ProjectApplication) getSettings().getAppRegistry().getApplication(proj.getId());
-    getSettings().getAppRegistry().detachApplication(proja);
-    proja.unregister();
+    if (proja != null) {
+      getSettings().getAppRegistry().detachApplication(proja);
+      proja.unregister();
+    }
   }
 
   @Override

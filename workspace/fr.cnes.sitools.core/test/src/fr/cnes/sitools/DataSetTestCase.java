@@ -24,13 +24,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
+import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -44,21 +44,16 @@ import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
 import fr.cnes.sitools.dataset.model.Column;
-import fr.cnes.sitools.dataset.model.ColumnConceptMapping;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.dataset.model.DictionaryMapping;
-import fr.cnes.sitools.dataset.model.Predicat;
 import fr.cnes.sitools.dataset.model.SpecificColumnType;
 import fr.cnes.sitools.dataset.model.structure.SitoolsStructure;
-import fr.cnes.sitools.dataset.model.structure.StructureNodeComplete;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
 import fr.cnes.sitools.datasource.jdbc.model.Table;
-import fr.cnes.sitools.properties.model.SitoolsPropertyType;
 import fr.cnes.sitools.properties.model.SitoolsProperty;
+import fr.cnes.sitools.properties.model.SitoolsPropertyType;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.util.Property;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 
@@ -538,7 +533,7 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
       boolean isArray) {
     try {
       if (!media.isCompatible(getMediaTest()) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -578,7 +573,7 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null; // TODO complete test with ObjectRepresentation
       }
     }

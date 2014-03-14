@@ -87,19 +87,6 @@ public class SitoolsOrAuthorizer extends DelegatedAuthorizer {
     }
   }
 
-  /**
-   * SitoolsOrAuthorizer with logger to log unsuccessful authorization
-   * 
-   * @param authorizers
-   *          List<Authorizer>
-   * @param logger
-   *          the {@link Logger}
-   */
-  public SitoolsOrAuthorizer(ArrayList<Authorizer> authorizers, Logger logger) {
-    this(authorizers);
-    setLogger(logger);
-  }
-
   @Override
   public boolean authorize(Request request, Response response) {
     if (authorizers.size() == 0) {

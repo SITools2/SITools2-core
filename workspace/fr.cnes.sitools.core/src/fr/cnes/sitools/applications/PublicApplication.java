@@ -19,30 +19,28 @@
 package fr.cnes.sitools.applications;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
+import org.restlet.engine.Engine;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Extractor;
 import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
-import org.restlet.security.Authenticator;
 
 import fr.cnes.sitools.client.ProxyRestlet;
 import fr.cnes.sitools.client.SitoolsVersionResource;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.login.LoginDetailsResource;
-import fr.cnes.sitools.login.LoginResource;
 import fr.cnes.sitools.login.ResetPasswordResource;
+import fr.cnes.sitools.login.UnBlacklistResource;
 import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.security.EditUserProfileResource;
 import fr.cnes.sitools.security.FindRoleResource;
-import fr.cnes.sitools.security.authentication.AuthenticatorFactory;
 import fr.cnes.sitools.server.Consts;
 
 /**
@@ -69,7 +67,7 @@ public final class PublicApplication extends StaticWebApplication {
 
   @Override
   public void sitoolsDescribe() {
-    setCategory(Category.PUBLIC);
+    setCategory(Category.USER);
     setName("client-public");
     setDescription("web client application for public resources used by other sitools client applications "
         + "-> Administrator must have all authorizations on this application\n"
@@ -88,7 +86,7 @@ public final class PublicApplication extends StaticWebApplication {
     // FILES
     String commonPath = new File(getAppPath() + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COMMON_PATH))
         .getAbsolutePath().replace("\\", "/");
-    Logger.getLogger(this.getName()).info(Consts.APP_CLIENT_PUBLIC_COMMON_PATH + ":" + commonPath);
+    Engine.getLogger(this.getClass().getName()).info(Consts.APP_CLIENT_PUBLIC_COMMON_PATH + ":" + commonPath);
     Directory commonDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + commonPath, getBaseUrl()
         + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COMMON_URL));
     commonDir.setDeeplyAccessible(true);
@@ -100,7 +98,7 @@ public final class PublicApplication extends StaticWebApplication {
 
     String cotsPath = new File(getAppPath() + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_PATH))
         .getAbsolutePath().replace("\\", "/");
-    Logger.getLogger(this.getName()).info(Consts.APP_CLIENT_PUBLIC_COTS_PATH + ":" + cotsPath);
+    Engine.getLogger(this.getClass().getName()).info(Consts.APP_CLIENT_PUBLIC_COTS_PATH + ":" + cotsPath);
     Directory cotsDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + cotsPath, getBaseUrl()
         + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_URL));
 
@@ -110,27 +108,6 @@ public final class PublicApplication extends StaticWebApplication {
     cotsDir.setName("Cots directoryProxy");
     cotsDir.setDescription("Exposes all the cots files");
     router.attach(getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_URL), cotsDir); // .setMatchingMode(Router.MODE_FIRST_MATCH);
-
-    if (getAuthenticationRealm() != null) {
-      // "Basic Public Login Test"
-      Authenticator authenticator = AuthenticatorFactory.getAuthenticator(getContext(), true, getSettings()
-          .getAuthenticationDOMAIN(), getAuthenticationRealm());
-      authenticator.setNext(LoginResource.class);
-      router.attach("/login", authenticator);
-
-      // "Basic Public Login Test Mandatory to return credentials"
-      Authenticator authenticatorMandatory = AuthenticatorFactory.getAuthenticator(getContext(), false, getSettings()
-          .getAuthenticationDOMAIN(), getAuthenticationRealm());
-      authenticatorMandatory.setNext(LoginResource.class);
-      router.attach("/login-mandatory", authenticatorMandatory);
-    }
-
-    else {
-      router.attach("/login", LoginResource.class);
-      router.attach("/login-mandatory", LoginResource.class);
-      router.attach("/login", LoginResource.class);
-
-    }
 
     router.attach("/login-details", LoginDetailsResource.class);
 
@@ -149,6 +126,9 @@ public final class PublicApplication extends StaticWebApplication {
 
     // Attach the resetPasswordResource to reset an user password
     router.attach("/resetPassword", ResetPasswordResource.class);
+
+    // Attach the resetPasswordResource to reset an user password
+    router.attach("/unblacklist", UnBlacklistResource.class);
 
     // Attach the EditUserProfileResource to modified an user properties
     router.attach("/editProfile/{user}", EditUserProfileResource.class);

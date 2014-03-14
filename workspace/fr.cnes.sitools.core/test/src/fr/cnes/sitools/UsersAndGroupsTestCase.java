@@ -19,12 +19,10 @@
 package fr.cnes.sitools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +32,7 @@ import org.restlet.Context;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
+import org.restlet.engine.Engine;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
@@ -650,7 +649,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -687,7 +686,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON supported in tests");
         return null; // TODO complete test for XML, Object
       }
     }

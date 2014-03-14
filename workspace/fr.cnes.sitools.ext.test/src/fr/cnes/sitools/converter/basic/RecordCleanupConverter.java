@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,9 +18,13 @@
  ******************************************************************************/
 package fr.cnes.sitools.converter.basic;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.common.validator.ConstraintViolationLevel;
@@ -30,12 +34,11 @@ import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
 import fr.cnes.sitools.datasource.jdbc.model.AttributeValue;
 import fr.cnes.sitools.datasource.jdbc.model.Record;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
- * Exemple de convertisseur pour supprimer les caractères spéciaux de chaines de caracteres dans XML et remplacer une
- * chaine [SI non vide] par une autre dans la colonne spécifiée.
+ * Exemple de convertisseur pour supprimer les caractères spéciaux de chaines de
+ * caracteres dans XML et remplacer une chaine [SI non vide] par une autre dans
+ * la colonne spécifiée.
  * 
  * @author jp.boignard
  * 
@@ -43,7 +46,7 @@ import java.util.Map;
 public class RecordCleanupConverter extends AbstractConverter {
 
   /** Class logger */
-  private static final Logger LOGGER = Logger.getLogger(RecordCleanupConverter.class.getName());
+  private final Logger logger = Engine.getLogger(RecordCleanupConverter.class.getName());
 
   /**
    * Constructor.
@@ -77,7 +80,7 @@ public class RecordCleanupConverter extends AbstractConverter {
     this.addParam(search);
     this.addParam(replace);
 
-    LOGGER.log(Level.INFO, "Converter :{0} version {1}", new Object[] { this.getName(), this.getClassVersion() });
+    logger.log(Level.FINE, String.format("Converter :%s version %s", this.getName(), this.getClassVersion()));
   }
 
   @Override
@@ -96,8 +99,8 @@ public class RecordCleanupConverter extends AbstractConverter {
         value = value.replace("", "");
         value = value.replace("", "");
 
-        LOGGER.log(Level.FINEST, "Value={0} search={1} replace={2}",
-            new Object[] { value, search.getValue(), replace.getValue() });
+        logger.log(Level.FINEST,
+            String.format("Value=%s search=%s replace=%s", value, search.getValue(), replace.getValue()));
 
         value = value.replace(search.getValue(), replace.getValue());
 
@@ -105,7 +108,7 @@ public class RecordCleanupConverter extends AbstractConverter {
       }
     }
     catch (Exception e) {
-      LOGGER.log(Level.INFO, "RecordCleanupConverter error", e);
+      logger.log(Level.INFO, "RecordCleanupConverter error", e);
     }
 
     return out;

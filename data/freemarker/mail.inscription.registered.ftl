@@ -11,12 +11,12 @@ ${description!}
 </p>
 
 <p>
-A new user as registered
+New user registration
 <ul>
-<li>Login : ${inscription.identifier}</li>
-<li>FirstName : ${inscription.firstName}</li>
-<li>LastName : ${inscription.lastName}</li>
-<li>Email : ${inscription.email}</li>
+	<li>Login : ${inscription.identifier}</li>
+	<li>FirstName : ${inscription.firstName}</li>
+	<li>LastName : ${inscription.lastName}</li>
+	<li>Email : ${inscription.email}</li>
 </ul>
 
 To validate inscription go to the <a href="${sitoolsUrl}">SITools2 adminstration</a>

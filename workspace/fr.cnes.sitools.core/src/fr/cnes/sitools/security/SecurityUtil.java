@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.restlet.Request;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Method;
+import org.restlet.engine.Engine;
 import org.restlet.ext.crypto.DigestUtils;
 import org.restlet.security.Authorizer;
 import org.restlet.security.Enroler;
@@ -64,7 +65,7 @@ public final class SecurityUtil {
   public static final String PUBLIC_USER = "public";
 
   /** logger */
-  private static Logger logger = Logger.getLogger(SecurityUtil.class.getName());
+  private static Logger logger = Engine.getLogger(SecurityUtil.class.getName());
 
   /**
    * Private constructor for utility class

@@ -18,7 +18,9 @@
  ******************************************************************************/
 package fr.cnes.sitools.filter.basic;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.restlet.Request;
@@ -32,8 +34,6 @@ import fr.cnes.sitools.dataset.filter.business.AbstractFilter;
 import fr.cnes.sitools.dataset.filter.model.FilterParameter;
 import fr.cnes.sitools.dataset.filter.model.FilterParameterType;
 import fr.cnes.sitools.dataset.model.Predicat;
-import java.util.HashSet;
-import java.util.Map;
 
 /**
  * Class to watch SQL request sent and check parameters conformity

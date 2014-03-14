@@ -1,7 +1,6 @@
 package fr.cnes.sitools.role;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.restlet.representation.Representation;

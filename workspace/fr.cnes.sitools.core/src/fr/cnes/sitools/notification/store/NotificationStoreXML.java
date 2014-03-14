@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.persistence.FilePersistenceStrategy;
@@ -46,7 +47,7 @@ public final class NotificationStoreXML implements NotificationStore {
   private static final String COLLECTION_NAME = "notifications";
 
   /** static logger for this store implementation */
-  private static Logger log = Logger.getLogger(NotificationStoreXML.class.getName());
+  private static Logger log = Engine.getLogger(NotificationStoreXML.class.getName());
 
   /** Persistent list of projects */
   private XmlMap list = null;

@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.restlet.Restlet;
+import org.restlet.engine.Engine;
 
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -51,7 +52,7 @@ public class SitoolsMongoDBDataSource implements SitoolsDataSource {
   /**
    * Logger
    */
-  static final Logger LOG = Logger.getLogger(SitoolsMongoDBDataSource.class.getName());
+  static final Logger LOG = Engine.getLogger(SitoolsMongoDBDataSource.class.getName());
 
   /**
    * Encapsulated model.MongoDBDataSource object

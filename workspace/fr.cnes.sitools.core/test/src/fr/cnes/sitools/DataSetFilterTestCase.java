@@ -28,13 +28,13 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.engine.Engine;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -696,7 +696,7 @@ public class DataSetFilterTestCase extends AbstractDataSetManagerTestCase {
   public Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
         return null;
       }
 
@@ -755,7 +755,7 @@ public class DataSetFilterTestCase extends AbstractDataSetManagerTestCase {
         return response;
       }
       else {
-        Logger.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON is supported in tests");
         return null; // TODO complete test for XML, Object representation
       }
     }

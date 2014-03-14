@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,6 +21,7 @@ package fr.cnes.sitools.login;
 import org.restlet.Request;
 import org.restlet.data.ChallengeRequest;
 import org.restlet.data.Method;
+import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -74,7 +75,11 @@ public final class LoginResource extends SitoolsResource {
       org.restlet.Response responseMandatory = null;
       try {
         responseMandatory = this.getContext().getClientDispatcher().handle(request);
-        if ((responseMandatory.getChallengeRequests() != null) && (responseMandatory.getChallengeRequests().size() > 0)) {
+        if (responseMandatory.getStatus().equals(Status.CLIENT_ERROR_FORBIDDEN)) {
+          response = new Response(false, "User blacklisted.");
+        }
+        else if ((responseMandatory.getChallengeRequests() != null)
+            && (responseMandatory.getChallengeRequests().size() > 0)) {
           ChallengeRequest challengeRequest = responseMandatory.getChallengeRequests().get(0);
 
           SitoolsAuthenticationInfo sai = new SitoolsAuthenticationInfo();
