@@ -101,7 +101,7 @@ public abstract class AbstractStorageResource extends SitoolsResource {
    * @return The Representation of the response with the selected mediaType
    */
   public Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
+    
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }

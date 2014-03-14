@@ -98,6 +98,7 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
       // Response
 
       Response response = new Response(true, authorizationOutput, ResourceAuthorization.class, "authorization");
+      trace(Level.INFO, "Profile : Change the authorization for the application with the profile  ");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {

@@ -132,6 +132,7 @@ public final class FilterPluginResource extends AbstractFilterPluginResource {
 
       FilterModelDTO filterModelOutDTO = getFilterModelDTO(filterOutput);
       Response response = new Response(true, filterModelOutDTO, FilterModelDTO.class, "filterPlugin");
+      trace(Level.INFO, "Add custom filter");
       return getRepresentation(response, variant);
 
     }

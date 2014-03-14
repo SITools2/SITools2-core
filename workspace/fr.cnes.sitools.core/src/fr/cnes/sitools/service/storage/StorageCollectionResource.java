@@ -21,6 +21,7 @@ package fr.cnes.sitools.service.storage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.restlet.data.LocalReference;
 import org.restlet.ext.wadl.MethodInfo;
@@ -148,6 +149,8 @@ public final class StorageCollectionResource extends AbstractStorageResource {
     response = new Response(true, dirListReturn, StorageDirectory.class, "directories");
     response.setMessage("directory.retrieval.success");
     response.setTotal(total);
+
+    trace(Level.INFO, "View available storages");
 
     // Return representation
     return getRepresentation(response, variant);

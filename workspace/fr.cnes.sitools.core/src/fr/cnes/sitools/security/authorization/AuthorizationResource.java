@@ -125,6 +125,7 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
             // Notify observers
             Notification notification = new Notification();
             notification.setEvent("AUTHORIZATION_DELETED");
+            trace(Level.INFO, "Delete the authorization");
             notification.setObservable(authorizationInput.getId());
             getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
           }
@@ -141,9 +142,11 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
           if (authorizationOutput == null) {
             authorizationOutput = getStore().create(authorizationInput);
             notification.setEvent("AUTHORIZATION_CREATED");
+            trace(Level.INFO, "Create the authorization");
           }
           else {
             notification.setEvent("AUTHORIZATION_UPDATED");
+            trace(Level.INFO, "Update the authorization");
           }
 
           notification.setObservable(authorizationOutput.getId());
