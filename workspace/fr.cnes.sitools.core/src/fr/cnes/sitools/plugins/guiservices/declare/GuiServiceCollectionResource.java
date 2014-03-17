@@ -68,14 +68,17 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
 
       // Response
       Response response = new Response(true, guiServiceOutput, GuiServiceModel.class, "guiService");
+      trace(Level.INFO, "Add GUI service");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add GUI service");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add GUI service");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
