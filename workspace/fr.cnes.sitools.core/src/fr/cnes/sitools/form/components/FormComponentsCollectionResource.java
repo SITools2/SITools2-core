@@ -71,6 +71,7 @@ public class FormComponentsCollectionResource extends AbstractFormComponentsReso
 
       // Response
       Response response = new Response(true, formComponentOutput, FormComponent.class, "formComponent");
+      trace(Level.INFO, "Add the query form component type");
       return getRepresentation(response, variant);
 
     }
@@ -115,6 +116,7 @@ public class FormComponentsCollectionResource extends AbstractFormComponentsReso
         formComponents = getStore().getPage(filter, formComponents);
         Response response = new Response(true, formComponents, FormComponent.class, "formComponents");
         response.setTotal(total);
+        trace(Level.INFO, "View available query form component types");
         return getRepresentation(response, variant);
       }
     }

@@ -64,6 +64,7 @@ public class FormComponentsResource extends AbstractFormComponentsResource {
     if (getFormComponentId() != null) {
       FormComponent formComponent = getStore().retrieve(getFormComponentId());
       Response response = new Response(true, formComponent, FormComponent.class, "formComponent");
+      trace(Level.INFO, "Edit configuration parameters of the query form component types");
       return getRepresentation(response, variant);
     }
     else {
@@ -110,6 +111,7 @@ public class FormComponentsResource extends AbstractFormComponentsResource {
       }
 
       Response response = new Response(true, formComponentOutput, FormComponent.class, "formComponent");
+      trace(Level.INFO, "Update configuration parameters of the query form component type");
       return getRepresentation(response, variant);
 
     }
@@ -148,6 +150,7 @@ public class FormComponentsResource extends AbstractFormComponentsResource {
 
       // Response
       Response response = new Response(true, "formComponent.delete.success");
+      trace(Level.INFO, "Delete the query form component type");
       return getRepresentation(response, variant);
 
     }
