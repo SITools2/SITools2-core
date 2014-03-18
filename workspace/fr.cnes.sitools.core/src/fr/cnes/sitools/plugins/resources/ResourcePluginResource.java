@@ -128,15 +128,18 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
       ResourceModelDTO resourceOutputDTO = getResourceModelDTO(resourceOutput);
 
       Response response = new Response(true, resourceOutputDTO, ResourceModelDTO.class, "resourcePlugin");
+      trace(Level.INFO, "Add the application service " + resourceOutput.getName() + " - id : " +  resourceOutput.getId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add application service");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add application service");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -319,23 +322,27 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
         ResourceModelDTO resourceOutputDTO = getResourceModelDTO(resourceOutput);
 
         Response response = new Response(true, resourceOutputDTO, ResourceModelDTO.class, "resourcePlugin");
+        trace(Level.INFO, "Update configuration parameters of the application service " + resourceOutput.getName() + " - id : " +  resourceOutput.getId());
         return getRepresentation(response, variant);
 
       }
       else {
         // Response
         Response response = new Response(false, "Can not validate resource plugin");
+        trace(Level.INFO, "Cannot update configuration parameters of the application service");
         return getRepresentation(response, variant);
 
       }
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update configuration parameters of the application service - id : " + resourceOutput.getId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update configuration parameters of the application service - id : " + resourceOutput.getId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -396,19 +403,23 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
         SitoolsParameterizedApplication app = (SitoolsParameterizedApplication) ((ResourcePluginApplication) getApplication())
             .getSettings().getAppRegistry().getApplication(getParentId());
         refreshApplication(app);
+        trace(Level.INFO, "Delete the service " + resource.getName() + " - id : " +  resource.getId());
 
       }
       else {
+        trace(Level.INFO, "Cannot delete service ");
         response = new Response(false, "resourceplugin.deleted.failure");
       }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete service ");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot delete service ");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

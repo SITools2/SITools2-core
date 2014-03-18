@@ -153,7 +153,7 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
           }
         }
         total = resources.size();
-
+        trace(Level.FINE, "View available application services");
         response = new Response(true, resources, Resource.class, "applications");
         response.setTotal(total);
       }
@@ -161,11 +161,13 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view application service");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view application service");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

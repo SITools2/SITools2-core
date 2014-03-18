@@ -98,7 +98,7 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
    * @return The Representation of the response with the selected mediaType
    */
   public final Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
+    
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }
