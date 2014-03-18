@@ -313,7 +313,8 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
                     return false;
                 }
                 this.close();
-                this.store.reload();
+                //wait for the server to refresh authorizations
+                Ext.defer(this.store.reload, 1000, this);
                 // Ext.Msg.alert(i18n.get('label.information'),
                 // i18n.get('msg.uservalidate'));
             },
