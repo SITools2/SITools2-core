@@ -367,8 +367,6 @@
 	<fill_properties_for_test propertyName="Tests.HSQLDB_DATABASE_PASSWORD"
 		propertyValue="${Tests.HSQLDB_DATABASE_PASSWORD}" />
 	<!-- MongoDB -->
-	<fill_properties_for_test propertyName="Tests.MONGODB_DATABASE_DRIVER"
-		propertyValue="${Tests.MONGODB_DATABASE_DRIVER}" />
 	<fill_properties_for_test propertyName="Tests.MONGODB_DATABASE_URL"
 		propertyValue="${Tests.MONGODB_DATABASE_URL}" />
 	<fill_properties_for_test propertyName="Tests.MONGODB_DATABASE_USER"
@@ -378,7 +376,10 @@
 	<fill_properties_for_test propertyName="Tests.MONGODB_DATABASE_PORT"
 		propertyValue="${Tests.MONGODB_DATABASE_PORT}" />
 	<fill_properties_for_test propertyName="Starter.CHECK_STORES_AT_STARTUP"
-		propertyValue="${Starter.CHECK_STORES_AT_STARTUP}" />
+		propertyValue="${Tests.CHECK_STORES_AT_STARTUP}" />
+		
+	<fill_properties_for_test propertyName="Starter.org.restlet.engine.loggerFacadeClass"
+		propertyValue="${Tests.LOGGER_FACADE_CLASS}" />
 
 
 

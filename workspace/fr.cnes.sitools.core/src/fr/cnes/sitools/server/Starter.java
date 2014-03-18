@@ -279,7 +279,7 @@ public final class Starter {
     // ============================
     // Logging configuration
     String loggerFacade = settings.getString("Starter.org.restlet.engine.loggerFacadeClass", null);
-    if (loggerFacade != null) {
+    if (loggerFacade != null && !loggerFacade.isEmpty()) {
       System.setProperty("org.restlet.engine.loggerFacadeClass", loggerFacade);
       // redirect standard Error and standard Out to a specific logger
       System.setErr(new PrintStream(new LoggingOutputStream(Engine.getLogger("fr.cnes.sitools.stderr"), Level.WARNING),
@@ -315,9 +315,9 @@ public final class Starter {
 
     component.setLogService(logService);
 
-//    String appLogOutputFile = settings.getRootDirectory() + settings.getString("Starter.AppLogService.outputFile");
-//    String appLogLevelName = settings.getString("Starter.AppLogService.levelName");
-//    String appLogFormat = settings.getString("Starter.AppLogService.logFormat");
+    // String appLogOutputFile = settings.getRootDirectory() + settings.getString("Starter.AppLogService.outputFile");
+    // String appLogLevelName = settings.getString("Starter.AppLogService.levelName");
+    // String appLogFormat = settings.getString("Starter.AppLogService.logFormat");
     String appLogName = settings.getString("Starter.AppLogService.logName");
     boolean appLogActive = Boolean.parseBoolean(settings.getString("Starter.AppLogService.active"));
 
