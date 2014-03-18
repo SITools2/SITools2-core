@@ -1,7 +1,8 @@
 package fr.cnes.sitools.util.logging;
 
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -11,6 +12,8 @@ import org.restlet.data.ClientInfo;
 import org.restlet.engine.Engine;
 import org.restlet.routing.Filter;
 import org.restlet.security.Role;
+
+import com.google.common.base.Joiner;
 
 import fr.cnes.sitools.security.SecurityUtil;
 
@@ -41,14 +44,13 @@ public class SitoolsLogFilter extends Filter {
         user = clientInfo.getUser().getIdentifier();
         profile = "";
         List<Role> roles = clientInfo.getRoles();
+        Set<String> rolesStr = new HashSet<String>();
         for (Role role : roles) {
           if (!SecurityUtil.PUBLIC_ROLE.equals(role.getName())) {
-            if (!profile.isEmpty()) {
-              profile += ",";
-            }
-            profile += role.getName();
+            rolesStr.add(role.getName());
           }
         }
+        profile += Joiner.on(",").join(rolesStr);
       }
 
       LogRecord logRecord = (LogRecord) logRecordObj;
