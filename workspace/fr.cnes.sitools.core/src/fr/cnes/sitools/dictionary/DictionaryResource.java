@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -65,25 +65,29 @@ public final class DictionaryResource extends AbstractDictionaryResource {
 
       if (getDictionaryId() != null) {
         Dictionary dictionary = getStore().retrieve(getDictionaryId());
+        trace(Level.FINE, "Edit information for the dictionary " + dictionary.getName());
         Response response = new Response(true, dictionary, Dictionary.class, "dictionary");
         return getRepresentation(response, variant);
       }
       else {
         Dictionary[] dictionary = getStore().getArray();
+        trace(Level.FINE, "View available dictionaries");
         Response response = new Response(true, dictionary);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available dictionaries");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view available dictionaries");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   protected void describeGet(MethodInfo info) {
 
@@ -92,7 +96,8 @@ public final class DictionaryResource extends AbstractDictionaryResource {
     info.setDocumentation("Get a single dictionary from its ID");
 
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("dictionaryId", true, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the dictionary to work with.");
+    ParameterInfo param = new ParameterInfo("dictionaryId", true, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the dictionary to work with.");
     info.getRequest().getParameters().add(param);
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -116,30 +121,32 @@ public final class DictionaryResource extends AbstractDictionaryResource {
         // Parse object representation
         Dictionary dictionaryInput = getObject(representation, variant);
         Dictionary oldDictionary = getStore().retrieve(dictionaryInput.getId());
-        
+
         // Business service
         dictionaryOutput = getStore().update(dictionaryInput);
-        
+
         Map<String, Dictionary> map = new HashMap<String, Dictionary>();
         map.put("oldDictionary", oldDictionary);
         map.put("newDictionary", dictionaryInput);
-        
+
         Notification notification = new Notification();
         notification.setObservable(getDictionaryId());
         notification.setEvent("DICTIONARY_UPDATED");
         notification.setMessage("dictionary.delete.success");
         notification.setEventSource(map);
-        
+
         getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
       }
 
       if (dictionaryOutput != null) {
+        trace(Level.INFO, "Update information for the dictionary " + dictionaryOutput.getName());
         // Response
         Response response = new Response(true, dictionaryOutput, Dictionary.class, "dictionary");
         return getRepresentation(response, variant);
 
       }
       else {
+        trace(Level.INFO, "Cannot update information for the dictionary - id: " + getDictionaryId());
         // Response
         Response response = new Response(false, "Can not validate dictionary");
         return getRepresentation(response, variant);
@@ -148,15 +155,17 @@ public final class DictionaryResource extends AbstractDictionaryResource {
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update information for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot update information for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   protected void describePut(MethodInfo info) {
 
@@ -167,7 +176,8 @@ public final class DictionaryResource extends AbstractDictionaryResource {
     // -> Response info
 
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("dictionaryId", true, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the dictionary to work with.");
+    ParameterInfo param = new ParameterInfo("dictionaryId", true, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the dictionary to work with.");
     info.getRequest().getParameters().add(param);
     this.addStandardResponseInfo(info);
 
@@ -186,35 +196,47 @@ public final class DictionaryResource extends AbstractDictionaryResource {
   @Delete
   public Representation deleteDictionary(Variant variant) {
     try {
+      Response response;
       Dictionary dictionaryToDelete = getStore().retrieve(getDictionaryId());
-      // Business service
-      getStore().delete(getDictionaryId());
+      if (dictionaryToDelete != null) {
+        // Business service
+        getStore().delete(getDictionaryId());
 
-      // Response
-      Response response = new Response(true, "dictionary.delete.success");
-      
-      // Notify observers
-      Notification notification = new Notification();
-      notification.setObservable(getDictionaryId());
-      notification.setEvent("DICTIONARY_DELETED");
-      notification.setMessage("dictionary.delete.success");
-      notification.setStatus("DELETED");
-      notification.setEventSource(dictionaryToDelete);
-      getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-      
+        // Response
+        response = new Response(true, "dictionary.delete.success");
+
+        // Notify observers
+        Notification notification = new Notification();
+        notification.setObservable(getDictionaryId());
+        notification.setEvent("DICTIONARY_DELETED");
+        notification.setMessage("dictionary.delete.success");
+        notification.setStatus("DELETED");
+        notification.setEventSource(dictionaryToDelete);
+        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+
+        trace(Level.INFO, "Delete the dictionary " + dictionaryToDelete.getName());
+
+      }
+      else {
+        // Response
+        response = new Response(false, "dictionary.delete.failure");
+        trace(Level.INFO, "Delete the dictionary - id:" + getDictionaryId());
+      }
       return getRepresentation(response, variant);
-      
+
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Delete the dictionary - id:" + getDictionaryId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Delete the dictionary - id:" + getDictionaryId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   protected void describeDelete(MethodInfo info) {
 
@@ -223,13 +245,14 @@ public final class DictionaryResource extends AbstractDictionaryResource {
     info.setDocumentation("Method to delete an existing dictionary.");
 
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("dictionaryId", true, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the dictionary to work with.");
+    ParameterInfo param = new ParameterInfo("dictionaryId", true, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the dictionary to work with.");
     info.getRequest().getParameters().add(param);
     this.addStandardSimpleResponseInfo(info);
-    
+
     // Failures
     this.addStandardInternalServerErrorInfo(info);
 
   }
-  
+
 }
