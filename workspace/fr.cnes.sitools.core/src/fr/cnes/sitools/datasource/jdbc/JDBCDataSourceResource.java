@@ -189,17 +189,17 @@ public final class JDBCDataSourceResource extends AbstractDataSourceResource {
           // Business service
           getStore().delete(getDatasourceId());
 
-          trace(Level.INFO, "Delete the data source " + datasourceOutput.getName());
+          trace(Level.INFO, "Delete the JDBC data source " + datasourceOutput.getName());
           response = new Response(true, "datasource.delete.success");
 
         }
         else {
-          trace(Level.INFO, "Cannot Delete the data source - id: " + getDatasourceId());
+          trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
           response = new Response(false, "datasource.delete.failure");
         }
       }
       catch (Exception e) {
-        trace(Level.INFO, "Cannot Delete the data source - id: " + getDatasourceId());
+        trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
         getLogger().log(Level.INFO, null, e);
         throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
       }
@@ -207,12 +207,12 @@ public final class JDBCDataSourceResource extends AbstractDataSourceResource {
 
     }
     catch (ResourceException e) {
-      trace(Level.INFO, "Cannot Delete the data source - id: " + getDatasourceId());
+      trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      trace(Level.INFO, "Cannot Delete the data source - id: " + getDatasourceId());
+      trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
       getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

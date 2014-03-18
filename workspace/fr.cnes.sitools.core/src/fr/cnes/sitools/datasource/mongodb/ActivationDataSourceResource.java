@@ -20,6 +20,7 @@ package fr.cnes.sitools.datasource.mongodb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
@@ -71,6 +72,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           MongoDBDataSource dsInput = getObject(representation);
           List<String> trace = new ArrayList<String>();
           boolean result = testDataSourceConnection(dsInput, trace);
+          trace(Level.INFO, "Test the connection for the MongoDB data source " + dsInput.getName());
           response = new Response(result, trace, String.class, "logs");
           return getRepresentation(response, variant);
         }
@@ -80,12 +82,14 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
       MongoDBDataSource ds = getStore().retrieve(getDatasourceId());
       if (ds == null) {
         response = new Response(false, "DATASOURCE_NOT_FOUND");
+        trace(Level.INFO, "Cannot perform action on the MongoDB data source - id: " + getDatasourceId());
         break;
       }
       if (this.getReference().toString().endsWith("test")) {
         List<String> trace = new ArrayList<String>();
         boolean result = testDataSourceConnection(ds, trace);
         response = new Response(result, trace, String.class, "logs");
+        trace(Level.INFO, "Test the connection for the MongoDB data source " + ds.getName());
         return getRepresentation(response, variant);
       }
 
@@ -94,6 +98,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           SitoolsDataSourceModel dsResult = getStore().update(ds);
           response = new Response(true, dsResult, MongoDBDataSource.class, "mongodbdatasource");
           response.setMessage("datasource.update.blocked");
+          trace(Level.INFO, "Cannot start the MongoDB data source " + ds.getName());
           break;
         }
 
@@ -101,6 +106,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           if (!testDataSourceConnection(ds, null)) {
             response = new Response(false, ds, MongoDBDataSource.class, "mongodbdatasource");
             response.setMessage("datasource.connection.error");
+            trace(Level.INFO, "Cannot start the MongoDB data source " + ds.getName());
             break;
           }
 
@@ -110,9 +116,11 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           response = new Response(true, dsResult, MongoDBDataSource.class, "mongodbdatasource"); // TODO API ajouter
                                                                                                  // ,"datasource"
           response.setMessage("datasource.update.success");
+          trace(Level.INFO, "Start the MongoDB data source " + ds.getName());
         }
         catch (Exception e) {
           response = new Response(false, "datasource.update.error");
+          trace(Level.INFO, "Cannot start the MongoDB data source " + ds.getName());
         }
         break;
       }
@@ -122,6 +130,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           SitoolsDataSourceModel dsResult = getStore().update(ds);
           response = new Response(true, dsResult, MongoDBDataSource.class, "mongodbdatasource");
           response.setMessage("datasource.stop.blocked");
+          trace(Level.INFO, "Cannot stop the MongoDB data source " + ds.getName());
           break;
         }
 
@@ -131,9 +140,11 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
           SitoolsDataSourceModel dsResult = getStore().update(ds);
           response = new Response(true, dsResult, MongoDBDataSource.class, "mongodbdatasource");
           response.setMessage("datasource.stop.success");
+          trace(Level.INFO, "Stop the MongoDB data source " + ds.getName());
         }
         catch (Exception e) {
           response = new Response(false, "datasource.stop.error");
+          trace(Level.INFO, "Cannot stop the MongoDB data source " + ds.getName());
         }
         break;
       }
@@ -156,19 +167,19 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
     if (path.endsWith("start")) {
       info.setDocumentation(" PUT /"
           + path
-          + " : starts a JDBC datasource, making available a connection pool and making a linked DBExplorerApplication ACTIVE.");
+          + " : starts a MongoDB datasource, making available a connection pool and making a linked DBExplorerApplication ACTIVE.");
     }
     else if (path.endsWith("stop")) {
       info.setDocumentation(" PUT /"
           + path
-          + " : stops a JDBC datasource, making unavailable a connection pool and making a linked DBExplorerApplication INACTIVE.");
+          + " : stops a MongoDB datasource, making unavailable a connection pool and making a linked DBExplorerApplication INACTIVE.");
     }
     else if (path.endsWith("test")) {
       info.setDocumentation(" PUT /" + path
-          + " : checks a datasource by executing an SQL request on a JDBC connection.");
+          + " : checks a datasource by executing an SQL request on a MongoDB connection.");
     }
 
-    // info.setDocumentation("Method to test/start/stop one/all JDBC datasource(s).");
+    // info.setDocumentation("Method to test/start/stop one/all MongoDB datasource(s).");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo param = new ParameterInfo("datasourceId", false, "xs:string", ParameterStyle.TEMPLATE,
         "datasourceId to retrieve a single datasource definition.");
