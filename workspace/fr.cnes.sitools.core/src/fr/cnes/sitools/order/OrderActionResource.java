@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -90,7 +90,6 @@ public final class OrderActionResource extends AbstractOrderResource {
 
         events.add(actionEvent);
         orderInput.setEvents(events);
-
         // Business service
         orderOutput = getStore().update(orderInput);
       }
@@ -108,19 +107,22 @@ public final class OrderActionResource extends AbstractOrderResource {
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public void describePut(MethodInfo info) {
     info.setDocumentation("Modify the order status according to the action identifier.");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo paramOrderId = new ParameterInfo("orderId", true, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the order to modify.");
-    ParameterInfo paramUserId = new ParameterInfo("userId", false, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the user to which belongs the order.");
-    ParameterInfo paramActionId = new ParameterInfo("actionId", true, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the action to apply to the order (new event).");
+    ParameterInfo paramOrderId = new ParameterInfo("orderId", true, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the order to modify.");
+    ParameterInfo paramUserId = new ParameterInfo("userId", false, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the user to which belongs the order.");
+    ParameterInfo paramActionId = new ParameterInfo("actionId", true, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the action to apply to the order (new event).");
     paramActionId.setDefaultValue("addEvent");
     info.getRequest().getParameters().add(paramOrderId);
     info.getRequest().getParameters().add(paramUserId);
-    info.getRequest().getParameters().add(paramActionId);    
-    this.addStandardObjectResponseInfo(info); 
+    info.getRequest().getParameters().add(paramActionId);
+    this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
   }
 

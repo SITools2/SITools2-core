@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -60,16 +60,18 @@ public final class OrderResource extends AbstractOrderResource {
   public Representation retrieveOrder(Variant variant) {
     if (getOrderId() != null) {
       Order order = getStore().retrieve(getOrderId());
+      trace(Level.INFO, "View order - id: " + getOrderId());
       Response response = new Response(true, order, Order.class, "order");
       return getRepresentation(response, variant);
     }
     else {
       Order[] orders = getStore().getArray();
+      trace(Level.INFO, "View orders");
       Response response = new Response(true, orders);
       return getRepresentation(response, variant);
     }
   }
-  
+
   @Override
   public void describeGet(MethodInfo info, String path) {
     if (path.contains("{userId}")) {
@@ -78,9 +80,10 @@ public final class OrderResource extends AbstractOrderResource {
     else {
       info.setDocumentation("GET : " + path + " : returns a specific order.");
     }
-    
+
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("orderId", false, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the order to get.");
+    ParameterInfo param = new ParameterInfo("orderId", false, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the order to get.");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
   }
@@ -98,28 +101,37 @@ public final class OrderResource extends AbstractOrderResource {
   public Representation updateOrder(Representation representation, Variant variant) {
     Order orderOutput = null;
     try {
+      Response response;
       if (representation != null) {
         // Parse object representation
         Order orderInput = getObject(representation, variant);
 
         // Business service
         orderOutput = getStore().update(orderInput);
+        trace(Level.INFO, "Update order - id: " + getOrderId());
+        response = new Response(true, orderOutput, Order.class, "order");
+      }
+      else {
+        trace(Level.INFO, "Update order - id: " + getOrderId());
+        response = new Response(false, "cannot update order");
+
       }
 
-      Response response = new Response(true, orderOutput, Order.class, "order");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update order - id: " + getOrderId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update order - id: " + getOrderId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public void describePut(MethodInfo info) {
     info.setDocumentation("Modify an order sending its new representation.");
@@ -138,28 +150,39 @@ public final class OrderResource extends AbstractOrderResource {
   @Delete
   public Representation deleteOrder(Variant variant) {
     try {
-      // Business service
-      getStore().delete(getOrderId());
-
-      Response response = new Response(true, "order.delete.success");
+      Order order = getStore().retrieve(getOrderId());
+      Response response;
+      if (order != null) {
+        // Business service
+        getStore().delete(getOrderId());
+        trace(Level.INFO, "Delete order - id: " + getOrderId());
+        response = new Response(true, "order.delete.success");
+      }
+      else {
+        trace(Level.INFO, "Cannot delete order - id: " + getOrderId());
+        response = new Response(false, "order.delete.failure");
+      }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete order - id: " + getOrderId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete order - id: " + getOrderId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public void describeDelete(MethodInfo info) {
     info.setDocumentation("Method to delete the order identified with its ID.");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("orderId", false, "xs:string", ParameterStyle.TEMPLATE, "Identifier of the order to get.");
+    ParameterInfo param = new ParameterInfo("orderId", false, "xs:string", ParameterStyle.TEMPLATE,
+        "Identifier of the order to get.");
     info.getRequest().getParameters().add(param);
     this.addStandardSimpleResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
