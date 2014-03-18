@@ -38,6 +38,8 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
+import com.google.common.base.Joiner;
+
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Resource;
@@ -173,48 +175,61 @@ public class RoleGroupsResource extends AbstractRoleResource {
   public Representation updateRole(Representation representation, Variant variant) {
     Role roleOutput = null;
     Role roleInput = null;
+    Response response;
     try {
       if (representation != null) {
         roleInput = getObject(representation, variant);
         Role roleFromStore = getStore().retrieve(getRoleId());
 
+        String groupsStr = getGroupsListAsString(roleInput);
+
         if (roleFromStore == null) {
-          Response response = new Response(false, "Can find existing role with id " + getRoleId());
+          trace(Level.INFO, "Cannot add group(s) " + groupsStr + " in the profile - id : " + getRoleId());
+          response = new Response(false, "Can find existing role with id " + getRoleId());
           return getRepresentation(response, variant);
         }
 
         roleInput.setUsers(roleFromStore.getUsers());
-      }
-      // Business service
-      roleOutput = getStore().update(roleInput);
 
-      if (roleOutput != null) {
-        // Response
-        Response response = new Response(true, roleOutput, Role.class, "role");
+        // Business service
+        roleOutput = getStore().update(roleInput);
 
-        // Notify observers
-        Notification notification = new Notification();
-        notification.setEvent("ROLE_GROUPS_UPDATED");
-        notification.setObservable(roleOutput.getId());
-        notification.setEventSource(roleOutput);
+        if (roleOutput != null) {
+          // Response
+          response = new Response(true, roleOutput, Role.class, "role");
 
-        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+          // Notify observers
+          Notification notification = new Notification();
+          notification.setEvent("ROLE_GROUPS_UPDATED");
+          notification.setObservable(roleOutput.getId());
+          notification.setEventSource(roleOutput);
 
-        return getRepresentation(response, variant);
+          getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+          trace(Level.INFO, "Add group(s) " + groupsStr + " in the profile " + roleFromStore.getName());
+        }
+        else {
+          trace(Level.INFO, "Cannot add group(s) " + groupsStr + " in the profile - id : " + getRoleId());
+          // Response
+          response = new Response(false, "Can not validate role");
+        }
       }
       else {
+        trace(Level.INFO, "Cannot add group(s) <undefined groups> in the profile - id : " + getRoleId());
         // Response
-        Response response = new Response(false, "Can not validate role");
+        response = new Response(false, "Can not validate role");
         return getRepresentation(response, variant);
       }
+      return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add group(s) <undefined groups> in the profile - id : " + getRoleId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add group(s) <undefined groups> in the profile - id : " + getRoleId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -228,5 +243,24 @@ public class RoleGroupsResource extends AbstractRoleResource {
     info.getRequest().getParameters().add(paramRoleId);
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
+  }
+
+  /**
+   * Get the list of groups for a Group as a String
+   * 
+   * @param input
+   *          the Group
+   * @return the List of groups as a String (joined on ,)
+   */
+  private String getGroupsListAsString(Role input) {
+    if (input == null || input.getGroups() == null) {
+      return "";
+    }
+    List<String> groups = new ArrayList<String>();
+    for (Resource group : input.getGroups()) {
+      groups.add(group.getId());
+    }
+    String groupsStr = Joiner.on(",").join(groups);
+    return groupsStr;
   }
 }

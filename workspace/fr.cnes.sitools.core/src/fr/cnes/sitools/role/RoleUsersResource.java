@@ -38,6 +38,8 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
+import com.google.common.base.Joiner;
+
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Resource;
@@ -176,50 +178,64 @@ public class RoleUsersResource extends AbstractRoleResource {
   public Representation updateRole(Representation representation, Variant variant) {
     Role roleOutput = null;
     Role roleInput = null;
+    Response response;
     try {
       if (representation != null) {
         roleInput = getObject(representation, variant);
         Role roleFromStore = getStore().retrieve(getRoleId());
 
+        String usersStr = getUsersListAsString(roleInput);
+
         if (roleFromStore == null) {
-          Response response = new Response(false, "Can find existing role with id " + getRoleId());
+          trace(Level.INFO, "Cannot add user(s) " + usersStr + " in the profile - id : " + getRoleId());
+          response = new Response(false, "Can find existing role with id " + getRoleId());
           return getRepresentation(response, variant);
         }
 
         roleInput.setGroups(roleFromStore.getGroups());
-      }
-      // Business service
-      roleOutput = getStore().update(roleInput);
 
-      if (roleOutput != null) {
-        // Response
-        Response response = new Response(true, roleOutput, Role.class, "role");
+        // Business service
+        roleOutput = getStore().update(roleInput);
 
-        // Notify observers
-        Notification notification = new Notification();
-        notification.setEvent("ROLE_USERS_UPDATED");
+        if (roleOutput != null) {
+          // Response
+          response = new Response(true, roleOutput, Role.class, "role");
 
-        // TODO OPTIMISATION POSSIBLE : passer le name dans l'observable evite de serializer l'objet Role ensuite si pas
-        // utile dans le trigger / observers
-        notification.setObservable(roleOutput.getId());
-        notification.setEventSource(roleOutput);
-        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+          // Notify observers
+          Notification notification = new Notification();
+          notification.setEvent("ROLE_USERS_UPDATED");
 
-        return getRepresentation(response, variant);
+          // TODO OPTIMISATION POSSIBLE : passer le name dans l'observable evite de serializer l'objet Role ensuite si
+          // pas
+          // utile dans le trigger / observers
+          notification.setObservable(roleOutput.getId());
+          notification.setEventSource(roleOutput);
+          getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+
+          trace(Level.INFO, "Add user(s) " + usersStr + " in the profile : " + roleFromStore.getName());
+        }
+        else {
+          trace(Level.INFO, "Cannot add user(s) " + usersStr + " in the profile - id : " + getRoleId());
+          // Response
+          response = new Response(false, "Can not validate role");
+        }
       }
       else {
+        trace(Level.INFO, "Cannot add user(s) <undefined users> in the profile - id : " + getRoleId());
         // Response
-        Response response = new Response(false, "Can not validate role");
-        return getRepresentation(response, variant);
+        response = new Response(false, "Can not validate role");
       }
 
+      return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add user(s) <undefined users> in the profile - id : " + getRoleId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add user(s) <undefined users> in the profile - id : " + getRoleId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -233,5 +249,24 @@ public class RoleUsersResource extends AbstractRoleResource {
     info.getRequest().getParameters().add(paramRoleId);
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
+  }
+
+  /**
+   * Get the list of users for a Group as a String
+   * 
+   * @param input
+   *          the Group
+   * @return the List of users as a String (joined on ,)
+   */
+  private String getUsersListAsString(Role input) {
+    if (input == null || input.getUsers() == null) {
+      return "";
+    }
+    List<String> users = new ArrayList<String>();
+    for (Resource user : input.getUsers()) {
+      users.add(user.getId());
+    }
+    String usersStr = Joiner.on(",").join(users);
+    return usersStr;
   }
 }

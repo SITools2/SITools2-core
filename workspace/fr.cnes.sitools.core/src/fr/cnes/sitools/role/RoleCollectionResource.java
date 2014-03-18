@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -69,16 +69,19 @@ public final class RoleCollectionResource extends AbstractRoleResource {
       // Business service
       Role roleOutput = getStore().create(roleInput);
 
+      trace(Level.INFO, "Create the profile " + roleOutput.getName());
       // Response
       Response response = new Response(true, roleOutput, Role.class, "role");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the profile");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot create the profile");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -108,14 +111,17 @@ public final class RoleCollectionResource extends AbstractRoleResource {
       roles = getStore().getPage(filter, roles);
       Response response = new Response(true, roles, Role.class, "roles");
       response.setTotal(total);
+      trace(Level.FINE, "View user’s profiles");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.FINE, "Cannot view user’s profiles");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.FINE, "Cannot view user’s profiles");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -126,7 +132,7 @@ public final class RoleCollectionResource extends AbstractRoleResource {
     this.addStandardGetRequestInfo(info);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
-    this.addStandardResourceCollectionFilterInfo(info);    
+    this.addStandardResourceCollectionFilterInfo(info);
   }
 
 }

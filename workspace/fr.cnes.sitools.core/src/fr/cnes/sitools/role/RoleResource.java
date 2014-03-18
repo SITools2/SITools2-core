@@ -61,15 +61,25 @@ public final class RoleResource extends AbstractRoleResource {
   public Representation retrieveRole(Variant variant) {
     try {
       Role role = getStore().retrieve(getRoleId());
-      Response response = new Response(true, role, Role.class, "role");
+      Response response;
+      if (role != null) {
+        trace(Level.FINE, "View profile information for the profile " + role.getName());
+        response = new Response(true, role, Role.class, "role");
+      }
+      else {
+        trace(Level.INFO, "Cannot view profile information for the profile - id: " + getRoleId());
+        response = new Response(false, role, Role.class, "role");
+      }
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view profile information for the profile - id: " + getRoleId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view profile information for the profile - id: " + getRoleId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -102,6 +112,7 @@ public final class RoleResource extends AbstractRoleResource {
       if (representation != null) {
         Role roleFromStore = getStore().retrieve(getRoleId());
         if (roleFromStore == null) {
+          trace(Level.INFO, "Cannot update profile information for the profile - id: " + getRoleId());
           Response response = new Response(false, "Can find existing role with id " + getRoleId());
           return getRepresentation(response, variant);
         }
@@ -116,11 +127,13 @@ public final class RoleResource extends AbstractRoleResource {
       }
 
       if (roleOutput != null) {
+        trace(Level.INFO, "Update profile information for the profile " + roleOutput.getName());
         // Response
         Response response = new Response(true, roleOutput, Role.class, "role");
         return getRepresentation(response, variant);
       }
       else {
+        trace(Level.INFO, "Cannot update profile information for the profile - id: " + getRoleId());
         // Response
         Response response = new Response(false, "Can not validate role");
         return getRepresentation(response, variant);
@@ -128,11 +141,13 @@ public final class RoleResource extends AbstractRoleResource {
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update profile information for the profile - id: " + getRoleId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update profile information for the profile - id: " + getRoleId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -160,6 +175,7 @@ public final class RoleResource extends AbstractRoleResource {
     try {
       // Business service
       Role roleOutput = getStore().retrieve(getRoleId());
+      Response response;
       if (roleOutput != null) {
         getStore().delete(getRoleId());
 
@@ -168,10 +184,15 @@ public final class RoleResource extends AbstractRoleResource {
         notification.setEvent("ROLE_DELETED");
         notification.setObservable(roleOutput.getId());
         getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+        // Response
+        response = new Response(true, "role.delete.success");
+        trace(Level.INFO, "Delete profile " + roleOutput.getName());
+      }
+      else {
+        trace(Level.INFO, "Cannot delete profile - id: " + getRoleId());
+        response = new Response(false, "role.delete.failure");
       }
 
-      // Response
-      Response response = new Response(true, "role.delete.success");
       return getRepresentation(response, variant);
 
     }

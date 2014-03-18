@@ -23,6 +23,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -30,12 +33,12 @@ import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.Method;
-import org.restlet.data.Protocol;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
+import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.role.RoleApplication;
@@ -107,11 +110,7 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
 
     if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
+      this.component = createTestComponent(SitoolsSettings.getInstance());
 
       // Context
       Context ctx = this.component.getContext().createChildContext();
@@ -161,8 +160,8 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
     retrieveByGroups(item);
     update(item);
     // TODO implement methods
-    // addUser(item, userId);
-    // addGroup(item, groupId);
+    addUser(item, userId);
+    addGroup(item, groupId);
     delete(item);
     assertNone();
     createWadl(getBaseUrl(), "roles");
@@ -207,6 +206,7 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
   public Role createObject(String id) {
     Role item = new Role();
     item.setId(id);
+    item.setName("role1");
     return item;
   }
 
@@ -319,9 +319,78 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
 
       Response response = GetResponseUtils.getResponseRole(getMediaTest(), result, Role.class);
       assertTrue(response.getSuccess());
-      Role prj = (Role) response.getItem();
-      assertEquals(prj.getName(), item.getName());
-      assertEquals(prj.getDescription(), item.getDescription());
+      Role role = (Role) response.getItem();
+      assertEquals(item.getName(), role.getName());
+      assertEquals(item.getDescription(), role.getDescription());
+    }
+    RIAPUtils.exhaust(result);
+  }
+
+  /**
+   * Invokes PUT method for updating Role to add a user
+   * 
+   * @param item
+   *          Role
+   * @param usersId
+   *          the user to add
+   */
+  public void addUser(Role item, String usersId) {
+    List<Resource> users = new ArrayList<Resource>();
+    Resource user = new Resource();
+    user.setId(usersId);
+    users.add(user);
+    item.setUsers(users);
+
+    Representation rep = GetRepresentationUtils.getRepresentationRole(item, getMediaTest());
+    ClientResource cr = new ClientResource(getBaseUrl() + "/" + item.getId() + "/users");
+    docAPI.appendRequest(Method.PUT, cr, rep);
+    Representation result = cr.put(rep, getMediaTest());
+    if (!docAPI.appendResponse(result)) {
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+
+      Response response = GetResponseUtils.getResponseRole(getMediaTest(), result, Role.class);
+      assertTrue(response.getSuccess());
+      Role role = (Role) response.getItem();
+      assertEquals(item.getName(), role.getName());
+      assertEquals(item.getDescription(), role.getDescription());
+      assertNotNull(role.getUsers());
+      assertEquals(item.getUsers().size(), role.getUsers().size());
+    }
+    RIAPUtils.exhaust(result);
+  }
+
+  /**
+   * Invokes PUT method for updating Role to add a user
+   * 
+   * @param item
+   *          Role
+   * @param groupId
+   *          the group to add
+   */
+  public void addGroup(Role item, String groupId) {
+    List<Resource> groups = new ArrayList<Resource>();
+    Resource group = new Resource();
+    group.setId(groupId);
+    groups.add(group);
+    item.setGroups(groups);
+
+    Representation rep = GetRepresentationUtils.getRepresentationRole(item, getMediaTest());
+
+    ClientResource cr = new ClientResource(getBaseUrl() + "/" + item.getId() + "/groups");
+    docAPI.appendRequest(Method.PUT, cr, rep);
+    Representation result = cr.put(rep, getMediaTest());
+    if (!docAPI.appendResponse(result)) {
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+
+      Response response = GetResponseUtils.getResponseRole(getMediaTest(), result, Role.class);
+      assertTrue(response.getSuccess());
+      Role role = (Role) response.getItem();
+      assertEquals(item.getName(), role.getName());
+      assertEquals(item.getDescription(), role.getDescription());
+      assertNotNull(role.getGroups());
+      assertEquals(item.getGroups().size(), role.getGroups().size());
     }
     RIAPUtils.exhaust(result);
   }
