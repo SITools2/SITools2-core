@@ -65,8 +65,15 @@ public final class JDBCDataSourceResource extends AbstractDataSourceResource {
 
       if (getDatasourceId() != null) {
         JDBCDataSource datasource = getStore().retrieve(getDatasourceId());
-        trace(Level.FINE, "Edit JDBC data source information for the data source " + datasource.getName());
-        Response response = new Response(true, datasource, JDBCDataSource.class, "jdbcdatasource");
+        Response response;
+        if (datasource != null) {
+          trace(Level.FINE, "Edit JDBC data source information for the data source " + datasource.getName());
+          response = new Response(true, datasource, JDBCDataSource.class, "jdbcdatasource");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit JDBC data source information for the data source " + getDatasourceId());
+          response = new Response(false, "cannot find mongodb datasource");
+        }
         return getRepresentation(response, variant);
       }
       else {

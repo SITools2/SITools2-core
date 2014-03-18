@@ -126,8 +126,15 @@ public class ConceptTemplateCollectionResource extends AbstractConceptTemplateRe
     try {
       if (getConceptTemplateId() != null) {
         ConceptTemplate template = getStore().retrieve(getConceptTemplateId());
-        trace(Level.FINE, "Edit information for the dictionary structure " + template.getName());
-        Response response = new Response(true, template, ConceptTemplate.class, "template");
+        Response response;
+        if (template != null) {
+          trace(Level.FINE, "Edit information for the dictionary structure " + template.getName());
+          response = new Response(true, template, ConceptTemplate.class, "template");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit information for the dictionary structure " + getConceptTemplateId());
+          response = new Response(false, "cannot find dictionary stucture");
+        }
         return getRepresentation(response, variant);
       }
       else {

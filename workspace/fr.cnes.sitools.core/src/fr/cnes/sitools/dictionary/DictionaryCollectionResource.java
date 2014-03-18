@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -77,7 +77,7 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
       notification.setEvent("DICTIONARY_CREATED");
       notification.setMessage("New dictionary created.");
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-      
+
       trace(Level.INFO, "Create the dictionary " + dictionaryOutput.getName());
       // Response
       Response response = new Response(true, dictionaryOutput, Dictionary.class, "dictionary");
@@ -135,8 +135,15 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
     try {
       if (getDictionaryId() != null) {
         Dictionary dictionary = getStore().retrieve(getDictionaryId());
-        trace(Level.FINE, "Edit information for the dictionary " + dictionary.getName());
-        Response response = new Response(true, dictionary, Dictionary.class, "dictionary");
+        Response response;
+        if (dictionary != null) {
+          trace(Level.FINE, "Edit information for the dictionary " + dictionary.getName());
+          response = new Response(true, dictionary, Dictionary.class, "dictionary");
+        }
+        else {
+          trace(Level.FINE, "Edit information for the dictionary " + getDictionaryId());
+          response = new Response(false, "cannot find dictionary");
+        }
         return getRepresentation(response, variant);
       }
       else {

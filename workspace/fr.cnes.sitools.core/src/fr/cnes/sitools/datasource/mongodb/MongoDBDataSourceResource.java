@@ -66,8 +66,15 @@ public final class MongoDBDataSourceResource extends AbstractDataSourceResource 
 
       if (getDatasourceId() != null) {
         SitoolsDataSourceModel datasource = getStore().retrieve(getDatasourceId());
-        trace(Level.FINE, "Edit MongoDB data source information for the data source " + datasource.getName());
-        Response response = new Response(true, datasource, MongoDBDataSource.class, "mongodbdatasource");
+        Response response;
+        if (datasource != null) {
+          trace(Level.FINE, "Edit MongoDB data source information for the data source " + datasource.getName());
+          response = new Response(true, datasource, MongoDBDataSource.class, "mongodbdatasource");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit MongoDB data source information for the data source " + getDatasourceId());
+          response = new Response(false, "cannot find mongodb datasource");
+        }
         return getRepresentation(response, variant);
       }
       else {

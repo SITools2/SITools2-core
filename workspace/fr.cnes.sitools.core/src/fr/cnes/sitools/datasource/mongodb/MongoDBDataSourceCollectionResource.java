@@ -79,7 +79,7 @@ public final class MongoDBDataSourceCollectionResource extends AbstractDataSourc
 
       // Business service
       SitoolsDataSourceModel datasourceOutput = getStore().create(datasourceInput);
-      
+
       trace(Level.INFO, "Create a MongoDB data source " + datasourceOutput.getName());
       // Response
       Response response = new Response(true, datasourceOutput, MongoDBDataSource.class, "mongodbdatasource");
@@ -123,8 +123,15 @@ public final class MongoDBDataSourceCollectionResource extends AbstractDataSourc
     try {
       if (getDatasourceId() != null) {
         SitoolsDataSourceModel datasource = getStore().retrieve(getDatasourceId());
-        trace(Level.FINE, "Edit MongoDB data source information for the data source " + datasource.getName());
-        Response response = new Response(true, datasource, MongoDBDataSource.class, "jdbcdatasource");
+        Response response;
+        if (datasource != null) {
+          trace(Level.FINE, "Edit MongoDB data source information for the data source " + datasource.getName());
+          response = new Response(true, datasource, MongoDBDataSource.class, "jdbcdatasource");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit MongoDB data source information for the data source " + getDatasourceId());
+          response = new Response(false, "cannot find mongodb datasource");
+        }
         return getRepresentation(response, variant);
       }
       else {

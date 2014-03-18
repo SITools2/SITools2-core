@@ -34,6 +34,7 @@ import org.restlet.resource.ResourceException;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
+import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 
 /**
  * Class for JDBC data source collection management
@@ -122,8 +123,15 @@ public final class JDBCDataSourceCollectionResource extends AbstractDataSourceRe
     try {
       if (getDatasourceId() != null) {
         JDBCDataSource datasource = getStore().retrieve(getDatasourceId());
-        trace(Level.FINE, "Edit JDBC data source information for the data source " + datasource.getName());
-        Response response = new Response(true, datasource, JDBCDataSource.class, "jdbcdatasource");
+        Response response;
+        if (datasource != null) {
+          trace(Level.FINE, "Edit JDBC data source information for the data source " + datasource.getName());
+          response = new Response(true, datasource, JDBCDataSource.class, "jdbcdatasource");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit JDBC data source information for the data source " + getDatasourceId());
+          response = new Response(false, "cannot find mongodb datasource");
+        }
         return getRepresentation(response, variant);
       }
       else {
