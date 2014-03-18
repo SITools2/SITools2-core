@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.security;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,9 +44,12 @@ import org.restlet.resource.Post;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
+import com.google.common.base.Joiner;
+
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
+import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.mail.model.Mail;
@@ -124,10 +128,12 @@ public final class UsersResource extends UsersAndGroupsResource {
       else {
         users = getStore().getUsers(filter);
       }
+      trace(Level.FINE, "View users");
       response = new Response(true, users, User.class);
       response.setTotal((filter.getTotalCount() == null) ? users.size() : filter.getTotalCount());
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view users");
       response = new Response(false, e.getMessage());
     }
     // debug
@@ -159,23 +165,47 @@ public final class UsersResource extends UsersAndGroupsResource {
       notification.setObservable(output.getName());
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
+      String usersStr = getUsersListAsString(input);
+      trace(Level.INFO, "Add user " + usersStr + " in group " + input.getName());
       // Response
       Response response = new Response(true, output, Group.class, "group");
       return getRepresentation(response, variant);
     }
     catch (SitoolsException e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add user <undefined users> in group");
+      getLogger().log(Level.WARNING, null, e);
       Response response = new Response(false, e.getMessage());
       return getRepresentation(response, variant.getMediaType());
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add user <undefined users> in group");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add user <undefined users> in group");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
+  }
+
+  /**
+   * Get the list of users for a Group as a String
+   * 
+   * @param input
+   *          the Group
+   * @return the List of users as a String (joined on ,)
+   */
+  private String getUsersListAsString(Group input) {
+    if (input == null || input.getUsers() == null) {
+      return "";
+    }
+    List<String> users = new ArrayList<String>();
+    for (Resource user : input.getUsers()) {
+      users.add(user.getId());
+    }
+    String usersStr = Joiner.on(",").join(users);
+    return usersStr;
   }
 
   @Override
@@ -229,6 +259,7 @@ public final class UsersResource extends UsersAndGroupsResource {
       SecurityUtil.encodeUserPassword(getSitoolsApplication().getSettings(), input);
 
       if (input.getProperties() != null && !checkPropertiesName(input.getProperties())) {
+        trace(Level.INFO, "Cannot create user");
         MediaType media = representation.getMediaType();
         Response response = new Response(false, "Duplicated Property Name");
         return getRepresentation(response, media);
@@ -272,21 +303,25 @@ public final class UsersResource extends UsersAndGroupsResource {
       // Si le user password a été changé, on envoi le nouveau à l'user
       sendMailToUser(input, passwordUnecoded);
 
+      trace(Level.INFO, "Create user " + output.getIdentifier());
       // Response
       Response response = new Response(true, output, User.class, "user");
       return getRepresentation(response, media);
     }
     catch (SitoolsException e) {
+      trace(Level.INFO, "Cannot create user");
       MediaType media = representation.getMediaType();
       Response response = new Response(false, e.getMessage());
       return getRepresentation(response, media);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create user");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      getLogger().log(Level.WARNING, null, e);
+      trace(Level.INFO, "Cannot create user");
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

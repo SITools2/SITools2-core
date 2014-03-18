@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
@@ -121,7 +122,7 @@ public abstract class UsersAndGroupsResource extends SitoolsResource {
     for (Variant variant : variants) {
       variantsString += " " + variant.getMediaType().toString();
     }
-    getLogger().info("Variants : " + variantsString);
+    getLogger().log(Level.FINEST, "Variants : " + variantsString);
 
   }
 

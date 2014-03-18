@@ -31,7 +31,6 @@ import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
-import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
@@ -113,11 +112,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
 
     if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
+      this.component = createTestComponent(settings);
 
       // Context
       Context ctx = this.component.getContext().createChildContext();
@@ -171,7 +166,9 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
   @Test
   public void testCRUDUsers() {
     createUser();
+
     retrieveUser();
+    retrieveUserThatDontExists();
     updateUser();
     deleteUser();
     createWadl(getBaseUrl(), "users_groups");
@@ -187,6 +184,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
     wait(10000);
     createGroup();
     retrieveGroup();
+    retrieveGroupThatDontExists();
     updateGroup();
     deleteGroup();
   }
@@ -282,7 +280,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
       assertTrue(crUsers.getStatus().isSuccess());
       assertNotNull(result);
       Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
-      assertTrue(response.getSuccess());
+      assertTrue(response.getMessage(), response.getSuccess());
       assertNotNull(response.getItem());
       User resultUser = (User) response.getItem();
       assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
@@ -319,6 +317,28 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
       assertEquals(resultUser.getLastName(), myUser.getLastName());
       assertNull(resultUser.getSecret()); // secret is private
       assertEquals(resultUser.getEmail(), myUser.getEmail());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
+  }
+
+  /**
+   * Invoke GET
+   */
+  public void retrieveUserThatDontExists() {
+    String userId = "test-identifier-dont-exists";
+    ClientResource cr = new ClientResource(getBaseUrl() + "/users/" + userId);
+    Representation result = null;
+    try {
+      result = cr.get(MediaType.APPLICATION_JSON);
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, User.class);
+      assertFalse(response.getMessage(), response.getSuccess());
     }
     finally {
       if (result != null) {
@@ -517,6 +537,28 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
       Group group = (Group) response.getItem();
       assertEquals(group.getName(), myGroup.getName());
       assertEquals(group.getDescription(), myGroup.getDescription());
+    }
+    finally {
+      if (result != null) {
+        RIAPUtils.exhaust(result);
+      }
+    }
+  }
+
+  /**
+   * Invoke GET
+   */
+  public void retrieveGroupThatDontExists() {
+    String groupId = "test-groupName-dont-exists";
+    ClientResource cr = new ClientResource(getBaseUrl() + "/groups/" + groupId);
+    Representation result = null;
+    try {
+      result = cr.get(MediaType.APPLICATION_JSON);
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+
+      Response response = getResponse(MediaType.APPLICATION_JSON, result, Group.class);
+      assertFalse(response.getMessage(), response.getSuccess());
     }
     finally {
       if (result != null) {
