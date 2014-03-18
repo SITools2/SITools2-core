@@ -71,12 +71,12 @@ public class DatasetViewCollectionResource extends AbstractDatasetViewResource {
 
       // Response
       Response response = new Response(true, datasetViewOutput, DatasetView.class, "datasetView");
-      trace(Level.INFO, "Add Dataset view");
+      trace(Level.INFO, "Add Dataset view - id : " + datasetViewOutput.getId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
-      trace(Level.INFO, "Add Dataset view");
+      trace(Level.INFO, "Cannot add Dataset view");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
