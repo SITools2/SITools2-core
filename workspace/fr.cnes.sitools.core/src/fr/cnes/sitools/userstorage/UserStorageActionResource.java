@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.restlet.Request;
 import org.restlet.data.MediaType;
@@ -86,10 +87,15 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
     if (Action.START.value().equals(getAction())) {
       getLogger().finest(Action.START.value());
       UserStorage storage = getStore().retrieve(getIdentifier());
+      if (storage == null) {
+        trace(Level.INFO, "Cannot start user space for the user " + getIdentifier());
+        Response response = new Response(false, "userstorage.activation.failure");
+        return getRepresentation(response, variant);
+      }
       storage.setStatus(UserStorageStatus.ACTIVE);
       // create directory
       // String root = (String) getContext().getAttributes().get(ROOT);
-      
+
       // Format UserStorage Path
       String path = storage.getStorage().getUserStoragePath();
       // String path = storage.getStorage().getUserStoragePath();
@@ -97,7 +103,7 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
         path = getUserStorageManagement().getRootDirectory() + File.separator + storage.getUserId();
       }
       storage.getStorage().setUserStoragePath(path);
-      
+
       path = settings.getFormattedString(storage.getStorage().getUserStoragePath());
       File cible = new File(path);
       if (cible.exists()) {
@@ -108,15 +114,22 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
       getStore().update(storage);
 
       getLogger().finest("status: " + storage.getStatus());
+      trace(Level.INFO, "Start user space for the user " + getIdentifier());
       Response response = new Response(true, "userstorage.activation.success");
       return getRepresentation(response, variant);
     }
     else if (Action.STOP.value().equals(getAction())) {
       getLogger().finest(Action.STOP.value());
       UserStorage storage = getStore().retrieve(getIdentifier());
+      if (storage == null) {
+        trace(Level.INFO, "Cannot stop user space for the user " + getIdentifier());
+        Response response = new Response(false, "userstorage.activation.failure");
+        return getRepresentation(response, variant);
+      }
       storage.setStatus(UserStorageStatus.DISACTIVE);
       getStore().update(storage);
       getLogger().finest("status: " + storage.getStatus());
+      trace(Level.INFO, "Stop user space for the user " + getIdentifier());
       Response response = new Response(true, "userstorage.stop.success");
       return getRepresentation(response, variant);
     }
@@ -125,7 +138,13 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
       if (storage != null) {
         UserStorageManager.refresh(getContext(), storage);
         getStore().update(storage);
+        trace(Level.INFO, "Refresh user space for the user " + getIdentifier());
         Response response = new Response(true, "userstorage.refresh.success");
+        return getRepresentation(response, variant);
+      }
+      else {
+        trace(Level.INFO, "Cannot refresh user space for the user " + getIdentifier());
+        Response response = new Response(false, "userstorage.refresh.failure");
         return getRepresentation(response, variant);
       }
     }
@@ -135,7 +154,13 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
         UserStorageManager.clean(getContext(), storage);
         UserStorageManager.refresh(getContext(), storage);
         getStore().update(storage);
+        trace(Level.INFO, "Clean user space for the user " + getIdentifier());
         Response response = new Response(true, "userstorage.clean.success");
+        return getRepresentation(response, variant);
+      }
+      else {
+        trace(Level.INFO, "Cannot clean user space for the user " + getIdentifier());
+        Response response = new Response(false, "userstorage.cleanr.failure");
         return getRepresentation(response, variant);
       }
     }
@@ -154,6 +179,7 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
       org.restlet.Response resp = getUserStorageManagement().getContext().getClientDispatcher().handle(reqGET);
 
       if (resp == null || Status.isError(resp.getStatus().getCode())) {
+        trace(Level.INFO, "Cannot notify at the user " + getIdentifier() + " that its user space is full");
         // fail access User application
         throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
       }
@@ -178,9 +204,11 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
         if (storage.getStorage().getBusyUserSpace() > storage.getStorage().getQuota()) {
           org.restlet.Response sendMailResponse = sendMailQuotaExceeded(storage, toList);
           if (sendMailResponse.getStatus().isError()) {
+            trace(Level.INFO, "Cannot notify at the user " + getIdentifier() + " that its user space is full");
             response = new Response(false, "userstorage.notify.error");
           }
           else {
+            trace(Level.INFO, "Notify at the user " + getIdentifier() + " that its user space is full");
             response = new Response(true, "userstorage.notify.success");
           }
           return getRepresentation(response, variant);
@@ -191,6 +219,7 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
         }
       }
       else {
+        trace(Level.INFO, "Cannot notify at the user " + getIdentifier() + " that its user space is full");
         response = new Response(false, "user.null");
         return getRepresentation(response, variant);
       }
@@ -200,17 +229,16 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
       getLogger().finest(this.getName() + " unknown requested action.");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "action.unknown");
     }
-    return new EmptyRepresentation();
   }
 
   /**
    * Send a mail to notify an user than is quota is exceeded
    * 
    * @param storage
-   *        th user storage
+   *          th user storage
    * @param toList
-   *        th user mail
-   * @return a {@link org.restlet.Response} mail 
+   *          th user mail
+   * @return a {@link org.restlet.Response} mail
    */
   private org.restlet.Response sendMailQuotaExceeded(UserStorage storage, String[] toList) {
     Mail mailToUser = new Mail();
