@@ -88,6 +88,7 @@ public final class ApplicationPluginCollectionResource extends AbstractApplicati
         Response response = new Response(true, appPluginModelsDTO, ApplicationPluginModelDTO.class,
             "ApplicationPluginModels");
         response.setTotal(total);
+        trace(Level.FINE, "View available application plugins");
         return getRepresentation(response, variant);
       }
     }
@@ -194,10 +195,12 @@ public final class ApplicationPluginCollectionResource extends AbstractApplicati
       ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appModelInput);
       response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
 
+      trace(Level.INFO, "Add the application plugin");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add the application plugin");
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
