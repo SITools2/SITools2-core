@@ -63,6 +63,7 @@ public final class JDBCDataSourceCollectionResource extends AbstractDataSourceRe
   @Post
   public Representation newDataSource(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create a JDBC data source");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "DATASOURCE_REPRESENTATION_REQUIRED");
     }
     try {
@@ -78,17 +79,20 @@ public final class JDBCDataSourceCollectionResource extends AbstractDataSourceRe
       // Business service
       JDBCDataSource datasourceOutput = getStore().create(datasourceInput);
 
+      trace(Level.INFO, "Create a JDBC data source " + datasourceOutput.getName());
       // Response
       Response response = new Response(true, datasourceOutput, JDBCDataSource.class, "jdbcdatasource");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create a JDBC data source");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create a JDBC data source");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -117,8 +121,9 @@ public final class JDBCDataSourceCollectionResource extends AbstractDataSourceRe
   public Representation retrieveDataSource(Variant variant) {
     try {
       if (getDatasourceId() != null) {
-        JDBCDataSource dataset = getStore().retrieve(getDatasourceId());
-        Response response = new Response(true, dataset, JDBCDataSource.class, "jdbcdatasource");
+        JDBCDataSource datasource = getStore().retrieve(getDatasourceId());
+        trace(Level.FINE, "Edit JDBC data source information for the data source " + datasource.getName());
+        Response response = new Response(true, datasource, JDBCDataSource.class, "jdbcdatasource");
         return getRepresentation(response, variant);
       }
       else {
@@ -126,17 +131,20 @@ public final class JDBCDataSourceCollectionResource extends AbstractDataSourceRe
         List<JDBCDataSource> datasources = getStore().getList(filter);
         int total = datasources.size();
         datasources = getStore().getPage(filter, datasources);
+        trace(Level.FINE, "View available JDBC data sources");
         Response response = new Response(true, datasources, JDBCDataSource.class, "jdbcdatasource");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available JDBC data sources");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available JDBC data sources");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

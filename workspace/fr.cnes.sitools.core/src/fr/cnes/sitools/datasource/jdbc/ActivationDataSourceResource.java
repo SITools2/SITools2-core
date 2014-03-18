@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -23,6 +23,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
@@ -67,6 +68,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
       if (this.getReference().toString().endsWith("test")) {
         if (representation != null) {
           JDBCDataSource dsInput = getObject(representation);
+          trace(Level.INFO, "Test the connection for the JDBC data source " + dsInput.getName());
           response = testDataSourceConnection(dsInput);
           break;
         }
@@ -75,6 +77,7 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
       // on charge la datasource
       JDBCDataSource ds = getStore().retrieve(getDatasourceId());
       if (ds == null) {
+        trace(Level.INFO, "Cannot perform action on the JDBC data source - id: " + getDatasourceId());
         response = new Response(false, "DATASOURCE_NOT_FOUND");
         break;
       }
@@ -82,16 +85,29 @@ public final class ActivationDataSourceResource extends AbstractDataSourceResour
       // on fait le test avec la datasource
       if (this.getReference().toString().endsWith("test")) {
         response = testDataSourceConnection(ds);
+        trace(Level.INFO, "Test the connection for the JDBC data source " + ds.getName());
         break;
       }
 
       if (this.getReference().toString().endsWith("start")) {
         response = this.startDataSource(ds);
+        if (response.isSuccess()) {
+          trace(Level.INFO, "Start the JDBC data source " + ds.getName());
+        }
+        else {
+          trace(Level.INFO, "Cannot start the JDBC data source " + ds.getName());
+        }
         break;
       }
 
       if (this.getReference().toString().endsWith("stop")) {
         response = this.stopDataSource(ds);
+        if (response.isSuccess()) {
+          trace(Level.INFO, "Stop the JDBC data source " + ds.getName());
+        }
+        else {
+          trace(Level.INFO, "Cannot stop the JDBC data source " + ds.getName());
+        }
         break;
       }
 
