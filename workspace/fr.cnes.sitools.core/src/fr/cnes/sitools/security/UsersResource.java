@@ -172,7 +172,7 @@ public final class UsersResource extends UsersAndGroupsResource {
       return getRepresentation(response, variant);
     }
     catch (SitoolsException e) {
-      trace(Level.INFO, "Cannot add user <undefined users> in group");
+      trace(Level.INFO, "Cannot add user <undefined users> in group - id: " + getGroupName());
       getLogger().log(Level.WARNING, null, e);
       Response response = new Response(false, e.getMessage());
       return getRepresentation(response, variant.getMediaType());
