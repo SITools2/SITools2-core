@@ -71,16 +71,18 @@ public class FormComponentsCollectionResource extends AbstractFormComponentsReso
 
       // Response
       Response response = new Response(true, formComponentOutput, FormComponent.class, "formComponent");
-      trace(Level.INFO, "Add the query form component type");
+      trace(Level.INFO, "Add the query form component type - id : " + formComponentOutput.getId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add query form component type");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add query form component type");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -116,7 +118,7 @@ public class FormComponentsCollectionResource extends AbstractFormComponentsReso
         formComponents = getStore().getPage(filter, formComponents);
         Response response = new Response(true, formComponents, FormComponent.class, "formComponents");
         response.setTotal(total);
-        trace(Level.INFO, "View available query form component types");
+        trace(Level.FINE, "View available query form component types");
         return getRepresentation(response, variant);
       }
     }
