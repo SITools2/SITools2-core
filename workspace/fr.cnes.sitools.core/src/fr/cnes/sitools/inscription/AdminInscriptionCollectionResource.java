@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -83,16 +83,20 @@ public final class AdminInscriptionCollectionResource extends InscriptionResourc
       SecurityUtil.encodeUserInscriptionPassword(getInscriptionApplication().getSettings(), inscriptionInput);
 
       Inscription inscriptionOutput = getStore().create(inscriptionInput);
-
+      
+      trace(Level.FINE, "Add the registration of the user: " + inscriptionInput.getIdentifier());
+      
       // Response
       Response response = new Response(true, inscriptionOutput, Inscription.class, "inscription");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add the registration of the user");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot add the registration of the user");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -123,14 +127,17 @@ public final class AdminInscriptionCollectionResource extends InscriptionResourc
       inscriptions = getStore().getPage(filter, inscriptions);
       Response response = new Response(true, inscriptions, Inscription.class, "inscriptions");
       response.setTotal(total);
+      trace(Level.FINE, "View information for new registers");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view information for new registers with the profile");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view information for new registers with the profile");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

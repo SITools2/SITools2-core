@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -81,17 +81,20 @@ public final class AdminInscriptionResource extends InscriptionResource {
     try {
       Inscription inscription = getStore().retrieve(getInscriptionId());
       if (inscription == null) {
+        trace(Level.INFO, "Cannot view information for the register " + getInscriptionId());
         throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
       }
-
+      trace(Level.FINE, "View information for the register " + inscription.getIdentifier());
       Response response = new Response(true, inscription, Inscription.class, "inscription");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view information for the register " + getInscriptionId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view information for the register " + getInscriptionId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -128,6 +131,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
     boolean validating = false;
 
     if (getInscriptionId() == null) {
+      trace(Level.INFO, "Cannot update information for the register");
       throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
     }
 
@@ -135,6 +139,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
       // On recharge l'inscription avec l'uid
       inscriptionInput = getStore().retrieve(getInscriptionId());
       if (inscriptionInput == null) {
+        trace(Level.INFO, "Registration of the user " + getInscriptionId() + " cannot be performed");
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
       }
       validating = true;
@@ -151,10 +156,12 @@ public final class AdminInscriptionResource extends InscriptionResource {
       }
 
       if (inscriptionInput == null) {
+        trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
       }
 
       if (!inscriptionInput.getId().equals(getInscriptionId())) {
+        trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
       }
 
@@ -165,9 +172,11 @@ public final class AdminInscriptionResource extends InscriptionResource {
         if (variant.getMediaType().isCompatible(MediaType.APPLICATION_JSON)
             || variant.getMediaType().isCompatible(MediaType.APPLICATION_XML)) {
           Response object = new Response(false, "error.password.mandatory");
+          trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
           return getRepresentation(object, variant.getMediaType());
         }
         else {
+          trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
           throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "error.password.mandatory");
         }
       }
@@ -181,9 +190,10 @@ public final class AdminInscriptionResource extends InscriptionResource {
 
       inscriptionOutput = getStore().update(inscriptionInput);
       if (inscriptionOutput == null) {
+        trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
         throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
       }
-
+      trace(Level.INFO, "Update information for the register " + inscriptionOutput.getIdentifier());
       response = new Response(true, "INSCRIPTION.UPDATED User updated");
     }
 
@@ -206,6 +216,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
 
       if (resp == null || Status.isError(resp.getStatus().getCode())) {
         // echec access User application
+        trace(Level.INFO, " Registration of the user " + getInscriptionId() + " cannot be performed");
         throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
       }
 
@@ -216,6 +227,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
         myObj = or.getObject();
       }
       catch (IOException e) { // marshalling error
+        trace(Level.INFO, "Registration of the user " + getInscriptionId() + " cannot be performed");
         throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
       }
       if (myObj.isSuccess() && myObj.getItem() != null) {
@@ -232,6 +244,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
 
         if (r == null || Status.isError(r.getStatus().getCode())) {
           // echec access User application
+          trace(Level.INFO, "Registration of the user " + getInscriptionId() + " cannot be performed");
           throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
         }
 
@@ -243,6 +256,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
           }
         }
         catch (IOException e) { // marshalling error
+          trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
           throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
 
@@ -291,6 +305,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
           sendMailResponse = getContext().getClientDispatcher().handle(request);
         }
         catch (Exception e) {
+          trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
           getApplication().getLogger().warning("Failed to post message to user");
         }
         if (sendMailResponse == null || sendMailResponse.getStatus().isError()) {
@@ -299,6 +314,13 @@ public final class AdminInscriptionResource extends InscriptionResource {
         else {
           // construction de la reponse
           response = new Response(true, "INSCRIPTION.VALIDATED User created, Inscription deleted, Mail sent to user.");
+        }
+
+        if (response.isSuccess()) {
+          trace(Level.INFO, "Registration of the user " + newUser.getIdentifier() + " is confirmed");
+        }
+        else {
+          trace(Level.INFO, "Registration of the user " + getInscriptionId() + " cannot be performed");
         }
 
         // =================================================================================
@@ -317,7 +339,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
       // Response XML / JSON
       return getRepresentation(response, variant);
     }
-
+    trace(Level.INFO, "Cannot update information for the register " + getInscriptionId());
     throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
   }
 
@@ -347,14 +369,23 @@ public final class AdminInscriptionResource extends InscriptionResource {
       Response response = result ? new Response(result, "INSCRIPTION.DELETED") : new Response(result,
           "INSCRIPTION.NOT_FOUND");
 
+      if (response.isSuccess()) {
+        trace(Level.INFO, "Delete information for the register of the user : " + getInscriptionId());
+      }
+      else {
+        trace(Level.INFO, "Cannot delete information for the register of the user : " + getInscriptionId());
+      }
+
       // Response
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete information for the register of the user : " + getInscriptionId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot delete information for the register of the user : " + getInscriptionId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
