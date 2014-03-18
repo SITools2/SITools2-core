@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -69,17 +69,19 @@ public class ConceptTemplateCollectionResource extends AbstractConceptTemplateRe
       ConceptTemplate output = getStore().create(input);
 
       // Response
-
+      trace(Level.INFO, "Create the dictionary structure " + output.getName());
       Response response = new Response(true, output, ConceptTemplate.class, "template");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the dictionary structure");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create the dictionary structure");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -124,6 +126,7 @@ public class ConceptTemplateCollectionResource extends AbstractConceptTemplateRe
     try {
       if (getConceptTemplateId() != null) {
         ConceptTemplate template = getStore().retrieve(getConceptTemplateId());
+        trace(Level.FINE, "Edit information for the dictionary structure " + template.getName());
         Response response = new Response(true, template, ConceptTemplate.class, "template");
         return getRepresentation(response, variant);
       }
@@ -132,17 +135,20 @@ public class ConceptTemplateCollectionResource extends AbstractConceptTemplateRe
         List<ConceptTemplate> templates = getStore().getList(filter);
         int total = templates.size();
         templates = getStore().getPage(filter, templates);
+        trace(Level.FINE, "View available dictionary structures");
         Response response = new Response(true, templates, ConceptTemplate.class, "templates");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available dictionary structures");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available dictionary structures");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
