@@ -90,8 +90,9 @@ public final class UserInscriptionResource extends InscriptionResource {
       // Response
       Response response = null;
 
-      if (!Inscription.isValid(inscriptionInput)) {
-        response = new Response(false, "INSCRIPTION.INVALID");
+      String message = checkInscription(inscriptionInput);
+      if (message != null) {
+        response = new Response(false, message);
       }
       else {
 
@@ -186,6 +187,31 @@ public final class UserInscriptionResource extends InscriptionResource {
     this.addStandardPostOrPutRequestInfo(info);
     this.addStandardResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
+  }
+
+  /**
+   * Check that the inscription is correct corresponding to some rules defined on the properties file
+   * 
+   * @param inscription
+   *          the inscription to check
+   * 
+   * @return a String corresponding to the error, or null if validation is ok
+   */
+  private String checkInscription(Inscription inscription) {
+    SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
+
+    String userRegExp = settings.getString("STARTER.SECURITY.USER_LOGIN_REGEX", null);
+    if (inscription.getIdentifier() != null && (userRegExp != null && !inscription.getIdentifier().matches(userRegExp))) {
+      return "WRONG_USER_LOGIN";
+    }
+
+    String passwordRegExp = settings.getString("STARTER.SECURITY.USER_PASSWORD_REGEX", null);
+    if (inscription.getPassword() != null
+        && (passwordRegExp != null && !inscription.getPassword().matches(passwordRegExp))) {
+      return "WRONG_USER_PASSWORD";
+    }
+    return null;
+
   }
 
 }

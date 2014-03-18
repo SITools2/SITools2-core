@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -33,7 +33,6 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
-import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
@@ -131,14 +130,8 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     SitoolsSettings settings = SitoolsSettings.getInstance();
 
-    
-
     if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
+      this.component = createTestComponent(settings);
 
       // USERS AND GROUPS
       // Context
@@ -151,7 +144,6 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
               SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_DRIVER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_URL"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_USER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_PASSWORD"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
       JDBCUsersAndGroupsStore ugstore = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctxUAG);
 
-
       ctxUAG.getAttributes().put(ContextAttributes.APP_STORE, ugstore);
 
       UsersAndGroupsAdministration anApplication = new UsersAndGroupsAdministration(ctxUAG);
@@ -163,13 +155,13 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
 
       Context ctxAdmin = this.component.getContext().createChildContext();
       ctxAdmin.getAttributes().put(ContextAttributes.SETTINGS, settings);
-      
+
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         cleanDirectory(storeDirectory);
         store = new InscriptionStoreXML(storeDirectory, ctxAdmin);
       }
-      
+
       ctxAdmin.getAttributes().put(ContextAttributes.APP_STORE, store);
 
       this.component.getDefaultHost().attach(getAttachUrlAdmin(), new InscriptionApplication(ctxAdmin));
@@ -261,7 +253,7 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
     item.setLastName("lastName");
     item.setComment("comment");
     item.setEmail("m.gond@akka.eu");
-    item.setPassword("password");
+    item.setPassword("mOtDePaSsE1");
 
     assertNone();
     userInscription(item);
@@ -328,7 +320,7 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
     Inscription item = new Inscription();
     item.setId("1000002");
     item.setIdentifier("1000002");
-    item.setPassword("password");
+    item.setPassword("mOtDePaSsE1");
     item.setFirstName("test-userInscription.firstName");
     item.setLastName("test-userInscription.lastName");
     item.setEmail("test-userInscription.email");
@@ -363,7 +355,7 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
     Response response = getResponse(MediaType.APPLICATION_JSON, result, Inscription.class);
     assertNotNull(response);
     LOGGER.info(response.toString());
-    assertTrue(response.getSuccess());
+    assertTrue(response.getMessage(), response.getSuccess());
     assertNotNull(response.getItem());
     assertEquals(item.getFirstName(), item.getFirstName());
     assertEquals(item.getLastName(), item.getLastName());
