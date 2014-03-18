@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -20,17 +20,17 @@ package fr.cnes.sitools.units.dimension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.measure.unit.Unit;
 
-import org.restlet.data.MediaType;
-import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
+import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
@@ -63,47 +63,54 @@ public final class DimensionCollectionResource extends AbstractDimensionResource
   @Post
   public Representation createDimension(Representation representation, Variant variant) {
     SitoolsDimension input = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      XstreamRepresentation<SitoolsDimension> xst = new XstreamRepresentation<SitoolsDimension>(representation);
-      xst.getXstream().alias("dimension", SitoolsDimension.class);
-      input = xst.getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-      // Parse the JSON representation to get the bean
-      JacksonRepresentation<SitoolsDimension> json = new JacksonRepresentation<SitoolsDimension>(representation,
-          SitoolsDimension.class);
-      input = json.getObject();
-    }
-    
-    if (getStore().retrieve(input.getName()) != null) {
-      Response response = new Response(false, "dimension.already.exists : " + input.getName());
-      return getRepresentation(response, variant);
-    }
 
-    if (!input.getName().matches("^[a-zA-Z0-9\\-\\.\\_]+$")) {
-      Response response = new Response(false, "dimension.name.malformed : " + input.getName());
-      return getRepresentation(response, variant);
-    }
+    try {
+      input = getObject(representation);
 
-    input.setId(input.getName());
-        
-    // Test to recognize units
-    for (SitoolsUnit unit : input.getUnits()) {
-      unit.setUnitName(unit.getUnitName().replaceAll("\\.", "\\*"));
-      unit.setUnitName(unit.getUnitName().replaceAll("\\*\\*", "\\^"));
-      unit = new SitoolsUnit(unit.getUnitName());
-      Unit<?> u = unit.getUnit();
-      if (u == null) {
-        Response response = new Response(false, "unit.definition.not.recognized : " + unit.getUnitName());
+      if (getStore().retrieve(input.getName()) != null) {
+        trace(Level.INFO, "Cannot create the unit system");
+        Response response = new Response(false, "dimension.already.exists : " + input.getName());
         return getRepresentation(response, variant);
       }
+
+      if (!input.getName().matches("^[a-zA-Z0-9\\-\\.\\_]+$")) {
+        trace(Level.INFO, "Cannot create the unit system");
+        Response response = new Response(false, "dimension.name.malformed : " + input.getName());
+        return getRepresentation(response, variant);
+      }
+
+      input.setId(input.getName());
+
+      // Test to recognize units
+      for (SitoolsUnit unit : input.getUnits()) {
+        unit.setUnitName(unit.getUnitName().replaceAll("\\.", "\\*"));
+        unit.setUnitName(unit.getUnitName().replaceAll("\\*\\*", "\\^"));
+        unit = new SitoolsUnit(unit.getUnitName());
+        Unit<?> u = unit.getUnit();
+        if (u == null) {
+          trace(Level.INFO, "Cannot create the unit system");
+          Response response = new Response(false, "unit.definition.not.recognized : " + unit.getUnitName());
+          return getRepresentation(response, variant);
+        }
+      }
+
+      SitoolsDimension output = getStore().create(input);
+
+      trace(Level.INFO, "Create the unit system " + output.getName());
+
+      Response response = new Response(true, output, SitoolsDimension.class, "dimension");
+      return getRepresentation(response, variant);
     }
-
-    SitoolsDimension output = getStore().create(input);
-
-    Response response = new Response(true, output, SitoolsDimension.class, "dimension");
-    return getRepresentation(response, variant);
+    catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the unit system");
+      getLogger().log(Level.INFO, null, e);
+      throw e;
+    }
+    catch (Exception e) {
+      trace(Level.INFO, "Cannot create the unit system");
+      getLogger().log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
   }
 
   @Override
@@ -126,6 +133,7 @@ public final class DimensionCollectionResource extends AbstractDimensionResource
     }
     int total = resourceArray.size();
     resourceArray = getStore().getPage(filter, resourceArray);
+    trace(Level.FINE, "View available unit systems");
     Response response = new Response(true, resourceArray, SitoolsDimension.class, "dimensions");
     response.setTotal(total);
     return getRepresentation(response, variant);
