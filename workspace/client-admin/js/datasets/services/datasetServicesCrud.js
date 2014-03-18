@@ -29,7 +29,8 @@ Ext.namespace('sitools.admin.datasets.services');
  * @extends Ext.grid.GridPanel
  */
 // ExtJS4.3 'Ext.grid.EditorGridPanel'
-Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ext.grid.plugin.RowEditing',
+Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-dataset_services',
     border : false,
     height : 300,
@@ -38,29 +39,29 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
     urlGrid : null,    
     conflictWarned : false,
     clicksToEdit: 1,
+    forceFit : true,
     viewConfig : {
-        forceFit : true,
         autoFill : true,
         allLoaded : false,
-        getRowClass : function (row, index, rowParams, store) {
-            var cls = '';
-            if (this.allLoaded) {
-                if (index === 0) {
-                    this.message = "";
-                }
-                var data = row.data;
-                if (data.modelVersion !== data.definitionVersion && !Ext.isEmpty(data.definitionVersion)) {
-                    this.message += "Resources " + data.name + " definition (v" + data.modelVersion + ") may conflict with current class version : "
-                            + data.definitionVersion + "<br/>";                        
-                    cls = "red-row";
-                }
-                if (!this.conflictWarned && !Ext.isEmpty(this.message) && index === store.getCount() - 1) {
-                    Ext.Msg.alert("warning.version.conflict", this.message);
-                    this.conflictWarned = true;
-                }
-            }
-            return cls; 
-        } 
+//        getRowClass : function (row, index, rowParams, store) {
+//            var cls = '';
+//            if (this.allLoaded) {
+//                if (index === 0) {
+//                    this.message = "";
+//                }
+//                var data = row.data;
+//                if (data.modelVersion !== data.definitionVersion && !Ext.isEmpty(data.definitionVersion)) {
+//                    this.message += "Resources " + data.name + " definition (v" + data.modelVersion + ") may conflict with current class version : "
+//                            + data.definitionVersion + "<br/>";                        
+//                    cls = "red-row";
+//                }
+//                if (!this.conflictWarned && !Ext.isEmpty(this.message) && index === store.getCount() - 1) {
+//                    Ext.Msg.alert("warning.version.conflict", this.message);
+//                    this.conflictWarned = true;
+//                }
+//            }
+//            return cls; 
+//        } 
     },
     initComponent : function () {
         this.appClassName = "fr.cnes.sitools.dataset.DataSetApplication";
@@ -106,14 +107,15 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
             selectOnFocus : true,            
             listeners : {
                 scope : this,
-                select : function (combo, rec, index) {
+                select : function (combo, records, index) {
+                    var rec = records[0];
                     this.parentId = rec.data.id;
                     if (!Ext.isEmpty(rec.data.type)) {
                         this.appClassName = rec.data.type;
                     }    
                     this.savePropertiesBtn.removeClass('not-save-textfield');
                     var url = this.urlDatasetAllServices.replace('{idDataset}', this.parentId);
-                    this.httpProxyResources.setUrl(url, true);
+                    this.httpProxyResources.url = url;
                     this.getStore().removeAll();
                     this.getStore().load();
                 }
@@ -177,7 +179,8 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
             }
         });
 
-        var visible = new Ext.grid.CheckColumn({
+        var visible = {
+            xtype : 'checkcolumn',
             header : i18n.get('headers.visible') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'visible',
             width : 55,
@@ -187,7 +190,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
                     this.savePropertiesBtn.addClass('not-save-textfield');
                 }
             }
-        });
+        };
         
         this.columns = new Ext.grid.ColumnModel({
             defaults : {
@@ -219,31 +222,34 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
                 header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'label',
                 width : 140,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     listeners : {
                         scope : this,
                         change : function (textfield, newValue, oldValue) {
-                            this.savePropertiesBtn.addClass('not-save-textfield');
+                            this.savePropertiesBtn.addCls('not-save-textfield');
                         }
                     }
-                })
+                }
             }, {
                 header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'category',
                 width : 150,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     listeners : {
                         scope : this,
                         change : function (textfield, newValue, oldValue) {
-                            this.savePropertiesBtn.addClass('not-save-textfield');
+                            this.savePropertiesBtn.addCls('not-save-textfield');
                         }
                     }
-                })
+                }
             }, {
                 header : 'Position' + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'position',
                 width : 100,
-                editor: new Ext.form.ComboBox({
+                editor: {
+                    xtype : 'combo',
                     typeAhead : true,
                     triggerAction : 'all',
                     lazyRender : true,
@@ -259,10 +265,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
                     listeners : {
                         scope : this,
                         change : function (textfield, newValue, oldValue) {
-                            this.savePropertiesBtn.addClass('not-save-textfield');
+                            this.savePropertiesBtn.addCls('not-save-textfield');
                         }
                     }
-                })
+                }
             }, {
                 header : i18n.get('label.icon'),
                 dataIndex : 'icon',
@@ -277,7 +283,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
             }, visible]
         });
         
-        this.plugins = [ visible ];
+        this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
+            pluginId : 'cellEditing',
+            clicksToEdit: 2
+        })];
 
         this.savePropertiesBtn = new Ext.Button({
             text : i18n.get('label.saveProperties'),
@@ -339,8 +348,8 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
         
         this.listeners = {
             scope : this, 
-            celldblclick : function (grid, row, col) {
-                if (grid.getColumnModel().isCellEditable(col, row)) {
+            celldblclick : function (grid, td, cellIndex, record, tr, rowIndex) {
+                if (this.getPlugin('cellEditing').isCellEditable(cellIndex, rowIndex)) {
                     return;
                 }
                 this.onModify();
@@ -363,8 +372,6 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { extend : 'Ex
         var parentId = this.comboParents.getValue();
         
         var urlParent = this.urlDatasets + "/" + parentId;
-        
-        
 
         if (type === "GUI") {
             var gui = new sitools.admin.datasets.services.datasetServicesProp({

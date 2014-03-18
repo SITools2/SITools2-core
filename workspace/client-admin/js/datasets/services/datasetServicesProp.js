@@ -57,26 +57,25 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ex
 
         this.title = this.action === "create" ? i18n.get('label.create' + this.parentType + 'Resource') : i18n.get('label.modify' + this.parentType + 'Resource'); 
 
-        var expander = new Ext.ux.grid.RowExpander({
-            tpl : new Ext.XTemplate(
-                '<tpl>' +
-	                '<div class="detail">' +
-	                    '<span style="font-weight:bold;">Author :&nbsp;</span>{author}' +
-	                '</div>' +
-                '</tpl>',
-                {
-                    compiled : true,
-                    descEmpty : function (description) {
-                        return Ext.isEmpty(description);
-                    }
-                }),
+        var expander = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
+            '<tpl>' +
+                '<div class="detail">' +
+                    '<span style="font-weight:bold;">Author :&nbsp;</span>{author}' +
+                '</div>' +
+            '</tpl>',
+            {
+                compiled : true,
+                descEmpty : function (description) {
+                    return Ext.isEmpty(description);
+                }
+            }),
             expandOnDblClick : true
-        });
+        };
         
         this.gridDatasetServices = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             layout : "fit",
             id : 'gridDatasetServices',
             title : i18n.get('title.datasetServiceIHM'),
@@ -132,9 +131,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ex
                 } ],
                 listeners :  {
                     load : function (store, records) {
-                        this.gridDatasetServices.getSelectionModel().lock();
+                        this.gridDatasetServices.getSelectionModel().setLocked(true);
                         this.loadDependencies(records, function () {
-                            this.gridDatasetServices.getSelectionModel().unlock();
+                            this.gridDatasetServices.getSelectionModel().setLocked(false);
                         }, this);
                                               
                     },
@@ -146,7 +145,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ex
                 defaults : {
                     sortable : true
                 },
-                columns : [ expander, {
+                columns : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
                     width : 100,
@@ -166,9 +165,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ex
                     dataIndex : 'version',
                     width : 200,
                     sortable : false
-                } ]
+                }]
             }),
-            plugins : expander            
+            plugins : [expander]            
         });
 
         var comboSelectionType = new Ext.form.Hidden({

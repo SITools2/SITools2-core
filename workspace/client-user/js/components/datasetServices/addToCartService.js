@@ -243,7 +243,8 @@ Ext.define('sitools.user.component.dataviews.services.addToCartService', {
 });
 
 sitools.user.component.dataviews.services.addToCartService.getParameters = function() {
-	var checkColumn = new Ext.grid.CheckColumn({
+	var checkColumn = {
+	    xtype : 'checkcolumn',
 		header : i18n.get('headers.exportData'),
 		tooltip : i18n.get('headers.helpExportData'),
 		dataIndex : 'isDataExported',
@@ -268,7 +269,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 								v ? '-on' : '', cmp.createId(), this.id);
 			}
 		}
-	});
+	};
 	return [{
 		jsObj : "Ext.form.Label",
 		config : {
@@ -304,9 +305,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 					bottom : 0,
 					left : 0
 				},
-				viewConfig : {
-					forceFit : true
-				},
+				forceFit : true,
 				store : new Ext.data.JsonStore({
 					fields : ['dataIndex', 'columnAlias', 'primaryKey',
 							'columnRenderer', 'featureType'],
@@ -319,11 +318,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 							Ext.each(records, function(rec) {
 								var columnRenderer = rec.get("columnRenderer");
 								if (!Ext.isEmpty(columnRenderer)) {
-									rec
-											.set(
-													"featureType",
-													ColumnRendererEnum
-															.getColumnRendererCategoryFromBehavior(columnRenderer.behavior));
+									rec.set("featureType", ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior));
 								}
 							});
 
@@ -351,10 +346,7 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 					bottom : 0,
 					left : 10
 				},
-				viewConfig : {
-					forceFit : true
-					,
-				},
+				forceFit : true,
 				store : new Ext.data.JsonStore({
 					fields : ['dataIndex', 'columnAlias', 'primaryKey',
 							'columnRenderer', 'isDataExported'],
@@ -407,8 +399,8 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 			setValue : function(value) {
 				var columnsToExport = Ext.util.JSON.decode(value);
 				Ext.each(columnsToExport, function(column) {
-							var recordColumn = new Ext.data.Record(column);
-							this.grid2.getStore().add(recordColumn);
+//							var recordColumn = new Ext.data.Record(column);
+							this.grid2.getStore().add(column);
 						}, this);
 				this.value = value;
 			}

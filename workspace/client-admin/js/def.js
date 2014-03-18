@@ -697,30 +697,30 @@ Ext.override(Ext.menu.DatePicker, {
 //    }
 //});
 
-Ext.override(Ext.slider.SingleSlider, {
-	listeners : {
-		afterrender : function (slider) {
-			slider.syncThumb();
-		}
-	}, 
-	doSnap : function (value) {
-        if (!(this.increment && value)) {
-            return value;
-        }
-        var newValue = value,
-            inc = this.increment,
-            m = value % inc;
-        if (m !== 0) {
-            newValue -= m;
-            if (m * 2 >= inc) {
-                newValue += inc;
-            } else if (m * 2 < -inc) {
-                newValue -= inc;
-            }
-        }
-        if (Ext.isString(newValue)) {
-			newValue = parseFloat(newValue);
-        }
-        return newValue.constrain(this.minValue,  this.maxValue);
-    }
-});
+//Ext.override(Ext.slider.Single, {
+//	listeners : {
+//		afterrender : function (slider) {
+//			slider.syncThumbs();
+//		}
+//	}, 
+//	doSnap : function (value) {
+//        if (!(this.increment && value)) {
+//            return value;
+//        }
+//        var newValue = value,
+//            inc = this.increment,
+//            m = value % inc;
+//        if (m !== 0) {
+//            newValue -= m;
+//            if (m * 2 >= inc) {
+//                newValue += inc;
+//            } else if (m * 2 < -inc) {
+//                newValue -= inc;
+//            }
+//        }
+//        if (Ext.isString(newValue)) {
+//			newValue = parseFloat(newValue);
+//        }
+//        return newValue.constrain(this.minValue,  this.maxValue);
+//    }
+//});

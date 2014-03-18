@@ -51,7 +51,7 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
-                    this.loadGraph(rec.data.id);
+                    this.loadGraph(rec[0].data.id);
                 }
 
             }
@@ -458,7 +458,8 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', { extend : 'Ext.tree.
  * Custom TreeLoader to deal with JSON returned from the server
  */
 // TODO ExtJS3 Ext.tree.TreeLoader > ?
-Ext.define('sitools.component.graphs.graphTreeLoader', { extend : 'Ext.tree.TreeLoader', 
+Ext.define('sitools.component.graphs.graphTreeLoader', { 
+    extend : 'Ext.tree.TreeLoader', 
 
     idGraph : null,
 

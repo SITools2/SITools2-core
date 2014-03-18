@@ -62,22 +62,30 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             flex: 1,
             dataIndex: 'category'
         }, {
-            header : "",
+            xtype: 'actioncolumn',
+            width: 30,
             dataIndex : "url",
-            width : 20,
-            sortable : false, 
-            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-                var applicationStatus = record.get("status");
-                if (Ext.isEmpty(applicationStatus) || "INACTIVE" == applicationStatus) {
-                    return null;
-                } else {
-                    return String.format("<a onClick='onClickOption(\"{0}\"); return false;' href=#>{1}</a>", value, String.format(
-                                                "<img alt={0} src='" + loadUrl.get('APP_URL') + "/common/res/images/icons/wadl.gif'>", i18n
-                                                        .get('label.wadl')));    
+            sortable : false,
+            items : [{
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
+                tooltip : i18n.get('label.wadl'),
+                scope : this,
+                handler : function (view, rowIndex, colIndex, item, e, record, row) {
+                    onClickOption(record.data.url);
                 }
-                
-                
-            }
+            }]
+//            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+//                var applicationStatus = record.get("status");
+//                if (Ext.isEmpty(applicationStatus) || "INACTIVE" == applicationStatus) {
+//                    return null;
+//                } else {
+//                    return String.format("<a onClick='onClickOption(\"{0}\"); return false;' href=#>{1}</a>", value, String.format(
+//                                                "<img alt={0} src='" + loadUrl.get('APP_URL') + "/common/res/images/icons/wadl.gif'>", i18n
+//                                                        .get('label.wadl')));    
+//                }
+//                
+//                
+//            }
         }];
 
         this.tbar = {

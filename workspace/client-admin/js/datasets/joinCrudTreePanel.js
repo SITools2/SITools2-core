@@ -1,4 +1,4 @@
-Ext.define('sitools.component.datasets.joinCrudTreePanel', { 
+Ext.define('sitools.component.datasets.joinCrudTreePanel', {
     extend : 'Ext.tree.Panel',
     loader : null,
     projectId : null,
@@ -6,7 +6,8 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
     autoScroll : true, 
     rootVisible : true,
     layout : 'fit',
-    enableDD: false,
+    useArrows: true,
+    
     initComponent : function () {
             
 //        this.root = Ext.create('Ext.data.NodeInterface', {
@@ -20,7 +21,8 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             root : {
                 text : this.name,
                 leaf : false,
-                expanded : true
+                expanded : true,
+                iconCls : 'x-tree-icon-parent'
             },
             proxy : {
                 type : 'memory',
@@ -35,8 +37,16 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 items : [{
                     id : 'create-node',
                     text : i18n.get("Add Table"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png', 
+                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png',
+                    defaults: {
+                        scope : this,
+                        handler: this._cxtMenuHandler
+                    },
                     menu : {
+                        defaults: {
+                            scope : this,
+                            handler: this._cxtMenuHandler
+                        },
                         items : [ {
                             id : 'INNER_JOIN',
                             action : "addTable",
@@ -61,21 +71,13 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                             id : 'RIGHT_OUTER_JOIN',
                             action : "addTable",
                             text : i18n.get("label.rightOuterJoin")
-                        }],
-                        listeners : {
-                            scope : this,
-                            itemclick : this._cxtMenuHandler
-                        }
+                        }]
                     }
                 }, {
                     id : 'edit-root',
                     text : i18n.get("label.modify"), 
                     icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png'
-                }],
-                listeners : {
-                    scope : this,
-                    itemclick : this._cxtMenuHandler
-                }
+                }]
             }),
             contextMenuNode : new Ext.menu.Menu({
                 items : [ {
@@ -148,14 +150,15 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             }),
             listeners : {
                 scope : this,
-                contextmenu : function (node, e) {
+                itemcontextmenu : function (view, record, item, index, e) {
                     e.stopEvent();
                     // Register the context node with the menu so that a Menu
                     // Item's handler function can access
                     // it via its parentMenu property.
-                    node.select();
+                    
+                    var node = this.getRootNode().getChildAt(index) || this.getRootNode();
                     var c;
-                    if (node == this.getRootNode()) {
+                    if (node.internalId == this.getRootNode().internalId) {
                         c = node.getOwnerTree().contextMenuRoot;
                         c.contextNode = this.getRootNode();
                     }
@@ -171,7 +174,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                     c.showAt(e.getXY());
                 }, 
                 beforenodedrop : function (dropEvent) {
-                    if (dropEvent.target.attributes.type == dropEvent.data.node.attributes.type) {
+                    if (dropEvent.target.raw.type == dropEvent.data.node.raw.type) {
                         return false;
                     }
                     
@@ -179,6 +182,146 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 }
             }
         });
+        
+        this.rootToolbarButtons = [{
+            id : 'create-node',
+            text : i18n.get("Add Table"), 
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png',
+            menu : {
+                defaults: {
+                    scope : this,
+                    handler: this._cxtMenuHandler
+                },
+                items : [{
+                    id : 'INNER_JOIN',
+                    action : "addTable",
+                    text : i18n.get("label.innerJoin")
+                }, {
+                    id : 'CROSS_JOIN',
+                    action : "addTable",
+                    text : i18n.get("label.crossJoin")
+                }, {
+                    id : 'LEFT_JOIN',
+                    action : "addTable",
+                    text : i18n.get("label.leftJoin")
+                }, {
+                    id : 'LEFT_OUTER_JOIN',
+                    action : "addTable",
+                    text : i18n.get("label.leftOuterJoin")
+                }, {
+                    id : 'RIGHT_JOIN',
+                    action : "addTable",
+                    text : i18n.get("label.rightJoin")
+                }, {
+                    id : 'RIGHT_OUTER_JOIN',
+                    action : "addTable",
+                    text : i18n.get("label.rightOuterJoin")
+                }]
+            }
+        }, {
+            id : 'edit-root',
+            text : i18n.get("label.modify"), 
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            scope : this,
+            handler: this._cxtMenuHandler
+        }];
+        
+        this.nodeToolbarButtons = [{
+            id : 'add-joinCondition',
+            text : i18n.get("Add Join Condition"), 
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_datasets.png',
+            scope : this,
+            handler: this._cxtMenuHandler
+        }, {
+            id : 'edit-node',
+            text : i18n.get("label.modify"), 
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            scope : this,
+            handler: this._cxtMenuHandler
+        }, {
+            id : 'edit-jointure',
+            text : i18n.get("editJointure"), 
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            scope : this,
+            handler: this._cxtMenuHandler,
+            menu : {
+                defaults: {
+                    scope : this,
+                    handler: this._cxtMenuHandler
+                },
+                items : [ {
+                    id : 'INNER_JOIN',
+                    action : "editJointure",
+                    text : i18n.get("label.innerJoin")
+                }, {
+                    id : 'CROSS_JOIN',
+                    action : "editJointure",
+                    text : i18n.get("label.crossJoin")
+                }, {
+                    id : 'LEFT_JOIN',
+                    action : "editJointure",
+                    text : i18n.get("label.leftJoin")
+                }, {
+                    id : 'LEFT_OUTER_JOIN',
+                    action : "editJointure",
+                    text : i18n.get("label.leftOuterJoin")
+                }, {
+                    id : 'RIGHT_JOIN',
+                    action : "editJointure",
+                    text : i18n.get("label.rightJoin")
+                }, {
+                    id : 'RIGHT_OUTER_JOIN',
+                    action : "editJointure",
+                    text : i18n.get("label.rightOuterJoin")
+                }]
+            }
+        }, {
+            id : 'delete-node',
+            text : i18n.get("label.delete"), 
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png',
+            scope : this,
+            handler: this._cxtMenuHandler
+        }];
+        
+        this.leafToolbarButtons = [{
+            id : 'edit-node',
+            text : i18n.get("label.modify"),
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            scope : this,
+            handler: this._cxtMenuHandler
+        }, {
+            id : 'delete-node',
+            text : i18n.get("label.delete"), 
+            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png',
+            scope : this,
+            handler: this._cxtMenuHandler
+        }];
+        
+        this.tbar = {
+            xtype : 'toolbar',
+            items : this.rootToolbarButtons
+        };
+        
+        this.listeners = {
+                scope : this,
+                itemclick : function (view, record, item, index) {
+                    var toolbar = this.down('toolbar');
+                    toolbar.removeAll();
+                    
+                    var node = this.getSelectionModel().getSelection()[0];
+                    if (node.isRoot()) {
+                        toolbar.add(this.rootToolbarButtons);
+                    } else {
+                        if (node.isLeaf()) {
+                            toolbar.add(this.leafToolbarButtons);
+                        } else {
+                            toolbar.add(this.nodeToolbarButtons);
+                        }
+                    }
+                    
+                }
+        };
+        
         sitools.component.datasets.joinCrudTreePanel.superclass.initComponent.call(this);
     },
 
@@ -197,9 +340,9 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 scope : this,
                 fn : function (btn, text) {
                     if (btn == 'yes') {
-                        var n = item.parentMenu.contextNode;
-                        if (n.parentNode) {
-                            n.remove();
+                        var node = this.getSelectionModel().getSelection()[0];
+                        if (!node.isRoot()) {
+                            node.remove();
                         }
                     }
                 }
@@ -208,7 +351,8 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             break;
 
         case 'add-joinCondition':
-            node = item.parentMenu.contextNode;
+//            node = item.parentMenu.contextNode;
+            node = this.getSelectionModel().getSelection()[0];
             
             // this.doLayout();
             up = new sitools.admin.datasets.joinConditionWin({
@@ -227,7 +371,8 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
         case 'RIGHT_JOIN':
         case 'RIGHT_OUTER_JOIN':
             if (item.action == "addTable") {
-                node = item.parentMenu.parentMenu.contextNode;
+//                node = item.parentMenu.parentMenu.contextNode;
+                node = this.getSelectionModel().getSelection()[0];
 
                 // this.doLayout();
                 up = new sitools.admin.datasets.joinTableWin({
@@ -239,14 +384,18 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 up.show();
             }
             if (item.action == "editJointure") {
-                node = item.parentMenu.parentMenu.contextNode;
-                node.attributes.typeJointure = item.id;
-                node.setText(this.getNodeText(node.attributes));
+//                node = item.parentMenu.parentMenu.contextNode;
+                node = this.getSelectionModel().getSelection()[0];
+                
+                node.raw.typeJointure = item.id;
+                node.set('text', this.getNodeText(node.raw));
             }
             break;
 
         case 'edit-node':
-            node = item.parentMenu.contextNode;
+//            node = item.parentMenu.contextNode;
+            node = this.getSelectionModel().getSelection()[0];
+            
             if (node.isLeaf()) {
                 up = new sitools.admin.datasets.joinConditionWin({
                     node : node,
@@ -258,13 +407,15 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                     node : node,
                     mode : 'edit', 
                     datasetSelectTables : this.datasetSelectTables, 
-                    typeJointure : node.attributes.typeJointure
+                    typeJointure : node.raw.typeJointure
                 });
             }
             up.show();
             break;
         case 'edit-root' : 
-            node = item.parentMenu.contextNode;
+//            node = item.parentMenu.contextNode;
+            node = this.getSelectionModel().getSelection()[0];
+            
             up = new sitools.admin.datasets.joinTableWin({
                 node : node,
                 mode : 'edit-root', 
@@ -291,7 +442,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 type : "table"
             });
             rootNode.text = rec.data.name;
-            Ext.apply(rootNode.attributes, {
+            Ext.apply(rootNode.raw, {
                 table : {
                     name : rec.data.name,
                     alias : rec.data.alias,
@@ -328,7 +479,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 leaf : false, 
                 expanded : true
             });
-            Ext.apply(rootNode.attributes, {
+            Ext.apply(rootNode.raw, {
                 table : mainTable
             });
         }
@@ -384,7 +535,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
 
         }
         else {
-            var table = ! Ext.isEmpty(node.table) ? node.table : node.attributes.table;
+            var table = ! Ext.isEmpty(node.table) ? node.table : node.raw.table;
             if (!Ext.isEmpty(table)) {
                 return node.typeJointure + " " + table.name;
             }

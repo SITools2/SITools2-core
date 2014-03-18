@@ -35,10 +35,12 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
         singleSelect : true
     }),
     pageSize : 15,
+    forceFit : true,
 
     initComponent : function () {
+        
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
-        this.iconCls = loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png';
+//        this.iconCls = loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png';
 
         this.store = new Ext.data.JsonStore({
             root : 'items',

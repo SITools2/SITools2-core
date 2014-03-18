@@ -55,8 +55,11 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
                                     minPriorityRec = recs[i];
                                 }                                
                             }
+                            tabRec = [];
+                            tabRec[0] = minPriorityRec;
+                            
                             this.comboDatasetViews.setValue(minPriorityrec.data.id);
-                            this.comboDatasetViews.fireEvent("select", this.comboDatasetViews, minPriorityRec);
+                            this.comboDatasetViews.fireEvent("select", this.comboDatasetViews, tabRec);
                         }
                     }
                 }
@@ -142,7 +145,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
     buildViewConfig : function (recSelected) {
         try {
             this.parametersFieldset.removeAll();
-            var getParametersMethod = eval(recSelected.json.jsObject + ".getParameters");
+            var getParametersMethod = eval(recSelected[0].data.jsObject + ".getParameters");
             if (!Ext.isFunction(getParametersMethod)) {
                 Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod <br/>' + getParametersMethod));
                 return;

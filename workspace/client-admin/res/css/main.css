@@ -189,6 +189,17 @@ pre {
 	font-weight: bold;
 }
 
+.STOPPED {
+	color: #157FCC;
+	font-weight: bold;
+}
+
+.STARTED {
+	color: #14BD12;
+	font-weight: bold;
+}
+
+
 /* .x-panel-body-default {
 	border: none !important;
 } */
@@ -218,3 +229,5 @@ pre {
 	border-radius : 1px !important;
 	-webkit-box-shadow: 1px 1px 6px 2px #EDF4FF !important;
 }
+
+$toolbar-background-color : #FFF;

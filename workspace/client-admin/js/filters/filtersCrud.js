@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.filters');
 
-Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.component.filters.filtersCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-filters',
     border : false,
     height : 300,
@@ -31,29 +32,28 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
     filterChainedId : {},
     // loadMask: true,
     conflictWarned : false,
+    forceFit : true,
     viewConfig : {
-        forceFit : true,
         autoFill : true, 
-		getRowClass : function (row, index) { 
-			var cls = ''; 
-			var data = row.data;
-			if (data.classVersion !== data.currentClassVersion
-			    && data.currentClassVersion !== null 
-				&& data.currentClassVersion !== undefined) {
-				if (!this.conflictWarned) {
-					Ext.Msg.alert("warning.version.conflict", "Filter " 
-					+ data.name 
-					+ " definition (v" 
-					+ data.classVersion 
-					+ ") may conflict with current class version : " 
-					+ data.currentClassVersion);
-					this.conflictWarned = true;
-				}
-				cls = "red-row";
-			}
-			return cls; 
-		} 
-		
+//		getRowClass : function (row, index) { 
+//			var cls = ''; 
+//			var data = row.data;
+//			if (data.classVersion !== data.currentClassVersion
+//			    && data.currentClassVersion !== null 
+//				&& data.currentClassVersion !== undefined) {
+//				if (!this.conflictWarned) {
+//					Ext.Msg.alert("warning.version.conflict", "Filter " 
+//					+ data.name 
+//					+ " definition (v" 
+//					+ data.classVersion 
+//					+ ") may conflict with current class version : " 
+//					+ data.currentClassVersion);
+//					this.conflictWarned = true;
+//				}
+//				cls = "red-row";
+//			}
+//			return cls; 
+//		} 
 	},
 
     initComponent : function () {
@@ -65,6 +65,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
             restful : true,
             method : 'GET'
         });
+        
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
             root : "filterChainedModel.filters",
@@ -127,8 +128,9 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
-                    this.datasetId = rec.data.id;
-                    this.httpFilterForms.setUrl(this.urlDatasets + "/" + this.datasetId + this.filterUrlPart, true);
+                    this.datasetId = rec[0].data.id;
+                    
+                    this.httpFilterForms.url = this.urlDatasets + "/" + this.datasetId + this.filterUrlPart;
                     this.getStore().removeAll();
                     this.getStore().load();
 
@@ -147,7 +149,11 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 150,
-                sortable : true
+                sortable : true,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
@@ -162,7 +168,11 @@ Ext.define('sitools.component.filters.filtersCrudPanel', { extend : 'Ext.grid.Pa
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
                 width : 50,
-                sortable : false
+                sortable : false,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value;
+                    return value;
+                }
             }, {
                 header : i18n.get('label.className'),
                 dataIndex : 'className',

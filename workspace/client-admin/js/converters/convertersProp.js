@@ -45,8 +45,9 @@ Ext.define('sitools.admin.converters.convertersProp', {
 		
         this.title = this.action == "create" ? i18n.get('label.createConverter') : i18n.get('label.modifyConverter'); 
         
-        var expander = new Ext.grid.plugin.RowExpander({
-            tpl : new Ext.XTemplate(
+        var expander = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
                 '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
                 '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
                 {
@@ -56,7 +57,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                     }
                 }),
             expandOnDblClick : true
-        });
+        };
 
         this.storeGridConverter = Ext.create('Ext.data.JsonStore', {
             root : 'data',
@@ -133,22 +134,23 @@ Ext.define('sitools.admin.converters.convertersProp', {
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
-//            plugins : [expander]
+            plugins : [expander]
         });
 
         
-        var expanderGridFieldMapping = new sitools.widget.ViolationRowExpander({
-            tpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-                {
-                    compiled : true,
-                    descEmpty : function (description) {
-                        return Ext.isEmpty(description);
-                    }
-                }),
+        var expanderGridFieldMapping = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
+            '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
+            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+            {
+                compiled : true,
+                descEmpty : function (description) {
+                    return Ext.isEmpty(description);
+                }
+            }),
             expandOnDblClick : false
-        });
+        };
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 2
@@ -294,7 +296,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                     }
                 }
             },
-            plugins : [/*expanderGridFieldMapping,*/ cellEditing],
+            plugins : [expanderGridFieldMapping, cellEditing],
         });
 
         // set the search form

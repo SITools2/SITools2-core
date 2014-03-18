@@ -33,7 +33,7 @@ Ext.namespace('sitools.component.datasets');
 Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-datasetsMultiTablesPanel',
-	closeAction : 'close', 
+//	closeAction : 'close', 
     initComponent : function () {
         Ext.apply(this, sitools.admin.datasets.abstractDatasetWin);
 		//do it when loadUrl is ready.
@@ -382,6 +382,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
         }
         if (this.panelWhere.getWizardWhereClause()) {
         	this.panelWhere.getWizardWhereClause().getStore().each(function (item) {
+        	    
                 putObject.predicat.push({
                     closedParenthesis : item.data.parentheseFermante,
                     openParenthesis : item.data.parentheseOuvrante,
@@ -486,7 +487,10 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                     this.close();
                     this.store.reload();
                 },
-                failure : alertFailure
+                failure : alertFailure,
+                callback : function () {
+                    this.destroyCkeditor();
+                }
             });
         } else {
             Ext.Ajax.request({
@@ -503,12 +507,14 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                     this.close();
                     this.store.reload();
 				},
-                failure : alertFailure
+                failure : alertFailure,
+                callback : function () {
+                    this.destroyCkeditor();
+                }
             });
-
         }
-
-    }, 
+    },
+    
     /**
      * Validate the Dataset : 
      *  - One and only one primary key

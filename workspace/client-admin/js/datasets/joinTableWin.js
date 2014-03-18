@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.joinTableWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.joinTableWin', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.joinTableWin', { 
+    extend : 'Ext.Window',
     width : 350,
     height : 300, 
     modal : true,
@@ -37,25 +38,6 @@ Ext.define('sitools.admin.datasets.joinTableWin', { extend : 'Ext.Window',
     initComponent : function () {
         this.title = i18n.get('label.tables');
         
-        var cm = new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                width : 160,
-                sortable : true,
-                dataIndex : 'name'
-            }, {
-                id : 'alias',
-                header : i18n.get('headers.tableAlias'),
-                width : 80,
-                sortable : true,
-                dataIndex : 'alias',
-                editor : new Ext.form.TextField({
-		            disabled : this.action == 'view' ? true : false
-                })
-            } ]
-        });
-
         /**
          * The store that contains the tables of a Dataset.
          * @type Ext.grid.ColumnModel
@@ -78,14 +60,31 @@ Ext.define('sitools.admin.datasets.joinTableWin', { extend : 'Ext.Window',
 
             ]
         });
+        
         store.add(this.datasetSelectTables.getStoreSelectedTables().data.items);
         
 
         this.grid = new Ext.grid.GridPanel({
 			layout : 'fit', 
             store : store,
-            cm : cm,
-            selModel : Ext.create('Ext.selection.RowModel',{
+            forceFit : true,
+            columns : [{
+                id : 'name',
+                header : i18n.get('headers.name'),
+                width : 160,
+                sortable : true,
+                dataIndex : 'name'
+            }, {
+                id : 'alias',
+                header : i18n.get('headers.tableAlias'),
+                width : 80,
+                sortable : true,
+                dataIndex : 'alias',
+                editor : new Ext.form.TextField({
+                    disabled : this.action == 'view' ? true : false
+                })
+            }],
+            selModel : Ext.create('Ext.selection.RowModel', {
 				singleSelect : true
 			}), 
 			autoScroll : true,
@@ -116,8 +115,8 @@ Ext.define('sitools.admin.datasets.joinTableWin', { extend : 'Ext.Window',
         var table = this.grid.getSelectionModel().getSelected();
         if(!Ext.isEmpty(table)){
 	        if (this.mode == 'edit') {
-	            this.node.setText(this.typeJointure + " " + table.data.name);
-	            this.node.attributes.table = {
+	            this.node.set('text', this.typeJointure + " " + table.data.name);
+	            this.node.raw.table = {
 					alias : table.data.alias,
 					name : table.data.name,
 					schema : table.data.schemaName
@@ -125,8 +124,8 @@ Ext.define('sitools.admin.datasets.joinTableWin', { extend : 'Ext.Window',
                 this.destroy();
 	            
 	        } else if (this.mode == "edit-root") {
-	            this.node.setText(table.data.name);
-	            this.node.attributes.table = {
+	            this.node.set('text', table.data.name);
+	            this.node.raw.table = {
 	                alias : table.data.alias,
 	                name : table.data.name,
 	                schema : table.data.schemaName

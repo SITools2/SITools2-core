@@ -32,7 +32,8 @@ Ext.namespace('sitools.component.filtersPlugins');
  * @class sitools.component.filtersPlugins.filtersPluginsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : 'Ext.Window',
+Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 500,
     modal : true,
@@ -45,23 +46,22 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
 
         this.title = this.action == "create" ? i18n.get('label.create' + this.parentType + 'Filter') : i18n.get('label.modify' + this.parentType + 'Filter'); 
 
-        var expander = new Ext.ux.grid.RowExpander({
-            tpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-                {
-                    compiled : true,
-                    descEmpty : function (description) {
-                        return Ext.isEmpty(description);
-                    }
-                }),
+        var expander = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
+            '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
+            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+            {
+                compiled : true,
+                descEmpty : function (description) {
+                    return Ext.isEmpty(description);
+                }
+            }),
             expandOnDblClick : true
-        });
+        };
         
         this.gridfilterPlugin = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             id : 'gridfilterPlugin',
             title : i18n.get('title.filterPlugin' + this.parentType + 'Class'),
             store : new Ext.data.JsonStore({
@@ -105,47 +105,37 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
                 ]
             }),
             
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ expander, {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.filterClassName'),
-                    dataIndex : 'filterClassName',
-                    width : 300,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.author'),
-                    dataIndex : 'classAuthor',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.version'),
-                    dataIndex : 'classVersion',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.classOwner'),
-                    dataIndex : 'classOwner',
-                    width : 100,
-                    sortable : true
-                } ]
-            }),
-            
-            
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.filterClassName'),
+                dataIndex : 'filterClassName',
+                width : 300,
+                sortable : true
+            }, {
+                header : i18n.get('label.author'),
+                dataIndex : 'classAuthor',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.version'),
+                dataIndex : 'classVersion',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.classOwner'),
+                dataIndex : 'classOwner',
+                width : 100,
+                sortable : true
+            }],
             listeners : {
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
             plugins : expander
-
         });
 
       
@@ -155,35 +145,41 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
             method : 'GET'
         });
         
-        var expanderGridFieldMapping = new sitools.widget.ViolationRowExpander({
-            tpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-                {
-                    compiled : true,
-                    descEmpty : function (description) {
-                        return Ext.isEmpty(description);
-                    }
-                }),
+        var expanderGridFieldMapping = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
+            '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
+            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+            {
+                compiled : true,
+                descEmpty : function (description) {
+                    return Ext.isEmpty(description);
+                }
+            }),
             expandOnDblClick : false
+        };
+        
+        
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
         });
         
-        this.gridFieldMapping = new Ext.grid.EditorGridPanel({
+        this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
+            forceFit : true,
             viewConfig : {
-                forceFit : true,
                 scope : this,
-                getRowClass : function (record, index, rowParams, store) {
-                    var cls = ''; 
-                    var violation = record.get("violation");
-                    if (!Ext.isEmpty(violation)) {
-                        if (violation.level == "CRITICAL") {
-                            cls = "red-row";
-                        } else if (violation.level == "WARNING") {
-                            cls = "orange-row";
-                        }
-                    }
-                    return cls;
-                }, 
+//                getRowClass : function (record, index, rowParams, store) {
+//                    var cls = ''; 
+//                    var violation = record.get("violation");
+//                    if (!Ext.isEmpty(violation)) {
+//                        if (violation.level == "CRITICAL") {
+//                            cls = "red-row";
+//                        } else if (violation.level == "WARNING") {
+//                            cls = "orange-row";
+//                        }
+//                    }
+//                    return cls;
+//                }, 
                 listeners : {
                     scope : this,
                     refresh : function (view) {
@@ -195,8 +191,14 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
                             if (!Ext.isEmpty(violation)) {
                                 var index = store.indexOf(record);
                                 //var view = this.scope.gridFieldMapping.getView();
-                                var htmlLineEl = view.getRow(index);
+                                var htmlLineEl = view.getNode(index);
                                 var el = Ext.get(htmlLineEl);
+                                
+                                if (violation.level == "CRITICAL") {
+                                    el.addCls('red-row');
+                                } else if (violation.level == "WARNING") {
+                                    el.addCls('orange-row');
+                                }
                                 
                                 var cls = (violation.level == "CRITICAL")
                                         ? "x-form-invalid-tip"
@@ -244,45 +246,40 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
                     name : 'violation'
                 }]
             }), 
-            bbar : new Ext.ux.StatusBar({
+            bbar : Ext.create('Ext.ux.StatusBar', {
                 id: 'statusBar',
                 hidden : true,
                 iconCls: 'x-status-error',
                 text : i18n.get("label.filtersPluginErrorValidationNotification")
             }),
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [expanderGridFieldMapping, {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.type'),
-                    dataIndex : 'type',
-                    width : 150,
-                    sortable : false
-                }, {
-                    header : i18n.get('label.value'),
-                    dataIndex : 'value',
-                    width : 230,
-                    sortable : false,
-                    editable : true,
-                    editor : new Ext.form.TextField()
-                } ]
-            }),
-            plugins : expanderGridFieldMapping
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.type'),
+                dataIndex : 'type',
+                width : 150,
+                sortable : false
+            }, {
+                header : i18n.get('label.value'),
+                dataIndex : 'value',
+                width : 230,
+                sortable : false,
+                editable : true,
+                editor : {
+                    xtype : 'textfield'
+                }
+            }],
+            plugins : [expanderGridFieldMapping, cellEditing]
         });
         
         
         // set the search form
         this.fieldMappingFormPanel = new Ext.FormPanel({
             height : 65,
-            frame : true,
+//            frame : true,
             defaultType : 'textfield',
             items : [{
                 fieldLabel : i18n.get('label.name'),
@@ -303,9 +300,6 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
             items : [ this.fieldMappingFormPanel, this.gridFieldMapping ]
         });
         
-        
-        
-
         this.tabPanel = new Ext.TabPanel({
             activeTab : 0,
             items : (this.action == "create") ? [ this.gridfilterPlugin, this.fieldMappingPanel ] : [
@@ -394,7 +388,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
             var form = this.fieldMappingFormPanel.getForm();
             rec.name = filterPlugin.name;
             rec.descriptionAction = filterPlugin.descriptionAction;
-            rec.data.id = filterPlugin.id;
+            rec.id = filterPlugin.id;
             rec.filterClassName = filterPlugin.filterClassName;
             form.setValues(rec);
             
@@ -405,7 +399,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { extend : '
                 for (var i = 0; i < parameters.length; i++) {
                     var recTmp = parameters[i];
                     if (action == "editDelete" && Ext.isEmpty(parameters[i].value)) {
-                        recTmp.set("value", "");
+                        recTmp.value = "";
                     }
                     store.add(recTmp);
                 }

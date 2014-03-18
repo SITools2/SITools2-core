@@ -21,7 +21,8 @@
 
 Ext.namespace('sitools.component.logs');
 
-Ext.define('sitools.component.logs.analogProp', { extend : 'Ext.panel.Panel',
+Ext.define('sitools.component.logs.analogProp', { 
+    extend : 'Ext.panel.Panel',
     alias : 'widget.s-analog',
     border : false,
     height : 480,
@@ -48,7 +49,18 @@ Ext.define('sitools.component.logs.analogProp', { extend : 'Ext.panel.Panel',
                 layout : "fit",
                 padding : 10
             };
-        this.panLog = new Ext.ux.ManagedIFrame.Panel(htmlReaderCfg);
+        this.panLog = Ext.create('Ext.panel.Panel', {
+            autoEl: {
+                tag: 'iframe',
+                border : false,
+                layout : 'fit',
+                src : this.url + '?_dc=' + new Date().getTime()
+            },
+            id : 'log',
+            layout : "fit",
+            padding : 10
+        });
+        
         this.items = [this.panLog];
         
         sitools.component.logs.analogProp.superclass.initComponent.call(this);

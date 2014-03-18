@@ -34,7 +34,8 @@ Ext.namespace('sitools.admin.storages');
  * @class sitools.admin.storages.storagesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.storages.storagesCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-storages',
     border : false,
     height : 300,
@@ -44,6 +45,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
     forceFit : true,
 
     initComponent : function () {
+        
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories';
         this.urlAuthorizations = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
         this.urlFilters = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_FILTERS_CLASSES_URL');
@@ -87,62 +89,60 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', { extend : 'Ext.grid.Pane
                 type : 'string'
             } ]
         });
-        var deeplyAccessible = new Ext.grid.CheckColumn({
+        var deeplyAccessible = {
+            xtype : 'checkcolumn',
             header : i18n.get('label.deeplyAccessible'),
             dataIndex : 'deeplyAccessible',
             width : 80, 
             tooltip : i18n.get('label.deeplyAccessible')
-        });
-        var listingAllowed = new Ext.grid.CheckColumn({
+        };
+        
+        var listingAllowed = {
+            xtype : 'checkcolumn',
             header : i18n.get('label.listingAllowed'),
             dataIndex : 'listingAllowed',
             width : 55, 
             tooltip : i18n.get('label.listingAllowed')
-        });
-        var modifiable = new Ext.grid.CheckColumn({
+        };
+        
+        var modifiable = {
+            xtype : 'checkcolumn',
             header : i18n.get('label.modifiable'),
             dataIndex : 'modifiable',
             width : 55, 
             tooltip : i18n.get('label.modifiable')
-        });
+        };
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : false
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 50,
-                sortable : true,
-                renderer : function (value, meta, record) {
-                    meta.style = "font-weight: bold;";
-                    return value;
-                }
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 120
-            }, {
-                header : i18n.get('label.localPath'),
-                dataIndex : 'localPath',
-                width : 150
-            }, {
-                header : i18n.get('label.attachUrl'),
-                dataIndex : 'attachUrl',
-                width : 150
-            }, deeplyAccessible, listingAllowed, modifiable, {
-                header : i18n.get('label.status'),
-                dataIndex : 'status',
-                width : 50,
-                renderer : function (value, meta, record, index, colIndex, store) {
-                    meta.tdCls += value;
-                    return value;
-                }
-            }]
-        });
+        this.columns =  [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 50,
+            sortable : true,
+            renderer : function (value, meta, record) {
+                meta.style = "font-weight: bold;";
+                return value;
+            }
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 120
+        }, {
+            header : i18n.get('label.localPath'),
+            dataIndex : 'localPath',
+            width : 150
+        }, {
+            header : i18n.get('label.attachUrl'),
+            dataIndex : 'attachUrl',
+            width : 150
+        }, deeplyAccessible, listingAllowed, modifiable, {
+            header : i18n.get('label.status'),
+            dataIndex : 'status',
+            width : 50,
+            renderer : function (value, meta, record, index, colIndex, store) {
+                meta.tdCls += value;
+                return value;
+            }
+        }];
 
         this.bbar = {
             xtype : 'pagingtoolbar',

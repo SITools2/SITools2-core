@@ -27,16 +27,23 @@ Ext.namespace('sitools.userProfile');
  * unblacklist : url to set to UnBlacklist button
  */
 
-sitools.userProfile.Login = Ext.extend(Ext.Window, {
+Ext.define('sitools.userProfile.Login', {
+    extend : 'Ext.window.Window',
     id : 'winLogin',
-    layout : 'hbox',
+//    layout : 'vbox',
     width : 392,
-    height : 220,
+    height : 200,
     resizable : false,
     closable : false,
     modal : true,
+    draggrable : false,
+    layout : {
+        type : 'fit'
+    },
+    
     initComponent : function () {
         this.title = i18n.get('label.login');
+        this.icon = loadUrl.get('APP_URL') + "/common/res/images/ux/login-big.gif";
         
         this.combo = new Ext.form.ComboBox({
             typeAhead : true,
@@ -63,21 +70,19 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
         } else {
             this.combo.setVisible(false);
 //            this.setSize(392, 160);
-            this.setSize(392, 175);
+//            this.setSize(392, 175);
         }
-        this.items = [ {
+        this.items = [{
             xtype : 'form',
-            frame : true,
             border : false,
             buttonAlign : 'center',
             id : 'frmLogin',
-            width : 392,
             labelWidth : 100,
-            padding : "10px 10px 0px 60px",
-            bodyStyle : "background-image: url("+loadUrl.get('APP_URL')+"/common/res/images/ux/login-big.gif);" +
-			"background-position: top left;" +
-			"background-repeat: no-repeat;",
-            items : [ {
+            padding : "10px 10px 0px 50px",
+//            bodyStyle : "background-image: url("+loadUrl.get('APP_URL')+"/common/res/images/ux/login-big.gif);" +
+//			"background-position: top left;" +
+//			"background-repeat: no-repeat;",
+            items : [{
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.login'),
                 name : 'login',
@@ -106,8 +111,9 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
                     }
                 }
             }, this.combo ],
-            buttons : [ {
+            buttons : [{
                 text : i18n.get('label.login'),
+                scale : 'large',
                 handler : this.getAuth,
                 scope : this
             }, {
@@ -126,10 +132,10 @@ sitools.userProfile.Login = Ext.extend(Ext.Window, {
                     });
                     register.show();
                 }
-            } ]
-        } ];
+            }]
+        }];
         
-        this.bbar = new Ext.ux.StatusBar({
+        this.bbar = Ext.create('Ext.ux.StatusBar', {
             text : i18n.get('label.ready'),
             id : 'sbWinLogin',
             iconCls : 'x-status-valid',

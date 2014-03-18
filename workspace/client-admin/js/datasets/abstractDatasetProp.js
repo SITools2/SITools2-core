@@ -116,20 +116,21 @@ sitools.admin.datasets.abstractDatasetWin = {
         if (Ext.isEmpty(root)) {
             return;
         } else if (root.isLeaf()) {
+            delete root.raw.predicat.rightAttribute.columnClass;
             node = {
                 leaf : true,
-                predicat : root.attributes.predicat,
-                type : root.attributes.type
+                predicat : root.raw.predicat,
+                type : root.raw.type
             };
             parent.push(node);
         } else {
 
             node = {
-                table : root.attributes.table, 
-                typeJointure : root.attributes.typeJointure,
+                table : root.raw.table, 
+                typeJointure : root.raw.typeJointure,
                 children : [],
                 leaf : false,
-                type : root.attributes.type
+                type : root.raw.type
             };
             parent.push(node);
 
@@ -223,7 +224,10 @@ sitools.admin.datasets.abstractDatasetWin = {
                                 this.viewConfigPanel.getDatasetViewsCombo().setValue(data.datasetView.id);
                                 this.viewConfigPanel.setViewConfigParamsValue(data.datasetViewConfig);
                                 
-                                this.viewConfigPanel.getDatasetViewsCombo().fireEvent("select", this.viewConfigPanel.getDatasetViewsCombo(), recSelected);
+                                tabRec = [];
+                                tabRec[0] = recSelected;
+                                
+                                this.viewConfigPanel.getDatasetViewsCombo().fireEvent("select", this.viewConfigPanel.getDatasetViewsCombo(), tabRec);
                                 
                             }
                         }

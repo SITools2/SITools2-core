@@ -158,7 +158,7 @@ Ext.define('sitools.admin.datasets.dictionaryWin', {
     },
     loadNotions : function (dictionaryId) {
         // alert (dictionaryId);
-        this.httpProxy.setUrl(this.urlDictionary + dictionaryId);
+        this.httpProxy.url = this.urlDictionary + dictionaryId;
         this.gridNotion.getStore().load({
             callback : function () {
                 this.gridNotion.getView().refresh();

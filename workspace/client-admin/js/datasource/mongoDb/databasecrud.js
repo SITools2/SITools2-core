@@ -146,7 +146,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
 						win.show();
 					}
                 }]
-            } ]
+            }]
         });
 
         this.bbar = {

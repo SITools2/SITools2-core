@@ -31,8 +31,8 @@ Ext.extend(Ext.ux.plugins.SliderRange, Ext.util.Observable, {
 				slider.range 	= slider.el.createChild({cls: 'ux-sliderrange'});
 				
 				// get position of two joining values
-				var startPos 	= slider.translateValue(slider.minValue);
-				var nextPos 	= slider.translateValue((slider.minValue+slider.increment));
+				var startPos 	= slider.translatePoints(slider.minValue);
+				var nextPos 	= slider.translatePoints((slider.minValue+slider.increment));
 				// get diff of positions
 				var diff 		= nextPos - startPos;
 				

@@ -29,14 +29,16 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.joinConditionWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.joinConditionWin', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.joinConditionWin', { 
+    extend : 'Ext.Window',
     // url + mode + storeref
     width : 650,
     modal : true,
     closable : false,
     pageSize : 10,
 	resizable : false, 
-    id : 'joinConditionWin', 
+    id : 'joinConditionWin',
+    
     initComponent : function () {
         this.storeColumnDataset.filterBy(function (rec) {
             return rec.data.specificColumnType == "DATABASE";
@@ -44,7 +46,7 @@ Ext.define('sitools.admin.datasets.joinConditionWin', { extend : 'Ext.Window',
         
         var defaultPredicat;
         try {
-			defaultPredicat = this.node.attributes.predicat || {};
+			defaultPredicat = this.node.raw.predicat || {};
         }
         catch (err) {
 			defaultPredicat = {};
@@ -234,8 +236,8 @@ Ext.define('sitools.admin.datasets.joinConditionWin', { extend : 'Ext.Window',
 			compareOperator : this.compareOperator.getValue()
         };
         if (this.mode == 'edit') {
-            this.node.attributes.predicat = predicat;
-            this.node.setText(this.getNodeText(predicat));
+            this.node.raw.predicat = predicat;
+            this.node.set('text', this.getNodeText(predicat));
             
         } else {
             var newNode = {

@@ -76,6 +76,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             root : "data",
             autoLoad : true
         });
+        
         this.comboProjects = new Ext.form.ComboBox({
             store : storeProjects,
             displayField : 'name',
@@ -90,7 +91,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
                 scope : this,
                 select : function (combo, rec, index) {
 //                    this.projectId = rec.data.id;
-                    this.loadProject(rec.data.id);
+                    this.loadProject(rec[0].data.id);
                 }
 
             }
@@ -156,7 +157,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
     },
     loadProject : function (projectId) {
         // alert (dictionaryId);
-        this.httpProxyMultiDs.setUrl(this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), true);
+        this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
         this.getStore().load({
             scope : this,
             callback : function () {
@@ -171,7 +172,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
         if (Ext.isEmpty(projectId)) {
             return;
         }
-        this.httpProxyMultiDs.setUrl(this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), true);
+        this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
         
         var up = new sitools.admin.multiDs.MultiDsPropPanel({
             urlMultiDs : this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), 
@@ -190,7 +191,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
-        this.httpProxyMultiDs.setUrl(this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), true);
+        this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
         
         var up = new sitools.admin.multiDs.MultiDsPropPanel({
             urlMultiDs : this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), 
@@ -233,7 +234,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             scope : this,
             success : function (ret) {
                 if (showResponse(ret)) {
-                    this.httpProxyMultiDs.setUrl(this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), true);
+                    this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
                     this.store.reload();
                 }
             },

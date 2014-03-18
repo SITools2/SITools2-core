@@ -88,7 +88,7 @@ sitools.component.forms.componentsAdminDef.ProjectContext = function () {
 	};
 	
 	this.onChangeDimension = function () {
-		this.storeUnits.proxy.setUrl(loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension/' + this.dimension.getValue());
+		this.storeUnits.proxy.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension/' + this.dimension.getValue();
 		this.storeUnits.load();
 	};
 	

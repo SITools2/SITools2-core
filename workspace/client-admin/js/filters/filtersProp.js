@@ -34,18 +34,19 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
         
         this.title = this.action == "create" ? i18n.get('label.createFilter') : i18n.get('label.modifyFilter'); 
         
-        var expander = new Ext.ux.grid.RowExpander({
-            tpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-                {
-                    compiled : true,
-                    descEmpty : function (description) {
-                        return Ext.isEmpty(description);
-                    }
-                }),
+        var expander = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
+            '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
+            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+            {
+                compiled : true,
+                descEmpty : function (description) {
+                    return Ext.isEmpty(description);
+                }
+            }),
             expandOnDblClick : true
-        });
+        };
         
         this.gridFilter = new Ext.grid.GridPanel({
             viewConfig : {
@@ -88,47 +89,38 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
                 }],
                 autoLoad : true
             }),
-
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ expander, {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.className'),
-                    dataIndex : 'className',
-                    width : 300,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.author'),
-                    dataIndex : 'classAuthor',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.version'),
-                    dataIndex : 'classVersion',
-                    width : 100,
-                    sortable : true
-                },
-                {
-                    header : i18n.get('label.classOwner'),
-                    dataIndex : 'classOwner',
-                    width : 100,
-                    sortable : true
-                }]
-            }),
-            
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.className'),
+                dataIndex : 'className',
+                width : 300,
+                sortable : true
+            }, {
+                header : i18n.get('label.author'),
+                dataIndex : 'classAuthor',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.version'),
+                dataIndex : 'classVersion',
+                width : 100,
+                sortable : true
+            },
+            {
+                header : i18n.get('label.classOwner'),
+                dataIndex : 'classOwner',
+                width : 100,
+                sortable : true
+            }],
             listeners : {
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
-            plugins : expander
+            plugins : [expander]
 
         });
 
@@ -138,35 +130,40 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
             method : 'GET'
         });
         
-        var expanderGridFieldMapping = new sitools.widget.ViolationRowExpander({
-            tpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-                {
-                    compiled : true,
-                    descEmpty : function (description) {
-                        return Ext.isEmpty(description);
-                    }
-                }),
+        var expanderGridFieldMapping = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
+            '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
+            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+            {
+                compiled : true,
+                descEmpty : function (description) {
+                    return Ext.isEmpty(description);
+                }
+            }),
             expandOnDblClick : false
-        });
+        };
 
-        this.gridFieldMapping = new Ext.grid.EditorGridPanel({
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
+            forceFit : true,
             viewConfig : {
-                forceFit : true,
                 scope : this,
-                getRowClass : function (record, index, rowParams, store) {
-                    var cls = ''; 
-                    var violation = record.get("violation");
-                    if (!Ext.isEmpty(violation)) {
-						if (violation.level == "CRITICAL") {
-							cls = "red-row";
-						} else if (violation.level == "WARNING") {
-							cls = "orange-row";
-						}
-					}
-                    return cls;
-                }, 
+//                getRowClass : function (record, index, rowParams, store) {
+//                    var cls = ''; 
+//                    var violation = record.get("violation");
+//                    if (!Ext.isEmpty(violation)) {
+//						if (violation.level == "CRITICAL") {
+//							cls = "red-row";
+//						} else if (violation.level == "WARNING") {
+//							cls = "orange-row";
+//						}
+//					}
+//                    return cls;
+//                }, 
                 listeners : {
                     scope : this,
                     refresh : function (view) {
@@ -178,9 +175,15 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
                             if (!Ext.isEmpty(violation)) {
 	                            var index = store.indexOf(record);
 		                        //var view = this.scope.gridFieldMapping.getView();
-		                        var htmlLineEl = view.getRow(index);
-		                        var el = Ext.get(htmlLineEl);
+	                            var htmlLineEl = view.getNode(index);
+                                var el = Ext.get(htmlLineEl);
 		                        
+                                if (violation.level == "CRITICAL") {
+                                    el.addCls('red-row');
+                                } else if (violation.level == "WARNING") {
+                                    el.addCls('orange-row');
+                                }
+                                
                                 var cls = (violation.level == "CRITICAL")
 										? "x-form-invalid-tip"
 										: "x-form-invalid-tip x-form-warning-tip";
@@ -229,36 +232,31 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
                 }
                 ]
             }),
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [expanderGridFieldMapping, {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.type'),
-                    dataIndex : 'parameterType',
-                    width : 150,
-                    sortable : false
-                }, {
-                    header : i18n.get('label.attachedColumn'),
-                    dataIndex : 'attachedColumn',
-                    width : 100,
-                    sortable : false
-                }, {
-                    header : i18n.get('label.value'),
-                    dataIndex : 'value',
-                    width : 80,
-                    sortable : false,
-                    editable : true,
-                    editor : new Ext.form.TextField()
-                } ]
-            }), 
+           columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.type'),
+                dataIndex : 'parameterType',
+                width : 150,
+                sortable : false
+            }, {
+                header : i18n.get('label.attachedColumn'),
+                dataIndex : 'attachedColumn',
+                width : 100,
+                sortable : false
+            }, {
+                header : i18n.get('label.value'),
+                dataIndex : 'value',
+                width : 80,
+                sortable : false,
+                editable : true,
+                editor : {
+                    xtype : 'textfield'
+                }
+            }],
             bbar : new Ext.ux.StatusBar({
 	            id: 'statusBar',
 	            hidden : true,
@@ -267,10 +265,10 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
             }),
             listeners : {
                 scope : this,
-                celldblclick : function (grid, rowIndex, columnIndex, e) {
-                    var storeRecord = grid.getStore().getAt(rowIndex);
-                    var rec = storeRecord.data;
-                    if (columnIndex == 3 && rec.parameterType != "PARAMETER_INTERN") {
+                celldblclick : function (grid, td, cellIndex, record, tr, rowIndex, e) {
+                    var rec = record.data;
+                    
+                    if (cellIndex == 3 && rec.parameterType != "PARAMETER_INTERN") {
                         var selectColumnWin = new sitools.admin.datasets.selectColumn({
                             field : "attachedColumn",
                             record : storeRecord,
@@ -279,14 +277,14 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
                             url : this.urlDatasets + "/" + this.datasetId
                         });
                         selectColumnWin.show(ID.BOX.DATASETS);
-                    } else if (columnIndex == 4 && rec.parameterType == "PARAMETER_INTERN") {
+                    } else if (cellIndex == 4 && rec.parameterType == "PARAMETER_INTERN") {
                         return true;
                     } else {
                         return false;
                     }
                 }
             },
-            plugins : expanderGridFieldMapping
+            plugins : [cellEditing , expanderGridFieldMapping]
         });
 
         // set the search form
@@ -379,8 +377,7 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
                 return false;
             }
             var className = rec.data.className;
-            this.proxyFieldMapping.setUrl(this.filtersUrl + "/" + className
-                    + "/" + this.datasetId);
+            this.proxyFieldMapping.url =this.filtersUrl + "/" + className + "/" + this.datasetId;
             var store = this.gridFieldMapping.getStore();
             store.removeAll();
             store.load();
@@ -456,6 +453,7 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
             var recTmp = storeField.getAt(i).data;
             //not to send the violation object, used only on the client part
             recTmp.violation = undefined;
+            delete recTmp.id;
             parameters.push(recTmp);
         }
         

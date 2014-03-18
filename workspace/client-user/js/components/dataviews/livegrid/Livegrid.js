@@ -734,7 +734,7 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
  */
 sitools.user.component.dataviews.livegrid.LiveGrid.getParameters = function () {
 	return [{
-		jsObj : "Ext.slider.SingleSlider", 
+		jsObj : "Ext.slider.Single", 
 		config : {
 			minValue : 20, 
 			maxValue : 100, 
@@ -742,7 +742,7 @@ sitools.user.component.dataviews.livegrid.LiveGrid.getParameters = function () {
 			width : 400,
 			value : 25, 
 			fieldLabel : i18n.get("label.lineHeight"), 
-			plugins: [new Ext.ux.plugins.SliderRange(), new Ext.slider.Tip()], 
+//			plugins: [new Ext.ux.plugins.SliderRange(), new Ext.slider.Tip()], 
 			parameterName : "lineHeight"
 		}
 	}];

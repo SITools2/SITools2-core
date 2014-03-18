@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.applications.plugins');
  * @class sitools.admin.applications.plugins.applicationPluginProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -42,28 +43,28 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
 
 		this.crudStore = this.store;
         
-        var expander = new Ext.ux.grid.RowExpander({
-            tpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-                {
-                    compiled : true,
-                    descEmpty : function (description) {
-                        return Ext.isEmpty(description);
-                    }
-                }),
+        var expander = {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
+            '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
+            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+            {
+                compiled : true,
+                descEmpty : function (description) {
+                    return Ext.isEmpty(description);
+                }
+            }),
             expandOnDblClick : true
-        });
+        };
         
         this.gridapplicationPlugin = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             id : 'gridapplicationPlugin',
             title : i18n.get('title.applicationPluginClass'),
             store : new Ext.data.JsonStore({
                 root : 'data',
                 restful : true,
+                autoLoad : true,
                 proxy : new Ext.data.HttpProxy({
                     url : this.urlList,
                     restful : true,
@@ -97,49 +98,41 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
                     type : 'string'
                 }, {
                     name : 'violation'
-                } ],
-                autoLoad : true
+                }]
             }),
 
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ expander, {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.description'),
-                    dataIndex : 'description',
-                    width : 300,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.className'),
-                    dataIndex : 'className',
-                    width : 300,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.author'),
-                    dataIndex : 'classAuthor',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.classOwner'),
-                    dataIndex : 'classOwner',
-                    width : 100,
-                    sortable : false
-                }, {
-                    header : i18n.get('label.version'),
-                    dataIndex : 'classVersion',
-                    width : 100,
-                    sortable : true
-                } ]
-            }),
-            bbar : new Ext.ux.StatusBar({
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.description'),
+                dataIndex : 'description',
+                width : 300,
+                sortable : true
+            }, {
+                header : i18n.get('label.className'),
+                dataIndex : 'className',
+                width : 300,
+                sortable : true
+            }, {
+                header : i18n.get('label.author'),
+                dataIndex : 'classAuthor',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.classOwner'),
+                dataIndex : 'classOwner',
+                width : 100,
+                sortable : false
+            }, {
+                header : i18n.get('label.version'),
+                dataIndex : 'classVersion',
+                width : 100,
+                sortable : true
+            }],
+            bbar : Ext.create('Ext.ux.StatusBar', {
                 id: 'statusBar',
                 hidden : true,
                 iconCls: 'x-status-error',
@@ -149,7 +142,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
-            plugins : expander
+            plugins : [expander]
 
         });
 
@@ -179,22 +172,26 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
             method : 'GET'
         });
 
-        this.gridFieldMapping = new Ext.grid.EditorGridPanel({
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
+            forceFit : true,
             viewConfig : {
-                forceFit : true,
                 scope : this,
-                getRowClass : function (record, index, rowParams, store) {
-                    var cls = ''; 
-                    var violation = record.get("violation");
-                    if (!Ext.isEmpty(violation)) {
-                        if (violation.level == "CRITICAL") {
-                            cls = "red-row";
-                        } else if (violation.level == "WARNING") {
-                            cls = "orange-row";
-                        }
-                    }
-                    return cls;
-                }, 
+//                getRowClass : function (record, index, rowParams, store) {
+//                    var cls = ''; 
+//                    var violation = record.get("violation");
+//                    if (!Ext.isEmpty(violation)) {
+//                        if (violation.level == "CRITICAL") {
+//                            cls = "red-row";
+//                        } else if (violation.level == "WARNING") {
+//                            cls = "orange-row";
+//                        }
+//                    }
+//                    return cls;
+//                }, 
                 listeners : {
                     scope : this,
                     refresh : function (view) {
@@ -206,8 +203,14 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
                             if (!Ext.isEmpty(violation)) {
                                 var index = store.indexOf(record);
                                 //var view = this.scope.gridFieldMapping.getView();
-                                var htmlLineEl = view.getRow(index);
+                                var htmlLineEl = view.getNode(index);
                                 var el = Ext.get(htmlLineEl);
+                                
+                                if (violation.level == "CRITICAL") {
+                                    el.addCls('red-row');
+                                } else if (violation.level == "WARNING") {
+                                    el.addCls('orange-row');
+                                }
                                 
                                 var cls = (violation.level == "CRITICAL")
                                         ? "x-form-invalid-tip"
@@ -249,43 +252,38 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
                     type : 'string'
                 } ]
             }), 
-            bbar : new Ext.ux.StatusBar({
+            bbar : Ext.create('Ext.ux.StatusBar', {
                 id: 'statusBar',
                 hidden : true,
                 iconCls: 'x-status-error',
                 text : i18n.get("label.applicationPluginErrorValidationNotification")
             }),
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ {
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.description'),
-                    dataIndex : 'description',
-                    width : 200,
-                    sortable : false
-                }, {
-                    header : i18n.get('label.value'),
-                    dataIndex : 'value',
-                    width : 100,
-                    sortable : false,
-                    editable : true,
-                    editor : new Ext.form.TextField()
-                } ]
-            }),
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.description'),
+                dataIndex : 'description',
+                width : 200,
+                sortable : false
+            }, {
+                header : i18n.get('label.value'),
+                dataIndex : 'value',
+                width : 100,
+                sortable : false,
+                editable : true,
+                editor : {
+                    xtype : 'textfield'
+                }
+            }],
             listeners : {
                 scope : this,
-                celldblclick : function (grid, rowIndex, columnIndex, e) {
-                    var storeRecord = grid.getStore().getAt(rowIndex);
+                celldblclick : function (view, td, cellIndex, storeRecord, tr, rowIndex) {
                     var rec = storeRecord.data;
-                    if (grid.getColumnModel().getColumnHeader(columnIndex) == "Value") {
+                    
+                    if (this.gridFieldMapping.columns[cellIndex].text == "Value") {
                         if (rec.valueType == "xs:dictionary") {
                             var selectDictionaryWin = new sitools.component.dictionary.selectDictionary({
                                 field : "value",
@@ -306,6 +304,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
                                 value : rec.value
                             });
                             selectBooleanWin.show(ID.BOX.DATASETS);
+                            
                         } 
                         else if (rec.valueType == "xs:image") {
                             
@@ -347,12 +346,17 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
                                 value : rec.value
                             });
                             selectEnumWin.show(ID.BOX.DATASETS);
-                        } 
+                        }
+                        
+                        Ext.defer(function () {
+                            Ext.WindowManager.sendToBack(this);
+                        }, 100, this);
                     } else {
                         return false;
                     }
                 }
-            }
+            },
+            plugins : [cellEditing]
         });
 
         this.tabPanel = new Ext.TabPanel({
@@ -431,8 +435,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
             }
             var className = rec.data.className;
 			if (className != this.classChosen) {
-				this.proxyFieldMapping.setUrl(this.urlList + "/"
-							+ className);
+				this.proxyFieldMapping.url = this.urlList + "/" + className;
 				var store = this.gridFieldMapping.getStore();
 				this.classChosen = className;
 				store.removeAll();
@@ -558,6 +561,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { extend 
         for (var i = 0; i < storeField.getCount(); i++) {
             var recTmp = storeField.getAt(i).data;
             recTmp.violation = undefined;
+            delete recTmp.id;
             parameters.push(recTmp);
         }
         

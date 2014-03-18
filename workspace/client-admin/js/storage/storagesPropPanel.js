@@ -33,7 +33,8 @@ Ext.namespace('sitools.admin.storages');
  * @class sitools.admin.storages.storagesPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.storages.storagesPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.storages.storagesPropPanel', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-storagesprop',
     width : 700,
     height : 480,
@@ -52,59 +53,54 @@ Ext.define('sitools.admin.storages.storagesPropPanel', { extend : 'Ext.Window',
         this.items = [ {
             xtype : 'panel',
             height : 450,
-            items : [ {
-                xtype : 'panel',
-                height : 410,
-                title : i18n.get('label.storageInfo'),
+            items : [{
+                xtype : 'form',
+                border : false,
+                padding : 10,
                 items : [ {
-                    xtype : 'form',
-                    border : false,
-                    padding : 10,
-                    items : [ {
-                        xtype : 'hidden',
-                        name : 'id'
-                    }, {
-                        xtype : 'textfield',
-                        name : 'name',
-                        fieldLabel : i18n.get('label.name'),
-                        anchor : '100%',
-                        maxLength : 30, 
-                        allowBlank : false
-                    }, {
-                        xtype : 'textfield',
-                        name : 'description',
-                        fieldLabel : i18n.get('label.description'),
-                        anchor : '100%',
-                        maxLength : 100
-                    }, {
-                        xtype : 'textfield',
-                        name : 'localPath',
-                        fieldLabel : i18n.get('label.localPath'),
-                        allowBlank : false,
-                        anchor : '100%',
-                        maxLength : 100
-                    }, {
-                        xtype : 'textfield',
-                        name : 'attachUrl',
-                        fieldLabel : i18n.get('label.attachUrl'),
-                        anchor : '100%',
-                        maxLength : 100, 
-                        vtype : "attachment", 
-                        allowBlank : false
-                    }, {
-                        xtype : 'checkbox', 
-                        fieldLabel: i18n.get('label.deeplyAccessible'),
-                        name: 'deeplyAccessible'
-                    }, {
-                        xtype : 'checkbox', 
-                        fieldLabel: i18n.get('label.listingAllowed'),
-                        name: 'listingAllowed'
-                    }, {
-                        xtype : 'checkbox', 
-                        fieldLabel: i18n.get('label.modifiable'),
-                        name: 'modifiable'
-                    }]
-                } ]
+                    xtype : 'hidden',
+                    name : 'id'
+                }, {
+                    xtype : 'textfield',
+                    name : 'name',
+                    fieldLabel : i18n.get('label.name'),
+                    anchor : '100%',
+                    maxLength : 30, 
+                    allowBlank : false
+                }, {
+                    xtype : 'textfield',
+                    name : 'description',
+                    fieldLabel : i18n.get('label.description'),
+                    anchor : '100%',
+                    maxLength : 100
+                }, {
+                    xtype : 'textfield',
+                    name : 'localPath',
+                    fieldLabel : i18n.get('label.localPath'),
+                    allowBlank : false,
+                    anchor : '100%',
+                    maxLength : 100
+                }, {
+                    xtype : 'textfield',
+                    name : 'attachUrl',
+                    fieldLabel : i18n.get('label.attachUrl'),
+                    anchor : '100%',
+                    maxLength : 100, 
+                    vtype : "attachment", 
+                    allowBlank : false
+                }, {
+                    xtype : 'checkbox', 
+                    fieldLabel: i18n.get('label.deeplyAccessible'),
+                    name: 'deeplyAccessible'
+                }, {
+                    xtype : 'checkbox', 
+                    fieldLabel: i18n.get('label.listingAllowed'),
+                    name: 'listingAllowed'
+                }, {
+                    xtype : 'checkbox', 
+                    fieldLabel: i18n.get('label.modifiable'),
+                    name: 'modifiable'
+                }]
             }],
             buttons : [ {
                 text : i18n.get('label.ok'),

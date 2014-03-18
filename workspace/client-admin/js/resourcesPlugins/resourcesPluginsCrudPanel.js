@@ -29,7 +29,8 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-plugins_resources',
 	urlParentsParams : '',
     border : false,
@@ -40,29 +41,28 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
     
     // Warning for version conflicts
     conflictWarned : false,
+    forceFit : true,
     viewConfig : {
-        forceFit : true,
         autoFill : true, 
-        getRowClass : function (row, index) { 
-            var cls = ''; 
-            var data = row.data;
-            if (data.classVersion !== data.currentClassVersion
-                && data.currentClassVersion !== null 
-                && data.currentClassVersion !== undefined) {
-                if (!this.conflictWarned) {
-                    Ext.Msg.alert("warning.version.conflict", "Resources " 
-                    + data.name 
-                    + " definition (v" 
-                    + data.classVersion 
-                    + ") may conflict with current class version : " 
-                    + data.currentClassVersion);
-                    this.conflictWarned = true;
-                }
-                cls = "red-row";
-            }
-            return cls; 
-        } 
-        
+//        getRowClass : function (row, index) { 
+//            var cls = ''; 
+//            var data = row.data;
+//            if (data.classVersion !== data.currentClassVersion
+//                && data.currentClassVersion !== null 
+//                && data.currentClassVersion !== undefined) {
+//                if (!this.conflictWarned) {
+//                    Ext.Msg.alert("warning.version.conflict", "Resources " 
+//                    + data.name 
+//                    + " definition (v" 
+//                    + data.classVersion 
+//                    + ") may conflict with current class version : " 
+//                    + data.currentClassVersion);
+//                    this.conflictWarned = true;
+//                }
+//                cls = "red-row";
+//            }
+//            return cls; 
+//        } 
     },
     
     initComponent : function () {
@@ -86,28 +86,26 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
             selectOnFocus : true,            
             listeners : {
                 scope : this,
-                select : function (combo, rec, index) {
+                select : function (combo, records, index) {
+                    var rec = records[0];
                     this.parentId = rec.data.id;
                     if (!Ext.isEmpty(rec.data.type)) {
                         this.appClassName = rec.data.type;
                     }                    
                     
                     var url = this.urlParents + "/" + this.parentId + this.resourcesUrlPart + this.urlParentsParams;
-                    this.httpProxyResources.setUrl(url, true);
+                    this.httpProxyResources.url = url;
                     this.getStore().load();
                 }
             }
         });
         
-        
-        
         this.httpProxyResources = new Ext.data.HttpProxy({
             url : "/tmp",
             restful : true,
             method : 'GET'
-            
-            
         });
+        
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
             root : "data",
@@ -159,57 +157,50 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
             proxy : this.httpProxyResources
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 150,
-                renderer : function (value, meta, record) {
-                    meta.style = "font-weight: bold;";
-                    return value;
-                }
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 200,
-                sortable : false
-            }, {
-                header : i18n.get('label.resourceClassName'),
-                dataIndex : 'resourceClassName',
-                width : 150,
-                sortable : false
-            }, {
-                header : i18n.get('label.classVersion'),
-                dataIndex : 'classVersion',
-                width : 50,
-                sortable : false
-            }, {
-                header : i18n.get('label.currentClassVersion'),
-                dataIndex : 'currentClassVersion',
-                width : 50,
-                sortable : false
-            }, {
-                header : i18n.get('label.classAuthor'),
-                dataIndex : 'classAuthor',
-                width : 100,
-                sortable : false
-            }, {
-                header : i18n.get('label.classOwner'),
-                dataIndex : 'classOwner',
-                width : 100,
-                sortable : false
-            }, {
-                header : i18n.get('label.descriptionAction'),
-                dataIndex : 'descriptionAction',
-                width : 200,
-                sortable : false
-            }  ]
-        });
+        this.columns =  [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 150,
+            renderer : function (value, meta, record) {
+                meta.style = "font-weight: bold;";
+                return value;
+            }
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 200,
+            sortable : false
+        }, {
+            header : i18n.get('label.resourceClassName'),
+            dataIndex : 'resourceClassName',
+            width : 150,
+            sortable : false
+        }, {
+            header : i18n.get('label.classVersion'),
+            dataIndex : 'classVersion',
+            width : 50,
+            sortable : false
+        }, {
+            header : i18n.get('label.currentClassVersion'),
+            dataIndex : 'currentClassVersion',
+            width : 50,
+            sortable : false
+        }, {
+            header : i18n.get('label.classAuthor'),
+            dataIndex : 'classAuthor',
+            width : 100,
+            sortable : false
+        }, {
+            header : i18n.get('label.classOwner'),
+            dataIndex : 'classOwner',
+            width : 100,
+            sortable : false
+        }, {
+            header : i18n.get('label.descriptionAction'),
+            dataIndex : 'descriptionAction',
+            width : 200,
+            sortable : false
+        }];
 
         this.tbar = {
             xtype : 'toolbar',
@@ -240,18 +231,19 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', { extend 
         };
 
         this.bbar = {
-                xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
-                store : this.store,
-                displayInfo : true,
-                displayMsg : i18n.get('paging.display'),
-                emptyMsg : i18n.get('paging.empty')
-            };
+            xtype : 'pagingtoolbar',
+            pageSize : this.pageSize,
+            store : this.store,
+            displayInfo : true,
+            displayMsg : i18n.get('paging.display'),
+            emptyMsg : i18n.get('paging.empty')
+        };
         
         this.listeners = {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
         sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel.superclass.initComponent.call(this);
 
     },

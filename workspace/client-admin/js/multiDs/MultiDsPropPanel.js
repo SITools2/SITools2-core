@@ -214,7 +214,8 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             border : false,
             padding : 10,
             trackResetOnLoad : true,
-            id : "formMainFormId", 
+            id : "formMainFormId",
+            autoScroll : true,
             items : [ {
                 xtype : 'hidden',
                 name : 'id'
@@ -384,10 +385,10 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 	        selectOnFocus : true,
 	        dataIndex : 'orderBy',
 	        lazyRender : true,
-	        listClass : 'x-combo-list-small',
+//	        listClass : 'x-combo-list-small',
 	        valueField : 'name',
 	        displayField : 'name',
-	        tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{name}</div></tpl>', 
+//	        tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{name}</div></tpl>', 
 	        width : 55
 	    });
         
@@ -445,7 +446,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             }],
             defaults : {
                 sortable : false,
-                width : 100
+                width : 400
             }
         });
         
@@ -488,13 +489,11 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             tbar : tbar,
             cm : cmProperties,
             selModel : smProperties,
-            viewConfig : {
-                forceFit : true
-            }, 
+            forceFit : true,
             listeners : {
 				scope : this, 
 				activate : function () {
-					this.storeComboProperties.proxy.setUrl(this.urlCollections + "/" + this.collectionId + "/properties");
+					this.storeComboProperties.proxy.url = this.urlCollections + "/" + this.collectionId + "/properties";
 					this.storeComboProperties.reload();
 				}
             }
@@ -825,7 +824,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
      */
     loadConcepts : function () {
 		var url = loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL') + "/" + this.collectionId + "/concepts/" + this.dictionaryId;
-		this.gridConcepts.getStore().proxy.setUrl(url);
+		this.gridConcepts.getStore().proxy.url = url;
 		this.gridConcepts.getStore().load();
     }, 
     /**
@@ -1055,15 +1054,15 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                         this.absoluteLayout.setSize(this.formSize);
                         
                         var rec = {};
-                        rec.data.id = data.id;
+                        rec.id = data.id;
                         rec.name = data.name;
                         rec.description = data.description;
                         rec.css = data.css;
                         rec.nbDatasetsMax = data.nbDatasetsMax;
                         rec.urlServicePropertiesSearch = data.urlServicePropertiesSearch;
                         rec.urlServiceDatasetSearch = data.urlServiceDatasetSearch;
-                        rec.data.idServiceDatasetSearch = data.idServiceDatasetSearch;
-                        rec.data.idServicePropertiesSearch = data.idServicePropertiesSearch;
+                        rec.idServiceDatasetSearch = data.idServiceDatasetSearch;
+                        rec.idServicePropertiesSearch = data.idServicePropertiesSearch;
                         
                         f.setValues(rec);
 						

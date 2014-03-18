@@ -26,7 +26,8 @@ Ext.namespace('sitools.admin.applications.plugins');
  * @class sitools.admin.applications.plugins.ApplicationPluginCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { extend : 'Ext.grid.GridPanel',
+Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { 
+    extend : 'Ext.grid.GridPanel',
 	alias : 'widget.s-Application_plugins',
     border : false,
     height : 300,
@@ -37,40 +38,41 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
     
     // Warning for version conflicts
 	conflictWarned : false,
+	forceFit : true,
     viewConfig : {
-        forceFit : true,
         autoFill : true, 
-		getRowClass : function (row, index) { 
-			var cls = ''; 
-			var data = row.data;
-			if (data.classVersion !== data.currentClassVersion
-			    && data.currentClassVersion !== null 
-				&& data.currentClassVersion !== undefined) {
-				if (!this.conflictWarned) {
-					Ext.Msg.alert("warning.version.conflict", "Application plugin " 
-					+ data.name 
-					+ "definition (v" 
-					+ data.classVersion 
-					+ ") may conflict with current class version : " 
-					+ data.currentClassVersion);
-					this.conflictWarned = true;
-				}
-				cls = "red-row";
-			}
-			return cls; 
-		} 
-		
+//		getRowClass : function (row, index) { 
+//			var cls = ''; 
+//			var data = row.data;
+//			if (data.classVersion !== data.currentClassVersion
+//			    && data.currentClassVersion !== null 
+//				&& data.currentClassVersion !== undefined) {
+//				if (!this.conflictWarned) {
+//					Ext.Msg.alert("warning.version.conflict", "Application plugin " 
+//					+ data.name 
+//					+ "definition (v" 
+//					+ data.classVersion 
+//					+ ") may conflict with current class version : " 
+//					+ data.currentClassVersion);
+//					this.conflictWarned = true;
+//				}
+//				cls = "red-row";
+//			}
+//			return cls; 
+//		} 
 	},
 	
 	initComponent : function () {
         this.urlAdmin = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_APPLICATIONS_URL') + '/instances';
         this.urlList = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_APPLICATIONS_URL') + '/classes';
+        
         this.httpProxyForms = new Ext.data.HttpProxy({
             url : this.urlAdmin,
             restful : true,
             method : 'GET'
             
         });
+        
         this.store = new Ext.data.JsonStore({
             idProperty : 'id',
             root : "data",
@@ -115,64 +117,65 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { ex
             proxy : this.httpProxyForms
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 150
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 200,
-                sortable : false
-            }, {
-                header : i18n.get('label.label'),
-                dataIndex : 'label',
-                width : 100,
-                sortable : false
-            }, {
-                header : i18n.get('label.urlAttach'),
-                dataIndex : 'urlAttach',
-                width : 100,
-                sortable : false
-            }, {
-                header : i18n.get('label.status'),
-                dataIndex : 'status',
-                width : 100,
-                sortable : false
-            }, {
-                header : i18n.get('label.className'),
-                dataIndex : 'className',
-                width : 150,
-                sortable : false
-            }, {
-                header : i18n.get('label.classVersion'),
-                dataIndex : 'classVersion',
-                width : 50,
-                sortable : false
-            }, {
-                header : i18n.get('label.currentClassVersion'),
-                dataIndex : 'currentClassVersion',
-                width : 50,
-                sortable : false
-            }, {
-                header : i18n.get('label.classAuthor'),
-                dataIndex : 'classAuthor',
-                width : 100,
-                sortable : false
-            },
-            {
-                header : i18n.get('label.classOwner'),
-                dataIndex : 'classOwner',
-                width : 100,
-                sortable : false
-            }]
-        });
+        this.columns =  [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 150,
+            renderer : function (value, meta, record) {
+                meta.style = "font-weight: bold;";
+                return value;
+            }
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 200,
+            sortable : false
+        }, {
+            header : i18n.get('label.label'),
+            dataIndex : 'label',
+            width : 100,
+            sortable : false
+        }, {
+            header : i18n.get('label.urlAttach'),
+            dataIndex : 'urlAttach',
+            width : 100,
+            sortable : false
+        }, {
+            header : i18n.get('label.status'),
+            dataIndex : 'status',
+            width : 100,
+            sortable : false,
+            renderer : function (value, meta, record, index, colIndex, store) {
+                meta.tdCls += value;
+                return value;
+            }
+        }, {
+            header : i18n.get('label.className'),
+            dataIndex : 'className',
+            width : 150,
+            sortable : false
+        }, {
+            header : i18n.get('label.classVersion'),
+            dataIndex : 'classVersion',
+            width : 50,
+            sortable : false
+        }, {
+            header : i18n.get('label.currentClassVersion'),
+            dataIndex : 'currentClassVersion',
+            width : 50,
+            sortable : false
+        }, {
+            header : i18n.get('label.classAuthor'),
+            dataIndex : 'classAuthor',
+            width : 100,
+            sortable : false
+        },
+        {
+            header : i18n.get('label.classOwner'),
+            dataIndex : 'classOwner',
+            width : 100,
+            sortable : false
+        }];
 
         this.tbar = {
             xtype : 'toolbar',

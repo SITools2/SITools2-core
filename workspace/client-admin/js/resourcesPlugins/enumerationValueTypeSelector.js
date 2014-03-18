@@ -33,7 +33,8 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.resourcesPlugins.enumerationValueTypeSelector
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { extend : 'Ext.Window',
+Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -48,6 +49,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
         var enumeration = this.enumeration.split("[");
         enumeration = enumeration[1].split("]");
         enumeration = enumeration[0].split(",");
+        
         this.storeEnum = new Ext.data.ArrayStore({
             fields: ["enumValue"],
             idIndex: 0
@@ -67,17 +69,16 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
                 dataIndex : "enumValue",
                 width : 250
             };
+        
         if (this.editable) {
 			Ext.apply(column, {
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
 		            disabled : !this.editable
-                })
+                }
 			});
         }
-        this.cmSelectColumn = new Ext.grid.ColumnModel({
-            columns : [ column ]
-        });
-		
+        
         var tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
             hidden : ! this.editable, 
@@ -101,16 +102,17 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
                 xtype : 's-menuButton'
             }]
         };
+        
         this.smSelectColumn = Ext.create('Ext.selection.RowModel',{
             singleSelect : this.enumType == "E" || this.enumType == "EE"
         });
         
-        this.gridSelect = new Ext.grid.EditorGridPanel({
+        this.gridSelect = Ext.create('Ext.grid.Panel', {
             tbar : tbar, 
             height : 380,
             autoScroll : true,
             store : this.storeEnum,
-            cm : this.cmSelectColumn,
+            columns : [column],
             selModel : this.smSelectColumn, 
             listeners : {
 				scope : this, 
@@ -118,7 +120,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
             }
         });
 
-        this.items = [ {
+        this.items = [{
             xtype : 'panel',
             layout : 'fit',
             items : [ this.gridSelect ],
@@ -126,16 +128,23 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { exte
                 text : i18n.get('label.ok'),
                 scope : this,
                 handler : this.onValidate
-
             }, {
                 text : i18n.get('label.cancel'),
                 scope : this,
                 handler : function () {
                     this.close();
                 }
-            } ]
+            }]
 
-        } ];
+        }];
+        
+        this.listeners = {
+            scope : this,
+            afterrender : function () {
+                Ext.WindowManager.bringToFront(this);
+            }
+        };
+        
         sitools.admin.resourcesPlugins.enumerationValueTypeSelector.superclass.initComponent.call(this);
     },
     

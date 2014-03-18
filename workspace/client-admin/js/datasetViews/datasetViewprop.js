@@ -63,27 +63,25 @@ Ext.define('sitools.admin.datasetView.DatasetViewPropPanel', { extend : 'Ext.Win
             }]
         };
         
-        this.gridDependencies = new Ext.grid.EditorGridPanel({
+        this.gridDependencies = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.dependencies'),
             height : 180,
             store : storeDependencies,
             tbar : tbar,
-            cm : new Ext.grid.ColumnModel({
-                columns : [ {
-                    header : i18n.get('label.url'),
-                    dataIndex : 'url',
-                    editor : new Ext.form.TextField({
-                        allowBlank : false
-                    })
-                } ]
-            }),
+            forceFit : true,
+            columns : [{
+                header : i18n.get('label.url'),
+                dataIndex : 'url',
+                editor : {
+                    xtype : 'textfield',
+                    allowBlank : false
+                }
+            }],
             selModel : Ext.create('Ext.selection.RowModel',{
                 singleSelect : true
-            }),
-            viewConfig : {
-                forceFit : true
-            }
+            })
         });
+        
         this.formPanel = new Ext.form.FormPanel({
         	title : i18n.get('label.datasetViewInfo'),
             border : false,

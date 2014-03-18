@@ -43,7 +43,8 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.resourcesPlugins.resourcesPluginsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -56,8 +57,9 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
 
         this.title = this.action == "create" ? i18n.get('label.create' + this.parentType + 'Resource') : i18n.get('label.modify' + this.parentType + 'Resource'); 
 
-        var expander = new Ext.ux.grid.RowExpander({
-            tpl : new Ext.XTemplate(
+        var expander = new {
+            ptype: 'rowexpander',
+            rowBodyTpl : new Ext.XTemplate(
                 '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
                 '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
                 {
@@ -67,13 +69,11 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     }
                 }),
             expandOnDblClick : true
-        });
+        };
         
         
         this.gridresourcePlugin = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             layout : "fit",
             id : 'gridresourcePlugin',
             title : i18n.get('title.resourcePlugin' + this.parentType + 'Class'),
@@ -132,7 +132,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     sortable : true
                 // columns are not sortable by default
                 },
-                columns : [ expander, {
+                columns : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
                     width : 100,
@@ -157,14 +157,14 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     dataIndex : 'classOwner',
                     width : 100,
                     sortable : true
-                } ]
+                }]
             }),
             
             listeners : {
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
-            plugins : expander
+            plugins : [expander]
 
         });
 
@@ -175,14 +175,16 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
         });
 
         
-        var userUpdatable = new Ext.grid.CheckColumn({
+        var userUpdatable = {
+            xtype : 'textfield',
 	        header : i18n.get('headers.userUpdatable'),
 	        dataIndex : 'userUpdatable',
 	        width : 55
-	    });
+	    };
         
-        var expanderGridFieldMapping = new sitools.widget.ViolationRowExpander({
-            tpl : new Ext.XTemplate(
+        var expanderGridFieldMapping = {
+                ptype: 'rowexpander',
+                rowBodyTpl : new Ext.XTemplate(
                 '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
                 '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
                 {
@@ -192,24 +194,28 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     }
                 }),
             expandOnDblClick : false           
-        });
+        };
 
-        this.gridFieldMapping = new Ext.grid.EditorGridPanel({
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2
+        });
+        
+        this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
+            forceFit : true,
             viewConfig : {
-                forceFit : true,
                 scope : this,
-                getRowClass : function (record, index, rowParams, store) {
-                    var cls = ''; 
-                    var violation = record.get("violation");
-                    if (!Ext.isEmpty(violation)) {
-                        if (violation.level == "CRITICAL") {
-                            cls = "red-row";
-                        } else if (violation.level == "WARNING") {
-                            cls = "orange-row";
-                        }
-                    }
-                    return cls;
-                }, 
+//                getRowClass : function (record, index, rowParams, store) {
+//                    var cls = ''; 
+//                    var violation = record.get("violation");
+//                    if (!Ext.isEmpty(violation)) {
+//                        if (violation.level == "CRITICAL") {
+//                            cls = "red-row";
+//                        } else if (violation.level == "WARNING") {
+//                            cls = "orange-row";
+//                        }
+//                    }
+//                    return cls;
+//                }, 
                 listeners : {
                     scope : this,
                     refresh : function (view) {
@@ -221,8 +227,14 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                             if (!Ext.isEmpty(violation)) {
                                 var index = store.indexOf(record);
                                 //var view = this.scope.gridFieldMapping.getView();
-                                var htmlLineEl = view.getRow(index);
+                                var htmlLineEl = view.getNode(index);
                                 var el = Ext.get(htmlLineEl);
+                                
+                                if (violation.level == "CRITICAL") {
+                                    el.addCls('red-row');
+                                } else if (violation.level == "WARNING") {
+                                    el.addCls('orange-row');
+                                }
                                 
                                 var cls = (violation.level == "CRITICAL")
                                         ? "x-form-invalid-tip"
@@ -296,7 +308,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     sortable : false
                 // columns are not sortable by default
                 },
-                columns : [expanderGridFieldMapping, {
+                columns : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
                     width : 100
@@ -314,19 +326,20 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                     dataIndex : 'value',
                     width : 230,
                     editable : true,
-                    editor : new Ext.form.TextField()
-                }, userUpdatable ]
+                    editor : {
+                        xtype : 'textfield'
+                    }
+                }, userUpdatable]
             }),
             listeners : {
                 scope : this,
-                celldblclick : function (grid, rowIndex, columnIndex, e) {
-                    var storeRecord = grid.getStore().getAt(rowIndex);
-                    var rec = storeRecord.data;
-                    if (columnIndex == 3) {
+                celldblclick : function (grid, td, cellIndex, record, tr, rowIndex, e) {
+                    var rec = record.data;
+                    if (cellIndex == 3) {
                         if (rec.valueType == "xs:dataset.columnAlias") {
                             var selectColumnWin = new sitools.admin.datasets.selectColumn({
                                 field : "value",
-                                record : storeRecord,
+                                record : record,
                                 parentStore : this.gridFieldMapping.getStore(),
                                 parentView : this.gridFieldMapping.getView(),
                                 url : loadUrl.get("APP_URL") + loadUrl.get("APP_DATASETS_URL") + "/" + this.idParent
@@ -336,7 +349,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                         else if (rec.valueType == "xs:dictionary") {
                             var selectDictionaryWin = new sitools.component.dictionary.selectDictionary({
                                 field : "value",
-                                record : storeRecord,
+                                record : record,
                                 parentStore : this.gridFieldMapping.getStore(),
                                 parentView : this.gridFieldMapping.getView(),
                                 url : loadUrl.get("APP_URL") + loadUrl.get("APP_DICTIONARIES_URL")
@@ -346,7 +359,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                         else if (rec.valueType == "xs:boolean") {
                             var selectBooleanWin = new sitools.admin.resourcesPlugins.enumerationValueTypeSelector({
                                 field : "value",
-                                record : storeRecord,
+                                record : record,
                                 parentView : this.gridFieldMapping.getView(),
                                 type : rec.name,
                                 enumeration : "[true,false]",
@@ -362,7 +375,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                                 height : 450,
                                 field : "value",
                                 parentView : this.gridFieldMapping.getView(),
-                                record : storeRecord
+                                record : record
                             });
                             chooser.show(document, function (data, config) {
                                 config.record.data[config.field] = data.url;
@@ -387,7 +400,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
                                 enumType : enumType, 
                                 field : "value",
                                 fieldEnum : "valueType", 
-                                record : storeRecord,
+                                record : record,
                                 parentView : this.gridFieldMapping.getView(),
                                 type : rec.name,
                                 enumeration : rec.valueType,
@@ -403,7 +416,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', { extend : 'Ex
 					this.showOptions(grid);
 				}
             }, 
-            plugins : [userUpdatable, expanderGridFieldMapping]
+            plugins : [expanderGridFieldMapping, cellEditing]
         });
         
         var comboBehavior = new Ext.form.ComboBox({

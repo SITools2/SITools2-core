@@ -269,7 +269,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
      */
     loadColumns : function (datasetId) {
         // alert (dictionaryId);
-        this.httpProxy.setUrl(this.urlDatasets + "/" + datasetId);
+        this.httpProxy.url = this.urlDatasets + "/" + datasetId;
         this.gridColumns.getStore().load({
             callback : function () {
                 this.gridColumns.getView().refresh();

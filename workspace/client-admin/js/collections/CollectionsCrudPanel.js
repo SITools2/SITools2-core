@@ -62,24 +62,17 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
         });
 
         
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 100,
-                sortable : true
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 400,
-                sortable : false
-            } ]
-        });
+        this.columns = [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 300,
+            sortable : true
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 400,
+            sortable : false
+        }];
 
         this.bbar = {
             xtype : 'pagingtoolbar',

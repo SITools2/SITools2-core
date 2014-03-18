@@ -38,20 +38,21 @@
     <link rel="stylesheet" type="text/css" href="res/css/main.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/commons.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/imageChooser/imageChooser.css"></link>
-    
-    <!--
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/lockingGrid/columnLock.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/sliderRange/css/ux/SliderRange.css"></link>
+    
+    <!--
     -->
+    
     <link rel="stylesheet" type="text/css" href="res/css/icons.css"></link>
     <!--
     <link rel="stylesheet" type="text/css" href="res/css/animated-dataview.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/animated-seeAlso.css"></link>
     -->
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/main.css"></link>
    	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/main.css"></link>
 	
 	<link rel="stylesheet" type="text/css" href="res/css/quickStart.css"></link>
   

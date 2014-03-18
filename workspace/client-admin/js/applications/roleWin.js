@@ -25,7 +25,8 @@ Ext.namespace('sitools.component.applications');
  * @class sitools.component.applications.rolesPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
+Ext.define('sitools.component.applications.rolesPanel', { 
+    extend : 'Ext.Window',
     // url + mode + storeref
     width : 350,
     modal : true,
@@ -58,6 +59,7 @@ Ext.define('sitools.component.applications.rolesPanel', { extend : 'Ext.Window',
         this.grid = new Ext.grid.GridPanel({
             selModel : Ext.create('Ext.selection.RowModel'),
             store : this.store,
+            forceFit : true,
             height : 200,
             columns : [ {
                 header : i18n.get('label.name'),

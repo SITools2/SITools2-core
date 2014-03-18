@@ -33,10 +33,11 @@ Ext.namespace('sitools.admin.storageFilters');
  * @class sitools.admin.storages.storageCopyProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.storages.storageCopyProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.storages.storageCopyProp', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-storage_copy',
     width : 230,
-    height : 130,
+    height : 145,
     modal : true,
     
     initComponent : function () {

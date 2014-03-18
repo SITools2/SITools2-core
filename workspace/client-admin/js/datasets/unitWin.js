@@ -27,7 +27,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.unitWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.unitWin', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-datasetsUnits',
     width : 600,
     height : 400,
@@ -78,7 +79,8 @@ Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
             autoScroll : true,
             store : this.storeUnits,
             cm : this.cmUnits,
-            selModel : this.smUnits, 
+            selModel : this.smUnits,
+            forceFit : true,
             region : "center"
         });
 
@@ -115,15 +117,17 @@ Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
             autoScroll : true,
             store : storeDimensions,
             cm : this.cmDimensions,
-            selModel : this.smDimensions, 
-            width : 200, 
-            collapsible : true, 
-            resizable : true, 
+            selModel : this.smDimensions,
+            flex : 1,
+//            width : 200, 
+//            collapsible : true, 
+//            resizable : true,
+            forceFit : true,
             listeners : {
 				scope : this, 
-				rowclick : function (grid, rowIndex) {
-					var rec = grid.getStore().getAt(rowIndex);
-					var dimensionId = rec.get('id');
+				itemClick : function (grid, record, item, rowIndex) {
+//					var rec = grid.getStore().getAt(rowIndex);
+					var dimensionId = record.get('id');
 					this.loadUnits(dimensionId);
 				}
             }
@@ -146,7 +150,7 @@ Ext.define('sitools.admin.datasets.unitWin', { extend : 'Ext.Window',
     },
     loadUnits : function (dimensionId) {
         // alert (dictionaryId);
-        this.httpProxy.setUrl(this.urlDimension + "/" + dimensionId);
+        this.httpProxy.url = this.urlDimension + "/" + dimensionId;
         this.storeUnits.load({
             callback : function () {
                 this.gridUnits.getView().refresh();

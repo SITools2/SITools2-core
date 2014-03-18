@@ -28,8 +28,10 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetViewConfig', { extend : 'Ext.form.Panel', 
+Ext.define('sitools.admin.datasets.datasetViewConfig', { 
+    extend : 'Ext.form.Panel', 
     padding : 10, 
+    
     initComponent : function () {
         this.title = i18n.get('label.viewConfig');
         var action = this.action;
@@ -54,8 +56,12 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', { extend : 'Ext.form.Pane
                                     minPriorityRec = recs[i];
                                 }                                
                             }
+                            
+                            tabRec = [];
+                            tabRec[0] = minPriorityRec;
+                            
                             this.comboDatasetViews.setValue(minPriorityRec.data.id);
-                            this.comboDatasetViews.fireEvent("select", this.comboDatasetViews, minPriorityRec);
+                            this.comboDatasetViews.fireEvent("select", this.comboDatasetViews, tabRec);
                         }
                     }
                 }
@@ -141,7 +147,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', { extend : 'Ext.form.Pane
     buildViewConfig : function (recSelected) {
         try {
             this.parametersFieldset.removeAll();
-            var getParametersMethod = eval(recSelected.json.jsObject + ".getParameters");
+            var getParametersMethod = eval(recSelected[0].data.jsObject + ".getParameters");
             if (!Ext.isFunction(getParametersMethod)) {
                 Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod <br/>' + getParametersMethod));
                 return;
@@ -168,7 +174,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', { extend : 'Ext.form.Pane
                 
             }, this);
             
-            this.doLayout();
+//            this.doLayout();
         }
         catch (err) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod <br/>') + err);

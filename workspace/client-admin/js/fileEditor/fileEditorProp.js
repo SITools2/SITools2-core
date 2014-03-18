@@ -33,6 +33,7 @@ Ext.define('sitools.component.fileEditor.fileEditorProp', {
         this.layout = 'fit';
         this.modal = this.modalType;
         var buttons;
+        
         if (this.modal === true) {
             buttons = [ [{
                 text : i18n.get('label.save'),
@@ -56,34 +57,48 @@ Ext.define('sitools.component.fileEditor.fileEditorProp', {
 
         }
         
-        this.items = [{
-            xtype : 'panel',
-            layout : 'fit',
-            items : [{
-                xtype : 'htmleditor',
-                id : 'fileEditor',
-                readOnly : this.editable,
-                autoScroll : true,
-                listeners : {
-                    afterrender : function () {
-                        this.syncValue();
-                        this.toggleSourceEdit(true);
-                        this.getToolbar().hide();
-                    }
-                }
-            }],
-            buttons : buttons
-        }];
+//        this.items =  [{
+//            xtype : 'htmleditor',
+//            id : 'fileEditor',
+//            layout : 'fit',
+//            readOnly : this.editable,
+//            renderTo: Ext.getBody(),
+//            autoScroll : true,
+//            listeners : {
+//                afterrender : function () {
+//                    this.syncValue();
+//                    this.toggleSourceEdit(true);
+//                    this.getToolbar().hide();
+//                }
+//            }
+//        }];
+        
+        this.items = [ new Ext.panel.Panel({
+            renderTo: Ext.getBody(),
+            width: 550,
+            height: 250,
+            border : false,
+            bodyBorder : false,
+            layout: 'fit',
+            items: {
+                xtype: 'htmleditor',
+                enableColors: false
+            }
+        })];
         
         
+        this.buttons = buttons;
         
         this.listeners = {
-                scope : this, 
-                activate : function () {
-                    this.findByType('htmleditor')[0].syncValue();
-                    this.findByType('htmleditor')[0].toggleSourceEdit(true);
-                }
-            };
+            scope : this, 
+            activate : function () {
+                var htmlEditor = this.down('htmleditor'); 
+                htmlEditor.syncValue();
+                htmlEditor.toggleSourceEdit(true);
+            }
+        };
+        
+        Ext.tip.QuickTipManager.init();
         
         sitools.component.fileEditor.fileEditorProp.superclass.initComponent.call(this);
         
@@ -100,7 +115,7 @@ Ext.define('sitools.component.fileEditor.fileEditorProp', {
                 scope : this,
                 success : function (ret) {
                     var data = ret.responseText;
-                    this.findByType('htmleditor')[0].setValue(data);
+                    this.down('htmleditor').setValue(data);
                 },
                 failure : alertFailure
             });
@@ -108,7 +123,8 @@ Ext.define('sitools.component.fileEditor.fileEditorProp', {
     },
     
     onValidate : function () {
-        var text = this.findByType('htmleditor')[0].getValue();
+        var text = this.down('htmleditor').getValue();
+        
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',

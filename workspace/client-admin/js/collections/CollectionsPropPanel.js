@@ -32,7 +32,8 @@ Ext.namespace('sitools.admin.collections');
  * @class sitools.admin.collections.CollectionsPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Window', 
+Ext.define('sitools.admin.collections.CollectionsPropPanel', { 
+    extend :'Ext.Window', 
 	alias : 'widget.s-collectionsprop',
 	width : 700,
     height : 580,
@@ -83,22 +84,6 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
             } ]
         });
 
-        var cmDataSets = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.name'),
-                dataIndex : 'name',
-                width : 100
-            }, {
-                header : i18n.get('headers.description'),
-                dataIndex : 'description',
-                width : 100
-            } ],
-            defaults : {
-                sortable : true,
-                width : 100
-            }
-        });
-
         var smDataSets = Ext.create('Ext.selection.RowModel',{
             singleSelect : false
         });
@@ -129,11 +114,17 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
             title : i18n.get('title.gridDataSets'),
             store : storeDataSets,
             tbar : tbar,
-            cm : cmDataSets,
+            columns : [{
+                header : i18n.get('headers.name'),
+                dataIndex : 'name',
+                width : 400
+            }, {
+                header : i18n.get('headers.description'),
+                dataIndex : 'description',
+                width : 400
+            }],
             selModel : smDataSets,
-            viewConfig : {
-                forceFit : true
-            }, 
+            forceFit : true,
             listeners : {
 				"activate" : function () {
 					if (action == 'view') {
@@ -252,7 +243,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
             putObject[key] = value;
         }, this);
         
-        var store = this.findById('gridDataSets').getStore();
+        var store = this.down('grid').getStore();
         if (store.getCount() > 0) {
             putObject.dataSets = [];
             store.each(function (record) {
@@ -308,7 +299,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
                     scope : this,
                     success : function (ret) {
                         var f = this.down('form').getForm();
-                        var grid = this.findById('gridDataSets');
+                        var grid = this.down('grid');
                         var store = grid.getStore();
                         var data = Ext.decode(ret.responseText).collection;
                         var dataSets = data.dataSets;
@@ -317,7 +308,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
                         // Chargement des dataSets disponible et mise a jour de
                         Ext.each(dataSets, function (dataSet) {
                             var rec = {};
-                            rec.data.id = dataSet.id;
+                            rec.id = dataSet.id;
                             rec.name = dataSet.name;
                             rec.description = dataSet.description;
                             rec.type = dataSet.description;
@@ -332,7 +323,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', { extend :'Ext.Wind
                         // ceuw attaches au projet
 
                         var rec = {};
-                        rec.data.id = data.id;
+                        rec.id = data.id;
                         rec.name = data.name;
                         rec.description = data.description;
                          

@@ -32,10 +32,10 @@ Ext.namespace('sitools.admin.datasets');
 Ext.define('sitools.admin.datasets.gridFieldSetup', {
     extend : 'Ext.grid.Panel',
     id : 'gridColumnSelect',
-    title : i18n.get('title.gridColumn'),
     layout : 'fit', 
     enableLocking : true,
     initComponent : function () {
+        this.title = i18n.get('title.gridColumn');
 
         var storeColumn = new Ext.data.JsonStore({
             id : 'storeColumnSelect',
@@ -113,10 +113,10 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             selectOnFocus : true,
             dataIndex : 'orderBy',
             lazyRender : true,
-            listClass : 'x-combo-list-small',
+//            listClass : 'x-combo-list-small',
             valueField : 'value',
             displayField : 'display',
-            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{display}</div></tpl>', 
+//            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{display}</div></tpl>', 
             width : 55,
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/orderBy.html"
         });

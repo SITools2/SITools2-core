@@ -171,8 +171,14 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsProp', { extend : 'Ex
                             if (!Ext.isEmpty(violation)) {
                                 var index = store.indexOf(record);
                                 //var view = this.scope.gridFieldMapping.getView();
-                                var htmlLineEl = view.getRow(index);
+                                var htmlLineEl = view.getNode(index);
                                 var el = Ext.get(htmlLineEl);
+                                
+                                if (violation.level == "CRITICAL") {
+                                    el.addCls('red-row');
+                                } else if (violation.level == "WARNING") {
+                                    el.addCls('orange-row');
+                                }
                                 
                                 var cls = (violation.level == "CRITICAL")
                                         ? "x-form-invalid-tip"

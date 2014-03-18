@@ -18,8 +18,8 @@
 ***************************************/
 Ext.namespace('sitools.widget');
 
-Ext.define('sitools.widget.TextFilter', { 
-    extend : 'Ext.form.TriggerField',
+Ext.define('sitools.widget.TextFilter', {
+    extend : 'Ext.form.field.Trigger',
 	alias : 'widget.s-filter',
 	ctCls:"s-textfilter",
 	cls:"s-textfilter-text",
