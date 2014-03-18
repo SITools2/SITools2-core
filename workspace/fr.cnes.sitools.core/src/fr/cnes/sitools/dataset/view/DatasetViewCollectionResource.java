@@ -71,15 +71,18 @@ public class DatasetViewCollectionResource extends AbstractDatasetViewResource {
 
       // Response
       Response response = new Response(true, datasetViewOutput, DatasetView.class, "datasetView");
+      trace(Level.INFO, "Add Dataset view");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Add Dataset view");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add Dataset view");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -115,6 +118,7 @@ public class DatasetViewCollectionResource extends AbstractDatasetViewResource {
         datasetViews = getStore().getPage(filter, datasetViews);
         Response response = new Response(true, datasetViews, DatasetView.class, "datasetViews");
         response.setTotal(total);
+        trace(Level.FINE, "View available Dataset views");
         return getRepresentation(response, variant);
       }
     }

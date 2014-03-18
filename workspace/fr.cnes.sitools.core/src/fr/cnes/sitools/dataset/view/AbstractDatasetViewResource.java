@@ -73,7 +73,7 @@ public abstract class AbstractDatasetViewResource extends SitoolsResource {
    * @return Representation
    */
   public final Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
+    
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }
