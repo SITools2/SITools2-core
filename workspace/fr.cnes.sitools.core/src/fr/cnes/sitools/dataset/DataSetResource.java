@@ -73,16 +73,16 @@ public final class DataSetResource extends AbstractDataSetResource {
   public Representation retrieveDataSet(Variant variant) {
     try {
 
-      if (datasetId != null) {
-        DataSet dataset = store.retrieve(datasetId);
+      if (getDatasetId() != null) {
+        DataSet dataset = store.retrieve(getDatasetId());
         Response response = null;
         if (dataset != null) {
+          trace(Level.FINE, "Edit information for the dataset " + dataset.getName());
           response = new Response(true, dataset, DataSet.class, "dataset");
-          trace(Level.INFO, "Dataset " + datasetId + " retrieved ");
         }
         else {
-          response = new Response(false, "NOT_FOUND");
-          trace(Level.INFO, "Dataset " + datasetId + " not found ");
+          trace(Level.INFO, "Cannot Edit information for the dataset - id: " + getDatasetId());
+          response = new Response(false, "dataset.not.found");
         }
         return getRepresentation(response, variant);
       }
@@ -91,16 +91,19 @@ public final class DataSetResource extends AbstractDataSetResource {
         List<DataSet> datasets = store.getList(filter);
         int total = datasets.size();
         datasets = store.getPage(filter, datasets);
+        trace(Level.FINE, "View available datasets");
         Response response = new Response(true, datasets, DataSet.class, "datasets");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot Edit information for the dataset - id: " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot Edit information for the dataset - id: " + getDatasetId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -136,8 +139,9 @@ public final class DataSetResource extends AbstractDataSetResource {
       if (representation != null) {
         datasetInput = getObject(representation);
 
-        datasetOutput = store.retrieve(datasetId);
+        datasetOutput = store.retrieve(getDatasetId());
         if ("ACTIVE".equals(datasetOutput.getStatus())) {
+          trace(Level.INFO, "Cannot update the dataset - id: " + getDatasetId());
           Response response = new Response(false, "DATASET_ACTIVE");
           return getRepresentation(response, variant);
         }
@@ -166,20 +170,24 @@ public final class DataSetResource extends AbstractDataSetResource {
       }
 
       if (datasetOutput != null) {
+        trace(Level.INFO, "Update the dataset " + datasetOutput.getName());
         Response response = new Response(true, datasetOutput, DataSet.class, "dataset");
         return getRepresentation(response, variant);
       }
       else {
+        trace(Level.INFO, "Cannot update the dataset - id: " + getDatasetId());
         Response response = new Response(false, "Can not validate dataset");
         return getRepresentation(response, variant);
       }
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update the dataset - id: " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot update the dataset - id: " + getDatasetId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -207,39 +215,49 @@ public final class DataSetResource extends AbstractDataSetResource {
   @Delete
   public Representation deleteDataSet(Variant variant) {
     try {
-      DataSet datasetOutput = store.retrieve(datasetId);
-      try {
-        application.detachDataSetDefinitif(datasetOutput);
+      Response response;
+      DataSet datasetOutput = store.retrieve(getDatasetId());
+      if (datasetOutput != null) {
+        try {
+          application.detachDataSetDefinitif(datasetOutput);
+        }
+        catch (Exception e) {
+          getLogger().log(Level.INFO, null, e);
+        }
+
+        // Business service
+        store.delete(getDatasetId());
+
+        // unregister DataSet as observer of Dictionary resources
+        unregisterObserver(datasetOutput);
+
+        // Response
+        response = new Response(true, "datasetCrud.popup");
+
+        // Notify observers
+        Notification notification = new Notification();
+        notification.setObservable(getDatasetId());
+        notification.setStatus("DELETED");
+        notification.setEvent("DATASET_DELETED");
+        notification.setMessage("DataSet definitively deleted.");
+        getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+
+        trace(Level.INFO, "Delete the dataset " + datasetOutput.getName());
       }
-      catch (Exception e) {
-        getLogger().log(Level.INFO, null, e);
+      else {
+        trace(Level.INFO, "Cannot delete the dataset - id:" + getDatasetId());
+        response = new Response(false, "dataset.delete.failure");
       }
-
-      // Business service
-      store.delete(datasetId);
-
-      // unregister DataSet as observer of Dictionary resources
-      unregisterObserver(datasetOutput);
-
-      // Response
-      Response response = new Response(true, "datasetCrud.popup");
-
-      // Notify observers
-      Notification notification = new Notification();
-      notification.setObservable(datasetId);
-      notification.setStatus("DELETED");
-      notification.setEvent("DATASET_DELETED");
-      notification.setMessage("DataSet definitively deleted.");
-      getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete the dataset - id:" + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot delete the dataset - id:" + getDatasetId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

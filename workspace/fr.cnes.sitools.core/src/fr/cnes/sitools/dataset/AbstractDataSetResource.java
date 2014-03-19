@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -182,6 +182,15 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
         notificationManager.removeObserver(mapping.getDictionaryId(), input.getId());
       }
     }
+  }
+
+  /**
+   * Gets the datasetId value
+   * 
+   * @return the datasetId
+   */
+  public String getDatasetId() {
+    return datasetId;
   }
 
 }
