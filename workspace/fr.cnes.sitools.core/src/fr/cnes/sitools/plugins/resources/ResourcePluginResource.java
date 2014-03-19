@@ -421,7 +421,7 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
     }
     catch (Exception e) {
       trace(Level.INFO, "Cannot delete  " + getTraceParentType() + " service ");
-      getLogger().log(Level.SEVERE, null, e);
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
