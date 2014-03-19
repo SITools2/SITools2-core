@@ -125,7 +125,7 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
         List<ProjectModuleModel> projectModules = getStore().getList(filter);
         int total = projectModules.size();
         projectModules = getStore().getPage(filter, projectModules);
-        trace(Level.INFO, "View available modules");
+        trace(Level.FINE, "View available modules");
         Response response = new Response(true, projectModules, ProjectModuleModel.class, "projectModules");
         response.setTotal(total);
         return getRepresentation(response, variant);

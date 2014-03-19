@@ -150,7 +150,7 @@ public final class StorageCollectionResource extends AbstractStorageResource {
     response.setMessage("directory.retrieval.success");
     response.setTotal(total);
 
-    trace(Level.INFO, "View available storages");
+    trace(Level.FINE, "View available storages");
 
     // Return representation
     return getRepresentation(response, variant);

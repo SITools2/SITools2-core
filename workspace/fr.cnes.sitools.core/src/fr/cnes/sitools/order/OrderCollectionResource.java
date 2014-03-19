@@ -134,7 +134,7 @@ public final class OrderCollectionResource extends AbstractOrderResource {
 
       if (getOrderId() != null) {
         Order order = getStore().retrieve(getOrderId());
-        trace(Level.INFO, "View order - id: " + getOrderId());
+        trace(Level.FINE, "View order - id: " + getOrderId());
         Response response = new Response(true, order, Order.class, "order");
         return getRepresentation(response, variant);
       }
@@ -143,7 +143,7 @@ public final class OrderCollectionResource extends AbstractOrderResource {
         List<Order> orders = getStore().getList(filter);
         int total = orders.size();
         orders = getStore().getPage(filter, orders);
-        trace(Level.INFO, "View orders");
+        trace(Level.FINE, "View orders");
         Response response = new Response(true, orders, Order.class, "orders");
         response.setTotal(total);
         return getRepresentation(response, variant);

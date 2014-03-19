@@ -87,7 +87,7 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -123,14 +123,17 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
       auhorizations = getStore().getPage(filter, auhorizations);
       Response response = new Response(true, auhorizations, ResourceAuthorization.class, "authorizations");
       response.setTotal(total);
+      trace(Level.FINE, "View authorizations");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view authorizations");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view authorizations");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

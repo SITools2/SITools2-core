@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -80,7 +80,7 @@ public final class StorageResource extends AbstractStorageResource {
     // Create response
     response = new Response(true, dir, StorageDirectory.class, "directory");
     response.setMessage("directory.retrieval.success");
-    trace(Level.INFO, "Edit configuration parameters of the storage");
+    trace(Level.FINE, "Edit configuration parameters of the storage");
 
     // Return representation
     return getRepresentation(response, variant);
@@ -133,7 +133,7 @@ public final class StorageResource extends AbstractStorageResource {
         response = new Response(true, directory, StorageDirectory.class, "directory");
         response.setMessage("directory.start.success");
         trace(Level.INFO, "Start the storage");
-        
+
       }
       else if (action.equals("stop") && isStarted) {
         if (getStorageApplication() != null) {
@@ -249,7 +249,7 @@ public final class StorageResource extends AbstractStorageResource {
 
     getStore().update(inputdir);
     response = new Response(true, inputdir, StorageDirectory.class, "directory");
-    response.setMessage("directory.update.success");    
+    response.setMessage("directory.update.success");
     trace(Level.INFO, "Update configuration parameters of the storage");
 
     return getRepresentation(response, variant);
