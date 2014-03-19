@@ -234,6 +234,7 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
       addCurrentClassDescription(resourceDTOArray);
       Response response = new Response(true, resourceDTOArray, ResourceModelDTO.class, "resourcePlugins");
       response.setTotal(total);
+      trace(Level.FINE, "view available " + getTraceParentType() + " services ");
       return getRepresentation(response, variant);
     }
 
