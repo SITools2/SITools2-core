@@ -246,7 +246,7 @@ public final class DataSetResource extends AbstractDataSetResource {
       }
       else {
         trace(Level.INFO, "Cannot delete the dataset - id:" + getDatasetId());
-        response = new Response(false, "dataset.delete.failure");
+        response = new Response(true, "datasetCrud.popup");
       }
       return getRepresentation(response, variant);
 
