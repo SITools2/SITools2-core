@@ -83,17 +83,17 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
       }
 
       Response response = new Response(true, guiServiceOutput, GuiServiceModel.class, "guiService");
-      trace(Level.INFO, "Update configuration parameters of the GUI service - id : " + getGuiServiceId());
+      trace(Level.INFO, "Update the dataset service " + guiServiceOutput.getName() + " - id : " + getGuiServiceId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
-      trace(Level.INFO, "Cannot update configuration parameters of the GUI service - id : " + getGuiServiceId());
+      trace(Level.INFO, "Cannot update the dataset GUI service - id : " + getGuiServiceId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      trace(Level.INFO, "Cannot update configuration parameters of the GUI service - id : " + getGuiServiceId());
+      trace(Level.INFO, "Cannot update the dataset GUI service - id : " + getGuiServiceId());
       getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

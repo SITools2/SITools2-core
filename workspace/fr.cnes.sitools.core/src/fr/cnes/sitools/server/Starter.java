@@ -939,6 +939,7 @@ public final class Starter {
 
     appContext.getAttributes().put(Consts.APP_STORE_TASK, taskModelStore);
     appContext.getAttributes().put(Consts.APP_STORE_PLUGINS_RESOURCES, resPlugStore);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "project");
 
     // Application
     ResourcePluginApplication resourcePluginApp = new ResourcePluginApplication(appContext);
@@ -967,6 +968,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, resPlugStore);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "dataset");
 
     // Application
     ResourcePluginApplication resourcePluginAppOnDataset = new ResourcePluginApplication(appContext);
@@ -990,6 +992,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, resPlugStore);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "application");
 
     // Application
     ResourcePluginApplication resourcePluginAppOnApp = new ResourcePluginApplication(appContext);

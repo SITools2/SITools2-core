@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.services;
 
+import java.io.IOException;
 import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
@@ -124,17 +125,19 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
         populateGuiServiceModel(guiServiceOutput, service);
 
         getStore().update(serviceCollection);
-
+        trace(Level.INFO, "Update the dataset service " + guiServiceOutput.getName() + " for the dataset - id : " + guiServiceOutput.getParent());
         response = new Response(true, guiServiceOutput, GuiServicePluginModel.class, "guiServicePlugin");
       }
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update dataset GUI service ");
       getLogger().log(Level.INFO, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update dataset GUI service ");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -173,25 +176,30 @@ public class GuiServiceResource extends AbstractGuiServiceResource {
           serviceCollection.getServices().remove(service);
           getStore().update(serviceCollection);
           response = new Response(true, "guiService.deleted.success");
+          trace(Level.INFO, "Delete the dataset service " + service.getName() + " for the dataset - id : " + getParentId());
 
         }
         else {
           response = new Response(false, "guiService.deleted.failure");
+          trace(Level.INFO, "Cannot delete the dataset GUI service ");
         }
 
       }
       else {
         response = new Response(false, "guiService.not.defined");
+        trace(Level.INFO, "Cannot delete the dataset GUI service ");
       }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete the dataset GUI service ");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete the dataset GUI service ");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

@@ -274,6 +274,7 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
   @Put
   public Representation updateResourcePlugin(Representation representation, Variant variant) {
     ResourceModel resourceOutput = null;
+    String parentType = (String) getContext().getAttributes().get("TRACE_PARENT_TYPE");
     try {
       if (representation != null) {
         ResourceModelDTO resourceInputDTO = getObject(representation);
@@ -322,26 +323,26 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
         ResourceModelDTO resourceOutputDTO = getResourceModelDTO(resourceOutput);
 
         Response response = new Response(true, resourceOutputDTO, ResourceModelDTO.class, "resourcePlugin");
-        trace(Level.INFO, "Update configuration parameters of the application service " + resourceOutput.getName() + " - id : " +  resourceOutput.getId());
+        trace(Level.INFO, "Update configuration parameters of the " + parentType + " service " + resourceOutput.getName() + " - id : " +  resourceOutput.getId());
         return getRepresentation(response, variant);
 
       }
       else {
         // Response
         Response response = new Response(false, "Can not validate resource plugin");
-        trace(Level.INFO, "Cannot update configuration parameters of the application service");
+        trace(Level.INFO, "Cannot update configuration parameters of the " + parentType + " service");
         return getRepresentation(response, variant);
 
       }
 
     }
     catch (ResourceException e) {
-      trace(Level.INFO, "Cannot update configuration parameters of the application service - id : " + resourceOutput.getId());
+      trace(Level.INFO, "Cannot update configuration parameters of the " + parentType + " service - id : " + resourceOutput.getId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      trace(Level.INFO, "Cannot update configuration parameters of the application service - id : " + resourceOutput.getId());
+      trace(Level.INFO, "Cannot update configuration parameters of the " + parentType + " service - id : " + resourceOutput.getId());
       getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

@@ -70,6 +70,7 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
       ref.setQuery(parameters);
     }
     MediaType mediaType = getMediaType(variant);
+    trace(Level.FINE, "View available dataset GUI services");
     return RIAPUtils.handle(url, Method.GET, mediaType, getContext());
   }
 
@@ -109,15 +110,18 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
       getStore().update(services);
 
       Response response = new Response(true, guiServiceOutput, GuiServicePluginModel.class, "guiServicePlugin");
+      trace(Level.INFO, "Add the dataset service " + guiServiceOutput.getName() + " for the dataset - id : " + guiServiceOutput.getParent());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add GUI dataset service ");
       getLogger().log(Level.INFO, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add GUI dataset service ");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
