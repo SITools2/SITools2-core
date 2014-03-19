@@ -812,11 +812,10 @@ public class GetResponseUtils {
         xstream.alias("item", dataClass);
         xstream.alias("item", Object.class, dataClass);
 
-        xstream.addImplicitCollection(Role.class, "users", "users", Resource.class);
-        xstream.addImplicitCollection(Role.class, "groups", "groups", Resource.class);
-
-        xstream.aliasField("users", Role.class, "users");
-        xstream.aliasField("groups", Role.class, "groups");
+        if (media.isCompatible(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(Role.class, "users", "users", Resource.class);
+          xstream.addImplicitCollection(Role.class, "groups", "groups", Resource.class);
+        }
 
         xstream.aliasField("role", Response.class, "item");
       }
