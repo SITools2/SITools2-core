@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,7 +18,13 @@
  ******************************************************************************/
 package fr.cnes.sitools.security.authorization;
 
+import java.io.IOException;
+
 import org.restlet.data.MediaType;
+import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.ext.xstream.XstreamRepresentation;
+import org.restlet.representation.ObjectRepresentation;
+import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 
 import com.thoughtworks.xstream.XStream;
@@ -35,16 +41,16 @@ import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization
  * 
  */
 public abstract class AbstractAuthorizationResource extends SitoolsResource {
-  
+
   /** parent application */
   private AuthorizationApplication application = null;
-  
+
   /** store */
   private AuthorizationStore store = null;
-  
+
   /** project identifier parameter */
   private String resId = null;
-  
+
   /**
    * Default constructor
    */
@@ -68,8 +74,11 @@ public abstract class AbstractAuthorizationResource extends SitoolsResource {
 
   /**
    * XStream configuration for Response object mapping
-   * @param xstream XStream
-   * @param response Response
+   * 
+   * @param xstream
+   *          XStream
+   * @param response
+   *          Response
    */
   public final void configure(XStream xstream, Response response) {
     xstream.autodetectAnnotations(false);
@@ -92,26 +101,59 @@ public abstract class AbstractAuthorizationResource extends SitoolsResource {
 
   /**
    * Get the resource ID
+   * 
    * @return the resource ID
    */
   public final String getResId() {
     return this.resId;
   }
-  
+
   /**
    * Get the store associated to the application
+   * 
    * @return the store associated
    */
   public final AuthorizationStore getStore() {
     return this.store;
   }
-  
+
   /**
    * Get the application associated to the resource
+   * 
    * @return the application associated
    */
   public final AuthorizationApplication getAuthorizationApplication() {
     return this.application;
   }
-  
+
+  /**
+   * Get the ResourceAuthorization for the Representation
+   * 
+   * @param representation
+   *          contains a ResourceAuthorization
+   * @return the ResourceAuthorization for the Representation
+   * @throws IOException
+   *           if there is an error while parsing the representation
+   */
+  protected ResourceAuthorization getObject(Representation representation) throws IOException {
+    ResourceAuthorization authorizationInput = null;
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      // Parse the XML representation to get the bean
+      authorizationInput = new XstreamRepresentation<ResourceAuthorization>(representation).getObject();
+
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      authorizationInput = new JacksonRepresentation<ResourceAuthorization>(representation, ResourceAuthorization.class)
+          .getObject();
+    }
+
+    else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<ResourceAuthorization> obj = (ObjectRepresentation<ResourceAuthorization>) representation;
+      authorizationInput = obj.getObject();
+    }
+    return authorizationInput;
+  }
+
 }
