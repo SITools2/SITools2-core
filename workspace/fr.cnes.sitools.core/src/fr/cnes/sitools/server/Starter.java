@@ -1325,6 +1325,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeFeeds);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "project");
 
     // Application
     FeedsApplication feedsProjectsApp = new FeedsApplication(appContext, storeFeeds) {
@@ -1351,6 +1352,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeFeeds);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "dataset");
 
     // Application
     FeedsApplication feedsDataSetsApp = new FeedsApplication(appContext, storeFeeds) {
@@ -1377,6 +1379,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeFeeds);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "portal");
 
     // Application
     FeedsApplication feedsPortalApp = new FeedsApplication(appContext, storeFeeds) {

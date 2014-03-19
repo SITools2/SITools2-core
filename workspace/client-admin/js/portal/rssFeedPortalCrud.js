@@ -67,6 +67,9 @@ sitools.component.portal.rssFeedPortalCrud = Ext.extend(Ext.grid.GridPanel, {
             }, {
                 name : 'externalUrl',
                 type : 'string'
+            }, {
+                name : 'name',
+                type : 'string'
             } ]
         });
 
