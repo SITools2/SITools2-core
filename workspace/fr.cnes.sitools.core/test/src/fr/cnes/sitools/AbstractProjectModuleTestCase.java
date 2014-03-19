@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -70,8 +70,6 @@ public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestC
    * Restlet Component for server
    */
   private Component component = null;
-  
-
 
   /**
    * relative url for dataset management REST API
@@ -108,13 +106,9 @@ public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestC
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
+
     if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
+      this.component = createTestComponent(SitoolsSettings.getInstance());
 
       // Context
       Context ctx = this.component.getContext().createChildContext();
@@ -126,14 +120,11 @@ public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestC
         store = new ProjectModuleStoreXML(storeDirectory, ctx);
 
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
       ctx.getAttributes().put(ContextAttributes.APP_ATTACH_REF, getAttachUrl());
       this.component.getDefaultHost().attach(getAttachUrl(), new ProjectModuleApplication(ctx));
     }
-    
-    
-
 
     if (!this.component.isStarted()) {
       this.component.start();

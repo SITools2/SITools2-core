@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -40,7 +40,7 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
  * 
  */
 public class ProjectModuleCollectionResource extends AbstractProjectModuleResource {
-  
+
   @Override
   public void sitoolsDescribe() {
     setName("ProjectModuleCollectionResource");
@@ -60,6 +60,7 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
   @Post
   public Representation newProjectModule(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create the module");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "PROJECT_MODULE_REPRESENTATION_REQUIRED");
     }
     try {
@@ -69,21 +70,24 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
       // Business service
       ProjectModuleModel projectModuleOutput = getStore().create(projectModuleInput);
 
+      trace(Level.INFO, "Create the module " + projectModuleOutput.getName());
       // Response
       Response response = new Response(true, projectModuleOutput, ProjectModuleModel.class, "projectModule");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the module");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create the module");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describePost(MethodInfo info) {
     info.setDocumentation("Method to create a new ProjectModule sending its representation.");
@@ -105,7 +109,15 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
 
       if (getProjectModuleId() != null) {
         ProjectModuleModel projectModule = getStore().retrieve(getProjectModuleId());
-        Response response = new Response(true, projectModule, ProjectModuleModel.class, "projectModule");
+        Response response;
+        if (projectModule != null) {
+          trace(Level.FINE, "Edit information for the module " + projectModule.getName());
+          response = new Response(true, projectModule, ProjectModuleModel.class, "projectModule");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit information for the module - id: " + getProjectModuleId());
+          response = new Response(false, "NO_MODULE_FOUND");
+        }
         return getRepresentation(response, variant);
       }
       else {
@@ -113,21 +125,24 @@ public class ProjectModuleCollectionResource extends AbstractProjectModuleResour
         List<ProjectModuleModel> projectModules = getStore().getList(filter);
         int total = projectModules.size();
         projectModules = getStore().getPage(filter, projectModules);
+        trace(Level.INFO, "View available modules");
         Response response = new Response(true, projectModules, ProjectModuleModel.class, "projectModules");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available modules");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available modules");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describeGet(MethodInfo info) {
     info.setDocumentation("Method to retrieve the list of ProjectModule available on the server.");

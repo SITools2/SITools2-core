@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -43,7 +43,7 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
  * 
  */
 public class ProjectModuleResource extends AbstractProjectModuleResource {
-  
+
   @Override
   public void sitoolsDescribe() {
     setName("ProjectModuleResource");
@@ -60,34 +60,49 @@ public class ProjectModuleResource extends AbstractProjectModuleResource {
    */
   @Get
   public Representation retrieveProjectModule(Variant variant) {
-    // XStream xstream = XStreamFactory.getInstance().getXStreamWriter(variant.getMediaType(), false);
-    if (getProjectModuleId() != null) {
-      ProjectModuleModel projectModule = getStore().retrieve(getProjectModuleId());
-      if (projectModule != null) {
-        Response response = new Response(true, projectModule, ProjectModuleModel.class, "projectModule");
+    try {
+      if (getProjectModuleId() != null) {
+        ProjectModuleModel projectModule = getStore().retrieve(getProjectModuleId());
+        Response response;
+        if (projectModule != null) {
+          trace(Level.FINE, "Edit information for the module " + projectModule.getName());
+          response = new Response(true, projectModule, ProjectModuleModel.class, "projectModule");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit information for the module - id: " + getProjectModuleId());
+          response = new Response(false, "NO_MODULE_FOUND");
+        }
         return getRepresentation(response, variant);
       }
       else {
-        Response response = new Response(false, "NO_MODULE_FOUND");
+        ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
+        List<ProjectModuleModel> projectModules = getStore().getList(filter);
+        int total = projectModules.size();
+        projectModules = getStore().getPage(filter, projectModules);
+        trace(Level.INFO, "View available modules");
+        Response response = new Response(true, projectModules, ProjectModuleModel.class, "projectModules");
+        response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
-    else {
-      ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
-      List<ProjectModuleModel> projectModules = getStore().getList(filter);
-      int total = projectModules.size();
-      projectModules = getStore().getPage(filter, projectModules);
-      Response response = new Response(true, projectModules, ProjectModuleModel.class, "projectModules");
-      response.setTotal(total);
-      return getRepresentation(response, variant);
+    catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available modules");
+      getLogger().log(Level.INFO, null, e);
+      throw e;
+    }
+    catch (Exception e) {
+      trace(Level.INFO, "Cannot view available modules");
+      getLogger().log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describeGet(MethodInfo info) {
     info.setDocumentation("Method to retrieve a single ProjectModule by ID");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("projectModuleId", true, "class", ParameterStyle.TEMPLATE, "Module identifier");
+    ParameterInfo param = new ParameterInfo("projectModuleId", true, "class", ParameterStyle.TEMPLATE,
+        "Module identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
     addStandardResourceCollectionFilterInfo(info);
@@ -115,26 +130,36 @@ public class ProjectModuleResource extends AbstractProjectModuleResource {
         // Business service
         projectModuleOutput = getStore().update(projectModuleInput);
       }
-
-      Response response = new Response(true, projectModuleOutput, ProjectModuleModel.class, "projectModule");
+      Response response;
+      if (projectModuleOutput != null) {
+        trace(Level.INFO, "Update the module " + projectModuleOutput.getName());
+        response = new Response(true, projectModuleOutput, ProjectModuleModel.class, "projectModule");
+      }
+      else {
+        trace(Level.INFO, "Cannot update the module - id: " + getProjectModuleId());
+        response = new Response(false, "projectmodule.update.failure");
+      }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update the module - id: " + getProjectModuleId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update the module - id: " + getProjectModuleId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describePut(MethodInfo info) {
     info.setDocumentation("Method to modify a single module sending its new representation");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("projectModuleId", true, "class", ParameterStyle.TEMPLATE, "Module identifier");
+    ParameterInfo param = new ParameterInfo("projectModuleId", true, "class", ParameterStyle.TEMPLATE,
+        "Module identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -150,29 +175,43 @@ public class ProjectModuleResource extends AbstractProjectModuleResource {
   @Delete
   public Representation deleteProjectModule(Variant variant) {
     try {
-      // Business service
-      getStore().delete(getProjectModuleId());
 
-      // Response
-      Response response = new Response(true, "projectModule.delete.success");
+      ProjectModuleModel projModule = getStore().retrieve(getProjectModuleId());
+      Response response;
+      if (projModule != null) {
+        // Business service
+        getStore().delete(getProjectModuleId());
+
+        trace(Level.INFO, "Delete the module " + projModule.getName());
+        // Response
+        response = new Response(true, "projectModule.delete.success");
+
+      }
+      else {
+        trace(Level.INFO, "Delete the module " + getProjectModuleId());
+        response = new Response(true, "projectModule.delete.failure");
+      }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Delete the module " + getProjectModuleId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Delete the module " + getProjectModuleId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describeDelete(MethodInfo info) {
     info.setDocumentation("Method to delete a single module by ID");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("projectModuleId", true, "class", ParameterStyle.TEMPLATE, "Module identifier");
+    ParameterInfo param = new ParameterInfo("projectModuleId", true, "class", ParameterStyle.TEMPLATE,
+        "Module identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardSimpleResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
