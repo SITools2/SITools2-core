@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.filter;
 
+import java.util.logging.Level;
+
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -96,6 +98,7 @@ public final class FilterActivationResource extends AbstractFilterResource {
         if (this.getReference().toString().endsWith("start")) {
           if ("ACTIVE".equals(filter.getStatus())) {
             response = new Response(true, "filter.update.blocked");
+            trace(Level.INFO, "Cannot start the filter for the dataset - id : " + getDatasetId());
             break;
           }
           else {
@@ -105,6 +108,7 @@ public final class FilterActivationResource extends AbstractFilterResource {
 
             FilterModelDTO filterModelDTO = getFilterModelDTO(filterOut);
             response = new Response(true, filterModelDTO, FilterModelDTO.class, "filter");
+            trace(Level.INFO, "Start the filter " + filterModelDTO.getName() + " for the dataset - id : " + getDatasetId()); 
             response.setMessage("filter.start.success");
           }
         }
@@ -112,6 +116,7 @@ public final class FilterActivationResource extends AbstractFilterResource {
         if (this.getReference().toString().endsWith("stop")) {
           if ("INACTIVE".equals(filter.getStatus())) {
             response = new Response(true, "filter.stop.blocked");
+            trace(Level.INFO, "Cannot stop the filter for the dataset - id : " + getDatasetId());
             break;
           }
           else {
@@ -120,6 +125,7 @@ public final class FilterActivationResource extends AbstractFilterResource {
             FilterModel filterOut = getFilterModel(filterChainedModel, filterId);
             FilterModelDTO filterModelDTO = getFilterModelDTO(filterOut);
             response = new Response(true, filterModelDTO, FilterModelDTO.class, "filter");
+            trace(Level.INFO, "Stop the filter " + filterModelDTO.getName() + " for the dataset - id : " + getDatasetId()); 
             response.setMessage("filter.stop.success");
           }
 

@@ -174,29 +174,37 @@ public final class FilterResource extends AbstractFilterResource {
 
             FilterModelDTO filterModelDTO = getFilterModelDTO(filterOut);
             response = new Response(true, filterModelDTO, FilterModelDTO.class, "filter");
+            
+            trace(Level.INFO, "Update the filter " + filterModelDTO.getName() + " for the dataset - id : " + getDatasetId());
+            
           }
           else {
             // filterChainedModel does not exists
             response = new Response(false, "filter.dontExists");
+            trace(Level.INFO, "Cannot update the filter for the dataset - id : " + getDatasetId());
           }
         }
         else {
           // filterChainedModel null
           response = new Response(false, "NOT FOUND");
+          trace(Level.INFO, "Cannot update the filter for the dataset - id : " + getDatasetId());
         }
       }
       else {
         // filterChainedModel null
         response = new Response(false, "NOT FOUND");
+        trace(Level.INFO, "Cannot update the filter for the dataset - id : " + getDatasetId());
       }
     }
 
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update the filter for the dataset - id : " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update the filter for the dataset - id : " + getDatasetId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
 
@@ -265,18 +273,22 @@ public final class FilterResource extends AbstractFilterResource {
         getStore().update(filterChained);
         if (success) {
           response = new Response(true, "filter.deleted.success");
+          trace(Level.INFO, "Delete the filter " + filter.getName() + " for the dataset - id : " + getDatasetId());
         }
         else {
           response = new Response(false, "filter.deleted.failure");
+          trace(Level.INFO, "Cannot delete the filter " + filter.getName() + " for the dataset - id : " + getDatasetId());
         }
       }
       else {
         response = new Response(false, "filter.deleted.failure.notfound");
+        trace(Level.INFO, "Cannot delete the filter for the dataset - id : " + getDatasetId());
       }
 
     }
     else {
       response = new Response(false, "filter.deleted.failure.filterChained.notfound");
+      trace(Level.INFO, "Cannot delete the filter for the dataset - id : " + getDatasetId());
     }
     return getRepresentation(response, variant);
 
