@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.project;
 
+import java.util.logging.Level;
+
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
@@ -66,12 +68,14 @@ public final class ActivationProjectResource extends AbstractProjectResource {
           // on charge le project
           Project proj = store.retrieve(getProjectId());
           if (proj == null) {
+            trace(Level.INFO, "Cannot perform action on the project - id: " + getProjectId());
             response = new Response(false, "PROJECT_NOT_FOUND");
             break;
           }
 
           if (this.getReference().toString().endsWith("start")) {
             if ("ACTIVE".equals(proj.getStatus())) {
+              trace(Level.INFO, "Cannot start the project " + proj.getName());
               response = new Response(true, "project.update.blocked");
               break;
             }
@@ -91,9 +95,11 @@ public final class ActivationProjectResource extends AbstractProjectResource {
               notification.setStatus(projResult.getStatus());
               notification.setMessage("project.update.success");
               getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+              trace(Level.INFO, "Start the project " + proj.getName());
 
             }
             catch (Exception e) {
+              trace(Level.INFO, "Cannot start the project - id: " + proj.getName());
               response = new Response(false, "project.update.error");
               throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
             }
@@ -110,10 +116,12 @@ public final class ActivationProjectResource extends AbstractProjectResource {
                 store.update(proj);
               }
               catch (Exception e) {
+                trace(Level.INFO, "Cannot stop the project " + proj.getName());
                 throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
               }
 
               response = new Response(true, "project.stop.blocked");
+              trace(Level.INFO, "Cannot stop the project " + proj.getName());
               break;
             }
 
@@ -132,8 +140,10 @@ public final class ActivationProjectResource extends AbstractProjectResource {
               notification.setStatus(projResult.getStatus());
               notification.setMessage("project.stop.success");
               getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+              trace(Level.INFO, "Stop the project " + proj.getName());
             }
             catch (Exception e) {
+              trace(Level.INFO, "Cannot stop the project " + proj.getName());
               response = new Response(false, "project.stop.error");
               throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
             }
@@ -142,6 +152,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
           if (this.getReference().toString().endsWith("startmaintenance")) {
             try {
               if (proj.isMaintenance()) {
+                trace(Level.INFO, "Cannot start the maintenance mode of the project " + proj.getName());
                 response = new Response(true, "project.maintenance.on.blocked");
                 break;
               }
@@ -154,9 +165,10 @@ public final class ActivationProjectResource extends AbstractProjectResource {
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.maintenance.on.success");
-
+              trace(Level.INFO, "Start the maintenance mode of the project " + proj.getName());
             }
             catch (Exception e) {
+              trace(Level.INFO, "Cannot start the maintenance mode of the project " + proj.getName());
               response = new Response(false, "project.update.error");
               throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
             }
@@ -165,6 +177,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
           if (this.getReference().toString().endsWith("stopmaintenance")) {
             try {
               if (!proj.isMaintenance()) {
+                trace(Level.INFO, "Cannot stop the maintenance mode of the project " + proj.getName());
                 response = new Response(true, "project.maintenance.off.blocked");
                 break;
               }
@@ -177,9 +190,10 @@ public final class ActivationProjectResource extends AbstractProjectResource {
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.maintenance.off.success");
-
+              trace(Level.INFO, "Stop the maintenance mode of the project " + proj.getName());
             }
             catch (Exception e) {
+              trace(Level.INFO, "Cannot stop the maintenance mode of the project " + proj.getName());
               response = new Response(false, "project.update.error");
               throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
             }

@@ -59,7 +59,16 @@ public final class ProjectResource extends AbstractProjectResource {
   @Get
   public Representation retrieveProject(Variant variant) {
     Project project = getStore().retrieve(getProjectId());
-    Response response = new Response(true, project, Project.class, "project");
+    Response response;
+    if (project != null) {
+      response = new Response(true, project, Project.class, "project");
+      trace(Level.FINE, "Edit information for the projet " + project.getName());
+    }
+    else {
+      trace(Level.INFO, "Cannot Edit information for the projet - id: " + getProjectId());
+      response = new Response(false, "project.not.found");
+    }
+
     return getRepresentation(response, variant);
   }
 
@@ -94,6 +103,7 @@ public final class ProjectResource extends AbstractProjectResource {
         projectInput = getObject(representation, variant);
 
         if ("ACTIVE".equals(projectInput.getStatus())) {
+          trace(Level.INFO, "Cannot update the projet " + projectInput.getName());
           response = new Response(false, "PROJECT_ACTIVE");
           return getRepresentation(response, variant);
         }
@@ -114,16 +124,27 @@ public final class ProjectResource extends AbstractProjectResource {
 
       }
 
-      response = new Response(true, projectOutput, Project.class, "project");
+      if (projectOutput != null) {
+        trace(Level.INFO, "Update the projet " + projectInput.getName());
+        response = new Response(true, projectOutput, Project.class, "project");
+
+      }
+      else {
+        trace(Level.INFO, "Cannot update the projet - id: " + getProjectId());
+        response = new Response(false, "project.update.failure");
+      }
+
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update the projet - id: " + getProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update the projet - id: " + getProjectId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -154,7 +175,8 @@ public final class ProjectResource extends AbstractProjectResource {
         getProjectApplication().detachProjectDefinitif(input);
       }
       catch (Exception e) {
-        getLogger().log(Level.SEVERE, null, e);
+        trace(Level.INFO, "Cannot delete the projet - id: " + getProjectId());
+        getLogger().log(Level.WARNING, null, e);
         throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
       }
 
@@ -177,19 +199,23 @@ public final class ProjectResource extends AbstractProjectResource {
         getStore().delete(getProjectId());
 
         response = new Response(true, "project.delete.success");
+        trace(Level.INFO, "Delete the projet " + input.getName());
       }
       else {
+        trace(Level.INFO, "Cannot delete the projet - id: " + getProjectId());
         response = new Response(false, "project.delete.notfound");
       }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete the projet - id: " + getProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete the projet - id: " + getProjectId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

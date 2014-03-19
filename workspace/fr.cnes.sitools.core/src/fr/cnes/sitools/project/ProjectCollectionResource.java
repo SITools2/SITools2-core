@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -60,6 +60,7 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
   @Post
   public Representation newProject(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create the project");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "PROJECT_REPRESENTATION_REQUIRED");
     }
     try {
@@ -73,11 +74,13 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
       if (!projectInput.getName().matches("^[a-zA-Z0-9\\-\\.\\_]+$")) {
         response = new Response(false, projectInput, Project.class, "project");
         response.setMessage("project.name.invalid.for.regexp");
+        trace(Level.INFO, "Cannot create the project " + projectInput.getName());
         return getRepresentation(response, variant);
       }
       // check for project unicity
       response = checkUnicity(projectInput, true);
       if (response != null && !response.getSuccess()) {
+        trace(Level.INFO, "Cannot create the project " + projectInput.getName());
         return getRepresentation(response, variant);
       }
       // Business service
@@ -97,15 +100,18 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
       notification.setMessage("project created.");
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
+      trace(Level.INFO, "Create the project " + projectInput.getName());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the project");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create the project");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -132,16 +138,19 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
       List<Project> projects = getStore().getList(filter);
       int total = projects.size();
       projects = getStore().getPage(filter, projects);
+      trace(Level.FINE, "View available projects");
       Response response = new Response(true, projects, Project.class, "projects");
       response.setTotal(total);
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available projects");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available projects");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
