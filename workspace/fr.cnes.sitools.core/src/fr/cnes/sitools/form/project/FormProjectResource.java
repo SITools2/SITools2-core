@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -66,20 +66,43 @@ public class FormProjectResource extends AbstractFormProjectResource {
    */
   @Get
   public Representation retrieveFormProject(Variant variant) {
-    // XStream xstream = XStreamFactory.getInstance().getXStreamWriter(variant.getMediaType(), false);
-    if (getFormProjectId() != null) {
-      FormProject formProject = getStore().retrieve(getFormProjectId());
-      Response response = new Response(true, formProject, FormProject.class, "formProject");
+    try {
+      Response response;
+      if (getFormProjectId() != null) {
+        FormProject formProject = getStore().retrieve(getFormProjectId());
+        if ((getProjectId() != null) && (!getProjectId().equals(formProject.getParent()))) {
+          trace(Level.INFO, "Cannot edit multi-dataset information for the multi-dataset - id: " + getFormProjectId());
+          response = new Response(false, "FORM_DONT_BELONG_TO_PROJECT");
+        }
+        else {
+          trace(Level.FINE, "Edit multi-dataset information for the multi-dataset " + formProject.getName());
+          response = new Response(true, formProject, FormProject.class, "formProject");
+        }
+      }
+      else {
+        ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
+        if (getProjectId() != null) {
+          filter.setParent(getProjectId());
+        }
+        List<FormProject> formProject = getStore().getList(filter);
+        int total = formProject.size();
+        formProject = getStore().getPage(filter, formProject);
+        trace(Level.FINE, "View available query forms for multi-datasets");
+        response = new Response(true, formProject, FormProject.class, "formProject");
+        response.setTotal(total);
+
+      }
       return getRepresentation(response, variant);
     }
-    else {
-      ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
-      List<FormProject> formProject = getStore().getList(filter);
-      int total = formProject.size();
-      formProject = getStore().getPage(filter, formProject);
-      Response response = new Response(true, formProject, FormProject.class, "formProject");
-      response.setTotal(total);
-      return getRepresentation(response, variant);
+    catch (ResourceException e) {
+      trace(Level.INFO, "Cannot edit multi-dataset information for the multi-dataset - id: " + getFormProjectId());
+      getLogger().log(Level.INFO, null, e);
+      throw e;
+    }
+    catch (Exception e) {
+      trace(Level.INFO, "Cannot edit multi-dataset information for the multi-dataset - id: " + getFormProjectId());
+      getLogger().log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
 
@@ -124,16 +147,27 @@ public class FormProjectResource extends AbstractFormProjectResource {
         formProjectOutput = getStore().update(formProjectInput);
 
       }
+      Response response;
+      if (formProjectOutput != null) {
+        response = new Response(true, formProjectOutput, FormProject.class, "formProject");
+        trace(Level.INFO, "update multi-dataset information for the multi-dataset " + formProjectOutput.getName());
+      }
+      else {
+        trace(Level.INFO, "Cannot update multi-dataset information for the multi-dataset - id: " + getFormProjectId());
+        response = new Response(false, "formProject.update.failure");
 
-      Response response = new Response(true, formProjectOutput, FormProject.class, "formProject");
+      }
+
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update multi-dataset information for the multi-dataset - id: " + getFormProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot update multi-dataset information for the multi-dataset - id: " + getFormProjectId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -161,20 +195,31 @@ public class FormProjectResource extends AbstractFormProjectResource {
   public Representation deleteFormProject(Variant variant) {
     try {
       FormProject formProject = getStore().retrieve(getFormProjectId());
-      detachServices(formProject);
-      // Business service
-      getStore().delete(getFormProjectId());
+      Response response;
+      if (formProject != null) {
+        detachServices(formProject);
+        // Business service
+        getStore().delete(getFormProjectId());
 
-      // Response
-      Response response = new Response(true, "formProject.delete.success");
+        trace(Level.INFO, "Delete the multi-dataset " + formProject.getName());
+        // Response
+        response = new Response(true, "formProject.delete.success");
+      }
+      else {
+        trace(Level.INFO, "Delete the multi-dataset - id: " + getFormProjectId());
+        response = new Response(false, "formProject.delete.failure");
+
+      }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Delete the multi-dataset - id: " + getFormProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Delete the multi-dataset - id: " + getFormProjectId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

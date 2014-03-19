@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -83,33 +83,35 @@ public class CommonConceptsResource extends AbstractCollectionsResource {
           Set<String> commonConcepts = new HashSet<String>();
           boolean first = true;
           List<Resource> datasets = collection.getDataSets();
-          for (Resource datasetRes : datasets) {
-            DataSet dataset = getDataset(datasetRes.getId());
-            if (dataset != null) {
-              DictionaryMapping dicoMapping = dataset.getDictionaryMapping(dictionaryId);
-              if (dicoMapping != null) {
-                Set<String> datasetConcepts = new HashSet<String>();
-                List<ColumnConceptMapping> colConceptMapping = dicoMapping.getMapping();
-                for (ColumnConceptMapping columnConceptMapping : colConceptMapping) {
-                  // On the first dataset, we fill the list with all the concepts
-                  if (first) {
-                    commonConcepts.add(columnConceptMapping.getConceptId());
+          if (datasets != null) {
+            for (Resource datasetRes : datasets) {
+              DataSet dataset = getDataset(datasetRes.getId());
+              if (dataset != null) {
+                DictionaryMapping dicoMapping = dataset.getDictionaryMapping(dictionaryId);
+                if (dicoMapping != null) {
+                  Set<String> datasetConcepts = new HashSet<String>();
+                  List<ColumnConceptMapping> colConceptMapping = dicoMapping.getMapping();
+                  for (ColumnConceptMapping columnConceptMapping : colConceptMapping) {
+                    // On the first dataset, we fill the list with all the concepts
+                    if (first) {
+                      commonConcepts.add(columnConceptMapping.getConceptId());
+                    }
+                    // on the other datasets, we will another list, which will be compare with the common concept list
+                    else {
+                      datasetConcepts.add(columnConceptMapping.getConceptId());
+                    }
                   }
-                  // on the other datasets, we will another list, which will be compare with the common concept list
-                  else {
-                    datasetConcepts.add(columnConceptMapping.getConceptId());
+                  if (!first) {
+                    commonConcepts = mergeLists(commonConcepts, datasetConcepts);
                   }
+                  first = false;
                 }
-                if (!first) {
-                  commonConcepts = mergeLists(commonConcepts, datasetConcepts);
-                }
-                first = false;
               }
-            }
-            // if the mapping is empty for a dataset, no concept are in common let's clear the list and leave the for
-            else {
-              commonConcepts.clear();
-              break;
+              // if the mapping is empty for a dataset, no concept are in common let's clear the list and leave the for
+              else {
+                commonConcepts.clear();
+                break;
+              }
             }
           }
 
