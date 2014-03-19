@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -131,14 +131,9 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
 
     if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
+      this.component = createTestComponent(SitoolsSettings.getInstance());
 
       // Context
       Context ctx = this.component.getContext().createChildContext();
@@ -150,23 +145,21 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
         cleanDirectory(storeDirectory);
         store = new GraphStoreXML(storeDirectory, ctx);
         storeProject = new ProjectStoreXML(storeProjectDirectory, ctx);
-        
+
         Map<String, Object> stores = new ConcurrentHashMap<String, Object>();
         stores.put(Consts.APP_STORE_PROJECT, storeProject);
         stores.put(Consts.APP_STORE_GRAPH, store);
-        
+
         SitoolsSettings.getInstance().setStores(stores);
-        
+
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, storeProject);
       ctx.getAttributes().put(Consts.APP_STORE_GRAPH, store);
 
       this.component.getDefaultHost().attach(getAttachUrl(),
           new ProjectAdministration(this.component.getDefaultHost(), ctx));
     }
-    
-    
 
     if (!this.component.isStarted()) {
       this.component.start();
@@ -316,7 +309,8 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
    * 
    * @param item
    *          Graph
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void create(Graph item) throws IOException {
     Representation rep = getRepresentation(item, getMediaTest());
@@ -356,7 +350,7 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
 
       RIAPUtils.exhaust(result);
     }
-    
+
   }
 
   /**
@@ -364,7 +358,8 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
    * 
    * @param item
    *          Graph
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void retrieve(Graph item) throws IOException {
     String url = getBaseUrl() + "/" + projectId + "/graph";
@@ -399,12 +394,13 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
    * 
    * @param item
    *          Graph
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void update(Graph item) throws IOException {
     Representation rep = getRepresentation(item, getMediaTest());
     ClientResource cr = new ClientResource(getBaseUrl() + "/" + projectId + "/graph");
-    
+
     if (docAPI.isActive()) {
       docAPI
           .appendComment("L'API supporte le <strong>JSON</strong> ou le <strong>XML</strong> pour requêter le server");
@@ -421,7 +417,7 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
       // PUT
       Representation result = cr.put(rep, getMediaTest());
       docAPI.appendResponse(result);
-      
+
       RIAPUtils.exhaust(result);
     }
     else {
@@ -434,10 +430,10 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
       Graph prj = (Graph) response.getItem();
       assertEquals(prj.getName(), item.getName());
       assertEquals(prj.getId(), item.getId());
-      
+
       RIAPUtils.exhaust(result);
     }
-    
+
   }
 
   /**
@@ -445,7 +441,8 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
    * 
    * @param item
    *          Graph
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void delete(Graph item) throws IOException {
     String url = getBaseUrl() + "/" + projectId + "/graph";
@@ -476,7 +473,8 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
   /**
    * Invokes GET and asserts result response is an empty array.
    * 
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void assertNone() throws IOException {
     String url = getBaseUrl();
