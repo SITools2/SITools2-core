@@ -106,15 +106,18 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
             // For SitoolsParameterizedApplications marked customizable
             if (bCustomizable && (app instanceof SitoolsParameterizedApplication)) {
+              trace(Level.INFO, "Cannot edit application - id: " + getApplication());
               response = null;
             }
             else {
+              trace(Level.INFO, "Edit application " + resource.getName());
               response = new Response(true, resource, Resource.class, "application");
             }
             break;
           }
         }
         if (response == null) {
+          trace(Level.INFO, "Cannot edit application - id: " + getApplication());
           response = new Response(false, "application.notfound");
         }
       }
@@ -153,7 +156,7 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
           }
         }
         total = resources.size();
-        trace(Level.FINE, "View available application services");
+        trace(Level.FINE, "View available applications");
         response = new Response(true, resources, Resource.class, "applications");
         response.setTotal(total);
       }
@@ -161,12 +164,12 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
     }
     catch (ResourceException e) {
-      trace(Level.INFO, "Cannot view application service");
+      trace(Level.INFO, "Cannot view applications");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      trace(Level.INFO, "Cannot view application service");
+      trace(Level.INFO, "Cannot view applications");
       getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -285,6 +288,7 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
   public Representation unregister(Representation representation, Variant variant) {
     Response response = null;
     if (getResourceId() == null) {
+      trace(Level.INFO, "Cannot delete the application");
       response = new Response(false, "RESOURCE_UNKNOWN");
     }
     else {
@@ -300,10 +304,12 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
       }
       if (updated) {
+        trace(Level.INFO, "Delete the application - id: " + getResourceId());
         getStore().update(resourceManager);
         response = new Response(true, "RESOURCE_DELETED");
       }
       else {
+        trace(Level.INFO, "Cannot delete the application - id: " + getResourceId());
         response = new Response(false, "RESOURCE_UNKNOWN");
       }
     }
@@ -337,12 +343,14 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
     try {
       do {
         if (getResourceId() == null) {
+          trace(Level.INFO, "Cannot perform action on the application");
           response = new Response(false, "RESOURCE_UNKNOWN");
           break;
         }
 
         SitoolsApplication app = getAppRegistryApplication().getApplications().get(getResourceId());
         if (app == null) {
+          trace(Level.INFO, "Cannot perform action on the application - id: " + getResourceId());
           response = new Response(false, "APPLICATION_INSTANCE_NOT_FOUND");
           break;
         }
@@ -358,6 +366,7 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
         }
 
         if (param == null) {
+          trace(Level.INFO, "Cannot perform action on the application - id: " + getResourceId());
           response = new Response(false, "APPLICATION_INSTANCE_ACTION_EXPECTED");
           break;
         }
@@ -367,11 +376,13 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
         if ("start".equals(value)) {
           synchronized (app) {
             if (app.isStarted()) {
+              trace(Level.INFO, "Cannot start the application " + app.getName());
               response = new Response(false, "APPLICATION_ALREADY_STARTED");
               break;
             }
             getAppRegistryApplication().attachApplication(app);
             app.start();
+            trace(Level.INFO, "Start the application " + app.getName());
             response = new Response(true, "APPLICATION_STARTED");
             break;
           }
@@ -380,6 +391,7 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
         if ("stop".equals(value)) {
           getAppRegistryApplication().detachApplication(app);
           app.stop();
+          trace(Level.INFO, "Stop the application " + app.getName());
           response = new Response(true, "APPLICATION_STOPPED");
           break;
         }
@@ -390,6 +402,7 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
           wait(2000);
           getAppRegistryApplication().attachApplication(app);
           app.start();
+          trace(Level.INFO, "Restart the application " + app.getName());
           response = new Response(true, "APPLICATION_RESTARTED");
           break;
         }
@@ -398,10 +411,12 @@ public final class AppRegistryResource extends AppRegistryAbstractResource {
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot perform action on the application - id: " + getResourceId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot perform action on the application - id: " + getResourceId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
