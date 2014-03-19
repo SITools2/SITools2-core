@@ -324,5 +324,19 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
     return current;
 
   }
+  
+  /**
+   * getTraceParentType
+   * @return a trace parent type
+   */
+  protected final String getTraceParentType() {
+    Object obj = getContext().getAttributes().get("TRACE_PARENT_TYPE");
+    if (obj != null) {
+      return obj.toString();
+    }
+    else {
+      return null;
+    }
+  }
 
 }
