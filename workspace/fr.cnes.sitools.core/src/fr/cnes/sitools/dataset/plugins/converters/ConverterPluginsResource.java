@@ -125,6 +125,7 @@ public final class ConverterPluginsResource extends AbstractConverterResource {
 
           // serialize the objet and return a representation of it
           response = new Response(true, convDTO, ConverterModelDTO.class, "converter");
+          
         }
         catch (IllegalArgumentException e) {
           response = new Response(false, "IllegalArgumentException");

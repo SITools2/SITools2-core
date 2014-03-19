@@ -19,6 +19,7 @@
 package fr.cnes.sitools.dataset.converter;
 
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
@@ -171,21 +172,25 @@ public final class ConverterResource extends AbstractConverterResource {
 
           ConverterModelDTO converterOutDTO = getConverterModelDTO(convOut);
           response = new Response(true, converterOutDTO, ConverterModelDTO.class, "converter");
+          trace(Level.INFO, "Update the converter " + converterOutDTO.getName() + " for the dataset - id : " + getDatasetId());
 
         }
         else {
           // converterChainedModel does not exists
           response = new Response(false, "converter.dontExists");
+          trace(Level.INFO, "Cannot update the converter for the dataset - id : " + getDatasetId());
         }
       }
       else {
         // converterChainedModel null
         response = new Response(false, "NOT FOUND");
+        trace(Level.INFO, "Cannot update the converter for the dataset - id : " + getDatasetId());
       }
     }
     else {
       // converterChainedModel null
       response = new Response(false, "NOT FOUND");
+      trace(Level.INFO, "Cannot update the converter for the dataset - id : " + getDatasetId());
     }
     return getRepresentation(response, variant);
   }
@@ -252,18 +257,22 @@ public final class ConverterResource extends AbstractConverterResource {
         getStore().update(convChained);
         if (success) {
           response = new Response(true, "converter.deleted.success");
+          trace(Level.INFO, "Delete the converter " + conv.getName() + " for the dataset - id : " + getDatasetId());
         }
         else {
           response = new Response(false, "converter.deleted.failure");
+          trace(Level.INFO, "Cannot delete the converter " + conv.getName() + " for the dataset - id : " + getDatasetId());
         }
       }
       else {
         response = new Response(false, "converter.deleted.failure.notfound");
+        trace(Level.INFO, "Cannot delete the converter for the dataset - id : " + getDatasetId());
       }
 
     }
     else {
       response = new Response(false, "converter.deleted.failure.convChained.notfound");
+      trace(Level.INFO, "Cannot delete the converter for the dataset - id : " + getDatasetId());
     }
     return getRepresentation(response, variant);
 

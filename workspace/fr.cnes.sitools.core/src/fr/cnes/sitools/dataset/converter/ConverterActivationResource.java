@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.converter;
 
+import java.util.logging.Level;
+
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -95,6 +97,7 @@ public final class ConverterActivationResource extends AbstractConverterResource
         if (this.getReference().toString().endsWith("start")) {
           if ("ACTIVE".equals(converter.getStatus())) {
             response = new Response(true, "converter.update.blocked");
+            trace(Level.INFO, "Cannot stop the converter for the dataset - id : " + getDatasetId());
             break;
           }
           else {
@@ -102,16 +105,17 @@ public final class ConverterActivationResource extends AbstractConverterResource
             getStore().update(converterChainedModel);
             // fillParameters(converter);
             ConverterModel converterOut = getConverterModel(converterChainedModel, converterId);
-
             ConverterModelDTO converterOutDTO = getConverterModelDTO(converterOut);
             response = new Response(true, converterOutDTO, ConverterModelDTO.class, "converter");
             response.setMessage("converter.start.success");
+            trace(Level.INFO, "Stop the converter " + converterOutDTO.getName() + " for the dataset - id : " + getDatasetId());
           }
         }
 
         if (this.getReference().toString().endsWith("stop")) {
           if ("INACTIVE".equals(converter.getStatus())) {
             response = new Response(true, "converter.stop.blocked");
+            trace(Level.INFO, "Cannot start the converter for the dataset - id : " + getDatasetId());
             break;
           }
           else {
@@ -121,6 +125,7 @@ public final class ConverterActivationResource extends AbstractConverterResource
             ConverterModelDTO converterOutDTO = getConverterModelDTO(converterOut);
             response = new Response(true, converterOutDTO, ConverterModelDTO.class, "converter");
             response.setMessage("converter.stop.success");
+            trace(Level.INFO, "Start the converter " + converterOutDTO.getName() + " for the dataset - id : " + getDatasetId());
           }
 
         }

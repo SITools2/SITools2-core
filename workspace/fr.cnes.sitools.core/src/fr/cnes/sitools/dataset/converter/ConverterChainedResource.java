@@ -131,15 +131,18 @@ public final class ConverterChainedResource extends AbstractConverterResource {
       registerObserver(converterChained);
       ConverterModelDTO converterOutDTO = getConverterModelDTO(convOut);
       response = new Response(true, converterOutDTO, ConverterModelDTO.class, "converter");
+      trace(Level.INFO, "Add the converter " + converterOutDTO.getName() + " for the dataset - id : " + getDatasetId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add the converter for the dataset - id : " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add the converter for the dataset - id : " + getDatasetId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
