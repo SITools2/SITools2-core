@@ -396,6 +396,7 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
       // Log results
       getLogger().fine("Converted target URI: " + this.getTargetUri());
       getLogger().finest("Converted base name : " + this.getBaseName());
+      getResponse().getAttributes().put("IS_DIRECTORY_TARGET", this.isDirectoryTarget());
     }
     catch (IOException ioe) {
       throw new ResourceException(ioe);
