@@ -69,11 +69,11 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         if (appModel != null) {
           ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appModel);
           response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
-          trace(Level.INFO, "Edit configuration parameters of the application plugin - id : " + getAppId());
+          trace(Level.FINE, "Edit configuration parameters of the application plugin " + appModelOutDTO.getName());
         }
         else {
           response = new Response(false, "NOT_FOUND");
-          trace(Level.INFO, "Cannot edit configuration parameters of the application plugin - id : " + getAppId());
+          trace(Level.FINE, "Cannot edit configuration parameters of the application plugin");
         }
         return getRepresentation(response, variant);
       }
@@ -161,7 +161,7 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appOutput);
         Response response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class,
             "ApplicationPluginModel");
-        trace(Level.INFO, "Update configuration parameters of the application plugin - id : " + getAppId());
+        trace(Level.INFO, "Update configuration parameters of the application plugin " + appModelOutDTO.getName());
         return getRepresentation(response, variant);
       }
       else {
@@ -200,7 +200,7 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         // Business service
         getStore().delete(appOutput);
         getResourceApplication().detachApplicationDefinively(appOutput);
-        trace(Level.INFO, "Delete application plugin - id : " + getAppId());
+        trace(Level.INFO, "Delete application plugin " + appOutput.getName());
         response = new Response(true, "ApplicationPluginModel.delete.success");
 
       }
