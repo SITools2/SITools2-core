@@ -106,11 +106,6 @@ public abstract class AbstractGuiServiceDeclareTestCase extends AbstractSitoolsT
   public void setUp() throws Exception {
     SitoolsSettings settings = SitoolsSettings.getInstance();
     if (this.component == null) {
-//      this.component = new Component();
-//      this.component.getServers().add(Protocol.HTTP, getTestPort());
-//      this.component.getClients().add(Protocol.HTTP);
-//      this.component.getClients().add(Protocol.FILE);
-//      this.component.getClients().add(Protocol.CLAP);
       this.component = createTestComponent(settings);
 
       // Context
