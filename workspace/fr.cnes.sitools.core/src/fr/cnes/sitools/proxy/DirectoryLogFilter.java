@@ -6,12 +6,12 @@ import java.util.logging.LogRecord;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
+import org.restlet.data.Reference;
 import org.restlet.routing.Filter;
 
 /**
- * DirectoryLogFilter
- *  Filter to manage logs on directory proxy resources (CSS/FTL/CGU)
- *  
+ * DirectoryLogFilter Filter to manage logs on directory proxy resources (CSS/FTL/CGU)
+ * 
  * @author tx.chevallier
  */
 public class DirectoryLogFilter extends Filter {
@@ -30,15 +30,18 @@ public class DirectoryLogFilter extends Filter {
         record = new LogRecord(Level.FINE, "view of the " + description.toUpperCase() + " editor");
       }
       else {
+        Reference ref = request.getResourceRef();
         if (request.getMethod().getName().equals(Method.GET.getName())) {
-          record = new LogRecord(Level.FINE, "edit the " + description.toUpperCase() + " file in the editor");
+          record = new LogRecord(Level.FINE, "edit the " + description.toUpperCase() + " file " + ref.getLastSegment()
+              + " in the editor");
         }
         else if (request.getMethod().getName().equals(Method.PUT.getName())) {
-          record = new LogRecord(Level.INFO, "update the " + description.toUpperCase() + " file in the editor");
+          record = new LogRecord(Level.INFO, "update the " + description.toUpperCase() + " file "
+              + ref.getLastSegment() + " in the editor");
         }
         else {
           record = new LogRecord(Level.FINE, request.getMethod().getName() + " on " + description.toUpperCase()
-              + " file");
+              + " file" + ref.getLastSegment());
         }
       }
 
@@ -46,5 +49,4 @@ public class DirectoryLogFilter extends Filter {
     response.getAttributes().put("LOG_RECORD", record);
 
   }
-
 }

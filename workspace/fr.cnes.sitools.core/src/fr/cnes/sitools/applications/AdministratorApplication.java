@@ -181,8 +181,11 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     analogDir.setListingAllowed(true);
     analogDir.setModifiable(false);
     analogDir.setNocache(true);
+    analogDir.setDescription("Log report");
+    DirectoryLogFilter analogFilter = new DirectoryLogFilter();
+    analogFilter.setNext(analogDir);
 
-    router.attach("/analog", analogDir);
+    router.attach("/analog", analogFilter);
 
     router.attach("/jettyprops", JettyPropertiesResource.class);
 
