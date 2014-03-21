@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -86,8 +86,9 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
       try {
         do {
           // on charge le dataset
-          DataSet ds = store.retrieve(datasetId);
+          DataSet ds = store.retrieve(getDatasetId());
           if (ds == null) {
+            trace(Level.INFO, "Cannot perform action on the dataset " + getDatasetId());
             response = new Response(false, "DATASET_NOT_FOUND");
             break;
           }
@@ -105,8 +106,10 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
           if (this.getReference().toString().endsWith("getSqlString")) {
             try {
               response = new Response(true, getRequestString(ds));
+              trace(Level.INFO, "View the request string of the dataset " + ds.getName());
             }
             catch (Exception e) {
+              trace(Level.INFO, "Cannot view the request string of the dataset " + ds.getName());
               getLogger().log(Level.INFO, null, e);
               response = new Response(false, "dataset.stop.error");
             }
@@ -156,6 +159,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
     Response response;
     do {
       if ("ACTIVE".equals(ds.getStatus())) {
+        trace(Level.INFO, "Cannot start the dataset " + ds.getName());
         response = new Response(true, "dataset.update.blocked");
         break;
       }
@@ -170,6 +174,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         try {
           boolean ok = testRequest(ds);
           if (!ok) {
+            trace(Level.INFO, "Cannot start the dataset " + ds.getName());
             response = new Response(false, "dataset.sql.error : " + sql);
             break;
           }
@@ -178,6 +183,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
           ds.setNbRecords(nbTotalResults);
         }
         catch (Exception e) {
+          trace(Level.INFO, "Cannot start the dataset " + ds.getName());
           getLogger().warning(e.getMessage());
           response = new Response(false, "dataset.sql.error : " + sql);
           break;
@@ -201,9 +207,10 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         notification.setEvent("DATASET_STATUS_CHANGED");
         notification.setMessage("dataset.update.success");
         getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
+        trace(Level.INFO, "Start the dataset " + ds.getName());
       }
       catch (Exception e) {
+        trace(Level.INFO, "Cannot start the dataset " + ds.getName());
         getLogger().log(Level.INFO, null, e);
         response = new Response(false, "dataset.update.error");
       }
@@ -232,7 +239,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         catch (Exception e) {
           getLogger().log(Level.INFO, null, e);
         }
-
+        trace(Level.INFO, "Cannot stop the dataset " + ds.getName());
         response = new Response(true, "dataset.stop.blocked");
         break;
       }
@@ -252,8 +259,10 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         notification.setEvent("DATASET_STATUS_CHANGED");
         notification.setMessage("dataset.stop.success");
         getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+        trace(Level.INFO, "Stop the dataset " + ds.getName());
       }
       catch (Exception e) {
+        trace(Level.INFO, "Cannot stop the dataset " + ds.getName());
         getLogger().log(Level.INFO, null, e);
         response = new Response(false, "dataset.stop.error");
       }

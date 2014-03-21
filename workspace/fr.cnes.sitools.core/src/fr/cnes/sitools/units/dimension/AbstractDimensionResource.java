@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -18,7 +18,10 @@
  ******************************************************************************/
 package fr.cnes.sitools.units.dimension;
 
+import java.io.IOException;
+
 import org.restlet.data.MediaType;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
@@ -116,6 +119,37 @@ public abstract class AbstractDimensionResource extends SitoolsResource {
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);
     return rep;
+  }
+
+  /**
+   * Gets SitoolsDimension object from Representation
+   * 
+   * @param representation
+   *          of a SitoolsDimension
+   * @return SitoolsDimension
+   * @throws IOException
+   *           if there is an error while deserializing Java Object
+   */
+  protected final SitoolsDimension getObject(Representation representation) throws IOException {
+    SitoolsDimension input = null;
+    if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<SitoolsDimension> obj = (ObjectRepresentation<SitoolsDimension>) representation;
+      input = obj.getObject();
+    }
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      // Parse the XML representation to get the bean
+      XstreamRepresentation<SitoolsDimension> xst = new XstreamRepresentation<SitoolsDimension>(representation);
+      xst.getXstream().alias("dimension", SitoolsDimension.class);
+      input = xst.getObject();
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      JacksonRepresentation<SitoolsDimension> json = new JacksonRepresentation<SitoolsDimension>(representation,
+          SitoolsDimension.class);
+      input = json.getObject();
+    }
+    return input;
   }
 
 }

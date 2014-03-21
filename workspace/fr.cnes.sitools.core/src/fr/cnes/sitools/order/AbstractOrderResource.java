@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -227,6 +227,34 @@ public abstract class AbstractOrderResource extends SitoolsResource {
    */
   public final String getActionId() {
     return this.actionId;
+  }
+
+  /**
+   * Gets an Order object from Representation
+   * 
+   * @param representation
+   *          of an Order
+   * @return DataSet
+   * @throws IOException
+   *           if there is an error while deserializing Java Object
+   */
+  protected final Order getObject(Representation representation) throws IOException {
+    Order orderInput = null;
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      // Parse the XML representation to get the bean
+      orderInput = new XstreamRepresentation<Order>(representation).getObject();
+  
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      orderInput = new JacksonRepresentation<Order>(representation, Order.class).getObject();
+    }
+    else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<Order> obj = (ObjectRepresentation<Order>) representation;
+      orderInput = obj.getObject();
+    }
+    return orderInput;
   }
   
 }

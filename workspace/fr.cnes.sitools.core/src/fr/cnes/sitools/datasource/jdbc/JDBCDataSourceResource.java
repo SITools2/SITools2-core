@@ -1,5 +1,5 @@
-     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -64,8 +64,16 @@ public final class JDBCDataSourceResource extends AbstractDataSourceResource {
       // XStream xstream = XStreamFactory.getInstance().getXStreamWriter(variant.getMediaType(), false);
 
       if (getDatasourceId() != null) {
-        JDBCDataSource dataset = getStore().retrieve(getDatasourceId());
-        Response response = new Response(true, dataset, JDBCDataSource.class, "jdbcdatasource");
+        JDBCDataSource datasource = getStore().retrieve(getDatasourceId());
+        Response response;
+        if (datasource != null) {
+          trace(Level.FINE, "Edit JDBC data source information for the data source " + datasource.getName());
+          response = new Response(true, datasource, JDBCDataSource.class, "jdbcdatasource");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit JDBC data source information for the data source " + getDatasourceId());
+          response = new Response(false, "cannot find mongodb datasource");
+        }
         return getRepresentation(response, variant);
       }
       else {
@@ -73,16 +81,19 @@ public final class JDBCDataSourceResource extends AbstractDataSourceResource {
         List<JDBCDataSource> datasources = getStore().getList(filter);
         int total = datasources.size();
         datasources = getStore().getPage(filter, datasources);
+        trace(Level.FINE, "View available JDBC data sources");
         Response response = new Response(true, datasources, JDBCDataSource.class, "jdbcdatasources");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available JDBC data sources");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view available JDBC data sources");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -128,21 +139,25 @@ public final class JDBCDataSourceResource extends AbstractDataSourceResource {
       }
 
       if (dsOutput != null) {
+        trace(Level.INFO, "Update information for the JDBC data source " + dsOutput.getName());
         Response response = new Response(true, dsOutput, JDBCDataSource.class, "jdbcdatasource");
         return getRepresentation(response, variant);
       }
       else {
+        trace(Level.INFO, "Update information for the JDBC data source - id: " + getDatasourceId());
         Response response = new Response(false, "Can not validate datasource");
         return getRepresentation(response, variant);
       }
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Update information for the JDBC data source - id: " + getDatasourceId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Update information for the JDBC data source - id: " + getDatasourceId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -173,29 +188,39 @@ public final class JDBCDataSourceResource extends AbstractDataSourceResource {
   @Delete
   public Representation deleteDataSource(Variant variant) {
     try {
+      Response response = null;
       try {
         JDBCDataSource datasourceOutput = getStore().retrieve(getDatasourceId());
         if (datasourceOutput != null) {
           getJDBCDataSourceAdministration().detachDataSourceDefinitif(datasourceOutput);
+          // Business service
+          getStore().delete(getDatasourceId());
+
+          trace(Level.INFO, "Delete the JDBC data source " + datasourceOutput.getName());
+          response = new Response(true, "datasource.delete.success");
+
+        }
+        else {
+          trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
+          response = new Response(false, "datasource.delete.failure");
         }
       }
       catch (Exception e) {
+        trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
         getLogger().log(Level.INFO, null, e);
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
       }
-
-      // Business service
-      getStore().delete(getDatasourceId());
-
-      Response response = new Response(true, "datasource.delete.success");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete the JDBC data source - id: " + getDatasourceId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

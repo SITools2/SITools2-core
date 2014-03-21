@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.units.dimension.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,12 @@ import fr.cnes.sitools.units.dimension.helper.DimensionHelper;
  * @author m.marseille (AKKA technologies)
  */
 @XStreamAlias("dimension")
-public final class SitoolsDimension implements IResource {
+public final class SitoolsDimension implements IResource, Serializable {
+
+  /**
+   * serialVersionUID
+   */
+  private static final long serialVersionUID = 1L;
 
   /** Identifier of the dimension */
   private String id;
@@ -334,13 +340,13 @@ public final class SitoolsDimension implements IResource {
         List<SitoolsUnitConverter> registeredConverters = this.getConverters(); // get the list of registered converters
         for (SitoolsUnitConverter conv : registeredConverters) {
           if (conv.getStartUnit().isCompatible(startUnit.getUnit())
-            && conv.getTargetUnit().isCompatible(targetUnit.getUnit())) {
+              && conv.getTargetUnit().isCompatible(targetUnit.getUnit())) {
             conv.setStartUnit(startUnit.getUnit());
             conv.setTargetUnit(targetUnit.getUnit());
             return conv.getBaseToTargetConverter();
           }
           if (conv.getStartUnit().isCompatible(targetUnit.getUnit())
-            && conv.getTargetUnit().isCompatible(startUnit.getUnit())) {
+              && conv.getTargetUnit().isCompatible(startUnit.getUnit())) {
             conv.setStartUnit(startUnit.getUnit());
             conv.setTargetUnit(targetUnit.getUnit());
             return conv.getTargetToBaseConverter();

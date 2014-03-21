@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -21,17 +21,15 @@ package fr.cnes.sitools.userstorage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 
 import org.restlet.data.Form;
-import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -68,10 +66,13 @@ public final class UserStorageResource extends AbstractUserStorageResource {
       UserStorageManager.refresh(getContext(), storage);
       getStore().update(storage);
 
+      trace(Level.FINE, "View user space information for the user : " + getIdentifier());
+
       Response response = new Response(true, storage, UserStorage.class, "userstorage");
       return getRepresentation(response, variant);
     }
     else {
+      trace(Level.INFO, "Cannot view user space information for the user : " + getIdentifier());
       Response response = new Response(false, "USERSTORAGE_NOTFOUND");
       return getRepresentation(response, variant);
     }
@@ -82,7 +83,7 @@ public final class UserStorageResource extends AbstractUserStorageResource {
     info.setDocumentation("Method to get representation of a user storage.");
     this.addStandardGetRequestInfo(info);
     ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the user to deal with.");
+        "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }
@@ -111,7 +112,7 @@ public final class UserStorageResource extends AbstractUserStorageResource {
     info.setDocumentation("Method to create a new User Storage for the specified user.");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the user to deal with.");
+        "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }
@@ -137,9 +138,17 @@ public final class UserStorageResource extends AbstractUserStorageResource {
     // catch (Exception e) {
     // getContext().getLogger().log(Level.FINE, "unable to delete UserStorage", e);
     // }
-
-    getStore().delete(getIdentifier());
-    Response response = new Response(true, "userstorage.delete.success");
+    Response response;
+    UserStorage userStorage = getStore().retrieve(getIdentifier());
+    if (userStorage != null) {
+      getStore().delete(getIdentifier());
+      trace(Level.INFO, "Delete user space for the user " + getIdentifier());
+      response = new Response(true, "userstorage.delete.success");
+    }
+    else {
+      trace(Level.INFO, "Cannot delete user space for the user " + getIdentifier());
+      response = new Response(false, "userstorage.delete.failure");
+    }
 
     return getRepresentation(response, variant);
 
@@ -150,7 +159,7 @@ public final class UserStorageResource extends AbstractUserStorageResource {
     info.setDocumentation("Method to delete the userstorage the specified user.");
     this.addStandardGetRequestInfo(info);
     ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the user to deal with.");
+        "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }
@@ -171,37 +180,39 @@ public final class UserStorageResource extends AbstractUserStorageResource {
       // update de l'objet userstorage (quota ...)
 
       if (representation == null) {
+        trace(Level.INFO, "Cannot update user space for the user " + getIdentifier());
         throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "USER_STORAGE_REPRESENTATION_REQUIRED");
       }
+      try {
+        UserStorage userStorageInput = getObject(representation);
 
-      UserStorage userStorageInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        userStorageInput = new XstreamRepresentation<UserStorage>(representation).getObject();
+        if (userStorageInput == null) {
+          trace(Level.INFO, "Cannot update user space for the user " + getIdentifier());
+          throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "USER_STORAGE_REPRESENTATION_REQUIRED");
+        }
 
+        UserStorage storage = getStore().retrieve(getIdentifier());
+        if (storage != null) {
+          storage.getStorage().setQuota(userStorageInput.getStorage().getQuota());
+          storage.getStorage().setLastUpdate(null);
+          UserStorage storageOut = getStore().update(storage);
+          trace(Level.INFO, "Update user space for the user " + getIdentifier());
+          response = new Response(true, storageOut, UserStorage.class, "userstorage");
+        }
+        else {
+          trace(Level.INFO, "Cannot update user space for the user " + getIdentifier());
+          response = new Response(false, "userstorage.not.found");
+        }
       }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-        // Parse the JSON representation to get the bean
-        userStorageInput = new JacksonRepresentation<UserStorage>(representation, UserStorage.class).getObject();
-      }
-
-      if (userStorageInput == null) {
-        throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "USER_STORAGE_REPRESENTATION_REQUIRED");
-      }
-
-      UserStorage storage = getStore().retrieve(getIdentifier());
-      if (storage != null) {
-        storage.getStorage().setQuota(userStorageInput.getStorage().getQuota());
-        storage.getStorage().setLastUpdate(null);
-        UserStorage storageOut = getStore().update(storage);
-        response = new Response(true, storageOut, UserStorage.class, "userstorage");
-      }
-      else {
-        response = new Response(false, "userstorage.not.found");
+      catch (Exception e) {
+        trace(Level.INFO, "Cannot update user space for the user " + getIdentifier());
+        getLogger().log(Level.WARNING, null, e);
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
       }
 
     }
     else {
+      trace(Level.INFO, "Cannot update user space for the user " + getIdentifier());
       response = new Response(false, "user.id.not.specified");
     }
 
@@ -213,7 +224,7 @@ public final class UserStorageResource extends AbstractUserStorageResource {
     info.setDocumentation("Method to modify the userstorage of the specified user.");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo paramUserId = new ParameterInfo(IDENTIFIER_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the user to deal with.");
+        "Identifier of the user to deal with.");
     info.getRequest().getParameters().add(paramUserId);
     this.addStandardResponseInfo(info);
   }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -64,6 +64,7 @@ public final class MongoDBDataSourceCollectionResource extends AbstractDataSourc
   @Post
   public Representation newDataSource(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create a MongoDB data source");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "DATASOURCE_REPRESENTATION_REQUIRED");
     }
     try {
@@ -79,17 +80,20 @@ public final class MongoDBDataSourceCollectionResource extends AbstractDataSourc
       // Business service
       SitoolsDataSourceModel datasourceOutput = getStore().create(datasourceInput);
 
+      trace(Level.INFO, "Create a MongoDB data source " + datasourceOutput.getName());
       // Response
       Response response = new Response(true, datasourceOutput, MongoDBDataSource.class, "mongodbdatasource");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create a MongoDB data source");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create a MongoDB data source");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -118,8 +122,16 @@ public final class MongoDBDataSourceCollectionResource extends AbstractDataSourc
   public Representation retrieveDataSource(Variant variant) {
     try {
       if (getDatasourceId() != null) {
-        SitoolsDataSourceModel dataset = getStore().retrieve(getDatasourceId());
-        Response response = new Response(true, dataset, MongoDBDataSource.class, "jdbcdatasource");
+        SitoolsDataSourceModel datasource = getStore().retrieve(getDatasourceId());
+        Response response;
+        if (datasource != null) {
+          trace(Level.FINE, "Edit MongoDB data source information for the data source " + datasource.getName());
+          response = new Response(true, datasource, MongoDBDataSource.class, "jdbcdatasource");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit MongoDB data source information for the data source " + getDatasourceId());
+          response = new Response(false, "cannot find mongodb datasource");
+        }
         return getRepresentation(response, variant);
       }
       else {
@@ -127,17 +139,20 @@ public final class MongoDBDataSourceCollectionResource extends AbstractDataSourc
         List<MongoDBDataSource> datasources = getStore().getList(filter);
         int total = datasources.size();
         datasources = getStore().getPage(filter, datasources);
+        trace(Level.FINE, "View available MongoDB data sources");
         Response response = new Response(true, datasources, MongoDBDataSource.class, "jdbcdatasource");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available MongoDB data sources");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available MongoDB data sources");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

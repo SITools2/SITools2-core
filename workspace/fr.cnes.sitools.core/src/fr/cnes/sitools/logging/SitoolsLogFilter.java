@@ -1,7 +1,8 @@
-package fr.cnes.sitools.util;
+package fr.cnes.sitools.logging;
 
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -12,15 +13,31 @@ import org.restlet.engine.Engine;
 import org.restlet.routing.Filter;
 import org.restlet.security.Role;
 
+import com.google.common.base.Joiner;
+
 import fr.cnes.sitools.security.SecurityUtil;
 
+/**
+ * Log filter that logs all the traces from the request response
+ * 
+ * 
+ * @author m.gond
+ */
 public class SitoolsLogFilter extends Filter {
-
+  /**
+   * The name of the logger to use
+   */
   private String loggerName;
 
-  public SitoolsLogFilter(String securityLoggerName) {
+  /**
+   * Instantiates a new sitools log filter.
+   * 
+   * @param loggerName
+   *          the name of the logger to use
+   */
+  public SitoolsLogFilter(String loggerName) {
     super();
-    this.loggerName = securityLoggerName;
+    this.loggerName = loggerName;
   }
 
   /*
@@ -41,14 +58,13 @@ public class SitoolsLogFilter extends Filter {
         user = clientInfo.getUser().getIdentifier();
         profile = "";
         List<Role> roles = clientInfo.getRoles();
+        Set<String> rolesStr = new HashSet<String>();
         for (Role role : roles) {
           if (!SecurityUtil.PUBLIC_ROLE.equals(role.getName())) {
-            if (!profile.isEmpty()) {
-              profile += ",";
-            }
-            profile += role.getName();
+            rolesStr.add(role.getName());
           }
         }
+        profile += Joiner.on(",").join(rolesStr);
       }
 
       LogRecord logRecord = (LogRecord) logRecordObj;

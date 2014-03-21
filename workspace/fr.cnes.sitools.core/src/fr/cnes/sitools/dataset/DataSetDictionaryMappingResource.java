@@ -1,5 +1,5 @@
-     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -65,7 +65,7 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
   public void doInit() {
     super.doInit();
     this.setNegotiated(false);
-    dictionaryId = (String) this.getRequest().getAttributes().get("dictionaryId");
+    setDictionaryId((String) this.getRequest().getAttributes().get("dictionaryId"));
 
   }
 
@@ -80,17 +80,23 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
   public Representation retrieveMappings(Variant variant) {
     try {
       Response response = null;
-      if (datasetId != null) {
-        DataSet dataset = store.retrieve(datasetId);
+      if (getDatasetId() != null) {
+        DataSet dataset = store.retrieve(getDatasetId());
         if (dataset == null) {
+          trace(Level.FINE, "Cannot edit semantic dictionary on the dataset - id: " + getDatasetId()
+              + " for the dictionary - id: " + getDictionaryId());
           response = new Response(false, "DATASET_NOT_FOUND");
         }
         else {
-          if (dataset.getDictionaryIds() == null || !dataset.getDictionaryIds().contains(dictionaryId)) {
+          if (dataset.getDictionaryIds() == null || !dataset.getDictionaryIds().contains(getDictionaryId())) {
             response = new Response(false, "DICTIONARY_NOT_FOUND");
+            trace(Level.FINE, "Cannot edit semantic dictionary on the dataset " + dataset.getName()
+                + " for the dictionary - id: " + getDictionaryId());
           }
           else {
-            response = new Response(true, dataset.getDictionaryMapping(dictionaryId), DictionaryMapping.class,
+            trace(Level.FINE, "Edit semantic dictionary on the dataset " + dataset.getName() + " for the dictionary "
+                + getDictionaryId());
+            response = new Response(true, dataset.getDictionaryMapping(getDictionaryId()), DictionaryMapping.class,
                 "dictionaryMapping");
 
           }
@@ -99,10 +105,14 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.FINE, "Cannot edit semantic dictionary on the dataset - id: " + getDatasetId()
+          + " for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.FINE, "Cannot edit semantic dictionary on the dataset - id: " + getDatasetId()
+          + " for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -138,11 +148,15 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
     Response response = null;
     try {
       // on charge le dataset
-      DataSet ds = store.retrieve(datasetId);
+      DataSet ds = store.retrieve(getDatasetId());
       if (ds == null) {
+        trace(Level.INFO, "Cannot apply a semantic dictionary on the dataset - id: " + getDatasetId()
+            + " for the dictionary - id: " + getDictionaryId());
         response = new Response(false, "DATASET_NOT_FOUND");
       }
       else if ("ACTIVE".equals(ds.getStatus())) {
+        trace(Level.INFO, "Cannot apply a semantic dictionary on the dataset - id: " + getDatasetId()
+            + " for the dictionary - id: " + getDictionaryId());
         response = new Response(false, "DATASET_ACTIVE");
       }
       else {
@@ -155,7 +169,7 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
             listMapping = new ArrayList<DictionaryMapping>();
             ds.setDictionaryMappings(listMapping);
           }
-          DictionaryMapping dicoMapping = ds.getDictionaryMapping(dictionaryId);
+          DictionaryMapping dicoMapping = ds.getDictionaryMapping(getDictionaryId());
           // if the dicoMapping already is in the List, let's delete it
           if (dicoMapping != null) {
             listMapping.remove(dicoMapping);
@@ -180,7 +194,7 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
           ds.setDictionaryMappings(listMapping);
           // update the dataset
           DataSet dsOut = store.update(ds);
-          mappingOutput = dsOut.getDictionaryMapping(dictionaryId);
+          mappingOutput = dsOut.getDictionaryMapping(getDictionaryId());
           response = new Response(true, mappingOutput, DictionaryMapping.class, "dictionaryMapping");
 
           // Notify observers
@@ -194,16 +208,23 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
           // Register DataSet as observer of Dictionary resources
           unregisterObserver(dsOut);
           registerObserver(dsOut);
+
+          trace(Level.INFO, "Apply a semantic dictionary on the dataset " + dsOut.getName()
+              + " for the dictionary - id: " + getDictionaryId());
         }
       }
 
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot apply a semantic dictionary on the dataset - id: " + getDatasetId()
+          + " for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot apply a semantic dictionary on the dataset - id: " + getDatasetId()
+          + " for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -234,19 +255,21 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
   @Delete
   public Representation deleteMapping(Variant variant) {
     try {
-      DataSet datasetOutput = store.retrieve(datasetId);
+      DataSet datasetOutput = store.retrieve(getDatasetId());
       Response response;
       if (datasetOutput == null) {
+        trace(Level.INFO, "Cannot delete a semantic dictionary on the dataset - id: " + getDatasetId()
+            + " for the dictionary - id: " + getDictionaryId());
         response = new Response(false, "DATASET_NOT_FOUND");
       }
       else {
         boolean updated = false;
         unregisterObserver(datasetOutput);
-        if (datasetOutput.getDictionaryIds() != null && datasetOutput.getDictionaryIds().contains(dictionaryId)) {
+        if (datasetOutput.getDictionaryIds() != null && datasetOutput.getDictionaryIds().contains(getDictionaryId())) {
           for (Iterator<DictionaryMapping> iterator = datasetOutput.getDictionaryMappings().iterator(); iterator
               .hasNext();) {
             DictionaryMapping mapping = iterator.next();
-            if (mapping.getDictionaryId().equals(dictionaryId)) {
+            if (mapping.getDictionaryId().equals(getDictionaryId())) {
               iterator.remove();
               updated = true;
               break;
@@ -258,20 +281,27 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
           // Register DataSet as observer of Dictionary resources
 
           registerObserver(datasetOutput);
-
+          trace(Level.INFO, "Delete a semantic dictionary on the dataset " + datasetOutput.getName()
+              + " for the dictionary - id: " + getDictionaryId());
           response = new Response(true, "MAPPING_DELETED");
         }
         else {
+          trace(Level.INFO, "Cannot delete a semantic dictionary on the dataset " + datasetOutput.getName()
+              + " for the dictionary - id: " + getDictionaryId());
           response = new Response(false, "MAPPING_NOT_FOUND");
         }
       }
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete a semantic dictionary on the dataset - id: " + getDatasetId()
+          + " for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot delete a semantic dictionary on the dataset - id: " + getDatasetId()
+          + " for the dictionary - id: " + getDictionaryId());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -314,4 +344,24 @@ public class DataSetDictionaryMappingResource extends AbstractDataSetResource {
 
     return object;
   }
+
+  /**
+   * Gets the dictionaryId value
+   * 
+   * @return the dictionaryId
+   */
+  public String getDictionaryId() {
+    return dictionaryId;
+  }
+
+  /**
+   * Sets the value of dictionaryId
+   * 
+   * @param dictionaryId
+   *          the dictionaryId to set
+   */
+  public void setDictionaryId(String dictionaryId) {
+    this.dictionaryId = dictionaryId;
+  }
+
 }

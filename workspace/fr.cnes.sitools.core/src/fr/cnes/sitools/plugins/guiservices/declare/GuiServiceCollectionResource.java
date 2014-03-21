@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -68,14 +68,17 @@ public class GuiServiceCollectionResource extends AbstractGuiServiceResource {
 
       // Response
       Response response = new Response(true, guiServiceOutput, GuiServiceModel.class, "guiService");
+      trace(Level.INFO, "Add GUI service - id : " + guiServiceOutput.getId());
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add GUI service");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add GUI service");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -54,11 +54,7 @@ public class UsersAndGroupsMySQLTestCase extends AbstractUsersAndGroupsTestCase 
     SitoolsSettings settings = SitoolsSettings.getInstance();
 
     if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
+      this.component = createTestComponent(settings);
 
       // Context
       Context ctx = this.component.getContext().createChildContext();

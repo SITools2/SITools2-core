@@ -1,5 +1,5 @@
- /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -30,16 +30,23 @@ import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.restlet.Component;
+import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
+import org.restlet.routing.Filter;
+import org.restlet.service.LogService;
+import org.restlet.service.Service;
 
 import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.api.DocWadl;
 import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.logging.SitoolsLogFilter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.FileUtils;
 
@@ -371,6 +378,37 @@ public abstract class AbstractSitoolsTestCase {
     catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Create a basic Component for the Tests
+   * 
+   * @param settings
+   *          the Settings
+   * @return A Component
+   */
+  protected Component createTestComponent(SitoolsSettings settings) {
+    Component component = new Component();
+    component.getServers().add(Protocol.HTTP, getTestPort());
+    component.getClients().add(Protocol.HTTP);
+    component.getClients().add(Protocol.FILE);
+    component.getClients().add(Protocol.CLAP);
+
+    final String securityLoggerName = settings.getString("Starter.SecurityLogName");
+
+    Service logServiceSecurity = new LogService(true) {
+      /*
+       * (non-Javadoc)
+       * 
+       * @see org.restlet.service.LogService#createInboundFilter(org.restlet.Context)
+       */
+      @Override
+      public Filter createInboundFilter(Context context) {
+        return new SitoolsLogFilter(securityLoggerName);
+      }
+    };
+    component.getServices().add(logServiceSecurity);
+    return component;
   }
 
 }

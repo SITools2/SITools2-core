@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -19,6 +19,7 @@
 package fr.cnes.sitools.plugins.guiservices.declare;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
@@ -79,7 +80,7 @@ public abstract class AbstractGuiServiceResource extends SitoolsResource {
    * @return Representation
    */
   public final Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
+
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }
@@ -184,6 +185,7 @@ public abstract class AbstractGuiServiceResource extends SitoolsResource {
       guiServices = getStore().getPage(filter, guiServices);
       Response response = new Response(true, guiServices, GuiServiceModel.class, "guiServices");
       response.setTotal(total);
+      trace(Level.FINE, "View available GUI services");
       return getRepresentation(response, variant);
     }
   }

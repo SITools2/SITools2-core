@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -396,6 +396,7 @@ public final class DirectoryProxyResource extends AbstractDirectoryServerResourc
       // Log results
       getLogger().fine("Converted target URI: " + this.getTargetUri());
       getLogger().finest("Converted base name : " + this.getBaseName());
+      getResponse().getAttributes().put("IS_DIRECTORY_TARGET", this.isDirectoryTarget());
     }
     catch (IOException ioe) {
       throw new ResourceException(ioe);

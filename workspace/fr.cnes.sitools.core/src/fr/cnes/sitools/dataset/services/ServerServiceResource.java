@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -81,6 +81,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
       ref.setQuery(parameters);
     }
     MediaType mediaType = getMediaType(variant);
+    trace(Level.FINE, "Edit the dataset service - id : " + resourcePluginId);
     return RIAPUtils.handle(url, Method.GET, mediaType, getContext());
   }
 
@@ -131,6 +132,7 @@ public class ServerServiceResource extends AbstractServerServiceResource {
           populateServiceModel(serverServiceOutput, service);
 
           getStore().update(serviceCollection);
+          trace(Level.INFO, "Update the dataset server service " + serverServiceOutput.getName() + " for the dataset - id : " + serverServiceOutput.getParent());
 
         }
         response = responsePersist;
@@ -138,10 +140,12 @@ public class ServerServiceResource extends AbstractServerServiceResource {
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update the dataset server service ");
       getLogger().log(Level.INFO, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot update the dataset server service ");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -200,25 +204,30 @@ public class ServerServiceResource extends AbstractServerServiceResource {
           serviceCollection.getServices().remove(service);
           getStore().update(serviceCollection);
           response = new Response(true, "resourceplugin.deleted.success");
+          trace(Level.INFO, "Delete the dataset server service " + service.getName() + " for the dataset - id : " + getParentId());
 
         }
         else {
           response = new Response(false, "resourceplugin.deleted.failure");
+          trace(Level.INFO, "Cannot delete dataset server service ");
         }
 
       }
       else {
         response = new Response(false, "resource.not.defined");
+        trace(Level.INFO, "Cannot delete dataset server service ");
       }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete dataset server service ");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete dataset server service ");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

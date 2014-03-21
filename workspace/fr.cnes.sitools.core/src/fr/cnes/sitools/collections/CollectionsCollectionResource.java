@@ -1,5 +1,5 @@
-     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -40,7 +40,7 @@ import fr.cnes.sitools.common.model.Response;
  * 
  */
 public class CollectionsCollectionResource extends AbstractCollectionsResource {
-  
+
   @Override
   public void sitoolsDescribe() {
     setName("CollectionsCollectionResource");
@@ -60,6 +60,7 @@ public class CollectionsCollectionResource extends AbstractCollectionsResource {
   @Post
   public Representation newCollection(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create new collection");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "PROJECT_REPRESENTATION_REQUIRED");
     }
     try {
@@ -69,21 +70,24 @@ public class CollectionsCollectionResource extends AbstractCollectionsResource {
       // Business service
       Collection collectionOutput = getStore().create(collectionInput);
 
+      trace(Level.INFO, "Create new collection " + collectionOutput.getName());
       // Response
       Response response = new Response(true, collectionOutput, Collection.class, "collection");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create new collection");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create new collection");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describePost(MethodInfo info) {
     info.setDocumentation("Method to create a new form components sending its representation.");
@@ -105,7 +109,15 @@ public class CollectionsCollectionResource extends AbstractCollectionsResource {
 
       if (getCollectionId() != null) {
         Collection collection = getStore().retrieve(getCollectionId());
-        Response response = new Response(true, collection, Collection.class, "collection");
+        Response response;
+        if (collection != null) {
+          trace(Level.FINE, "Edit collection information for the collection " + collection.getName());
+          response = new Response(true, collection, Collection.class, "collection");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit collection information for the collection - id: " + getCollectionId());
+          response = new Response(false, "collection.not.found");
+        }
         return getRepresentation(response, variant);
       }
       else {
@@ -113,21 +125,24 @@ public class CollectionsCollectionResource extends AbstractCollectionsResource {
         List<Collection> collections = getStore().getList(filter);
         int total = collections.size();
         collections = getStore().getPage(filter, collections);
+        trace(Level.FINE, "View available collections");
         Response response = new Response(true, collections, Collection.class, "collections");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available collections");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available collections");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describeGet(MethodInfo info) {
     info.setDocumentation("Method to retrieve the list of form components available on the server.");

@@ -17,7 +17,7 @@ Your password has been changed
 
 <ul>
 <li>Login : ${user.identifier}</li>
-<li>Password : ${user.password}</li>
+<li>Password : ${user.secret}</li>
 </ul>
 </p>
 

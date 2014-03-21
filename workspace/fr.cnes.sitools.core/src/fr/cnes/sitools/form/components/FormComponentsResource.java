@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -64,6 +64,7 @@ public class FormComponentsResource extends AbstractFormComponentsResource {
     if (getFormComponentId() != null) {
       FormComponent formComponent = getStore().retrieve(getFormComponentId());
       Response response = new Response(true, formComponent, FormComponent.class, "formComponent");
+      trace(Level.INFO, "Edit configuration parameters of the query form component type - id : " + getFormComponentId());
       return getRepresentation(response, variant);
     }
     else {
@@ -110,15 +111,18 @@ public class FormComponentsResource extends AbstractFormComponentsResource {
       }
 
       Response response = new Response(true, formComponentOutput, FormComponent.class, "formComponent");
+      trace(Level.INFO, "Update configuration parameters of the query form component type - id : " + getFormComponentId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update the query form component type - id : " + getFormComponentId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update the query form component type - id : " + getFormComponentId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -148,15 +152,18 @@ public class FormComponentsResource extends AbstractFormComponentsResource {
 
       // Response
       Response response = new Response(true, "formComponent.delete.success");
+      trace(Level.INFO, "Delete the query form component type - id : " + getFormComponentId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete the query form component type - id : " + getFormComponentId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete the query form component type - id : " + getFormComponentId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

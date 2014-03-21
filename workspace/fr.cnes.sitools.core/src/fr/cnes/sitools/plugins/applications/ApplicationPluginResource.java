@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -69,9 +69,11 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         if (appModel != null) {
           ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appModel);
           response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
+          trace(Level.FINE, "Edit configuration parameters of the application plugin " + appModelOutDTO.getName());
         }
         else {
           response = new Response(false, "NOT_FOUND");
+          trace(Level.FINE, "Cannot edit configuration parameters of the application plugin");
         }
         return getRepresentation(response, variant);
       }
@@ -92,11 +94,13 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot edit configuration parameters of the application plugin");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot edit configuration parameters of the application plugin");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -157,20 +161,24 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appOutput);
         Response response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class,
             "ApplicationPluginModel");
+        trace(Level.INFO, "Update configuration parameters of the application plugin " + appModelOutDTO.getName());
         return getRepresentation(response, variant);
       }
       else {
         Response response = new Response(false, "Can not validate ApplicationPluginModel");
+        trace(Level.INFO, "Cannot update configuration parameters of the application plugin - id : " + getAppId());
         return getRepresentation(response, variant);
       }
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update configuration parameters of the application plugin - id : " + getAppId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update configuration parameters of the application plugin - id : " + getAppId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -192,22 +200,27 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         // Business service
         getStore().delete(appOutput);
         getResourceApplication().detachApplicationDefinively(appOutput);
+        trace(Level.INFO, "Delete application plugin " + appOutput.getName());
         response = new Response(true, "ApplicationPluginModel.delete.success");
 
       }
       else {
         // Response
+        trace(Level.INFO, "Cannot delete application plugin - id : " + getAppId());
         response = new Response(true, "ApplicationPluginModel.delete.failure");
+        
       }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete application plugin - id : " + getAppId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete application plugin - id : " + getAppId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

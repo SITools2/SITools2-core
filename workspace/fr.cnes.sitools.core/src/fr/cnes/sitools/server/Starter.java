@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -19,10 +19,12 @@
 package fr.cnes.sitools.server;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.restlet.Application;
 import org.restlet.Client;
@@ -35,6 +37,7 @@ import org.restlet.Server;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
+import org.restlet.engine.Engine;
 import org.restlet.ext.solr.SolrClientHelper;
 import org.restlet.resource.ResourceException;
 import org.restlet.routing.Filter;
@@ -93,7 +96,9 @@ import fr.cnes.sitools.inscription.InscriptionApplication;
 import fr.cnes.sitools.inscription.UserInscriptionApplication;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.logging.LogDataServerService;
+import fr.cnes.sitools.logging.LoggingOutputStream;
 import fr.cnes.sitools.logging.SitoolsApplicationLogFilter;
+import fr.cnes.sitools.logging.SitoolsLogFilter;
 import fr.cnes.sitools.mail.MailAdministration;
 import fr.cnes.sitools.notification.NotificationApplication;
 import fr.cnes.sitools.notification.business.NotificationManager;
@@ -155,7 +160,6 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
 import fr.cnes.sitools.userstorage.UserStorageStore;
-import fr.cnes.sitools.util.SitoolsLogFilter;
 
 /**
  * Server Starting class.
@@ -275,8 +279,14 @@ public final class Starter {
     // ============================
     // Logging configuration
     String loggerFacade = settings.getString("Starter.org.restlet.engine.loggerFacadeClass", null);
-    if (loggerFacade != null) {
+    if (loggerFacade != null && !loggerFacade.isEmpty()) {
       System.setProperty("org.restlet.engine.loggerFacadeClass", loggerFacade);
+      // redirect standard Error and standard Out to a specific logger
+      System.setErr(new PrintStream(new LoggingOutputStream(Engine.getLogger("fr.cnes.sitools.stderr"), Level.WARNING),
+          true));
+      System.setOut(new PrintStream(new LoggingOutputStream(Engine.getLogger("fr.cnes.sitools.stdout"), Level.INFO),
+          true));
+
     }
 
     String logConfigFile = settings.getRootDirectory() + settings.getString("Starter.Logging.configFile");
@@ -295,24 +305,23 @@ public final class Starter {
     // ============================
     // Logs access
 
-    String logOutputFile = settings.getRootDirectory() + settings.getString("Starter.LogService.outputFile");
-    String logLevelName = settings.getString("Starter.LogService.levelName");
-    String logFormat = settings.getString("Starter.LogService.logFormat");
+    // String logOutputFile = settings.getRootDirectory() + settings.getString("Starter.LogService.outputFile");
+    // String logLevelName = settings.getString("Starter.LogService.levelName");
+    // String logFormat = settings.getString("Starter.LogService.logFormat");
     String logName = settings.getString("Starter.LogService.logName");
     boolean logActive = Boolean.parseBoolean(settings.getString("Starter.LogService.active"));
 
-    LogService logService = new LogDataServerService(logOutputFile, logLevelName, logFormat, logName, logActive);
+    LogService logService = new LogDataServerService(logName, logActive);
 
     component.setLogService(logService);
 
-    String appLogOutputFile = settings.getRootDirectory() + settings.getString("Starter.AppLogService.outputFile");
-    String appLogLevelName = settings.getString("Starter.AppLogService.levelName");
-    String appLogFormat = settings.getString("Starter.AppLogService.logFormat");
+    // String appLogOutputFile = settings.getRootDirectory() + settings.getString("Starter.AppLogService.outputFile");
+    // String appLogLevelName = settings.getString("Starter.AppLogService.levelName");
+    // String appLogFormat = settings.getString("Starter.AppLogService.logFormat");
     String appLogName = settings.getString("Starter.AppLogService.logName");
     boolean appLogActive = Boolean.parseBoolean(settings.getString("Starter.AppLogService.active"));
 
-    LogService logServiceApplication = new LogDataServerService(appLogOutputFile, appLogLevelName, appLogFormat,
-        appLogName, appLogActive) {
+    LogService logServiceApplication = new LogDataServerService(appLogName, appLogActive) {
       /*
        * (non-Javadoc)
        * 
@@ -325,9 +334,8 @@ public final class Starter {
     };
     component.getServices().add(logServiceApplication);
 
-    
     final String securityLoggerName = settings.getString("Starter.SecurityLogName");
-    
+
     Service logServiceSecurity = new LogService(true) {
       /*
        * (non-Javadoc)
@@ -931,6 +939,7 @@ public final class Starter {
 
     appContext.getAttributes().put(Consts.APP_STORE_TASK, taskModelStore);
     appContext.getAttributes().put(Consts.APP_STORE_PLUGINS_RESOURCES, resPlugStore);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "project");
 
     // Application
     ResourcePluginApplication resourcePluginApp = new ResourcePluginApplication(appContext);
@@ -959,6 +968,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, resPlugStore);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "dataset");
 
     // Application
     ResourcePluginApplication resourcePluginAppOnDataset = new ResourcePluginApplication(appContext);
@@ -982,6 +992,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, resPlugStore);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "application");
 
     // Application
     ResourcePluginApplication resourcePluginAppOnApp = new ResourcePluginApplication(appContext);
@@ -1314,6 +1325,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeFeeds);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "project");
 
     // Application
     FeedsApplication feedsProjectsApp = new FeedsApplication(appContext, storeFeeds) {
@@ -1340,6 +1352,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeFeeds);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "dataset");
 
     // Application
     FeedsApplication feedsDataSetsApp = new FeedsApplication(appContext, storeFeeds) {
@@ -1366,6 +1379,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeFeeds);
+    appContext.getAttributes().put("TRACE_PARENT_TYPE", "portal");
 
     // Application
     FeedsApplication feedsPortalApp = new FeedsApplication(appContext, storeFeeds) {

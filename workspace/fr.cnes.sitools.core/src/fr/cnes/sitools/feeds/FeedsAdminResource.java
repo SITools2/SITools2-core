@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -58,13 +58,25 @@ public final class FeedsAdminResource extends AbstractFeedsResource {
   @Get
   public Representation retrieveFeedsModel(Variant variant) {
     if (getFeedsId() != null) {
-      FeedModel project = getStore().retrieve(getFeedsId());
-      Response response = new Response(true, project, FeedModel.class, "FeedModel");
+      FeedModel feedModel = getStore().retrieve(getFeedsId());
+      Response response;
+      if (feedModel != null) {
+        response = new Response(true, feedModel, FeedModel.class, "FeedModel");
+        trace(Level.FINE, "Edit RSS feed " + feedModel.getName() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
+      }
+      else {
+        response = new Response(false, "feed.not.found");
+        trace(Level.INFO, "Cannot edit RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
+      }
+
       return getRepresentation(response, variant, false);
     }
     else {
       FeedModel[] feeds = getStore().getArray();
       Response response = new Response(true, feeds);
+      trace(Level.FINE, "View available RSS feeds for " + getTraceParentType() + " - id: " + getDataId());
       return getRepresentation(response, variant, false);
     }
   }
@@ -114,17 +126,30 @@ public final class FeedsAdminResource extends AbstractFeedsResource {
         registerObserver(feedOutput);
       }
 
-      response = new Response(true, feedOutput, FeedModel.class, "FeedModel");
+      if (feedOutput != null) {
+        trace(Level.INFO, "Update RSS feed " + feedOutput.getName() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
+        response = new Response(true, feedOutput, FeedModel.class, "FeedModel");
+      }
+      else {
+        trace(Level.INFO, "Cannot update RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
+        response = new Response(false, "feed.update.failure");
+      }
+
       return getRepresentation(response, variant, false);
 
     }
     catch (ResourceException e) {
-
+      trace(Level.INFO, "Cannot update RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+          + getDataId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.INFO, null, e);
+      trace(Level.INFO, "Cannot update RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+          + getDataId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -160,9 +185,12 @@ public final class FeedsAdminResource extends AbstractFeedsResource {
 
         // Response
         response = new Response(true, "feed.delete.success");
-
+        trace(Level.INFO, "Delete RSS feed " + feedModel.getName() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
       }
       else {
+        trace(Level.INFO, "Cannot delete RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
         // Response
         response = new Response(true, "feed.delete.failure");
       }
@@ -170,11 +198,15 @@ public final class FeedsAdminResource extends AbstractFeedsResource {
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+          + getDataId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+          + getDataId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

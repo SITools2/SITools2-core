@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -21,6 +21,7 @@ package fr.cnes.sitools.dataset.plugins.converters;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.restlet.data.MediaType;
 import org.restlet.ext.wadl.MethodInfo;
@@ -84,6 +85,7 @@ public final class ConverterPluginsCollectionResource extends SitoolsResource {
         listDesc.add(currentDescription);
       }
       response = new Response(true, listDesc, ConverterPluginsDescriptionDTO.class, "converters");
+      trace(Level.FINE, "View available dataset converters");
     }
 
     else {

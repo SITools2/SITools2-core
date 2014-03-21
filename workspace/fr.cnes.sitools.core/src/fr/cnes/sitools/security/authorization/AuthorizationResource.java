@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -18,17 +18,12 @@
  ******************************************************************************/
 package fr.cnes.sitools.security.authorization;
 
-import java.io.IOException;
 import java.util.logging.Level;
 
-import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.ext.xstream.XstreamRepresentation;
-import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Delete;
@@ -69,21 +64,26 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
         ResourceAuthorization authorization = getStore().retrieve(getResId());
         Response response = null;
         if (authorization != null) {
+          trace(Level.FINE, "Edit the authorization for the application " + authorization.getName());
           response = new Response(true, authorization, ResourceAuthorization.class, "authorization");
         }
         else {
+          trace(Level.INFO, "Cannot edit the authorization for the application - id: " + getResId());
           response = new Response(false, "Authorization " + getResId() + " not found");
         }
         return getRepresentation(response, variant);
       }
+      trace(Level.INFO, "Cannot edit the authorization for the application - id: " + getResId());
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot edit the authorization for the application - id: " + getResId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot edit the authorization for the application - id: " + getResId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -111,20 +111,22 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
   @Put
   public Representation updateResourceAuthorization(Representation representation, Variant variant) {
     ResourceAuthorization authorizationOutput = null;
+    String traceAction = "";
     try {
       if (representation != null) {
-        ResourceAuthorization authorizationInput = getAuthorizationFromMediaType(representation);
+        ResourceAuthorization authorizationInput = getObject(representation);
 
         // Business service
         if (authorizationInput.getAuthorizations() == null) {
 
           // on doit supprimer toute la definition de l'authorization pour cette application
           boolean deleted = getStore().delete(authorizationInput.getId());
-
+          traceAction = "delete";
           if (deleted) {
             // Notify observers
             Notification notification = new Notification();
             notification.setEvent("AUTHORIZATION_DELETED");
+            trace(Level.INFO, "Delete the authorization");
             notification.setObservable(authorizationInput.getId());
             getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
           }
@@ -139,11 +141,15 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
 
           // le client fait toujours un PUT (donc possible que l'update est echoue si inexistant)
           if (authorizationOutput == null) {
+            traceAction = "create";
             authorizationOutput = getStore().create(authorizationInput);
             notification.setEvent("AUTHORIZATION_CREATED");
+
           }
           else {
+            traceAction = "update";
             notification.setEvent("AUTHORIZATION_UPDATED");
+            trace(Level.INFO, "Update the authorization for the application " + authorizationOutput.getName());
           }
 
           notification.setObservable(authorizationOutput.getId());
@@ -153,11 +159,12 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
 
       if (authorizationOutput != null) {
         // Response
-
+        trace(Level.INFO, traceAction + " the authorization for the application " + authorizationOutput.getName());
         Response response = new Response(true, authorizationOutput, ResourceAuthorization.class, "authorization");
         return getRepresentation(response, variant);
       }
       else {
+        trace(Level.INFO, "Cannot " + traceAction + " the authorization for the application - id: " + getResId());
         // Response
         Response response = new Response(false, "Can not validate authorization");
         return getRepresentation(response, variant);
@@ -165,40 +172,15 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot perform action on the authorization for the application - id: " + getResId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot perform action on the authorization for the application - id: " + getResId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
-  }
-
-  /**
-   * Instanciate a {@link ResourceAuthorization} from a {@link MediaType}
-   * 
-   * @param representation
-   *          the representation
-   * 
-   * @return a {@link ResourceAuthorization} corresponding to the right {@link MediaType}, null otherwise
-   * @throws IOException IOException
-   */
-  private ResourceAuthorization getAuthorizationFromMediaType(Representation representation) throws IOException {
-    ResourceAuthorization authorizationInput = null;
-    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-      // Parse the XML representation to get the bean
-      authorizationInput = new XstreamRepresentation<ResourceAuthorization>(representation).getObject();
-    }
-    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-      authorizationInput = new JacksonRepresentation<ResourceAuthorization>(representation, ResourceAuthorization.class)
-          .getObject();
-    }
-    else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
-      @SuppressWarnings("unchecked")
-      ObjectRepresentation<ResourceAuthorization> obj = (ObjectRepresentation<ResourceAuthorization>) representation;
-      authorizationInput = obj.getObject();
-    }
-    return authorizationInput;
   }
 
   @Override
@@ -219,25 +201,31 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
   @Delete
   public Representation deleteResourceAuthorization(Variant variant) {
     try {
+      ResourceAuthorization auth = getStore().retrieve(getResId());
+
       // Business service
       boolean success = getStore().delete(getResId());
 
       // Response
       Response response = null;
       if (success) {
+        trace(Level.INFO, "Delete the authorization for the application " + auth.getName());
         response = new Response(true, "ResourceAuthorization deleted");
       }
       else {
+        trace(Level.INFO, "Cannot delete the authorization for the application " + getResId());
         response = new Response(false, "Failed to delete authorization " + getResId());
       }
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete the authorization for the application " + getResId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete the authorization for the application " + getResId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

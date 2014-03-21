@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -111,15 +111,18 @@ public class DatasetViewResource extends AbstractDatasetViewResource {
       }
 
       Response response = new Response(true, datasetViewOutput, DatasetView.class, "datasetView");
+      trace(Level.INFO, "Update the Dataset view - id : " + getDatasetViewId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update the Dataset view - id : " + getDatasetViewId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update the Dataset view - id : " + getDatasetViewId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -149,15 +152,18 @@ public class DatasetViewResource extends AbstractDatasetViewResource {
 
       // Response
       Response response = new Response(true, "datasetView.delete.success");
+      trace(Level.INFO, "Delete the Dataset view - id : " + getDatasetViewId());
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete the Dataset view - id : " + getDatasetViewId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete the Dataset view - id : " + getDatasetViewId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

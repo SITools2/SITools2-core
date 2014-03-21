@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -70,6 +70,7 @@ public class DataSetDictionaryMappingCollectionResource extends AbstractDataSetR
       if (datasetId != null) {
         DataSet dataset = store.retrieve(datasetId);
         if (dataset == null) {
+          trace(Level.INFO, "Cannot view available semantics on the dataset");
           response = new Response(false, "DATASET_NOT_FOUND");
         }
         else {
@@ -80,15 +81,18 @@ public class DataSetDictionaryMappingCollectionResource extends AbstractDataSetR
           else {
             response.setTotal(dataset.getDictionaryMappings().size());
           }
+          trace(Level.FINE, "View available semantics on the dataset " + dataset.getName());
         }
       }
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available semantics on the dataset");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view available semantics on the dataset");
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }

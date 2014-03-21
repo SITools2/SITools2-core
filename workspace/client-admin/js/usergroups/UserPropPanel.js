@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -312,7 +312,8 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
                     return false;
                 }
                 this.close();
-                this.store.reload();
+                //wait for the server to refresh authorizations
+                Ext.defer(this.store.reload, 1000, this);
                 // Ext.Msg.alert(i18n.get('label.information'),
                 // i18n.get('msg.uservalidate'));
             },

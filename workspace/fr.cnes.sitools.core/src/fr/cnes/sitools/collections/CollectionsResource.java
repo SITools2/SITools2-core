@@ -1,5 +1,5 @@
-     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -43,7 +43,7 @@ import fr.cnes.sitools.common.model.Response;
  * 
  */
 public class CollectionsResource extends AbstractCollectionsResource {
-  
+
   @Override
   public void sitoolsDescribe() {
     setName("CollectionResource");
@@ -60,28 +60,50 @@ public class CollectionsResource extends AbstractCollectionsResource {
    */
   @Get
   public Representation retrieveCollection(Variant variant) {
-    // XStream xstream = XStreamFactory.getInstance().getXStreamWriter(variant.getMediaType(), false);
-    if (getCollectionId() != null) {
-      Collection collection = getStore().retrieve(getCollectionId());
-      Response response = new Response(true, collection, Collection.class, "collection");
-      return getRepresentation(response, variant);
+    try {
+
+      if (getCollectionId() != null) {
+        Collection collection = getStore().retrieve(getCollectionId());
+        Response response;
+        if (collection != null) {
+          trace(Level.FINE, "Edit collection information for the collection " + collection.getName());
+          response = new Response(true, collection, Collection.class, "collection");
+        }
+        else {
+          trace(Level.INFO, "Cannot edit collection information for the collection - id: " + getCollectionId());
+          response = new Response(false, "collection.not.found");
+        }
+        return getRepresentation(response, variant);
+      }
+      else {
+        ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
+        List<Collection> collections = getStore().getList(filter);
+        int total = collections.size();
+        collections = getStore().getPage(filter, collections);
+        trace(Level.FINE, "View available collections");
+        Response response = new Response(true, collections, Collection.class, "collections");
+        response.setTotal(total);
+        return getRepresentation(response, variant);
+      }
     }
-    else {
-      ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
-      List<Collection> collections = getStore().getList(filter);
-      int total = collections.size();
-      collections = getStore().getPage(filter, collections);
-      Response response = new Response(true, collections, Collection.class, "collections");
-      response.setTotal(total);
-      return getRepresentation(response, variant);
+    catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available collections");
+      getLogger().log(Level.INFO, null, e);
+      throw e;
+    }
+    catch (Exception e) {
+      trace(Level.INFO, "Cannot view available collections");
+      getLogger().log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describeGet(MethodInfo info) {
     info.setDocumentation("Method to retrieve a single form component by ID");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("collectionId", true, "class", ParameterStyle.TEMPLATE, "Form component identifier");
+    ParameterInfo param = new ParameterInfo("collectionId", true, "class", ParameterStyle.TEMPLATE,
+        "Form component identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
   }
@@ -109,25 +131,36 @@ public class CollectionsResource extends AbstractCollectionsResource {
         collectionOutput = getStore().update(collectionInput);
       }
 
-      Response response = new Response(true, collectionOutput, Collection.class, "collection");
+      Response response;
+      if (collectionOutput != null) {
+        trace(Level.INFO, "Update collection " + collectionOutput.getName());
+        response = new Response(true, collectionOutput, Collection.class, "collection");
+      }
+      else {
+        trace(Level.INFO, "Cannot update collection - id: " + getCollectionId());
+        response = new Response(false, "collection.update.failure");
+      }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update collection - id: " + getCollectionId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update collection - id: " + getCollectionId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describePut(MethodInfo info) {
     info.setDocumentation("Method to modify a single collection sending its new representation");
     this.addStandardPostOrPutRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("collectionId", true, "class", ParameterStyle.TEMPLATE, "Collection identifier");
+    ParameterInfo param = new ParameterInfo("collectionId", true, "class", ParameterStyle.TEMPLATE,
+        "Collection identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -143,29 +176,43 @@ public class CollectionsResource extends AbstractCollectionsResource {
   @Delete
   public Representation deleteCollection(Variant variant) {
     try {
-      // Business service
-      getStore().delete(getCollectionId());
+      Collection collection = getStore().retrieve(getCollectionId());
+      Response response;
+      if (collection != null) {
+        // Business service
+        getStore().delete(getCollectionId());
 
-      // Response
-      Response response = new Response(true, "collection.delete.success");
+        trace(Level.INFO, "Delete collection " + collection.getName());
+        // Response
+        response = new Response(true, "collection.delete.success");
+
+      }
+      else {
+        trace(Level.INFO, "Cannot delete collection " + getCollectionId());
+        response = new Response(true, "collection.delete.failure");
+
+      }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete collection " + getCollectionId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete collection " + getCollectionId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public final void describeDelete(MethodInfo info) {
     info.setDocumentation("Method to delete a single form component by ID");
     this.addStandardGetRequestInfo(info);
-    ParameterInfo param = new ParameterInfo("collectionId", true, "class", ParameterStyle.TEMPLATE, "Form component identifier");
+    ParameterInfo param = new ParameterInfo("collectionId", true, "class", ParameterStyle.TEMPLATE,
+        "Form component identifier");
     info.getRequest().getParameters().add(param);
     this.addStandardSimpleResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);

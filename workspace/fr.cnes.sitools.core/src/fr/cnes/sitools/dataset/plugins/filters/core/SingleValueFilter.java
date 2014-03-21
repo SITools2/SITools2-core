@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -87,19 +87,24 @@ public final class SingleValueFilter extends AbstractFormFilter {
     rpd.put("2", paramInfo);
     paramInfo = new ParameterInfo("p[#]", false, "xs:string", ParameterStyle.QUERY, "DROPDOWNLIST|columnAlias|value");
     rpd.put("3", paramInfo);
+    paramInfo = new ParameterInfo("p[#]", false, "xs:string", ParameterStyle.QUERY, "BOOLEAN_CHECKBOX|columnAlias|value");
+    rpd.put("4", paramInfo);
 
     paramInfo = new ParameterInfo("c[#]", false, "xs:string", ParameterStyle.QUERY,
         "TEXTFIELD|dictionaryName,conceptName|value");
-    rpd.put("4", paramInfo);
-    paramInfo = new ParameterInfo("c[#]", false, "xs:string", ParameterStyle.QUERY,
-        "RADIO|dictionaryName,conceptName|value");
     rpd.put("5", paramInfo);
     paramInfo = new ParameterInfo("c[#]", false, "xs:string", ParameterStyle.QUERY,
-        "LISTBOX|dictionaryName,conceptName|value");
+        "RADIO|dictionaryName,conceptName|value");
     rpd.put("6", paramInfo);
     paramInfo = new ParameterInfo("c[#]", false, "xs:string", ParameterStyle.QUERY,
-        "DROPDOWNLIST|dictionaryName,conceptName|value");
+        "LISTBOX|dictionaryName,conceptName|value");
     rpd.put("7", paramInfo);
+    paramInfo = new ParameterInfo("c[#]", false, "xs:string", ParameterStyle.QUERY,
+        "DROPDOWNLIST|dictionaryName,conceptName|value");
+    rpd.put("8", paramInfo);
+    paramInfo = new ParameterInfo("c[#]", false, "xs:string", ParameterStyle.QUERY,
+        "BOOLEAN_CHECKBOX|dictionaryName,conceptName|value");
+    rpd.put("9", paramInfo);
     this.setRequestParamsDescription(rpd);
     //
 

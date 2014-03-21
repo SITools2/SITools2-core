@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -34,6 +34,7 @@ import fr.cnes.sitools.common.resource.JettyPropertiesResource;
 import fr.cnes.sitools.common.resource.SitoolsJavaVersionResource;
 import fr.cnes.sitools.common.resource.SitoolsSettingsResource;
 import fr.cnes.sitools.notification.business.NotifierFilter;
+import fr.cnes.sitools.proxy.DirectoryLogFilter;
 import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.server.Consts;
 
@@ -137,26 +138,37 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     dpTemplate.setListingAllowed(true);
     dpTemplate.setModifiable(true);
     dpTemplate.setRegexp("([^\\s]+(\\.(?i)(ftl|FTL|txt|TXT))$)");
+    dpTemplate.setDescription("ftl");
 
     /** Css access config */
     dpCss.setDeeplyAccessible(true);
     dpCss.setListingAllowed(true);
     dpCss.setModifiable(true);
     dpCss.setRegexp("([^\\s]+(\\.(?i)(css|CSS))$)");
+    dpCss.setDescription("css");
 
     /** Licence access config */
     dpLicence.setDeeplyAccessible(true);
     dpLicence.setListingAllowed(true);
     dpLicence.setModifiable(true);
     dpLicence.setRegexp("([^\\s]+(\\.(?i)(htm|html|HTML|HTM))$)");
+    dpLicence.setDescription("Conditions of use");
 
     this.getTunnelService().setEnabled(true);
     this.getTunnelService().setMethodTunnel(true);
     this.getTunnelService().setMethodParameter("method");
 
-    router.attach(templateAttachment, dpTemplate);
-    router.attach(cssAttachment, dpCss);
-    router.attach("/cgu.html", dpLicence);
+    DirectoryLogFilter cssFilter = new DirectoryLogFilter();
+    DirectoryLogFilter templateFilter = new DirectoryLogFilter();
+    DirectoryLogFilter cguFilter = new DirectoryLogFilter();
+    
+    cssFilter.setNext(dpCss);
+    templateFilter.setNext(dpTemplate);
+    cguFilter.setNext(dpLicence);
+    
+    router.attach(templateAttachment, templateFilter);
+    router.attach(cssAttachment, cssFilter);
+    router.attach("/cgu.html", cguFilter);
 
     router.attach("/settings/{PARAMETER}", SitoolsSettingsResource.class);
     router.attach("/javaVersion", SitoolsJavaVersionResource.class);
@@ -169,8 +181,11 @@ public final class AdministratorApplication extends SitoolsParameterizedApplicat
     analogDir.setListingAllowed(true);
     analogDir.setModifiable(false);
     analogDir.setNocache(true);
+    analogDir.setDescription("Log report");
+    DirectoryLogFilter analogFilter = new DirectoryLogFilter();
+    analogFilter.setNext(analogDir);
 
-    router.attach("/analog", analogDir);
+    router.attach("/analog", analogFilter);
 
     router.attach("/jettyprops", JettyPropertiesResource.class);
 

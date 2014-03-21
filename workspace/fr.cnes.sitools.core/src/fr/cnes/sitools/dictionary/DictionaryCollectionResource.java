@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -78,16 +78,19 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
       notification.setMessage("New dictionary created.");
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
+      trace(Level.INFO, "Create the dictionary " + dictionaryOutput.getName());
       // Response
       Response response = new Response(true, dictionaryOutput, Dictionary.class, "dictionary");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the dictionary");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create the dictionary");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -132,7 +135,15 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
     try {
       if (getDictionaryId() != null) {
         Dictionary dictionary = getStore().retrieve(getDictionaryId());
-        Response response = new Response(true, dictionary, Dictionary.class, "dictionary");
+        Response response;
+        if (dictionary != null) {
+          trace(Level.FINE, "Edit information for the dictionary " + dictionary.getName());
+          response = new Response(true, dictionary, Dictionary.class, "dictionary");
+        }
+        else {
+          trace(Level.FINE, "Edit information for the dictionary " + getDictionaryId());
+          response = new Response(false, "cannot find dictionary");
+        }
         return getRepresentation(response, variant);
       }
       else {
@@ -140,17 +151,20 @@ public final class DictionaryCollectionResource extends AbstractDictionaryResour
         List<Dictionary> dictionaries = getStore().getList(filter);
         int total = dictionaries.size();
         dictionaries = getStore().getPage(filter, dictionaries);
+        trace(Level.FINE, "View available dictionaries");
         Response response = new Response(true, dictionaries, Dictionary.class, "dictionaries");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available dictionaries");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available dictionaries");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

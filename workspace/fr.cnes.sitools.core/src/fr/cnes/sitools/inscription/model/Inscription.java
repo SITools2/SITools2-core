@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -44,9 +44,6 @@ import fr.cnes.sitools.util.Property;
 @JsonIgnoreProperties("cpassword")
 public class Inscription implements IResource {
   
-  /** minimal length for identifier and password */
-  private static final int MINIMAL_STRING_LENGTH = 4; 
-
   /** internal identifier */
   private String id;
 
@@ -336,21 +333,6 @@ public class Inscription implements IResource {
     return result;
   }
 
-  /**
-   * Check l'inscription
-   * 
-   * TODO EVO : validator qui retourne une liste de codes d'anomalies.
-   * 
-   * @param inscription
-   *          object to check
-   * @return boolean
-   */
-  public static final boolean isValid(Inscription inscription) {
-    return (inscription != null) 
-      && (inscription.getIdentifier() != null) 
-      && (inscription.getIdentifier().length() >= MINIMAL_STRING_LENGTH) 
-      && (inscription.getPassword().length() >= MINIMAL_STRING_LENGTH);
-  }
 
   @Override
   public final String getName() {

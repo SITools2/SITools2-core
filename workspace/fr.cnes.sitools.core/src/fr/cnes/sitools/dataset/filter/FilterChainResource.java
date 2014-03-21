@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -135,14 +135,17 @@ public final class FilterChainResource extends AbstractFilterResource {
       registerObserver(filterChained);
       FilterModelDTO filterModelDTO = getFilterModelDTO(filterOut);
       response = new Response(true, filterModelDTO, FilterModelDTO.class, "filter");
+      trace(Level.INFO, "Add the filter " + filterModelDTO.getName() + " for the dataset - id : " + getDatasetId());
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add the filter for the dataset - id : " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add the filter for the dataset - id : " + getDatasetId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
 
@@ -207,7 +210,7 @@ public final class FilterChainResource extends AbstractFilterResource {
       addCurrentClassDescription(filterChainedOutDTO);
       response = new Response(true, filterChainedOutDTO, FilterChainedModelDTO.class, "filterChainedModel");
     }
-
+    trace(Level.FINE, "View the filters for the dataset - id : " + getDatasetId());
     return getRepresentation(response, variant);
 
   }

@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -24,14 +24,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.ext.xstream.XstreamRepresentation;
-import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
@@ -67,27 +63,15 @@ public final class OrderCollectionResource extends AbstractOrderResource {
    *          client preferred media type
    * @return Representation
    */
-  @SuppressWarnings("unchecked")
   @Post
   public Representation newOrder(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot add new order");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "ORDER_REPRESENTATION_REQUIRED");
     }
     try {
       Order orderInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        orderInput = new XstreamRepresentation<Order>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-        // Parse the JSON representation to get the bean
-        orderInput = new JacksonRepresentation<Order>(representation, Order.class).getObject();
-      }
-      else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
-        ObjectRepresentation<Order> obj = (ObjectRepresentation<Order>) representation;
-        orderInput = obj.getObject();
-      }
+      orderInput = getObject(representation);
 
       // Business service
       orderInput.setDateOrder(new Date(new GregorianCalendar().getTime().getTime()));
@@ -107,17 +91,21 @@ public final class OrderCollectionResource extends AbstractOrderResource {
 
       Order orderOutput = getStore().create(orderInput);
 
+      trace(Level.INFO, "Add new order");
+
       // Response
       Response response = new Response(true, orderOutput, Order.class, "order");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add new order");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add new order");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -146,6 +134,7 @@ public final class OrderCollectionResource extends AbstractOrderResource {
 
       if (getOrderId() != null) {
         Order order = getStore().retrieve(getOrderId());
+        trace(Level.FINE, "View order - id: " + getOrderId());
         Response response = new Response(true, order, Order.class, "order");
         return getRepresentation(response, variant);
       }
@@ -154,17 +143,20 @@ public final class OrderCollectionResource extends AbstractOrderResource {
         List<Order> orders = getStore().getList(filter);
         int total = orders.size();
         orders = getStore().getPage(filter, orders);
+        trace(Level.FINE, "View orders");
         Response response = new Response(true, orders, Order.class, "orders");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view orders");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view orders");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

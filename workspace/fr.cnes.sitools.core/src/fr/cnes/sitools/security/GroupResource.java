@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -106,11 +106,21 @@ public final class GroupResource extends UsersAndGroupsResource implements fr.cn
     Response response = null;
     try {
       Group group = getStore().getGroupById(getGroupName());
-      response = new Response(true, group, Group.class, "group");
+      if (group != null) {
+        response = new Response(true, group, Group.class, "group");
+        trace(Level.FINE, "View group information for the group " + getGroupName());
+
+      }
+      else {
+        response = new Response(false, "group : " + getGroupName() + " does not exists");
+        trace(Level.INFO, "Cannot View group information for the group " + getGroupName());
+      }
+
     }
     catch (Exception e) {
       response = new Response(false, e.getMessage());
       getLogger().log(Level.INFO, null, e);
+      trace(Level.INFO, "Cannot View group information for the group " + getGroupName());
     }
     return response;
   }
@@ -138,17 +148,19 @@ public final class GroupResource extends UsersAndGroupsResource implements fr.cn
       notification.setEvent("GROUP_UPDATED");
       notification.setObservable(output.getName());
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
+      trace(Level.INFO, "Update group information for the group " + getGroupName());
       // Response
       Response response = new Response(true, output, Group.class, "group");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update group information for the group " + getGroupName());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot update group information for the group " + getGroupName());
       getLogger().log(Level.SEVERE, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -176,10 +188,11 @@ public final class GroupResource extends UsersAndGroupsResource implements fr.cn
       notification.setEvent("GROUP_DELETED");
       notification.setObservable(getGroupName());
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
+      trace(Level.INFO, "Delete information for the group " + getGroupName());
       response = new Response(true, "Group " + getGroupName() + " deleted.");
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot delete information for the group " + getGroupName());
       response = new Response(false, e.getMessage());
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, null, e);
     }

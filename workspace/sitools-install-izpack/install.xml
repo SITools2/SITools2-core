@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <!-- ===================================
-==  Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 ==  
 ==  This file is part of SITools2.
 ==  
@@ -27,7 +27,7 @@
 	<jar src="lib/hsqldb.jar" />
 	<info>
 		<appname>Sitools2</appname>
-		<appversion>2.3</appversion>
+		<appversion>2.3.1</appversion>
 		<authors>
 			<author email="" name="CNES" />
 			<author email="" name="Akka Technologies" />
@@ -250,6 +250,8 @@
 			<parsable encoding="UTF-8"
 				targetfile="$INSTALL_PATH/$fr.cnes.sitools.corePath/sitools.properties"
 				type="javaprop" />
+			<file override="true" src="../fr.cnes.sitools.core/conf/properties/log4j.properties"
+				targetdir="$INSTALL_PATH/$fr.cnes.sitools.corePath" />
 		</pack>
 		<!-- DATA -->
 		<pack name="data" preselected="yes" required="yes" parent="Server">

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -18,20 +18,12 @@
  ******************************************************************************/
 package fr.cnes.sitools.logging;
 
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.restlet.Context;
 import org.restlet.data.Status;
 import org.restlet.engine.Engine;
-import org.restlet.engine.log.AccessLogFileHandler;
-import org.restlet.engine.log.LogFilter;
 import org.restlet.resource.ResourceException;
-import org.restlet.routing.Filter;
 import org.restlet.service.LogService;
-
-import fr.cnes.sitools.util.SitoolsLogFilter;
 
 /**
  * Custom log service
@@ -49,41 +41,20 @@ public class LogDataServerService extends LogService {
   /**
    * Constructor
    * 
-   * @param outputFile
-   *          Path to store the log file
-   * @param levelName
-   *          level name of the log
-   * @param logFormat
-   *          logging template
    * @param logName
    *          logger name
    * @param enabled
    *          True to make enable the service. False to make disable the service
    * @see http://java.sun.com/javase/6/docs/api/java/util/logging/Level.html
    */
-  public LogDataServerService(String outputFile, String levelName, String logFormat, String logName, boolean enabled) {
+  public LogDataServerService(String logName, boolean enabled) {
     super(enabled);
     try {
-      if (logFormat != null && !logFormat.equals("")) {
-        this.setLogFormat(logFormat);
-      }
       this.setLoggerName(logName);
-
-      Level level = Level.parse(levelName);
-
-      AccessLogFileHandler accessLogFileHandler = new AccessLogFileHandler(outputFile, true);
-      accessLogFileHandler.setFormatter(new LogAccessFormatter());
-      accessLogFileHandler.setLevel(level);
 
       if ((logName != null) && !logName.equals("")) {
         logger = Engine.getLogger(logName);
       }
-      logger.setLevel(level);
-      logger.setUseParentHandlers(false);
-      logger.addHandler(accessLogFileHandler);
-    }
-    catch (IOException ex) {
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);
     }
     catch (SecurityException ex) {
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, ex);

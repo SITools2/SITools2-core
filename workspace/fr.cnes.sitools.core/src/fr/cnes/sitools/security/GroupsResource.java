@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -119,12 +119,13 @@ public final class GroupsResource extends UsersAndGroupsResource {
       else {
         groups = getStore().getGroups(filter);
       }
-
+      trace(Level.FINE, "View groups");
       response = new Response(true, groups, Group.class);
       response.setTotal((filter.getTotalCount() == null) ? groups.size() : filter.getTotalCount());
 
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view groups");
       response = new Response(false, e.getMessage());
     }
     // debug ?
@@ -161,6 +162,7 @@ public final class GroupsResource extends UsersAndGroupsResource {
       // check if the group already exists or not
       Group existingGroup = getStore().getGroupById(input.getName());
       if (existingGroup != null) {
+        trace(Level.INFO, "Cannot create group");
         Response response = new Response(false, "label.group.already.exists");
         return getRepresentation(response, variant.getMediaType());
       }
@@ -174,22 +176,26 @@ public final class GroupsResource extends UsersAndGroupsResource {
       notification.setEvent("GROUP_CREATED");
       notification.setObservable(output.getName());
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
+      trace(Level.INFO, "Create group " + output.getName());
 
       // Response
       Response response = new Response(true, output, Group.class, "group");
       return getRepresentation(response, variant.getMediaType());
     }
     catch (SitoolsException e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create group");
+      getLogger().log(Level.WARNING, null, e);
       Response response = new Response(false, e.getMessage());
       return getRepresentation(response, variant.getMediaType());
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create group");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create group");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

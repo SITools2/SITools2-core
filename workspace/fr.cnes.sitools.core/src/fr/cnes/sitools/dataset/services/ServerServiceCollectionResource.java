@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -63,6 +63,7 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
       ref.setQuery(parameters);
     }
     MediaType mediaType = getMediaType(variant);
+    trace(Level.FINE, "View available dataset server services");
     return RIAPUtils.handle(url, Method.GET, mediaType, getContext());
   }
 
@@ -109,17 +110,20 @@ public class ServerServiceCollectionResource extends AbstractServerServiceResour
 
         services.getServices().add(service);
         getStore().update(services);
+        trace(Level.INFO, "Add the dataset service " + serverServiceOutput.getName() + " for the dataset - id : " + serverServiceOutput.getParent());
       }
       response = responsePersist;
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add dataset server service ");
       getLogger().log(Level.INFO, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add dataset server service ");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

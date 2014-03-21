@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -67,6 +67,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
   @Post
   public Representation newFormProject(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create the multi-dataset - id: " + getFormProjectId());
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "PROJECT_REPRESENTATION_REQUIRED");
     }
     try {
@@ -82,17 +83,21 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
       // Business service
       FormProject formProjectOutput = getStore().create(formProjectInput);
 
+      trace(Level.INFO, "Create the multi-dataset " + formProjectInput.getName());
+
       // Response
       Response response = new Response(true, formProjectOutput, FormProject.class, "formProject");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the multi-dataset - id: " + getFormProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create the multi-dataset - id: " + getFormProjectId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -113,7 +118,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
    *           if className cannot be found
    */
   private FormProject attachServices(FormProject formProject) throws SitoolsException, InstantiationException,
-    IllegalAccessException, ClassNotFoundException {
+      IllegalAccessException, ClassNotFoundException {
 
     String resourceModelClassNamePropertiesSearch = "fr.cnes.sitools.form.project.services.ServicePropertiesSearchResourceModel";
     String resourceModelClassNameDatasetSearch = "fr.cnes.sitools.form.project.services.ServiceDatasetSearchResourceModel";
@@ -157,7 +162,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
    */
   private String attachPropertiesServiceResource(String className, String attachment, String collectionId,
       String dictionary, String descriptionAction) throws SitoolsException, InstantiationException,
-    IllegalAccessException, ClassNotFoundException {
+      IllegalAccessException, ClassNotFoundException {
     ResourceModel resourceModel = createResourceModelWithCommonParam(className, attachment, collectionId, dictionary,
         descriptionAction);
     return persistResourceModel(resourceModel);
@@ -190,7 +195,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
    */
   private String attachSearchServiceResource(String className, String attachment, String collectionId,
       String dictionary, String descriptionAction, Integer nbDatasetsMax) throws SitoolsException,
-    InstantiationException, IllegalAccessException, ClassNotFoundException {
+      InstantiationException, IllegalAccessException, ClassNotFoundException {
     ResourceModel resourceModel = createResourceModelWithCommonParam(className, attachment, collectionId, dictionary,
         descriptionAction);
     if (nbDatasetsMax != null) {
@@ -225,7 +230,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
    */
   private ResourceModel createResourceModelWithCommonParam(String className, String attachment, String collectionId,
       String dictionary, String descriptionAction) throws SitoolsException, InstantiationException,
-    IllegalAccessException, ClassNotFoundException {
+      IllegalAccessException, ClassNotFoundException {
 
     @SuppressWarnings("unchecked")
     Class<ResourceModel> resourceModelClass = (Class<ResourceModel>) Class.forName(className);
@@ -286,12 +291,13 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
       if (getFormProjectId() != null) {
         FormProject formProject = getStore().retrieve(getFormProjectId());
         if ((getProjectId() != null) && (!getProjectId().equals(formProject.getParent()))) {
+          trace(Level.INFO, "Cannot edit multi-dataset information for the multi-dataset - id: " + getFormProjectId());
           response = new Response(false, "FORM_DONT_BELONG_TO_PROJECT");
         }
         else {
+          trace(Level.FINE, "Edit multi-dataset information for the multi-dataset " + formProject.getName());
           response = new Response(true, formProject, FormProject.class, "formProject");
         }
-
       }
       else {
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
@@ -301,6 +307,7 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
         List<FormProject> formProject = getStore().getList(filter);
         int total = formProject.size();
         formProject = getStore().getPage(filter, formProject);
+        trace(Level.FINE, "View available query forms for multi-datasets");
         response = new Response(true, formProject, FormProject.class, "formProject");
         response.setTotal(total);
 
@@ -308,11 +315,13 @@ public class FormProjectCollectionResource extends AbstractFormProjectResource {
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available query forms for multi-datasets");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available query forms for multi-datasets");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

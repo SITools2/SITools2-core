@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -22,12 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
-import org.restlet.ext.xstream.XstreamRepresentation;
-import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
@@ -65,27 +61,12 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
   @Post
   public Representation newResourceAuthorization(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create authorization");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "AUTHORIZATION_REPRESENTATION_REQUIRED");
     }
     try {
-      ResourceAuthorization authorizationInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        authorizationInput = new XstreamRepresentation<ResourceAuthorization>(representation).getObject();
+      ResourceAuthorization authorizationInput = getObject(representation);
 
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-        // Parse the JSON representation to get the bean
-        authorizationInput = new JacksonRepresentation<ResourceAuthorization>(representation,
-            ResourceAuthorization.class).getObject();
-      } 
-
-      else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
-        @SuppressWarnings("unchecked")
-        ObjectRepresentation<ResourceAuthorization> obj = (ObjectRepresentation<ResourceAuthorization>) representation;
-        authorizationInput = obj.getObject();
-      }     
-      
       // Business service
       ResourceAuthorization authorizationOutput = getStore().create(authorizationInput);
 
@@ -94,10 +75,11 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
       notification.setEvent("AUTHORIZATION_CREATED");
       notification.setObservable(authorizationOutput.getId());
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-       
+
       // Response
 
       Response response = new Response(true, authorizationOutput, ResourceAuthorization.class, "authorization");
+      trace(Level.INFO, "Create the authorization for the application " + authorizationOutput.getName());
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
@@ -105,11 +87,11 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public void describePost(MethodInfo info) {
     info.setDocumentation("Method to create a new authorization.");
@@ -141,18 +123,21 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
       auhorizations = getStore().getPage(filter, auhorizations);
       Response response = new Response(true, auhorizations, ResourceAuthorization.class, "authorizations");
       response.setTotal(total);
+      trace(Level.FINE, "View authorizations");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view authorizations");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view authorizations");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
-  
+
   @Override
   public void describeGet(MethodInfo info) {
     info.setDocumentation("Method to get the list of all authorizations.");

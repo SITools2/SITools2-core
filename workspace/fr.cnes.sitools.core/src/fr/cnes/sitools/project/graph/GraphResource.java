@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -70,6 +70,7 @@ public final class GraphResource extends AbstractGraphResource {
     if (getProjectId() != null) {
       Graph graph = getStore().retrieve(getGraphId());
       Response response = new Response(true, graph, Graph.class, GRAPH_RESPONSE_NAME);
+      trace(Level.FINE, "Edit browse by collection for project - id:" + getProjectId());
       return getRepresentation(response, variant);
     }
     else {
@@ -79,6 +80,7 @@ public final class GraphResource extends AbstractGraphResource {
       graphs = getStore().getPage(filter, graphs);
       Response response = new Response(true, graphs, Graph.class, "graphs");
       response.setTotal(total);
+      trace(Level.FINE, "View available browses by collection");
       return getRepresentation(response, variant);
     }
   }
@@ -88,7 +90,7 @@ public final class GraphResource extends AbstractGraphResource {
     info.setDocumentation("Retrieve the graph definition.");
     this.addStandardGetRequestInfo(info);
     ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the project");
+        "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardObjectResponseInfo(info);
   }
@@ -118,17 +120,27 @@ public final class GraphResource extends AbstractGraphResource {
 
         registerObserver(graphOutput);
       }
+      Response response;
+      if (graphOutput != null) {
+        trace(Level.INFO, "Update browse by collection for project - id: " + getProjectId());
+        response = new Response(true, graphOutput, Graph.class, GRAPH_RESPONSE_NAME);
+      }
+      else {
+        trace(Level.INFO, "Cannot update browse by collection for project - id: " + getProjectId());
+        response = new Response(false, "graph.update.failure");
+      }
 
-      Response response = new Response(true, graphOutput, Graph.class, GRAPH_RESPONSE_NAME);
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update browse by collection for project - id: " + getProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update browse by collection for project - id: " + getProjectId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -138,7 +150,7 @@ public final class GraphResource extends AbstractGraphResource {
     info.setDocumentation("Modifies the graph definition.");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the project");
+        "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -168,17 +180,20 @@ public final class GraphResource extends AbstractGraphResource {
 
       registerObserver(graph);
 
+      trace(Level.INFO, "Create browse by collection for project - id: " + getProjectId());
       // Response
       Response response = new Response(true, graph, Graph.class, GRAPH_RESPONSE_NAME);
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create browse by collection for project - id: " + getProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create browse by collection for project - id: " + getProjectId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -188,7 +203,7 @@ public final class GraphResource extends AbstractGraphResource {
     info.setDocumentation("Method to add a graph definition.");
     this.addStandardPostOrPutRequestInfo(info);
     ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the project");
+        "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
@@ -226,7 +241,7 @@ public final class GraphResource extends AbstractGraphResource {
 
         // unregister as observer
         unregisterObserver(graph);
-
+        trace(Level.INFO, "Delete browse by collection for project - id: " + getProjectId());
         response = new Response(true, "graph.delete.success");
 
       }
@@ -237,11 +252,13 @@ public final class GraphResource extends AbstractGraphResource {
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete browse by collection for project - id: " + getProjectId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete browse by collection for project - id: " + getProjectId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -251,7 +268,7 @@ public final class GraphResource extends AbstractGraphResource {
     info.setDocumentation("Method to delete the graph definition.");
     this.addStandardGetRequestInfo(info);
     ParameterInfo paramProjectId = new ParameterInfo(PROJECT_ID_PARAM_NAME, true, "xs:string", ParameterStyle.TEMPLATE,
-      "Identifier of the project");
+        "Identifier of the project");
     info.getRequest().getParameters().add(paramProjectId);
     this.addStandardSimpleResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);

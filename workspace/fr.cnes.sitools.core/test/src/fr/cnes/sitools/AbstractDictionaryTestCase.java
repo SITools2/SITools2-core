@@ -1,5 +1,5 @@
- /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -113,11 +113,7 @@ public abstract class AbstractDictionaryTestCase extends AbstractSitoolsTestCase
   public void setUp() throws Exception {
 
     if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
+      this.component = createTestComponent(SitoolsSettings.getInstance());
 
       // Context
       Context ctx = this.component.getContext().createChildContext();
@@ -128,13 +124,11 @@ public abstract class AbstractDictionaryTestCase extends AbstractSitoolsTestCase
         cleanDirectory(storeDirectory);
         store = new DictionaryStoreXML(storeDirectory, ctx);
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       this.component.getDefaultHost().attach(getAttachUrl(), new DictionaryAdministration(ctx));
     }
-
-    
 
     if (!this.component.isStarted()) {
       this.component.start();

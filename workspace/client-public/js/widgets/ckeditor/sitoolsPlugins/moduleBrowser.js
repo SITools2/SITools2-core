@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -25,7 +25,6 @@ Ext.namespace('sitools.widget.sitoolsEditorPlugins');
  * @extends Ext.util.Observable
  */
 sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPanel, {
-	alias : 'widget.sitools.widget.sitoolsEditorPlugins.moduleBrowser',
     layout : 'fit',
     initComponent : function () {
         
@@ -57,7 +56,7 @@ sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPane
             autoFill : true
         };
         
-        this.sm = Ext.create('Ext.selection.RowModel',{
+        this.sm = new Ext.grid.RowSelectionModel({
             singleSelect:true,
             listeners : {
                 scope : this,
@@ -141,3 +140,4 @@ sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPane
         this.ownerCt.close();
     }
 });
+Ext.reg('sitools.widget.sitoolsEditorPlugins.moduleBrowser', sitools.widget.sitoolsEditorPlugins.moduleBrowser);

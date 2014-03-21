@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -122,9 +122,18 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     Response response = null;
     try {
       User user = getStore().getUserById(getUserId());
-      response = new Response(true, user, User.class, "user");
+      if (user != null) {
+        response = new Response(true, user, User.class, "user");
+        trace(Level.FINE, "View user information for the user - id: " + getUserId());
+      }
+      else {
+        response = new Response(false, "user - id: " + getUserId() + " does not exists");
+        trace(Level.INFO, "Cannot view user information for the user - id: " + getUserId());
+      }
+
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot view user information for the user - id: " + getUserId());
       response = new Response(false, e.getMessage());
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
@@ -154,6 +163,7 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
           input = obj.getObject();
         }
         catch (IOException e) {
+          trace(Level.INFO, "Cannot update user information for the user - id: " + getUserId());
           throw new ResourceException(Status.SERVER_ERROR_INTERNAL, null, e);
         }
       }
@@ -173,12 +183,14 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
           return getRepresentation(object, variant.getMediaType());
         }
         else {
+          trace(Level.INFO, "Cannot update user information for the user - id: " + getUserId());
           throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "error.login.not.mofifiable");
         }
       }
 
       if (input.getProperties() != null && !checkPropertiesName(input.getProperties())) {
         MediaType media = representation.getMediaType();
+        trace(Level.INFO, "Cannot update user information for the user - id: " + getUserId());
         Response response = new Response(false, "Duplicated Property Name");
         return getRepresentation(response, media);
       }
@@ -209,22 +221,26 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
       notification.setEventSource(notifier);
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
 
+      trace(Level.INFO, "Update user information for the user - id: " + getUserId());
       // Response
       Response response = new Response(true, output, User.class, "user");
       return getRepresentation(response, variant);
 
     }
     catch (SitoolsException e) {
+      trace(Level.INFO, "Cannot update user information for the user - id: " + getUserId());
       MediaType media = representation.getMediaType();
       Response response = new Response(false, e.getMessage());
       return getRepresentation(response, media);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update user information for the user - id: " + getUserId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update user information for the user - id: " + getUserId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -253,9 +269,10 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
       notification.setEvent("USER_DELETED");
       notification.setMessage("user.delete.success");
       getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
-
+      trace(Level.INFO, "Delete information for the user - id: " + getUserId());
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot delete information for the user - id: " + getUserId());
       response = new Response(false, e.getMessage());
       getLogger().log(Level.INFO, null, e);
     }

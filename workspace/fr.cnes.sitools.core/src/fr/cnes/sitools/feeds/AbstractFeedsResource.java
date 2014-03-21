@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -359,5 +359,15 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
    */
   public final String getDataId() {
     return dataId;
+  }
+
+  protected final String getTraceParentType() {
+    Object obj = getApplication().getContext().getAttributes().get("TRACE_PARENT_TYPE");
+    if (obj != null) {
+      return obj.toString();
+    }
+    else {
+      return null;
+    }
   }
 }

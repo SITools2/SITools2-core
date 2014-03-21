@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -19,6 +19,7 @@
 package fr.cnes.sitools.service.storage;
 
 import java.io.File;
+import java.util.logging.Level;
 
 import org.restlet.data.LocalReference;
 import org.restlet.data.Parameter;
@@ -79,6 +80,7 @@ public final class StorageResource extends AbstractStorageResource {
     // Create response
     response = new Response(true, dir, StorageDirectory.class, "directory");
     response.setMessage("directory.retrieval.success");
+    trace(Level.FINE, "Edit configuration parameters of the storage");
 
     // Return representation
     return getRepresentation(response, variant);
@@ -130,6 +132,8 @@ public final class StorageResource extends AbstractStorageResource {
         }
         response = new Response(true, directory, StorageDirectory.class, "directory");
         response.setMessage("directory.start.success");
+        trace(Level.INFO, "Start the storage");
+
       }
       else if (action.equals("stop") && isStarted) {
         if (getStorageApplication() != null) {
@@ -137,6 +141,7 @@ public final class StorageResource extends AbstractStorageResource {
         }
         response = new Response(true, directory, StorageDirectory.class, "directory");
         response.setMessage("directory.stop.success");
+        trace(Level.INFO, "Stop the storage");
       }
       else if (action.equals("start") && isStarted) {
         response = new Response(false, "directory.already.started");
@@ -245,6 +250,7 @@ public final class StorageResource extends AbstractStorageResource {
     getStore().update(inputdir);
     response = new Response(true, inputdir, StorageDirectory.class, "directory");
     response.setMessage("directory.update.success");
+    trace(Level.INFO, "Update configuration parameters of the storage");
 
     return getRepresentation(response, variant);
   }
@@ -301,6 +307,7 @@ public final class StorageResource extends AbstractStorageResource {
 
     // Return response
     response = new Response(true, "directory.delete.success");
+    trace(Level.INFO, "Delete the storage");
 
     return getRepresentation(response, variant);
   }

@@ -54,13 +54,11 @@ public class LoginApplication extends SitoolsApplication {
       // "Basic Public Login Test"
       Authenticator authenticator = AuthenticatorFactory.getAuthenticator(getContext(), true, getSettings()
           .getAuthenticationDOMAIN(), getAuthenticationRealm());
-      authenticator.setNext(LoginResource.class);
-      
-      filter.setNext(LoginResource.class);
+
       authenticator.setNext(filter);
+      filter.setNext(LoginResource.class);
 
       router.attach("/login", authenticator);
-
 
       // "Basic Public Login Test Mandatory to return credentials"
       Authenticator authenticatorMandatory = AuthenticatorFactory.getAuthenticator(getContext(), false, getSettings()

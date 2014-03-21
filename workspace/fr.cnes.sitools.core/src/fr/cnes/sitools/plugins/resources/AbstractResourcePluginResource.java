@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -98,7 +98,7 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
    * @return The Representation of the response with the selected mediaType
    */
   public final Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
+    
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }
@@ -323,6 +323,20 @@ public class AbstractResourcePluginResource extends AbstractPluginResource {
     current.setBehavior(resource.getBehavior());
     return current;
 
+  }
+  
+  /**
+   * getTraceParentType
+   * @return a trace parent type
+   */
+  protected final String getTraceParentType() {
+    Object obj = getContext().getAttributes().get("TRACE_PARENT_TYPE");
+    if (obj != null) {
+      return obj.toString();
+    }
+    else {
+      return null;
+    }
   }
 
 }

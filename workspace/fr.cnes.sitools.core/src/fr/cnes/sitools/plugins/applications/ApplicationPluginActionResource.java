@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -19,6 +19,7 @@
 package fr.cnes.sitools.plugins.applications;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
@@ -116,9 +117,11 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
             ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
             response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
             response.setMessage("appPlugin.start.success");
+            trace(Level.INFO, "Start the application plugin " + appModelOutDTO.getName());
           }
           else {
             response = new Response(false, "appPlugin.start.error");
+            trace(Level.INFO, "Cannot start the application plugin ");
           }
 
         }
@@ -126,6 +129,7 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
         if (this.getReference().toString().endsWith("stop")) {
           if ("INACTIVE".equals(model.getStatus())) {
             response = new Response(false, "appPlugin.inactive");
+            trace(Level.INFO, "Cannot stop the application plugin ");
             break;
           }
 
@@ -135,6 +139,7 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
           ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
           response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
           response.setMessage("appPlugin.stop.success");
+          trace(Level.INFO, "Stop the application plugin " + appModelOutDTO.getName());
         }
       } while (false);
     }

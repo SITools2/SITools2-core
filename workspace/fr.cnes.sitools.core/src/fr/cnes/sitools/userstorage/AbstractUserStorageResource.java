@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -18,7 +18,10 @@
  ******************************************************************************/
 package fr.cnes.sitools.userstorage;
 
+import java.io.IOException;
+
 import org.restlet.data.MediaType;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
@@ -34,25 +37,26 @@ import fr.cnes.sitools.userstorage.model.UserStorage;
 
 /**
  * Resource for user storage
+ * 
  * @author AKKA
- *
+ * 
  */
 public abstract class AbstractUserStorageResource extends SitoolsResource {
-  
+
   /**
    * The name of the project ID parameter name
    */
   public static final String IDENTIFIER_PARAM_NAME = "identifier";
-  
+
   /** Application */
   private UserStorageManagement application = null;
-  
+
   /** Store */
   private UserStorageStore store = null;
-  
+
   /** User id in the request */
   private String identifier = null;
-  
+
   /** Notion id in the request */
   private String action = null;
 
@@ -73,8 +77,11 @@ public abstract class AbstractUserStorageResource extends SitoolsResource {
 
   /**
    * Get a representation of the object
-   * @param response the response to treat
-   * @param media the media to use
+   * 
+   * @param response
+   *          the response to treat
+   * @param media
+   *          the media to use
    * @return Representation
    */
   public final Representation getRepresentation(Response response, MediaType media) {
@@ -87,42 +94,86 @@ public abstract class AbstractUserStorageResource extends SitoolsResource {
     configure(xstream, response);
     xstream.alias("userstorage", UserStorage.class);
     xstream.alias("diskstorage", DiskStorage.class);
-    
+
     XstreamRepresentation<Response> rep = new XstreamRepresentation<Response>(media, response);
     rep.setXstream(xstream);
     return rep;
   }
-  
+
   /**
    * Get the action described in the API
+   * 
    * @return the action
    */
   public final String getAction() {
     return this.action;
   }
-  
+
   /**
    * Get the identifier given in the API
+   * 
    * @return the identifier given
    */
   public final String getIdentifier() {
     return this.identifier;
   }
-  
+
   /**
    * Get the store associated to the application
+   * 
    * @return the store
    */
   public final UserStorageStore getStore() {
     return this.store;
   }
-  
+
   /**
    * Get the application associated to the resource
+   * 
    * @return the application
    */
   public final UserStorageManagement getUserStorageManagement() {
     return this.application;
+  }
+
+  /**
+   * Gets UserStorage object from Representation
+   * 
+   * @param representation
+   *          of a UserStorage
+   * @return UserStorage
+   * @throws IOException
+   *           if there is an error while deserializing Java Object
+   */
+  protected final UserStorage getObject(Representation representation) throws IOException {
+    UserStorage userStorageInput = null;
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      // Parse the XML representation to get the bean
+      userStorageInput = new XstreamRepresentation<UserStorage>(representation).getObject();
+
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      userStorageInput = new JacksonRepresentation<UserStorage>(representation, UserStorage.class).getObject();
+    }
+    else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
+      @SuppressWarnings("unchecked")
+      ObjectRepresentation<UserStorage> obj = (ObjectRepresentation<UserStorage>) representation;
+      userStorageInput = obj.getObject();
+
+    }
+    return userStorageInput;
+  }
+
+  /**
+   * Get the userID from a userstorage for trace only
+   * 
+   * @param userStorageInput
+   *          the userstorage
+   * @return the userID from a userstorage for trace only
+   */
+  protected String getUserIdAsString(UserStorage userStorageInput) {
+    return (userStorageInput.getUserId() != null) ? userStorageInput.getUserId() : "<undefined user>";
   }
 
 }

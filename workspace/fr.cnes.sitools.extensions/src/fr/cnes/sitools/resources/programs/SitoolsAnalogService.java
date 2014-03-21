@@ -1,5 +1,5 @@
- /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -93,7 +93,8 @@ public class SitoolsAnalogService extends SitoolsParameterizedResource {
    *          no Representation needed for that Method
    * @param variant
    *          the Variant needed in return
-   * @return A {@link Representation} of a {@link Response} indicating whether or not the report was generated
+   * @return A {@link Representation} of a {@link Response} indicating whether
+   *         or not the report was generated
    */
   @Put
   public Representation generateReport(Representation entity, Variant variant) {
@@ -133,10 +134,12 @@ public class SitoolsAnalogService extends SitoolsParameterizedResource {
 
     File outputdir = new File(paramOutputDir);
     if (!outputdir.exists()) {
+      trace(Level.INFO, "Cannot create the log report");
       response = new Response(false, "program.parameter.output.notfound");
       return getRepresentation(response, variant);
     }
     if (!outputdir.isDirectory()) {
+      trace(Level.INFO, "Cannot create the log report");
       response = new Response(false, "program.parameter.output.notdirectory");
       return getRepresentation(response, variant);
     }
@@ -192,21 +195,26 @@ public class SitoolsAnalogService extends SitoolsParameterizedResource {
 
       int exitValue = pr.waitFor();
       if (exitValue == 0) {
+        trace(Level.INFO, "Create the log report");
         response = new Response(true, "program.execution.success");
       }
       else {
+        trace(Level.INFO, "Cannot create the log report");
         response = new Response(false, commandLog);
       }
       return getRepresentation(response, variant);
     }
     catch (IOException e) {
+      trace(Level.INFO, "Cannot create the log report");
       getLogger().warning(e.getMessage());
       response = new Response(false, "program.execution.failed");
     }
     catch (InterruptedException e) {
+      trace(Level.INFO, "Cannot create the log report");
       getLogger().warning(e.getMessage());
       response = new Response(false, "program.execution.failed");
     }
+    trace(Level.INFO, "Cannot create the log report");
     response = new Response(false, "program.execution.sent");
     return getRepresentation(response, variant);
   }

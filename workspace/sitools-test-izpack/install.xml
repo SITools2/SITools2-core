@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <!-- ===================================
-==  Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+==  Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 ==  
 ==  This file is part of SITools2.
 ==  
@@ -30,7 +30,7 @@
 	<jar src="install_res/libraries/mysql-connector-java-5.1.7-bin.jar" />
 	<info>
 		<appname>Sitools2 - Databases for tests</appname>
-		<appversion>2.3</appversion>
+		<appversion>2.3.1</appversion>
 		<authors>
 			<author email="" name="CNES" />
 			<author email="" name="Akka Technologies" />

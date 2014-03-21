@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  * 
  * This file is part of SITools2.
  * 
@@ -25,7 +25,6 @@ Ext.namespace('sitools.widget.sitoolsEditorPlugins');
  * @extends Ext.util.Observable
  */
 sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
-	alias : 'sitools.widget.sitoolsEditorPlugins.documentBrowser',
     width : 500,
     height : 500,
     layout : 'fit',
@@ -70,7 +69,7 @@ sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
             padding:'5',
             store: this.store,
             title: i18n.get('label.selectDocToImport'),
-            sm: Ext.create('Ext.selection.RowModel',{singleSelect:true}),
+            sm: new Ext.grid.RowSelectionModel({singleSelect:true}),
             colModel: new Ext.grid.ColumnModel({
                 columns: [{
                         width: 30, 
@@ -242,3 +241,4 @@ sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
     }
     
 });
+Ext.reg('sitools.widget.sitoolsEditorPlugins.documentBrowser', sitools.widget.sitoolsEditorPlugins.documentBrowser);

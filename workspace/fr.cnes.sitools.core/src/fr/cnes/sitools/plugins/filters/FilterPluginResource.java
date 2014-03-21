@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -132,6 +132,7 @@ public final class FilterPluginResource extends AbstractFilterPluginResource {
 
       FilterModelDTO filterModelOutDTO = getFilterModelDTO(filterOutput);
       Response response = new Response(true, filterModelOutDTO, FilterModelDTO.class, "filterPlugin");
+      trace(Level.INFO, "Add custom filter");
       return getRepresentation(response, variant);
 
     }

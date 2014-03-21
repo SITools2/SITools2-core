@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.feeds;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,6 +33,8 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
+
+import com.google.common.base.Joiner;
 
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
@@ -67,6 +70,8 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
   @Post
   public Representation newFeed(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+          + getDataId());
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "FEEDS_REPRESENTATION_REQUIRED");
     }
 
@@ -91,8 +96,12 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
         // register observer
         registerObserver(feedOutput);
         response = new Response(true, feedOutput, FeedModel.class, "FeedModel");
+        trace(Level.INFO, "Create RSS feed " + feedOutput.getName() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
       }
       else {
+        trace(Level.INFO, "Cannot create RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+            + getDataId());
         response = new Response(false, "feed.create.error");
       }
 
@@ -100,9 +109,15 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
       return getRepresentation(response, variant, false);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+          + getDataId());
+      getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
+      trace(Level.INFO, "Cannot create RSS feed - id: " + getFeedsId() + " for " + getTraceParentType() + " - id: "
+          + getDataId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -131,7 +146,15 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
     try {
       if (getFeedsId() != null) {
         FeedModel feed = getStore().retrieve(getFeedsId());
-        Response response = new Response(true, feed, FeedModel.class, "FeedModel");
+        Response response;
+        if (feed != null) {
+          response = new Response(true, feed, FeedModel.class, "FeedModel");
+          trace(Level.FINE, "Edit RSS feed " + feed.getName() + " for " + getTraceParentType());
+        }
+        else {
+          response = new Response(false, "feed.not.found");
+          trace(Level.INFO, "Cannot edit RSS feed - id: " + getFeedsId() + "for " + getTraceParentType());
+        }
         return getRepresentation(response, variant, false);
       }
       else if (getDataId() == null || getDataId().equals("idObject")) {
@@ -139,6 +162,7 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
         FeedModel[] feedsOutput = getStore().getArray(filter);
         Response response = new Response(true, feedsOutput);
         Representation rep = getRepresentation(response, variant, true);
+        trace(Level.FINE, "View available RSS feeds for " + getTraceParentType() + " - id: " + getDataId());
         return rep;
       }
       else {
@@ -167,15 +191,18 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
         feedsOutput = feeds.toArray(feedsOutput);
         Response response = new Response(true, feedsOutput);
         response.setTotal(total);
+        trace(Level.FINE, "View available RSS feeds for " + getTraceParentType() + " - id: " + getDataId());
         return getRepresentation(response, variant, true);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view available RSS feeds for " + getTraceParentType());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view available RSS feeds for " + getTraceParentType());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -207,18 +234,23 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
 
     Response response = null;
     if (representation == null) {
+      trace(Level.INFO, "The new selection of RSS feeds cannot be performed on the portal : <undefined feeds>");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "FEEDS_REPRESENTATION_REQUIRED");
     }
     try {
       // Parse object representation
-      FeedCollectionModel visibleFeedsList = getFeedCollectionModel(representation, variant);
-      if (visibleFeedsList != null) {
-        List<FeedModel> feeds = visibleFeedsList.getFeeds();
+      FeedCollectionModel portalFeedsList = getFeedCollectionModel(representation, variant);
+      if (portalFeedsList != null) {
+        List<FeedModel> feeds = portalFeedsList.getFeeds();
+        List<String> visibleFeedsName = new ArrayList<String>();
         for (Iterator<FeedModel> iterator = feeds.iterator(); iterator.hasNext();) {
           FeedModel feedModel = iterator.next();
           // Store specific function
 
           ((FeedsStoreXML) getStore()).updateDetails(feedModel);
+          if (feedModel.isVisible()) {
+            visibleFeedsName.add(feedModel.getName());
+          }
         }
 
         ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
@@ -241,20 +273,26 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
 
         FeedModel[] feedsOutput = new FeedModel[feeds.size()];
         feedsOutput = feeds.toArray(feedsOutput);
+        trace(Level.INFO,
+            "The following RSS feeds are displayed on the portal : " + Joiner.on(",").join(visibleFeedsName));
         response = new Response(true, feedsOutput);
         response.setTotal(total);
+
       }
       else {
+        trace(Level.INFO, "The new selection of RSS feeds cannot be performed on the portal : <undefined feeds>");
         response = new Response(false, "BAD_PARAMETERS");
       }
       return getRepresentation(response, variant, true);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "The new selection of RSS feeds cannot be performed on the portal : <undefined feeds>");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "The new selection of RSS feeds cannot be performed on the portal : <undefined feeds>");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
 

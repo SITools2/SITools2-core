@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -27,10 +27,9 @@ Ext.namespace("sitools.admin.forms");
  * @class sitools.admin.forms.setupAdvancedFormPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.setupAdvancedFormPanel', { 
-    extend : 'Ext.Window',
+sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
     modal : true,
-    height : 230,
+    height : 210,
     width : 260,
     initComponent : function () {
 
@@ -39,8 +38,6 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
         
         this.form = new Ext.form.FormPanel({
             padding : 5,
-            border : false,
-            bodyBorder : false,
             items : [ {
                 xtype : 'textfield',
                 name : 'title',
@@ -84,15 +81,8 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
                 accelerate : true,
                 anchor : "100%", 
                 allowBlank : false
-            }*/]
-        });
-        
-        this.items = [ this.form ];
-        
-        this.dockedItems = [{
-            xtype: 'toolbar',
-            dock: 'bottom',
-            items:  ['->', {
+            }*/],
+            buttons : [ {
                 scope : this,
                 text : i18n.get('label.ok'),
                 handler : this._onValidate
@@ -100,9 +90,10 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
                 scope : this,
                 text : i18n.get('label.cancel'),
                 handler : this._onCancel
-            }]
-        }];
+            } ]
+        });
         
+        this.items = [ this.form ];
         
         sitools.admin.forms.setupAdvancedFormPanel.superclass.initComponent.call(this);
 
@@ -111,13 +102,13 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
     onRender : function () {
         sitools.admin.forms.setupAdvancedFormPanel.superclass.onRender.apply(this, arguments);
         if (this.action === 'modify') {
-            this.form.getForm().setValues(this.zone);
+            var recZone = new Ext.data.Record(this.zone);
+            this.form.getForm().loadRecord(recZone);
         }
         
     },
     
     _onValidate : function () {
-        
         var f = this.form.getForm();
         
         var title = f.findField('title').getValue();
@@ -147,7 +138,7 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
         }
         else {
             rec.containerPanelId = Ext.id();
-            this.parentContainer.zoneStore.add(rec);
+            this.parentContainer.zoneStore.add(new Ext.data.Record(rec));
         }
         
         this.destroy();

@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -92,15 +92,19 @@ public final class FormDTOCollectionResource extends AbstractFormResource {
 
       // Response
       Response response = new Response(true, formDTOOutput, FormDTO.class, "form");
+      trace(Level.INFO, "Add the query form " + formDTOOutput.getName() + " for the dataset - id : " + getDatasetId());
+      
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot add query form for the dataset - id : " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot add query form for the dataset - id : " + getDatasetId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -165,16 +169,19 @@ public final class FormDTOCollectionResource extends AbstractFormResource {
         }
         response = new Response(true, formsDTO, FormDTO.class, "forms");
         response.setTotal(total);
+        trace(Level.FINE, "View available query forms for the dataset - id : " + getDatasetId());
         return getRepresentation(response, variant);
 
       }
     }
     catch (ResourceException e) {
+      trace(Level.FINE, "Cannot view available query forms for the dataset - id : " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.FINE, "Cannot view available query forms for the dataset - id : " + getDatasetId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
 

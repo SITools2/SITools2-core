@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -166,20 +166,24 @@ public final class FormDTOResource extends AbstractFormResource {
 
         // Response
         Response response = new Response(true, formDTOOutput, FormDTO.class, "form");
+        trace(Level.INFO, "Update the query form " + formDTOOutput.getName() + " for the dataset - id : " + getDatasetId());
         return getRepresentation(response, variant);
       }
       else {
         Response response = new Response(false, "Can not validate form");
+        trace(Level.INFO, "Cannot update the query form " + formInput.getName() + " for the dataset - id : " + getDatasetId());
         return getRepresentation(response, variant);
       }
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update query form for the dataset - id : " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot update query form for the dataset - id : " + getDatasetId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -231,19 +235,23 @@ public final class FormDTOResource extends AbstractFormResource {
         // Response
 
         response = new Response(true, "form.delete.success");
+        trace(Level.INFO, "Delete the query form " + form.getName() + " for the dataset - id : " + getDatasetId());
       }
       else {
         response = new Response(true, "form.delete.failure");
+        trace(Level.INFO, "Cannot delete query form for the dataset - id : " + getDatasetId());
       }
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot delete query form for the dataset - id : " + getDatasetId());
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot delete query form for the dataset - id : " + getDatasetId());
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

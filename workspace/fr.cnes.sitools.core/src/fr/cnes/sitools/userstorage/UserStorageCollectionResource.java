@@ -1,5 +1,5 @@
-    /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -21,14 +21,10 @@ package fr.cnes.sitools.userstorage;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.restlet.data.MediaType;
 import org.restlet.data.Status;
-import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.ext.xstream.XstreamRepresentation;
-import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
@@ -71,22 +67,7 @@ public final class UserStorageCollectionResource extends AbstractUserStorageReso
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "USER_STORAGE_REPRESENTATION_REQUIRED");
     }
     try {
-      UserStorage userStorageInput = null;
-      if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
-        // Parse the XML representation to get the bean
-        userStorageInput = new XstreamRepresentation<UserStorage>(representation).getObject();
-
-      }
-      else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
-        // Parse the JSON representation to get the bean
-        userStorageInput = new JacksonRepresentation<UserStorage>(representation, UserStorage.class).getObject();
-      }
-      else if (representation.getMediaType().isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
-        @SuppressWarnings("unchecked")
-        ObjectRepresentation<UserStorage> obj = (ObjectRepresentation<UserStorage>) representation;
-        userStorageInput = obj.getObject();
-
-      }
+      UserStorage userStorageInput = getObject(representation);
       // Having free space not null at creation, should be done more cleanly maybe ...
       Long quota = userStorageInput.getStorage().getQuota();
       DiskStorage storage = userStorageInput.getStorage();
@@ -102,27 +83,30 @@ public final class UserStorageCollectionResource extends AbstractUserStorageReso
         userStorageOutput = getStore().create(userStorageInput);
       }
       catch (SitoolsException e) {
+        trace(Level.INFO, "Cannot add new user space for the user " + getUserIdAsString(userStorageInput));
         Response response = new Response(false, e.getMessage());
         return getRepresentation(response, variant);
       }
       if (userStorageOutput != null) {
- 
+
         String path = getUserStorageManagement().getRootDirectory() + "/" + userStorageOutput.getUserId(); // File.separator
         userStorageOutput.getStorage().setUserStoragePath(path);
         UserStorageManager.build(getContext(), userStorageOutput);
         getStore().update(userStorageOutput);
       }
-
+      trace(Level.INFO, "Add new user space for the user " + getUserIdAsString(userStorageInput));
       Response response = new Response(true, userStorageOutput, UserStorage.class, "userstorage");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Add new user space for the user <undefined user>");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Add new user space for the user <undefined user>");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -143,7 +127,7 @@ public final class UserStorageCollectionResource extends AbstractUserStorageReso
    * @return Representation
    */
   @Get
-  public Representation retrieveUserStorage(Variant variant) {
+  public Representation retrieveUserStorages(Variant variant) {
     try {
       ResourceCollectionFilter filter = new ResourceCollectionFilter(this.getRequest());
       List<UserStorage> userStorages = getStore().getList(filter);
@@ -151,14 +135,17 @@ public final class UserStorageCollectionResource extends AbstractUserStorageReso
       userStorages = getStore().getPage(filter, userStorages);
       Response response = new Response(true, userStorages, UserStorage.class, "userStorages");
       response.setTotal(total);
+      trace(Level.FINE, "View user spaces information");
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot view user spaces information");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot view user spaces information");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }

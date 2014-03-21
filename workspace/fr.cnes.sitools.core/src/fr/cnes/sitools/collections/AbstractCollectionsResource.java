@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -80,7 +80,6 @@ public abstract class AbstractCollectionsResource extends SitoolsResource {
    * @return Representation
    */
   public final Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }

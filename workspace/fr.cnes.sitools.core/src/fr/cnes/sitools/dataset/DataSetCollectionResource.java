@@ -1,5 +1,5 @@
-     /*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -74,6 +74,7 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
   @Post
   public Representation newDataSet(Representation representation, Variant variant) {
     if (representation == null) {
+      trace(Level.INFO, "Cannot create the dataset");
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "DATASET_REPRESENTATION_REQUIRED");
     }
     try {
@@ -106,17 +107,20 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
       unregisterObserver(datasetOutput);
       registerObserver(datasetOutput);
 
+      trace(Level.INFO, "Create the dataset " + datasetOutput.getName());
       // Response
       Response response = new Response(true, datasetOutput, DataSet.class, "dataset");
       return getRepresentation(response, variant);
 
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "Cannot create the dataset");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "Cannot create the dataset");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
@@ -141,8 +145,16 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
   public Representation retrieveDataSet(Variant variant) {
     try {
       if (datasetId != null) {
-        DataSet dataset = store.retrieve(datasetId);
-        Response response = new Response(true, dataset, DataSet.class, "dataset");
+        DataSet dataset = store.retrieve(getDatasetId());
+        Response response;
+        if (dataset != null) {
+          trace(Level.FINE, "Edit information for the dataset " + dataset.getName());
+          response = new Response(true, dataset, DataSet.class, "dataset");
+        }
+        else {
+          trace(Level.INFO, "Cannot Edit information for the dataset - id: " + getDatasetId());
+          response = new Response(false, "dataset.not.found");
+        }
         return getRepresentation(response, variant);
       }
       else {
@@ -150,17 +162,21 @@ public final class DataSetCollectionResource extends AbstractDataSetResource {
         List<DataSet> datasets = store.getList(filter);
         int total = datasets.size();
         datasets = store.getPage(filter, datasets);
+
+        trace(Level.FINE, "View available datasets");
         Response response = new Response(true, datasets, DataSet.class, "datasets");
         response.setTotal(total);
         return getRepresentation(response, variant);
       }
     }
     catch (ResourceException e) {
+      trace(Level.INFO, "View available datasets");
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      trace(Level.INFO, "View available datasets");
+      getLogger().log(Level.WARNING, null, e);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
   }
