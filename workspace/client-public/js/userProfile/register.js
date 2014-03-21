@@ -167,7 +167,7 @@ sitools.userProfile.Register = Ext.extend(Ext.Window, {
 			}],
 			buttons: [
 				{ text: i18n.get('label.register'), handler: this.register, scope: this },
-				{ text: i18n.get('label.back'), hidden: !this.register, scope: this,
+				{ text: i18n.get('label.back'), hidden: !this.register || Ext.isEmpty(this.back), scope: this,
 				icon: loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
 				handler: function () {
 	        		Ext.getCmp('winRegister').close();
