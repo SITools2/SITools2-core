@@ -48,7 +48,7 @@ public class UserStorageStatusResource extends SitoolsResource {
   /** The userstorage of the user */
   private UserStorage userStorage;
   /** The UserStorageStore */
-  private UserStorageStore store;
+  private UserStorageStoreInterface store;
 
   @Override
   public void sitoolsDescribe() {

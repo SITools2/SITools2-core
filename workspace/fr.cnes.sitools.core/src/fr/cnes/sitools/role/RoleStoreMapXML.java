@@ -23,10 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.management.RuntimeErrorException;
-
 import org.restlet.Context;
 
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.role.model.Role;
 
@@ -100,7 +99,7 @@ public final class RoleStoreMapXML extends XmlMapStore<Role> implements RoleStor
    */
   @Override
   public List<Role> retrieveByParent(String id) {
-    throw new RuntimeException("NOT IMPLEMENTED");
+    throw new RuntimeException(SitoolsException.NOT_IMPLEMENTED);
   }
 
   @Override

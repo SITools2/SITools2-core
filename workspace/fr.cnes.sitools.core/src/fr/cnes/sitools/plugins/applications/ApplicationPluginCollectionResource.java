@@ -67,7 +67,7 @@ public final class ApplicationPluginCollectionResource extends AbstractApplicati
   public Representation retrieveAppPlugin(Variant variant) {
     try {
       if (getAppId() != null) {
-        ApplicationPluginModel appModel = getStore().get(getAppId());
+        ApplicationPluginModel appModel = getStore().retrieve(getAppId());
         ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appModel);
         addCurrentClassDescription(appModelOutDTO);
         Response response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class,
@@ -155,7 +155,7 @@ public final class ApplicationPluginCollectionResource extends AbstractApplicati
         appModelInput.setUrlAttach("/" + appModelInput.getId());
       }
 
-      getStore().save(appModelInput);
+//      getStore().save(appModelInput);
 
       // instanciation de la nouvelle application
 
@@ -190,7 +190,7 @@ public final class ApplicationPluginCollectionResource extends AbstractApplicati
 //      }
 
       appModelInput.setStatus("NEW");
-      getStore().save(appModelInput);
+      getStore().create(appModelInput);
 
       ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appModelInput);
       response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");

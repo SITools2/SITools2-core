@@ -29,6 +29,7 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.applications.dto.ApplicationPluginModelDTO;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 
@@ -61,10 +62,10 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
   @Put
   public Representation action(Representation representation, Variant variant) {
     Response response = null;
-    ApplicationPluginStore store = getStore();
+    ApplicationPluginStoreInterface store = getStore();
 
     synchronized (store) {
-      model = store.get(getAppId());
+      model = store.retrieve(getAppId());
 
       do {
 
@@ -112,7 +113,7 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
           }
           if (getResourceApplication().isStarted()) {
             model.setStatus("ACTIVE");
-            store.save(model);
+            store.update(model);
 
             ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
             response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
@@ -135,7 +136,7 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
 
           getResourceApplication().detachApplication(model);
           model.setStatus("INACTIVE");
-          store.save(model);
+          store.update(model);
           ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
           response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
           response.setMessage("appPlugin.stop.success");

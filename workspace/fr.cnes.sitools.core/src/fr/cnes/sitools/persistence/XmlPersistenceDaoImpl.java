@@ -46,7 +46,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
  * 
  * @param <E>
  *          Element must extend Persistent
- * @deprecated
+ * @deprecated  use Xml<Map or List>Store / XStream instead
  */
 public abstract class XmlPersistenceDaoImpl<E extends Persistent> implements PersistenceDao<E> {
 

@@ -108,6 +108,7 @@ import fr.cnes.sitools.order.UserOrderApplication;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginApplication;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.filters.FilterClassPluginApplication;
 import fr.cnes.sitools.plugins.filters.FilterPluginApplication;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
@@ -129,8 +130,8 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.proxy.ProxySettings;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.registry.model.AppRegistry;
-import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.role.RoleApplication;
+import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.security.UsersAndGroupsAdministration;
 import fr.cnes.sitools.security.UsersAndGroupsStore;
 import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
@@ -142,6 +143,7 @@ import fr.cnes.sitools.security.ssl.SslFactory;
 import fr.cnes.sitools.security.userblacklist.UserBlackListApplication;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.service.storage.DataStorageStore;
+import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.StorageAdministration;
 import fr.cnes.sitools.service.storage.StorageApplication;
 import fr.cnes.sitools.solr.SolrApplication;
@@ -160,7 +162,7 @@ import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
-import fr.cnes.sitools.userstorage.UserStorageStore;
+import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
 
 /**
  * Server Starting class.
@@ -868,7 +870,7 @@ public final class Starter {
     // Et exposition des plugins d'ApplicationPlugin
 
     // Store
-    ApplicationPluginStore appPluginStore = (ApplicationPluginStore) settings.getStores().get(
+    ApplicationPluginStoreInterface appPluginStore = (ApplicationPluginStoreInterface) settings.getStores().get(
         Consts.APP_STORE_PLUGINS_APPLICATIONS);
 
     // Reference
@@ -1566,7 +1568,7 @@ public final class Starter {
     // Administration des espaces de stockage
 
     // Store
-    UserStorageStore storeUS = (UserStorageStore) settings.getStores().get(Consts.APP_STORE_USERSTORAGE);
+    UserStorageStoreInterface storeUS = (UserStorageStoreInterface) settings.getStores().get(Consts.APP_STORE_USERSTORAGE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_USERSTORAGE_URL);
@@ -1691,7 +1693,7 @@ public final class Starter {
     // Application Data Storage
 
     // Store
-    DataStorageStore storeDataStorage = (DataStorageStore) settings.getStores().get(Consts.APP_STORE_DATASTORAGE);
+    DataStorageStoreInterface storeDataStorage = (DataStorageStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASTORAGE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASTORAGE_URL);

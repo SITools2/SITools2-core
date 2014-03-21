@@ -45,7 +45,7 @@ public final class UserStorageManagement extends SitoolsApplication {
   private String rootDirectory;
 
   /** User accounts database */
-  private UserStorageStore store = null;
+  private UserStorageStoreInterface store = null;
   
   /**
    * Constructor
@@ -56,7 +56,7 @@ public final class UserStorageManagement extends SitoolsApplication {
   public UserStorageManagement(Context context) {
     super(context);
     rootDirectory = (String) context.getAttributes().get("USER_STORAGE_ROOT");
-    this.store = (UserStorageStore) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (UserStorageStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     
   }
 
@@ -93,7 +93,7 @@ public final class UserStorageManagement extends SitoolsApplication {
    * 
    * @return the store
    */
-  public UserStorageStore getStore() {
+  public UserStorageStoreInterface getStore() {
     return store;
   }
 
@@ -103,7 +103,7 @@ public final class UserStorageManagement extends SitoolsApplication {
    * @param store
    *          the store to set
    */
-  public void setStore(UserStorageStore store) {
+  public void setStore(UserStorageStoreInterface store) {
     this.store = store;
   }
   

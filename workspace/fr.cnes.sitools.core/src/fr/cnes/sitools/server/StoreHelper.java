@@ -72,7 +72,9 @@ import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.persistence.PersistenceDao;
 import fr.cnes.sitools.persistence.Persistent;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreXmlImpl;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreXmlMap;
 import fr.cnes.sitools.plugins.filters.FilterPluginStoreXML;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXML;
@@ -104,7 +106,9 @@ import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
 import fr.cnes.sitools.service.storage.DataStorageStore;
+import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.DataStorageStoreXmlImpl;
+import fr.cnes.sitools.service.storage.DataStorageStoreXmlMap;
 import fr.cnes.sitools.tasks.TaskStoreXML;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
@@ -112,7 +116,9 @@ import fr.cnes.sitools.units.dimension.DimensionStoreXML;
 import fr.cnes.sitools.units.dimension.DimensionStoreXMLMap;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageStore;
+import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
 import fr.cnes.sitools.userstorage.UserStorageStoreXML;
+import fr.cnes.sitools.userstorage.UserStorageStoreXmlMap;
 import fr.cnes.sitools.userstorage.model.UserStorage;
 
 /**
@@ -197,9 +203,16 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_TEMPLATE, storeConceptTemplate);
 
-    ApplicationPluginStore storeApplicationPlugin = new ApplicationPluginStoreXmlImpl(new File(
-        settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR)), context);
+    ApplicationPluginStoreInterface storeApplicationPlugin = new ApplicationPluginStoreXmlMap(new File(
+        settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_PLUGINS_APPLICATIONS, storeApplicationPlugin);
+
+    // Migrating ApplicationPlugin
+    ApplicationPluginStore storeApplicationPluginOLD = new ApplicationPluginStoreXmlImpl(new File(
+        settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR)), context);
+    if (!storeApplicationPluginOLD.getList().isEmpty()) {
+      storeApplicationPlugin.saveList(storeApplicationPluginOLD.getList());
+    }
 
     SitoolsStore<FilterModel> storeFilterPlugin = new FilterPluginStoreXML(new File(
         settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
@@ -270,14 +283,28 @@ public final class StoreHelper {
         context);
     stores.put(Consts.APP_STORE_ORDER, storeOrd);
 
-    UserStorageStore storeUserStorage = new UserStorageStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR)), context);
+    UserStorageStoreInterface storeUserStorage = new UserStorageStoreXmlMap(new File(
+        settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_USERSTORAGE, storeUserStorage);
-
-    DataStorageStore storeDataStorage = new DataStorageStoreXmlImpl(new File(
-        settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR)), context);
+    
+    // Migrating UserStorage
+    UserStorageStore storeUserStorageOLD = new UserStorageStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR)), context);
+    if (!storeUserStorageOLD.getList().isEmpty()){
+      storeUserStorage.saveList(storeUserStorageOLD.getList());
+    }
+    
+    DataStorageStoreInterface storeDataStorage = new DataStorageStoreXmlMap(new File(
+        settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASTORAGE, storeDataStorage);
-  
+
+    // Migrating DataStorage
+    DataStorageStore storeDataStorageOLD = new DataStorageStoreXmlImpl(new File(
+        settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR)), context);
+    if (!storeDataStorageOLD.getList().isEmpty()) {
+      storeDataStorage.saveList(storeDataStorageOLD.getList());
+    }
+    
     DimensionStoreInterface storeDimensions = new DimensionStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)+"/map"), context);
     stores.put(Consts.APP_STORE_DIMENSION, storeDimensions);

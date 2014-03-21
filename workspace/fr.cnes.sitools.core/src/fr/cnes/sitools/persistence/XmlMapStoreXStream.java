@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
+import org.restlet.engine.Engine;
 
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
@@ -54,9 +55,6 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
 
   /** Store structure is a Map<String, IPersistent> */
   private Map<String, E> map;
-
-  /** List associated */
-  private List<E> list;
   
   /** The xstream */
   private XStream xstream;
@@ -88,7 +86,7 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
    */
   public XmlMapStoreXStream(File location, Context context) {
     super();
-    log = Logger.getLogger(this.getClass().getName());
+    log = Engine.getLogger(this.getClass().getName());
     this.context = context;
     init(location);
   }
@@ -162,15 +160,14 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
     // FilePersistenceStrategy
     XmlMap dataStoreXStream = new XmlMap(new FilePersistenceStrategy(location, xstream));
     map = Collections.synchronizedMap(dataStoreXStream);    
-  
-//  FilePersistenceStrategy strategy = new FilePersistenceStrategy(location, xstream);
-//  List<E> xstreamList = new XmlArrayList(strategy);
-//  list = Collections.synchronizedList(xstreamList);
   }
   
-  
+  /**
+   * Clear the current store and add all coll items in the store
+   * @param coll List<E>
+   */
   public final void init(List<E> coll){
-    list = Collections.synchronizedList(coll);
+    List<E> list = Collections.synchronizedList(coll);
     map.clear();
     for (Iterator<E> iterator = list.iterator(); iterator.hasNext();) {
       E e = (E) iterator.next();
@@ -184,8 +181,8 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
    * @return the list
    */
   public final List<E> getList() {
-    List<E> result = Collections.unmodifiableList(Lists.newArrayList(map.values()));
-
+    
+    ArrayList<E> result = Lists.newArrayList(map.values());
     sort(result, null);
     return result;
   }
@@ -210,7 +207,9 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
     init(list); // this.list = list;
   }
 
-  
+  /**
+   * @return Map<String, E>  -- private ? Modifying this Map automatically persists data
+   */
   public Map<String, E> getMap() {
     return map;
   }
@@ -232,5 +231,15 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
   public final Logger getLog() {
     return log;
   }
+
+  public Context getContext() {
+    return context;
+  }
+
+  public XStream getXstream() {
+    return xstream;
+  }
+  
+  
   
 }

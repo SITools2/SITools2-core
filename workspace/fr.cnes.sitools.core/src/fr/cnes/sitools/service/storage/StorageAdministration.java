@@ -45,7 +45,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 public final class StorageAdministration extends SitoolsApplication {
 
   /** RESTlet storage */
-  private DataStorageStore store;
+  private DataStorageStoreInterface store;
 
   /** Internal router for directory attachment */
   private Router route;
@@ -64,7 +64,7 @@ public final class StorageAdministration extends SitoolsApplication {
    */
   public StorageAdministration(Context context) {
     super(context);
-    this.store = (DataStorageStore) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (DataStorageStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     if (this.store == null) {
       getLogger().warning("Missing APP_STORE in StorageApplication context");
     }
@@ -128,7 +128,7 @@ public final class StorageAdministration extends SitoolsApplication {
    * 
    * @return the store
    */
-  public DataStorageStore getStore() {
+  public DataStorageStoreInterface getStore() {
     return store;
   }
 

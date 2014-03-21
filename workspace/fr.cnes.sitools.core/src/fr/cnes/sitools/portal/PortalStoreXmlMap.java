@@ -19,12 +19,14 @@
 package fr.cnes.sitools.portal;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.portal.model.Portal;
 
@@ -36,7 +38,7 @@ import fr.cnes.sitools.portal.model.Portal;
 public final class PortalStoreXmlMap extends XmlMapStore<Portal> implements PortalStoreInterface {
   
   /** default location for file persistence */
-  private static final String COLLECTION_NAME = "portal";
+  private static final String COLLECTION_NAME = Portal.class.getSimpleName().toLowerCase(); 
   
   /**
    * Constructor
@@ -52,9 +54,8 @@ public final class PortalStoreXmlMap extends XmlMapStore<Portal> implements Port
 
   @Override
   public List<Portal> retrieveByParent(String id) {
-    throw new RuntimeException("NOT IMPLEMENTED");
+    throw new RuntimeException(SitoolsException.NOT_IMPLEMENTED);
   }
-
   
   @Override
   public String getCollectionName() {
@@ -63,9 +64,8 @@ public final class PortalStoreXmlMap extends XmlMapStore<Portal> implements Port
 
   @Override
   public void init(File location) {
-    Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
-//  TODO ?  aliases.put("portal", Portal.class);
-//  Pour des raisons de compatibilité  peut-être pas...  
+    Map<String, Class<?>> aliases = new HashMap<String, Class<?>>();
+    aliases.put(COLLECTION_NAME, Portal.class);
     this.init(location, aliases); 
   }
   

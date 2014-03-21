@@ -22,6 +22,8 @@ import java.io.Serializable;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+import fr.cnes.sitools.common.model.IResource;
+
 /**
  * Disk space allocated for a user
  * 
@@ -29,7 +31,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * 
  */
 @XStreamAlias("userStorage")
-public final class UserStorage implements Serializable {
+public final class UserStorage implements IResource, Serializable {
 
   /** serialVersionUID */
   private static final long serialVersionUID = 1593134047575467004L;
@@ -43,10 +45,10 @@ public final class UserStorage implements Serializable {
   /** Status of user storage */
   private String status;
 
-  // private boolean listingAllowed;
-  // private boolean modifiable;
-  // private boolean deeplyAccessible;
-
+  // private boolean listingAllowed; // true
+  // private boolean modifiable; // true
+  // private boolean deeplyAccessible; // true
+ 
   /**
    * Gets the identifier value
    * 
@@ -55,6 +57,32 @@ public final class UserStorage implements Serializable {
   public String getUserId() {
     return userId;
   }
+
+  @Override
+  public String getId() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void setId(String id) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public String getName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getDescription() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
+  
 
   /**
    * Sets the value of identifier
