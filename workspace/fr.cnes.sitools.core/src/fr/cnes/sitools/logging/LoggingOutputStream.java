@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.util.logging;
+package fr.cnes.sitools.logging;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -45,9 +45,17 @@ import java.util.logging.Logger;
  *      code</a>
  */
 public class LoggingOutputStream extends OutputStream {
+  /**
+   * The default number of bytes in the buffer. =2048
+   */
+  public static final int DEFAULT_BUFFER_LENGTH = 2048;
+
   /** The LINE_SEPARATOR */
   protected static final String LINE_SEPERATOR = System.getProperty("line.separator");
-
+  /**
+   * The priority to use when writing to the Category.
+   */
+  protected Logger logger;
   /**
    * Used to maintain the contract of {@link #close()}.
    */
@@ -59,6 +67,10 @@ public class LoggingOutputStream extends OutputStream {
   protected byte[] buf;
 
   /**
+   * The category to write to.
+   */
+  protected Level level;
+  /**
    * The number of valid bytes in the buffer. This value is always in the range <tt>0</tt> through <tt>buf.length</tt>;
    * elements <tt>buf[0]</tt> through <tt>buf[count-1]</tt> contain valid byte data.
    */
@@ -68,21 +80,6 @@ public class LoggingOutputStream extends OutputStream {
    * Remembers the size of the buffer for speed.
    */
   private int bufLength;
-
-  /**
-   * The default number of bytes in the buffer. =2048
-   */
-  public static final int DEFAULT_BUFFER_LENGTH = 2048;
-
-  /**
-   * The category to write to.
-   */
-  protected Level level;
-
-  /**
-   * The priority to use when writing to the Category.
-   */
-  protected Logger logger;
 
   private LoggingOutputStream() {
     // illegal

@@ -96,7 +96,9 @@ import fr.cnes.sitools.inscription.InscriptionApplication;
 import fr.cnes.sitools.inscription.UserInscriptionApplication;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.logging.LogDataServerService;
+import fr.cnes.sitools.logging.LoggingOutputStream;
 import fr.cnes.sitools.logging.SitoolsApplicationLogFilter;
+import fr.cnes.sitools.logging.SitoolsLogFilter;
 import fr.cnes.sitools.mail.MailAdministration;
 import fr.cnes.sitools.notification.NotificationApplication;
 import fr.cnes.sitools.notification.business.NotificationManager;
@@ -158,8 +160,6 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
 import fr.cnes.sitools.userstorage.UserStorageStore;
-import fr.cnes.sitools.util.logging.LoggingOutputStream;
-import fr.cnes.sitools.util.logging.SitoolsLogFilter;
 
 /**
  * Server Starting class.

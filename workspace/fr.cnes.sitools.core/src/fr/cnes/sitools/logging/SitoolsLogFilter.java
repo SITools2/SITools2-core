@@ -1,4 +1,4 @@
-package fr.cnes.sitools.util.logging;
+package fr.cnes.sitools.logging;
 
 import java.util.HashSet;
 import java.util.List;
@@ -17,13 +17,27 @@ import com.google.common.base.Joiner;
 
 import fr.cnes.sitools.security.SecurityUtil;
 
+/**
+ * Log filter that logs all the traces from the request response
+ * 
+ * 
+ * @author m.gond
+ */
 public class SitoolsLogFilter extends Filter {
-
+  /**
+   * The name of the logger to use
+   */
   private String loggerName;
 
-  public SitoolsLogFilter(String securityLoggerName) {
+  /**
+   * Instantiates a new sitools log filter.
+   * 
+   * @param loggerName
+   *          the name of the logger to use
+   */
+  public SitoolsLogFilter(String loggerName) {
     super();
-    this.loggerName = securityLoggerName;
+    this.loggerName = loggerName;
   }
 
   /*

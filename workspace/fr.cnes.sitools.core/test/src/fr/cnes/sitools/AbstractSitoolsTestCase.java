@@ -46,9 +46,9 @@ import org.restlet.service.Service;
 import fr.cnes.sitools.api.DocAPI;
 import fr.cnes.sitools.api.DocWadl;
 import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.logging.SitoolsLogFilter;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.FileUtils;
-import fr.cnes.sitools.util.logging.SitoolsLogFilter;
 
 /**
  * Classe de base pour les tests unitaires des Serveurs/Applications Restlet et de la persistance des données Permet
