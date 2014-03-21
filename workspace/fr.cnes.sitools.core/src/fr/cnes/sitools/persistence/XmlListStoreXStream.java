@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.engine.Engine;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.persistence.FilePersistenceStrategy;
@@ -45,9 +44,8 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
  * @param <E>
  *          The elements returned for pagination
  * @author AKKA
- * @deprecated @see Xml<List or Map>StoreXStream
  */
-public abstract class Paginable<E extends IResource> {
+public abstract class XmlListStoreXStream<E extends IResource> {
 
   /** The restlet {@link Context} */
   protected Context context;
@@ -67,7 +65,7 @@ public abstract class Paginable<E extends IResource> {
    * @param context
    *          TODO
    */
-  public Paginable(Context context) {
+  public XmlListStoreXStream(Context context) {
     super();
     this.context = context;
   }
@@ -80,9 +78,9 @@ public abstract class Paginable<E extends IResource> {
    * @param context
    *          TODO
    */
-  public Paginable(File location, Context context) {
+  public XmlListStoreXStream(File location, Context context) {
     super();
-    log = Engine.getLogger(this.getClass().getName());
+    log = Logger.getLogger(this.getClass().getName());
     this.context = context;
     init(location);
   }
@@ -148,8 +146,13 @@ public abstract class Paginable<E extends IResource> {
     FilePersistenceStrategy strategy = new FilePersistenceStrategy(location, xstream);
     List<E> xstreamList = new XmlArrayList(strategy);
     list = Collections.synchronizedList(xstreamList);
-
   }
+  
+  
+  public final void init(List<E> coll){
+    list = Collections.synchronizedList(coll);
+  }
+  
 
   /**
    * Return the list
@@ -194,25 +197,6 @@ public abstract class Paginable<E extends IResource> {
    */
   public final List<E> getRawList() {
     return list;
-  }
-
-  /**
-   * get the list with XQuery
-   * 
-   * @param xquery
-   *          the XQuery
-   * @return the list
-   */
-  public final List<E> getListByXQuery(String xquery) {
-    log.warning("getListByXQuery DEFAULT IMPLEMENTATION : getList");
-    return getList();
-  }
-
-  /**
-   * Close the Store ...
-   */
-  public final void close() {
-    // TODO
   }
 
   /**

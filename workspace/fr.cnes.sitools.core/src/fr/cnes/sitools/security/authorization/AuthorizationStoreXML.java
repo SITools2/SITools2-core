@@ -213,11 +213,6 @@ public final class AuthorizationStoreXML extends Paginable<ResourceAuthorization
     return result;
   }
 
-  @Override
-  public ResourceAuthorization[] getArrayByXQuery(String xquery) {
-    getLog().severe("getArrayByXQuery NOT IMPLEMENTED");
-    return null;
-  }
 
   /*
    * (non-Javadoc)

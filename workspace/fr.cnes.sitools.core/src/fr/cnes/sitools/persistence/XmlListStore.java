@@ -1,5 +1,5 @@
-     /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+/*******************************************************************************
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.common.store;
+package fr.cnes.sitools.persistence;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -31,7 +31,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
-import fr.cnes.sitools.persistence.Paginable;
+import fr.cnes.sitools.common.store.SitoolsStore;
 
 /**
  * Base class for XML stores
@@ -39,10 +39,8 @@ import fr.cnes.sitools.persistence.Paginable;
  * @param <T>
  *          object class to be stored
  * @author m.marseille (AKKA technologies)
- * 
- * @deprecated use XmlSynchronized<List or Map>Store instead
  */
-public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends Paginable<T> implements SitoolsStore<T> {
+public abstract class XmlListStore<T extends IResource> extends XmlListStoreXStream<T> implements SitoolsStore<T> {
 
   /**
    * Object instance
@@ -54,25 +52,22 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
    * 
    * @param cl
    *          the class to keep
-   * @param context
-   *          TODO
+   * @param context TODO
    */
-  public SitoolsSynchronizedStoreXML(Class<T> cl, Context context) {
+  public XmlListStore(Class<T> cl, Context context) {
     super(context);
     this.persistentClass = cl;
   }
 
   /**
    * Constructor with file location
-   * 
    * @param cl
    *          the class to keep
    * @param location
    *          the file location
-   * @param context
-   *          TODO
+   * @param context TODO
    */
-  public SitoolsSynchronizedStoreXML(Class<T> cl, File location, Context context) {
+  public XmlListStore(Class<T> cl, File location, Context context) {
     super(location, context);
     this.persistentClass = cl;
   }
@@ -81,17 +76,13 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
   @Override
   public final T[] getArray() {
     T[] result = null;
-    List<T> rawList = getRawList();
-    synchronized (rawList) {
-      if ((rawList != null) && (rawList.size() > 0)) {
-        T[] array = (T[]) Array.newInstance(persistentClass, rawList.size());
-        result = rawList.toArray(array);
-      }
-      else {
-        result = (T[]) Array.newInstance(persistentClass, 0);
-      }
+    if ((getRawList() != null) && (getRawList().size() > 0)) {
+      T[] array = (T[]) Array.newInstance(persistentClass, getRawList().size());
+      result = getRawList().toArray(array);
     }
-
+    else {
+      result = (T[]) Array.newInstance(persistentClass, 0);
+    }
     return result;
   }
 
@@ -113,32 +104,30 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
   @Override
   public List<T> getList(ResourceCollectionFilter filter) {
     List<T> result = new ArrayList<T>();
-    List<T> rawList = getRawList();
-    synchronized (rawList) {
-      if ((getRawList() == null) || (getRawList().size() <= 0) || (filter.getStart() > getRawList().size())) {
-        return result;
-      }
-      // Filtre
-      if ((filter.getQuery() != null) && !filter.getQuery().equals("")) {
-        for (T resource : rawList) {
-          if (null == resource.getName()) {
-            continue;
+    if ((getRawList() == null) || (getRawList().size() <= 0) || (filter.getStart() > getRawList().size())) {
+      return result;
+    }
+
+    // Filtre
+    if ((filter.getQuery() != null) && !filter.getQuery().equals("")) {
+      for (T resource : getRawList()) {
+        if (null == resource.getName()) {
+          continue;
+        }
+        if ("strict".equals(filter.getMode())) {
+          if (resource.getName().equals(filter.getQuery())) {
+            result.add(resource);
           }
-          if ("strict".equals(filter.getMode())) {
-            if (resource.getName().equals(filter.getQuery())) {
-              result.add(resource);
-            }
-          }
-          else {
-            if (resource.getName().toLowerCase().startsWith(filter.getQuery().toLowerCase())) {
-              result.add(resource);
-            }
+        }
+        else {
+          if (resource.getName().toLowerCase().startsWith(filter.getQuery().toLowerCase())) {
+            result.add(resource);
           }
         }
       }
-      else {
-        result.addAll(rawList);
-      }
+    }
+    else {
+      result.addAll(getRawList());
     }
 
     // Si index premier element > nombre d'elements filtres => resultat vide
@@ -159,22 +148,20 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
     if (resource.getId() == null || "".equals(resource.getId())) {
       resource.setId(UUID.randomUUID().toString());
     }
-    List<T> rawList = getRawList();
-    synchronized (rawList) {
-      // Recherche sur l'id
-      for (Iterator<T> it = rawList.iterator(); it.hasNext();) {
-        T current = it.next();
-        if (current.getId().equals(resource.getId())) {
-          getLog().info(getCollectionName() + " found");
-          result = current;
-          break;
-        }
-      }
 
-      if (result == null) {
-        rawList.add(resource);
-        result = resource;
+    // Recherche sur l'id
+    for (Iterator<T> it = getRawList().iterator(); it.hasNext();) {
+      T current = it.next();
+      if (current.getId().equals(resource.getId())) {
+        getLog().info(getCollectionName() + " found");
+        result = current;
+        break;
       }
+    }
+
+    if (result == null) {
+      getRawList().add(resource);
+      result = resource;
     }
     return result;
   }
@@ -182,19 +169,16 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
   @Override
   public final T retrieve(String id) {
     T result = null;
-    List<T> rawList = getRawList();
-    synchronized (rawList) {
-      for (Iterator<T> it = rawList.iterator(); it.hasNext();) {
-        T current = it.next();
-        if (current.getId().equals(id)) {
-          getLog().info(getCollectionName() + " found");
-          result = current;
-          break;
-        }
+    for (Iterator<T> it = getRawList().iterator(); it.hasNext();) {
+      T current = it.next();
+      if (current.getId().equals(id)) {
+        getLog().info(getCollectionName() + " found");
+        result = current;
+        break;
       }
-      if (result == null) {
-        getLog().info(getCollectionName() + " not found.");
-      }
+    }
+    if (result == null) {
+      getLog().info(getCollectionName() + " not found.");
     }
     return result;
   }
@@ -202,16 +186,13 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
   @Override
   public final boolean delete(String id) {
     boolean result = false;
-    List<T> rawList = getRawList();
-    synchronized (rawList) {
-      for (Iterator<T> it = rawList.iterator(); it.hasNext();) {
-        T current = it.next();
-        if (current.getId().equals(id)) {
-          getLog().info("Removing " + getCollectionName());
-          it.remove();
-          result = true;
-          break;
-        }
+    for (Iterator<T> it = getRawList().iterator(); it.hasNext();) {
+      T current = it.next();
+      if (current.getId().equals(id)) {
+        getLog().info("Removing " + getCollectionName());
+        it.remove();
+        result = true;
+        break;
       }
     }
     return result;
@@ -224,6 +205,27 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
     }
   }
 
+  private final T save(T o) {
+   getRawList().add(o);
+    return o;
+  }
+  
+  @Override
+  public final List<T> saveList(List<T> resources) {
+    getRawList().clear();
+    getRawList().addAll(resources);
+    return getRawList();
+    
+//    Iterator<T> iterator = os.iterator();
+//    while (iterator.hasNext()) {
+//      T e = iterator.next();
+//      save(e);
+//    }
+//    return os;
+  }
+  
+  
+  
   /**
    * Method to implement for collection name
    * 
@@ -231,12 +233,4 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
    */
   public abstract String getCollectionName();
 
-  
-  @Override
-  public List<T> saveList(List<T> resources) {
-    getRawList().clear();
-    getRawList().addAll(resources);
-    return getRawList();
-  }
-  
 }

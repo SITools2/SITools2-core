@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
@@ -47,7 +46,7 @@ public abstract class AbstractRoleResource extends SitoolsResource {
   private RoleApplication application = null;
   
   /** Store */
-  private SitoolsStore<Role> store = null;
+  private RoleStoreInterface store = null;
   
   /** id in the request */
   private String roleId = null;
@@ -132,7 +131,7 @@ public abstract class AbstractRoleResource extends SitoolsResource {
    * Get the store associated to the role application
    * @return the store associated
    */
-  public final SitoolsStore<Role> getStore() {
+  public final RoleStoreInterface getStore() {
     return this.store;
   }
 

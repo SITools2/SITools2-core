@@ -115,7 +115,7 @@ public final class PortalResource extends AbstractPortalResource {
           portalInput.setId(getPortalId());
 
           // Business service
-          getStore().save(portalInput);
+          getStore().update(portalInput);
 
           portalOutput = portalInput;
         }

@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -18,15 +18,14 @@
  ******************************************************************************/
 package fr.cnes.sitools.portal;
 
-import fr.cnes.sitools.persistence.PersistenceDao;
+import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.portal.model.Portal;
 
 /**
  * Specialized Portal persistence interface
  *
  * @author jp.boignard (AKKA Technologies)
- * 
- * @deprecated
  */
-public interface PortalStore extends PersistenceDao<fr.cnes.sitools.portal.model.Portal> {
+public interface PortalStoreInterface extends SitoolsStore<Portal> {
 
 }

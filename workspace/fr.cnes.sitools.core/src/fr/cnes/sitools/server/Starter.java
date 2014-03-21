@@ -119,7 +119,7 @@ import fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication;
 import fr.cnes.sitools.plugins.resources.ResourcePluginApplication;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.portal.PortalApplication;
-import fr.cnes.sitools.portal.PortalStore;
+import fr.cnes.sitools.portal.PortalStoreInterface;
 import fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication;
 import fr.cnes.sitools.project.ProjectAdministration;
 import fr.cnes.sitools.project.graph.model.Graph;
@@ -129,8 +129,8 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.proxy.ProxySettings;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.registry.model.AppRegistry;
+import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.role.RoleApplication;
-import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.UsersAndGroupsAdministration;
 import fr.cnes.sitools.security.UsersAndGroupsStore;
 import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
@@ -156,6 +156,7 @@ import fr.cnes.sitools.trigger.RoleTrigger;
 import fr.cnes.sitools.trigger.UserTrigger;
 import fr.cnes.sitools.units.UnitsApplication;
 import fr.cnes.sitools.units.dimension.DimensionAdministration;
+import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
@@ -406,7 +407,7 @@ public final class Starter {
     // Authentication / Authorizations
 
     // Store Role
-    SitoolsStore<Role> storeRole = (SitoolsStore<Role>) settings.getStores().get(Consts.APP_STORE_ROLE);
+   RoleStoreInterface storeRole = (RoleStoreInterface) settings.getStores().get(Consts.APP_STORE_ROLE);
 
     // Store Users and Groups
     UsersAndGroupsStore storeUandG = (UsersAndGroupsStore) settings.getStores().get(Consts.APP_STORE_USERSANDGROUPS);
@@ -1077,7 +1078,7 @@ public final class Starter {
     // Informations du portail
 
     // Store
-    PortalStore storePortal = (PortalStore) settings.getStores().get(Consts.APP_STORE_PORTAL);
+    PortalStoreInterface storePortal = (PortalStoreInterface) settings.getStores().get(Consts.APP_STORE_PORTAL);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_PORTAL_URL);
@@ -1950,7 +1951,7 @@ public final class Starter {
     // Dimension Management
 
     // Store
-    SitoolsStore<SitoolsDimension> storeDimension = (SitoolsStore<SitoolsDimension>) settings.getStores().get(
+    DimensionStoreInterface storeDimension = (DimensionStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DIMENSION);
 
     // Reference

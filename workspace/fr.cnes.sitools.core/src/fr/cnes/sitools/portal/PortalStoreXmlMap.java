@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -19,21 +19,25 @@
 package fr.cnes.sitools.portal;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.persistence.XmlPersistenceDaoImpl;
+import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.portal.model.Portal;
 
 /**
- * Specialized XML Persistence implementation of PortalStore.
+ * Specialized XML Persistence implementation of PortalStoreInterface.
  * 
  * @author jp.boignard (AKKA Technologies)
- * 
- * @deprecated use PortalStoreXmlMap
  */
-public final class PortalStoreXmlImpl extends XmlPersistenceDaoImpl<Portal> implements PortalStore {
-
+public final class PortalStoreXmlMap extends XmlMapStore<Portal> implements PortalStoreInterface {
+  
+  /** default location for file persistence */
+  private static final String COLLECTION_NAME = "portal";
+  
   /**
    * Constructor
    * 
@@ -42,8 +46,27 @@ public final class PortalStoreXmlImpl extends XmlPersistenceDaoImpl<Portal> impl
    * @param context
    *          the Restlet Context
    */
-  public PortalStoreXmlImpl(File storageRoot, Context context) {
-    super(storageRoot, context);
+  public PortalStoreXmlMap(File storageRoot, Context context) {
+    super(Portal.class, storageRoot, context);
   }
 
+  @Override
+  public List<Portal> retrieveByParent(String id) {
+    throw new RuntimeException("NOT IMPLEMENTED");
+  }
+
+  
+  @Override
+  public String getCollectionName() {
+    return COLLECTION_NAME;
+  }
+
+  @Override
+  public void init(File location) {
+    Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
+//  TODO ?  aliases.put("portal", Portal.class);
+//  Pour des raisons de compatibilité  peut-être pas...  
+    this.init(location, aliases); 
+  }
+  
 }

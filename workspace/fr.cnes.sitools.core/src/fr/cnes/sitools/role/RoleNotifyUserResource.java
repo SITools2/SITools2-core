@@ -47,7 +47,7 @@ public class RoleNotifyUserResource extends AbstractRoleResource {
   @Put
   public Representation deleteUserFromRoles(Representation representation, Variant variant) {
 
-    SitoolsStore<Role> store = getStore();
+    RoleStoreInterface store = getStore();
     List<Role> rolesFromStore = store.getList();
     // duplicate the original list because the store will modify it when a role is updated
     List<Role> roles = new ArrayList<Role>(rolesFromStore);
@@ -68,7 +68,7 @@ public class RoleNotifyUserResource extends AbstractRoleResource {
    * @param store
    *          the store
    */
-  private void deleteUserFromRole(Role role, String userId, SitoolsStore<Role> store) {
+  private void deleteUserFromRole(Role role, String userId, RoleStoreInterface store) {
     List<Resource> users = role.getUsers();
     if (users != null) {
       for (Resource resource : users) {

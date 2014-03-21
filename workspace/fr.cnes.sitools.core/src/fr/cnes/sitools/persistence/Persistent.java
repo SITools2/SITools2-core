@@ -24,6 +24,8 @@ import java.io.Serializable;
  * Interface for persistent objects
  * 
  * @author jp.boignard (AKKA Technologies)
+ * 
+ * @deprecated use IResource instead
  */
 public interface Persistent extends Serializable {
   /**

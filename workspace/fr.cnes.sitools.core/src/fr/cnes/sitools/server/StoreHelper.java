@@ -82,7 +82,9 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.portal.PortalStore;
+import fr.cnes.sitools.portal.PortalStoreInterface;
 import fr.cnes.sitools.portal.PortalStoreXmlImpl;
+import fr.cnes.sitools.portal.PortalStoreXmlMap;
 import fr.cnes.sitools.project.ProjectStoreXML;
 import fr.cnes.sitools.project.graph.GraphStoreXML;
 import fr.cnes.sitools.project.graph.model.Graph;
@@ -91,6 +93,8 @@ import fr.cnes.sitools.project.modules.ProjectModuleStoreXML;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.registry.AppRegistryStoreXML;
 import fr.cnes.sitools.registry.model.AppRegistry;
+import fr.cnes.sitools.role.RoleStoreInterface;
+import fr.cnes.sitools.role.RoleStoreMapXML;
 import fr.cnes.sitools.role.RoleStoreXML;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
@@ -103,7 +107,9 @@ import fr.cnes.sitools.service.storage.DataStorageStore;
 import fr.cnes.sitools.service.storage.DataStorageStoreXmlImpl;
 import fr.cnes.sitools.tasks.TaskStoreXML;
 import fr.cnes.sitools.tasks.model.TaskModel;
+import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
 import fr.cnes.sitools.units.dimension.DimensionStoreXML;
+import fr.cnes.sitools.units.dimension.DimensionStoreXMLMap;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageStore;
 import fr.cnes.sitools.userstorage.UserStorageStoreXML;
@@ -149,9 +155,16 @@ public final class StoreHelper {
     JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity, context);
     stores.put(Consts.APP_STORE_USERSANDGROUPS, storeUandG);
 
-    SitoolsStore<Role> storeRole = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)), context);
+    RoleStoreInterface storeRole = new RoleStoreMapXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)
+        + "/map"), context);
     stores.put(Consts.APP_STORE_ROLE, storeRole);
-
+   
+    // Migrating Roles
+    SitoolsStore<Role> storeRoleOLD = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)), context);
+    if (!storeRoleOLD.getList().isEmpty()) {
+      storeRole.saveList(storeRoleOLD.getList());
+    }
+    
     SitoolsStore<AppRegistry> storeApp = new AppRegistryStoreXML(new File(
         settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_REGISTRY, storeApp);
@@ -212,10 +225,17 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_VIEWS, storeDsView);
 
-    PortalStore storePortal = new PortalStoreXmlImpl(new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR)),
-        context);
+    PortalStoreInterface storePortal = new PortalStoreXmlMap(new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR)
+        + "/map"), context);
     stores.put(Consts.APP_STORE_PORTAL, storePortal);
 
+    // Migrating Portal
+    PortalStore storePortalOLD = new PortalStoreXmlImpl(new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR)),
+        context);
+    if (!storePortalOLD.getList().isEmpty()) {
+      storePortal.saveList(storePortalOLD.getList());
+    }
+    
     SitoolsStore<FormComponent> storefc = new FormComponentsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_FORMCOMPONENT, storefc);
@@ -257,11 +277,18 @@ public final class StoreHelper {
     DataStorageStore storeDataStorage = new DataStorageStoreXmlImpl(new File(
         settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASTORAGE, storeDataStorage);
-
-    SitoolsStore<SitoolsDimension> storeDimensions = new DimensionStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)), context);
+  
+    DimensionStoreInterface storeDimensions = new DimensionStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)+"/map"), context);
     stores.put(Consts.APP_STORE_DIMENSION, storeDimensions);
 
+    // Migrating Dimension
+    SitoolsStore<SitoolsDimension> storeDimensionsOLD = new DimensionStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)), context);
+    if (!storeDimensionsOLD.getList().isEmpty()) {
+      storeDimensions.saveList(storeDimensionsOLD.getList());
+    }
+    
     SitoolsStore<TaskModel> storeTaskModel = new TaskStoreXML(
         new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_TASK, storeTaskModel);
@@ -370,13 +397,13 @@ public final class StoreHelper {
           }
         }
         catch (Exception e) {
-          try {
-            storeImpl.close();
+//          try {
+//            storeImpl.close();
             throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e);
-          }
-          catch (IOException e1) {
-            throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e1);
-          }
+//          }
+//          catch (IOException e1) {
+//            throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e1);
+//          }
         }
       }
       else if (store instanceof PersistenceDao) {

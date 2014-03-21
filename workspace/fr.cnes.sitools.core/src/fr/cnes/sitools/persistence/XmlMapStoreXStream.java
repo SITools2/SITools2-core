@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -21,17 +21,18 @@ package fr.cnes.sitools.persistence;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.engine.Engine;
 
+import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.persistence.FilePersistenceStrategy;
-import com.thoughtworks.xstream.persistence.XmlArrayList;
+import com.thoughtworks.xstream.persistence.XmlMap;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.XStreamFactory;
@@ -45,15 +46,20 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
  * @param <E>
  *          The elements returned for pagination
  * @author AKKA
- * @deprecated @see Xml<List or Map>StoreXStream
  */
-public abstract class Paginable<E extends IResource> {
+public abstract class XmlMapStoreXStream<E extends IResource> {
 
   /** The restlet {@link Context} */
   protected Context context;
 
+  /** Store structure is a Map<String, IPersistent> */
+  private Map<String, E> map;
+
   /** List associated */
   private List<E> list;
+  
+  /** The xstream */
+  private XStream xstream;
 
   /** Logger */
   private Logger log;
@@ -67,7 +73,7 @@ public abstract class Paginable<E extends IResource> {
    * @param context
    *          TODO
    */
-  public Paginable(Context context) {
+  public XmlMapStoreXStream(Context context) {
     super();
     this.context = context;
   }
@@ -80,16 +86,22 @@ public abstract class Paginable<E extends IResource> {
    * @param context
    *          TODO
    */
-  public Paginable(File location, Context context) {
+  public XmlMapStoreXStream(File location, Context context) {
     super();
-    log = Engine.getLogger(this.getClass().getName());
+    log = Logger.getLogger(this.getClass().getName());
     this.context = context;
     init(location);
   }
 
   /**
-   * Initialization with location method to override
-   * 
+   * Initialization with location method to override in order to define class aliases <br/>
+   * <pre>
+   * {@code
+   *    Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
+   *    aliases.put("dimension", SitoolsDimension.class);
+   *    this.init(location, aliases);
+   * }
+   * </pre>
    * @param location
    *          the file location
    */
@@ -139,17 +151,32 @@ public abstract class Paginable<E extends IResource> {
     log.info("Store location " + location.getAbsolutePath());
     SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
     boolean strict = !settings.isStartWithMigration();
-    XStream xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, context, strict);
+    xstream = XStreamFactory.getInstance().getXStream(MediaType.APPLICATION_XML, context, strict);
 
     xstream.autodetectAnnotations(true);
     for (String alias : aliases.keySet()) {
       xstream.alias(alias, aliases.get(alias));
     }
-    FilePersistenceStrategy strategy = new FilePersistenceStrategy(location, xstream);
-    List<E> xstreamList = new XmlArrayList(strategy);
-    list = Collections.synchronizedList(xstreamList);
 
+    // creates the xml data storage engine - as a XmlMap, backed by a
+    // FilePersistenceStrategy
+    XmlMap dataStoreXStream = new XmlMap(new FilePersistenceStrategy(location, xstream));
+    map = Collections.synchronizedMap(dataStoreXStream);    
+  
+//  FilePersistenceStrategy strategy = new FilePersistenceStrategy(location, xstream);
+//  List<E> xstreamList = new XmlArrayList(strategy);
+//  list = Collections.synchronizedList(xstreamList);
   }
+  
+  
+  public final void init(List<E> coll){
+    list = Collections.synchronizedList(coll);
+    map.clear();
+    for (Iterator<E> iterator = list.iterator(); iterator.hasNext();) {
+      E e = (E) iterator.next();
+      map.put(e.getId(), e);
+    }
+  }  
 
   /**
    * Return the list
@@ -157,11 +184,7 @@ public abstract class Paginable<E extends IResource> {
    * @return the list
    */
   public final List<E> getList() {
-    // List<E> result = new ArrayList<E>();
-    // if ((list != null) || (list.size() > 0)) {
-    // result.addAll(list);
-    // }
-    List<E> result = Collections.unmodifiableList(list);
+    List<E> result = Collections.unmodifiableList(Lists.newArrayList(map.values()));
 
     sort(result, null);
     return result;
@@ -184,35 +207,12 @@ public abstract class Paginable<E extends IResource> {
    *          the list to set
    */
   public final void setList(List<E> list) {
-    this.list = list;
+    init(list); // this.list = list;
   }
 
-  /**
-   * Gets the list value
-   * 
-   * @return the list
-   */
-  public final List<E> getRawList() {
-    return list;
-  }
-
-  /**
-   * get the list with XQuery
-   * 
-   * @param xquery
-   *          the XQuery
-   * @return the list
-   */
-  public final List<E> getListByXQuery(String xquery) {
-    log.warning("getListByXQuery DEFAULT IMPLEMENTATION : getList");
-    return getList();
-  }
-
-  /**
-   * Close the Store ...
-   */
-  public final void close() {
-    // TODO
+  
+  public Map<String, E> getMap() {
+    return map;
   }
 
   /**
@@ -232,5 +232,5 @@ public abstract class Paginable<E extends IResource> {
   public final Logger getLog() {
     return log;
   }
-
+  
 }

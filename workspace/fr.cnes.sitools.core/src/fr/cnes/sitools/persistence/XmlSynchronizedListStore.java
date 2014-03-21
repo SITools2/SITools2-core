@@ -1,5 +1,5 @@
      /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.common.store;
+package fr.cnes.sitools.persistence;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -31,18 +31,17 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
-import fr.cnes.sitools.persistence.Paginable;
+import fr.cnes.sitools.common.store.SitoolsStore;
 
 /**
  * Base class for XML stores
  * 
  * @param <T>
  *          object class to be stored
- * @author m.marseille (AKKA technologies)
+ * @author jp.boignard (AKKA technologies)
  * 
- * @deprecated use XmlSynchronized<List or Map>Store instead
  */
-public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends Paginable<T> implements SitoolsStore<T> {
+public abstract class XmlSynchronizedListStore<T extends IResource> extends XmlListStoreXStream<T> implements SitoolsStore<T> {
 
   /**
    * Object instance
@@ -57,7 +56,7 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
    * @param context
    *          TODO
    */
-  public SitoolsSynchronizedStoreXML(Class<T> cl, Context context) {
+  public XmlSynchronizedListStore(Class<T> cl, Context context) {
     super(context);
     this.persistentClass = cl;
   }
@@ -72,7 +71,7 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
    * @param context
    *          TODO
    */
-  public SitoolsSynchronizedStoreXML(Class<T> cl, File location, Context context) {
+  public XmlSynchronizedListStore(Class<T> cl, File location, Context context) {
     super(location, context);
     this.persistentClass = cl;
   }

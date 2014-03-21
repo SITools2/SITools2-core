@@ -1,5 +1,5 @@
     /*******************************************************************************
- * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
  *
@@ -27,19 +27,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.persistence.XmlListStore;
+import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 
 /**
  * Storage of dimensions
  * 
- * For migrating old SitoolsStoreXML<SitoolsDimension> store
- * 
- * @author m.marseille (AKKA technologies)
- * 
- * @deprecated
+ * @author jp.boignard (AKKA technologies)
  */
-public final class DimensionStoreXML extends XmlListStore<SitoolsDimension> {
+public final class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> implements DimensionStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "dimensions";
@@ -50,7 +46,7 @@ public final class DimensionStoreXML extends XmlListStore<SitoolsDimension> {
    * @param context
    *          the Restlet Context
    */
-  public DimensionStoreXML(Context context) {
+  public DimensionStoreXMLMap(Context context) {
     super(SitoolsDimension.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
@@ -64,14 +60,14 @@ public final class DimensionStoreXML extends XmlListStore<SitoolsDimension> {
    * @param context
    *          the Restlet Context
    */
-  public DimensionStoreXML(File location, Context context) {
+  public DimensionStoreXMLMap(File location, Context context) {
     super(SitoolsDimension.class, location, context);
   }
 
   @Override
   public SitoolsDimension update(SitoolsDimension resource) {
     SitoolsDimension result = null;
-    for (Iterator<SitoolsDimension> it = getRawList().iterator(); it.hasNext();) {
+    for (Iterator<SitoolsDimension> it = getList().iterator(); it.hasNext();) {
       SitoolsDimension current = it.next();
       if (current.getId().equals(resource.getId())) {
         getLog().info("Updating Dimension");
@@ -87,7 +83,7 @@ public final class DimensionStoreXML extends XmlListStore<SitoolsDimension> {
       }
     }
     if (result != null) {
-      getRawList().add(result);
+      getMap().put(result.getId(), result);
     }
     return result;
   }
@@ -95,7 +91,7 @@ public final class DimensionStoreXML extends XmlListStore<SitoolsDimension> {
   @Override
   public List<SitoolsDimension> retrieveByParent(String id) {
     List<SitoolsDimension> result = new ArrayList<SitoolsDimension>();
-    for (Iterator<SitoolsDimension> it = getRawList().iterator(); it.hasNext();) {
+    for (Iterator<SitoolsDimension> it = getList().iterator(); it.hasNext();) {
       SitoolsDimension current = it.next();
       if (current.getParent().equals(id)) {
         getLog().info("Parent found");
