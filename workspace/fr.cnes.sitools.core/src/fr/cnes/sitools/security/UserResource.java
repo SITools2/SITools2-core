@@ -144,6 +144,9 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
   @Put
   public Representation update(Representation representation, Variant variant) {
     try {
+      
+      String origin = getRequest().getResourceRef().getQueryAsForm().getFirstValue("origin", "admin");
+            
       User input = null;
       String password = "";
 
@@ -207,7 +210,7 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
 
       // Si le user password a été changé, on envoi le nouveau à l'user
       if (!password.isEmpty()) {
-        sendMailToUser(input, password);
+        sendMailToUser(input, password, origin);
       }
 
       // Notify observers
@@ -286,8 +289,9 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
    *          the user to send mail
    * @param pass
    *          the user password to send
+   * @param origin 
    */
-  private void sendMailToUser(User user, String pass) {
+  private void sendMailToUser(User user, String pass, String origin) {
 
     SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
 
@@ -304,9 +308,17 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     // use a freemarker template for email body with Mail object
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
         + "mail.password.reset.ftl";
+    
+    if (origin.equals("user")) {
+      templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+          + "mail.userpassword.change.ftl";
+    }
+    
     Map<String, Object> root = new HashMap<String, Object>();
     root.put("mail", mailToUser);
+    root.put("origin", origin);
     root.put("user", user);
+    root.put("pass", pass);
     root.put(
         "sitoolsUrl",
         getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
