@@ -11,19 +11,21 @@ ${description!}
 </p>
 
 <p>
-Hello ${user.firstName} ${user.lastName},
+Dear ${user.firstName} ${user.lastName},
 </p>
 
 <p>
-The password of your account on ${sitoolsUrl} has been changed successfully.
+The password of your account on <a href="${sitoolsUrl}">SITools2</a> has been changed successfully.
 </p>
 
 <p>
 If you did not initiate this change, we invite you to reset your password by selecting the "forgotten password" option in the connection component.
 </p>
 
-<p>Best regards</p>
-<p>The SITools2 team</p>
+
+<p>
+Best regards,<br/>
+The SITools2 team</p>
 
 </body>
 </html>
