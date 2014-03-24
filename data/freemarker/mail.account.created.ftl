@@ -5,20 +5,24 @@
 
 <body style="font-family: sans-serif;">
 
-<h1>Sitools 2 information</h1>
-<p style="font-size: 1.2em;font-weight: bold;margin: 1em 0px;">
-${description!}
+
+<p>
+Dear ${user.firstName} ${user.lastName},
 </p>
 
 <p>
-Your new account is now available
-<ul>
-<li>Login : ${user.identifier}</li>
-<#if pass??>
-	<li>Password : ${pass!}</li>
-</#if>
-</ul>
+We are pleased to inform you that your user account has been created on SITools2. You can can access data as defined in the <a href="${sitoolsUrl}">SITools2 url</a>.
 </p>
+
+<p>
+Your login is ${user.identifier}<br/>
+Your password is initialized with ${pass}, please update it as soon as possible with "Edit Profile" Menu.
+</p>
+
+
+<p>
+Best regards,<br/>
+The SITools2 team</p>
 
 </body>
 </html>
