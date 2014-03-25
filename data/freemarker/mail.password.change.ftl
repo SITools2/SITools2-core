@@ -14,7 +14,7 @@ Dear ${user.firstName} ${user.lastName},
 </p>
 
 <p>
-We are pleased to inform you that your user account has been created on SITools2. You can can access data as defined in the <a href="${sitoolsUrl}">SITools2 url</a>.
+We are pleased to inform you that your user account has been modified on SITools2. You can can access data as defined in the <a href="${sitoolsUrl}">SITools2 url</a>.
 </p>
 
 <p>
