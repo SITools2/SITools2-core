@@ -22,15 +22,15 @@ import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.server.Consts;
 
 /**
- * Gets the ResetPassword index page
+ * Gets the Unlock account index page
  * 
  * 
  * @author m.gond
  */
-public class ResetPasswordIndex extends SitoolsResource {
+public class UnlockAccountIndex extends SitoolsResource {
 
   /**
-   * The clientAdminApplication
+   * The PublicApplication
    */
   private PublicApplication application;
   /**
@@ -40,8 +40,8 @@ public class ResetPasswordIndex extends SitoolsResource {
 
   @Override
   public void sitoolsDescribe() {
-    setName("ResetPasswordIndex");
-    setDescription("Resource to return the index.html page of the resetPassword interface");
+    setName("UnlockAccountIndex");
+    setDescription("Resource to return the index.html page of the unlockAccount interface");
   }
 
   @Override
@@ -67,19 +67,19 @@ public class ResetPasswordIndex extends SitoolsResource {
   @Override
   public Representation get() {
 
-    getApplication().getLogger().fine("get resetPasswordIndex");
+    getApplication().getLogger().fine("get UnlockAccountIndex");
 
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("appUrl", application.getSettings().getString(Consts.APP_URL));
     params.put("challengeToken", token);
-    params.put("resourceUrl", "/resetPassword");
+    params.put("resourceUrl", "/unlockAccount");
 
     Reference ref = LocalReference.createFileReference(application.getResetPasswordIndexUrl());
 
-    Representation resetPasswordFtl = new ClientResource(ref).get();
+    Representation unlockAccount = new ClientResource(ref).get();
 
     // Wraps the bean with a FreeMarker representation
-    return new TemplateRepresentation(resetPasswordFtl, params, MediaType.TEXT_HTML);
+    return new TemplateRepresentation(unlockAccount, params, MediaType.TEXT_HTML);
   }
 
   /**
@@ -89,7 +89,7 @@ public class ResetPasswordIndex extends SitoolsResource {
    *          the WADL documentation info
    */
   public void describeGet(MethodInfo info) {
-    info.setDocumentation("Method to get the resetPassword page.");
+    info.setDocumentation("Method to get the unlockaccount page.");
     this.addStandardGetRequestInfo(info);
     ResponseInfo responseInfo = new ResponseInfo();
     RepresentationInfo representationInfo = new RepresentationInfo();

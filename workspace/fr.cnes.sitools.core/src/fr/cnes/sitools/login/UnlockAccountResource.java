@@ -28,9 +28,10 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.SitoolsResource;
+import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -41,12 +42,46 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author AKKA Technologies
  * 
  */
-public class UnBlacklistResource extends SitoolsResource {
+public class UnlockAccountResource extends ResetPasswordResource {
+
+  /**
+   * The userLogin get from the challengeToken
+   */
+  private String userLogin;
+  /** The challengeToken */
+  private ChallengeToken challengeToken;
+  /** The token */
+  private String token;
 
   @Override
   public void sitoolsDescribe() {
     setName("UnBlacklistResource");
     setDescription("Resource to unblacklist a user and reset and generate a new user password");
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.common.SitoolsResource#doInit()
+   */
+  @Override
+  protected void doInit() {
+    super.doInit();
+    PublicApplication application = (PublicApplication) getApplication();
+    challengeToken = application.getChallengeToken();
+
+    token = getRequest().getResourceRef().getQueryAsForm().getFirstValue("cdChallengeMail", null);
+    if (token == null) {
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "cdChallengeMail parameter mandatory");
+    }
+
+    userLogin = challengeToken.getTokenValue(token);
+    if (userLogin == null) {
+      throw new ResourceException(
+          Status.CLIENT_ERROR_GONE,
+          "You asked for changing your password, but the request is no longer available. Please ask again to change your password on SITools2");
+    }
+
   }
 
   /**
@@ -67,18 +102,24 @@ public class UnBlacklistResource extends SitoolsResource {
     SitoolsSettings settings = getSettings();
 
     // reset new password
-    User user = getObject(representation);
     Response response = null;
     String url = getSitoolsSetting(Consts.APP_SECURITY_URL) + "/users";
-    User userDb = RIAPUtils.getObject(user.getIdentifier(), url, getContext());
+    User userDb = RIAPUtils.getObject(userLogin, url, getContext());
 
     if (userDb != null) {
-      if (userDb.getEmail().equals(user.getEmail())) {
+      if (userLogin.equals(userDb.getIdentifier())) {
+        User userPassword = getObject(representation);
         // Unblacklist user
         String unblacklistUrl = settings.getString(Consts.APP_USER_BLACKLIST_URL) + "/" + userDb.getIdentifier();
         boolean result = RIAPUtils.deleteObject(unblacklistUrl, getContext());
         if (result) {
-          response = new Response(true, "User account unlocked");
+          userDb.setSecret(userPassword.getSecret());
+          if (updateUser(userDb, url)) {
+            response = new Response(true, "User account unlocked");
+          }
+          else {
+            response = new Response(false, "Cannot unlock user account");
+          }
         }
         else {
           response = new Response(false, "Cannot unlock user account");

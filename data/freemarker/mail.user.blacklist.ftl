@@ -15,11 +15,11 @@ Hello,
 <br/>
 <br/>
 
-You have asked to reinitialize your password for your account <a href="${sitoolsUrl}">SITools2</a>.<br/>
-In order to modify you password, please click on the following link <a href="${passwordLostUrl}"/>Change your password</a><br/>
+You have asked to unlock your account and to reinitialize your password for your account <a href="${sitoolsUrl}">SITools2</a>.<br/>
+In order to do so, please click on the following link <a href="${unlockAccountUrl}"/>Unlock your account and change your password</a><br/>
 <br/>
 If the link does not work, just copy it into your favorite browser<br/>
-<i><small>${passwordLostUrl}</small></i>
+<i><small>${unlockAccountUrl}</small></i>
 <br/>
 <br/>
 Best regards

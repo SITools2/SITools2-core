@@ -153,7 +153,7 @@ sitools.userProfile.lostPassword = Ext.extend(Ext.Window, {
                     var notify = new Ext.ux.Notification({
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
-                        html : i18n.get('label.passwordSent') + json.message,
+                        html : i18n.get('label.emailSent') + json.message,
                         autoDestroy : true,
                         hideDelay : 1300
                     });
@@ -161,7 +161,7 @@ sitools.userProfile.lostPassword = Ext.extend(Ext.Window, {
 //                    if (this.handler !== null && this.handler !== undefined) {
 //                        this.handler.call(this.scope || this);
 //                    }
-//                    this.openLoginWindow();
+                    this.openLoginWindow();
                 } else {
                     Ext.getCmp('winPassword').body.unmask();
                     Ext.getCmp('sbWinPassword').setStatus({

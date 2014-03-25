@@ -56,7 +56,6 @@ import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.mail.MailAdministration;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.UsersAndGroupsAdministration;
-import fr.cnes.sitools.security.captcha.CaptchaContainer;
 import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.security.challenge.ChallengeTokenContainer;
 import fr.cnes.sitools.security.model.User;

@@ -149,7 +149,7 @@ public class ResetPasswordResource extends SitoolsResource {
    *          the url to use
    * @return boolean
    */
-  private boolean updateUser(User user, String url) {
+  protected boolean updateUser(User user, String url) {
     return (RIAPUtils.updateObject(user, url + "/" + user.getIdentifier() + "?origin=user", getContext())) != null;
   }
 

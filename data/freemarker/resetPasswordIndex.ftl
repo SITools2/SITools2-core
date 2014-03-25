@@ -106,14 +106,15 @@
 					Ext.QuickTips.init();
 					
 					var resetPasswordPanel = new sitools.userProfile.resetPasswordPanel({
-						challengeToken : "${challengeToken}"
+						challengeToken : "${challengeToken}",
+						resourceUrl : "${resourceUrl}"
 					});
 					
 					var win = new Ext.Window({
+						title : i18n.get("title.changePassword"),
 						items : [resetPasswordPanel], 
 						modal : true, 
 						width : 400, 
-						height : 405, 
 						resizable : false
 					});
 					

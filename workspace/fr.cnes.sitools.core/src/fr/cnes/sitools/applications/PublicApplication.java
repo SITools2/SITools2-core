@@ -35,13 +35,15 @@ import org.restlet.routing.Template;
 import fr.cnes.sitools.client.ProxyRestlet;
 import fr.cnes.sitools.client.ResetPasswordIndex;
 import fr.cnes.sitools.client.SitoolsVersionResource;
+import fr.cnes.sitools.client.UnlockAccountIndex;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.login.LoginDetailsResource;
 import fr.cnes.sitools.login.LostPasswordResource;
 import fr.cnes.sitools.login.ResetPasswordResource;
-import fr.cnes.sitools.login.UnBlacklistResource;
+import fr.cnes.sitools.login.UnblacklistUserResource;
+import fr.cnes.sitools.login.UnlockAccountResource;
 import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.security.EditUserProfileResource;
 import fr.cnes.sitools.security.FindRoleResource;
@@ -58,7 +60,10 @@ import fr.cnes.sitools.server.Consts;
  */
 public final class PublicApplication extends StaticWebApplication {
 
+  /** The challengeToken. */
   private ChallengeToken challengeToken;
+
+  /** The resetPassword index page url. */
   private String resetPasswordIndexUrl;
 
   /**
@@ -155,13 +160,18 @@ public final class PublicApplication extends StaticWebApplication {
     // Attach the LostPasswordResource to ask for another password
     router.attach("/lostPassword", LostPasswordResource.class);
 
-    // Attach the resetPasswordResource to reset an user password
-    CaptchaFilter captchaFilter = new CaptchaFilter(getContext());
-    captchaFilter.setNext(ResetPasswordResource.class);
-    router.attach("/resetPassword", captchaFilter);
+    // Attach the LostPasswordResource to ask for another password
+    router.attach("/unblacklist", UnblacklistUserResource.class);
 
     // Attach the resetPasswordResource to reset an user password
-    router.attach("/unblacklist", UnBlacklistResource.class);
+    CaptchaFilter captchaFilterResetPwd = new CaptchaFilter(getContext());
+    captchaFilterResetPwd.setNext(ResetPasswordResource.class);
+    router.attach("/resetPassword", captchaFilterResetPwd);
+
+    // Attach the resetPasswordResource to reset an user password
+    CaptchaFilter captchaFilterUnBlacklist = new CaptchaFilter(getContext());
+    captchaFilterUnBlacklist.setNext(UnlockAccountResource.class);
+    router.attach("/unlockAccount", captchaFilterUnBlacklist);
 
     // Attach the EditUserProfileResource to modified an user properties
     router.attach("/editProfile/{user}", EditUserProfileResource.class);
@@ -170,9 +180,14 @@ public final class PublicApplication extends StaticWebApplication {
 
     router.attach("/proxy", new ProxyRestlet(getContext()));
 
+    // Attach index pages to reset password and to unlock account
     router.attach("/resetPassword/index.html", ResetPasswordIndex.class).getTemplate()
         .setMatchingMode(Template.MODE_EQUALS);
-    
+
+    router.attach("/unlockAccount/index.html", UnlockAccountIndex.class).getTemplate()
+        .setMatchingMode(Template.MODE_EQUALS);
+
+    // Captcha resource for unlock account and reset password resource
     router.attach("/captcha", CaptchaResource.class);
 
     return router;

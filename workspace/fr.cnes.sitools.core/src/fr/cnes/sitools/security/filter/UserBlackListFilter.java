@@ -43,7 +43,7 @@ public class UserBlackListFilter extends Filter {
 
   /** The store. */
   private SitoolsStore<UserBlackListModel> store;
-
+  /** The settings */
   private SitoolsSettings settings;
 
   /**

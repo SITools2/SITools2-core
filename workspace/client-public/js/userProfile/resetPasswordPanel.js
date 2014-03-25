@@ -95,17 +95,15 @@ sitools.userProfile.resetPasswordPanel = Ext.extend(Ext.Panel, {
                 id: 'captcha',
                 allowBlank: false,
                 anchor: '100%'
+            }],
+            buttons : [ {
+                text : i18n.get('label.saveEdit'),
+                handler : this.saveEdit,
+                scope : this
             }]
         });
         
         this.items = [this.form];
-        
-        this.buttons = [ {
-            text : i18n.get('label.saveEdit'),
-            handler : this.saveEdit,
-            scope : this
-        }];
-        
         
         sitools.userProfile.resetPasswordPanel.superclass.initComponent.call(this);
         
@@ -137,7 +135,7 @@ sitools.userProfile.resetPasswordPanel = Ext.extend(Ext.Panel, {
         Ext.getCmp('sbWinRegister').showBusy();
 
         Ext.Ajax.request({
-            url : loadUrl.get('APP_URL') + "/resetPassword",
+            url : loadUrl.get('APP_URL') + this.resourceUrl,
             params : {
                 cdChallengeMail : this.challengeToken,
                 "captcha.id" : cook,
@@ -150,15 +148,12 @@ sitools.userProfile.resetPasswordPanel = Ext.extend(Ext.Panel, {
                 var json = Ext.decode(response.responseText);
                 if (json.success) {
                     this.ownerCt.close();
-                    
-                    var notify = new Ext.ux.Notification({
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : json.message,
-                        autoDestroy : true,
-                        hideDelay : 1000
+
+                    Ext.Msg.alert(i18n.get("label.information"), i18n.get("label.passwordChanged.success"), function() {
+                        var link = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/index.html";
+                        window.open(link, "_self");
                     });
-                    notify.show(document);
+                    
                 } else {
                     this.body.unmask();
                      Ext.getCmp('sbWinRegister').setStatus({

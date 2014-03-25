@@ -55,14 +55,14 @@ import fr.cnes.sitools.util.Util;
  * @author AKKA Technologies
  * 
  */
-public class LostPasswordResource extends SitoolsResource {
-  /** The application */
+public class UnblacklistUserResource extends SitoolsResource {
+  /** Application */
   private PublicApplication application;
 
   @Override
   public void sitoolsDescribe() {
-    setName("ResetPasswordResource");
-    setDescription("Resource for reset and generate a new user password");
+    setName("UnblacklistUserResource");
+    setDescription("Resource to send en email to the user if his account is locked");
   }
 
   /*
@@ -87,7 +87,7 @@ public class LostPasswordResource extends SitoolsResource {
    * @return Representation if success
    */
   @Put
-  public Representation resetPass(Representation representation, Variant variant) {
+  public Representation unblacklistUserEmail(Representation representation, Variant variant) {
     if (representation == null) {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "USER_REPRESENTATION_REQUIRED");
     }
@@ -99,7 +99,7 @@ public class LostPasswordResource extends SitoolsResource {
 
       if (userDb != null) {
         if (userDb.getEmail().equals(user.getEmail())) {
-          String resetPasswordUrl = getResetPasswordUrl(user);
+          String resetPasswordUrl = getUnlockAccountUrl(user);
           sendMailToUser(user, resetPasswordUrl);
           response = new Response(true, "Mail sent to : " + user.getEmail() + " to initialize new password");
         }
@@ -124,15 +124,15 @@ public class LostPasswordResource extends SitoolsResource {
   }
 
   /**
-   * Gets the url to call to reset the password.
+   * Gets the url for the UnlockAccount
    * 
    * @param user
-   *          the user
-   * @return the reset password url
+   *          the User
+   * @return the url to call to unlock the account
    */
-  private String getResetPasswordUrl(User user) {
+  private String getUnlockAccountUrl(User user) {
     String token = application.getChallengeToken().getToken(user.getIdentifier());
-    return getSitoolsSetting(Consts.APP_CLIENT_PUBLIC_URL) + "/resetPassword/index.html?cdChallengeMail=" + token;
+    return getSitoolsSetting(Consts.APP_CLIENT_PUBLIC_URL) + "/unlockAccount/index.html?cdChallengeMail=" + token;
   }
 
   @Override
@@ -190,19 +190,19 @@ public class LostPasswordResource extends SitoolsResource {
     mailToUser.setToList(Arrays.asList(toList));
 
     // Object
-    mailToUser.setSubject("SITOOLS - Password lost");
+    mailToUser.setSubject("SITOOLS - Account locked");
 
     // Body
     mailToUser.setBody(user.getIdentifier() + ", click on <a href='" + url + "'>" + url
-        + "</a> to initialize a new password");
+        + "</a> to unlock your account and initialize a new password");
 
     // use a freemarker template for email body with Mail object
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
-        + "mail.password.lost.ftl";
+        + "mail.user.blacklist.ftl";
     Map<String, Object> root = new HashMap<String, Object>();
     root.put("mail", mailToUser);
     root.put("user", user);
-    root.put("passwordLostUrl", getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL) + url);
+    root.put("unlockAccountUrl", getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL) + url);
     root.put(
         "sitoolsUrl",
         getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
