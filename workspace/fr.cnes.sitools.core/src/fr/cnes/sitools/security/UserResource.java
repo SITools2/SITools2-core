@@ -307,7 +307,7 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
 
     // use a freemarker template for email body with Mail object
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
-        + "mail.password.reset.ftl";
+        + "mail.password.change.ftl";
     
     if (origin.equals("user")) {
       templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)

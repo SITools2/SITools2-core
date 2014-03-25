@@ -30,17 +30,24 @@ import org.restlet.resource.Directory;
 import org.restlet.routing.Extractor;
 import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
+import org.restlet.routing.Template;
 
 import fr.cnes.sitools.client.ProxyRestlet;
+import fr.cnes.sitools.client.ResetPasswordIndex;
 import fr.cnes.sitools.client.SitoolsVersionResource;
 import fr.cnes.sitools.common.application.StaticWebApplication;
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.login.LoginDetailsResource;
+import fr.cnes.sitools.login.LostPasswordResource;
 import fr.cnes.sitools.login.ResetPasswordResource;
 import fr.cnes.sitools.login.UnBlacklistResource;
 import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.security.EditUserProfileResource;
 import fr.cnes.sitools.security.FindRoleResource;
+import fr.cnes.sitools.security.captcha.CaptchaFilter;
+import fr.cnes.sitools.security.captcha.CaptchaResource;
+import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.server.Consts;
 
 /**
@@ -51,6 +58,9 @@ import fr.cnes.sitools.server.Consts;
  */
 public final class PublicApplication extends StaticWebApplication {
 
+  private ChallengeToken challengeToken;
+  private String resetPasswordIndexUrl;
+
   /**
    * Constructor.
    * 
@@ -60,9 +70,27 @@ public final class PublicApplication extends StaticWebApplication {
    *          location of Directory to be exposed
    * @param baseUrl
    *          public URL for listing files of Directory
+   * @throws SitoolsException
+   *           if the challengeToken is null
    */
-  public PublicApplication(Context context, String appPath, String baseUrl) {
+  public PublicApplication(Context context, String appPath, String baseUrl) throws SitoolsException {
     super(context, appPath, baseUrl);
+
+    challengeToken = (ChallengeToken) context.getAttributes().get("Security.challenge.ChallengeTokenContainer");
+    if (challengeToken == null) {
+      throw new SitoolsException("ChallengeToken is null");
+    }
+
+    // Application settings
+
+    resetPasswordIndexUrl = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
+        + getSettings().getString("Starter.resetPassword.resetPasswordIndex");
+
+    File resetPasswordIndexFile = new File(resetPasswordIndexUrl);
+    if (resetPasswordIndexFile == null || !resetPasswordIndexFile.exists()) {
+      getLogger().warning("Template file for resetPassword/index.html not found :" + resetPasswordIndexUrl);
+    }
+
   }
 
   @Override
@@ -124,8 +152,13 @@ public final class PublicApplication extends StaticWebApplication {
     // Attach the version resource to get the version of Sitools
     router.attach("/version", SitoolsVersionResource.class);
 
+    // Attach the LostPasswordResource to ask for another password
+    router.attach("/lostPassword", LostPasswordResource.class);
+
     // Attach the resetPasswordResource to reset an user password
-    router.attach("/resetPassword", ResetPasswordResource.class);
+    CaptchaFilter captchaFilter = new CaptchaFilter(getContext());
+    captchaFilter.setNext(ResetPasswordResource.class);
+    router.attach("/resetPassword", captchaFilter);
 
     // Attach the resetPasswordResource to reset an user password
     router.attach("/unblacklist", UnBlacklistResource.class);
@@ -137,6 +170,11 @@ public final class PublicApplication extends StaticWebApplication {
 
     router.attach("/proxy", new ProxyRestlet(getContext()));
 
+    router.attach("/resetPassword/index.html", ResetPasswordIndex.class).getTemplate()
+        .setMatchingMode(Template.MODE_EQUALS);
+    
+    router.attach("/captcha", CaptchaResource.class);
+
     return router;
   }
 
@@ -146,4 +184,23 @@ public final class PublicApplication extends StaticWebApplication {
     appInfo.setDocumentation("Web client application for public resources used by other SITools2 client applications.");
     return appInfo;
   }
+
+  /**
+   * Gets the challengeToken value
+   * 
+   * @return the challengeToken
+   */
+  public ChallengeToken getChallengeToken() {
+    return challengeToken;
+  }
+
+  /**
+   * Gets the resetPasswordIndexUrl value
+   * 
+   * @return the resetPasswordIndexUrl
+   */
+  public String getResetPasswordIndexUrl() {
+    return resetPasswordIndexUrl;
+  }
+
 }

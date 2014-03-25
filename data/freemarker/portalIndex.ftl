@@ -76,7 +76,7 @@
 	<script type="text/javascript" src="${appUrl}/common/js/userProfile/loginUtils.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/register.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/userProfile/resetPassword.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/userProfile/lostPassword.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/editProfile.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/vtype.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/mif.js"></script>

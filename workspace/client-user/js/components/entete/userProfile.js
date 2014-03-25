@@ -145,7 +145,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			        closable : true,
                     url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
-                    reset : loadUrl.get('APP_URL') + '/resetPassword',
+                    reset : loadUrl.get('APP_URL') + '/lostPassword',
                     unblacklist : loadUrl.get('APP_URL') + '/unblacklist'                    
                 });			    
 			}
@@ -159,7 +159,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 				var register = new sitools.userProfile.Register({
 	                closable : true,
 	                url : loadUrl.get('APP_URL')+ "/inscriptions/user",
-                    reset : loadUrl.get('APP_URL') + '/resetPassword',
+                    reset : loadUrl.get('APP_URL') + '/lostPassword',
                     unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
 	                login : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login'
 	            });

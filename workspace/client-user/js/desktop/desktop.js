@@ -379,7 +379,7 @@ sitools.user.desktop.App = function () {
             closable : true,
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
             register : loadUrl.get('APP_URL') + '/inscriptions/user',
-            reset : loadUrl.get('APP_URL') + '/resetPassword',
+            reset : loadUrl.get('APP_URL') + '/lostPassword',
             unblacklist : loadUrl.get('APP_URL') + '/unblacklist'
         });
 	}

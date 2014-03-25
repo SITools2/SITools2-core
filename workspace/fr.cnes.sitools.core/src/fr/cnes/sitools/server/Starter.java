@@ -138,6 +138,8 @@ import fr.cnes.sitools.security.authentication.SitoolsRealm;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
 import fr.cnes.sitools.security.authorization.AuthorizationStore;
 import fr.cnes.sitools.security.captcha.CaptchaContainer;
+import fr.cnes.sitools.security.challenge.ChallengeToken;
+import fr.cnes.sitools.security.challenge.ChallengeTokenContainer;
 import fr.cnes.sitools.security.ssl.SslFactory;
 import fr.cnes.sitools.security.userblacklist.UserBlackListApplication;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
@@ -623,6 +625,15 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
 
+    long cacheTime = settings.getLong("Security.challenge.cacheTime");
+    long cacheSize = settings.getLong("Security.challenge.cacheSize");
+    
+    
+    CaptchaContainer captchaContainer = new CaptchaContainer();
+    appContext.getAttributes().put("Security.Captcha.CaptchaContainer", captchaContainer);
+    ChallengeToken challengeTokenContainer = new ChallengeTokenContainer(cacheTime, cacheSize);
+    appContext.getAttributes().put("Security.challenge.ChallengeTokenContainer", challengeTokenContainer);
+
     // Application
     PublicApplication publicApp = new PublicApplication(appContext, publicAppPath, baseRef + appReference);
 
@@ -721,7 +732,7 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storeIns);
 
-    CaptchaContainer captchaContainer = new CaptchaContainer();
+    captchaContainer = new CaptchaContainer();
     appContext.getAttributes().put("Security.Captcha.CaptchaContainer", captchaContainer);
 
     // Application publique pour pouvoir s'enregistrer
