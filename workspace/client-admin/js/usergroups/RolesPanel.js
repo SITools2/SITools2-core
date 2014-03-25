@@ -182,10 +182,10 @@ Ext.define('sitools.admin.usergroups.RolesPanel', { extend : 'Ext.Window',
         var recs = this.grid.getSelectionModel().getSelections();
         var newrecs = [];
         Ext.each(recs, function (rec) {
-            newrecs.push(new this.store.recordType({
+            newrecs.push({
                 name : rec.data.name,
                 description : rec.data.description
-            }));
+            });
         });
         this.storeref.add(newrecs);
         this.close();

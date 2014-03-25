@@ -39,7 +39,7 @@ sitools.admin.datasets.abstractDatasetWin = {
 	 * @cfg width
 	 * @inheritdoc
 	 */
-    width : 700,
+    width : 785,
 	/**
 	 * @cfg height
 	 * @inheritdoc
@@ -261,9 +261,8 @@ sitools.admin.datasets.abstractDatasetWin = {
                                     columnAlias : predicat[i].leftAttribute.columnAlias,
                                     specificColumnType : predicat[i].leftAttribute.specificColumnType
                                 };
-                                var RecordType = storeWhereClause.recordType;
 
-                                rec = new RecordType({
+                                storeWhereClause.add({
                                     parentheseFermante : predicat[i].closedParenthesis,
                                     parentheseOuvrante : predicat[i].openParenthesis,
                                     opLogique : predicat[i].logicOperator,
@@ -271,7 +270,6 @@ sitools.admin.datasets.abstractDatasetWin = {
                                     leftAttribute : leftAttribute,
                                     rightAttribute : predicat[i].rightValue.$
                                 });
-                                storeWhereClause.add(rec);
 
                             }
                         }

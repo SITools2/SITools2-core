@@ -320,23 +320,23 @@ Ext.override(Ext.grid.GridPanel, {
 });
 
 //override the spinnerField to use validation when spining
-Ext.override(Ext.ux.Spinner, {
-    spin: function (down, alternate) {
-        var v = parseFloat(this.field.getValue());
-        var incr = (alternate === true) ? this.alternateIncrementValue : this.incrementValue;
-        if (down === true) {
-			v -= incr;
-        }
-        else {
-			v += incr;
-        }
-
-        v = (isNaN(v)) ? this.defaultValue : v;
-        v = this.fixBoundries(v);
-        //use setValue instead of setRawValue to use validator
-        this.field.setValue(v);
-    }
-});
+//Ext.override(Ext.ux.Spinner, {
+//    spin: function (down, alternate) {
+//        var v = parseFloat(this.field.getValue());
+//        var incr = (alternate === true) ? this.alternateIncrementValue : this.incrementValue;
+//        if (down === true) {
+//			v -= incr;
+//        }
+//        else {
+//			v += incr;
+//        }
+//
+//        v = (isNaN(v)) ? this.defaultValue : v;
+//        v = this.fixBoundries(v);
+//        //use setValue instead of setRawValue to use validator
+//        this.field.setValue(v);
+//    }
+//});
 
 /**
  * Add a tooltip on every form field: tooltip could be an object like tooltip : {

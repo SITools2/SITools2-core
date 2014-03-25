@@ -20,14 +20,16 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.portal');
 
-sitools.component.portal.rssFeedPortalCrud = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define('sitools.component.portal.rssFeedPortalCrud', {
+    extend : 'Ext.grid.Panel',
+    alias : 'widget.s-rssFeedPortal',
+    
     border : false,
     height : 300,
     id : ID.BOX.RSSPORTAL,
     pageSize : 10,
     label : i18n.get("label.selectPortal"),
-    forceFit : "true",
+    forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL');
@@ -103,42 +105,37 @@ sitools.component.portal.rssFeedPortalCrud = Ext.extend(Ext.grid.GridPanel, {
         // });
 
         // colonne avec checkbox pour choisir quelle colonne est la clé primaire
-        var visible = new Ext.grid.CheckColumn({
+        var visible = {
+            xtype : 'checkcolumn',    
             header : i18n.get('headers.visible'),
             dataIndex : 'visible',
             width : 80
-        });
+        };
 
-        this.cm = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            },
-            columns : [ {
-                header : i18n.get('label.titleRss'),
-                dataIndex : 'title',
-                width : 150
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 150
-            }, {
-                header : i18n.get('label.url'),
-                dataIndex : 'externalUrl',
-                width : 150
-            }, {
-                header : i18n.get('headers.type'),
-                dataIndex : 'feedType',
-                width : 50
-            }, visible, {
-                header : i18n.get('headers.feedSource'),
-                dataIndex : 'feedSource',
-                width : 100
-            } ]
-        });
+        this.columns = [{
+            header : i18n.get('label.titleRss'),
+            dataIndex : 'title',
+            width : 150
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 150
+        }, {
+            header : i18n.get('label.url'),
+            dataIndex : 'externalUrl',
+            width : 150
+        }, {
+            header : i18n.get('headers.type'),
+            dataIndex : 'feedType',
+            width : 50
+        }, visible, {
+            header : i18n.get('headers.feedSource'),
+            dataIndex : 'feedSource',
+            width : 100
+        }];
 
         // définition des plugins nécessaires (colonnes avec checkbox )
-        this.plugins = [ visible ];
+//        this.plugins = [ visible ];
 
         this.tbar = {
             xtype : 'toolbar',
@@ -214,5 +211,3 @@ sitools.component.portal.rssFeedPortalCrud = Ext.extend(Ext.grid.GridPanel, {
     }
 
 });
-
-Ext.reg('s-rssFeedPortal', sitools.component.portal.rssFeedPortalCrud);

@@ -41,7 +41,8 @@ Ext.namespace('sitools.admin.datasets.services');
  * @class sitools.admin.datasets.services.datasetServicesProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.services.datasetServicesProp', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -50,6 +51,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ex
     datasetServiceIHMId : null,
     modelClassName : null,
     currentRecordId : null,
+    
     initComponent : function () {
         this.id = "datasetServicesPropId";
 
@@ -135,12 +137,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', { extend : 'Ex
                         this.loadDependencies(records, function () {
                             this.gridDatasetServices.getSelectionModel().setLocked(false);
                         }, this);
-                                              
                     },
                     scope : this
                 }
             }),
-
             cm : new Ext.grid.ColumnModel({
                 defaults : {
                     sortable : true

@@ -56,7 +56,8 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
 		    triggerAction : 'all',
 		    lazyRender : true,
 		    mode : 'local',
-		    width : 50, 
+		    width : 50,
+		    editable : false,
 		    store : new Ext.data.ArrayStore({
 		        id : 0,
 		        fields : [ 'myId', 'displayText' ],
@@ -108,7 +109,8 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
 		    triggerAction : 'all',
 		    lazyRender : true,
 		    mode : 'local',
-		    width : 50, 
+		    width : 50,
+		    editable : false,
 		    store : new Ext.data.ArrayStore({
 		        id : 1,
 		        fields : [ 'myId', 'displayText' ],

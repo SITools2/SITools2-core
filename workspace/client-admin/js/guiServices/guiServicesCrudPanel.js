@@ -34,50 +34,48 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
     border : false,
     height : 300,
     id : ID.BOX.GUISERVICES,
-    selModel : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel', {
         singleSelect : true
     }),
     pageSize : 10,
     forceFit : true,
 
     initComponent : function () {
-        // url = '/sitools/projectModules'
+        
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_GUI_SERVICES_URL');
+        
         this.store = new sitools.admin.guiServices.guiServicesStore({
             url : this.url
         });
         
-        var defaultGuiService = new Ext.grid.CheckColumn({
+        var defaultGuiService = {
+            xtype : 'checkcolumn',
             header : i18n.get('headers.defaultGuiService'),
             dataIndex : 'defaultGuiService',
             editable : false,
             width : 55
-        });
+        };
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 150,
-                sortable : true
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 250,
-                sortable : false
-            }, {
-                header : i18n.get('label.xtype'),
-                dataIndex : 'xtype',
-                width : 300,
-                sortable : false
-            }, defaultGuiService
-             ]
-        });
+        this.columns = [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 150,
+            sortable : true,
+            renderer : function (value, meta, record) {
+                meta.style = "font-weight: bold;";
+                return value;
+            }
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 250,
+            sortable : false
+        }, {
+            header : i18n.get('label.xtype'),
+            dataIndex : 'xtype',
+            width : 300,
+            sortable : false
+        }, defaultGuiService ];
 
         this.bbar = {
             xtype : 'pagingtoolbar',

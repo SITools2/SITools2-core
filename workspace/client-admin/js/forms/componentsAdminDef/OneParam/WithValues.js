@@ -26,9 +26,10 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @extends sitools.admin.forms.oneParam.abstractForm
  */
 Ext.define('sitools.admin.forms.oneParam.withValues', { 
-    extend : 'sitools.admin.forms.oneParam.abstractForm', 
+    extend : 'sitools.admin.forms.oneParam.abstractForm',
+    alias : 'widget.sitools.admin.forms.oneParam.withValues',
+//    id : "sitools.component.forms.definitionId",
     height : 450,
-    id : "sitools.component.forms.definitionId",
     initComponent : function () {
         sitools.admin.forms.oneParam.withValues.superclass.initComponent.call(this);
         var urlFormulaire = this.winPropComponent.urlFormulaire;
@@ -69,8 +70,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
                 name : 'value',
                 type : 'string'
             }, {
-                name : 'availableFor',
-                type : 'string'
+                name : 'availableFor'
             } ],
             autoLoad : false
         });
@@ -104,6 +104,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             height : 180,
             store : storeValues,
             tbar : tbar,
+            forceFit : true,
             columns : [{
                 header : i18n.get('headers.value'),
                 dataIndex : 'value',
@@ -116,9 +117,6 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
                 dataIndex : 'defaultValue'
             }],
             selModel : smValues,
-            viewConfig : {
-                forceFit : true
-            },
             plugins : [cellEditing]
         });
 
@@ -217,7 +215,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
                     code : value.code,
                     defaultValue : value.defaultValue,
                     value : value.value,
-                    availableFor : value.availableFor
+                    availableFor : value.availableFor || []
                 };
                 this.gridValues.getStore().add(rec);
             }, this);
@@ -317,7 +315,3 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
     }
 
 });
-
-// Ext.reg('sitools.admin.forms.oneParam.withValues',
-// sitools.admin.forms.oneParam.withValues);
-

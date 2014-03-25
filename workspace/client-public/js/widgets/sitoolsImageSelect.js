@@ -37,7 +37,8 @@ Ext.define('Ext.form.SitoolsSelectImage', {
 	            url : loadUrl.get('APP_URL') + '/upload/?media=json',
 	            width : 515,
 	            height : 450,
-	            fieldUrl : this
+	            fieldUrl : this,
+	            callback : validate
 	        });
 	        chooser.show(document, validate);
         }

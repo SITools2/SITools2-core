@@ -16,6 +16,9 @@ Ext.define('Ext.ux.form.ToolFieldSet', {
                 ownerLayout: me.componentLayout
             };
 
+        // Title
+        items.push(me.createTitleCmp());
+        
         // Checkbox
         if (me.checkboxToggle) {
             items.push(me.createCheckboxCmp());
@@ -29,8 +32,6 @@ Ext.define('Ext.ux.form.ToolFieldSet', {
                 items.push(me.createToolCmp(me.tools[i]));
             }
         }
-        // Title
-        items.push(me.createTitleCmp());
 
         return legend;
     },

@@ -29,6 +29,7 @@ Ext.namespace('sitools.userProfile');
 
 Ext.define('sitools.userProfile.Login', {
     extend : 'Ext.window.Window',
+    alias : 'widget.s-login',
     id : 'winLogin',
 //    layout : 'vbox',
     width : 392,
@@ -317,5 +318,3 @@ Ext.define('sitools.userProfile.Login', {
     }
 
 });
-
-Ext.reg('s-login', sitools.userProfile.Login);

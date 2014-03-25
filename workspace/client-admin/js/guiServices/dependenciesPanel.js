@@ -28,13 +28,11 @@ Ext.namespace('sitools.admin.util');
  * @class sitools.admin.projects.modules.ProjectModulesCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.util.DependenciesPanel', { extend : 'Ext.grid.plugin.RowEditing',
-
+Ext.define('sitools.admin.util.DependenciesPanel', { 
+    extend : 'Ext.grid.Panel',
     height : 180,
-    viewConfig : {
-		forceFit : true
-    },
-
+    forceFit : true,
+    
     initComponent : function () {
         this.title = i18n.get('title.dependencies');
 
@@ -51,7 +49,7 @@ Ext.define('sitools.admin.util.DependenciesPanel', { extend : 'Ext.grid.plugin.R
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
                 text : i18n.get('label.create'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
                 handler : this.onCreateDependencies
@@ -63,17 +61,15 @@ Ext.define('sitools.admin.util.DependenciesPanel', { extend : 'Ext.grid.plugin.R
         };
         
        
-        this.columns = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('label.url'),
-                dataIndex : 'url',
-                editor : new Ext.form.TextField({
-                    allowBlank : false
-                })
-            } ]
-        });
+        this.columns = [{
+            header : i18n.get('label.url'),
+            dataIndex : 'url',
+            editor : new Ext.form.TextField({
+                allowBlank : false
+            })
+        }];
         
-        this.sm = Ext.create('Ext.selection.RowModel',{
+        this.sm = Ext.create('Ext.selection.RowModel', {
             singleSelect : true
         });
         

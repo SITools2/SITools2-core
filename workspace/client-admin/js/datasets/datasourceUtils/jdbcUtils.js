@@ -32,9 +32,6 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
 		sitools.admin.datasets.datasourceUtils.jdbcUtils.superclass.constructor.call(this);
 	}, 
 	
-	logInfo : function () {
-		console.log('jdbc');
-	}, 
     /**
      * Get the url of the datasource
      * @return {string}
@@ -70,7 +67,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
             fields : [{
                 name : 'name'
             }, {
-                name : 'dataName'
+                name : 'dataIndex'
             }, {
                 name : 'tableName'
             }, {
@@ -103,10 +100,10 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
                             tableName : record.data.tableName,
                             tableAlias : record.data.tableAlias,
                             schemaName : record.data.schemaName,
-                            dataIndex : record.data.dataName                            
+                            dataIndex : record.data.dataIndex                            
                         };
                         var tmp = record.data.tableAlias ? record.data.tableAlias : record.data.tableName;
-                        tmp += "." + record.data.dataName;
+                        tmp += "." + record.data.dataIndex;
                         record.data.nomAffiche = tmp;
                     });
                 }
@@ -123,7 +120,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
             id : 'name',
             header : i18n.get('headers.name'),
             sortable : true,
-            dataIndex : 'dataName'
+            dataIndex : 'dataIndex'
         }];
 
 
@@ -248,7 +245,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
                             var columns = Json.table;
                             Ext.each(columns.attributes, function (column, index, columns) {
                                 this.panelSelectFields.getBDDPanel().getStore().add({
-                                    dataName : column.name,
+                                    dataIndex : column.name,
                                     schemaName : options.params.schemaName,
                                     tableName : options.params.tableName,
                                     tableAlias : options.params.tableAlias,
@@ -336,7 +333,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
             id : 'name',
             header : i18n.get('headers.name'),
             sortable : true,
-            dataIndex : 'dataName'
+            dataIndex : 'dataIndex'
         }];
     }, 
     /**

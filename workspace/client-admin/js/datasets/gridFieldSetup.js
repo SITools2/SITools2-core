@@ -51,18 +51,16 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                                 record.data.header = record.data.dataIndex;
                             }
                             if (Ext.isEmpty(record.data.columnAlias)) {
-                                record.data.columnAlias = record.data.dataName.toLowerCase();
+                                record.data.columnAlias = record.data.dataIndex.toLowerCase();
                             }
                             if (sql2ext.get(record.get("sqlColumnType")) == "dateAsString" && Ext.isEmpty(record.data.format)) {
                                 record.data.format = SITOOLS_DEFAULT_IHM_DATE_FORMAT;
                             }
-
                         }
                     });
                 }
             }
         });
-        
 
         var visible = {
             xtype : 'checkcolumn',
@@ -77,7 +75,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             xtype : 'checkcolumn',
             header : i18n.get('headers.sortable'),
             dataIndex : 'sortable',
-            width : 55,
+            width : 70,
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/sortable.html",
             onMouseDown : function (e, t) {
                 if(t.className && t.className.indexOf('x-grid3-cc-'+this.id) != -1){
@@ -113,11 +111,9 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             selectOnFocus : true,
             dataIndex : 'orderBy',
             lazyRender : true,
-//            listClass : 'x-combo-list-small',
             valueField : 'value',
             displayField : 'display',
-//            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{display}</div></tpl>', 
-            width : 55,
+            width : 65,
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/orderBy.html"
         });
 
@@ -130,7 +126,8 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                     [ 'Other', 'Other', i18n.get("label.other.tooltip") ]]                
         });
 
-        var comboColumnRenderer = new Ext.form.ComboBox({
+        var comboColumnRenderer = {
+            xtype : 'combo',
             disabled : this.action == 'view' ? true : false, 
             store : comboStore,
             mode : 'local',
@@ -138,12 +135,10 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             triggerAction : 'all',
             forceSelection : true,
             selectOnFocus : true,
-            data : 'light',
+//            data : 'light',
             lazyRender : true,
-            listClass : 'x-combo-list-small',
             valueField : 'value',
             displayField : 'display',
-//            tpl : '<tpl for="."><div ext:qtip="{tooltip}" class="x-combo-list-item comboItem">{display}</div></tpl>',
             listeners : {
                 scope : this, 
                 select : function (combo, record) {
@@ -163,7 +158,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                     } 
                 }
             }
-        });
+        };
 
         var filterColumn = {
             xtype : 'checkcolumn',
@@ -185,22 +180,22 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
 
         var cmColumn = [{
                 header : i18n.get('headers.sqlDefinition'),
-                dataIndex : 'dataName',
+                dataIndex : 'dataIndex',
                 width : 120,
                 locked : true,
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/sqlDefinition.html"
             }, {
                 header : i18n.get('headers.tableName'),
                 dataIndex : 'tableName',
-                width : 80
+                width : 90
             }, {
                 header : i18n.get('headers.tableAlias'),
                 dataIndex : 'tableAlias',
-                width : 80
+                width : 85
             }, {
                 header : i18n.get('headers.columnAlias'),
                 dataIndex : 'columnAlias',
-                width : 80,
+                width : 90,
                 editor : {
                     xtype : 'textfield',
                     disabled : this.action == 'view' ? true : false, 
@@ -257,7 +252,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             }, {
                 header : i18n.get('headers.width'),
                 dataIndex : 'width',
-                width : 40,
+                width : 50,
                 editor : {
                     xtype : 'textfield',
                     disabled : this.action == 'view' ? true : false, 
@@ -267,7 +262,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             }, sortable, visible, filterColumn, {
                 header : i18n.get('headers.orderBy'),
                 dataIndex : 'orderBy',
-                width : 55,
+                width : 70,
                 editor : comboOrderBy,
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/orderBy.html"
             }, primaryKey, {
@@ -276,8 +271,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                 width : 120,
                 editor : comboColumnRenderer,
                 helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/previewUrl.html"
-            },
-            {
+            }, {
                 header : i18n.get('headers.tooltip'),
                 dataIndex : 'toolTip',
                 width : 80,

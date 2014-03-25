@@ -47,8 +47,7 @@ Ext.define('sitools.admin.forms.FormGridComponents', { extend : 'Ext.grid.Panel'
                 name : 'type',
                 type : 'string'
             }, {
-                name : 'code',
-                type : 'string'
+                name : 'code'
             }, {
                 name : 'values'
             }, {

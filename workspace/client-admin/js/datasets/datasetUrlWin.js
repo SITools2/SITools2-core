@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetUrlWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.datasetUrlWin', { 
+    extend : 'Ext.Window',
     width : 400,
     height : 400,
     modal : true,
@@ -45,7 +46,7 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
         });
         
         this.storeColumns = new Ext.data.JsonStore({
-            id : 'datasetColumnId',
+//            id : 'datasetColumnId',
             root : 'dataset.columnModel',
             idProperty : 'id',
             proxy : this.httpProxy,
@@ -93,8 +94,8 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
             singleSelect : true
         });
 
-        this.gridColumns = new Ext.grid.EditorGridPanel({
-            id : 'gridColumnsSelect',
+        this.gridColumns = Ext.create('Ext.grid.Panel', {
+//            id : 'gridColumnsSelect',
             title : i18n.get('title.gridColumns'),
             layout : 'fit',
             height : 280, 
@@ -102,7 +103,8 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', { extend : 'Ext.Window',
             autoScroll : true,
             store : this.storeColumns,
             cm : this.cmColumns,
-            selModel : this.smColumns
+            selModel : this.smColumns,
+            forceFit : true
         });
 
         var storeDatasets = new Ext.data.JsonStore({

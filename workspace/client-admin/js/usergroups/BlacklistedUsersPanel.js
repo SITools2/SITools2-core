@@ -31,7 +31,9 @@ Ext.namespace('sitools.admin.usergroups');
  * @extends Ext.Window
  */
 //sitools.component.usergroups.UsersPanel = Ext.extend(Ext.Window, {
-sitools.admin.usergroups.BlacklistedUsersPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.usergroups.BlacklistedUsersPanel', {
+    extend : 'Ext.window.Window',
+    alias : 'widget.s-blacklistedusers',
     // url + mode + storeref
     
     width : 700,
@@ -172,5 +174,3 @@ sitools.admin.usergroups.BlacklistedUsersPanel = Ext.extend(Ext.Window, {
 
 
 });
-
-Ext.reg('s-blacklistedusers', sitools.admin.usergroups.BlacklistedUsersPanel);

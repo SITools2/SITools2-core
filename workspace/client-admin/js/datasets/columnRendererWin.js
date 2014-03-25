@@ -34,8 +34,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.columnRendererWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.columnRendererWin', { extend : 'Ext.Window',
-    
+Ext.define('sitools.admin.datasets.columnRendererWin', { 
+    extend : 'Ext.Window',
     width : 400,
     height : 600,
     modal : true,
@@ -43,7 +43,6 @@ Ext.define('sitools.admin.datasets.columnRendererWin', { extend : 'Ext.Window',
         type : 'vbox',
         align : 'stretch'
     },
-
 
     initComponent : function () {
         
@@ -73,7 +72,6 @@ Ext.define('sitools.admin.datasets.columnRendererWin', { extend : 'Ext.Window',
 			break;
         }
         
-        
         var storeBehavior = new Ext.data.ArrayStore({
             fields : [ {
                 name : 'name'
@@ -82,7 +80,6 @@ Ext.define('sitools.admin.datasets.columnRendererWin', { extend : 'Ext.Window',
             } ],
             data : behaviorData
         });
-        
         
         this.comboBehavior = new Ext.form.ComboBox({
             store : storeBehavior,
@@ -99,11 +96,12 @@ Ext.define('sitools.admin.datasets.columnRendererWin', { extend : 'Ext.Window',
             allowBlank : false,
             listeners : {
                 scope : this,
-                select : function (combo, rec, index) {
+                select : function (combo, recs, index) {
                     if (!Ext.isEmpty(this.panelDetails)) {
 						this.remove(this.panelDetails);
                         this.panelDetails = null;
 					}
+                    var rec = recs[0];
                     var value = rec.get("behavior");
                     //if we modify the columnRenderer it will not be null
                     var columnRenderer = this.selectedRecord.get("columnRenderer");
@@ -135,18 +133,17 @@ Ext.define('sitools.admin.datasets.columnRendererWin', { extend : 'Ext.Window',
 				    }
                     if (!Ext.isEmpty(this.panelDetails)) {
                         this.add(this.panelDetails);
-                        this.doLayout();
+//                        this.doLayout();
                     }
                 }
 
             }
         });
         
-        
         this.behaviorForm = new Ext.form.FormPanel({
             title : i18n.get('label.behavior'),
-            height : 80,
-            padding : 5,
+            height : 120,
+            padding : '5 5 5 5',
             items : [this.comboBehavior , {
                 fieldLabel : i18n.get('label.tooltip'),
                 name : 'toolTip',

@@ -52,33 +52,25 @@ Ext.define('sitools.admin.forms.formPropPanel', {
         }
         this.zoneStore = new Ext.data.JsonStore({
             root : 'data',
-            idProperty : 'id',
-            fields : [ {
-                id : 'id',
-                type : 'string'
+//            idProperty : 'id',
+            fields : [{
+                name : 'title'
             }, {
-                name : 'title',
-                type : 'string'
+                name : 'height'
+            },{
+                name : 'width'
             }, {
-                name : 'height',
-                type : 'int'
+                name : 'css'
             }, {
-                name : 'css',
-                type : 'string'
+                name : 'position'
             }, {
-                name : 'position',
-                type : 'string'
+                name : 'collapsible'
             }, {
-                name : 'collapsible',
-                type : 'boolean'
-            }, {
-                name : 'collapsed',
-                type : 'boolean'
+                name : 'collapsed'
             }, {
                 name : 'params'
             }, {
-                name : 'containerPanelId',
-                type : 'string'
+                name : 'containerPanelId'
             }],
             listeners : {
                 scope : this,
@@ -102,8 +94,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                 name : 'type',
                 type : 'string'
             }, {
-                name : 'code',
-                type : 'string'
+                name : 'code'
             }, {
                 name : 'values'
             }, {
@@ -375,6 +366,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                                     containerPanelId : zone.id,
                                     title : zone.title,
                                     height : zone.height,
+                                    width : zone.width,
                                     collapsible : zone.collapsible,
                                     collapsed : zone.collapsed,
                                     css : zone.css,

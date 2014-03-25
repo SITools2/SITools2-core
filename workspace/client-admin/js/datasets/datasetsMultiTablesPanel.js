@@ -33,7 +33,7 @@ Ext.namespace('sitools.component.datasets');
 Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-datasetsMultiTablesPanel',
-//	closeAction : 'close', 
+//	closeAction : 'close',
     initComponent : function () {
         Ext.apply(this, sitools.admin.datasets.abstractDatasetWin);
 		//do it when loadUrl is ready.
@@ -443,6 +443,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                     tmp.columnRenderer = rec.columnRenderer;
                 }
 
+                delete tmp.columnOrder;
                 putObject.columnModel.push(tmp);
             }
         }

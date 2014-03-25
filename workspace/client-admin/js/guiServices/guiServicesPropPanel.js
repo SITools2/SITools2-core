@@ -29,13 +29,16 @@ Ext.namespace('sitools.admin.guiservices');
  * @class sitools.admin.projects.modules.ProjectModulePropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 540,
     modal : true,
     id : ID.PROP.GUISERVICES,
     layout : 'fit',
+    
     initComponent : function () {
+        
         if (this.action === 'create') {
             this.title = i18n.get('label.createGuiService');
         } else if (this.action === 'modify') {
@@ -61,9 +64,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', { extend : 'Ext.Win
                     [ 'NONE' ],
                     [ 'SINGLE' ],
                     [ 'MULTIPLE' ],
-                    [ 'ALL' ]
-                    
-                ]
+                    [ 'ALL' ]]
             }),
             valueField : 'dataSetSelection',
             displayField : 'dataSetSelection'
@@ -175,8 +176,8 @@ Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', { extend : 'Ext.Win
     /**
      * done a specific render to load project modules properties. 
      */
-    onRender : function () {
-        sitools.admin.guiservices.GuiServicesPropPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.guiservices.GuiServicesPropPanel.superclass.afterRender.apply(this, arguments);
         if (this.action === 'modify') {
             var f = this.formPanel.getForm();
             

@@ -32,7 +32,8 @@ Ext.define('sitools.admin.forms.oneParam.abstractForm', {
     extend : 'Ext.form.Panel',
     autoScroll : true, 
     context : null, 
-    
+    border : false,
+    bodyBorder : false,
     initComponent : function () {
         this.context = new sitools.component.forms.componentsAdminDef.ComponentFactory(this.context);
         

@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.forms.noParam');
 Ext.define('sitools.admin.forms.noParam.label', { 
     extend : 'Ext.form.Panel',
     height : 120,
-    id : "sitools.component.forms.definitionId",
+//    id : "sitools.component.forms.definitionId",
+    
     initComponent : function () {
         this.css = new Ext.form.TextField({
             fieldLabel : i18n.get('label.css'),

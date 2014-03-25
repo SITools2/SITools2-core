@@ -100,7 +100,6 @@ sitools.common.forms.components.ComboBox = Ext.extend(Ext.Container, {
 	        flex : 1, 
 	        height : this.height,
 	        value : defaultValue,
-            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{value}</div></tpl>', 
 			stype : "sitoolsFormItem", 
 	        /**
 			 * The Parent Window.

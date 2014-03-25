@@ -103,8 +103,10 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/checkcolumn.js"></script>
     <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/mif.js"></script>-->
     <script type="text/javascript" src="${appUrl}/common/js/widgets/textfilter.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/spinner.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/spinnerfield.js"></script>
+    
+    <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/spinner.js"></script>
+    <script type="text/javascript" src="${appUrl}/common/js/widgets/spinnerfield.js"></script>-->
+    
     <script type="text/javascript" src="${appUrl}/common/js/widgets/panelSelectItems.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/gridUp.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.Plugin.RemoteComponent.js"></script>

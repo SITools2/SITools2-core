@@ -20,10 +20,11 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.forms.oneParam');
 
-Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', { extend : 'sitools.admin.forms.oneParam.abstractWithUnit', 
-
+Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', { 
+    extend : 'sitools.admin.forms.oneParam.abstractWithUnit', 
     height : 250,
-    id : "sitools.component.forms.definitionId",
+//    id : "sitools.component.forms.definitionId",
+    
     initComponent : function () {
         this.winPropComponent.specificHeight = 350;
         this.winPropComponent.specificWidth = 400;

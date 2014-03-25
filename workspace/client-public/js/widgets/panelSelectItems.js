@@ -57,6 +57,7 @@ Ext.define('sitools.component.datasets.selectItems', {
                 handler : this._onRemoveAll
             } ]
         });
+        
         Ext.applyIf(this.grid1, {
             flex : this.defaultFlexGrid
         });
@@ -66,6 +67,7 @@ Ext.define('sitools.component.datasets.selectItems', {
         
         this.items =  [ this.grid1, commandPanel, this.grid2 ];
         this.layout = 'hbox',
+        
         this.layoutConfig = {
             flex : "ratio" , 
             align : 'stretch'
@@ -76,17 +78,15 @@ Ext.define('sitools.component.datasets.selectItems', {
     
     _onAdd : function () {
         var store2 = this.grid2.getStore();
-
-//      var recs = this.scope.datasourceUtils.getFieldsBDDSelected(this.grid1);
-        
         var recs = [];
         
-        if (this.grid1 instanceof Ext.grid.GridPanel) {
+        if (this.grid1 instanceof Ext.grid.Panel) {
             recs = this.grid1.getSelectionModel().getSelections();
         }
-        if (this.grid1 instanceof Ext.tree.TreePanel) {
+        
+        if (this.grid1 instanceof Ext.tree.Panel) {
             var treeNodes = this.grid1.getSelectionModel().getSelectedNodes();
-            var RecType = store2.recordType;
+            
             Ext.each (treeNodes, function (node) {
                 var attributes = Ext.apply(node.attributes, {
                     columnAlias : node.attributes.name.toLowerCase(), 
@@ -94,7 +94,7 @@ Ext.define('sitools.component.datasets.selectItems', {
                     sqlColumnType : node.attributes.type, 
                     tableName : this.grid1.getRootNode().attributes.collection
                 });
-                recs.push(new RecType(node.attributes));
+                recs.push(node.attributes);
             }, this)
         }
         
@@ -114,18 +114,18 @@ Ext.define('sitools.component.datasets.selectItems', {
             store2.add(recTmp);
         }, this);
 
-        this.grid2.getView().refresh();
+//        this.grid2.getView().refresh();
 
     },
     _onAddAll : function () {
         var store2 = this.grid2.getStore();
         var recs = [];
         
-        if (this.grid1 instanceof Ext.grid.GridPanel) {
+        if (this.grid1 instanceof Ext.grid.Panel) {
             var store1 = this.grid1.getStore();
             recs = store1.data.items;
         }
-        if (this.grid1 instanceof Ext.tree.TreePanel) {
+        if (this.grid1 instanceof Ext.tree.Panel) {
             var treeNodes = this.grid1.getRootNode().childNodes;
             var RecType = store2.recordType;
             Ext.each (treeNodes, function (node) {
@@ -135,7 +135,8 @@ Ext.define('sitools.component.datasets.selectItems', {
                     sqlColumnType : node.attributes.type, 
                     tableName : node.ownerTree.getRootNode().attributes.collection
                 });
-                recs.push(new RecType(node.attributes));
+//                recs.push(new RecType(node.attributes));
+                recs.push(node.attributes);
             }, this)
         }
         var recTmp;
@@ -167,10 +168,10 @@ Ext.define('sitools.component.datasets.selectItems', {
 
     },
     _onRemoveAll : function () {
-        var store2 = this.grid2.getStore();
-        store2.each(function (rec) {
-            store2.remove(rec);
-        });
+        var store2 = this.grid2.getStore().removeAll();
+//        store2.each(function (rec) {
+//            store2.remove(rec);
+//        });
     }, 
     setFirstGrid : function (grid) {
         this.remove(this.grid1);

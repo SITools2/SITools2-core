@@ -25,9 +25,11 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @class sitools.admin.forms.oneParam.DateBetween
  * @extends sitools.admin.forms.oneParam.abstractForm
  */
-Ext.define('sitools.admin.forms.oneParam.DateBetween', { extend : 'sitools.admin.forms.oneParam.abstractForm', 
+Ext.define('sitools.admin.forms.oneParam.DateBetween', { 
+    extend : 'sitools.admin.forms.oneParam.abstractForm', 
     height : 330,
-    id : "sitools.component.forms.definitionId",
+//    id : "sitools.component.forms.definitionId",
+    
     initComponent : function () {
         //formattage de extraParams : 
         this.winPropComponent.specificHeight = 430;

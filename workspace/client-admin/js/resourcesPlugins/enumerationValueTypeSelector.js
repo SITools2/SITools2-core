@@ -204,7 +204,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
      * Add a new line to the enumeration
      */
     onAddValue : function () {
-        this.gridSelect.getStore().add(new (this.gridSelect.getStore().recordType));
+        this.gridSelect.getStore().add({});
         this.gridSelect.getView().refresh();
     },
     

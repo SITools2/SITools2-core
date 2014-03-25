@@ -182,11 +182,11 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
             var recs = this.grid.getSelectionModel().getSelections();
             var newrecs = [];
             Ext.each(recs, function (rec) {
-                newrecs.push(new this.store.recordType({
+                newrecs.push({
                     identifier : rec.data.identifier,
                     firstName : rec.data.firstName,
                     lastName : rec.data.lastName
-                }));
+                });
             });
             this.storeref.add(newrecs);
         }

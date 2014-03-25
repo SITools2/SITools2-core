@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { extend: 'Ext.Panel',
+Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { 
+    extend: 'Ext.Panel',
         flex : 1,
         layout : {
 	        type : 'vbox',
@@ -80,8 +81,6 @@ Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { extend: 'Ext.Pa
 	                break;
                 }
             }
-                
-            
         },
         
         /**
@@ -107,7 +106,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { extend: 'Ext.Pa
 	            }
 	        });
 	
-	        var smColumns = Ext.create('Ext.selection.RowModel',{
+	        var smColumns = Ext.create('Ext.selection.RowModel', {
 	            singleSelect : true,
                 listeners : {
                     scope : this,
@@ -126,7 +125,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', { extend: 'Ext.Pa
 	        });
 	
 	        this.gridColumns = new Ext.grid.GridPanel({
-	            id : 'gridColumnsSelect',
+//	            id : 'gridColumnsSelect',
 	            layout : 'fit',
 	            autoScroll : true,
 	            store : store,

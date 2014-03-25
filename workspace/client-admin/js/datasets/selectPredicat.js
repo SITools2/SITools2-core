@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.selectPredicat
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.selectPredicat', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-datasetspredicat',
     width : 700,
     height : 480,
@@ -68,10 +69,11 @@ Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
             autoScroll : true,
             store : this.storePredicat,
             cm : this.cmSelectPredicat,
-            selModel : this.smSelectPredicat
+            selModel : this.smSelectPredicat,
+            forceFit : true
         });
 
-        this.items = [ {
+        this.items = [{
             xtype : 'panel',
             layout : 'fit',
             items : [ this.gridSelectPredicat ],
@@ -86,9 +88,9 @@ Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
                 handler : function () {
                     this.close();
                 }
-            } ]
+            }]
 
-        } ];
+        }];
         sitools.admin.datasets.selectPredicat.superclass.initComponent.call(this);
     },
     onValidate : function () {
@@ -100,6 +102,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
             this.recordPredicat.data.leftAttribute = {
                 tableName : rec.data.tableName,
                 tableAlias : rec.data.tableAlias,
+//                dataIndex : rec.data.dataIndex,
                 dataIndex : rec.data.dataIndex,
                 schema : rec.data.schemaName,
                 columnAlias : rec.data.columnAlias,
@@ -111,6 +114,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', { extend : 'Ext.Window',
             this.recordPredicat.data.rightAttribute = {
                 tableName : rec.data.tableName,
                 tableAlias : rec.data.tableAlias,
+//                dataIndex : rec.data.dataIndex,
                 dataIndex : rec.data.dataIndex,
                 schema : rec.data.schemaName,
                 columnAlias : rec.data.columnAlias,

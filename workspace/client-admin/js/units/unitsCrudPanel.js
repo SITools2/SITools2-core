@@ -28,12 +28,14 @@ Ext.namespace('sitools.admin.units');
  * @class sitools.admin.units.unitsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.units.unitsCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.units.unitsCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-units',
     border : false,
     height : 300,
     id : ID.BOX.UNITS,
-    pageSize : 10,    
+    pageSize : 10,
+    forceFit : true,
     
     initComponent : function () {
         this.urlAdmin = loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL');
@@ -69,37 +71,30 @@ Ext.define('sitools.admin.units.unitsCrudPanel', { extend : 'Ext.grid.Panel',
             proxy : this.httpProxy
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 150,
-                renderer : function (value, meta, record) {
-                    meta.style = "font-weight: bold;";
-                    return value;
-                }
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 200,
-                sortable : false
-            }, {
-                header : i18n.get('label.dimensionHelperName'),
-                dataIndex : 'dimensionHelperName',
-                width : 300,
-                sortable : false
-            }, {
-                header : i18n.get('label.isConsistent'),
-                dataIndex : 'isConsistent',
-                width : 100,
-                sortable : false
-            } ]
-        });
+        this.columns = [{
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 150,
+            renderer : function (value, meta, record) {
+                meta.style = "font-weight: bold;";
+                return value;
+            }
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 200,
+            sortable : false
+        }, {
+            header : i18n.get('label.dimensionHelperName'),
+            dataIndex : 'dimensionHelperName',
+            width : 300,
+            sortable : false
+        }, {
+            header : i18n.get('label.isConsistent'),
+            dataIndex : 'isConsistent',
+            width : 100,
+            sortable : false
+        }];
 
         this.tbar = {
             xtype : 'toolbar',

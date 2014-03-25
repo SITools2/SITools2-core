@@ -31,10 +31,11 @@ Ext.namespace('sitools.admin.forms.multiParam');
 Ext.define('sitools.admin.forms.multiParam.coneSearch', { 
     extend : 'sitools.admin.forms.multiParam.abstractForm',
     height : 400,
-    id : 'sitools.component.forms.definitionId',
+//    id : 'sitools.component.forms.definitionId',
     columnUnitName : "°", 
     //TODO améliorer ça pour que ce ne soit plus statique.
     columnDimensionId : "Angle",
+    
     initComponent : function () {
         this.winPropComponent.specificHeight = 500;
         this.winPropComponent.specificWidth = 500;

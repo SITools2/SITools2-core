@@ -85,6 +85,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
          * @type Ext.grid.ColumnModel
          */
         this.gridFieldsDataset = Ext.create('Ext.grid.Panel', {
+            title : 'Columns Dataset',
 			layout : 'fit', 
             store : this.gridFieldsDataset,
             columns : cmFieldsDataset,
@@ -92,7 +93,9 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
             enableDragDrop : true,
             stripeRows : true,
             forceFit : true,
-            title : 'Columns Dataset',
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : 'MULTI'
+            }),
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
                 pluginId : 'fieldAliasEditing',
                 clicksToEdit: 2

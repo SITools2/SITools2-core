@@ -388,7 +388,6 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 //	        listClass : 'x-combo-list-small',
 	        valueField : 'name',
 	        displayField : 'name',
-//	        tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{name}</div></tpl>', 
 	        width : 55
 	    });
         

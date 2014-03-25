@@ -29,21 +29,26 @@ Ext.namespace('sitools.admin.forms');
  * @class sitools.admin.forms.componentsListPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.advancedFormPanel', { 
+Ext.define('sitools.admin.forms.advancedFormPanel', {
     extend : 'Ext.ux.form.ToolFieldSet',
     border : true,
     closable : true,
     style : 'background-color : white;',
+    layout : "absolute",
+    autoScroll : true, 
+    enableDragDrop : true,
+    
     initComponent : function (config) {
 
         Ext.apply(this, config);
         
         this.padding = '0 0 5 0';
-        this.iconCls = 'icon-properties';
+//        this.iconCls = 'dark-icons';
         
         this.tools = [{
             type : 'close',
             tooltip: i18n.get('label.remove'),
+            cls : 'dark-icons',
             shrinkWrap : true,
             autoShow : true,
             scope : this,
@@ -63,6 +68,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
             }
         }, {
             type : 'gear',
+            cls : 'dark-icons',
             tooltip : i18n.get('label.editFieldsetProps'),
             shrinkWrap : true,
             autoShow : true,
@@ -84,107 +90,11 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 //            '</tpl>'
 //        );
         
-        Ext.apply(this, {
-            layout : "absolute",
-            autoScroll : true, 
-            enableDragDrop : true,
-            listeners : {
-                scope : this,
-                activate : function () {
-                    var y = 0;
-                    var x = 25;
-                    
-                    this.removeAll(true);
-                    var mypanel = this;
-                    this.formComponentsStore.each(function (component) {
-
-                        var containerId = component.data.containerPanelId;
-
-//                        if (containerId == this.id) {
-                          if (containerId == this.containerPanelId) {
-
-                            y = Ext.isEmpty(component.data.ypos) ? y + 50 : component.data.ypos;
-                            x = Ext.isEmpty(component.data.xpos) ? x : component.data.xpos;
-                            // height = Ext.isEmpty (component.data.height) ?
-                            // height :
-                            // component.data.height;
-                            var containerItems = [ sitools.common.forms.formParameterToComponent(component.data, null, null, this.datasetColumnModel,
-                                    this.context).component ];
-                            containerItems[0].setDisabled(true);
-                            containerItems[0].maskOnDisable = false;
-                            // containerItems[0].initialConfig.overCls =
-                            // 'over-form-component';
-
-                            var container = new Ext.Container({
-                                width : parseInt(component.data.width, 10),
-                                height : parseInt(component.data.height, 10),
-                                bodyCssClass : "noborder",
-                                cls : component.data.css,
-                                x : x,
-                                y : y,
-                                id : component.data.id,
-                                componentData : component.data,
-                                labelWidth : 100,
-                                items : containerItems,
-                                displayPanel : this,
-                                record : component,
-                                listeners : {
-                                    scope : this,
-                                    afterrender : function (container) {
-                                        this.addResizers(container);
-                                        this.addDragDrop(container);
-                                    }
-                                },
-                                onEdit : function () {
-                                    var rec = this.record;
-                                    if (!rec) {
-                                        return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
-                                    }
-                                    var propComponentPanel = new sitools.admin.forms.componentPropPanel({
-                                        datasetColumnModel : this.displayPanel.datasetColumnModel,
-                                        action : 'modify',
-                                        urlFormulaire : this.displayPanel.urlFormulaire,
-                                        context : this.displayPanel.context,
-                                        storeConcepts : this.displayPanel.storeConcepts,
-                                        record : this.record,
-                                        formComponentsStore : this.displayPanel.formComponentsStore,
-                                        absoluteLayout : this.displayPanel,
-                                        containerPanelId : mypanel.containerPanelId
-                                    });
-                                    propComponentPanel.show();
-                                },
-
-                                onDelete : function () {
-                                    var rec = this.record;
-                                    if (!rec) {
-                                        return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
-                                    }
-                                    var childrenExists = false, childrens = [];
-                                    this.displayPanel.formComponentsStore.each(function (record) {
-                                        if (rec.data.id === record.data.parentParam) {
-                                            childrenExists = true;
-                                            childrens.push(record.data.label);
-                                        }
-                                    });
-                                    if (childrens.length > 0) {
-                                        Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.atLeastOneChildren') + childrens.join(", "));
-                                        return;
-                                    }
-                                    this.displayPanel.formComponentsStore.remove(rec);
-                                    this.displayPanel.fireEvent("activate");
-                                }
-                            });
-                            
-                            this.add(container);
-                        }
-                    }, this);
-
-//                    this.doLayout();
-//                    this.addResizers(this.items.items);
-//                    this.addDragDrop(this.items.items);
-                }
-            }
-        });
+        this.listeners = {
+            scope : this,
+            activate : this.onActivate
+        };
+        
         sitools.admin.forms.advancedFormPanel.superclass.initComponent.call(this);
     },
 
@@ -238,10 +148,109 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 		            containerPanelId : mypanel.containerPanelId,
 		            ddSource : ddSource
 		        });
+		        
 		        ComponentWin.show();
+		        this.endDrag();
 			},
 			overClass : 'over-dd-form'
 		});
+    },
+    
+    onActivate : function () {
+
+        var y = 0;
+        var x = 25;
+        
+        this.removeAll();
+        var mypanel = this;
+        
+        this.formComponentsStore.each(function (component) {
+
+            var containerId = component.data.containerPanelId;
+
+//            if (containerId == this.id) {
+              if (containerId == this.containerPanelId) {
+
+                y = Ext.isEmpty(component.data.ypos) ? y + 50 : component.data.ypos;
+                x = Ext.isEmpty(component.data.xpos) ? x : component.data.xpos;
+                // height = Ext.isEmpty (component.data.height) ?
+                // height :
+                // component.data.height;
+                var containerItems = [ sitools.common.forms.formParameterToComponent(component.data, null, null, this.datasetColumnModel,
+                        this.context).component ];
+                containerItems[0].setDisabled(true);
+                containerItems[0].maskOnDisable = false;
+                // containerItems[0].initialConfig.overCls =
+                // 'over-form-component';
+
+                var container = new Ext.Container({
+                    width : parseInt(component.data.width, 10),
+                    height : parseInt(component.data.height, 10),
+                    bodyCssClass : "noborder",
+                    cls : component.data.css,
+                    x : x,
+                    y : y,
+                    id : component.data.id,
+                    componentData : component.data,
+                    labelWidth : 100,
+                    items : containerItems,
+                    displayPanel : this,
+                    record : component,
+                    listeners : {
+                        scope : this,
+                        afterrender : function (container) {
+                            this.addResizers(container);
+                            this.addDragDrop(container);
+                            container.doLayout();
+                        }
+                    },
+                    onEdit : function () {
+                        var rec = this.record;
+                        if (!rec) {
+                            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+                        }
+                        var propComponentPanel = new sitools.admin.forms.componentPropPanel({
+                            datasetColumnModel : this.displayPanel.datasetColumnModel,
+                            action : 'modify',
+                            urlFormulaire : this.displayPanel.urlFormulaire,
+                            context : this.displayPanel.context,
+                            storeConcepts : this.displayPanel.storeConcepts,
+                            record : this.record,
+                            formComponentsStore : this.displayPanel.formComponentsStore,
+                            absoluteLayout : this.displayPanel,
+                            containerPanelId : mypanel.containerPanelId
+                        });
+                        propComponentPanel.show();
+                    },
+
+                    onDelete : function () {
+                        var rec = this.record;
+                        if (!rec) {
+                            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+                        }
+                        var childrenExists = false, childrens = [];
+                        this.displayPanel.formComponentsStore.each(function (record) {
+                            if (rec.data.id === record.data.parentParam) {
+                                childrenExists = true;
+                                childrens.push(record.data.label);
+                            }
+                        });
+                        if (childrens.length > 0) {
+                            Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.atLeastOneChildren') + childrens.join(", "));
+                            return;
+                        }
+                        this.displayPanel.formComponentsStore.remove(rec);
+                        this.displayPanel.fireEvent("activate");
+                    }
+                });
+                
+                this.add(container);
+            }
+        }, this);
+
+        this.doLayout();
+//        this.addResizers(this.items.items);
+//        this.addDragDrop(this.items.items);
     },
     
     onContextMenu : function (event, htmlEl, options) {
@@ -279,6 +288,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                 constrainTo : this.getEl(),
 //                resizeChild : true,
                 pinned : true,
+                dynamic : false,
                 listeners : {
                     scope : this,
                     resize : function (resizable, width, height, e) {
@@ -292,8 +302,9 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                         container.items.items[0].setSize(width - container.getEl().getPadding('l') - container.getEl().getPadding('r'), height);
                         // redimensionner dans le cas de listbox :
                         if (rec.data.type === "LISTBOX" || rec.data.type === "LISTBOXMULTIPLE") {
-                            var multiselect = container.findByType('multiselect')[0];
-                            multiselect.view.container.setHeight(height - container.getEl().getPadding('b') - container.getEl().getPadding('t') - 40);
+                            var multiselect = container.down('multiselect');
+//                            multiselect.view.container.setHeight(height - container.getEl().getPadding('b') - container.getEl().getPadding('t') - 40);
+                            multiselect.setHeight(height - container.getEl().getPadding('b') - container.getEl().getPadding('t') - 40);
                         }
                     }
                 }

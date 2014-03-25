@@ -63,9 +63,10 @@ Ext.define('sitools.admin.datasets.datasetCriteria', {
          */
         this.SqlWhereClause = new Ext.Panel({
             height : 350,
-            items : [ {
+            items : [{
                 xtype : 'form',
-                items : [ {
+                padding : "7px 0px 0px 7px",
+                items : [{
                     xtype : 'textarea',
                     id : "sqlQuery",
                     autoScroll : true,
@@ -116,8 +117,8 @@ Ext.define('sitools.admin.datasets.datasetCriteria', {
                 listeners : {
                     scope : this,
                     change : function (radioGroup, radio) {
-                        if (!Ext.isEmpty(radio)) {
-							this.scope.queryType = radio.inputValue;
+                        if (!Ext.isEmpty(radio.queryType)) {
+							this.scope.queryType = radio.queryType;
                         }
                         if (this.scope.queryType === 'W') {
 	                        this.whereClausePanel.remove(this.SqlWhereClause, false);
@@ -175,6 +176,10 @@ Ext.define('sitools.admin.datasets.datasetCriteria', {
 	                        this.whereClausePanel.add(this.SqlWhereClause);
 	                        this.whereClausePanel.doLayout();
 	                    }
+						
+						selecteur.down('radiogroup').setValue({
+						    queryType : this.scope.queryType
+						});
 					}
 					
 					

@@ -57,7 +57,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
 
         this.title = this.action == "create" ? i18n.get('label.create' + this.parentType + 'Resource') : i18n.get('label.modify' + this.parentType + 'Resource'); 
 
-        var expander = new {
+        var expander = {
             ptype: 'rowexpander',
             rowBodyTpl : new Ext.XTemplate(
                 '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
@@ -125,47 +125,37 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                     type : 'string'
                 } ]
             }),
-
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [{
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.resourceClassName'),
-                    dataIndex : 'className',
-                    width : 300,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.author'),
-                    dataIndex : 'classAuthor',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.version'),
-                    dataIndex : 'classVersion',
-                    width : 100,
-                    sortable : true
-                }, {
-                    header : i18n.get('label.classOwner'),
-                    dataIndex : 'classOwner',
-                    width : 100,
-                    sortable : true
-                }]
-            }),
-            
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.resourceClassName'),
+                dataIndex : 'className',
+                width : 300,
+                sortable : true
+            }, {
+                header : i18n.get('label.author'),
+                dataIndex : 'classAuthor',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.version'),
+                dataIndex : 'classVersion',
+                width : 100,
+                sortable : true
+            }, {
+                header : i18n.get('label.classOwner'),
+                dataIndex : 'classOwner',
+                width : 100,
+                sortable : true
+            }],
             listeners : {
                 scope : this,
                 rowclick :  this.onClassClick
             }, 
             plugins : [expander]
-
         });
 
         this.proxyFieldMapping = new Ext.data.HttpProxy({
@@ -174,9 +164,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             method : 'GET'
         });
 
-        
         var userUpdatable = {
-            xtype : 'textfield',
+            xtype : 'checkcolumn',
 	        header : i18n.get('headers.userUpdatable'),
 	        dataIndex : 'userUpdatable',
 	        width : 55
@@ -219,9 +208,9 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                 listeners : {
                     scope : this,
                     refresh : function (view) {
-                        
                         var grid = this.gridFieldMapping;
                         var store = grid.getStore();
+                        
                         store.each(function (record) {
                             var violation = record.get("violation");
                             if (!Ext.isEmpty(violation)) {
@@ -296,41 +285,34 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                 }
             },
             selModel : Ext.create('Ext.selection.RowModel'),
-            bbar : new Ext.ux.StatusBar({
+            bbar : {
                 id: 'statusBar',
                 hidden : true,
                 iconCls: 'x-status-error',
                 text : i18n.get("label.resourcesPluginErrorValidationNotification")
-            }),
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : false
-                // columns are not sortable by default
-                },
-                columns : [{
-                    header : i18n.get('label.name'),
-                    dataIndex : 'name',
-                    width : 100
-                }/*, {
-                    header : i18n.get('label.description'),
-                    dataIndex : 'description',
-                    width : 100,
-                    sortable : false
-                }*/, {
-                    header : i18n.get('label.type'),
-                    dataIndex : 'type',
-                    width : 150
-                }, {
-                    header : i18n.get('label.value'),
-                    dataIndex : 'value',
-                    width : 230,
-                    editable : true,
-                    editor : {
-                        xtype : 'textfield'
-                    }
-                }, userUpdatable]
-            }),
+            },
+            columns : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 100
+            }/*, {
+                header : i18n.get('label.description'),
+                dataIndex : 'description',
+                width : 100,
+                sortable : false
+            }*/, {
+                header : i18n.get('label.type'),
+                dataIndex : 'type',
+                width : 150
+            }, {
+                header : i18n.get('label.value'),
+                dataIndex : 'value',
+                width : 230,
+                editable : true,
+                editor : {
+                    xtype : 'textfield'
+                }
+            }, userUpdatable],
             listeners : {
                 scope : this,
                 celldblclick : function (grid, td, cellIndex, record, tr, rowIndex, e) {
@@ -604,7 +586,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             var form = this.fieldMappingFormPanel.getForm();
             rec.name = resourcePlugin.name;
             rec.descriptionAction = resourcePlugin.descriptionAction;
-            rec.data.id = resourcePlugin.id;
+            rec.id = resourcePlugin.id;
             rec.resourceClassName = resourcePlugin.resourceClassName;
             rec.behavior = resourcePlugin.behavior;
             form.setValues(rec);
@@ -616,7 +598,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                 for (var i = 0; i < parameters.length; i++) {
                     var recTmp = parameters[i];
                     if (action == "create" && Ext.isEmpty(parameters[i].value)) {
-                        recTmp.set("value", "");
+                        recTmp.value = "";
                     }
                     store.add(recTmp);
                 }

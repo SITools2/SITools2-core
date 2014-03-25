@@ -36,7 +36,7 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
     extend : 'Ext.Window',
     modal : true,
     pageSize : 10,
-
+    layout : 'fit',
     initComponent : function () {
         this.title = i18n.get('label.componentProperties');
         var specificComponentString, config = {}, JsObj;
@@ -109,6 +109,7 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
         });
 
         this.items = [ this.componentPropPanel ];
+        
         sitools.admin.forms.componentPropPanel.superclass.initComponent.call(this);
     },
     afterRender : function () {

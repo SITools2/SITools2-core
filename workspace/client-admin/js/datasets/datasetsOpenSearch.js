@@ -223,7 +223,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                 displayField : 'textRssField',
                 // template pour les items de la combobox, permet d'ajouter une
                 // classe CSS a chacun des items
-                tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{textRssField}</div></tpl>',
                 listeners : {
                     scope : this, 
                     select : function (combo, record) {
@@ -263,7 +262,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                 displayField : 'textSolrType',
                 // template pour les items de la combobox, permet d'ajouter une
                 // classe CSS a chacun des items
-                tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{textSolrType}</div></tpl>'
 
                         
             })

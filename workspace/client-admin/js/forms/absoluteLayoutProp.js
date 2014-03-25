@@ -42,7 +42,7 @@ Ext.define('sitools.admin.forms.absoluteLayoutProp', {
             padding : 5,
             border : false,
             bodyBorder : false,
-            items : [ {
+            items : [{
                 xtype : 'textfield',
                 id : "absolutePanelWidth",
                 value : width,
@@ -54,10 +54,10 @@ Ext.define('sitools.admin.forms.absoluteLayoutProp', {
                 value : height,
                 fieldLabel : i18n.get('label.height'),
                 anchor : "100%"
-            } ]
+            }]
         });
         
-        this.height = 130;
+        this.height = 150;
         this.width = 260;
 
         this.title = i18n.get('label.setSize');

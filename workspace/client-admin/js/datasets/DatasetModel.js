@@ -72,5 +72,8 @@ Ext.define('DatasetModel', {
     }, {
         name : 'format', 
         type : 'string'
+    }, {
+        name : 'orderBy', 
+        type : 'string'
     }]
 });

@@ -27,10 +27,12 @@ Ext.namespace("sitools.admin.forms");
  * @class sitools.admin.forms.setupAdvancedFormPanel
  * @extends Ext.Window
  */
-sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
+Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
+    extend : 'Ext.Window',
     modal : true,
-    height : 210,
+    height : 230,
     width : 260,
+    layout : 'fit',
     initComponent : function () {
 
         this.title = i18n.get('label.setupAdvancedFormPanel');
@@ -38,6 +40,8 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
         
         this.form = new Ext.form.FormPanel({
             padding : 5,
+            border : false,
+            bodyBorder : false,
             items : [ {
                 xtype : 'textfield',
                 name : 'title',
@@ -81,8 +85,13 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
                 accelerate : true,
                 anchor : "100%", 
                 allowBlank : false
-            }*/],
-            buttons : [ {
+            }*/]
+        });
+        
+        this.items = [ this.form ];
+        
+        
+        this.bbar = [ '->' , {
                 scope : this,
                 text : i18n.get('label.ok'),
                 handler : this._onValidate
@@ -90,22 +99,17 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
                 scope : this,
                 text : i18n.get('label.cancel'),
                 handler : this._onCancel
-            } ]
-        });
-        
-        this.items = [ this.form ];
+            }];
         
         sitools.admin.forms.setupAdvancedFormPanel.superclass.initComponent.call(this);
 
     },
     
-    onRender : function () {
-        sitools.admin.forms.setupAdvancedFormPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.setupAdvancedFormPanel.superclass.afterRender.apply(this, arguments);
         if (this.action === 'modify') {
-            var recZone = new Ext.data.Record(this.zone);
-            this.form.getForm().loadRecord(recZone);
+            this.form.getForm().setValues(this.zone);
         }
-        
     },
     
     _onValidate : function () {
@@ -127,10 +131,11 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
         };
         
         if (this.action === 'modify') {
+            var zoneToRemove;
             if (!Ext.isEmpty(this.zone.containerPanelId)){
-            	var zoneToRemove = this.parentContainer.zoneStore.find('containerPanelId', this.zone.containerPanelId);
+            	zoneToRemove = this.parentContainer.zoneStore.find('containerPanelId', this.zone.containerPanelId);
             } else {
-            	var zoneToRemove = this.parentContainer.zoneStore.find('position', 0);
+            	zoneToRemove = this.parentContainer.zoneStore.find('position', 0);
             }
             var zoneRec = this.parentContainer.zoneStore.getAt(zoneToRemove);
             
@@ -138,7 +143,7 @@ sitools.admin.forms.setupAdvancedFormPanel = Ext.extend(Ext.Window, {
         }
         else {
             rec.containerPanelId = Ext.id();
-            this.parentContainer.zoneStore.add(new Ext.data.Record(rec));
+            this.parentContainer.zoneStore.add(rec);
         }
         
         this.destroy();

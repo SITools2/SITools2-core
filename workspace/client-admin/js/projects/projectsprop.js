@@ -1161,7 +1161,8 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         // Selectively replace <textarea> elements, based on
         // custom assertions.
         CKEDITOR.replaceAll(function (textarea, config) {
-            if (!Ext.isEmpty(textarea.classList) && textarea.classList.contains("ckeditor")) {
+            var tableArea = Ext.get(textarea).up('table').dom;
+            if (!Ext.isEmpty(tableArea.classList) && tableArea.classList.contains("ckeditor")) {
                 config.customConfig = 'config-basic.js';
                 config.width = "95%";
                 // false to hide datasetLink label in link.js combo

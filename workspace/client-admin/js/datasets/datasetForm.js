@@ -49,7 +49,6 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 						    this.comboDataSource.fireEvent("initValue", this.comboDataSource, recs[0].data.id);
                         }
 					}
-					
 				}
             }
         });

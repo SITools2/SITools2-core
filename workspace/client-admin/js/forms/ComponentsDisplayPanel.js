@@ -37,7 +37,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
     extend : 'Ext.panel.Panel',
 	y : 0,
 	position : 0,
-	padding : 5,
+	padding : '5 5 5 5',
 	bodyStyle : 'background-color : #EDF2FF;',
 	initComponent : function () {
         
@@ -138,7 +138,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
         	this.setHeight(totalHeight + 20);	
 		}
         
-        this.doLayout();
+//        this.doLayout();
 
         /* loop on the panels */
         if (!Ext.isEmpty(this.items)) {

@@ -124,7 +124,9 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', {
             layout : 'fit', 
             store : this.storeTablesDataset,
             columns : cmTablesDataSet,
-            selModel : Ext.create('Ext.selection.RowModel',{}),
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : 'MULTI'
+            }),
             autoScroll : true,
             enableDragDrop : true,
             stripeRows : true,

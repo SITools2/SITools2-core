@@ -27,7 +27,8 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { extend : 'Ext.Panel',
+Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { 
+        extend : 'Ext.Panel',
 		flex : 1,
 		layout : "fit",
         initComponent : function () {
@@ -35,7 +36,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { extend : 'Ext.Pan
                 defaults : {
                     anchor : "100%"
                 },
-                padding : 5,
+                padding : '5 5 5 5',
                 items : [{
                     fieldLabel : i18n.get('label.display'),
                     name : 'display',
@@ -53,21 +54,21 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { extend : 'Ext.Pan
                     } ],
                     listeners : {
                         scope : this,
-                        change : function (radioGroup, radioChecked) {
-                            var name = radioChecked.getGroupValue();
+                        change : function (radioGroup, newValue, oldValue) {
+//                            var name = radioChecked.getGroupValue();
+                            var name = newValue.display;
                             var isImage = true;
                             if (name == "Text") {                        
                                 isImage = false;
                             }
-                            this.formPanel.getForm().findField("linkText").setVisible(!isImage);
-                            this.formPanel.getForm().findField("linkText").setDisabled(isImage);
+                            this.formPanel.down("textfield[name=linkText]").setVisible(!isImage);
+                            this.formPanel.down("textfield[name=linkText]").setDisabled(isImage);
                             
-                            this.formPanel.getForm().findField("image").setVisible(isImage);
-                            this.formPanel.getForm().findField("image").setDisabled(!isImage);
+                            this.formPanel.down("textfield[name=image]").setVisible(isImage);
+                            this.formPanel.down("textfield[name=image]").setDisabled(!isImage);
                             this.doLayout();
                         }
                     }
-                
                 }, {
 						fieldLabel : i18n.get('label.linkText'),
 						name : 'linkText',

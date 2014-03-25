@@ -29,7 +29,8 @@ Ext.define('sitools.admin.forms.noParam.hr', {
     extend : 'Ext.form.Panel',
     alias : 'widget.sitools.admin.forms.noParam.hr',
 	height : 100,
-    id : "sitools.component.forms.definitionId",
+//    id : "sitools.component.forms.definitionId",
+	
     initComponent : function () {
         this.css = new Ext.form.TextField({
             fieldLabel : i18n.get('label.css'),

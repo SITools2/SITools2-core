@@ -45,7 +45,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
         });
         
         this.storeColumns = new Ext.data.JsonStore({
-            id : 'datasetColumnId',
+//            id : 'datasetColumnId',
             root : 'dataset.columnModel',
             idProperty : 'id',
             proxy : this.httpProxy,
@@ -61,36 +61,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             } ]
         });
         
-        this.gridViewColumns = new Ext.grid.View({
-            listeners : {
-                scope : this, 
-                refresh : function () {
-                    if (!Ext.isEmpty(this.columnRenderer) 
-                        && !Ext.isEmpty(this.columnRenderer.columnAlias)
-                        && this.comboDatasets.getValue() == this.columnRenderer.datasetLinkUrl) {
-                        var columnAlias = this.columnRenderer.columnAlias;
-                        var index = this.gridColumns.getStore().find("columnAlias", columnAlias);
-                        if (index != -1) {
-							this.gridColumns.getSelectionModel().selectRow(index);
-                        }
-                    }
-                }
-            }
-        });
-        this.cmColumns = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.tableName'),
-                dataIndex : 'tableName'
-            }, {
-                header : i18n.get('headers.columnAlias'),
-                dataIndex : 'columnAlias'
-            }],
-            defaults : {
-                sortable : true              
-            }
-        });
-
-        this.smColumns = Ext.create('Ext.selection.RowModel',{
+        this.smColumns = Ext.create('Ext.selection.RowModel', {
             singleSelect : true,
             listeners : {
                 scope : this,
@@ -146,22 +117,43 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
-                    this.loadColumns(rec.data.id);                    
+                    this.loadColumns(rec[0].data.id);                    
                 }
 
             }
         });
         
         this.gridColumns = new Ext.grid.GridPanel({
-            id : 'gridColumnsSelect',
+//            id : 'gridColumnsSelect',
             title : i18n.get('title.datasetLinkDetails'),
             layout : 'fit',
             flex : 1,
             forceFit: true,
-            view : this.gridViewColumns, 
+            view : {
+                listeners : {
+                    scope : this, 
+                    refresh : function () {
+                        if (!Ext.isEmpty(this.columnRenderer) 
+                            && !Ext.isEmpty(this.columnRenderer.columnAlias)
+                            && this.comboDatasets.getValue() == this.columnRenderer.datasetLinkUrl) {
+                            var columnAlias = this.columnRenderer.columnAlias;
+                            var index = this.gridColumns.getStore().find("columnAlias", columnAlias);
+                            if (index != -1) {
+                                this.gridColumns.getSelectionModel().selectRow(index);
+                            }
+                        }
+                    }
+                }
+            }, 
             autoScroll : true,
             store : this.storeColumns,
-            cm : this.cmColumns,
+            columns : [ {
+                header : i18n.get('headers.tableName'),
+                dataIndex : 'tableName'
+            }, {
+                header : i18n.get('headers.columnAlias'),
+                dataIndex : 'columnAlias'
+            }],
             selModel : this.smColumns,
             bbar : this.bbar,
             tbar : {
@@ -196,8 +188,6 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
         
         this.items.push(this.gridColumns);
         
-        
-        
         sitools.admin.datasets.columnRenderer.datasetLinkPanel.superclass.initComponent.call(this);
     },
     
@@ -210,6 +200,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             }
         }
     },
+    
     /**
      * This function is used to validate the panel
      * @return {Boolean} true if the panel is valid, false otherwise
@@ -262,7 +253,6 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
         
     },
     
-    
     /**
      * Load the columns of a specific dataset
      * @param {String} datasetId (required) the dataset Id
@@ -277,10 +267,5 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             scope : this
         });
     }
-    
-    
-    
-    
-    
 
 });

@@ -25,9 +25,10 @@ Ext.namespace('sitools.admin.forms.oneParam');
  * @class sitools.admin.forms.oneParam.withoutValues
  * @extends sitools.admin.forms.oneParam.abstractForm
  */
-Ext.define('sitools.admin.forms.oneParam.withoutValues', { extend : 'sitools.admin.forms.oneParam.abstractForm', 
+Ext.define('sitools.admin.forms.oneParam.withoutValues', { 
+    extend : 'sitools.admin.forms.oneParam.abstractForm', 
     height : 250,
-    id : "sitools.component.forms.definitionId",
+//    id : "sitools.component.forms.definitionId",
     initComponent : function () {
         this.winPropComponent.specificHeight = 350;
         this.winPropComponent.specificWidth = 400;

@@ -63,6 +63,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
 //            return cls; 
 //        } 
     },
+    
     initComponent : function () {
         this.appClassName = "fr.cnes.sitools.dataset.DataSetApplication";
         this.parentType = "dataset";
@@ -130,7 +131,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         
 
         this.store = new Ext.data.JsonStore({
-            idProperty : 'id',
+//            idProperty : 'id',
             root : "ServiceCollectionModel.services",
             fields : [ {
                 name : 'id',
@@ -192,105 +193,100 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             }
         };
         
-        this.columns = new Ext.grid.ColumnModel({
-            defaults : {
-                sortable : true
-            },
-            columns : [ {
-                header : i18n.get('label.type'),
-                dataIndex : 'type',
-                width : 60,
-                resizable : false,
-                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-                    if (value === "SERVER") {
-                        metadata.style += "font-weight:bold; color:blue;";
-                    } else {
-                        metadata.style += "font-weight:bold; color:green;";
-                    }
-                    return value;
+        this.columns = [{
+            header : i18n.get('label.type'),
+            dataIndex : 'type',
+            width : 70,
+            resizable : false,
+            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                if (value === "SERVER") {
+                    metadata.style += "font-weight:bold; color:blue;";
+                } else {
+                    metadata.style += "font-weight:bold; color:green;";
                 }
-            }, {
-                header : i18n.get('label.name'),
-                dataIndex : 'name',
-                width : 160
-            }, {
-                header : i18n.get('label.description'),
-                dataIndex : 'description',
-                width : 255,
-                sortable : false
-            }, {
-                header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
-                dataIndex : 'label',
-                width : 140,
-                editor : {
-                    xtype : 'textfield',
-                    listeners : {
-                        scope : this,
-                        change : function (textfield, newValue, oldValue) {
-                            this.savePropertiesBtn.addCls('not-save-textfield');
-                        }
+                return value;
+            }
+        }, {
+            header : i18n.get('label.name'),
+            dataIndex : 'name',
+            width : 160
+        }, {
+            header : i18n.get('label.description'),
+            dataIndex : 'description',
+            width : 255,
+            sortable : false
+        }, {
+            header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            dataIndex : 'label',
+            width : 140,
+            editor : {
+                xtype : 'textfield',
+                listeners : {
+                    scope : this,
+                    change : function (textfield, newValue, oldValue) {
+                        this.savePropertiesBtn.addCls('not-save-textfield');
                     }
                 }
-            }, {
-                header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
-                dataIndex : 'category',
-                width : 150,
-                editor : {
-                    xtype : 'textfield',
-                    listeners : {
-                        scope : this,
-                        change : function (textfield, newValue, oldValue) {
-                            this.savePropertiesBtn.addCls('not-save-textfield');
-                        }
+            }
+        }, {
+            header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            dataIndex : 'category',
+            width : 150,
+            editor : {
+                xtype : 'textfield',
+                listeners : {
+                    scope : this,
+                    change : function (textfield, newValue, oldValue) {
+                        this.savePropertiesBtn.addCls('not-save-textfield');
                     }
                 }
-            }, {
-                header : 'Position' + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
-                dataIndex : 'position',
-                width : 100,
-                editor: {
-                    xtype : 'combo',
-                    typeAhead : true,
-                    triggerAction : 'all',
-                    lazyRender : true,
-                    mode : 'local',
-                    store : new Ext.data.ArrayStore({
-                        id : 0,
-                        fields : ['position'],
-                        data : [['left'], ['right']]
-                    }),
-                    value : 'Left',
-                    valueField : 'position',
-                    displayField : 'position',
-                    listeners : {
-                        scope : this,
-                        change : function (textfield, newValue, oldValue) {
-                            this.savePropertiesBtn.addCls('not-save-textfield');
-                        }
+            }
+        }, {
+            header : 'Position' + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            dataIndex : 'position',
+            width : 100,
+            editor: {
+                xtype : 'combo',
+                typeAhead : true,
+                triggerAction : 'all',
+                lazyRender : true,
+                mode : 'local',
+                store : new Ext.data.ArrayStore({
+                    id : 0,
+                    fields : ['position'],
+                    data : [['left'], ['right']]
+                }),
+                value : 'Left',
+                valueField : 'position',
+                displayField : 'position',
+                listeners : {
+                    scope : this,
+                    change : function (textfield, newValue, oldValue) {
+                        this.savePropertiesBtn.addCls('not-save-textfield');
+                        this.savePropertiesBtn.doComponentLayout();
                     }
                 }
-            }, {
-                header : i18n.get('label.icon'),
-                dataIndex : 'icon',
-                width : 80,
-                sortable : false,
-                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-                    if (!Ext.isEmpty(value)) {
-                        value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
-                    }
-                    return value;
+            }
+        }, {
+            header : i18n.get('label.icon'),
+            dataIndex : 'icon',
+            width : 80,
+            sortable : false,
+            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                if (!Ext.isEmpty(value)) {
+                    value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
                 }
-            }, visible]
-        });
+                return value;
+            }
+        }, visible];
         
         this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
             pluginId : 'cellEditing',
-            clicksToEdit: 2
+            clicksToEdit: 1
         })];
 
         this.savePropertiesBtn = new Ext.Button({
             text : i18n.get('label.saveProperties'),
-            id : 'tocard',
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
             handler : this.onSaveProperties,
             tooltip : i18n.get('label.savePropertiesHelp'),
@@ -349,10 +345,11 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         this.listeners = {
             scope : this, 
             celldblclick : function (grid, td, cellIndex, record, tr, rowIndex) {
-                if (this.getPlugin('cellEditing').isCellEditable(cellIndex, rowIndex)) {
+                if (this.columns[cellIndex].hasEditor()) {
                     return;
+                } else {
+                    this.onModify();    
                 }
-                this.onModify();
             }
         };
 
@@ -620,7 +617,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                     var data = json.data;
                     Ext.each(data, function (pluginFromServer) {
                         var plugin = store.getById(pluginFromServer.id);
-                        if (plugin){
+                        if (plugin) {
                             plugin.set("definitionVersion", pluginFromServer.currentClassVersion);
                             plugin.set("modelVersion", pluginFromServer.classVersion);
                         }
@@ -644,8 +641,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                     var data = json.data;
                     Ext.each(data, function (guiPluginFromServer) {
                         var plugin = store.getById(guiPluginFromServer.id);
-                        plugin.set("definitionVersion", guiPluginFromServer.currentGuiServiceVersion);
-                        plugin.set("modelVersion", guiPluginFromServer.version);
+                        if (plugin) {
+                            plugin.set("definitionVersion", guiPluginFromServer.currentGuiServiceVersion);
+                            plugin.set("modelVersion", guiPluginFromServer.version);
+                        }
                     }, this);
                     this.getView().allLoaded = true;
                     this.getView().refresh();
@@ -655,5 +654,3 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         });
     }
 });
-
-

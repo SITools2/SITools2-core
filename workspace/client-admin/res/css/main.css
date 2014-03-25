@@ -161,17 +161,18 @@ pre {
 }
 
 .not-save-textfield {
-	background-color: rgb(255, 132, 132);
-	-moz-border-radius: 2px;
-	-webkit-border-radius: 10px;
-	border-radius: 4px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border:1px outset #FF3F40;
 }
 
 .over-dd-form {
-	background-color: #84BAFF;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
+	margin : 5px 2px 2px 5px;
+	background-color: #ADD2ED;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
 }
 
 .INACTIVE {
@@ -215,10 +216,6 @@ pre {
 .x-toolbar-default {
 	background-color: #3892D3;
 } */
-.x-tool-img-fieldset {
-	background-image:
-		url("/sitools/cots/extjs4/ext-4.2.1.883/resources/ext-theme-neptune/images/tools/tool-sprites-dark.png");
-}
 
 .row-error .x-grid-cell {
 	background-color: #e2ffe2;
@@ -230,4 +227,6 @@ pre {
 	-webkit-box-shadow: 1px 1px 6px 2px #EDF4FF !important;
 }
 
-$toolbar-background-color : #FFF;
+.x-tool-img .dark-icons {
+	background-image: url(/sitools/cots/extjs4/ext-4.2.1.883/resources/ext-theme-neptune/images/tools/tool-sprites-dark.png) !important;
+}
