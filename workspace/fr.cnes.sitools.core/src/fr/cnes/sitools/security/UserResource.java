@@ -48,6 +48,7 @@ import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.PasswordGenerator;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
@@ -203,7 +204,13 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
         SecurityUtil.encodeUserPassword(getUsersAndGroupsAdministration().getSettings(), input);
       }
       else {
-        input.setSecret(initial.getSecret());
+        if (origin.equals("user")){
+            input.setSecret(initial.getSecret());
+        }
+        else {
+          input.setSecret(PasswordGenerator.generate(10));
+          password = input.getSecret();
+        }
       }
 
       User output = getStore().updateUser(input);
