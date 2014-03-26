@@ -16,7 +16,9 @@ We are pleased to inform you that your user account has been created on SITools2
 
 <p>
 Your login is ${user.identifier}<br/>
-Your password is initialized with ${pass}, please update it as soon as possible with "Edit Profile" Menu.
+<#if pass??>
+	Your password is initialized with ${pass}, please update it as soon as possible with "Edit Profile" Menu.
+</#if>
 </p>
 
 
