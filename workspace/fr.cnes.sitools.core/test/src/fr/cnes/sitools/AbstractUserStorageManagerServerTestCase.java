@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.restlet.data.Method;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -81,7 +81,7 @@ public abstract class AbstractUserStorageManagerServerTestCase extends AbstractS
     uds.setUserStoragePath("D:/CNES-ULISSE/data/storage/show");
     us.setStorage(uds);
 
-    JsonRepresentation rep = new JsonRepresentation(us);
+    JacksonRepresentation<UserStorage> rep = new JacksonRepresentation<UserStorage>(us);
     ClientResource cr = new ClientResource(getBaseUrl() + "/users");
     docAPI.appendRequest(Method.POST, cr, rep);
 

@@ -583,25 +583,6 @@ public abstract class AbstractFeedsPortalTestCase extends AbstractSitoolsServerT
   }
 
   /**
-   * Builds XML or JSON Representation of Project for Create and Update methods.
-   * 
-   * @param item
-   *          Project
-   * @param media
-   *          APPLICATION_XML or APPLICATION_JSON
-   * @return XML or JSON Representation
-   */
-  /*
-   * public static Representation getRepresentation(FeedModel item, MediaType media) { if
-   * (media.equals(MediaType.APPLICATION_JSON)) { return new JsonRepresentation(item); } else if
-   * (media.equals(MediaType.APPLICATION_XML)) { XStream xstream = XStreamFactory.getInstance().getXStream(media,
-   * false); XstreamRepresentation<FeedModel> rep = new XstreamRepresentation<FeedModel>(media, item);
-   * configure(xstream); rep.setXstream(xstream); return rep; } else { Engine.getLogger(AbstractSitoolsTestCase
-   * .class.getName()).warning("Only JSON or XML supported in tests"); return null; // TODO complete test with
-   * ObjectRepresentation } }
-   */
-
-  /**
    * Response to Representation
    * 
    * @param response

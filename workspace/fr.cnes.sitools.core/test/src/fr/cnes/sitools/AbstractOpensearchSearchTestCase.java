@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
@@ -819,7 +819,7 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    */
   public static Representation getRepresentation(Opensearch item, MediaType media) {
     if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JsonRepresentation(item);
+      return new JacksonRepresentation<Opensearch>(item);
     }
     else if (media.equals(MediaType.APPLICATION_XML)) {
       XStream xstream = XStreamFactory.getInstance().getXStream(media, false);

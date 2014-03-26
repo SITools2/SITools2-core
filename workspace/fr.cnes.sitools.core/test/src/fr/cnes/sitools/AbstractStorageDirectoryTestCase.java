@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.hsqldb.lib.Storage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -403,7 +404,7 @@ public abstract class AbstractStorageDirectoryTestCase extends AbstractSitoolsSe
    */
   public static Representation getRepresentation(StorageDirectory item, MediaType media) {
     if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JsonRepresentation(item);
+      return new JacksonRepresentation<StorageDirectory>(item);
     }
     else if (media.equals(MediaType.APPLICATION_XML)) {
       XStream xstream = XStreamFactory.getInstance().getXStream(media, false);

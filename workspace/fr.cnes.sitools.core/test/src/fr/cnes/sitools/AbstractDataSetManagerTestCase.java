@@ -40,7 +40,7 @@ import org.junit.Assert;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ClientResource;
@@ -86,7 +86,7 @@ public abstract class AbstractDataSetManagerTestCase extends AbstractSitoolsServ
    *          DataSet
    */
   public void create(DataSet item) {
-    JsonRepresentation rep = new JsonRepresentation(item);
+    JacksonRepresentation<DataSet> rep = new JacksonRepresentation<DataSet>(item);
     ClientResource cr = new ClientResource(getUrl());
     Representation result = cr.post(rep, getMediaTest());
     assertTrue(cr.getStatus().isSuccess());

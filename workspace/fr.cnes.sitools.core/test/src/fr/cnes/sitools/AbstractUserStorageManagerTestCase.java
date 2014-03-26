@@ -45,7 +45,6 @@ import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
@@ -378,7 +377,7 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
     String url = userReference.replace("{identifier}", userId)
         + "/files?filepath=%2FdataSelection%2Frecords&filename=file.json";
     String json = "{'orderRecord':{'records':[]}}";
-    JsonRepresentation repr = new JsonRepresentation(json);
+    StringRepresentation repr = new StringRepresentation(json, MediaType.APPLICATION_JSON);
 
     ClientResource cr = new ClientResource(url);
     cr.setChallengeResponse(challenge);
