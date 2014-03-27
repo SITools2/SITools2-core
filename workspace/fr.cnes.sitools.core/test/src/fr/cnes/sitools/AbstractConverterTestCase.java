@@ -136,7 +136,7 @@ public abstract class AbstractConverterTestCase extends AbstractSitoolsTestCase 
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-
+    super.setUp();
     SitoolsSettings settings = SitoolsSettings.getInstance();
     if (this.component == null) {
       this.component = createTestComponent(settings);

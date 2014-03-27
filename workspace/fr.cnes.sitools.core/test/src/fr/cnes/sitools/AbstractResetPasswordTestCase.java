@@ -80,6 +80,10 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
   private Component component = null;
   private ChallengeToken challengeTokenContainer;
 
+  private JDBCUsersAndGroupsStore ugstore;
+
+  private SitoolsSQLDataSource ds;
+
   /**
    * relative url for inscription management REST API
    * 
@@ -125,11 +129,19 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
       Context ctxUAG = this.component.getContext().createChildContext();
       ctxUAG.getAttributes().put(ContextAttributes.SETTINGS, settings);
 
-      SitoolsSQLDataSource ds = SitoolsSQLDataSourceFactory
-          .getInstance()
-          .setupDataSource(
-              SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_DRIVER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_URL"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_USER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_PASSWORD"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-      JDBCUsersAndGroupsStore ugstore = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctxUAG);
+      if (ds == null) {
+        ds = SitoolsSQLDataSourceFactory.getInstance().setupDataSource(
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_DRIVER"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_URL"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_USER"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_PASSWORD"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_SCHEMA"));
+
+      }
+
+      if (ugstore == null) {
+        ugstore = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctxUAG);
+      }
 
       ctxUAG.getAttributes().put(ContextAttributes.APP_STORE, ugstore);
 
@@ -175,6 +187,7 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
     super.tearDown();
     this.component.stop();
     this.component = null;
+    this.challengeTokenContainer = null;
   }
 
   /**
@@ -195,14 +208,19 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
   /**
    * Test Reset the user password with API activate
    */
-  @Test
+//  @Test
   public void testResetPasswordAPI() {
-    docAPI.setActive(true);
-    docAPI.appendChapter("Reset User Password API");
-    docAPI.appendSubChapter("Reset User Password", "reset");
-    User myUser = new User("identifier", "mynewPass%", "", "", "email@website.fr");
-    String token = challengeTokenContainer.getToken(myUser.getIdentifier());
-    updateUser(myUser, token);
+    try {
+      docAPI.setActive(true);
+      docAPI.appendChapter("Reset User Password API");
+      docAPI.appendSubChapter("Reset User Password", "reset");
+      User myUser = new User("identifier", "mynewPass%", "", "", "email@website.fr");
+      String token = challengeTokenContainer.getToken(myUser.getIdentifier());
+      updateUser(myUser, token);
+    }
+    finally {
+      docAPI.close();
+    }
 
   }
 
@@ -211,27 +229,42 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
    * 
    * @param user
    *          the user to update
+   * @param token
+   *          the token
    */
   public void updateUser(User user, String token) {
     Reference ref = new Reference(getBaseUrl() + "/resetPassword");
     ref.addQueryParameter(TOKEN_PARAM_NAME, token);
+
+    Representation appRep = getRepresentation(user, getMediaTest());
+    String url = ref.toString();
     if (docAPI.isActive()) {
-      Representation appRep = getRepresentation(user, getMediaTest());
-      String url = ref.toString();
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       parameters.put("PUT", "A <i>User</i> object with <b>identifier</b> and <b>email</b>");
       putDocAPI(url, "", appRep, parameters, url);
     }
     else {
+      final Client client = new Client(Protocol.HTTP);
+      Request request = new Request(Method.PUT, url);
+      request.setEntity(appRep);
 
-      ClientResource crUsers = new ClientResource(ref);
+      org.restlet.Response response = null;
+      try {
+        response = client.handle(request);
 
-      Representation result = crUsers.put(getRepresentation(user, getMediaTest()), getMediaTest());
-      assertNotNull(result);
-      assertTrue(crUsers.getStatus().isSuccess());
+        assertNotNull(response);
+        assertTrue(response.getStatus().isSuccess());
 
-      Response response = getResponse(getMediaTest(), result, User.class, false);
-      assertTrue(response.getMessage(), response.getSuccess());
+        Response resp = getResponse(getMediaTest(), response.getEntity(), User.class, false);
+        assertTrue(resp.getMessage(), resp.getSuccess());
+
+      }
+      finally {
+        if (response != null) {
+          RIAPUtils.exhaust(response);
+        }
+      }
+
     }
   }
 
