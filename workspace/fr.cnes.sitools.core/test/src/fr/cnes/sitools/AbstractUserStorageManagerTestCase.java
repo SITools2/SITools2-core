@@ -28,8 +28,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -389,19 +391,25 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
+    assertJsonSuccess(result);
+
+  }
+
+  private void assertJsonSuccess(Representation result) {
     try {
-      // Always returns some JSON so we can deserialise it with a Simple
-      // JSONObject
-      String txt = result.getText();
-      assertNotNull(txt);
-      JSONObject jsonResponse = new JSONObject(txt);
-
-      boolean success = jsonResponse.getBoolean("success");
-      assertNotNull(success);
-      assertTrue(success);
-
+      // general method, same as with data binding
+      ObjectMapper mapper = new ObjectMapper();
+      // (note: can also use more specific type, like ArrayNode or ObjectNode!)
+      JsonNode rootNode = mapper.readValue(result.getStream(), JsonNode.class); // src can be a File, URL,
+                                                                                // InputStream etc
+      JsonNode success = rootNode.get("success");
+      assertTrue(success.getBooleanValue());
     }
-    catch (JSONException e) {
+    catch (JsonParseException e) {
+      e.printStackTrace();
+      fail(e.getMessage());
+    }
+    catch (JsonMappingException e) {
       e.printStackTrace();
       fail(e.getMessage());
     }
@@ -409,7 +417,6 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
       e.printStackTrace();
       fail(e.getMessage());
     }
-
   }
 
   /**
@@ -438,26 +445,7 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
-    try {
-      // Always returns some JSON so we can deserialise it with a Simple
-      // JSONObject
-      String txt = result.getText();
-      assertNotNull(txt);
-      JSONObject jsonResponse = new JSONObject(txt);
-
-      boolean success = jsonResponse.getBoolean("success");
-      assertNotNull(success);
-      assertTrue(success);
-
-    }
-    catch (JSONException e) {
-      e.printStackTrace();
-      fail(e.getMessage());
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-      fail(e.getMessage());
-    }
+    assertJsonSuccess(result);
 
   }
 
