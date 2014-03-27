@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -29,10 +29,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.data.CharacterSet;
@@ -43,7 +43,6 @@ import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
@@ -147,7 +146,7 @@ public class DataSetExplorerUtil {
     Map<String, Object> attributes = this.getRequest().getAttributes();
 
     this.recordName = (attributes.get("record") != null) ? Reference.decode((String) attributes.get("record"),
-      CharacterSet.UTF_8) : null;
+        CharacterSet.UTF_8) : null;
 
     // parameters : pagination, ...
     this.pagination = this.getRequest().getResourceRef().getQueryAsForm();
@@ -156,16 +155,16 @@ public class DataSetExplorerUtil {
     // pas de / à la fin...
     if (this.getRequest().getResourceRef().getBaseRef().toString().endsWith("/")) {
       this.baseRef = this.getRequest().getResourceRef().getBaseRef().toString()
-        .substring(1, this.getRequest().getResourceRef().getBaseRef().toString().length());
+          .substring(1, this.getRequest().getResourceRef().getBaseRef().toString().length());
     }
     else {
       this.baseRef = this.getRequest().getResourceRef().getBaseRef().toString();
     }
 
     databaseParams = new DatabaseRequestParameters(this.getDataSource(), this.getPaginationStartRecord(),
-      this.getDistinct(), this.getCountIsDone(), this.getDataSet(), this.getPredicats(), this.getStructures(),
-      this.getOrderBy(), this.getColumnFromDistinctQuery(), this.getSQLColumnVisible(), this.getPaginationExtend(),
-      this.getBaseRef(), this.getListOfIds(), this.getRanges(), this.getAllColumnVisible());
+        this.getDistinct(), this.getCountIsDone(), this.getDataSet(), this.getPredicats(), this.getStructures(),
+        this.getOrderBy(), this.getColumnFromDistinctQuery(), this.getSQLColumnVisible(), this.getPaginationExtend(),
+        this.getBaseRef(), this.getListOfIds(), this.getRanges(), this.getAllColumnVisible());
 
     int nbmaxrows = this.application.getSettings().getInt("AbstractDatabaseRequest.MAX_ROWS");
     databaseParams.setMaxrows(nbmaxrows);
@@ -313,7 +312,7 @@ public class DataSetExplorerUtil {
    */
   private boolean isNoClientAccess(Column column) {
     return column.getColumnRenderer() != null
-      && BehaviorEnum.noClientAccess.equals(column.getColumnRenderer().getBehavior());
+        && BehaviorEnum.noClientAccess.equals(column.getColumnRenderer().getBehavior());
   }
 
   /**
@@ -343,7 +342,7 @@ public class DataSetExplorerUtil {
    */
   private boolean isRequestableColumn(Column column) {
     return column.getSpecificColumnType() == SpecificColumnType.DATABASE
-      || column.getSpecificColumnType() == SpecificColumnType.SQL;
+        || column.getSpecificColumnType() == SpecificColumnType.SQL;
   }
 
   /**
@@ -463,7 +462,7 @@ public class DataSetExplorerUtil {
     String nbHits = this.pagination.getFirstValue("limit", true);
     try {
       int extend = ((nbHits != null) && !nbHits.equals("")) ? Integer.parseInt(nbHits)
-        : DatabaseRequestParameters.RETURN_FIRST_PAGE;
+          : DatabaseRequestParameters.RETURN_FIRST_PAGE;
 
       if (extend == -1) {
         return DatabaseRequestParameters.RETURN_ALL;
@@ -611,12 +610,12 @@ public class DataSetExplorerUtil {
     }
     catch (ResourceException e) {
       application.getLogger().warning(
-        "Exception when applying filterChained on dataset " + application.getDataSet().getName());
+          "Exception when applying filterChained on dataset " + application.getDataSet().getName());
       throw e;
     }
     catch (Exception e) {
       application.getLogger().warning(
-        "Exception when applying filterChained on dataset " + application.getDataSet().getName());
+          "Exception when applying filterChained on dataset " + application.getDataSet().getName());
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
     if (predicatsResult == null) {
@@ -681,29 +680,34 @@ public class DataSetExplorerUtil {
         Representation repFile = this.getFile(urlFile, this.getRequest().getClientInfo().getUser());
 
         if (repFile != null) {
-          repFile = (FileRepresentation) repFile;
-          JSONObject json;
 
+          // general method, same as with data binding
+          ObjectMapper mapper = new ObjectMapper();
+          // (note: can also use more specific type, like ArrayNode or ObjectNode!)
+          JsonNode rootNode;
           try {
-            String text = repFile.getText();
-            json = new JSONObject(text);
+            rootNode = mapper.readValue(repFile.getStream(), JsonNode.class);
 
             Column primaryKey = getPrimaryKey();
 
             // create the list of ids from the JSON object
-            JSONObject orderRecord = json.getJSONObject("orderRecord");
-            JSONArray records = orderRecord.getJSONArray("records");
-            String[] idList = new String[records.length()];
-            for (int i = 0; i < records.length(); i++) {
-              idList[i] = records.getJSONObject(i).getString(primaryKey.getColumnAlias());
+            JsonNode orderRecord = rootNode.get("orderRecord");
+            JsonNode records = orderRecord.get("records");
+            List<String> idList = new ArrayList<String>();
+
+            for (JsonNode record : records) {
+              idList.add(record.get(primaryKey.getColumnAlias()).getTextValue());
             }
-            return idList;
+            return (String[]) idList.toArray(new String[idList.size()]);
           }
-          catch (JSONException e) {
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+          catch (JsonParseException e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+          }
+          catch (JsonMappingException e) {
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
           }
           catch (IOException e) {
-            throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+            throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
           }
         }
       }
@@ -791,24 +795,31 @@ public class DataSetExplorerUtil {
   private List<Range> getRanges() {
     List<Range> listRanges = null;
     String ranges = getRequest().getResourceRef().getQueryAsForm().getFirstValue(RANGES);
-    if (ranges != null && !"".equals(ranges)) {
+    if (ranges != null && !ranges.isEmpty()) {
       listRanges = new ArrayList<Range>();
+      // general method, same as with data binding
+      ObjectMapper mapper = new ObjectMapper();
+      // (note: can also use more specific type, like ArrayNode or ObjectNode!)
       try {
-        JSONArray array = new JSONArray(ranges);
-        for (int i = 0; i < array.length(); i++) {
-          JSONArray rangeArray = array.getJSONArray(i);
-          if (rangeArray.length() == 2) {
-            Range range = new Range(rangeArray.getInt(0), rangeArray.getInt(1));
+        JsonNode rootNode = mapper.readValue(ranges, JsonNode.class);
+        for (JsonNode rangeArray : rootNode) {
+          if (rangeArray.size() == 2) {
+            Range range = new Range(rangeArray.get(0).getIntValue(), rangeArray.get(1).getIntValue());
             listRanges.add(range);
           }
         }
+        // Let's sort the list to have the ranges in the right order
+        Collections.sort(listRanges);
       }
-      catch (JSONException e) {
-        application.getLogger().warning("Wrong range parameter");
-        throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, e);
+      catch (JsonParseException e) {
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
       }
-      // Let's sort the list to have the ranges in the right order
-      Collections.sort(listRanges);
+      catch (JsonMappingException e) {
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+      }
+      catch (IOException e) {
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL);
+      }
     }
     return listRanges;
   }
@@ -821,21 +832,21 @@ public class DataSetExplorerUtil {
    */
   public static void addDatasetExplorerGetRequestInfo(MethodInfo info) {
     ParameterInfo startInfo = new ParameterInfo("start", false, "xs:int", ParameterStyle.QUERY,
-      "Starting index for SQL request.");
+        "Starting index for SQL request.");
     ParameterInfo limitInfo = new ParameterInfo("limit", false, "xs:int", ParameterStyle.QUERY,
-      "Maximal number of records returned.");
+        "Maximal number of records returned.");
     ParameterInfo queryInfo = new ParameterInfo("query", false, "xs:string", ParameterStyle.QUERY,
-      "Request sent by filters and forms.");
+        "Request sent by filters and forms.");
     ParameterInfo colModelInfo = new ParameterInfo("colModel", false, "xs:string", ParameterStyle.QUERY,
-      "Column model description used for getting back records.");
+        "Column model description used for getting back records.");
     ParameterInfo sortInfo = new ParameterInfo("sort", false, "xs:string", ParameterStyle.QUERY,
-      "Column name to sort by.");
+        "Column name to sort by.");
     ParameterInfo dirInfo = new ParameterInfo("dir", false, "xs:string", ParameterStyle.QUERY,
-      "(ASC or DESC) Sorting order.");
+        "(ASC or DESC) Sorting order.");
     ParameterInfo distinctInfo = new ParameterInfo("distinct", false, "xs:boolean", ParameterStyle.QUERY,
-      "If true then creates a DISTINCT SQL request.");
+        "If true then creates a DISTINCT SQL request.");
     ParameterInfo rangesInfo = new ParameterInfo("ranges", false, "xs:string", ParameterStyle.QUERY,
-      "Array of index ranges to select (example : [[1,10],[20,50]])");
+        "Array of index ranges to select (example : [[1,10],[20,50]])");
 
     info.getRequest().getParameters().add(colModelInfo);
     info.getRequest().getParameters().add(startInfo);
