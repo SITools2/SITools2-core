@@ -122,7 +122,7 @@ public final class MutliDsOsResource extends SitoolsResource {
     }
     else if (this.getReference().getBaseRef().toString().endsWith("suggest")) {
       this.fillOsMap();
-      repr = new MutliDsOsSuggestRepresentation(MediaType.APPLICATION_JSON, this);
+      repr = new MultiDsOsSuggestRepresentation(MediaType.APPLICATION_JSON, this);
 
     }
     return repr;
