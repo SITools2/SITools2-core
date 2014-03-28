@@ -27,7 +27,6 @@
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.javamail.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.jackson.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/javax.mail_1.4/javax.mail.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.json_2.0/org.json.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/com.thoughtworks.xstream_1.3/com.thoughtworks.xstream.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.codehaus.jettison_1.2/org.codehaus.jettison.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.apache.commons.fileupload_1.2/org.apache.commons.fileupload.jar"/>
@@ -39,7 +38,6 @@
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.atom.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.fileupload.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.jetty.jar"/>
-        <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.json.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.rome.jar"/>
         <archive path="D:/CNES-ULISSE/workspace/org.restlet.ext.wadl/org.restlet.ext.wadl_2.0.1.jar"/>
         <archive path="D:/CNES-ULISSE/cots/restlet-2.0.5-patched/org.restlet.ext.wadl.jar"/>
