@@ -22,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.data.Preference;
 import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
@@ -208,7 +210,7 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
   /**
    * Test Reset the user password with API activate
    */
-//  @Test
+  // @Test
   public void testResetPasswordAPI() {
     try {
       docAPI.setActive(true);
@@ -250,6 +252,11 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
 
       org.restlet.Response response = null;
       try {
+
+        ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
+        objectMediaType.add(new Preference<MediaType>(getMediaTest()));
+        request.getClientInfo().setAcceptedMediaTypes(objectMediaType);
+
         response = client.handle(request);
 
         assertNotNull(response);
