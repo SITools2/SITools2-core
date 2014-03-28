@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,24 +19,15 @@
 package fr.cnes.sitools.solr;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.restlet.Request;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
@@ -45,6 +36,10 @@ import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
+import org.restlet.resource.ResourceException;
+
+import fr.cnes.sitools.solr.representation.SuggestForBrowserRepresentation;
+import fr.cnes.sitools.solr.representation.SuggestJsonRepresentation;
 
 /**
  * SolrResource to execute request
@@ -155,12 +150,17 @@ public final class SolrResource extends AbstractSolrResource {
           break;
         }
 
-        if (variant.getMediaType().isCompatible(MediaType.APPLICATION_JSON)) {
-          repr = this.getSuggestJSON(response);
-        }
-        if (variant.getMediaType().isCompatible(MediaType.APPLICATION_ALL_XML)) {
-          repr = this.getSuggestForBrowser(response, query);
+        try {
+          if (variant.getMediaType().isCompatible(MediaType.APPLICATION_JSON)) {
+            repr = this.getSuggestJSON(response);
+          }
+          if (variant.getMediaType().isCompatible(MediaType.APPLICATION_ALL_XML)) {
+            repr = this.getSuggestForBrowser(response, query);
 
+          }
+        }
+        catch (IOException e) {
+          throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
         }
 
       }
@@ -199,49 +199,15 @@ public final class SolrResource extends AbstractSolrResource {
    * @param query
    *          the client query string
    * @return Representation
+   * @throws IOException
    */
-  private Representation getSuggestForBrowser(org.restlet.Response response, String query) {
-
-    XMLInputFactory factory = XMLInputFactory.newInstance();
-    XMLStreamReader reader;
-
-    JSONArray json = new JSONArray();
-    JSONArray arrayKeyword = new JSONArray();
-    json.put(query);
-
-    try {
-      reader = factory.createXMLStreamReader(new StringReader(response.getEntity().getText()));
-
-      boolean inTermsField = false;
-
-      while (reader.hasNext()) {
-        int type = reader.next();
-        switch (type) {
-
-          case XMLStreamReader.START_ELEMENT:
-            if (reader.getLocalName().equals("lst") && "terms".equals(reader.getAttributeValue(0))) {
-              inTermsField = true;
-            }
-            else if (reader.getLocalName().equals("int") && inTermsField) {
-              arrayKeyword.put(reader.getAttributeValue(0));
-            }
-            break;
-
-          default:
-            break;
-        }
-      }
+  private Representation getSuggestForBrowser(org.restlet.Response response, String query) throws IOException {
+    if (response.getEntity() != null) {
+      return new SuggestForBrowserRepresentation(MediaType.APPLICATION_JSON, response.getEntity().getStream(), query);
     }
-    catch (XMLStreamException e) {
-      getLogger().warning(e.getMessage());
+    else {
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "Empty solr response");
     }
-    catch (IOException e) {
-      getLogger().warning(e.getMessage());
-    }
-
-    json.put(arrayKeyword);
-
-    return new JsonRepresentation(json);
   }
 
   /**
@@ -250,88 +216,15 @@ public final class SolrResource extends AbstractSolrResource {
    * @param response
    *          the server response
    * @return the representation as JSON
+   * @throws IOException
    */
-  private Representation getSuggestJSON(org.restlet.Response response) {
-    JsonRepresentation repr = null;
+  private Representation getSuggestJSON(org.restlet.Response response) throws IOException {
     if (response.getEntity() != null) {
-      XMLInputFactory factory = XMLInputFactory.newInstance();
-      JSONObject json = new JSONObject();
-
-      try {
-        XMLStreamReader reader = factory.createXMLStreamReader(new StringReader(response.getEntity().getText()));
-
-        JSONArray array = getJsonFromXML(reader);
-
-        json.put("success", "true");
-        json.put("data", array);
-
-        repr = new JsonRepresentation(json);
-
-      }
-      catch (XMLStreamException e) {
-        getLogger().warning(e.getMessage());
-      }
-      catch (IOException e) {
-        getLogger().warning(e.getMessage());
-      }
-      catch (JSONException e) {
-        getLogger().warning(e.getMessage());
-      }
+      return new SuggestJsonRepresentation(MediaType.APPLICATION_JSON, response.getEntity().getStream());
     }
-
-    return repr;
-  }
-
-  /**
-   * // * XML parser // * // * @param reader // * the XMLStreamReader // * @return JSONArray containing the list of
-   * keywords, the number of occurance // * and the field associated to it // * @throws XMLStreamException // * reader
-   * stream error // * @throws JSONException // * json writing error //
-   * 
-   * @return JSON array
-   */
-  private JSONArray getJsonFromXML(XMLStreamReader reader) throws XMLStreamException, JSONException {
-
-    JSONArray jsonArray = new JSONArray();
-
-    boolean inTermsField = false;
-    boolean inInt = false;
-    JSONObject object = null;
-    String fieldName = "";
-    while (reader.hasNext()) {
-      int type = reader.next();
-      switch (type) {
-        case XMLStreamReader.START_ELEMENT:
-          inInt = false;
-          if (reader.getLocalName().equals("lst") && "terms".equals(reader.getAttributeValue(0))) {
-            inTermsField = true;
-          }
-          else if (reader.getLocalName().equals("lst") && inTermsField) {
-
-            fieldName = reader.getAttributeValue(0);
-          }
-          else if (reader.getLocalName().equals("int") && inTermsField) {
-            object = new JSONObject();
-            object.put("field", fieldName);
-            object.put("name", reader.getAttributeValue(0));
-            inInt = true;
-          }
-          break;
-
-        case XMLStreamReader.CHARACTERS:
-          if (inInt) {
-            object.put("nb", reader.getText());
-            jsonArray.put(object);
-            inInt = false;
-          }
-          break;
-
-        default:
-          break;
-      }
+    else {
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "Empty solr response");
     }
-
-    return jsonArray;
-
   }
 
 }
