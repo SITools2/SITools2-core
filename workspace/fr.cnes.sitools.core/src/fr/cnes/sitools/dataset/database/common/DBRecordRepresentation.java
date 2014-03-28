@@ -34,7 +34,6 @@ import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.resource.ResourceException;

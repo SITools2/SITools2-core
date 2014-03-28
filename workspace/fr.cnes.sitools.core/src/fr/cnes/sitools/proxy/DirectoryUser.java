@@ -33,7 +33,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.ReferenceList;
 import org.restlet.data.Status;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.ext.xml.XmlRepresentation;
 import org.restlet.representation.Representation;
@@ -97,8 +97,8 @@ public final class DirectoryUser extends DirectoryProxy {
   }
 
   /**
-   * To manage the POST JSON or XML representation (command/preferences/...) as a file into the user directory (creates the
-   * directories path if needed).
+   * To manage the POST JSON or XML representation (command/preferences/...) as a file into the user directory (creates
+   * the directories path if needed).
    * 
    * @param request
    *          Request
@@ -121,7 +121,7 @@ public final class DirectoryUser extends DirectoryProxy {
       if (MediaType.APPLICATION_JSON.toString().equals(mediaTypeEntity)) {
         Form form = request.getResourceRef().getQueryAsForm();
         try {
-          JsonRepresentation json = new JsonRepresentation(request.getEntity());
+          // JsonRepresentation json = new JsonRepresentation(request.getEntity());
           String filename = form.getFirstValue("filename");
           String filepath = form.getFirstValue("filepath");
           String pathRootUser = this.getRootRef().getPath(true) + File.separator + identifier;
@@ -141,11 +141,14 @@ public final class DirectoryUser extends DirectoryProxy {
           }
           if (cible.createNewFile()) {
             FileOutputStream fos = new FileOutputStream(cible);
-            fos.write(json.getText().getBytes());
+            fos.write(request.getEntity().getText().getBytes());
             fos.flush();
             fos.close();
           }
-          response.setEntity(new JsonRepresentation(new fr.cnes.sitools.common.model.Response(true, "Saved")));
+          fr.cnes.sitools.common.model.Response responseResult = new fr.cnes.sitools.common.model.Response(true,
+              "Saved");
+          response.setEntity(new JacksonRepresentation<fr.cnes.sitools.common.model.Response>(
+              MediaType.APPLICATION_JSON, responseResult));
         }
         catch (IOException e) {
           getLogger().log(Level.INFO, null, e);
@@ -155,7 +158,7 @@ public final class DirectoryUser extends DirectoryProxy {
           || MediaType.TEXT_XML.toString().equals(mediaTypeEntity)) {
         Form form = request.getResourceRef().getQueryAsForm();
         try {
-          XmlRepresentation json = new DomRepresentation(request.getEntity());
+          XmlRepresentation xml = new DomRepresentation(request.getEntity());
           String filename = form.getFirstValue("filename");
           String filepath = form.getFirstValue("filepath");
           String pathRootUser = this.getRootRef().getPath(true) + File.separator + identifier;
@@ -175,11 +178,15 @@ public final class DirectoryUser extends DirectoryProxy {
           }
           if (cible.createNewFile()) {
             FileOutputStream fos = new FileOutputStream(cible);
-            fos.write(json.getText().getBytes());
+            fos.write(xml.getText().getBytes());
             fos.flush();
             fos.close();
           }
-          response.setEntity(new JsonRepresentation(new fr.cnes.sitools.common.model.Response(true, "Saved")));
+
+          fr.cnes.sitools.common.model.Response responseResult = new fr.cnes.sitools.common.model.Response(true,
+              "Saved");
+          response.setEntity(new JacksonRepresentation<fr.cnes.sitools.common.model.Response>(
+              MediaType.APPLICATION_JSON, responseResult));
         }
         catch (IOException e) {
           getLogger().log(Level.INFO, null, e);
