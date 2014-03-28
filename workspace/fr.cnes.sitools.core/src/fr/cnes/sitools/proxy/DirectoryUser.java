@@ -36,6 +36,7 @@ import org.restlet.data.Status;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.ext.xml.XmlRepresentation;
+import org.restlet.representation.Representation;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.userstorage.UserStorageApplication;
@@ -246,7 +247,7 @@ public final class DirectoryUser extends DirectoryProxy {
    * @return a JSON representation
    */
   @Override
-  protected JsonRepresentation getJsonRepresentation(ReferenceList reference) {
+  protected Representation getJsonRepresentation(ReferenceList reference) {
     return getAdvancedJsonRepresentation(reference);
   }
 
