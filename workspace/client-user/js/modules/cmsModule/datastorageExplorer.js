@@ -203,7 +203,8 @@ sitools.user.modules.datastorageExplorer = Ext.extend(Ext.Panel, {
             root : {
                 text : this.nameDatastorage,
                 leaf : false,
-                url : this.datastorageUrl
+                url : this.datastorageUrl,
+                name : this.nameDatastorage
             },            
             listeners : {
                 scope : this,
