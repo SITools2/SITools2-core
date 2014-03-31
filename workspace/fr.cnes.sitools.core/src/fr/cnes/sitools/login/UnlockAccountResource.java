@@ -79,7 +79,7 @@ public class UnlockAccountResource extends ResetPasswordResource {
     if (userLogin == null) {
       throw new ResourceException(
           Status.CLIENT_ERROR_GONE,
-          "You asked for changing your password, but the request is no longer available. Please ask again to change your password on SITools2");
+          "You asked to unlock your account, but the request is no longer available. Please ask again to unlock your password on SITools2");
     }
 
   }
@@ -133,7 +133,7 @@ public class UnlockAccountResource extends ResetPasswordResource {
     else {
       response = new Response(false, "User not found. ");
     }
-
+    challengeToken.invalidToken(token);
     return getRepresentation(response, variant);
   }
 

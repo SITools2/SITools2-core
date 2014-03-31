@@ -59,7 +59,7 @@ public class UnlockAccountIndex extends SitoolsResource {
     if (!challengeToken.isValid(token)) {
       throw new ResourceException(
           Status.CLIENT_ERROR_GONE,
-          "You asked for changing your password, but the request is no longer available. Please ask again to change your password on SITools2");
+          "You asked to unlock your account, but the request is no longer available. Please ask again to unlock your password on SITools2");
     }
   }
 

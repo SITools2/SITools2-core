@@ -199,6 +199,10 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
       captcha = getCaptcha();
 
       unlockAccount(token, newUserPwd, captcha);
+      
+      captcha = getCaptcha();
+      //token is supposed to be invalid now
+      unlockAccountBadToken(token, captcha);
 
       checkUserNotBlacklisted(userId, newUserPwd);
 

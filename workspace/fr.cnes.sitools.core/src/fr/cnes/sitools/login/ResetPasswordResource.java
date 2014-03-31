@@ -82,7 +82,7 @@ public class ResetPasswordResource extends SitoolsResource {
     if (userLogin == null) {
       throw new ResourceException(
           Status.CLIENT_ERROR_GONE,
-          "You asked for changing your password, but the request is no longer available. Please ask again to change your password on SITools2");
+          "You asked to change your password, but the request is no longer available. Please ask again to change your password on SITools2");
     }
 
   }
