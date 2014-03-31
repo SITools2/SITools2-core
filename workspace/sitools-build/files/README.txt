@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2014-03-14
-Version                              : 2.3.1
+Date                                 : 2014-04-04
+Version                              : 2.4
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -12,10 +12,26 @@ Project page                         : http://sitools2.sourceforge.net/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
-Reference tag                        : (2.3)
+Reference tag                        : (2.4)
 
 2/ Changes
 
+_________________
+-2.4 (2014-04-04)
+	* New features :
+		- Administrator actions logged in a specific log
+		- 
+			
+	* Enhancements :	
+		- Password recovery process changed
+		- Unlock account process changed
+		- Change password emails improved
+					
+	* Bug fixed :
+		 
+	* API changes :
+		- org.json library removed in favor of Jackson
+		- org.restlet.ext library removed
 _________________
 -2.3.1 (2014-03-14)
 	* New features :
