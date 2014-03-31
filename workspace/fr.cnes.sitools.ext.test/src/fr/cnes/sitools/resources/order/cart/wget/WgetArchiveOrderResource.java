@@ -147,6 +147,10 @@ public class WgetArchiveOrderResource extends AbstractCartOrderResource {
     root.put("order", order);
     root.put("task", task);
     root.put("user", getClientInfo().getUser());
+    root.put(
+        "sitoolsUrl",
+        getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
+            + settings.getString(Consts.APP_CLIENT_USER_URL) + "/");
 
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 

@@ -5,10 +5,7 @@
 
 <body style="font-family: sans-serif;">
 
-
-<p style="font-size: 1.2em;font-weight: bold;margin: 1em 0px;">
-${description!}
-</p>
+<a href="${sitoolsUrl}"><img src="${sitoolsUrl}../common/res/images/logo_01_petiteTaille.png"/></a>
 
 <p>
 Dear ${user.firstName} ${user.lastName},
@@ -24,8 +21,7 @@ If you did not initiate this change, we invite you to reset your password by sel
 
 
 <p>
-Best regards,<br/>
-The SITools2 team</p>
+<#include "mail.bottom.ftl">
 
 </body>
 </html>

@@ -48,6 +48,7 @@ import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.PasswordGenerator;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
@@ -307,7 +308,7 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     mailToUser.setToList(Arrays.asList(toList));
 
     // Object
-    mailToUser.setSubject("SITOOLS - Your password has been changed");
+    mailToUser.setSubject("SITools2 - Password changed");
 
     // Body
     mailToUser.setBody(user.getIdentifier() + ", your password has been changed. Your new password is : " + pass);
@@ -322,14 +323,10 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     }
     
     Map<String, Object> root = new HashMap<String, Object>();
-    root.put("mail", mailToUser);
     root.put("origin", origin);
     root.put("user", user);
     root.put("pass", pass);
-    root.put(
-        "sitoolsUrl",
-        getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
-            + settings.getString(Consts.APP_CLIENT_USER_URL) + "/");
+    MailUtils.addDefaultParameters(root, getSettings(), mailToUser);
 
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 

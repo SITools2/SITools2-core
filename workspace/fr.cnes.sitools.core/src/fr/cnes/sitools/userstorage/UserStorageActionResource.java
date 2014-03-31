@@ -34,7 +34,6 @@ import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
-import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -50,6 +49,7 @@ import fr.cnes.sitools.userstorage.business.UserStorageManager;
 import fr.cnes.sitools.userstorage.model.Action;
 import fr.cnes.sitools.userstorage.model.UserStorage;
 import fr.cnes.sitools.userstorage.model.UserStorageStatus;
+import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
@@ -244,7 +244,7 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
     Mail mailToUser = new Mail();
     mailToUser.setToList(Arrays.asList(toList));
     // TODO EVOL : email subject should be a parameter
-    mailToUser.setSubject("Sitools quota");
+    mailToUser.setSubject("SITools2 - Quota exceeded");
 
     // default body
     mailToUser.setBody("Your quota exceeded:" + storage.getStorage().getBusyUserSpace() + " used / "
@@ -254,8 +254,8 @@ public final class UserStorageActionResource extends AbstractUserStorageResource
     String templatePath = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
         + "mail.quota.exceeded.ftl";
     Map<String, Object> root = new HashMap<String, Object>();
-    root.put("mail", mailToUser);
     root.put("storage", storage);
+    MailUtils.addDefaultParameters(root, getSettings(), mailToUser);
 
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 

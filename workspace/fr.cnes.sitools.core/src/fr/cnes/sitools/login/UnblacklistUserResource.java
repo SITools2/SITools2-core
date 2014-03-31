@@ -45,6 +45,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
@@ -100,7 +101,7 @@ public class UnblacklistUserResource extends SitoolsResource {
       if (userDb != null) {
         if (userDb.getEmail().equals(user.getEmail())) {
           String resetPasswordUrl = getUnlockAccountUrl(user);
-          sendMailToUser(user, resetPasswordUrl);
+          sendMailToUser(userDb, resetPasswordUrl);
           response = new Response(true, "Mail sent to : " + user.getEmail() + " to initialize new password");
         }
         else {
@@ -190,7 +191,7 @@ public class UnblacklistUserResource extends SitoolsResource {
     mailToUser.setToList(Arrays.asList(toList));
 
     // Object
-    mailToUser.setSubject("SITOOLS - Account locked");
+    mailToUser.setSubject("SITools2 - Account locked");
 
     // Body
     mailToUser.setBody(user.getIdentifier() + ", click on <a href='" + url + "'>" + url
@@ -200,14 +201,10 @@ public class UnblacklistUserResource extends SitoolsResource {
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
         + "mail.user.blacklist.ftl";
     Map<String, Object> root = new HashMap<String, Object>();
-    root.put("mail", mailToUser);
     root.put("user", user);
     root.put("unlockAccountUrl", getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL) + url);
-    root.put(
-        "sitoolsUrl",
-        getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
-            + settings.getString(Consts.APP_CLIENT_USER_URL) + "/");
-
+    MailUtils.addDefaultParameters(root, getSettings(), mailToUser);
+    
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 
     root.put("context", getContext());

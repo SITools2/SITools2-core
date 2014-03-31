@@ -51,6 +51,7 @@ import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.SecurityUtil;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
@@ -271,7 +272,7 @@ public final class AdminInscriptionResource extends InscriptionResource {
         mailToUser.setToList(Arrays.asList(toList));
 
         // TODO EVOL : email subject should be a parameter
-        mailToUser.setSubject("Sitools registration");
+        mailToUser.setSubject("SITools2 - Registration");
 
         // default
         mailToUser.setBody("Your account is now activated.");
@@ -280,12 +281,8 @@ public final class AdminInscriptionResource extends InscriptionResource {
         String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
             + "mail.account.activated.ftl";
         Map<String, Object> root = new HashMap<String, Object>();
-        root.put("mail", mailToUser);
         root.put("user", newUser);
-        root.put(
-            "sitoolsUrl",
-            getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
-                + settings.getString(Consts.APP_CLIENT_USER_URL) + "/");
+        MailUtils.addDefaultParameters(root, settings, mailToUser);
 
         TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 

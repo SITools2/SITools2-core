@@ -5,13 +5,14 @@
 
 <body style="font-family: sans-serif;">
 
+<a href="${sitoolsUrl}"><img src="${sitoolsUrl}../common/res/images/logo_01_petiteTaille.png"/></a>
 
 <p>
 Dear ${user.firstName} ${user.lastName},
 </p>
 
 <p>
-We are pleased to inform you that your user account has been created on SITools2. You can can access data as defined in the <a href="${sitoolsUrl}">SITools2 url</a>.
+We are pleased to inform you that your user account has been created on SITools2. You can can access data as defined in <a href="${sitoolsUrl}">SITools2</a>.
 </p>
 
 <p>
@@ -22,9 +23,7 @@ Your login is ${user.identifier}<br/>
 </p>
 
 
-<p>
-Best regards,<br/>
-The SITools2 team</p>
+<#include "mail.bottom.ftl">
 
 </body>
 </html>
