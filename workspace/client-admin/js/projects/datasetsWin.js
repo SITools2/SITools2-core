@@ -36,7 +36,7 @@ Ext.define('sitools.admin.projects.datasetsWin', {
     modal : true,
     closable : false,
     pageSize : 10,
-//    id : 'projectsDatasetWinId',
+    layout : 'fit',
 
     initComponent : function () {
         this.title = i18n.get('label.datasets');
@@ -83,7 +83,9 @@ Ext.define('sitools.admin.projects.datasetsWin', {
             } ]
         });
         this.grid = new Ext.grid.GridPanel({
-            selModel : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel', {
+                mode : 'MULTI'
+            }),
             store : this.store,
             height : 200,
             forceFit : true,
@@ -96,7 +98,7 @@ Ext.define('sitools.admin.projects.datasetsWin', {
             } ]
         });
         
-        this.items = [ {
+        this.items = [{
             xtype : 'panel',
             title : i18n.get('label.selectDataset'),
             items : [ this.grid ],
@@ -108,7 +110,7 @@ Ext.define('sitools.admin.projects.datasetsWin', {
 	            displayMsg : i18n.get('paging.display'),
 	            emptyMsg : i18n.get('paging.empty')
             }
-        } ];
+        }];
         
         this.buttons = [{
             text : i18n.get('label.ok'),
@@ -119,6 +121,7 @@ Ext.define('sitools.admin.projects.datasetsWin', {
             scope : this, 
             handler : this._onCancel
         } ];
+        
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
         sitools.admin.projects.datasetsWin.superclass.initComponent.call(this);
     },

@@ -134,7 +134,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', {
             title : 'Tables Dataset',
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
                 pluginId : 'tableAliasEditing',
-                clicksToEdit: 2
+                clicksToEdit: 1
             })]
         });
 

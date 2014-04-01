@@ -95,7 +95,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
         };
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         this.gridValues = Ext.create('Ext.grid.Panel', {
@@ -108,9 +108,10 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             columns : [{
                 header : i18n.get('headers.value'),
                 dataIndex : 'value',
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     allowBlank : false
-                })
+                }
             }, { 
                 xtype : 'checkcolumn',
                 header : i18n.get('headers.defaultValue'),

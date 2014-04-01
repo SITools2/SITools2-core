@@ -20,55 +20,143 @@
  showHelp*/
 Ext.namespace('sitools.admin.datasource.mongoDb');
 
+Ext.define('sitools.admin.datasource.mongoDb.fieldsModel', {
+    extend : 'Ext.data.Model',
+    fields : [{
+        name :'type'
+    }, {
+        name : 'text'
+    }, {
+        name : 'name'
+    }]
+});
+
 /**
- * A tree Panel to represent a metadata coming from mongoDb resourceRepresentation. 
+ * A tree Panel to represent a metadata coming from mong    oDb resourceRepresentation. 
  * @cfg {} collection An object representing the collection mongo DB 
  * @class sitools.admin.datasource.mongoDb.CollectionExplorer
  * @extends Ext.tree.TreePanel
  */
-Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', { extend : 'Ext.tree.Panel',
+Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', {
+    extend : 'Ext.tree.Panel',
+    useArrows : false,
+    autoScroll : true,
+    animate : true,
+    rootVisible : false,
     
     initComponent : function () {
-		var url = !Ext.isEmpty(this.collection) ? this.collection.url + "/metadata" : null;
-		sitools.admin.datasource.mongoDb.CollectionExplorer.superclass.initComponent.call(Ext.apply(this, {
-			title : i18n.get("label.metadata"), 
-			useArrows : false,
-            autoScroll : true,
-            animate : true,
-            selModel : new Ext.tree.MultiSelectionModel(), 
-            root : {
-                nodeType : 'async'
-            },
-            loader : new sitools.widget.rootTreeLoader({
-                requestMethod : 'GET',
-                root: "data", 
-                url : url, 
-                listeners : {
-					scope : this,
-					load : function (loader, node, response) {
-						if (this.observer) {
-							this.observer.fireEvent("metadataLoaded", node);
-						}
-					}
-				}
-            }),
-            rootVisible : false,
-            listeners : {
-            	scope : this, 
-                beforeload : function (node) {
-					node.setText(node.attributes.name);
-					node.attributes.collection = this.collection.name;
-					return node.isRoot || Ext.isDefined(node.attributes.children);
-                },
-                load : function (node) {
-					node.eachChild(function (item) {
-						item.setText(item.attributes.name);
-					    return true;
-					});
+        this.title = i18n.get("label.metadata");
+        
+		this.url = !Ext.isEmpty(this.collection) ? this.collection.url + "/metadata" : null;
+		
+		this.store = Ext.create('Ext.data.TreeStore', {
+            model : 'sitools.admin.datasource.mongoDb.fieldsModel',
+//            root : {
+//                text : this.name,
+//                expanded : true,
+//                leaf : false
+//            },
+            proxy : {
+                type : 'memory',
+//                url : this.url,
+                reader : {
+                    root : 'children',
+                    type : 'json'
                 }
-            }			
-		}));
+            },
+            listeners : {
+                scope : this,
+//                load : function ( store, node, records, successful, eOpts ) {
+//                    Ext.each(records, function (record) {
+//                        this.createNode(record);                
+//                    }, this);
+//                }
+            }
+        });
+		
+		this.listeners = {
+            scope : this,
+            afterrender : function () {
+                this.loadStore();
+//                this.store.load();
+            },
+//            beforeappend : function (rootNode, node) {
+//                node.set('leaf', Ext.isEmpty(node.get('children')));  
+//            },
+        };
+		
+//        loader : new sitools.widget.rootTreeLoader({
+//            requestMethod : 'GET',
+//            root: "data", 
+//            url : url, 
+//            listeners : {
+//                scope : this,
+//                load : function (loader, node, response) {
+//                    if (this.observer) {
+//                        this.observer.fireEvent("metadataLoaded", node);
+//                    }
+//                }
+//            }
+//        }),
+        
+//        listeners : {
+//          scope : this, 
+//            beforeload : function (node) {
+//              node.setText(node.attributes.name);
+//              node.attributes.collection = this.collection.name;
+//              return node.isRoot || Ext.isDefined(node.attributes.children);
+//            },
+//            load : function (node) {
+//              node.eachChild(function (item) {
+//                  item.setText(item.attributes.name);
+//                  return true;
+//              });
+//            }
+//        } 
+		
+		sitools.admin.datasource.mongoDb.CollectionExplorer.superclass.initComponent.call(this);
     }, 
+    
+    loadStore : function () {
+        Ext.Ajax.request({
+            method : 'GET',
+            url : this.url,
+            scope : this,
+            success : function (ret) {
+                var jsonData = Ext.decode(ret.responseText).children;
+                
+                if (ret.status != 200) {
+                    Ext.Msg.alert(i18n.get('label.warning'), ret.message);
+                    return false;
+                }
+                
+                Ext.each(jsonData, function (node) {
+                    this.createNode(node);
+                }, this);
+                
+                this.store.getRootNode().appendChild(jsonData);
+            },
+            failure : alertFailure
+        });
+    },
+    
+    loadNodeStore : function () {
+        
+    },
+    
+    createNode : function (node) {
+        
+        node.text = node.name;
+        
+        if (Ext.isEmpty(node.children)) {
+            return;
+        } else {
+            Ext.each(node.children, function (record) {
+                this.createNode(record);
+            }, this);
+        }
+    },
+    
     getLoader : function () {
     	return this.loader;
     }

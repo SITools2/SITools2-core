@@ -116,7 +116,8 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', {
 	     */
 	    fillSpecificValue : function (columnRenderer) {
 			var form = this.formPanel.getForm();
-			var display = form.findField("display").getValue().getGroupValue();
+//			var display = form.findField("display").getValue().getGroupValue();
+			var display = form.findField("display").getValue().display;
             if ("Text" == display) {
 				var linkText = form.findField("linkText").getValue();
 				columnRenderer.linkText = linkText;

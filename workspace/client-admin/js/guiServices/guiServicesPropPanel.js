@@ -122,7 +122,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', {
                     anchor : '100%', 
                     allowBlank : false
                 }, comboSelectionType, {
-                    xtype : 'spinnerfield',
+                    xtype : 'numberfield',
                     name : 'priority',
                     id : 'priorityId', 
                     fieldLabel : i18n.get('label.priority'),

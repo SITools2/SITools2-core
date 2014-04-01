@@ -51,9 +51,6 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
             height : 450,
             store : this.storeAuthorizations,
             forceFit : true,
-            selModel: {
-                selType: 'cellmodel'
-            },
             tbar : {
                 xtype : 'toolbar',
                 defaults : {
@@ -148,7 +145,7 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
     _onDeleteRole : function () {
         var recs = this.gridAuthorizations.getSelectionModel().getSelections();
         if (recs.length === 0) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         this.gridAuthorizations.getStore().remove(recs);
     },

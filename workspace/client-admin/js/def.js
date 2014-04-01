@@ -33,6 +33,7 @@ var SHOW_HELP = true;
 var COOKIE_DURATION = 20;
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
+var msgCt;
 var JAVA_TYPES = [{
 	name : "String"
 }, {
@@ -260,6 +261,24 @@ function showResponse(ret) {
         Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.javascriptError') + " : " + err);
         return false;
     }
+}
+
+function createBox(t, s, i) {
+    if (i) {
+        return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p><span style="padding:6px;"><img src="' + i +'"/></span>' + s + '</p></div>';
+    } else {
+        return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p>' + s + '</p></div>';
+    }
+}
+
+function popupMessage(title, format, icon, delayTime) {
+    if(!msgCt){
+        msgCt = Ext.DomHelper.insertFirst(document.body, {id:'msg-div'}, true);
+    }
+    var s = Ext.String.format.apply(String, Array.prototype.slice.call(arguments, 1));
+    var m = Ext.DomHelper.append(msgCt, createBox(title, s, icon), true);
+    m.hide();
+    m.slideIn('t').ghost("t", { delay: delayTime || 1000, remove: true});
 }
 
 //Basic formFields Validation

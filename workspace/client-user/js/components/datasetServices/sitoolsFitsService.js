@@ -547,7 +547,6 @@ sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = fun
             mode : 'local',
             forceSelection : true,
             triggerAction : 'all',
-            tpl : '<tpl for="."><div class="x-combo-list-item comboItem">{columnAlias}</div></tpl>',
             store : new Ext.data.JsonStore({
                         fields : ['columnAlias'],
                         url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
@@ -555,9 +554,9 @@ sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = fun
                         autoLoad : true,
                         listeners : {
                             load : function(store) {
-                                store.add(new Ext.data.Record({
-                                            'columnAlias' : ""
-                                        }));
+                                store.add({
+                                    columnAlias : ""
+                                });
                             }
 
                         }

@@ -168,7 +168,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
         var rec = this.getSelectionModel().getSelected();
         
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.units.unitsProp({
             action : 'modify',
@@ -186,19 +186,18 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
     onDelete : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('unitsCrud.delete'),
+            msg : String.format(i18n.get('unitsCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
                     this.doDelete(rec);
                 }
             }
-
         });
     },
 

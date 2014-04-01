@@ -92,17 +92,18 @@ sitools.admin.datasets.abstractDatasetWin = {
      * @method 
      */
     onUpload : function () {
-        function validate(data, config) {
-
+        var validate = function (data, config) {
             config.fieldUrl.setValue(data.url);
-        }
+        };
+        
         var chooser = new ImageChooser({
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_UPLOAD_URL') + '/?media=json',
             width : 515,
             height : 350,
-            fieldUrl : this.ownerCt.items.items[0]
+            fieldUrl : this.ownerCt.items.items[0],
+            callback : validate
         });
-        chooser.show(document, validate);
+        chooser.show(document);
     },
 
     /**

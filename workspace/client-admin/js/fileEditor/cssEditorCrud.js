@@ -121,7 +121,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
     onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         var cssProp = new sitools.component.fileEditor.fileEditorProp({

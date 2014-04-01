@@ -184,12 +184,11 @@ var clientAdmin = {
 	initGui : function () {
 	    
 	    var menuLogout = {
-//	            xtype : 'tbbutton',
 	        xtype : 'button',
-//	        text : i18n.get('label.logout'),
 	        tooltip : i18n.get('label.logout'),
 	        itemId : 'menu_logout',
 	        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/logout.png',
+	        cls : 'x-custom-button-color',
 	        handler : function () {
 	            sitools.userProfile.LoginUtils.logout();
 	        }
@@ -206,21 +205,24 @@ var clientAdmin = {
 	    var toolbar = {
 	        xtype : 'toolbar',
 	        id : ID.CMP.TOOLBAR,
+	        cls : 'admin-bg',
 	        items : [ {
 	            xtype : 'label',
 	            html : '<img src=res/images/cnes.png width=92 height=28>'
 	        }, {
 	            xtype : 'label',
-	            style : "text-shadow: 1px 1px #D5D5D5;font-size: 12px;color: #15428B;font-weight: bold;",
+	            style : "text-shadow: 1px 1px #F2F8FF;font-size: 12px; color: #526572; font-weight: bold; padding-left : 15px",
 	            text : i18n.get('label.title')
 	        }, '->', {
 	            xtype : 'label',
+	            style : "text-shadow: 1px 1px #F2F8FF; font-size: 12px; color: #526572;",
 	            html : i18n.get('label.welcome') + ' <b>' + Ext.util.Cookies.get('userLogin') + '</b>'
 	        }, '-', {
 	            id : 'quickStart',
 	            tooltip : 'Quick Start',
 	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/quick_start.png',
                 style : 'padding:2px',
+                cls : 'x-custom-button-color',
                 handler : function () {
                     mainPanel.removeAll();
                     
@@ -250,6 +252,7 @@ var clientAdmin = {
                 tooltip : 'Version',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/version.png',
                 style : 'padding:2px',
+                cls : 'x-custom-button-color',
                 handler : function () {
                     showVersion();
                 }
@@ -258,6 +261,7 @@ var clientAdmin = {
 		        tooltip: 'Show Help',
 		        enableToggle: true,
                 style : 'padding:2px',
+                cls : 'x-custom-button-color',
 		        toggleHandler: function (item, checked) {
 					var helpPanel = Ext.getCmp(ID.PANEL.HELP);
 					SHOW_HELP = checked;
@@ -274,14 +278,14 @@ var clientAdmin = {
 			    },
 		        pressed: true,
 		        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png'
-		    }, {
-//		        text : 'Advanced Mode',
+		    }, /*{
 		        tooltip : 'Advanced Mode',
 		        id : 'switchModeId',
 		        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/maintenance.png',
 		        enableToggle: true,
 		        pressed : true,
                 style : 'padding:2px',
+                cls : 'x-custom-button-color',
 		        toggleHandler : function (item, checked) {
 		            var main = Ext.getCmp(ID.PANEL.MAIN);
 		            var tree = Ext.getCmp(ID.PANEL.TREE);
@@ -363,7 +367,8 @@ var clientAdmin = {
 		            }
 		            viewport.doLayout();
 		        }
-		    }, "-", menuLogout
+		    }*/,
+		    "-", menuLogout
 	
 	        // menuList,
 	        // '-',
@@ -385,12 +390,15 @@ var clientAdmin = {
 	        id : ID.PANEL.TREE,
 	        region : 'west',
 	        title : i18n.get('label.menu'),
-	        split : true,
+//	        split : true,
 	        autoScroll : true,
-	        width : 330,
+	        width : 295,
 	        layout : 'fit',
 	        border : false,
             bodyBorder : false,
+            header : {
+                cls : 'x-toolbar-shadow',
+            },
 	        defaults : {
 	            padding : 10
 	        }
@@ -405,45 +413,50 @@ var clientAdmin = {
                 id : ID.PANEL.QUICKSTART,
                 border : false,
                 bodyBorder : false,
-                width : "100%",
                 flex : 1
             });
             
-            var containerPanel = Ext.create('Ext.Component', {
+            var containerPanel = Ext.create('Ext.container.Container', {
                 name : 'containerPanel',
-//                autoLoad : 'res/html/' + LOCALE + '/welcome.html',
 //                width : "100%",
                 layout : 'fit',
                 bodyCssClass : 'admin-bg',
                 autoScroll : false,
                 border : false,
                 flex : 1,
-                autoEl: {
-                    tag: 'iframe',
-                    border : false,
-                    src: 'res/html/' + LOCALE + '/welcome.html'
-                }
+                items : [{
+                    xtype : 'component',
+                    autoEl: {
+                        tag: 'iframe',
+                        border : false,
+                        src: 'res/html/' + LOCALE + '/welcome.html'
+                    }
+                }]
             }); 
             mainPanelItems.push(containerPanel);
             mainPanelItems.push(quickStartPanel);
         } else {
-            var welcomePanel = Ext.create('Ext.Component', {
+            var welcomePanel = Ext.create('Ext.container.Container', {
                 xtype : 'panel', 
-                layout : 'fit', 
-                height : 1200,
-                autoEl: {
-                    tag: 'iframe',
-                    border : false,
-                    autoScroll : false,
-                    src: 'res/html/' + LOCALE + '/welcome.html'
-                }
-//                autoLoad : 'res/html/' + LOCALE + '/welcome.html'
+                layout : 'fit',
+                flex : 1,
+                items : [{
+                    xtype : 'component',
+                    autoEl: {
+                        tag: 'iframe',
+                        border : false,
+                        src: 'res/html/' + LOCALE + '/welcome.html'
+                    }
+                }]
             }); 
             mainPanelItems.push(welcomePanel);
         }
         
 	    mainPanel = new Ext.Panel({
 	        bodyCssClass : 'admin-bg',
+	        header : {
+                cls : 'x-toolbar-shadow',
+	        },
 	        layout : 'vbox',
 	        border : false,
             bodyBorder : false,

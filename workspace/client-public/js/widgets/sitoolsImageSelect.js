@@ -40,7 +40,7 @@ Ext.define('Ext.form.SitoolsSelectImage', {
 	            fieldUrl : this,
 	            callback : validate
 	        });
-	        chooser.show(document, validate);
+	        chooser.show(document);
         }
 	} 
 

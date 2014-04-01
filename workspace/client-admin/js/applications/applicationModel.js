@@ -35,8 +35,6 @@ Ext.define('ApplicationModel', {
         type : 'string'
     }, {
         name : 'wadl',
-        type : 'string',
-        convert : function (v, record) {
-        }
+        type : 'string'
     }],
 });

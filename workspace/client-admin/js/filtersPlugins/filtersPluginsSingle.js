@@ -161,7 +161,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
         
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
@@ -263,7 +263,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
                 width : 150,
                 sortable : false
             }, {
-                header : i18n.get('label.value'),
+                header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'value',
                 width : 230,
                 sortable : false,

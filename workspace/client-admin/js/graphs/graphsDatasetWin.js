@@ -22,15 +22,14 @@ Ext.namespace('sitools.component.graphs');
 
 Ext.define('sitools.component.graphs.graphsDatasetWin', { 
     extend : 'Ext.Window',
-    // url + mode + storeref
     width : 350,
     modal : true,
     closable : false,
     pageSize : 10,
 
     initComponent : function () {
-        this.title = i18n.get('label.datasets');
-        var projectId = this.projectId;
+        this.title = i18n.get('label.selectDataset');
+        
         this.store = new Ext.data.JsonStore({
             root : 'project.dataSets',
             restful : true,
@@ -65,10 +64,12 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
                 name : 'properties'
             } ]
         });
+        
         this.grid = new Ext.grid.GridPanel({
-            selModel : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel', {
                 singleSelect : true
             }),
+            forceFit : true,
             store : this.store,
             height : 200,
             columns : [ {
@@ -80,7 +81,7 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
             } ],
             listeners : {
                 scope : this,
-                viewReady : function () {
+                viewready : function () {
                     var node = this.node;
                     if (this.mode == 'edit') {
                         var index = this.store.find('name', node.text);
@@ -92,7 +93,6 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
         });
         this.items = [ {
             xtype : 'panel',
-            title : i18n.get('label.selectDataset'),
             items : [ this.grid ],
             bbar : {
                 xtype : 'toolbar',
@@ -130,9 +130,14 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
     },
 
     _onOK : function () {
-        var dataset = this.grid.getSelectionModel().getSelected();
+        var dataset = this.grid.getSelectionModel().getSelection()[0];
+        
+        if (Ext.isEmpty(dataset)) {
+            return;
+        }
+        
         if (this.mode == 'edit') {
-            this.node.setText(dataset.data.name);
+            this.node.set('text', dataset.data.name);
         } else {
 			var properties = dataset.data.properties;
 			var nbRecord = 0;
@@ -152,8 +157,8 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
 				});
 			}
 			
-            var newNode = {
-                text : dataset.data.name,
+			var newNode = Ext.create('sitools.component.graphs.graphNodeModel', {
+			    text : dataset.data.name,
                 datasetId : dataset.data.id,
                 visible : dataset.data.visible, 
                 status : dataset.data.status,
@@ -163,11 +168,27 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
                 imageDs : imageDs,
                 readme : descriptionHTML,
                 url : dataset.data.url
-            };
+			});
+			
+//            var newNode = {
+//                text : dataset.data.name,
+//                leaf : true,
+//            };
+            
             if (!this.node.isExpanded()) {
                 this.node.expand();
             }
-            this.node.appendChild(newNode);
+            
+            var addedNode = this.node.appendChild(newNode);
+            
+//            addedNode.set('datasetId', dataset.data.id);
+//            addedNode.set('visible', dataset.data.visible);
+//            addedNode.set('status', dataset.data.status);
+//            addedNode.set('nbRecord', dataset.data.nbRecord);
+//            addedNode.set('type', 'dataset');
+//            addedNode.set('imageDs', imageDs);
+//            addedNode.set('readme', descriptionHTML);
+//            addedNode.set('url', dataset.data.url);
         }
         this.close();
     },

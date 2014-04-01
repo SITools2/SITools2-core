@@ -27,7 +27,8 @@ Ext.namespace('sitools.admin.datasource');
  * @class sitools.admin.datasource.DataBaseTest
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasource.DataBaseTest', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasource.DataBaseTest', { 
+    extend : 'Ext.Window',
     width : 400,
     height : 210,
     modal : true,
@@ -36,13 +37,15 @@ Ext.define('sitools.admin.datasource.DataBaseTest', { extend : 'Ext.Window',
     buttonAlign : 'center',
 
     initComponent : function () {
+        
         this.title = i18n.get('label.databaseInfo');
         this.bbar = new Ext.ux.StatusBar({
             text : i18n.get('label.ready'),
             id : 'sbDBTest',
             iconCls : 'x-status-valid'
         });
-        this.items = [ {
+        
+        this.items = [{
             xtype : 'panel',
             baseCls : 'x-plain',
             layout : 'fit',
@@ -50,14 +53,15 @@ Ext.define('sitools.admin.datasource.DataBaseTest', { extend : 'Ext.Window',
                 xtype : 'textarea',
                 id : 'DBText'
             } ]
-        } ];
-        this.buttons = [ {
+        }];
+        
+        this.buttons = [{
             text : i18n.get('label.ok'),
             scope : this,
             handler : function () {
                 this.close();
             }
-        } ];
+        }];
 
         sitools.admin.datasource.DataBaseTest.superclass.initComponent.call(this);
     },

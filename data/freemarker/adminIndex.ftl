@@ -32,19 +32,17 @@
        
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css"></link>
     <!--<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/spinner.css"></link>-->
+    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/imageChooser/imageChooser.css"></link>
+    <link rel="stylesheet" type="text/css" href="res/css/commons.css"></link>
     
     
     <!-- Sitools specific css -->
     <link rel="stylesheet" type="text/css" href="res/css/main.css"></link>
-    <link rel="stylesheet" type="text/css" href="res/css/commons.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/imageChooser/imageChooser.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/lockingGrid/columnLock.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/sliderRange/css/ux/SliderRange.css"></link>
     
-    <!--
-    -->
     
     <link rel="stylesheet" type="text/css" href="res/css/icons.css"></link>
     <!--
@@ -241,6 +239,8 @@
     <script type="text/javascript" src="js/order/orderprop.js"></script>
     <script type="text/javascript" src="js/order/orderCrud.js"></script>
     <script type="text/javascript" src="js/order/events.js"></script>
+    <script type="text/javascript" src="js/graphs/graphsTreeLoader.js"></script>
+    <script type="text/javascript" src="js/graphs/graphsCrudTreePanel.js"></script>
     <script type="text/javascript" src="js/graphs/graphsCrud.js"></script>
     <script type="text/javascript" src="js/graphs/graphsDatasetWin.js"></script>
     <script type="text/javascript" src="js/graphs/graphsNodeWin.js"></script>   

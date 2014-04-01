@@ -96,9 +96,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         });
         
         this.gridConverter = Ext.create('Ext.grid.Panel', {
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             id : 'gridConverter',
             title : i18n.get('title.converterClass'),
             selModel : Ext.create('Ext.selection.RowModel'),
@@ -153,7 +151,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         };
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         this.proxyFieldMapping = Ext.create('Ext.data.proxy.Ajax', {
@@ -261,7 +259,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                     width : 100,
                     sortable : false
                 }, {
-                    header : i18n.get('label.value'),
+                    header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                     dataIndex : 'value',
                     width : 80,
                     sortable : false,
@@ -280,7 +278,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                 celldblclick : function (grid, td, columnIndex, record, tr, rowIndex) {
                     var storeRecord = grid.getStore().getAt(rowIndex);
                     var rec = storeRecord.data;
-                    if (columnIndex == 2 && rec.parameterType != "CONVERTER_PARAMETER_INTERN") {
+                    if (columnIndex == 3 && rec.parameterType != "CONVERTER_PARAMETER_INTERN") {
                         var selectColumnWin = new sitools.admin.datasets.selectColumn({
                             field : "attachedColumn",
                             record : storeRecord,
@@ -289,7 +287,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                             url : this.urlDatasets + "/" + this.datasetId
                         });
                         selectColumnWin.show(ID.BOX.DATASETS);
-                    } else if (columnIndex == 3 && rec.parameterType == "CONVERTER_PARAMETER_INTERN") {
+                    } else if (columnIndex == 4 && rec.parameterType == "CONVERTER_PARAMETER_INTERN") {
                         return true;
                     } else {
                         return false;

@@ -26,16 +26,16 @@ html,body {
 }
 
 .admin-bg {
-	/*background:url(../images/bg.jpg) no-repeat left top;*/
-	background-size: 100%;
-	background: rgb(21,127,204); /* Old browsers */
-	background: -moz-linear-gradient(-45deg,  rgba(21,127,204,1) 0%, rgba(165,208,239,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(21,127,204,1)), color-stop(100%,rgba(165,208,239,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* IE10+ */
-	background: linear-gradient(135deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#157fcc', endColorstr='#a5d0ef',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	background:url(/sitools/common/res/wallpapers/paper.jpg) repeat left top;
+	/* background-size: 100%;
+	background: rgb(21,127,204); Old browsers
+	background: -moz-linear-gradient(-45deg,  rgba(21,127,204,1) 0%, rgba(165,208,239,1) 100%); FF3.6+
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(21,127,204,1)), color-stop(100%,rgba(165,208,239,1))); Chrome,Safari4+
+	background: -webkit-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); Chrome10+,Safari5.1+
+	background: -o-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); Opera 11.10+
+	background: -ms-linear-gradient(-45deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); IE10+
+	background: linear-gradient(135deg,  rgba(21,127,204,1) 0%,rgba(165,208,239,1) 100%); W3C
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#157fcc', endColorstr='#a5d0ef',GradientType=1 ); IE6-9 fallback on horizontal gradient */
 }
 
 .admin-bg-transparent {
@@ -200,6 +200,16 @@ pre {
 	font-weight: bold;
 }
 
+.GUI {
+	color: #14BD12;
+	font-weight: bold;
+}
+
+.SERVER {
+	color: #157FCC;
+	font-weight: bold;
+}
+
 
 /* .x-panel-body-default {
 	border: none !important;
@@ -224,9 +234,57 @@ pre {
 
 .adminPanel {
 	border-radius : 1px !important;
-	-webkit-box-shadow: 1px 1px 6px 2px #EDF4FF !important;
+	-webkit-box-shadow: 1px 1px 4px 2px #84A9C4 !important;
 }
 
 .x-tool-img .dark-icons {
 	background-image: url(/sitools/cots/extjs4/ext-4.2.1.883/resources/ext-theme-neptune/images/tools/tool-sprites-dark.png) !important;
+}
+
+.x-custom-button-color {
+	background: rgb(78,174,243); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(78,174,243,1) 0%, rgba(111,184,237,1) 11%, rgba(42,136,204,1) 79%, rgba(54,161,238,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(78,174,243,1)), color-stop(11%,rgba(111,184,237,1)), color-stop(79%,rgba(42,136,204,1)), color-stop(100%,rgba(54,161,238,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(78,174,243,1) 0%,rgba(111,184,237,1) 11%,rgba(42,136,204,1) 79%,rgba(54,161,238,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(78,174,243,1) 0%,rgba(111,184,237,1) 11%,rgba(42,136,204,1) 79%,rgba(54,161,238,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(78,174,243,1) 0%,rgba(111,184,237,1) 11%,rgba(42,136,204,1) 79%,rgba(54,161,238,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(78,174,243,1) 0%,rgba(111,184,237,1) 11%,rgba(42,136,204,1) 79%,rgba(54,161,238,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4eaef3', endColorstr='#36a1ee',GradientType=0 ); /* IE6-9 */
+}
+
+.x-toolbar-shadow {
+	box-shadow: 1px 0px 4px 2px #5A5A5A;
+	-moz-box-shadow:1px 0px 4px 2px #5A5A5A;
+	-webkit-box-shadow: 1px 0px 4px 2px #5A5A5A;
+}
+
+<!-- POPUP MESSAGE CSS -->
+
+.msg .x-box-mc {
+    font-size:14px;
+}
+#msg-div {
+    position:absolute;
+    left:50%;
+    top:10px;
+    width:400px;
+    margin-left:-200px;
+    z-index:20000;
+}
+#msg-div .msg {
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    background: #F6F6F6;
+    border: 2px solid #ccc;
+    margin-top: 2px;
+    padding: 10px 15px;
+    color: #555;
+}
+#msg-div .msg h3 {
+    margin: 0 0 8px;
+    font-weight: bold;
+    font-size: 15px;
+}
+#msg-div .msg p {
+    margin: 0;
 }

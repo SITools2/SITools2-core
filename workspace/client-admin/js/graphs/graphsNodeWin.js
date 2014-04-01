@@ -22,7 +22,6 @@ Ext.namespace('sitools.component.projects');
 
 Ext.define('sitools.component.graphs.graphsNodeWin', { 
     extend : 'Ext.Window',
-    // url + mode + storeref
     width : 350,
     modal : true,
     closable : false,
@@ -31,7 +30,7 @@ Ext.define('sitools.component.graphs.graphsNodeWin', {
         this.title = i18n.get('label.nodeDescription');
 
         /* paramétres du formulaire */
-        this.itemsForm = [ {
+        this.itemsForm = [{
             fieldLabel : i18n.get('label.name'),
             name : 'name',
             anchor : '100%',
@@ -63,8 +62,10 @@ Ext.define('sitools.component.graphs.graphsNodeWin', {
         };
 
         this.formPanel = new Ext.FormPanel({
-            labelWidth : 100, // label settings here cascade unless overridden
-            frame : true,
+            labelWidth : 100,
+            border : false,
+            bodyBorder : false,
+            padding : '5 5 5 5',
             defaultType : 'textfield',
             items : this.itemsForm
 
@@ -87,9 +88,9 @@ Ext.define('sitools.component.graphs.graphsNodeWin', {
             var node = this.node;
             var form = this.formPanel.getForm();
             var rec = {};
-            rec.name = node.text;
-            rec.image = node.attributes.image.url;
-            rec.description = node.attributes.description;
+            rec.name = node.get('text');
+            rec.image = node.get('image').url;
+            rec.description = node.get('description');
 
             form.setValues(rec);
         }
@@ -99,6 +100,7 @@ Ext.define('sitools.component.graphs.graphsNodeWin', {
         var form = this.formPanel.getForm();
         var values = form.getValues();
         var image = {};
+        
         if (!Ext.isEmpty(values.image)) {
             image.url = values.image;
             image.type = "Image";
@@ -106,18 +108,19 @@ Ext.define('sitools.component.graphs.graphsNodeWin', {
         }
 
         if (this.mode == 'edit') {
-            this.node.setText(values.name);
-            this.node.attributes.description = values.description;
-            this.node.attributes.image = image;
+            this.node.set('text', values.name);
+            this.node.set('description', values.description);
+            this.node.set('image', image);
 
         } else {
-            var newNode = {
+            var newNode = Ext.create('sitools.component.graphs.graphNodeModel', {
                 text : values.name,
                 image : image,
                 description : values.description,
                 type : "node",
                 children : []
-            };
+            });
+            
             if (!this.node.isExpanded()) {
                 this.node.expand();
             }

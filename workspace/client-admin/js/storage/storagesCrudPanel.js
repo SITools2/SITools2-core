@@ -240,7 +240,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
             applicationRecord : rec
         });
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         if (rec.data.status == "STARTED") {
@@ -310,7 +310,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.storages.storagesPropPanel({
             url : this.url + '/' + rec.data.id,
@@ -371,7 +371,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     onActive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id + "?action=start",
@@ -393,7 +393,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     onDisactive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id + "?action=stop",
@@ -413,7 +413,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     onCopy : function (){
     	var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.storages.storageCopyProp({
             urlDirectories : this.url,

@@ -29,13 +29,15 @@ Ext.namespace('sitools.admin.projects.modules');
  * @class sitools.admin.projects.modules.ProjectModulePropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { 
+    extend : 'Ext.Window', 
 	alias : 'widget.s-projectmoduleprop',
     width : 700,
     height : 540,
     modal : true,
     id : ID.PROP.PROJECTMODULE,
     layout : 'fit',
+    
     initComponent : function () {
         if (this.action == 'create') {
             this.title = i18n.get('label.createProjectModule');
@@ -178,7 +180,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', { extend : '
                     anchor : '100%', 
                     allowBlank : false
                 }, {
-                    xtype : 'spinnerfield',
+                    xtype : 'numberfield',
                     name : 'priority',
                     id : 'priorityId', 
                     fieldLabel : i18n.get('label.priority'),

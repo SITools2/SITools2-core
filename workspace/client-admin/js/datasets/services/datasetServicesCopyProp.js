@@ -33,7 +33,8 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @class sitools.admin.datasets.services.datasetServicesCopyProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { 
+    extend : 'Ext.Window', 
 	alias : 'widget.s-storage_copy',
     width : 260,
     height : 230,
@@ -48,8 +49,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { extend :
     	    xtype : 'fieldset',
             name : 'fieldsetCopiedServices',
             title : i18n.get('label.servicesCopied'),
-            autoHeight : true,
-            hidden : true
+            hidden : true,
+            height : 150,
+            autoScroll : true
     	});
     	
     	this.items = [{
@@ -113,7 +115,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { extend :
         this.idDest = f.findField('datasetDestId').getValue();
         
         if (Ext.isEmpty(this.idDest)) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         
         Ext.each(this.services, function (service) {
@@ -128,7 +130,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { extend :
         
         this.executeCopy();
         
-        var buttonToolbar = this.buttons[0]; 
+        var buttonToolbar = this.down('button'); 
         buttonToolbar.copyFinish = true;
         buttonToolbar.setText(i18n.get('label.close'));
         buttonToolbar.setHandler(function () {
@@ -161,7 +163,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { extend :
             jsonData : service.data,
             scope : this,
             success : function (ret) {
-                var fieldService = this.fieldset.find('id', service.id)[0];
+                var fieldService = this.fieldset.down('label[id=' + service.internalId + ']');
                 if (ret.status == 200) {
                     fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/valid.png"/> ' + service.data.name + '<br>';
                 } else {
@@ -173,7 +175,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { extend :
                 this.executeCopy();
             },
             failure : function (ret) {
-                var fieldService = this.fieldset.find('id',service.id)[0];
+                var fieldService = this.fieldset.down('label[id=' + service.internalId + ']');
                 fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/search-cancel.png"/> ' + service.data.name + '<br>';
                 
             }

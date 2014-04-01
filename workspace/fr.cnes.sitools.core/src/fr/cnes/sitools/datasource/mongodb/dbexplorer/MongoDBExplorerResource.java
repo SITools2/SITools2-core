@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -349,9 +349,13 @@ public class MongoDBExplorerResource extends SitoolsResource {
       if (isObject(value)) {
         BasicDBObject dbObjectValue = (BasicDBObject) value;
         attr.setChildren(getAttributeValue(dbObjectValue, withValue));
+        attr.setLeaf(false);
       }
       else if (withValue) {
         attr.setValue(dbObject.get(key));
+      }
+      else {
+        attr.setLeaf(true);
       }
 
       children.add(attr);
@@ -456,6 +460,7 @@ public class MongoDBExplorerResource extends SitoolsResource {
     xstream.alias("collection", Collection.class);
     xstream.alias("attribute", MongoDBAttributeValue.class);
     xstream.alias("record", MongoDBRecord.class);
+    xstream.aliasField("children", Response.class, "data");
 
     // If a class is present inside the response, link the item alias with this class
     if (response.getItemClass() != null) {

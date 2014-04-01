@@ -171,7 +171,8 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             applicationRecord : rec
         });
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+//            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
 
         up.show(ID.BOX.APPLICATION);
@@ -201,39 +202,44 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
 	 * @return {Boolean}
 	 */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected(), tot = Ext.Msg.show({
+        var rec = this.getSelectionModel().getSelected();
+        
+        if (!rec) {
+            return false;
+        }
+        
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : {
                 yes : i18n.get('label.yes'),
                 no : i18n.get('label.no')
             },
-            msg : i18n.get('applicationsCrud.delete'),
+            msg : String.format(i18n.get('applicationsCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn === 'yes') {
                     this.doDelete(rec);
                 }
             }
-
         });
-        if (!rec) {
-            return false;
-        }
-
     },
     /**
      * Send a delete request to the server with the application url. 
      * @param {} rec
      */
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
-        // if (!rec) return false;
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                
+                popupMessage("",  
+                        String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -254,7 +260,13 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                
+                popupMessage("",
+                        String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -275,7 +287,13 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                
+                popupMessage("",  
+                        String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },

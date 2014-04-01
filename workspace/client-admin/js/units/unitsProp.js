@@ -29,7 +29,8 @@ Ext.namespace('sitools.admin.units');
  * @class sitools.admin.units.unitsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.units.unitsProp', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -37,15 +38,14 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
     classChosen : "",
     unitsId : null,    
     helperName : null,
+    layout : 'fit',
 
     initComponent : function () {
 
         this.title = this.action == "create" ? i18n.get('label.createUnits') : i18n.get('label.modifyUnits'); 
 
         this.gridHelper = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             id : 'gridHelper',
             title : i18n.get('title.unitsHelperClass'),
             store : new Ext.data.JsonStore({
@@ -113,20 +113,23 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
             }]
         });
         this.cmConvertersFromHelper = new Ext.grid.ColumnModel({
-            columns : [ {
+            columns : [{
                 id : 'name',
                 header : i18n.get('headers.name'),
-                width : 500,
+//                width : 500,
                 sortable : true,
                 dataIndex : 'name'
-            } ]
+            }]
         });
 
         this.gridConvertersFromHelper = new Ext.grid.GridPanel({
-            layout : 'fit', 
+            layout : 'fit',
+            forceFit : true,
             store : this.storeConvertersFromHelper,
             columns : this.cmConvertersFromHelper,
-            selModel : Ext.create('Ext.selection.RowModel',{}),
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : 'MULTI'
+            }),
             enableDragDrop : true,
             stripeRows : true,
             title : i18n.get("title.convertersFromHelper")            
@@ -134,10 +137,10 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
 
         // Creation de la grid des tables du dataset
         var cmConvertersForDimension = new Ext.grid.ColumnModel({
-            columns : [ {
+            columns : [{
                 id : 'name',
                 header : i18n.get('headers.name'),
-                width : 500,
+//                width : 500,
                 sortable : true,
                 dataIndex : 'name'
             } ]
@@ -151,10 +154,13 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
         });
 
         this.gridConverters = new Ext.grid.EditorGridPanel({
-            layout : 'fit', 
+            layout : 'fit',
+            forceFit : true,
             store : this.storeConvertersForDimension,
             columns : cmConvertersForDimension,
-            selModel : Ext.create('Ext.selection.RowModel',{}),
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : 'MULTI'
+            }),
             autoScroll : true,
             enableDragDrop : true,
             stripeRows : true,
@@ -227,12 +233,13 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
         //------------------- UNITS GRID 
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         this.gridUnit = new Ext.grid.Panel({
             id : 'gridUnit',
             title : i18n.get('title.gridUnit'),
+            forceFit : true,
             store : new Ext.data.JsonStore({
                 idProperty : 'name',
                 fields : [ {
@@ -268,22 +275,21 @@ Ext.define('sitools.admin.units.unitsProp', { extend : 'Ext.Window',
                     header : i18n.get('label.name'),
                     dataIndex : 'label',
                     width : 250,
-                    editor : new Ext.form.TextField({
+                    editor : {
+                        xtype : 'textfield',
                         allowBlank : false
-                    })
+                    }
                 }, {
                     header : i18n.get('label.unit'),
                     dataIndex : 'unitName',
                     width : 250,
-                    editor : new Ext.form.TextField({
+                    editor : {
+                        xtype : 'textfield',
                         allowBlank : false
-                    })                  
-                } ],
+                    }              
+                }],
                 autoLoad : false
             }),
-            selModel : {
-                    selType: 'cellmodel'
-            },
             plugins : [cellEditing]
         });
 

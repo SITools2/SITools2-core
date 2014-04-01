@@ -136,7 +136,7 @@ div.link a:active {
 
 h1,h2,h3,h4 {
 	font-family: Arial, "Helvetica", sans-serif;
-	color: #EBEBEB;
+	color: #376F97;
 	margin: 1em 10px 0.5em 10px;
 	padding: 0 0 1px 0;
 	font-weight: 600;
@@ -171,7 +171,7 @@ h4 {
 
 p,ol,ul,dl,table {
 	font-size: 13px;
-	color: #F7F7F7;
+	color: #1D1D1D;
 	line-height: 18px;
 	margin: 0 10px 0 10px;
 	padding: 0 0 6px 0;

@@ -321,7 +321,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         var rec = this.getSelectionModel().getLastSelected();
         var index = this.getStore().indexOf(rec);
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.converters.convertersProp({
             action : 'modify',
@@ -413,7 +413,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     _onActive : function () {
         var rec = this.getSelectionModel().getLastSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlDatasets + "/" + this.datasetId + this.converterUrlPart + "/" + rec.data.id + "/start",
@@ -431,7 +431,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     _onDisactive : function () {
         var rec = this.getSelectionModel().getLastSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlDatasets + "/" + this.datasetId + this.converterUrlPart + "/" + rec.data.id + "/stop",

@@ -32,18 +32,24 @@ Ext.namespace('sitools.admin.rssFeed');
  * @class sitools.admin.rssFeed.rssFeedProps
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
+Ext.define('sitools.admin.rssFeed.rssFeedProps', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
     resizable : false,
     stateful : false,
     urlValid : false,
+    layout : 'fit',
 
     initComponent : function () {
 
+        if (this.action == "create") {
+            this.title = i18n.get("title.createFeed");
+        } else {
+            this.title = i18n.get("title.editFeed");
+        }
         this.crudStore = this.store;
-
         
         /**
          * *********************************************** TAB1 FORMULAIRE
@@ -82,6 +88,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
             height : 165,
             title : i18n.get("title.feedDetails"),
             trackResetOnLoad : true,
+            border : false,
+            bodyBorder : false,
             items : [{
 		        xtype : 'fieldset',
 				title : i18n.get('title.feedDetailsCommon'),
@@ -119,11 +127,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
 		                    } else {
 		                        this.gridPanel.setDisabled(true);
 		                    }
-		                    this.doLayout();
-		                       
 		                }
 		            }
-                
                 }]  
             }, {
                 xtype : 'fieldset',
@@ -187,7 +192,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
 								} else {
 									return true;
 								}
-                                
                             },
                             listeners : {
                                 scope : this,
@@ -220,7 +224,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
                                         this.boxComponent.setVisible(false);
                                         imgClass = "img-error";
                                         break;
-                                    
                                     }
                                     this.buttonValidUrl.setIconCls(imgClass);
                                 }
@@ -228,10 +231,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
                         }, this.buttonValidUrl                            
                         ]
                     }, this.boxComponent
-                    
                 ]
             }]
-            
         });
         
         
@@ -241,7 +242,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
          */
 
         this.storeItem = new Ext.data.JsonStore({
-            idProperty : 'id',
+//            idProperty : 'id',
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -255,12 +256,16 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
                 name : 'link',
                 type : 'string'
             }, {
-                name : 'pubDate',
+                name : 'author'
+            }, {
+                name : 'image'
+            }, {
+                name : 'publishedDate',
                 type : 'date'
-            } /*
-                 * ,{ name : 'guid', type :'guid' }
-                 */
-            ]
+            }, {
+                name : 'updatedDate',
+                type : 'date'
+            }]
         });
 
         var cm = new Ext.grid.ColumnModel({
@@ -316,9 +321,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
         };
 
         this.gridPanel = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             layout : 'fit',
             title : i18n.get("title.feedItems"),
             store : this.storeItem,
@@ -332,26 +335,27 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
          * ***********************************************
          */
         
+        this.tabPanel = new Ext.TabPanel({
+            height : 450,
+            activeTab : 0,
+            items : [ this.formPanel, this.gridPanel ]
+        });
+
+        this.items = [ this.tabPanel ];
+        
         this.saveButton = new Ext.Button({
             text : i18n.get('label.ok'),
             scope : this,
             handler : this.onValidate
         });
-
-        this.tabPanel = new Ext.TabPanel({
-            height : 450,
-            activeTab : 0,
-            items : [ this.formPanel, this.gridPanel ],
-            buttons : [ this.saveButton, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-        });
-
-        this.items = [ this.tabPanel ];
+        
+        this.buttons = [ this.saveButton, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
 
         sitools.admin.rssFeed.rssFeedProps.superclass.initComponent.call(this);
     },
@@ -359,13 +363,9 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
     /**
      * done a specific render to load rss informations. 
      */
-    onRender : function () {
-        sitools.admin.rssFeed.rssFeedProps.superclass.onRender.apply(this, arguments);
-        if (this.action == "create") {
-            this.title = i18n.get("title.createFeed");
-        } else {
-            this.title = i18n.get("title.editFeed");
-            // load data from the server
+    afterRender : function () {
+        sitools.admin.rssFeed.rssFeedProps.superclass.afterRender.apply(this, arguments);
+        if (this.action == "modify") {
             Ext.Ajax.request({
                 url : this.url + "/" + this.id + this.urlRef + "/" + this.idFeed,
                 method : "GET",
@@ -392,7 +392,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
                             externalUrlField.fireEvent("changeStatus", externalUrlField, "valid");
                         }
                     }
-
                 },
                 failure : alertFailure
             });
@@ -410,13 +409,24 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
             var form = this.formPanel.getForm();
             
             var rec = {};
-            rec.data.id = data.id;
+            rec.id = data.id;
             rec.name = data.name;
             rec.feedType = data.feedType;
             rec.feedSource = data.feedSource;
 			rec.title = data.title;
 	        rec.description = data.description;
             
+	        var radioGroupFeedType = this.down('fieldset > radiogroup[name=feedType]');
+	        
+	        if (data.feedType == "rss_2.0") {
+	            radioGroupFeedType.down('radiofield[inputValue=rss_2.0]').setValue(true);
+	        } else {
+	            radioGroupFeedType.down('radiofield[inputValue=atom_1.0]').setValue(true);
+	        }
+	        
+	        var radioGroupFeedSource = this.down('fieldset > radiogroup[name=feedSource]');
+	        radioGroupFeedSource.down('radiofield[inputValue=' + data.feedSource + ']').setValue(true);
+	        
             if (data.feedSource == "EXTERNAL") {
                 rec.externalUrl = data.externalUrl;
 			} else {
@@ -551,6 +561,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
 	                rec.publishedDate = publishedDate.format('Y-m-d\\TH:i:s.u') + publishedDate.getGMTOffset();
 	
 	            }
+	            delete rec.id;
 	            json.entries.push(rec);
 	        }
         }
@@ -634,7 +645,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
     onModify : function () {
         var rec = this.gridPanel.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.rssFeed.rssFeedItemProps({
             store : this.storeItem,
@@ -651,7 +662,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', { extend : 'Ext.Window',
     onDelete : function () {
         var rec = this.gridPanel.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         this.storeItem.remove(rec);
     },

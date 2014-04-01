@@ -187,7 +187,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             width : 55,
             listeners : {
                 scope : this,
-                change : function (combo, newValue, oldValue) {
+                checkchange : function (combo, rowIndex, checked) {
                     this.savePropertiesBtn.addClass('not-save-textfield');
                 }
             }
@@ -196,14 +196,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         this.columns = [{
             header : i18n.get('label.type'),
             dataIndex : 'type',
-            width : 70,
+            width : 80,
             resizable : false,
-            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-                if (value === "SERVER") {
-                    metadata.style += "font-weight:bold; color:blue;";
-                } else {
-                    metadata.style += "font-weight:bold; color:green;";
-                }
+            renderer : function (value, meta, record, index, colIndex, store) {
+                meta.tdCls += value;
                 return value;
             }
         }, {
@@ -213,7 +209,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         }, {
             header : i18n.get('label.description'),
             dataIndex : 'description',
-            width : 255,
+            width : 230,
             sortable : false
         }, {
             header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
@@ -231,7 +227,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         }, {
             header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'category',
-            width : 150,
+            width : 120,
             editor : {
                 xtype : 'textfield',
                 listeners : {
@@ -263,14 +259,13 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                     scope : this,
                     change : function (textfield, newValue, oldValue) {
                         this.savePropertiesBtn.addCls('not-save-textfield');
-                        this.savePropertiesBtn.doComponentLayout();
                     }
                 }
             }
         }, {
             header : i18n.get('label.icon'),
             dataIndex : 'icon',
-            width : 80,
+            width : 50,
             sortable : false,
             renderer : function (value, metadata, record, rowIndex, colIndex, store) {
                 if (!Ext.isEmpty(value)) {
@@ -294,7 +289,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         });
         
         this.tbar = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+//            xtype : 'sitools.widget.GridSorterToolbar',
             defaults : {
                 scope : this
             },
@@ -329,6 +324,29 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 handler : this.onDuplicate,
                 xtype : 's-menuButton'
             }]
+        };
+        
+        this.rbar = {
+            xtype : 'sitools.widget.GridSorterToolbar',
+            alignRight : false,
+            layout : {
+                pack : 'center'
+            },
+            defaults : {
+                scope : this
+            },
+            listeners : {
+                scope : this,
+                afterrender : function (toolbar) {
+                    var buttons = Ext.ComponentQuery.query('toolbar[xtype=sitools.widget.GridSorterToolbar] > button');
+                    Ext.each(buttons, function (button) {
+                        button.on('click', function () {
+                            if (this.getSelectionModel().getSelections()[0] != undefined)
+                                this.savePropertiesBtn.addCls('not-save-textfield');
+                        }, this);
+                    }, this);
+                }
+            }
         };
 
         this.bbar = {
@@ -408,7 +426,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         var rec = this.getSelectionModel().getSelected();
         
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
        
 
@@ -430,7 +448,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         var arrayRecords = this.getSelectionModel().getSelections();
         
         if (Ext.isEmpty(arrayRecords)) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         
         var datasetServicesCopy = new sitools.admin.datasets.services.datasetServicesCopyProp({
@@ -454,7 +472,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Msg.show({
             title : i18n.get('label.delete'),

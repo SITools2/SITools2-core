@@ -49,7 +49,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             restful : true,
             url : this.url,
             remoteSort : true,
-            idProperty : 'id',
+//            idProperty : 'id',
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -90,7 +90,13 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             }, {
                 header : i18n.get('label.image'),
                 dataIndex : 'image',
-                width : 300
+                width : 50,
+                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                    if (!Ext.isEmpty(value)) {
+                        value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
+                    }
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
@@ -213,7 +219,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 //        if (rec.data.status == i18n.get('status.active')) {
 //            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
@@ -263,8 +269,12 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -275,14 +285,19 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     _onStartMaintenance : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/startmaintenance',
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -292,14 +307,19 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     _onStopMaintenance : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/stopmaintenance',
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -310,14 +330,19 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     _onActive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -328,14 +353,19 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     _onDisactive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -346,7 +376,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     onDuplicate : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.projects.ProjectsPropPanel({
             projectUrlToCopy : this.url + "/" + rec.data.id,

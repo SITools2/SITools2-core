@@ -122,7 +122,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewPropPanel', { extend : 'Ext.Win
                 anchor : '100%', 
                 allowBlank : true
             }, {
-                    xtype : 'spinnerfield',
+                    xtype : 'numberfield',
                     name : 'priority',
                     id : 'priorityId', 
                     fieldLabel : i18n.get('label.priority'),

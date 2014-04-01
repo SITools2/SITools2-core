@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.projects');
 
-Ext.define('sitools.component.projects.rssFeedProject', { extend : 'Ext.panel.Panel',
+Ext.define('sitools.component.projects.rssFeedProject', { 
+    extend : 'Ext.panel.Panel',
 	alias : 'widget.s-rssFeedProjects',
     border : false,
     height : 300,

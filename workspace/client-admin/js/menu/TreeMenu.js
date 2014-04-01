@@ -29,39 +29,47 @@ Ext.define('sitools.admin.menu.TreeMenu', {
     extend: 'Ext.layout.container.Container',
 
     constructor : function (jsonUrl) {
+        
         var tree = Ext.create('Ext.tree.Panel', {
             id : ID.CMP.MENU,
             component : this,
             useArrows : false,
             autoScroll : true,
             animate : true,
-            root : {
-                nodeType : 'async'
-            },
-            loader : new Ext.tree.TreeLoader({
-                requestMethod : 'GET',
-                url : jsonUrl
+            store : Ext.create('Ext.data.TreeStore', {
+                fields : [{
+                  name : 'iconMenu'
+              }, {
+                  name : 'name',
+                  mapping : 'nodeName'
+              }, {
+                  name : 'text',
+                  convert : function (value, record) {
+                      return i18n.get('label.' + record.get('name'));
+                  }
+              }],
+              proxy : {
+                  type : 'ajax',
+                  url : jsonUrl,
+                  reader : {
+                      root : 'children',
+                      type : 'json'
+                  }
+              }
             }),
             rootVisible : false,
             listeners : {
-                beforeload : function (node) {
-                    node.setText(i18n.get('label.' + node.raw.nodeName));
-                    return node.isRoot || Ext.isDefined(node.raw.children);
-                },
-                load : function (tree, node) {
-                    node.eachChild(function (item) {
-                        item.text = i18n.get('label.' + item.raw.nodeName);
-                        return true;
-                    });
-                },
                 itemclick : function (tree, node) {
                     if (node.isLeaf()) {
                         this.component.treeAction(node);
                     }
+                },
+                afterrender : function (tree) {
+                    tree.expandAll();
                 }
             }
         });
-        tree.getRootNode().expand(true);
+        
         return tree;
     },
 
@@ -73,64 +81,21 @@ Ext.define('sitools.admin.menu.TreeMenu', {
      */
     treeAction : function (node) {
         // Getting nodeName
-        var nodeName = node.raw.nodeName;
-        var nodeId = node.raw.id;
+        var nodeName = node.get('name');
+        var nodeId = node.get('id');
 
         if (!Ext.isDefined(nodeName)) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('msg.nodeundefined'));
             return;
         }
 
-//        if (!node.raw.mvc && !Ext.ComponentMgr.isRegistered('widget.s-' + nodeName)) {
-//            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.component') + ' \'' + 's-' + nodeName + '\' ' + i18n.get('msg.undefined'));
-//            return;
-//        }
-
         // Displaying Main Panel
         ann(mainPanel, "mainPanel is null");
-
         
         var pan_config = new sitools.admin.menu.dataView();
         // Loading component 's-nodeName'
         mainPanel.removeAll();
         
-        // delte the current MVC module if it exists
-//        sitools.util.applicationModulesManager.destroyCurrentModule();
-        
-//        if (node.attributes.mvc) {
-//            
-//            var className = node.attributes.classname;
-//            
-//            var module = sitools.util.applicationModulesManager.registerModule(className);
-//            
-//            var view = module.getView('crud');
-//            view.sitoolsType = "mainAdminPanel";
-//            
-//	        mainPanel.add(
-//	            {
-//	                width: "100%", 
-//	                items : [ {
-//	                    xtype : 's-box',
-//	                    label : i18n.get('label.' + nodeName),
-//	                    items : [ 
-//	                        view
-//	                    ],
-//	                    idItem : nodeId
-//	                } ], 
-//	                listeners : {
-//	                    resize : function (panel, width, height) {
-//	                        var size = panel.items.items[0].body.getSize();
-//	                        var sBoxTitle = panel.items.items[0].items.items[0].getEl();
-//	                        size = {
-//	                            height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargins("t") + sBoxTitle.getMargins("b")), 
-//	                            width : size.width - 8
-//	                        };
-//	                        var mainAdminPanel = panel.find("sitoolsType", "mainAdminPanel");
-//	                        mainAdminPanel[0].setSize(size);
-//	                    }
-//	                }
-//	         });            
-//        } else {
             mainPanel.add(
 	        {
 	            width: "100%",
@@ -177,9 +142,7 @@ Ext.define('sitools.admin.menu.TreeMenu', {
 //            defaultSrc : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html"
         });
         
-        mainPanel.add(
-            helpPanel
-        );
+        mainPanel.add( helpPanel );
         mainPanel.doLayout();
         helpPanel.setVisible(SHOW_HELP);
         

@@ -74,7 +74,7 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
                 id : 'isCollapseFieldset',
                 anchor : "100%"
             }   /*{
-                xtype : 'spinnerfield',
+                xtype : 'numberfield',
                 id : 'position', 
                 fieldLabel : i18n.get('label.position'),
                 minValue : 0,

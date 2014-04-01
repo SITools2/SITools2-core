@@ -323,7 +323,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
         var rec = this.getSelectionModel().getSelected();
         var index = this.getStore().indexOf(rec);
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.filters.filtersProp({
             action : 'modify',
@@ -415,7 +415,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
     _onActive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlDatasets + "/" + this.datasetId + this.filterUrlPart + "/" + rec.data.id + "/start",
@@ -433,7 +433,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
     _onDisactive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlDatasets + "/" + this.datasetId + this.filterUrlPart + "/" + rec.data.id + "/stop",

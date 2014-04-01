@@ -135,8 +135,6 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             triggerAction : 'all',
             forceSelection : true,
             selectOnFocus : true,
-//            data : 'light',
-            lazyRender : true,
             valueField : 'value',
             displayField : 'display',
             listeners : {
@@ -331,7 +329,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
 //        this.plugins = [ sortable, visible, filterColumn, primaryKey ];
         
         this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         })];
         
         this.listeners = {

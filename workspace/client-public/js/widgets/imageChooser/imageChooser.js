@@ -107,7 +107,7 @@ Ext.define('ImageChooser', {
            store: this.store,
            listeners: {
                'selectionchange': {fn:this.showDetails, scope:this, buffer:100},
-               'dblclick'       : {fn:this.doCallback, scope:this},
+               'itemdblclick'       : {fn:this.doCallback, scope:this},
                'loadexception'  : {fn:this.onLoadException, scope:this},
                'beforeselect'   : {fn:function(view){
                    return view.store.getRange().length > 0;

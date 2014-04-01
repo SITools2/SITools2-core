@@ -290,7 +290,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
         }, {
             xtype : 'gridcolumn',
             id : 'alias',
-            header : i18n.get('headers.tableAlias'),
+            header : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
             width : 80,
             sortable : true,
             dataIndex : 'alias',
@@ -316,7 +316,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
         return [{
             xtype : 'gridcolumn',
             id : 'tableAlias',
-            header : i18n.get('headers.tableAlias'),
+            header : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
             sortable : true,
             dataIndex : 'tableAlias',
             editor : {

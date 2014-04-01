@@ -33,150 +33,151 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @class sitools.admin.datasource.mongoDb.DataBasePropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-databaseprop',
     width : 700,
     height : 480,
     modal : true,
     id : ID.COMPONENT_SETUP.DATABASE,
+    layout : 'fit',
 
     initComponent : function () {
-        if (this.action === 'create') {
-			this.title = i18n.get('label.createDatabase');
-		} else if (this.action === 'modify') {
-			this.title = i18n.get('label.modifyDatabase');
-		} else if (this.action === 'view') {
-			this.title = i18n.get('label.viewDatabase');
-		}
-        this.items = [ {
-            xtype : 'panel',
-            layout : "fit", 
-            title : i18n.get('label.databaseInfo'),
-            items : [ {
-                xtype : 'form',
-                formId : 'datasourceForm',
-                border : false,
-                labelWidth : 150,
-                padding : 10,
-                defaultType : "textfield",
-                defaults : {
-                    anchor : '100%',
-                    allowBlank : false
-                },
-                items : [ {
-                    name : 'id',
-                    hidden : true,
-                    allowBlank : true
-                }, {
-                    name : 'name',
-                    fieldLabel : i18n.get('label.name')
-                }, {
-                    name : 'description',
-                    fieldLabel : i18n.get('label.description'),
-                    allowBlank : true
-                }, {
-                    xtype : 'combo',
-                    id : 'driverDatasourceId',
-                    mode : 'local',
-                    triggerAction : 'all',
-                    editable : false,
-                    name : 'driverClass',
-                    fieldLabel : i18n.get('label.driver'),
-                    width : 100,
-                    store : new Ext.data.ArrayStore({
-                        fields : [ {
-                            name : 'code'
-                        }, {
-                            name : 'label'
-                        } ],
-                        data : [ [ 'com.mongo.driver', 'MongoDb' ]]
-                    }),
-                    valueField : 'code',
-                    displayField : 'label',
-                    anchor : "50%", 
-                    value : "com.mongo.driver"
-                }, {
-                    name : 'url',
-                    fieldLabel : i18n.get('label.url'), 
-                    validator : function (value) {
-						var driverValue = Ext.getCmp('driverDatasourceId').getValue();
-						if (Ext.isEmpty(driverValue)) {
-							return "The Driver is empty";
-						}
-						return true;
-                    }
-                }, {
-                    name : 'sitoolsAttachementForUsers',
-                    fieldLabel : i18n.get('label.userAttach'), 
-                    vtype : "attachment"
-                }, {
-                    name : 'databaseName',
-                    fieldLabel : i18n.get('label.databaseName'), 
-                    vtype : "withoutSpace"
-                }, {
-                    xtype : "numberfield",
-                    name : 'portNumber',
-                    fieldLabel : i18n.get('label.portNumber')
-                }, {
-                    name : 'authentication',
-                    fieldLabel : i18n.get('label.authentication'), 
-                    xtype : "checkbox", 
-                    listeners : {
-						check : function (me, checked) {
-							var f = me.ownerCt.getForm();
-							f.findField("userLogin").setVisible(checked);
-							f.findField("userPassword").setVisible(checked);
-						}
-					}
-                }, {
-                    name : 'userLogin',
-                    allowBlank : true, 
-                    fieldLabel : i18n.get('label.userLogin')
-                }, {
-                    fieldLabel : i18n.get('label.userPassword'),
-                    allowBlank : true, 
-                    inputType : 'password',
-                    name : 'userPassword'
-                },  {
-                    xtype : 'spinnerfield',
-                    name : 'maxActive',
-                    id : 'maxActiveId', 
-                    fieldLabel : i18n.get('label.maxActive'),
-                    minValue : 0,
-                    maxValue : 20,
-                    allowDecimals : false,
-                    incrementValue : 1,
-                    accelerate : true,
-                    anchor : "50%", 
-                    value : 10
-                }]
-            } ],
-            buttons : [ {
-                text : i18n.get('label.testCnx'),
-                name : 'testConnectionButton',
-                scope : this,
-                handler : this._onTest
-            }, {
-                text : i18n.get('label.ok'),
-                name : 'okButton',
-                scope : this,
-                handler : this._onValidate
+//        if (this.action === 'create') {
+//			this.title = i18n.get('label.createDatabase');
+//		} else if (this.action === 'modify') {
+//			this.title = i18n.get('label.modifyDatabase');
+//		} else if (this.action === 'view') {
+//			this.title = i18n.get('label.viewDatabase');
+//		}
+        
+        this.title = i18n.get('label.databaseInfo');
+        
+        this.items = [{
+            xtype : 'form',
+            formId : 'datasourceForm',
+            border : false,
+            labelWidth : 150,
+            padding : 10,
+            defaultType : "textfield",
+            defaults : {
+                anchor : '100%',
+                allowBlank : false
             },
-            {
-                text : i18n.get('label.cancel'),
-                name : 'cancelButton',
-                scope : this,
-                handler : function () {
-                    this.close();
+            items : [ {
+                name : 'id',
+                hidden : true,
+                allowBlank : true
+            }, {
+                name : 'name',
+                fieldLabel : i18n.get('label.name')
+            }, {
+                name : 'description',
+                fieldLabel : i18n.get('label.description'),
+                allowBlank : true
+            }, {
+                xtype : 'combo',
+                id : 'driverDatasourceId',
+                mode : 'local',
+                triggerAction : 'all',
+                editable : false,
+                name : 'driverClass',
+                fieldLabel : i18n.get('label.driver'),
+                width : 100,
+                store : new Ext.data.ArrayStore({
+                    fields : [ {
+                        name : 'code'
+                    }, {
+                        name : 'label'
+                    } ],
+                    data : [ [ 'com.mongo.driver', 'MongoDb' ]]
+                }),
+                valueField : 'code',
+                displayField : 'label',
+                anchor : "50%", 
+                value : "com.mongo.driver"
+            }, {
+                name : 'url',
+                fieldLabel : i18n.get('label.url'), 
+                validator : function (value) {
+                    var driverValue = Ext.getCmp('driverDatasourceId').getValue();
+                    if (Ext.isEmpty(driverValue)) {
+                        return "The Driver is empty";
+                    }
+                    return true;
                 }
-            } ]
-            
-        } ];
+            }, {
+                name : 'sitoolsAttachementForUsers',
+                fieldLabel : i18n.get('label.userAttach'), 
+                vtype : "attachment"
+            }, {
+                name : 'databaseName',
+                fieldLabel : i18n.get('label.databaseName'), 
+                vtype : "withoutSpace"
+            }, {
+                xtype : "numberfield",
+                name : 'portNumber',
+                fieldLabel : i18n.get('label.portNumber')
+            }, {
+                name : 'authentication',
+                fieldLabel : i18n.get('label.authentication'), 
+                xtype : "checkbox", 
+                listeners : {
+                    check : function (me, checked) {
+                        var f = me.ownerCt.getForm();
+                        f.findField("userLogin").setVisible(checked);
+                        f.findField("userPassword").setVisible(checked);
+                    }
+                }
+            }, {
+                name : 'userLogin',
+                allowBlank : true, 
+                fieldLabel : i18n.get('label.userLogin')
+            }, {
+                fieldLabel : i18n.get('label.userPassword'),
+                allowBlank : true, 
+                inputType : 'password',
+                name : 'userPassword'
+            },  {
+                xtype : "numberfield",
+                name : 'maxActive',
+                id : 'maxActiveId',
+                fieldLabel : i18n.get('label.maxActive'),
+                minValue : 0,
+                maxValue : 20,
+                allowDecimals : false,
+                incrementValue : 1,
+                accelerate : true,
+                anchor : "50%", 
+                value : 10
+            }]
+         }];
+        
+        this.buttons = [{
+            text : i18n.get('label.testCnx'),
+            name : 'testConnectionButton',
+            scope : this,
+            handler : this._onTest
+        }, {
+            text : i18n.get('label.ok'),
+            name : 'okButton',
+            scope : this,
+            handler : this._onValidate
+        },
+        {
+            text : i18n.get('label.cancel'),
+            name : 'cancelButton',
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+        
         this.listeners = {
 			scope : this, 
 	        resize : function (window, width, height) {
 				var size = window.body.getSize();
-				this.down('panel').setSize(size);
+				this.down('form').setSize(size);
 			}
         };
         sitools.admin.datasource.mongoDb.DataBasePropPanel.superclass.initComponent.call(this);

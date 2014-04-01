@@ -29,13 +29,15 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.UserPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.usergroups.UserPropPanel', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-userprop',
 	id: 'winCreateUser',
     width : 700,
     height : 480,
     modal : true,
     pageSize : 10,
+    layout : 'fit',
     // quotaStore : new Ext.data.JsonStore({
     // fields: [
     // {name: 'vol', type: 'string'},
@@ -51,24 +53,14 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
     // header: i18n.get('header.enabledquota')}),
 
     initComponent : function () {
-        if (this.action == "create") {
-            this.title = i18n.get('label.createUser');
-        } else {
-            this.title = i18n.get('label.modifyUser');
-        }
-
-        // this.joinCheck.header = i18n.get('header.add');
-        // this.quotaCheck.header = i18n.get('header.enabledquota');
-
-        // this.groupStore = new Ext.data.JsonStore({
-        // root: 'data',
-        // restful: true,
-        // url:this.url+'/groups',
-        // fields: [
-        // {name: 'name', type: 'string'},
-        // {name: 'description', type: 'string'},
-        // {name: 'join', type: 'boolean'},
-        // ]});
+        
+//        if (this.action == "create") {
+//            this.title = i18n.get('label.createUser');
+//        } else {
+//            this.title = i18n.get('label.modifyUser');
+//        }
+        
+        this.title = i18n.get('label.userInfo');
 
         var storeProperties = new Ext.data.JsonStore({
             fields : [ {
@@ -85,52 +77,49 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
             autoLoad : false
         });
         
-        var dataScope = [ [ 'Editable' ], [ 'ReadOnly' ], [ 'Hidden' ] ];
-                  
-        
         var storeScope = new Ext.data.ArrayStore({
             fields : ['scope'],
-            data : dataScope
+            data : [ [ 'Editable' ], [ 'ReadOnly' ], [ 'Hidden' ] ]
         });
         
-        var smProperties = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
-        });
-
-        var cmProperties = new Ext.grid.ColumnModel({
-            columns : [ {
-                header : i18n.get('headers.name'),
-                dataIndex : 'name',
-                editor : new Ext.form.TextField({
-                    allowBlank : false
-                })
-            }, {
-                header : i18n.get('headers.value'),
-                dataIndex : 'value',
-                editor : new Ext.form.TextField({
-                    allowBlank : false
-                })
-            },
-            {
-                header : i18n.get('headers.scope'),
-                dataIndex : 'scope',
-                editor : new Ext.form.ComboBox({
-                    typeAhead : true,
-                    triggerAction : 'all',
-                    lazyRender : true,
-                    lazyInit : false,
-                    mode : 'local',
-                    forceSelection : true,
-                    valueField : 'scope',
-                    displayField : 'scope',
-                    store : storeScope
-                })
-            }],
-            defaults : {
-                sortable : false,
-                width : 100
+        var columns =  [ {
+            header : i18n.get('headers.name'),
+            dataIndex : 'name',
+            sortable : false,
+            width : 100,
+            editor : {
+                xtype : 'textfield',
+                allowBlank : false
             }
-        });
+        }, {
+            header : i18n.get('headers.value'),
+            dataIndex : 'value',
+            sortable : false,
+            width : 100,
+            editor : {
+                xtype : 'textfield',
+                allowBlank : false
+            }
+        },
+        {
+            header : i18n.get('headers.scope'),
+            dataIndex : 'scope',
+            sortable : false,
+            width : 100,
+            editor : {
+                xtype : 'combo',
+                typeAhead : true,
+                triggerAction : 'all',
+                lazyRender : true,
+                lazyInit : false,
+                mode : 'local',
+                forceSelection : true,
+                valueField : 'scope',
+                displayField : 'scope',
+                store : storeScope
+            }
+        }];
+        
         var tbar = new Ext.Toolbar({
             defaults : {
                 scope : this
@@ -146,33 +135,36 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
             }]
         });
 
-        this.gridProperties = new Ext.grid.EditorGridPanel({
+        this.gridProperties = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.properties'),
             id : 'userGridProperties',
-            height : 180,
             store : storeProperties,
             tbar : tbar,
-            cm : cmProperties,
-            selModel : smProperties,
-            viewConfig : {
-                forceFit : true
-            }
+            minHeight : 160,
+            columns : columns,
+            padding : '5 5 5 5',
+            forceFit : true,
+            selModel : smProperties = Ext.create('Ext.selection.RowModel',{
+                singleSelect : true
+            }),
+            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+                clicksToEdit: 1
+            })]
         });
         
-        this.items = [ {
-            // xtype: 'tabpanel',
-            // activeTab: 0,
-            // layoutOnTabChange: true,
-            // height: 450,
-            // items: [
-            // {
+        this.items = [{
+//            title : i18n.get('label.userInfo'),
             xtype : 'panel',
             height : 450,
-            title : i18n.get('label.userInfo'),
-            items : [ {
+            padding : '5 5 5 5',
+            border : false,
+            bodyBorder : false,
+            autoScroll : true,
+            items : [{
                 xtype : 'form',
                 id: 'formCreateUser',
                 border : false,
+                bodyBorder : false,
                 padding : 10,
                 labelWidth : 120,
                 items : [ {
@@ -244,19 +236,20 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', { extend : 'Ext.Window',
                     }
                 }]
             }, this.gridProperties],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this.onModifyOrCreate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-
-        } ];
+        }];
+        
+        this.buttons = [{
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this.onModifyOrCreate
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+        
         sitools.admin.usergroups.UserPropPanel.superclass.initComponent.call(this);
     },
     

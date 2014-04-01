@@ -184,7 +184,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
     _onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.usergroups.UserPropPanel({
             url : this.url + '/' + rec.data.id,
@@ -205,7 +205,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('userCrud.delete'),
+            msg : String.format(i18n.get('userCrud.delete'), rec.data.identifier),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

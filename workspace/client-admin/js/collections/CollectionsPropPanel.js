@@ -215,7 +215,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
     _onDeleteDataset : function () {
         var recs = this.gridDataSets.getSelectionModel().getSelections();
         if (recs.length === 0) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         this.gridDataSets.getStore().remove(recs);
     },

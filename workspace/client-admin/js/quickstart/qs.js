@@ -19,156 +19,166 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-Ext.define('sitools.admin.quickStart.qs', { extend : 'Ext.panel.Panel',
+Ext.define('sitools.admin.quickStart.qs', { 
+    extend : 'Ext.panel.Panel',
     layout : 'border',
     bodyCssClass : 'quickStart',
+    
     initComponent : function () {
         
-        this.stepsBtn = [{
-            id : 'qsStart',
-            value : 'qsStart',
-            icon : '/sitools/common/res/images/icons/logo_fav_icone.png',
-            scope : this,
-            enableToogle: true,
-            toggleGroup : 'steps',
-            toggleHandler : this.manageSteps,
-            allowDepress : false,
-            scale : 'medium',
-            cls : 'services-toolbar-btn',
-            pressed : true,
-            listeners : {
-                afterrender : function (b) {
-                    new Ext.ToolTip({
-                        target : 'qsStart',
-                        anchor: 'top',
-                        showDelay : 0,
-                        hideDelay : 0,
-                        html : "Start"
-                    });
-                }
-            }
-        }, {
-            id : 'qsProject',
-            value : 'qsProject',
-            icon : '/sitools/common/res/images/icons/tree_projects.png',
-            scope : this,
-            enableToogle: true,
-            toggleGroup : 'steps',
-            toggleHandler : this.manageSteps,
-            allowDepress : false,
-            scale : 'medium',
-            cls : 'services-toolbar-btn',
-            listeners : {
-                afterrender : function (b) {
-                    new Ext.ToolTip({
-                        target : 'qsProject',
-                        anchor: 'top',
-                        showDelay : 0,
-                        hideDelay : 0,
-                        html : "Project"
-                    });
-                }
-            }
-        }, {
-            value : 'qsDatasource',
-            id : 'qsDatasource',
-            icon : '/sitools/common/res/images/icons/tree_databases.png',
-            scope : this,
-            enableToogle: true,
-            toggleGroup : 'steps',
-            toggleHandler : this.manageSteps,
-            allowDepress : false,
-            scale : 'medium',
-            cls : 'services-toolbar-btn',
-            listeners : {
-                afterrender : function (b) {
-                    new Ext.ToolTip({
-                        target : 'qsDatasource',
-                        anchor: 'top',
-                        showDelay : 0,
-                        hideDelay : 0,
-                        html : "Datasource"
-                    });
-                }
-            }
-        }, {
-            id : 'qsDataset',
-            value : 'qsDataset',
-            icon : '/sitools/common/res/images/icons/tree_datasets.png',
-            scope : this,
-            enableToogle: true,
-            toggleGroup : 'steps',
-            toggleHandler : this.manageSteps,
-            allowDepress : false,
-            scale : 'medium',
-            cls : 'services-toolbar-btn',
-            listeners : {
-                afterrender : function (b) {
-                    new Ext.ToolTip({
-                        target : 'qsDataset',
-                        anchor: 'top',
-                        showDelay : 0,
-                        hideDelay : 0,
-                        html : "Dataset"
-                    });
-                }
-            }
-        }, {
-            id : 'qsForm',
-            value : 'qsForm',
-            icon : '/sitools/common/res/images/icons/tree_forms.png',
-            scope : this,
-            enableToogle: true,
-            toggleGroup : 'steps',
-            toggleHandler : this.manageSteps,
-            allowDepress : false,
-            scale : 'medium',
-            cls : 'services-toolbar-btn',
-            listeners : {
-                afterrender : function (b) {
-                    new Ext.ToolTip({
-                        target : 'qsForm',
-                        anchor: 'top',
-                        showDelay : 0,
-                        hideDelay : 0,
-                        html : "Form"
-                    });
-                }
-            }
-        }, {
-            id : 'qsSecurity',
-            value : 'qsSecurity',
-            icon : '/sitools/common/res/images/icons/tree_userman.png',
-            scope : this,
-            enableToogle: true,
-            toggleGroup : 'steps',
-            toggleHandler : this.manageSteps,
-            allowDepress : false,
-            scale : 'medium',
-            cls : 'services-toolbar-btn',
-            listeners : {
-                afterrender : function (b) {
-                    new Ext.ToolTip({
-                        target : 'qsSecurity',
-                        anchor: 'top',
-                        showDelay : 0,
-                        hideDelay : 0,
-                        html : "Security"
-                    });
-                }
-            }
-        }, '->', {xtype : 'label', html : '<i>Show QuickStart on startup<i>'},
-        {
-           xtype : 'checkbox',
-           listeners : {
-               check : function (combo, checked) {
-                   Ext.util.Cookies.set('showQuickStart', checked);
-               },
-               afterrender : function (cb) {
-                   cb.setValue(Ext.util.Cookies.get('showQuickStart'));
-               }
-           }
-        }];
+        this.stepsBtn = {
+                xtype : 'toolbar',
+                layout : {
+                    pack : 'center'
+                },
+                items : ['->',{
+                    id : 'qsStart',
+                    value : 'qsStart',
+                    icon : '/sitools/common/res/images/icons/logo_fav_icone.png',
+                    scope : this,
+                    enableToogle: true,
+                    toggleGroup : 'steps',
+                    toggleHandler : this.manageSteps,
+                    allowDepress : false,
+//                    scale : 'medium',
+//                    cls : 'services-toolbar-btn',
+                    pressed : true,
+                    listeners : {
+                        afterrender : function (b) {
+                            new Ext.ToolTip({
+                                target : 'qsStart',
+                                anchor: 'top',
+                                showDelay : 0,
+                                hideDelay : 0,
+                                html : "Start"
+                            });
+                        }
+                    }
+                }, {
+                    id : 'qsProject',
+                    value : 'qsProject',
+                    icon : '/sitools/common/res/images/icons/tree_projects.png',
+                    scope : this,
+                    enableToogle: true,
+                    toggleGroup : 'steps',
+                    toggleHandler : this.manageSteps,
+                    allowDepress : false,
+//                    scale : 'medium',
+//                    cls : 'services-toolbar-btn',
+                    listeners : {
+                        afterrender : function (b) {
+                            new Ext.ToolTip({
+                                target : 'qsProject',
+                                anchor: 'top',
+                                showDelay : 0,
+                                hideDelay : 0,
+                                html : "Project"
+                            });
+                        }
+                    }
+                }, {
+                    value : 'qsDatasource',
+                    id : 'qsDatasource',
+                    icon : '/sitools/common/res/images/icons/tree_databases.png',
+                    scope : this,
+                    enableToogle: true,
+                    toggleGroup : 'steps',
+                    toggleHandler : this.manageSteps,
+                    allowDepress : false,
+//                    scale : 'medium',
+//                    cls : 'services-toolbar-btn',
+                    listeners : {
+                        afterrender : function (b) {
+                            new Ext.ToolTip({
+                                target : 'qsDatasource',
+                                anchor: 'top',
+                                showDelay : 0,
+                                hideDelay : 0,
+                                html : "Datasource"
+                            });
+                        }
+                    }
+                }, {
+                    id : 'qsDataset',
+                    value : 'qsDataset',
+                    icon : '/sitools/common/res/images/icons/tree_datasets.png',
+                    scope : this,
+                    enableToogle: true,
+                    toggleGroup : 'steps',
+                    toggleHandler : this.manageSteps,
+                    allowDepress : false,
+//                    scale : 'medium',
+//                    cls : 'services-toolbar-btn',
+                    listeners : {
+                        afterrender : function (b) {
+                            new Ext.ToolTip({
+                                target : 'qsDataset',
+                                anchor: 'top',
+                                showDelay : 0,
+                                hideDelay : 0,
+                                html : "Dataset"
+                            });
+                        }
+                    }
+                }, {
+                    id : 'qsForm',
+                    value : 'qsForm',
+                    icon : '/sitools/common/res/images/icons/tree_forms.png',
+                    scope : this,
+                    enableToogle: true,
+                    toggleGroup : 'steps',
+                    toggleHandler : this.manageSteps,
+                    allowDepress : false,
+//                    scale : 'medium',
+//                    cls : 'services-toolbar-btn',
+                    listeners : {
+                        afterrender : function (b) {
+                            new Ext.ToolTip({
+                                target : 'qsForm',
+                                anchor: 'top',
+                                showDelay : 0,
+                                hideDelay : 0,
+                                html : "Form"
+                            });
+                        }
+                    }
+                }, {
+                    id : 'qsSecurity',
+                    value : 'qsSecurity',
+                    icon : '/sitools/common/res/images/icons/tree_userman.png',
+                    scope : this,
+                    enableToogle: true,
+                    toggleGroup : 'steps',
+                    toggleHandler : this.manageSteps,
+                    allowDepress : false,
+//                    scale : 'medium',
+//                    cls : 'services-toolbar-btn',
+                    listeners : {
+                        afterrender : function (b) {
+                            new Ext.ToolTip({
+                                target : 'qsSecurity',
+                                anchor: 'top',
+                                showDelay : 0,
+                                hideDelay : 0,
+                                html : "Security"
+                            });
+                        }
+                    }
+                }, '->', {xtype : 'label', html : '<i>Show QuickStart on startup<i>'},
+                {
+                   xtype : 'checkbox',
+                   listeners : {
+                       check : function (combo, checked) {
+                           Ext.util.Cookies.set('showQuickStart', checked);
+                       },
+                       afterrender : function (cb) {
+                           cb.setValue(Ext.util.Cookies.get('showQuickStart'));
+                       }
+                   }
+                }]
+                
+                
+        };
         
         this.currentPanel = new sitools.admin.quickStart.qsStart({
             qs : this
@@ -180,18 +190,19 @@ Ext.define('sitools.admin.quickStart.qs', { extend : 'Ext.panel.Panel',
             layout : 'fit',
 //            autoLoad : "/sitools/client-admin/res/html/quickStart/qs-start.html"
             bodyCssClass : 'quickStart',
-            items : [this.currentPanel]
+            items : [this.currentPanel],
+            bbar : this.stepsBtn
         });
         
-        this.stepsPanel = new Ext.Panel({
-            region : 'south',
-            bodyCssClass : 'quickStart',
-            buttonAlign : 'center',
-            height : 0,
-            buttons : [this.stepsBtn]
-        });
+//        this.stepsPanel = new Ext.Panel({
+//            region : 'south',
+//            bodyCssClass : 'quickStart',
+//            buttonAlign : 'center',
+//            height : 0,
+//            buttons : [this.stepsBtn]
+//        });
         
-        this.items = [this.welcomePanel, this.stepsPanel];
+        this.items = [this.welcomePanel/*, this.stepsPanel*/];
         
         sitools.admin.quickStart.qs.superclass.initComponent.call(this);
     },
@@ -217,26 +228,27 @@ Ext.define('sitools.admin.quickStart.qs', { extend : 'Ext.panel.Panel',
     },
     
     openFeature : function (nodeId) {
-        var containerP = mainPanel.find('name', 'containerPanel')[0];
+        var containerP = mainPanel.down('[name=containerPanel]');
         var tree = treePanel.items.items[0];
         
         var node = tree.getNodeById(nodeId);
         tree.getSelectionModel().select(node);
         
         containerP.removeAll();
+        
         containerP.add(
             {
                 width: "100%",
                 bodyCssClass : 'admin-bg',
-                icon : node.attributes.icon,
+//                icon : node.raw.icon,
                 items : [ {
                     xtype : 's-box',
-                    label : i18n.get('label.' + node.attributes.nodeName),
+//                    label : i18n.get('label.' + node.raw.nodeName),
                     items : [ {
-                        xtype : 's-' + node.attributes.nodeName,
+                        xtype : 's-' + node.raw.nodeName,
                         sitoolsType : "mainAdminPanel"
                     } ],
-                    idItem : node.attributes.id
+//                    idItem : node.raw.id
                 } ], 
                 listeners : {
                     resize : function (panel, width, height) {
@@ -246,8 +258,8 @@ Ext.define('sitools.admin.quickStart.qs', { extend : 'Ext.panel.Panel',
                             height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargins("t") + sBoxTitle.getMargins("b")), 
                             width : size.width - 8
                         };
-                        var mainAdminPanel = panel.find("sitoolsType", "mainAdminPanel");
-                        mainAdminPanel[0].setSize(size);
+                        var mainAdminPanel = panel.down('[sitoolsType=mainAdminPanel]');
+                        mainAdminPanel.setSize(size);
                     }
                 }
             });

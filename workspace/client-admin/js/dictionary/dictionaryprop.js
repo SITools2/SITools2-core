@@ -44,8 +44,6 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
         
         this.gridTemplates = Ext.create('Ext.grid.Panel', {
             forceFit : true,
-            viewConfig : {
-            },
             id : 'gridTemplates',
             title : i18n.get('title.conceptTemplates'),
             store : new Ext.data.JsonStore({

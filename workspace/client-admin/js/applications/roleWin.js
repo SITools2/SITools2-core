@@ -28,14 +28,13 @@ Ext.namespace('sitools.component.applications');
 Ext.define('sitools.component.applications.rolesPanel', { 
     extend : 'Ext.Window',
     // url + mode + storeref
-    width : 350,
+    width : 500,
+    height : 350,
     modal : true,
     closable : false,
     pageSize : 10,
+    layout : 'fit',
 
-    /**
-     * 
-     */
     initComponent : function () {
         this.title = i18n.get('label.roleWin');
 
@@ -56,8 +55,11 @@ Ext.define('sitools.component.applications.rolesPanel', {
                 type : 'string'
             } ]
         });
+        
         this.grid = new Ext.grid.GridPanel({
-            selModel : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel', {
+                mode : 'MULTI'
+            }),
             store : this.store,
             forceFit : true,
             height : 200,
@@ -67,17 +69,17 @@ Ext.define('sitools.component.applications.rolesPanel', {
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description'
-            } ]
+            }],
+            bbar : {
+                xtype : 'pagingtoolbar',
+                pageSize : this.pageSize,
+                store : this.store,
+                displayInfo : true,
+                displayMsg : i18n.get('paging.display'),
+                emptyMsg : i18n.get('paging.empty')
+            }
         });
         
-        this.bbar = {
-            xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
-            store : this.store,
-            displayInfo : true,
-            displayMsg : i18n.get('paging.display'),
-            emptyMsg : i18n.get('paging.empty')
-        };
         
         this.items = [this.grid ];
         

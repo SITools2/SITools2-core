@@ -29,23 +29,27 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.RolePropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.usergroups.RolePropPanel', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.usergroups.RolePropPanel', { 
+    extend : 'Ext.Window', 
 	alias : 'widget.s-roleprop',
     width : 700,
     height : 480,
     modal : true,
+    layout : 'fit',
 
     initComponent : function () {
-        if (this.action == 'modify') {
-            this.title = i18n.get('label.modifyRole');
-        } else {
-            this.title = i18n.get('label.createRole');
-        }
+//        if (this.action == 'modify') {
+//            this.title = i18n.get('label.modifyRole');
+//        } else {
+//            this.title = i18n.get('label.createRole');
+//        }
+        this.title = i18n.get('label.roleInfo');
+
         this.items = [ {
             xtype : 'panel',
             height : 450,
-            title : i18n.get('label.roleInfo'),
-            items : [ {
+//            title : i18n.get('label.roleInfo'),
+            items : [{
                 xtype : 'form',
                 border : false,
                 padding : 10,
@@ -66,22 +70,24 @@ Ext.define('sitools.admin.usergroups.RolePropPanel', { extend : 'Ext.Window',
                     fieldLabel : i18n.get('label.description'),
                     anchor : '100%',
                     growMax : 400
-                } ]
-            } ],
-            buttons : [ {
-                id : ID.ITEM.OKBUTTON,
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this.onModify
-            }, {
-                id : ID.ITEM.CANCELBUTTON,
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-        } ];
+                }]
+            }]
+        }];
+        
+        this.buttons = [{
+            id : ID.ITEM.OKBUTTON,
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this.onModify
+        }, {
+            id : ID.ITEM.CANCELBUTTON,
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+        
         sitools.admin.usergroups.RolePropPanel.superclass.initComponent.call(this);
     },
 

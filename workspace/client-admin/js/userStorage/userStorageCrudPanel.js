@@ -28,7 +28,8 @@ Ext.namespace('sitools.admin.userStorage');
  * @class sitools.admin.userStorage.userStorageCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid.Panel',
+Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { 
+    extend :'Ext.grid.Panel',
 	alias : 'widget.s-userStorage',
     border : false,
     height : 300,
@@ -132,7 +133,11 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
             }, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
-                width : 100
+                width : 100,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value.toUpperCase();
+                    return value.toUpperCase();
+                }
             } ]
         });
 
@@ -231,7 +236,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
     onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.userStorage.userStoragePropPanel({
             url : this.url + '/' + rec.data.id,
@@ -254,7 +259,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('userStorageCrud.delete'),
+            msg : String.format(i18n.get('userStorageCrud.delete'), rec.data.userId),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -291,7 +296,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
     _onActive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/start',
@@ -312,7 +317,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
     _onDisactive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/stop',
@@ -333,12 +338,12 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
     _onClean : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('userStorageCrud.clean'),
+            msg : String.format(i18n.get('userStorageCrud.clean'), rec.data.userId),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -370,7 +375,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
     _onRefresh : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/refresh',
@@ -391,7 +396,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', { extend :'Ext.grid
     _onNotify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/notify',

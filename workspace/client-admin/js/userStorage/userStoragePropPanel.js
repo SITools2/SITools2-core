@@ -29,13 +29,15 @@ Ext.namespace('sitools.admin.userStorage');
  * @class sitools.admin.userStorage.userStoragePropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.userStorage.userStoragePropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.userStorage.userStoragePropPanel', {
+    extend : 'Ext.Window',
 	alias : 'widget.s-userStoragesprop',
     width : 700,
     height : 480,
     modal : true,
     pageSize : 10,
     dataSets : "",
+    layout : 'fit',
 
     initComponent : function () {
         if (this.action == 'modify') {
@@ -45,115 +47,110 @@ Ext.define('sitools.admin.userStorage.userStoragePropPanel', { extend : 'Ext.Win
             this.title = i18n.get('label.createUserStorage');
         }
 
-        this.items = [ {
-            xtype : 'panel',
-            height : 450,
-            items : [ {
-                xtype : 'panel',
-                height : 400,
-                items : [ {
-                    xtype : 'form',
-                    border : false,
-                    padding : 10,
-                    defaults : [ {
-                        readOnly : true
-                    } ],
-                    items : [ {
-                        xtype : 'hidden',
-                        name : 'userId',
-                        id : 'userValueFieldId'
-                    }, {
-                        xtype : 'textfield',
-                        name : 'displayUser',
-                        fieldLabel : i18n.get('label.user'),
-                        anchor : '100%',
-                        maxLength : 100,
-                        allowBlank : false,
-                        blankText  : 'The user field cannot be empty',
-                        listeners : {
-                            scope : this,
-                            focus : function (field) {
-
-                                if (this.action == 'create') {
-                                    /**
-                                     * Create a {sitools.admin.usergroups.UsersPanel} to select an existing user
-                                     */
-                                    var usersWin = new sitools.admin.usergroups.UsersPanel({
-                                        mode : 'selectUnique',
-                                        url : loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/users',
-                                        displayField : field,
-                                        valueField : this.down('form').getForm().findField('userValueFieldId')
-
-                                    });
-                                    usersWin.show();
-                                }
-                            }
-                        }
-                    }, {
-                        xtype : 'compositefield',
-                        fieldLabel : i18n.get('label.quota'),
-                        anchor : '100%',
-                        defaults : {
-                            flex : 1
-                        },
-                        items : [ {
-                            xtype : 'textfield',
-                            name : 'quota',
-                            fieldLabel : i18n.get('label.quota'),
-                            anchor : '75%'
-                        }, {
-                            xtype : 'label',
-                            text : i18n.get('label.quota.unit'),
-                            width : 50,
-                            flex : 0
-                        } ]
-                    }, {
-                        xtype : 'textfield',
-                        name : 'userStoragePath',
-                        fieldLabel : i18n.get('label.userStoragePath'),
-                        anchor : '100%',
-                        maxLength : 100,
-                        readOnly : true,
-                        disabled : true
-                    }, {
-                        xtype : 'numberfield',
-                        name : 'freeUserSpace',
-                        fieldLabel : i18n.get('label.freeUserSpace'),
-                        anchor : '100%',
-                        maxLength : 100,
-                        readOnly : true,
-                        disabled : true
-                    }, {
-                        xtype : 'numberfield',
-                        name : 'busyUserSpace',
-                        fieldLabel : i18n.get('label.busyUserSpace'),
-                        anchor : '100%',
-                        maxLength : 100,
-                        readOnly : true,
-                        disabled : true
-                    }, {
-                        xtype : 'textfield',
-                        name : 'status',
-                        fieldLabel : i18n.get('label.status'),
-                        anchor : '100%',
-                        maxLength : 30,
-                        readOnly : true,
-                        disabled : true
-                    } ]
-                } ]
+        this.items = [{
+            xtype : 'form',
+            border : false,
+            bodyBorder : false,
+            padding : 10,
+            defaults : [ {
+                readOnly : true
             } ],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this.onValidate
+            items : [ {
+                xtype : 'hidden',
+                name : 'userId',
+                id : 'userValueFieldId'
             }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
+                xtype : 'textfield',
+                name : 'displayUser',
+                fieldLabel : i18n.get('label.user'),
+                anchor : '100%',
+                maxLength : 100,
+                allowBlank : false,
+                blankText  : 'The user field cannot be empty',
+                listeners : {
+                    scope : this,
+                    focus : function (field) {
+
+                        if (this.action == 'create') {
+                            /**
+                             * Create a {sitools.admin.usergroups.UsersPanel} to select an existing user
+                             */
+                            var usersWin = new sitools.admin.usergroups.UsersPanel({
+                                mode : 'selectUnique',
+                                url : loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/users',
+                                displayField : field,
+                                valueField : this.down('form').getForm().findField('userValueFieldId')
+
+                            });
+                            usersWin.show();
+                        }
+                    }
                 }
-            } ]
-        } ];
+            }, {
+                xtype : 'compositefield',
+                fieldLabel : i18n.get('label.quota'),
+                anchor : '100%',
+                defaults : {
+                    flex : 1
+                },
+                items : [ {
+                    xtype : 'textfield',
+                    name : 'quota',
+                    fieldLabel : i18n.get('label.quota'),
+                    anchor : '75%'
+                }, {
+                    xtype : 'label',
+                    text : i18n.get('label.quota.unit'),
+                    width : 50,
+                    flex : 0
+                } ]
+            }, {
+                xtype : 'textfield',
+                name : 'userStoragePath',
+                fieldLabel : i18n.get('label.userStoragePath'),
+                anchor : '100%',
+                maxLength : 100,
+                readOnly : true,
+                disabled : true
+            }, {
+                xtype : 'numberfield',
+                name : 'freeUserSpace',
+                fieldLabel : i18n.get('label.freeUserSpace'),
+                anchor : '100%',
+                maxLength : 100,
+                readOnly : true,
+                disabled : true
+            }, {
+                xtype : 'numberfield',
+                name : 'busyUserSpace',
+                fieldLabel : i18n.get('label.busyUserSpace'),
+                anchor : '100%',
+                maxLength : 100,
+                readOnly : true,
+                disabled : true
+            }, {
+                xtype : 'textfield',
+                name : 'status',
+                fieldLabel : i18n.get('label.status'),
+                anchor : '100%',
+                maxLength : 30,
+                readOnly : true,
+                disabled : true
+            }]
+        }];
+        
+        this.buttons = [{
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this.onValidate
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+        
         sitools.admin.userStorage.userStoragePropPanel.superclass.initComponent.call(this);
     },
     

@@ -39,21 +39,22 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
 	width : 700,
     height : 480,
     modal : true,
+    layout : 'fit',
     id : ID.COMPONENT_SETUP.DATABASE,
 
     initComponent : function () {
-        if (this.action == 'create') {
-            this.title = i18n.get('label.createDatabase');
-        } else if (this.action == 'modify') {
-            this.title = i18n.get('label.modifyDatabase');
-        } else if (this.action == 'view') {
-            this.title = i18n.get('label.viewDatabase');
-        }
-        this.items = [ {
-            xtype : 'panel',
-            layout : "fit", 
-            title : i18n.get('label.databaseInfo'),
-            items : [ {
+        
+//        if (this.action == 'create') {
+//            this.title = i18n.get('label.createDatabase');
+//        } else if (this.action == 'modify') {
+//            this.title = i18n.get('label.modifyDatabase');
+//        } else if (this.action == 'view') {
+//            this.title = i18n.get('label.viewDatabase');
+//        }
+        
+        this.title = i18n.get('label.databaseInfo');
+        
+        this.items = [{
                 xtype : 'form',
                 formId : 'datasourceForm',
                 border : false,
@@ -97,8 +98,8 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
                     displayField : 'label',
                     anchor : "50%",
                     listeners : {
-                        select : function (combo, record, index) {
-                            var driverValue = record.get("code");
+                        select : function (combo, records, index) {
+                            var driverValue = records[0].get("code");
                             var portField = Ext.getCmp('portField');
                             switch (driverValue) {
                             case 'org.gjt.mm.mysql.Driver':
@@ -152,7 +153,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
                             allowBlank : true,
                             anchor : '100%'
                         },  {
-                            xtype : 'spinnerfield',
+                            xtype : "numberfield",
                             name : 'maxActive',
                             id : 'maxActiveId', 
                             fieldLabel : i18n.get('label.maxActive'),
@@ -179,7 +180,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
                                 }
                             }
                         }, {
-                            xtype : 'spinnerfield',
+                            xtype : "numberfield",
                             name : 'initialSize',
                             id : 'initialSizeId', 
                             fieldLabel : i18n.get('label.initialSize'),
@@ -208,32 +209,33 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
                         }
                     ]
                 }]
-            }],
-            buttons : [ {
-                text : i18n.get('label.testCnx'),
-                name : 'testConnectionButton',
-                scope : this,
-                handler : this._onTest
-            }, {
-                text : i18n.get('label.ok'),
-                name : 'okButton',
-                scope : this,
-                handler : this._onValidate
-            },
-            {
-                text : i18n.get('label.cancel'),
-                name : 'cancelButton',
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-        } ];
+            }];
+        
+        this.buttons = [{
+            text : i18n.get('label.testCnx'),
+            name : 'testConnectionButton',
+            scope : this,
+            handler : this._onTest
+        }, {
+            text : i18n.get('label.ok'),
+            name : 'okButton',
+            scope : this,
+            handler : this._onValidate
+        },
+        {
+            text : i18n.get('label.cancel'),
+            name : 'cancelButton',
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+        
         this.listeners = {
 			scope : this, 
 	        resize : function (window, width, height) {
 				var size = window.body.getSize();
-				this.down('panel').setSize(size);
+				this.down('form').setSize(size);
 			}
         };
         sitools.admin.datasource.jdbc.DataBasePropPanel.superclass.initComponent.call(this);

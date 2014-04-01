@@ -262,7 +262,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
         var rec = this.getSelectionModel().getSelected();
         
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         if ("ACTIVE" === rec.data.status) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
@@ -285,7 +285,8 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
     onDelete : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+//            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
@@ -328,7 +329,8 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
     _onActive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+//            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlAdmin + "/" + rec.data.id + "/start",
@@ -349,7 +351,8 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
     _onDisactive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+//            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlAdmin + "/" + rec.data.id + "/stop",

@@ -23,7 +23,8 @@
   */
 Ext.namespace('sitools.component.filters');
 
-Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
+Ext.define('sitools.component.filters.filtersProp', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -145,7 +146,7 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
         };
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
@@ -248,7 +249,7 @@ Ext.define('sitools.component.filters.filtersProp', { extend : 'Ext.Window',
                 width : 100,
                 sortable : false
             }, {
-                header : i18n.get('label.value'),
+                header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'value',
                 width : 80,
                 sortable : false,

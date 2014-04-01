@@ -162,10 +162,10 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
     onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.usergroups.GroupPropPanel({
-            url : this.url + '/' + rec.data.id,
+            url : this.url + '/' + rec.data.name,
             action : 'modify',
             store : this.getStore()
         });
@@ -178,13 +178,13 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
     onDelete : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('msg.group.delete'),
+            msg : String.format(i18n.get('msg.group.confirm.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -204,7 +204,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.data.id,
+            url : this.url + "/" + rec.data.name,
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -224,11 +224,14 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
     onMembers : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
+        
+        delete rec.data.id;
+        
         var up = new sitools.admin.usergroups.UsersPanel({
             mode : 'list',
-            url : this.url + '/' + rec.data.id + '/users',
+            url : this.url + '/' + rec.data.name + '/users',
             data : rec.data
         });
         up.show(ID.BOX.GROUP);

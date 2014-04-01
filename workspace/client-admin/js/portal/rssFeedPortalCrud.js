@@ -165,7 +165,7 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
     loadRss : function () {
 
         var urlRss = this.url + "/" + this.dataId + this.urlRef;
-        this.httpProxyRss.setUrl(urlRss, true);
+        this.httpProxyRss.url = urlRss;
         this.getStore().load({
             scope : this,
             callback : function () {
@@ -196,13 +196,11 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
                     Ext.Msg.alert(i18n.get('label.warning'), data.message);
                     return false;
                 }
-                var tmp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.feedsSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                
+                popupMessage("", 
+                        i18n.get('label.feedsSaved'),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/save.png');
+                
                 this.store.load();
             }
 

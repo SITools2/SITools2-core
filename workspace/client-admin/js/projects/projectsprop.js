@@ -67,7 +67,9 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     }, {
         name : "label.editorialInformations", 
         url : "/sitools/common/html/editorialInformations.html"
-    }], 
+    }],
+    layout : 'fit',
+    
     initComponent : function () {
         var action = this.action;
         if (this.action === 'view') {
@@ -273,12 +275,32 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 anchor : '100%',
                 maxLength : 100
             }, {
-                xtype : 'textfield',
+                xtype : 'combo',
                 name : 'ftlTemplateFile',
+                store : Ext.create('Ext.data.JsonStore', {
+                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/ftl',
+                    idProperty : 'name',
+                    fields : [ 'name', 'url' ],
+                    root : 'items',
+                }),
+                valueField : 'name',
+                displayField : 'name',
+                typeAhead : true,
+                forceSelection : true,
+                editable : false,
+                selectOnFocus : true,
                 fieldLabel : i18n.get('label.ftlTemplateFile'),
                 anchor : '100%', 
                 tooltip : i18n.get("label.projectTemplateHelp"), 
-                value : this.defaultValueTpl
+                value : this.defaultValueTpl,
+                listeners : {
+                    scope : this,
+                    afterrender : function (combo) {
+                        if (this.action == 'create') {
+                            combo.setRawValue(this.defaultValueTpl);
+                        }
+                    }
+                }
             }, {
                 xtype : 'textarea',
                 name : 'htmlHeader',
@@ -475,7 +497,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         };
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         var columnsProjectModules = [/*visible,*/ {
@@ -614,7 +636,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             forceFit : true,
             plugins : [
                Ext.create('Ext.grid.plugin.CellEditing', {
-                   clicksToEdit: 2
+                   clicksToEdit: 1
             })],
             columns : [{            
                     header : i18n.get('headers.name'),
@@ -700,7 +722,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     _onDelete : function () {
         var recs = this.gridDataSets.getSelectionModel().getSelections();
         if (recs.length === 0) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         this.gridDataSets.getStore().remove(recs);
     },
@@ -708,7 +730,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     _onRoles : function () {
         var rec = this.modulePanel.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var gp = new sitools.admin.usergroups.RolesPanel({
             mode : 'list',
@@ -720,7 +742,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     _onModuleConfig : function () {
         var rec = this.modulePanel.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var mc = new sitools.admin.projects.modules.ProjectModuleConfig({
             module : rec
@@ -729,16 +751,19 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     },
     
     onUpload : function () {
-        function validate(data, config) {
+        
+        var validate = function (data, config) {
             config.fieldUrl.setValue(data.url);
-        }
+        };
+        
         var chooser = new ImageChooser({
             url : loadUrl.get('APP_URL') + '/client-admin/res/json/componentList.json',
             width : 515,
             height : 350,
-            fieldUrl : this.ownerCt.items.items[0]
+            fieldUrl : this.ownerCt.items.items[0],
+            callback : validate
         });
-        chooser.show(document, validate);
+        chooser.show(document);
     },
     /**
      * Check the validity of form
@@ -1025,7 +1050,8 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                         f.setValues(rec);
                         //Mise a jour manuelle de la combo 
                         try {
-                            this.ihmProfile.find('xtype', 'radiogroup')[0].setValue(rec.navigationMode);
+                            this.ihmProfile.find('xtype', 'radiogroup').setValue(rec.navigationMode);
+                            this.ihmProfile.down('combo').setRawValue(rec.ftlTemplateFile);
                         }
                         catch (err) {
                             var tmp;

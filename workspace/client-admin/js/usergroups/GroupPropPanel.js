@@ -29,30 +29,28 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.GroupPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.usergroups.GroupPropPanel', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.usergroups.GroupPropPanel', {
+    extend : 'Ext.Window', 
 	alias : 'widget.s-groupprop',
     width : 700,
     height : 480,
     modal : true,
     pageSize : 10,
-
+    layout : 'fit',
+    
     initComponent : function () {
-        if (this.action == "create") {
-            this.title = i18n.get('label.createGroup');
-        } else {
-            this.title = i18n.get('label.modifyGroup');
-        }
+//        if (this.action == "create") {
+//            this.title = i18n.get('label.createGroup');
+//        } else {
+//            this.title = i18n.get('label.modifyGroup');
+//        }
+        
+        this.title = i18n.get('label.groupInfo'),
 
         this.items = [ {
-            // xtype: 'tabpanel',
-            // activeTab: 0,
-            // layoutOnTabChange: true,
-            // height: 450,
-            // items: [
-            // {
             xtype : 'panel',
             height : 450,
-            title : i18n.get('label.groupInfo'),
+//            title : i18n.get('label.groupInfo'),
             items : [ {
                 xtype : 'form',
                 border : false,
@@ -71,60 +69,21 @@ Ext.define('sitools.admin.usergroups.GroupPropPanel', { extend : 'Ext.Window',
                     anchor : '100%',
                     growMax : 400
                 } ]
-            } ],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this.onModifyOrCreate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
             } ]
         } ];
 
-        // ,
-        // {
-        // xtype: 'panel',
-        // disabled: true,
-        // title: i18n.get('label.groupPrivileges'),
-        // items: [
-        // {
-        // xtype: 'grid',
-        // height: 400,
-        // columns: [
-        // {
-        // xtype: 'gridcolumn',
-        // dataIndex: 'string',
-        // header: 'Name',
-        // sortable: true,
-        // width: 100,
-        // editable: false
-        // },
-        // {
-        // xtype: 'booleancolumn',
-        // dataIndex: 'bool',
-        // header: 'R',
-        // sortable: true,
-        // width: 100
-        // },
-        // {
-        // xtype: 'booleancolumn',
-        // dataIndex: 'bool',
-        // header: 'W',
-        // sortable: true,
-        // width: 100
-        // }
-        // ]
-        // }
-        // ]
-        // }
-        // ],
-        //
-        // }
-        // ];
+        this.buttons = [{
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this.onModifyOrCreate
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
+        
         sitools.admin.usergroups.GroupPropPanel.superclass.initComponent.call(this);
     },
 

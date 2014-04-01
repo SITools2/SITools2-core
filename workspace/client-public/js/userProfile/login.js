@@ -31,16 +31,13 @@ Ext.define('sitools.userProfile.Login', {
     extend : 'Ext.window.Window',
     alias : 'widget.s-login',
     id : 'winLogin',
-//    layout : 'vbox',
     width : 392,
     height : 200,
+    draggable : false,
     resizable : false,
     closable : false,
     modal : true,
-    draggrable : false,
-    layout : {
-        type : 'fit'
-    },
+    layout : 'fit',
     
     initComponent : function () {
         this.title = i18n.get('label.login');
@@ -92,7 +89,7 @@ Ext.define('sitools.userProfile.Login', {
                 anchor : '80%',
                 listeners : {
                     afterrender : function (login) {
-                        login.focus(false, 100);
+                        login.focus(false, 300);
                     }
                 }
             }, {
@@ -112,34 +109,39 @@ Ext.define('sitools.userProfile.Login', {
                     }
                 }
             }, this.combo ],
-            buttons : [{
-                text : i18n.get('label.login'),
-                scale : 'large',
-                handler : this.getAuth,
-                scope : this
-            }, {
-                text : i18n.get('label.register'),
-                hidden : !this.register,
-                scope : this,
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-                handler : function () {
-                    Ext.getCmp('winLogin').close();
-                    var register = new sitools.userProfile.Register({
-                        closable : this.closable,
-                        url : this.register,
-                        login : this.url,
-                        handler : this.handler,
-                        back : this
-                    });
-                    register.show();
-                }
-            }]
+            buttons : {
+                xtype : 'toolbar',
+                style : 'background-color:white;',
+                items : [{
+                    text : i18n.get('label.login'),
+                    scale : 'large',
+                    handler : this.getAuth,
+                    scope : this
+                }, {
+                    text : i18n.get('label.register'),
+                    hidden : !this.register,
+                    scope : this,
+                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
+                    handler : function () {
+                        Ext.getCmp('winLogin').close();
+                        var register = new sitools.userProfile.Register({
+                            closable : this.closable,
+                            url : this.register,
+                            login : this.url,
+                            handler : this.handler,
+                            back : this
+                        });
+                        register.show();
+                    }
+                }]
+            }
         }];
         
         this.bbar = Ext.create('Ext.ux.StatusBar', {
             text : i18n.get('label.ready'),
             id : 'sbWinLogin',
             iconCls : 'x-status-valid',
+            height : 40,
             items : [ {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
                 iconAlign : 'right',

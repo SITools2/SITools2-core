@@ -100,7 +100,6 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                     name : 'violation'
                 }]
             }),
-
             columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
@@ -161,9 +160,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                 anchor : '100%',
                 vtype : "attachment",
                 allowBlank: false
-                
             } ]
-
         });
 
         this.proxyFieldMapping = new Ext.data.HttpProxy({
@@ -173,7 +170,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
         });
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
@@ -269,7 +266,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                 width : 200,
                 sortable : false
             }, {
-                header : i18n.get('label.value'),
+                header : i18n.get('label.value') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'value',
                 width : 100,
                 sortable : false,
@@ -308,18 +305,21 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                         } 
                         else if (rec.valueType == "xs:image") {
                             
+                            var callback = function (data, config) {
+                                config.record.data[config.field] = data.url;
+                                config.parentView.refresh();                                
+                            };
+                            
                             var chooser = new ImageChooser({
                                 url : loadUrl.get('APP_URL') + loadUrl.get('APP_UPLOAD_URL') + '/?media=json',
                                 width : 515,
                                 height : 450,
                                 field : "value",
                                 parentView : this.gridFieldMapping.getView(),
-                                record : storeRecord
+                                record : storeRecord,
+                                callback : callback
                             });
-                            chooser.show(document, function (data, config) {
-                                config.record.data[config.field] = data.url;
-                                config.parentView.refresh();                                
-                            });
+                            chooser.show(document);
                         }
                         else if (rec.valueType.indexOf("xs:enum") != -1) {
                             var enumType;
@@ -407,13 +407,14 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
             if (newTab.id == "fieldMappingFormPanel" || newTab.id == "gridFieldMapping") {
                 var rec = this.gridapplicationPlugin.getSelectionModel().getSelected();
                 if (!rec) {
-                    var tmp = new Ext.ux.Notification({
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : i18n.get('warning.noselection'),
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    }).show(document);
+                    popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+//                    var tmp = new Ext.ux.Notification({
+//                        iconCls : 'x-icon-information',
+//                        title : i18n.get('label.information'),
+//                        html : i18n.get('warning.noselection'),
+//                        autoDestroy : true,
+//                        hideDelay : 1000
+//                    }).show(document);
                     return false;
                 }
             }
@@ -504,13 +505,14 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
         if (this.action == "create") {
             rec = this.gridapplicationPlugin.getSelectionModel().getSelected();
             if (!rec) {
-                var tmp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('warning.noselection'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+//                var tmp = new Ext.ux.Notification({
+//                    iconCls : 'x-icon-information',
+//                    title : i18n.get('label.information'),
+//                    html : i18n.get('warning.noselection'),
+//                    autoDestroy : true,
+//                    hideDelay : 1000
+//                }).show(document);
                 return false;
             }
             jsonReturn.name = rec.data.name;

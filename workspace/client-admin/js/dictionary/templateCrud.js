@@ -20,7 +20,8 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.dictionary');
 
-Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.component.dictionary.templateCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-template',
     border : false,
     height : 300,
@@ -138,7 +139,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
     onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         var up = new sitools.component.dictionary.templatePropPanel({
@@ -158,7 +159,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('templateCrud.delete'),
+            msg : String.format(i18n.get('templateCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -175,7 +176,12 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', { extend : 'Ext.gri
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },

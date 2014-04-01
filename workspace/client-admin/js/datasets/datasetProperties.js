@@ -111,7 +111,7 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
             selModel : smProperties,
             forceFit : true,
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-                clicksToEdit: 2
+                clicksToEdit: 1
             })], 
             listeners : {
 				scope : this, 

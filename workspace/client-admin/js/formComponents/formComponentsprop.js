@@ -97,7 +97,7 @@ Ext.define('sitools.component.formComponents.FormComponentsPropPanel', { extend 
                     anchor : '100%', 
                     allowBlank : false
                 }, {
-                        xtype : 'spinnerfield',
+                        xtype : 'numberfield',
                         name : 'priority',
                         id : 'priorityId', 
                         fieldLabel : i18n.get('label.priority'),

@@ -33,8 +33,8 @@ Ext.namespace('sitools.user.component');
  * @class sitools.user.component.viewDataDetail
  * @extends Ext.Panel
  */
-sitools.user.component.viewDataDetail = Ext.extend(Ext.Panel, {
-//sitools.component.users.viewDataDetail = Ext.extend(Ext.Panel, {
+Ext.define('sitools.user.component.viewDataDetail', {
+    extend : 'Ext.Panel',
 	datasetColumnModel : null,
     initComponent : function () {
         var rec;

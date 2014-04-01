@@ -41,19 +41,19 @@ Ext.define('sitools.component.datasets.selectItems', {
             },
             items : [ {
                 xtype : 'button',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-right.png',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-right-white.png',
                 handler : this._onAdd
             }, {
                 xtype : 'button',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-right.png',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-right-white.png',
                 handler : this._onAddAll
             }, {
                 xtype : 'button',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-left.png',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-left-white.png',
                 handler : this._onRemove
             }, {
                 xtype : 'button',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-left.png',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-left-white.png',
                 handler : this._onRemoveAll
             } ]
         });
@@ -85,16 +85,17 @@ Ext.define('sitools.component.datasets.selectItems', {
         }
         
         if (this.grid1 instanceof Ext.tree.Panel) {
-            var treeNodes = this.grid1.getSelectionModel().getSelectedNodes();
+            var treeNodes = this.grid1.getSelectionModel().getSelection();
             
             Ext.each (treeNodes, function (node) {
-                var attributes = Ext.apply(node.attributes, {
-                    columnAlias : node.attributes.name.toLowerCase(), 
+                var attributes = Ext.apply(node.raw, {
+                    columnAlias : node.raw.name.toLowerCase(), 
                     dataIndex : this.buildDataIndex(node), 
-                    sqlColumnType : node.attributes.type, 
-                    tableName : this.grid1.getRootNode().attributes.collection
+                    sqlColumnType : node.raw.type, 
+//                    tableName : this.grid1.getRootNode().raw.collection
+                    tableName : this.grid1.collection.name
                 });
-                recs.push(node.attributes);
+                recs.push(node);
             }, this)
         }
         
@@ -106,11 +107,18 @@ Ext.define('sitools.component.datasets.selectItems', {
         Ext.each(recs, function (rec) {
             recTmp = rec.copy();
             recTmp.id = Ext.data.Record.id(recTmp);
+            
             Ext.each(this.defaultRecord, function (property) {
                 if (!recTmp.get(property.name)) {
                     recTmp.set(property.name, property.value);
                 }
             }, this);
+            
+            // Iterate over raw properties which are not copied automatically
+            Ext.iterate(recTmp.raw, function (key, value) {
+                recTmp.set(key, value);
+            });
+            
             store2.add(recTmp);
         }, this);
 
@@ -129,25 +137,33 @@ Ext.define('sitools.component.datasets.selectItems', {
             var treeNodes = this.grid1.getRootNode().childNodes;
             var RecType = store2.recordType;
             Ext.each (treeNodes, function (node) {
-                var attributes = Ext.apply(node.attributes, {
-                    columnAlias : node.attributes.name.toLowerCase(), 
+                var attributes = Ext.apply(node.raw, {
+                    columnAlias : node.raw.name.toLowerCase(), 
                     dataIndex : this.buildDataIndex(node), 
-                    sqlColumnType : node.attributes.type, 
-                    tableName : node.ownerTree.getRootNode().attributes.collection
+                    sqlColumnType : node.raw.type, 
+//                    tableName : node.getOwnerTree().getRootNode().raw.collection
+                    tableName : this.grid1.collection.name
                 });
 //                recs.push(new RecType(node.attributes));
-                recs.push(node.attributes);
+                recs.push(node);
             }, this)
         }
         var recTmp;
         Ext.each(recs, function (rec) {
             recTmp = rec.copy();
             recTmp.id = Ext.data.Record.id(recTmp);
+            
             Ext.each(this.defaultRecord, function (property) {
                 if (!recTmp.get(property.name)) {
                     recTmp.set(property.name, property.value);
                 }
             }, this);
+            
+            // Iterate over raw properties which are not copied automatically
+            Ext.iterate(recTmp.raw, function (key, value) {
+                recTmp.set(key, value);
+            });
+            
             store2.add(recTmp);
         }, this);
 
@@ -190,11 +206,11 @@ Ext.define('sitools.component.datasets.selectItems', {
     }, 
     buildDataIndex : function (node, currentName) {
         if (Ext.isEmpty(currentName)) {
-            currentName = node.attributes.name;
+            currentName = node.raw.name;
         }
         while (node.parentNode && !node.parentNode.isRoot) {
             node = node.parentNode;
-            currentName = node.attributes.name + "." + currentName;
+            currentName = node.raw.name + "." + currentName;
             this.buildDataIndex(node, currentName)
         }
         return currentName;

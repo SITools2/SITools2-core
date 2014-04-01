@@ -29,7 +29,8 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @class sitools.admin.datasource.mongoDb.DataBaseExplorer
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', { 
+    extend : 'Ext.Window',
     width : 800,
     height : 500,
     closable : true,

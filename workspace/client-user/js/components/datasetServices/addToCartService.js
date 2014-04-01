@@ -325,18 +325,15 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 						}
 					}
 				}),
-				colModel : new Ext.grid.ColumnModel({
-							columns : [{
-										header : i18n
-												.get('label.selectColumns'),
-										dataIndex : 'columnAlias',
-										sortable : true
-									}, {
-										header : i18n.get('headers.previewUrl'),
-										dataIndex : 'featureType',
-										sortable : true
-									}]
-						})
+				columns : [{
+					header : i18n.get('label.selectColumns'),
+					dataIndex : 'columnAlias',
+					sortable : true
+				}, {
+					header : i18n.get('headers.previewUrl'),
+					dataIndex : 'featureType',
+					sortable : true
+				}]
 			}),
 			grid2 : new Ext.grid.GridPanel({
 				width : 270,
@@ -369,15 +366,11 @@ sitools.user.component.dataviews.services.addToCartService.getParameters = funct
 						}
 					}
 				}),
-				colModel : new Ext.grid.ColumnModel({
-							columns : [{
-										header : i18n
-												.get('label.exportColumns'),
-										dataIndex : 'columnAlias',
-										sortable : true
-									}, checkColumn]
-						}),
-				plugins : [checkColumn]
+				columns : [{
+					header : i18n.get('label.exportColumns'),
+					dataIndex : 'columnAlias',
+					sortable : true
+				}, checkColumn]
 			}),
 			name : "exportcolumns",
 			value : [],

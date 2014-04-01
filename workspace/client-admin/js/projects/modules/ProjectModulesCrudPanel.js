@@ -203,7 +203,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
     _onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         var dbp = new sitools.admin.projects.modules.ProjectModulePropPanel({
@@ -226,7 +226,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('projectModulesCrud.delete'),
+            msg : String.format(i18n.get('projectModulesCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -250,7 +250,12 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },

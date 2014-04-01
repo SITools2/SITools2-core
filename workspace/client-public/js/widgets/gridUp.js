@@ -25,15 +25,17 @@ Ext.define('sitools.widget.GridUp', {
         sitools.widget.GridUp.superclass.initComponent.call(this);
     },	 
 	handler: function (){
-        
-		 if (Ext.isEmpty(this.gridId)) {
-            var grid = this.findByType('grid')[0];
-        } else {
-            var grid = Ext.getCmp(this.gridId);
-        }
-		if (! grid) {
-			var grid = this;
-		} 
+          if (Ext.isEmpty(this.gridId)) {
+              var grid = this.findByType('grid')[0];
+          } else {
+              var grid = Ext.getCmp(this.gridId);
+          }
+         
+        if (!grid) {
+            var grid = this;
+        } 
+          
+        var grid = this;
 		var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
@@ -63,14 +65,18 @@ Ext.define('sitools.widget.GridDown', {
         sitools.widget.GridDown.superclass.initComponent.call(this);
     },  
 	handler: function (){
-		 if (Ext.isEmpty(this.gridId)) {
+	    if (Ext.isEmpty(this.gridId)) {
             var grid = this.findByType('grid')[0];
         } else {
             var grid = Ext.getCmp(this.gridId);
         }
-		if (! grid) {
+		 
+		if (!grid) {
 			var grid = this;
 		} 
+		
+		var grid = this;
+		
 		var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
@@ -101,14 +107,17 @@ Ext.define('sitools.widget.GridTop', {
     },
     handler: function (){
         if (Ext.isEmpty(this.gridId)) {
-			var grid = this.findByType('grid')[0];
-		} else {
-			var grid = Ext.getCmp(this.gridId);
-		}
-        
-        if (! grid) {
+              var grid = this.findByType('grid')[0];
+          } else {
+              var grid = Ext.getCmp(this.gridId);
+          }
+         
+        if (!grid) {
             var grid = this;
         } 
+          
+        var grid = this;
+        
         var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
@@ -135,14 +144,17 @@ Ext.define('sitools.widget.GridBottom', {
         sitools.widget.GridBottom.superclass.initComponent.call(this);
     },
     handler: function (){
-         if (Ext.isEmpty(this.gridId)) {
-            var grid = this.findByType('grid')[0];
-        } else {
-            var grid = Ext.getCmp(this.gridId);
-        }
-        if (! grid) {
+          if (Ext.isEmpty(this.gridId)) {
+              var grid = this.findByType('grid')[0];
+          } else {
+              var grid = Ext.getCmp(this.gridId);
+          }
+         
+        if (!grid) {
             var grid = this;
         } 
+          
+        var grid = this;
         var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;

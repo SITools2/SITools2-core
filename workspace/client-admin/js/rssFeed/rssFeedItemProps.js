@@ -38,9 +38,9 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
     resizable : false,
     layout : 'fit',
     
-
     initComponent : function () {
         this.title = i18n.get('title.feedItemDetails');
+        
         /* paramétres du formulaire */
         var itemsForm = [ {
             fieldLabel : i18n.get('label.titleRss'),
@@ -81,7 +81,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             }, {
                 name : 'hours',
                 xtype : 'numberfield',
-                width : 48,
+                width : 50,
                 maxValue : 23,
                 minValue : 0
             }, {
@@ -90,7 +90,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             }, {
                 name : 'minutes',
                 xtype : 'numberfield',
-                width : 48,
+                width : 50,
                 maxValue : 59,
                 minValue : 0
 
@@ -117,7 +117,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             }, {
                 name : 'hoursPub',
                 xtype : 'numberfield',
-                width : 48,
+                width : 50,
                 maxValue : 23,
                 minValue : 0,
                 allowBlank : false
@@ -127,7 +127,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             }, {
                 name : 'minutesPub',
                 xtype : 'numberfield',
-                width : 48,
+                width : 50,
                 maxValue : 59,
                 minValue : 0,
                 allowBlank : false
@@ -151,11 +151,13 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             defaultType : 'textfield',
             items : itemsForm,
             border : false,
+            bodyBorder : false,
             padding : 10
         });
 
         this.items = [ this.formPanel ];
-        this.buttons = [ {
+        
+        this.buttons = [{
             text : i18n.get('label.ok'),
             scope : this,
             handler : this.onValidate
@@ -165,7 +167,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             handler : function () {
                 this.close();
             }
-        } ];
+        }];
+        
         sitools.admin.rssFeed.rssFeedItemProps.superclass.initComponent.call(this);
     },
 
@@ -204,9 +207,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
 				record.set("image", record.get('image').url);
             }
             
-            form.loadRecord(record);
-            
-
+            form.setValues(record.data);
         }
     },
 

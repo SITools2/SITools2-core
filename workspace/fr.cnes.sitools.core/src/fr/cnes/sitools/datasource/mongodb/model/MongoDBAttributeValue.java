@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -47,6 +47,11 @@ public class MongoDBAttributeValue {
    * The list of Children
    */
   private List<MongoDBAttributeValue> children;
+
+  /**
+   * Attribute leaf
+   */
+  private boolean leaf;
 
   /**
    * Gets the name value
@@ -122,6 +127,25 @@ public class MongoDBAttributeValue {
    */
   public void setValue(Object value) {
     this.value = value;
+  }
+
+  /**
+   * Gets the leaf value
+   * 
+   * @return the leaf
+   */
+  public boolean isLeaf() {
+    return leaf;
+  }
+
+  /**
+   * Sets the value of leaf
+   * 
+   * @param leaf
+   *          the leaf to set
+   */
+  public void setLeaf(boolean leaf) {
+    this.leaf = leaf;
   }
 
 }

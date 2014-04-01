@@ -32,8 +32,8 @@ Ext.ns("sitools.admin.datasets");
 Ext.define('sitools.admin.datasets.PredicatsPanel', {
     extend : 'Ext.grid.Panel',
     layout : 'fit', 
-    flex : 0.70, 
-    resizable : true,
+    flex : 0.80, 
+//    resizable : true,
     autoHeight : false,
     forceFit : true,
     autoScroll : true,
@@ -72,7 +72,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             };
         };
 
-        // Ici on cr�e les combos pour utilisation dans l'Editor Grid
+        // Ici on créé les combos pour utilisation dans l'Editor Grid
         var comboOl = {
             xtype : 'combobox',
             id : "comboOlEditor", 
@@ -185,7 +185,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             dataIndex : 'parentheseFermante',
             monType : 'parenthese'
         }];
-        // ajout du plugin pour d�finir la drop Zone
+        // ajout du plugin pour définir la drop Zone
         
         // menu contextuel
         this.listeners = {
@@ -384,7 +384,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
         };
         
         this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         })];
         
         this.callParent(arguments);

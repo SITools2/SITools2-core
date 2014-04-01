@@ -27,6 +27,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
     height : 480,
     modal : true,
     pageSize : 10,
+    layout : 'fit',
 
     initComponent : function () {
         if (this.action == 'modify') {
@@ -75,7 +76,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
 //            }
 //        });
 
-        var smProperty = Ext.create('Ext.selection.RowModel',{
+        var smProperty = Ext.create('Ext.selection.RowModel', {
             singleSelect : true
         });
 
@@ -96,7 +97,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
         };
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         var gridProperty = Ext.create('Ext.grid.Panel', {
@@ -104,6 +105,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
             title : i18n.get('title.gridProperty'),
             store : storeProperty,
             tbar : tbar,
+            forceFit : true,
             columns :  [{
                 header : i18n.get('headers.name'),
                 dataIndex : 'name',
@@ -121,10 +123,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
     
             }],
             selModel : smProperty,
-            plugins : [cellEditing],
-            selModel: {
-                selType: 'cellmodel'
-            }
+            plugins : [cellEditing]
         });
         
         this.items = [ {

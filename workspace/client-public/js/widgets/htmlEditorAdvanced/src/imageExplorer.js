@@ -113,7 +113,7 @@ ImageExplorer.prototype = {
 	                checked: false,
 	                menu : {
 	                	items : [{
-	                		xtype: 'spinnerfield',
+	                		xtype: 'numberfield',
 	                    	emptyText: 'Custom width...',
 	                    	name: 'width',
 	                    	listeners : {
@@ -124,7 +124,7 @@ ImageExplorer.prototype = {
 	                    	}
 	                	},
 	                	{
-	                		xtype: 'spinnerfield',
+	                		xtype: 'numberfield',
 	                		emptyText: 'Custom height...',
 	                    	name: 'height',
 	                    	listeners : {

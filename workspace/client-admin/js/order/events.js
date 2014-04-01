@@ -20,15 +20,19 @@
  showHelp*/
 Ext.namespace('sitools.component.order');
 
-Ext.define('sitools.component.order.events', { extend : 'Ext.Window',
+Ext.define('sitools.component.order.events', { 
+    extend : 'Ext.Window',
     width : 350,
     height : 230,
     modal : true,
     closable : true,
     baseUrl : this.baseUrl,
+    layout : 'fit',
 
     initComponent : function () {
+        
         this.title = i18n.get('label.orders');
+        
         this.items = [ {
             xtype : 'panel',
             height : 200,
@@ -48,20 +52,21 @@ Ext.define('sitools.component.order.events', { extend : 'Ext.Window',
                     fieldLabel : i18n.get('label.message'),
                     anchor : '100%',
                     maxLength : 100
-                } ]
-            } ],
-            buttons : [ {
-                text : i18n.get('label.ok'),
-                scope : this,
-                handler : this._onValidate
-            }, {
-                text : i18n.get('label.cancel'),
-                scope : this,
-                handler : function () {
-                    this.close();
-                }
-            } ]
-        } ];
+                }]
+            }]
+        }];
+        
+        this.buttons = [{
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this._onValidate
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : function () {
+                this.close();
+            }
+        }];
 
         sitools.component.order.events.superclass.initComponent.call(this);
 

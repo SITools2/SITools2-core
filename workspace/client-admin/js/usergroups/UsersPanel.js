@@ -30,15 +30,20 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.UsersPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window', 
+Ext.define('sitools.admin.usergroups.UsersPanel', { 
+    extend : 'Ext.Window', 
 	alias : 'widget.s-users',
-    // url + mode + storeref
-    width : 350,
+    width : 500,
+    height : 350,
     modal : true,
     closable : false,
     pageSize : 10,
+    layout : 'fit',
 
     initComponent : function () {
+        
+        this.title = this.mode == 'list' ? i18n.get('label.members') : i18n.get('label.selectUsers');
+
         this.store = new Ext.data.JsonStore({
             root : 'data',
             restful : true,
@@ -56,41 +61,22 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
                 type : 'string'
             } ]
         });
+        
         this.grid = new Ext.grid.GridPanel({
             xtype : 'grid',
-            selModel : Ext.create('Ext.selection.RowModel'),
+            selModel : Ext.create('Ext.selection.RowModel', {
+                mode : 'MULTI'
+            }),
             store : this.store,
             height : 200,
-            columns : [ {
-                header : i18n.get('label.login'),
-                dataIndex : 'identifier'
-            }, {
-                header : i18n.get('label.firstName'),
-                dataIndex : 'firstName'
-            }, {
-                header : i18n.get('label.lastName'),
-                dataIndex : 'lastName'
-            } ],
-            bbar : {
-                xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
-                store : this.store,
-                displayInfo : true,
-                displayMsg : i18n.get('paging.display'),
-                emptyMsg : i18n.get('paging.empty')
-            }
-        });
-        this.items = [ {
-            xtype : 'panel',
-            title : this.mode == 'list' ? i18n.get('label.members') : i18n.get('label.selectUsers'),
-            items : [ this.grid ],
+            forceFit : true,
             tbar : {
                 xtype : 'toolbar',
                 defaults : {
                     scope : this,
                     hidden : true
                 },
-                items : [ {
+                items : [{
                     text : i18n.get('label.add'),
                     hidden : (this.mode == 'select' || this.mode == 'selectUnique'),
                     icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
@@ -106,28 +92,46 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
                     emptyText : i18n.get('label.search'),
                     store : this.store,
                     pageSize : this.pageSize
-                } ]
-            },
-            bbar : {
-                xtype : 'toolbar',
-                defaults : {
-                    scope : this
-                },
-                items : [ '->', {
-                    text : i18n.get('label.ok'),
-                    handler : this._onAdd,
-                    hidden : this.mode == 'list'
-                }, {
-                    text : i18n.get('label.ok'),
-                    handler : this._onOK,
-                    hidden : (this.mode == 'select' || this.mode == 'selectUnique')
-                }, {
-                    text : i18n.get('label.cancel'),
-                    handler : this._onCancel
                 }]
+            },
+            columns : [{
+                header : i18n.get('label.login'),
+                dataIndex : 'identifier'
+            }, {
+                header : i18n.get('label.firstName'),
+                dataIndex : 'firstName'
+            }, {
+                header : i18n.get('label.lastName'),
+                dataIndex : 'lastName'
+            }],
+            bbar : {
+                xtype : 'pagingtoolbar',
+                pageSize : this.pageSize,
+                store : this.store,
+                displayInfo : true,
+                displayMsg : i18n.get('paging.display'),
+                emptyMsg : i18n.get('paging.empty')
             }
-        } ];
-        // this.relayEvents(this.store, ['destroy', 'save', 'update']);
+        });
+        
+        this.items = [this.grid];
+        
+        this.buttons = [{
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this._onAdd,
+            hidden : this.mode == 'list'
+        }, {
+            text : i18n.get('label.ok'),
+            scope : this,
+            handler : this._onOK,
+            hidden : (this.mode == 'select' || this.mode == 'selectUnique')
+        }, {
+            text : i18n.get('label.cancel'),
+            scope : this,
+            handler : this._onCancel
+        }];
+        
         sitools.admin.usergroups.UsersPanel.superclass.initComponent.call(this);
     },
 
@@ -169,7 +173,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
     _onDelete : function () {
         var rec = this.grid.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         this.store.remove(rec);
     },
@@ -210,6 +214,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', { extend : 'Ext.Window',
             };
             putObject.users.push(resource);
         });
+        
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',

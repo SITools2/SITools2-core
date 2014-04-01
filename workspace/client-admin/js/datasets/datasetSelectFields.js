@@ -98,7 +98,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
             }),
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
                 pluginId : 'fieldAliasEditing',
-                clicksToEdit: 2
+                clicksToEdit: 1
             })]
         });
 

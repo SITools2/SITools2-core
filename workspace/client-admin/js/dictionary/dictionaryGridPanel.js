@@ -33,6 +33,7 @@ Ext.define('sitools.component.dictionary.gridPanel', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.dictionaryGridPanel',
     template : null,
+    forceFit : true,
     initComponent : function () {
         
         this.store = this.getStoreConcepts(this.template, this.url);
@@ -40,12 +41,8 @@ Ext.define('sitools.component.dictionary.gridPanel', {
         this.columns = this.getColumnModelConcepts(this.template, this.editable);
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
-        
-        this.selModel = {
-            selType: 'cellmodel'
-        };
         
         this.plugins = [cellEditing];
         
@@ -136,9 +133,10 @@ Ext.define('sitools.component.dictionary.gridPanel', {
             defaults : {
                 sortable : true,
                 width : 100,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     allowBlank : false
-                })
+                }
             }
         });
         return cmConcepts;

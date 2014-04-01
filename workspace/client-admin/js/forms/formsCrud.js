@@ -180,7 +180,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
 
     onCreate : function () {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         
         var up = new sitools.admin.forms.formPropPanel({
@@ -196,7 +196,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
         
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.forms.formPropPanel({
             urlFormulaire : this.baseUrlFormulaires + '/' + this.datasetId + '/forms/' + rec.data.id,
@@ -210,7 +210,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
     onDelete : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),

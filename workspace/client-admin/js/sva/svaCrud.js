@@ -264,7 +264,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
         var rec = this.getSelectionModel().getSelected();
 
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.sva.svaProp({
             action : 'modify',
@@ -283,7 +283,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
     onDelete : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
@@ -317,7 +317,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
     _onActive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.data.id + "/start",
@@ -335,7 +335,7 @@ Ext.define('sitools.component.sva.svaCrudPanel', { extend : 'Ext.grid.Panel',
     _onDisactive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlDatasets + "/" + this.datasetId + this.svaUrlPart + "/" + rec.data.id + "/stop",

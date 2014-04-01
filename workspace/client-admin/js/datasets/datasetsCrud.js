@@ -181,7 +181,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
 	onEdit : function () {
 		var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         if (rec.data.status == "ACTIVE") {
 			this.onView();
@@ -199,7 +199,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
 	onDuplicate : function () {
 		var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.datasets.datasetsMultiTablesPanel({
             datasetUrlToCopy : this.url + "/" + rec.data.id,
@@ -242,7 +242,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     onView : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.datasets.datasetsMultiTablesPanel({
             url : this.url + '/' + rec.data.id,
@@ -263,7 +263,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             return;
         }
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.datasets.datasetsMultiTablesPanel({
             url : this.url + '/' + rec.data.id,
@@ -285,7 +285,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('datasetCrud.delete'),
+            msg : String.format(i18n.get('datasetCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -309,7 +309,12 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
 
@@ -324,7 +329,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     onEditOpenSearch : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.datasets.datasetsOpenSearch({
             url : this.url + '/' + rec.data.id,
@@ -341,7 +346,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onRefresh : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         if (rec.data.status != i18n.get("status.active")) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
@@ -353,7 +358,12 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             scope : this,
             success : function (ret) {
                 Ext.Msg.alert(i18n.get('label.info'), i18n.get('dataset.refresh.needReactive'));
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_refresh.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -367,14 +377,19 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onActive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -388,14 +403,19 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onDisactive : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
                 }
             },
@@ -409,7 +429,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _getSqlString : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/getSqlString',
@@ -449,7 +469,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onEditSemantic : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         } 
         var up = new sitools.admin.datasets.DicoMapping({
             url : this.url + '/' + rec.data.id,

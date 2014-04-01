@@ -186,7 +186,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
         };
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 2
+            clicksToEdit: 1
         });
         
         this.gridFieldMapping = Ext.create('Ext.grid.Panel', {
@@ -351,18 +351,21 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                         } 
                         else if (rec.valueType == "xs:image") {
                             
+                            var callback = function (data, config) {
+                                config.record.data[config.field] = data.url;
+                                config.parentView.refresh();                                
+                            };
+                            
                             var chooser = new ImageChooser({
                                 url : loadUrl.get('APP_URL') + loadUrl.get('APP_UPLOAD_URL') + '/?media=json',
                                 width : 515,
                                 height : 450,
                                 field : "value",
                                 parentView : this.gridFieldMapping.getView(),
-                                record : record
+                                record : record,
+                                callback : callback
                             });
-                            chooser.show(document, function (data, config) {
-                                config.record.data[config.field] = data.url;
-                                config.parentView.refresh();                                
-                            });
+                            chooser.show(document);
                         }
                         else if (rec.valueType.indexOf("xs:enum") != -1) {
                             var enumType;

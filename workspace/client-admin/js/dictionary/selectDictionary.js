@@ -30,7 +30,8 @@ Ext.namespace('sitools.component.dictionary');
  * @class sitools.component.dictionary.selectDictionary
  * @extends Ext.Window
  */
-Ext.define('sitools.component.dictionary.selectDictionary', { extend : 'Ext.Window',
+Ext.define('sitools.component.dictionary.selectDictionary', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-selectDictionaryWin',
     width : 700,
     height : 480,
@@ -61,9 +62,7 @@ Ext.define('sitools.component.dictionary.selectDictionary', { extend : 'Ext.Wind
         this.gridselectDictionary = new Ext.grid.GridPanel({
             height : 380,
             autoScroll : true,
-            viewConfig : {
-                forceFit : true
-            },
+            forceFit : true,
             store : new Ext.data.JsonStore({
                 root : 'data',
                 restful : true,

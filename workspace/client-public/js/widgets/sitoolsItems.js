@@ -158,18 +158,24 @@ Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
 Ext.define('sitools.widget.GridSorterToolbar', {
     extend : 'Ext.Toolbar',
 	alias : 'sitools.widget.GridSorterToolbar',
-	
+	alignRight : true, //default to true
     initComponent : function () {
+        
+        
         sitools.widget.GridSorterToolbar.superclass.initComponent.call(this);
-        this.add('->', new sitools.widget.GridTop({
-							gridId : this.gridId
-						}), new sitools.widget.GridUp({
-							gridId : this.gridId
-						}), new sitools.widget.GridDown({
-							gridId : this.gridId
-						}), new sitools.widget.GridBottom({
-							gridId : this.gridId
-						}));
+        
+        if (this.alignRight) {
+            this.add('->');
+        }
+        this.add(new sitools.widget.GridTop({
+    					gridId : this.gridId
+    				}), new sitools.widget.GridUp({
+    					gridId : this.gridId
+    				}), new sitools.widget.GridDown({
+    					gridId : this.gridId
+    				}), new sitools.widget.GridBottom({
+    					gridId : this.gridId
+    				}));
     }
 });
 
@@ -347,40 +353,40 @@ Ext.define('sitools.widget.DateFieldWithToday', {
     }
 });
 
-sitools.widget.rootTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
-	createNode : function (attr) {
-		if (Ext.isEmpty(attr.children)) {
-			attr.leaf = true;
-		}
-		return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
-	}, 
-	processResponse : function (response, node, callback, scope) {
-	    var json = response.responseText, children, newNode, i = 0, len;
-	    try {
-	
-	        if (!(children = response.responseData)) {
-	            children = Ext.decode(json);
-	            if (this.root) {
-	                if (!this.getRoot) {
-	                    this.getRoot = Ext.data.JsonReader.prototype.createAccessor(this.root);
-	                }
-	                children = this.getRoot(children);
-	            }
-	        }
-	        node.beginUpdate();
-	        for (len = children.length; i < len; i++) {
-	            newNode = this.createNode(children[i]);
-	            if (newNode) {
-	                node.appendChild(newNode);
-	            }
-	        }
-	        node.endUpdate();
-	        this.runCallback(callback, scope || node, [ node ]);
-	    } catch (e) {
-	        this.handleFailure(response);
-	    }
-	}, 
-	setUrl : function (url) {
-		this.url = url;
-	}
-});
+//sitools.widget.rootTreeLoader = Ext.extend(Ext.tree.TreeLoader, {
+//	createNode : function (attr) {
+//		if (Ext.isEmpty(attr.children)) {
+//			attr.leaf = true;
+//		}
+//		return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
+//	}, 
+//	processResponse : function (response, node, callback, scope) {
+//	    var json = response.responseText, children, newNode, i = 0, len;
+//	    try {
+//	
+//	        if (!(children = response.responseData)) {
+//	            children = Ext.decode(json);
+//	            if (this.root) {
+//	                if (!this.getRoot) {
+//	                    this.getRoot = Ext.data.JsonReader.prototype.createAccessor(this.root);
+//	                }
+//	                children = this.getRoot(children);
+//	            }
+//	        }
+//	        node.beginUpdate();
+//	        for (len = children.length; i < len; i++) {
+//	            newNode = this.createNode(children[i]);
+//	            if (newNode) {
+//	                node.appendChild(newNode);
+//	            }
+//	        }
+//	        node.endUpdate();
+//	        this.runCallback(callback, scope || node, [ node ]);
+//	    } catch (e) {
+//	        this.handleFailure(response);
+//	    }
+//	}, 
+//	setUrl : function (url) {
+//		this.url = url;
+//	}
+//});

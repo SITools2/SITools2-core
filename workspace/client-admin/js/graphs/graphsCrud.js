@@ -20,14 +20,15 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.graphs');
 
-Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Panel',
+Ext.define('sitools.component.graphs.graphsCrudPanel', { 
+    extend : 'Ext.panel.Panel',
 	alias : 'widget.s-graphs',
     border : false,
     height : 300,
     id : ID.BOX.GRAPHS,
     autoScroll: true,
     // loadMask: true,
-
+    layout : 'fit',
     initComponent : function () {
         this.urlProjects = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
 
@@ -51,6 +52,11 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
+                    var tree = this.down('treepanel');
+                    if (!Ext.isEmpty(tree)) {
+                        tree.getSelectionModel().deselectAll();
+                    }
+                    
                     this.loadGraph(rec[0].data.id);
                 }
 
@@ -62,25 +68,24 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
             defaults : {
                 scope : this
             },
-            items : [ this.comboProjects, {
-                text : i18n.get('label.save'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
-                handler : this._onSave,
-                xtype : 's-menuButton'
-            }, {
-                text : i18n.get('label.reset'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_refresh.png',
-                handler : this._onReset,
-                xtype : 's-menuButton'
-            }, {
-                text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-                handler : this._onDelete,
-                xtype : 's-menuButton'
-            } ]
+            items : [ this.comboProjects ]
+        };
+        
+        this.lbar = {
+            xtype : 'toolbar',
+            name : 'menuTreeToolbar',
+            width : 125,
+            defaults : {
+                scope : this
+            },
+            layout : {
+                pack : 'start',
+                align : 'stretch'
+            },
+            items : []
         };
 
-        this.buttons = [ {
+        this.buttons = [{
             text : i18n.get('label.save'),
             scope : this,
             handler : this._onSave
@@ -107,9 +112,10 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
 
         this.tree = new sitools.component.graphs.graphsCrudTreePanel({
             name : projectName,
-            projectId : projectId
+            projectId : projectId,
+            graphsCrud : this
         });
-        this.tree.getRootNode().expand(true);
+//        this.tree.getRootNode().expand(true);
         this.add(this.tree);
         this.doLayout();
 
@@ -129,6 +135,7 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
             }
 
             var idGraph = this.tree.getIdGraph();
+//            var idGraph = projectId;
 
             var jsonReturn = {
                 nodeList : tree,
@@ -173,26 +180,25 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
             return;
         } else if (root.isLeaf()) {
             node = {
-                text : root.text,
-                datasetId : root.attributes.datasetId,
-                visible : root.attributes.visible, 
-                status : root.attributes.status, 
-                nbRecord : root.attributes.nbRecord,
-                imageDs : root.attributes.imageDs,
-                readme : root.attributes.readme,
-                url : root.attributes.url,
+                text : root.get('text'),
+                datasetId : root.get('datasetId'),
+                visible : root.get('visible'), 
+                status : root.get('status'), 
+                nbRecord : root.get('nbRecord'),
+                imageDs : root.get('imageDs'),
+                readme : root.get('readme'),
+                url : root.get('url'),
                 leaf : true,
-                type : root.attributes.type
+                type : root.get('type')
             };
             parent.push(node);
         } else {
-
             node = {
-                text : root.text,
-                image : root.attributes.image,
-                description : root.attributes.description,
+                text : root.get('text'),
+                image : root.get('image'),
+                description : root.get('description'),
                 children : [],
-                type : root.attributes.type,
+                type : root.get('type'),
                 leaf : false
             };
             parent.push(node);
@@ -229,10 +235,8 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
     doReset : function () {
         if (!Ext.isEmpty(this.tree)) {
             var root = this.tree.getRootNode();
-            root.removeAll(true);
-            this.tree.getLoader().load(root, function () {
-                root.expand(true);
-            }, this);
+            root.removeAll();
+            this.tree.loadStore();
         }
     },
 
@@ -270,234 +274,3 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', { extend : 'Ext.panel.Pan
     }
 
 });
-
-Ext.define('sitools.component.graphs.graphsCrudTreePanel', { extend : 'Ext.tree.Panel',
-
-    idGraph : null,
-    loader : null,
-    projectId : null,
-
-    constructor : function (config) {
-        this.loader = new sitools.component.graphs.graphTreeLoader({
-            requestMethod : 'GET',
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL') + "/" + config.projectId + "/graph",
-            root : 'graph.nodeList'
-        });
-        /*
-         * this.root = { text : config.name, children : [], nodeType:'async' };
-         */
-        this.projectId = config.projectId;
-        
-        config = Ext.apply({
-            rootVisible : true,
-            loader : this.loader,
-            layout : 'fit',
-            enableDD: true,           
-            root : {
-                nodeType : 'async',
-                text : config.name
-            },
-            contextMenuRoot : new Ext.menu.Menu({
-                items : [ {
-                    id : 'create-node',
-                    text : i18n.get("label.createNode"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png'
-                }, {
-                    id : 'add-dataset',
-                    text : i18n.get("label.addDataset"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_datasets.png'
-                } ],
-                listeners : {
-                    scope : this,
-                    itemclick : this._cxtMenuHandler
-                }
-            }),
-            contextMenuNode : new Ext.menu.Menu({
-                items : [ {
-                    id : 'create-node',
-                    text : i18n.get("label.createNode"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png'
-                }, {
-                    id : 'add-dataset',
-                    text : i18n.get("label.addDataset"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_datasets.png'
-                }, {
-                    id : 'edit-node',
-                    text : i18n.get("label.modify"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png'
-                }, {
-                    id : 'delete-node',
-                    text : i18n.get("label.delete"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png'
-                } ],
-                listeners : {
-                    scope : this,
-                    itemclick : this._cxtMenuHandler
-                }
-            }),
-            contextMenuLeaf : new Ext.menu.Menu({
-                items : [ {
-                    id : 'edit-node',
-                    text : i18n.get("label.modify"),
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png'
-                }, {
-                    id : 'delete-node',
-                    text : i18n.get("label.delete"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png'
-                } ],
-                listeners : {
-                    scope : this,
-                    itemclick : this._cxtMenuHandler
-                }
-            }),
-            listeners : {
-                scope : this,
-                contextmenu : function (node, e) {
-                    // Register the context node with the menu so that a Menu
-                    // Item's handler function can access
-                    // it via its parentMenu property.
-                    node.select();
-                    var c;
-                    if (node.id == this.root.id) {
-                        c = node.getOwnerTree().contextMenuRoot;
-                    } else {
-                        if (node.isLeaf()) {
-                            c = node.getOwnerTree().contextMenuLeaf;
-                        } else {
-                            c = node.getOwnerTree().contextMenuNode;
-                        }
-                    }
-                    c.contextNode = node;
-                    c.showAt(e.getXY());
-                }
-            }
-
-        });
-
-        sitools.component.graphs.graphsCrudTreePanel.superclass.constructor.call(this, config);
-
-    },
-
-    onRender : function () {
-
-        sitools.component.graphs.graphsCrudTreePanel.superclass.onRender.apply(this, arguments);
-
-    },
-
-    _cxtMenuHandler : function (item) {
-        var node, up;
-        switch (item.id) {
-        case 'delete-node':
-            var tot = Ext.Msg.show({
-                title : i18n.get('label.warning'),
-                buttons : Ext.Msg.YESNO,
-                msg : i18n.get('label.graphs.node.delete'),
-                scope : this,
-                fn : function (btn, text) {
-                    if (btn == 'yes') {
-                        var n = item.parentMenu.contextNode;
-                        if (n.parentNode) {
-                            n.remove();
-                        }
-                    }
-                }
-            });
-
-            break;
-
-        case 'add-dataset':
-            node = item.parentMenu.contextNode;
-
-            // this.doLayout();
-            up = new sitools.component.graphs.graphsDatasetWin({
-                node : node,
-                url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
-                mode : 'create'
-            });
-            up.show(this);
-
-            break;
-
-        case 'create-node':
-            node = item.parentMenu.contextNode;
-
-            // this.doLayout();
-            up = new sitools.component.graphs.graphsNodeWin({
-                node : node,
-                mode : 'create'
-            });
-            up.show(this);
-
-            break;
-        case 'edit-node':
-            node = item.parentMenu.contextNode;
-            if (node.isLeaf()) {
-                up = new sitools.component.graphs.graphsDatasetWin({
-                    node : node,
-                    url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
-                    mode : 'edit'
-                });
-            } else {
-                up = new sitools.component.graphs.graphsNodeWin({
-                    node : node,
-                    mode : 'edit'
-                });
-            }
-            up.show(this);
-            break;
-        }
-    },
-
-    getIdGraph : function () {
-        return this.loader.getIdGraph();
-    }
-
-});
-
-/**
- * Custom TreeLoader to deal with JSON returned from the server
- */
-// TODO ExtJS3 Ext.tree.TreeLoader > ?
-Ext.define('sitools.component.graphs.graphTreeLoader', { 
-    extend : 'Ext.tree.TreeLoader', 
-
-    idGraph : null,
-
-    createNode : function (attr) {
-        return Ext.tree.TreeLoader.prototype.createNode.call(this, attr);
-    },
-
-    processResponse : function (response, node, callback, scope) {
-        var json = response.responseText, children, newNode, i = 0, len;
-        try {
-
-            if (!(children = response.responseData)) {
-                children = Ext.decode(json);
-                this.idGraph = children.graph.id;
-
-                if (this.root) {
-                    if (!this.getRoot) {
-                        this.getRoot = Ext.data.JsonReader.prototype.createAccessor(this.root);
-                    }
-                    children = this.getRoot(children);
-                }
-            }
-            node.beginUpdate();
-            for (len = children.length; i < len; i++) {
-                newNode = this.createNode(children[i]);
-                if (newNode) {
-                    node.appendChild(newNode);
-                }
-            }
-            node.endUpdate();
-            this.runCallback(callback, scope || node, [ node ]);
-        } catch (e) {
-            this.handleFailure(response);
-        }
-    },
-
-    getIdGraph : function () {
-        return this.idGraph;
-    }
-});
-

@@ -20,10 +20,11 @@
  showHelp*/
 Ext.namespace('sitools.component.order');
 
-Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.component.order.orderPropPanel', {
+    extend : 'Ext.Window',
 	alias : 'widget.s-orderprop',
     width : 700,
-    height : 480,
+    height : 500,
     modal : true,
     pageSize : 10,
     dataSets : "",
@@ -76,7 +77,8 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
             cm : eventsCm,
             rowSelectionModel : Ext.create('Ext.selection.RowModel'),
             autoScroll : true,
-            collapsible : false
+            padding : '5 5 5 5',
+            forceFit : true
         });
 
         var resourceCollectionStore = new Ext.data.JsonStore({
@@ -87,9 +89,9 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
         });
         if (!Ext.isEmpty(this.orderRec.data.resourceCollection)) {
             Ext.each(this.orderRec.data.resourceCollection, function (resource) {
-                var rec = new resourceCollectionStore.recordType({
+                var rec = {
                     resourceCollection : resource
-                });
+                };
                 resourceCollectionStore.add(rec);
             });
             
@@ -97,9 +99,9 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
         
         if (!Ext.isEmpty(this.orderRec.data.adminResourceCollection)) {
             Ext.each(this.orderRec.data.adminResourceCollection, function (resource) {
-                var rec = new resourceCollectionStore.recordType({
+                var rec = {
                     resourceCollection : resource
-                });
+                };
                 resourceCollectionStore.add(rec);
             });
             
@@ -120,7 +122,8 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
             cm : resourceCollectionCm,
             rowSelectionModel : Ext.create('Ext.selection.RowModel'),
             autoScroll : true,
-            collapsible : false
+            padding : '5 5 5 5',
+            forceFit : true
         });
 
         this.items = [ {
@@ -183,8 +186,8 @@ Ext.define('sitools.component.order.orderPropPanel', { extend : 'Ext.Window',
         sitools.component.order.orderPropPanel.superclass.initComponent.call(this);
     },
 
-    onRender : function () {
-        sitools.component.order.orderPropPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.component.order.orderPropPanel.superclass.afterRender.apply(this, arguments);
         var f = this.down('form').getForm();
         f.loadRecord(this.orderRec);
     }
