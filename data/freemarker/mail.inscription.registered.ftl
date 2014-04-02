@@ -5,22 +5,19 @@
 
 <body style="font-family: sans-serif;">
 
-<h1>Sitools 2 information</h1>
-<p style="font-size: 1.2em;font-weight: bold;margin: 1em 0px;">
-${description!}
+<a href="${sitoolsUrl}"><img src="${sitoolsUrl}../common/res/images/logo_01_petiteTaille.png"/></a>
+
+<p>
+Dear administrator,
 </p>
 
 <p>
-New user registration
-<ul>
-	<li>Login : ${inscription.identifier}</li>
-	<li>FirstName : ${inscription.firstName}</li>
-	<li>LastName : ${inscription.lastName}</li>
-	<li>Email : ${inscription.email}</li>
-</ul>
-
-To validate inscription go to the <a href="${sitoolsUrl}">SITools2 adminstration</a>
+${inscription.firstName} ${inscription.lastName} is asking for registration. <br/>
+Please connect to <a href="${sitoolsUrl}">SITools2</a> to validate his registration.
 </p>
+
+<#include "mail.bottom.ftl">
+
 
 </body>
 </html>

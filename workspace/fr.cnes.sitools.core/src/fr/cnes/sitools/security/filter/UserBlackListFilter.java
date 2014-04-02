@@ -22,6 +22,7 @@ import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
@@ -226,7 +227,7 @@ public class UserBlackListFilter extends Filter {
    */
   private void sendMailToAdmin(String id) {
 
-    String adminMail = settings.getString("Starter.StatusService.CONTACT_MAIL", null);
+    String adminMail = settings.getAdminMail();
 
     if (adminMail == null) {
       getLogger().info("No email address for administrator, cannot send inscription email");
@@ -238,7 +239,7 @@ public class UserBlackListFilter extends Filter {
     mailToAdmin.setToList(Arrays.asList(toList));
 
     // Object
-    mailToAdmin.setSubject("SITOOLS2 - User account blocked");
+    mailToAdmin.setSubject("SITools2 - User account blocked");
 
     // Body
     mailToAdmin.setBody(String.format("The account of the user %s has been blocked", id));
@@ -247,12 +248,8 @@ public class UserBlackListFilter extends Filter {
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
         + "mail.account.blocked.ftl";
     Map<String, Object> root = new HashMap<String, Object>();
-    root.put("mail", mailToAdmin);
     root.put("userId", id);
-    root.put(
-        "sitoolsUrl",
-        settings.getPublicHostDomain() + settings.getString(Consts.APP_URL)
-            + settings.getString(Consts.APP_CLIENT_ADMIN_URL) + "/");
+    MailUtils.addDefaultParameters(root, settings, mailToAdmin);
 
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 

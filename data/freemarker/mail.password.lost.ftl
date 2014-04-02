@@ -5,13 +5,11 @@
 
 <body style="font-family: sans-serif;">
 
-<p style="font-size: 1.2em;font-weight: bold;margin: 1em 0px;">
-${description!}
-</p>
+<a href="${sitoolsUrl}"><img src="${sitoolsUrl}../common/res/images/logo_01_petiteTaille.png"/></a>
 
 <p>
 
-Hello, 
+Dear ${user.firstName} ${user.lastName}, 
 <br/>
 <br/>
 
@@ -21,13 +19,8 @@ In order to modify you password, please click on the following link <a href="${p
 If the link does not work, just copy it into your favorite browser<br/>
 <i><small>${passwordLostUrl}</small></i>
 <br/>
-<br/>
-Best regards
-<br/>
-SITools2 team
-
-
 </p>
+<#include "mail.bottom.ftl">
 
 </body>
 </html>

@@ -43,6 +43,7 @@ import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.SecurityUtil;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.MailUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.TemplateUtils;
 import fr.cnes.sitools.util.Util;
@@ -139,7 +140,7 @@ public final class UserInscriptionResource extends InscriptionResource {
     mailToAdmin.setToList(Arrays.asList(toList));
 
     // Object
-    mailToAdmin.setSubject("SITOOLS2 - New user registration");
+    mailToAdmin.setSubject("SITools2 - New user registration");
 
     // Body
     mailToAdmin.setBody("A new user registered on SITools2, username : " + inscription.getIdentifier());
@@ -148,13 +149,9 @@ public final class UserInscriptionResource extends InscriptionResource {
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
         + "mail.inscription.registered.ftl";
     Map<String, Object> root = new HashMap<String, Object>();
-    root.put("mail", mailToAdmin);
     root.put("inscription", inscription);
-    root.put(
-        "sitoolsUrl",
-        getSettings().getPublicHostDomain() + settings.getString(Consts.APP_URL)
-            + settings.getString(Consts.APP_CLIENT_ADMIN_URL) + "/");
-
+    MailUtils.addDefaultParameters(root, getSettings(), mailToAdmin);
+    
     TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
 
     root.put("context", getContext());

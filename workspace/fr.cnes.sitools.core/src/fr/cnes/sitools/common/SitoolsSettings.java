@@ -918,4 +918,13 @@ public final class SitoolsSettings {
     this.checkStores = checkStores;
   }
 
+  /**
+   * Gets the admin mail.
+   * 
+   * @return the admin mail
+   */
+  public String getAdminMail() {
+    return getString("Starter.StatusService.CONTACT_MAIL", null);
+  }
+
 }

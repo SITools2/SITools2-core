@@ -33,8 +33,6 @@ public class AdvancedReferenceListJsonRepresentation extends OutputRepresentatio
     JsonFactory jfactory = new JsonFactory();
     JsonGenerator jGenerator = jfactory.createJsonGenerator(out);
 
-    jGenerator.writeStartObject();
-    jGenerator.writeFieldName("items");
     jGenerator.writeStartArray();
 
     for (Reference ref : referenceList) {
@@ -66,7 +64,6 @@ public class AdvancedReferenceListJsonRepresentation extends OutputRepresentatio
       jGenerator.writeEndObject();
     }
     jGenerator.writeEndArray();
-    jGenerator.writeEndObject();
 
     // flush the stream
     out.flush();
