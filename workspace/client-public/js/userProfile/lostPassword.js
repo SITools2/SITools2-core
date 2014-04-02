@@ -22,10 +22,10 @@ Ext.namespace('sitools.userProfile');
  * @cfg {boolean} closable Window config
  * @cfg {string} url The url to send reset request
  * @cfg {} handler A method to call after success 
- * @class sitools.userProfile.resetPassword
+ * @class sitools.userProfile.lostPassword
  * @extends Ext.Window
  */
-sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
+sitools.userProfile.lostPassword = Ext.extend(Ext.Window, {
     id : 'winPassword',
     layout : 'hbox',
     width : 420,
@@ -102,7 +102,7 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                 handler : this.openLoginWindow
             } ]
         } ];
-        sitools.userProfile.resetPassword.superclass.initComponent.call(this);
+        sitools.userProfile.lostPassword.superclass.initComponent.call(this);
     },
     reset : function () {
         var f = Ext.getCmp('frmResetPassword').getForm();
@@ -153,7 +153,7 @@ sitools.userProfile.resetPassword = Ext.extend(Ext.Window, {
                     var notify = new Ext.ux.Notification({
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
-                        html : i18n.get('label.passwordSent') + json.message,
+                        html : i18n.get('label.emailSent') + json.message,
                         autoDestroy : true,
                         hideDelay : 1300
                     });

@@ -19,13 +19,9 @@
 package fr.cnes.sitools.login;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
-import org.restlet.Request;
 import org.restlet.data.MediaType;
-import org.restlet.data.Method;
-import org.restlet.data.Preference;
 import org.restlet.data.Status;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
@@ -36,11 +32,12 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
+import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.security.model.User;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.util.PasswordGenerator;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -50,18 +47,52 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  */
 public class ResetPasswordResource extends SitoolsResource {
+  /**
+   * The userLogin get from the challengeToken
+   */
+  private String userLogin;
+  /** The challengeToken */
+  private ChallengeToken challengeToken;
+  /** The token */
+  private String token;
 
   @Override
   public void sitoolsDescribe() {
     setName("ResetPasswordResource");
-    setDescription("Resource for reset and generate a new user password");
+    setDescription("Resource to change the user password");
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.common.SitoolsResource#doInit()
+   */
+  @Override
+  protected void doInit() {
+    super.doInit();
+    PublicApplication application = (PublicApplication) getApplication();
+    challengeToken = application.getChallengeToken();
+
+    token = getRequest().getResourceRef().getQueryAsForm().getFirstValue("cdChallengeMail", null);
+    if (token == null) {
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "cdChallengeMail parameter mandatory");
+    }
+
+    userLogin = challengeToken.getTokenValue(token);
+    if (userLogin == null) {
+      throw new ResourceException(
+          Status.CLIENT_ERROR_GONE,
+          "You asked to change your password, but the request is no longer available. Please ask again to change your password on SITools2");
+    }
+
   }
 
   /**
    * Reset an user Password
    * 
    * @param representation
-   *          the response to use
+   *          The new password
+   * 
    * @param variant
    *          client preference for response media type
    * @return Representation if success
@@ -72,49 +103,41 @@ public class ResetPasswordResource extends SitoolsResource {
       throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "USER_REPRESENTATION_REQUIRED");
     }
     try {
-      User user = getObject(representation);
       Response response = null;
       String url = getSitoolsSetting(Consts.APP_SECURITY_URL) + "/users";
-      User userDb = RIAPUtils.getObject(user.getIdentifier(), url, getContext());
+      User userDb = RIAPUtils.getObject(userLogin, url, getContext());
 
       if (userDb != null) {
-        if (userDb.getEmail().equals(user.getEmail())) {
-          String password = PasswordGenerator.generate(10);
-          userDb.setSecret(password);
+        if (userLogin.equals(userDb.getIdentifier())) {
+          User userPassword = getObject(representation);
+          userDb.setSecret(userPassword.getSecret());
           if (updateUser(userDb, url)) {
-            response = new Response(true, user.getEmail());
+            response = new Response(true, userDb.getEmail());
           }
           else {
             response = new Response(false, "ERROR UPDATING USER ");
           }
         }
         else {
-          response = new Response(false, "Invalid fields : email doesn't match the correct login ");
+          response = new Response(false, "User not found. ");
         }
       }
       else {
         response = new Response(false, "User not found. ");
       }
-
+      challengeToken.invalidToken(token);
       return getRepresentation(response, variant);
     }
     catch (ResourceException e) {
+      challengeToken.invalidToken(token);
       getLogger().log(Level.INFO, null, e);
       throw e;
     }
     catch (Exception e) {
-      getLogger().log(Level.SEVERE, null, e);
+      getLogger().log(Level.WARNING, null, e);
+      challengeToken.invalidToken(token);
       throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
     }
-  }
-
-  @Override
-  public void describePut(MethodInfo info) {
-    info.setDocumentation("Method to reset the password of a user");
-    info.setIdentifier("reset_password");
-    addStandardPostOrPutRequestInfo(info);
-    addStandardResponseInfo(info);
-    addStandardInternalServerErrorInfo(info);
   }
 
   /**
@@ -126,24 +149,8 @@ public class ResetPasswordResource extends SitoolsResource {
    *          the url to use
    * @return boolean
    */
-  private boolean updateUser(User user, String url) {
-    Request reqPUT = new Request(Method.PUT, RIAPUtils.getRiapBase() + url + "/" + user.getIdentifier(),
-        new ObjectRepresentation<User>(user));
-
-    ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
-    objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
-    reqPUT.getClientInfo().setAcceptedMediaTypes(objectMediaType);
-    org.restlet.Response response = getContext().getClientDispatcher().handle(reqPUT);
-
-    if (response == null || Status.isError(response.getStatus().getCode())) {
-      RIAPUtils.exhaust(response);
-      return false;
-    }
-    else {
-      RIAPUtils.exhaust(response);
-      return true;
-    }
-
+  protected boolean updateUser(User user, String url) {
+    return (RIAPUtils.updateObject(user, url + "/" + user.getIdentifier() + "?origin=user", getContext())) != null;
   }
 
   /**
@@ -173,6 +180,15 @@ public class ResetPasswordResource extends SitoolsResource {
     }
 
     return object;
+  }
+
+  @Override
+  public void describePut(MethodInfo info) {
+    info.setDocumentation("Method to reset the password of a user");
+    info.setIdentifier("reset_password");
+    addStandardPostOrPutRequestInfo(info);
+    addStandardResponseInfo(info);
+    addStandardInternalServerErrorInfo(info);
   }
 
 }

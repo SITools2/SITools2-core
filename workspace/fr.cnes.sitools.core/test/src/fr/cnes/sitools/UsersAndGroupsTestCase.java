@@ -32,7 +32,7 @@ import org.restlet.Context;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -464,10 +464,10 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    * 
    * @param bean
    *          User
-   * @return JsonRepresentation
+   * @return Representation
    */
   public static Representation getRepresentationJSON(User bean) {
-    return new JsonRepresentation(bean);
+    return new JacksonRepresentation<User>(bean);
   }
 
   /**
@@ -475,7 +475,7 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    * 
    * @param bean
    *          User
-   * @return FormRepresentation
+   * @return Representation
    */
   public static Representation getRepresentationFORM(User bean) {
     // Form Representation
@@ -636,10 +636,10 @@ public class UsersAndGroupsTestCase extends AbstractSitoolsTestCase {
    * 
    * @param bean
    *          Group
-   * @return JsonRepresentation
+   * @return Representation
    */
   public static Representation getRepresentationJSON(Group bean) {
-    return new JsonRepresentation(bean);
+    return new JacksonRepresentation<Group>(bean);
   }
 
   /**

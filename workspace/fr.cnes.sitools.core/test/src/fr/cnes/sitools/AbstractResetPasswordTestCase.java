@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,14 +18,27 @@
  ******************************************************************************/
 package fr.cnes.sitools;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.restlet.Client;
+import org.restlet.Component;
+import org.restlet.Context;
+import org.restlet.Request;
 import org.restlet.data.MediaType;
+import org.restlet.data.Method;
+import org.restlet.data.Preference;
+import org.restlet.data.Protocol;
+import org.restlet.data.Reference;
+import org.restlet.data.Status;
 import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
@@ -34,10 +47,21 @@ import org.restlet.resource.ClientResource;
 
 import com.thoughtworks.xstream.XStream;
 
+import fr.cnes.sitools.applications.PublicApplication;
+import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
+import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
+import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
+import fr.cnes.sitools.mail.MailAdministration;
+import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
+import fr.cnes.sitools.security.UsersAndGroupsAdministration;
+import fr.cnes.sitools.security.challenge.ChallengeToken;
+import fr.cnes.sitools.security.challenge.ChallengeTokenContainer;
 import fr.cnes.sitools.security.model.User;
+import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
 /**
@@ -48,7 +72,125 @@ import fr.cnes.sitools.util.RIAPUtils;
  * @author b.fiorito (AKKA Technologies)
  * 
  */
-public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsServerTestCase {
+public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestCase {
+  /** Name of the token param */
+  private static final String TOKEN_PARAM_NAME = "cdChallengeMail";
+
+  /**
+   * Restlet Component for server
+   */
+  private Component component = null;
+  private ChallengeToken challengeTokenContainer;
+
+  private JDBCUsersAndGroupsStore ugstore;
+
+  private SitoolsSQLDataSource ds;
+
+  /**
+   * relative url for inscription management REST API
+   * 
+   * @return url
+   */
+  protected String getAttachUrl() {
+    return SITOOLS_URL + SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_PUBLIC_URL);
+  }
+
+  /**
+   * absolute url for inscription management REST API
+   * 
+   * @return url
+   */
+  protected String getBaseUrl() {
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_PUBLIC_URL);
+  }
+
+  @Before
+  @Override
+  /**
+   * Create component, store and application and start server
+   * @throws java.lang.Exception
+   */
+  public void setUp() throws Exception {
+    SitoolsSettings settings = SitoolsSettings.getInstance();
+
+    if (this.component == null) {
+      this.component = createTestComponent(settings);
+
+      // ============================
+      // MAIL INTERNAL APPLICATION
+      Context ctxMail = this.component.getContext().createChildContext();
+      ctxMail.getAttributes().put(ContextAttributes.SETTINGS, settings);
+
+      // Application
+      MailAdministration mailAdministration = new MailAdministration(ctxMail, component);
+
+      component.getInternalRouter().attach(settings.getString(Consts.APP_MAIL_ADMIN_URL), mailAdministration);
+
+      // USERS AND GROUPS
+      // Context
+      Context ctxUAG = this.component.getContext().createChildContext();
+      ctxUAG.getAttributes().put(ContextAttributes.SETTINGS, settings);
+
+      if (ds == null) {
+        ds = SitoolsSQLDataSourceFactory.getInstance().setupDataSource(
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_DRIVER"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_URL"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_USER"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_PASSWORD"),
+            SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_SCHEMA"));
+
+      }
+
+      if (ugstore == null) {
+        ugstore = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctxUAG);
+      }
+
+      ctxUAG.getAttributes().put(ContextAttributes.APP_STORE, ugstore);
+
+      UsersAndGroupsAdministration anApplication = new UsersAndGroupsAdministration(ctxUAG);
+
+      // attach to the internatl router
+      component.getInternalRouter().attach(settings.getString(Consts.APP_SECURITY_URL), anApplication);
+
+      // USERS AND GROUPS
+      // Context
+      Context context = this.component.getContext().createChildContext();
+
+      // Directory
+      String publicAppPath = settings.getString(Consts.APP_PATH) + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH);
+      context.getAttributes().put(ContextAttributes.SETTINGS, settings);
+
+      long cacheTime = settings.getLong("Security.challenge.cacheTime");
+      long cacheSize = settings.getLong("Security.challenge.cacheSize");
+
+      context.getAttributes().put("Security.filter.captcha.enabled", false);
+
+      challengeTokenContainer = new ChallengeTokenContainer(cacheTime, cacheSize);
+      context.getAttributes().put("Security.challenge.ChallengeTokenContainer", challengeTokenContainer);
+
+      PublicApplication application = new PublicApplication(context, publicAppPath, getBaseUrl());
+
+      this.component.getDefaultHost().attach(getAttachUrl(), application);
+
+    }
+
+    if (!this.component.isStarted()) {
+      this.component.start();
+    }
+  }
+
+  @After
+  @Override
+  /**
+   * Stop server
+   * @throws java.lang.Exception
+   */
+  public void tearDown() throws Exception {
+    super.tearDown();
+    this.component.stop();
+    this.component = null;
+    this.challengeTokenContainer = null;
+  }
 
   /**
    * Test Reset the user password without API
@@ -56,21 +198,31 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsServe
   @Test
   public void testResetPassword() {
     docAPI.setActive(false);
-    User myUser = new User("identifier", "", "", "", "email@website.fr");
-    updateUser(myUser);
+    User myUser = new User("identifier", "mynewPass%", "", "", "email@website.fr");
+
+    updateUserWrongToken(myUser, "testToken");
+    String token = challengeTokenContainer.getToken(myUser.getIdentifier());
+    updateUser(myUser, token);
+    updateUserWrongToken(myUser, token);
 
   }
 
   /**
    * Test Reset the user password with API activate
    */
-  @Test
+  // @Test
   public void testResetPasswordAPI() {
-    docAPI.setActive(true);
-    docAPI.appendChapter("Reset User Password API");
-    docAPI.appendSubChapter("Reset User Password", "reset");
-    User myUser = new User("identifier", "", "", "", "email@website.fr");
-    updateUser(myUser);
+    try {
+      docAPI.setActive(true);
+      docAPI.appendChapter("Reset User Password API");
+      docAPI.appendSubChapter("Reset User Password", "reset");
+      User myUser = new User("identifier", "mynewPass%", "", "", "email@website.fr");
+      String token = challengeTokenContainer.getToken(myUser.getIdentifier());
+      updateUser(myUser, token);
+    }
+    finally {
+      docAPI.close();
+    }
 
   }
 
@@ -79,24 +231,87 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsServe
    * 
    * @param user
    *          the user to update
+   * @param token
+   *          the token
    */
-  public void updateUser(User user) {
+  public void updateUser(User user, String token) {
+    Reference ref = new Reference(getBaseUrl() + "/resetPassword");
+    ref.addQueryParameter(TOKEN_PARAM_NAME, token);
+
+    Representation appRep = getRepresentation(user, getMediaTest());
+    String url = ref.toString();
     if (docAPI.isActive()) {
-      Representation appRep = getRepresentation(user, getMediaTest());
-      String url = getBaseUrl() + "/resetPassword";
       Map<String, String> parameters = new LinkedHashMap<String, String>();
       parameters.put("PUT", "A <i>User</i> object with <b>identifier</b> and <b>email</b>");
       putDocAPI(url, "", appRep, parameters, url);
     }
     else {
-      ClientResource crUsers = new ClientResource(getBaseUrl() + "/resetPassword");
+      final Client client = new Client(Protocol.HTTP);
+      Request request = new Request(Method.PUT, url);
+      request.setEntity(appRep);
 
-      Representation result = crUsers.put(getRepresentation(user, getMediaTest()), getMediaTest());
-      assertNotNull(result);
-      assertTrue(crUsers.getStatus().isSuccess());
+      org.restlet.Response response = null;
+      try {
 
-      Response response = getResponse(getMediaTest(), result, User.class, false);
-      assertTrue(response.getSuccess());
+        ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
+        objectMediaType.add(new Preference<MediaType>(getMediaTest()));
+        request.getClientInfo().setAcceptedMediaTypes(objectMediaType);
+
+        response = client.handle(request);
+
+        assertNotNull(response);
+        assertTrue(response.getStatus().isSuccess());
+
+        Response resp = getResponse(getMediaTest(), response.getEntity(), User.class, false);
+        assertTrue(resp.getMessage(), resp.getSuccess());
+
+      }
+      finally {
+        if (response != null) {
+          RIAPUtils.exhaust(response);
+        }
+      }
+
+    }
+  }
+
+  /**
+   * Invoke PUT
+   * 
+   * @param user
+   *          the user to update
+   */
+  public void updateUserWrongToken(User user, String token) {
+    Reference ref = new Reference(getBaseUrl() + "/resetPassword");
+    ref.addQueryParameter(TOKEN_PARAM_NAME, token);
+
+    String url = ref.toString();
+    if (docAPI.isActive()) {
+      Representation appRep = getRepresentation(user, getMediaTest());
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("PUT", "A <i>User</i> object with <b>identifier</b> and <b>email</b>");
+      putDocAPI(url, "", appRep, parameters, url);
+    }
+    else {
+      Representation appRep = getRepresentation(user, getMediaTest());
+      final Client client = new Client(Protocol.HTTP);
+      Request request = new Request(Method.PUT, url);
+      request.setEntity(appRep);
+
+      org.restlet.Response response = null;
+      try {
+        response = client.handle(request);
+
+        assertNotNull(response);
+        assertTrue(response.getStatus().isError());
+        assertEquals(Status.CLIENT_ERROR_GONE, response.getStatus());
+
+      }
+      finally {
+        if (response != null) {
+          RIAPUtils.exhaust(response);
+        }
+      }
     }
   }
 

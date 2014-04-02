@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -23,15 +23,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONWriter;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.restlet.data.MediaType;
-import org.restlet.data.Status;
 import org.restlet.representation.OutputRepresentation;
-import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.portal.multidatasets.opensearch.dto.OpensearchDescriptionDTO;
 
@@ -43,7 +42,7 @@ import fr.cnes.sitools.portal.multidatasets.opensearch.dto.OpensearchDescription
  * @version
  * 
  */
-public final class MutliDsOsSuggestRepresentation extends OutputRepresentation {
+public final class MultiDsOsSuggestRepresentation extends OutputRepresentation {
   /**
    * A MultiDatasetsOpensearchResource
    */
@@ -55,7 +54,7 @@ public final class MutliDsOsSuggestRepresentation extends OutputRepresentation {
    * @param mediaType
    *          The mediaType
    */
-  public MutliDsOsSuggestRepresentation(MediaType mediaType) {
+  public MultiDsOsSuggestRepresentation(MediaType mediaType) {
     super(mediaType);
   }
 
@@ -67,7 +66,7 @@ public final class MutliDsOsSuggestRepresentation extends OutputRepresentation {
    * @param res
    *          The MultiDatasetsOpensearchResource
    */
-  public MutliDsOsSuggestRepresentation(MediaType mediaType, MutliDsOsResource res) {
+  public MultiDsOsSuggestRepresentation(MediaType mediaType, MutliDsOsResource res) {
     super(mediaType);
     this.resource = res;
   }
@@ -83,53 +82,54 @@ public final class MutliDsOsSuggestRepresentation extends OutputRepresentation {
   @Override
   public void write(OutputStream outputStream) throws IOException {
     List<OpensearchDescriptionDTO> osList = resource.getOsList();
-
     String searchQuery = resource.getSearchQuery();
     // creates a JSONWriter to properly format JSON
     OutputStreamWriter out = new OutputStreamWriter(outputStream);
-    JSONWriter writer = new JSONWriter(out);
-    try {
-      // creates new object
-      writer.object();
-      // creates new key "data"
-      writer.key("data");
-      // creates new array for key "data"
-      writer.array();
 
-      for (Iterator<OpensearchDescriptionDTO> iterator = osList.iterator(); iterator.hasNext();) {
-        OpensearchDescriptionDTO opensearchDescriptionDTO = iterator.next();
-        // get the suggest JSON string
-        String suggest = resource.getOpensearchSuggest(searchQuery, opensearchDescriptionDTO.getIdOs(),
-            super.getMediaType());
-        
-        if (suggest != null) {
-          // parse the suggest JSON string
-          JSONObject json = new JSONObject(suggest);
-          // gets the array of the "data" node
-          JSONArray array = json.getJSONArray("data");
-          // loop through the array and add each element to the writer
-          for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = (JSONObject) array.get(i);
-            writer.value(obj);
+    JsonFactory jfactory = new JsonFactory();
+    JsonGenerator jGenerator = jfactory.createJsonGenerator(out);
+
+    // creates new object
+    jGenerator.writeStartObject(); // {
+    // creates new key "data"
+    jGenerator.writeArrayFieldStart("data");
+
+    for (Iterator<OpensearchDescriptionDTO> iterator = osList.iterator(); iterator.hasNext();) {
+      OpensearchDescriptionDTO opensearchDescriptionDTO = iterator.next();
+      // get the suggest JSON string
+      String suggest = resource.getOpensearchSuggest(searchQuery, opensearchDescriptionDTO.getIdOs(),
+          super.getMediaType());
+
+      if (suggest != null) {
+        // read the suggest JSON 
+        ObjectMapper mapper = new ObjectMapper();
+        // (note: can also use more specific type, like ArrayNode or ObjectNode!)
+        JsonNode rootNode = mapper.readValue(suggest, JsonNode.class); // src can be a File, URL,
+                                                                       // InputStream etc
+        JsonNode data = rootNode.get("data");
+        for (JsonNode jsonNode : data) {
+          jGenerator.writeStartObject();
+          Iterator<Entry<String, JsonNode>> values = jsonNode.getFields();
+          while (values.hasNext()) {
+            Entry<String, JsonNode> value = values.next();
+            jGenerator.writeStringField(value.getKey(), value.getValue().getTextValue());
           }
-          // flush the stream to stream data
-          out.flush();
+          jGenerator.writeEndObject();
         }
+        // flush the stream to stream data
+        out.flush();
       }
-      // close the array
-      writer.endArray();
-      // add the success node
-      writer.key("success").value("true");
-      // close the object
-      writer.endObject();
-      // flush the stream
-      out.flush();
-      out.close();
     }
-    catch (JSONException e) {
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
-    }
-
+    // close the array
+    jGenerator.writeEndArray();
+    // add the success node
+    jGenerator.writeStringField("success", "true");
+    // close the object
+    jGenerator.writeEndObject();
+    // flush the stream
+    out.flush();
+    jGenerator.close();
+    out.close();
   }
 
 }

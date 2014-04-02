@@ -205,6 +205,8 @@ sitools.userProfile.editProfile = Ext.extend(Ext.Panel, {
             });
         });
 
+        var changePwd = !Ext.isEmpty(putObject.secret);
+        
         this.body.mask();
         Ext.getCmp('sbWinEditProfile').showBusy();
 
@@ -225,6 +227,9 @@ sitools.userProfile.editProfile = Ext.extend(Ext.Panel, {
                         autoDestroy : true,
                         hideDelay : 1000
                     });
+                    if (changePwd){ 
+                    	sitools.userProfile.LoginUtils.logout();
+                    }
                     notify.show(document);
                 } else {
                     Ext.getCmp('winEditProfile').body.unmask();

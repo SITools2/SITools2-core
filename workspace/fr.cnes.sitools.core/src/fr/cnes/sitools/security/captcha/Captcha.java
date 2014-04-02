@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -33,72 +33,78 @@ import nl.captcha.text.producer.DefaultTextProducer;
 public class Captcha {
 
   /** chars used for answer producer */
-  private static final char[] CHARS = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'm', 'n', 'p', 'r', 's', 'w', 'x', 'y', '2', '3', '4', '5', '6', '7', '8' };
-  
+  private static final char[] CHARS = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'm', 'n', 'p', 'r',
+      's', 'w', 'x', 'y', '2', '3', '4', '5', '6', '7', '8'};
+
   /** captcha identifier (System.currentTimeMillis) */
   private long id;
-  
+
   /** captcha generated answer */
   private String answer;
-  
+
   /** captcha generated image */
   private BufferedImage image;
 
-  //  private long timeMillis;
-  
+  // private long timeMillis;
+
   /**
    * Constructor
-   * @param width int width in pixel of the required generated image
-   * @param height int heigth in pixem of the required generated image
-   * @param length int number of characters for the generated answer
+   * 
+   * @param width
+   *          int width in pixel of the required generated image
+   * @param height
+   *          int heigth in pixem of the required generated image
+   * @param length
+   *          int number of characters for the generated answer
    */
   public Captcha(int width, int height, int length) {
-    
+
     long timeMillis = System.currentTimeMillis();
-    
-//    id = UUID.randomUUID().toString();
+
+    // id = UUID.randomUUID().toString();
     id = timeMillis;
-    
+
     nl.captcha.Captcha.Builder builder = new nl.captcha.Captcha.Builder(width, height);
-    
+
     // Noise
     builder.addBackground(new GradiatedBackgroundProducer());
     builder.addNoise(new StraightLineNoiseProducer());
     builder.gimp(new FishEyeGimpyRenderer());
     builder.addBorder();
-    
+
     // Text
     DefaultTextProducer textProducer = new DefaultTextProducer(length, CHARS);
     nl.captcha.Captcha captcha = builder.addText(textProducer).build();
-    
+
     answer = captcha.getAnswer();
     image = captcha.getImage();
   }
 
   /**
-   *  Get captcha identifier
+   * Get captcha identifier
+   * 
    * @return String to be used in a Container.
    */
   public String getId() {
     return String.valueOf(id);
   }
 
-//  public String getAnswer() {
-//    return answer;
-//  }
+  // public String getAnswer() {
+  // return answer;
+  // }
 
   /**
-   * Get the generated image.
-   * After a first call, the image could be null.
+   * Get the generated image. After a first call, the image could be null.
+   * 
    * @return BufferedImage
    */
   public BufferedImage getImage() {
     return image;
   }
-  
-  
+
   /**
    * get SystemTimeMillis at Captcha new instance Time.
+   * 
    * @return long
    */
   public long getTimeMillis() {
@@ -106,12 +112,24 @@ public class Captcha {
   }
 
   /**
-   * Compare internal masked answer with a response. 
-   * @param response String
+   * Compare internal masked answer with a response.
+   * 
+   * @param response
+   *          String
    * @return boolean true if identical
    */
   public boolean check(String response) {
     return (answer.equals(response));
   }
-  
+
+  /**
+   * get the answer of the captcha
+   * 
+   * 
+   * @return String, the answer of the captcha.Useful for tests
+   */
+  public String getAnswer() {
+    return answer;
+  }
+
 }

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -20,19 +20,20 @@ package fr.cnes.sitools.dataset.database.common;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonProcessingException;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.resource.ResourceException;
@@ -124,7 +125,7 @@ public final class DBRecordRepresentation extends OutputRepresentation {
   }
 
   @Override
-  public void write(OutputStream arg0) throws IOException {
+  public void write(OutputStream outputStream) throws IOException {
     Record record = null;
     try {
 
@@ -151,35 +152,37 @@ public final class DBRecordRepresentation extends OutputRepresentation {
     }
 
     if (this.getMediaType().isCompatible(MediaType.APPLICATION_JSON)) {
+      OutputStreamWriter out = new OutputStreamWriter(outputStream);
+
+      JsonFactory jfactory = new JsonFactory();
+      JsonGenerator jGenerator = jfactory.createJsonGenerator(out);
       // Response response = new Response(true, record, Record.class, "record");
-      JSONObject root = new JSONObject();
-      try {
-        if (record != null) {
-          root.put("success", true);
+      jGenerator.writeStartObject();
+      if (record != null) {
+        try {
+          jGenerator.writeBooleanField("success", true);
           // application du convertisseur en sortie
           if (converterChained != null) {
             record = converterChained.getConversionOf(record);
           }
-          JSONObject jo = getJson(record);
-          root.put("record", jo);
-
+          jGenerator.writeFieldName("record");
+          writeRecord(record, jGenerator);
         }
-        else {
-          root.put("success", false);
+        catch (SitoolsException e) {
+          logger.log(Level.INFO, null, e);
         }
-        JsonRepresentation jr = new JsonRepresentation(root);
-        arg0.write(jr.getText().getBytes());
       }
-      catch (JSONException e) {
-        logger.log(Level.INFO, null, e);
+      else {
+        jGenerator.writeBooleanField("success", false);
       }
-      catch (SitoolsException e) {
-        logger.log(Level.INFO, null, e);
-      }
-
+      jGenerator.writeEndObject();
+      // flush the stream
+      out.flush();
+      jGenerator.close();
+      out.close();
     }
     else if (this.getMediaType().isCompatible(MediaType.APPLICATION_XML)
-      || this.getMediaType().isCompatible(MediaType.TEXT_XML)) {
+        || this.getMediaType().isCompatible(MediaType.TEXT_XML)) {
 
       boolean success = (record == null) ? false : true;
 
@@ -190,7 +193,7 @@ public final class DBRecordRepresentation extends OutputRepresentation {
 
       Response response = new Response(success, record, Record.class, "record");
       XstreamRepresentation<Response> innerRepresentation = new XstreamRepresentation<Response>(this.getMediaType(),
-        response);
+          response);
 
       XStream xstream = XStreamFactory.getInstance().getXStream(this.getMediaType(), res.getContext());
       innerRepresentation.setXstream(xstream);
@@ -209,7 +212,7 @@ public final class DBRecordRepresentation extends OutputRepresentation {
         xstream.aliasField(response.getItemName(), Response.class, "item");
       }
 
-      innerRepresentation.write(arg0);
+      innerRepresentation.write(outputStream);
     }
 
   }
@@ -250,49 +253,44 @@ public final class DBRecordRepresentation extends OutputRepresentation {
    * @throws SitoolsException
    *           if an error occurs
    */
-  private JSONObject getJson(Record rec) throws SitoolsException {
+  private void writeRecord(Record rec, JsonGenerator jGenerator) throws SitoolsException {
     try {
-      JSONObject json = new JSONObject();
+      jGenerator.writeStartObject();
       if (rec != null) {
 
         List<AttributeValue> list = rec.getAttributeValues();
         AttributeValue obj;
 
-        json.put("id", rec.getId());
-
-        JSONArray attributesValues = new JSONArray();
+        jGenerator.writeStringField("id", rec.getId());
+        jGenerator.writeFieldName("attributeValues");
+        jGenerator.writeStartArray();
 
         for (Iterator<AttributeValue> it = list.iterator(); it.hasNext();) {
           obj = it.next();
           if (obj != null) {
-            attributesValues.put(getAttributeJSON(obj));
+            jGenerator.writeStartObject();
+            jGenerator.writeStringField("name", obj.getName());
+            Object value = (obj.getValue() != null) ? obj.getValue().toString() : obj.getValue();
+            jGenerator.writeObjectField("value", value);
+            jGenerator.writeEndObject();
           }
         }
-        json.put("attributeValues", attributesValues);
-
+        jGenerator.writeEndArray();
+        jGenerator.writeEndObject();
       }
-      return json;
     }
-    catch (JSONException ejson) {
-      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.SEVERE, null, ejson);
-      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.json", ejson);
+    catch (JsonGenerationException e) {
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.json", e);
+    }
+    catch (JsonProcessingException e) {
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.json", e);
+    }
+    catch (IOException e) {
+      Engine.getLogger(DataSetExplorerResource.class.getName()).log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "dataset.records.json", e);
     }
   }
 
-  /**
-   * Create a {@link JSONObject} from an {@link AttributeValue}
-   * 
-   * @param obj
-   *          the {@link AttributeValue}
-   * @return a {@link JSONObject} containing the name and the value of the given {@link AttributeValue}
-   * @throws JSONException
-   *           if there is an error while creating the {@link JSONObject}
-   */
-  private JSONObject getAttributeJSON(AttributeValue obj) throws JSONException {
-    JSONObject attribute = new JSONObject();
-    attribute.put("name", obj.getName());
-    Object value = (obj.getValue() != null) ? obj.getValue().toString() : obj.getValue();
-    attribute.put("value", value);
-    return attribute;
-  }
 }

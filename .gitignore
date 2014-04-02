@@ -8,7 +8,9 @@ classes/
 dist/
 extensions/
 build.num
-/data/
+/data/*
+!data/freemarker/
+data/freemarker/*.fields.txt
 .settings/
 data-emtpy/
 ingeoclouds/

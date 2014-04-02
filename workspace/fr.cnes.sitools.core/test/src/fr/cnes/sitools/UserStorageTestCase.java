@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -410,7 +410,7 @@ public class UserStorageTestCase extends AbstractSitoolsServerTestCase {
    * @return Representation UserStorage representation
    */
   private Representation createUserStorage(UserStorage userStorage) {
-    JsonRepresentation rep = new JsonRepresentation(userStorage);
+    Representation rep = new JacksonRepresentation<UserStorage>(userStorage);
     ClientResource cr = new ClientResource(getBaseUrl() + ROOT_ADMIN);
     Representation result = cr.post(rep, getMediaTest());
     assertTrue(cr.getStatus().isSuccess());

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -26,12 +26,13 @@ import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -76,7 +77,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
    * @return url
    */
   protected String getBaseUrl() {
-    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_FORMS_URL) + "/sansDTO";
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_FORMS_URL);
   }
 
   /**
@@ -105,7 +106,6 @@ public class FormTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
 
     if (this.component == null) {
       this.component = new Component();
@@ -147,7 +147,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
   /**
    * Test CRUD Form with JSon format exchanges.
    */
-  // Test
+  @Test
   public void tstCRUD() {
     assertNone();
     create();
@@ -163,7 +163,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
   public void create() {
     FormDTO item = new FormDTO();
     item.setId("1000000");
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = new JacksonRepresentation<FormDTO>(item);
     ClientResource cr = new ClientResource(getBaseUrl());
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
     assertNotNull(result);
@@ -200,7 +200,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
   public void update() {
     FormDTO item = new FormDTO();
     item.setId("1000000");
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = new JacksonRepresentation<FormDTO>(item);
     ClientResource cr = new ClientResource(getBaseUrl() + "/" + item.getId());
     Representation result = cr.put(rep, MediaType.APPLICATION_JSON);
     assertNotNull(result);
@@ -238,7 +238,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
     assertTrue(cr.getStatus().isSuccess());
 
     Response response = getResponse(MediaType.APPLICATION_JSON, result, FormDTO.class);
-    assertTrue(response.getSuccess());
+    assertTrue(response.getMessage(), response.getSuccess());
     assertEquals(response.getTotal().intValue(), 0);
   }
 

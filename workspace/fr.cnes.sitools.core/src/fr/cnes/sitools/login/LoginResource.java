@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import org.restlet.Request;
 import org.restlet.data.ChallengeRequest;
 import org.restlet.data.Method;
-import org.restlet.data.Status;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;

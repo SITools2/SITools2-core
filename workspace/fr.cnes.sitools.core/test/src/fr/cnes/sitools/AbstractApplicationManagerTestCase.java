@@ -29,7 +29,7 @@ import java.util.List;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -375,7 +375,7 @@ public abstract class AbstractApplicationManagerTestCase extends AbstractSitools
    */
   public static Representation getRepresentation(Project item, MediaType media) {
     if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JsonRepresentation(item);
+      return new JacksonRepresentation<Project>(item);
     }
     else if (media.equals(MediaType.APPLICATION_XML)) {
       XStream xstream = XStreamFactory.getInstance().getXStream(media, false);

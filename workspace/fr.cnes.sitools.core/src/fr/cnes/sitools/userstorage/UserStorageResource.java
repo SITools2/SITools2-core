@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import org.restlet.data.Form;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.wadl.MethodInfo;
 import org.restlet.ext.wadl.ParameterInfo;
 import org.restlet.ext.wadl.ParameterStyle;
@@ -239,7 +238,6 @@ public final class UserStorageResource extends AbstractUserStorageResource {
   protected Representation doIt(Representation representation) {
     Form form = getQuery();
     try {
-      JsonRepresentation json = new JsonRepresentation(representation);
 
       String filename = form.getFirstValue("filename");
       String filepath = form.getFirstValue("filepath");
@@ -250,7 +248,7 @@ public final class UserStorageResource extends AbstractUserStorageResource {
       String formattedUserStoragePath = getSettings().getFormattedString(storage.getStorage().getUserStoragePath());
       File cible = new File(formattedUserStoragePath + filepath, filename);
       FileOutputStream fos = new FileOutputStream(cible);
-      fos.write(json.getText().getBytes());
+      fos.write(representation.getText().getBytes());
       fos.flush();
       fos.close();
       getResponse().redirectPermanent(new Reference(getReference().getBaseRef() + filepath + filename));

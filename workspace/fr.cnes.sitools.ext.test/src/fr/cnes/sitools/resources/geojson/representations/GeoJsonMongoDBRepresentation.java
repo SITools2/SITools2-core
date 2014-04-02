@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.representation.WriterRepresentation;
 
 import com.mongodb.DBObject;
 
@@ -39,11 +39,12 @@ import fr.cnes.sitools.datasource.jdbc.model.Record;
 import fr.cnes.sitools.util.Util;
 
 /**
- * Produce a GeoJson representation from a DatabaseRequest, a geometry column and a list of converters
+ * Produce a GeoJson representation from a DatabaseRequest, a geometry column
+ * and a list of converters
  * 
  * @author m.gond
  */
-public class GeoJsonMongoDBRepresentation extends JsonRepresentation {
+public class GeoJsonMongoDBRepresentation extends WriterRepresentation {
   /** the parameters */
   private DatabaseRequestParameters params;
   /** the name of the geometry column */
@@ -54,7 +55,8 @@ public class GeoJsonMongoDBRepresentation extends JsonRepresentation {
   private String geometryTypeColName;
 
   /**
-   * Constructor with a DatabaseRequestParameters, a geometryColName and a converterChained
+   * Constructor with a DatabaseRequestParameters, a geometryColName and a
+   * converterChained
    * 
    * @param params
    *          the DatabaseRequestParameters
@@ -189,4 +191,5 @@ public class GeoJsonMongoDBRepresentation extends JsonRepresentation {
     }
 
   }
+
 }
