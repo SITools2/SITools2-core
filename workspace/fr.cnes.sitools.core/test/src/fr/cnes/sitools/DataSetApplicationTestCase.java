@@ -33,7 +33,6 @@ import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -47,6 +46,7 @@ import fr.cnes.sitools.dataset.DataSetStoreXML;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.utils.GetRepresentationUtils;
 import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
@@ -164,7 +164,7 @@ public class DataSetApplicationTestCase extends AbstractSitoolsTestCase {
    *          DataSet
    */
   public void create(DataSet item) {
-    JsonRepresentation rep = new JsonRepresentation(item);
+    Representation rep = GetRepresentationUtils.getRepresentationDataset(item, MediaType.APPLICATION_JSON);
     ClientResource cr = new ClientResource(getBaseUrl());
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
     assertTrue(cr.getStatus().isSuccess());

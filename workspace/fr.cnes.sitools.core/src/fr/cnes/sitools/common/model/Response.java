@@ -22,6 +22,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -260,6 +262,7 @@ public final class Response implements Serializable {
    * 
    * @return the success
    */
+  @JsonIgnore
   public boolean isSuccess() {
     return success;
   }

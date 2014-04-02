@@ -39,7 +39,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.data.Status;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
@@ -319,7 +319,7 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
    *          inscription
    */
   public void userInscription(Inscription item) {
-    JsonRepresentation rep = new JsonRepresentation(item);
+    Representation rep = new JacksonRepresentation<Inscription>(item);
     ClientResource cr = null;
     try {
       cr = new ClientResource(this.getBaseUrlUser());

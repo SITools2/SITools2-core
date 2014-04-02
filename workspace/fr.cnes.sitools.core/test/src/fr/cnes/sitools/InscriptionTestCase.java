@@ -34,7 +34,7 @@ import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -346,7 +346,7 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
    *          inscription
    */
   public void userInscription(Inscription item) {
-    JsonRepresentation rep = new JsonRepresentation(item);
+    Representation rep = getRepresentation(item);
     ClientResource cr = new ClientResource(this.getBaseUrlUser());
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
     assertTrue(cr.getStatus().isSuccess());
@@ -429,7 +429,7 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
    *          inscription
    */
   public void adminCreate(Inscription item) {
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = getRepresentation(item);
     ClientResource cr = new ClientResource(this.getBaseUrlAdmin());
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
     assertTrue(cr.getStatus().isSuccess());
@@ -472,7 +472,7 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
    *          inscription
    */
   public void adminUpdate(Inscription item) {
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = getRepresentation(item);
     ClientResource cr = new ClientResource(this.getBaseUrlAdmin() + "/" + item.getId());
     Representation result = cr.put(rep, MediaType.APPLICATION_JSON);
     assertTrue(cr.getStatus().isSuccess());
@@ -486,6 +486,18 @@ public class InscriptionTestCase extends AbstractSitoolsTestCase {
     // assertEquals(item.getLastName(), item.getLastName());
     // assertEquals(item.getComment(), item.getComment());
     // assertEquals(item.getEmail(), item.getEmail());
+  }
+
+  /**
+   * Get the json representation of the following inscription
+   * 
+   * @param item
+   *          the Inscription
+   * @return the json representation of the following inscription
+   */
+  private Representation getRepresentation(Inscription item) {
+    Representation rep = new JacksonRepresentation<Inscription>(item);
+    return rep;
   }
 
   /**

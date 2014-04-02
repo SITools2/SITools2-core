@@ -5,20 +5,17 @@
 
 <body style="font-family: sans-serif;">
 
+<a href="${sitoolsUrl}"><img src="${sitoolsUrl}../common/res/images/logo_01_petiteTaille.png"/></a>
+
 <p>
-Dear <i>${order.name}</i>, <br/>
-your <i>${order.description}</i> order is <i>${order.status!}</i>.<br/>
+Dear ${order.name}, <br/>
+your order ${order.description} is ${order.status!}.<br/>
 <br/>
 <br/>
 In order to retrieve the ordered files, use the following command :<br/>
 <i>wget --auth-no-challenge --http-user=${user.identifier!} --http-password=[password] ${order.resourceCollection[0]!}</i>
 </p>
-<p>
-For further information, please contact the administrator <a href="mailto:${mail.from!}">${mail.from!}</a>.
-</p>
-<p>
-Best regards,<br/>
-The project Team.
-</p>
+
+<#include "mail.bottom.ftl">
 </body>
 </html>

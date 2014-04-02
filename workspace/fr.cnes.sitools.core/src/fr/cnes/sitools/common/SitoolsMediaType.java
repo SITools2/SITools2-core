@@ -46,8 +46,7 @@ public final class SitoolsMediaType {
   /** used by client */
   public static final MediaType APPLICATION_SITOOLS_JSON_DIRECTORY = MediaType.register(
       "application/json+sitools-directory", "MediaType for Sitools Directory Json Representation");
- 
-  
+
   /**
    * private constructor
    */

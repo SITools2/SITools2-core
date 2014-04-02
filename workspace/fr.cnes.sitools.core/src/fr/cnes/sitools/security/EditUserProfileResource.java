@@ -257,7 +257,7 @@ public class EditUserProfileResource extends SitoolsResource {
    * @return boolean
    */
   private boolean updateUser(User user, String url) {
-    Request reqPUT = new Request(Method.PUT, "riap://component" + url + "/" + user.getIdentifier(),
+    Request reqPUT = new Request(Method.PUT, "riap://component" + url + "/" + user.getIdentifier() + "?origin=user",
         new ObjectRepresentation<User>(user));
 
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();

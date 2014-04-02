@@ -20,17 +20,12 @@ package fr.cnes.sitools.proxy;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.restlet.data.ReferenceList;
-import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.DocumentationInfo;
 import org.restlet.ext.wadl.ExtendedResourceInfo;
@@ -209,48 +204,8 @@ public class DirectoryProxy extends Directory implements WadlDescribable {
    *          the reference used
    * @return a JSON representation
    */
-  protected JsonRepresentation getJsonRepresentation(ReferenceList reference) {
-
-    Collection<JSONObject> entries = new ArrayList<JSONObject>();
-    for (Reference ref : reference) {
-      File file = null;
-      if (reference instanceof ReferenceFileList) {
-        file = ((ReferenceFileList) reference).get(ref.toString());
-      }
-
-      try {
-        if (!ref.toString().endsWith("/")) {
-          JSONObject jo = new JSONObject();
-          String[] arrayPath = ref.toString().split("/");
-          String path = arrayPath[arrayPath.length - 1];
-
-          jo.put("name", path);
-          jo.put("url", ref.toString());
-
-          if ((file != null) && file.exists()) {
-            jo.put("size", file.length());
-            jo.put("lastmod", Math.round(file.lastModified() / 1000));
-
-          }
-          entries.add(jo);
-        }
-      }
-      catch (org.json.JSONException e) {
-        getLogger().warning("JSON exception: " + e.getMessage());
-      }
-    }
-
-    JSONObject result = new JSONObject();
-    try {
-      result.put(this.getRootNode(), entries);
-    }
-    catch (JSONException e) {
-      getLogger().warning("DirectoryProxy.getJsonRepresentation >> JSONException: " + e.getMessage());
-    }
-
-    JsonRepresentation jsonRep = new JsonRepresentation(result);
-    jsonRep.setMediaType(MediaType.APPLICATION_JSON);
-    return jsonRep;
+  protected Representation getJsonRepresentation(ReferenceList reference) {
+    return new ReferenceListJsonRepresentation(MediaType.APPLICATION_JSON, reference);
   }
 
   /**
@@ -261,44 +216,8 @@ public class DirectoryProxy extends Directory implements WadlDescribable {
    *          the reference used
    * @return a JSON representation
    */
-  protected JsonRepresentation getAdvancedJsonRepresentation(ReferenceList reference) {
-    JSONArray array = new JSONArray();
-    for (Reference ref : reference) {
-      JSONObject jo = new JSONObject();
-      File file = null;
-      if (reference instanceof ReferenceFileList) {
-        file = ((ReferenceFileList) reference).get(ref.toString());
-      }
-      try {
-        if (ref.toString().endsWith("/")) {
-          // jo.put("leaf", "false");
-          jo.put("cls", "folder");
-          jo.put("checked", false);
-
-        }
-        else {
-          jo.put("leaf", "true");
-          jo.put("checked", false);
-        }
-
-        String[] arrayPath = ref.toString().split("/");
-        String path = arrayPath[arrayPath.length - 1];
-        jo.put("url", ref.toString());
-        jo.put("text", path);
-
-        if ((file != null) && file.exists()) {
-          jo.put("size", file.length());
-          jo.put("lastmod", Math.round(file.lastModified() / 1000));
-        }
-        array.put(jo);
-      }
-      catch (org.json.JSONException e) {
-        getLogger().warning("DirectoryProxy.getAdvancedJsonRepresentation >> JSON exception: " + e.getMessage());
-      }
-    }
-    JsonRepresentation jsonRep = new JsonRepresentation(array);
-    jsonRep.setMediaType(SitoolsMediaType.APPLICATION_SITOOLS_JSON_DIRECTORY);
-    return jsonRep;
+  protected Representation getAdvancedJsonRepresentation(ReferenceList reference) {
+    return new AdvancedReferenceListJsonRepresentation(SitoolsMediaType.APPLICATION_SITOOLS_JSON_DIRECTORY, reference);
   }
 
   /**

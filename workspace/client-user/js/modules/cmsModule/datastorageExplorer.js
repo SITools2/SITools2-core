@@ -205,7 +205,8 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             root : {
                 text : this.nameDatastorage,
                 leaf : false,
-                url : this.datastorageUrl
+                url : this.datastorageUrl,
+                name : this.nameDatastorage
             },            
             listeners : {
                 scope : this,

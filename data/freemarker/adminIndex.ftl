@@ -95,7 +95,7 @@
     <script type="text/javascript" src="${appUrl}/common/js/widgets/sliderRange/js/ux/SliderRange.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/userProfile/loginUtils.js"></script>
 	<script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>	
-	<script type="text/javascript" src="${appUrl}/common/js/userProfile/resetPassword.js"></script>	
+	<script type="text/javascript" src="${appUrl}/common/js/userProfile/lostPassword.js"></script>	
     <script type="text/javascript" src="${appUrl}/common/js/widgets/actionlink.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/highlighttext.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/checkcolumn.js"></script>
@@ -356,7 +356,7 @@
 							sitools.userProfile.LoginUtils.connect({
 								url:'${appUrl}/authentication/login',
 			        			handler : initAppli,
-								reset : loadUrl.get('APP_URL') + '/resetPassword',
+								reset : loadUrl.get('APP_URL') + '/lostPassword',
 								unblacklist : loadUrl.get('APP_URL') + '/unblacklist'							});
 						}
 						else {

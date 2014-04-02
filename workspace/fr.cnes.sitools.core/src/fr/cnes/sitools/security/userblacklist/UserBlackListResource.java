@@ -113,14 +113,6 @@ public final class UserBlackListResource extends AbstractUserBlackListResource {
             Consts.SECURITY_FILTER_USER_BLACKLIST_CONTAINER);
         counter.remove(getUserId());
 
-        // if the user exists, generate a new password
-        User user = getUserObject(getUserId());
-        if (user != null) {
-          String resetPasswwordUrl = getSettings().getString(Consts.APP_CLIENT_PUBLIC_PATH) + "/resetPassword";
-          RIAPUtils.handle(resetPasswwordUrl, new ObjectRepresentation<User>(user), Method.PUT, getMediaType(variant),
-              getContext());
-        }
-
         response = new Response(true, "userBlackListModel.delete.success");
       }
       else {

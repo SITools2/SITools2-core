@@ -150,7 +150,7 @@ Ext.define('sitools.userProfile.Login', {
                 scope : this,
                 handler : function () {
                     Ext.getCmp('winLogin').close();
-                    var reset = new sitools.userProfile.resetPassword({
+                    var reset = new sitools.userProfile.lostPassword({
                         closable : this.closable,
                         urlResetPassword : this.reset,
                         urlUnblacklist : this.unblacklist,

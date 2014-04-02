@@ -67,7 +67,7 @@ public class CaptchaContainer {
 
     Captcha captcha = new Captcha(width, height, length);
     captchas.put(captcha.getId(), captcha);
-
+    
     return captcha;
   }
 

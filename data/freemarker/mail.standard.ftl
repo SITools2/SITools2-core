@@ -5,11 +5,6 @@
 
 <body style="font-family: sans-serif;">
 
-<h1>Sitools 2 information</h1>
-<p style="font-size: 1.2em;font-weight: bold;margin: 1em 0px;">
-${description!}
-</p>
-
 <p>
 ${mail.body!}
 </p>

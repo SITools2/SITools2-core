@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -28,12 +28,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
@@ -55,8 +55,8 @@ import fr.cnes.sitools.util.RIAPUtils;
  * 
  * @author m.gond (AKKA Technologies)
  * 
- *         En cas d'echec du test : Supprimer le fichier int@2.xml du repertoire
- *         TESTS\opensearch correspondant à l'osId ci-dessous
+ *         En cas d'echec du test : Supprimer le fichier int@2.xml du repertoire TESTS\opensearch correspondant à l'osId
+ *         ci-dessous
  */
 public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTestCase {
 
@@ -192,8 +192,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param os
    *          the opensearchId
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an IOException
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an IOException
    */
   private void createOs(Opensearch os) throws IOException {
     String url = String.format(getUrl(), os.getId());
@@ -238,8 +238,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param os
    *          the opensearch to update
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an exception at the end
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an exception at the end
    */
   private void updateOs(Opensearch os) throws IOException {
     os.setName(osName + "_updated");
@@ -286,8 +286,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param osId2
    *          the opensearchId
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an IOException
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an IOException
    */
   private void activateOs(String osId2) throws IOException {
     String url = String.format(getUrl(), osId) + "/start";
@@ -332,8 +332,9 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    *          the urlAttachment of the opensearch
    * @param queryText
    *          the queryText
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an exception releasing resources
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an exception releasing
+   *           resources
    */
   private void query(String urlAttachment, String queryText) throws IOException {
     String url = getHostUrl() + urlAttachment + "/opensearch/search?q=" + queryText;
@@ -371,8 +372,9 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param osId
    *          the opensearch id
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an exception releasing the ressources
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an exception releasing the
+   *           ressources
    */
   private void getDescription(String osId) throws IOException {
     String url = getHostUrl() + urlAttachment + "/opensearch.xml";
@@ -409,8 +411,9 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    *          the urlAttachment of the opensearch
    * @param suggestText2
    *          the queryText
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an exception releasing resources
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an exception releasing
+   *           resources
    */
   private void suggest(String urlAttachment2, String suggestText2) throws IOException {
     String url = getHostUrl() + urlAttachment2 + "/opensearch/suggest?q=" + suggestText2;
@@ -430,18 +433,13 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
         assertTrue(cr.getStatus().isSuccess());
 
         if (getMediaTest().equals(MediaType.APPLICATION_JSON)) {
-          String text = result.getText();
-          assertNotNull(text);
-          try {
-            JSONObject json = new JSONObject(text);
-            assertNotNull(json);
-            boolean success = json.getBoolean("success"); 
-            assertTrue(success);
-          }
-          catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
+          // general method, same as with data binding
+          ObjectMapper mapper = new ObjectMapper();
+          // (note: can also use more specific type, like ArrayNode or ObjectNode!)
+          JsonNode rootNode = mapper.readValue(result.getStream(), JsonNode.class); // src can be a File, URL,
+                                                                                    // InputStream etc
+          JsonNode success = rootNode.get("success");
+          assertEquals("true", success.getTextValue());
 
         }
       }
@@ -461,8 +459,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param osId2
    *          the opensearchId
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an IOException
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an IOException
    */
   private void stopOs(String osId2) throws IOException {
     String url = String.format(getUrl(), osId) + "/stop";
@@ -507,8 +505,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param osId2
    *          the opensearchId
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an IOException
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an IOException
    */
   private void cancelOs(String osId2) throws IOException {
     String url = String.format(getUrl(), osId) + "/cancel";
@@ -549,8 +547,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param osId
    *          the Opensearch id
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an IOException
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an IOException
    * @throws InterruptedException
    *           if there is an error while doing Thread.sleep
    */
@@ -568,8 +566,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * @param osId
    *          the opensearch id
    * @return the Status of the given osId
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an IOException
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an IOException
    */
   private String checkStatus(String osId) throws IOException {
     String url = String.format(getUrl(), osId);
@@ -603,8 +601,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param osId
    *          the opensearchId to Delete
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
-   *           if there is an exception at the end
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS if there is an exception at the end
    */
   private void delete(String osId) throws IOException {
     String url = String.format(getUrl(), osId);
@@ -646,7 +644,8 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    * 
    * @param datasetId
    *          Opensearch needed to set datasetId (= item.id) in the url
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void assertNone(String datasetId) throws IOException {
     String url = String.format(getUrl(), datasetId);
@@ -741,8 +740,7 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
   }
 
   /**
-   * REST API Response Representation wrapper for single or multiple items
-   * expexted
+   * REST API Response Representation wrapper for single or multiple items expexted
    * 
    * @param media
    *          MediaType expected
@@ -819,7 +817,7 @@ public abstract class AbstractOpensearchSearchTestCase extends SitoolsServerTest
    */
   public static Representation getRepresentation(Opensearch item, MediaType media) {
     if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JsonRepresentation(item);
+      return new JacksonRepresentation<Opensearch>(item);
     }
     else if (media.equals(MediaType.APPLICATION_XML)) {
       XStream xstream = XStreamFactory.getInstance().getXStream(media, false);

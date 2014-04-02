@@ -24,7 +24,7 @@ import java.util.Iterator;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.representation.WriterRepresentation;
 
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.dataset.converter.business.ConverterChained;
@@ -42,7 +42,7 @@ import fr.cnes.sitools.util.Util;
  * 
  * @author m.gond
  */
-public class GeoJsonRepresentation extends JsonRepresentation {
+public class GeoJsonRepresentation extends WriterRepresentation {
   /** the parameters */
   private DatabaseRequestParameters params;
   /** the sva parent */

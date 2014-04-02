@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -198,21 +198,23 @@ public final class FileCopyUtils {
       }
     }
   }
-  
+
   /**
    * 
-   * @param inputFile complete zip filename 
-   * @param outputFolder directory path
+   * @param inputFile
+   *          complete zip filename
+   * @param outputFolder
+   *          directory path
    */
   public static void unzipAFile(final String inputFile, final String outputFolder) {
 
     byte[] buffer = new byte[1024];
-    
+
     File folder = null;
     ZipInputStream zis = null;
     File newFile = null;
     FileOutputStream fos = null;
-    
+
     try {
       // create output directory is not exists
       folder = new File(outputFolder);
@@ -222,7 +224,7 @@ public final class FileCopyUtils {
 
       // get the zip file content
       zis = new ZipInputStream(new FileInputStream(inputFile));
-      
+
       // get the zipped file list entry
       ZipEntry ze = zis.getNextEntry();
 
@@ -231,18 +233,25 @@ public final class FileCopyUtils {
         String fileName = ze.getName();
         newFile = new File(outputFolder + File.separator + fileName);
 
-        // create all non exists folders
-        // else you will hit FileNotFoundException for compressed folder
-        new File(newFile.getParent()).mkdirs();
-
-        fos = new FileOutputStream(newFile);
-
-        int len;
-        while ((len = zis.read(buffer)) > 0) {
-          fos.write(buffer, 0, len);
+        if (ze.isDirectory()) {
+          // create all non exists folders
+          newFile.mkdirs();
         }
+        else {
+          fos = new FileOutputStream(newFile);
 
-        fos.close();
+          int len;
+          while ((len = zis.read(buffer)) > 0) {
+            fos.write(buffer, 0, len);
+          }
+
+          fos.close();
+
+        }
+        // 
+        // // else you will hit FileNotFoundException for compressed folder
+        // new File(newFile.getParent()).mkdirs();
+
         ze = zis.getNextEntry();
       }
 
@@ -255,15 +264,14 @@ public final class FileCopyUtils {
     }
     catch (IOException e) {
       e.printStackTrace();
-    } 
-    finally 
-    {
+    }
+    finally {
       if (null != zis) {
         try {
           zis.close();
         }
         catch (IOException e) {
-          // nothing 
+          // nothing
         }
       }
       if (null != fos) {
@@ -271,7 +279,7 @@ public final class FileCopyUtils {
           fos.close();
         }
         catch (IOException e) {
-          // nothing 
+          // nothing
         }
       }
     }

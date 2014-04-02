@@ -1,22 +1,32 @@
 package fr.cnes.sitools.security.filter;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.Method;
 import org.restlet.data.Status;
+import org.restlet.representation.ObjectRepresentation;
+import org.restlet.resource.ResourceException;
 import org.restlet.routing.Filter;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.mail.model.Mail;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.util.MailUtils;
+import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.util.TemplateUtils;
+import fr.cnes.sitools.util.Util;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class UserBlackListFilter.
  * 
@@ -34,6 +44,8 @@ public class UserBlackListFilter extends Filter {
 
   /** The store. */
   private SitoolsStore<UserBlackListModel> store;
+  /** The settings */
+  private SitoolsSettings settings;
 
   /**
    * Instantiates a new user black list filter.
@@ -45,8 +57,7 @@ public class UserBlackListFilter extends Filter {
   public UserBlackListFilter(Context context) {
     super(context);
 
-    // get the SitoolsSettings
-    SitoolsSettings settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
+    settings = (SitoolsSettings) context.getAttributes().get(ContextAttributes.SETTINGS);
 
     nbAllowedRequestBeforeBlacklist = settings.getInt("Starter.NB_ALLOWED_REQ_BEFORE_BLACKLIST");
     store = (SitoolsStore<UserBlackListModel>) settings.getStores().get(Consts.APP_STORE_USER_BLACKLIST);
@@ -96,6 +107,7 @@ public class UserBlackListFilter extends Filter {
       if (nb >= nbAllowedRequestBeforeBlacklist) {
         if (store.retrieve(id) == null) {
           store.create(wrapUserBlacklist(id, request));
+          sendMailToAdmin(id);
         }
 
         response.setStatus(Status.CLIENT_ERROR_FORBIDDEN, "Blacklisted user");
@@ -172,8 +184,8 @@ public class UserBlackListFilter extends Filter {
    */
   private void log(Request request, Response response, String id) {
 
-    String message = "Request to: " + request.getResourceRef().getPath()
-        + " forbidden, user: " + id + " blacklisted for too many requests with bad credentials";
+    String message = "Request to: " + request.getResourceRef().getPath() + " forbidden, user: " + id
+        + " blacklisted for too many requests with bad credentials";
 
     LogRecord record = new LogRecord(Level.WARNING, message);
     response.getAttributes().put("LOG_RECORD", record);
@@ -205,5 +217,63 @@ public class UserBlackListFilter extends Filter {
    */
   private boolean userAuthenticated(String id, Request request) {
     return (request.getClientInfo() != null && request.getClientInfo().isAuthenticated());
+  }
+
+  /**
+   * Send the new password by mail to an user
+   * 
+   * @param id
+   *          the user identifier
+   */
+  private void sendMailToAdmin(String id) {
+
+    String adminMail = settings.getAdminMail();
+
+    if (adminMail == null) {
+      getLogger().info("No email address for administrator, cannot send inscription email");
+      return;
+    }
+
+    String[] toList = new String[] {adminMail};
+    Mail mailToAdmin = new Mail();
+    mailToAdmin.setToList(Arrays.asList(toList));
+
+    // Object
+    mailToAdmin.setSubject("SITools2 - User account blocked");
+
+    // Body
+    mailToAdmin.setBody(String.format("The account of the user %s has been blocked", id));
+
+    // use a freemarker template for email body with Mail object
+    String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
+        + "mail.account.blocked.ftl";
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("userId", id);
+    MailUtils.addDefaultParameters(root, settings, mailToAdmin);
+
+    TemplateUtils.describeObjectClassesForTemplate(templatePath, root);
+
+    root.put("context", getContext());
+
+    String body = TemplateUtils.toString(templatePath, root);
+    if (Util.isNotEmpty(body)) {
+      mailToAdmin.setBody(body);
+    }
+
+    org.restlet.Response sendMailResponse = null;
+    try {
+      // riap request to MailAdministration application
+      Request request = new Request(Method.POST, RIAPUtils.getRiapBase()
+          + settings.getString(Consts.APP_MAIL_ADMIN_URL), new ObjectRepresentation<Mail>(mailToAdmin));
+
+      sendMailResponse = getContext().getClientDispatcher().handle(request);
+    }
+    catch (Exception e) {
+      getApplication().getLogger().warning("Failed to post message to user");
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
+    if (sendMailResponse.getStatus().isError()) {
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, "Server Error sending email to user.");
+    }
   }
 }

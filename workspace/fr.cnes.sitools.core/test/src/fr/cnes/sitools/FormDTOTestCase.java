@@ -31,10 +31,9 @@ import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -237,7 +236,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
    */
   public void create(FormDTO item) {
 
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = new JacksonRepresentation<FormDTO>(item);
     ClientResource cr = new ClientResource(String.format(getBaseUrl(), dataSetId));
 
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
@@ -310,7 +309,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
    *          FormDTO
    */
   public void update(FormDTO item) {
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = new JacksonRepresentation<FormDTO>(item);
     ClientResource cr = new ClientResource(String.format(getBaseUrl(), dataSetId) + "/" + item.getId());
     Representation result = cr.put(rep, MediaType.APPLICATION_JSON);
     assertNotNull(result);

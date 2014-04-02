@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -35,7 +35,7 @@ import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -238,7 +238,7 @@ public class OpenSearchTestCase extends AbstractSitoolsTestCase {
    *          DataSet
    */
   public void create(Opensearch item) {
-    JsonRepresentation rep = new JsonRepresentation(item);
+    Representation rep = getRepresentation(item);
     ClientResource cr = new ClientResource(String.format(getBaseUrl(), item.getId()));
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
     assertTrue(cr.getStatus().isSuccess());
@@ -333,7 +333,7 @@ public class OpenSearchTestCase extends AbstractSitoolsTestCase {
    *          DataSet
    */
   public void update(Opensearch item) {
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = getRepresentation(item);
 
     ClientResource cr = new ClientResource(String.format(getBaseUrl(), item.getId())); // +
                                                                                        // "/"
@@ -348,6 +348,18 @@ public class OpenSearchTestCase extends AbstractSitoolsTestCase {
     assertNotNull(response.getItem());
     Opensearch rs = (Opensearch) response.getItem();
     assertEqualsOpensearch(rs, item);
+  }
+
+  /**
+   * Get the Json representation of the Opensearch object
+   * 
+   * @param item
+   *          the opensearch object
+   * @return the json representation
+   */
+  private Representation getRepresentation(Opensearch item) {
+    Representation rep = new JacksonRepresentation<Opensearch>(item);
+    return rep;
   }
 
   /**

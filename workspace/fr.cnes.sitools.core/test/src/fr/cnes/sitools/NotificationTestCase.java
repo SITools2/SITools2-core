@@ -33,7 +33,7 @@ import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
-import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
@@ -314,7 +314,7 @@ public class NotificationTestCase extends AbstractSitoolsTestCase {
    *          Observable
    */
   public void observableCreate(RestletObservable item) {
-    Representation rep = new JsonRepresentation(item);
+    Representation rep = new JacksonRepresentation<RestletObservable>(item);
     ClientResource cr = new ClientResource(this.getBaseUrl());
     Representation result = cr.post(rep, MediaType.APPLICATION_JSON);
     assertTrue(cr.getStatus().isSuccess());
