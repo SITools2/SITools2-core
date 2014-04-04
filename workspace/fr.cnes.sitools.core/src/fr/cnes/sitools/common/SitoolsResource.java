@@ -381,12 +381,30 @@ public abstract class SitoolsResource extends AbstractSitoolsResource {
     return settings;
   }
 
+  /**
+   * Add a trace to the Administration Logger
+   * 
+   * @param level
+   *          the level to log
+   * @param message
+   *          the message to log
+   * @param throwable
+   *          the throwable to log
+   */
   public void trace(Level level, String message, Throwable throwable) {
     LogRecord record = new LogRecord(level, message);
     record.setThrown(throwable);
     getResponse().getAttributes().put("LOG_RECORD", record);
   }
 
+  /**
+   * Add a trace to the Administration Logger
+   * 
+   * @param level
+   *          the level to log
+   * @param message
+   *          the message to log
+   */
   public void trace(Level level, String message) {
     trace(level, message, null);
   }

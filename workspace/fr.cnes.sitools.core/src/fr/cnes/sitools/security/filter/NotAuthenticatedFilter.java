@@ -57,13 +57,15 @@ public class NotAuthenticatedFilter extends Filter {
    * 
    * @param request
    *          the request
+   * @param response
+   *          the response
    * @param id
    *          the id
    */
   private void log(Request request, Response response, String id) {
 
-    String message = "Request to : " + request.getResourceRef().getPath()
-        + " forbidden, bad credentials for user: " + id;
+    String message = "Request to : " + request.getResourceRef().getPath() + " forbidden, bad credentials for user: "
+        + id;
 
     LogRecord record = new LogRecord(Level.WARNING, message);
     response.getAttributes().put("LOG_RECORD", record);

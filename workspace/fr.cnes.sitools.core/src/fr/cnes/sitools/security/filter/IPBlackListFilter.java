@@ -80,13 +80,15 @@ public class IPBlackListFilter extends SecurityFilter {
    * 
    * @param request
    *          the request
+   * @param response
+   *          the response
    * @param clientip
    *          the client ip
    */
   private void log(Request request, Response response, String clientip) {
 
-    String message = "Request to : " + request.getResourceRef().getPath()
-        + " forbidden, IP address:" + clientip + " is in blacklist";
+    String message = "Request to : " + request.getResourceRef().getPath() + " forbidden, IP address:" + clientip
+        + " is in blacklist";
 
     LogRecord record = new LogRecord(Level.WARNING, message);
     response.getAttributes().put("LOG_RECORD", record);

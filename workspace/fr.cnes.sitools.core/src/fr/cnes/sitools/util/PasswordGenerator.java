@@ -5,7 +5,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class PasswordGenerator {
+/**
+ * An util class to generate a Password with CNES complexity
+ * 
+ * 
+ * @author m.gond
+ */
+public final class PasswordGenerator {
+
+  /**
+   * Private constructor
+   */
+  private PasswordGenerator() {
+
+  }
+
   /**
    * Generate a password
    * 

@@ -245,11 +245,12 @@ public final class DBRecordRepresentation extends OutputRepresentation {
   }
 
   /**
-   * Return a <code>Record</code> in a <code>JSONObject</code> object
+   * Write a <code>Record</code> into the given <code>JsonGenerator</code>
    * 
    * @param rec
    *          a Record
-   * @return The <code>JSONObject</code> of the current <code>ResultSet</code>
+   * @param jGenerator
+   *          the JsonGenerator to write the Record to
    * @throws SitoolsException
    *           if an error occurs
    */
