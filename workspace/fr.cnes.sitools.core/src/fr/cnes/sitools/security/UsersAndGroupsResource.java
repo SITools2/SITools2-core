@@ -137,7 +137,6 @@ public abstract class UsersAndGroupsResource extends SitoolsResource {
    * @return Representation the final representation of the response
    */
   public Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }

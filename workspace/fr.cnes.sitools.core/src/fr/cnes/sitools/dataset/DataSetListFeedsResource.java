@@ -105,7 +105,6 @@ public class DataSetListFeedsResource extends AbstractDataSetResource {
    * @return Representation
    */
   public Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<Response>(response);
     }
