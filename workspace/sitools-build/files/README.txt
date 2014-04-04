@@ -20,18 +20,15 @@ _________________
 -2.4 (2014-04-04)
 	* New features :
 		- Administrator actions logged in a specific log
-		- 
 			
 	* Enhancements :	
 		- Password recovery process changed
 		- Unlock account process changed
 		- Change password emails improved
 					
-	* Bug fixed :
-		 
 	* API changes :
 		- org.json library removed in favor of Jackson
-		- org.restlet.ext library removed
+		- org.restlet.ext.json library removed
 _________________
 -2.3.1 (2014-03-14)
 	* New features :
