@@ -87,23 +87,10 @@ Ext.define('sitools.admin.userStorage.userStoragePropPanel', {
                     }
                 }
             }, {
-                xtype : 'compositefield',
-                fieldLabel : i18n.get('label.quota'),
+                xtype : 'textfield',
+                fieldLabel : i18n.get('label.quota') + " ("+ i18n.get('label.quota.unit') +")",
                 anchor : '100%',
-                defaults : {
-                    flex : 1
-                },
-                items : [ {
-                    xtype : 'textfield',
-                    name : 'quota',
-                    fieldLabel : i18n.get('label.quota'),
-                    anchor : '75%'
-                }, {
-                    xtype : 'label',
-                    text : i18n.get('label.quota.unit'),
-                    width : 50,
-                    flex : 0
-                } ]
+                name : 'quota',
             }, {
                 xtype : 'textfield',
                 name : 'userStoragePath',

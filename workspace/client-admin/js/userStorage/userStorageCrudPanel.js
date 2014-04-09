@@ -41,12 +41,18 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_URL') + '/users';
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'userId'
+                }
+            },
             remoteSort : true,
-            idProperty : 'userId',
             fields : [ {
                 name : 'userId',
                 type : 'string'
@@ -76,13 +82,13 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
         /**
          * {Ext.grid.ColumnModel} the columns definition for the store
          */
-        this.columns = new Ext.grid.ColumnModel({
+        this.columns = {
             // specify any defaults for each column
             defaults : {
                 sortable : true
             // columns are not sortable by default
             },
-            columns : [ {
+            items : [ {
                 header : i18n.get('label.userLogin'),
                 dataIndex : 'userId',
                 width : 100,
@@ -139,11 +145,10 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
                     return value.toUpperCase();
                 }
             } ]
-        });
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -151,7 +156,6 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
         };
 
         this.tbar = {
-            xtype : 'toolbar',
             defaults : {
                 scope : this
             },
@@ -208,13 +212,12 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     /**
      * do a specific render to load informations from the store. 
      */
-    onRender : function () {
-        sitools.admin.userStorage.userStorageCrudPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.userStorage.userStorageCrudPanel.superclass.afterRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize,
+            action : 'read'
         });
     },
 
@@ -234,12 +237,12 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Modify the selected {sitools.admin.userStorage.userStoragePropPanel} user Storage
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.userStorage.userStoragePropPanel({
-            url : this.url + '/' + rec.data.id,
+            url : this.url + '/' + rec.get("id"),
             userStorageRec : rec,
             action : 'modify',
             store : this.getStore()
@@ -252,14 +255,14 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('userStorageCrud.delete'), rec.data.userId),
+            msg : Ext.String.format(i18n.get('userStorageCrud.delete'), rec.data.userId),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -277,7 +280,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      */
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.data.id,
+            url : this.url + "/" + rec.get("id"),
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -294,12 +297,12 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Activate the selected {sitools.admin.userStorage.userStoragePropPanel} user Storage
      */
     _onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.data.id + '/start',
+            url : this.url + '/' + rec.get("id") + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -315,12 +318,12 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Deactivate the selected {sitools.admin.userStorage.userStoragePropPanel} user Storage
      */
     _onDisactive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
-            url : this.url + '/' + rec.data.id + '/stop',
+            url : this.url + '/' + rec.get("id") + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -336,14 +339,14 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Delete all files from the selected {sitools.admin.userStorage.userStoragePropPanel} user Storage
      */
     _onClean : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('userStorageCrud.clean'), rec.data.userId),
+            msg : Ext.String.format(i18n.get('userStorageCrud.clean'), rec.data.userId),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -357,7 +360,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + '/' + rec.data.id + '/clean',
+            url : this.url + '/' + rec.get("id") + '/clean',
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -373,7 +376,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Refresh the selected {sitools.admin.userStorage.userStoragePropPanel} user Storage
      */
     _onRefresh : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -394,7 +397,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Notify the selected {sitools.admin.userStorage.userStoragePropPanel} user Storage by e-mail
      */
     _onNotify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -409,6 +412,10 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
             },
             failure : alertFailure
         });
+    },
+    
+    getLastSelectedRecord : function () {
+       return this.store.getById(this.getSelectionModel().getLastSelected().getId());
     }
 
 });
