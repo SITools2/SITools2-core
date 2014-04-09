@@ -49,7 +49,8 @@ var filters = new Ext.ux.grid.GridFilters({
 });
  * </code></pre>
  */
-Ext.ux.grid.filter.DateFilter = Ext.extend(Ext.ux.grid.filter.Filter, {
+Ext.define('Ext.ux.grid.filter.DateFilter', {
+    extend : 'Ext.ux.grid.filter.Filter',
     /**
      * @cfg {String} afterText
      * Defaults to 'After'.

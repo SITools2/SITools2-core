@@ -24,8 +24,8 @@ Ext.ns('sitools.common.forms');
  * @class sitools.common.forms.AbstractWithUnit
  * @extends Ext.Container
  */
-sitools.common.forms.AbstractWithUnit = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.AbstractComponentsWithUnit = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.AbstractWithUnit', {
+   extend : 'Ext.Container',
    dimensionId : null,
    userUnit : null, 
    userDimension : null,
@@ -105,7 +105,7 @@ sitools.common.forms.AbstractWithUnit = Ext.extend(Ext.Container, {
         });
 
         var smUnits = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.gridUnits = new Ext.grid.GridPanel({

@@ -20,7 +20,8 @@ Ext.namespace("Ext.ux");
 Ext.ux.NotificationMgr = {
 positions: []
 };
-Ext.ux.Notification = Ext.extend(Ext.Window, {
+Ext.define('Ext.ux.Notification', {
+    extend : 'Ext.Window',
     initComponent: function(){
         Ext.apply(this, {
             iconCls: this.iconCls || 'x-icon-information',

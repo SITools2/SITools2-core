@@ -70,7 +70,8 @@ sb.clearStatus(); // once completeed
  * Creates a new StatusBar
  * @param {Object/Array} config A config object
  */
-Ext.ux.StatusBar = Ext.extend(Ext.Toolbar, {
+Ext.define('Ext.ux.StatusBar', {
+    extend : 'Ext.Toolbar',
 	alias : 'widget.statusbar',
     /**
      * @cfg {String} statusAlign
@@ -400,7 +401,7 @@ statusBar.setStatus({
 
         if(this.rendered){
 	        if(this.currIconCls){
-	            this.statusEl.removeClass(this.currIconCls);
+	            this.statusEl.removeCls(this.currIconCls);
 	            this.currIconCls = null;
 	        }
 	        if(cls.length > 0){

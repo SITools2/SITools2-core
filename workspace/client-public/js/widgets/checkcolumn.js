@@ -72,10 +72,11 @@ Ext.ux.grid.CheckColumn = function(config){
     this.renderer = this.renderer.createDelegate(this);
 };
 
-Ext.ux.grid.CheckColumn = Ext.extend(Ext.Component, {
+Ext.define('Ext.ux.grid.CheckColumn', {
+    extend : 'Ext.Component',
 	alias : 'widget.checkcolumn',
     enabled : true, 
-    init : function(grid){
+    init : function(grid) {
         this.grid = grid;
         this.grid.on('render', function(){
             var view = this.grid.getView();

@@ -29,12 +29,11 @@ Ext.namespace('sitools.admin.menu');
  * @class sitools.admin.menu.dataView
  * @extends Ext.DataView
  */
-Ext.define('sitools.admin.menu.dataView', { extend : 'Ext.view.View',
-	
+Ext.define('sitools.admin.menu.dataView', { 
+    extend : 'Ext.view.View',
     id: 'nodes',
-    
     itemSelector: 'div.nodes',
-    overClass   : 'nodes-hover',
+    overItemCls   : 'nodes-hover',
     singleSelect: true,
     multiSelect : false,
     autoScroll  : true,
@@ -124,6 +123,9 @@ Ext.define('sitools.admin.menu.dataView', { extend : 'Ext.view.View',
 			root : '',
 			restful : true,
 			remoteSort : false,
+			proxy : {
+			    type : 'ajax'
+			},
 			fields : [
 				{name: 'name', mapping : 'text'},
 				{name: 'nodeName'},
@@ -173,7 +175,7 @@ Ext.define('sitools.admin.menu.dataView', { extend : 'Ext.view.View',
 	                mainPanel.getTopToolbar().show();
 	                var dataViewEl = dataViewWin.getEl();
 	                dataViewEl.fadeIn({
-					    endOpacity: 0.95, //can be any value between 0 and 1 (e.g. .5)
+					    opacity: 0.95, //can be any value between 0 and 1 (e.g. .5)
 					    easing: 'easeOut',
 					    duration: 0.5
 					});
@@ -321,7 +323,7 @@ Ext.define('sitools.admin.menu.dataView', { extend : 'Ext.view.View',
 					var size = panel.items.items[0].body.getSize();
 					var sBoxTitle = panel.items.items[0].items.items[0].getEl();
 					size = {
-						height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargins("t") + sBoxTitle.getMargins("b")), 
+						height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargin("t") + sBoxTitle.getMargin("b")), 
 						width : size.width - 8
 					};
 					var mainAdminPanel = panel.find("sitoolsType", "mainAdminPanel");

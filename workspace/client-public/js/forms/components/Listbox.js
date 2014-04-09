@@ -27,7 +27,6 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.ListBox
  * @extends Ext.Container
  */
-//sitools.component.users.SubSelectionParameters.MultipleSelection.ListBox = Ext.extend(Ext.Container, {
 Ext.define('sitools.common.forms.components.ListBox', {
     extend : 'Ext.container.Container',
 

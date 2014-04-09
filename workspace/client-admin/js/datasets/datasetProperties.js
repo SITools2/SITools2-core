@@ -45,7 +45,7 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
             autoLoad : false
         });
         var smProperties = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
         
         var storeTypesProperties = new Ext.data.JsonStore({
@@ -60,7 +60,6 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
 	        forceSelection : true,
 	        selectOnFocus : true,
 	        dataIndex : 'orderBy',
-	        lazyRender : true,
 	        listClass : 'x-combo-list-small',
 	        valueField : 'name',
 	        displayField : 'name',

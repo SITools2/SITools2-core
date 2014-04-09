@@ -42,7 +42,7 @@ Ext.define('sitools.admin.datasets.selectColumn', {
         this.title = i18n.get('title.selectColumn');
 
         this.smSelectColumn = Ext.create('Ext.selection.RowModel', {
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.gridSelectColumn = new Ext.grid.GridPanel({

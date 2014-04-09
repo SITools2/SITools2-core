@@ -44,7 +44,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
         Ext.apply(this, {
 //            title: this.formName,
 //            id : "panelResultForm" + this.formId, 
-            bodyCssClass : this.css,
+            bodyCls : this.css,
             height : this.height,
             width : this.width,
 //            border : false,
@@ -165,7 +165,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                         height : param.height,
                         x : x,
                         y : y,
-                        bodyCssClass : "noborder",
+                        bodyCls : "noborder",
                         cls : param.css,
                         items : containerItems
                     });
@@ -189,7 +189,7 @@ sitools.user.component.formComponentsPanel = Ext.extend(Ext.Panel, {
                     height : parameter.height,
                     x : x,
                     y : y,
-                    bodyCssClass : "noborder",
+                    bodyCls : "noborder",
                     cls : parameter.css,
                     items : containerItems
                 });

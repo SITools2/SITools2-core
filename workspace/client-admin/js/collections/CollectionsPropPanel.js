@@ -84,8 +84,8 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
             } ]
         });
 
-        var smDataSets = Ext.create('Ext.selection.RowModel',{
-            singleSelect : false
+        var smDataSets = Ext.create('Ext.selection.RowModel', {
+            mode : 'MULTI'
         });
         var tbar = {
             xtype : 'toolbar',

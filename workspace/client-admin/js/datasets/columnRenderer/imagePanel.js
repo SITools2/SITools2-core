@@ -107,7 +107,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', {
 	        });
 	
 	        var smColumns = Ext.create('Ext.selection.RowModel', {
-	            singleSelect : true,
+	            mode : 'SINGLE',
                 listeners : {
                     scope : this,
                     rowselect : function (selectionModel, rowIndex, record) {

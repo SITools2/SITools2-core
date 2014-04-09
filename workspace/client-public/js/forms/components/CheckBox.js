@@ -27,8 +27,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.CheckBox
  * @extends Ext.Container
  */
-sitools.common.forms.components.CheckBox = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.MultipleSelection.CheckBox = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.CheckBox', {
+    extend : 'Ext.Container',
 
     initComponent : function () {
 		this.context = new sitools.common.forms.ComponentFactory(this.context);

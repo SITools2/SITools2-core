@@ -60,7 +60,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
         });
 
         this.smSelectPredicat = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.gridSelectPredicat = new Ext.grid.GridPanel({

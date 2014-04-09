@@ -91,7 +91,7 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', {
         });
 
         this.smColumns = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.gridColumns = Ext.create('Ext.grid.Panel', {

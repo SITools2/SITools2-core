@@ -35,7 +35,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
     id : ID.BOX.ROLE,
     forceFit : true,
     selModel : Ext.create('Ext.selection.RowModel',{
-        singleSelect : true
+        mode : 'SINGLE'
     }),
     pageSize : 10,
 

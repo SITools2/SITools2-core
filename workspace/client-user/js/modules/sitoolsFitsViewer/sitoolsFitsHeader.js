@@ -42,7 +42,7 @@ sitools.user.modules.sitoolsFitsHeader = Ext.extend(Ext.grid.GridPanel, {
         });
         
         this.selModel = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
         
         this.viewConfig = {

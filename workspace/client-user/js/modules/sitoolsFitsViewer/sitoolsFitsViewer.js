@@ -160,7 +160,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
            region : 'center',
            name : 'canvasPanel',
            autoScroll : true,
-           bodyCssClass : 'canvas-background',
+           bodyCls : 'canvas-background',
            padding : '10px 15px 10px 10px',
            html : '<canvas class="shadow-canvas" style="float:left;" id="FITSimage"></canvas>'
         });
@@ -187,7 +187,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
         this.processingWindow = new Ext.Window({
             title : 'Histogram',
             padding : '30px',
-            bodyCssClass : 'histogram-background',
+            bodyCls : 'histogram-background',
             autoWidth : true,
             autoHeight : true,
             closable : false,

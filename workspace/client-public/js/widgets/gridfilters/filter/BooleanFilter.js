@@ -43,7 +43,8 @@ var filters = new Ext.ux.grid.GridFilters({
 });
  * </code></pre>
  */
-Ext.ux.grid.filter.BooleanFilter = Ext.extend(Ext.ux.grid.filter.Filter, {
+Ext.define('Ext.ux.grid.filter.BooleanFilter', {
+    extend : 'Ext.ux.grid.filter.Filter',
 	/**
 	 * @cfg {Boolean} defaultValue
 	 * Set this to null if you do not want either option to be checked by default. Defaults to false.

@@ -91,7 +91,7 @@ sitools.widget.rss2FeedReader = function (config) {
             msg : i18n.get("label.loadingFeed")
         },
         sm : Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         }),
         autoExpandColumn : 'title',
         hideHeaders : true,
@@ -109,9 +109,8 @@ sitools.widget.rss2FeedReader = function (config) {
     // this.on('beforeShow',this.loadData);
 };
 
-Ext.extend(sitools.widget.rss2FeedReader, Ext.grid.GridPanel, {
-
-   
+Ext.define('sitools.widget.rss2FeedReader', {
+    extend : 'Ext.grid.Panel',
     loadData : function () {
         this.loadFeed('http://feeds.feedburner.com/extblog');
         this.doLayout();

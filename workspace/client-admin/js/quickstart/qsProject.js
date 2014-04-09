@@ -27,7 +27,7 @@ Ext.define('sitools.admin.quickStart.qsProject', { extend : 'Ext.panel.Panel',
         align : 'center',
         pack : 'start'
     },
-    bodyCssClass : 'quickStart',
+    bodyCls : 'quickStart',
     initComponent : function () {
         
         var title = new Ext.form.Label({
@@ -65,7 +65,7 @@ Ext.define('sitools.admin.quickStart.qsProject', { extend : 'Ext.panel.Panel',
                     Ext.get("qs-projet").on('load', function () {
                         
                         img.getEl().fadeIn({
-                            endOpacity: 1,
+                            opacity: 1,
                             easing : 'easeIn',
                             duration: 1,
                             useDisplay : true
@@ -81,7 +81,7 @@ Ext.define('sitools.admin.quickStart.qsProject', { extend : 'Ext.panel.Panel',
                                 scope : this,
                                 render : function (imgProjet) {
                                     imgProjet.getEl().fadeIn({
-                                        endOpacity: 1,
+                                        opacity: 1,
                                         easing : 'easeIn',
                                         duration: 1.5,
                                         useDisplay : true

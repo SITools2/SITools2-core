@@ -73,7 +73,7 @@ sitools.user.modules.serverApplicationManager = function (config) {
         loadMask : true,
         autoExpandColumn : 'url',
         sm : Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         }),
         columns : [ {
             header : i18n.get('label.name'),

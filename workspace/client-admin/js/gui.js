@@ -51,34 +51,42 @@ function showHelp(helpUrl) {
     }
     var winHelp = Ext.getCmp(ID.WIN.HELP);
     if (!winHelp) {
-        var helpPanel = new Ext.ux.ManagedIFrame.Panel({
+        
+        var helpPanel = Ext.create('Ext.container.Container', {
             id : ID.WIN.HELP,
             layout : 'fit',
-            // autoScroll:true,
             defaultSrc : helpUrl,
+            items : [{
+                xtype : 'component',
+                autoEl: {
+                    tag: 'iframe',
+                    border : false,
+                    src: helpUrl
+                }
+            }],
             defaults : {
                 padding : 10
             }
         });
-        // helpPanel.setSrc(helpUrl);
 
         winHelp = new Ext.Window({
             title : i18n.get('label.help'),
             width : DEFAULT_HELP_WIDTH,
-            autoScroll : true,
+//            autoScroll : true,
             modal : true,
             id : 'winHelpId',
             height : DEFAULT_HELP_HEIGHT,
+            layout : 'fit',
             items : [ helpPanel ],
-            buttons : [ {
+            buttons : [{
                 text : 'close',
                 handler : function () {
                     this.ownerCt.ownerCt.close();
                 }
-            } ],
+            }],
             listeners : {
                 resize : function (win, width, height) {
-                    this.findById(ID.WIN.HELP).setHeight(height - 65);
+                    //this.findById(ID.WIN.HELP).setHeight(height - 65);
                 }
             }
         });
@@ -236,7 +244,7 @@ var clientAdmin = {
                         name : 'containerPanel',
                         width : "100%",
                         layout : 'fit',
-                        bodyCssClass : 'admin-bg',
+                        bodyCls : 'admin-bg',
                         border : false,
                         bodyBorder : false,
                         flex : 1
@@ -360,7 +368,7 @@ var clientAdmin = {
 		                main.getTopToolbar().show();
 		                var dataViewEl = dataViewWin.getEl();
 		                dataViewEl.fadeIn({
-						    endOpacity: 0.95, //can be any value between 0 and 1 (e.g. .5)
+						    opacity: 0.95, //can be any value between 0 and 1 (e.g. .5)
 						    easing: 'easeOut',
 						    duration: 0.5
 						});
@@ -420,7 +428,7 @@ var clientAdmin = {
                 name : 'containerPanel',
 //                width : "100%",
                 layout : 'fit',
-                bodyCssClass : 'admin-bg',
+                bodyCls : 'admin-bg',
                 autoScroll : false,
                 border : false,
                 flex : 1,
@@ -453,7 +461,7 @@ var clientAdmin = {
         }
         
 	    mainPanel = new Ext.Panel({
-	        bodyCssClass : 'admin-bg',
+	        bodyCls : 'admin-bg',
 	        header : {
                 cls : 'x-toolbar-shadow',
 	        },

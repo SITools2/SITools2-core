@@ -12,7 +12,8 @@
  * It will fire events and set defaults, deferring the actual reordering to a doReorder implementation.
  * See Ext.ux.TabReorderer for an example.
  */
-Ext.ux.Reorderer = Ext.extend(Object, {
+Ext.define('Ext.ux.Reorderer', {
+    extend : 'Object',
     /**
      * @property defaults
      * @type Object
@@ -249,7 +250,8 @@ Ext.ux.Reorderer = Ext.extend(Object, {
  * @extends Ext.ux.Reorderer
  * Description
  */
-Ext.ux.HBoxReorderer = Ext.extend(Ext.ux.Reorderer, {
+Ext.define('Ext.ux.HBoxReorderer', {
+    extend : 'Ext.ux.Reorderer',
     /**
      * Initializes the plugin, decorates the container with additional functionality
      */

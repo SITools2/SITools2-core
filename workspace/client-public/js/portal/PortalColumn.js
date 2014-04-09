@@ -23,7 +23,8 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-Ext.ux.PortalColumn = Ext.extend(Ext.Container, {
+Ext.define('Ext.ux.PortalColumn', {
+    extend : 'Ext.Container',
 	alias : 'widget.portalcolumn',
     // layout : 'anchor',
     // autoEl : 'div',//already defined by Ext.Component

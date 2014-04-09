@@ -3,7 +3,8 @@
  * @class Ext.SitoolsDatePicker
  * @extends Ext.BoxComponent
  */
-Ext.SitoolsDatePicker = Ext.extend(Ext.BoxComponent, {
+Ext.define('Ext.SitoolsDatePicker', {
+    extend : 'Ext.Component',
     alias : 'widget.datepicker',
     todayText : 'Today',
     /**

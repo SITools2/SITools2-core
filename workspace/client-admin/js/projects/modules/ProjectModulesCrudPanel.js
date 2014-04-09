@@ -35,7 +35,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.PROJECTMODULE,
     selModel : Ext.create('Ext.selection.RowModel',{
-        singleSelect : true
+        mode : 'SINGLE'
     }),
     pageSize : 10,
     forceFit : true,
@@ -43,13 +43,12 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
     initComponent : function () {
         // url = '/sitools/projectModules'
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_MODULES_URL');
+        
         this.store = new Ext.data.JsonStore({
             root : 'data',
-            restful : true,
             remoteSort : true,
-            autoSave : false,
             url : this.url,
-            idProperty : null,
+//            idProperty : null,
             fields : [ {
                 name : 'id',
                 type : 'string'

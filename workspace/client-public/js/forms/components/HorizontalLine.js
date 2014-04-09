@@ -24,8 +24,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.Hl
  * @extends Ext.Container
  */
-sitools.common.forms.components.Hl = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.noSelection.Hl = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.Hl', {
+    extend : 'Ext.Container',
 
     initComponent : function () {
 	    Ext.apply(this, {

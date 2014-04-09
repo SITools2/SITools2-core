@@ -88,7 +88,7 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
         });
         
         this.selModel = Ext.create('Ext.selection.RowModel', {
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.columns = [{

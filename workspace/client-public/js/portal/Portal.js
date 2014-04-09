@@ -23,7 +23,8 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-Ext.ux.Portal = Ext.extend(Ext.Panel, {
+Ext.define('Ext.ux.Portal', {
+    extend : 'Ext.Panel',
 	alias : 'widget.portal',
     layout : 'column',
     autoScroll : true,
@@ -57,7 +58,8 @@ Ext.ux.Portal = Ext.extend(Ext.Panel, {
 
 
 
-Ext.ux.Portal.DropZone = Ext.extend(Ext.dd.DropTarget, {
+Ext.define('Ext.ux.Portal.DropZone', {
+    extend : 'Ext.dd.DropTarget',
 
     constructor : function (portal, cfg) {
 	    this.portal = portal;

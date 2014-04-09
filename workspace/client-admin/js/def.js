@@ -92,7 +92,8 @@ var onBeforeRequest = function (conn, options) {
 		}
 		else {
 		    if (!Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
-		        Ext.util.Cookies.set('hashCode', Ext.util.Cookies.get('hashCode'), date.add(Date.MINUTE, COOKIE_DURATION));
+		        date.setMinutes(date.getMinutes() + COOKIE_DURATION);
+		        Ext.util.Cookies.set('hashCode', Ext.util.Cookies.get('hashCode'), date);
 		        Ext.apply(Ext.Ajax.defaultHeaders, {
 					Authorization : Ext.util.Cookies.get('hashCode')
 		        });
@@ -102,22 +103,20 @@ var onBeforeRequest = function (conn, options) {
 		}
     }
     if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-        var expireDate = date.add(Date.MINUTE, COOKIE_DURATION);
-        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), expireDate);
+        date.setMinutes(date.getMinutes() + COOKIE_DURATION);
+        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), date);
         
         taskCheckSessionExpired.cancel();
         taskCheckSessionExpired.delay(COOKIE_DURATION * 1000 * 60);
         
         //use localstorage to store sessionsTime out
-        localStorage.setItem("userSessionTimeOut", expireDate.format(SITOOLS_DATE_FORMAT));
+        localStorage.setItem("userSessionTimeOut", Ext.util.Format.date(date, SITOOLS_DATE_FORMAT));
         Ext.EventManager.un(window, "storage");
         Ext.EventManager.on(window, "storage", function() {
             if (Ext.isEmpty(localStorage.getItem("userSessionTimeOut"))) {
                 checkSessionExpired();                
             }
         });
-        
-        
     }
 };
 
@@ -521,9 +520,9 @@ function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
             // if not : include the Js Script
             var DSLScript = document.createElement("script");
             DSLScript.type = "text/javascript";
-            DSLScript.onload = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
-            DSLScript.onreadystatechange = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
-            DSLScript.onerror = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.onload = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.onreadystatechange = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.onerror = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
             DSLScript.src = url;
 
             var headID = document.getElementsByTagName('head')[0];

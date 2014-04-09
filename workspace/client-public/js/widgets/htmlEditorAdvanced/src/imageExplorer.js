@@ -79,7 +79,7 @@ ImageExplorer.prototype = {
 				tpl: this.thumbTemplate,
 				id : 'imageChooserDataViewId', 
 				singleSelect: true,
-				overClass:'x-view-over',
+				overItemCls:'x-view-over',
 				itemSelector: 'div.thumb-wrap',
 				emptyText : '<div style="padding:10px;">No images match the specified filter</div>',
 				store: this.store,

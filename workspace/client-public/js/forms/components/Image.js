@@ -24,8 +24,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.Image
  * @extends Ext.Container
  */
-sitools.common.forms.components.Image = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.noSelection.Image = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.Image', {
+    extend : 'Ext.Container',
 
     initComponent : function () {
         Ext.apply(this, {

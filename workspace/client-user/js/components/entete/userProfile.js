@@ -108,7 +108,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 	        autoHeight : true,
 	        width : this.userPublic ? 100 : this.width, 
 	        multiSelect: true,
-	        overClass: 'x-view-over',
+	        overItemCls: 'x-view-over',
 	        overCls : 'userButtonsPointer',
 	        emptyText: 'No images to display', 
 	        itemSelector: 'div.userButtons',

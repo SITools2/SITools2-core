@@ -27,8 +27,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.TextField
  * @extends Ext.Container
  */
-sitools.common.forms.components.TextField = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.SingleSelection.TextField = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.TextField', {
+    extend : 'Ext.Container',
 
     initComponent : function () {
         this.context = new sitools.common.forms.ComponentFactory(this.context);

@@ -377,7 +377,8 @@ Ext.ux.form.MultiSelect.DragZone = function(ms, config) {
     this.setDraggable(ddGroup);
 };
 
-Ext.extend(Ext.ux.form.MultiSelect.DragZone, Ext.dd.DragZone, {
+Ext.define('Ext.ux.form.MultiSelect.DragZone', {
+    extend : 'Ext.dd.DragZone',
     onInitDrag : function(x, y){
         var el = Ext.get(this.dragData.ddel.cloneNode(true));
         this.proxy.update(el.dom);
@@ -472,7 +473,8 @@ Ext.ux.form.MultiSelect.DropZone = function(ms, config){
     this.setDroppable(ddGroup);
 };
 
-Ext.extend(Ext.ux.form.MultiSelect.DropZone, Ext.dd.DropZone, {
+Ext.define('Ext.ux.form.MultiSelect.DropZone', {
+    extend : 'Ext.dd.DropZone',
     /**
      * Part of the Ext.dd.DropZone interface. If no target node is found, the
      * whole Element becomes the target, and this causes the drop gesture to append.

@@ -20,7 +20,8 @@ Ext.namespace('sitools.userProfile');
 /*
  * config { url + handler }
  */
-sitools.userProfile.resetPasswordPanel = Ext.extend(Ext.Panel, {
+Ext.define('sitools.userProfile.resetPasswordPanel', {
+    extend : 'Ext.Panel',
 	padding : "10px 10px 0px 60px",
 	frame : true,
 	layout : "fit", 

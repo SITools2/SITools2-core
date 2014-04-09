@@ -137,7 +137,8 @@ store.load({params: {start: 0, limit: 15}});
 grid.filters
  * </code></pre>
  */
-Ext.ux.grid.GridFilters = Ext.extend(Ext.util.Observable, {
+Ext.define('Ext.ux.grid.GridFilters' {
+    extend : 'Ext.util.Observable',
     /**
      * @cfg {Boolean} autoReload
      * Defaults to true, reloading the datasource when a filter change happens.
@@ -768,7 +769,8 @@ Ext.preg('gridfilters', Ext.ux.grid.GridFilters);
  * @class Ext.ux.grid.GridFiltersSpe
  * @extends Ext.ux.grid.GridFilters
  */
-Ext.ux.grid.GridFiltersSpe = Ext.extend(Ext.ux.grid.GridFilters, {
+Ext.define('Ext.ux.grid.GridFiltersSpe', {
+    extend : 'Ext.ux.grid.GridFilters',
     /**
      * Returns an Array of the currently active filters.
      * @return {Array} filters Array of the currently active filters.

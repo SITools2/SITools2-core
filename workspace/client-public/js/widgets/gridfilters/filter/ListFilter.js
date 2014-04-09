@@ -46,7 +46,8 @@ var filters = new Ext.ux.grid.GridFilters({
  * </code></pre>
  * 
  */
-Ext.ux.grid.filter.ListFilter = Ext.extend(Ext.ux.grid.filter.Filter, {
+Ext.define('Ext.ux.grid.filter.ListFilter', {
+    extend : 'Ext.ux.grid.filter.Filter',
 
     /**
      * @cfg {Array} options

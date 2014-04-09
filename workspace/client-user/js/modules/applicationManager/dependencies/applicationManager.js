@@ -181,7 +181,7 @@ sitools.user.modules.applicationManager.dependencies.applicationManager = functi
         delAppHandler : delAppHandler,
         
         sm : Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         })
 
     }, config));

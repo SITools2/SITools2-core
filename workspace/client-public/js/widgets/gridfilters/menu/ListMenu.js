@@ -31,7 +31,8 @@ Ext.namespace('Ext.ux.menu');
  * Although not listed as configuration options for this class, this class
  * also accepts all configuration options from {@link Ext.ux.grid.filter.ListFilter}.
  */
-Ext.ux.menu.ListMenu = Ext.extend(Ext.menu.Menu, {
+Ext.define('Ext.ux.menu.ListMenu', {
+    extend : 'Ext.menu.Menu',
     /**
      * @cfg {String} labelField
      * Defaults to 'text'.

@@ -440,10 +440,10 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             height : 350,
             region : 'center',
             store : this.store,
-            singleSelect : true,
+            mode : 'SINGLE',
             tpl : this.tpl,
             selectedClass : "datastorageSelectionClass",
-//            overClass:'x-view-over-ds',
+//            overItemCls:'x-view-over-ds',
             itemSelector : 'div.dv-datastorage-wrap',
             emptyText : i18n.get('label.nothingToDisplay'),
             listeners : {

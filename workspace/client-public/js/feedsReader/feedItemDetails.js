@@ -23,10 +23,10 @@ Ext.namespace('sitools.widget');
  * @param urlFeed :
  *            The feed URL
  */
-sitools.widget.feedItemDetails = Ext.extend(Ext.Panel, {
+Ext.define('sitools.widget.feedItemDetails', {
+    extend : 'Ext.Panel',
 
     initComponent : function () {
-
         this.layout = "fit";
 
         var record = this.record;

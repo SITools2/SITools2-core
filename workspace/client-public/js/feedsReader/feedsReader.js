@@ -107,7 +107,8 @@ sitools.widget.FeedGridFlux = function (config) {
     sitools.widget.FeedGridFlux.superclass.constructor.call(this);
 };
 
-Ext.extend(sitools.widget.FeedGridFlux, Ext.Panel, {
+Ext.define('sitools.widget.FeedGridFlux', {
+    extend : 'Ext.Panel',
 	alias : 'widget.appfeedgridflux',
     componentType : "feeds",
     _getSettings : function () {

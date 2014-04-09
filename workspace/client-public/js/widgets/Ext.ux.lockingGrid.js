@@ -30,7 +30,8 @@
  */
 Ext.ns('Ext.ux.grid');
 
-Ext.ux.grid.LockingGridView = Ext.extend(Ext.grid.GridView, {
+Ext.define('Ext.ux.grid.LockingGridView', {
+    extend : 'Ext.grid.GridView',
     lockText : 'Lock',
     unlockText : 'Unlock',
     rowBorderWidth : 1,
@@ -873,7 +874,8 @@ Ext.ux.grid.LockingGridView = Ext.extend(Ext.grid.GridView, {
     }
 });
 
-Ext.ux.grid.LockingColumnModel = Ext.extend(Ext.grid.ColumnModel, {
+Ext.define('Ext.ux.grid.LockingColumnModel', {
+    extend : 'Ext.grid.ColumnModel',
 	isHelp : function (colIndex) {
 		return Ext.isEmpty (this.config[colIndex].helpUrl);
 	}, 

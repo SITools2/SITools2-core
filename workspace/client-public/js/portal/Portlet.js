@@ -23,7 +23,8 @@
  * http://www.extjs.com/license
  */
 /*global Ext, sitools*/
-Ext.ux.Portlet = Ext.extend(Ext.Panel, {
+Ext.define('Ext.ux.Portlet', {
+    extend : 'Ext.Panel',
 	alias : 'widget.portlet',
     anchor : '100%',
     frame : true,

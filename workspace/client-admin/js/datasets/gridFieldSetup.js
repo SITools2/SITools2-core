@@ -110,7 +110,6 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             forceSelection : true,
             selectOnFocus : true,
             dataIndex : 'orderBy',
-            lazyRender : true,
             valueField : 'value',
             displayField : 'display',
             width : 65,
@@ -282,7 +281,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             }];
 
         var smColumn = Ext.create('Ext.selection.RowModel', {
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         var menuActions = new Ext.menu.Menu({
@@ -580,7 +579,3 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         };
     }
 });
-
-//Ext.extend(sitools.admin.datasets.gridFieldSetup, Ext.ux.grid.LockingEditorGridPanel, {
-//    
-//});

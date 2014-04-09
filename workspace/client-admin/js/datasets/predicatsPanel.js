@@ -78,7 +78,6 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             id : "comboOlEditor", 
             typeAhead : false,
             triggerAction : 'all',
-            lazyRender : true,
             mode : 'local',
             store : new Ext.data.ArrayStore({
                 id : 0,
@@ -94,7 +93,6 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             id : "comboOpEditor", 
             typeAhead : false,
             triggerAction : 'all',
-            lazyRender : true,
             mode : 'local',
             store : new Ext.data.ArrayStore({
                 id : 0,

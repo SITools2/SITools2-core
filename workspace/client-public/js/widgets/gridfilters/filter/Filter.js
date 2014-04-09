@@ -29,7 +29,8 @@ Ext.namespace('Ext.ux.grid.filter');
  * @extends Ext.util.Observable
  * Abstract base class for filter implementations.
  */
-Ext.ux.grid.filter.Filter = Ext.extend(Ext.util.Observable, {
+Ext.define('Ext.ux.grid.filter.Filter', {
+    extend : 'Ext.util.Observable',
     /**
      * @cfg {Boolean} active
      * Indicates the initial status of the filter (defaults to false).

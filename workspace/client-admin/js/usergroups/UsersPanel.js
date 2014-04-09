@@ -173,7 +173,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
     _onDelete : function () {
         var rec = this.grid.getSelectionModel().getSelected();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
         this.store.remove(rec);
     },

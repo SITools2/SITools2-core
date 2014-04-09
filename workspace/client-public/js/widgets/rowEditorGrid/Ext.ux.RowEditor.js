@@ -33,7 +33,8 @@ Ext.ns('Ext.ux.grid');
  *
  * @ptype roweditor
  */
-Ext.ux.grid.RowEditor = Ext.extend(Ext.Panel, {
+Ext.define('Ext.ux.grid.RowEditor', {
+    extend : 'Ext.Panel',
     floating: true,
     shadow: false,
     layout: 'hbox',

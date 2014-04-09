@@ -89,7 +89,7 @@ Ext.define('sitools.user.modules.datasetExplorerDataView', {
             id : "datasetDataView",
             region : 'center',
             itemSelector : 'li.dataset',
-	        singleSelect : true,
+	        mode : 'SINGLE',
 	        multiSelect : false,
 	        autoScroll : true,
 	        tpl : new Ext.XTemplate(

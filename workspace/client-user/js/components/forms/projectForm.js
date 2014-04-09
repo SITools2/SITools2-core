@@ -198,7 +198,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
         });
         
         var smDatasets = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
         
         /**

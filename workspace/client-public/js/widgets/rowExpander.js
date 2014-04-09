@@ -39,7 +39,6 @@ Ext.define('Ext.ux.grid.RowExpander', {
     menuDisabled : true,
     dataIndex : '',
     id : 'expander',
-    lazyRender : true,
     enableCaching : true,
 
     constructor: function (config) {
@@ -100,7 +99,7 @@ Ext.define('Ext.ux.grid.RowExpander', {
     getRowClass : function (record, rowIndex, p, ds) {
         p.cols = p.cols - 1;
         var content = this.bodyContent[record.id];
-        if (!content && !this.lazyRender) {
+        if (!content) {
             content = this.getBodyContent(record, rowIndex);
         }
         if (content) {
@@ -194,7 +193,7 @@ Ext.define('Ext.ux.grid.RowExpander', {
 
     beforeExpand : function (record, body, rowIndex) {
 		if (this.fireEvent('beforeexpand', this, record, body, rowIndex) !== false) {
-			if (this.tpl && this.lazyRender) {
+			if (this.tpl) {
 				body.innerHTML = this.getBodyContent(record, rowIndex);
 			}
 			return true;

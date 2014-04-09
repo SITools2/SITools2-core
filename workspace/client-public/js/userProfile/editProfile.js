@@ -20,7 +20,8 @@ Ext.namespace('sitools.userProfile');
 /*
  * config { url + handler }
  */
-sitools.userProfile.editProfile = Ext.extend(Ext.Panel, {
+Ext.define('sitools.userProfile.editProfile', {
+    extend : 'Ext.Panel',
 //    id : 'winEditProfile',
 //    layout : 'hbox',
 //    width : 420,
@@ -58,7 +59,7 @@ sitools.userProfile.editProfile = Ext.extend(Ext.Panel, {
             autoLoad : false
         });
         var smProperties = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         var cmProperties = new Ext.grid.ColumnModel({

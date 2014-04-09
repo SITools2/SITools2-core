@@ -27,8 +27,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.DateBetween
  * @extends Ext.Container
  */
-sitools.common.forms.components.DateBetween = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.SingleSelection.DateBetween = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.DateBetween', {
+    extend : 'Ext.Container',
     regToday : new RegExp("^\{\\$TODAY\}"), 
     initComponent : function () {
         this.context = new sitools.common.forms.ComponentFactory(this.context);

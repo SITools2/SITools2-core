@@ -70,7 +70,7 @@ Ext.define('sitools.admin.datasets.unitWin', {
         });
 
         this.smUnits = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.gridUnits = new Ext.grid.GridPanel({
@@ -107,7 +107,7 @@ Ext.define('sitools.admin.datasets.unitWin', {
         });
 
         this.smDimensions = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.gridDimensions = new Ext.grid.GridPanel({

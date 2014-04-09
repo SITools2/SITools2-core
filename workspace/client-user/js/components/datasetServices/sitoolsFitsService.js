@@ -29,7 +29,7 @@ Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
     alias : 'sitools.user.component.dataviews.services.sitoolsFitsService',
     initComponent : function () {
 
-        this.bodyCssClass = 'canvas-background';
+        this.bodyCls = 'canvas-background';
         this.urlFits = this.record.data.fits;
         this.autoScroll = true;
         this.layout = 'fit';
@@ -193,7 +193,7 @@ Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
 //           region : 'center',
            name : 'canvasPanel',
            autoScroll : true,
-           bodyCssClass : 'canvas-background',
+           bodyCls : 'canvas-background',
            padding : '10px 15px 10px 10px',
            html : '<canvas class="shadow-canvas" style="float:left;" id="' + this.idFitsImage + '"></canvas>'
         });
@@ -598,7 +598,7 @@ sitools.user.component.dataviews.services.sitoolsFitsService.executeAsService = 
     var windowConfig = {
         layout : 'fit',
         title : i18n.get('label.fitsViewer'),
-        bodyCssClass : 'canvas-background',
+        bodyCls : 'canvas-background',
         iconCls : 'fitsService',
         autoScroll : true,
         saveToolbar : true,

@@ -35,7 +35,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
     height : 300,
     id : ID.BOX.GROUP,
     selModel : Ext.create('Ext.selection.RowModel',{
-        singleSelect : true
+        mode : 'SINGLE'
     }),
     pageSize : 10,
     forceFit : true,

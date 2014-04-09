@@ -38,7 +38,8 @@ Ext.define('Ext.ux.grid.LockingGridPanel', {
 	}
 });
 
-Ext.ux.grid.LockingEditorGridPanel = Ext.extend(Ext.grid.EditorGridPanel, {
+Ext.define('Ext.ux.grid.LockingEditorGridPanel', {
+    extend : 'Ext.grid.Panel',
 	initComponent : function(){
 		if(!this.cm && !this.colModel && Ext.isArray(this.columns)){
 			this.colModel = new Ext.ux.grid.LockingColumnModel(this.columns);
@@ -933,10 +934,11 @@ Ext.define('Ext.ux.grid.LockingGridView', {
 });
 
 
-Ext.ux.grid.LockingColumnModel = Ext.extend(Ext.grid.ColumnModel, {
+Ext.define('Ext.ux.grid.LockingColumnModel', {
+    extend : 'Ext.grid.ColumnModel',
 	isHelp : function (colIndex) {
 		return Ext.isEmpty (this.config[colIndex].helpUrl);
-	}, 
+	},
 	showHelp : function (colIndex) {
 		showHelp (this.config[colIndex].helpUrl);
 	}, 

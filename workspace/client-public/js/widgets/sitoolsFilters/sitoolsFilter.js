@@ -6,7 +6,8 @@
 
 Ext.ns("sitools.widget");
 
-sitools.widget.Filter = Ext.extend(Ext.Container, {
+Ext.define('sitools.widget.Filter', {
+    extend : 'Ext.Container',
     /**
      * @cfg {String} columnAlias 
      * The {@link Ext.data.Store} columnAlias of the field this filter represents.

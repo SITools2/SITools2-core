@@ -29,7 +29,8 @@ Ext.namespace('sitools.user.modules');
  * @extends Ext.ux.tree.TreeGrid
  * @requires sitools.user.component.columnsDefinition
  */
-sitools.user.modules.projectGraphTree = Ext.extend(Ext.ux.tree.TreeGrid, {
+Ext.define('sitools.user.modules.projectGraphTree', {
+    extend : 'Ext.tree.Panel',
 	alias : 'sitools.user.modules.projectGraphTree',
     enableHdMenu : false,
     enableSort : false,
@@ -40,6 +41,7 @@ sitools.user.modules.projectGraphTree = Ext.extend(Ext.ux.tree.TreeGrid, {
     animate : true,
     columnResize : false,
     headerEllipsisSize : 12,
+    
     initComponent : function () {
         this.columns = [ {
             dataIndex : 'text',

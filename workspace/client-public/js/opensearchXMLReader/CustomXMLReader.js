@@ -30,7 +30,8 @@ sitools.component.users.datasets.XmlReader = function (meta, recordType) {
 
     sitools.component.users.datasets.XmlReader.superclass.constructor.call(this, meta, recordType || meta.fields);
 };
-Ext.extend(sitools.component.users.datasets.XmlReader, Ext.data.XmlReader, {
+Ext.define('sitools.component.users.datasets.XmlReader', {
+    extend : 'Ext.data.XmlReader',
 
     /**
      * Creates a function to return some particular key of data from a response.
@@ -68,5 +69,4 @@ Ext.extend(sitools.component.users.datasets.XmlReader, Ext.data.XmlReader, {
             }
         };
     }()
-
 });

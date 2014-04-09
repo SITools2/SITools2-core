@@ -26,7 +26,8 @@ Ext.ns('sitools.widget');
  * false to keep the image size with scrollbars if needed. Default to false
  * @extends Ext.Window
  */
-sitools.widget.WindowImageViewer = Ext.extend(Ext.Window, {
+Ext.define('sitools.widget.WindowImageViewer', {
+    extend : 'Ext.Window',
     resizeImage : false, 
     maximizable : true, 
     modal : true, 
@@ -141,7 +142,8 @@ sitools.widget.WindowImageViewer = Ext.extend(Ext.Window, {
  * @class sitools.widget.WindowImageViewer
  * @extends Ext.Window
  */
-sitools.widget.PanelImageViewer = Ext.extend(Ext.Panel, {
+Ext.define('sitools.widget.PanelImageViewer', {
+    extend : 'Ext.Panel',
 
     initComponent : function () {
         this.bodyCfg = {

@@ -44,7 +44,8 @@ var filters = new Ext.ux.grid.GridFilters({
 });
  * </code></pre>
  */
-Ext.ux.grid.filter.StringFilter = Ext.extend(Ext.ux.grid.filter.Filter, {
+Ext.define('Ext.ux.grid.filter.StringFilter', {
+    extend : 'Ext.ux.grid.filter.Filter',
 
     /**
      * @cfg {String} iconCls

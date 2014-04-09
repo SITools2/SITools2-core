@@ -52,7 +52,8 @@ this.startMenu.addTool({
 
 Ext.namespace("Ext.ux");
 
-Ext.ux.StartMenu = Ext.extend(Ext.menu.Menu, {
+Ext.define('Ext.ux.StartMenu', {
+    extend : 'Ext.menu.Menu',
     initComponent : function (config) {
 	    Ext.ux.StartMenu.superclass.initComponent.call(this, config);
 

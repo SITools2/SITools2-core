@@ -96,9 +96,9 @@ Ext.define('sitools.user.component.viewDataDetail', {
 	            }),
 	        cls : 'linkImageDataView',
 	        itemSelector : 'li.img-link',
-	        overClass : 'nodes-hover',
+	        overItemCls : 'nodes-hover',
             selectedClass : '',
-	        singleSelect : true,
+	        mode : 'SINGLE',
 	        multiSelect : false,
 	        autoScroll : true,
 	        listeners : {

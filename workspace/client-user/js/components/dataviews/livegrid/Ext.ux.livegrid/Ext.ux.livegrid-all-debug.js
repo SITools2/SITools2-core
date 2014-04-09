@@ -3712,7 +3712,7 @@ Ext.namespace('Ext.ux.grid.livegrid');
  * @author Thorsten Suckow-Homberg <ts@siteartwork.de>
  */
 Ext.define('Ext.ux.grid.livegrid.EditorGridPanel', {
-    extend : 'Ext.grid.EditorGridPanel',
+    extend : 'Ext.grid.Panel',
 
     /**
      * Overriden so the panel listens to the "cursormove" event for cancelling

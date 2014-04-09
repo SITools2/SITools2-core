@@ -48,7 +48,6 @@ Ext.define('sitools.userProfile.Login', {
             triggerAction : 'all',
             forceSelection : true,
             allowBlank : false,
-            lazyRender : true,
             mode : 'local',
             store : new Ext.data.ArrayStore({
                 id : 0,
@@ -202,9 +201,10 @@ Ext.define('sitools.userProfile.Login', {
                         });
                         var A1 = auth.getA1();
 
+                        date.setMinutes(date.getMinutes() + 1);
                         // stockage en cookie du mode d'authorization
                         Ext.util.Cookies.set('A1', A1);
-                        Ext.util.Cookies.set('userLogin', auth.usr, date.add(Date.MINUTE, 1));
+                        Ext.util.Cookies.set('userLogin', auth.usr, date);
                         Ext.util.Cookies.set('scheme', Json.data.scheme);
                         Ext.util.Cookies.set('algorithm', Json.data.algorithm);
                         Ext.util.Cookies.set('realm', auth.realm);
@@ -217,10 +217,11 @@ Ext.define('sitools.userProfile.Login', {
                         var hash = Base64.encode(tok);
                         var auth = 'Basic ' + hash;
 
+                        date.setMinutes(date.getMinutes() + 1);
                         // stockage en cookie du mode d'authorization
-                        Ext.util.Cookies.set('userLogin', usr, date.add(Date.MINUTE, 1));
+                        Ext.util.Cookies.set('userLogin', usr, date);
                         Ext.util.Cookies.set('scheme', Json.data.scheme);
-                        Ext.util.Cookies.set('hashCode', auth, date.add(Date.MINUTE, 1));
+                        Ext.util.Cookies.set('hashCode', auth, date);
                     }
                 }
 

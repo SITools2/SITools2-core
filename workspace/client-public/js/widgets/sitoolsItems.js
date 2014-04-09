@@ -33,13 +33,13 @@ Ext.define('sitools.widget.Box', {
     cls : 'x-box-blue module-root centering',
     _title : '',
 
-    constructor : function (cfg) {
-
-	    sitools.widget.Box.superclass.constructor.call(this, Ext.apply({
-	        _title : cfg.label,
-	        _idItem : cfg.idItem
-	    }, cfg));
-    },
+//    constructor : function (cfg) {
+//
+//	    sitools.widget.Box.superclass.constructor.call(this, Ext.apply({
+//	        _title : cfg.label,
+//	        _idItem : cfg.idItem
+//	    }, cfg));
+//    },
 
     initComponent : function () {
 	    this.items.unshift({
@@ -58,7 +58,8 @@ Ext.define('sitools.widget.Box', {
  * @class sitools.widget.JsonStore
  * @extends Ext.data.JsonStore
  */
-sitools.widget.JsonStore = Ext.extend(Ext.data.JsonStore, {
+Ext.define('sitools.widget.JsonStore', { 
+    extend : 'Ext.data.JsonStore',
     /**
      * dirty : true if one record have been added
      * @type Boolean
@@ -139,9 +140,10 @@ sitools.widget.templateTreeNode = function (attributes) {
 
 };
 
-Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
-
-});
+// DOES NOT EXIST ANYMORE !!!
+//Ext.extend(sitools.widget.templateTreeNode, Ext.tree.AsyncTreeNode, {
+//
+//});
 // add this new node to the list of nodes
 // TODO Ext.tree.Panel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
 //Ext.tree.Panel.nodeTypes.templateTreeNode = sitools.widget.templateTreeNode;
@@ -186,10 +188,10 @@ Ext.define('sitools.widget.GridSorterToolbar', {
  * @class sitools.admin.resourcesPlugins.violationRowExpander
  * @extends Ext.ux.grid.RowExpander
  */
-sitools.widget.ViolationRowExpander = Ext.extend(
-   Ext.ux.grid.RowExpander, {
+Ext.define('sitools.widget.ViolationRowExpander', {
+       extend : 'Ext.ux.grid.RowExpander',
 	   alias : 'sitools.widget.ViolationRowExpander',
-        getRowClass : function (record, index, rowParams, store) {
+       getRowClass : function (record, index, rowParams, store) {
             //call the method from the superclass
             var cls = sitools.widget.ViolationRowExpander.superclass.getRowClass.call(this,
                     record, index, rowParams, store);
@@ -213,44 +215,43 @@ sitools.widget.ViolationRowExpander = Ext.extend(
  * @class sitools.widget.colorField
  * @extends Ext.form.TriggerField
  */
-sitools.widget.colorField = Ext.extend(
-	Ext.form.TriggerField, {
-		onTriggerClick : function (e) {
-			var cp = new Ext.menu.ColorMenu({
-		        scope : this, 
-		        handler: function (cm, color) {
-		            this.setValue("#" + color);
-		            this.setFontColor("#" + color);
-                    this.fireEvent("select", this, color);
-		        }
-		    });
-		    cp.showAt(e.getXY());
+Ext.define('sitools.widget.colorField', {
+    extend : 'Ext.form.TriggerField',
+	onTriggerClick : function (e) {
+		var cp = new Ext.menu.ColorMenu({
+	        scope : this, 
+	        handler: function (cm, color) {
+	            this.setValue("#" + color);
+	            this.setFontColor("#" + color);
+                this.fireEvent("select", this, color);
+	        }
+	    });
+	    cp.showAt(e.getXY());
 
-		},
-		setFontColor : function (color) {
-	        var h2d = function (d) {
-				return parseInt(d, 16);
-			};
-			var value = [
-                h2d(color.slice(1, 3)),
-                h2d(color.slice(3, 5)),
-                h2d(color.slice(5))
-            ];
-	        var avg = (value[0] + value[1] + value[2]) / 3;
-		    this.el.setStyle({
-				'color' : (avg > 128) ? '#000' : '#FFF', 
-				'background-color' : color, 
-				'background-image' : "none"
-		    });
-            
-		}, 
-		listeners : {
-			afterrender : function (tf) {
-				tf.setFontColor(tf.getValue());
-			}
+	},
+	setFontColor : function (color) {
+        var h2d = function (d) {
+			return parseInt(d, 16);
+		};
+		var value = [
+            h2d(color.slice(1, 3)),
+            h2d(color.slice(3, 5)),
+            h2d(color.slice(5))
+        ];
+        var avg = (value[0] + value[1] + value[2]) / 3;
+	    this.el.setStyle({
+			'color' : (avg > 128) ? '#000' : '#FFF', 
+			'background-color' : color, 
+			'background-image' : "none"
+	    });
+        
+	}, 
+	listeners : {
+		afterrender : function (tf) {
+			tf.setFontColor(tf.getValue());
 		}
 	}
-)
+});
 
 Ext.define('sitools.widget.DateFieldWithToday', {
     extend : 'Ext.form.field.Date',

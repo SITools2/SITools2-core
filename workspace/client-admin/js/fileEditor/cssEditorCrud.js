@@ -32,7 +32,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
     height : 300,
     id : ID.BOX.FILEEDITORCSS,
     selModel : Ext.create('Ext.selection.RowModel',{
-        singleSelect : true
+        mode : 'SINGLE'
     }),
     pageSize : 15,
     forceFit : true,

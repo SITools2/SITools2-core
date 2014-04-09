@@ -176,7 +176,8 @@ sitools.widget.sitoolsEditorPlugins.datasetBrowser = function(config) {
 
 };
 
-Ext.extend(sitools.widget.sitoolsEditorPlugins.datasetBrowser, Ext.tree.TreePanel, {
+Ext.define('sitools.widget.sitoolsEditorPlugins.datasetBrowser', {
+        extend : 'Ext.tree.TreePanel',
 		alias : 'sitools.widget.sitoolsEditorPlugins.datasetBrowser',
 			_getSettings : function() {
 				return {

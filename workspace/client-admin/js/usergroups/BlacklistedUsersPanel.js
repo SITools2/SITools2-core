@@ -30,7 +30,6 @@ Ext.namespace('sitools.admin.usergroups');
  * @class sitools.admin.usergroups.UsersPanel
  * @extends Ext.Window
  */
-//sitools.component.usergroups.UsersPanel = Ext.extend(Ext.Window, {
 Ext.define('sitools.admin.usergroups.BlacklistedUsersPanel', {
     extend : 'Ext.window.Window',
     alias : 'widget.s-blacklistedusers',

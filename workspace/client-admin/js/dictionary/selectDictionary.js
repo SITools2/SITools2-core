@@ -56,7 +56,7 @@ Ext.define('sitools.component.dictionary.selectDictionary', {
         });
 
         this.smselectDictionary = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         this.gridselectDictionary = new Ext.grid.GridPanel({

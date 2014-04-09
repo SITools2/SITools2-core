@@ -16,7 +16,8 @@ Ext.ux.plugins.SliderRange = function(config) {
 };
  
 // plugin code
-Ext.extend(Ext.ux.plugins.SliderRange, Ext.util.Observable, {
+Ext.define('Ext.ux.plugins.SliderRange', {
+    extend : 'Ext.util.Observable',
     init:function(slider) {
         Ext.apply(slider, {
             onResize:slider.onResize.createSequence(function(ct, position) {

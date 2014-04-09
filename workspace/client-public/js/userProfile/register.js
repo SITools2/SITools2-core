@@ -27,7 +27,8 @@ Ext.namespace('sitools.userProfile');
  * @class sitools.userProfile.Register
  * @extends Ext.Window
  */
-sitools.userProfile.Register = Ext.extend(Ext.Window, {
+Ext.define('sitools.userProfile.Register', {
+    extend : 'Ext.Window',
 	alias : 'widget.s-register',
     id: 'winRegister',
 	layout: 'hbox',

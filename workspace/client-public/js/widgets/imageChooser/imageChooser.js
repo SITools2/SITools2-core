@@ -27,20 +27,17 @@
  * C'est utile dans le cas ou on utilise ce composant dans l'éditeur HTML CKEDITOR puisque ses fenêtres sont ouvertes
  * en dehors du windowManager de Sitools 
  */
-//var ImageChooser = function(config){
-//	this.config = config;
-//}
-
 Ext.define('ImageChooser', {
    extend : 'Ext.window.Window',
-   
    title: i18n.get('label.chooseImage'),
    id: 'img-chooser-dlg',
    layout: 'border',
-   minWidth: 500,
+   minWidth: 550,
    minHeight: 450,
+   width : 600,
    modal: true,
    border: false,
+   
    initComponent : function () {
 
        this.initTemplates();
@@ -101,7 +98,7 @@ Ext.define('ImageChooser', {
            tpl: this.thumbTemplate,
            id : 'imageChooserDataViewId', 
            singleSelect: true,
-           overClass:'x-view-over',
+           overItemCls:'x-view-over',
            itemSelector: 'div.thumb-wrap',
            emptyText : '<div style="padding:10px;">No images match the specified filter</div>',
            store: this.store,
@@ -122,80 +119,38 @@ Ext.define('ImageChooser', {
        
        this.fp = new Ext.FormPanel({
            fileUpload: true,
-           frame: true,
            formId : 'formUploadId', 
-           autoHeight: true,
-           bodyStyle: 'padding: 10px 10px 0 10px;',
+           height: 100,
+           padding: '5 5 5 5',
            labelWidth: 50,
+           border : false,
+           bodyBorder : false,
+           buttonAlign : 'center',
            defaults: {
-               anchor: '95%',
                allowBlank: false,
                msgTarget: 'side'
            },
            items: [{
-               xtype: 'fileuploadfield',
-               id: 'form-file',
-//             emptyText: 'Select an image',
+               xtype: 'filefield',
                fieldLabel: 'Photo',
                name: 'image',
+               anchor: '95%',
                buttonText: '',
-               buttonCfg: {
-                   iconCls: 'upload-icon'
-               }
-           }],
-           buttons: [{
+               iconCls: 'upload-icon'
+           }, {
+               xtype : 'button',
                text: i18n.get('label.uploadFile'),
-               scope : this, 
-               handler: function(){
-                   if(this.fp.getForm().isValid()){
-                       
-                       var urlUpload;
-                       if (!Ext.isEmpty(this.urlToUpload)) {
-                           urlUpload = this.urlToUpload;
-                       } else {
-                           urlUpload = loadUrl.get('APP_URL') + '/upload/';
-                       }
-                       
-                       Ext.Ajax.request ({
-                           url : urlUpload,
-                           form : 'formUploadId', 
-                           isUpload : true,
-                           waitMsg : "wait...", 
-                           method : 'POST', 
-                           scope : this,
-                           success : function (response) {
-                               new Ext.ux.Notification({
-                                   iconCls:    'x-icon-information',
-                                   title:    i18n.get('label.information'),
-                                   html:     i18n.get ('label.imageUploaded'),
-                                   autoDestroy: true,
-                                   hideDelay:  1000,
-                                   listeners : {
-                                       scope : this,
-                                       destroy : function (win) {
-                                           this.bringToFront(this);                                                                                                
-                                       },
-                                       show : function (win) {
-                                           this.bringToFront(this);
-                                       }
-                                   }
-                               }).show(document);
-                               
-                               this.down('dataview').refresh();
-                               
-                           }, 
-                           failure : function (response){
-                               Ext.Msg.alert (i18n.get('label.error'));
-                           }, 
-                           callback : function () {
-                               var dataview = this.down('dataview');
-                               dataview.getStore().load();
-                               dataview.refresh();
-                           }
-                       });
-                   }
-               }
-           }]
+               scope : this,
+               anchor: '50%',
+               handler : this.uploadFile
+           }],
+//           buttons: [{
+//               text: i18n.get('label.uploadFile'),
+//               scope : this, 
+//               handler: function() {
+//                   
+//               }
+//           }]
        });
 
        this.items = [{
@@ -278,10 +233,6 @@ Ext.define('ImageChooser', {
            }
        };
        
-//       Ext.apply(cfg, this.config);
-//       this.win = new Ext.Window(cfg);
-   
-       
        this.callParent(arguments);
    },
    
@@ -341,6 +292,69 @@ Ext.define('ImageChooser', {
            detailEl.update('');
        }
    },
+   
+   uploadFile : function () {
+       var form = this.fp.getForm();
+       if(this.fp.getForm().isValid()) {
+           var urlUpload;
+           
+           if (!Ext.isEmpty(this.urlToUpload)) {
+               urlUpload = this.urlToUpload;
+           } else {
+               urlUpload = loadUrl.get('APP_URL') + '/upload/';
+           }
+           
+           form.submit({
+               url: urlUpload,
+               waitMsg: 'Uploading your photo...',
+               success: function(response) {
+                   popupMessage("", i18n.get ('label.imageUploaded'), loadUrl.get('APP_URL') + '/common/res/images/icons/image_add.png');;
+                   this.down('dataview').refresh();
+               },
+               callback : function () {
+                   var dataview = this.down('dataview');
+                   dataview.getStore().load();
+                   dataview.refresh();
+               }
+           });
+           
+//           Ext.Ajax.request({
+//               url : urlUpload,
+//               form : 'formUploadId', 
+//               isUpload : true,
+//               waitMsg : "wait...", 
+//               method : 'POST', 
+//               scope : this,
+//               success : function (response) {
+//                   new Ext.ux.Notification({
+//                       iconCls:    'x-icon-information',
+//                       title:    i18n.get('label.information'),
+//                       html:     i18n.get ('label.imageUploaded'),
+//                       autoDestroy: true,
+//                       hideDelay:  1000,
+//                       listeners : {
+//                           scope : this,
+//                           destroy : function (win) {
+//                               this.bringToFront(this);                                                                                                
+//                           },
+//                           show : function (win) {
+//                               this.bringToFront(this);
+//                           }
+//                       }
+//                   }).show(document);
+//                   this.down('dataview').refresh();
+//               }, 
+//               failure : function (response){
+//                   Ext.Msg.alert (i18n.get('label.error'));
+//               }, 
+//               callback : function () {
+//                   var dataview = this.down('dataview');
+//                   dataview.getStore().load();
+//                   dataview.refresh();
+//               }
+//           });
+       }
+   },
 
    filter : function () {
        var filter = this.down('textfield[name=filter]');
@@ -387,11 +401,6 @@ Ext.define('ImageChooser', {
    }
    
 });
-
-//ImageChooser.prototype = {
-//    // cache data by image name for easy lookup
-//    
-//};
 
 String.prototype.ellipse = function(maxLength){
     if(this.length > maxLength){

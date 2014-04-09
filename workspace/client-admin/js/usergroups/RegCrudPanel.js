@@ -36,7 +36,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
     id : ID.BOX.REG,
     forceFit : true,
     selModel : Ext.create('Ext.selection.RowModel', {
-        singleSelect : true
+        mode : 'SINGLE'
     }),
     pageSize : 10,
     forceFit : true,
@@ -57,11 +57,16 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
         // PUT /users/[id] update
         // DESTROY /users/[id] delete
         this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
             remoteSort : true,
-            idProperty : 'id',
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -226,20 +231,20 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
-                if (!Json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+                
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
+                
+                if (jsonResponse.success) {
+                    this.store.reload();
+                }
+                
+                if (!jsonResponse.success) {
+                    Ext.Msg.alert(i18n.get('label.warning'), jsonResponse.message);
                     return;
                 }
-
-                this.store.reload();
-                var tmp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get(Json.message),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
             },
             failure : alertFailure
         });

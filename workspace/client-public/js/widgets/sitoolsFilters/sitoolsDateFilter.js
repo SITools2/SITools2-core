@@ -17,7 +17,8 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 Ext.ns("sitools.widget");
-sitools.widget.DateFilter = Ext.extend(sitools.widget.Filter, {
+Ext.define('sitools.widget.DateFilter',
+    extend : 'sitools.widget.Filter',
 	
     /**
      * @cfg {String} iconCls

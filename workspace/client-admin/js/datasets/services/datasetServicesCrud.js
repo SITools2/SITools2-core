@@ -245,7 +245,6 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 xtype : 'combo',
                 typeAhead : true,
                 triggerAction : 'all',
-                lazyRender : true,
                 mode : 'local',
                 store : new Ext.data.ArrayStore({
                     id : 0,

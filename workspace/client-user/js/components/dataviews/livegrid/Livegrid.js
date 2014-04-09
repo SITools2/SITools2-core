@@ -483,7 +483,8 @@ Ext.define('sitools.user.component.dataviews.livegrid.LiveGrid', {
     }
 });
 
-Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.livegrid.EditorGridPanel, {
+Ext.define('sitools.user.component.dataviews.livegrid.LiveGrid', {
+    extend : 'Ext.ux.grid.livegrid.EditorGridPanel',
     /**
      * @private
 	 * @returns the JsonColModel used to store the userPreferences.

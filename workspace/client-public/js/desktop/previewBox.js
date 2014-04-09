@@ -1,6 +1,7 @@
 Ext.ns("sitools.common");
 
-sitools.common._PreviewBox = Ext.extend(Ext.BoxComponent, {
+Ext.define('sitools.common._PreviewBox',
+    extend : 'Ext.Component',
 	inited : false,
 	defaultZIndex : 13000,
 	defaultLeft : 0,

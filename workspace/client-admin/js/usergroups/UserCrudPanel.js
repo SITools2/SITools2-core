@@ -29,13 +29,13 @@ Ext.namespace('sitools.admin.usergroups');
  * @extends Ext.grid.GridPanel
  */
 Ext.define('sitools.admin.usergroups.UserCrudPanel', {
-    extend :'Ext.grid.Panel',
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-usercrud',
     border : false,
     height : 300,
     id : ID.BOX.USER,
-    selModel : Ext.create('Ext.selection.RowModel',{
-        singleSelect : true
+    selModel : Ext.create('Ext.selection.RowModel', {
+        mode : 'SINGLE'
     }),
     forceFit : true,
     pageSize : 10,
@@ -56,14 +56,19 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
         // PUT /users/id update
         // DESTROY /users/id delete
         this.store = Ext.create('Ext.data.JsonStore', {
-            root : 'data',
-            restful : true,
-            autoSave : false,
             autoLoad : true,
-            url : this.url,
-            idProperty : 'identifier',
             remoteSort : true,
-            fields : [ {
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'identifier'
+                        
+                }
+            },
+            fields : [{
                 name : 'identifier',
                 type : 'string'
             }, {
@@ -75,7 +80,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
             }, {
                 name : 'email',
                 type : 'string'
-            } ]
+            }]
         });
 
         this.columns = [{
@@ -226,20 +231,19 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
-                if (!Json.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
+                
+                if (jsonResponse.success) {
+                    this.store.reload();
+                }
+                
+                if (!jsonResponse.success) {
+                    Ext.Msg.alert(i18n.get('label.warning'), jsonResponse.message);
                     return;
                 }
-
-                this.store.reload();
-                var tmp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get(Json.message),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
             },
             failure : alertFailure
         });

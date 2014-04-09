@@ -24,8 +24,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.Label
  * @extends Ext.Container
  */
-sitools.common.forms.components.Label = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.noSelection.Label = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.Label', {
+    extend : 'Ext.Container',
 
     initComponent : function () {
 	    Ext.apply(this, {

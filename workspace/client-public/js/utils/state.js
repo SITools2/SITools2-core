@@ -37,7 +37,8 @@ Ext.state.Provider = function(){
     this.state = {};
     Ext.state.Provider.superclass.constructor.call(this);
 };
-Ext.extend(Ext.state.Provider, Ext.util.Observable, {
+Ext.define('Ext.state.Provider', {
+    extend : 'Ext.util.Observable',
     /**
      * Returns the current value for a key
      * @param {String} name The key name
@@ -243,7 +244,8 @@ Ext.state.CookieProvider = function(config){
     this.state = this.readCookies();
 };
 
-Ext.extend(Ext.state.CookieProvider, Ext.state.Provider, {
+Ext.define('Ext.state.CookieProvider', {
+    extend : 'Ext.state.Provider',
     // private
     set : function(name, value){
         if(typeof value == "undefined" || value === null){

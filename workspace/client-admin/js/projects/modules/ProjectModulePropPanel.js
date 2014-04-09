@@ -69,23 +69,22 @@ Ext.define('sitools.admin.projects.modules.ProjectModulePropPanel', {
             }]
         };
         
-        this.gridDependencies = new Ext.grid.EditorGridPanel({
+        this.gridDependencies =Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.dependencies'),
             height : 180,
             store : storeDependencies,
             tbar : tbar,
             forceFit : true,
-            cm : new Ext.grid.ColumnModel({
-                columns : [ {
-                    header : i18n.get('label.url'),
-                    dataIndex : 'url',
-                    editor : new Ext.form.TextField({
-                        allowBlank : false
-                    })
-                } ]
-            }),
+            columns : [{
+                header : i18n.get('label.url'),
+                dataIndex : 'url',
+                editor : {
+                    xtype : 'textfield',
+                    allowBlank : false
+                }
+            }],
             selModel : Ext.create('Ext.selection.RowModel',{
-                singleSelect : true
+                mode : 'SINGLE'
             })
         });
         

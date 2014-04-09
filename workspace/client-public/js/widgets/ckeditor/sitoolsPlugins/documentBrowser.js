@@ -24,7 +24,8 @@ Ext.namespace('sitools.widget.sitoolsEditorPlugins');
  * @class sitools.widget.sitoolsEditorPlugins.documentBrowser
  * @extends Ext.util.Observable
  */
-sitools.widget.sitoolsEditorPlugins.documentBrowser = Ext.extend(Ext.Window, {
+Ext.define('sitools.widget.sitoolsEditorPlugins.documentBrowser', {
+    extend : 'Ext.Window',
     width : 500,
     height : 500,
     layout : 'fit',

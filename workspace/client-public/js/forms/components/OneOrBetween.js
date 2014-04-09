@@ -43,8 +43,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.OneOrBetween
  * @extends sitools.common.forms.AbstractWithUnit
  */
-sitools.common.forms.components.OneOrBetween = Ext.extend(sitools.common.forms.AbstractWithUnit, {
-//sitools.component.users.SubSelectionParameters.SingleSelection.OneOrBetween = Ext.extend(sitools.common.forms.AbstractWithUnit, {
+Ext.define('sitools.common.forms.components.OneOrBetween', {
+    extend : 'sitools.common.forms.AbstractWithUnit',
     /**
 	 * the first value.
 	 */

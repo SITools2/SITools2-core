@@ -123,7 +123,7 @@ sitools.widget.atom1FeedReader = function (config) {
             msg : i18n.get("label.loadingFeed")
         },
 	    sm : Ext.create('Ext.selection.RowModel',{
-		    singleSelect : true
+		    mode : 'SINGLE'
 	    }),
 	    autoExpandColumn : 'title',
 	    hideHeaders : true,
@@ -137,7 +137,8 @@ sitools.widget.atom1FeedReader = function (config) {
 	});
 };
 
-Ext.extend(sitools.widget.atom1FeedReader, Ext.grid.GridPanel, {
+Ext.define('sitools.widget.atom1FeedReader', {
+    extend : 'Ext.grid.GridPanel',
     /**
      * Load the feeds with the given url
      * @param {string} url

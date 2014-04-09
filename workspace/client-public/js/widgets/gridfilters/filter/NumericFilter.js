@@ -37,7 +37,8 @@ var filters = new Ext.ux.grid.GridFilters({
 });
  * </code></pre> 
  */
-Ext.ux.grid.filter.NumericFilter = Ext.extend(Ext.ux.grid.filter.Filter, {
+Ext.define('Ext.ux.grid.filter.NumericFilter', {
+    extend : 'Ext.ux.grid.filter.Filter',
 
     /**
      * @cfg {Object} fieldCls

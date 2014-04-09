@@ -62,7 +62,7 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
         });
         
         var smProperties = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         var cmProperties = new Ext.grid.ColumnModel({
@@ -85,7 +85,6 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
                 editor : new Ext.form.ComboBox({
                     typeAhead : true,
                     triggerAction : 'all',
-                    lazyRender : true,
                     lazyInit : false,
                     mode : 'local',
                     forceSelection : true,

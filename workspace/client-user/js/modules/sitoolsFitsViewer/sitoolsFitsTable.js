@@ -53,7 +53,7 @@ Ext.define('sitools.user.modules.sitoolsFitsTable', {
             }),
             colModel : new Ext.grid.ColumnModel(columns),
             selModel : Ext.create('Ext.selection.RowModel',{
-                singleSelect : true
+                mode : 'SINGLE'
             }),
             listeners : {
                 scope : this,

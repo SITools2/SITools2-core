@@ -30,7 +30,8 @@ Ext.ns('Ext.ux.form');
  * Creates a field utilizing Ext.ux.Spinner
  * @xtype spinnerfield
  */
-Ext.ux.form.SpinnerField = Ext.extend(Ext.form.NumberField, {
+Ext.define('Ext.ux.form.SpinnerField', {
+    extend : 'Ext.form.NumberField',
 	alias : 'widget.spinnerfield',
     actionMode: 'wrap',
     deferHeight: true,

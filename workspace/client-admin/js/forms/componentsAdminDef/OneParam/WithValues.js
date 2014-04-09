@@ -75,7 +75,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             autoLoad : false
         });
         var smValues = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         var tbar = {

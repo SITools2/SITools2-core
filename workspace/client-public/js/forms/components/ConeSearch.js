@@ -32,7 +32,9 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.AbstractConeSearch
  * @extends sitools.common.forms.AbstractWithUnit
  */
-sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.forms.AbstractWithUnit, {
+Ext.define('sitools.common.forms.components.AbstractConeSearch', {
+    extend : 'sitools.common.forms.AbstractWithUnit',
+    
     initComponent : function () {
         this.context = new sitools.common.forms.ComponentFactory(this.context);
         //formattage de extraParams : 
@@ -348,7 +350,8 @@ sitools.common.forms.components.AbstractConeSearch = Ext.extend(sitools.common.f
  * @class sitools.common.forms.components.ConeSearchCartesien
  * @extends sitools.common.forms.components.AbstractConeSearch
  */
-sitools.common.forms.components.ConeSearchCartesien = Ext.extend(sitools.common.forms.components.AbstractConeSearch, {
+Ext.define('sitools.common.forms.components.ConeSearchCartesien', {
+    extend : 'sitools.common.forms.components.AbstractConeSearch',
     getLabelThirdParam : function () {
 		return "SR";
     }
@@ -359,7 +362,8 @@ sitools.common.forms.components.ConeSearchCartesien = Ext.extend(sitools.common.
  * @class sitools.common.forms.components.ConeSearchPGSphere
  * @extends sitools.common.forms.components.AbstractConeSearch
  */
-sitools.common.forms.components.ConeSearchPGSphere = Ext.extend(sitools.common.forms.components.AbstractConeSearch, {
+Ext.define('sitools.common.forms.components.ConeSearchPGSphere', {
+    extend : 'sitools.common.forms.components.AbstractConeSearch',
     getLabelThirdParam : function () {
 		return "Radius";
     }

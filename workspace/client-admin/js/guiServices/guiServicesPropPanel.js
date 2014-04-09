@@ -52,7 +52,6 @@ Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', {
             fieldLabel : i18n.get("label.selectionType"), 
             name : "dataSetSelection", 
             triggerAction : 'all',
-            lazyRender : true,
             editable : false,
             mode : 'local',
             anchor : "100%",

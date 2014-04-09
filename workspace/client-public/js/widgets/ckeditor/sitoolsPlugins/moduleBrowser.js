@@ -24,7 +24,8 @@ Ext.namespace('sitools.widget.sitoolsEditorPlugins');
  * @class sitools.widget.sitoolsEditorPlugins.moduleBrowser
  * @extends Ext.util.Observable
  */
-sitools.widget.sitoolsEditorPlugins.moduleBrowser = Ext.extend(Ext.grid.GridPanel, {
+Ext.define('sitools.widget.sitoolsEditorPlugins.moduleBrowser', {
+    extend : 'Ext.grid.GridPanel',
     layout : 'fit',
     initComponent : function () {
         

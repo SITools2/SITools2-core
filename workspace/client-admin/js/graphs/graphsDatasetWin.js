@@ -67,7 +67,7 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
         
         this.grid = new Ext.grid.GridPanel({
             selModel : Ext.create('Ext.selection.RowModel', {
-                singleSelect : true
+                mode : 'SINGLE'
             }),
             forceFit : true,
             store : this.store,

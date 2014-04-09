@@ -28,8 +28,8 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.mapPanel
  * @extends Ext.Container
  */
-sitools.common.forms.components.mapPanel = Ext.extend(Ext.Container, {
-//sitools.component.users.SubSelectionParameters.SingleSelection.mapPanel = Ext.extend(Ext.Container, {
+Ext.define('sitools.common.forms.components.mapPanel', {
+    extend : 'Ext.Container',
 	defaultLayers : ["basic"], 
 	defaultWmsUrl : "http://vmap0.tiles.osgeo.org/wms/vmap0",
 	

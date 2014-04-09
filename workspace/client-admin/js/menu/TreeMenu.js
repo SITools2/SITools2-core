@@ -69,7 +69,6 @@ Ext.define('sitools.admin.menu.TreeMenu', {
                 }
             }
         });
-        
         return tree;
     },
 
@@ -89,6 +88,11 @@ Ext.define('sitools.admin.menu.TreeMenu', {
             return;
         }
 
+        var currentActivePanel = mainPanel.down("panel [sitoolsType=mainAdminPanel]");
+        if (currentActivePanel != null && currentActivePanel.xtype == 'widget.s-' + nodeName) {
+            return;
+        }
+        
         // Displaying Main Panel
         ann(mainPanel, "mainPanel is null");
         
@@ -96,20 +100,20 @@ Ext.define('sitools.admin.menu.TreeMenu', {
         // Loading component 's-nodeName'
         mainPanel.removeAll();
         
-            mainPanel.add(
-	        {
+            mainPanel.add({
+                xtype : 'panel',
 	            width: "100%",
-	            bodyCssClass : 'admin-bg',
+	            bodyCls : 'admin-bg',
 	            border : false,
 	            bodyBorder : false,
 	            items : [{
-	                xtype : 'widget.s-box',
+	                xtype : 's-box',
 //	                label : i18n.get('label.' + nodeName),
 	                items : [{
-	                    xtype : 'widget.s-' + nodeName,
+	                    xtype : 's-' + nodeName,
 	                    sitoolsType : "mainAdminPanel",
 	                    cls : "adminPanel"
-	                }]
+	                }],
 //	                idItem : nodeId
 	            } ], 
 	            listeners : {
@@ -117,7 +121,7 @@ Ext.define('sitools.admin.menu.TreeMenu', {
 	                    var size = panel.items.items[0].body.getSize();
 	                    var sBoxTitle = panel.items.items[0].items.items[0].getEl();
 	                    size = {
-	                        height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargins("t") + sBoxTitle.getMargins("b")), 
+	                        height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargin("t") + sBoxTitle.getMargin("b")), 
 	                        width : size.width - 8
 	                    };
 	                    var mainAdminPanel = panel.down("panel[sitoolsType=mainAdminPanel]");
@@ -131,7 +135,7 @@ Ext.define('sitools.admin.menu.TreeMenu', {
 //        }
 
         var helpPanel = Ext.create('Ext.Component', {
-            bodyCssClass : 'admin-bg-transparent',
+            bodyCls : 'admin-bg-transparent',
             id : ID.PANEL.HELP,
             width : "100%", 
             flex : 1,

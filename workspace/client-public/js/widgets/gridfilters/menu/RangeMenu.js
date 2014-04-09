@@ -34,7 +34,8 @@ Ext.ns('Ext.ux.menu');
 
  * </code></pre> 
  */
-Ext.ux.menu.RangeMenu = Ext.extend(Ext.menu.Menu, {
+Ext.define('Ext.ux.menu.RangeMenu', {
+    extend : 'Ext.menu.Menu',
 
     constructor : function (config) {
 

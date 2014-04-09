@@ -33,7 +33,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
     height : 300,
     id : ID.BOX.FILEEDITORFTL,
     selModel : Ext.create('Ext.selection.RowModel',{
-        singleSelect : true
+        mode : 'SINGLE'
     }),
     pageSize : 15,
     forceFit : true,

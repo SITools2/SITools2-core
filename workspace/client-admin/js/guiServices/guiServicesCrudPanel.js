@@ -35,7 +35,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
     height : 300,
     id : ID.BOX.GUISERVICES,
     selModel : Ext.create('Ext.selection.RowModel', {
-        singleSelect : true
+        mode : 'SINGLE'
     }),
     pageSize : 10,
     forceFit : true,

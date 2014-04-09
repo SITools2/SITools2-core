@@ -85,7 +85,7 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
                 })
             }],
             selModel : Ext.create('Ext.selection.RowModel', {
-				singleSelect : true
+				mode : 'SINGLE'
 			}), 
 			autoScroll : true,
             enableDragDrop : false,

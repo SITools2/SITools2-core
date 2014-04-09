@@ -236,8 +236,8 @@ sitools.Portal = function (projectsList, languages, preferences) {
         // ],
         id : 'projectDataView',
         itemSelector : 'li.project',
-        overClass : 'project-hover',
-        singleSelect : true,
+        overItemCls : 'project-hover',
+        mode : 'SINGLE',
         multiSelect : false,
         autoScroll : true,
         listeners : {
@@ -332,7 +332,7 @@ sitools.Portal = function (projectsList, languages, preferences) {
    
     var portletRecherche = new Ext.ux.Portlet({
         collapsed : true, 
-        bodyCssClass : 'portletRecherche',
+        bodyCls : 'portletRecherche',
         id : ID.PORTLET.RECHERCHE,
         title : i18n.get('label.portletRechercheTitle'),        
         items : [ osPanel ],

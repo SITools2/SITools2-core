@@ -187,7 +187,7 @@ sitools.user.component.dataviews.tplView.TplView = function (config) {
         autoHeight: true,
         multiSelect: true,
         columnModel : this.columnModel.config, 
-        overClass: 'x-view-over',
+        overItemCls: 'x-view-over',
         itemSelector: 'div.thumb-wrap',
         selectedClass : 'x-view-selected-datasetView',
         emptyText: '', 

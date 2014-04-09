@@ -30,7 +30,9 @@ Ext.namespace('sitools.user.component.dataviews.services');
  */
 sitools.user.component.dataviews.services.viewDataDetailsService = {};
 
-Ext.reg('sitools.user.component.dataviews.services.viewDataDetailsService', sitools.user.component.dataviews.services.viewDataDetailsService);
+Ext.define('sitools.user.component.dataviews.services.viewDataDetailsService', {
+    alias : 'sitools.user.component.dataviews.services.viewDataDetailsService'
+});
 
 sitools.user.component.dataviews.services.viewDataDetailsService.getParameters = function () {
     return [];

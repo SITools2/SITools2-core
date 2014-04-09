@@ -22,7 +22,7 @@ Ext.namespace('sitools.admin.quickStart');
 Ext.define('sitools.admin.quickStart.qs', { 
     extend : 'Ext.panel.Panel',
     layout : 'border',
-    bodyCssClass : 'quickStart',
+    bodyCls : 'quickStart',
     
     initComponent : function () {
         
@@ -31,7 +31,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                 layout : {
                     pack : 'center'
                 },
-                items : ['->',{
+                items : [{
                     id : 'qsStart',
                     value : 'qsStart',
                     icon : '/sitools/common/res/images/icons/logo_fav_icone.png',
@@ -189,14 +189,14 @@ Ext.define('sitools.admin.quickStart.qs', {
             id : "startPanel",
             layout : 'fit',
 //            autoLoad : "/sitools/client-admin/res/html/quickStart/qs-start.html"
-            bodyCssClass : 'quickStart',
+            bodyCls : 'quickStart',
             items : [this.currentPanel],
             bbar : this.stepsBtn
         });
         
 //        this.stepsPanel = new Ext.Panel({
 //            region : 'south',
-//            bodyCssClass : 'quickStart',
+//            bodyCls : 'quickStart',
 //            buttonAlign : 'center',
 //            height : 0,
 //            buttons : [this.stepsBtn]
@@ -239,7 +239,7 @@ Ext.define('sitools.admin.quickStart.qs', {
         containerP.add(
             {
                 width: "100%",
-                bodyCssClass : 'admin-bg',
+                bodyCls : 'admin-bg',
 //                icon : node.raw.icon,
                 items : [ {
                     xtype : 's-box',
@@ -255,7 +255,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                         var size = panel.items.items[0].body.getSize();
                         var sBoxTitle = panel.items.items[0].items.items[0].getEl();
                         size = {
-                            height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargins("t") + sBoxTitle.getMargins("b")), 
+                            height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargin("t") + sBoxTitle.getMargin("b")), 
                             width : size.width - 8
                         };
                         var mainAdminPanel = panel.down('[sitoolsType=mainAdminPanel]');

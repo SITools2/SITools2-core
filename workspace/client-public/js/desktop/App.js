@@ -42,7 +42,8 @@ Ext.app.App = function (cfg) {
 	
 };
 
-Ext.extend(Ext.app.App, Ext.util.Observable, {
+Ext.define('Ext.app.App', {
+    extend : 'Ext.util.Observable',
     /**
      * True when application is ready
      * @type Boolean

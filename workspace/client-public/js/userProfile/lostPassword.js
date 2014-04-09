@@ -25,7 +25,8 @@ Ext.namespace('sitools.userProfile');
  * @class sitools.userProfile.lostPassword
  * @extends Ext.Window
  */
-sitools.userProfile.lostPassword = Ext.extend(Ext.Window, {
+Ext.define('sitools.userProfile.lostPassword', {
+    extend : 'Ext.Window',
     id : 'winPassword',
     layout : 'hbox',
     width : 420,

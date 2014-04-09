@@ -35,6 +35,7 @@ Ext.app.Module = function (config) {
 	this.init();
 };
 
-Ext.extend(Ext.app.Module, Ext.util.Observable, {
+Ext.define('Ext.app.Module', {
+    extend : 'Ext.util.Observable',
 	init : Ext.emptyFn
 });

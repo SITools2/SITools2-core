@@ -26,7 +26,7 @@ Ext.define('sitools.widget.GridUp', {
     },	 
 	handler: function (){
           if (Ext.isEmpty(this.gridId)) {
-              var grid = this.findByType('grid')[0];
+              var grid = this.down('grid');
           } else {
               var grid = Ext.getCmp(this.gridId);
           }
@@ -35,7 +35,7 @@ Ext.define('sitools.widget.GridUp', {
             var grid = this;
         } 
           
-        var grid = this;
+//        var grid = this;
 		var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;
@@ -66,7 +66,7 @@ Ext.define('sitools.widget.GridDown', {
     },  
 	handler: function (){
 	    if (Ext.isEmpty(this.gridId)) {
-            var grid = this.findByType('grid')[0];
+            var grid = this.down('grid');
         } else {
             var grid = Ext.getCmp(this.gridId);
         }
@@ -75,7 +75,7 @@ Ext.define('sitools.widget.GridDown', {
 			var grid = this;
 		} 
 		
-		var grid = this;
+//		var grid = this;
 		
 		var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
@@ -107,7 +107,7 @@ Ext.define('sitools.widget.GridTop', {
     },
     handler: function (){
         if (Ext.isEmpty(this.gridId)) {
-              var grid = this.findByType('grid')[0];
+            var grid = this.down('grid');
           } else {
               var grid = Ext.getCmp(this.gridId);
           }
@@ -116,7 +116,7 @@ Ext.define('sitools.widget.GridTop', {
             var grid = this;
         } 
           
-        var grid = this;
+//        var grid = this;
         
         var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
@@ -132,8 +132,6 @@ Ext.define('sitools.widget.GridTop', {
         grid.getSelectionModel().selectRow(0);
 		grid.getView().refresh();
     }
-
-    
 });
 
 Ext.define('sitools.widget.GridBottom', {
@@ -145,7 +143,7 @@ Ext.define('sitools.widget.GridBottom', {
     },
     handler: function (){
           if (Ext.isEmpty(this.gridId)) {
-              var grid = this.findByType('grid')[0];
+              var grid = this.down('grid');
           } else {
               var grid = Ext.getCmp(this.gridId);
           }
@@ -154,7 +152,7 @@ Ext.define('sitools.widget.GridBottom', {
             var grid = this;
         } 
           
-        var grid = this;
+//        var grid = this;
         var rec = grid.getSelectionModel().getLastSelected();
         if (!rec){
             return;

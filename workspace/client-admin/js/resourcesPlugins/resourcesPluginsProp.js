@@ -409,7 +409,6 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
 			fieldLabel : i18n.get("label.behavior"), 
             name : "behavior", 
             triggerAction : 'all',
-		    lazyRender : true,
 		    mode : 'local',
 		    anchor : "100%", 
 		    store : new Ext.data.ArrayStore({
@@ -455,9 +454,6 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             }
         });
         
-        
-        
-
         this.tabPanel = new Ext.TabPanel({
             height : 450,
             activeTab : 0,
@@ -480,6 +476,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                 beforetabchange : this.beforeTabChange
             }
         });
+        
         this.listeners = {
             scope : this, 
             resize : function (window, width, height) {
@@ -488,6 +485,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             }
 
         };  
+        
         this.items = [ this.tabPanel ];
 
         sitools.admin.resourcesPlugins.resourcesPluginsProp.superclass.initComponent.call(this);
@@ -714,14 +712,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                     return false;
                 }
 
-                var tmp = new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.resourcePlugin' + this.parentType + 'Saved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
-
+                popupMessage("", i18n.get('label.resourcePlugin' + this.parentType + 'Saved'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                
                 this.parentPanel.getStore().reload();
                 this.close();
 

@@ -77,7 +77,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
 //        });
 
         var smProperty = Ext.create('Ext.selection.RowModel', {
-            singleSelect : true
+            mode : 'SINGLE'
         });
 
         var tbar = {

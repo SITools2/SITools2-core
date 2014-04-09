@@ -70,7 +70,7 @@ Ext.define('sitools.admin.util.DependenciesPanel', {
         }];
         
         this.sm = Ext.create('Ext.selection.RowModel', {
-            singleSelect : true
+            mode : 'SINGLE'
         });
         
         sitools.admin.util.DependenciesPanel.superclass.initComponent.call(this);

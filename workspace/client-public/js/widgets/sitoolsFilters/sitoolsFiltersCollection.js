@@ -24,7 +24,8 @@
 
 Ext.ns("sitools.widget");
 
-sitools.widget.FiltersCollection = Ext.extend(Ext.util.MixedCollection, {
+Ext.define('sitools.widget.FiltersCollection', {
+    extend : 'Ext.util.MixedCollection',
     
     constructor : function (config) {
         sitools.widget.FiltersCollection.superclass.constructor.call(this);

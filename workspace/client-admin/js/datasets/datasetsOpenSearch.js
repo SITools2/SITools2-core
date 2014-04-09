@@ -27,13 +27,15 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetsOpenSearch
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.datasetsOpenSearch', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-datasetsOpenSearch',
-    width : 700,
+    width : 800,
     height : 480,
     modal : true,
     resizable : false,
     state : null,
+    layout : 'border',
     id : ID.COMPONENT_SETUP.OPENSEARCH, 
 
     initComponent : function () {
@@ -43,57 +45,46 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
 
         this.title = i18n.get('label.editOpenSearchIndexes');
 
-        /*
-         * this.httpProxyForms = new Ext.data.HttpProxy ({ url : this.url,
-         * restful : true, method : 'GET' });
-         */
-
         /* paramétres du formulaire */
-        var itemsForm = [ {
+        var itemsForm = [{
             fieldLabel : i18n.get('label.name'),
             name : 'name',
-            anchor : '100%',
+            anchor : '90%',
             maxLength : 16, // name size must be less or equal 16 (opensearch
             // 1.1 specifications)
             allowBlank : false
         }, {
             fieldLabel : i18n.get('label.description'),
             name : 'description',
-            anchor : '100%',
+            anchor : '90%',
             allowBlank : false
         }, {
             xtype : 'sitoolsSelectImage',
             name : 'image',
             fieldLabel : i18n.get('label.image'),
-            anchor : '100%',
+            anchor : '90%',
             growMax : 400
         }, {
             fieldLabel : i18n.get('label.lastImportDate'),
             name : 'lastImportDate',
-            anchor : '100%',
+            anchor : '90%',
             disabled : true
-        } ];
+        }];
 
         this.formPanel = new Ext.FormPanel({
-            labelWidth : 100, // label settings here cascade unless overridden
+            labelWidth : 100,
             height : 120,
-            frame : true,
             defaultType : 'textfield',
             items : itemsForm,
-            region : 'north'
+            region : 'north',
+            border : false,
+            bodyBorder : false
         });
 
-        // ########### paramètres de la grid ####### //
-        // définition du store pour les entrées de la grid
         var store = new Ext.data.JsonStore({
             root : 'dataset.columnModel',
-            // restful: true,
-            // proxy : this.httpProxyForms,
-            // sortField: 'name',
             idProperty : 'id',
-            // on stocke tous les champs d'une colonne dans le store au cas ou
-            // on en ai besoin plus tard
-            fields : [ {
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -158,56 +149,48 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             }, {
                 name : 'linkFieldRelative',
                 type : 'boolean'
-            } ]
-        // ,
-        // autoLoad : true
+            }]
         });
 
-        // colonne avec checkbox pour choisir quelles colonnes indexer
-        var indexed = new Ext.grid.CheckColumn({
+        var indexed = {
+            xtype : 'checkcolumn',
             header : i18n.get('header.indexed'),
             dataIndex : 'indexed',
             width : 60
-        });
+        };
 
-        // colonne avec checkbox pour choisir quelle est la colonne de recherche
-        // par défault
-        var defaultSearchField = new Ext.grid.CheckColumn({
+        var defaultSearchField = {
+            xtype : 'checkcolumn',
             header : i18n.get('header.defaultSearchField'),
             dataIndex : 'defaultSearchField',
             width : 120
-        });
+        };
 
-        // colonne avec checkbox pour choisir quelle colonne est la clé primaire
-        var uniqueKey = new Ext.grid.CheckColumn({
+        var uniqueKey = {
+            xtype : 'checkcolumn',
             header : i18n.get('header.uniqueKey'),
             dataIndex : 'uniqueKey',
             width : 80
-        });
+        };
 
-        // colonne avec checkbox pour choisir quelles colonnes sont utilisées
-        // pour l'autocompletion mots clés
-        var keyWords = new Ext.grid.CheckColumn({
+        var keyWords = {
+            xtype : 'checkcolumn',
             header : i18n.get('header.useForKeyWord'),
             dataIndex : 'keyword',
             width : 80
-        });
+        };
 
-        // définition des champs d'un flux RSS pour le retour des données
-        this.rssFieldData = [ [ 0, "" ], [ 1, 'titleField' ], [ 2, 'linkField' ], [ 3, 'guidField' ], [ 4, 'pubDateField' ], [ 5, 'descriptionField' ] ];
+        this.rssFieldData = [ [ 0, " " ], [ 1, 'titleField' ], [ 2, 'linkField' ], [ 3, 'guidField' ], [ 4, 'pubDateField' ], [ 5, 'descriptionField' ] ];
 
-        // définition de la combobox pour choisir le champs pour le retour des
-        // données
         var returned = {
             header : i18n.get('header.returned'),
             dataIndex : 'returned',
             width : 130,
             scope : this, 
-            // définition de la combobox
-            editor : new Ext.form.ComboBox({
+            editor : {
+                xtype : 'combo',
                 typeAhead : true,
                 triggerAction : 'all',
-                lazyRender : true,
                 lazyInit : false,
                 mode : 'local',
                 emptyText : " ",
@@ -225,7 +208,12 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                 // classe CSS a chacun des items
                 listeners : {
                     scope : this, 
-                    select : function (combo, record) {
+                    select : function (combo, records) {
+                        if (Ext.isEmpty(records)) {
+                            return;
+                        }
+                        
+                        var record = records[0];
                         if (record.data.textRssField == "linkField") {
                             var tmp = new sitools.admin.datasets.datasetsOpenSearch.relativeLink({
                                 selectedRecord : this.grid.getSelectionModel().getSelected()
@@ -234,48 +222,44 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                         }                    
                     }
                 }
-
-            })
+            }
         };
         
-        // définition des type solr
-        this.solrTypeData = [ [ 0, "" ], [1, 'text' ], [ 2, 'string' ], [ 3, 'rss_date' ], [ 4, 'date' ] ];
+        this.solrTypeData = [ [ 0, " " ], [1, 'text' ], [ 2, 'string' ], [ 3, 'rss_date' ], [ 4, 'date' ] ];
 
-        // définition de la combobox pour choisir le champs pour le retour des
-        // données
         var solrType = {
             header : i18n.get('headers.solrType'),
             dataIndex : 'solrType',
             width : 130,
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/opensearch/solrType.html",
-            // définition de la combobox
-            editor : new Ext.form.ComboBox({
+            editor : {
+                xtype : 'combo',
                 triggerAction : 'all',
                 mode : 'local',
                 emptyText : " ",
                 store : new Ext.data.ArrayStore({
                     fields : [ 'idSolrType', 'textSolrType' ],
-                    // utilisation des donnees definie precedement
                     data : this.solrTypeData
                 }),
                 valueField : 'textSolrType',
                 displayField : 'textSolrType',
-                // template pour les items de la combobox, permet d'ajouter une
-                // classe CSS a chacun des items
-
-                        
-            })
+            }
         };
 
-        // définition du columnModel
-        var cm = new Ext.ux.grid.LockingColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are sortable by default
-
-            },
-            columns : [ {
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+        });
+        
+        var smColumn = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE'
+        });
+        
+        this.grid = Ext.create('Ext.grid.Panel', {
+            border : false,
+            layout : 'fit',
+            pageSize : 10,
+            urlDatasets : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
+            columns : [{
                 header : i18n.get('label.name'),
                 id : 'dataIndex',
                 dataIndex : 'columnAlias',
@@ -285,51 +269,26 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                 id : 'tableName',
                 dataIndex : 'tableName',
                 locked : true
-            }, indexed, returned, defaultSearchField, uniqueKey, keyWords, solrType ]
-        });
-
-        // définition des plugins nécessaires (colonnes avec checkbox )
-        var plugins = [ indexed, defaultSearchField, uniqueKey, keyWords];
-        
-        var smColumn = Ext.create('Ext.selection.RowModel',{
-            singleSelect : true
-        });
-        
-        // instantiation du grid
-        this.grid = new Ext.ux.grid.LockingEditorGridPanel({
-            border : false,
-            layout : 'fit',
-            pageSize : 10,
-            urlDatasets : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
-            cm : cm,
+            }, indexed, returned, defaultSearchField, uniqueKey, keyWords, solrType ],
             selModel : smColumn,
             store : store,
-            plugins : plugins,
-            autoExpandColumn : "dataIndex",
-            clicksToEdit : 1,
+            plugins : [cellEditing],
             enableColumnMove : false,
             region : 'center',
+            forceFit : true,
             viewConfig : {
-				forceFit : true,
 				autoFill : true,
-				getRowClass : function (row, index) {
-					var cls = '';
-					var data = row.data;
-					if (!data.indexed && !Ext.isEmpty(data.returned)) {
-						cls = "red-row";
-					}
-					return cls;
-				}
-	
+//				getRowClass : function (row, index) {
+//					var cls = '';
+//					var data = row.data;
+//					if (!data.indexed && !Ext.isEmpty(data.returned)) {
+//						cls = "red-row";
+//					}
+//					return cls;
+//				}
 			}
-            
-            
         });
-        this.layout = 'border';
         
-        
-        
-        // ajout du grid dans la fenêtre
         this.items = [ this.formPanel, this.grid ]; 
 
         this.saveAndQuitButton = new Ext.Button({
@@ -356,8 +315,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             hidden : true
         });
         
-        
-
         // ajout des boutons dans la fenetre
         this.buttons = [ this.saveAndQuitButton, this.refreshStatusButton, this.buttonCancel, {
             text : i18n.get('label.close'),
@@ -436,9 +393,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             xtype : 'toolbar',
             defaults : {
                 scope : this
-            },
-            height : 27
-
+            }
         };
         
         this.buttonbbar = new Ext.Button({
@@ -458,10 +413,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
         }, this);
 
         
-        
-        
-        
-        
         sitools.admin.datasets.datasetsOpenSearch.superclass.initComponent.call(this);
     },
 
@@ -471,11 +422,8 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
      * Call loadModification if success.
      */
     onRender : function () {
-
         sitools.admin.datasets.datasetsOpenSearch.superclass.onRender.apply(this, arguments);
-
         this.objectList = {};
-        // vérification d'un index existant
 
         // sinon on charge le dataset
         Ext.Ajax.request({
@@ -622,17 +570,9 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
 					 */
                     Ext.getCmp('statusBar').show();
 					this.buttonbbar.setHandler(function () {
-								Ext.Msg
-										.alert(
-												i18n.get("msg.error"),
-												i18n
-														.get("label.osErrorLastExe")
-														+ "<BR/>"
-														+ data.errorMsg
-														+ "<BR/>"
-														+ i18n
-																.get("label.checkLogMoreInfo"));
-							});
+						Ext.Msg.alert(i18n.get("msg.error"),i18n.get("label.osErrorLastExe") + "<BR/>" + data.errorMsg + "<BR/>" 
+						        + i18n.get("label.checkLogMoreInfo"));
+					});
 
 				}
                     
@@ -706,16 +646,18 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
      */
     updateButtons : function (state) {
 
-        var tb = this.getTopToolbar();
+        var tb = this.down('toolbar');
         tb.removeAll();
         this.hideLoadingMask();
-        this.applyMask(state);        
+        this.applyMask(state);    
+        
         if (state == this.state1) {
             this.addButtonToToolbar(tb, this.buttonState1);
             this.saveAndQuitButton.setHandler(this._onSaveAndQuitIndexHandler, this);
             this.saveAndQuitButton.show();        
             this.refreshStatusButton.hide();
             this.buttonCancel.hide();
+            
         } else if (state == this.state2) {
             this.addButtonToToolbar(tb, this.buttonState2);
             
@@ -730,14 +672,13 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             this.saveAndQuitButton.hide();
             this.refreshStatusButton.show();            
             this.buttonCancel.show();
+            
         } else if (state == this.state4) {
             this.addButtonToToolbar(tb, this.buttonState4);
             this.saveAndQuitButton.hide();
             this.refreshStatusButton.hide();
             this.buttonCancel.hide();
         } 
-        this.doLayout();
-
     },
     /**
      * Apply a mask on all window
@@ -745,14 +686,16 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
      */
     applyMask : function (state) {
 		if (state == this.state4) {
-			this.grid.getView().getLockedBody().mask();
-            this.grid.getView().mainBody.mask();
+//			this.grid.getView().getLockedBody().mask();
+			this.grid.setDisabled(true);
+//            this.grid.getView().mainBody.mask();
             this.formPanel.getEl().mask();
 		} else if (state == this.state3) {
 			this.applyLoadingMask();
 		} else {
-			this.grid.getView().getLockedBody().unmask();
-            this.grid.getView().mainBody.unmask();
+//			this.grid.getView().getLockedBody().unmask();
+			this.grid.setDisabled(false);
+//            this.grid.getView().mainBody.unmask();
             this.formPanel.getEl().unmask();
 		}
 		this.doLayout();
@@ -763,7 +706,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
      */
     applyLoadingMask : function () {
         this.items.items[0].getEl().mask();
-        this.getTopToolbar().getEl().mask();
+        this.down('toolbar').getEl().mask();
 
         var myMask = new Ext.LoadMask(this.items.items[1].getEl(), {
             msg : i18n.get("label.waitForActivation") + "<br/>" + i18n.get("label.refreshOsToCheckStatus")
@@ -777,7 +720,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
     hideLoadingMask : function () {
         this.items.items[0].getEl().unmask();
         this.items.items[1].getEl().unmask();        
-        this.getTopToolbar().getEl().unmask();
+        this.down('toolbar').getEl().unmask();
     },
 
     /**
@@ -798,12 +741,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             url : this.url  + loadUrl.get('APP_OPENSEARCH_URL') +  "/start",
             method : 'PUT',
             scope : this,
-            //timeout : 300000,
-            /*listeners : {
-                beforerequest : function (conn, options) {
-                    this.getEl().mask();
-                }
-            },*/
             success : function (ret) {
 
 				var getData = Ext.decode(ret.responseText);
@@ -820,8 +757,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
 			},
             failure : function (response, opts) {
                 alertFailure(response, opts);
-                //myMask.hide();
-                
             }
         });
     },
@@ -900,7 +835,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
             var rec = storeGrid.getAt(i).data;
             if (rec.indexed) {
                 var indexColumn = {};
-                indexColumn.idColumn = rec.data.id;
+                indexColumn.idColumn = rec.id;
                 if (!Ext.isEmpty(rec.solrType) && rec.solrType !== "") {
                     indexColumn.type = rec.solrType;
                 }
@@ -910,14 +845,14 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                 keywordIndex.push(rec.columnAlias);
             }
             if (rec.defaultSearchField) {
-                returnedJSON.defaultSearchField = rec.data.id;
+                returnedJSON.defaultSearchField = rec.id;
             }
             if (rec.uniqueKey) {
-                returnedJSON.uniqueKey = rec.data.id;
+                returnedJSON.uniqueKey = rec.id;
             }
             var tmp = rec.returned;
             if (!Ext.isEmpty(rec.returned)) {
-                returnedJSON[rec.returned] = rec.data.id;
+                returnedJSON[rec.returned] = rec.id;
                 if (!rec.indexed) {
                     colReturnedButNotIndex = true;
                 }
@@ -996,18 +931,16 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
                 // check for the success of the request
                 var data = Ext.decode(ret.responseText);
                 if (!data.success) {
-                    Ext.Msg.alert(i18n.get('label.warning'), data.message);
+                    popupMessage("",  
+                            data.message,
+                            loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-error.png');
                     return false;
                 }
                 if (!quit) {
-                    var tmp = new Ext.ux.Notification({
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : i18n.get('label.indexSaved'),
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    }).show(document);
-                    // update the buttons state
+                    popupMessage("",  
+                            i18n.get('label.indexSaved'),
+                            loadUrl.get('APP_URL') + '/common/res/images/icons/save.png');
+                    
                     this.updateButtons(this.state2);
                 } else {
                     this.close();
@@ -1035,7 +968,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
     },
     // method to delete an opensearch index
     doDelete : function () {
-
         Ext.Ajax.request({
             url : this.url  + loadUrl.get('APP_OPENSEARCH_URL'),
             method : 'DELETE',
@@ -1194,15 +1126,19 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', { extend : 'Ext.Window',
 });
 
 
-Ext.define('sitools.admin.datasets.datasetsOpenSearch.relativeLink', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.datasetsOpenSearch.relativeLink', { 
+    extend : 'Ext.Window',
     modal : true,
     width : 200,
+    
     initComponent : function () {
         this.title = i18n.get('label.detailColumnDefinition');
         
         this.formRelative = new Ext.form.FormPanel({
             padding : 10,
             labelWidth: 120,
+            border : false,
+            bodyBorder : false,
             items : [{
                 xtype : 'checkbox',
                 name : 'relative',

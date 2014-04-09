@@ -129,7 +129,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         }];
 
         var smDataSets = Ext.create('Ext.selection.RowModel', {
-            singleSelect : false
+            mode : 'MULTI'
         });
         var tbar = {
             xtype : 'toolbar',
@@ -656,7 +656,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                     }
             }],
             selModel : Ext.create('Ext.selection.RowModel', {
-                singleSelect : true
+                mode : 'SINGLE'
             }),
             listeners : {
                 "activate" : function () {

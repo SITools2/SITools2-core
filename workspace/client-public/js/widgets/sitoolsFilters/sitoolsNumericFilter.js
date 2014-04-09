@@ -1,5 +1,6 @@
 Ext.ns("sitools.widget");
-sitools.widget.NumericFilter = Ext.extend(sitools.widget.Filter, {
+Ext.define('sitools.widget.NumericFilter', {
+    extend : 'sitools.widget.Filter',
 	
     /**
      * @cfg {String} iconCls

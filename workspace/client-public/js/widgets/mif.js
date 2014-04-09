@@ -4436,7 +4436,7 @@
 
   Ext.ux.ManagedIFrame.Panel = Ext.extend( Ext.Panel , {
         ctype       : 'Ext.ux.ManagedIFrame.Panel',
-        bodyCssClass: 'ux-mif-mask-target',
+        bodyCls: 'ux-mif-mask-target',
         constructor : function(config){
             MIF.Panel.superclass.constructor.call(this, embed_MIF.call(this, config));
          }
@@ -4492,7 +4492,7 @@
   Ext.ux.ManagedIFrame.Window = Ext.extend( Ext.Window , 
        {
             ctype       : "Ext.ux.ManagedIFrame.Window",
-            bodyCssClass: 'ux-mif-mask-target',
+            bodyCls: 'ux-mif-mask-target',
             constructor : function(config){
 			    MIF.Window.superclass.constructor.call(this, embed_MIF.call(this, config));
             }

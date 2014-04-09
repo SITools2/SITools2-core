@@ -27,7 +27,8 @@
  * @extends Ext.util.Observable
  * Creates a Spinner control utilized by Ext.ux.form.SpinnerField
  */
-Ext.ux.Spinner = Ext.extend(Ext.util.Observable, {
+Ext.define('Ext.ux.Spinner', {
+    extend : 'Ext.util.Observable',
     incrementValue: 1,
     alternateIncrementValue: 5,
     triggerClass: 'x-form-spinner-trigger',

@@ -293,7 +293,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
         var rec = this.getSelectionModel().getSelected();
         
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
         if ("ACTIVE" === rec.data.status) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
@@ -325,7 +325,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
         var arrayRecords = this.getSelectionModel().getSelections();
         
         if (Ext.isEmpty(arrayRecords)) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
         
         var projectServicesCopy = new sitools.admin.resourcesPlugins.resourcesServicesCopyProp({
@@ -352,12 +352,12 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
         
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('resourcesPlugins' + this.parentType + 'Crud.delete'),
+            msg : String.format(i18n.get('resourcesPlugins' + this.parentType + 'Crud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -378,9 +378,18 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
-                if (showResponse(ret)) {
+                var jsonResponse = Ext.decode(ret.responseText);
+                popupMessage("",  
+                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
+                
+                if (jsonResponse.success) {
                     this.store.reload();
+                }
+                
+                if (!jsonResponse.success) {
+                    Ext.Msg.alert(i18n.get('label.warning'), jsonResponse.message);
+                    return;
                 }
             },
             failure : alertFailure

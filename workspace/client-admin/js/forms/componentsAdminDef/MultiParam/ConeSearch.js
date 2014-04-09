@@ -121,7 +121,6 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
 		    fieldLabel : i18n.get('label.coordSystem'),
             name : 'coordSystem',
             triggerAction: 'all',
-			lazyRender : true,
 		    mode: 'local',
 		    store: new Ext.data.ArrayStore({
 		        id: 0,
@@ -140,7 +139,6 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
 		    fieldLabel : i18n.get('label.resolverName'),
             name : 'resolverName',
             triggerAction: 'all',
-			lazyRender : true,
 		    mode: 'local',
 		    store: new Ext.data.ArrayStore({
 		        id: 0,

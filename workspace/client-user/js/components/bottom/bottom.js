@@ -43,7 +43,7 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 		align : 'stretch',
 		pack : 'start'
 	},
-	bodyCssClass : 'sitools_footer',
+	bodyCls : 'sitools_footer',
 	initComponent : function() {
 
 		this.versionUrl = loadUrl.get('APP_URL') + '/version';
@@ -60,7 +60,7 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 				html : "<img id='sitools_logo' src='"
 						+ loadUrl.get("APP_URL")
 						+ "/res/images/logo_01_petiteTaille.png' alt='sitools_logo'/>",
-				bodyCssClass : 'no-background',
+				bodyCls : 'no-background',
 				listeners : {
 					scope : this,
 					afterRender : function() {
@@ -79,12 +79,12 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 			this.panelMiddle = new Ext.Panel({
 						border : false,
 						flex : 1,
-						bodyCssClass : 'no-background',
+						bodyCls : 'no-background',
 						items : [{
 									xtype : "panel",
 									id : 'sitools_build_by',
 									cls : "sitools_footer_build_by",
-									bodyCssClass : 'no-background',
+									bodyCls : 'no-background',
 									items : [this.credits]
 
 								}]
@@ -114,7 +114,7 @@ sitools.user.component.bottom.Bottom = Ext.extend(Ext.Panel, {
 			this.panelRight = new Ext.Panel({
 						border : false,
 						flex : 0.5,
-						bodyCssClass : 'no-background',
+						bodyCls : 'no-background',
 						items : [linkDataview]
 					});
 

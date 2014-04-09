@@ -23,7 +23,7 @@ Ext.define('sitools.admin.quickStart.qsStart', { extend : 'Ext.panel.Panel',
     forceLayout : true, 
     layout : "vbox",
     border : false,
-    bodyCssClass : 'quickStart',
+    bodyCls : 'quickStart',
     layoutConfig : {
         align : 'center',
         pack : 'start'
@@ -62,7 +62,7 @@ Ext.define('sitools.admin.quickStart.qsStart', { extend : 'Ext.panel.Panel',
             listeners : {
                 render : function (img) {
                     img.getEl().fadeIn({
-                        endOpacity: 1,
+                        opacity: 1,
                         easing : 'easeIn',
                         duration: 1.5,
                         useDisplay : true

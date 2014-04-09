@@ -40,7 +40,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
 	conflictWarned : false,
 	forceFit : true,
     viewConfig : {
-        autoFill : true, 
+        autoFill : true,
 //		getRowClass : function (row, index) { 
 //			var cls = ''; 
 //			var data = row.data;

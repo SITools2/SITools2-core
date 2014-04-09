@@ -225,7 +225,7 @@ sitools.user.component.openSearchResultFeed = function(config) {
 					msg : i18n.get("label.loadingFeed")
 				},
 				sm : Ext.create('Ext.selection.RowModel',{
-							singleSelect : true
+							mode : 'SINGLE'
 						}),
 				autoExpandColumn : 'title',
 				viewConfig : {

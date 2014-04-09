@@ -110,7 +110,6 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
                 xtype : 'combo',
                 typeAhead : true,
                 triggerAction : 'all',
-                lazyRender : true,
                 lazyInit : false,
                 mode : 'local',
                 forceSelection : true,
@@ -145,7 +144,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
             padding : '5 5 5 5',
             forceFit : true,
             selModel : smProperties = Ext.create('Ext.selection.RowModel',{
-                singleSelect : true
+                mode : 'SINGLE'
             }),
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
                 clicksToEdit: 1
@@ -306,7 +305,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
                 }
                 this.close();
                 //wait for the server to refresh authorizations
-                Ext.defer(this.store.reload, 1000, this);
+                Ext.defer(this.store.load, 1000, this);
                 // Ext.Msg.alert(i18n.get('label.information'),
                 // i18n.get('msg.uservalidate'));
             },
