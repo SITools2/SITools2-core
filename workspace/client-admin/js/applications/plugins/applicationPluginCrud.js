@@ -35,6 +35,9 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
     pageSize : 10,    
     modify : false,
     urlGrid : null,
+    mixins : {
+        utils : "js.utils.utils"
+    },
     
     // Warning for version conflicts
 	conflictWarned : false,
@@ -256,7 +259,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
      * to edit an Application plugin
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
@@ -280,17 +283,14 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
      * Open a confirmation window before deleting selected record
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
 //            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : {
-                yes : i18n.get('label.yes'),
-                no : i18n.get('label.no')
-            },
+            buttons : Ext.Msg.YESNO,
             msg : i18n.get('applicationPluginCrud.delete'),
             scope : this,
             fn : function (btn, text) {
@@ -311,7 +311,6 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
                 if (showResponse(ret)) {
                     this.store.reload();
                 }
@@ -324,7 +323,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
      * Call the resource start on the application 
      */
     _onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
 //            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
@@ -346,7 +345,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
      * Call the resource stop on the application 
      */
     _onDisactive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
 //            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;

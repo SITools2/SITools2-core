@@ -36,6 +36,9 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
     resizable : true,
     classChosen : "",
     applicationPluginId : null,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
 
@@ -62,19 +65,23 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
             id : 'gridapplicationPlugin',
             title : i18n.get('title.applicationPluginClass'),
             store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
                 autoLoad : true,
-                proxy : new Ext.data.HttpProxy({
+                proxy : {
                     url : this.urlList,
-                    restful : true,
-                    method : 'GET'
-                }),
+                    type : "ajax",
+                    reader : {
+                        type : 'json',
+                        root : 'data',
+                        idProperty : 'id'
+                    }
+                },
                 remoteSort : false,
-                idProperty : 'id',
                 fields : [ {
                     name : 'id',
-                    type : 'string'
+                    type : 'string',
+                    convert : function () {
+                        return Ext.id();
+                    }
                 }, {
                     name : 'name',
                     type : 'string'
@@ -139,13 +146,13 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
             }),
             listeners : {
                 scope : this,
-                rowclick :  this.onClassClick
+                itemclick :  this.onClassClick
             }, 
             plugins : [expander]
 
         });
 
-        this.fieldMappingFormPanel = new Ext.FormPanel({
+        this.fieldMappingFormPanel = Ext.create('Ext.form.Panel', {
             padding : 10,
             id : 'fieldMappingFormPanel',
             defaultType : 'textfield',
@@ -161,12 +168,6 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                 vtype : "attachment",
                 allowBlank: false
             } ]
-        });
-
-        this.proxyFieldMapping = new Ext.data.HttpProxy({
-            url : '/tmp',
-            restful : true,
-            method : 'GET'
         });
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
@@ -230,11 +231,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
             layout : 'fit',
             title : i18n.get('title.parametersMapping'),
             store : new Ext.data.JsonStore({
-                root : 'ApplicationPlugin.model.parameters',
-                proxy : this.proxyFieldMapping,
-                restful : true,
                 remoteSort : false,
-                idProperty : 'name',
                 fields : [ {
                     name : 'name',
                     type : 'string'
@@ -405,7 +402,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action == "create") {
             if (newTab.id == "fieldMappingFormPanel" || newTab.id == "gridFieldMapping") {
-                var rec = this.gridapplicationPlugin.getSelectionModel().getSelected();
+                var rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
                 if (!rec) {
                     popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
 //                    var tmp = new Ext.ux.Notification({
@@ -428,16 +425,20 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
      * @param {} e
      * @return {Boolean}
      */
-    onClassClick : function (self, rowIndex, e) {
+    onClassClick : function (self, rec, item, index, e, eOpts) {
         if (this.action == "create") {
-            var rec = this.gridapplicationPlugin.getSelectionModel().getSelected();
-            if (!rec) {
-                return false;
-            }
             var className = rec.data.className;
 			if (className != this.classChosen) {
-				this.proxyFieldMapping.url = this.urlList + "/" + className;
-				var store = this.gridFieldMapping.getStore();
+			    var store = this.gridFieldMapping.getStore();
+				store.setProxy({
+				    type : 'ajax',
+				    url : this.urlList + "/" + className,
+				    reader: {
+				        type : "json",
+				        root : 'ApplicationPlugin.model.parameters',
+				        idProperty : 'name',
+				    }
+				});
 				this.classChosen = className;
 				store.removeAll();
 				store.load();
@@ -503,7 +504,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
         var rec;
         var jsonReturn = {};
         if (this.action == "create") {
-            rec = this.gridapplicationPlugin.getSelectionModel().getSelected();
+            rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
             if (!rec) {
                 return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
 //                var tmp = new Ext.ux.Notification({
@@ -516,7 +517,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                 return false;
             }
             jsonReturn.name = rec.data.name;
-            jsonReturn.description = rec.data.description;
+            jsonReturn.description = rec.data.description;            
             
         }
         var form = this.fieldMappingFormPanel.getForm();
@@ -539,7 +540,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
         var parameters = [];
         var applicationPlugin;
         if (this.action == "create") {
-            rec = this.gridapplicationPlugin.getSelectionModel().getSelected();
+            rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
             applicationPlugin = rec.data;
             
 //            jsonReturn.name = applicationPlugin.name;
