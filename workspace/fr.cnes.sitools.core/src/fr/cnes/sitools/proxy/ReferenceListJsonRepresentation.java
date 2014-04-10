@@ -12,19 +12,44 @@ import org.restlet.data.Reference;
 import org.restlet.data.ReferenceList;
 import org.restlet.representation.OutputRepresentation;
 
+/**
+ * The Class ReferenceListJsonRepresentation.
+ * 
+ * @author m.gond
+ */
 public class ReferenceListJsonRepresentation extends OutputRepresentation {
 
+  /** The reference list. */
   private ReferenceList referenceList;
 
+  /**
+   * Instantiates a new reference list json representation.
+   * 
+   * @param mediaType
+   *          the media type
+   */
   public ReferenceListJsonRepresentation(MediaType mediaType) {
     super(mediaType);
   }
 
+  /**
+   * Instantiates a new reference list json representation.
+   * 
+   * @param mediaType
+   *          the media type
+   * @param referenceList
+   *          the reference list
+   */
   public ReferenceListJsonRepresentation(MediaType mediaType, ReferenceList referenceList) {
     super(mediaType);
     this.referenceList = referenceList;
   }
 
+  /*
+   * (non-Javadoc)
+   * 
+   * @see org.restlet.representation.Representation#write(java.io.OutputStream)
+   */
   @Override
   public void write(OutputStream outputStream) throws IOException {
 

@@ -20,7 +20,6 @@ package fr.cnes.sitools.security.authorization.business;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.restlet.Request;
 import org.restlet.Response;

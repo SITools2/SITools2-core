@@ -18,7 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset.services;
 
-import java.io.IOException;
 import java.util.logging.Level;
 
 import org.restlet.data.MediaType;

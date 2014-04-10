@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -201,7 +201,7 @@ public final class FeedsClientResource extends SitoolsResource {
         if (feedEntryModel.getImage() != null) {
           SyndEnclosureImpl enc = new SyndEnclosureImpl();
           enc.setType(feedEntryModel.getImage().getType());
-          enc.setUrl(feedEntryModel.getImage().getUrl());
+          enc.setUrl(getEnclosureUrl(feedEntryModel));
           List<SyndEnclosureImpl> enclosures = new ArrayList<SyndEnclosureImpl>();
           enclosures.add(enc);
           entry.setEnclosures(enclosures);
@@ -236,6 +236,15 @@ public final class FeedsClientResource extends SitoolsResource {
       }
     }
     return new SyndFeedRepresentation(syndFeed);
+  }
+
+  private String getEnclosureUrl(FeedEntryModel feedEntryModel) {
+    String url = feedEntryModel.getImage().getUrl();
+    if (url.startsWith("/")) {
+      SitoolsSettings settings = ((SitoolsApplication) getApplication()).getSettings();
+      return settings.getPublicHostDomain() + url;
+    }
+    return url;
   }
 
   /**

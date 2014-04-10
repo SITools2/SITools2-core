@@ -81,6 +81,9 @@ public class LoggingOutputStream extends OutputStream {
    */
   private int bufLength;
 
+  /**
+   * Private constructor
+   */
   private LoggingOutputStream() {
     // illegal
   }

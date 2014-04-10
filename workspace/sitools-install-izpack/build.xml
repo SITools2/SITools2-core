@@ -115,6 +115,7 @@
 	<!-- TARGET xslt-build-shell-for-install -->
 	<target name="build-shell-for-install"
 		description="Mise à jour du shell de lancement pour l'installeur">
+		<property file="${install.res.properties.dir}/sitools.properties" prefix="properties" />
 		<!-- build script sitools -->
 		<copy file="${conf.reference.dir}/sitools-reference" tofile="${install.res.script.dir}/sitools"
 			outputencoding="UTF-8" overwrite="true">
@@ -123,6 +124,7 @@
 					<token key="ROOT_DIRECTORY" value="%{INSTALL_PATH}" />
 					<token key="VERSION" value="%{APP_VER}" />
 					<token key="PORT" value="%{host_port}" />				
+					<token key="COPYRIGHT" value="${properties.Starter.COPYRIGHT}" />				
 				</replacetokens>
 			</filterchain>
 		</copy>

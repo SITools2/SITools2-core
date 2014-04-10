@@ -200,6 +200,7 @@ public final class SolrResource extends AbstractSolrResource {
    *          the client query string
    * @return Representation
    * @throws IOException
+   *           if there is an error while creating the Suggest representation
    */
   private Representation getSuggestForBrowser(org.restlet.Response response, String query) throws IOException {
     if (response.getEntity() != null) {
@@ -217,6 +218,7 @@ public final class SolrResource extends AbstractSolrResource {
    *          the server response
    * @return the representation as JSON
    * @throws IOException
+   *           if there is an error while creating the Suggest representation
    */
   private Representation getSuggestJSON(org.restlet.Response response) throws IOException {
     if (response.getEntity() != null) {

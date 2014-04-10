@@ -33,8 +33,7 @@ import nl.captcha.text.producer.DefaultTextProducer;
 public class Captcha {
 
   /** chars used for answer producer */
-  private static final char[] CHARS = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'm', 'n', 'p', 'r',
-      's', 'w', 'x', 'y', '2', '3', '4', '5', '6', '7', '8'};
+  private static final char[] CHARS = new char[] {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'k', 'm', 'n', 'p', 'r', 's', 'w', 'x', 'y', '2', '3', '4', '5', '6', '7', '8'};
 
   /** captcha identifier (System.currentTimeMillis) */
   private long id;

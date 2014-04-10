@@ -210,7 +210,6 @@ public final class MailResource extends SitoolsResource {
    * @return Representation
    */
   public Representation getRepresentation(fr.cnes.sitools.common.model.Response response, MediaType media) {
-    getLogger().info(media.toString());
     if (media.isCompatible(MediaType.APPLICATION_JAVA_OBJECT)) {
       return new ObjectRepresentation<fr.cnes.sitools.common.model.Response>(response);
     }
