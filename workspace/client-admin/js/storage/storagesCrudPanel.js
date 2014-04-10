@@ -43,6 +43,9 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         
@@ -249,7 +252,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Open a {sitools.admin.applications.applicationsRolePanel} role panel to add a role authorization to the selected storage
      */
     onDefineRole : function () {
-        var rec = this.getSelectionModel().getSelected(), up = new sitools.admin.applications.applicationsRolePanel({
+        var rec = this.getLastSelectedRecord(), up = new sitools.admin.applications.applicationsRolePanel({
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });
@@ -267,7 +270,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Open a {sitools.component.filtersPlugins.filtersPluginsSingle} filter plugin panel to add a filter plugin to the selected storage
      */
     onDefineFilter : function (item, e) {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.noselection'));
@@ -322,7 +325,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Open a {sitools.admin.storages.storagesPropPanel} storage property panel to create a new storage
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -338,7 +341,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
@@ -362,7 +365,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * @param rec the record to delete
      */
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
+        // var rec = this.getLastSelectedRecord();
         // if (!rec) return false;
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
@@ -383,7 +386,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Activate the selected storage and set his status to "started"
      */
     onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -405,7 +408,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Deactivate the selected storage and set his status to "stopped"
      */
     onDisactive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -425,7 +428,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     },
     
     onCopy : function (){
-    	var rec = this.getSelectionModel().getSelected();
+    	var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
