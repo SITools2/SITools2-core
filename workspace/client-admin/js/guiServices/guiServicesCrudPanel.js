@@ -39,23 +39,19 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
     }),
     pageSize : 10,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_GUI_SERVICES_URL');
         
         this.store = new sitools.admin.guiServices.guiServicesStore({
-            url : this.url
+            url : this.url,
+            pageSize : this.pageSize
         });
         
-        var defaultGuiService = {
-            xtype : 'checkcolumn',
-            header : i18n.get('headers.defaultGuiService'),
-            dataIndex : 'defaultGuiService',
-            editable : false,
-            width : 55
-        };
-
         this.columns = [{
             header : i18n.get('label.name'),
             dataIndex : 'name',
@@ -75,7 +71,15 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
             dataIndex : 'xtype',
             width : 300,
             sortable : false
-        }, defaultGuiService ];
+        }, {
+            xtype : 'checkcolumn',
+            header : i18n.get('headers.defaultGuiService'),
+            dataIndex : 'defaultGuiService',
+            editable : false,
+            width : 55,
+            processEvent: function () { return false; },
+            sortable : false
+        }];
 
         this.bbar = {
             xtype : 'pagingtoolbar',
@@ -127,10 +131,8 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
     onRender : function () {
         sitools.admin.guiservices.GuiServicesCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -151,7 +153,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
      *  to modify an existing project module
      */
     _onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -168,7 +170,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }

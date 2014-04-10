@@ -45,7 +45,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', {
             this.title = i18n.get('label.modifyGuiService');
         }
         
-        this.gridDependencies = new sitools.admin.util.DependenciesPanel();        
+        this.gridDependencies = Ext.create("sitools.admin.util.DependenciesPanel");
         
         var comboSelectionType = new Ext.form.ComboBox({
             typeAhead : false,

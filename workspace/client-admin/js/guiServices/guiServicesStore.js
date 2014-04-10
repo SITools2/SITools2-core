@@ -25,12 +25,18 @@ Ext.define('sitools.admin.guiServices.guiServicesStore', { extend : 'Ext.data.Js
     constructor : function (config) {
         
         Ext.apply(config, {
-            root : 'data',
-            restful : true,
+            pageSize : config.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : config.url,
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id',
+                }
+            },
             remoteSort : true,
-            autoSave : false,
-            url : config.url,
-            idProperty : 'id',
             fields : [ {
                 name : 'id',
                 type : 'string'

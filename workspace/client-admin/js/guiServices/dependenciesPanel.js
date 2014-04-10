@@ -64,14 +64,19 @@ Ext.define('sitools.admin.util.DependenciesPanel', {
         this.columns = [{
             header : i18n.get('label.url'),
             dataIndex : 'url',
-            editor : new Ext.form.TextField({
+            editor : {
+                xtype : 'textfield',
                 allowBlank : false
-            })
+            }
         }];
         
         this.sm = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
+        
+        this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+        })];
         
         sitools.admin.util.DependenciesPanel.superclass.initComponent.call(this);
     },
@@ -87,11 +92,7 @@ Ext.define('sitools.admin.util.DependenciesPanel', {
      * Delete the selected dependency of a project module
      */
     onDeleteDependencies : function () {
-        var s = this.getSelectionModel().getSelections();
-        var i, r;
-        for (i = 0; s[i]; i++) {
-            r = s[i];
-            this.getStore().remove(r);
-        }
+        var selections = this.getSelectionModel().getSelection();
+        this.getStore().remove(selections);
     }
 });
