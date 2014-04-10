@@ -37,7 +37,10 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
     forceFit : true,
-
+    mixins : {
+        utils : "js.utils.utils"
+    },
+    
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_URL') + '/users';
         
@@ -414,10 +417,6 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
             },
             failure : alertFailure
         });
-    },
-    
-    getLastSelectedRecord : function () {
-       return this.store.getById(this.getSelectionModel().getLastSelected().getId());
     }
 
 });
