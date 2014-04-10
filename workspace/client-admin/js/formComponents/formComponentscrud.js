@@ -31,17 +31,25 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     }),
     pageSize : 10,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
+        this.store = Ext.create("Ext.data.JsonStore", {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             remoteSort : true,
-            autoSave : false,
-            url : this.url,
-            idProperty : 'id',
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -69,13 +77,13 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
             }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
+        this.columns = {
             // specify any defaults for each column
             defaults : {
                 sortable : true
             // columns are not sortable by default
             },
-            columns : [ {
+            items : [ {
                 header : i18n.get('label.type'),
                 dataIndex : 'type',
                 width : 100,
@@ -94,9 +102,9 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
                 header : i18n.get('label.priority'),
                 dataIndex : 'priority',
                 width : 50,
-                sortable : true
+                sortable : false
             } ]
-        });
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
@@ -145,10 +153,8 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     onRender : function () {
         sitools.component.formComponents.FormComponentsCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -162,7 +168,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     },
 
     _onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -176,7 +182,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     },
 
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
@@ -196,7 +202,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
 
     },
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
+        // var rec = this.getLastSelectedRecord();
         // if (!rec) return false;
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,

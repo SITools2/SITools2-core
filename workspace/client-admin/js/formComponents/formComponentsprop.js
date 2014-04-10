@@ -157,8 +157,8 @@ Ext.define('sitools.component.formComponents.FormComponentsPropPanel', { extend 
             jsonData : jsonObject,
             success : function (ret) {
                 //load the scripts defined in this component. 
-				includeJs(frm.items.get('fileUrlUserId').getValue());
-                includeJs(frm.items.get('fileUrlAdminId').getValue());
+				includeJs(jsonObject.fileUrlUser);
+                includeJs(jsonObject.fileUrlAdmin);
                 this.store.reload();
                 this.close();
             },
