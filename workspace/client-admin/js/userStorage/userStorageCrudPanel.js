@@ -85,12 +85,13 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
         this.columns = {
             // specify any defaults for each column
             defaults : {
-                sortable : true
+                sortable : false
             // columns are not sortable by default
             },
             items : [ {
                 header : i18n.get('label.userLogin'),
                 dataIndex : 'userId',
+                sortable : true,
                 width : 100,
                 renderer : function (value, meta, record) {
                     meta.style = "font-weight: bold;";
@@ -139,6 +140,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
             }, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
+                sortable : true,
                 width : 100,
                 renderer : function (value, meta, record, index, colIndex, store) {
                     meta.tdCls += value.toUpperCase();

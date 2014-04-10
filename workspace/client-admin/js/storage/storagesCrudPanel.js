@@ -51,12 +51,18 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
         this.urlFilters = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_FILTERS_CLASSES_URL');
         this.urlParents = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_FILTERS_INSTANCES_URL');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
+        this.store = Ext.create('Ext.data.JsonStore', {
             remoteSort : true,
-            idProperty : 'id',
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -89,12 +95,14 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
                 type : 'string'
             } ]
         });
+        
         var deeplyAccessible = {
             xtype : 'checkcolumn',
             header : i18n.get('label.deeplyAccessible'),
             dataIndex : 'deeplyAccessible',
             width : 80, 
-            tooltip : i18n.get('label.deeplyAccessible')
+            tooltip : i18n.get('label.deeplyAccessible'),
+            processEvent: function () { return false; }
         };
         
         var listingAllowed = {
@@ -102,7 +110,8 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
             header : i18n.get('label.listingAllowed'),
             dataIndex : 'listingAllowed',
             width : 55, 
-            tooltip : i18n.get('label.listingAllowed')
+            tooltip : i18n.get('label.listingAllowed'),
+            processEvent: function () { return false; }
         };
         
         var modifiable = {
@@ -110,43 +119,49 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
             header : i18n.get('label.modifiable'),
             dataIndex : 'modifiable',
             width : 55, 
-            tooltip : i18n.get('label.modifiable')
+            tooltip : i18n.get('label.modifiable'),
+            processEvent: function () { return false; }
         };
 
-        this.columns =  [{
-            header : i18n.get('label.name'),
-            dataIndex : 'name',
-            width : 50,
-            sortable : true,
-            renderer : function (value, meta, record) {
-                meta.style = "font-weight: bold;";
-                return value;
-            }
-        }, {
-            header : i18n.get('label.description'),
-            dataIndex : 'description',
-            width : 120
-        }, {
-            header : i18n.get('label.localPath'),
-            dataIndex : 'localPath',
-            width : 150
-        }, {
-            header : i18n.get('label.attachUrl'),
-            dataIndex : 'attachUrl',
-            width : 150
-        }, deeplyAccessible, listingAllowed, modifiable, {
-            header : i18n.get('label.status'),
-            dataIndex : 'status',
-            width : 50,
-            renderer : function (value, meta, record, index, colIndex, store) {
-                meta.tdCls += value;
-                return value;
-            }
-        }];
+        this.columns = {
+            defaults : {
+                sortable : false
+            // columns are not sortable by default
+            },              
+            items : [{
+                header : i18n.get('label.name'),
+                dataIndex : 'name',
+                width : 50,
+                sortable : true,
+                renderer : function (value, meta, record) {
+                    meta.style = "font-weight: bold;";
+                    return value;
+                }
+            }, {
+                header : i18n.get('label.description'),
+                dataIndex : 'description',
+                width : 120
+            }, {
+                header : i18n.get('label.localPath'),
+                dataIndex : 'localPath',
+                width : 150
+            }, {
+                header : i18n.get('label.attachUrl'),
+                dataIndex : 'attachUrl',
+                width : 150
+            }, deeplyAccessible, listingAllowed, modifiable, {
+                header : i18n.get('label.status'),
+                dataIndex : 'status',
+                width : 50,
+                renderer : function (value, meta, record, index, colIndex, store) {
+                    meta.tdCls += value;
+                    return value;
+                }
+            }]
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -221,13 +236,12 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     /**
      * do a specific render to load storages from the store. 
      */
-    onRender : function () {
-        sitools.admin.storages.storagesCrudPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.storages.storagesCrudPanel.superclass.afterRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize,
+            action : 'read'
         });
     },
     
