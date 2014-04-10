@@ -49,6 +49,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
             proxy : {
                 type : 'ajax',
                 url : this.url,
+                simpleSortMode : true,
                 reader : {
                     type : 'json',
                     root : 'data',
