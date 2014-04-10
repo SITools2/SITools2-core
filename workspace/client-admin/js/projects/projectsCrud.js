@@ -246,7 +246,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('projectCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('projectCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -271,7 +271,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
                 
                 if (jsonResponse.success) {
@@ -294,7 +294,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
                 
                 if (jsonResponse.success) {
@@ -316,7 +316,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {
@@ -339,7 +339,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
                 
                 if (jsonResponse.success) {
@@ -362,7 +362,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {

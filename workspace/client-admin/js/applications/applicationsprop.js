@@ -47,53 +47,53 @@ Ext.define('sitools.admin.applications.applicationsPropPanel', {
             },
             items : [{
                 xtype : 'hidden',
-                name : 'id',
+                name : 'id'
             }, {
                 xtype : 'textfield',
                 name : 'name',
                 fieldLabel : i18n.get('label.name'),
                 anchor : '100%',
-                maxLength : 30,
+                maxLength : 30
             }, {
                 xtype : 'textarea',
                 name : 'description',
                 fieldLabel : i18n.get('label.description'),
-                anchor : '100%',                    
+                anchor : '100%'               
             }, {
                 xtype : 'textfield',
                 name : 'urn',
                 fieldLabel : i18n.get('label.urn'),
-                anchor : '100%',
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 name : 'type',
                 fieldLabel : i18n.get('label.type'),
-                anchor : '100%',
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 name : 'url',
                 fieldLabel : i18n.get('label.url'),
-                anchor : '100%',
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 name : 'author',
                 fieldLabel : i18n.get('label.author'),
-                anchor : '100%',
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 name : 'owner',
                 fieldLabel : i18n.get('label.owner'),
-                anchor : '100%',
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 name : 'lastUpdate',
                 fieldLabel : i18n.get('label.lastUpdate'),
-                anchor : '100%',
+                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 name : 'status',
                 fieldLabel : i18n.get('label.status'),
-                anchor : '100%',
+                anchor : '100%'
             }]
         }];
         

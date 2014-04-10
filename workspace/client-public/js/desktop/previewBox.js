@@ -179,10 +179,10 @@ Ext.define('sitools.common._PreviewBox',
 		}
 		d = Math.min(d, 1);
 		newEl.addClass("taskbar-previewbox-win-transform");
-		newEl.setStyle("-webkit-transform", String.format("scale({0})", d));
-		newEl.setStyle("-moz-transform", String.format("scale({0})", d));
-		newEl.setStyle("-o-transform", String.format("scale({0})", d));
-		newEl.setStyle("transform", String.format("scale({0})", d));
+		newEl.setStyle("-webkit-transform", Ext.String.format("scale({0})", d));
+		newEl.setStyle("-moz-transform", Ext.String.format("scale({0})", d));
+		newEl.setStyle("-o-transform", Ext.String.format("scale({0})", d));
+		newEl.setStyle("transform", Ext.String.format("scale({0})", d));
 		newEl.setLeftTop(h, c);
 		return newEl;
 	},

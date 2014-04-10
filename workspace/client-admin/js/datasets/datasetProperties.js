@@ -164,7 +164,7 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
 						}
 						switch (rec.get('type')) {
 						case "String" : 
-							value = String.format(value);
+							value = Ext.String.format(value);
 							break;
 						
 						case "Numeric" : 
@@ -174,7 +174,7 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
 							value = value.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
 							break;
 						case "Enum" : 
-							value = String.format(value);
+							value = Ext.String.format(value);
 							break;
 						}
 						rec.set("value", value);	

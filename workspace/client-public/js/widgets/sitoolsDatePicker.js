@@ -404,8 +404,8 @@ Ext.define('Ext.SitoolsDatePicker', {
             var today = (new Date()).dateFormat(this.format);
             this.todayBtn = new Ext.Button({
                 renderTo: this.el.child('td.x-date-bottom', true),
-                text: String.format(this.todayText, today),
-                tooltip: String.format(this.todayTip, today),
+                text: Ext.String.format(this.todayText, today),
+                tooltip: Ext.String.format(this.todayTip, today),
                 handler: this.selectToday,
                 scope: this
             });

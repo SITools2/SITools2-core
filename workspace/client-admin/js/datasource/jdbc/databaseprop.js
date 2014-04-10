@@ -174,7 +174,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
                                     return i18n.get('label.nullValue');
                                 }
                                 if (initialSizeValue > value) {
-                                    return String.format(i18n.get('label.dbMaxActiveError'), value, initialSizeValue);
+                                    return Ext.String.format(i18n.get('label.dbMaxActiveError'), value, initialSizeValue);
                                 }
                                 else {
                                     return true;
@@ -201,7 +201,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
                                     return i18n.get('label.nullValue');
                                 }
                                 if (maxActiveValue < value) {
-                                    return String.format(i18n.get('label.dbMaxActiveError'), maxActiveValue, value);
+                                    return Ext.String.format(i18n.get('label.dbMaxActiveError'), maxActiveValue, value);
                                 }
                                 else {
                                     return true;

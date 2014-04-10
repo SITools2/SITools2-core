@@ -36,19 +36,25 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
     id : ID.BOX.UNITS,
     pageSize : 10,
     forceFit : true,
+    mixins : {
+        utils : 'js.utils.utils'
+    },
     
     initComponent : function () {
         this.urlAdmin = loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL');
         
-        this.httpProxy = new Ext.data.HttpProxy({
-            url : this.urlAdmin + "/dimension",
-            restful : true,
-            method : 'GET'
-        });
-        this.store = new Ext.data.JsonStore({
-            idProperty : 'id',
-            root : "data",
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.urlAdmin + "/dimension",
+                reader : {
+                    type : 'json',
+                    root : "data",
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -67,8 +73,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
             }, {
                 name : 'isConsistent',
                 type : 'boolean'
-            } ],
-            proxy : this.httpProxy
+            }]
         });
 
         this.columns = [{
@@ -121,7 +126,6 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
 
         this.bbar = {
                 xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
@@ -165,8 +169,8 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
      * Create a new {sitools.admin.units.unitsProp} unit prop to modify a dimension
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
-        
+        var rec = this.getLastSelectedRecord();
+
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -184,14 +188,14 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('unitsCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('unitsCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

@@ -129,7 +129,7 @@ Ext.define('sitools.admin.datasource.mongoDb.RecordsPanel', { extend : 'Ext.grid
 					title : i18n.get('label.detail') + " " + column.header + " object", 
 					modal : true, 
 					autoScroll : true, 
-					html : String.format("<pre>{0}</pre>", sitools.common.utils.Utils.syntaxHighlight(JSON.stringify(value, undefined, 4))), 
+					html : Ext.String.format("<pre>{0}</pre>", sitools.common.utils.Utils.syntaxHighlight(JSON.stringify(value, undefined, 4))), 
 					height : 400, 
 					x : evt.getXY()[0], 
 					y : evt.getXY()[1]

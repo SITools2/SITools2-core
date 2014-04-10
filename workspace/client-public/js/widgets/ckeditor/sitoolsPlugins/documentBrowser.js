@@ -213,7 +213,7 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.documentBrowser', {
         textfield.documentName = document.data.name;
         textfield.documentUrl = docUrl;
         textfield.setValue("Document : " + document.data.name);
-        textfield.documentComponent = String.format("parent.sitools.user.component.bottom.Bottom.showFooterLink(\"{0}\", \"{1}\"); return false;", docUrl, document.data.name);
+        textfield.documentComponent = Ext.String.format("parent.sitools.user.component.bottom.Bottom.showFooterLink(\"{0}\", \"{1}\"); return false;", docUrl, document.data.name);
         
         this.close();
     },

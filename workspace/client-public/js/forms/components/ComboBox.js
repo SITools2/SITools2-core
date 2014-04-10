@@ -27,7 +27,7 @@ Ext.ns('sitools.common.forms.components');
  * @class sitools.common.forms.components.ComboBox
  * @extends Ext.Container
  */
-Ext.define('sitools.common.forms.components.ComboBox',
+Ext.define('sitools.common.forms.components.ComboBox', {
     extend : 'Ext.Container',
     initComponent : function () {
 		this.context = new sitools.common.forms.ComponentFactory(this.context);

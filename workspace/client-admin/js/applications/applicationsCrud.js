@@ -36,6 +36,9 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
     selModel : Ext.create('Ext.selection.RowModel'),
     forceFit : true,
     pageSize : 10,
+    mixins : {
+        utils : 'js.utils.utils'
+    },
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_APPLICATIONS_URL');
@@ -50,7 +53,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                 reader : {
                     type : 'json',
                     root : 'data',
-                    idProperty : 'id',
+                    idProperty : 'id'
                 }
             },
             model : 'ApplicationModel',
@@ -62,7 +65,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             text: 'Name',
             flex: 1,
             dataIndex: 'name'
-        },{
+        }, {
             text: 'Category',
             flex: 1,
             dataIndex: 'category'
@@ -130,23 +133,17 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
     },
 
     /**
-     * Basic on Render and load the applications store...
-     */
-    onRender : function () {
-        sitools.admin.applications.applicationsCrudPanel.superclass.onRender.apply(this, arguments);
-//        this.store.load();
-    },
-
-    /**
      * Called when user click on Authorizations button
      * Open a {sitools.admin.applications.applicationsRolePanel} window.
      * @return {}
      */
     onDefineRole : function () {
-        var rec = this.getSelectionModel().getLastSelected(), up = new sitools.admin.applications.applicationsRolePanel({
+        var rec = this.getLastSelectedRecord();
+        var up = new sitools.admin.applications.applicationsRolePanel({
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });
+        
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
@@ -160,9 +157,11 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
      * @return {}
      */
     onDetails : function () {
-        var rec = this.getSelectionModel().getSelected(), up = new sitools.admin.applications.applicationsPropPanel({
+        var rec = this.getLastSelectedRecord();
+        var up = new sitools.admin.applications.applicationsPropPanel({
             applicationRecord : rec
         });
+        
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
 //            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
@@ -195,7 +194,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
 	 * @return {Boolean}
 	 */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         
         if (!rec) {
             return false;
@@ -207,7 +206,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                 yes : i18n.get('label.yes'),
                 no : i18n.get('label.no')
             },
-            msg : String.format(i18n.get('applicationsCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('applicationsCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn === 'yes') {
@@ -229,7 +228,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 
                 popupMessage("",  
-                        String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
                 
                 if (jsonResponse.success) {
@@ -244,7 +243,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
      * Call the resource start on the application 
      */
     _onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
@@ -256,7 +255,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 
                 popupMessage("",
-                        String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
                 
                 if (jsonResponse.success) {
@@ -271,7 +270,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
      * Call the resource stop on the application 
      */
     _onDisactive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
@@ -283,7 +282,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 
                 popupMessage("",  
-                        String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get('label.' + jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {

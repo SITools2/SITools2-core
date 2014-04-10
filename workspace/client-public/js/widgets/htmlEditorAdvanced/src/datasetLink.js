@@ -97,7 +97,7 @@ Ext.define('sitools.widget.HtmlEditor.datasetLink', {
 						text = frm.findField('text').getValue(); 
 						browseField = frm.findField('datasetLink');
 						
-						var html = String.format(browseField.dataLinkComponent + "{0}</a>", text);
+						var html = Ext.String.format(browseField.dataLinkComponent + "{0}</a>", text);
 						this.cmp.insertAtCursor(html);
 						this.datasetLinkWindow.close();
 					} else {

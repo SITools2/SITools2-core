@@ -132,7 +132,7 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.moduleBrowser', {
         }
         
         this.browseField.moduleTitle = module.data.title;
-        this.browseField.moduleComponent = String.format("parent.sitools.user.component.module.moduleUtils.openModule(\"{0}\"); return false;", module.data.id);
+        this.browseField.moduleComponent = Ext.String.format("parent.sitools.user.component.module.moduleUtils.openModule(\"{0}\"); return false;", module.data.id);
         
         
         this.browseField.setValue('Module : ' + module.data.title);

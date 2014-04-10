@@ -661,10 +661,10 @@ Ext.define('Ext.ux.grid.LockingGridView', {
             last = colCount - 1, 
             cls = ['x-grid3-row'], 
             rowParams = {
-                tstyle: String.format("width: {0};", this.getTotalWidth())
+                tstyle: Ext.String.format("width: {0};", this.getTotalWidth())
             }, 
             lockedRowParams = {
-                tstyle: String.format("width: {0};", this.getLockedWidth())
+                tstyle: Ext.String.format("width: {0};", this.getLockedWidth())
             }, 
             colBuffer = [], 
             lockedColBuffer = [], 

@@ -28,9 +28,9 @@ Ext.define('sitools.component.datasets.selectItems', {
     
     initComponent : function () {
 
-        var commandPanel = Ext.create('Ext.Panel', {
-            layout : "vbox", 
-            layoutConfig : {
+        var commandPanel = Ext.create('Ext.panel.Panel', {
+            layout : {
+                type : 'vbox',
                 align : "center", 
                 pack : "center", 
                 defaultMargins : {top:10, right:0, bottom:0, left:0}
@@ -66,10 +66,9 @@ Ext.define('sitools.component.datasets.selectItems', {
         });
         
         this.items =  [ this.grid1, commandPanel, this.grid2 ];
-        this.layout = 'hbox',
-        
-        this.layoutConfig = {
-            flex : "ratio" , 
+        this.layout = {
+            type : 'hbox',
+            flex : 'ratio' , 
             align : 'stretch'
         };
         
@@ -81,7 +80,7 @@ Ext.define('sitools.component.datasets.selectItems', {
         var recs = [];
         
         if (this.grid1 instanceof Ext.grid.Panel) {
-            recs = this.grid1.getSelectionModel().getSelections();
+            recs = this.grid1.getSelectionModel().getSelection();
         }
         
         if (this.grid1 instanceof Ext.tree.Panel) {
@@ -171,7 +170,7 @@ Ext.define('sitools.component.datasets.selectItems', {
     },
     _onRemove : function () {
         var store2 = this.grid2.getStore();
-        var recs = this.grid2.getSelectionModel().getSelections();
+        var recs = this.grid2.getSelectionModel().getSelection();
         if (recs.length === 0) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;

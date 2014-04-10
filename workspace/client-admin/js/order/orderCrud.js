@@ -20,24 +20,37 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.order');
 
-Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.component.order.orderCrudPanel', { 
+    extend : 'Ext.grid.Panel',
 	alias : 'widget.s-order',
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel', {
+        mode : 'SINGLE'
+    }),
+    mixins : {
+        utils : 'js.utils.utils'
+    },
     pageSize : 10,
     forceFit : true,
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_ADMIN_URL');
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
+        
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
             remoteSort : true,
-            idProperty : 'id',
-            fields : [ {
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -64,13 +77,8 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
             }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
+        this.columns = {
+            items : [{
                 header : i18n.get('label.userLogin'),
                 dataIndex : 'userId',
                 width : 100
@@ -86,12 +94,11 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
                 header : i18n.get('label.dateOrder'),
                 dataIndex : 'dateOrder',
                 width : 150
-            } ]
-        });
+            }]
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -103,7 +110,7 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
                 text : i18n.get('label.details'),
                 // icon: 'res/images/icons/toolbar_project_add.png',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_details.png',
@@ -132,7 +139,7 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
                 emptyText : i18n.get('label.search'),
                 store : this.store,
                 pageSize : this.pageSize
-            } ]
+            }]
         };
 
         this.listeners = {
@@ -153,7 +160,7 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
     },
 
     _onDetail : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -167,7 +174,7 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
     },
 
     _onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -178,11 +185,10 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
             orderRec : rec
         });
         up.show();
-
     },
 
     _onDone : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -194,8 +200,9 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
         });
         up.show();
     },
+    
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
@@ -213,9 +220,8 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
         });
 
     },
+    
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
-        // if (!rec) return false;
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
             method : 'DELETE',
@@ -227,7 +233,6 @@ Ext.define('sitools.component.order.orderCrudPanel', { extend : 'Ext.grid.Panel'
             },
             failure : alertFailure
         });
-
     }
 
 });

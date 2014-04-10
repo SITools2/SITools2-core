@@ -19,7 +19,7 @@
 Ext.namespace('sitools.widget');	
 
 Ext.define('sitools.widget.GridUp', {
-    extend: 'Ext.Button',
+    extend: 'Ext.button.Button',
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-up.png';
         sitools.widget.GridUp.superclass.initComponent.call(this);
@@ -49,7 +49,7 @@ Ext.define('sitools.widget.GridUp', {
 		if( index > 0){
 			store.remove (rec);
 			store.insert (index-1, rec);
-			grid.getSelectionModel().selectRow(index-1);
+			grid.getSelectionModel().select(index-1);
 			
 		}
 		grid.getView().refresh();
@@ -59,7 +59,7 @@ Ext.define('sitools.widget.GridUp', {
 });
 
 Ext.define('sitools.widget.GridDown', {
-    extend: 'Ext.Button',
+    extend: 'Ext.button.Button',
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/simple-arrow-down.png';
         sitools.widget.GridDown.superclass.initComponent.call(this);
@@ -90,7 +90,7 @@ Ext.define('sitools.widget.GridDown', {
 		if(index < store.getCount()-1){
 			store.remove (rec);
 			store.insert (index+1, rec);
-			grid.getSelectionModel().selectRow(index+1);
+			grid.getSelectionModel().select(index+1);
 			
 		}
 		grid.getView().refresh();
@@ -100,7 +100,7 @@ Ext.define('sitools.widget.GridDown', {
 });
 
 Ext.define('sitools.widget.GridTop', {
-    extend: 'Ext.Button',
+    extend: 'Ext.button.Button',
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-up.png';
         sitools.widget.GridTop.superclass.initComponent.call(this);
@@ -129,13 +129,13 @@ Ext.define('sitools.widget.GridTop', {
         
         store.remove (rec);
         store.insert (0, rec);
-        grid.getSelectionModel().selectRow(0);
+        grid.getSelectionModel().select(0);
 		grid.getView().refresh();
     }
 });
 
 Ext.define('sitools.widget.GridBottom', {
-    extend: 'Ext.Button',
+    extend: 'Ext.button.Button',
     
     initComponent : function () {
         this.icon = loadUrl.get('APP_URL') + '/common/res/images/icons/double-arrow-down.png';
@@ -165,7 +165,7 @@ Ext.define('sitools.widget.GridBottom', {
         
         store.remove (rec);
         store.insert (store.getCount(), rec);
-        grid.getSelectionModel().selectRow(store.getCount() - 1);
+        grid.getSelectionModel().select(store.getCount() - 1);
 		grid.getView().refresh();
             
     }

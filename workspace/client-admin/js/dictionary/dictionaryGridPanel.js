@@ -18,7 +18,7 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.component.dictionary.gridPanel');
+Ext.namespace('sitools.component.dictionary');
 /**
  * @param template
  *            the dictionary template
@@ -51,7 +51,7 @@ Ext.define('sitools.component.dictionary.gridPanel', {
     
     getStoreConcepts : function (template, url) {
         
-        var fields = [ {
+        var fields = [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -60,7 +60,7 @@ Ext.define('sitools.component.dictionary.gridPanel', {
             }, {
                 name : 'description',
                 type : 'string'
-            } ];
+            }];
         
         for (var i = 0; i < template.properties.length; i++) {
             var property = template.properties[i];
@@ -71,10 +71,30 @@ Ext.define('sitools.component.dictionary.gridPanel', {
             });
         }
         
-        var storeConcept = new Ext.data.JsonStore({
-			idProperty : 'id',
+        //sometime url is define sometimes not...
+        var proxy;
+        if (Ext.isEmpty(url)) {
+            proxy = {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    idProperty : 'id'
+                }
+            };
+        } else {
+            proxy = {
+                type : 'ajax',
+                url : url,
+                reader : {
+                    type : 'json',
+                    idProperty : 'id'
+                }
+            };
+        }
+        
+        var storeConcept = Ext.create('Ext.data.JsonStore', {
 			fields : fields,
-			url : url,
+			proxy : proxy,
 			// on surchage la fonction load
 			loadConcepts : function (options) {
                 Ext.Ajax.request({
@@ -98,10 +118,8 @@ Ext.define('sitools.component.dictionary.gridPanel', {
 									var property = conceptIn.properties[j];
 									conceptOut[property.name] = property.value;
 								}
-			
 								this.add(conceptOut);
 							}
-                            
                         }
                         this.fireEvent("load", this);
                     }, 
@@ -109,27 +127,23 @@ Ext.define('sitools.component.dictionary.gridPanel', {
                 });  
 			}
 		});
-        
         return storeConcept;
-        
         
     },
     
     getColumnModelConcepts : function (template, editable) {
         var columns = [];
-        columns.push(this.createColumn(i18n.get("headers.name"), 'name', 100,
-			editable, false));
-        columns.push(this.createColumn(i18n.get("headers.description"), 'description', 120,
-            editable, true));
+        columns.push(this.createColumn(i18n.get("headers.name"), 'name', 100, editable, false));
+        
+        columns.push(this.createColumn(i18n.get("headers.description"), 'description', 120, editable, true));
         
         for (var i = 0; i < template.properties.length; i++) {
             var property = template.properties[i];
-            columns.push(this.createColumn(property.name, property.name, 80,
-            editable, true));            
+            columns.push(this.createColumn(property.name, property.name, 80, editable, true));            
         }
         
-        var cmConcepts = new Ext.grid.ColumnModel({
-            columns : columns,
+        var cmConcepts = {
+            items : columns,
             defaults : {
                 sortable : true,
                 width : 100,
@@ -138,7 +152,7 @@ Ext.define('sitools.component.dictionary.gridPanel', {
                     allowBlank : false
                 }
             }
-        });
+        };
         return cmConcepts;
     },
     
@@ -147,9 +161,10 @@ Ext.define('sitools.component.dictionary.gridPanel', {
 			header : header,
 			dataIndex : dataIndex,
 			width : width,
-			editor : (editable === true) ? (new Ext.form.TextField({
+			editor : (editable === true) ? {
+			    xtype : 'textfield',
 				allowBlank : allowBlank
-			})) : null
+			} : null
 		};
 		return column;
 	},
@@ -159,4 +174,3 @@ Ext.define('sitools.component.dictionary.gridPanel', {
     }
         
 });
-

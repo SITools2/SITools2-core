@@ -285,7 +285,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('datasetCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('datasetCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -311,7 +311,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {
@@ -360,7 +360,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
                 Ext.Msg.alert(i18n.get('label.info'), i18n.get('dataset.refresh.needReactive'));
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_refresh.png');
                 
                 if (jsonResponse.success) {
@@ -386,7 +386,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
                 
                 if (jsonResponse.success) {
@@ -412,7 +412,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {

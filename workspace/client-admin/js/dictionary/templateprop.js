@@ -30,6 +30,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
     layout : 'fit',
 
     initComponent : function () {
+        
         if (this.action == 'modify') {
             this.title = i18n.get('label.modifyTemplate');
         }
@@ -37,10 +38,16 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
             this.title = i18n.get('label.createTemplate');
         }
 
-        var storeProperty = new Ext.data.JsonStore({
+        var storeProperty = Ext.create('Ext.data.JsonStore', {
             id : 'storePropertiesSelect',
-            root : 'property',
-            idProperty : 'name',
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    root : 'property',
+                    idProperty : 'name'
+                }
+            },
             fields : [ {
                 name : 'name',
                 type : 'string'
@@ -49,32 +56,6 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
                 type : 'string'
             } ]
         });
-
-//        var cmProperty = Ext.create('Ext.grid.column.Column', {
-//            columns : [ {
-//                header : i18n.get('headers.name'),
-//                dataIndex : 'name',
-//                width : 100,
-//                editor : new Ext.form.TextField({
-//                    allowBlank : false
-//                })
-//            },  {
-//                header : i18n.get('headers.value'),
-//                dataIndex : 'value',
-//                width : 150,
-//                editor : new Ext.form.TextField({
-//                    allowBlank : true
-//                })
-//
-//            } ],
-//            defaults : {
-//                sortable : true,
-//                width : 100,
-//                editor : new Ext.form.TextField({
-//                    allowBlank : false
-//                })
-//            }
-//        });
 
         var smProperty = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
@@ -110,31 +91,30 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
                 header : i18n.get('headers.name'),
                 dataIndex : 'name',
                 width : 100,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     allowBlank : false
-                })
+                }
             }, {
                 header : i18n.get('headers.value'),
                 dataIndex : 'value',
                 width : 150,
-                editor : new Ext.form.TextField({
+                editor : {
+                    xtype : 'textfield',
                     allowBlank : true
-                })
-    
+                }
             }],
             selModel : smProperty,
             plugins : [cellEditing]
         });
         
-        this.items = [ {
+        this.items = [{
             xtype : 'tabpanel',
             height : 450,
             activeTab : 0,
-            items : [ {
-                xtype : 'panel',
-                height : 400,
-                title : i18n.get('label.templateInfo'),
-                items : [ {
+            items : [{
+                    height : 400,
+                    title : i18n.get('label.templateInfo'),
                     xtype : 'form',
                     border : false,
                     padding : 10,
@@ -152,8 +132,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
                         name : 'description',
                         fieldLabel : i18n.get('label.description'),
                         anchor : '100%'
-                    } ]
-                } ]
+                    }]
             }, gridProperty ],
             buttons : [ {
                 text : i18n.get('label.ok'),

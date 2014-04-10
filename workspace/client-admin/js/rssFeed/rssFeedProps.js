@@ -707,7 +707,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 					} 
 	                
 	                if (isRss || isAtom) {
-                        this.boxComponent.setHtml(String.format(i18n.get("label.feedTypeDetected"), feedField.getValue().inputValue));
+                        this.boxComponent.setHtml(Ext.String.format(i18n.get("label.feedTypeDetected"), feedField.getValue().inputValue));
                         this.boxComponent.setVisible(true);
                         
                         var xml = (isRss) ? rss : atom;

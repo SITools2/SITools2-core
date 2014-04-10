@@ -870,7 +870,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                         try {
                             if (!Ext.isFunction(eval(record.data.xtype))) {
                                 record.set('dirty', true);
-                                Ext.Msg.alert(i18n.get('label.warning'), String.format(i18n.get('label.undefinedModule'), record.data.name));
+                                Ext.Msg.alert(i18n.get('label.warning'), Ext.String.format(i18n.get('label.undefinedModule'), record.data.name));
                                 correctlyParamModule = false;
                             }
                             getParametersMethod = eval(record.data.xtype + ".getParameters");

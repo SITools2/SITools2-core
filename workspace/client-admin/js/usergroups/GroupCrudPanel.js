@@ -34,9 +34,12 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel',{
+    selModel : Ext.create('Ext.selection.RowModel', {
         mode : 'SINGLE'
     }),
+    mixins : {
+        utils : 'js.utils.utils'
+    },
     pageSize : 10,
     forceFit : true,
 
@@ -44,27 +47,31 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/groups';
         
         this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
             remoteSort : true,
-            idProperty : 'name',
-            fields : [ {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'name'
+                }
+            },
+            fields : [{
                 name : 'name',
                 type : 'string'
             }, {
                 name : 'description',
                 type : 'string'
-            } ]
+            }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
+        this.columns = {
             defaults : {
                 sortable : true
-            // columns are not sortable by default
             },
-            columns : [ {
+            items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 200,
@@ -76,12 +83,11 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
                 width : 400
-            } ]
-        });
+            }]
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -93,7 +99,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
                 text : i18n.get('label.create'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
                 handler : this.onCreate,
@@ -118,7 +124,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
                 emptyText : i18n.get('label.search'),
                 store : this.store,
                 pageSize : this.pageSize
-            } ]
+            }]
         };
 
         this.listeners = {
@@ -160,7 +166,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
      * Create a new {sitools.admin.usergroups.GroupPropPanel} groupPropertyPanel to modify an existing group
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -176,7 +182,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -184,16 +190,14 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('msg.group.confirm.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('msg.group.confirm.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
                     this.doDelete(rec);
                 }
             }
-
         });
-
     },
     
     /**
@@ -222,7 +226,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
      * @returns
      */
     onMembers : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }

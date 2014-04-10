@@ -42,23 +42,27 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
         
         this.title = this.mode == 'list' ? i18n.get('label.groups') : i18n.get('label.selectGroups');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            autoSave : false,
-            idProperty : 'name',
-            url : this.url,
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    idProperty : 'name',
+                    root : 'data'
+                }
+            },
+            fields : [{
                 name : 'name',
                 type : 'string'
             }, {
                 name : 'description',
                 type : 'string'
-            } ]
+            }]
         });
         
-        this.grid = new Ext.grid.GridPanel({
-            xtype : 'grid',
+        this.grid = Ext.create('Ext.grid.Panel', {
             selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
@@ -97,7 +101,6 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
             }],
             bbar : {
                 xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
@@ -162,18 +165,18 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
      * Delete the selected group from the selected role
      */
     _onDelete : function () {
-        var rec = this.grid.getSelectionModel().getSelected();
-        if (!rec) {
+        var recs = this.grid.getSelectionModel().getSelection();
+        if (!recs) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        this.store.remove(rec);
+        this.store.remove(recs);
     },
 
     /**
      * Gets the selected groups and add them to the list groups of the current parent object
      */
     _onAdd : function () { // sub window -> no action
-        var recs = this.grid.getSelectionModel().getSelections();
+        var recs = this.grid.getSelectionModel().getSelection();
         var newrecs = [];
         Ext.each(recs, function (rec) {
             newrecs.push({

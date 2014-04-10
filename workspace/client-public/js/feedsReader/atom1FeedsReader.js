@@ -232,13 +232,13 @@ Ext.define('sitools.widget.atom1FeedReader', {
         var authorEmail = (record.data.author.email !== undefined) ? record.data.author.email : "";
         var res = "";
         if (link !== undefined && link !== "") {
-            res = String.format('<div class="topic"><a href="{0}" title="{1}" target="_blank"><span class="rss_feed_title">{2}</span></a><br/><span class="author">{3}</span></div>', link, value, 
+            res = Ext.String.format('<div class="topic"><a href="{0}" title="{1}" target="_blank"><span class="rss_feed_title">{2}</span></a><br/><span class="author">{3}</span></div>', link, value, 
                     xf.ellipsis(xf.stripTags(value), 50), author);
         } else {
-            res = String.format('<div class="topic"><span class="rss_feed_title">{0}</span><br/><span class="author">{1}</span></div>', xf.ellipsis(xf.stripTags(value), 50), author);
+            res = Ext.String.format('<div class="topic"><span class="rss_feed_title">{0}</span><br/><span class="author">{1}</span></div>', xf.ellipsis(xf.stripTags(value), 50), author);
         }
         if (dateFormat != "" && dateFormat != undefined ){
-            res += String.format('<p id="feeds-date">{0}</p>', dateFormat);
+            res += Ext.String.format('<p id="feeds-date">{0}</p>', dateFormat);
         }
         return res;
 
@@ -250,7 +250,7 @@ Ext.define('sitools.widget.atom1FeedReader', {
         if (value.type.substr(0, 5) != "image") {
         	return "";
         }
-		return String.format('<img src="{0}" width="50px">', value.href);
+		return Ext.String.format('<img src="{0}" width="50px">', value.href);
     },
     
     sortByDate : function (direction){

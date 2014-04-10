@@ -345,7 +345,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('label.convertersCrud.deleteConverter'), rec.data.name),
+            msg : Ext.String.format(i18n.get('label.convertersCrud.deleteConverter'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

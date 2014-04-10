@@ -38,13 +38,18 @@ Ext.define('sitools.component.applications.rolesPanel', {
     initComponent : function () {
         this.title = i18n.get('label.roleWin');
 
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            autoSave : false,
-            idProperty : 'id',
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_ROLES_URL'),
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_ROLES_URL'),
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -53,10 +58,10 @@ Ext.define('sitools.component.applications.rolesPanel', {
             }, {
                 name : 'description',
                 type : 'string'
-            } ]
+            }]
         });
         
-        this.grid = new Ext.grid.GridPanel({
+        this.grid = Ext.create('Ext.grid.Panel', {
             selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
@@ -72,7 +77,6 @@ Ext.define('sitools.component.applications.rolesPanel', {
             }],
             bbar : {
                 xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
@@ -80,8 +84,7 @@ Ext.define('sitools.component.applications.rolesPanel', {
             }
         });
         
-        
-        this.items = [this.grid ];
+        this.items = [ this.grid ];
         
         this.buttons = [{
             text : i18n.get('label.ok'),
@@ -93,7 +96,6 @@ Ext.define('sitools.component.applications.rolesPanel', {
             scope : this
             
         }];                
-        
         
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
         sitools.component.applications.rolesPanel.superclass.initComponent.call(this);
@@ -123,16 +125,13 @@ Ext.define('sitools.component.applications.rolesPanel', {
 	 * will add the selected roles in the storeRolesApplication. 
 	 */
     _onOK : function () {
-        Ext.each(this.grid.getSelectionModel().getSelections(), function (role) {
+        Ext.each(this.grid.getSelectionModel().getSelection(), function (role) {
             if (this.storeRolesApplication.find('role', role.data.name) == -1) {
                 var record = Ext.create('AuthorizationModel', {
                     role : role.data.name
                 });
 
                 this.storeRolesApplication.add(record);
-//                this.storeRolesApplication.add(new Ext.data.Record({
-//                    role : role.data.name
-//                }, role.data.name));
             }
         }, this);
         this.close();

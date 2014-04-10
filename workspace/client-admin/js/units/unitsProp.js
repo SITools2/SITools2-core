@@ -39,58 +39,50 @@ Ext.define('sitools.admin.units.unitsProp', {
     unitsId : null,    
     helperName : null,
     layout : 'fit',
+    mixins : {
+        utils : 'js.utils.utils'
+    },
 
     initComponent : function () {
 
         this.title = this.action == "create" ? i18n.get('label.createUnits') : i18n.get('label.modifyUnits'); 
 
-        this.gridHelper = new Ext.grid.GridPanel({
+        this.gridHelper = Ext.create('Ext.grid.Panel', {
             forceFit : true,
             id : 'gridHelper',
             title : i18n.get('title.unitsHelperClass'),
-            store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
+            store : Ext.create('Ext.data.JsonStore', {
+                autoLoad : true,
+                proxy : {
+                    type : 'ajax',
                     url : this.urlAdmin + "/unithelpers",
-                    restful : true,
-                    method : 'GET'
-                }),
-                remoteSort : false,
-                idProperty : 'id',
-                fields : [ {
+                    reader : {
+                        type : 'json',
+                        root : 'data',
+                        idProperty : 'id'
+                    }
+                },
+                fields : [{
                     name : 'helperName',
                     type : 'string'
-                } ],
-                autoLoad : true
+                }]
             }),
-
-            cm : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ {
+            columns : {
+                items : [{
                     header : i18n.get('label.helperName'),
                     dataIndex : 'helperName',
                     width : 100,
                     sortable : true
-                } ]
-            })/*,
-            listeners : {
-                scope : this,
-                cellclick :  this.onClassClick
-            }*/
-
+                }]
+            }
         });
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = Ext.create('Ext.form.Panel', {
             padding : 10,
             id : 'formPanel',
             defaultType : 'textfield',
             title : i18n.get('title.unitsDetails'),
-            items : [ {
+            items : [{
                 fieldLabel : i18n.get('label.name'),
                 name : 'name',
                 anchor : '100%', 
@@ -99,35 +91,40 @@ Ext.define('sitools.admin.units.unitsProp', {
                 fieldLabel : i18n.get('label.description'),
                 name : 'description',
                 anchor : '100%'               
-            } ]
+            }]
         });
         
         
         // ---------------- CONVERTERS GRID
         // Creation de la grid des tables d'une datasource
-        this.storeConvertersFromHelper = new Ext.data.JsonStore({
-            root : "data.converters",
+        this.storeConvertersFromHelper = Ext.create('Ext.data.JsonStore', {
+            proxy : {
+                type : 'memory',
+                reader : {
+                    root : "data.converters",
+                }
+            },
             fields : [ {
                 name : 'name',
                 type : 'string'
             }]
         });
-        this.cmConvertersFromHelper = new Ext.grid.ColumnModel({
-            columns : [{
+        this.cmConvertersFromHelper = {
+            items : [{
                 id : 'name',
                 header : i18n.get('headers.name'),
 //                width : 500,
                 sortable : true,
                 dataIndex : 'name'
             }]
-        });
+        };
 
-        this.gridConvertersFromHelper = new Ext.grid.GridPanel({
+        this.gridConvertersFromHelper = Ext.create('Ext.grid.Panel', {
             layout : 'fit',
             forceFit : true,
             store : this.storeConvertersFromHelper,
             columns : this.cmConvertersFromHelper,
-            selModel : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
             enableDragDrop : true,
@@ -136,24 +133,24 @@ Ext.define('sitools.admin.units.unitsProp', {
         });
 
         // Creation de la grid des tables du dataset
-        var cmConvertersForDimension = new Ext.grid.ColumnModel({
-            columns : [{
+        var cmConvertersForDimension = {
+            items : [{
                 id : 'name',
                 header : i18n.get('headers.name'),
 //                width : 500,
                 sortable : true,
                 dataIndex : 'name'
-            } ]
-        });
+            }]
+        };
 
-        this.storeConvertersForDimension = new Ext.data.JsonStore({
-            fields : [ {
+        this.storeConvertersForDimension = Ext.create('Ext.data.JsonStore', {
+            fields : [{
                 name : 'name',
                 type : 'string'
-            } ]
+            }]
         });
 
-        this.gridConverters = new Ext.grid.EditorGridPanel({
+        this.gridConverters = Ext.create('Ext.grid.Panel', {
             layout : 'fit',
             forceFit : true,
             store : this.storeConvertersForDimension,
@@ -173,7 +170,7 @@ Ext.define('sitools.admin.units.unitsProp', {
 			defaultRecord : {}
         });
         
-        this.gridChooseConverters = new Ext.Panel({
+        this.gridChooseConverters = Ext.create('Ext.panel.Panel', {
             title : i18n.get('label.gridConverters'),
             layout : 'fit', 
             items : [ displayPanelConverters ],            
@@ -184,8 +181,6 @@ Ext.define('sitools.admin.units.unitsProp', {
                 }
             }
         });
-        
-        
         
         // colonne avec checkbox pour choisir quelles colonnes indexer
         /*var indexed = new Ext.grid.CheckColumn({
@@ -236,13 +231,19 @@ Ext.define('sitools.admin.units.unitsProp', {
             clicksToEdit: 1
         });
         
-        this.gridUnit = new Ext.grid.Panel({
+        this.gridUnit = Ext.create('Ext.grid.Panel', {
             id : 'gridUnit',
             title : i18n.get('title.gridUnit'),
             forceFit : true,
-            store : new Ext.data.JsonStore({
-                idProperty : 'name',
-                fields : [ {
+            store : Ext.create('Ext.data.JsonStore', {
+                proxy : {
+                    type : 'memory',
+                    reader : {
+                        type : 'json',
+                        idProperty : 'name'
+                    }
+                },
+                fields : [{
                     name : 'label',
                     type : 'string'
                 }, {
@@ -265,13 +266,8 @@ Ext.define('sitools.admin.units.unitsProp', {
 	                handler : this.onDeleteUnit
 	            } ]
 	        },
-            columns : new Ext.grid.ColumnModel({
-                // specify any defaults for each column
-                defaults : {
-                    sortable : true
-                // columns are not sortable by default
-                },
-                columns : [ {
+            columns : {
+                items : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'label',
                     width : 250,
@@ -287,13 +283,12 @@ Ext.define('sitools.admin.units.unitsProp', {
                         xtype : 'textfield',
                         allowBlank : false
                     }              
-                }],
-                autoLoad : false
-            }),
+                }]
+            },
             plugins : [cellEditing]
         });
 
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create('Ext.tab.Panel', {
             height : 450,
             activeTab : 0,
             items : (this.action == "create") ? [ this.gridHelper, this.formPanel, this.gridChooseConverters, this.gridUnit ] : [
@@ -322,7 +317,7 @@ Ext.define('sitools.admin.units.unitsProp', {
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action == "create") {
             if (newTab.id == "fieldMappingFormPanel" || newTab.id == "gridFieldMapping") {
-                var rec = this.gridHelper.getSelectionModel().getSelected();
+                var rec = this.getLastSelectedRecord(this.gridHelper);
                 if (!rec) {
                     var tmp = new Ext.ux.Notification({
                         iconCls : 'x-icon-information',
@@ -439,7 +434,7 @@ Ext.define('sitools.admin.units.unitsProp', {
     loadConverters : function () {
         var helperName;
         if (this.action == "create") {
-			var record = this.gridHelper.getSelectionModel().getSelected();
+			var record = this.getLastSelectedRecord(this.gridHelper);
 			if (!record) {
 				var tmp = new Ext.ux.Notification({
 						iconCls : 'x-icon-information',
@@ -493,7 +488,7 @@ Ext.define('sitools.admin.units.unitsProp', {
         var rec;
         var jsonReturn = {};
         if (this.action == "create") {
-            rec = this.gridHelper.getSelectionModel().getSelected();
+            rec = this.getLastSelectedRecord(this.gridHelper);
             if (!rec) {
                 var tmp = new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
@@ -593,13 +588,12 @@ Ext.define('sitools.admin.units.unitsProp', {
      * Delete the selected unit property
      */
     onDeleteUnit : function () {
-        var grid = this.gridUnit;
-        var rec = grid.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord(this.gridUnit);
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
         }
-        grid.getStore().remove(rec);
+        this.gridUnit.getStore().remove(rec);
 
     }
 

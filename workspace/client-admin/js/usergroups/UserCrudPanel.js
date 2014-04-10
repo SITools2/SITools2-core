@@ -37,6 +37,9 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
     selModel : Ext.create('Ext.selection.RowModel', {
         mode : 'SINGLE'
     }),
+    mixins : {
+        utils : 'js.utils.utils'
+    },
     forceFit : true,
     pageSize : 10,
 
@@ -187,7 +190,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
      * Open a {sitools.admin.usergroups.UserPropPanel} userPropertyPanel to modify an user
      */
     _onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -203,14 +206,14 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('userCrud.delete'), rec.data.identifier),
+            msg : Ext.String.format(i18n.get('userCrud.delete'), rec.data.identifier),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -233,7 +236,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
                 
                 if (jsonResponse.success) {

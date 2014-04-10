@@ -234,7 +234,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
                 
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
                 
                 if (jsonResponse.success) {

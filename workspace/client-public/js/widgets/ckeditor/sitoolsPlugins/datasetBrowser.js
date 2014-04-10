@@ -204,12 +204,12 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.datasetBrowser', {
 					    this.browseField.setValue('Data : ' + selNode.attributes.datasetName);
 					    this.textField.setValue(selNode.attributes.datasetName);
 					    
-						this.browseField.dataLinkComponent = String.format("parent.sitools.user.clickDatasetIcone(\"{0}\", 'data'); return false;", urlLink);
+						this.browseField.dataLinkComponent = Ext.String.format("parent.sitools.user.clickDatasetIcone(\"{0}\", 'data'); return false;", urlLink);
 					}
 					else if (selNode.attributes.type == "form"){
 					    this.browseField.setValue('Form : ' + selNode.attributes.datasetName);
 					    this.textField.setValue(selNode.attributes.datasetName);
-						this.browseField.dataLinkComponent = String.format('parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;', urlLink);
+						this.browseField.dataLinkComponent = Ext.String.format('parent.SitoolsDesk.showFormFromEditor(\'{0}/forms\'); return false;', urlLink);
 					}
 					this.ownerCt.close();
 				}

@@ -30,7 +30,9 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     templateLoaded : false,
     //the copy of the conceptTemplate contained in the dictionary (only used when action = modify)
     conceptTemplate : null,
-    
+    mixins : {
+        utils : 'js.utils.utils'
+    },
 
     initComponent : function () {
         this.conceptTemplatesUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_TEMPLATES_URL');
@@ -46,17 +48,18 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
             forceFit : true,
             id : 'gridTemplates',
             title : i18n.get('title.conceptTemplates'),
-            store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
+            store : Ext.create('Ext.data.JsonStore', {
+                autoLoad : true,
+                proxy : {
+                    type : 'ajax',
                     url : this.conceptTemplatesUrl,
-                    restful : true,
-                    method : 'GET'
-                }),
-                remoteSort : false,
-                idProperty : 'id',
-                fields : [ {
+                    reader : {
+                        type : 'json',
+                        root : 'data',
+                        idProperty : 'id'
+                    }
+                },
+                fields : [{
                     name : 'id',
                     type : 'string'
                 }, {
@@ -68,7 +71,6 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
                 }, {
                     name : 'properties'
                 }],
-                autoLoad : true,
                 listeners : {
                     scope : this,
                     load : function () {
@@ -79,7 +81,6 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
                     }
                 }
             }),
-
             columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
@@ -98,16 +99,15 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
                     if (this.templateLoaded && !Ext.isEmpty(this.conceptTemplate) && this.action == "modify" && !Ext.isEmpty(this.conceptTemplate.id)) {
 	                    var recIndex = this.gridTemplates.getStore().indexOfId(this.conceptTemplate.id);
 	                    if (recIndex > -1) {
-	                        this.gridTemplates.getSelectionModel().selectRow(recIndex);    
+	                        this.gridTemplates.getSelectionModel().select(recIndex);    
 	                    }
 	                }
 	            }                
             }           
-            
         });
         
         //temporary panel to show the concept tab
-        var panelConceptTmp = new Ext.Panel({
+        var panelConceptTmp = Ext.create('Ext.panel.Panel', {
             title : i18n.get('title.gridConcept'),
             id : 'gridConceptsSelect', 
             listeners : {
@@ -116,13 +116,13 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
             }
         });
         
-        this.dictionaryFormPanel = new Ext.FormPanel({
+        this.dictionaryFormPanel = Ext.create('Ext.form.Panel', {
             border : false,
 			padding : 10,
 			id : 'dictionaryFormPanel',
             title : i18n.get('label.dictionaryInfo'),
             height : 400,
-			items : [ {
+			items : [{
 			    xtype : 'hidden',
 			    name : 'id'
 			}, {
@@ -136,11 +136,10 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 			    name : 'description',
 			    fieldLabel : i18n.get('label.description'),
 			    anchor : '100%'
-			} ] 
+			}] 
         });
         
-        this.mainTabPanel = new Ext.TabPanel({
-            xtype : 'tabpanel',
+        this.mainTabPanel = Ext.create('Ext.tab.Panel', {
             height : 450,
             activeTab : 0,
             id : 'tabPanelDictionary',
@@ -149,7 +148,6 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
                 text : i18n.get('label.ok'),
                 scope : this,
                 handler : this.onValidate
-
             }, {
                 text : i18n.get('label.cancel'),
                 scope : this,
@@ -161,8 +159,8 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
                 scope : this,
                 beforetabchange : this.beforeTabChange
             }
-
         });
+        
         this.items = [ this.mainTabPanel];
         this.listeners = {
 			scope : this, 
@@ -184,7 +182,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
         //create a new concept with the default values, specified in the template selected
         var templateSelected;
         if (Ext.isEmpty(this.conceptTemplate)) {
-            templateSelected = this.gridTemplates.getSelectionModel().getLastSelected().data;
+            templateSelected = this.getLastSelectedRecord(this.gridTemplates).data;
         } else {
             templateSelected = this.conceptTemplate;
         }
@@ -201,7 +199,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     },
     onDeleteConcet : function () {
         var grid = this.down('dictionaryGridPanel');
-        var rec = grid.getSelectionModel().getLastSelected();
+        var rec = grid.getLastSelectedRecord();
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
@@ -213,7 +211,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 
     },   
     onValidate : function () {
-        var rec = this.gridTemplates.getSelectionModel().getLastSelected();
+        var rec = this.getLastSelectedRecord(this.gridTemplates);
         var tmp;
         if (!rec) {
             tmp = new Ext.ux.Notification({
@@ -249,7 +247,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
         
         var templateSelected;
         if (Ext.isEmpty(this.conceptTemplate)) {
-            templateSelected = this.gridTemplates.getSelectionModel().getLastSelected().data;
+            templateSelected = this.getLastSelectedRecord(this.gridTemplates).data;
         } else {
             templateSelected = this.conceptTemplate;
         }
@@ -261,9 +259,8 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 			}
         }
         
-        
-        
         var gridConcept = this.down('dictionaryGridPanel');
+        
         if (!Ext.isEmpty(gridConcept) && Ext.isFunction(gridConcept.getStore)) {
 	        store = this.down('dictionaryGridPanel').getStore();
 	        if (store.getCount() > 0) {
@@ -366,7 +363,6 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
                                 conceptOut[property.name] = property.value;                                
                             }
                             
-//                            rec = new Ext.data.Record(conceptOut);
                             store.add(conceptOut);
                         }
                         if (nbConcepts > 0) {
@@ -384,7 +380,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     },
     
     onTemplateClick : function (self, rowIndex,  e) {
-        var rec = this.gridTemplates.getSelectionModel().getLastSelected();
+        var rec = this.getLastSelectedRecord(this.gridTemplates);
 		if (!rec) {
 			return false;
 		}
@@ -403,8 +399,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 			selModel : Ext.create('Ext.selection.RowModel', {
 				mode : 'SINGLE'
 			}),
-			tbar : {
-				xtype : 'sitools.widget.GridSorterToolbar',
+			tbar : Ext.create('sitools.widget.GridSorterToolbar', {
 				gridId : "gridConceptsSelect",
 				items : [{
 					text : i18n.get('label.create'),
@@ -417,35 +412,28 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 					handler : this.onDeleteConcet,
 					scope : this
 				}]
-			},
+			}),
 			id : 'gridConceptsSelect',
 			title : i18n.get('title.gridConcept'),
             editable : true
 		});
         
-        var tabPanel = this.get("tabPanelDictionary");
+        var tabPanel = this.down('tabpanel');
         tabPanel.remove('gridConceptsSelect');
         
         tabPanel.add(gridConceptsSelect);
+        tabPanel.setActiveTab('gridConceptsSelect');
         
-        this.doLayout();
     },
     beforeTabChange : function (self, newTab, currentTab) {
-//        if (this.action == "create") {
         if (newTab.id == "gridConceptsSelect" || newTab.id == "dictionaryFormPanel") {
-            var rec = this.gridTemplates.getSelectionModel().getLastSelected();
+            var rec = this.getLastSelectedRecord(this.gridTemplates);
+            
             if (!rec && Ext.isEmpty(this.conceptTemplate)) {
-                var tmp = new Ext.ux.Notification({
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : i18n.get('warning.noTemplateselection'),
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    }).show(document);
+                popupMessage("", i18n.get('warning.noTemplateselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
                 return false;
             }
         }
-//        }
     }
 });    
 

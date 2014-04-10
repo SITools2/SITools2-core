@@ -160,7 +160,7 @@ Ext.define('sitools.userProfile.Register', {
             },
             {
 				xtype: 'checkbox',
-				fieldLabel: String.format(i18n.get('label.acceptCGU'), URL_CGU),
+				fieldLabel: Ext.String.format(i18n.get('label.acceptCGU'), URL_CGU),
 	            id: 'acceptCGU',
 				name: 'acceptCGU',
 	            height: 40,

@@ -269,7 +269,7 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
         
         var compareOperator = predicatOperators.getOperatorValueForClient(predicat.compareOperator);
 		
-		return String.format("{0} {1} {2} {3}", 
+		return Ext.String.format("{0} {1} {2} {3}", 
 			predicat.logicOperator, 
 			this.getDisplayName(predicat.leftAttribute), 
 			compareOperator, 
@@ -290,7 +290,7 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
      */
     getDisplayName : function (column) {
 		if (column.specificColumnType == "DATABASE") {
-			return String.format("{0}.{1}", 
+			return Ext.String.format("{0}.{1}", 
 			Ext.isEmpty(column.tableAlias) ? column.tableName: column.tableAlias, 
 			column.columnAlias);
 		}

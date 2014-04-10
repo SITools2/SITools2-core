@@ -508,7 +508,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                 if (rec.columnAlias.toLowerCase() != rec.columnAlias) {
                     result = {
                         success : false, 
-                        message : String.format(i18n.get('label.columnAliasMaj'), rec.columnAlias)
+                        message : Ext.String.format(i18n.get('label.columnAliasMaj'), rec.columnAlias)
                     };
                     return result;
                 }
@@ -517,7 +517,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                     if (Ext.isEmpty(rec.filter) || !rec.filter) {
                         result = {
                             success : false, 
-                            message : String.format(i18n.get('label.columnPKNoFilter'), rec.columnAlias)
+                            message : Ext.String.format(i18n.get('label.columnPKNoFilter'), rec.columnAlias)
                         };
                         return result;
                     }

@@ -115,7 +115,7 @@ Ext.define('sitools.component.version.sitoolsVersion', {
                     
                     this.versionLabel.setText("<h4>Version : " + version + "</h4>", false);                    
                     this.buildDateLabel.setText("<h4>Build date : " + buildDate + "</h4>", false);                    
-                    this.credits.setText(String.format("<p>{0}</p><br>", copyright), false);
+                    this.credits.setText(Ext.String.format("<p>{0}</p><br>", copyright), false);
                     
                 },
                 failure : alertFailure

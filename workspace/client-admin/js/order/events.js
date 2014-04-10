@@ -23,7 +23,7 @@ Ext.namespace('sitools.component.order');
 Ext.define('sitools.component.order.events', { 
     extend : 'Ext.Window',
     width : 350,
-    height : 230,
+    height : 250,
     modal : true,
     closable : true,
     baseUrl : this.baseUrl,

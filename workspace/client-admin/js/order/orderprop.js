@@ -37,8 +37,8 @@ Ext.define('sitools.component.order.orderPropPanel', {
         this.title += " " + i18n.get('label.the');
         this.title += " " + this.orderRec.data.dateOrder;
 
-        var eventsStore = new Ext.data.JsonStore({
-            fields : [ {
+        var eventsStore = Ext.create('Ext.data.JsonStore', {
+            fields : [{
                 name : 'eventDate',
                 type : 'string'
             }, {
@@ -47,19 +47,20 @@ Ext.define('sitools.component.order.orderPropPanel', {
             }, {
                 name : 'message',
                 type : 'string'
-            } ],
+            }],
             data : this.orderRec.data.events
         });
-
-        var eventsCm = new Ext.grid.ColumnModel({
-            columns : [ {
+        
+        var eventsGrid = Ext.create('Ext.grid.Panel', {
+            layout : 'fit', 
+            flex : 0.5, 
+            title : i18n.get('label.events'),
+            store : eventsStore,
+            columns : [{
                 header : i18n.get("headers.date"),
                 dataIndex : 'eventDate',
                 width : 150
-            },
-            // {header : i18n.get("headers.order"), dataIndex: 'order', width :
-            // 100},
-            {
+            }, {
                 header : i18n.get("headers.description"),
                 dataIndex : 'description',
                 width : 250
@@ -67,26 +68,22 @@ Ext.define('sitools.component.order.orderPropPanel', {
                 header : i18n.get("headers.message"),
                 dataIndex : 'message',
                 width : 150
-            } ]
-        });
-        var eventsGrid = new Ext.grid.GridPanel({
-            layout : 'fit', 
-            flex : 0.5, 
-            title : i18n.get('label.events'),
-            store : eventsStore,
-            cm : eventsCm,
-            rowSelectionModel : Ext.create('Ext.selection.RowModel'),
+            }],
+            rowSelectionModel : Ext.create('Ext.selection.RowModel', {
+                mode : 'SINGLE'
+            }),
             autoScroll : true,
             padding : '5 5 5 5',
             forceFit : true
         });
 
-        var resourceCollectionStore = new Ext.data.JsonStore({
-            fields : [ {
+        var resourceCollectionStore = Ext.create('Ext.data.JsonStore', {
+            fields : [{
                 name : 'resourceCollection',
                 type : 'string'
-            } ]
+            }]
         });
+        
         if (!Ext.isEmpty(this.orderRec.data.resourceCollection)) {
             Ext.each(this.orderRec.data.resourceCollection, function (resource) {
                 var rec = {
@@ -107,40 +104,37 @@ Ext.define('sitools.component.order.orderPropPanel', {
             
         }
 
-        var resourceCollectionCm = new Ext.grid.ColumnModel({
-            columns : [ {
+        var resourceCollectionGrid = Ext.create('Ext.grid.Panel', {
+            layout : 'fit', 
+            flex : 0.5,
+            title : i18n.get('label.resourceCollection'),
+            store : resourceCollectionStore,
+            columns : [{
                 header : i18n.get("headers.resource"),
                 dataIndex : 'resourceCollection',
                 width : 600
-            } ]
-        });
-        var resourceCollectionGrid = new Ext.grid.GridPanel({
-            layout : 'fit', 
-            flex : 0.5, 
-            title : i18n.get('label.resourceCollection'),
-            store : resourceCollectionStore,
-            cm : resourceCollectionCm,
-            rowSelectionModel : Ext.create('Ext.selection.RowModel'),
+            }],
+            rowSelectionModel : Ext.create('Ext.selection.RowModel', {
+                mode : 'SINGLE'
+            }),
             autoScroll : true,
             padding : '5 5 5 5',
             forceFit : true
         });
 
-        this.items = [ {
+        this.items = [{
             xtype : 'panel',
-            layout : 'fit', 
-            items : [ {
-                xtype : 'panel',
-	            layout : 'vbox', 
-	            layoutConfig : {
-					align : 'stretch', 
-					flex : 'ratio'
-	            }, 
-                items : [ {
+            layout : {
+                type : 'vbox',
+                align : 'stretch',
+                pack  : 'start'
+            },
+            items : [{
                     xtype : 'form',
                     border : false,
                     padding : 10,
-                    items : [ {
+                    height : 140,
+                    items : [{
                         xtype : 'hidden',
                         name : 'orderId',
                         id : 'userValueFieldId'
@@ -173,8 +167,7 @@ Ext.define('sitools.component.order.orderPropPanel', {
                         maxLength : 100,
                         readOnly : true
                     } ]
-                }, resourceCollectionGrid, eventsGrid ]
-            } ],
+                }, resourceCollectionGrid, eventsGrid],
             buttons : [ {
                 text : i18n.get('label.close'),
                 scope : this,
@@ -183,6 +176,7 @@ Ext.define('sitools.component.order.orderPropPanel', {
                 }
             } ]
         } ];
+        
         sitools.component.order.orderPropPanel.superclass.initComponent.call(this);
     },
 

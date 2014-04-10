@@ -42,9 +42,15 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
         
         this.storeAuthorizations = Ext.create('Ext.data.JsonStore', {
             model : 'AuthorizationModel',
-            url : this.urlAuthorizations,
-            root : 'authorization.authorizations',
-            autoLoad : true
+            autoLoad : true,
+            proxy : {
+                type : 'ajax',
+                url : this.urlAuthorizations,
+                reader : {
+                    type : 'json',
+                    root : 'authorization.authorizations'
+                }
+            }
         });
 
         this.gridAuthorizations = Ext.create('Ext.grid.Panel', {
@@ -107,7 +113,7 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
                 header : i18n.get('headers.options'),
                 dataIndex: 'optionsMethod',
                 width: 55
-            }],
+            }]
         });
         
         this.items = [ this.gridAuthorizations ];
@@ -143,7 +149,7 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
      * @return {}
      */
     _onDeleteRole : function () {
-        var recs = this.gridAuthorizations.getSelectionModel().getSelections();
+        var recs = this.gridAuthorizations.getSelectionModel().getSelection();
         if (recs.length === 0) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }

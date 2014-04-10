@@ -39,18 +39,26 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
     closable : false,
     pageSize : 10,
     layout : 'fit',
+    mixins : {
+        utils : 'js.utils.utils'
+    },
 
     initComponent : function () {
         
         this.title = this.mode == 'list' ? i18n.get('label.members') : i18n.get('label.selectUsers');
 
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            autoSave : false,
-            idProperty : 'identifier',
-            url : this.url,
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'identifier'
+                }
+            },
+            fields : [{
                 name : 'identifier',
                 type : 'string'
             }, {
@@ -59,11 +67,10 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
             }, {
                 name : 'lastName',
                 type : 'string'
-            } ]
+            }]
         });
         
-        this.grid = new Ext.grid.GridPanel({
-            xtype : 'grid',
+        this.grid = Ext.create('Ext.grid.Panel', {
             selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
@@ -106,7 +113,6 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
             }],
             bbar : {
                 xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
@@ -141,7 +147,6 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
     onRender : function () {
         sitools.admin.usergroups.UsersPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            scope : this,
             params : {
                 start : 0,
                 limit : this.pageSize
@@ -171,11 +176,11 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
      * Delete the selected user from the store
      */
     _onDelete : function () {
-        var rec = this.grid.getSelectionModel().getSelected();
-        if (!rec) {
+        var recs = this.grid.getSelectionModel().getSelection();
+        if (!recs) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
-        this.store.remove(rec);
+        this.store.remove(recs);
     },
 
     /**
@@ -183,7 +188,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
      */
     _onAdd : function () { // sub window -> no action
         if (this.mode == "select") {
-            var recs = this.grid.getSelectionModel().getSelections();
+            var recs = this.grid.getSelectionModel().getSelection();
             var newrecs = [];
             Ext.each(recs, function (rec) {
                 newrecs.push({
@@ -195,7 +200,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
             this.storeref.add(newrecs);
         }
         if (this.mode == "selectUnique") {
-            var rec = this.grid.getSelectionModel().getSelected();
+            var rec = this.getLastSelectedRecord();
             this.displayField.setValue(rec.data.firstName + " " + rec.data.lastName);
             this.valueField.setValue(rec.data.identifier);
         }
@@ -239,6 +244,5 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
     _onCancel : function () {
         this.destroy();
     }
-
 });
 

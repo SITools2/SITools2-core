@@ -324,11 +324,11 @@ Ext.define('Ext.ux.form.MultiSelect', {
              }
         }
         if (value.length < this.minSelections) {
-            this.markInvalid(String.format(this.minSelectionsText, this.minSelections));
+            this.markInvalid(Ext.String.format(this.minSelectionsText, this.minSelections));
             return false;
         }
         if (value.length > this.maxSelections) {
-            this.markInvalid(String.format(this.maxSelectionsText, this.maxSelections));
+            this.markInvalid(Ext.String.format(this.maxSelectionsText, this.maxSelections));
             return false;
         }
         return true;

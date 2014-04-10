@@ -158,26 +158,25 @@ sitools.widget.templateTreeNode = function (attributes) {
  * @extends Ext.Toolbar
  */
 Ext.define('sitools.widget.GridSorterToolbar', {
-    extend : 'Ext.Toolbar',
-	alias : 'sitools.widget.GridSorterToolbar',
+    extend : 'Ext.toolbar.Toolbar',
+	alias : 'widget.sitools.widget.GridSorterToolbar',
 	alignRight : true, //default to true
     initComponent : function () {
-        
         
         sitools.widget.GridSorterToolbar.superclass.initComponent.call(this);
         
         if (this.alignRight) {
             this.add('->');
         }
-        this.add(new sitools.widget.GridTop({
-    					gridId : this.gridId
-    				}), new sitools.widget.GridUp({
-    					gridId : this.gridId
-    				}), new sitools.widget.GridDown({
-    					gridId : this.gridId
-    				}), new sitools.widget.GridBottom({
-    					gridId : this.gridId
-    				}));
+        this.add(Ext.create('sitools.widget.GridTop', {
+				gridId : this.gridId
+			}), Ext.create('sitools.widget.GridUp', {
+				gridId : this.gridId
+			}), Ext.create('sitools.widget.GridDown', {
+				gridId : this.gridId
+			}), Ext.create('sitools.widget.GridBottom', {
+				gridId : this.gridId
+			}));
     }
 });
 
@@ -299,7 +298,7 @@ Ext.define('sitools.widget.DateFieldWithToday', {
 				}
 			}
         	catch (err) {
-        		errors.push(String.format(this.invalidTextWithToday, svalue));
+        		errors.push(Ext.String.format(this.invalidTextWithToday, svalue));
         		return errors;	
         	}
         	
@@ -309,18 +308,18 @@ Ext.define('sitools.widget.DateFieldWithToday', {
         }
         
         if (!value) {
-            errors.push(String.format(this.invalidText, svalue, this.format));
+            errors.push(Ext.String.format(this.invalidText, svalue, this.format));
             return errors;
         }
 
         time = value.getTime();
         
         if (this.minValue && time < this.minValue.clearTime().getTime()) {
-            errors.push(String.format(this.minText, this.formatDate(this.minValue)));
+            errors.push(Ext.String.format(this.minText, this.formatDate(this.minValue)));
         }
 
         if (this.maxValue && time > this.maxValue.clearTime().getTime()) {
-            errors.push(String.format(this.maxText, this.formatDate(this.maxValue)));
+            errors.push(Ext.String.format(this.maxText, this.formatDate(this.maxValue)));
         }
 
         if (this.disabledDays) {
@@ -336,7 +335,7 @@ Ext.define('sitools.widget.DateFieldWithToday', {
 
         var fvalue = this.formatDate(value);
         if (this.disabledDatesRE && this.disabledDatesRE.test(fvalue)) {
-            errors.push(String.format(this.disabledDatesText, fvalue));
+            errors.push(Ext.String.format(this.disabledDatesText, fvalue));
         }
 
         return errors;

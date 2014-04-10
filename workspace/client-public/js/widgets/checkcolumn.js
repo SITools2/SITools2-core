@@ -104,10 +104,10 @@ Ext.define('Ext.ux.grid.CheckColumn', {
         p.css += ' x-grid3-check-col-td'; 
         var cmp = Ext.getCmp(this.id); 
         if (cmp.enabled) {
-        	return String.format('<div id="{2}" class="x-grid3-check-col{0} x-grid3-check-col-enabled {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
+        	return Ext.String.format('<div id="{2}" class="x-grid3-check-col{0} x-grid3-check-col-enabled {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
         }
         else {
-        	return String.format('<div id="{2}" class="x-grid3-check-disabled-col{0} {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
+        	return Ext.String.format('<div id="{2}" class="x-grid3-check-disabled-col{0} {1}">&#160;</div>', v ? '-on' : '', cmp.createId(), this.id);
         }
     },
     

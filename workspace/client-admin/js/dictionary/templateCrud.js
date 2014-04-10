@@ -29,17 +29,26 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
     selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
     forceFit : true,
+    mixins : {
+        utils : 'js.utils.utils'
+    },
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_TEMPLATES_URL');
 
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
+        this.store = Ext.create('Ext.data.JsonStore', {
             remoteSort : true,
-            idProperty : 'id',
-            fields : [ {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    idProperty : 'id',
+                    root : 'data'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -48,16 +57,11 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
             }, {
                 name : 'description',
                 type : 'string'
-            } ]
+            }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
+        this.columns = {
+            items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 100,
@@ -70,12 +74,11 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
                 dataIndex : 'description',
                 width : 400,
                 sortable : false
-            } ]
-        });
+            }]
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -137,7 +140,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
     },
 
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -151,7 +154,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
     },
 
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
@@ -159,7 +162,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('templateCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('templateCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -178,7 +181,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
                 
                 if (jsonResponse.success) {

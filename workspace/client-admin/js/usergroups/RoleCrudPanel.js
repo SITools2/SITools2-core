@@ -37,18 +37,27 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'
     }),
+    mixins : {
+        utils : 'js.utils.utils'
+    },
     pageSize : 10,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ROLES_URL');
         
         this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
+            pageSize : this.pageSize,
             remoteSort : true,
-            idProperty : 'id',
-            fields : [ {
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    idProperty : 'id',
+                    root : 'data'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -57,16 +66,11 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
             }, {
                 name : 'description',
                 type : 'string'
-            } ]
+            }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : true
-            // columns are not sortable by default
-            },
-            columns : [ {
+        this.columns = {
+            items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 200,
@@ -79,12 +83,11 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
                 dataIndex : 'description',
                 width : 400,
                 sortable : false
-            } ]
-        });
+            }]
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -96,7 +99,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
                 text : i18n.get('label.create'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
                 handler : this.onCreate,
@@ -126,7 +129,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
                 emptyText : i18n.get('label.search'),
                 store : this.store,
                 pageSize : this.pageSize
-            } ]
+            }]
         };
 
         this.listeners = {
@@ -165,7 +168,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      * Open a {sitools.admin.usergroups.RolePropPanel} role panel to modify an existing role
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -181,14 +184,14 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      * Diplay confirm delete Msg box and call the method doDelete
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : String.format(i18n.get('roleCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('roleCrud.delete'), rec.data.name),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -205,8 +208,6 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      * @param rec the record to delete
      */
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
-        // if (!rec) return false;
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
             method : 'DELETE',
@@ -224,7 +225,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      * Open a {sitools.admin.usergroups.UsersPanel} users panel retrieving all the users of the current role
      */
     onUsers : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -240,7 +241,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      * Open a {sitools.admin.usergroups.GroupsPanel} groups panel retrieving all the groups of the current role
      */
     onGroups : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
