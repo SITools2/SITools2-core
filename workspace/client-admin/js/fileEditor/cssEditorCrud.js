@@ -36,18 +36,27 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
     }),
     pageSize : 15,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
-//        this.iconCls = loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png';
 
-        this.store = new Ext.data.JsonStore({
-            root : 'items',
-            restful : true,
+        this.store = Ext.create("Ext.data.JsonStore", {
+            pageSize : this.pageSize,
+            autoLoad : true,
+            proxy : {
+                type : 'ajax',
+                url : this.url + '/css',
+                reader : {
+                    type : 'json',
+                    root : 'items',
+                    idProperty : 'name'
+                }
+            },
             remoteSort : false,
-            url : this.url + '/css',
-            idProperty : 'name',
             fields : [ {
                 name : 'name',
                 type : 'string',
@@ -68,29 +77,26 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
             } ]
         });
         
-        this.columns = new Ext.grid.ColumnModel({
+        this.columns = {
             defaults : {
                 sortable : true
             },
-            columns : [{
+            items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 500,
-                sortable : true
+                width : 500
             },
             {
                 header : i18n.get('label.size'),
                 dataIndex : 'size',
-                width : 100,
-                sortable : true
+                width : 100
             },
             {
                 header : i18n.get('label.lastModif'),
                 dataIndex : 'lastModif',
-                width : 360,
-                sortable : true
+                width : 360
             }]
-        });
+        };
 
         this.tbar = {
             xtype : 'toolbar',
@@ -113,13 +119,8 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
         sitools.component.fileEditor.cssEditorCrud.superclass.initComponent.call(this);
     },
 
-    onRender : function () {
-        sitools.component.fileEditor.cssEditorCrud.superclass.onRender.apply(this, arguments);
-        this.store.load();
-    },
-    
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }

@@ -35,7 +35,7 @@ Ext.define('sitools.component.fileEditor.fileEditorProp', {
         var buttons;
         
         if (this.modal === true) {
-            buttons = [ [{
+            buttons = [{
                 text : i18n.get('label.save'),
                 scope : this,
                 handler : this.onValidate
@@ -45,7 +45,7 @@ Ext.define('sitools.component.fileEditor.fileEditorProp', {
                 handler : function () {
                     this.close();
                 }
-            } ] ];
+            } ];
         } else {
             buttons = [{
                 text : i18n.get('label.cancel'),
