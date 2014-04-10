@@ -71,6 +71,7 @@ Ext.define('sitools.component.fileEditor.licenceEditorProp', { extend : 'Ext.Pan
                         height : 350
                     });
                     this.fileEditor.setValue(data);
+                    CKEDITOR.instances[this.fileEditor.id].setData(data); 
                 },
                 failure : alertFailure
             });
@@ -78,8 +79,7 @@ Ext.define('sitools.component.fileEditor.licenceEditorProp', { extend : 'Ext.Pan
     },
     
     onValidate : function () {
-        CKEDITOR.instances[this.fileEditor.id].updateElement();
-        var text = this.fileEditor.getValue();
+        var text = CKEDITOR.instances[this.fileEditor.id].getData();
         Ext.Ajax.request({
             url : this.url + '/cgu.html',
             method : 'PUT',
