@@ -40,6 +40,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
     height : 480,
     modal : true,
     layout : 'fit',
+    autoScroll : true,
     id : ID.COMPONENT_SETUP.DATABASE,
 
     initComponent : function () {

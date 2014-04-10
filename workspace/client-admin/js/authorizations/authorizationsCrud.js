@@ -24,7 +24,8 @@ Ext.namespace('sitools.admin.authorizations');
  * @class sitools.admin.authorizations.authorizationsCrudPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'Ext.grid.Panel', 
+Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
+    extend : 'Ext.grid.Panel', 
 	alias : 'widget.s-authorizations',
     border : false,
     height : 300,
@@ -37,17 +38,22 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
         this.urlAuthorizations = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.url,
+        this.store = Ext.create('Ext.data.JsonStore', {
             remoteSort : true,
-            // sortField: 'name',
-            idProperty : 'id',
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             baseParams : {
                 type : "class"
             },
-            fields : [ {
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -61,16 +67,14 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
                 type : 'string'
             }, {
                 name : 'authorizations'
-            } ]
+            }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
+        this.columns = {
             defaults : {
                 sortable : true
-            // columns are not sortable by default
             },
-            columns : [ {
+            items : [{
                 header : i18n.get('label.id'),
                 dataIndex : 'id',
                 width : 100,
@@ -88,12 +92,11 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
                 dataIndex : 'description',
                 width : 450,
                 sortable : false
-            } ]
-        });
+            }]
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -138,7 +141,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
     },
 
     onDefineRole : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getLastSelected();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -150,7 +153,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', { extend : 'E
     },
 
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getLastSelected();
         if (!rec) {
             return false;
         }

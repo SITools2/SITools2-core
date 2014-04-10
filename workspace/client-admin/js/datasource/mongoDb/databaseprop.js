@@ -41,6 +41,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', {
     modal : true,
     id : ID.COMPONENT_SETUP.DATABASE,
     layout : 'fit',
+    autoScroll : true,
 
     initComponent : function () {
 //        if (this.action === 'create') {

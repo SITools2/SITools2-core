@@ -42,12 +42,17 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
         this.urlAuthorizations = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
 
         this.store = Ext.create('Ext.data.JsonStore', {
-            root : 'data',
-            idProperty : 'id',
-            restful : true,
-            url : this.url,
             remoteSort : true,
             autoLoad : true,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id',
+                }
+            },
             model : 'ApplicationModel',
             sorters: ['category','name'],
             groupField: 'category'
@@ -74,18 +79,6 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                     onClickOption(record.data.url);
                 }
             }]
-//            renderer : function (value, metadata, record, rowIndex, colIndex, store) {
-//                var applicationStatus = record.get("status");
-//                if (Ext.isEmpty(applicationStatus) || "INACTIVE" == applicationStatus) {
-//                    return null;
-//                } else {
-//                    return String.format("<a onClick='onClickOption(\"{0}\"); return false;' href=#>{1}</a>", value, String.format(
-//                                                "<img alt={0} src='" + loadUrl.get('APP_URL') + "/common/res/images/icons/wadl.gif'>", i18n
-//                                                        .get('label.wadl')));    
-//                }
-//                
-//                
-//            }
         }];
 
         this.tbar = {
@@ -125,7 +118,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             } ]
         };
         
-        var groupingFeature = Ext.create('Ext.grid.feature.Grouping',{
+        var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
             startCollapsed : true,
 //            groupHeaderTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
             groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})'
@@ -150,7 +143,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
      * @return {}
      */
     onDefineRole : function () {
-        var rec = this.getSelectionModel().getSelected(), up = new sitools.admin.applications.applicationsRolePanel({
+        var rec = this.getSelectionModel().getLastSelected(), up = new sitools.admin.applications.applicationsRolePanel({
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });

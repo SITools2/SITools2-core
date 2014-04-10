@@ -49,14 +49,18 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
         // GET /datasources read
         // PUT /datasources/[id] update
         // DELETE /datasources/[id] delete
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
+        this.store = Ext.create('Ext.data.JsonStore', {
             remoteSort : true,
-            autoSave : false,
-            url : this.url,
-            idProperty : 'id',
-            fields : [ {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -92,13 +96,11 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             } ]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
+        this.columns = {
             defaults : {
                 sortable : true
-            // columns are not sortable by default
             },
-            columns : [ {
+            items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 100,
@@ -147,11 +149,10 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
 					}
                 }]
             }]
-        });
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),

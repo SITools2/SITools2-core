@@ -66,17 +66,17 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
         this.urlAdmin = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_APPLICATIONS_URL') + '/instances';
         this.urlList = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_APPLICATIONS_URL') + '/classes';
         
-        this.httpProxyForms = new Ext.data.HttpProxy({
-            url : this.urlAdmin,
-            restful : true,
-            method : 'GET'
-            
-        });
-        
-        this.store = new Ext.data.JsonStore({
-            idProperty : 'id',
-            root : "data",
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            proxy : {
+                type : 'ajax',
+                url : this.urlAdmin,
+                reader : {
+                    type : 'json',
+                    idProperty : 'id',
+                    root : "data"
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -113,8 +113,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
             {
                 name : 'classOwner',
                 type : 'string'
-            }],
-            proxy : this.httpProxyForms
+            }]
         });
 
         this.columns =  [{
@@ -211,20 +210,20 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
         };
 
         this.bbar = {
-                xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
-                store : this.store,
-                displayInfo : true,
-                displayMsg : i18n.get('paging.display'),
-                emptyMsg : i18n.get('paging.empty')
-            };
+            xtype : 'pagingtoolbar',
+            pageSize : this.pageSize,
+            store : this.store,
+            displayInfo : true,
+            displayMsg : i18n.get('paging.display'),
+            emptyMsg : i18n.get('paging.empty')
+        };
         
         this.listeners = {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
         sitools.admin.applications.plugins.ApplicationPluginCrudPanel.superclass.initComponent.call(this);
-
     },
 
 	/**
@@ -233,10 +232,8 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
     onRender : function () {
         sitools.admin.applications.plugins.ApplicationPluginCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
