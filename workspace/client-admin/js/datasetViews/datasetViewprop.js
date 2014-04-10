@@ -39,48 +39,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewPropPanel', { extend : 'Ext.Win
             this.title = i18n.get('label.modifyDatasetView');
         }
         
-        var storeDependencies = new Ext.data.JsonStore({
-            fields : [ {
-                name : 'url',
-                type : 'string'
-            }],
-            autoLoad : false
-        });
-        
-        var tbar = {
-			xtype : 'sitools.widget.GridSorterToolbar',
-            defaults : {
-                scope : this
-            },
-            items : [ {
-                text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
-                handler : this.onCreateDependencies
-            }, {
-                text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-                handler : this.onDeleteDependencies
-            }]
-        };
-        
-        this.gridDependencies = Ext.create('Ext.grid.Panel', {
-            title : i18n.get('title.dependencies'),
-            height : 180,
-            store : storeDependencies,
-            tbar : tbar,
-            forceFit : true,
-            columns : [{
-                header : i18n.get('label.url'),
-                dataIndex : 'url',
-                editor : {
-                    xtype : 'textfield',
-                    allowBlank : false
-                }
-            }],
-            selModel : Ext.create('Ext.selection.RowModel',{
-                mode : 'SINGLE'
-            })
-        });
+        this.gridDependencies = Ext.create("sitools.admin.util.DependenciesPanel");
         
         this.formPanel = new Ext.form.FormPanel({
         	title : i18n.get('label.datasetViewInfo'),

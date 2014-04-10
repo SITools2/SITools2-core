@@ -40,17 +40,26 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
     }),
     pageSize : 10,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_VIEWS_URL');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
+        this.store = Ext.create("Ext.data.JsonStore", {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             remoteSort : true,
-            autoSave : false,
-            url : this.url,
-            idProperty : 'id',
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -75,13 +84,13 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
             }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
+        this.columns = {
             // specify any defaults for each column
             defaults : {
                 sortable : true
             // columns are not sortable by default
             },
-            columns : [ {
+            items : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 100,
@@ -106,7 +115,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
                 width : 50,
                 sortable : true
             } ]
-        });
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
@@ -155,10 +164,8 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
     onRender : function () {
         sitools.admin.datasetView.DatasetViewsCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -172,7 +179,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
     },
 
     _onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -186,12 +193,12 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
     },
 
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
 
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('datasetViewsCrud.delete'),
@@ -206,8 +213,6 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
 
     },
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
-        // if (!rec) return false;
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
             method : 'DELETE',
