@@ -349,7 +349,7 @@
 					Ext.MessageBox.buttonText.yes = i18n.get('label.yes');
 		      		Ext.MessageBox.buttonText.no = i18n.get('label.no');
 						Ext.QuickTips.init();
-						if (Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
+						if (Ext.isEmpty(Ext.util.Cookies.get('scheme')) || Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
 							/*new sitools.userProfile.Login({
 			        			url:'${appUrl}/authentication/login',
 			        			handler : initAppli

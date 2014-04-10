@@ -92,8 +92,8 @@ var onBeforeRequest = function (conn, options) {
 		}
 		else {
 		    if (!Ext.isEmpty(Ext.util.Cookies.get('hashCode'))) {
-		        date.setMinutes(date.getMinutes() + COOKIE_DURATION);
-		        Ext.util.Cookies.set('hashCode', Ext.util.Cookies.get('hashCode'), date);
+		        var expireDate = Ext.Date.add(date, Ext.Date.MINUTE, COOKIE_DURATION);
+		        Ext.util.Cookies.set('hashCode', Ext.util.Cookies.get('hashCode'), expireDate);
 		        Ext.apply(Ext.Ajax.defaultHeaders, {
 					Authorization : Ext.util.Cookies.get('hashCode')
 		        });
@@ -102,15 +102,16 @@ var onBeforeRequest = function (conn, options) {
             }
 		}
     }
+    
     if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-        date.setMinutes(date.getMinutes() + COOKIE_DURATION);
-        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), date);
+        var expireDate = Ext.Date.add(date, Ext.Date.MINUTE, COOKIE_DURATION);
+        Ext.util.Cookies.set('userLogin', Ext.util.Cookies.get('userLogin'), expireDate);
         
         taskCheckSessionExpired.cancel();
         taskCheckSessionExpired.delay(COOKIE_DURATION * 1000 * 60);
         
         //use localstorage to store sessionsTime out
-        localStorage.setItem("userSessionTimeOut", Ext.util.Format.date(date, SITOOLS_DATE_FORMAT));
+        localStorage.setItem("userSessionTimeOut", Ext.util.Format.date(expireDate, SITOOLS_DATE_FORMAT));
         Ext.EventManager.un(window, "storage");
         Ext.EventManager.on(window, "storage", function() {
             if (Ext.isEmpty(localStorage.getItem("userSessionTimeOut"))) {
