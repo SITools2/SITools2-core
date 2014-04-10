@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,10 +18,14 @@
  ******************************************************************************/
 package fr.cnes.sitools.common.model;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.restlet.Request;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.Form;
 import org.restlet.data.Reference;
+import org.restlet.data.Status;
+import org.restlet.resource.ResourceException;
 
 /**
  * Base class for filter parameters.
@@ -75,12 +79,12 @@ public final class ResourceCollectionFilter {
    * totalCount OUT
    */
   private Integer totalCount = null;
-  
+
   /**
    * searching mode (strict, startwith (default))
    */
   private String mode = "startwith";
-  
+
   /**
    * Constructor with Request.
    * 
@@ -102,11 +106,27 @@ public final class ResourceCollectionFilter {
     this.query = (pquery != null) ? Reference.decode(pquery, CharacterSet.UTF_8) : null;
 
     String psort = form.getFirstValue("sort");
-    this.sort = (psort != null) ? Reference.decode(psort, CharacterSet.UTF_8) : null;
+    if (psort != null && psort.startsWith("[")) {
+      ObjectMapper mapper = new ObjectMapper();
+      try {
+        JsonNode rootNode = mapper.readValue(psort, JsonNode.class);
+        JsonNode sortNode = rootNode.get(0);
+        psort = sortNode.get("property").getTextValue();
+        this.sort = (psort != null) ? Reference.decode(psort, CharacterSet.UTF_8) : null;
+        String porder = sortNode.get("direction").getTextValue();
+        this.order = (porder != null) ? Reference.decode(porder, CharacterSet.UTF_8) : null;
+      }
+      catch (Exception e) {
+        throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e.getMessage(), e);
+      }
+    }
+    else {
+      this.sort = (psort != null) ? Reference.decode(psort, CharacterSet.UTF_8) : null;
 
-    String porder = form.getFirstValue("dir");
-    this.order = (porder != null) ? Reference.decode(porder, CharacterSet.UTF_8) : null;
-    
+      String porder = form.getFirstValue("dir");
+      this.order = (porder != null) ? Reference.decode(porder, CharacterSet.UTF_8) : null;
+    }
+
     String pmode = form.getFirstValue("mode");
     this.setMode((pmode != null) ? Reference.decode(pmode, CharacterSet.UTF_8) : null);
 
@@ -127,9 +147,10 @@ public final class ResourceCollectionFilter {
     this.start = startIndex;
     this.query = queryStr;
   }
-  
+
   /**
    * Gets the filterMode value
+   * 
    * @return the filterMode
    */
   public int getFilterMode() {
@@ -138,7 +159,9 @@ public final class ResourceCollectionFilter {
 
   /**
    * Sets the value of filterMode
-   * @param filterMode the filterMode to set
+   * 
+   * @param filterMode
+   *          the filterMode to set
    */
   public void setFilterMode(int filterMode) {
     this.filterMode = filterMode;
@@ -173,8 +196,11 @@ public final class ResourceCollectionFilter {
 
   /**
    * To SQL count
-   * @param req request
-   * @param fieldName field name
+   * 
+   * @param req
+   *          request
+   * @param fieldName
+   *          field name
    * @return request
    */
   public String toSqlCount(String req, String fieldName) {
@@ -325,7 +351,9 @@ public final class ResourceCollectionFilter {
 
   /**
    * Sets the value of request
-   * @param request the request to set
+   * 
+   * @param request
+   *          the request to set
    */
   public void setRequest(Request request) {
     this.request = request;
@@ -333,6 +361,7 @@ public final class ResourceCollectionFilter {
 
   /**
    * Gets the request value
+   * 
    * @return the request
    */
   public Request getRequest() {
@@ -341,7 +370,9 @@ public final class ResourceCollectionFilter {
 
   /**
    * Sets the value of mode
-   * @param mode the mode to set
+   * 
+   * @param mode
+   *          the mode to set
    */
   public void setMode(String mode) {
     this.mode = mode;
@@ -349,6 +380,7 @@ public final class ResourceCollectionFilter {
 
   /**
    * Gets the mode value
+   * 
    * @return the mode
    */
   public String getMode() {
