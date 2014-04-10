@@ -143,7 +143,7 @@ var checkSessionExpired = function () {
         //extend the timer for the remaining session time
         var expire = localStorage.getItem("userSessionTimeOut");
         var date = new Date();
-        var expireDate = Date.parseDate(expire, SITOOLS_DATE_FORMAT);
+        var expireDate = Ext.Date.parse(expire, SITOOLS_DATE_FORMAT);
         
         var sessionTimeLeftMs = (expireDate.getTime() - date.getTime()) + 1000;
         taskCheckSessionExpired.delay(sessionTimeLeftMs);
