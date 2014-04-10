@@ -24,7 +24,6 @@ Ext.namespace('sitools.component.logs');
 Ext.define('sitools.component.logs.analogProp', { 
     extend : 'Ext.panel.Panel',
     alias : 'widget.s-analog',
-    border : false,
     height : 480,
     id : "analogBoxId",
     width : 700,
@@ -33,7 +32,11 @@ Ext.define('sitools.component.logs.analogProp', {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/plugin/analog';
         this.layout = 'fit';
         
-        this.tbar = new Ext.Toolbar({
+        this.tbar = {
+            xtype : 'toolbar',
+            defaults : {
+                scope : this
+            },
             items : [ {
                 xtype : 'button',
                 text : i18n.get('label.logGenerate'),
@@ -41,30 +44,11 @@ Ext.define('sitools.component.logs.analogProp', {
                 icon : '/sitools/common/res/images/icons/tree_application_plugin.png',
                 handler : this.refresh
             } ]
-        });
+        };
         
-        var htmlReaderCfg = {
-                defaultSrc : this.url + '?_dc=' + new Date().getTime(),
-                id : 'log',
-                layout : "fit",
-                padding : 10
-            };
-        this.panLog = Ext.create('Ext.panel.Panel', {
-            autoEl: {
-                tag: 'iframe',
-                border : false,
-                layout : 'fit',
-                src : this.url + '?_dc=' + new Date().getTime()
-            },
-            id : 'log',
-            layout : "fit",
-            padding : 10
-        });
-        
-        this.items = [this.panLog];
+        this.items = [this.createLogPanel()];
         
         sitools.component.logs.analogProp.superclass.initComponent.call(this);
-        
         
     },
 
@@ -87,8 +71,11 @@ Ext.define('sitools.component.logs.analogProp', {
                     hideDelay : 1000
                 }).show(document);
                 
-                this.panLog.setSrc(this.url + '?_dc=' + new Date().getTime()); 
-                                  
+                
+                
+                this.removeAll();
+                this.add(this.createLogPanel());
+                
             },
             failure : alertFailure,
             callback : function () {
@@ -103,6 +90,23 @@ Ext.define('sitools.component.logs.analogProp', {
         });
         myMask.show();
         this.onGenerate();
+    },
+    
+    createLogPanel : function () {
+        return Ext.create('Ext.panel.Panel', {
+            items: {
+                xtype : 'component',
+                autoEl: {
+                    tag: 'iframe',
+                    border : false,
+                    layout : 'fit',
+                    src : this.url + '?_dc=' + new Date().getTime()
+                }
+            },
+            id : 'log',
+            layout : "fit",
+            padding : 10
+        });
     }
     
 
