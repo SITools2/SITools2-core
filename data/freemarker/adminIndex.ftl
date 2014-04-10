@@ -98,7 +98,7 @@
 	<script type="text/javascript" src="${appUrl}/common/js/userProfile/lostPassword.js"></script>	
     <script type="text/javascript" src="${appUrl}/common/js/widgets/actionlink.js"></script>
     <script type="text/javascript" src="${appUrl}/common/js/widgets/highlighttext.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/checkcolumn.js"></script>
+    
     <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/mif.js"></script>-->
     <script type="text/javascript" src="${appUrl}/common/js/widgets/textfilter.js"></script>
     
