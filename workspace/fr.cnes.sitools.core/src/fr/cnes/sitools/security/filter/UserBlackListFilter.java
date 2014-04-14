@@ -179,8 +179,10 @@ public class UserBlackListFilter extends Filter {
    * 
    * @param request
    *          the request
+   * @param response
+   *          the response
    * @param id
-   *          the id
+   *          the user id
    */
   private void log(Request request, Response response, String id) {
 
@@ -204,19 +206,6 @@ public class UserBlackListFilter extends Filter {
   private boolean userNotAuthenticated(String id, Request request) {
     return (request.getClientInfo() != null && !request.getClientInfo().isAuthenticated() && id != null && !id
         .isEmpty());
-  }
-
-  /**
-   * User authenticated.
-   * 
-   * @param id
-   *          the id
-   * @param request
-   *          the request
-   * @return true, if successful
-   */
-  private boolean userAuthenticated(String id, Request request) {
-    return (request.getClientInfo() != null && request.getClientInfo().isAuthenticated());
   }
 
   /**

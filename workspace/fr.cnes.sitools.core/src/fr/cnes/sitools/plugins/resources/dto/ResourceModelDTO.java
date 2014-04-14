@@ -37,7 +37,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
  * 
  * @author m.gond
  */
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResourceModelDTO extends ExtensionModelDTO<ResourceParameter> {
 
   /** serialVersionUID */

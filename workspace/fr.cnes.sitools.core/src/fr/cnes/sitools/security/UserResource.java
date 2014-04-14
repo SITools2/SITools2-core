@@ -146,9 +146,9 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
   @Put
   public Representation update(Representation representation, Variant variant) {
     try {
-      
+
       String origin = getRequest().getResourceRef().getQueryAsForm().getFirstValue("origin", "admin");
-            
+
       User input = null;
       String password = "";
 
@@ -205,8 +205,8 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
         SecurityUtil.encodeUserPassword(getUsersAndGroupsAdministration().getSettings(), input);
       }
       else {
-        if (origin.equals("user")){
-            input.setSecret(initial.getSecret());
+        if (origin.equals("user")) {
+          input.setSecret(initial.getSecret());
         }
         else {
           input.setSecret(PasswordGenerator.generate(10));
@@ -297,7 +297,8 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
    *          the user to send mail
    * @param pass
    *          the user password to send
-   * @param origin 
+   * @param origin
+   *          the origin user of the action (admin or user)
    */
   private void sendMailToUser(User user, String pass, String origin) {
 
@@ -316,12 +317,12 @@ public final class UserResource extends UsersAndGroupsResource implements fr.cne
     // use a freemarker template for email body with Mail object
     String templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
         + "mail.password.change.ftl";
-    
+
     if (origin.equals("user")) {
       templatePath = settings.getRootDirectory() + settings.getString(Consts.TEMPLATE_DIR)
           + "mail.userpassword.change.ftl";
     }
-    
+
     Map<String, Object> root = new HashMap<String, Object>();
     root.put("origin", origin);
     root.put("user", user);

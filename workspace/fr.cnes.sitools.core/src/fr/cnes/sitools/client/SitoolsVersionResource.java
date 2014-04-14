@@ -80,8 +80,6 @@ public final class SitoolsVersionResource extends SitoolsResource {
    * @return The Representation of the response with the selected mediaType
    */
   public Representation getRepresentation(Response response, MediaType media) {
-    getLogger().info(media.toString());
-
     XStream xstream = XStreamFactory.getInstance().getXStream(media, getContext());
     configure(xstream, response);
 

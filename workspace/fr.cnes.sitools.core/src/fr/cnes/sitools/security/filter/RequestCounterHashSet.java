@@ -4,6 +4,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * {@link RequestCounter} implementation based on a HashMap
+ * 
+ * 
+ * @author m.gond
+ */
 public class RequestCounterHashSet implements RequestCounter {
 
   /** in memory list of banished IP */

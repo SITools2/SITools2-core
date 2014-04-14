@@ -672,17 +672,27 @@ Ext.extend(sitools.user.component.dataviews.livegrid.LiveGrid, Ext.ux.grid.liveg
             handler : this.displayTipsLivegrid,
             listeners : {
                 click : function (btn, e) {
-                    var tip = new Ext.ToolTip({
-                        target : this.getEl(),
-                        autoWidth : true,
-                        autoLoad : {
-                            url : loadUrl.get('APP_URL') + "/common/html/"+ locale.getLocale() + "/tips.html",
-                        },
-                        anchor : 'left',
-                        autoHide : false,
-                        closable : true
-                    });
-                    tip.show();
+                    //only create one tooltip
+                    if (Ext.isEmpty(this.tip)) {
+                        this.tip = new Ext.ToolTip({
+                            target : this.getEl(),
+                            autoWidth : true,
+                            autoLoad : {
+                                url : loadUrl.get('APP_URL') + "/common/html/"+ locale.getLocale() + "/tips.html",
+                            },
+                            anchor : 'left',
+                            autoHide : false,
+                            closable : true,
+                            listeners : {
+                                scope : this,
+                                destroy : function (tip) {
+                                    console.log("close");
+                                }
+                            },
+                            disabled : true
+                        });
+                    }
+                    this.tip.show();
                 },
                 mouseover : function (btn, e) {
                     btn.tTip = null;

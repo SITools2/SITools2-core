@@ -318,7 +318,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
    *           throws SitoolsException
    */
   protected int getTotalResults(DataSet ds, List<Structure> structures, List<Column> columns, List<Predicat> predicats)
-      throws SitoolsException {
+    throws SitoolsException {
 
     int totalResults;
 

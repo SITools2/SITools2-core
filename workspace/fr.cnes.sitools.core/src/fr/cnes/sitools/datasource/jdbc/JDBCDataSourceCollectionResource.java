@@ -34,7 +34,6 @@ import org.restlet.resource.ResourceException;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
-import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 
 /**
  * Class for JDBC data source collection management

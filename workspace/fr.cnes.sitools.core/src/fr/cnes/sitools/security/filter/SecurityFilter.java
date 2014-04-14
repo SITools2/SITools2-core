@@ -271,13 +271,15 @@ public class SecurityFilter extends Filter {
    * 
    * @param request
    *          the request
-   * @param id
-   *          the id
+   * @param response
+   *          the response
+   * @param ip
+   *          the ip address
    */
   private void log(Request request, Response response, String ip) {
 
-    String message = "Request to: " + request.getResourceRef().getPath()
-        + " forbiden, IP address: " + ip + " is out of Intranet domain";
+    String message = "Request to: " + request.getResourceRef().getPath() + " forbiden, IP address: " + ip
+        + " is out of Intranet domain";
 
     LogRecord record = new LogRecord(Level.WARNING, message);
     response.getAttributes().put("LOG_RECORD", record);

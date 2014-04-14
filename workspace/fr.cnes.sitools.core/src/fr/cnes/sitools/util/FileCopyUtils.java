@@ -200,6 +200,7 @@ public final class FileCopyUtils {
   }
 
   /**
+   * unzipAFile
    * 
    * @param inputFile
    *          complete zip filename
@@ -248,7 +249,7 @@ public final class FileCopyUtils {
           fos.close();
 
         }
-        // 
+        //
         // // else you will hit FileNotFoundException for compressed folder
         // new File(newFile.getParent()).mkdirs();
 
@@ -259,7 +260,6 @@ public final class FileCopyUtils {
       zis.close();
     }
     catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     catch (IOException e) {
