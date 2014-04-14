@@ -50,9 +50,15 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
         enumeration = enumeration[1].split("]");
         enumeration = enumeration[0].split(",");
         
-        this.storeEnum = new Ext.data.ArrayStore({
+        this.storeEnum = Ext.create("Ext.data.ArrayStore", {
             fields: ["enumValue"],
-            idIndex: 0
+            idIndex: 0,
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'xml'                    
+                }
+            }
         });
         
         Ext.each(enumeration, function (item, index) {
@@ -104,7 +110,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
         };
         
         this.smSelectColumn = Ext.create('Ext.selection.RowModel',{
-            singleSelect : this.enumType == "E" || this.enumType == "EE"
+            mode : (this.enumType == "E" || this.enumType == "EE") ? "SINGLE" : "SIMPLE"
         });
         
         this.gridSelect = Ext.create('Ext.grid.Panel', {
@@ -139,10 +145,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
         }];
         
         this.listeners = {
-            scope : this,
-            afterrender : function () {
-                Ext.WindowManager.bringToFront(this);
-            }
+            scope : this
         };
         
         sitools.admin.resourcesPlugins.enumerationValueTypeSelector.superclass.initComponent.call(this);
@@ -152,7 +155,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
      * Save the selected value
      */
     onValidate : function () {
-        var recs = this.gridSelect.getSelectionModel().getSelections();
+        var recs = this.gridSelect.getSelectionModel().getSelection();
         var result = [];
         Ext.each(recs, function (rec) {
 			result.push(rec.data.enumValue);
@@ -194,7 +197,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
 		Ext.each(values, function (value) {
 			var index = grid.getStore().find("enumValue", value);
 			if (index != -1) {
-				grid.getSelectionModel().selectRow(index, true);
+				grid.getSelectionModel().selectRange(index, index);
 			}
 		});
 

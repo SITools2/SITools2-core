@@ -21,6 +21,20 @@
  * @include "../datasets/selectColumn.js"
  */
 Ext.namespace('sitools.admin.resourcesPlugins');
+
+Ext.define('sitools.admin.resourcesPlugins.customCheckColumn', {
+    extend : 'Ext.grid.column.CheckColumn',
+    renderer : function  (value, meta, rec) {
+        var toShow = rec.get("type") == "PARAMETER_USER_INPUT";
+        if (toShow) {
+          return this.callParent(arguments);
+        } else {
+           return "";
+        }
+    }    
+});
+
+
 /**
  * A window of a resource plugin properties
  * 
@@ -52,6 +66,9 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
     classChosen : "",
     resourcePluginId : null,
     modelClassName : null,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
 
@@ -72,28 +89,30 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
         };
         
         
-        this.gridresourcePlugin = new Ext.grid.GridPanel({
+        this.gridresourcePlugin = Ext.create("Ext.grid.GridPanel", {
             forceFit : true,
-            layout : "fit",
-            id : 'gridresourcePlugin',
             title : i18n.get('title.resourcePlugin' + this.parentType + 'Class'),
-            store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
+            store : Ext.create("Ext.data.JsonStore", {
+                autoLoad : true,
+                proxy : {
                     url : this.urlResources,
-                    restful : true,
-                    method : 'GET'
-                }),
-                remoteSort : false,
-                sortInfo : {
-					field : "name", 
-					direction : "ASC"
-                }, 
-                idProperty : 'id',
+                    type : 'ajax',
+                    extraParams : {
+                        appClassName : this.appClassName,
+                        parent : this.idParent
+                    },
+                    reader : {
+                        type : 'json',
+                        root : 'data',
+                        idProperty : 'id'
+                    }
+                },            
                 fields : [ {
                     name : 'id',
-                    type : 'string'
+                    type : 'string',
+                    convert : function () {
+                        return Ext.id();
+                    }
                 }, {
                     name : 'name',
                     type : 'string'
@@ -124,7 +143,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                     name : 'dataSetSelection',
                     type : 'string'
                 } ]
-            }),
+            }),                
             columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
@@ -153,24 +172,11 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             }],
             listeners : {
                 scope : this,
-                rowclick :  this.onClassClick
-            }, 
+                itemClick :  this.onClassClick
+            },
             plugins : [expander]
         });
 
-        this.proxyFieldMapping = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
-
-        var userUpdatable = {
-            xtype : 'checkcolumn',
-	        header : i18n.get('headers.userUpdatable'),
-	        dataIndex : 'userUpdatable',
-	        width : 55
-	    };
-        
         var expanderGridFieldMapping = {
                 ptype: 'rowexpander',
                 rowBodyTpl : new Ext.XTemplate(
@@ -250,12 +256,15 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             layout : 'fit',
             region : 'center',
             title : i18n.get('title.parametersMapping'),
-            store : new Ext.data.JsonStore({
-                root : 'resourcePlugin.parameters',
-                proxy : this.proxyFieldMapping,
-                restful : true,
-                remoteSort : false,
-                idProperty : 'name',
+            store : Ext.create("Ext.data.JsonStore", {
+                proxy : {
+                    type : 'memory',
+                    reader : {
+                        idProperty : 'name',
+                        type : 'json',
+                        root : 'resourcePlugin.parameters',
+                    }
+                },
                 fields : [ {
                     name : 'name',
                     type : 'string'
@@ -278,19 +287,18 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
 					type : "boolean"
                 }]
             }), 
-            tbar : {
-                xtype : 'sitools.widget.GridSorterToolbar',
+            tbar : Ext.create('sitools.widget.GridSorterToolbar', {
                 defaults : {
                     scope : this
                 }
-            },
+            }),
             selModel : Ext.create('Ext.selection.RowModel'),
-            bbar : {
+            bbar : Ext.create('Ext.ux.StatusBar', {
                 id: 'statusBar',
                 hidden : true,
                 iconCls: 'x-status-error',
                 text : i18n.get("label.resourcesPluginErrorValidationNotification")
-            },
+            }),
             columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
@@ -312,34 +320,38 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                 editor : {
                     xtype : 'textfield'
                 }
-            }, userUpdatable],
+            }, Ext.create("sitools.admin.resourcesPlugins.customCheckColumn", {
+                header : i18n.get('headers.userUpdatable'),
+                dataIndex : 'userUpdatable',
+                width : 55                
+            })],
             listeners : {
                 scope : this,
-                celldblclick : function (grid, td, cellIndex, record, tr, rowIndex, e) {
+                cellclick : function (grid, td, cellIndex, record, tr, rowIndex, e) {
                     var rec = record.data;
                     if (cellIndex == 3) {
                         if (rec.valueType == "xs:dataset.columnAlias") {
-                            var selectColumnWin = new sitools.admin.datasets.selectColumn({
+                            var selectColumnWin = Ext.create("sitools.admin.datasets.selectColumn", {
                                 field : "value",
                                 record : record,
                                 parentStore : this.gridFieldMapping.getStore(),
                                 parentView : this.gridFieldMapping.getView(),
                                 url : loadUrl.get("APP_URL") + loadUrl.get("APP_DATASETS_URL") + "/" + this.idParent
                             });
-                            selectColumnWin.show(ID.BOX.DATASETS);
+                            selectColumnWin.show(this);
                         }
                         else if (rec.valueType == "xs:dictionary") {
-                            var selectDictionaryWin = new sitools.component.dictionary.selectDictionary({
+                            var selectDictionaryWin = Ext.create("sitools.component.dictionary.selectDictionary", {
                                 field : "value",
                                 record : record,
                                 parentStore : this.gridFieldMapping.getStore(),
                                 parentView : this.gridFieldMapping.getView(),
                                 url : loadUrl.get("APP_URL") + loadUrl.get("APP_DICTIONARIES_URL")
                             });
-                            selectDictionaryWin.show(ID.BOX.DATASETS);
+                            selectDictionaryWin.show(this);
                         }
                         else if (rec.valueType == "xs:boolean") {
-                            var selectBooleanWin = new sitools.admin.resourcesPlugins.enumerationValueTypeSelector({
+                            var selectBooleanWin = Ext.create("sitools.admin.resourcesPlugins.enumerationValueTypeSelector", {
                                 field : "value",
                                 record : record,
                                 parentView : this.gridFieldMapping.getView(),
@@ -347,7 +359,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                                 enumeration : "[true,false]",
                                 value : rec.value
                             });
-                            selectBooleanWin.show(ID.BOX.DATASETS);
+                            selectBooleanWin.show(this);
                         } 
                         else if (rec.valueType == "xs:image") {
                             
@@ -365,7 +377,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                                 record : record,
                                 callback : callback
                             });
-                            chooser.show(document);
+                            chooser.show(this);
                         }
                         else if (rec.valueType.indexOf("xs:enum") != -1) {
                             var enumType;
@@ -391,7 +403,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                                 enumeration : rec.valueType,
                                 value : rec.value
                             });
-                            selectEnumWin.show(ID.BOX.DATASETS);
+                            selectEnumWin.show(this);
                         } 
                     } else {
                         return false;
@@ -497,10 +509,10 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
      */
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action == "create") {
-            if (newTab.id == "gridFieldMapping") {
-                var rec = this.gridresourcePlugin.getSelectionModel().getSelected();
+            if (newTab.id == "fieldMappingPanel") {
+                var rec =this.getLastSelectedRecord(this.gridresourcePlugin);
                 if (!rec) {
-                    var tmp = new Ext.ux.Notification({
+                    new Ext.ux.Notification({
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
                         html : i18n.get('warning.noselection'),
@@ -517,12 +529,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
     /**
      * Load fields mapping form fields and parameters in fonction of the class clicked
      */
-    onClassClick : function (self, rowIndex, e) {
+    onClassClick : function (self, rec, item, index, e, eOpts) {
         if (this.action == "create") {
-            var rec = this.gridresourcePlugin.getSelectionModel().getSelected();
-            if (!rec) {
-                return false;
-            }
             var className = rec.data.className;
             if (className != this.classChosen) {
                 var url = this.urlResources + "/" + className;
@@ -563,14 +571,6 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
 
         if (this.action == "modify") {
             this.fillGridAndForm(this.record.data, this.action);
-        } else {
-            //only need to load the resourcesPlugins for creation
-            this.gridresourcePlugin.getStore().load({
-                params : {
-                    appClassName : this.appClassName,
-                    parent : this.idParent
-                }
-            });
         }
     },
 
@@ -619,9 +619,9 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
         var parameters = [];
         var resourcePlugin;
         if (this.action == "create") {
-            rec = this.gridresourcePlugin.getSelectionModel().getSelected();
+            rec = this.getLastSelectedRecord(this.gridresourcePlugin);
             if (!rec) {
-                var tmp = new Ext.ux.Notification({
+                new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('warning.noselection'),
@@ -750,20 +750,24 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
      * @param grid, the mapping grid
      */
     showOptions : function (grid) {
-		var toShow, rec;
-		var colIndex = grid.getColumnModel().findColumnIndex("userUpdatable");
-		for (var i = 0; i < grid.getStore().getCount(); i++) {
-			rec = grid.getStore().getAt(i);
-			toShow = rec.get("type") == "PARAMETER_USER_INPUT";
-			if (!toShow) {
-				try {
-					grid.getView().getCell(i, colIndex).innerHTML = " ";
-				}
-				catch (err) {
-					return;
-				}
-			}
-		}
+//		var toShow, rec;
+//		var colIndex = this.getColumnIndex(grid, "userUpdatable");
+//		for (var i = 0; i < grid.getStore().getCount(); i++) {
+//			rec = grid.getStore().getAt(i);
+//			toShow = rec.get("type") == "PARAMETER_USER_INPUT";
+//			if (!toShow) {
+//			    var view = grid.getView();
+//					view.getCell(i, colIndex).innerHTML = " ";
+//			}
+//		}
+    },
+    
+    getColumnIndex : function (grid, colName) {
+        return Ext.each(grid.columns, function(column) {
+            if(column.text == colName){
+                return false;
+            }            
+        });
     }
 
 });

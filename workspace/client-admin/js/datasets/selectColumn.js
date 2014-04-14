@@ -45,20 +45,22 @@ Ext.define('sitools.admin.datasets.selectColumn', {
             mode : 'SINGLE'
         });
 
-        this.gridSelectColumn = new Ext.grid.GridPanel({
+        this.gridSelectColumn = Ext.create("Ext.grid.GridPanel", {
             height : 380,
             autoScroll : true,
             forceFit : true,
-            store : new Ext.data.JsonStore({
-                root : 'dataset.columnModel',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
+            store : Ext.create("Ext.data.JsonStore", {
+                proxy : {
+                    type :'ajax',
+                    method : 'GET',
                     url : this.url,
-                    restful : true,
-                    method : 'GET'
-                }),
+                    reader : {
+                        type : 'json',
+                        idProperty : 'id',
+                        root : 'dataset.columnModel'
+                    }
+                },
                 remoteSort : true,
-                idProperty : 'id',
                 fields : [ {
                     name : 'id',
                     type : 'string'
@@ -125,9 +127,9 @@ Ext.define('sitools.admin.datasets.selectColumn', {
      * update the Record and close the window
      */
     onValidate : function () {
-        var rec = this.gridSelectColumn.getSelectionModel().getSelected();
+        var rec = this.gridSelectColumn.getSelectionModel().getLastSelected();
         if (rec !== null) {
-	        this.record.data[this.field] = rec.data.columnAlias;
+	        this.record.data[this.field] = rec.get("columnAlias");
 	
 	        // this.recordColumn.data.dataIndex = rec.data.dataIndex;
 	        // this.recordColumn.data.schema = rec.data.schema;

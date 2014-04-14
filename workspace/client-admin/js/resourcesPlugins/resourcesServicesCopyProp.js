@@ -35,16 +35,17 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  */
 Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend : 'Ext.Window',
 	alias : 'widget.s-storage_copy',
-    width : 260,
-    height : 230,
+    width : 350,
+    height : 250,
     modal : true,
     autoHeight : true,
     autoScroll : true,
+    layout : 'fit',
     initComponent : function () {
         
     	this.title = (this.parentType == "projet") ? i18n.get('label.duplicateProjectServices') : i18n.get('label.duplicateAppServices');
     	
-    	this.fieldset = new Ext.form.FieldSet({
+    	this.fieldset = Ext.create("Ext.form.FieldSet", {
     	    xtype : 'fieldset',
             name : 'fieldsetCopiedServices',
             title : i18n.get('label.servicesCopied'),
@@ -52,10 +53,9 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
             hidden : true
     	});
     	
-    	this.formPanel = new Ext.form.FormPanel({
+    	this.formPanel = Ext.create("Ext.form.FormPanel", {
             xtype : 'form',
             id : 'formCopyId',
-            layout : 'fit',
             frame: false,
             border: false,
             autoHeight : true,
@@ -74,7 +74,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
                 mode : 'local',
                 forceSelection : true,
                 triggerAction : 'all',
-                selectOnFocus : true
+                selectOnFocus : true,
+                anchor : "100%"
             }, this.fieldset]
         });
     	
@@ -113,8 +114,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
         Ext.each(this.services, function (service) {
             this.fieldset.add({
                 xtype : 'label',
-                id : service.data.id,
-                html : '<img src="/sitools/common/res/images/icons/loading.gif"/> ' + service.data.name + "<br>"
+                id : service.get("id"),
+                html : '<img src="/sitools/common/res/images/icons/loading.gif"/> ' + service.get("name") + "<br>"
             });
         }, this);
         this.fieldset.setVisible(true);
@@ -123,34 +124,37 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
         this.url = this.urlParents +  "/" + idDest + this.resourcesUrlPart;
         this.executeCopy();
         
-        var buttonToolbar = this.buttons[0]; 
-        buttonToolbar.copyFinish = true;
-        buttonToolbar.setText(i18n.get('label.close'));
-        buttonToolbar.setHandler(function () {
-            this.close();
-        }, this);
+       
     },
     
     executeCopy : function () {
         if (Ext.isEmpty(this.services)) {
+            var buttonToolbar = this.down("button"); 
+            buttonToolbar.copyFinish = true;
+            buttonToolbar.setText(i18n.get('label.close'));
+            buttonToolbar.setHandler(function () {
+                this.storeServices.load();
+                this.close();
+            }, this);
             return;
         }
         
-        var service = this.services[0];
-        delete service.json.id;
-        delete service.json.parent;
+        var service = this.services[0].getData();
+        var idService = service.id;
+        delete service.id;
+        delete service.parent;
         
         Ext.Ajax.request({
             url : this.url,
             method : 'POST',
-            jsonData : service.json,
+            jsonData : service,
             scope : this,
             success : function (ret) {
-                var fieldService = this.fieldset.find('id', service.data.id)[0];
+                var fieldService = this.fieldset.down('label[id='+idService+']');
                 if (ret.status == 200) {
-                    fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/valid.png"/> ' + service.data.name + '<br>';
+                    fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/valid.png"/> ' + service.name + '<br>';
                 } else {
-                    fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/search-cancel.png"/> ' + service.data.name + '<br>';
+                    fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/search-cancel.png"/> ' + service.name + '<br>';
                 }
             },
             callback : function () {
@@ -158,8 +162,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
                 this.executeCopy();
             },
             failure : function (ret) {
-                var fieldService = this.fieldset.find('id', service.data.id)[0];
-                fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/search-cancel.png"/> ' + service.data.name + '<br>';
+                var fieldService = this.fieldset.down('label[id='+idService+']');
+                fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/search-cancel.png"/> ' + service.name + '<br>';
             }
         });
     }

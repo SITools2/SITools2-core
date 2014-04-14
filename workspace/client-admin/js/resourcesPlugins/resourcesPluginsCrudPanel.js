@@ -38,6 +38,9 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
     pageSize : 10,
     modify : false,
     urlGrid : null,    
+    mixins : {
+        utils : "js.utils.utils"
+    },
     
     // Warning for version conflicts
     conflictWarned : false,
@@ -67,14 +70,28 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
     
     initComponent : function () {
         //LIST OF PARENTS
-        this.storeParents = new Ext.data.JsonStore({
+        this.storeParents = Ext.create("Ext.data.JsonStore", {
             fields : [ 'id', 'name', 'type' ],
-            url : this.urlParents + this.urlParentsParams,
-            root : "data",
+            proxy : {
+                type : 'ajax',
+                url : this.urlParents + this.urlParentsParams,
+                limitParam : undefined,
+                startParam : undefined,
+                pageParam : undefined, 
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             autoLoad : true
         });
         
-        this.comboParents = new Ext.form.ComboBox({
+        this.selModel = Ext.create('Ext.selection.RowModel',{
+            mode : "SINGLE"
+        });
+        
+        this.comboParents = Ext.create("Ext.form.ComboBox", {
             store : this.storeParents,
             displayField : 'name',
             valueField : 'id',
@@ -94,21 +111,28 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
                     }                    
                     
                     var url = this.urlParents + "/" + this.parentId + this.resourcesUrlPart + this.urlParentsParams;
-                    this.httpProxyResources.url = url;
-                    this.getStore().load();
+                    this.getStore().setProxy({
+                        type : 'ajax',
+                        url : url,
+                        simpleSortMode : true,
+                        reader : {
+                            type : 'json',
+                            root : "data",
+                            idProperty : 'id'
+                        }
+                    });
+                    this.getStore().load({
+                        start : 0,
+                        limit : this.pageSize
+                    });
                 }
             }
         });
         
-        this.httpProxyResources = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
-        
-        this.store = new Ext.data.JsonStore({
-            idProperty : 'id',
-            root : "data",
+        this.store = Ext.create("Ext.data.JsonStore", {
+            autoLoad : false,
+            pageSize : this.pageSize,
+            remoteSort : true,
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -153,8 +177,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
             }, {
                 name : 'behavior',
                 type : 'string'
-            } ],
-            proxy : this.httpProxyResources
+            } ]           
         });
 
         this.columns =  [{
@@ -271,7 +294,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
             action : 'create',            
             parentPanel : this,          
             urlResources : this.urlResources,
-            urlResourcesCRUD : this.httpProxyResources.url,
+            urlResourcesCRUD : this.getStore().getProxy().url,
             urlParent : urlParent,
             parentType : this.parentType,
             appClassName : this.appClassName,
@@ -290,7 +313,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
         }
         var parentId = this.comboParents.getValue();
         
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
@@ -305,7 +328,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
             record : rec,
             parentPanel : this,          
             urlResources : this.urlResources,
-            urlResourcesCRUD : this.httpProxyResources.url,
+            urlResourcesCRUD : this.getStore().getProxy().url,
             urlParent : urlParent,
             appClassName : this.appClassName,
             idParent : parentId,
@@ -322,7 +345,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
         
         var parentId = this.comboParents.getValue();
         
-        var arrayRecords = this.getSelectionModel().getSelections();
+        var arrayRecords = this.getSelectionModel().getSelection();
         
         if (Ext.isEmpty(arrayRecords)) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
@@ -335,6 +358,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
             urlParents : this.urlParents,
             resourcesUrlPart : this.resourcesUrlPart,
             parentType : this.parentType,
+            storeServices : this.store
         });
         projectServicesCopy.show();
         
@@ -350,7 +374,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
         }
         var parentId = this.comboParents.getValue();
         
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
