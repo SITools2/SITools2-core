@@ -64,7 +64,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
             forceFit : true,
             id : 'gridapplicationPlugin',
             title : i18n.get('title.applicationPluginClass'),
-            store : new Ext.data.JsonStore({
+            store : Ext.create("Ext.data.JsonStore", {
                 autoLoad : true,
                 proxy : {
                     url : this.urlList,
@@ -138,12 +138,6 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                 width : 100,
                 sortable : true
             }],
-            bbar : Ext.create('Ext.ux.StatusBar', {
-                id: 'statusBar',
-                hidden : true,
-                iconCls: 'x-status-error',
-                text : i18n.get("label.filterErrorValidationNotification")
-            }),
             listeners : {
                 scope : this,
                 itemclick :  this.onClassClick
