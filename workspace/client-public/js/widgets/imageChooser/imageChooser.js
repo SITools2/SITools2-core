@@ -30,23 +30,34 @@
 Ext.define('ImageChooser', {
    extend : 'Ext.window.Window',
    title: i18n.get('label.chooseImage'),
-   id: 'img-chooser-dlg',
    layout: 'border',
    minWidth: 550,
    minHeight: 450,
    width : 600,
    modal: true,
    border: false,
+   cls : 'img-chooser-dlg',
    
    initComponent : function () {
 
        this.initTemplates();
 
-       this.store = new Ext.data.JsonStore({
-           url: this.url,
-           root: 'items',
+       this.store = Ext.create("Ext.data.JsonStore", {
+           proxy : {
+               url : this.url,
+               type : 'ajax',
+               reader : {
+                   type : 'json',
+                   root : 'items',
+                   idProperty : 'id'
+               }
+           },
            fields: [
-               'name', 'url',
+               {name:'id',type :'string',convert : function() {
+                   return Ext.id();
+               }},
+               {name:'name',type:'string'},
+               {name:'url',type:'string'},
                {name:'size', type: 'float'},
                {name:'lastmod', type:'date', dateFormat:'timestamp'}
            ],
@@ -78,27 +89,14 @@ Ext.define('ImageChooser', {
        
        this.store.load();
 
-       var formatSize = function(data){
-           if(data.size < 1024) {
-               return data.size + " bytes";
-           } else {
-               return (Math.round(((data.size*10) / 1024))/10) + " KB";
-           }
-       };
+      
 
-       var formatData = function(data){
-           data.shortName = data.name.ellipse(15);
-           data.sizeString = formatSize(data);
-           data.dateString = new Date(data.lastmod).format("d/m/Y g:i a");
-           this.lookup[data.name] = data;
-           return data;
-       };
-
-       this.view = new Ext.DataView({
+       this.view = Ext.create("Ext.view.View", {
            tpl: this.thumbTemplate,
            id : 'imageChooserDataViewId', 
            singleSelect: true,
            overItemCls:'x-view-over',
+           selectedItemCls : 'x-view-selected',
            itemSelector: 'div.thumb-wrap',
            emptyText : '<div style="padding:10px;">No images match the specified filter</div>',
            store: this.store,
@@ -109,15 +107,14 @@ Ext.define('ImageChooser', {
                'beforeselect'   : {fn:function(view){
                    return view.store.getRange().length > 0;
                }}
-           },
-           prepareData: formatData.createDelegate(this)
+           }
        });
 
 //       if (!Ext.isEmpty(this.fp)){
 //           this.fp.destroy();
 //       }
        
-       this.fp = new Ext.FormPanel({
+       this.fp = Ext.create("Ext.FormPanel", {
            fileUpload: true,
            formId : 'formUploadId', 
            height: 100,
@@ -135,7 +132,7 @@ Ext.define('ImageChooser', {
                fieldLabel: 'Photo',
                name: 'image',
                anchor: '95%',
-               buttonText: '',
+               buttonText: i18n.get("label.browse"),
                iconCls: 'upload-icon'
            }, {
                xtype : 'button',
@@ -167,10 +164,8 @@ Ext.define('ImageChooser', {
                width: 100,
                listeners: {
                    scope : this,
-                   render : function (textfield) {
-                       textfield.getEl().on('keyup', function() {
-                           this.filter();
-                       }, this, {buffer:500});
+                   change : function (textfield, newValue, oldValue, opts) {
+                       this.filter();
                    }
                }
            }, ' ', '-', {
@@ -236,8 +231,6 @@ Ext.define('ImageChooser', {
        this.callParent(arguments);
    },
    
-   lookup : {},
-
 //   show : function(el, callback){
 //
 ////       this.reset();
@@ -252,38 +245,48 @@ Ext.define('ImageChooser', {
            '<tpl for=".">',
                '<div class="thumb-wrap" id="{name}">',
                '<div class="thumb"><img src="{[this.formatUrl(values.url)]}" height="96" width="96" title="{name}"></div>',
-               '<span>{shortName}</span></div>',
+               '<span>{[this.formatName(values.name)]}</span></div>',
            '</tpl>', {
            formatUrl : function(url) {
                var url = new Reference(url);
                return url.getFile();
+           },
+           formatName : function (name) {
+               return Ext.String.ellipsis(decodeURIComponent(name),15);
            }
        });
        this.thumbTemplate.compile();
-
+       
        this.detailsTemplate = new Ext.XTemplate(
            '<div class="details">',
                '<tpl for=".">',
                    '<img height="96" width="96" src="{url}"><div class="details-info">',
                    '<b>Image Name:</b>',
-                   '<span>{name}</span>',
+                   '<span>{[decodeURIComponent(values.name)]}</span>',
                    '<b>Size:</b>',
-                   '<span>{sizeString}</span>',
+                   '<span>{[this.formatSize(values.size)]}</span>',
                    '<b>Last Modified:</b>',
-                   '<span>{dateString}</span></div>',
+                   '<span>{[this.formatDate(values.lastmod)]}</span></div>',
                '</tpl>',
-           '</div>'
+           '</div>', {
+               formatSize : function(size) {
+                   return Ext.util.Format.fileSize(size);
+               },
+               formatDate : function (date) {
+                   return Ext.Date.format(date, SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+               }
+           }
        );
        this.detailsTemplate.compile();
    },
 
-   showDetails : function(){
-       var selNode = this.view.getSelectedNodes();
+   showDetails : function (self, selected){
+       var selNode = selected;
        var detailEl = this.down('panel[name=detailPanel]').body;
        if(selNode && selNode.length > 0){
            selNode = selNode[0];
            Ext.getCmp('ok-btn').enable();
-           var data = this.lookup[selNode.id];
+           var data = selNode.getData();
            detailEl.hide();
            this.detailsTemplate.overwrite(detailEl, data);
            detailEl.slideIn('l', {stopFx:true,duration:.2});
@@ -307,59 +310,25 @@ Ext.define('ImageChooser', {
            form.submit({
                url: urlUpload,
                waitMsg: 'Uploading your photo...',
-               success: function(response) {
-                   popupMessage("", i18n.get ('label.imageUploaded'), loadUrl.get('APP_URL') + '/common/res/images/icons/image_add.png');;
-                   this.down('dataview').refresh();
+               success: function(form, action) {
+                   // as the server sends no content back, it is considered by extjs as a failure.
                },
-               callback : function () {
+               failure : function (form, action) {
+                   popupMessage("", i18n.get('label.imageUploaded'), loadUrl.get('APP_URL') + '/common/res/images/icons/image_add.png');
                    var dataview = this.down('dataview');
                    dataview.getStore().load();
                    dataview.refresh();
-               }
+               },
+               scope : this
            });
            
-//           Ext.Ajax.request({
-//               url : urlUpload,
-//               form : 'formUploadId', 
-//               isUpload : true,
-//               waitMsg : "wait...", 
-//               method : 'POST', 
-//               scope : this,
-//               success : function (response) {
-//                   new Ext.ux.Notification({
-//                       iconCls:    'x-icon-information',
-//                       title:    i18n.get('label.information'),
-//                       html:     i18n.get ('label.imageUploaded'),
-//                       autoDestroy: true,
-//                       hideDelay:  1000,
-//                       listeners : {
-//                           scope : this,
-//                           destroy : function (win) {
-//                               this.bringToFront(this);                                                                                                
-//                           },
-//                           show : function (win) {
-//                               this.bringToFront(this);
-//                           }
-//                       }
-//                   }).show(document);
-//                   this.down('dataview').refresh();
-//               }, 
-//               failure : function (response){
-//                   Ext.Msg.alert (i18n.get('label.error'));
-//               }, 
-//               callback : function () {
-//                   var dataview = this.down('dataview');
-//                   dataview.getStore().load();
-//                   dataview.refresh();
-//               }
-//           });
        }
    },
 
    filter : function () {
        var filter = this.down('textfield[name=filter]');
+       this.view.store.clearFilter(true);
        this.view.store.filter('name', filter.getValue());
-       this.view.select(0);
    },
 
    sortImages : function() {
@@ -378,12 +347,16 @@ Ext.define('ImageChooser', {
    },
 
    doCallback : function () {
-       var selNode = this.view.getSelectedNodes()[0];
+       var selRecords = this.view.getSelectedNodes();
+       if(Ext.isEmpty(selRecords)){
+           popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+           return;
+       }
        var callback = this.callback;
-       var lookup = this.lookup;
        var config = this;
+       var selNode = this.view.getRecord(selRecords[0])
        if(selNode && callback){
-           var data = lookup[selNode.id];
+           var data = selNode.getData();
            callback(data, config);
        }; 
        this.close();
@@ -401,10 +374,3 @@ Ext.define('ImageChooser', {
    }
    
 });
-
-String.prototype.ellipse = function(maxLength){
-    if(this.length > maxLength){
-        return this.substr(0, maxLength-3) + '...';
-    }
-    return this;
-};

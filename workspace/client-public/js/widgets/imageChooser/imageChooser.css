@@ -22,26 +22,31 @@
  * licensing@sencha.com
  * http://www.sencha.com/license
  */
-#img-chooser-dlg .details{
+.img-chooser-dlg .details{
     padding: 10px;
     text-align: center;
 }
-#img-chooser-dlg .details-info{
+.img-chooser-dlg .details-info{
     border-top: 1px solid #cccccc;
     font: 11px Arial, Helvetica, sans-serif;
     margin-top: 5px;
     padding-top: 5px;
     text-align: left;
 }
-#img-chooser-dlg .details-info b{
+.img-chooser-dlg .details-info b{
     color: #555555;
     display: block;
     margin-bottom: 4px;
 }
-#img-chooser-dlg .details-info span{
+.img-chooser-dlg .details-info span{
     display: block;
     margin-bottom: 5px;
     margin-left: 5px;
+}
+
+.img-chooser-dlg .thumb-wrap {
+	width : 100px;
+	height : 110px;
 }
 
 #img-chooser-view{
