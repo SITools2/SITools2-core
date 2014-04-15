@@ -34,7 +34,9 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel'),
+    selModel : Ext.create('Ext.selection.RowModel',{
+        mode : "SINGLE"
+    }),
     pageSize : 10,
     forceFit : true,
     mixins : {
