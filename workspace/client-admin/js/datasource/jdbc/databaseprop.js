@@ -81,7 +81,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
                 }, {
                     xtype : 'combo',
                     id : 'driverDatasourceId',
-                    mode : 'local',
+                    queryMode : 'local',
                     triggerAction : 'all',
                     editable : false,
                     name : 'driverClass',

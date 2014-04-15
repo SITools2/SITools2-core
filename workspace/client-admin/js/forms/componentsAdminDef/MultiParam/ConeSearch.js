@@ -197,7 +197,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
             fieldLabel : i18n.get('label.dimension'),
             store : this.storeDimension,
             displayField : "name",
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : false,
             triggerAction : 'all',
             emptyText : i18n.get('label.selectDimension'),

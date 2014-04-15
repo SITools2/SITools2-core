@@ -111,7 +111,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
                 typeAhead : true,
                 triggerAction : 'all',
                 lazyInit : false,
-                mode : 'local',
+                queryMode : 'local',
                 forceSelection : true,
                 valueField : 'scope',
                 displayField : 'scope',

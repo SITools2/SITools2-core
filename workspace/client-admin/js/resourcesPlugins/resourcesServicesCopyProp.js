@@ -71,7 +71,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
                 displayField : 'name',
                 valueField : 'id',
                 typeAhead : true,
-                mode : 'local',
+                queryMode : 'local',
                 forceSelection : true,
                 triggerAction : 'all',
                 selectOnFocus : true,

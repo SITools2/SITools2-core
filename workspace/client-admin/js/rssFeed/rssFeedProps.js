@@ -56,7 +56,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
          * ***********************************************
          */
         
-        this.buttonValidUrl =  new Ext.Button({
+        this.buttonValidUrl =  Ext.create('Ext.button.Button', {
             text : i18n.get('label.validateUrl'),
             scope : this,
             handler : function () {
@@ -67,8 +67,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
             iconAlign : "left"            
         });
         
-        
-        this.boxComponent = new Ext.BoxComponent({
+        this.boxComponent = Ext.create('Ext.Component', {
             hidden : true,
             labelSeparator : "",
             fieldLabel : " ",
@@ -171,7 +170,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                    inputValue : "atom_1.0"
 	                } ]
 	            },  {
-                        xtype: 'compositefield',
+                        xtype: 'fieldcontainer',
                         anchor : "100%",
                         fieldLabel : i18n.get('label.url'),
                         msgTarget: 'under',

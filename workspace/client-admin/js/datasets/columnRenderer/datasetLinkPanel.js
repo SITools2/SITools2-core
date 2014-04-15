@@ -115,7 +115,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             displayField : 'name',
             valueField : 'sitoolsAttachementForUsers',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : i18n.get("label.selectADataset"),

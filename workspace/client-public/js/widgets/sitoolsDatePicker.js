@@ -529,7 +529,7 @@ Ext.define('Ext.SitoolsDatePicker', {
         		labelWidth : 1,
         		itemsCls : "sitools-no-margin",
         		items : [{
-        			xtype : "compositefield",
+        			xtype : "fieldcontainer",
         			width : 135,
         			style : {
         				padding : "3px"

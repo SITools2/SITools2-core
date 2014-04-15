@@ -64,7 +64,7 @@ Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
         
 		this.comboColumnType = new Ext.form.ComboBox({
             store : comboStore,
-            mode : 'local',
+            queryMode : 'local',
             fieldLabel : i18n.get('label.specificColumnType'),
             typeAhead : true,
             triggerAction : 'all',
@@ -112,7 +112,7 @@ Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
         
         this.sqlColumnType = new Ext.form.ComboBox({
             store : storeColumnType,
-            mode : 'local',
+            queryMode : 'local',
             fieldLabel : i18n.get('label.columnType'),
             typeAhead : true,
             triggerAction : 'all',

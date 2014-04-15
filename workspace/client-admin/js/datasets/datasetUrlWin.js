@@ -127,7 +127,7 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', {
             displayField : 'name',
             valueField : 'sitoolsAttachementForUsers',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : 'Select a dataset...',

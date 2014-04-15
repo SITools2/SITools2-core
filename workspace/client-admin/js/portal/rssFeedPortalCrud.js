@@ -88,7 +88,7 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
         // displayField : 'name',
         // valueField : 'id',
         // typeAhead : true,
-        // mode : 'local',
+        // queryMode : 'local',
         // forceSelection : true,
         // triggerAction : 'all',
         // emptyText : this.label,

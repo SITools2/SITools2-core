@@ -134,7 +134,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', {
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : i18n.get('label.selectDictionary'),

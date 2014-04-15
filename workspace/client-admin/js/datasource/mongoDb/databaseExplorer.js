@@ -70,7 +70,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', {
             displayField : 'name',
             valueField : 'name',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             emptyText : i18n.get('label.selectACollection'), 
             forceSelection : true,
             triggerAction : 'all',

@@ -72,7 +72,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
              * , { fieldLabel : i18n.get('label.guid'), name : 'guid', anchor :
              * '100%' }
              */, {
-            xtype : 'compositefield',
+            xtype : 'fieldcontainer',
             fieldLabel : i18n.get('label.updatedDate'),
             items : [ {
                 fieldLabel : i18n.get("label.day"),
@@ -107,7 +107,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
                 handler : this.nowDate
             } ]
         }, {
-            xtype : 'compositefield',
+            xtype : 'fieldcontainer',
             fieldLabel : i18n.get('label.publishedDate'),
             items : [ {
                 fieldLabel : i18n.get("label.day"),
@@ -146,7 +146,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             }]
         } ];
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = Ext.create('Ext.form.Panel', {
             labelWidth : 100, // label settings here cascade unless overridden
             defaultType : 'textfield',
             items : itemsForm,
@@ -187,16 +187,16 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             var dateStr = this.rec.get("updatedDate");
 
             var date = new Date(dateStr);
-            record.set("date", date.format('m/d/Y'));
-            record.set("hours", date.format('H'));
-            record.set("minutes", date.format('i'));
+            record.set("date", Ext.Date.format(date, 'm/d/Y'));
+            record.set("hours", Ext.Date.format(date, 'H'));
+            record.set("minutes", Ext.Date.format(date, 'i'));
 
             var dateStrPub = this.rec.get("publishedDate");
 
             var datePub = new Date(dateStrPub);
-            record.set("datePub", datePub.format('m/d/Y'));
-            record.set("hoursPub", datePub.format('H'));
-            record.set("minutesPub", datePub.format('i'));
+            record.set("datePub", Ext.Date.format(datePub, 'm/d/Y'));
+            record.set("hoursPub", Ext.Date.format(datePub, 'H'));
+            record.set("minutesPub", Ext.Date.format(datePub, 'i'));
 
             var author = record.get("author");
             if (!Ext.isEmpty(author)) {
@@ -309,18 +309,19 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             form = this.formPanel.getForm();
             record = form.getValues();
             
-            record.date = date.format('m/d/Y');
-            record.hours = date.format('H');
-            record.minutes = date.format('i');
+            record.date = Ext.Date.format(date, 'm/d/Y');
+            record.hours = Ext.Date.format(date, 'H');
+            record.minutes = Ext.Date.format(date, 'i');
             form.setValues(record);
         }
+        
         if (button.name == "nowPublished") {
             form = this.formPanel.getForm();
             record = form.getValues();
             
-            record.datePub = date.format('m/d/Y');
-            record.hoursPub = date.format('H');
-            record.minutesPub = date.format('i');
+            record.datePub = Ext.Date.format(date, 'm/d/Y');
+            record.hoursPub = Ext.Date.format(date, 'H');
+            record.minutesPub = Ext.Date.format(date, 'i');
             form.setValues(record);
         }
 

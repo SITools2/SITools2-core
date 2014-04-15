@@ -192,7 +192,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
                 typeAhead : true,
                 triggerAction : 'all',
                 lazyInit : false,
-                mode : 'local',
+                queryMode : 'local',
                 emptyText : " ",
                 // on force la selection pour que l'utilisateur ne puisse pas
                 // saisir de valeur au clavier
@@ -235,7 +235,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
             editor : {
                 xtype : 'combo',
                 triggerAction : 'all',
-                mode : 'local',
+                queryMode : 'local',
                 emptyText : " ",
                 store : new Ext.data.ArrayStore({
                     fields : [ 'idSolrType', 'textSolrType' ],

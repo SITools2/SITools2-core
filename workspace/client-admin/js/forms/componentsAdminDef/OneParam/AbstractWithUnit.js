@@ -78,7 +78,7 @@ Ext.define('sitools.admin.forms.oneParam.abstractWithUnit', { extend : 'sitools.
             fieldLabel : i18n.get('label.dimension'),
             store : this.storeDimension,
             displayField : "name",
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : false,
             triggerAction : 'all',
             emptyText : i18n.get('label.selectDimension'),

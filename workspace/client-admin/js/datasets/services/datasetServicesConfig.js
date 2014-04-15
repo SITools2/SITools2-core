@@ -80,7 +80,7 @@ Ext.define('sitools.admin.datasets.datasetServicesConfig', {
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             name : 'comboDatasetViews',
             forceSelection : true,
             triggerAction : 'all',

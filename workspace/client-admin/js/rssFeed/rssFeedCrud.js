@@ -39,16 +39,18 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     forceFit : "true",
 
     initComponent : function () {
-        this.httpProxyRss = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
 
-        this.store = new Ext.data.JsonStore({
-            idProperty : 'id',
-            root : 'data',
-            proxy : this.httpProxyRss,
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : "/tmp",
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -73,19 +75,25 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             } ]
         });
 
-        var storeCombo = new Ext.data.JsonStore({
-            fields : [ 'id', 'name' ],
-            url : this.url,
-            root : "data",
-            autoLoad : true
+        var storeCombo = Ext.create('Ext.data.JsonStore', {
+            autoLoad : true,
+            fields : ['id', 'name'],
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : "data"
+                }
+            }
         });
 
-        this.combobox = new Ext.form.ComboBox({
+        this.combobox = Ext.create('Ext.form.field.ComboBox', {
             store : storeCombo,
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : this.label,
@@ -96,18 +104,15 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
                     this.dataId = rec[0].data.id;
 //                    this.getDockedItems('toolbar[dock="top"]').down("s-filter").enable();
                     this.loadRss();
-
                 }
-
             }
         });
 
-        this.columns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
+        this.columns = {
             defaults : {
                 sortable : true
             },
-            columns : [ {
+            items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 100,
@@ -135,8 +140,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
                 header : i18n.get('headers.feedSource'),
                 dataIndex : 'feedSource',
                 width : 100
-            } ]
-        });
+            }]
+        };
 
         this.tbar = [this.combobox, {
             text : i18n.get('label.add'),
@@ -167,7 +172,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : this.pageSize,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -188,8 +192,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     loadRss : function () {
 
         var urlRss = this.url + "/" + this.dataId + this.urlRef;
-        this.httpProxyRss.url = urlRss;
-        this.getStore().load({
+        this.store.getProxy().url = urlRss;
+        this.store.load({
             scope : this,
             callback : function () {
                 this.getView().refresh();
@@ -205,7 +209,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
         if (Ext.isEmpty(this.combobox.getValue())) {
             return;
         }
-        var up = new sitools.admin.rssFeed.rssFeedProps({
+        var up = Ext.create('sitools.admin.rssFeed.rssFeedProps', {
             action : 'create',
             store : this.store,
             id : this.dataId,
@@ -220,12 +224,12 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
      *  to modify an existing rss feed
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getSelection()[0];
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
-        var up = new sitools.admin.rssFeed.rssFeedProps({
+        var up = Ext.create('sitools.admin.rssFeed.rssFeedProps', {
             action : 'modify',
             store : this.store,
             id : this.dataId,
@@ -240,7 +244,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getSelection()[0];
         if (!rec) {
             return false;
         }

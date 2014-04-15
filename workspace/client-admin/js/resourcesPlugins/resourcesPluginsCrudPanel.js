@@ -96,7 +96,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : i18n.get('label.select' + this.parentType + 's'),

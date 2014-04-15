@@ -48,7 +48,7 @@ Ext.define('sitools.userProfile.Login', {
             triggerAction : 'all',
             forceSelection : true,
             allowBlank : false,
-            mode : 'local',
+            queryMode : 'local',
             store : new Ext.data.ArrayStore({
                 id : 0,
                 fields : [ 'myId', 'displayText' ],

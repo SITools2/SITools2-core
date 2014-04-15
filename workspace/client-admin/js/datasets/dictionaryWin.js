@@ -121,7 +121,7 @@ Ext.define('sitools.admin.datasets.dictionaryWin', {
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : 'Select a dictionary...',

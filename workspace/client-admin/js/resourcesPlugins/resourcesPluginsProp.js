@@ -421,7 +421,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
 			fieldLabel : i18n.get("label.behavior"), 
             name : "behavior", 
             triggerAction : 'all',
-		    mode : 'local',
+		    queryMode : 'local',
 		    anchor : "100%", 
 		    store : new Ext.data.ArrayStore({
 		        id : 0,

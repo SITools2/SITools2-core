@@ -90,7 +90,7 @@ Ext.define('sitools.common.forms.components.ComboBox', {
 	        valueField : 'id',
 	        displayField : 'value',
 	        typeAhead : true,
-	        mode : 'local',
+	        queryMode : 'local',
 	        triggerAction : 'all',
 	        selectOnFocus : true,
 	        allowBlank : true,

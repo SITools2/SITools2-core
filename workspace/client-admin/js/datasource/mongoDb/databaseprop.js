@@ -79,7 +79,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', {
             }, {
                 xtype : 'combo',
                 id : 'driverDatasourceId',
-                mode : 'local',
+                queryMode : 'local',
                 triggerAction : 'all',
                 editable : false,
                 name : 'driverClass',

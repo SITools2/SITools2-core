@@ -110,7 +110,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         var comboOrderBy = Ext.create('Ext.form.field.ComboBox', {
             header : i18n.get('headers.orderBy'),
             store : comboStoreOrderBy, 
-            mode : 'local',
+            queryMode : 'local',
             typeAhead : true,
             triggerAction : 'all',
             forceSelection : true,
@@ -135,7 +135,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             xtype : 'combo',
             disabled : this.action == 'view' ? true : false, 
             store : comboStore,
-            mode : 'local',
+            queryMode : 'local',
             typeAhead : true,
             triggerAction : 'all',
             forceSelection : true,

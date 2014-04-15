@@ -53,7 +53,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesPropPanel', {
             name : "dataSetSelection", 
             triggerAction : 'all',
             editable : false,
-            mode : 'local',
+            queryMode : 'local',
             anchor : "100%",
             emptyText: i18n.get("label.selectionTypeEmpty"),
             store : new Ext.data.ArrayStore({
