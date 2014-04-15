@@ -2,7 +2,6 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
     extend : 'Ext.tree.Panel',
     loader : null,
     projectId : null,
-    layout : "fit", 
     autoScroll : true, 
     rootVisible : true,
     layout : 'fit',
@@ -16,169 +15,16 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
 //            expanded : true
 //        }); 
         
-
         this.store = Ext.create('Ext.data.TreeStore', {
             root : {
                 text : this.name,
                 leaf : false,
-                expanded : true,
-                iconCls : 'x-tree-icon-parent'
+                expanded : true
             },
             proxy : {
                 type : 'memory',
                 reader : {
                     type : 'json'
-                }
-            }
-        });
-        
-        Ext.apply(this, {
-            contextMenuRoot : new Ext.menu.Menu({
-                items : [{
-                    id : 'create-node',
-                    text : i18n.get("Add Table"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png',
-                    defaults: {
-                        scope : this,
-                        handler: this._cxtMenuHandler
-                    },
-                    menu : {
-                        defaults: {
-                            scope : this,
-                            handler: this._cxtMenuHandler
-                        },
-                        items : [ {
-                            id : 'INNER_JOIN',
-                            action : "addTable",
-                            text : i18n.get("label.innerJoin")
-                        }, {
-                            id : 'CROSS_JOIN',
-                            action : "addTable",
-                            text : i18n.get("label.crossJoin")
-                        }, {
-                            id : 'LEFT_JOIN',
-                            action : "addTable",
-                            text : i18n.get("label.leftJoin")
-                        }, {
-                            id : 'LEFT_OUTER_JOIN',
-                            action : "addTable",
-                            text : i18n.get("label.leftOuterJoin")
-                        }, {
-                            id : 'RIGHT_JOIN',
-                            action : "addTable",
-                            text : i18n.get("label.rightJoin")
-                        }, {
-                            id : 'RIGHT_OUTER_JOIN',
-                            action : "addTable",
-                            text : i18n.get("label.rightOuterJoin")
-                        }]
-                    }
-                }, {
-                    id : 'edit-root',
-                    text : i18n.get("label.modify"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png'
-                }]
-            }),
-            contextMenuNode : new Ext.menu.Menu({
-                items : [ {
-                    id : 'add-joinCondition',
-                    text : i18n.get("Add Join Condition"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/add_datasets.png'
-                }, {
-                    id : 'edit-node',
-                    text : i18n.get("label.modify"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png'
-                }, {
-                    id : 'edit-jointure',
-                    text : i18n.get("editJointure"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png', 
-                    menu : {
-                        items : [ {
-                            id : 'INNER_JOIN',
-                            action : "editJointure",
-                            text : i18n.get("label.innerJoin")
-                        }, {
-                            id : 'CROSS_JOIN',
-                            action : "editJointure",
-                            text : i18n.get("label.crossJoin")
-                        }, {
-                            id : 'LEFT_JOIN',
-                            action : "editJointure",
-                            text : i18n.get("label.leftJoin")
-                        }, {
-                            id : 'LEFT_OUTER_JOIN',
-                            action : "editJointure",
-                            text : i18n.get("label.leftOuterJoin")
-                        }, {
-                            id : 'RIGHT_JOIN',
-                            action : "editJointure",
-                            text : i18n.get("label.rightJoin")
-                        }, {
-                            id : 'RIGHT_OUTER_JOIN',
-                            action : "editJointure",
-                            text : i18n.get("label.rightOuterJoin")
-                        }],
-                        listeners : {
-                            scope : this,
-                            itemclick : this._cxtMenuHandler
-                        }
-                    }
-                }, {
-                    id : 'delete-node',
-                    text : i18n.get("label.delete"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png'
-                } ],
-                listeners : {
-                    scope : this,
-                    itemclick : this._cxtMenuHandler
-                }
-            }),
-            contextMenuLeaf : new Ext.menu.Menu({
-                items : [ {
-                    id : 'edit-node',
-                    text : i18n.get("label.modify"),
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png'
-                }, {
-                    id : 'delete-node',
-                    text : i18n.get("label.delete"), 
-                    icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png'
-                } ],
-                listeners : {
-                    scope : this,
-                    itemclick : this._cxtMenuHandler
-                }
-            }),
-            listeners : {
-                scope : this,
-                itemcontextmenu : function (view, record, item, index, e) {
-                    e.stopEvent();
-                    // Register the context node with the menu so that a Menu
-                    // Item's handler function can access
-                    // it via its parentMenu property.
-                    
-                    var node = this.getRootNode().getChildAt(index) || this.getRootNode();
-                    var c;
-                    if (node.internalId == this.getRootNode().internalId) {
-                        c = node.getOwnerTree().contextMenuRoot;
-                        c.contextNode = this.getRootNode();
-                    }
-                    else {
-                        if (node.isLeaf()) {
-                            c = node.getOwnerTree().contextMenuLeaf;
-                        } else {
-                            c = node.getOwnerTree().contextMenuNode;
-                        }
-                        c.contextNode = node;
-                    }
-                    
-                    c.showAt(e.getXY());
-                }, 
-                beforenodedrop : function (dropEvent) {
-                    if (dropEvent.target.raw.type == dropEvent.data.node.raw.type) {
-                        return false;
-                    }
-                    
-                    return true;
                 }
             }
         });
@@ -303,30 +149,34 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
         };
         
         this.listeners = {
-                scope : this,
-                itemclick : function (view, record, item, index) {
-                    var toolbar = this.down('toolbar');
-                    toolbar.removeAll();
-                    
-                    var node = this.getSelectionModel().getSelection()[0];
-                    if (node.isRoot()) {
-                        toolbar.add(this.rootToolbarButtons);
+            scope : this,
+            afterrender : function () {
+                this.getSelectionModel().select(0);
+            },
+            itemclick : function (view, record, item, index) {
+                var toolbar = this.down('toolbar');
+                toolbar.removeAll();
+                
+                var node = this.getSelectionModel().getSelection()[0];
+                if (node.isRoot()) {
+                    toolbar.add(this.rootToolbarButtons);
+                } else {
+                    if (node.isLeaf()) {
+                        toolbar.add(this.leafToolbarButtons);
                     } else {
-                        if (node.isLeaf()) {
-                            toolbar.add(this.leafToolbarButtons);
-                        } else {
-                            toolbar.add(this.nodeToolbarButtons);
-                        }
+                        toolbar.add(this.nodeToolbarButtons);
                     }
-                    
                 }
+            },
+            beforenodedrop : function (dropEvent) {
+                if (dropEvent.target.raw.type == dropEvent.data.node.raw.type) {
+                    return false;
+                }
+                return true;
+            }
         };
         
         sitools.component.datasets.joinCrudTreePanel.superclass.initComponent.call(this);
-    },
-
-    onRender : function () {
-        sitools.component.datasets.joinCrudTreePanel.superclass.onRender.apply(this, arguments);
     },
 
     _cxtMenuHandler : function (item) {
@@ -429,6 +279,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
     getIdGraph : function () {
         return this.loader.getIdGraph();
     }, 
+    
     buildDefault : function () {
         //load the first table as main table and the others as children
         var storeTables = this.scope.panelSelectTables.getStoreSelectedTables();
@@ -470,6 +321,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             }, this);
         }
     }, 
+    
     loadTree : function (dataset) {
         var rootNode = this.getRootNode();
         var mainTable = dataset.structure.mainTable;
@@ -487,6 +339,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             this.loadNode(node, rootNode);
         }, this);
     }, 
+    
     loadNode : function (node, parent) {
         var treeNode;
         if (node.leaf) {
@@ -495,7 +348,8 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 nodeType : "sync", 
                 expanded : true
             });
-            treeNode = new Ext.tree.TreeNode(node);
+//            treeNode = new Ext.tree.TreeNode(node);
+            treeNode = node;
             node.children = [];
 
             parent.appendChild(treeNode);

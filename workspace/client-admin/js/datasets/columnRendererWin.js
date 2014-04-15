@@ -72,27 +72,25 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
 			break;
         }
         
-        var storeBehavior = new Ext.data.ArrayStore({
-            fields : [ {
+        var storeBehavior = Ext.create('Ext.data.ArrayStore', {
+            fields : [{
                 name : 'name'
             }, {
                 name : 'behavior'
-            } ],
+            }],
             data : behaviorData
         });
         
-        this.comboBehavior = new Ext.form.ComboBox({
+        this.comboBehavior = Ext.create('Ext.form.field.ComboBox', {
             store : storeBehavior,
             displayField : 'name',
             valueField : 'behavior',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
-            triggerAction : 'all',
             emptyText : i18n.get("label.selectABehavior"),
             fieldLabel : i18n.get('label.behavior'),
             anchor : "100%",
-            selectOnFocus : true,
             allowBlank : false,
             listeners : {
                 scope : this,
@@ -107,14 +105,14 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
                     var columnRenderer = this.selectedRecord.get("columnRenderer");
                     switch (this.columnRendererType) {
 				    case "URL" :
-                        this.panelDetails = new sitools.admin.datasets.columnRenderer.urlPanel({
+                        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.urlPanel', {
                             behaviorType : value,
                             title : i18n.get("label.behaviorDetails"),
                             columnRenderer : columnRenderer
                         });
 				        break;
 				    case "Image" :
-				        this.panelDetails = new sitools.admin.datasets.columnRenderer.imagePanel({
+				        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.imagePanel', {
                             behaviorType : value,
                             title : i18n.get("label.behaviorDetails"),
                             datasetColumnStore : this.datasetColumnStore,
@@ -122,7 +120,7 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
                         });                     
                         break;				        
 				    case "DataSetLink" :
-				        this.panelDetails = new sitools.admin.datasets.columnRenderer.datasetLinkPanel({
+				        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
                             behaviorType : value,
                             title : i18n.get("label.behaviorDetails"),
                             columnRenderer : columnRenderer
@@ -140,14 +138,17 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
             }
         });
         
-        this.behaviorForm = new Ext.form.FormPanel({
+        this.behaviorForm = Ext.create('Ext.form.Panel', {
             title : i18n.get('label.behavior'),
             height : 120,
             padding : '5 5 5 5',
-            items : [this.comboBehavior , {
+            bodyPadding : '5 5 5 5',
+            bodyBorder : false,
+            border : false,
+            items : [this.comboBehavior, {
                 fieldLabel : i18n.get('label.tooltip'),
                 name : 'toolTip',
-                xtype : 'textfield',
+                xtype : 'textfield'
             }]
         });
         
@@ -178,7 +179,6 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
 			}
 		};
 
-        
         sitools.admin.datasets.columnRendererWin.superclass.initComponent.call(this);
     },
     
@@ -196,9 +196,7 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
 	            var record = this.comboBehavior.getStore().getAt(index);            
 	            this.comboBehavior.fireEvent("select", this.comboBehavior, record, index);
             }
-            
         }
-                
     },
     
     onValidate : function () {
@@ -226,7 +224,6 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
             }
         }
     }
-    
     
 });
 

@@ -28,7 +28,6 @@ Ext.namespace('sitools.admin.datasets');
 Ext.define('sitools.admin.datasets.datasetSelectFields', { 
     extend : 'Ext.Panel',
     initComponent : function () {
-		var action = this.action;
         
         Ext.apply(this, {
             title : i18n.get('label.selectFields'), 
@@ -44,7 +43,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
 					}
 					this.scope.datasourceUtils.loadColumnsBDD();
 
-					if (action == 'view') {
+					if (this.action == 'view') {
 						panel.getEl().mask();
 					}
                 }, 
@@ -102,7 +101,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
             })]
         });
 
-        var defaultRecord = [ {
+        var defaultRecord = [{
             name : 'width',
             value : this.scope.defaultColumnWidth
         }, {
@@ -117,15 +116,16 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
         }, {
             name : 'specificColumnType',
             value : 'DATABASE'
-        } ];
+        }];
         
-        this.displayPanelFields = new sitools.component.datasets.selectItems({
+        this.displayPanelFields = Ext.create('sitools.component.datasets.selectItems', {
 			grid1 : this.gridFieldsBDD, 
 			grid2 : this.gridFieldsDataset, 
 			defaultRecord : defaultRecord, 
 			listeners : {
+			    scope : this,
                 activate : function (panel) {
-                    if (action == 'view') {
+                    if (this.action == 'view') {
 						panel.getEl().mask();
 					}
                 }
@@ -137,12 +137,15 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
         this.datasourceUtils.loadColumnsBDD();
         this.doLayout();
     }, 
+    
     isFilled : function () {
-    	return this.gridFieldsDataset.getStore().getCount() > 0;
+        return this.gridFieldsDataset.getStore().getCount() > 0;
     }, 
+    
     getBDDPanel : function () {
 		return this.gridFieldsBDD;
     }, 
+    
     setFirstGrid : function (panel) {
 		if (!Ext.isEmpty(this.displayPanelFields)) {
 			this.displayPanelFields.setFirstGrid(panel);

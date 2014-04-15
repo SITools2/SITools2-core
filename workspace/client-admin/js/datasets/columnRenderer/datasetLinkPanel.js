@@ -27,29 +27,32 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @extends Ext.form.FormPanel
  */
 Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', { 
-    extend : 'Ext.Panel', 
+    extend : 'Ext.panel.Panel', 
     flex : 1,
     layout : {
         type : 'vbox',
         align : 'stretch'
     },
+    bodyBorder : false,
     border : false,
+    padding : '5 5 5 5',
+    bodyPadding : '5 5 5 5',
+    
     initComponent : function () {
         
         this.urlDatasets = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'); 
         
-        this.httpProxy = new Ext.data.HttpProxy({
-            url : this.urlDatasets,
-            restful : true,
-            method : 'GET'
-        });
-        
-        this.storeColumns = new Ext.data.JsonStore({
-//            id : 'datasetColumnId',
-            root : 'dataset.columnModel',
-            idProperty : 'id',
-            proxy : this.httpProxy,
-            fields : [ {
+        this.storeColumns = Ext.create('Ext.data.JsonStore', {
+            proxy : {
+                type : 'ajax',
+                url : this.urlDatasets,
+                reader : {
+                    type : 'json',
+                    root : 'dataset.columnModel',
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -58,7 +61,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             }, {
                 name : 'columnAlias',
                 type : 'string'
-            } ]
+            }]
         });
         
         this.smColumns = Ext.create('Ext.selection.RowModel', {
@@ -72,18 +75,24 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             }
         });
         
-        this.bbar = new Ext.ux.StatusBar({
+        this.bbar = Ext.create('Ext.ux.StatusBar', {
             id : "status_bar_column",
             hidden : true,
             text: i18n.get("label.no_column_selected"),
             iconCls: 'x-status-error'
         });
         
-        var storeDatasets = new Ext.data.JsonStore({
-            fields : [ 'id', 'name', 'sitoolsAttachementForUsers' ],
-            url : this.urlDatasets,
-            root : "data",
+        var storeDatasets = Ext.create('Ext.data.JsonStore', {
             autoLoad : true, 
+            proxy : {
+                type : 'ajax',
+                url : this.urlDatasets,
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }
+            },
+            fields : [ 'id', 'name', 'sitoolsAttachementForUsers' ],
             listeners : {
                 scope : this, 
                 load : function () {
@@ -100,7 +109,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             }
         });
         
-        this.comboDatasets = new Ext.form.ComboBox({
+        this.comboDatasets = Ext.create('Ext.form.ComboBox', {
             store : storeDatasets,
             name : "comboDatasets",
             displayField : 'name',
@@ -123,13 +132,13 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             }
         });
         
-        this.gridColumns = new Ext.grid.GridPanel({
+        this.gridColumns = Ext.create('Ext.grid.Panel', {
 //            id : 'gridColumnsSelect',
             title : i18n.get('title.datasetLinkDetails'),
             layout : 'fit',
             flex : 1,
             forceFit: true,
-            view : {
+            viewConfig : {
                 listeners : {
                     scope : this, 
                     refresh : function () {
@@ -144,7 +153,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
                         }
                     }
                 }
-            }, 
+            },
             autoScroll : true,
             store : this.storeColumns,
             columns : [ {
@@ -167,9 +176,13 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
         
         this.items = [];
         
-        if (this.behaviorType == ColumnRendererEnum.DATASET_ICON_LINK) {            
-            this.formImage = new Ext.form.FormPanel({
-                padding : 5,
+        if (this.behaviorType == ColumnRendererEnum.DATASET_ICON_LINK) {
+            
+            this.formImage = Ext.create('Ext.form.Panel', {
+                padding : '5 5 5 5',
+                bodyPadding : '5 5 5 5',
+                border : false,
+                bodyBorder : false,
                 items : [{
                     xtype : 'sitoolsSelectImage',
                     name : 'image',
@@ -179,8 +192,8 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
                     allowBlank : false
                 }]
             });
-        
             this.items.push(this.formImage);
+            
         } else {
             this.title = "";
             
@@ -193,6 +206,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
     
     afterRender : function () {
         sitools.admin.datasets.columnRenderer.datasetLinkPanel.superclass.afterRender.apply(this, arguments);
+        
         if (!Ext.isEmpty(this.columnRenderer) && this.columnRenderer.behavior == this.behaviorType) {
             if (this.columnRenderer.behavior == ColumnRendererEnum.DATASET_ICON_LINK
                 && !Ext.isEmpty(this.columnRenderer.image)) {
@@ -213,7 +227,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
         if (isValid) {
             isValid = this.comboDatasets.isValid();
             if (isValid) {
-	            var column = this.gridColumns.getSelectionModel().getSelected();
+	            var column = this.gridColumns.getSelectionModel().getSelection()[0];
 	            if (Ext.isEmpty(column)) {
 	                isValid = false;
 	                Ext.getCmp('status_bar_column').show();
@@ -233,7 +247,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
     fillSpecificValue : function (columnRenderer) {
         var dataset = this.comboDatasets.getValue();
         columnRenderer.datasetLinkUrl = dataset;
-        var column = this.gridColumns.getSelectionModel().getSelected();
+        var column = this.gridColumns.getSelectionModel().getSelection()[0];
         if (Ext.isEmpty(column)) {
             return false;   
         }
@@ -241,6 +255,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
         if (this.behaviorType == ColumnRendererEnum.DATASET_ICON_LINK) {
             var image = this.formImage.getForm().findField("image").getValue();
             var resourceImage = {};
+            
 	        if (!Ext.isEmpty(image)) {
 	            resourceImage.url = image;
 	            resourceImage.type = "Image";
@@ -259,7 +274,9 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
      */
     loadColumns : function (datasetId) {
         // alert (dictionaryId);
-        this.httpProxy.url = this.urlDatasets + "/" + datasetId;
+        this.storeColumns.getProxy().url = this.urlDatasets + "/" + datasetId;
+//        this.httpProxy.url = this.urlDatasets + "/" + datasetId;
+        
         this.gridColumns.getStore().load({
             callback : function () {
                 this.gridColumns.getView().refresh();

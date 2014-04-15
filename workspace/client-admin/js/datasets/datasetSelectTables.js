@@ -124,7 +124,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', {
             layout : 'fit', 
             store : this.storeTablesDataset,
             columns : cmTablesDataSet,
-            selModel : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
             autoScroll : true,
@@ -138,7 +138,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', {
             })]
         });
 
-        this.displayPanelTables = new sitools.component.datasets.selectItems({
+        this.displayPanelTables = Ext.create('sitools.component.datasets.selectItems', {
 			grid1 : this.gridTablesBDD, 
 			grid2 : this.gridTablesDataset, 
 			defaultRecord : {}

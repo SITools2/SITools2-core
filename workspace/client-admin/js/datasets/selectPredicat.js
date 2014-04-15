@@ -35,13 +35,13 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
     height : 480,
     modal : true,
     pageSize : 10,
-    id : 'selectPredicatId',
+    layout : 'fit',
 
     initComponent : function () {
         this.title = i18n.get('label.selectPredicat');
 
-        this.cmSelectPredicat = new Ext.grid.ColumnModel({
-            columns : [ {
+        this.cmSelectPredicat = {
+            items : [{
                 id : 'tableAlias',
                 header : i18n.get('headers.tableAlias'),
                 sortable : true,
@@ -56,19 +56,19 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
                 header : i18n.get('headers.alias'),
                 sortable : true,
                 dataIndex : 'columnAlias'
-            } ]
-        });
+            }]
+        };
 
-        this.smSelectPredicat = Ext.create('Ext.selection.RowModel',{
+        this.smSelectPredicat = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
 
-        this.gridSelectPredicat = new Ext.grid.GridPanel({
-            title : i18n.get('title.gridSelectPredicat'),
+        this.gridSelectPredicat = Ext.create('Ext.grid.Panel', {
+//            title : i18n.get('title.gridSelectPredicat'),
             height : 380,
             autoScroll : true,
             store : this.storePredicat,
-            cm : this.cmSelectPredicat,
+            columns : this.cmSelectPredicat,
             selModel : this.smSelectPredicat,
             forceFit : true
         });
@@ -89,11 +89,12 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
                     this.close();
                 }
             }]
-
         }];
+        
         sitools.admin.datasets.selectPredicat.superclass.initComponent.call(this);
     },
     onValidate : function () {
+        
         var rec = this.gridSelectPredicat.getSelectionModel().getSelected();
         var nomAffiche = rec.data.tableAlias ? rec.data.tableAlias : rec.data.tableName;
         nomAffiche = nomAffiche + "." + rec.data.dataIndex;
@@ -128,7 +129,5 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
 
         this.viewPredicat.refresh();
         this.close();
-
     }
-
 });

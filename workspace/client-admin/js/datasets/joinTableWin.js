@@ -42,7 +42,7 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
          * The store that contains the tables of a Dataset.
          * @type Ext.grid.ColumnModel
          */
-        var store = new sitools.widget.JsonStore({
+        var store = Ext.create('sitools.widget.JsonStore', {
             id : 'storeTablesDataset',
             fields : [ {
                 name : 'id',
@@ -64,7 +64,7 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
         store.add(this.datasetSelectTables.getStoreSelectedTables().data.items);
         
 
-        this.grid = new Ext.grid.GridPanel({
+        this.grid = Ext.create('Ext.grid.GridPanel', {
 			layout : 'fit', 
             store : store,
             forceFit : true,
@@ -94,6 +94,7 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
 		});
         
         this.items = [this.grid];
+        
 		this.buttons = [{
             text : i18n.get('label.ok'),
             handler : this._onOK, 
@@ -112,8 +113,8 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
      * Depending on action mode, it could edit the root node, edit a node, or add new node.
      */
     _onOK : function () {
-        var table = this.grid.getSelectionModel().getSelected();
-        if(!Ext.isEmpty(table)){
+        var table = this.grid.getSelectionModel().getSelection()[0];
+        if(!Ext.isEmpty(table)) {
 	        if (this.mode == 'edit') {
 	            this.node.set('text', this.typeJointure + " " + table.data.name);
 	            this.node.raw.table = {

@@ -33,6 +33,7 @@ Ext.namespace('sitools.component.datasets');
 Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-datasetsMultiTablesPanel',
+	layout : 'fit',
 //	closeAction : 'close',
     initComponent : function () {
         Ext.apply(this, sitools.admin.datasets.abstractDatasetWin);
@@ -74,7 +75,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 		/**
 		 * The main form of the dataset definition. 
 		 */
-		this.formulairePrincipal = new sitools.admin.datasets.datasetForm({
+		this.formulairePrincipal = Ext.create('sitools.admin.datasets.datasetForm', {
 			urlDatasetViews : this.urlDatasetViews, 
 			action : this.action, 
 			urlDatasources : this.urlDatasources, 
@@ -84,7 +85,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 		
 		
 
-        this.panelSelectTables = new sitools.admin.datasets.datasetSelectTables({
+        this.panelSelectTables = Ext.create('sitools.admin.datasets.datasetSelectTables', {
             scope : this,
             action : this.action
         });
@@ -98,15 +99,16 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                 }
             });
             
-			if (indexAlias !== -1) {
-				if (this.gridFields.getStore().getCount() > 0) {
-				    panel.gridTablesDataset.getColumnModel().setEditable(indexAlias, false);
-				}
-				else {
-				    panel.gridTablesDataset.getColumnModel().setEditable(indexAlias, true);
-				}
-			}
-            panel.gridTablesDataset.getView().refresh();
+//			if (indexAlias !== -1) {
+//				if (this.gridFields.getStore().getCount() > 0) {
+//				    panel.gridTablesDataset.columns[indexAlias].setDisabled(true);
+//				}
+//				else {
+//				    panel.gridTablesDataset.columns[indexAlias].setDisabled(false);
+//				}
+//			}
+//			
+//            panel.gridTablesDataset.getView().refresh();
 		}, this);
 		
 		// Permet de prendre en compte la nouvelle valeur
@@ -120,7 +122,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
         // !!! le store de cette grille est le meme que celui de fields
         // setup....
 		
-        this.panelSelectFields = new sitools.admin.datasets.datasetSelectFields({
+        this.panelSelectFields = Ext.create('sitools.admin.datasets.datasetSelectFields', {
 			scope : this, 
 			gridFieldsDataset : this.gridFields.getStore(),
             action : this.action
@@ -128,10 +130,10 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 
         
         
-        this.panelWhere = new sitools.admin.datasets.datasetCriteria({
+        this.panelWhere = Ext.create('sitools.admin.datasets.datasetCriteria', {
 			scope : this, 
-			layout : "vbox",
-			layoutConfig : {
+			layout : {
+			    type : "vbox",
 				align : "stretch", 
 				flex : "ratio"
 			}, 
@@ -144,7 +146,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 			}
 		});
 		
-		this.gridProperties = new sitools.admin.datasets.datasetProperties({
+		this.gridProperties = Ext.create('sitools.admin.datasets.datasetProperties', {
 			action : this.action
 		});
 		
@@ -183,7 +185,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
             }
         }); 
         
-        this.viewConfigPanel = new sitools.admin.datasets.datasetViewConfig({
+        this.viewConfigPanel = Ext.create('sitools.admin.datasets.datasetViewConfig', {
 			urlDatasetViews : this.urlDatasetViews, 
 			action : this.action
         });
@@ -381,8 +383,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
             putObject.predicat = [];
         }
         if (this.panelWhere.getWizardWhereClause()) {
-        	this.panelWhere.getWizardWhereClause().getStore().each(function (item) {
-        	    
+            this.panelWhere.getWizardWhereClause().getStore().each(function (item) {
                 putObject.predicat.push({
                     closedParenthesis : item.data.parentheseFermante,
                     openParenthesis : item.data.parentheseOuvrante,

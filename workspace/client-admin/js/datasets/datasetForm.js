@@ -38,8 +38,14 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 
         //Datasource Store
         var storeDataSource = Ext.create('Ext.data.JsonStore', {
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }
+            },
             fields : [ 'id', 'name', 'sitoolsAttachementForUsers', 'jdbc', 'mongoDb' ],
-            root : "data",            
             listeners : {
 				scope : this, 
 				load : function (store, recs) {
@@ -57,7 +63,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
          * Combo to select Datasources.
          * Uses the storeDataSource.
          */
-        this.comboDataSource = new Ext.form.ComboBox({
+        this.comboDataSource = Ext.create('Ext.form.field.ComboBox', {
             disabled : this.action == 'view' ? true : false, 
             id : "comboDataSource",
             store : storeDataSource,
@@ -97,7 +103,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
             getDatasourceType : function () {
 				var rec = this.getStore().getAt(this.getStore().findExact("id", this.getValue()));
 				return {
-					jdbc : rec.get('jdbc'), 
+					jdbc : rec.get('jdbc'),
 					mongoDb : rec.get('mongoDb')
 				};
             }
@@ -188,7 +194,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 		sitools.admin.datasets.datasetForm.superclass.initComponent.call(this);
     }, 
     getForm : function () {
-    	return this.items.items[0].getForm();
+        return this.items.items[0].getForm();
     }, 
     /**
      * Get the combo of dataSources
@@ -236,7 +242,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
                 Ext.each(Json.data, function (data) {
 					data.jdbc = true;
                 });
-                store.loadData(Json);
+                store.loadData(Json.data);
                 
                 Ext.Ajax.request({
 		            url : urlDatasourcesMongoDB,
@@ -251,7 +257,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
                         Ext.each(Json.data, function (record) {
                             record.mongoDb = true;
                         });
-                        store.loadData(Json, true);
+                        store.loadData(Json.data, true);
 //                        store.each(function (record) {
 //                            record.set("sitoolsAttachementForUsers", record.set("sitoolsAttachementForUsers") + "/collection");    
 //                        });

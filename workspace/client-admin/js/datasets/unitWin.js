@@ -38,17 +38,18 @@ Ext.define('sitools.admin.datasets.unitWin', {
     initComponent : function () {
         this.title = i18n.get('label.units');
 
-        this.httpProxy = new Ext.data.HttpProxy({
-            url : this.urlDimension,
-            restful : true,
-            method : 'GET'
-        });
-        this.storeUnits = new Ext.data.JsonStore({
+        this.storeUnits = Ext.create('Ext.data.JsonStore', {
             id : 'storeUnitSelect',
-            root : 'dimension.sitoolsUnits',
-            idProperty : 'id',
-            proxy : this.httpProxy,
-            fields : [ {
+            proxy : {
+                type : 'ajax',
+                url : this.urlDimension,
+                reader : {
+                    type : 'json',
+                    root : 'dimension.sitoolsUnits',
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'label',
                 type : 'string'
             }, {
@@ -57,8 +58,8 @@ Ext.define('sitools.admin.datasets.unitWin', {
             }]
         });
 
-        this.cmUnits = new Ext.grid.ColumnModel({
-            columns : [ {
+        this.cmUnits = {
+            items : [{
                 header : i18n.get('headers.label'),
                 dataIndex : 'label',
                 width : 100
@@ -67,31 +68,38 @@ Ext.define('sitools.admin.datasets.unitWin', {
                 sortable : true,
                 width : 100
             }
-        });
+        };
 
-        this.smUnits = Ext.create('Ext.selection.RowModel',{
+        this.smUnits = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
 
-        this.gridUnits = new Ext.grid.GridPanel({
+        this.gridUnits = Ext.create('Ext.grid.Panel', {
             id : 'gridUnitId',
             title : i18n.get('title.unitList'),
             autoScroll : true,
             store : this.storeUnits,
-            cm : this.cmUnits,
+            columns : this.cmUnits,
             selModel : this.smUnits,
             forceFit : true,
             region : "center"
         });
 
-        var storeDimensions = new Ext.data.JsonStore({
-            fields : [ 'id', 'name', 'description' ],
-            url : this.urlDimension,
-            root : "data",
-            autoLoad : true
+        var storeDimensions = Ext.create('Ext.data.JsonStore', {
+            autoLoad : true,
+            proxy : {
+                type : 'ajax',
+                url : this.urlDimension,
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }
+            },
+            fields : [ 'id', 'name', 'description' ]
         });
-        this.cmDimensions = new Ext.grid.ColumnModel({
-            columns : [ {
+        
+        this.cmDimensions = {
+            items : [{
                 header : i18n.get('headers.name'),
                 dataIndex : 'name',
                 width : 100
@@ -104,24 +112,21 @@ Ext.define('sitools.admin.datasets.unitWin', {
                 sortable : true,
                 width : 100
             }
-        });
+        };
 
-        this.smDimensions = Ext.create('Ext.selection.RowModel',{
+        this.smDimensions = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
 
-        this.gridDimensions = new Ext.grid.GridPanel({
+        this.gridDimensions = Ext.create('Ext.grid.GridPanel', {
             id : 'gridViewDimensionsId',
             title : i18n.get('title.DimensionsList'),
             region : "west",
             autoScroll : true,
             store : storeDimensions,
-            cm : this.cmDimensions,
+            columns : this.cmDimensions,
             selModel : this.smDimensions,
             flex : 1,
-//            width : 200, 
-//            collapsible : true, 
-//            resizable : true,
             forceFit : true,
             listeners : {
 				scope : this, 
@@ -132,25 +137,28 @@ Ext.define('sitools.admin.datasets.unitWin', {
 				}
             }
         });
+        
 		this.layout = "border";
         this.items = [this.gridUnits, this.gridDimensions ];
-        this.buttons = [ {
+        
+        this.buttons = [{
             text : i18n.get('label.ok'),
             scope : this,
             handler : this.onValidate
-
         }, {
             text : i18n.get('label.cancel'),
             scope : this,
             handler : function () {
                 this.close();
             }
-        } ];
+        }];
         sitools.admin.datasets.unitWin.superclass.initComponent.call(this);
     },
+    
     loadUnits : function (dimensionId) {
-        // alert (dictionaryId);
-        this.httpProxy.url = this.urlDimension + "/" + dimensionId;
+        this.storeUnits.getProxy().url = this.urlDimension + "/" + dimensionId;
+//        this.httpProxy.url = this.urlDimension + "/" + dimensionId;
+        
         this.storeUnits.load({
             callback : function () {
                 this.gridUnits.getView().refresh();
@@ -159,21 +167,20 @@ Ext.define('sitools.admin.datasets.unitWin', {
         });
 
     },
+    
     onValidate : function () {
-        var recUnit = this.gridUnits.getSelectionModel().getSelected();
+        var recUnit = this.gridUnits.getSelectionModel().getSelection()[0];
         if (Ext.isEmpty(recUnit)) {
 			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noSelection'));
 			return;
         }
-        var recDimension = this.gridDimensions.getSelectionModel().getSelected();
+        var recDimension = this.gridDimensions.getSelectionModel().getSelection()[0];
         
         this.recordColumn.data.unit = recUnit.data;
         this.recordColumn.data.dimensionId = recDimension.data.id;
         //this.recordColumn.data.notionDescription = rec.data.description;
         this.viewColumn.refresh();
         this.close();
-
     }
-
 });
 

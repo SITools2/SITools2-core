@@ -32,7 +32,7 @@ Ext.ns("sitools.admin.datasets");
 Ext.define('sitools.admin.datasets.PredicatsPanel', {
     extend : 'Ext.grid.Panel',
     layout : 'fit', 
-    flex : 0.80, 
+    flex : 0.80,
 //    resizable : true,
     autoHeight : false,
     forceFit : true,
@@ -47,8 +47,11 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
         
         id : this.gridId;
 
-        this.store = new Ext.data.JsonStore({
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            proxy : {
+                type : 'memory'
+            },
+            fields : [{
                 name : 'parentheseOuvrante',
                 type : 'text'
             }, {
@@ -62,7 +65,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                 name : 'parentheseFermante'
             }, {
                 name : 'opLogique'
-            } ]
+            }]
         });
 
         Ext.util.Format.comboRenderer = function (combo) {
@@ -78,9 +81,12 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             id : "comboOlEditor", 
             typeAhead : false,
             triggerAction : 'all',
-            mode : 'local',
-            store : new Ext.data.ArrayStore({
-                id : 0,
+            queryMode : 'local',
+            store : Ext.create('Ext.data.ArrayStore', {
+//                proxy : {
+//                    type : 'memory'
+//                },
+//                id : 0,
                 fields : [ 'myId', 'displayText' ],
                 data : [ [ '', '' ], [ 'and', 'and' ], [ 'or', 'or' ] ]
             }),
@@ -93,9 +99,9 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             id : "comboOpEditor", 
             typeAhead : false,
             triggerAction : 'all',
-            mode : 'local',
-            store : new Ext.data.ArrayStore({
-                id : 0,
+            queryMode : 'local',
+            store : Ext.create('Ext.data.ArrayStore', {
+//                id : 0,
                 fields : [ 'myId', 'displayText' ],
                 data : [ [ 'GT', '>' ], [ 'GTE', '>=' ], [ 'LT', '<' ], [ 'LTE', '<=' ], [ 'LIKE', 'like' ],
                         [ 'EQ', '=' ], [ 'NE', '!=' ] ]
@@ -147,7 +153,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
         }
         
         this.columns = [{
-            header : "",
+            text : "",
             width : 50,
             sortable : false,
             dataIndex : 'opLogique',
@@ -155,7 +161,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
 //            renderer : Ext.util.Format.comboRenderer(comboOl)
 
         }, {
-            header : "",
+            text : "",
             width : 20,
             sortable : false,
             dataIndex : 'parentheseOuvrante'
@@ -169,7 +175,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             // editor : comboChamp1,
             renderer : Ext.util.Format.attributeRenderer()
         }, {
-            header : i18n.get('header.operateur'),
+            text : i18n.get('header.operateur'),
             width : 70,
             sortable : false,
             dataIndex : 'operateur',
@@ -177,13 +183,12 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
 //            renderer : Ext.util.Format.comboRenderer(comboOp)
 
         }, rightAttribute, {
-            header : "",
+            text : "",
             width : 20,
             sortable : false,
             dataIndex : 'parentheseFermante',
             monType : 'parenthese'
         }];
-        // ajout du plugin pour définir la drop Zone
         
         // menu contextuel
         this.listeners = {
@@ -222,91 +227,8 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                     record.set('parentheseFermante', data + ')');
                 }
                 view.refresh();
-            },
-//            contextmenu : function (e) {
-//                if (!Ext.isEmpty(Ext.getCmp('gridCritereCtxMenu'))) {
-//                    Ext.getCmp('gridCritereCtxMenu').destroy();
-//                }
-//                this.contextMenu = new Ext.menu.Menu({
-//                    id : 'gridCritereCtxMenu',
-//                    items : [
-//                            {
-//                                text : i18n.get('label.ajoutCondition'),
-//                                icon : loadUrl.get('APP_URL') + "/res/images/icons/add_condition.png",
-//                                listeners : {
-//                                    scope : this,
-//                                    click : function () {
-//                                        var rowIndex = 0;
-//                                        var selModel = this.getSelectionModel();
-//                                        if (selModel.hasSelection()) {
-//
-//                                            rowIndex = this.getStore().indexOf(selModel.getSelected()) + 1;
-//
-//                                        }
-//                                        var RecordType = this.getStore().recordType;
-//                                        var p = new RecordType({
-//                                            parentheseOuvrante : ' ',
-//                                            parentheseFermante : ' '
-//                                        });
-//                                        this.stopEditing();
-//                                        this.store.insert(rowIndex, p);
-//
-//                                    }
-//                                }
-//                            },
-//                            {
-//                                text : i18n.get('label.suppressionCondition'),
-//                                icon : loadUrl.get('APP_URL') + "/res/images/icons/delete_condition.png",
-//                                listeners : {
-//                                    scope : this,
-//                                    click : function () {
-//                                        if (!this.getSelectionModel().hasSelection()) {
-//                                            Ext.Msg.alert(i18n.get('warning.noselection'), i18n
-//                                                    .get('warning.noselection'));
-//                                            return;
-//                                        }
-//                                        var s = this.getSelectionModel().getSelections();
-//                                        for (var i = 0, r; r = s[i]; i++) {
-//                                            this.store.remove(r);
-//                                        }
-//
-//                                    }
-//                                }
-//                            },
-//                            {
-//                                text : i18n.get('label.suppressionParenthese'),
-//                                icon : loadUrl.get('APP_URL') + "/res/images/icons/delete_parenthesis.png",
-//                                listeners : {
-//                                    scope : this,
-//                                    click : function () {
-//                                        var selModel = this.getSelectionModel();
-//                                        if (!selModel.hasSelection()) {
-//                                            Ext.Msg.alert(i18n.get('warning.noselection'), i18n
-//                                                    .get('warning.noselection'));
-//                                            return;
-//                                        }
-//
-//                                        var selectedRecords = selModel.getSelections();
-//
-//                                        var i = 0;
-//                                        selModel.each(function (selected) {
-//                                            selected.data.parentheseOuvrante = " ";
-//                                            selected.data.parentheseFermante = " ";
-//                                        });
-//                                        this.getView().refresh();
-//
-//                                    }
-//                                }
-//                            }
-//                        ]
-//                    });
-//                var xy = e.getXY();
-//                this.contextMenu.showAt(xy);
-//                e.stopEvent();
-//            }
+            }
         };
-        
-        
         
         this.tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',

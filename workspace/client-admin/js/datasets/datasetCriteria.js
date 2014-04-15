@@ -31,14 +31,14 @@ Ext.namespace('sitools.admin.datasets');
  * @extends Ext.Panel
  */
 Ext.define('sitools.admin.datasets.datasetCriteria', { 
-    extend: 'Ext.Panel',
+    extend: 'Ext.panel.Panel',
     
 	initComponent : function () {
 		/**
          * The panel that displays the join conditions.
          * @type sitools.admin.datasets.joinPanel
          */
-        this.wizardJoinCondition = new sitools.admin.datasets.joinPanel({
+        this.wizardJoinCondition = Ext.create('sitools.admin.datasets.joinPanel', {
 			datasetId : this.scope.datasetId, 
 			datasetSelectTables : this.scope.panelSelectTables, 
 			action : this.scope.action,
@@ -50,7 +50,7 @@ Ext.define('sitools.admin.datasets.datasetCriteria', {
          * the panel that displays the where clause
          * @type sitools.admin.datasets.PredicatsPanel
          */
-        this.wizardWhereClause = new sitools.admin.datasets.PredicatsPanel({
+        this.wizardWhereClause = Ext.create('sitools.admin.datasets.PredicatsPanel', {
 			gridId : 'whereClauseId', 
 			title : i18n.get('label.wizardWhereClause'), 
 			storeSelectFields : this.scope.gridFields.getStore(), 
@@ -61,42 +61,45 @@ Ext.define('sitools.admin.datasets.datasetCriteria', {
          * the panel that displays the SQL specific query.
          * @type Ext.Panel
          */
-        this.SqlWhereClause = new Ext.Panel({
+        this.SqlWhereClause = Ext.create('Ext.form.Panel', {
             height : 350,
+            border : false,
+            bodyBorder : false,
+            padding : '7 7 7 7',
             items : [{
-                xtype : 'form',
-                padding : "7px 0px 0px 7px",
-                items : [{
-                    xtype : 'textarea',
-                    id : "sqlQuery",
-                    autoScroll : true,
-                    height : 350,
-                    anchor : '100%',
-                    name : "sqlQuery", 
-                    validator : function (value) {
-						if (value.toLowerCase().match("where")) {
-							if (value.toLowerCase().match("from")) {
-								return true;
-							}
-							else {
-								return false;
-							}
-						}
-						else {
-							return false;
-						}
-						
-                    }, 
-                    invalidText : i18n.get('label.invalidSQl')
-                } ]
-
-            } ]
+                xtype : 'label',
+                html : i18n.get('label.enterQuery')
+            }, {
+                xtype : 'textarea',
+                id : "sqlQuery",
+                autoScroll : true,
+                height : 350,
+                anchor : '100%',
+                name : "sqlQuery", 
+                invalidText : i18n.get('label.invalidSQl'),
+                validator : function (value) {
+                    if (value.toLowerCase().match("where")) {
+                        if (value.toLowerCase().match("from")) {
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }]
         });
-        var selecteur = new Ext.form.FormPanel({
+        var selecteur = Ext.create('Ext.form.Panel', {
             height : 30, 
-            flex : 0.1, 
-            id : "selecteurId", 
-            items : [ {
+            flex : 0.1,
+            padding : '7 7 7 7',
+            id : "selecteurId",
+            bodyBorder : false,
+            border : false,
+            items : [{
                 xtype : 'radiogroup',
                 id : 'radioQueryType',
                 fieldLabel : i18n.get('label.queryType'),
@@ -148,45 +151,42 @@ Ext.define('sitools.admin.datasets.datasetCriteria', {
          * A single container with a flex layout. 
          * @type Ext.Panel
          */
-        this.whereClausePanel = new Ext.Panel({
+        this.whereClausePanel = Ext.create('Ext.panel.Panel', {
 			flex : 0.9, 
-			layout : "vbox", 
-			layoutConfig : {
+			layout : {
+			    type : 'vbox', 
 				align : "stretch"
 			}
 		});   
         
-        Ext.apply(this, {
-            items : [selecteur, this.whereClausePanel], 
-            listeners : {
-				"activate" : function () {
-					if (this.scope.action === 'view') {
-						this.getEl().mask();
-					}
-					if (!Ext.isEmpty(this.scope.datasourceUtils)) {
-						this.wizardJoinCondition.setVisible(this.scope.datasourceUtils.isJdbc);
-						selecteur.setVisible(this.scope.datasourceUtils.isJdbc);
-						
-						if (this.scope.queryType === 'W') {
-							this.scope.datasourceUtils.loadColumnsBDD();
-	                        this.wizardJoinCondition.buildDefault();
-	                        this.whereClausePanel.add([this.wizardJoinCondition, this.wizardWhereClause]);
-	                        this.whereClausePanel.doLayout();
-	                    } else {
-	                        this.whereClausePanel.add(this.SqlWhereClause);
-	                        this.whereClausePanel.doLayout();
-	                    }
-						
-						selecteur.down('radiogroup').setValue({
-						    queryType : this.scope.queryType
-						});
-					}
-					
-					
-				}, 
-				scope : this
+        this.items = [selecteur, this.whereClausePanel];
+        
+        this.listeners = {
+            scope : this,
+            activate : function () {
+                if (this.scope.action === 'view') {
+                    this.getEl().mask();
+                }
+                if (!Ext.isEmpty(this.scope.datasourceUtils)) {
+                    this.wizardJoinCondition.setVisible(this.scope.datasourceUtils.isJdbc);
+                    selecteur.setVisible(this.scope.datasourceUtils.isJdbc);
+                    
+                    if (this.scope.queryType === 'W') {
+                        this.scope.datasourceUtils.loadColumnsBDD();
+                        this.wizardJoinCondition.buildDefault();
+                        this.whereClausePanel.add([this.wizardJoinCondition, this.wizardWhereClause]);
+                        this.whereClausePanel.doLayout();
+                    } else {
+                        this.whereClausePanel.add(this.SqlWhereClause);
+                        this.whereClausePanel.doLayout();
+                    }
+                    
+                    selecteur.down('radiogroup').setValue({
+                        queryType : this.scope.queryType
+                    });
+                }
             }
-        });
+        };
         
         sitools.admin.datasets.datasetCriteria.superclass.initComponent.call(this);
     }, 

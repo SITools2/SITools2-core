@@ -30,7 +30,7 @@ Ext.namespace('sitools.admin.projects');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.projects.datasetsWin', { 
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
     // url + mode + storeref
     width : 500,
     modal : true,
@@ -41,14 +41,19 @@ Ext.define('sitools.admin.projects.datasetsWin', {
     initComponent : function () {
         this.title = i18n.get('label.datasets');
 
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            autoSave : false,
-            idProperty : 'id',
-            totalProperty : 'total',
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id',
+                    totalProperty : 'total'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -80,22 +85,23 @@ Ext.define('sitools.admin.projects.datasetsWin', {
             }, {
                 name : 'descriptionHTML', 
                 type : "string"
-            } ]
+            }]
         });
-        this.grid = new Ext.grid.GridPanel({
+        
+        this.grid = Ext.create('Ext.grid.Panel', {
             selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
             store : this.store,
             height : 200,
             forceFit : true,
-            columns : [ {
+            columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name'
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description'
-            } ]
+            }]
         });
         
         this.items = [{
@@ -104,7 +110,6 @@ Ext.define('sitools.admin.projects.datasetsWin', {
             items : [ this.grid ],
             bbar : {
                 xtype : 'pagingtoolbar',
-				pageSize : this.pageSize,
 	            store : this.store,
 	            displayInfo : true,
 	            displayMsg : i18n.get('paging.display'),
@@ -150,7 +155,7 @@ Ext.define('sitools.admin.projects.datasetsWin', {
      * Add selected Datasets to the project
      */
     _onOK : function () {
-        Ext.each(this.grid.getSelectionModel().getSelections(), function (dataset) {
+        Ext.each(this.grid.getSelectionModel().getSelection(), function (dataset) {
             if (this.storeDatasets.find('id', dataset.data.id) == -1) {
                 var image = dataset.data.image;
                 

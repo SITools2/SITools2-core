@@ -30,9 +30,13 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
     extend : 'Ext.grid.Panel',
     
     initComponent : function () {
-		var action = this.action;
-		var storeProperties = new Ext.data.JsonStore({
-            fields : [ {
+		
+		var storeProperties = Ext.create('Ext.data.JsonStore', {
+		    autoLoad : false,
+		    proxy : {
+		        type : 'memory'
+		    },
+            fields : [{
                 name : 'name',
                 type : 'string'
             }, {
@@ -41,26 +45,27 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
             }, {
                 name : 'value',
                 type : 'string'
-            } ],
-            autoLoad : false
+            }],
         });
-        var smProperties = Ext.create('Ext.selection.RowModel',{
+		
+        var smProperties = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
         
-        var storeTypesProperties = new Ext.data.JsonStore({
+        var storeTypesProperties = Ext.create('Ext.data.JsonStore', {
             fields : ['name'],
             data : [{name : "String"}, {name : "Enum"}, {name : "Numeric"}, {name : "Date"}]
         });
-	    var comboTypesProperties = new Ext.form.ComboBox({
+        
+	    var comboTypesProperties = Ext.create('Ext.form.field.ComboBox', {
 	        store : storeTypesProperties, 
-	        mode : 'local',
+	        queryMode : 'local',
 	        typeAhead : true,
 	        triggerAction : 'all',
 	        forceSelection : true,
 	        selectOnFocus : true,
 	        dataIndex : 'orderBy',
-	        listClass : 'x-combo-list-small',
+//	        listClass : 'x-combo-list-small',
 	        valueField : 'name',
 	        displayField : 'name',
 	        width : 55

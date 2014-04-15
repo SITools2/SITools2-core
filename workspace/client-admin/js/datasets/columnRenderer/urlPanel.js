@@ -28,21 +28,30 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @extends Ext.form.FormPanel
  */
 Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { 
-        extend : 'Ext.Panel',
+        extend : 'Ext.panel.Panel',
 		flex : 1,
 		layout : "fit",
+        bodyBorder : false,
+        border : false,
+        padding : '5 5 5 5',
+        bodyPadding : '5 5 5 5',
+		
         initComponent : function () {
-            this.formPanel = new Ext.form.FormPanel({  
+            
+            this.formPanel = Ext.create('Ext.form.Panel', {  
                 defaults : {
-                    anchor : "100%"
+                    anchor : "95%"
                 },
+                bodyBorder : false,
+                border : false,
                 padding : '5 5 5 5',
+                bodyPadding : '5 5 5 5',
                 items : [{
                     fieldLabel : i18n.get('label.display'),
                     name : 'display',
                     xtype : 'radiogroup',
                     columns : 2,
-                    items : [ {
+                    items : [{
                         boxLabel : 'Text',
                         name : 'display',
                         inputValue : "Text",
@@ -51,7 +60,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', {
                         boxLabel : 'Image',
                         name : 'display',
                         inputValue : "Image"
-                    } ],
+                    }],
                     listeners : {
                         scope : this,
                         change : function (radioGroup, newValue, oldValue) {
@@ -81,14 +90,12 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', {
                         hidden : true,
                         disabled : true,
 						fieldLabel : i18n.get('label.image'),
-						anchor : '100%',
 						growMax : 400,
                         allowBlank : false
 					}, {
                         xtype : 'checkbox',
 			            fieldLabel : i18n.get('label.isDisplayable'),
 			            name : 'displayable',
-			            anchor : '100%',
                         tooltip : i18n.get('label.isDisplayable.tooltip'),
                         hidden : (this.behaviorType != ColumnRendererEnum.URL_EXT_DESKTOP),
                         disabled : (this.behaviorType != ColumnRendererEnum.URL_EXT_DESKTOP)

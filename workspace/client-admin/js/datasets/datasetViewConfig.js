@@ -33,17 +33,25 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
     padding : 10, 
     initComponent : function () {
         this.title = i18n.get('label.viewConfig');
-        var action = this.action;
-        //Store of the comboDatasetsViews.
-        this.storeDatasetViews = new Ext.data.JsonStore({
-            fields : [ 'id', 'name', 'description', 'jsObject', 'fileUrl', 'priority' ],
-            url : this.urlDatasetViews,
-            autoLoad : false,
-            root : "data", 
-            sortInfo : {
-                field : 'priority',
-                direction : 'ASC'
+
+        console.log('tamere');
+        
+        this.storeDatasetViews = Ext.create('Ext.data.JsonStore', {
+            autoLoad : true,
+            proxy : {
+                type : 'ajax',
+                url : this.urlDatasetViews,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
             },
+            fields : [ 'id', 'name', 'description', 'jsObject', 'fileUrl', 'priority' ],
+            sorters : [{
+                property : 'priority',
+                direction : 'ASC'
+            }],
             listeners : {
                 scope : this, 
                 load : function (store, recs) {
@@ -55,10 +63,10 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
                                     minPriorityRec = recs[i];
                                 }                                
                             }
-                            tabRec = [];
+                            var tabRec = [];
                             tabRec[0] = minPriorityRec;
                             
-                            this.comboDatasetViews.setValue(minPriorityrec.data.id);
+                            this.comboDatasetViews.setValue(minPriorityRec.data.id);
                             this.comboDatasetViews.fireEvent("select", this.comboDatasetViews, tabRec);
                         }
                     }
@@ -70,25 +78,22 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
          * Combo to select Datasets Views.
          * Uses the storeDatasetViews. 
          */
-        this.comboDatasetViews = new Ext.form.ComboBox({
+        this.comboDatasetViews = Ext.create('Ext.form.field.ComboBox', {
             disabled : this.action == 'view' ? true : false, 
             id : "comboDatasetViews",
             store : this.storeDatasetViews,
             fieldLabel : i18n.get('label.datasetViews'),
+            emptyText : i18n.get('label.datasetViewsSelect'),
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+//            queryMode : 'local',
             name : 'comboDatasetViews',
             forceSelection : true,
-            triggerAction : 'all',
             editable : false,
-            emptyText : i18n.get('label.datasetViewsSelect'),
             selectOnFocus : true,
             anchor : '95%',    
-            itemSelector : 'div.search-item',
             allowBlank : false,
-            autoSelect : true, 
             maxHeight : 200,
             validator : function (value) {
                 if (Ext.isEmpty(value)) {
@@ -99,7 +104,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
             },
             tpl : new Ext.XTemplate(
                 '<tpl for=".">',
-                '<div class="search-item combo-datasetview"><div class="combo-datasetview-name">{name}</div>',
+                '<div class="x-boundlist-item search-item combo-datasetview"><div class="combo-datasetview-name">{name}</div>',
                 '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription-datasetview"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
                 '</div></tpl>',
                 {
@@ -117,7 +122,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
             }
         });
 
-        this.parametersFieldset = new Ext.form.FieldSet({
+        this.parametersFieldset = Ext.create('Ext.form.FieldSet', {
             title : i18n.get('label.parameters'), 
             anchor : "95%"
         });
@@ -125,7 +130,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
             items : [this.comboDatasetViews, this.parametersFieldset], 
             listeners : {
                 "activate" : function () {
-                    if (action == 'view') {
+                    if (this.action == 'view') {
                         this.getEl().mask();
                     }
                 }

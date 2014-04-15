@@ -28,7 +28,7 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.datasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetViewConfig', { 
+Ext.define('sitools.admin.datasets.datasetServicesConfig', { 
     extend : 'Ext.form.Panel', 
     padding : 10, 
     
@@ -134,7 +134,7 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
             }
         });
         
-        sitools.admin.datasets.datasetViewConfig.superclass.initComponent.call(this);
+        sitools.admin.datasets.datasetServicesConfig.superclass.initComponent.call(this);
 
 
     }, 

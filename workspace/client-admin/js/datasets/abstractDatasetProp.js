@@ -281,7 +281,8 @@ sitools.admin.datasets.abstractDatasetWin = {
                     }
                     var columnModel = data.columnModel;
                     this.down('panel[id=gridColumnSelect]').getData(columnModel);
-                    if (! Ext.isEmpty(data.structure)) {
+                    
+                    if (!Ext.isEmpty(data.structure)) {
 						this.panelWhere.getWizardJoinCondition().items.items[0].loadTree(data);
                     }
                     
@@ -310,7 +311,7 @@ sitools.admin.datasets.abstractDatasetWin = {
         } else {
 //            this.formulairePrincipal.getDataSourceCombo().getStore().load();
             this.formulairePrincipal.loadDatasources();
-            this.viewConfigPanel.getDatasetViewsCombo().getStore().load();
+//            this.viewConfigPanel.getDatasetViewsCombo().getStore().load();
             this.applyCkeditor();
         }
 
@@ -333,7 +334,7 @@ sitools.admin.datasets.abstractDatasetWin = {
     },
     
     refreshTextAreaValues : function () {
-        Ext.iterate(CKEDITOR.instances, function(key, instance){
+        Ext.iterate(CKEDITOR.instances, function(key, instance) {
             instance.updateElement();
         });
     }

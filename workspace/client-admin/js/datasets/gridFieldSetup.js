@@ -37,12 +37,18 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
     initComponent : function () {
         this.title = i18n.get('title.gridColumn');
 
-        var storeColumn = new Ext.data.JsonStore({
+        var storeColumn = Ext.create('Ext.data.JsonStore', {
             id : 'storeColumnSelect',
-            root : 'ColumnModel',
-            idProperty : 'columnAlias',
             remoteSort : false,
             model : 'DatasetModel',
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    idProperty : 'columnAlias',
+                    root : 'ColumnModel'
+                }
+            },
             listeners : {
                 add : function (store, records) {
                     Ext.each(records, function (record) {
@@ -96,12 +102,12 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/primaryKey.html"
         };
         
-        var comboStoreOrderBy = new Ext.data.ArrayStore({
+        var comboStoreOrderBy = Ext.create('Ext.data.ArrayStore', {
             fields : [ 'value', 'display' ],
             data : [ [ '', '' ], [ 'ASC', 'ASC' ], [ 'DESC', 'DESC' ] ]
         });
         
-        var comboOrderBy = new Ext.form.ComboBox({
+        var comboOrderBy = Ext.create('Ext.form.field.ComboBox', {
             header : i18n.get('headers.orderBy'),
             store : comboStoreOrderBy, 
             mode : 'local',
@@ -116,7 +122,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             helpUrl : loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/dataset/orderBy.html"
         });
 
-        var comboStore = new Ext.data.ArrayStore({
+        var comboStore = Ext.create('Ext.data.ArrayStore', {
             fields : [ 'value', 'display', 'tooltip' ],
             data : [ [ '', '' ],
                     [ 'Image', 'Image', i18n.get("label.image.tooltip") ], 
@@ -142,9 +148,9 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                     var columnRendererType = combo.getValue();
                     //get the last value, which is either the last value selected or the first value.
                     var lastValue = (Ext.isEmpty(combo.lastValue)) ? combo.startValue   : combo.lastValue;
-                    var selectedRecord = this.getSelectionModel().getSelected();
+                    var selectedRecord = this.getSelectionModel().getSelection()[0];
                     if (!Ext.isEmpty(columnRendererType)) {                
-                        var colWindow = new sitools.admin.datasets.columnRendererWin({
+                        var colWindow = Ext.create('sitools.admin.datasets.columnRendererWin', {
                             selectedRecord : selectedRecord, 
                             gridView : this.getView(),
                             columnRendererType : columnRendererType,
@@ -284,11 +290,11 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             mode : 'SINGLE'
         });
 
-        var menuActions = new Ext.menu.Menu({
+        var menuActions = Ext.create('Ext.menu.Menu', {
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
                 text : i18n.get('label.assignUnit'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh_clue.png',
                 handler : this.onAssignUnit
@@ -298,12 +304,13 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                 handler : this.onDeleteUnit
             }]
         });
+        
         var tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
                 text : i18n.get('label.create'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
                 handler : this.onCreateColumn
@@ -358,13 +365,13 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
      */
     onAssignUnit : function () {
         var grid = this;
-        var rec = grid.getSelectionModel().getSelected();
+        var rec = grid.getSelectionModel().getSelection()[0];
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
         }
 
-        var unitWin = new sitools.admin.datasets.unitWin({
+        var unitWin = Ext.create('sitools.admin.datasets.unitWin', {
             recordColumn : rec,
             viewColumn : grid.getView(),
             urlDimension : this.urlDimension
@@ -376,7 +383,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
      * @method
      */
     onCreateColumn : function () {
-        var winPropColumn = new sitools.admin.datasets.columnsPropPanel({
+        var winPropColumn = Ext.create('sitools.admin.datasets.columnsPropPanel', {
             action : 'create',
             store : this.getStore(), 
             datasourceUtils : this.datasourceUtils
@@ -389,7 +396,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
      * @method
      */
     onModifyColumn : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getSelectionModel().getSelection()[0];
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
@@ -400,7 +407,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             return;
         }
         
-        var winPropColumn = new sitools.admin.datasets.columnsPropPanel({
+        var winPropColumn = Ext.create('sitools.admin.datasets.columnsPropPanel', {
             action : 'modify',
             store : this.getStore(),
             recordColumn : rec, 
@@ -415,7 +422,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
      */
     onDeleteColumn : function () {
         var grid = this;
-        var rec = grid.getSelectionModel().getSelected();
+        var rec = grid.getSelectionModel().getSelection()[0];
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
@@ -430,7 +437,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
      */
     onDeleteUnit : function () {
         var grid = this;
-        var rec = grid.getSelectionModel().getSelected();
+        var rec = grid.getSelectionModel().getSelection()[0];
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
@@ -525,7 +532,6 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                 if (!Ext.isEmpty(rec.orderBy) && rec.orderBy) {
                     nbOrderBy++;
                 }
-                
             }
             if (nbPrimaryKey != 1) {
                 result = {

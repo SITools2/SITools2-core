@@ -27,21 +27,23 @@ Ext.namespace('sitools.admin.datasets');
  * @class sitools.admin.datasets.DicoMapping
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.DicoMapping', { 
+    extend : 'Ext.Window',
 	alias : 'widget.s-DicoMapping',
     width : 800,
     height : 680,
     modal : true,
     resizable : true,    
     urlDataset  : null,
-    layout : 'vbox',
     dictionaryId : null,
     isModified : false,
     urlMappingPart : "/mappings",
-    layoutConfig : {
-            align : 'stretch',
-            pack : 'start'
-        },
+    layout : {
+        type : 'vbox',
+        align : 'stretch',
+        pack : 'start'
+    },
+    
     initComponent : function () {
         this.urlDictionaries = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_URL');
         
@@ -52,13 +54,18 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
         /** Dataset column grid */
         /** ###################################### */
         
-        var storeDatasetColumns = new Ext.data.JsonStore({
-			root : 'dataset.columnModel',
-			idProperty : 'id',
+        var storeDatasetColumns = Ext.create('Ext.data.JsonStore', {
 			remoteSort : false,
-            url : this.urlDataset,
             autoLoad : true,
-            restful : true,
+            proxy : {
+                type : 'ajax',
+                url : this.urlDataset,
+                reader : {
+                    type : 'json',
+                    root : 'dataset.columnModel',
+                    idProperty : 'id'
+                }
+            },
 			fields : [{
 				name : 'id',
 				type : 'string'
@@ -68,28 +75,20 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
 			}]
 		});
         
-        var cmDatasetColumns = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : false
-            // columns are not sortable by default
-            },
-            columns : [ {
+        var cmDatasetColumns = {
+            items : [{
                 header : i18n.get('label.columnAlias'),
                 dataIndex : 'columnAlias',                
                 sortable : true
-            } ]
-        });
+            }]
+        };
         
-        this.gridDatasetColumn = new Ext.grid.GridPanel({
+        this.gridDatasetColumn = Ext.create('Ext.grid.Panel', {
             store : storeDatasetColumns,
-            cm : cmDatasetColumns,
+            columns : cmDatasetColumns,
             flex : 1,
             title : i18n.get("label.datasetColumn"),
-            viewConfig : {
-                forceFit : true,
-                autoFill : true
-            },
+            forceFit : true,
             listeners : {
                 scope : this,
                 mappingsSelected : function (grid, columnsId) {
@@ -116,15 +115,21 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
         /** Dictionnaries combo box and GRID */
         /** ###################################### */
         
-        var storeDictionaries = new Ext.data.JsonStore({
+        var storeDictionaries = Ext.create('Ext.data.JsonStore', {
             fields : [ 'id', 'name', 'conceptTemplate' ],
-            url : this.urlDictionaries,
-            root : "data",
-            autoLoad : true
+            autoLoad : true,
+            proxy : {
+                type : 'ajax',
+                url : this.urlDictionaries,
+                reader : {
+                    type : 'json',
+                    root : "data"
+                }
+            }
         });
         
         
-        this.comboDictionaries = new Ext.form.ComboBox({
+        this.comboDictionaries = Ext.create('Ext.form.field.ComboBox', {
             store : storeDictionaries,
             displayField : 'name',
             valueField : 'id',
@@ -144,13 +149,13 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
             }
         });
         //temporary definition of gridDictionaryConcept to display the title
-        this.gridDictionaryConcept = new Ext.Panel({
+        this.gridDictionaryConcept = Ext.create('Ext.panel.Panel', {
             id : 'gridDictionaryConcept',
             flex : 2,
             title : i18n.get("label.dictionaryConcepts")
         });
         
-        this.checkboxDefaultDictionary = new Ext.form.Checkbox({
+        this.checkboxDefaultDictionary = Ext.create('Ext.form.field.Checkbox', {
             name : 'defaultDico',
             boxLabel: i18n.get("label.defaultDictionary"),
             anchor : '100%',
@@ -158,7 +163,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
             disabled : this.masked            
         });
         
-        this.choicePanel = new Ext.Panel({
+        this.choicePanel = Ext.create('Ext.panel.Panel', {
             items : [this.gridDatasetColumn, this.gridDictionaryConcept],
             flex : 1,
             layout : "hbox",
@@ -208,46 +213,47 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
         /** Concepts Mapping */
         /** ###################################### */
         
-        var storeMapping = new Ext.data.JsonStore({
-            root : 'ColumnModel',
-            idProperty : 'concatColConcept',
-            remoteSort : false,
-            url : this.urlConcepts,            
-            restful : true,
-            fields : [{
-                name : 'concatColConcept',
-                type : 'string'
-            }, {
-                name : 'columnId',
-                type : 'string'
-            }, {
-                name : 'conceptsId'                
-            }, {
-                name : 'conceptName'                
-            }]
-        });
+        // NEVER USED ??!
         
-        var cmMapping = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
-            defaults : {
-                sortable : false
-            // columns are not sortable by default
-            },
-            columns : [ {
-                header : i18n.get('label.columnAlias'),
-                dataIndex : 'columnId',
-                width : 100,
-                sortable : true
-            }, {
-                header : i18n.get('label.conceptName'),
-                dataIndex : 'conceptName',
-                width : 100,
-                sortable : true
-            } ]
-        });
+//        var storeMapping = Ext.create('Ext.data.JsonStore', {
+//            proxy : {
+//                type : 'ajax',
+//                url : this.urlConcepts,
+//                reader : {
+//                    type : 'json',
+//                    root : 'ColumnModel',
+//                    idProperty : 'concatColConcept'
+//                }
+//            },
+//            fields : [{
+//                name : 'concatColConcept',
+//                type : 'string'
+//            }, {
+//                name : 'columnId',
+//                type : 'string'
+//            }, {
+//                name : 'conceptsId'                
+//            }, {
+//                name : 'conceptName'                
+//            }]
+//        });
+//        
+//        var cmMapping = {
+//            items : [ {
+//                header : i18n.get('label.columnAlias'),
+//                dataIndex : 'columnId',
+//                width : 100,
+//                sortable : true
+//            }, {
+//                header : i18n.get('label.conceptName'),
+//                dataIndex : 'conceptName',
+//                width : 100,
+//                sortable : true
+//            } ]
+//        };
         
         //temporary definition of gridMapping to diplay the title
-        this.gridMapping = new Ext.Panel({
+        this.gridMapping = Ext.create('Ext.panel.Panel', {
             flex : 1,
             title : i18n.get("label.mappingConceptColumn"),
 			listeners : {
@@ -259,7 +265,6 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
 				}
 			}
         });
-        
         
         this.items = [this.choicePanel, this.gridMapping];       
         
@@ -291,7 +296,8 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
         //refresh dico grid
         this.dictionaryId = rec.data.id;
         var templateConcept = rec.data.conceptTemplate;
-        this.gridDictionaryConcept = new sitools.component.dictionary.gridPanel({
+        
+        this.gridDictionaryConcept = Ext.create('sitools.component.dictionary.gridPanel', {
             template : templateConcept,
             editable : false,
             url : this.urlDictionaries + "/" + this.dictionaryId,
@@ -359,16 +365,17 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
             type : 'string'
         });
         
-        var reader = new Ext.data.JsonReader({
+        var storeMapping = Ext.create('Ext.data.Store', {
+            reader : {
+                type : 'json',
+                idProperty : 'idMapping'
+            },
             fields : fields,
-            idProperty : 'idMapping'
-        });
-        
-        var storeMapping = new Ext.data.GroupingStore({
-            reader : reader,
-            remoteSort : false,
-            fields : fields,
-            sortInfo: {field: 'columnAlias', direction: 'ASC'},
+            sorters : [{
+                property: 'columnAlias',
+                direction: 'ASC'
+            }],
+//            sortInfo: {field: 'columnAlias', direction: 'ASC'},
             listeners : {
                 scope : this,
                 add : function (store, records, index) {
@@ -393,7 +400,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
 //			col.resizable = true;
 //		});
         
-        cmConfigNew.push(new Ext.grid.Column({
+        cmConfigNew.push(Ext.create('Ext.grid.column.Column', {
             header : i18n.get('label.columnAlias'),
             dataIndex : 'columnAlias',
             width : 100,
@@ -402,13 +409,20 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
             resizable : true
         }));
         
-        var cmMapping = new Ext.grid.ColumnModel(cmConfigNew);
+        var cmMapping = Ext.create('Ext.grid.ColumnModel', {
+            items : cmConfigNew
+        });
         
         this.remove(this.gridMapping);
         
-        this.gridMapping = new Ext.grid.GridPanel({
+        var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
+            startCollapsed : true,
+            groupHeaderTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+        });
+        
+        this.gridMapping = Ext.create('Ext.grid.Panel', {
             store : storeMapping,
-            cm : cmMapping,
+            columns : cmMapping,
             flex : 1,
             title : i18n.get("label.mappingConceptColumn"),
             tbar : {
@@ -426,11 +440,12 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
                     icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                     handler : this.onRemoveMapping
                 }]
-            }, 
-            view : new Ext.grid.GroupingView({
-                groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})',
-                autoFill : true
-            }),
+            },
+            features : [groupingFeature],
+//            view : new Ext.grid.GroupingView({
+//                groupTextTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})',
+//                autoFill : true
+//            }),
             listeners : {
                 scope : this,
                 afterrender : function () {
@@ -454,7 +469,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
 //                    selModel.selectRecords(records);   
 //                }
 //            },
-            selModel : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel', {
 				listeners : {
 					scope : this,
 					rowselect : this.gridMappingRowSelectionModelListener,
@@ -542,17 +557,20 @@ Ext.define('sitools.admin.datasets.DicoMapping', { extend : 'Ext.Window',
                 
                 this.loadMappingData(json.dictionaryMapping);
 				
-                new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get("dictionary.mapping.saved"),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                return popupMessage("", i18n.get("dictionary.mapping.saved"), 
+                        loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+
+//                new Ext.ux.Notification({
+//                    iconCls : 'x-icon-information',
+//                    title : i18n.get('label.information'),
+//                    html : i18n.get("dictionary.mapping.saved"),
+//                    autoDestroy : true,
+//                    hideDelay : 1000
+//                }).show(document);
                 
-                if (quit) {
-                    this.close();
-                }
+//                if (quit) {
+//                    this.close();
+//                }
 			},
 			failure : alertFailure
 		});

@@ -36,7 +36,7 @@ Ext.namespace('sitools.admin.datasets');
  * @extends Ext.Panel
  */
 Ext.define('sitools.admin.datasets.joinPanel', { 
-    extend : 'Ext.Panel',
+    extend : 'Ext.panel.Panel',
     border : false,
     urlJDBC : loadUrl.get('APP_URL') + "/",
     autoScroll: true,
@@ -57,13 +57,13 @@ Ext.define('sitools.admin.datasets.joinPanel', {
 
         this.removeAll();
 
-        this.tree = new sitools.component.datasets.joinCrudTreePanel({
+        this.tree = Ext.create('sitools.component.datasets.joinCrudTreePanel', {
             datasetId : this.datasetId
         });
+        
         this.tree.getRootNode().expand(true);
         this.add(this.tree);
         this.doLayout();
-
     },
 
     _onSave : function () {
@@ -101,13 +101,10 @@ Ext.define('sitools.admin.datasets.joinPanel', {
                         Ext.Msg.alert(i18n.get('label.warning'), data.message);
                         return false;
                     } else {
-                        var tmp = new Ext.ux.Notification({
-                            iconCls : 'x-icon-information',
-                            title : i18n.get('label.information'),
-                            html : i18n.get('label.graphSaved'),
-                            autoDestroy : true,
-                            hideDelay : 1000
-                        }).show(document);
+                        popupMessage("",
+                                i18n.get('label.graphSaved'),
+                                loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
+                        
                         this.loadGraph(projectId);
                     }
                 },

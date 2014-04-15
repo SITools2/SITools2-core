@@ -38,6 +38,7 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
     pageSize : 10,
 	resizable : false, 
     id : 'joinConditionWin',
+    layout : 'fit',
     
     initComponent : function () {
         this.storeColumnDataset.filterBy(function (rec) {
@@ -51,13 +52,14 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
         catch (err) {
 			defaultPredicat = {};
         }
-        this.logicOperator = new Ext.form.ComboBox({
+        
+        this.logicOperator = Ext.create('Ext.form.field.ComboBox', {
 		    typeAhead : false,
 		    triggerAction : 'all',
-		    mode : 'local',
+		    queryMode : 'local',
 		    width : 50,
 		    editable : false,
-		    store : new Ext.data.ArrayStore({
+		    store : Ext.create('Ext.data.ArrayStore', {
 		        id : 0,
 		        fields : [ 'myId', 'displayText' ],
 		        data : [ [ '', '' ], [ 'on', 'on' ], [ 'and', 'and' ], [ 'or', 'or' ] ]
@@ -66,49 +68,50 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
 		    displayField : 'displayText', 
 		    value : Ext.isEmpty(defaultPredicat.logicOperator) ? "on" : defaultPredicat.logicOperator
 		});
-		var myTpl = new Ext.XTemplate('<tpl for=".">', 
-			'<div class="x-combo-list-item">', 
-				'<tpl if="this.isNull(tableAlias)">', 
-					'<tpl if="this.isNotNull(tableName)">{[values.tableName.toUpperCase()]}.</tpl>',
-				'</tpl>',
-				'<tpl if="this.isNotNull(tableAlias)">[values.tableAlias.toUpperCase()].</tpl>',
-				'{columnAlias}</div>',
+        
+		var myTpl = Ext.create('Ext.XTemplate', '<tpl for=".">', 
+			'<div class="x-boundlist-item">', 
+			    '<tpl if="this.isNotNull(tableAlias)">{[values.tableAlias.toUpperCase()]}.</tpl>',
+				'<tpl if="this.isNotNull(tableName)">{[values.tableName.toUpperCase()]}.</tpl>',
+				'{columnAlias}' +
+				'</div>',
 		'</tpl>', 
 		{
-			compiled : true, 
-			isNull : function (value) {
-				return Ext.isEmpty(value);
-			}, 
-			isNotNull : function (value) {
-				return !Ext.isEmpty(value);
-			}, 
-			isDatabase : function (value) {
-				return value == "DATABASE";
-			}
-		});
-		this.leftAttribute = new Ext.form.ComboBox({
-			fieldLabel : "left",
+		    disableFormats : true,
+            isNull : function (value) {
+                return Ext.isEmpty(value);
+            },
+            isNotNull : function (value) {
+                return !Ext.isEmpty(value);
+            },
+            isDatabase : function (value) {
+                return value == "DATABASE";
+            }
+        });
+		
+		this.leftAttribute = Ext.create('Ext.form.field.ComboBox', {
+			emptyText : 'Left attribute...',
 			typeAhead : false,
 		    triggerAction : 'all',
 		    forceSelection : true, 
 		    id : "leftAttributeField", 
 		    flex : 2, 
-		    mode : 'local',
+		    queryMode : 'local',
 		    displayField : 'columnAlias', 
 		    valueField : 'columnAlias', 
 		    store : this.storeColumnDataset, 
 		    value : defaultPredicat.leftAttribute ? defaultPredicat.leftAttribute.columnAlias : null, 
 		    tpl : myTpl
-			
 		});
-		this.compareOperator = new Ext.form.ComboBox({
+		
+		this.compareOperator = Ext.create('Ext.form.field.ComboBox', {
 		    typeAhead : false,
 		    forceSelection : true, 
 		    triggerAction : 'all',
-		    mode : 'local',
+		    queryMode : 'local',
 		    width : 50,
 		    editable : false,
-		    store : new Ext.data.ArrayStore({
+		    store : Ext.create('Ext.data.ArrayStore', {
 		        id : 1,
 		        fields : [ 'myId', 'displayText' ],
 		        data : predicatOperators.operators
@@ -119,37 +122,45 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
 		    value : Ext.isEmpty(defaultPredicat.compareOperator) ? "EQ" : defaultPredicat.compareOperator
 		});
 
-		this.rightAttribute = new Ext.form.ComboBox({
-			fieldLabel : "left",
+		this.rightAttribute = Ext.create('Ext.form.field.ComboBox', {
+		    emptyText : 'Right attribute...',
 			typeAhead : false,
 		    triggerAction : 'all',
 		    forceSelection : true, 
 		    id : "rightAttributeField", 
-		    mode : 'local',
+		    queryMode : 'local',
 		    flex : 2, 
 		    displayField : 'columnAlias',
 		    valueField : 'columnAlias', 
-            
 		    store : this.storeColumnDataset, 
 		    value : defaultPredicat.rightAttribute ? defaultPredicat.rightAttribute.columnAlias : null, 
 		    tpl : myTpl
 		});
-		var form = new Ext.form.FormPanel({
-	        labelWidth : 100, // label settings here cascade unless overridden
+		
+		var form = Ext.create('Ext.form.Panel', {
+	        labelWidth : 100,
 	        bodyStyle : 'padding:5px 5px 0',
-	        width : 640, 
+	        width : 640,
+	        border : false,
+	        bodyBorder : false,
 			items : [{
-				xtype : 'compositefield', 
+				xtype : 'fieldcontainer',
+				layout: {
+				    type : 'hbox',
+				    defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
+				},
 				fieldLabel : i18n.get('label.joinCondition'),
 				defaults : {
 					flex : 1
 				}, 
 				items : [this.logicOperator, this.leftAttribute, this.compareOperator, this.rightAttribute]
 			}]
-
 		});
-		this.title = i18n.get('label.joinCondition');
+		
+//		this.title = i18n.get('label.joinCondition');
+		
         this.items = [form];
+        
         this.buttons = [ {
             text : i18n.get('label.ok'),
             handler : this._onOK, 
