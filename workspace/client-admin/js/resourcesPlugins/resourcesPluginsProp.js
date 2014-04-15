@@ -531,7 +531,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
      */
     onClassClick : function (self, rec, item, index, e, eOpts) {
         if (this.action == "create") {
-            var className = rec.data.className;
+            var className = rec.get("className");
             if (className != this.classChosen) {
                 var url = this.urlResources + "/" + className;
                 var store = this.gridFieldMapping.getStore();

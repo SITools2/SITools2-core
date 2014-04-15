@@ -29,6 +29,9 @@ Ext.define('sitools.component.filters.filtersProp', {
     height : 480,
     modal : true,
     resizable : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         this.filtersUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_FILTERS_PLUGINS_URL');
@@ -37,7 +40,7 @@ Ext.define('sitools.component.filters.filtersProp', {
         
         var expander = {
             ptype: 'rowexpander',
-            rowBodyTpl : new Ext.XTemplate(
+            rowBodyTpl : Ext.create("Ext.XTemplate",
             '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
             '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
             {
@@ -49,25 +52,29 @@ Ext.define('sitools.component.filters.filtersProp', {
             expandOnDblClick : true
         };
         
-        this.gridFilter = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
-            id : 'gridFilter',
+        this.gridFilter = Ext.create("Ext.grid.GridPanel",{
+            forceFit : true,
             title : i18n.get('title.filterClass'),
-            store : new Ext.data.JsonStore({
-                root : 'data',
+            store : Ext.create("Ext.data.JsonStore", {
                 restful : true,
-                proxy : new Ext.data.HttpProxy({
+                proxy : {
+                    type : 'ajax',
+                    startParam : undefined,
+                    limitParam : undefined,
                     url : this.filtersUrl,
-                    restful : true,
-                    method : 'GET'
-                }),
+                    reader : {
+                        type : 'json',
+                        root : 'data',
+                        idProperty : 'id'
+                    }
+                },
                 remoteSort : false,
-                idProperty : 'id',
                 fields : [ {
                     name : 'id',
-                    type : 'string'
+                    type : 'string',
+                    convert : function () {
+                        return Ext.id();
+                    }
                 }, {
                     name : 'name',
                     type : 'string'
@@ -119,21 +126,20 @@ Ext.define('sitools.component.filters.filtersProp', {
             }],
             listeners : {
                 scope : this,
-                rowclick :  this.onClassClick
+                itemClick :  this.onClassClick
             }, 
-            plugins : [expander]
+            plugins : [expander],
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode: 'SINGLE'
+            }),
 
         });
 
-        this.proxyFieldMapping = new Ext.data.HttpProxy({
-            url : '/tmp',
-            restful : true,
-            method : 'GET'
-        });
+        
         
         var expanderGridFieldMapping = {
             ptype: 'rowexpander',
-            rowBodyTpl : new Ext.XTemplate(
+            rowBodyTpl : Ext.create("Ext.XTemplate", 
             '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
             '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
             {
@@ -196,7 +202,7 @@ Ext.define('sitools.component.filters.filtersProp', {
 		                            cls : cls
 		                        };
 		
-		                        var ttip = new Ext.ToolTip(ttConfig);
+		                        Ext.create("Ext.ToolTip", ttConfig);
                             }
                         });
                     }
@@ -204,12 +210,8 @@ Ext.define('sitools.component.filters.filtersProp', {
             },
             layout : 'fit',
             region : 'center',
-            store : new Ext.data.JsonStore({
-                root : 'filter.parameters',
-                proxy : this.proxyFieldMapping,
-                restful : true,
+            store : Ext.create("Ext.data.JsonStore", {
                 remoteSort : false,
-                idProperty : 'name',
                 fields : [ {
                     name : 'name',
                     type : 'string'
@@ -258,7 +260,7 @@ Ext.define('sitools.component.filters.filtersProp', {
                     xtype : 'textfield'
                 }
             }],
-            bbar : new Ext.ux.StatusBar({
+            bbar : Ext.create("Ext.ux.StatusBar", {
 	            id: 'statusBar',
 	            hidden : true,
 	            iconCls: 'x-status-error',
@@ -270,7 +272,7 @@ Ext.define('sitools.component.filters.filtersProp', {
                     var rec = record.data;
                     
                     if (cellIndex == 3 && rec.parameterType != "PARAMETER_INTERN") {
-                        var selectColumnWin = new sitools.admin.datasets.selectColumn({
+                        var selectColumnWin = Ext.create("sitools.admin.datasets.selectColumn", {
                             field : "attachedColumn",
                             record : storeRecord,
                             parentStore : this.gridFieldMapping.getStore(),
@@ -289,9 +291,11 @@ Ext.define('sitools.component.filters.filtersProp', {
         });
 
         // set the search form
-        this.fieldMappingFormPanel = new Ext.FormPanel({
+        this.fieldMappingFormPanel = Ext.create("Ext.FormPanel", {
             height : 40,
-            frame : true,
+            border : false,
+            bodyBorder : false,
+            padding : 5,
             defaultType : 'textfield',
             items : [ {
                 fieldLabel : i18n.get('label.descriptionAction'),
@@ -302,7 +306,7 @@ Ext.define('sitools.component.filters.filtersProp', {
 
         });
 
-        this.fieldMappingPanel = new Ext.Panel({
+        this.fieldMappingPanel = Ext.create("Ext.Panel", {
             layout : 'border',
             id : 'gridFieldMapping',
             title : i18n.get('title.fieldMapping'),
@@ -310,7 +314,7 @@ Ext.define('sitools.component.filters.filtersProp', {
 
         });
 
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create("Ext.TabPanel", {
             height : 450,
             activeTab : 0,
             items : (this.action == "create") ? [ this.gridFilter, this.fieldMappingPanel ] : [ this.fieldMappingPanel ],
@@ -348,9 +352,9 @@ Ext.define('sitools.component.filters.filtersProp', {
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action == "create") {
             if (newTab.id == "gridFieldMapping") {
-                var rec = this.gridFilter.getSelectionModel().getSelected();
+                var rec = this.getLastSelectedRecord(this.gridFilter);
                 if (!rec) {
-                    var tmp = new Ext.ux.Notification({
+                    Ext.create("Ext.ux.Notification", {
                             iconCls : 'x-icon-information',
                             title : i18n.get('label.information'),
                             html : i18n.get('warning.noselection'),
@@ -364,9 +368,8 @@ Ext.define('sitools.component.filters.filtersProp', {
 
     },
     
-    onClassClick : function (self, rowIndex, e) {
+    onClassClick : function (self, rec, item, index, e, eOpts) {
         if (this.action == "create") {
-            var rec = this.gridFilter.getSelectionModel().getSelected();
             if (!rec) {
 //                var tmp = new Ext.ux.Notification({
 //                        iconCls : 'x-icon-information',
@@ -377,9 +380,18 @@ Ext.define('sitools.component.filters.filtersProp', {
 //                    }).show(document);
                 return false;
             }
-            var className = rec.data.className;
-            this.proxyFieldMapping.url =this.filtersUrl + "/" + className + "/" + this.datasetId;
+            var className = rec.get("className");
+            
             var store = this.gridFieldMapping.getStore();
+            store.setProxy({
+                type : 'ajax', 
+                url : this.filtersUrl + "/" + className + "/" + this.datasetId,
+                reader : {
+                    type : 'json',
+                    root : 'filter.parameters',
+                    idProperty : 'name'
+                }
+            });
             store.removeAll();
             store.load();
         }
@@ -410,9 +422,9 @@ Ext.define('sitools.component.filters.filtersProp', {
         }
     },
     onValidate : function () {
-        var rec = this.gridFilter.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord(this.gridFilter);
         if (!rec && this.action == "create") {
-            var tmp = new Ext.ux.Notification({
+            Ext.create("Ext.ux.Notification", {
                 iconCls : 'x-icon-information',
                 title : i18n.get('label.information'),
                 html : i18n.get('warning.noselection'),
@@ -436,8 +448,7 @@ Ext.define('sitools.component.filters.filtersProp', {
 
         var parameters = [];
         if (this.action == "create") {
-            rec = this.gridFilter.getSelectionModel().getSelected();
-            var classParam = rec.data;
+            var classParam = rec.getData();
 
             jsonReturn.className = classParam.className;
             jsonReturn.name = classParam.name;
@@ -488,7 +499,7 @@ Ext.define('sitools.component.filters.filtersProp', {
                     }
                     return false;
                 }
-                var tmp = new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('label.filterSaved'),
