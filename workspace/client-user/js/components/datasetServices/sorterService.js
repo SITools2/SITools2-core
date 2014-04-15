@@ -147,7 +147,7 @@ Ext.define('sitools.user.component.dataviews.services.sorterService', {
             name : "field" + 1,
             triggerAction : 'all',
             lazyRender : true,
-            mode : 'local',
+            queryMode : 'local',
             store : this.storeCombo,
             valueField : 'dataIndex',
             displayField : 'columnHeader',

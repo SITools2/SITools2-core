@@ -490,7 +490,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
             break;
         case "NUMERIC_BETWEEN" : 
             field = {
-                xtype: 'compositefield',
+                xtype: 'fieldcontainer',
                 defaults: {
                     flex: 1
                 },
@@ -521,7 +521,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
             break;
         case "DATE_BETWEEN" : 
             field = {
-                xtype: 'compositefield',
+                xtype: 'fieldcontainer',
                 defaults: {
                     flex: 1
                 },

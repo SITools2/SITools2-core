@@ -73,8 +73,12 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
              * '100%' }
              */, {
             xtype : 'fieldcontainer',
+            layout : {
+                type : 'hbox',
+                defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
+            },
             fieldLabel : i18n.get('label.updatedDate'),
-            items : [ {
+            items : [{
                 fieldLabel : i18n.get("label.day"),
                 name : 'date',
                 xtype : "datefield"
@@ -105,11 +109,15 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
                 flex : 0,
                 scope : this,
                 handler : this.nowDate
-            } ]
+            }]
         }, {
             xtype : 'fieldcontainer',
+            layout : {
+                type : 'hbox',
+                defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
+            },
             fieldLabel : i18n.get('label.publishedDate'),
-            items : [ {
+            items : [{
                 fieldLabel : i18n.get("label.day"),
                 name : 'datePub',
                 xtype : "datefield",
@@ -244,31 +252,37 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
         rec.author = author;
         
         Ext.iterate(form.getValues(), function (key, value) {
-            if (key == "date") {
-                dateStr = value;
-            } else if (key == "hours") {
-                hours = value;
-            } else if (key == "minutes") {
-                mins = value;
-            } else if (key == "datePub") {
-                dateStrPub = value;
-            } else if (key == "hoursPub") {
-                hoursPub = value;
-            } else if (key == "minutesPub") {
-                minsPub = value;
-            } else if (key == "name" || key == "email") {
-                author[key] = value;
-            } else if (key == "image") {
-				if (!Ext.isEmpty(value)) {
-					var type = this.getTypeFromUrl(value);
-					rec[key] = {
-						url : value, 
-						type : type
-					};
-				}
-            } else {
-                rec[key] = value;
+            
+            if (this.action == "create") {
+                if (key == "date") {
+                    dateStr = value;
+                } else if (key == "hours") {
+                    hours = value;
+                } else if (key == "minutes") {
+                    mins = value;
+                } else if (key == "datePub") {
+                    dateStrPub = value;
+                } else if (key == "hoursPub") {
+                    hoursPub = value;
+                } else if (key == "minutesPub") {
+                    minsPub = value;
+                } else if (key == "name" || key == "email") {
+                    author[key] = value;
+                } else if (key == "image") {
+                    if (!Ext.isEmpty(value)) {
+                        var type = this.getTypeFromUrl(value);
+                        rec[key] = {
+                            url : value, 
+                            type : type
+                        };
+                    }
+                } else {
+                    rec[key] = value;
+                }
+            } else { // also a record so we use record method
+                rec.set(key, value);
             }
+            
 
         }, this);
         var date;

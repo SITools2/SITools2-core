@@ -68,6 +68,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         });
         
         this.boxComponent = Ext.create('Ext.Component', {
+            layout : 'hbox',
             hidden : true,
             labelSeparator : "",
             fieldLabel : " ",
@@ -80,7 +81,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         });
         
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = Ext.create('Ext.FormPanel', {
             labelWidth : 100, // label settings here cascade unless overridden
             defaultType : 'textfield',
             padding : 10,
@@ -159,7 +160,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                name : 'feedType',
 	                xtype : 'radiogroup',
 	                columns : 1,
-	                items : [ {
+	                items : [{
 	                    boxLabel : 'RSS',
 	                    name : 'feedType',
 	                    inputValue : "rss_2.0",
@@ -168,7 +169,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                    boxLabel : 'ATOM',
 	                    name : 'feedType',
 	                    inputValue : "atom_1.0"
-	                } ]
+	                }]
 	            },  {
                         xtype: 'fieldcontainer',
                         anchor : "100%",
@@ -180,9 +181,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 				            name : 'externalUrl',
                             xtype: 'textfield',
                             anchor : "100%",                            
-                            flex : 1,
                             status : "pending",
-                            allowBlank : "false",
+                            allowBlank : false,
                             vtype : "uri",
                             validator : function (value) {
                                 var status = this.status;
@@ -240,8 +240,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
          * ***********************************************
          */
 
-        this.storeItem = new Ext.data.JsonStore({
-//            idProperty : 'id',
+        this.storeItem = Ext.create('Ext.data.JsonStore', {
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    idProperty : 'id'
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -267,13 +273,11 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
             }]
         });
 
-        var cm = new Ext.grid.ColumnModel({
-            // specify any defaults for each column
+        var cm = {
             defaults : {
                 sortable : true
-            // columns are not sortable by default
             },
-            columns : [ {
+            items : [{
                 header : i18n.get('label.titleRss'),
                 dataIndex : 'title',
                 width : 150,
@@ -293,8 +297,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
                 dataIndex : 'updatedDate',
                 width : 100,
                 sortable : true
-            } ]
-        });
+            }]
+        };
 
         var tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
@@ -319,14 +323,13 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
             }]
         };
 
-        this.gridPanel = new Ext.grid.GridPanel({
+        this.gridPanel = Ext.create('Ext.grid.Panel', {
             forceFit : true,
             layout : 'fit',
             title : i18n.get("title.feedItems"),
             store : this.storeItem,
-            cm : cm,
+            columns : cm,
             tbar : tbar
-
         });
 
         /**
@@ -334,7 +337,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
          * ***********************************************
          */
         
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create('Ext.tab.Panel', {
             height : 450,
             activeTab : 0,
             items : [ this.formPanel, this.gridPanel ]
@@ -342,7 +345,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 
         this.items = [ this.tabPanel ];
         
-        this.saveButton = new Ext.Button({
+        this.saveButton = Ext.create('Ext.button.Button', {
             text : i18n.get('label.ok'),
             scope : this,
             handler : this.onValidate
@@ -435,9 +438,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                rec.authorEmail = data.author.email;
 	            }
             }
-
             form.setValues(rec);
-            
         }
     },
 
@@ -455,10 +456,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
                 var date = new Date(entry.updatedDate);
                 entry.updatedDate = date;
                 this.storeItem.add(entry);
-
             }
         }
-
     },
 
     /**
@@ -484,7 +483,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         else {        
             this.onValidateModify();
         }
-        
     },
     
     onValidateModify : function () {
@@ -545,19 +543,18 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         // gets the value from the grid
         json.entries = [];
         if (json.feedSource == "CLASSIC") {
-	        
 	        var i;
 	        for (i = 0; i < this.storeItem.getCount(); i++) {
 	            var rec = this.storeItem.getAt(i).copy().data;
 	            var date = rec.updatedDate;
 	            if (date !== null && date !== undefined) {
 	                var updatedDate = new Date(date);
-	                rec.updatedDate = updatedDate.format('Y-m-d\\TH:i:s.u') + updatedDate.getGMTOffset();
+	                rec.updatedDate = Ext.Date.format(updatedDate, 'Y-m-d\\TH:i:s.u') + Ext.Date.getGMTOffset(updatedDate);
 	            }
 	            date = rec.publishedDate;
 	            if (date !== null && date !== undefined) {
 	                var publishedDate = new Date(date);
-	                rec.publishedDate = publishedDate.format('Y-m-d\\TH:i:s.u') + publishedDate.getGMTOffset();
+	                rec.publishedDate = Ext.Date.format(publishedDate, 'Y-m-d\\TH:i:s.u') + Ext.Date.getGMTOffset(publishedDate);
 	
 	            }
 	            delete rec.id;
@@ -588,7 +585,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
                 }
                 this.store.reload();
                 this.close();
-
             },
             failure : alertFailure
         });
@@ -629,7 +625,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
      *  to create a property
      */
     onCreate : function () {
-        var up = new sitools.admin.rssFeed.rssFeedItemProps({
+        var up = Ext.create('sitools.admin.rssFeed.rssFeedItemProps', {
             store : this.storeItem,
             parent : this.gridPanel,
             action : "create"
@@ -642,11 +638,11 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
      *  to modify a property
      */
     onModify : function () {
-        var rec = this.gridPanel.getSelectionModel().getSelected();
+        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.rssFeed.rssFeedItemProps({
+        var up = Ext.create('sitools.admin.rssFeed.rssFeedItemProps', {
             store : this.storeItem,
             parent : this.gridPanel,
             action : "modify",
@@ -659,7 +655,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
      * Delete the selected rss property from the store
      */
     onDelete : function () {
-        var rec = this.gridPanel.getSelectionModel().getSelected();
+        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -740,7 +736,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	            }
 	        });
         }
-        
     }
 
 });

@@ -167,7 +167,7 @@ Ext.define('sitools.user.component.dataPlotter', {
             valueField : "columnAlias", 
             displayField : "columnAlias", 
             editable : false,
-            mode : 'local',
+            queryMode : 'local',
             listeners : {
                 scope : this, 
                 select : function (combo, record, index) {
@@ -219,7 +219,7 @@ Ext.define('sitools.user.component.dataPlotter', {
             valueField : "columnAlias", 
             displayField : "columnAlias", 
             triggerAction : 'all',
-            mode : 'local',
+            queryMode : 'local',
             listeners : {
                 scope : this, 
                 select : function (combo, record, index) {
@@ -308,7 +308,7 @@ Ext.define('sitools.user.component.dataPlotter', {
             fieldLabel : i18n.get('label.plot.select.tagcolumn'),
             selectOnFocus : true,
             triggerAction : 'all',
-            mode : 'local',
+            queryMode : 'local',
             scope : this,
             listeners : {
                 scope : this,

@@ -513,7 +513,7 @@ sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = fun
             fieldLabel : i18n.get('headers.previewUrl'),
             width : 200,
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             valueField : 'display',
@@ -544,7 +544,7 @@ sitools.user.component.dataviews.services.sitoolsFitsService.getParameters = fun
             fieldLabel : i18n.get('label.columnImage'),
             width : 200,
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             store : new Ext.data.JsonStore({

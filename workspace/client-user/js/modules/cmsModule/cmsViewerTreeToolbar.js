@@ -52,7 +52,7 @@ sitools.user.modules.cmsViewerTreeToolbar = Ext.extend(Ext.Toolbar, {
                 displayField : 'text',
                 valueField : 'locale',
                 typeAhead : true,
-                mode : 'local',
+                queryMode : 'local',
                 forceSelection : true,
                 triggerAction : 'all',
                 emptyText : i18n.get('label.selectLanguage'),

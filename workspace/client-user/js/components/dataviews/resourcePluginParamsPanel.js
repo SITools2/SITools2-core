@@ -55,7 +55,7 @@ sitools.user.component.dataviews.resourcePluginParamsPanel = Ext.extend(Ext.Pane
         var formCommonParametersFields = [];
         var comboMethod = new Ext.form.ComboBox({                
             xtype : 'combo',
-            mode : 'local',
+            queryMode : 'local',
             triggerAction : 'all',
             editable : false,
             name : 'method',

@@ -44,7 +44,7 @@ Ext.define('sitools.user.modules.feedsReaderProject', {
             displayField : 'name',
             valueField : 'name',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : i18n.get('label.selectAFeed'),
