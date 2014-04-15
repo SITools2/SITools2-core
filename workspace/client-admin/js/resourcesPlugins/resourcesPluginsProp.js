@@ -288,9 +288,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                 }]
             }), 
             tbar : Ext.create('sitools.widget.GridSorterToolbar', {
-                defaults : {
-                    scope : this
-                }
+                gridId : "gridFieldMapping"
             }),
             selModel : Ext.create('Ext.selection.RowModel'),
             bbar : Ext.create('Ext.ux.StatusBar', {
