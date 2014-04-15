@@ -42,6 +42,9 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     // loadMask: true,
     conflictWarned : false,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
     viewConfig : {
         autoFill : true,
         // TODO doesn't works with Neptune Theme...
@@ -70,16 +73,54 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         this.urlDatasets = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
         this.converterUrlPart = loadUrl.get('APP_DATASETS_CONVERTERS_URL');
         
-        this.httpProxyForms = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
+        var storeDatasets = Ext.create("Ext.data.JsonStore", {
+            fields : [ 'id', 'name' ],
+            proxy : {
+                type : 'ajax',
+                url : this.urlDatasets,
+                reader : {
+                    type : 'json',
+                    root : "data"
+                }
+            },
+            autoLoad : true
         });
         
-        this.store = new Ext.data.JsonStore({
-            idProperty : 'id',
-            proxy : this.httpProxyForms,
-            root : "converterChainedModel.converters",
+        this.comboDatasets = Ext.create("Ext.form.ComboBox", {
+            store : storeDatasets,
+            displayField : 'name',
+            valueField : 'id',
+            typeAhead : true,
+            queryMode : 'local',
+            forceSelection : true,
+            triggerAction : 'all',
+            emptyText : i18n.get('label.selectDatasets'),
+            selectOnFocus : true,
+            listeners : {
+                scope : this,
+                select : function (combo, rec, index) {
+                    this.datasetId = rec[0].get("id");
+                    
+                    this.getStore().setProxy({
+                        type : 'ajax',
+                        url : this.urlDatasets + "/" + this.datasetId + this.converterUrlPart,
+                        reader : {
+                            type : 'json',
+                            root : "converterChainedModel.converters",
+                            idProperty : 'id'
+                        }
+                    });
+                    
+                    this.getStore().removeAll();
+                    this.getStore().load();
+
+                }
+
+            }
+        });
+        
+        
+        this.store = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -118,43 +159,15 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
             }]
         });
 
-        var storeDatasets = new Ext.data.JsonStore({
-            fields : [ 'id', 'name' ],
-            url : this.urlDatasets,
-            root : "data",
-            autoLoad : true
-        });
-        
-        this.comboDatasets = new Ext.form.ComboBox({
-            store : storeDatasets,
-            displayField : 'name',
-            valueField : 'id',
-            typeAhead : true,
-            queryMode : 'local',
-            forceSelection : true,
-            triggerAction : 'all',
-            emptyText : i18n.get('label.selectDatasets'),
-            selectOnFocus : true,
-            listeners : {
-                scope : this,
-                select : function (combo, rec, index) {
-                    this.datasetId = rec[0].data.id;
-                    this.httpProxyForms.url = this.urlDatasets + "/" + this.datasetId + this.converterUrlPart;
-                    this.getStore().removeAll();
-                    this.getStore().load();
+       
 
-                }
-
-            }
-        });
-
-        this.columns = new Ext.grid.ColumnModel({
+        this.columns = {
             // specify any defaults for each column
             defaults : {
                 sortable : true
             // columns are not sortable by default
             },
-            columns : [ {
+            items : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 150,
@@ -204,7 +217,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
                 width : 100,
                 sortable : false
             } ]
-        });
+        };
 
         this.tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
@@ -262,7 +275,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
             return;
         }
-        var up = new sitools.admin.converters.convertersProp({
+        var up = Ext.create("sitools.admin.converters.convertersProp", {
             action : 'create',
             parent : this,
             datasetId : this.datasetId,
@@ -283,8 +296,8 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         jsonReturn.idOrder = [];
         
         for (var i = 0; i < this.store.getCount(); i++) {
-            var rec = this.store.getAt(i).data;
-            jsonReturn.idOrder.push(rec.id);
+            var rec = this.store.getAt(i);
+            jsonReturn.idOrder.push(rec.get("id"));
         }
         var url = this.urlDatasets + "/" + datasetId + this.converterUrlPart;
         Ext.Ajax.request({
@@ -298,7 +311,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
                     Ext.Msg.alert(i18n.get('label.warning'), data.message);
                     return false;
                 }
-                var tmp = new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('label.converterSaved'),
@@ -318,12 +331,12 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
             return;
         }
-        var rec = this.getSelectionModel().getLastSelected();
+        var rec = this.getLastSelectedRecord();
         var index = this.getStore().indexOf(rec);
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.converters.convertersProp({
+        var up = Ext.create("sitools.admin.converters.convertersProp", {
             action : 'modify',
             parent : this,
             converter : rec.data,
@@ -338,11 +351,11 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     },
 
     onDelete : function () {
-        var rec = this.getSelectionModel().getLastSelected();
+        var rec = this.getLastSelectedRecord();
         if (Ext.isEmpty(rec)) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('label.convertersCrud.deleteConverter'), rec.data.name),
@@ -378,7 +391,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
             return;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('label.convertersCrud.delete.all'),
@@ -411,7 +424,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         });
     },
     _onActive : function () {
-        var rec = this.getSelectionModel().getLastSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -429,7 +442,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     },
 
     _onDisactive : function () {
-        var rec = this.getSelectionModel().getLastSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }

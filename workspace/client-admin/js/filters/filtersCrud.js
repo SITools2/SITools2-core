@@ -30,6 +30,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
     modify : false,
     urlGrid : null,
     filterChainedId : {},
+    forceFit : true,
     // loadMask: true,
     conflictWarned : false,
     mixins : {

@@ -39,6 +39,9 @@ Ext.define('sitools.admin.converters.convertersProp', {
     height : 480,
     modal : true,
     resizable : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         this.convertersPluginUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_CONVERTERS_PLUGINS_URL');
@@ -47,7 +50,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         
         var expander = {
             ptype: 'rowexpander',
-            rowBodyTpl : new Ext.XTemplate(
+            rowBodyTpl : Ext.create("Ext.XTemplate", 
                 '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
                 '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
                 {
@@ -60,18 +63,22 @@ Ext.define('sitools.admin.converters.convertersProp', {
         };
 
         this.storeGridConverter = Ext.create('Ext.data.JsonStore', {
-            root : 'data',
-            restful : true,
-            proxy : new Ext.data.HttpProxy ({
+            proxy : {
+                type : 'ajax',
                 url : this.convertersPluginUrl,
-                restful : true,
-                method : 'GET'
-            }),
+                reader : {
+                    root : 'data',
+                    type : 'json',
+                    idProperty : 'id'
+                }
+            },
             remoteSort : false,
-            idProperty : 'id',
             fields : [ {
                 name : 'id',
-                type : 'string'
+                type : 'string',
+                convert : function () {
+                    return Ext.id();
+                }
             }, {
                 name : 'name',
                 type : 'string'
@@ -92,7 +99,6 @@ Ext.define('sitools.admin.converters.convertersProp', {
                 type : 'string'
             }],
             autoLoad : true
-        
         });
         
         this.gridConverter = Ext.create('Ext.grid.Panel', {
@@ -130,7 +136,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
             }],
             listeners : {
                 scope : this,
-                rowclick :  this.onClassClick
+                itemClick :  this.onClassClick
             }, 
             plugins : [expander]
         });
@@ -138,7 +144,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         
         var expanderGridFieldMapping = {
             ptype: 'rowexpander',
-            rowBodyTpl : new Ext.XTemplate(
+            rowBodyTpl : Ext.create("Ext.XTemplate", 
             '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
             '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
             {
@@ -154,17 +160,8 @@ Ext.define('sitools.admin.converters.convertersProp', {
             clicksToEdit: 1
         });
         
-        this.proxyFieldMapping = Ext.create('Ext.data.proxy.Ajax', {
-            url : '/tmp',
-            restful : true,
-            method : 'GET'
-        });
-        
         this.storeFieldMapping = Ext.create('Ext.data.JsonStore', {
-            root : 'converter.parameters',
-            proxy : this.proxyFieldMapping,
-            remoteSort : true,
-            idProperty : 'name',
+            remoteSort : false,
             fields : [{
                 name : 'name',
                 type : 'string'
@@ -234,7 +231,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                                     target : el,
                                     cls : cls
                                 };
-                                var ttip = new Ext.ToolTip(ttConfig);
+                                Ext.create("Ext.ToolTip", ttConfig);
                             }
                         });
                     }
@@ -267,7 +264,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                         xtype: 'textfield'
                     }
             }],
-            bbar : new Ext.ux.StatusBar({
+            bbar : Ext.create('Ext.ux.StatusBar', {
                 id: 'statusBar',
                 hidden : true,
                 iconCls: 'x-status-error',
@@ -275,11 +272,11 @@ Ext.define('sitools.admin.converters.convertersProp', {
             }),
             listeners : {
                 scope : this,
-                celldblclick : function (grid, td, columnIndex, record, tr, rowIndex) {
+                cellclick : function (grid, td, columnIndex, record, tr, rowIndex) {
                     var storeRecord = grid.getStore().getAt(rowIndex);
                     var rec = storeRecord.data;
                     if (columnIndex == 3 && rec.parameterType != "CONVERTER_PARAMETER_INTERN") {
-                        var selectColumnWin = new sitools.admin.datasets.selectColumn({
+                        var selectColumnWin = Ext.create('sitools.admin.datasets.selectColumn', {
                             field : "attachedColumn",
                             record : storeRecord,
                             parentStore : this.gridFieldMapping.getStore(),
@@ -311,7 +308,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
 
         });
 
-        this.fieldMappingPanel = new Ext.Panel({
+        this.fieldMappingPanel = Ext.create('Ext.Panel', {
             layout : 'border',
             id : 'gridFieldMapping',
             title : i18n.get('title.fieldMapping'),
@@ -319,7 +316,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
 
         });
 
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create('Ext.TabPanel', {
             height : 450,
             activeTab : 0,
             items : (this.action == "create") ? [ this.gridConverter, this.fieldMappingPanel ] : [ this.fieldMappingPanel ],
@@ -362,9 +359,9 @@ Ext.define('sitools.admin.converters.convertersProp', {
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action == "create") {
             if (newTab.id == "gridFieldMapping") {
-                var rec = this.gridConverter.getSelectionModel().getSelected();
+                var rec = this.getLastSelectedRecord(this.gridConverter);
                 if (!rec) {
-                    var tmp = new Ext.ux.Notification({
+                    Ext.create("Ext.ux.Notification", {
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
                         html : i18n.get('warning.noselection'),
@@ -383,15 +380,24 @@ Ext.define('sitools.admin.converters.convertersProp', {
      * @param {} e
      * @return {Boolean}
      */
-    onClassClick : function (self, rowIndex, e) {
+    onClassClick : function (self, rec, item, index, e, eOpts) {
 		if (this.action == "create") {
-			var rec = this.gridConverter.getSelectionModel().getSelected();
 			if (!rec) {
 				return false;
 			}
-			var className = rec.data.className;
-			this.proxyFieldMapping.url = this.convertersPluginUrl + "/" + className + "/" + this.datasetId;
+			var className = rec.get("className");
+			
 			var store = this.gridFieldMapping.getStore();
+			store.setProxy({
+                type : 'ajax',
+                url : this.convertersPluginUrl + "/" + className + "/" + this.datasetId,
+                reader : {
+                    type : 'json',
+                    root : 'converter.parameters',
+                    idProperty : 'name'
+                }
+            });			
+			
 			store.removeAll();
 			store.load();
 		}
@@ -429,9 +435,9 @@ Ext.define('sitools.admin.converters.convertersProp', {
      * @return {Boolean}
      */
     onValidate : function () {
-        var rec = this.gridConverter.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord(this.gridConverter);
         if (!rec && this.action == "create") {
-            var tmp = new Ext.ux.Notification({
+            Ext.create("Ext.ux.Notification", {
                 iconCls : 'x-icon-information',
                 title : i18n.get('label.information'),
                 html : i18n.get('warning.noselection'),
@@ -455,8 +461,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         
         var parameters = [];
         if (this.action == "create") {
-            rec = this.gridConverter.getSelectionModel().getSelected();
-            var classParam = rec.data;
+            var classParam = rec.getData();
 
             jsonReturn.className = classParam.className;
             jsonReturn.name = classParam.name;
@@ -506,7 +511,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
                     }
                     return false;
                 }
-                var tmp = new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('label.converterSaved'),
