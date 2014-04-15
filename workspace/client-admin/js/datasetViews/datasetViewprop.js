@@ -41,11 +41,12 @@ Ext.define('sitools.admin.datasetView.DatasetViewPropPanel', { extend : 'Ext.Win
         
         this.gridDependencies = Ext.create("sitools.admin.util.DependenciesPanel");
         
-        this.formPanel = new Ext.form.FormPanel({
+        this.formPanel = Ext.create("Ext.form.FormPanel", {
         	title : i18n.get('label.datasetViewInfo'),
             border : false,
+            bodyBorder : false,
             labelWidth : 150,
-            padding : 10,
+            padding : 5,
             items : [  {
                 xtype : 'textfield',
                 name : 'id',

@@ -40,6 +40,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
     conflictWarned : false,
     clicksToEdit: 1,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
+    
     viewConfig : {
         autoFill : true,
         allLoaded : false,
@@ -89,19 +93,25 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         
 
         // LIST OF PARENTS
-        this.storeParents = new Ext.data.JsonStore({
+        this.storeParents = Ext.create("Ext.data.JsonStore", {
             fields : [ 'id', 'name', 'type', 'sitoolsAttachementForUsers' ],
-            url : this.urlDatasets,
-            root : "data",
+            proxy : {
+                type : "ajax",
+                url : this.urlDatasets,
+                reader : {
+                    type : 'json',
+                    root : "data"
+                }
+            },
             autoLoad : true
         });
         
-        this.comboParents = new Ext.form.ComboBox({
+        this.comboParents = Ext.create("Ext.form.ComboBox", {
             store : this.storeParents,
             displayField : 'name',
             valueField : 'id',
             typeAhead : true,
-            mode : 'local',
+            queryMode : 'local',
             forceSelection : true,
             triggerAction : 'all',
             emptyText : i18n.get('label.select' + this.parentType + 's'),
@@ -110,29 +120,30 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 scope : this,
                 select : function (combo, records, index) {
                     var rec = records[0];
-                    this.parentId = rec.data.id;
-                    if (!Ext.isEmpty(rec.data.type)) {
+                    this.parentId = rec.get("id");
+                    if (!Ext.isEmpty(rec.get("type"))) {
                         this.appClassName = rec.data.type;
                     }    
-                    this.savePropertiesBtn.removeClass('not-save-textfield');
+                    this.savePropertiesBtn.removeCls('not-save-textfield');
                     var url = this.urlDatasetAllServices.replace('{idDataset}', this.parentId);
-                    this.httpProxyResources.url = url;
+                    
+                    this.getStore().setProxy({
+                        type :'ajax',
+                        url : url,
+                        reader : {
+                            type :'json',
+                            root : "ServiceCollectionModel.services",
+                            idProperty : 'id'
+                        }
+                    });
+                    
                     this.getStore().removeAll();
                     this.getStore().load();
                 }
             }
         });
         
-        this.httpProxyResources = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
-        
-
-        this.store = new Ext.data.JsonStore({
-//            idProperty : 'id',
-            root : "ServiceCollectionModel.services",
+        this.store = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -169,7 +180,6 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 name : 'definitionVersion',
                 type : 'string'
             } ],
-            proxy : this.httpProxyResources,
             listeners : {
                 scope : this,
                 beforeLoad : function () {
@@ -188,7 +198,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             listeners : {
                 scope : this,
                 checkchange : function (combo, rowIndex, checked) {
-                    this.savePropertiesBtn.addClass('not-save-textfield');
+                    this.savePropertiesBtn.addCls('not-save-textfield');
                 }
             }
         };
@@ -279,7 +289,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             clicksToEdit: 1
         })];
 
-        this.savePropertiesBtn = new Ext.Button({
+        this.savePropertiesBtn = Ext.create("Ext.Button", {
             text : i18n.get('label.saveProperties'),
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
             handler : this.onSaveProperties,
@@ -340,7 +350,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                     var buttons = Ext.ComponentQuery.query('toolbar[xtype=sitools.widget.GridSorterToolbar] > button');
                     Ext.each(buttons, function (button) {
                         button.on('click', function () {
-                            if (this.getSelectionModel().getSelections()[0] != undefined)
+                            if (this.getLastSelectedRecord() != undefined)
                                 this.savePropertiesBtn.addCls('not-save-textfield');
                         }, this);
                     }, this);
@@ -357,7 +367,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 emptyMsg : i18n.get('paging.empty')
             };
         
-        this.sm = Ext.create('Ext.selection.RowModel');
+        this.sm = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE'
+        });
         
         this.listeners = {
             scope : this, 
@@ -388,7 +400,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         var urlParent = this.urlDatasets + "/" + parentId;
 
         if (type === "GUI") {
-            var gui = new sitools.admin.datasets.services.datasetServicesProp({
+            var gui = Ext.create("sitools.admin.datasets.services.datasetServicesProp", {
                 action : 'create',
                 parentPanel : this,
                 parentType : this.parentType,
@@ -401,7 +413,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             gui.show();
         }
         else if (type === "SERVER") {
-            var server = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
+            var server = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsProp", {
                 action : 'create',
                 parentPanel : this,
                 urlResources : this.urlAllServicesSERVER,
@@ -422,7 +434,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         if (Ext.isEmpty(this.comboParents.getValue())) {
             return;
         }
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
@@ -444,18 +456,19 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         
         var parentId = this.comboParents.getValue();
         
-        var arrayRecords = this.getSelectionModel().getSelections();
+        var arrayRecords = this.getSelectionModel().getSelection();
         
         if (Ext.isEmpty(arrayRecords)) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         
-        var datasetServicesCopy = new sitools.admin.datasets.services.datasetServicesCopyProp({
+        var datasetServicesCopy = new Ext.create("sitools.admin.datasets.services.datasetServicesCopyProp", {
             storeCombo : this.storeParents,
             services : arrayRecords,
             parentDatasetId : parentId,
             urlDatasetServiceSERVER : this.urlDatasetAllServicesSERVER,
-            urlDatasetServiceGUI : this.urlDatasetAllServicesIHM
+            urlDatasetServiceGUI : this.urlDatasetAllServicesIHM,
+            storeServices : this.store
         });
         datasetServicesCopy.show();
     },
@@ -469,14 +482,14 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         }
         var parentId = this.comboParents.getValue();
         
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('resourcesPlugins' + this.parentType + 'Crud.delete'),
+            msg : Ext.String.format(i18n.get('resourcesPlugins' + this.parentType + 'Crud.delete'), rec.get("name")),
             scope : this,
             fn : function (btn, text) {
                 if (btn === 'yes') {
@@ -538,7 +551,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             jsonData : service,
             scope : this,
             success : function (ret) {
-                this.savePropertiesBtn.removeClass('not-save-textfield');
+                this.savePropertiesBtn.removeCls('not-save-textfield');
                 new Ext.ux.Notification({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),

@@ -51,6 +51,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
     datasetServiceIHMId : null,
     modelClassName : null,
     currentRecordId : null,
+    mixins : {
+        utils : "js.utils.utils"
+    },
     
     initComponent : function () {
         this.id = "datasetServicesPropId";
@@ -61,7 +64,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
 
         var expander = {
             ptype: 'rowexpander',
-            rowBodyTpl : new Ext.XTemplate(
+            rowBodyTpl : Ext.create("Ext.XTemplate", 
             '<tpl>' +
                 '<div class="detail">' +
                     '<span style="font-weight:bold;">Author :&nbsp;</span>{author}' +
@@ -76,25 +79,28 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
             expandOnDblClick : true
         };
         
-        this.gridDatasetServices = new Ext.grid.GridPanel({
+        this.gridDatasetServices = Ext.create("Ext.grid.GridPanel", {
             forceFit : true,
             layout : "fit",
             id : 'gridDatasetServices',
             title : i18n.get('title.datasetServiceIHM'),
-            store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
+            store : Ext.create("Ext.data.JsonStore", {
+                proxy : {
+                    startParam : undefined,
+                    limitParam : undefined,
                     url : this.urlAllServicesIHM,
-                    restful : true,
-                    method : 'GET'
-                }),
+                    type :'ajax',
+                    reader : {
+                        type :'json',
+                        root : 'data',
+                        idProperty : 'id'
+                    }
+                },
                 remoteSort : false,
-                sortInfo : {
-					field : "name", 
+                sorters : [{
+					property : "name", 
 					direction : "ASC"
-                }, 
-                idProperty : 'id',
+                }], 
                 fields : [ {
                     name : 'id',
                     type : 'string'
@@ -141,47 +147,47 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
                     scope : this
                 }
             }),
-            cm : new Ext.grid.ColumnModel({
+            columns : {
                 defaults : {
                     sortable : true
                 },
-                columns : [{
+                items : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
-                    width : 100,
-                    sortable : true
+                    width : 100
                 }, {
                     header : i18n.get('label.description'),
                     dataIndex : 'description',
-                    width : 300,
-                    sortable : true
+                    width : 300
                 }, {
                     header : i18n.get('label.xtype'),
                     dataIndex : 'xtype',
-                    width : 300,
-                    sortable : true
+                    width : 300
                 }, {
                     header : i18n.get('label.version'),
                     dataIndex : 'version',
                     width : 200,
                     sortable : false
                 }]
-            }),
+            },
             plugins : [expander]            
         });
 
-        var comboSelectionType = new Ext.form.Hidden({
+        var comboSelectionType = Ext.create("Ext.form.Hidden", {
             name : "dataSetSelection"
         });
         
 
-        this.centerPanel = new Ext.Panel({
+        this.centerPanel = Ext.create("Ext.Panel", {
             layout : 'fit',
             region : 'center'
         });
         
-        this.fieldMappingFormPanel = new Ext.FormPanel({
+        this.fieldMappingFormPanel = Ext.create("Ext.FormPanel", {
             height : 115,
+            border :false,
+            bodyBorder : false,
+            padding : 5,
             frame : true,
             region : 'north',
             defaultType : 'textfield',
@@ -202,7 +208,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
             }, comboSelectionType]
         });
 
-        this.dsFieldParametersPanel = new Ext.Panel({
+        this.dsFieldParametersPanel = Ext.create("Ext.Panel", {
             layout : 'border',
             id : 'dsFieldParametersPanel',
             urlDataset : this.urlDataset,
@@ -210,7 +216,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
             items : [ this.fieldMappingFormPanel, this.centerPanel ]
         });
         
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create("Ext.TabPanel", {
             height : 450,
             activeTab : 0,
             items : (this.action === "create") ? [ this.gridDatasetServices, this.dsFieldParametersPanel ] : [
@@ -252,9 +258,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action === "create") {
             if (newTab.id === "dsFieldParametersPanel") {
-                var rec = this.gridDatasetServices.getSelectionModel().getSelected();
+                var rec = this.getLastSelectedRecord(this.gridDatasetServices);
                 if (!rec) {
-                    new Ext.ux.Notification({
+                    Ext.create("Ext.ux.Notification", {
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
                         html : i18n.get('warning.noselection'),
@@ -273,7 +279,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
                 this.centerPanel.remove(this.formParametersPanel);
                 
 
-                this.formParametersPanel = new sitools.admin.common.FormParametersConfigUtil({
+                this.formParametersPanel = Ext.create("sitools.admin.common.FormParametersConfigUtil", {
                     rec : rec.data
                 });
                 
@@ -298,7 +304,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
         if (this.action === "modify") {
             this.gridDatasetServices.getStore().load({
                 callback : function () {
-                    this.formParametersPanel = new sitools.admin.common.FormParametersConfigUtil({
+                    this.formParametersPanel = Ext.create("sitools.admin.common.FormParametersConfigUtil", {
                         rec : this.record,
                         parametersList : this.record.parameters
                     });
@@ -329,9 +335,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
         var rec, datasetServiceIhm = {};
         
         if (this.action === "create") {
-            rec = this.gridDatasetServices.getSelectionModel().getSelected();
+            rec = this.getLastSelectedRecord();
             if (!rec) {
-                new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('warning.noselection'),
@@ -403,7 +409,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
                     return false;
                 }
 
-                new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('label.datasetServiceIHMSaved'),

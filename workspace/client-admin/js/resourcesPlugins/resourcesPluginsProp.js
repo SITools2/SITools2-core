@@ -95,6 +95,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             store : Ext.create("Ext.data.JsonStore", {
                 autoLoad : true,
                 proxy : {
+                    startParam : undefined,
+                    limitParam : undefined,
                     url : this.urlResources,
                     type : 'ajax',
                     extraParams : {

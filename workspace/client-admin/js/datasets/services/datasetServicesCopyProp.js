@@ -36,8 +36,9 @@ Ext.namespace('sitools.admin.resourcesPlugins');
 Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { 
     extend : 'Ext.Window', 
 	alias : 'widget.s-storage_copy',
-    width : 260,
-    height : 230,
+	width : 350,
+	height : 250,
+	layout : "fit",
     modal : true,
     autoHeight : true,
     autoScroll : true,
@@ -45,24 +46,22 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', {
         
     	this.title = i18n.get('label.duplicateDatasetServices');
     	
-    	this.fieldset = new Ext.form.FieldSet({
+    	this.fieldset = Ext.create("Ext.form.FieldSet", {
     	    xtype : 'fieldset',
             name : 'fieldsetCopiedServices',
             title : i18n.get('label.servicesCopied'),
             hidden : true,
-            height : 150,
             autoScroll : true
     	});
     	
     	this.items = [{
     		xtype : 'form',
     		id : 'formCopyId',
-    		layout : 'fit',
     		frame: false,
 			border: false,
-			autoHeight : true,
+			bodyBorder : false,
+			padding : 5,
 			buttonAlign: 'center',
-			bodyStyle: 'padding:15px 10px 15px 15px;',
     		items : [{
     			xtype : 'label',
     			text : i18n.get('label.datasetDestination')
@@ -73,10 +72,11 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', {
                 displayField : 'name',
                 valueField : 'id',
                 typeAhead : true,
-                mode : 'local',
+                queryMode : 'local',
                 forceSelection : true,
                 triggerAction : 'all',
-                selectOnFocus : true
+                selectOnFocus : true,
+                anchor : "100%"
     		}, this.fieldset]
     	}];
     	
@@ -129,17 +129,18 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', {
         this.fieldset.doLayout();
         
         this.executeCopy();
-        
-        var buttonToolbar = this.down('button'); 
-        buttonToolbar.copyFinish = true;
-        buttonToolbar.setText(i18n.get('label.close'));
-        buttonToolbar.setHandler(function () {
-            this.close();
-        }, this);
+       
     },
     
     executeCopy : function () {
         if (Ext.isEmpty(this.services)) {
+            var buttonToolbar = this.down('button'); 
+            buttonToolbar.copyFinish = true;
+            buttonToolbar.setText(i18n.get('label.close'));
+            buttonToolbar.setHandler(function () {
+                this.storeServices.load();
+                this.close();
+            }, this);
             return;
         }
         

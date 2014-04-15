@@ -38,6 +38,8 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', { extend : 'Ext.form
     autoScroll : true,
     frame : true,
     border : false,
+    bodyBorder : false,
+    padding : 5,
     monitorValid : true,
     labelWidth : 150,
     isRenderer : false,
