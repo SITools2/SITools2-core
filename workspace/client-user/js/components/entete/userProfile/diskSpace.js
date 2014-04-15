@@ -152,7 +152,7 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
                 else if (pourcentage > 100) {
                     cls = "x-status-error";
                 }
-                var str = String.format(i18n.get('label.diskSpaceLong'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
+                var str = Ext.String.format(i18n.get('label.diskSpaceLong'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
                 
                 this.getTopToolbar().setText(str);
                 this.getTopToolbar().setIcon(cls);

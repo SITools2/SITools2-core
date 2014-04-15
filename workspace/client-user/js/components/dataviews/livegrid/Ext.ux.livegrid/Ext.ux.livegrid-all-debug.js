@@ -1827,7 +1827,7 @@ Ext.define('Ext.ux.grid.livegrid.GridView', {
             h = 35000000;
             var nbRecords = Math.floor(h / this.rowHeight);
             if (this._displayWarningTooManyRows) {
-                Ext.Msg.alert(i18n.get('label.warning'), String.format(i18n.get("label.tooManyRecords"), nbRecords, this.visibleRows + hiddenRows));
+                Ext.Msg.alert(i18n.get('label.warning'), Ext.String.format(i18n.get("label.tooManyRecords"), nbRecords, this.visibleRows + hiddenRows));
                 this._displayWarningTooManyRows = false;
             }
             
@@ -3457,7 +3457,7 @@ Ext.define('Ext.ux.grid.livegrid.Toolbar', {
     // private
     updateInfo : function (rowIndex, visibleRows, totalCount) {
         if (this.displayEl) {
-            var msg = totalCount === 0 ? this.emptyMsg : String.format(this.displayMsg, rowIndex + 1, Math.min(rowIndex + 1 + visibleRows, totalCount), totalCount);
+            var msg = totalCount === 0 ? this.emptyMsg : Ext.String.format(this.displayMsg, rowIndex + 1, Math.min(rowIndex + 1 + visibleRows, totalCount), totalCount);
             this.displayEl.update(msg);
         }
     },

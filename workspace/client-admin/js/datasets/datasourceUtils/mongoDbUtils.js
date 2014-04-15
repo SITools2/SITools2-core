@@ -56,7 +56,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
 	 * @returns
 	 */
 	createGridFieldsBDD : function () {
-		var metadataPanel = new Ext.Panel();
+		var metadataPanel = Ext.create('Ext.panel.Panel', {});
 		return metadataPanel;
 
 	}, 
@@ -77,7 +77,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
         if (store._getDirty() || store.getModifiedRecords().length > 0) {
             if (store.getCount() > 0) {
                 var url = dataSourceUrl + "/" + store.getAt(0).data.name;
-                var treePanel = new sitools.admin.datasource.mongoDb.CollectionExplorer({
+                var treePanel = Ext.create('sitools.admin.datasource.mongoDb.CollectionExplorer', {
 					collection : {
 						name : store.getAt(0).data.name, 
 						url : url
@@ -90,29 +90,26 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
 	
 	
 	createGridTablesBDD : function () {
-        /**
-         * Proxy used to request a datasource
-         * @type Ext.data.HttpProxy
-         */
-        var httpProxyJDBC = new Ext.data.HttpProxy({
-            url : loadUrl.get('APP_URL'),
-            restful : true,
-            method : 'GET'
-        });
 
         /**
          * This store contains all tables of a datasource.
          * @type Ext.data.JsonStore
          */
-        var storeTablesMongo = new Ext.data.JsonStore({
-            root : "mongodbdatabase.collections",
+        var storeTablesMongo = Ext.create('Ext.data.JsonStore', {
             datasourceUtils : this, 
             fields : [{
                 name : 'url'
             }, {
                 name : 'name'
             }],
-            proxy : httpProxyJDBC,
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL'),
+                reader : {
+                    type : 'json',
+                    root : "mongodbdatabase.collections"
+                }
+            },
             listeners : {
                 beforeload : function () {
                     var dataSourceUrl = this.datasourceUtils.getDataSourceUrl();
@@ -128,8 +125,8 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
          * @type Ext.grid.ColumnModel
          */
         var cmTablesMongo =  [{
-            id : 'name',
-            header : i18n.get('headers.name'),
+//            id : 'name',
+            text : i18n.get('headers.name'),
             width : 160,
             sortable : true,
             dataIndex : 'name'
@@ -143,7 +140,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
             layout : 'fit', 
             store : storeTablesMongo,
             columns : cmTablesMongo,
-            selModel : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
             forceFit : true,
@@ -174,8 +171,8 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
      */
     getCmTablesDataset : function () {
         return  [{
-            id : 'name',
-            header : i18n.get('headers.name'),
+//            id : 'name',
+            text : i18n.get('headers.name'),
             width : 160,
             sortable : true,
             dataIndex : 'name'
@@ -187,13 +184,13 @@ Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
      */
     getCmFieldsDataset : function () {
         return  [{
-            id : 'tableName',
-            header : i18n.get('headers.tableName'),
+//            id : 'tableName',
+            text : i18n.get('headers.tableName'),
             sortable : true,
             dataIndex : 'tableName'
         }, {
-            id : 'name',
-            header : i18n.get('headers.name'),
+//            id : 'name',
+            text : i18n.get('headers.name'),
             sortable : true,
             dataIndex : 'dataIndex'
         }];

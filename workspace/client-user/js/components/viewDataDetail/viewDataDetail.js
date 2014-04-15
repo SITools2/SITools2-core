@@ -390,7 +390,7 @@ Ext.define('sitools.user.component.viewDataDetail', {
 	                                            item = new Ext.BoxComponent({
 		                                            fieldLabel : column.header,
 					                                labelSeparator : "", 
-		                                            html : String.format(html, value)
+		                                            html : Ext.String.format(html, value)
 		                                        });	                                         
 	                                            itemsForm.push(item);
 							                } else if (!Ext.isEmpty(columnRenderer.image)) {
@@ -429,7 +429,7 @@ Ext.define('sitools.user.component.viewDataDetail', {
 						                        imageUrl = this.findRecordValue(record, columnRenderer.columnAlias);            
 						                    }
 	                                        item = new Ext.BoxComponent({
-	                                            html : String.format(html, value, imageUrl),
+	                                            html : Ext.String.format(html, value, imageUrl),
                                                 tooltip : tooltip,
 	                                            cls : "x-form-item"
 	                                        });                                       
@@ -442,7 +442,7 @@ Ext.define('sitools.user.component.viewDataDetail', {
                                         item = new Ext.BoxComponent({
 	                                        fieldLabel : column.header,
 			                                labelSeparator : "", 
-	                                        html : String.format(html, value)
+	                                        html : Ext.String.format(html, value)
 	                                    });                                          
 	                                    itemsForm.push(item);
 	                                    break;

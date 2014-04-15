@@ -107,7 +107,7 @@ Ext.define('sitools.user.modules.contentEditorModule', {
             htmlReaderCfg.defaultSrc = this.url;
         }
         
-        var textTooltip = String.format(i18n.get('label.runCopyInfo'), this.datastorageSrc, this.datastorageDest);
+        var textTooltip = Ext.String.format(i18n.get('label.runCopyInfo'), this.datastorageSrc, this.datastorageDest);
         
         this.tree = new Ext.tree.TreePanel({
             id : 'treepanel',

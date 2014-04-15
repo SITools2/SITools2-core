@@ -153,7 +153,7 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
      * Create a new {sitools.admin.usergroups.GroupsPanel} group Panel and retrieve all the groups
      */
     _onCreate : function () {
-        var up = new sitools.admin.usergroups.GroupsPanel({
+        var up = Ext.create('sitools.admin.usergroups.GroupsPanel', {
             mode : 'select',
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/groups?media=json',
             storeref : this.store
@@ -226,5 +226,3 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
     }
 
 });
-
-

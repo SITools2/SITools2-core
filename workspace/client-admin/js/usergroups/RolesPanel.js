@@ -29,7 +29,7 @@ Ext.namespace('sitools.admin.usergroups');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.usergroups.RolesPanel', { 
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
 	alias : 'widget.s-roles',
 	width : 500,
     height : 350,
@@ -42,13 +42,18 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
         
         this.title = this.mode == 'list' ? i18n.get('label.roles') : i18n.get('label.selectRoles');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            autoSave : false,
-            idProperty : 'name',
-            url : this.url,
-            fields : [ {
+        this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'name'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -57,11 +62,10 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
             }, {
                 name : 'description',
                 type : 'string'
-            } ]
+            }]
         });
         
-        this.grid = new Ext.grid.GridPanel({
-            xtype : 'grid',
+        this.grid = Ext.create('Ext.grid.Panel', {
             selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
@@ -79,7 +83,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
                 defaults : {
                     scope : this
                 },
-                items : [ {
+                items : [{
                     text : i18n.get('label.add'),
                     hidden : this.mode == 'select',
                     icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
@@ -95,11 +99,10 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
                     emptyText : i18n.get('label.search'),
                     store : this.store,
                     pageSize : this.pageSize
-                } ]
+                }]
             },
             bbar : {
                 xtype : 'pagingtoolbar',
-                pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
@@ -150,7 +153,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
             });
         }
         else {
-            Ext.each(this.rec.data.listRoles, function (item){
+            Ext.each(this.rec.data.listRoles, function (item) {
                 this.store.add(item);
             }, this);
             
@@ -161,7 +164,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
      * Create a new {sitools.admin.usergroups.RolesPanel} role panel and display all roles
      */
     _onCreate : function () {
-        var up = new sitools.admin.usergroups.RolesPanel({
+        var up = Ext.create('sitools.admin.usergroups.RolesPanel', {
             mode : 'select',
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/roles?media=json',
             storeref : this.store
@@ -173,7 +176,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
      * Delete the selected role from the store
      */
     _onDelete : function () {
-        var rec = this.grid.getSelectionModel().getSelected();
+        var rec = this.grid.getSelectionModel().getSelection()[0];
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -184,7 +187,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
      * Gets the selected roles and add them to the list roles of the current parent object
      */
     _onAdd : function () { // sub window -> no action
-        var recs = this.grid.getSelectionModel().getSelections();
+        var recs = this.grid.getSelectionModel().getSelection();
         var newrecs = [];
         Ext.each(recs, function (rec) {
             newrecs.push({

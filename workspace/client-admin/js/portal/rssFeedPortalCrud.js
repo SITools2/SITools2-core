@@ -32,20 +32,21 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
     forceFit : true,
 
     initComponent : function () {
+
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL');
         this.urlRef = loadUrl.get('APP_FEEDS_URL');
         
-        this.httpProxyRss = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
-
         this.store = new Ext.data.JsonStore({
-            idProperty : 'id',
-            root : 'data',
-            proxy : this.httpProxyRss,
-            fields : [ {
+            proxy : {
+                type : 'ajax',
+                url : '/tmp',
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -72,7 +73,7 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
             }, {
                 name : 'name',
                 type : 'string'
-            } ]
+            }]
         });
 
         // var storeCombo = new Ext.data.JsonStore({
@@ -165,8 +166,8 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
     loadRss : function () {
 
         var urlRss = this.url + "/" + this.dataId + this.urlRef;
-        this.httpProxyRss.url = urlRss;
-        this.getStore().load({
+        this.store.getProxy().url = urlRss;
+        this.store.load({
             scope : this,
             callback : function () {
                 this.getView().refresh();

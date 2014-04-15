@@ -32,7 +32,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
         
         this.sliderTip = new Ext.slider.Tip({
             getText: function(thumb){
-                return String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
+                return Ext.String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
             }
         });
         
@@ -321,7 +321,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
                 this.addEvent(this.jsFits.canvas, "mousemove", function(e) {
                     var world = this.w.pix2sky(e.offsetX, this.jsFits.canvas.height - e.offsetY);
                     
-                    this.tipRaDec.update(String.format(this.tipRaDec.templ, world[0].toFixed(6), world[1].toFixed(6)));
+                    this.tipRaDec.update(Ext.String.format(this.tipRaDec.templ, world[0].toFixed(6), world[1].toFixed(6)));
                         this.tipRaDec.doLayout();
                     
                 }.bind(this));

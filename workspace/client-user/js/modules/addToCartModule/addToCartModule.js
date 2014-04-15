@@ -548,7 +548,7 @@ Ext.define('sitools.user.modules.addToCartModule', {
         });
         
         this.containerArticlesDetailsPanel.add(detailsSelectionPanel);
-        this.containerArticlesDetailsPanel.setTitle(String.format(i18n.get('label.orderDetails'), selected.data.selectionName));
+        this.containerArticlesDetailsPanel.setTitle(Ext.String.format(i18n.get('label.orderDetails'), selected.data.selectionName));
         this.containerArticlesDetailsPanel.doLayout();
     },
     

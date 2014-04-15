@@ -513,7 +513,7 @@ function includeCss(url) {
 //                blur: this.onPagingBlur
 //            }
 //        }), this.afterTextItem = new T.TextItem({
-//            text: String.format(this.afterPageText, 1)
+//            text: Ext.String.format(this.afterPageText, 1)
 //        }), '-', this.next = new T.Button({
 //            tooltip: this.nextText,
 //            overflowText: this.nextText,
@@ -738,8 +738,8 @@ Ext.override(Ext.form.DateField,  {
             disabledDaysText : this.disabledDaysText,
             format : this.format,
             showToday : this.showToday,
-            minText : String.format(this.minText, this.formatDate(this.minValue)),
-            maxText : String.format(this.maxText, this.formatDate(this.maxValue))
+            minText : Ext.String.format(this.minText, this.formatDate(this.minValue)),
+            maxText : Ext.String.format(this.maxText, this.formatDate(this.maxValue))
         });
         this.menu.picker.setValue(this.getValue() || new Date());
         this.menu.show(this.el, "tl-bl?");

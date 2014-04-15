@@ -26,12 +26,12 @@ Ext.namespace('sitools.admin.datasets.datasourceUtils');
 //sitools.component.datasets.abstractDatasetWin = {
 sitools.admin.datasets.datasourceUtils.DatasourceFactory = function (datasourceType, scope) {
 	if (datasourceType.jdbc) {
-		return new sitools.admin.datasets.datasourceUtils.jdbcUtils({
+		return Ext.create('sitools.admin.datasets.datasourceUtils.jdbcUtils', {
 			scope : scope
 		});
 	}
 	if (datasourceType.mongoDb) {
-		return new sitools.admin.datasets.datasourceUtils.mongoDbUtils({
+		return Ext.create('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
 			scope : scope
 		});
 	}

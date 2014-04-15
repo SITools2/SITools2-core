@@ -153,7 +153,7 @@ Ext.define('sitools.user.component.forms.resultsProjectForm', {
 				dataIndex : 'image', 
 				header : "", 
 				renderer : function (value) {
-					return ! Ext.isEmpty(value) && ! Ext.isEmpty(value.url) ? String.format("<img src='{0}' width=20 height=20>", value.url) : "";
+					return ! Ext.isEmpty(value) && ! Ext.isEmpty(value.url) ? Ext.String.format("<img src='{0}' width=20 height=20>", value.url) : "";
 				}
 			}, {
 				width : 100, 

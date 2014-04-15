@@ -71,7 +71,7 @@ Ext.define('sitools.user.component.dataviews.services.sitoolsFitsService', {
         
         this.sliderTip = new Ext.slider.Tip({
             getText: function(thumb){
-                return String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
+                return Ext.String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
             }
         });
         

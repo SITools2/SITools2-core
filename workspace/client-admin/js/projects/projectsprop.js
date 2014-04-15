@@ -72,6 +72,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     
     initComponent : function () {
         var action = this.action;
+        
         if (this.action === 'view') {
             this.title = i18n.get('label.viewProject');
         }
@@ -85,9 +86,12 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             this.title = i18n.get('label.duplicateProject');
         }
 
-        var storeDataSets = new Ext.data.JsonStore({
+        var storeDataSets = Ext.create('Ext.data.JsonStore', {
             id : 'storeDataSets',
-            fields : [ {
+            proxy : {
+                type : 'memory'
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -113,7 +117,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             }, {
                 name : 'url',
                 type : 'string'
-            } ]
+            }]
         });
 
         var cmDataSets = [{
@@ -136,7 +140,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
                 text : i18n.get('label.add'),
                 hidden : this.mode === 'select',
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
@@ -152,7 +156,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 emptyText : i18n.get('label.search'),
                 store : this.store,
                 pageSize : this.pageSize
-            } ]
+            }]
         };
 
         /**
@@ -178,7 +182,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         /**
          * {Ext.FormPanel} formProject The main Form 
          */
-        this.formProject = new Ext.FormPanel({
+        this.formProject = Ext.create('Ext.form.Panel', {
             title : i18n.get('label.projectInfo'),
             name : 'formProperties',
             xtype : 'form',
@@ -248,13 +252,12 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                     }
                 }
             }
-
         });
         
         /**
          * {Ext.FormPanel} formProject The main Form 
          */
-        this.ihmProfile = new Ext.FormPanel({
+        this.ihmProfile = Ext.create('Ext.form.Panel', {
             title : i18n.get('label.ihmProfile'),
             xtype : 'form',
             border : false,
@@ -278,10 +281,16 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 xtype : 'combo',
                 name : 'ftlTemplateFile',
                 store : Ext.create('Ext.data.JsonStore', {
-                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/ftl',
-                    idProperty : 'name',
-                    fields : [ 'name', 'url' ],
-                    root : 'items',
+                    proxy : {
+                        type : 'ajax',
+                        url : loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/ftl',
+                        reader : {
+                            type : 'json',
+                            root : 'items',
+                            idProperty : 'name'
+                        }
+                    },
+                    fields : ['name', 'url'],
                 }),
                 valueField : 'name',
                 displayField : 'name',
@@ -320,7 +329,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
 
         });
         
-        this.allModulesAttachedBtn = new Ext.Button({
+        this.allModulesAttachedBtn = Ext.create('Ext.button.Button', {
             text : this.allModulesDetached ? i18n.get('label.allDetached') : i18n.get('label.allAttached'),
             hidden : this.mode === 'select',
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
@@ -329,7 +338,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         });
         
         
-        this.listRolesBtn = new Ext.Button({
+        this.listRolesBtn = Ext.create('Ext.button.Button', {
             text : i18n.get('label.rolecrud'),
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_role.png',
             scope : this,
@@ -343,15 +352,19 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         };
         
         // The store that contains all distinct Modules
-        var storeAllModules = new Ext.data.JsonStore({
-            root : 'data',
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_MODULES_URL'),
-            restful : true,
+        var storeAllModules = Ext.create('Ext.data.JsonStore', {
             remoteSort : false,
-            autoSave : false,
             autoLoad : true, 
-            idProperty : 'id',
-            fields : [ {
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_MODULES_URL'),
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -404,10 +417,9 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         });
         
         // The store that contains modules for this project. 
-        this.storeProjectModules = new Ext.data.JsonStore({
-            autoLoad : false, 
+        this.storeProjectModules = Ext.create('Ext.data.JsonStore', {
             idProperty : 'id',
-            fields : [ {
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -537,8 +549,8 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_projects_resources.png",
                 scope : this,
                 handler : function (grid, row, col, item, e) {
-                    this.modulePanel.getSelectionModel().selectRow(row);
-                    var rec = this.modulePanel.getSelectionModel().getLastSelected();
+                    this.modulePanel.getSelectionModel().select(row);
+                    var rec = this.modulePanel.getSelectionModel().getSelection()[0];
                     this._onModuleConfig(rec);
                 }
             }],
@@ -601,7 +613,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             plugins : [cellEditing]
         });
         
-        var storeLinks = new Ext.data.JsonStore({
+        var storeLinks = Ext.create('Ext.data.JsonStore', {
             idProperty : 'name',
             fields : [ {
                 name : 'name',
@@ -670,7 +682,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         /**
          * {Ext.TabPanel} tabPanel the main Item of the window
          */
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create('Ext.tab.Panel', {
             height : 550,
             activeTab : 0,
             items : [this.formProject, this.ihmProfile, this.gridDataSets, this.modulePanel, this.linksPanel ],
@@ -707,7 +719,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
      * Create a {sitools.admin.projects.datasetsWin} datasetWindow to add datasets
      */
     _onCreate : function () {
-        var up = new sitools.admin.projects.datasetsWin({
+        var up = Ext.create('sitools.admin.projects.datasetsWin', {
             mode : 'select',
             url : loadUrl.get('APP_URL') + '/datasets',
             storeDatasets : this.gridDataSets.getStore()
@@ -720,7 +732,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
      * @return {}
      */
     _onDelete : function () {
-        var recs = this.gridDataSets.getSelectionModel().getSelections();
+        var recs = this.gridDataSets.getSelectionModel().getSelection();
         if (recs.length === 0) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -728,11 +740,11 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     },
     
     _onRoles : function () {
-        var rec = this.modulePanel.getSelectionModel().getSelected();
+        var rec = this.modulePanel.getSelectionModel().getSelection()[0];
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var gp = new sitools.admin.usergroups.RolesPanel({
+        var gp = Ext.create('sitools.admin.usergroups.RolesPanel', {
             mode : 'list',
             rec : rec
         });
@@ -740,11 +752,11 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     },
     
     _onModuleConfig : function () {
-        var rec = this.modulePanel.getSelectionModel().getSelected();
+        var rec = this.modulePanel.getSelectionModel().getSelection()[0];
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var mc = new sitools.admin.projects.modules.ProjectModuleConfig({
+        var mc = Ext.create('sitools.admin.projects.modules.ProjectModuleConfig', {
             module : rec
         });
         mc.show();
@@ -756,7 +768,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             config.fieldUrl.setValue(data.url);
         };
         
-        var chooser = new ImageChooser({
+        var chooser = Ext.create('ImageChooser', {
             url : loadUrl.get('APP_URL') + '/client-admin/res/json/componentList.json',
             width : 515,
             height : 350,
@@ -1153,7 +1165,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
      * Delete the selected dependency of a project module
      */
     onDeleteLink : function () {
-        var s = this.linksPanel.getSelectionModel().getSelections();
+        var s = this.linksPanel.getSelectionModel().getSelection();
         var i, r;
         for (i = 0; s[i]; i++) {
             r = s[i];

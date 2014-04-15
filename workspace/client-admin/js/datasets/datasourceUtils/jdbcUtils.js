@@ -49,21 +49,17 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
 	}, 
 	
 	createGridFieldsBDD : function () {
-		/**
-         * The proxy used to get the description of a JDBC table
-         * @type Ext.data.HttpProxy
-         */
-        var httpProxyFields = new Ext.data.HttpProxy({
-            url : "/",
-            restful : true,
-            method : 'GET'
-        });
 
-        var storeFields = new Ext.data.JsonStore({
-            proxy : httpProxyFields,
+        var storeFields = Ext.create('Ext.data.JsonStore', {
             datasourceUtils : this, 
-            root : "table.attributes",
-            autoLoad : false,
+            proxy : {
+                type : 'ajax',
+                url : "/",
+                reader : {
+                    type : 'json',
+                    root : "table.attributes"
+                }
+            },
             fields : [{
                 name : 'name'
             }, {
@@ -112,13 +108,13 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
         });
 
         var columnsSelectedtables = [{
-            id : 'tableName',
-            header : i18n.get('headers.tableName'),
+//            id : 'tableName',
+            text : i18n.get('headers.tableName'),
             sortable : true,
             dataIndex : 'tableName'
         }, {
-            id : 'name',
-            header : i18n.get('headers.name'),
+//            id : 'name',
+            text : i18n.get('headers.name'),
             sortable : true,
             dataIndex : 'dataIndex'
         }];
@@ -132,7 +128,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
 			layout : 'fit', 
             store : storeFields,
             columns : columnsSelectedtables,
-            selModel : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
             enableDragDrop : true,
@@ -144,23 +140,21 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
 	}, 
 	
 	createGridTablesBDD : function () {
-        /**
-         * Proxy used to request a datasource
-         * @type Ext.data.HttpProxy
-         */
-        var httpProxyJDBC = new Ext.data.HttpProxy({
-            url : loadUrl.get('APP_URL'),
-            restful : true,
-            method : 'GET'
-        });
 
         /**
          * This store contains all tables of a datasource.
          * @type Ext.data.JsonStore
          */
-        var storeTablesJDBC = new Ext.data.JsonStore({
-            root : "database.tables",
+        var storeTablesJDBC = Ext.create('Ext.data.JsonStore', {
             datasourceUtils : this, 
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL'),
+                reader : {
+                    type : 'json',
+                    root : "database.tables"
+                }
+            },
             fields : [{
                 name : 'url'
             }, {
@@ -169,7 +163,6 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
             }, {
                 name : 'name'
             }],
-            proxy : httpProxyJDBC,
             listeners : {
                 beforeload : function () {
                     var dataSourceUrl = this.datasourceUtils.getDataSourceUrl();
@@ -183,8 +176,8 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
          * @type Ext.grid.ColumnModel
          */
         var columnsTablesJDBC = [{
-            id : 'name',
-            header : i18n.get('headers.name'),
+//            id : 'name',
+            text : i18n.get('headers.name'),
             width : 160,
             sortable : true,
             dataIndex : 'name'
@@ -198,7 +191,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
             layout : 'fit', 
             store : storeTablesJDBC,
             columns : columnsTablesJDBC,
-            selModel : Ext.create('Ext.selection.RowModel',{
+            selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
             enableDragDrop : true,
@@ -281,16 +274,14 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
      */
     getCmTablesDataset : function () {
         return  [{
-            xtype : 'gridcolumn',
-            id : 'name',
-            header : i18n.get('headers.name'),
+//            id : 'name',
+            text : i18n.get('headers.name'),
             width : 160,
             sortable : true,
             dataIndex : 'name'
         }, {
-            xtype : 'gridcolumn',
-            id : 'alias',
-            header : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+//            id : 'alias',
+            text : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
             width : 80,
             sortable : true,
             dataIndex : 'alias',
@@ -314,24 +305,21 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
      */
     getCmFieldsDataset : function () {
         return [{
-            xtype : 'gridcolumn',
-            id : 'tableAlias',
-            header : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+//            id : 'tableAlias',
+            text : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
             sortable : true,
             dataIndex : 'tableAlias',
             editor : {
                 xtype : 'textfield'
             }
         }, {
-            xtype : 'gridcolumn',
-            id : 'tableName',
-            header : i18n.get('headers.tableName'),
+//            id : 'tableName',
+            text : i18n.get('headers.tableName'),
             sortable : true,
             dataIndex : 'tableName'
         }, {
-            xtype : 'gridcolumn',
-            id : 'name',
-            header : i18n.get('headers.name'),
+//            id : 'name',
+            text : i18n.get('headers.name'),
             sortable : true,
             dataIndex : 'dataIndex'
         }];

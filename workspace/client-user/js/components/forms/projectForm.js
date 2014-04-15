@@ -305,7 +305,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
         }
         
         if (! Ext.isEmpty(this.nbDatasetsMax) && datasets.length > this.nbDatasetsMax) {          
-            Ext.Msg.alert(i18n.get('label.error'), String.format(i18n.get('label.toManyDatasetsAllowed'), this.nbDatasetsMax));
+            Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.toManyDatasetsAllowed'), this.nbDatasetsMax));
             button.setDisabled(false);
             return;
         }
@@ -469,7 +469,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(this.getValue())) {
                         return null;
                     }
-                    return String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
+                    return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
                 }
             };          
             break;
@@ -484,7 +484,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(this.getValue())) {
                         return null;
                     }
-                    return String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
+                    return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
                 }
             };          
             break;
@@ -515,7 +515,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(deb) || Ext.isEmpty(fin)) {
                         return null;
                     }
-                    return String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
+                    return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
                 }
             };          
             break;
@@ -557,7 +557,7 @@ sitools.user.component.forms.projectForm = Ext.extend(Ext.Panel, {
                     if (Ext.isEmpty(deb) || Ext.isEmpty(fin)) {
                         return null;
                     }
-                    return String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
+                    return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
                 }
             };          
             break;

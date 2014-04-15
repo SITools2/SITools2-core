@@ -535,6 +535,7 @@ Ext.define('sitools.user.component.dataviews.cartoView.cartoView', {
  * @return {Array} the parameters to display into administration view. 
  */
 sitools.user.component.dataviews.cartoView.cartoView.getParameters = function () {
+    
     var baseLayer = {
         xtype : 'checkcolumn',
         header : i18n.get('headers.baseLayer'),
@@ -543,7 +544,10 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
     };
 
     // create the Data Store
-    var store = new Ext.data.JsonStore({
+    var store = Ext.create('Ext.data.JsonStore', {
+        proxy : {
+            type : 'memory'
+        },
         fields : [{
             name : "layerName",
             type : "string"
@@ -556,7 +560,7 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
         }]
     });
 
-    var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+    var cellEditing = Ext.create('Ext.grid.plugin.RowEditing', {
         pluginId : 'layerEditorId',
         clicksToEdit: 1
     });
@@ -607,7 +611,6 @@ sitools.user.component.dataviews.cartoView.cartoView.getParameters = function ()
             anchor : "100%", 
             height: 200,
             autoScroll : true, 
-//            clicksToEdit: 2,
             plugins : [cellEditing],
             listeners : {
                 scope : this,

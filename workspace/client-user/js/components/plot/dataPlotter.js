@@ -417,7 +417,7 @@ Ext.define('sitools.user.component.dataPlotter', {
                     if (pageSize > this.maxWarningRecords) {   
                         Ext.Msg.show({
                             title: i18n.get("label.warning"),
-                            msg : String.format(i18n.get("label.plot.toManyRecordsAsked"), pageSize, this.maxWarningRecords),
+                            msg : Ext.String.format(i18n.get("label.plot.toManyRecordsAsked"), pageSize, this.maxWarningRecords),
                             buttons : {
                                 yes : i18n.get('label.yes'),
                                 no : i18n.get('label.no')
@@ -648,7 +648,7 @@ Ext.extend(sitools.user.component.dataPlotter, Ext.Panel, {
         this.hasPlotted = true;        
         
         if (this.isSelection) {
-            this.rightPanel.getBottomToolbar().findById('plot-tb-text').setText(String.format(i18n.get("label.plot.displayNbRecords"),
+            this.rightPanel.getBottomToolbar().findById('plot-tb-text').setText(Ext.String.format(i18n.get("label.plot.displayNbRecords"),
                     records.length));
             
         } 

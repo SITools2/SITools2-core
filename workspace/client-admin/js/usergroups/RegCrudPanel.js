@@ -39,7 +39,9 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
         mode : 'SINGLE'
     }),
     pageSize : 10,
-    forceFit : true,
+    mixins : {
+        utils : 'js.utils.utils'
+    },
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_INSCRIPTIONS_ADMIN_URL');
@@ -56,7 +58,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
         // GET /users read
         // PUT /users/[id] update
         // DESTROY /users/[id] delete
-        this.store = new Ext.data.JsonStore({
+        this.store = Ext.create('Ext.data.JsonStore', {
             remoteSort : true,
             proxy : {
                 type : 'ajax',
@@ -67,7 +69,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
                     idProperty : 'id'
                 }
             },
-            fields : [ {
+            fields : [{
                 name : 'id',
                 type : 'string'
             }, {
@@ -148,7 +150,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
-//        sitools.admin.usergroups.RegCrudPanel.superclass.initComponent.call(this);
+        
         this.callParent(arguments);
     },
 
@@ -169,10 +171,11 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
      * Accept a registration and create an user
      */
     onValidate : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
+        
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id,
             method : 'PUT',
@@ -188,11 +191,12 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
      * Open a panel to edit properties of the selected user registration
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.usergroups.RegPropPanel({
+        
+        var up = Ext.create('sitools.admin.usergroups.RegPropPanel', {
             url : this.url + '/' + rec.data.id,
             store : this.store
         });
@@ -203,10 +207,11 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
      * Diplay confirm delete Msg box and call the method doDelete
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
+        
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,

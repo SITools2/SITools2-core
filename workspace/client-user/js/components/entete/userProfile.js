@@ -72,13 +72,13 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 				name: i18n.get('label.userDiskSpace'), 
 				url : '/sitools/common/res/images/icons/menu/dataAccess.png', 
 				action : "showDisk", 
-				comment : String.format(i18n.get("label.userDiskUse"), freeDisk, totalDisk)
+				comment : Ext.String.format(i18n.get("label.userDiskUse"), freeDisk, totalDisk)
 			}, {
 				identifier : "tasks", 
 				name: i18n.get("label.Tasks"), 
 				url : "/sitools/common/res/images/icons/menu/applications2.png", 
 				action : "showTasks", 
-				comment : String.format(i18n.get("label.taskRunning"), userTasksRunning, userTotalTasks)
+				comment : Ext.String.format(i18n.get("label.taskRunning"), userTasksRunning, userTotalTasks)
 			}, {
 				identifier : "orders", 
 				name: i18n.get("label.orders"), 
@@ -467,7 +467,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 			    if (!Ext.isEmpty(cls)) {
                     str += "<span class='" + cls + "'>";
                 }
-			    str += String.format(i18n.get('label.diskSpace'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
+			    str += Ext.String.format(i18n.get('label.diskSpace'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
 			    if (!Ext.isEmpty(cls)) {
                     str += "</span>";
                 }
@@ -500,7 +500,7 @@ sitools.user.component.entete.UserProfile = Ext.extend(Ext.Window, {
 					totalTasks++;
 				});
                 if (runningTasks > 0) {
-				    el.update(String.format(i18n.get('label.taskRunning'), runningTasks));
+				    el.update(Ext.String.format(i18n.get('label.taskRunning'), runningTasks));
                 } else {
                     el.update("");
                 }
