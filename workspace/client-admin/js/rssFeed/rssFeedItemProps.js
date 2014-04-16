@@ -73,85 +73,74 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
              * '100%' }
              */, {
             xtype : 'fieldcontainer',
-            layout : {
-                type : 'hbox',
-                defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
-            },
             fieldLabel : i18n.get('label.updatedDate'),
-            items : [{
+            layout : 'hbox',
+            defaults : {
+                labelWidth : 50,
+                flex : 1,
+                padding : '0 5 0 0'
+            },
+            items : [ {
                 fieldLabel : i18n.get("label.day"),
                 name : 'date',
-                xtype : "datefield"
+                xtype : "datefield",
+                flex : 2,
             }, {
                 name : 'hours',
                 xtype : 'numberfield',
-                width : 50,
                 maxValue : 23,
-                minValue : 0
-            }, {
-                xtype : 'displayfield',
-                value : i18n.get("label.hours")
+                minValue : 0,
+                fieldLabel : i18n.get("label.hours"),
             }, {
                 name : 'minutes',
                 xtype : 'numberfield',
-                width : 50,
                 maxValue : 59,
-                minValue : 0
-
-            }, {
-                xtype : 'displayfield',
-                value : i18n.get("label.minutes")
+                minValue : 0,
+                fieldLabel : i18n.get("label.minutes"),
             }, {
                 xtype : 'button',
                 name : 'nowUpdated',
                 text : i18n.get("label.now"),
-                width : 50,
-                flex : 0,
                 scope : this,
-                handler : this.nowDate
-            }]
+                handler : this.nowDate,
+                padding : 0,
+                flex : 0
+            } ]
         }, {
             xtype : 'fieldcontainer',
-            layout : {
-                type : 'hbox',
-                defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
+            fieldLabel : i18n.get('label.PubDate'),
+            layout : 'hbox',
+            defaults : {
+                labelWidth : 50,
+                flex : 1,
+                padding : '0 5 0 0'
             },
-            fieldLabel : i18n.get('label.publishedDate'),
-            items : [{
+            items : [ {
                 fieldLabel : i18n.get("label.day"),
                 name : 'datePub',
                 xtype : "datefield",
-                allowBlank : false
+                flex : 2,
             }, {
                 name : 'hoursPub',
                 xtype : 'numberfield',
-                width : 50,
                 maxValue : 23,
                 minValue : 0,
-                allowBlank : false
-            }, {
-                xtype : 'displayfield',
-                value : i18n.get("label.hours")
+                fieldLabel : i18n.get("label.hours"),
             }, {
                 name : 'minutesPub',
                 xtype : 'numberfield',
-                width : 50,
                 maxValue : 59,
                 minValue : 0,
-                allowBlank : false
-
-            }, {
-                xtype : 'displayfield',
-                value : i18n.get("label.minutes")
+                fieldLabel : i18n.get("label.minutes"),
             }, {
                 xtype : 'button',
                 name : 'nowPublished',
                 text : i18n.get("label.now"),
-                width : 50,
-                flex : 0,
                 scope : this,
-                handler : this.nowDate
-            }]
+                handler : this.nowDate,
+                padding : 0,
+                flex : 0
+            } ]
         } ];
 
         this.formPanel = Ext.create('Ext.form.Panel', {
@@ -228,12 +217,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.invalidForm'));
             return;
         }
-        var rec;
-        if (this.action == "create") {
-            rec = {};
-        } else {
-            rec = this.rec;
-        }
+        var rec = {};
+        
         // store the form fields
         var form = this.formPanel.getForm();
         if (!form.isValid()) {
@@ -249,40 +234,34 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
         var dateStrPub = null;
 
         var author = {};
-        rec.author = author;
+        rec["author"] = author;
         
         Ext.iterate(form.getValues(), function (key, value) {
-            
-            if (this.action == "create") {
-                if (key == "date") {
-                    dateStr = value;
-                } else if (key == "hours") {
-                    hours = value;
-                } else if (key == "minutes") {
-                    mins = value;
-                } else if (key == "datePub") {
-                    dateStrPub = value;
-                } else if (key == "hoursPub") {
-                    hoursPub = value;
-                } else if (key == "minutesPub") {
-                    minsPub = value;
-                } else if (key == "name" || key == "email") {
-                    author[key] = value;
-                } else if (key == "image") {
-                    if (!Ext.isEmpty(value)) {
-                        var type = this.getTypeFromUrl(value);
-                        rec[key] = {
-                            url : value, 
-                            type : type
-                        };
-                    }
-                } else {
-                    rec[key] = value;
-                }
-            } else { // also a record so we use record method
-                rec.set(key, value);
+            if (key == "date") {
+                dateStr = value;
+            } else if (key == "hours") {
+                hours = value;
+            } else if (key == "minutes") {
+                mins = value;
+            } else if (key == "datePub") {
+                dateStrPub = value;
+            } else if (key == "hoursPub") {
+                hoursPub = value;
+            } else if (key == "minutesPub") {
+                minsPub = value;
+            } else if (key == "name" || key == "email") {
+                author[key] = value;
+            } else if (key == "image") {
+				if (!Ext.isEmpty(value)) {
+					var type = this.getTypeFromUrl(value);
+					rec["image"]= {
+						url : value, 
+						type : type
+					};
+				}
+            } else {
+                rec[key] = value;
             }
-            
 
         }, this);
         var date;
@@ -292,7 +271,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
                 dateStr += " " + hours + ":" + mins;
             }
             date = new Date(dateStr);
-            rec.updatedDate = date;
+            rec["updatedDate"] = date;
         }
         if (dateStrPub !== null && dateStrPub !== "") {
 
@@ -300,11 +279,15 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProps', {
                 dateStrPub += " " + hoursPub + ":" + minsPub;
             }
             date = new Date(dateStrPub);
-            rec.publishedDate = date;
+            rec["publishedDate"] = date;
         }
 
         if (this.action == "create") {
             this.store.add(rec);
+        } else {
+            Ext.iterate(rec, function(key, value) {
+                this.rec.set(key, value);
+            }, this);
         }
 
         this.parent.getView().refresh();

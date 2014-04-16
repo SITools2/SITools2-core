@@ -37,10 +37,11 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
     width : 700,
     height : 480,
     modal : true,
-    resizable : false,
-    stateful : false,
     urlValid : false,
     layout : 'fit',
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
 
@@ -68,7 +69,6 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         });
         
         this.boxComponent = Ext.create('Ext.Component', {
-            layout : 'hbox',
             hidden : true,
             labelSeparator : "",
             fieldLabel : " ",
@@ -81,7 +81,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         });
         
 
-        this.formPanel = Ext.create('Ext.FormPanel', {
+        this.formPanel = Ext.create("Ext.FormPanel", {
             labelWidth : 100, // label settings here cascade unless overridden
             defaultType : 'textfield',
             padding : 10,
@@ -160,7 +160,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                name : 'feedType',
 	                xtype : 'radiogroup',
 	                columns : 1,
-	                items : [{
+	                items : [ {
 	                    boxLabel : 'RSS',
 	                    name : 'feedType',
 	                    inputValue : "rss_2.0",
@@ -169,20 +169,22 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                    boxLabel : 'ATOM',
 	                    name : 'feedType',
 	                    inputValue : "atom_1.0"
-	                }]
+	                } ]
 	            },  {
                         xtype: 'fieldcontainer',
                         anchor : "100%",
                         fieldLabel : i18n.get('label.url'),
                         msgTarget: 'under',
                         hidden : true,
+                        layout : 'hbox',
                         id : 'compositeFieldExternalUrl',
                         items: [{                            
 				            name : 'externalUrl',
                             xtype: 'textfield',
                             anchor : "100%",                            
+                            flex : 4,
                             status : "pending",
-                            allowBlank : false,
+                            allowBlank : "false",
                             vtype : "uri",
                             validator : function (value) {
                                 var status = this.status;
@@ -240,17 +242,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
          * ***********************************************
          */
 
-        this.storeItem = Ext.create('Ext.data.JsonStore', {
-            proxy : {
-                type : 'memory',
-                reader : {
-                    type : 'json',
-                    idProperty : 'id'
-                }
-            },
+        this.storeItem = Ext.create("Ext.data.JsonStore", {
+//            idProperty : 'id',
             fields : [ {
                 name : 'id',
-                type : 'string'
+                type : 'string',
+                convert : function () {
+                    return Ext.id();
+                }
             }, {
                 name : 'title',
                 type : 'string'
@@ -273,11 +272,13 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
             }]
         });
 
-        var cm = {
+        var columns = {
+            // specify any defaults for each column
             defaults : {
                 sortable : true
+            // columns are not sortable by default
             },
-            items : [{
+            items : [ {
                 header : i18n.get('label.titleRss'),
                 dataIndex : 'title',
                 width : 150,
@@ -297,7 +298,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
                 dataIndex : 'updatedDate',
                 width : 100,
                 sortable : true
-            }]
+            } ]
         };
 
         var tbar = {
@@ -323,13 +324,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
             }]
         };
 
-        this.gridPanel = Ext.create('Ext.grid.Panel', {
+        this.gridPanel = Ext.create("Ext.grid.GridPanel", {
             forceFit : true,
             layout : 'fit',
             title : i18n.get("title.feedItems"),
             store : this.storeItem,
-            columns : cm,
+            columns : columns,
             tbar : tbar
+
         });
 
         /**
@@ -337,7 +339,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
          * ***********************************************
          */
         
-        this.tabPanel = Ext.create('Ext.tab.Panel', {
+        this.tabPanel = Ext.create("Ext.TabPanel", {
             height : 450,
             activeTab : 0,
             items : [ this.formPanel, this.gridPanel ]
@@ -345,7 +347,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 
         this.items = [ this.tabPanel ];
         
-        this.saveButton = Ext.create('Ext.button.Button', {
+        this.saveButton = Ext.create("Ext.Button", {
             text : i18n.get('label.ok'),
             scope : this,
             handler : this.onValidate
@@ -438,7 +440,9 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                rec.authorEmail = data.author.email;
 	            }
             }
+
             form.setValues(rec);
+            
         }
     },
 
@@ -456,8 +460,10 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
                 var date = new Date(entry.updatedDate);
                 entry.updatedDate = date;
                 this.storeItem.add(entry);
+
             }
         }
+
     },
 
     /**
@@ -483,6 +489,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         else {        
             this.onValidateModify();
         }
+        
     },
     
     onValidateModify : function () {
@@ -543,20 +550,26 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
         // gets the value from the grid
         json.entries = [];
         if (json.feedSource == "CLASSIC") {
+	        
 	        var i;
 	        for (i = 0; i < this.storeItem.getCount(); i++) {
 	            var rec = this.storeItem.getAt(i).copy().data;
 	            var date = rec.updatedDate;
 	            if (date !== null && date !== undefined) {
 	                var updatedDate = new Date(date);
-	                rec.updatedDate = Ext.Date.format(updatedDate, 'Y-m-d\\TH:i:s.u') + Ext.Date.getGMTOffset(updatedDate);
+	                rec.updatedDate = Ext.Date.format(updatedDate,'Y-m-d\\TH:i:s.u') + Ext.Date.getGMTOffset(updatedDate);
 	            }
 	            date = rec.publishedDate;
 	            if (date !== null && date !== undefined) {
 	                var publishedDate = new Date(date);
-	                rec.publishedDate = Ext.Date.format(publishedDate, 'Y-m-d\\TH:i:s.u') + Ext.Date.getGMTOffset(publishedDate);
+	                rec.publishedDate = Ext.Date.format(publishedDate,'Y-m-d\\TH:i:s.u') + Ext.Date.getGMTOffset(publishedDate);
 	
 	            }
+	            image = rec.image;
+	            if(Ext.isEmpty(image)){
+	                delete rec.image;
+	            }
+	            
 	            delete rec.id;
 	            json.entries.push(rec);
 	        }
@@ -585,6 +598,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
                 }
                 this.store.reload();
                 this.close();
+
             },
             failure : alertFailure
         });
@@ -625,7 +639,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
      *  to create a property
      */
     onCreate : function () {
-        var up = Ext.create('sitools.admin.rssFeed.rssFeedItemProps', {
+        var up = Ext.create("sitools.admin.rssFeed.rssFeedItemProps", {
             store : this.storeItem,
             parent : this.gridPanel,
             action : "create"
@@ -638,11 +652,11 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
      *  to modify a property
      */
     onModify : function () {
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
+        var rec = this.getLastSelectedRecord(this.gridPanel);
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create('sitools.admin.rssFeed.rssFeedItemProps', {
+        var up = Ext.create("sitools.admin.rssFeed.rssFeedItemProps", {
             store : this.storeItem,
             parent : this.gridPanel,
             action : "modify",
@@ -655,7 +669,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
      * Delete the selected rss property from the store
      */
     onDelete : function () {
-        var rec = this.gridPanel.getSelectionModel().getSelection()[0];
+        var rec = this.getLastSelectedRecord(this.gridPanel);
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -696,13 +710,13 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	                var feedField = form.findField("feedType");
 	                var externalUrlField = form.findField("externalUrl");
 	                if (isRss) {
-						feedField.setValue("rss_2.0");                    
+						feedField.setValue({feedType : "rss_2.0"});                    
 					} else if (isAtom) {
-						feedField.setValue("atom_1.0");                    
+						feedField.setValue({feedType : "atom_1.0"});                    
 					} 
 	                
 	                if (isRss || isAtom) {
-                        this.boxComponent.setHtml(Ext.String.format(i18n.get("label.feedTypeDetected"), feedField.getValue().inputValue));
+                        this.boxComponent.setHtml(Ext.String.format(i18n.get("label.feedTypeDetected"), feedField.getValue().feedType));
                         this.boxComponent.setVisible(true);
                         
                         var xml = (isRss) ? rss : atom;
@@ -736,6 +750,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
 	            }
 	        });
         }
+        
     }
 
 });
