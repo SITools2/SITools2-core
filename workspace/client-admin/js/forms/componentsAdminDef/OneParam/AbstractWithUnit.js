@@ -36,8 +36,15 @@ Ext.define('sitools.admin.forms.oneParam.abstractWithUnit', { extend : 'sitools.
     
     initComponent : function () {
         sitools.admin.forms.oneParam.abstractWithUnit.superclass.initComponent.call(this);
-        this.storeDimension = new Ext.data.JsonStore({
-            root : "data", 
+        this.storeDimension = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension',
+                reader : {
+                    type : 'json',
+                    root : "data" 
+                }                
+            },
             fields : [{
                 name : "id", 
                 type : "string"
@@ -51,8 +58,6 @@ Ext.define('sitools.admin.forms.oneParam.abstractWithUnit', { extend : 'sitools.
                 name : "dimensionHelperName", 
                 type : "string"
             }], 
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension',
-            restful : true,
             autoLoad : false, 
             listeners : {
                 scope : this, 
@@ -74,7 +79,7 @@ Ext.define('sitools.admin.forms.oneParam.abstractWithUnit', { extend : 'sitools.
 //        return true;
 //    },
     _onDimensionLoad : function () {
-        this.dimension = new Ext.form.ComboBox({
+        this.dimension = Ext.create("Ext.form.ComboBox", {
             fieldLabel : i18n.get('label.dimension'),
             store : this.storeDimension,
             displayField : "name",

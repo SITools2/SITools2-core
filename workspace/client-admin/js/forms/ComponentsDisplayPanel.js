@@ -79,42 +79,33 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 	
     _activeDisposition : function () {
         var formPincipal = this.up('window').down('form > textfield[name=css]');
-        this.body.addClass(formPincipal.getValue());
+        this.body.addCls(formPincipal.getValue());
         this.setWidth(this.formSize.width);
         
         this.removeAll(true);
 
         var totalHeight = 0;
         
-
-		if (this.action != 'modify') {
-			var mainPanel = new sitools.admin.forms.advancedFormPanel({
+        console.log("_activeDisposition");
+        
+        //add a first zone if none exists
+        if (this.action != 'modify' && this.zoneStore.getCount() == 0) {
+			var initialZone = {
 				containerPanelId : 'main',
 				title : i18n.get('label.mainForm'),
 				height : 300,
-				border : true,
-				//id : 'mainpanel',
-				ddGroup : 'gridComponentsList',
 				collapsible : false,
-				datasetColumnModel : this.datasetColumnModel,
-				formComponentsStore : this.formComponentsStore,
-				storeConcepts : this.storeConcepts,
-				context : this.context,
-				absoluteLayout : this,
 				position : "0"
-			});
-			// this.add(mainPanel);
+			};
+		    this.zoneStore.add(initialZone);
 		}
 	        
-	     if (this.zoneStore.getCount() == 0 && mainPanel){
-	        this.zoneStore.add(mainPanel);
-    	} 
 
         if (this.zoneStore.getCount() > 0) {
             this.zoneStore.each(function (rec) {
                 totalHeight += rec.data.height;
                 //if (rec.data.id!='mainpanel'){
-				var zonePanel = new sitools.admin.forms.advancedFormPanel({
+				var zonePanel = Ext.create("sitools.admin.forms.advancedFormPanel", {
 	                    containerPanelId : rec.data.containerPanelId,
 	                    title: rec.data.title,
 	                    height: rec.data.height,

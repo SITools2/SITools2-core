@@ -20,7 +20,8 @@
  showHelp */
 Ext.namespace('sitools.admin.forms');
 
-Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
+Ext.define('sitools.admin.forms.parentParamWin', { 
+    extend : 'Ext.Window',
     modal : true,
     title : i18n.get('label.chooseParent'),
     width : 500, 
@@ -30,8 +31,8 @@ Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
             mode : 'SINGLE'
         });
     
-        var cmComponents = new Ext.grid.ColumnModel({
-            columns : [ {
+        var columns = {
+            items : [ {
                 header : i18n.get('headers.label'),
                 dataIndex : 'label'
             }, {
@@ -42,14 +43,14 @@ Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
                 sortable : true,
                 width : 100
             }
-        });
+        };
         this.gridFormComponents = new Ext.grid.GridPanel({
             title : i18n.get('title.gridComponents'),
             layout : 'fit', 
             id : "gridFormParentComponents",
             height : 430,
             store : storeComponents,
-            cm : cmComponents,
+            columns : columns,
             selModel : smComponents,
             viewConfig : {
                 forceFit : true
@@ -80,10 +81,10 @@ Ext.define('sitools.admin.forms.parentParamWin', { extend : 'Ext.Window',
         sitools.admin.forms.parentParamWin.superclass.onRender.apply(this, arguments);
     }, 
     onValidate : function () {
-        if (!Ext.isEmpty(this.gridFormComponents.getSelectionModel().getSelected())) {
-            var selected = this.gridFormComponents.getSelectionModel().getSelected(); 
-            this.parentParamField.setValue(selected.data);
-            this.parentParamFieldDisplay.setValue(selected.data.label);
+        if (!Ext.isEmpty(this.gridFormComponents.getSelectionModel().getLastSelected())) {
+            var selected = this.gridFormComponents.getSelectionModel().getLastSelected(); 
+            this.parentParamField.setValue(selected.getData());
+            this.parentParamFieldDisplay.setValue(selected.get("label"));
             this.close();
         }
         

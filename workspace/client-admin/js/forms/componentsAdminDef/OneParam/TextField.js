@@ -25,7 +25,7 @@ Ext.define('sitools.admin.forms.oneParam.TextField', {
     
     initComponent : function () {
         sitools.admin.forms.oneParam.TextField.superclass.initComponent.call(this);
-        this.componentAutoComplete = new Ext.form.Checkbox({
+        this.componentAutoComplete = Ext.create("Ext.form.Checkbox", {
             fieldLabel : i18n.get('label.autoComplete'),
             name : 'autoComplete',
             anchor : '100%', 

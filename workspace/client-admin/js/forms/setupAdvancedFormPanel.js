@@ -38,7 +38,7 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
         this.title = i18n.get('label.setupAdvancedFormPanel');
         this.fielsetPosition = this.parentContainer.zoneStore.getCount() + 1;
         
-        this.form = new Ext.form.FormPanel({
+        this.form = Ext.create("Ext.form.FormPanel", {
             padding : 5,
             border : false,
             bodyBorder : false,

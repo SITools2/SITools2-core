@@ -35,10 +35,10 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
         var urlFormulaire = this.winPropComponent.urlFormulaire;
         var formComponentsStore = this.formComponentsStore;
         
-        this.parentParam = new Ext.form.Hidden({
+        this.parentParam = Ext.create("Ext.form.Hidden", {
             name : 'PARENT_PARAM'
         });
-        this.parentParamDisplay = new Ext.form.TriggerField({
+        this.parentParamDisplay = Ext.create("Ext.form.TriggerField", {
             fieldLabel : i18n.get('label.parentParam'),
             name : 'PARENT_PARAM_DISPLAY',
             anchor : '100%', 
@@ -46,7 +46,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             disabled : this.context.context == "project"
         });
         this.parentParamDisplay.onTriggerClick = function (event) {
-            var winParent = new sitools.admin.forms.parentParamWin({
+            var winParent = Ext.create("sitools.admin.forms.parentParamWin", {
                 parentParamField : this.ownerCt.parentParam, 
                 parentParamFieldDisplay : this,
                 store : formComponentsStore,
@@ -59,7 +59,8 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
         
         this.winPropComponent.specificHeight = 550;
         this.winPropComponent.specificWidth = 400;
-        var storeValues = new Ext.data.JsonStore({
+        
+        var storeValues = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'code',
                 type : 'string'

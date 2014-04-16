@@ -37,8 +37,7 @@ sitools.common.forms.formParameterToComponent = function (parameter, dataUrl, fo
 	var value, values, items, i, component, defaultValues, existsWidgetForParameterCode, selectedValue, minValue, maxValue, disabledDates;
 
 	//The name of the constructor
-	var constructor = eval(parameter.jsUserObject);
-	component = new constructor ({
+	component = Ext.create(parameter.jsUserObject, {
         parameterId : parameter.id, 
         values : Ext.isArray(parameter.values) ? parameter.values : [],
 	    code : parameter.code,
@@ -59,6 +58,7 @@ sitools.common.forms.formParameterToComponent = function (parameter, dataUrl, fo
         datasetCm : datasetCm, 
         context : context,
         form : form,
+        padding : 5
 	});
 	
 	return {

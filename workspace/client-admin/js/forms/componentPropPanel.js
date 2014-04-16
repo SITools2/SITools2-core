@@ -35,17 +35,16 @@ Ext.namespace('sitools.admin.forms');
 Ext.define('sitools.admin.forms.componentPropPanel', { 
     extend : 'Ext.Window',
     modal : true,
-    pageSize : 10,
     layout : 'fit',
     initComponent : function () {
         this.title = i18n.get('label.componentProperties');
-        var specificComponentString, config = {}, JsObj;
+        var specificComponentString, config = {}, jsObjName;
         if (this.action == 'modify') {
             var rec = this.record;
             if (!rec) {
                 return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
             }
-            JsObj = eval(rec.data.jsAdminObject);
+            jsObjName = rec.get("jsAdminObject");
             config = {
 				datasetColumnModel : this.datasetColumnModel,
 				winPropComponent : this,
@@ -64,7 +63,7 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
 				containerPanelId : this.containerPanelId
             };
         } else {
-            JsObj = eval(this.jsAdminObject);
+            jsObjName = this.jsAdminObject;
             config = {
 				datasetColumnModel : this.datasetColumnModel,
 				winPropComponent : this,
@@ -83,8 +82,8 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
             };
         }
         
-        var specificComponent = new JsObj(config);
-        this.componentPropPanel = new Ext.Panel({
+        var specificComponent = Ext.create(jsObjName, config);
+        this.componentPropPanel = Ext.create("Ext.Panel", {
             layout : 'fit',
             padding : 10,
             border : false,

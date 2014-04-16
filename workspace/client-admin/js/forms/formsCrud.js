@@ -38,41 +38,27 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
     pageSize : 10,
     urlFormulaires : "/tmp",
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         this.baseUrlFormulaires = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
         this.urlDatasets = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
         
-        this.httpProxyForms = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            proxy : this.httpProxyForms,
-            remoteSort : true,
-            idProperty : 'id',
-            fields : [ {
-                name : 'id',
-                type : 'string'
-            }, {
-                name : 'name',
-                type : 'string'
-            }, {
-                name : 'description',
-                type : 'string'
-            } ]
-        });
-
-        var storeDatasets = new Ext.data.JsonStore({
+        var storeDatasets = Ext.create("Ext.data.JsonStore", {
             fields : [ 'id', 'name', 'columnModel' ],
-            url : this.urlDatasets,
-            root : "data",
+            proxy : {
+                type : 'ajax',
+                url : this.urlDatasets,
+                reader : {
+                    type :'json',
+                    root : "data"
+                }
+            },
             autoLoad : true
         });
-        this.comboDatasets = new Ext.form.ComboBox({
+        this.comboDatasets = Ext.create("Ext.form.ComboBox", {
             store : storeDatasets,
             displayField : 'name',
             valueField : 'id',
@@ -88,20 +74,47 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
                     var rec = records[0];
                     this.datasetId = rec.data.id;
                     this.datasetColumnModel = rec.data.columnModel;
-                    this.httpProxyForms.url = this.baseUrlFormulaires + "/" + rec.data.id + "/forms";
-                    this.loadFormulaires(rec.data.id);
+                    
+                    this.getStore().setProxy({
+                        type : 'ajax',
+                        simpleSortMode : true,
+                        url : this.baseUrlFormulaires + "/" + rec.get("id") + "/forms",
+                        reader : {
+                            type : 'json',
+                            idProperty : 'id',
+                            root : 'data'
+                        }
+                    });
+                    this.loadFormulaires(rec.get("id"));
                 }
 
             }
         });
+        
+        this.store = Ext.create("Ext.data.JsonStore", {
+            remoteSort : true,
+            pageSize : this.pageSize,
+            fields : [ {
+                name : 'id',
+                type : 'string'
+            }, {
+                name : 'name',
+                type : 'string'
+            }, {
+                name : 'description',
+                type : 'string'
+            } ]
+        });
 
-        this.columns = new Ext.grid.ColumnModel({
+        
+
+        this.columns = {
             // specify any defaults for each column
             defaults : {
                 sortable : true
             // columns are not sortable by default
             },
-            columns : [ {
+            items : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 100,
@@ -112,7 +125,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
                 width : 400,
                 sortable : false
             } ]
-        });
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
@@ -163,13 +176,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
     loadFormulaires : function (datasetId) {
         // alert (dictionaryId);
         this.urlFormulaires = this.baseUrlFormulaires + "/" + datasetId + "/forms";
-        this.httpProxyForms.url = this.urlFormulaires;
-        this.getStore().load({
-            scope : this,
-            callback : function () {
-                this.getView().refresh();
-            }
-        });
+        this.getStore().load();
     },
 
     // onRender : function (){
@@ -183,7 +190,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
         
-        var up = new sitools.admin.forms.formPropPanel({
+        var up = Ext.create("sitools.admin.forms.formPropPanel", {
             urlFormulaire : this.urlFormulaires,
             action : 'create',
             store : this.getStore(),
@@ -194,12 +201,12 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
 
     onModify : function () {
         
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.forms.formPropPanel({
-            urlFormulaire : this.baseUrlFormulaires + '/' + this.datasetId + '/forms/' + rec.data.id,
+        var up = Ext.create("sitools.admin.forms.formPropPanel", {
+            urlFormulaire : this.baseUrlFormulaires + '/' + this.datasetId + '/forms/' + rec.get("id"),
             action : 'modify',
             store : this.getStore(),
             datasetColumnModel : this.datasetColumnModel
@@ -208,11 +215,11 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
     },
 
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();;
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('formsCrud.delete'),
@@ -227,7 +234,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
 
     },
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
+        // var rec = this.getLastSelectedRecord();;
         // if (!rec) return false;
         Ext.Ajax.request({
             url : this.baseUrlFormulaires + "/" + this.datasetId + "/forms/" + rec.data.id,

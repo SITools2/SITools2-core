@@ -29,22 +29,25 @@ Ext.define('sitools.admin.forms.noParam.hr', {
     extend : 'Ext.form.Panel',
     alias : 'widget.sitools.admin.forms.noParam.hr',
 	height : 100,
+	border : false,
+    bodyBorder : false,
+    padding : 10,
 //    id : "sitools.component.forms.definitionId",
 	
     initComponent : function () {
-        this.css = new Ext.form.TextField({
+        this.css = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.css'),
             name : 'CSS',
             anchor : '100%'
         });
 
-        this.componentDefaultHeight = new Ext.form.TextField({
+        this.componentDefaultHeight = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.height'),
             name : 'componentDefaultHeight',
             anchor : '100%',
             value : this.componentDefaultHeight
         });
-        this.componentDefaultWidth = new Ext.form.TextField({
+        this.componentDefaultWidth = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.width'),
             name : 'componentDefaultWidth',
             anchor : '100%',

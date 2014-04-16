@@ -28,10 +28,13 @@ Ext.namespace('sitools.admin.forms.noParam');
 Ext.define('sitools.admin.forms.noParam.label', { 
     extend : 'Ext.form.Panel',
     height : 120,
+    border : false,
+    bodyBorder : false,
+    padding : 10,
 //    id : "sitools.component.forms.definitionId",
     
     initComponent : function () {
-        this.css = new Ext.form.TextField({
+        this.css = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.css'),
             name : 'CSS',
             anchor : '100%'
@@ -42,13 +45,13 @@ Ext.define('sitools.admin.forms.noParam.label', {
             anchor : '100%', 
             value : Ext.isEmpty(this.selectedRecord) ? "" : this.selectedRecord.data.label
         });
-        this.componentDefaultHeight = new Ext.form.TextField({
+        this.componentDefaultHeight = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.height'),
             name : 'componentDefaultHeight',
             anchor : '100%',
             value : this.componentDefaultHeight
         });
-        this.componentDefaultWidth = new Ext.form.TextField({
+        this.componentDefaultWidth = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.width'),
             name : 'componentDefaultWidth',
             anchor : '100%',

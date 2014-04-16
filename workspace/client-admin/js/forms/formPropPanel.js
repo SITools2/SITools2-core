@@ -50,8 +50,14 @@ Ext.define('sitools.admin.forms.formPropPanel', {
         if (this.action == 'create') {
             this.title = i18n.get('label.createForm');
         }
-        this.zoneStore = new Ext.data.JsonStore({
-            root : 'data',
+        this.zoneStore = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }                
+            },
 //            idProperty : 'id',
             fields : [{
                 name : 'title'
@@ -76,13 +82,19 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                 scope : this,
                 remove : function (store, rec, ind) {
                     store.commitChanges();
-                    this.absoluteLayout.fireEvent('activate');
+                    this.componentsDisplayPanel.fireEvent('activate');
                 }
             }
         });
         
-        this.formComponentsStore = new Ext.data.JsonStore({
-            root : 'data',
+        this.formComponentsStore = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }                
+            },
             autoLoad : false,
             fields : [ {
                 name : 'id',
@@ -140,10 +152,10 @@ Ext.define('sitools.admin.forms.formPropPanel', {
             }]
         });
         
-        this.formulairePrincipal = new Ext.FormPanel({
-            title : i18n.get('label.formInfo'),
+        this.formulairePrincipal = Ext.create("Ext.FormPanel", {
             id : "formMainFormId", 
             border : false,
+            borderBody : false,
             padding : 10,
             items : [ {
                 xtype : 'hidden',
@@ -171,11 +183,18 @@ Ext.define('sitools.admin.forms.formPropPanel', {
             } ]
         });
         
-        var storeColumns = new Ext.data.JsonStore({
+        var storeColumns = Ext.create("Ext.data.JsonStore", {
 //	        root : 'data',
 //	        url : loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL') + "/" + config.collectionId + "/concepts/" + config.dictionaryId, 
 //	        proxy : httpProxyConcepts, 
 //	        restful : true, 
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }                
+            },
 	        remoteSort : false,
 	        autoLoad : false,
 	        fields : [ {
@@ -189,9 +208,9 @@ Ext.define('sitools.admin.forms.formPropPanel', {
 	        }]
 	    });	
         
-	    this.gridColumns = new Ext.grid.GridPanel({
+	    this.gridColumns = Ext.create("Ext.grid.GridPanel", {
 	        forceFit : true,
-			store : storeColumns, 
+			store : storeColumns,
 			columns : [{
                 header : i18n.get("label.tableName"), 
                 dataIndex : 'tableName', 
@@ -211,11 +230,11 @@ Ext.define('sitools.admin.forms.formPropPanel', {
             }
         }, this);
         
-        var firstPanel = new Ext.Panel({
+        var firstPanel = Ext.create("Ext.Panel", {
 			title : i18n.get('label.FormInfo'),
-            layout : "vbox", 
-            layoutConfig : {
-				align : "stretch"
+            layout : {
+                type : "vbox",
+                align : 'stretch'
             },
 			items : [this.formulairePrincipal, this.gridColumns], 
             listeners : {
@@ -228,7 +247,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
             } 
         });
         
-        this.absoluteLayout = new sitools.admin.forms.ComponentsDisplayPanel({
+        this.componentsDisplayPanel = Ext.create("sitools.admin.forms.ComponentsDisplayPanel", {
         	zoneStore : this.zoneStore,
         	formComponentsStore : this.formComponentsStore, 
 			datasetColumnModel : this.datasetColumnModel,
@@ -237,7 +256,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
 			action : this.action
         });
         
-        var absContainer = new Ext.Panel({
+        var absContainer = Ext.create("Ext.Panel", {
             title : i18n.get('label.disposition'),
 			flex : 1, 
 			autoScroll : true,
@@ -255,10 +274,10 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                 }]
     
             }),
-			items : [this.absoluteLayout]
+			items : [this.componentsDisplayPanel]
         });
         
-        this.componentListPanel = new sitools.admin.forms.componentsListPanel({
+        this.componentListPanel = Ext.create("sitools.admin.forms.componentsListPanel", {
             datasetColumnModel : this.datasetColumnModel,
             formComponentsStore : this.formComponentsStore,
             action : 'create', 
@@ -266,26 +285,25 @@ Ext.define('sitools.admin.forms.formPropPanel', {
             storeConcepts : this.storeConcepts
         });
         
-        var dispPanel = new Ext.Panel({
-			layout : "hbox", 
+        var dispPanel = Ext.create("Ext.Panel", {
+			layout : {
+			    type : "hbox", 
+			    align : "stretch"
+			},
 			title : i18n.get('label.disposition'),
 			autoScroll : true,
-			layoutConfig : {
-				align : "stretch"
-			}, 
 			items : [this.componentListPanel, absContainer], 
 			listeners : {
 				scope : this, 
 				activate : function () {
-					this.absoluteLayout.fireEvent('activate');
+					this.componentsDisplayPanel.fireEvent('activate');
 				}
 			}
 		});
         
-        this.tabPanel = new Ext.TabPanel({
-            height : 450,
+        this.tabPanel = Ext.create("Ext.TabPanel", {
             activeTab : 0,
-            items : [ firstPanel, dispPanel ],
+            items : [ firstPanel, dispPanel],
             listeners : {
 				scope : this, 
 				afterrender : function (panel) {
@@ -315,8 +333,8 @@ Ext.define('sitools.admin.forms.formPropPanel', {
         sitools.admin.forms.formPropPanel.superclass.initComponent.call(this);
     },
 
-    onRender : function () {
-        sitools.admin.forms.formPropPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.formPropPanel.superclass.afterRender.apply(this, arguments);
         
         if (this.urlFormulaire) {
             // Si l'objet est en modification, on charge l'objet en question
@@ -342,7 +360,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                             this.formSize.height = data.height;
                         }
                         
-                        this.absoluteLayout.setSize(this.formSize);
+                        this.componentsDisplayPanel.setSize(this.formSize);
                         
                         var rec = {};
                         rec.id = data.id;
@@ -455,9 +473,9 @@ Ext.define('sitools.admin.forms.formPropPanel', {
     },
     
     _sizeUp : function () {
-        var panelProp = new sitools.admin.forms.absoluteLayoutProp({
-            absoluteLayout : this.absoluteLayout,
-            tabPanel : this.absoluteLayout.ownerCt.ownerCt.ownerCt,
+        var panelProp = Ext.create("sitools.admin.forms.absoluteLayoutProp", {
+            absoluteLayout : this.componentsDisplayPanel,
+            tabPanel : this.componentsDisplayPanel.ownerCt.ownerCt.ownerCt,
             win : this,
             formSize : this.formSize
         });
@@ -465,13 +483,13 @@ Ext.define('sitools.admin.forms.formPropPanel', {
     },
     
     _addPanel : function () {
-        var setupAdvancedPanel = new sitools.admin.forms.setupAdvancedFormPanel({
-            parentContainer : this.absoluteLayout,
-            currentPosition : this.absoluteLayout.position
+        var setupAdvancedPanel = Ext.create("sitools.admin.forms.setupAdvancedFormPanel", {
+            parentContainer : this.componentsDisplayPanel,
+            currentPosition : this.componentsDisplayPanel.position
         });
         setupAdvancedPanel.show();
        
-        this.absoluteLayout.doLayout();
+        this.componentsDisplayPanel.doLayout();
 
     },
     

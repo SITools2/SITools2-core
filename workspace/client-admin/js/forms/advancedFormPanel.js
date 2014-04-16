@@ -113,7 +113,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 		
 		var context = this.context;
 		
-		var advPanelDropTargetEl = new Ext.dd.DropTarget(advPanelDropTargetEl, {
+		var advPanelDropTarget = new Ext.dd.DropTarget(advPanelDropTargetEl, {
 			ddGroup : ddGroup,
             notifyDrop : function (ddSource, e, data) {
 
@@ -127,7 +127,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 				// Reference the record (single selection) for readability
 				var rec = ddSource.dragData.records[0];
 				
-		        var ComponentWin = new sitools.admin.forms.componentPropPanel({
+		        var ComponentWin = Ext.create("sitools.admin.forms.componentPropPanel", {
 		            urlAdmin : rec.data.jsonDefinitionAdmin,
 		            datasetColumnModel : datasetColumnModel,
 		            ctype : rec.data.type,
@@ -182,8 +182,8 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                 containerItems[0].maskOnDisable = false;
                 // containerItems[0].initialConfig.overCls =
                 // 'over-form-component';
-
-                var container = new Ext.Container({
+                console.log("add component : id : " + component.data.id);
+                var container = Ext.create("Ext.Container", {
                     width : parseInt(component.data.width, 10),
                     height : parseInt(component.data.height, 10),
                     bodyCssClass : "noborder",
@@ -199,7 +199,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                     listeners : {
                         scope : this,
                         afterrender : function (container) {
-                            this.addResizers(container);
+                            this.addResizer(container);
                             this.addDragDrop(container);
                             container.doLayout();
                         }
@@ -209,7 +209,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                         if (!rec) {
                             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
                         }
-                        var propComponentPanel = new sitools.admin.forms.componentPropPanel({
+                        var propComponentPanel = Ext.create("sitools.admin.forms.componentPropPanel", {
                             datasetColumnModel : this.displayPanel.datasetColumnModel,
                             action : 'modify',
                             urlFormulaire : this.displayPanel.urlFormulaire,
@@ -272,100 +272,98 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
     },
     
     /**
-     * Add a resizer on each components of the fieldset
-     * @param components
+     * Add a resizer on the given component
+     * @param component
      */
-    addResizers : function (components) {
-        Ext.each(components, function (container) {
-            
-//            var resizer = new Ext.Resizable(container.getId(), {
-            Ext.create('Ext.resizer.Resizer', {
-                el : container.getEl(),
-//                handles : 's e',
+    addResizer : function (component) {
+//            var resizer = new Ext.Resizable(component.getId(), {
+        console.log("add resizer : " + component.getEl().first().dom.id);
+        Ext.create('Ext.resizer.Resizer', {
+            el : component.getEl().first(),
 //                minWidth : 150,
 //                maxWidth : 1000,
 //                constrainTo : this.body,
-                constrainTo : this.getEl(),
+            constrainTo : this.getEl(),
 //                resizeChild : true,
-                pinned : true,
-                dynamic : false,
-                listeners : {
-                    scope : this,
-                    resize : function (resizable, width, height, e) {
-                        var store = this.formComponentsStore;
+            pinned : true,
+            dynamic : false,
+            listeners : {
+                scope : this,
+                resize : function (resizable, width, height, e) {
+                    console.log("resize");
+                    var store = this.formComponentsStore;
 
-                        var rec = store.getAt(store.find('id', container.getId()));
-                        var PanelPos = this.getEl().getAnchorXY();
+                    var rec = store.getAt(store.find('id', component.getId()));
+                    var PanelPos = this.getEl().getAnchorXY();
 
-                        rec.set("width", width);
-                        rec.set("height", height);
-                        container.items.items[0].setSize(width - container.getEl().getPadding('l') - container.getEl().getPadding('r'), height);
-                        // redimensionner dans le cas de listbox :
-                        if (rec.data.type === "LISTBOX" || rec.data.type === "LISTBOXMULTIPLE") {
-                            var multiselect = container.down('multiselect');
-//                            multiselect.view.container.setHeight(height - container.getEl().getPadding('b') - container.getEl().getPadding('t') - 40);
-                            multiselect.setHeight(height - container.getEl().getPadding('b') - container.getEl().getPadding('t') - 40);
-                        }
+                    rec.set("width", width);
+                    rec.set("height", height);
+                    component.down("component").setSize(width - component.getEl().getPadding('l') - component.getEl().getPadding('r'), height);
+                    // redimensionner dans le cas de listbox :
+                    if (rec.get("type") === "LISTBOX" || rec.get("type") === "LISTBOXMULTIPLE") {
+                        var multiselect = component.down('multiselect');
+//                            multiselect.view.component.setHeight(height - component.getEl().getPadding('b') - component.getEl().getPadding('t') - 40);
+                        multiselect.setHeight(height - component.getEl().getPadding('b') - component.getEl().getPadding('t') - 40);
                     }
                 }
-            });
-        }, this);
+            }
+        });
     },
     
     /**
      * Add drag drop event and contextMenu action on each components of the fielset
      * @param components
      */
-    addDragDrop : function (components) {
-        Ext.each(components, function (container) {
-            container.getEl().on('contextmenu', this.onContextMenu, container);
-            
-            var dd = new Ext.dd.DDProxy(container.getEl().dom.id, 'group', {
-                isTarget : false
-            });
-            Ext.apply(dd, {
-                win : this,
-                startDrag : function (x, y) {
-                    var dragEl = Ext.get(this.getDragEl());
-                    var el = Ext.get(this.getEl());
+    addDragDrop : function (component) {
+        component.getEl().on('contextmenu', this.onContextMenu, component);
+        console.log("add addDragDrop : " + component.getEl().dom.id);
+        var dd = new Ext.dd.DDProxy(component.getEl().dom.id, 'group', {
+            isTarget : false
+        });
+        Ext.apply(dd, {
+            win : this,
+            startDrag : function (x, y) {
+                var dragEl = Ext.get(this.getDragEl());
+                var el = Ext.get(this.getEl());
 
-                    dragEl.applyStyles({
-                        border : '',
-                        'z-index' : this.win.ownerCt.ownerCt.lastZIndex + 1
-                    });
-                    dragEl.update(el.dom.innerHTML);
-                    dragEl.addClass(el.dom.className);
+                dragEl.applyStyles({
+                    border : '',
+                    'z-index' : this.win.ownerCt.ownerCt.lastZIndex + 1
+                });
+                dragEl.update(el.dom.innerHTML);
+                dragEl.addCls(el.dom.className);
 
-                    this.constrainTo(this.win.body);
-                },
-                afterDrag : function () {
-                    var dragEl = Ext.get(this.getDragEl());
-                    var container = Ext.get(this.getEl());
+                this.constrainTo(this.win.body);
+            },
+            afterDrag : function () {
+                console.log("drag");
+                var dragEl = Ext.get(this.getDragEl());
+                var component = Ext.get(this.getEl());
 
-                    var x = dragEl.getX();
-                    var y = dragEl.getY();
+                var x = dragEl.getX();
+                var y = dragEl.getY();
 
-                    var store = this.win.formComponentsStore;
+                var store = this.win.formComponentsStore;
 
-                    var rec = store.getAt(store.find('id', container.id));
-                    var PanelPos = Ext.get(this.win.body).getAnchorXY();
+                var rec = store.getAt(store.find('id', component.id));
+                var PanelPos = Ext.get(this.win.body).getAnchorXY();
 
-                    rec.set("xpos", x - PanelPos[0]);
-                    rec.set("ypos", y - PanelPos[1]);
-                }
-            });
-        }, this);
+                rec.set("xpos", x - PanelPos[0]);
+                rec.set("ypos", y - PanelPos[1]);
+            }
+        });
     },
     
     editPanel : function () {
-        if (!Ext.isEmpty(this.containerPanelId)){
-        	var zoneToRemove = this.absoluteLayout.zoneStore.find('containerPanelId', this.containerPanelId);
+        var zoneToRemove;
+        if (!Ext.isEmpty(this.containerPanelId)) {
+            zoneToRemove = this.absoluteLayout.zoneStore.find('containerPanelId', this.containerPanelId);
         } else {
-        	var zoneToRemove = this.absoluteLayout.zoneStore.find('position', 0);
+            zoneToRemove = this.absoluteLayout.zoneStore.find('position', 0);
         }
         var zoneRec = this.absoluteLayout.zoneStore.getAt(zoneToRemove);
         
-        var setupAdvancedPanel = new sitools.admin.forms.setupAdvancedFormPanel({
+        var setupAdvancedPanel = Ext.create("sitools.admin.forms.setupAdvancedFormPanel", {
             parentContainer : this.absoluteLayout,
             action : 'modify',
             zone : zoneRec.data

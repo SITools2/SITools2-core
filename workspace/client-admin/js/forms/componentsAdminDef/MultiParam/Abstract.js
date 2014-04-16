@@ -25,15 +25,25 @@ Ext.namespace('sitools.admin.forms.multiParam');
  * @class sitools.admin.forms.multiParam.abstractForm
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.multiParam.abstractForm', { extend : 'Ext.form.Panel',
+Ext.define('sitools.admin.forms.multiParam.abstractForm', { 
+    extend : 'Ext.form.Panel',
     autoScroll : true, 
+    border : false,
+    bodyBorder : false,
+    padding : 10,
     initComponent : function () {
-        this.context = new sitools.component.forms.componentsAdminDef.ComponentFactory(this.context);
+        this.context = Ext.create("sitools.component.forms.componentsAdminDef.ComponentFactory", this.context);
         
-        this.storeColumn = new Ext.data.JsonStore({
+        this.storeColumn = Ext.create("Ext.data.JsonStore", {
             id : 'storeColumnSelect',
-            root : 'ColumnModel',
-            idProperty : 'header',
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type : 'json',
+                    root : "ColumnModel", 
+                    idProperty : 'header'
+                }                
+            },
             remoteSort : false,
             fields : [ {
                 name : 'id',
@@ -96,38 +106,38 @@ Ext.define('sitools.admin.forms.multiParam.abstractForm', { extend : 'Ext.form.P
         }, this);
 
         
-        this.buttonAdd = new Ext.Button({
+        this.buttonAdd = Ext.create("Ext.Button", {
 			text : i18n.get('label.addColumn'), 
 			scope : this, 
 			handler : function (button) {
 				this.addColumn(button);
 			}
 		});
-		this.buttonDel = new Ext.Button({
+		this.buttonDel = Ext.create("Ext.Button", {
 			text : i18n.get('label.deleteColumn'), 
 			scope : this, 
 			handler : function (button) {
 				this.deleteColumn(button);
 			}
 		});
-        this.labelParam1 = new Ext.form.TextField({
+        this.labelParam1 = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.label'),
             name : 'LABEL_PARAM1',
             anchor : '100%'
         });
-        this.css = new Ext.form.TextField({
+        this.css = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.css'),
             name : 'CSS',
             anchor : '100%'
         });
-        this.componentDefaultHeight = new Ext.form.TextField({
+        this.componentDefaultHeight = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.height'),
             name : 'componentDefaultHeight',
             anchor : '100%',
             value : this.componentDefaultHeight, 
             allowBlank : false
         });
-        this.componentDefaultWidth = new Ext.form.TextField({
+        this.componentDefaultWidth = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.width'),
             name : 'componentDefaultWidth',
             anchor : '100%',

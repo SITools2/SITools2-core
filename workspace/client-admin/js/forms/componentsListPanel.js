@@ -46,9 +46,16 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
         
         this.title = i18n.get('label.chooseComponent');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL'),
+        this.store = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL'),
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -80,10 +87,10 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
                 name : 'extraParams'
             } ],
             autoLoad : true,
-            sortInfo: {
-			    field: 'type',
+            sorters : [{
+			    property: 'type',
 			    direction: 'ASC' // or 'DESC' (case sensitive for local sorting)
-			}
+			}]
            
         });
         
@@ -121,7 +128,7 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
         sitools.admin.forms.componentsListPanel.superclass.afterRender.apply(this, arguments);
         this.dd = new Ext.dd.DragDrop(this.getId(), 'gridComponentsTest', {});
         
-        var panelDropTarget = new Ext.dd.DragZone(this.getEl(), {
+        new Ext.dd.DragZone(this.getEl(), {
             notifyDrag: function(dragsource, event, data) {
                 Ext.example.msg("drag target");
             }
@@ -166,7 +173,7 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
  * @param {string} value
  */
 sitools.admin.forms.componentsListPanel.showPreview = function (value) {
-    var previewWin = new Ext.Window({
+    var previewWin = Ext.create("Ext.Window", {
         title : i18n.get('label.showPreview'),
         modal : true,
         html : "<img src ='" + value + "'>",
@@ -176,7 +183,7 @@ sitools.admin.forms.componentsListPanel.showPreview = function (value) {
         buttons : [ {
             text : i18n.get('label.close'),
             handler : function () {
-                this.ownerCt.ownerCt.destroy();
+                this.close();
             }
         } ]
     });

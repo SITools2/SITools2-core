@@ -34,24 +34,25 @@ Ext.define('sitools.admin.forms.oneParam.abstractForm', {
     context : null, 
     border : false,
     bodyBorder : false,
+    padding : 5,
     initComponent : function () {
         this.context = new sitools.component.forms.componentsAdminDef.ComponentFactory(this.context);
         
-        this.buttonAdd = new Ext.Button({
+        this.buttonAdd = Ext.create("Ext.Button", {
 			text : i18n.get('label.addColumn'), 
 			scope : this, 
 			handler : function (button) {
 				this.addColumn(button);
 			}
 		});
-		this.buttonDel = new Ext.Button({
+		this.buttonDel = Ext.create("Ext.Button", {
 			text : i18n.get('label.deleteColumn'), 
 			scope : this, 
 			handler : function (button) {
 				this.deleteColumn(button);
 			}
 		});
-        this.labelParam1 = new Ext.form.TextField({
+        this.labelParam1 = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.label'),
             name : 'LABEL_PARAM1',
             anchor : '100%', 
@@ -65,19 +66,19 @@ Ext.define('sitools.admin.forms.oneParam.abstractForm', {
 		this.mapParam1 = this.context.buildComboParam1(this);
 		
         
-	    this.css = new Ext.form.TextField({
+	    this.css = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.css'),
             name : 'CSS',
             anchor : '100%'
         });
-        this.componentDefaultHeight = new Ext.form.TextField({
+        this.componentDefaultHeight = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.height'),
             name : 'componentDefaultHeight',
             anchor : '100%',
             value : this.componentDefaultHeight, 
             allowBlank : false
         });
-        this.componentDefaultWidth = new Ext.form.TextField({
+        this.componentDefaultWidth = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.width'),
             name : 'componentDefaultWidth',
             anchor : '100%',
