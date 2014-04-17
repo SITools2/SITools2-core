@@ -25,7 +25,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.validator.Validable;
 import fr.cnes.sitools.common.validator.Validator;
-import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginParameter;
 
@@ -115,18 +115,18 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   public synchronized void start() throws Exception {
     super.start();
     if (isStarted()) {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       if (appModel != null) {
         model.setStatus("ACTIVE");
         store.update(appModel);
       }
     }
     else {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       getLogger().warning("ApplicationPlugin should be started.");
       if (appModel != null) {
         appModel.setStatus("INACTIVE");
@@ -139,18 +139,18 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   public synchronized void stop() throws Exception {
     super.stop();
     if (isStopped()) {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       if (appModel != null) {
         appModel.setStatus("INACTIVE");
         store.update(appModel);
       }
     }
     else {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       getLogger().warning("ApplicationPlugin should be stopped.");
       if (appModel != null) {
         appModel.setStatus("ACTIVE");
