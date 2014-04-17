@@ -44,6 +44,15 @@ Ext.define('sitools.component.graphs.graphNodeModel', {
         name : 'url'
     }, {
         name : 'text'
+    }, {
+        name : 'icon',
+        convert : function (value, record) {
+            if (record.get("leaf")) {
+                return loadUrl.get('APP_URL') + "/common/res/images/icons/tree_datasets.png";
+            } else {
+                return undefined;
+            }
+        }
     }]
 });
 
@@ -53,6 +62,8 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
     enableDD: true,           
     layout : 'fit',
     useArrows : true,
+    border : false,
+    bodyBorder : false,
     idGraph : null,
     initComponent : function () {
         
@@ -70,13 +81,13 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
 
         this.menuLeafToolbar =  [{
             id : 'edit-node',
-            text : i18n.get("label.modify"),
+            text : i18n.get("label.modifyNode"),
             icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
             scope : this,
             handler : this._cxtMenuHandler
         }, {
             id : 'delete-node',
-            text : i18n.get("label.delete"), 
+            text : i18n.get("label.deleteNode"), 
             icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png',
             scope : this,
             handler : this._cxtMenuHandler
@@ -96,31 +107,8 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
             handler : this._cxtMenuHandler
         }];
         
-        this.menuNodeToolbar = [{
-            id : 'create-node',
-            text : i18n.get("label.createNode"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png',
-            scope : this,
-            handler : this._cxtMenuHandler
-        }, {
-            id : 'add-dataset',
-            text : i18n.get("label.addDataset"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_datasets.png',
-            scope : this,
-            handler : this._cxtMenuHandler
-        }, {
-            id : 'edit-node',
-            text : i18n.get("label.modify"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
-            scope : this,
-            handler : this._cxtMenuHandler
-        }, {
-            id : 'delete-node',
-            text : i18n.get("label.delete"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png',
-            scope : this,
-            handler : this._cxtMenuHandler
-        }];
+        this.menuNodeToolbar = Ext.Array.merge(this.menuLeafToolbar, ['-'], this.menuRootToolbar);
+        
         
         this.listeners = {
             scope : this,
@@ -165,7 +153,10 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
                     return;
                 }
                 this.idGraph = data.graph.id;
-                this.store.getRootNode().appendChild(data.graph.nodeList);
+                if (!Ext.isEmpty(data.graph.nodeList)) {
+                    this.store.getRootNode().appendChild(data.graph.nodeList);
+                    this.expandAll();
+                }
             },
             failure : alertFailure
         });
@@ -179,10 +170,11 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         var node, up;
         switch (item.id) {
         case 'delete-node':
-            var tot = Ext.Msg.show({
+            node = this.getSelectionModel().getSelection()[0];
+            Ext.Msg.show({
                 title : i18n.get('label.warning'),
                 buttons : Ext.Msg.YESNO,
-                msg : i18n.get('label.graphs.node.delete'),
+                msg : Ext.String.format(i18n.get('label.graphs.node.delete'), node.get("text")),
                 scope : this,
                 fn : function (btn, text) {
                     if (btn == 'yes') {
@@ -198,7 +190,7 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         case 'add-dataset':
             node = this.getSelectionModel().getSelection()[0];
 
-            up = new sitools.component.graphs.graphsDatasetWin({
+            up = Ext.create("sitools.component.graphs.graphsDatasetWin", {
                 node : node,
                 url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
                 mode : 'create'
@@ -210,7 +202,7 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         case 'create-node':
             node = this.getSelectionModel().getSelection()[0];
 
-            up = new sitools.component.graphs.graphsNodeWin({
+            up = Ext.create("sitools.component.graphs.graphsNodeWin", {
                 node : node,
                 mode : 'create'
             });
@@ -221,13 +213,13 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
             
             if (node.isLeaf()) {
-                up = new sitools.component.graphs.graphsDatasetWin({
+                up = Ext.create("sitools.component.graphs.graphsDatasetWin", {
                     node : node,
                     url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
                     mode : 'edit'
                 });
             } else {
-                up = new sitools.component.graphs.graphsNodeWin({
+                up = Ext.create("sitools.component.graphs.graphsNodeWin", {
                     node : node,
                     mode : 'edit'
                 });

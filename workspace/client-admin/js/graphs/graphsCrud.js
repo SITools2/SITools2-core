@@ -24,22 +24,28 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
     extend : 'Ext.panel.Panel',
 	alias : 'widget.s-graphs',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GRAPHS,
-    autoScroll: true,
+//    autoScroll: true,
     // loadMask: true,
-    layout : 'fit',
     initComponent : function () {
         this.urlProjects = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
 
-        this.storeProjects = new Ext.data.JsonStore({
+        this.storeProjects = Ext.create("Ext.data.JsonStore", {
             fields : [ 'id', 'name' ],
-            url : this.urlProjects,
-            root : "data",
+            proxy : {
+                type : 'ajax',
+                url : this.urlProjects,
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }
+            },
             autoLoad : true
         });
 
-        this.comboProjects = new Ext.form.ComboBox({
+        this.comboProjects = Ext.create("Ext.form.ComboBox", {
             store : this.storeProjects,
             displayField : 'name',
             valueField : 'id',
@@ -57,7 +63,7 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
                         tree.getSelectionModel().deselectAll();
                     }
                     
-                    this.loadGraph(rec[0].data.id);
+                    this.loadGraph(rec[0].get("id"));
                 }
 
             }
@@ -68,7 +74,19 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
             defaults : {
                 scope : this
             },
-            items : [ this.comboProjects ]
+            items : [ this.comboProjects, {
+                text : i18n.get('label.saveGraph'),
+                scope : this,
+                handler : this._onSave,
+                xtype : 's-menuButton',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png'
+            }, {
+                text : i18n.get('label.deleteGraph'),
+                scope : this,
+                handler : this._onDelete,
+                xtype : 's-menuButton',
+                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png'
+            } ]
         };
         
         this.lbar = {
@@ -85,20 +103,10 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
             items : []
         };
 
-        this.buttons = [{
-            text : i18n.get('label.save'),
-            scope : this,
-            handler : this._onSave
-        }, {
-            text : i18n.get('label.reset'),
-            scope : this,
-            handler : this._onReset
-        }, {
-            text : i18n.get('label.delete'),
-            scope : this,
-            handler : this._onDelete
-        } ];
-
+        
+        this.buttons = [ ];
+        
+        
         sitools.component.graphs.graphsCrudPanel.superclass.initComponent.call(this);
 
     },
@@ -110,14 +118,15 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
 
         this.removeAll();
 
-        this.tree = new sitools.component.graphs.graphsCrudTreePanel({
+        this.tree = Ext.create("sitools.component.graphs.graphsCrudTreePanel", {
             name : projectName,
             projectId : projectId,
             graphsCrud : this
         });
-//        this.tree.getRootNode().expand(true);
+        
+        
         this.add(this.tree);
-        this.doLayout();
+//        this.doLayout();
 
     },
 
@@ -157,13 +166,7 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
                         Ext.Msg.alert(i18n.get('label.warning'), data.message);
                         return false;
                     } else {
-                        var tmp = new Ext.ux.Notification({
-                            iconCls : 'x-icon-information',
-                            title : i18n.get('label.information'),
-                            html : i18n.get('label.graphSaved'),
-                            autoDestroy : true,
-                            hideDelay : 1000
-                        }).show(document);
+                        popupMessage("", i18n.get('label.graphSaved'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
                         this.loadGraph(projectId);
                     }
                 },
@@ -215,7 +218,7 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
     _onReset : function () {
         var projectId = this.comboProjects.getValue();
         if (!Ext.isEmpty(projectId)) {
-            var tot = Ext.Msg.show({
+            Ext.Msg.show({
                 title : i18n.get('label.warning'),
                 buttons : Ext.Msg.YESNO,
                 msg : i18n.get('label.graphs.reset'),
@@ -243,10 +246,11 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
     _onDelete : function () {
         var projectId = this.comboProjects.getValue();
         if (!Ext.isEmpty(projectId)) {
-            var tot = Ext.Msg.show({
+            var projectName = this.storeProjects.getById(projectId).get("name");
+            Ext.Msg.show({
                 title : i18n.get('label.warning'),
                 buttons : Ext.Msg.YESNO,
-                msg : i18n.get('label.graphs.delete'),
+                msg : Ext.String.format(i18n.get('label.graphs.delete'), projectName),
                 scope : this,
                 fn : function (btn, text) {
                     if (btn == 'yes') {

@@ -30,12 +30,16 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
     initComponent : function () {
         this.title = i18n.get('label.selectDataset');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'project.dataSets',
-            restful : true,
-            autoSave : false,
-            idProperty : 'id',
-            url : this.url,
+        this.store = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'project.dataSets'
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -65,7 +69,7 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
             } ]
         });
         
-        this.grid = new Ext.grid.GridPanel({
+        this.grid = Ext.create("Ext.grid.GridPanel", {
             selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'SINGLE'
             }),
@@ -82,11 +86,9 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
             listeners : {
                 scope : this,
                 viewready : function () {
-                    var node = this.node;
                     if (this.mode == 'edit') {
-                        var index = this.store.find('name', node.text);
-                        var sm = this.grid.getSelectionModel();
-                        sm.selectRow(index);
+                        var index = this.store.find('id', this.node.get("datasetId"));
+                        this.grid.getSelectionModel().select(index);
                     }
                 }
             }
@@ -136,60 +138,52 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
             return;
         }
         
-        if (this.mode == 'edit') {
-            this.node.set('text', dataset.data.name);
-        } else {
-			var properties = dataset.data.properties;
-			var nbRecord = 0;
-            var imageDs;
-            var descriptionHTML;
-			if (!Ext.isEmpty(properties)) {
-				Ext.each(properties, function (property) {
-					if (property.name == "nbRecord") {
-						nbRecord = property.value;
-					}
-                    if (property.name == "imageUrl") {
-                        imageDs = property.value;
-                    }
-                    if (property.name == "descriptionHTML") {
-                        descriptionHTML = property.value;
-                    }
-				});
-			}
-			
-			var newNode = Ext.create('sitools.component.graphs.graphNodeModel', {
-			    text : dataset.data.name,
-                datasetId : dataset.data.id,
-                visible : dataset.data.visible, 
-                status : dataset.data.status,
-                nbRecord : nbRecord, 
-                leaf : true,
-                type : "dataset",
-                imageDs : imageDs,
-                readme : descriptionHTML,
-                url : dataset.data.url
+		var properties = dataset.get("properties");
+		var nbRecord = 0;
+        var imageDs;
+        var descriptionHTML;
+		if (!Ext.isEmpty(properties)) {
+			Ext.each(properties, function (property) {
+				if (property.name == "nbRecord") {
+					nbRecord = property.value;
+				}
+                if (property.name == "imageUrl") {
+                    imageDs = property.value;
+                }
+                if (property.name == "descriptionHTML") {
+                    descriptionHTML = property.value;
+                }
 			});
-			
-//            var newNode = {
-//                text : dataset.data.name,
-//                leaf : true,
-//            };
-            
-            if (!this.node.isExpanded()) {
-                this.node.expand();
-            }
-            
-            var addedNode = this.node.appendChild(newNode);
-            
-//            addedNode.set('datasetId', dataset.data.id);
-//            addedNode.set('visible', dataset.data.visible);
-//            addedNode.set('status', dataset.data.status);
-//            addedNode.set('nbRecord', dataset.data.nbRecord);
-//            addedNode.set('type', 'dataset');
-//            addedNode.set('imageDs', imageDs);
-//            addedNode.set('readme', descriptionHTML);
-//            addedNode.set('url', dataset.data.url);
+		}
+		var node;
+		if (this.mode == 'create') {
+		     node = Ext.create('sitools.component.graphs.graphNodeModel', {
+		         leaf : true
+		     });
+		}
+		else {
+		    node = this.node;
+		}
+		
+		node.set("text", dataset.get("name"));
+		node.set("datasetId", dataset.get("id"));
+		node.set("visible", dataset.get("visible"));
+		node.set("status", dataset.get("status"));
+		node.set("nbRecord", nbRecord);
+		node.set("type", "dataset");
+		node.set("imageDs", imageDs);
+		node.set("readme", descriptionHTML);
+		node.set("url", dataset.get("url"));
+		
+
+		if (!this.node.isExpanded()) {
+            this.node.expand();
         }
+		
+		if (this.mode == 'create') {
+		    this.node.appendChild(node);
+		}
+        
         this.close();
     },
 
