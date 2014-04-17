@@ -148,24 +148,32 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
             }),
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
                 clicksToEdit: 1
-            })]
+            })],
+            flex : 1
         });
         
         this.items = [{
 //            title : i18n.get('label.userInfo'),
             xtype : 'panel',
-            height : 450,
+            padding : 5,
+            layout : {
+                type :'vbox',
+                align : 'stretch'
+            },
             padding : '5 5 5 5',
             border : false,
             bodyBorder : false,
             autoScroll : true,
             items : [{
+                height : 'auto',
                 xtype : 'form',
                 id: 'formCreateUser',
                 border : false,
                 bodyBorder : false,
                 padding : 10,
-                labelWidth : 120,
+                defaults : {
+                    labelWidth : 150
+                },
                 items : [ {
                     xtype : 'textfield',
                     name : 'firstName',
