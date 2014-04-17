@@ -62,7 +62,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
         
         this.title = i18n.get('label.userInfo');
 
-        var storeProperties = new Ext.data.JsonStore({
+        var storeProperties = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'name',
                 type : 'string'
@@ -77,7 +77,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
             autoLoad : false
         });
         
-        var storeScope = new Ext.data.ArrayStore({
+        var storeScope = Ext.create("Ext.data.ArrayStore", {
             fields : ['scope'],
             data : [ [ 'Editable' ], [ 'ReadOnly' ], [ 'Hidden' ] ]
         });
@@ -119,7 +119,7 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
             }
         }];
         
-        var tbar = new Ext.Toolbar({
+        var tbar = Ext.create("Ext.Toolbar", {
             defaults : {
                 scope : this
             },
