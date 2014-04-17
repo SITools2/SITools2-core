@@ -44,14 +44,14 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
             proxy : {
                 type : 'ajax',
                 url : this.url,
+                extraParams : {
+                    type : "class"
+                },
                 reader : {
                     type : 'json',
                     root : 'data',
                     idProperty : 'id'
                 }
-            },
-            baseParams : {
-                type : "class"
             },
             fields : [{
                 name : 'id',
@@ -145,7 +145,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.applications.applicationsRolePanel({
+        var up = Ext.create("sitools.admin.applications.applicationsRolePanel", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });

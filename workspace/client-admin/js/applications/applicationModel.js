@@ -1,6 +1,12 @@
 Ext.define('ApplicationModel', {
     extend : 'Ext.data.Model',
     fields : [{
+        name : 'colId',
+        type : 'string',
+        convert : function () {
+            return Ext.id();
+        }
+    }, {
         name : 'id',
         type : 'string'
     }, {

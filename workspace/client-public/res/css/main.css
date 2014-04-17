@@ -109,6 +109,7 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 
 .sitoolsDescriptionText {
 	display: table;
+	margin : 5px !important;
 }
 
 .sitoolsDescription {

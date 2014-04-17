@@ -51,8 +51,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         var expander = {
             ptype: 'rowexpander',
             rowBodyTpl : Ext.create("Ext.XTemplate", 
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+                '<tpl if="this.descEmpty(description) == false" ><p class="sitoolsDescriptionText"> <b>Description :&nbsp;</b>{description} </p></tpl>',
                 {
                     compiled : true,
                     descEmpty : function (description) {
@@ -145,8 +144,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         var expanderGridFieldMapping = {
             ptype: 'rowexpander',
             rowBodyTpl : Ext.create("Ext.XTemplate", 
-            '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+            '<tpl if="this.descEmpty(description) == false" ><p class="sitoolsDescriptionText"> <b>Description :&nbsp;</b>{description} </p></tpl>',
             {
                 compiled : true,
                 descEmpty : function (description) {

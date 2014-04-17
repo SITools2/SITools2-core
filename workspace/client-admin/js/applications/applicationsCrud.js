@@ -33,7 +33,6 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
 	border : false,
     height : 300,
     id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel'),
     forceFit : true,
     pageSize : 10,
     mixins : {
@@ -43,21 +42,29 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_APPLICATIONS_URL');
         this.urlAuthorizations = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
-
+        
         this.store = Ext.create('Ext.data.JsonStore', {
-            remoteSort : true,
+            remoteSort : false,
             autoLoad : true,
             proxy : {
                 type : 'ajax',
                 url : this.url,
+                limitParam : undefined,
+                startParam : undefined,
                 reader : {
                     type : 'json',
                     root : 'data',
-                    idProperty : 'id'
+                    idProperty : 'colId'
                 }
             },
             model : 'ApplicationModel',
-            sorters: ['category','name'],
+            sorters : [ {
+                property : 'category',
+                direction : 'ASC'
+            }, {
+                property : 'name',
+                direction : 'ASC'
+            } ],
             groupField: 'category'
         });
         
@@ -66,9 +73,13 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             flex: 1,
             dataIndex: 'name'
         }, {
-            text: 'Category',
+            text: 'Status',
             flex: 1,
-            dataIndex: 'category'
+            dataIndex: 'status',
+            renderer : function (value, meta, record, index, colIndex, store) {
+                meta.tdCls += value;
+                return value;
+            }
         }, {
             xtype: 'actioncolumn',
             width: 30,
@@ -76,7 +87,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             sortable : false,
             items : [{
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
-                tooltip : i18n.get('label.wadl'),
+                tooltip : i18n.get('WADL'),
                 scope : this,
                 handler : function (view, rowIndex, colIndex, item, e, record, row) {
                     onClickOption(record.data.url);
@@ -121,13 +132,12 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             } ]
         };
         
-        var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
+        this.features = [{
+            ftype:'grouping',
+            groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
             startCollapsed : true,
-//            groupHeaderTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
-            groupHeaderTpl: '{columnName}: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})'
-        });
-        
-        this.features = [groupingFeature];
+            enableGroupingMenu: false
+        }];
         
         sitools.admin.applications.applicationsCrudPanel.superclass.initComponent.call(this);
     },
@@ -169,24 +179,6 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
 
         up.show(ID.BOX.APPLICATION);
     },
-
-//    /**
-//     * Called when user click on Details button
-//     * Open a {sitools.admin.applications.applicationsPropPanel} window.
-//     * @return {}
-//     */
-//    onModify : function () {
-//        var rec = this.getSelectionModel().getSelected(), up = new sitools.admin.applications.applicationsPropPanel({
-//            url : this.url + '/' + rec.data.id,
-//            action : 'modify',
-//            store : this.getStore()
-//        });
-//        if (!rec) {
-//            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
-//        }
-//
-//        up.show(ID.BOX.APPLICATION);
-//    },
 
 	/**
 	 * Called when delete Button is pressed :
@@ -259,7 +251,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
                 
                 if (jsonResponse.success) {
-                    this.store.reload();
+                    this.store.reload();                    
                 }
             },
             failure : alertFailure

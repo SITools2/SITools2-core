@@ -23,6 +23,22 @@
 Ext.namespace('sitools.admin.applications');
 
 /**
+ * A specific checkColumn that is displayed only when allMethod is not checked
+ */
+Ext.define('sitools.admin.applications.customCheckColumn', {
+    extend : 'Ext.grid.column.CheckColumn',
+    alias : 'widget.appCheckColumn',
+    renderer : function (value, meta, rec) {
+        var toShow = !rec.get("allMethod");
+        if (toShow) {
+            return this.callParent(arguments);
+        } else {
+            return "";
+        }
+    }
+});
+
+/**
  * A window to display Roles and authorizations for each options. 
  * @cfg {string} urlAuthorizations  
  * @cfg {Ext.data.Record} applicationRecord
@@ -64,12 +80,12 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
                 },
                 items : [ {
                     text : i18n.get('label.create'),
-                    hidden : this.mode == 'select',
+                    hidden : this.mode === 'select',
                     icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
                     handler : this._onCreateRole
                 }, {
                     text : i18n.get('label.remove'),
-                    hidden : this.mode == 'select',
+                    hidden : this.mode === 'select',
                     icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                     handler : this._onDeleteRole
                 } ]
@@ -84,32 +100,32 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
                 dataIndex: 'allMethod',
                 width: 55
             }, {
-                xtype: 'checkcolumn',
+                xtype: 'appCheckColumn',
                 header : i18n.get('headers.post'),
                 dataIndex: 'postMethod',
                 width: 55
             }, {
-                xtype: 'checkcolumn',
+                xtype: 'appCheckColumn',
                 header : i18n.get('headers.get'),
                 dataIndex: 'getMethod',
                 width: 55
             }, {
-                xtype: 'checkcolumn',
+                xtype: 'appCheckColumn',
                 header : i18n.get('headers.put'),
                 dataIndex: 'putMethod',
                 width: 55
             }, {
-                xtype: 'checkcolumn',
+                xtype: 'appCheckColumn',
                 header : i18n.get('headers.delete'),
                 dataIndex: 'deleteMethod',
                 width: 55
             }, {
-                xtype: 'checkcolumn',
+                xtype: 'appCheckColumn',
                 header : i18n.get('headers.head'),
                 dataIndex: 'headMethod',
                 width: 55
             }, {
-                xtype: 'checkcolumn',
+                xtype: 'appCheckColumn',
                 header : i18n.get('headers.options'),
                 dataIndex: 'optionsMethod',
                 width: 55
@@ -139,7 +155,7 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
      * Adds a record to the role store. 
      */
     _onCreateRole : function () {
-        var winRole = new sitools.component.applications.rolesPanel({
+        var winRole = Ext.create("sitools.component.applications.rolesPanel", {
             storeRolesApplication : this.gridAuthorizations.getStore()
         });
         winRole.show();

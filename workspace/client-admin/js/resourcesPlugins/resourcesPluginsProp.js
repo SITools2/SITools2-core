@@ -24,14 +24,14 @@ Ext.namespace('sitools.admin.resourcesPlugins');
 
 Ext.define('sitools.admin.resourcesPlugins.customCheckColumn', {
     extend : 'Ext.grid.column.CheckColumn',
-    renderer : function  (value, meta, rec) {
-        var toShow = rec.get("type") == "PARAMETER_USER_INPUT";
+    renderer : function (value, meta, rec) {
+        var toShow = rec.get("type") === "PARAMETER_USER_INPUT";
         if (toShow) {
-          return this.callParent(arguments);
+            return this.callParent(arguments);
         } else {
-           return "";
+            return "";
         }
-    }    
+    }
 });
 
 
@@ -77,8 +77,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
         var expander = {
             ptype: 'rowexpander',
             rowBodyTpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+                '<tpl if="this.descEmpty(description) == false" ><p class="sitoolsDescriptionText"> <b>Description :&nbsp;</b>{description} </p></tpl>',
                 {
                     compiled : true,
                     descEmpty : function (description) {
@@ -182,8 +181,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
         var expanderGridFieldMapping = {
                 ptype: 'rowexpander',
                 rowBodyTpl : new Ext.XTemplate(
-                '<tpl if="this.descEmpty(description)" ><div></div></tpl>',
-                '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+                '<tpl if="this.descEmpty(description) == false" ><p class="sitoolsDescriptionText"> <b>Description :&nbsp;</b>{description} </p></tpl>',
                 {
                     compiled : true,
                     descEmpty : function (description) {

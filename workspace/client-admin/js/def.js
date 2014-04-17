@@ -743,3 +743,68 @@ Ext.override(Ext.menu.DatePicker, {
 //        return newValue.constrain(this.minValue,  this.maxValue);
 //    }
 //});
+
+//DA Fix a bug on ExtJs 4.2.1 on grouping feature selection
+Ext.define('App.overrides.view.Table', {
+    override : 'Ext.view.Table',
+    getRecord : function (node) {
+        var me = this;
+        if (me.dataSource.buffered) {
+            node = this.getNode(node);
+            if (node) {
+                var recordIndex = node.getAttribute('data-recordIndex');
+                if (recordIndex) {
+                    recordIndex = parseInt(recordIndex, 10);
+                    if (recordIndex > -1) {
+                        // The index is the index in the original Store, not in
+                        // a GroupStore
+                        // The Grouping Feature increments the index to skip
+                        // over unrendered records in collapsed groups
+                        return this.store.data.getAt(recordIndex);
+                    }
+                }
+                return this.dataSource.data.get(node.getAttribute('data-recordId'));
+            }
+        } else {
+            node = this.getNode(node);
+            if (node) {
+                // var recordIndex = node.getAttribute('data-recordIndex');
+                // if (recordIndex) {
+                // recordIndex = parseInt(recordIndex, 10);
+                // if (recordIndex > -1) {
+                // // The index is the index in the original Store, not in a
+                // GroupStore
+                // // The Grouping Feature increments the index to skip over
+                // unrendered records in collapsed groups
+                // return this.store.data.getAt(recordIndex);
+                // }
+                // }
+                return this.dataSource.data.get(node.getAttribute('data-recordId'));
+            }
+        }
+    },
+    indexInStore : function (node) {
+        var me = this;
+        if (me.dataSource.buffered) {
+            node = this.getNode(node, true);
+            if (!node && node !== 0) {
+                return -1;
+            }
+            var recordIndex = node.getAttribute('data-recordIndex');
+            if (recordIndex) {
+                return parseInt(recordIndex, 10);
+            }
+            return this.dataSource.indexOf(this.getRecord(node));
+        } else {
+            node = this.getNode(node, true);
+            if (!node && node !== 0) {
+                return -1;
+            }
+            //var recordIndex = node.getAttribute('data-recordIndex');
+            //if (recordIndex) {
+            // return parseInt(recordIndex, 10);
+            //}
+            return this.dataSource.indexOf(this.getRecord(node));
+        }
+    }
+});
