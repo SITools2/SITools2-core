@@ -37,25 +37,25 @@ Ext.define('sitools.admin.menu.TreeMenu', {
             autoScroll : true,
             animate : true,
             store : Ext.create('Ext.data.TreeStore', {
-                fields : [{
-                  name : 'iconMenu'
-              }, {
-                  name : 'name',
-                  mapping : 'nodeName'
-              }, {
-                  name : 'text',
-                  convert : function (value, record) {
-                      return i18n.get('label.' + record.get('name'));
-                  }
-              }],
-              proxy : {
-                  type : 'ajax',
-                  url : jsonUrl,
-                  reader : {
-                      root : 'children',
-                      type : 'json'
-                  }
-              }
+                fields : [ {
+                    name : 'iconMenu'
+                }, {
+                    name : 'name',
+                    mapping : 'nodeName'
+                }, {
+                    name : 'text',
+                    convert : function (value, record) {
+                        return i18n.get('label.' + record.get('name'));
+                    }
+                } ],
+                proxy : {
+                    type : 'ajax',
+                    url : jsonUrl,
+                    reader : {
+                        root : 'children',
+                        type : 'json'
+                    }
+                }
             }),
             rootVisible : false,
             listeners : {

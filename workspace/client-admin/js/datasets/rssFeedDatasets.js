@@ -28,7 +28,7 @@ Ext.namespace('sitools.admin.datasets');
 Ext.define('sitools.admin.datasets.rssFeedDatasets', { extend : 'Ext.Panel',
 	alias : 'widget.s-rssFeedDatasets',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.RSSPROJECT,
     layout : 'fit',
 

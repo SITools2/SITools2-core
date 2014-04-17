@@ -33,7 +33,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-dataset_services',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     pageSize : 10,
     modify : false,
     urlGrid : null,    

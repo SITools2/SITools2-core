@@ -31,7 +31,7 @@ Ext.namespace('sitools.admin.datasets.plugins');
 Ext.define('sitools.admin.datasets.plugins.resourcesCrudPanel', { extend : 'Ext.Panel',
     alias : 'widget.s-dataset_resources',
     border : false,
-    height : 300,    
+    height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
 
     initComponent : function () {

@@ -384,7 +384,7 @@ var clientAdmin = {
 	        ]
 	    };
 		
-	    var menuPanel = new Ext.Panel({
+	    var menuPanel = Ext.create("Ext.Panel", {
 	        id : ID.PANEL.MENU,
 	        region : 'north',
 	        layout : 'fit',
@@ -394,7 +394,7 @@ var clientAdmin = {
 	        items : [ toolbar ]
 	    });
 	
-	    treePanel = new Ext.Panel({
+	    treePanel = Ext.create("Ext.Panel", {
 	        id : ID.PANEL.TREE,
 	        region : 'west',
 	        title : i18n.get('label.menu'),
@@ -412,7 +412,7 @@ var clientAdmin = {
 	        }
 	    });
 	
-        var pan_config = new sitools.admin.menu.dataView();
+        var pan_config = Ext.create("sitools.admin.menu.dataView");
 	
         var mainPanelItems = [];
         
@@ -511,7 +511,7 @@ var clientAdmin = {
 	        }
 	    });
 
-		var menu = new sitools.admin.menu.TreeMenu('res/json/menu.json');
+		var menu = Ext.create("sitools.admin.menu.TreeMenu", 'res/json/menu.json');
 		treePanel.add(menu);
 		treePanel.doLayout();
 

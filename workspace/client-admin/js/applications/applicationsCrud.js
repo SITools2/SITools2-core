@@ -31,7 +31,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-applications',
 	border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GROUP,
     forceFit : true,
     pageSize : 10,

@@ -28,7 +28,7 @@ Ext.define('sitools.admin.applications.plugins.applicationResourcesCrudPanel', {
     extend : 'Ext.Panel', 
     alias : 'widget.s-application_resources',
     border : false,
-    height : 300,    
+    height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
 
     initComponent : function () {

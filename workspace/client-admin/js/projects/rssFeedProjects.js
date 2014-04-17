@@ -24,7 +24,7 @@ Ext.define('sitools.component.projects.rssFeedProject', {
     extend : 'Ext.panel.Panel',
 	alias : 'widget.s-rssFeedProjects',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.RSSPROJECT,
     layout : 'fit',
 

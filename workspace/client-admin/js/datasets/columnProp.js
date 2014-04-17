@@ -47,7 +47,7 @@ Ext.namespace('sitools.admin.datasets');
  */
 Ext.define('sitools.admin.datasets.columnsPropPanel', { extend : 'Ext.Window',
     width : 600,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     modal : true,
     id : 'columnPropId',
     dataSets : "",

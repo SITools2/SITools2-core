@@ -29,7 +29,7 @@ Ext.namespace('sitools.component.fileEditor');
 Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel',
     alias : 'widget.s-cssEditor',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.FILEEDITORCSS,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'

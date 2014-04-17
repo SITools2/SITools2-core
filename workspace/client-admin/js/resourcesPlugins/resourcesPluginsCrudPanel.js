@@ -34,7 +34,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
 	alias : 'widget.s-plugins_resources',
 	urlParentsParams : '',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     pageSize : 10,
     modify : false,
     urlGrid : null,    

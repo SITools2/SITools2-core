@@ -33,7 +33,7 @@ Ext.namespace('sitools.admin.multiDs');
 Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel',
     alias : 'widget.s-multiDs',
 	border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.MULTIDS,
     pageSize : 10,
     urlMultiDs : "/tmp",

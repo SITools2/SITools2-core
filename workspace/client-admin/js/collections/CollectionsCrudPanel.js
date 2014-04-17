@@ -34,7 +34,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
     extend : 'Ext.grid.Panel', 
     alias : 'widget.s-collections',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.COLLECTIONS,
     pageSize : 10,
     forceFit : true,

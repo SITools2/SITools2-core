@@ -25,7 +25,7 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
     alias : 'widget.s-rssFeedPortal',
     
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.RSSPORTAL,
     pageSize : 10,
     label : i18n.get("label.selectPortal"),

@@ -24,7 +24,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-order',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GROUP,
     selModel : Ext.create('Ext.selection.RowModel', {
         mode : 'SINGLE'

@@ -33,7 +33,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-datasetView',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.DATASETVIEW,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'

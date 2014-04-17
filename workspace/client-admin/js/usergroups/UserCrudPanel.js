@@ -32,7 +32,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-usercrud',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.USER,
     selModel : Ext.create('Ext.selection.RowModel', {
         mode : 'SINGLE'

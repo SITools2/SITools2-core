@@ -31,7 +31,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-databaseJDBC',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.DATABASE,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'

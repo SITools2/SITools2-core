@@ -32,7 +32,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     extend :'Ext.grid.Panel',
 	alias : 'widget.s-userStorage',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GROUP,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : "SINGLE"
@@ -407,7 +407,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     _onNotify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/notify',

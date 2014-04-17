@@ -30,7 +30,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-ftlEditor',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.FILEEDITORFTL,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'

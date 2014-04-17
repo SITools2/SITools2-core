@@ -22,7 +22,7 @@ Ext.namespace('sitools.component.storageFilters');
 Ext.define('sitools.component.storageFilters.storageFiltersCrudPanel', { extend : 'Ext.panel.Panel',
     alias : 'widget.s-storage_filters',
     border : false,
-    height : 300,    
+    height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
 
     initComponent : function () {

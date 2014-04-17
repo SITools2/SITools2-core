@@ -31,7 +31,7 @@ Ext.namespace('sitools.admin.usergroups');
 Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
 	alias : 'widget.s-rolecrud',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.ROLE,
     forceFit : true,
     selModel : Ext.create('Ext.selection.RowModel',{

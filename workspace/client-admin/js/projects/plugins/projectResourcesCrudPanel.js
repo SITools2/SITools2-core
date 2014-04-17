@@ -29,7 +29,7 @@ Ext.define('sitools.admin.projectResources.projectResourcesCrudPanel', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.s-project_resources',
     border : false,
-    height : 300,    
+    height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
 
     initComponent : function () {

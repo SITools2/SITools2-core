@@ -24,7 +24,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-formComponents',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.FORMCOMPONENTS,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'

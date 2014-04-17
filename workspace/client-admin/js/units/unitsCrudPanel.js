@@ -32,7 +32,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-units',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.UNITS,
     pageSize : 10,
     forceFit : true,

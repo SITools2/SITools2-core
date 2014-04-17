@@ -23,7 +23,7 @@ Ext.namespace('sitools.component.firewall');
 Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Panel',
 	alias : 'widget.s-firewall',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.FIREWALL,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'

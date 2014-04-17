@@ -31,7 +31,7 @@ Ext.namespace('sitools.admin.datasets');
 Ext.define('sitools.admin.datasets.joinTableWin', { 
     extend : 'Ext.Window',
     width : 350,
-    height : 300, 
+    height : ADMIN_PANEL_HEIGHT, 
     modal : true,
     closable : false,
 	layout : "fit", 

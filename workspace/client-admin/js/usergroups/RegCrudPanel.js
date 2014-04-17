@@ -32,7 +32,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
     extend : 'Ext.grid.Panel', 
 	alias : 'widget.s-regcrud',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.REG,
     forceFit : true,
     selModel : Ext.create('Ext.selection.RowModel', {

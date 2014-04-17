@@ -24,7 +24,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-filters',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.FILTERS,
     pageSize : 10,
     modify : false,

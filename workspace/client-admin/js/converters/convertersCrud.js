@@ -33,7 +33,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     extend : 'Ext.grid.GridPanel', 
 	alias : 'widget.s-converters',
     border : false,
-    height : 300,
+    height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.CONVERTERS,
     pageSize : 10,
     modify : false,

@@ -248,14 +248,8 @@ function showResponse(ret) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
             return false;
         }
-
-        var tmp = new Ext.ux.Notification({
-            iconCls : 'x-icon-information',
-            title : i18n.get('label.information'),
-            html : i18n.get(Json.message),
-            autoDestroy : true,
-            hideDelay : 1000
-        }).show(document);
+        popupMessage("", i18n.get(Json.message), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+        
         return true;
     } catch (err) {
         Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.javascriptError') + " : " + err);
