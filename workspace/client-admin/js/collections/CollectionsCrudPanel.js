@@ -38,16 +38,23 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
     id : ID.BOX.COLLECTIONS,
     pageSize : 10,
     forceFit : true,
-
+    mixins : {
+        utils : "js.utils.utils"
+    },
     initComponent : function () {
         this.urlCollections = loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            url : this.urlCollections, 
+        this.store = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : this.urlCollections, 
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                }
+            },
             remoteSort : true,
-            idProperty : 'id',
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -122,7 +129,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
      * Action on Create Button
      */
     onCreate : function () {
-        var up = new sitools.admin.collections.CollectionsPropPanel({
+        var up = Ext.create("sitools.admin.collections.CollectionsPropPanel", {
             urlCollections : this.urlCollections,
             action : 'create',
             store : this.getStore()
@@ -134,7 +141,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
      * Action on Modify Button
      */
     onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -150,16 +157,13 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
      * Action on Delete Button
      */
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
-            buttons : {
-                yes : i18n.get('label.yes'),
-                no : i18n.get('label.no')
-            },
+            buttons : Ext.Msg.YESNO,
             msg : i18n.get('collectionsCrud.delete'),
             scope : this,
             fn : function (btn, text) {
@@ -175,10 +179,8 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
      * send the Delete request
      */
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
-        // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.urlCollections + "/" + rec.data.id,
+            url : this.urlCollections + "/" + rec.get("id"),
             method : 'DELETE',
             scope : this,
             success : function (ret) {

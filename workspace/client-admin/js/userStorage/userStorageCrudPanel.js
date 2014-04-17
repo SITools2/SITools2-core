@@ -233,7 +233,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
      * Create a {sitools.admin.userStorage.userStoragePropPanel} user Storage to add to the storage
      */
     onCreate : function () {
-        var up = new sitools.admin.userStorage.userStoragePropPanel({
+        var up = Ext.create("sitools.admin.userStorage.userStoragePropPanel", {
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -249,7 +249,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.userStorage.userStoragePropPanel({
+        var up = Ext.create("sitools.admin.userStorage.userStoragePropPanel", {
             url : this.url + '/' + rec.get("id"),
             userStorageRec : rec,
             action : 'modify',

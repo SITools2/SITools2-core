@@ -40,9 +40,11 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
     modal : true,
     pageSize : 10,
     dataSets : "",
-    id : ID.COMPONENT_SETUP.COLLECTIONS,
 	allModulesDetached : false, 
 	allModulesInvisible : false, 
+	mixins : {
+        utils : "js.utils.utils"
+    },
 	
     initComponent : function () {
         var action = this.action;
@@ -53,8 +55,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
             this.title = i18n.get('label.createCollection');
         }
 
-        var storeDataSets = new Ext.data.JsonStore({
-            id : 'storeDataSets',
+        var storeDataSets = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -108,11 +109,12 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
         /**
          * {Ext.grid.EditorGridPanel} gridDataSets The grid that displays datasets
          */
-        this.gridDataSets = new Ext.grid.GridPanel({
+        this.gridDataSets = Ext.create("Ext.grid.GridPanel", {
             id : 'gridDataSets',
             flex : 1, 
             title : i18n.get('title.gridDataSets'),
             store : storeDataSets,
+            padding : 10,
             tbar : tbar,
             columns : [{
                 header : i18n.get('headers.name'),
@@ -137,12 +139,16 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
         /**
          * {Ext.FormPanel} formCollection The main Form 
          */
-        this.formCollection = new Ext.FormPanel({
+        this.formCollection = Ext.create("Ext.FormPanel", {
             title : i18n.get('label.CollectionInfo'),
             xtype : 'form',
             border : false,
+            bodyBorder : false,
             padding : 10,
             trackResetOnLoad : true,
+            defaults : {
+                padding : 5
+            },
             items : [ {
                 xtype : 'hidden',
                 name : 'id'
@@ -165,12 +171,12 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
         /**
          * {Ext.Panel} mainPanel the main Item of the window
          */
-        this.mainPanel = new Ext.Panel({
+        this.mainPanel = Ext.create("Ext.Panel", {
             height : 550,
-            layout : "vbox",
-            layoutConfig : {
-				align : "stretch"
-            }, 
+            layout : {
+                type : "vbox",
+                align : "stretch"
+            },
             items : [this.formCollection, this.gridDataSets],
             buttons : [ {
                 text : i18n.get('label.ok'),
@@ -200,7 +206,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
      * Create a {sitools.admin.projects.datasetsWin} datasetWindow to add datasets
      */
     _onAttachDataset : function () {
-        var up = new sitools.admin.projects.datasetsWin({
+        var up = Ext.create("sitools.admin.projects.datasetsWin", {
             mode : 'select',
             url : loadUrl.get('APP_URL') + '/datasets',
             storeDatasets : this.gridDataSets.getStore()
@@ -213,7 +219,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
      * @return {}
      */
     _onDeleteDataset : function () {
-        var recs = this.gridDataSets.getSelectionModel().getSelections();
+        var recs = this.getLastSelectedRecord(this.gridDataSets);
         if (recs.length === 0) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
