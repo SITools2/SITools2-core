@@ -60,13 +60,12 @@ public final class UserStorage implements IResource, Serializable {
 
   @Override
   public String getId() {
-    // TODO Auto-generated method stub
-    return null;
+    return getUserId();
   }
 
   @Override
   public void setId(String id) {
-    // TODO Auto-generated method stub
+    this.userId = id;
     
   }
 
