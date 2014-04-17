@@ -177,7 +177,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
         }
         
         Ext.Ajax.request({
-            url : this.url + '/' + rec.data.id,
+            url : this.url + '/' + rec.get("id"),
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -197,7 +197,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
         }
         
         var up = Ext.create('sitools.admin.usergroups.RegPropPanel', {
-            url : this.url + '/' + rec.data.id,
+            url : this.url + '/' + rec.get("id"),
             store : this.store
         });
         up.show(ID.BOX.REG);
@@ -215,7 +215,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : i18n.get('userCrud.delete'),
+            msg : Ext.String.format(i18n.get('label.regcrud.delete'), rec.get("identifier")),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {

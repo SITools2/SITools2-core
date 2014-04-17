@@ -34,12 +34,16 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
     height : 480,
     modal : true,
     storePanel : null,
+    layout : 'fit',
+    mixins : {
+        utils : 'js.utils.utils'
+    },
 
     initComponent : function () {
         this.storePanel = this.store;
         this.title = i18n.get('label.modifyRegister');
         
-        var storeProperties = new Ext.data.JsonStore({
+        var storeProperties = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'name',
                 type : 'string'
@@ -56,7 +60,7 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
         
         var dataScope = [ [ 'Editable' ], [ 'ReadOnly' ], [ 'Hidden' ] ];
 
-        var storeScope = new Ext.data.ArrayStore({
+        var storeScope = Ext.create("Ext.data.ArrayStore", {
             fields : [ 'scope' ],
             data : dataScope
         });
@@ -65,24 +69,24 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
             mode : 'SINGLE'
         });
 
-        var cmProperties = new Ext.grid.ColumnModel({
-            columns : [ {
+        var cmProperties = {
+            items : [ {
                 header : i18n.get('headers.name'),
                 dataIndex : 'name',
-                editor : new Ext.form.TextField({
+                editor : Ext.create("Ext.form.TextField", {
                     allowBlank : false
                 })
             }, {
                 header : i18n.get('headers.value'),
                 dataIndex : 'value',
-                editor : new Ext.form.TextField({
+                editor : Ext.create("Ext.form.TextField", {
                     allowBlank : false
                 })
             },
             {
                 header : i18n.get('headers.scope'),
                 dataIndex : 'scope',
-                editor : new Ext.form.ComboBox({
+                editor : Ext.create("Ext.form.ComboBox", {
                     typeAhead : true,
                     triggerAction : 'all',
                     lazyInit : false,
@@ -97,7 +101,7 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
                 sortable : false,
                 width : 100
             }
-        });
+        };
         var tbar = new Ext.Toolbar({
             defaults : {
                 scope : this
@@ -113,70 +117,75 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
             }]
         });
 
-        this.gridProperties = new Ext.grid.EditorGridPanel({
+        this.gridProperties = Ext.create("Ext.grid.GridPanel", {
             title : i18n.get('title.properties'),
-            id : 'userGridProperties',
             height : 180,
             store : storeProperties,
             tbar : tbar,
-            cm : cmProperties,
+            columns : cmProperties,
             selModel : smProperties,
-            viewConfig : {
-                forceFit : true
-            }
+            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+                clicksToEdit: 1
+            })],
+            flex : 1
         });
+        
         this.items = [ {
             xtype : 'panel',
-            height : 450,
+            padding : 5,
+            border : false,
+            bodyBorder : false,
+            layout : {
+                type : 'vbox',
+                align : 'stretch'
+            },
             items : [ {
-                xtype : 'panel',
-                title : i18n.get('label.userInfo'),
+                height : "auto",
+                xtype : 'form',
+                border : false,
+                bodyBorder : false,
+                padding : 5,
                 items : [ {
-                    xtype : 'form',
-                    border : false,
-                    padding : 10,
-                    items : [ {
-                        xtype : 'textfield',
-                        name : 'id',
-                        hidden : true
-                    }, {
-                        xtype : 'textfield',
-                        name : 'identifier',
-                        fieldLabel : i18n.get('label.login'),
-                        anchor : '100%'
-                    }, {
-                        xtype : 'textfield',
-                        name : 'firstName',
-                        fieldLabel : i18n.get('label.firstName'),
-                        anchor : '100%'
-                    }, {
-                        xtype : 'textfield',
-                        name : 'lastName',
-                        fieldLabel : i18n.get('label.lastName'),
-                        anchor : '100%',
-                        growMax : 400
-                    }, {
-                        xtype : 'textfield',
-                        name : 'email',
-                        fieldLabel : i18n.get('label.email'),
-                        anchor : '100%'
-                    }, {
-                        xtype : 'textfield',
-                        fieldLabel : i18n.get('label.password'),
-                        anchor : '100%',
-                        inputType : 'password',
-                        name : 'password', 
-                        id : "regPassword"
-                    }, {
-                        xtype : 'textfield',
-                        fieldLabel : i18n.get('label.confirmPassword'),
-                        anchor : '100%',
-                        inputType : 'password',
-                        name : 'confirmPassword',
-                        submitValue : false,
-                        initialPassField: 'regPassword',
-                        vtype : 'password'
-                    } ]
+                    xtype : 'textfield',
+                    name : 'id',
+                    hidden : true
+                }, {
+                    xtype : 'textfield',
+                    name : 'identifier',
+                    fieldLabel : i18n.get('label.login'),
+                    anchor : '100%'
+                }, {
+                    xtype : 'textfield',
+                    name : 'firstName',
+                    fieldLabel : i18n.get('label.firstName'),
+                    anchor : '100%'
+                }, {
+                    xtype : 'textfield',
+                    name : 'lastName',
+                    fieldLabel : i18n.get('label.lastName'),
+                    anchor : '100%',
+                    growMax : 400
+                }, {
+                    xtype : 'textfield',
+                    name : 'email',
+                    fieldLabel : i18n.get('label.email'),
+                    anchor : '100%'
+                }, {
+                    xtype : 'textfield',
+                    fieldLabel : i18n.get('label.password'),
+                    anchor : '100%',
+                    inputType : 'password',
+                    name : 'password', 
+                    id : "regPassword"
+                }, {
+                    xtype : 'textfield',
+                    fieldLabel : i18n.get('label.confirmPassword'),
+                    anchor : '100%',
+                    inputType : 'password',
+                    name : 'confirmPassword',
+                    submitValue : false,
+                    initialPassField: 'regPassword',
+                    vtype : 'password'
                 } ]
             }, this.gridProperties ],
             buttons : [ {
@@ -197,12 +206,10 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
         this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), {});
     },
     onDeleteProperties : function () {
-        var s = this.gridProperties.getSelectionModel().getSelections();
-        var i, r;
-        for (i = 0; s[i]; i++) {
-            r = s[i];
-            this.gridProperties.getStore().remove(r);
-        }
+        var selections = this.gridProperties.getSelectionModel().getSelection();
+        Ext.each(selections, function (selection) {
+            this.gridProperties.getStore().remove(selection);
+        }, this);
     },
 
     onModify : function () {
@@ -215,9 +222,9 @@ Ext.define('sitools.admin.usergroups.RegPropPanel', { extend : 'Ext.Window',
         putObject.properties = [];
         this.gridProperties.getStore().each(function (item) {
 			putObject.properties.push({
-				name : item.data.name, 
-				value : item.data.value,
-				scope : item.data.scope
+				name : item.get("name"), 
+				value : item.get("value"),
+				scope : item.get("scope")
 			});
         });
         Ext.Ajax.request({
