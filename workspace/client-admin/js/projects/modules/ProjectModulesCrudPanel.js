@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.projects.modules');
  * A Panel to show all the project modules in Sitools2
  * 
  * @cfg {String} the url where get the resource
- * @cfg {Ext.data.JsonStore} the store where saved the project modules data
+ * @cfg {Ext..JsonStore} the store where saved the project modules data
  * @class sitools.admin.projects.modules.ProjectModulesCrudPanel
  * @extends Ext.grid.GridPanel
  */
@@ -33,22 +33,31 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
 	alias : 'widget.s-projectmodule',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.PROJECTMODULE,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'
     }),
     pageSize : 10,
     forceFit : true,
-
+    mixins : {
+        utils : "js.utils.utils"
+    },
+    
     initComponent : function () {
         // url = '/sitools/projectModules'
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_MODULES_URL');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
+        this.store = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'data'
+                }
+            },
+            pageSize : this.pageSize,
             remoteSort : true,
-            url : this.url,
-//            idProperty : null,
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -97,13 +106,13 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
             }]
         });
 
-        this.columns = new Ext.grid.ColumnModel({
+        this.columns = {
             // specify any defaults for each column
             defaults : {
-                sortable : true
+                sortable : false
             // columns are not sortable by default
             },
-            columns : [{
+            items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 150,
@@ -115,15 +124,13 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 300,
-                sortable : false
+                width : 300
             }, {
                 header : i18n.get('label.xtype'),
                 dataIndex : 'xtype',
-                width : 350,
-                sortable : false
+                width : 350
             }]
-        });
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
@@ -175,10 +182,8 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
     onRender : function () {
         sitools.admin.projects.modules.ProjectModulesCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize            
         });
     },
 
@@ -187,12 +192,12 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
      *  to create a new project module
      */
     _onCreate : function () {
-        var dbp = new sitools.admin.projects.modules.ProjectModulePropPanel({
+        var dbp = Ext.create("sitools.admin.projects.modules.ProjectModulePropPanel", {
             url : this.url,
             action : 'create',
             store : this.store
         });
-        dbp.show(ID.PROP.PROJECTMODULE);
+        dbp.show();
     },
 
     /**
@@ -200,32 +205,32 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
      *  to modify an existing project module
      */
     _onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
-        var dbp = new sitools.admin.projects.modules.ProjectModulePropPanel({
+        var dbp = Ext.create("sitools.admin.projects.modules.ProjectModulePropPanel", {
             url : this.url + '/' + rec.get("id"),
             action : 'modify',
             store : this.store
         });
-        dbp.show(ID.PROP.PROJECTMODULE);
+        dbp.show();
     },
 
     /**
      * Diplay confirm delete Msg box and call the method doDelete
      */
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
 
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : Ext.String.format(i18n.get('projectModulesCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('projectModulesCrud.delete'), rec.get("name")),
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
@@ -251,7 +256,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.get("name")),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {
