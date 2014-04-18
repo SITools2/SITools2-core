@@ -100,6 +100,8 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 	                    var recIndex = this.gridTemplates.getStore().indexOfId(this.conceptTemplate.id);
 	                    if (recIndex > -1) {
 	                        this.gridTemplates.getSelectionModel().select(recIndex);    
+	                    } else {
+	                        return popupMessage("", Ext.String.format(i18n.get('label.concept.doesnt.exists'), this.conceptTemplate.name), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
 	                    }
 	                }
 	            }                
@@ -197,9 +199,9 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
             this.gridTemplates.getEl().mask();
         }
     },
-    onDeleteConcet : function () {
+    onDeleteConcept : function () {
         var grid = this.down('dictionaryGridPanel');
-        var rec = grid.getLastSelectedRecord();
+        var rec = this.getLastSelectedRecord(grid);
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
@@ -212,20 +214,28 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     },   
     onValidate : function () {
         var rec = this.getLastSelectedRecord(this.gridTemplates);
-        var tmp;
-        if (!rec) {
-            tmp = new Ext.ux.Notification({
-                iconCls : 'x-icon-information',
-                title : i18n.get('label.information'),
-                html : i18n.get('warning.noTemplateselection'),
-                autoDestroy : true,
-                hideDelay : 1000
-            }).show(document);
-            return false;
-        }
+       
+        if (!rec && this.action == 'modify') {
+            Ext.Msg.show({
+                title : i18n.get('label.delete'),
+                buttons : Ext.Msg.YESNO,
+                msg : Ext.String.format(i18n.get('label.concept.doesnt.exists'), this.conceptTemplate.name) +"<br/>"+i18n.get('label.concept.use.old.anyway'),
+                scope : this,
+                fn : function (btn, text) {
+                    if (btn == 'yes') {
+                        this.doValidate();
+                    }
+                }
 
+            });
+        } else {
+            this.doValidate();
+        }
+    },
+    
+    doValidate : function () {
         var f, putObject = {}, store, i;
-        tmp = [];
+        var tmp = [];
         
         f = this.dictionaryFormPanel.getForm();
 
@@ -255,40 +265,40 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
             putObject.conceptTemplate = templateSelected;
             
             if (Ext.isEmpty(putObject.conceptTemplate.properties)) {
-				putObject.conceptTemplate.properties = [];
-			}
+                putObject.conceptTemplate.properties = [];
+            }
         }
         
         var gridConcept = this.down('dictionaryGridPanel');
         
         if (!Ext.isEmpty(gridConcept) && Ext.isFunction(gridConcept.getStore)) {
-	        store = this.down('dictionaryGridPanel').getStore();
-	        if (store.getCount() > 0) {
-	            putObject.concepts = [];
-	                           
-	            for (i = 0; i < store.getCount(); i++) {
-	                var recConcept = store.getAt(i).data;
-	                
-	                var concept = {
-	                    id : recConcept.id,
-	                    name : recConcept.name,
-	                    description : recConcept.description,
-	                    properties : []
-	                };
-	                
-	                for (var key in recConcept) {
-	                    if (key != "id" && key != "name"
-	                        && key != "description") {
-	                        concept.properties.push({
-	                            name : key,
-	                            value : recConcept[key]
-	                        });
-	                    }    
-	                }
-	                
-	                putObject.concepts.push(concept);
-	            }
-	        }
+            store = this.down('dictionaryGridPanel').getStore();
+            if (store.getCount() > 0) {
+                putObject.concepts = [];
+                               
+                for (i = 0; i < store.getCount(); i++) {
+                    var recConcept = store.getAt(i).data;
+                    
+                    var concept = {
+                        id : recConcept.id,
+                        name : recConcept.name,
+                        description : recConcept.description,
+                        properties : []
+                    };
+                    
+                    for (var key in recConcept) {
+                        if (key != "id" && key != "name"
+                            && key != "description") {
+                            concept.properties.push({
+                                name : key,
+                                value : recConcept[key]
+                            });
+                        }    
+                    }
+                    
+                    putObject.concepts.push(concept);
+                }
+            }
         }
 
             
@@ -409,7 +419,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 				}, {
 					text : i18n.get('label.delete'),
 					icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-					handler : this.onDeleteConcet,
+					handler : this.onDeleteConcept,
 					scope : this
 				}]
 			}),

@@ -124,21 +124,23 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', {
                 fieldLabel : i18n.get('label.authentication'), 
                 xtype : "checkbox", 
                 listeners : {
-                    check : function (me, checked) {
-                        var f = me.ownerCt.getForm();
-                        f.findField("userLogin").setVisible(checked);
-                        f.findField("userPassword").setVisible(checked);
+                    scope : this,
+                    change : function (me, checked) {
+                        this.down("textfield[name=userLogin]").setDisabled(!checked);
+                        this.down("textfield[name=userPassword]").setDisabled(!checked);
                     }
                 }
             }, {
                 name : 'userLogin',
                 allowBlank : true, 
+                emptyText : null,
                 fieldLabel : i18n.get('label.userLogin')
             }, {
                 fieldLabel : i18n.get('label.userPassword'),
                 allowBlank : true, 
                 inputType : 'password',
-                name : 'userPassword'
+                name : 'userPassword',
+                emptyText : null
             },  {
                 xtype : "numberfield",
                 name : 'maxActive',
@@ -219,8 +221,9 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', {
             this.down('button[name=testConnectionButton]').enable();
             this.down('button[name=okButton]').enable();
         }
-		basicFrm.findField("userLogin").setVisible(basicFrm.findField("authentication").getValue());
-		basicFrm.findField("userPassword").setVisible(basicFrm.findField("authentication").getValue());
+        var authentication = this.down("checkbox[name=authentication]").getValue();
+        this.down("textfield[name=userLogin]").setDisabled(!authentication);
+        this.down("textfield[name=userPassword]").setDisabled(!authentication);
     },
     
     _onValidate : function () {

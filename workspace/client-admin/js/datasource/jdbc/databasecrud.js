@@ -38,6 +38,9 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     }),
     pageSize : 10,
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_URL');
@@ -55,6 +58,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
                 type : 'ajax',
                 url : this.url,
                 reader : {
+                    type : 'json',
                     root : 'data',
                     idProperty : 'id'
                 }
@@ -173,15 +177,13 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     onRender : function () {
         sitools.admin.datasource.jdbc.DataBaseCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
     _onCreate : function () {
-        var dbp = new sitools.admin.datasource.jdbc.DataBasePropPanel({
+        var dbp = Ext.create("sitools.admin.datasource.jdbc.DataBasePropPanel", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -190,7 +192,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     },
 
     _onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -199,7 +201,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             this._onView();
             return;
         }
-        var dbp = new sitools.admin.datasource.jdbc.DataBasePropPanel({
+        var dbp = Ext.create("sitools.admin.datasource.jdbc.DataBasePropPanel", {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store
@@ -208,11 +210,11 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     },
     
     _onView : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.datasource.jdbc.DataBasePropPanel({
+        var up = Ext.create("sitools.admin.datasource.jdbc.DataBasePropPanel", {
             url : this.url + '/' + rec.data.id,
             action : 'view',
             store : this.store
@@ -221,7 +223,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     },
 
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
@@ -245,7 +247,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
         // var rec = this.getSelectionModel().getSelected();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.data.id,
+            url : this.url + "/" + rec.get("id"),
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -263,7 +265,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
         });
     },
     _onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -288,7 +290,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     },
 
     _onDisactive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -313,12 +315,12 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     },
 
     _onTest : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
-        var dbt = new sitools.admin.datasource.DataBaseTest({
+        var dbt = Ext.create("sitools.admin.datasource.DataBaseTest", {
             url : this.url + '/' + rec.data.id + '/test'
         });
         dbt.show();

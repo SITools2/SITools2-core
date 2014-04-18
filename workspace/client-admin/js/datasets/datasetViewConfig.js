@@ -34,8 +34,6 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
     initComponent : function () {
         this.title = i18n.get('label.viewConfig');
 
-        console.log('tamere');
-        
         this.storeDatasetViews = Ext.create('Ext.data.JsonStore', {
             autoLoad : true,
             proxy : {

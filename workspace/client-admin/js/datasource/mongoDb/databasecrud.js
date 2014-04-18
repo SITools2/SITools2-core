@@ -39,7 +39,9 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     }),
     pageSize : 10,
     forceFit : true,
-
+    mixins : {
+        utils : "js.utils.utils"
+    },
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_MONGODB_URL');
 
@@ -56,6 +58,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
                 type : 'ajax',
                 url : this.url,
                 reader : {
+                    type : 'json',
                     root : 'data',
                     idProperty : 'id'
                 }
@@ -142,8 +145,8 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
 					},
 					handler: function (grid, rowIndex, colIndex) {
 						var rec = grid.getStore().getAt(rowIndex);
-						var win = new sitools.admin.datasource.mongoDb.DataBaseExplorer({
-							database : rec.data
+						var win = Ext.create("sitools.admin.datasource.mongoDb.DataBaseExplorer", {
+							database : rec.getData()
 						});
 						win.show();
 					}
@@ -212,15 +215,13 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     onRender : function () {
         sitools.admin.datasource.mongoDb.DataBaseCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
     _onCreate : function () {
-        var dbp = new sitools.admin.datasource.mongoDb.DataBasePropPanel({
+        var dbp = Ext.create("sitools.admin.datasource.mongoDb.DataBasePropPanel", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -229,7 +230,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     },
 
     _onModify : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
@@ -238,8 +239,8 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             this._onView();
             return;
         }
-        var dbp = new sitools.admin.datasource.mongoDb.DataBasePropPanel({
-            url : this.url + '/' + rec.data.id,
+        var dbp = Ext.create("sitools.admin.datasource.mongoDb.DataBasePropPanel", {
+            url : this.url + '/' + rec.get("id"),
             action : 'modify',
             store : this.store
         });
@@ -247,12 +248,12 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     },
     
     _onView : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.datasource.mongoDb.DataBasePropPanel({
-            url : this.url + '/' + rec.data.id,
+        var up = Ext.create("sitools.admin.datasource.mongoDb.DataBasePropPanel", {
+            url : this.url + '/' + rec.get("id"),
             action : 'view',
             store : this.store
         });
@@ -260,7 +261,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     },
 
     _onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
@@ -268,7 +269,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
-            msg : Ext.String.format(i18n.get('databaseCrud.delete'), rec.data.name),
+            msg : Ext.String.format(i18n.get('databaseCrud.delete'), rec.get("name")),
             scope : this,
             fn : function (btn, text) {
                 if (btn === 'yes') {
@@ -280,16 +281,16 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
 
     },
     doDelete : function (rec) {
-        // var rec = this.getSelectionModel().getSelected();
+        // var rec = this.getLastSelectedRecord();
         // if (!rec) return false;
         Ext.Ajax.request({
-            url : this.url + "/" + rec.data.id,
+            url : this.url + "/" + rec.get("id"),
             method : 'DELETE',
             scope : this,
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.get("name")),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
                 
                 if (jsonResponse.success) {
@@ -300,19 +301,19 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
         });
     },
     _onActive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         Ext.Ajax.request({
-            url : this.url + '/' + rec.data.id + '/start',
+            url : this.url + '/' + rec.get("id") + '/start',
             method : 'PUT',
             scope : this,
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",
-                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.get("name")),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
                 
                 if (jsonResponse.success) {
@@ -324,19 +325,19 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     },
 
     _onDisactive : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         Ext.Ajax.request({
-            url : this.url + '/' + rec.data.id + '/stop',
+            url : this.url + '/' + rec.get("id") + '/stop',
             method : 'PUT',
             scope : this,
             success : function (ret) {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
-                        Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
+                        Ext.String.format(i18n.get(jsonResponse.message), rec.get("name")),
                         loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {
@@ -348,13 +349,13 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     },
 
     _onTest : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
 
         var dbt = new sitools.admin.datasource.DataBaseTest({
-            url : this.url + '/' + rec.data.id + '/test'
+            url : this.url + '/' + rec.get("id") + '/test'
         });
         dbt.show();
     }
