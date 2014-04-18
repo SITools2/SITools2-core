@@ -281,9 +281,12 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 xtype : 'combo',
                 name : 'ftlTemplateFile',
                 store : Ext.create('Ext.data.JsonStore', {
+                    autoLoad : true,
                     proxy : {
                         type : 'ajax',
                         url : loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL') + '/ftl',
+                        limitParam : undefined,
+                        startParam : undefined,
                         reader : {
                             type : 'json',
                             root : 'items',
@@ -291,6 +294,15 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                         }
                     },
                     fields : ['name', 'url'],
+                    listeners : {
+                        load : function (store, records) {
+                            Ext.each(records, function(record){
+                                if (!Ext.String.endsWith(record.get("name"), ".ftl")) {
+                                    this.remove(record);
+                                }
+                            }, store);
+                        }
+                    }
                 }),
                 valueField : 'name',
                 displayField : 'name',
@@ -306,7 +318,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                     scope : this,
                     afterrender : function (combo) {
                         if (this.action == 'create') {
-                            combo.setRawValue(this.defaultValueTpl);
+                            combo.setValue(this.defaultValueTpl);
                         }
                     }
                 }
@@ -501,18 +513,12 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             dataIndex : "attached",
             width : 55
         });
-        var visible = {
-            xtype : 'checkcolumn',
-            header : i18n.get('headers.visible'),
-            dataIndex : "visible",
-            width : 55
-        };
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1
         });
         
-        var columnsProjectModules = [/*visible,*/ {
+        var columnsProjectModules = [attached, {
             header : i18n.get('headers.name'),
             dataIndex : 'name',
             width : 100
@@ -581,15 +587,8 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             store : this.storeProjectModules,
             columns : columnsProjectModules,
             forceFit : true,
-            selModel : Ext.create('Ext.selection.CheckboxModel', {
-                listeners : {
-                    select : function (selModel, record, index) {
-                        record.data.attached = true;
-                    },
-                    deselect : function (selModel, record, index) {
-                        record.data.attached = false;
-                    }
-                }
+            selModel : Ext.create('Ext.selection.RowModel', {
+                mode : "SINGLE"
             }),
             columnLines: true,
             tbar : tbarModules, 
@@ -1063,7 +1062,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                         //Mise a jour manuelle de la combo 
                         try {
                             this.ihmProfile.find('xtype', 'radiogroup').setValue(rec.navigationMode);
-                            this.ihmProfile.down('combo').setRawValue(rec.ftlTemplateFile);
+                            this.ihmProfile.down('combo').setValue(rec.ftlTemplateFile);
                         }
                         catch (err) {
                             var tmp;

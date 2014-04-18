@@ -50,7 +50,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
                 reader : {
                     type : 'json',
                     root : 'data',
-                    idProperty : 'name'
+                    idProperty : 'id'
                 }
             },
             fields : [{
@@ -65,12 +65,13 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
             }]
         });
         
-        this.grid = Ext.create('Ext.grid.Panel', {
+        var gridConf  = {
             selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'MULTI'
             }),
+            forceFit : true,
             store : this.store,
-            height : 200,
+            layout : 'fit',
             columns : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name'
@@ -99,16 +100,24 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
                     emptyText : i18n.get('label.search'),
                     store : this.store,
                     pageSize : this.pageSize
-                }]
-            },
-            bbar : {
+               }]
+            }
+        };
+        
+        if(this.mode == "select") {
+            gridConf.bbar = {
                 xtype : 'pagingtoolbar',
                 store : this.store,
                 displayInfo : true,
                 displayMsg : i18n.get('paging.display'),
                 emptyMsg : i18n.get('paging.empty')
-            }
-        });
+            };
+        }
+        
+        
+        
+        this.grid = Ext.create('Ext.grid.Panel', gridConf);
+        
         
         this.items = [this.grid];
             
@@ -153,9 +162,11 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
             });
         }
         else {
-            Ext.each(this.rec.data.listRoles, function (item) {
-                this.store.add(item);
-            }, this);
+            if (!Ext.isEmpty(this.rec.get("listRoles"))) {
+                Ext.each(this.rec.get("listRoles"), function (item) {
+                    this.store.add(item);
+                }, this);
+            }
             
         }
     },
@@ -176,11 +187,11 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
      * Delete the selected role from the store
      */
     _onDelete : function () {
-        var rec = this.grid.getSelectionModel().getSelection()[0];
-        if (!rec) {
+        var recs = this.grid.getSelectionModel().getSelection();
+        if (!recs) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        this.store.remove(rec);
+        this.store.remove(recs);
     },
 
     /**
@@ -190,11 +201,14 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
         var recs = this.grid.getSelectionModel().getSelection();
         var newrecs = [];
         Ext.each(recs, function (rec) {
-            newrecs.push({
-                name : rec.data.name,
-                description : rec.data.description
-            });
-        });
+            if (Ext.isEmpty(this.storeref.getById(rec.get("id")))) {
+                newrecs.push({
+                    id : rec.data.id,
+                    name : rec.data.name,
+                    description : rec.data.description
+                });
+            }
+        }, this);
         this.storeref.add(newrecs);
         this.close();
     },
