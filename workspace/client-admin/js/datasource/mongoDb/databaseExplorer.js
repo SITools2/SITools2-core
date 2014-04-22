@@ -30,32 +30,36 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', { 
-    extend : 'Ext.Window',
+    extend : 'Ext.window.Window',
     width : 800,
     height : 500,
     closable : true,
-    layout : 'hbox', 
-    layoutConfig : {
-		pack : "start", 
-		align : "stretch"
+    layout : {
+        type : 'hbox',
+		pack : 'start', 
+		align : 'stretch'
 	},
 	
     initComponent : function () {
         this.title = i18n.get('label.databaseExplorer');
         
-        var storeCombo = new Ext.data.JsonStore({
-            fields : [ 'name', 'url' ],
-			url : this.database.sitoolsAttachementForUsers + "/collections",
-			root : "mongodbdatabase.collections",
+        var storeCombo = Ext.create('Ext.data.JsonStore', {
 			autoLoad : true,
+			proxy : {
+			    type : 'ajax',
+			    url : this.database.sitoolsAttachementForUsers + "/collections",
+			    reader : {
+			        type : 'json',
+			        root : 'mongodbdatabase.collections'
+			    }
+			},
+			fields : [ 'name', 'url' ],
 			listeners : {
 				scope : this,
 				load : function (store, recs) {
 					if (recs.length !== 0) {
-						this.combobox.setValue(recs[0]
-								.get('name'));
-						this.combobox.fireEvent("select",
-								this.combobox, recs[0], 0);
+						this.combobox.setValue(recs[0].get('name'));
+						this.combobox.fireEvent("select", this.combobox, recs, 0);
 					}
 				}
 			}
@@ -64,7 +68,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', {
         /**
          * The collection ComboBox
          */
-        this.combobox = new Ext.form.ComboBox({
+        this.combobox = Ext.create('Ext.form.ComboBox', {
             store : storeCombo,
             fieldLabel : i18n.get('label.selectCollection'), 
             displayField : 'name',
@@ -78,25 +82,25 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', {
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
-                    this.collection = rec.data;
+                    this.collection = rec[0].data;
                     this.loadCollection();
                 }
-
             }
         });
+        
         this.tbar = {
             xtype : 'toolbar',
             defaults : {
                 scope : this
             },
-            items : [ {
+            items : [{
 				xtype : "label", 
 				text : i18n.get('label.selectCollection') + " : " 
             }, this.combobox]
         };
 
         
-        this.buttons = [ {
+        this.buttons = [{
             text : i18n.get('label.ok'),
             scope : this,
             handler : function () {
@@ -120,14 +124,14 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', {
 		if (!Ext.isEmpty(this.metadataPanel)) {
 			this.remove(this.metadataPanel);
 		}
-		this.metadataPanel = new sitools.admin.datasource.mongoDb.CollectionExplorer({
+		this.metadataPanel = Ext.create('sitools.admin.datasource.mongoDb.CollectionExplorer', {
 			collection : this.collection,
 			observer : this, 
 			flex : 1
 		});
 		
 		this.add(this.metadataPanel);
-		this.doLayout();
+//		this.doLayout();
     }, 
     /**
      * Called when event metadataLoaded is fired. 
@@ -140,20 +144,20 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', {
 		if (!Ext.isEmpty(this.recordsPanel)) {
 			this.remove(this.recordsPanel);
 		}
-		try {
-			this.recordsPanel = new sitools.admin.datasource.mongoDb.RecordsPanel({
+//		try {
+			this.recordsPanel = Ext.create('sitools.admin.datasource.mongoDb.RecordsPanel', {
 				collection : this.collection,
 				node : node, 
 				flex : 2
 			});
 			this.add(this.recordsPanel);
-			this.doLayout();			
-		}
-		catch (err) {
-			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.displayRecordsProblem'));
-			this.removeAll();
-			this.doLayout();
-		}
+//			this.doLayout();			
+//		}
+//		catch (err) {
+//			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.displayRecordsProblem'));
+//			this.removeAll();
+//			this.doLayout();
+//		}
 
     }
 });

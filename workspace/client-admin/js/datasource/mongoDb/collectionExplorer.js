@@ -23,7 +23,7 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
 Ext.define('sitools.admin.datasource.mongoDb.fieldsModel', {
     extend : 'Ext.data.Model',
     fields : [{
-        name :'type'
+        name : 'type'
     }, {
         name : 'text'
     }, {
@@ -60,8 +60,8 @@ Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', {
                 type : 'memory',
 //                url : this.url,
                 reader : {
-                    root : 'children',
-                    type : 'json'
+                    type : 'json',
+                    root : 'children'
                 }
             },
             listeners : {
@@ -135,6 +135,11 @@ Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', {
                 }, this);
                 
                 this.store.getRootNode().appendChild(jsonData);
+            },
+            callback : function () {
+                if (this.observer) {
+                    this.observer.fireEvent("metadataLoaded", this.getRootNode());
+                }
             },
             failure : alertFailure
         });
