@@ -21,11 +21,11 @@ Ext.namespace('sitools.admin.applications');
 
 /**
  * A window to view application details; 
- * @class sitools.admin.applications.applicationsPropPanel
+ * @class sitools.admin.applications.applicationsProp
  * @cfg {Ext.data.Record} applicationRecord the selected record 
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.applications.applicationsPropPanel', {
+Ext.define('sitools.admin.applications.applicationsProp', {
     extend : 'Ext.Window', 
     width : 700,
     height : 480,
@@ -105,7 +105,7 @@ Ext.define('sitools.admin.applications.applicationsPropPanel', {
             }
         }];
         
-        sitools.admin.applications.applicationsPropPanel.superclass.initComponent.call(this);
+        sitools.admin.applications.applicationsProp.superclass.initComponent.call(this);
     },
 
     /**

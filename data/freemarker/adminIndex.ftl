@@ -225,13 +225,6 @@
     <script type="text/javascript" src="js/forms/componentsAdminDef/MultiParam/Abstract.js"></script>
     <script type="text/javascript" src="js/forms/advancedFormPanel.js"></script>
 
-    <script type="text/javascript" src="js/applications/applicationsRole.js"></script>
-    <script type="text/javascript" src="js/applications/roleWin.js"></script>
-    <script type="text/javascript" src="js/applications/applicationsprop.js"></script>
-    <script type="text/javascript" src="js/applications/applicationsCrud.js"></script>
-    <script type="text/javascript" src="js/applications/applicationModel.js"></script>
-    
-    
     <script type="text/javascript" src="js/authorizations/authorizationsCrud.js"></script>
     <script type="text/javascript" src="js/authorizations/AuthorizationModel.js"></script>
     <script type="text/javascript" src="js/userStorage/userStoragePropPanel.js"></script>
@@ -309,8 +302,7 @@
 	
 	<script type="text/javascript" src="js/usergroups/RolesPanel.js"></script>
 	
-	<script type="text/javascript" src="js/guiServices/guiServicesCrudPanel.js"></script>
-	<script type="text/javascript" src="js/guiServices/guiServicesPropPanel.js"></script>
+
 	<script type="text/javascript" src="js/guiServices/guiServicesStore.js"></script>
 	<script type="text/javascript" src="js/guiServices/dependenciesPanel.js"></script>
 	<script type="text/javascript" src="js/guiServices/guiServicesStore.js"></script>
@@ -318,7 +310,7 @@
 	
 	<script type="text/javascript" src="js/usergroups/BlacklistedUsersPanel.js"></script>	
 	
-	
+	<script type="text/javascript" src="app.js"></script>	
 	
 	
 <!-- END_JS_DEV_INCLUDES -->
@@ -342,32 +334,6 @@
   </head>
 
   <body>
-    <script type="text/javascript">
-		Ext.onReady(function(){
-			i18n.load('${appUrl}/common/res/i18n/'+LOCALE+'/gui.properties', function() {
-			    loadUrl.load('${appUrl}/client-admin/siteMap', function () {
-					Ext.MessageBox.buttonText.yes = i18n.get('label.yes');
-		      		Ext.MessageBox.buttonText.no = i18n.get('label.no');
-						Ext.QuickTips.init();
-						if (Ext.isEmpty(Ext.util.Cookies.get('scheme')) || Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-							/*new sitools.userProfile.Login({
-			        			url:'${appUrl}/authentication/login',
-			        			handler : initAppli
-			        		}).show();*/
-							sitools.userProfile.LoginUtils.connect({
-								url:'${appUrl}/authentication/login',
-			        			handler : initAppli,
-								reset : loadUrl.get('APP_URL') + '/lostPassword',
-								unblacklist : loadUrl.get('APP_URL') + '/unblacklist'							});
-						}
-						else {
-							initAppli();
-						}
-				    });
-
-    		});
-        });
-
-    </script>
+    
   </body>
 </html>

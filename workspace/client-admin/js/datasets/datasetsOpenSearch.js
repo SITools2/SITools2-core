@@ -37,6 +37,9 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
     state : null,
     layout : 'border',
     id : ID.COMPONENT_SETUP.OPENSEARCH, 
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
 
@@ -71,7 +74,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
             disabled : true
         }];
 
-        this.formPanel = new Ext.FormPanel({
+        this.formPanel = Ext.create("Ext.FormPanel", {
             labelWidth : 100,
             height : 120,
             defaultType : 'textfield',
@@ -81,9 +84,15 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
             bodyBorder : false
         });
 
-        var store = new Ext.data.JsonStore({
-            root : 'dataset.columnModel',
-            idProperty : 'id',
+        var store = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'memory',
+                reader : {
+                    type :'json',
+                    root : 'dataset.columnModel',
+                    idProperty : 'id'
+                }
+            },
             fields : [{
                 name : 'id',
                 type : 'string'
@@ -180,7 +189,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
             width : 80
         };
 
-        this.rssFieldData = [ [ 0, " " ], [ 1, 'titleField' ], [ 2, 'linkField' ], [ 3, 'guidField' ], [ 4, 'pubDateField' ], [ 5, 'descriptionField' ] ];
+        this.rssFieldData = [ [ 0, "&nbsp;" ], [ 1, 'titleField' ], [ 2, 'linkField' ], [ 3, 'guidField' ], [ 4, 'pubDateField' ], [ 5, 'descriptionField' ] ];
 
         var returned = {
             header : i18n.get('header.returned'),
@@ -204,8 +213,6 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
                 }),
                 valueField : 'textRssField',
                 displayField : 'textRssField',
-                // template pour les items de la combobox, permet d'ajouter une
-                // classe CSS a chacun des items
                 listeners : {
                     scope : this, 
                     select : function (combo, records) {
@@ -213,19 +220,23 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
                             return;
                         }
                         
+                        if (combo.getValue() == "" || combo.getValue() == "&nbsp;"){ 
+                            combo.setValue(null);
+                        }
+                        
                         var record = records[0];
                         if (record.data.textRssField == "linkField") {
-                            var tmp = new sitools.admin.datasets.datasetsOpenSearch.relativeLink({
-                                selectedRecord : this.grid.getSelectionModel().getSelected()
+                            var tmp = Ext.create("sitools.admin.datasets.datasetsOpenSearch.relativeLink", {
+                                selectedRecord : this.getLastSelectedRecord(this.grid)
                             });
                             tmp.show();
-                        }                    
+                        }
                     }
                 }
             }
         };
         
-        this.solrTypeData = [ [ 0, " " ], [1, 'text' ], [ 2, 'string' ], [ 3, 'rss_date' ], [ 4, 'date' ] ];
+        this.solrTypeData = [ [ 0, "&nbsp;" ], [1, 'text' ], [ 2, 'string' ], [ 3, 'rss_date' ], [ 4, 'date' ] ];
 
         var solrType = {
             header : i18n.get('headers.solrType'),
@@ -243,6 +254,14 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
                 }),
                 valueField : 'textSolrType',
                 displayField : 'textSolrType',
+            },
+            listeners : {
+                scope : this, 
+                select : function (combo, records) {
+                    if (combo.getValue() == "" || combo.getValue() == "&nbsp;"){ 
+                        combo.setValue(null);
+                    }
+                }
             }
         };
 

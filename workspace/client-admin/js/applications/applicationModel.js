@@ -1,4 +1,4 @@
-Ext.define('ApplicationModel', {
+Ext.define('sitools.admin.applications.ApplicationModel', {
     extend : 'Ext.data.Model',
     fields : [{
         name : 'colId',

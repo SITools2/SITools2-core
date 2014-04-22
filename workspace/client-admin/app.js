@@ -16,32 +16,12 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-Ext.define('AuthorizationModel', {
-    idProperty : 'role',
-    extend : 'Ext.data.Model',
-    fields : [{
-        name : 'role',
-        type : 'string'
-    }, {
-        name : 'allMethod',
-        type : 'boolean'
-    }, {
-        name : 'postMethod',
-        type : 'bool'
-    }, {
-        name : 'getMethod',
-        type : 'bool'
-    }, {
-        name : 'putMethod',
-        type : 'bool'
-    }, {
-        name : 'deleteMethod',
-        type : 'bool'
-    }, {
-        name : 'headMethod',
-        type : 'bool'
-    }, {
-        name : 'optionsMethod',
-        type : 'bool'
-    }]
+Ext.application({
+    name: 'clientadmin',
+
+    extend: 'sitools.admin.Application',
+    
+    paths : {
+        "sitools.admin" : "./js"
+    },
 });

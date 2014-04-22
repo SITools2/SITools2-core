@@ -249,10 +249,10 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     },
     
     /**
-     * Open a {sitools.admin.applications.applicationsRolePanel} role panel to add a role authorization to the selected storage
+     * Open a {sitools.admin.applications.applicationsRole} role panel to add a role authorization to the selected storage
      */
     onDefineRole : function () {
-        var rec = this.getLastSelectedRecord(), up = new sitools.admin.applications.applicationsRolePanel({
+        var rec = this.getLastSelectedRecord(), up = new sitools.admin.applications.applicationsRole({
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });

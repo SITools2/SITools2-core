@@ -17,15 +17,15 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext, sitools, ID, i18n, showResponse, alertFailure, loadUrl*/
-Ext.namespace('sitools.component.applications');
+Ext.namespace('sitools.admin.applications');
 
 /**
  * A window to display roles and add any selected roles to a parameter store. 
  * @cfg {Ext.data.JsonStore} storeRolesApplication The store to add records. 
- * @class sitools.component.applications.rolesPanel
+ * @class sitools.admin.applications.roles
  * @extends Ext.Window
  */
-Ext.define('sitools.component.applications.rolesPanel', { 
+Ext.define('sitools.admin.applications.roles', { 
     extend : 'Ext.Window',
     // url + mode + storeref
     width : 500,
@@ -98,14 +98,14 @@ Ext.define('sitools.component.applications.rolesPanel', {
         }];                
         
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.component.applications.rolesPanel.superclass.initComponent.call(this);
+        sitools.admin.applications.roles.superclass.initComponent.call(this);
     },
 
     /**
      * Loads the store 
      */
     onRender : function () {
-        sitools.component.applications.rolesPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.applications.roles.superclass.onRender.apply(this, arguments);
         this.store.load({
             scope : this,
             params : {

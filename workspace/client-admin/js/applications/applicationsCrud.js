@@ -17,17 +17,17 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 
-/*global Ext, sitools, ID, i18n, showResponse, alertFailure, loadUrl*/
+/*global Ext, sitools, ID, i18n, showResponse, alertFailure, loadUrl, ADMIN_PANEL_HEIGHT*/
 Ext.namespace('sitools.admin.applications');
 
 /**
  * A Panel to display all sitools Applications. 
- * @class sitools.admin.applications.applicationsCrudPanel
+ * @class sitools.admin.applications.applicationsCrud
  * @extends Ext.grid.GridPanel
- * @requires sitools.admin.applications.applicationsPropPanel
- * @requires sitools.admin.applications.applicationsRolePanel
+ * @requires sitools.admin.applications.applicationsProp
+ * @requires sitools.admin.applications.applicationsRole
  */
-Ext.define('sitools.admin.applications.applicationsCrudPanel', { 
+Ext.define('sitools.admin.applications.applicationsCrud', { 
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-applications',
 	border : false,
@@ -38,6 +38,11 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
     mixins : {
         utils : 'js.utils.utils'
     },
+    
+    requires : ["sitools.admin.applications.applicationsProp",
+                "sitools.admin.applications.ApplicationModel",
+                "sitools.admin.applications.applicationsRole"], 
+                
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_APPLICATIONS_URL');
@@ -57,7 +62,7 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
                     idProperty : 'colId'
                 }
             },
-            model : 'ApplicationModel',
+            model : 'sitools.admin.applications.ApplicationModel',
             sorters : [ {
                 property : 'category',
                 direction : 'ASC'
@@ -139,17 +144,17 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
             enableGroupingMenu: false
         }];
         
-        sitools.admin.applications.applicationsCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.applications.applicationsCrud.superclass.initComponent.call(this);
     },
 
     /**
      * Called when user click on Authorizations button
-     * Open a {sitools.admin.applications.applicationsRolePanel} window.
+     * Open a {sitools.admin.applications.applicationsRole} window.
      * @return {}
      */
     onDefineRole : function () {
         var rec = this.getLastSelectedRecord();
-        var up = new sitools.admin.applications.applicationsRolePanel({
+        var up = new sitools.admin.applications.applicationsRole({
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });
@@ -163,12 +168,12 @@ Ext.define('sitools.admin.applications.applicationsCrudPanel', {
 
     /**
      * Called when user click on Details button
-     * Open a {sitools.admin.applications.applicationsPropPanel} window.
+     * Open a {sitools.admin.applications.applicationsProp} window.
      * @return {}
      */
     onDetails : function () {
         var rec = this.getLastSelectedRecord();
-        var up = new sitools.admin.applications.applicationsPropPanel({
+        var up = new sitools.admin.applications.applicationsProp({
             applicationRecord : rec
         });
         

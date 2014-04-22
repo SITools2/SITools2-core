@@ -29,7 +29,6 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
 	alias : 'widget.s-authorizations',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.GROUP,
     selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
     forceFit : true,
@@ -145,7 +144,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.applications.applicationsRolePanel", {
+        var up = Ext.create("sitools.admin.applications.applicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });

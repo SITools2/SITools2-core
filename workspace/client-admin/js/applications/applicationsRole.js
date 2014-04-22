@@ -42,17 +42,19 @@ Ext.define('sitools.admin.applications.customCheckColumn', {
  * A window to display Roles and authorizations for each options. 
  * @cfg {string} urlAuthorizations  
  * @cfg {Ext.data.Record} applicationRecord
- * @class sitools.admin.applications.applicationsRolePanel
+ * @class sitools.admin.applications.applicationsRole
  * @extends Ext.Window
- * @requires sitools.component.applications.rolesPanel
+ * @requires sitools.admin.applications.roles
  */
-Ext.define('sitools.admin.applications.applicationsRolePanel', { 
+Ext.define('sitools.admin.applications.applicationsRole', { 
     extend : 'Ext.Window', 
     width : 700,
     height : 480,
     modal : true,
     pageSize : 10,
-
+    
+    requires : ["sitools.admin.applications.roles"],
+    
     initComponent : function () {
         this.title = i18n.get('label.authorizations') + " : " + this.applicationRecord.data.name;
         
@@ -148,14 +150,14 @@ Ext.define('sitools.admin.applications.applicationsRolePanel', {
             }
         } ];
 
-        sitools.admin.applications.applicationsRolePanel.superclass.initComponent.call(this);
+        sitools.admin.applications.applicationsRole.superclass.initComponent.call(this);
 
     },
     /**
      * Adds a record to the role store. 
      */
     _onCreateRole : function () {
-        var winRole = Ext.create("sitools.component.applications.rolesPanel", {
+        var winRole = Ext.create("sitools.admin.applications.roles", {
             storeRolesApplication : this.gridAuthorizations.getStore()
         });
         winRole.show();
