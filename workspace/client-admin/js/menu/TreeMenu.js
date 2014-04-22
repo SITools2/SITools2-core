@@ -98,40 +98,40 @@ Ext.define('sitools.admin.menu.TreeMenu', {
         
         var pan_config = new sitools.admin.menu.dataView();
         // Loading component 's-nodeName'
-        mainPanel.removeAll();
+        mainPanel.removeAll(true);
         
-            mainPanel.add({
-                xtype : 'panel',
-	            width: "100%",
-	            bodyCls : 'admin-bg',
-	            border : false,
-	            bodyBorder : false,
-	            items : [{
-	                xtype : 's-box',
+        mainPanel.add({
+            xtype : 'panel',
+            width: "100%",
+            bodyCls : 'admin-bg',
+            border : false,
+            bodyBorder : false,
+            items : [{
+                xtype : 's-box',
 //	                label : i18n.get('label.' + nodeName),
-	                items : [{
-	                    xtype : 's-' + nodeName,
-	                    sitoolsType : "mainAdminPanel",
-	                    cls : "adminPanel"
-	                }],
+                items : [{
+                    xtype : 's-' + nodeName,
+                    sitoolsType : "mainAdminPanel",
+                    cls : "adminPanel"
+                }],
 //	                idItem : nodeId
-	            } ], 
-	            listeners : {
-	                resize : function (panel, width, height) {
-	                    var size = panel.items.items[0].body.getSize();
-	                    var sBoxTitle = panel.items.items[0].items.items[0].getEl();
-	                    size = {
-	                        height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargin("t") + sBoxTitle.getMargin("b")), 
-	                        width : size.width - 8
-	                    };
-	                    var mainAdminPanel = panel.down("panel[sitoolsType=mainAdminPanel]");
-	                    mainAdminPanel.setSize(size);
-	                }
-	            }
-	        });
+            } ], 
+            listeners : {
+                resize : function (panel, width, height) {
+                    var size = panel.items.items[0].body.getSize();
+                    var sBoxTitle = panel.items.items[0].items.items[0].getEl();
+                    size = {
+                        height : size.height - (sBoxTitle.getHeight() + sBoxTitle.getMargin("t") + sBoxTitle.getMargin("b")), 
+                        width : size.width - 8
+                    };
+                    var mainAdminPanel = panel.down("panel[sitoolsType=mainAdminPanel]");
+                    mainAdminPanel.setSize(size);
+                }
+            }
+        });
             
-            mainPanel.setIconCls('icon-' + nodeId);
-            mainPanel.setTitle(i18n.get('label.' + nodeName));
+        mainPanel.setIconCls('icon-' + nodeId);
+        mainPanel.setTitle(i18n.get('label.' + nodeName));
 //        }
 
         var helpPanel = Ext.create('Ext.Component', {
