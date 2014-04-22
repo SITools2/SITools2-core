@@ -69,7 +69,7 @@ function showHelp(helpUrl) {
             }
         });
 
-        winHelp = new Ext.Window({
+        winHelp = Ext.create('Ext.window.Window', {
             title : i18n.get('label.help'),
             width : DEFAULT_HELP_WIDTH,
 //            autoScroll : true,
@@ -234,13 +234,13 @@ var clientAdmin = {
                 handler : function () {
                     mainPanel.removeAll();
                     
-                    var quickStartPanel = new sitools.admin.quickStart.qs({
+                    var quickStartPanel = Ext.create('sitools.admin.quickStart.qs', {
                         id : ID.PANEL.QUICKSTART,
                         width : "100%",
                         flex : 1
                     });
                     
-                    var containerPanel = new Ext.Panel({
+                    var containerPanel = Ext.create('Ext.panel.Panel', {
                         name : 'containerPanel',
                         width : "100%",
                         layout : 'fit',
@@ -417,7 +417,7 @@ var clientAdmin = {
         var mainPanelItems = [];
         
         if (Ext.util.Cookies.get('showQuickStart') == "true") {
-            var quickStartPanel = new sitools.admin.quickStart.qs({
+            var quickStartPanel = Ext.create('sitools.admin.quickStart.qs', {
                 id : ID.PANEL.QUICKSTART,
                 border : false,
                 bodyBorder : false,
@@ -460,7 +460,7 @@ var clientAdmin = {
             mainPanelItems.push(welcomePanel);
         }
         
-	    mainPanel = new Ext.Panel({
+	    mainPanel = Ext.create('Ext.panel.Panel', {
 	        bodyCls : 'admin-bg',
 	        header : {
                 cls : 'x-toolbar-shadow',
@@ -489,7 +489,7 @@ var clientAdmin = {
 	     */
 	    
 	    // Setting the viewport
-	    viewport = new Ext.Viewport({
+	    viewport = Ext.create('Ext.container.Viewport', {
 	        layout : 'border',
 	        items : [ menuPanel, treePanel, mainPanel
 	        // ,
@@ -506,14 +506,13 @@ var clientAdmin = {
 						dataViewWin.setPosition(0, 82);
 						dataViewWin.doLayout();
 					}
-					
 				}
 	        }
 	    });
 
 		var menu = Ext.create("sitools.admin.menu.TreeMenu", 'res/json/menu.json');
 		treePanel.add(menu);
-		treePanel.doLayout();
+//		treePanel.doLayout();
 
 	    // viewport.doLayout();
 	
