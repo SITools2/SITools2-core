@@ -282,7 +282,7 @@ var clientAdmin = {
 				    else {
 				        helpPanel.toggleCollapse(checked);
 				    }
-				    mainPanel.doLayout();
+//				    mainPanel.doLayout();
 			    },
 		        pressed: true,
 		        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png'
@@ -465,13 +465,13 @@ var clientAdmin = {
 	        header : {
                 cls : 'x-toolbar-shadow',
 	        },
-	        layout : 'vbox',
+	        layout : {
+	            type : 'vbox',
+	            align : 'stretch',
+	            pack  : 'start'
+	        },
 	        border : false,
             bodyBorder : false,
-	        layoutConfig: {
-			    align : 'stretch',
-			    pack  : 'start'
-			},
 	        xtype : 'panel',
 	        id : ID.PANEL.MAIN,
 //	        title : i18n.get('label.main'),
@@ -504,7 +504,7 @@ var clientAdmin = {
 							width : Ext.getBody().getSize().width - 5
 						});
 						dataViewWin.setPosition(0, 82);
-						dataViewWin.doLayout();
+//						dataViewWin.doLayout();
 					}
 				}
 	        }
