@@ -195,7 +195,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
         }
         this.down('dictionaryGridPanel').getStore().add(newConcept);
         
-        if (this.down('dictionaryGridPanel').getStore().getCount() == 1) {
+        if (this.down('dictionaryGridPan#[el').getStore().getCount() == 1) {
             this.gridTemplates.getEl().mask();
         }
     },

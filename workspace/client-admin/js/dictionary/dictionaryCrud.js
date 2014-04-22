@@ -25,7 +25,6 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
 	alias : 'widget.s-dictionary',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.GROUP,
     selModel : Ext.create('Ext.selection.RowModel'),
     pageSize : 10,
     forceFit : true,
@@ -164,7 +163,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
             return false;
         }
 
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('dictionaryCrud.delete'), rec.data.name),
