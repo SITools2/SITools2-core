@@ -33,7 +33,6 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
 	alias : 'widget.s-databaseMongoDb',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.DATABASE,
     selModel : Ext.create('Ext.selection.RowModel', {
         mode : 'SINGLE'
     }),
@@ -226,7 +225,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             action : 'create',
             store : this.store
         });
-        dbp.show(ID.BOX.DATABASE);
+        dbp.show();
     },
 
     _onModify : function () {
@@ -244,7 +243,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             action : 'modify',
             store : this.store
         });
-        dbp.show(ID.BOX.DATABASE);
+        dbp.show();
     },
     
     _onView : function () {

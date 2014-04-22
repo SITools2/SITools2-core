@@ -32,7 +32,6 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
 	alias : 'widget.s-databaseJDBC',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.DATABASE,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'
     }),
@@ -59,8 +58,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
                 url : this.url,
                 reader : {
                     type : 'json',
-                    root : 'data',
-                    idProperty : 'id'
+                    root : 'data'
                 }
             },
             fields : [{
@@ -188,7 +186,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             action : 'create',
             store : this.store
         });
-        dbp.show(ID.BOX.DATABASE);
+        dbp.show();
     },
 
     _onModify : function () {
@@ -206,7 +204,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             action : 'modify',
             store : this.store
         });
-        dbp.show(ID.BOX.DATABASE);
+        dbp.show();
     },
     
     _onView : function () {
@@ -228,7 +226,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             return false;
         }
 
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             icon : Ext.Msg.QUESTION,
