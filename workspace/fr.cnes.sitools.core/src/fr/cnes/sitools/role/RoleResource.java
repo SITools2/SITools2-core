@@ -119,6 +119,12 @@ public final class RoleResource extends AbstractRoleResource {
 
         // Parse object representation
         roleInput = getObject(representation, variant);
+        if (checkRoleExists(roleInput)) {
+          trace(Level.INFO, "Cannot update profile information for the profile " + roleInput.getName());
+          Response response = new Response(false, "Role already exist");
+          return getRepresentation(response, variant);
+        }
+
         roleInput.setUsers(roleFromStore.getUsers());
         roleInput.setGroups(roleFromStore.getGroups());
 
@@ -183,6 +189,7 @@ public final class RoleResource extends AbstractRoleResource {
         Notification notification = new Notification();
         notification.setEvent("ROLE_DELETED");
         notification.setObservable(roleOutput.getId());
+        notification.setEventSource(roleOutput);
         getResponse().getAttributes().put(Notification.ATTRIBUTE, notification);
         // Response
         response = new Response(true, "role.delete.success");

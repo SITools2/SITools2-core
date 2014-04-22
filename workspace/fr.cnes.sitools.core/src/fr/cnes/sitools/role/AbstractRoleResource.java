@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -29,6 +29,7 @@ import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
+import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.role.model.Role;
@@ -45,10 +46,10 @@ public abstract class AbstractRoleResource extends SitoolsResource {
 
   /** Application */
   private RoleApplication application = null;
-  
+
   /** Store */
   private SitoolsStore<Role> store = null;
-  
+
   /** id in the request */
   private String roleId = null;
 
@@ -119,17 +120,19 @@ public abstract class AbstractRoleResource extends SitoolsResource {
     }
     return roleInput;
   }
-  
+
   /**
    * Get the identifier of the role
+   * 
    * @return the role identifier
    */
   public final String getRoleId() {
     return this.roleId;
   }
-  
+
   /**
    * Get the store associated to the role application
+   * 
    * @return the store associated
    */
   public final SitoolsStore<Role> getStore() {
@@ -138,10 +141,23 @@ public abstract class AbstractRoleResource extends SitoolsResource {
 
   /**
    * Gets the application value
+   * 
    * @return the application
    */
   public final RoleApplication getRoleApplication() {
     return application;
   }
 
+  /**
+   * Check if a role with the same name already exists in the store.
+   * 
+   * @param role
+   *          the role
+   * @return true if a role exist with the same name, false otherwise
+   */
+  public boolean checkRoleExists(Role role) {
+    ResourceCollectionFilter filter = new ResourceCollectionFilter(0, 1, role.getName());
+    filter.setMode("strict");
+    return !getStore().getList(filter).isEmpty();
+  }
 }

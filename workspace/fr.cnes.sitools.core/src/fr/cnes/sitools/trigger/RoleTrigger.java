@@ -43,8 +43,8 @@ public class RoleTrigger extends TriggerResource {
   @Post
   public void event(Representation representation) {
     Notification notification = NotificationManager.getObject(representation);
-    Role roleOutput = (Role) notification.getEventSource();
-    if (roleOutput == null) {
+    Role role = (Role) notification.getEventSource();
+    if (role == null) {
       getLogger().warning("Notification.eventSource is null. A Role instance is expected.");
       return;
     }
@@ -57,15 +57,15 @@ public class RoleTrigger extends TriggerResource {
     SitoolsRealm realm = ((SitoolsApplication) getApplication()).getSettings().getAuthenticationRealm();
     
     if (notification.getEvent().equals("ROLE_DELETED")) {
-      realm.removeRole(roleOutput.getName());
+      realm.removeRole(role.getName());
     }
 
     if (notification.getEvent().equals("ROLE_USERS_UPDATED")) {
-      realm.refreshRoleMappings(roleOutput);
+      realm.refreshRoleMappings(role);
     }
     
     if (notification.getEvent().equals("ROLE_GROUPS_UPDATED")) {
-      realm.refreshRoleMappings(roleOutput);
+      realm.refreshRoleMappings(role);
     }
   }
 }

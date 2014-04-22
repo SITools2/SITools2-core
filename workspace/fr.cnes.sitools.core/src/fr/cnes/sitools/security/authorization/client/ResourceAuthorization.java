@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,6 +21,7 @@ package fr.cnes.sitools.security.authorization.client;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.restlet.Application;
 import org.restlet.data.Method;
@@ -68,7 +69,7 @@ public final class ResourceAuthorization implements Serializable, IResource {
 
   /** reference ResourceAuthorization for managing Classes of ResourceAuthorization */
   private String refId = null;
-  
+
   /** Authorization list to apply on resource */
   private ArrayList<RoleAndMethodsAuthorization> authorizations = null;
 
@@ -215,7 +216,8 @@ public final class ResourceAuthorization implements Serializable, IResource {
   /**
    * Wrap security configuration to Authorizer
    * 
-   * @param application the application to check
+   * @param application
+   *          the application to check
    * @return Authorizer
    */
   public DelegatedAuthorizer wrap(Application application) {
@@ -285,9 +287,21 @@ public final class ResourceAuthorization implements Serializable, IResource {
     else {
       for (RoleAndMethodsAuthorization authorization : this.getAuthorizations()) {
         if (authorization.getRole() != null) {
+          Role role = reference.get(authorization.getRole());
+          if (role == null) {
+            application.getLogger().log(
+                Level.WARNING,
+                "Role " + authorization.getRole()
+                    + " does not exist anymore, this role is no longer authorized for the application : "
+                    + application.getName() + " / authorization : " + this.getName());
+            RoleAuthorizer ra = new RoleAuthorizer(authorization.getRole());
+            MethodAuthorizer ma = new SitoolsMethodAuthorizer(application);
+            rama.add(new SitoolsAndAuthorizer(ra, ma));
+            continue;
+          }
           RoleAuthorizer ra = new RoleAuthorizer(authorization.getRole());
 
-          ra.getAuthorizedRoles().add(reference.get(authorization.getRole()));
+          ra.getAuthorizedRoles().add(role);
           MethodAuthorizer ma = new SitoolsMethodAuthorizer(application);
 
           if ((null != authorization.getAllMethod()) && authorization.getAllMethod()) {
@@ -357,5 +371,4 @@ public final class ResourceAuthorization implements Serializable, IResource {
     }
     return new SitoolsOrAuthorizer(rama);
   }
-
 }
