@@ -37,7 +37,8 @@ Ext.namespace('sitools.admin.multiDs');
  * @class sitools.admin.multiDs.MultiDsPropPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 700,
     modal : true,
@@ -64,11 +65,17 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             this.title = i18n.get('label.createForm');
         }
 
-        var storeCollections = new Ext.data.JsonStore({
-            id : 'storeCollections',
-            restful : true, 
-            url : this.urlCollections, 
-            root : "data", 
+        var storeCollections = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type :'ajax',
+                url : this.urlCollections,
+                limitParam : undefined,
+                startParam : undefined,
+                reader : {
+                    type : 'json',
+                    root : "data" 
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -93,7 +100,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
          * Combo to select Datasets Views.
          * Uses the storeDatasetViews. 
          */
-        this.comboCollections = new Ext.form.ComboBox({
+        this.comboCollections = Ext.create("Ext.form.ComboBox", {
             disabled : false, 
             id : "comboCollections",
             store : storeCollections,
@@ -108,23 +115,22 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             editable : false,
             emptyText : i18n.get('label.CollectionsSelect'),
             selectOnFocus : true,
-            anchor : '95%',    
-            itemSelector : 'div.search-item',
             allowBlank : false,
             autoSelect : true, 
             maxHeight : 200,
-            tpl : new Ext.XTemplate(
-	            '<tpl for=".">',
-	            '<div class="search-item combo-datasetview"><div class="combo-datasetview-name">{name}</div>',
-	            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription-datasetview"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-	            '</div></tpl>',
-	            {
-					compiled : true, 
-					descEmpty : function (description) {
-					    return Ext.isEmpty(description);
-					}
-	            }
-	        ), 
+            labelWidth : 150,
+//            tpl : new Ext.XTemplate(
+//	            '<tpl for=".">',
+//	            '<div class="search-item combo-datasetview"><div class="combo-datasetview-name">{name}</div>',
+//	            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription-datasetview"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+//	            '</div></tpl>',
+//	            {
+//					compiled : true, 
+//					descEmpty : function (description) {
+//					    return Ext.isEmpty(description);
+//					}
+//	            }
+//	        ), 
 	        listeners : {
 				change : function (field, newValue, oldValue) {
                     this.getBubbleTarget().fireEvent("collectionChanged", field, newValue, oldValue);
@@ -137,11 +143,17 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             }
         });
 
-		var storeDictionnaires = new Ext.data.JsonStore({
-            id : 'storeDictionnaires',
-            restful : true, 
-            url : this.urlDictionnaires, 
-            root : "data", 
+		var storeDictionnaires = Ext.create("Ext.data.JsonStore", {
+		    proxy : {
+                type :'ajax',
+                url : this.urlDictionnaires,
+                limitParam : undefined,
+                startParam : undefined,
+                reader : {
+                    type : 'json',
+                    root : "data" 
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -164,7 +176,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
          * Combo to select Dictionnaires.
          * Uses the storeDictionnaires. 
          */
-        this.comboDictionnaires = new Ext.form.ComboBox({
+        this.comboDictionnaires = Ext.create("Ext.form.ComboBox", {
             disabled : false, 
             id : "comboDictionnaires",
             store : storeDictionnaires,
@@ -178,23 +190,23 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             editable : false,
             emptyText : i18n.get('label.DictionarySelect'),
             selectOnFocus : true,
-            anchor : '95%',    
-            itemSelector : 'div.search-item',
             allowBlank : false,
             autoSelect : true, 
             maxHeight : 200,
-            tpl : new Ext.XTemplate(
-	            '<tpl for=".">',
-	            '<div class="search-item combo-datasetview"><div class="combo-datasetview-name">{name}</div>',
-	            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription-datasetview"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
-	            '</div></tpl>',
-	            {
-					compiled : true, 
-					descEmpty : function (description) {
-					    return Ext.isEmpty(description);
-					}
-	            }
-	        ), 
+            labelWidth : 150,
+            anchor : '100%',
+//            tpl : new Ext.XTemplate(
+//	            '<tpl for=".">',
+//	            '<div class="search-item combo-datasetview"><div class="combo-datasetview-name">{name}</div>',
+//	            '<tpl if="this.descEmpty(description) == false" ><div class="sitoolsDescription-datasetview"><div class="sitoolsDescriptionHeader">Description :&nbsp;</div><p class="sitoolsDescriptionText"> {description} </p></div></tpl>',
+//	            '</div></tpl>',
+//	            {
+//					compiled : true, 
+//					descEmpty : function (description) {
+//					    return Ext.isEmpty(description);
+//					}
+//	            }
+//	        ), 
 	        listeners : {
 				change : function (field, newValue, oldValue) {
                     this.getBubbleTarget().fireEvent("dictionaryChanged", field, newValue, oldValue);
@@ -209,13 +221,16 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
         /**
          * {Ext.FormPanel} formProject The main Form 
          */
-        this.mainForm = new Ext.FormPanel({
-            xtype : 'form',
+        this.mainForm = Ext.create("Ext.FormPanel", {
             border : false,
             padding : 10,
             trackResetOnLoad : true,
-            id : "formMainFormId",
             autoScroll : true,
+            defaults : {
+                padding : 3,
+                labelWidth : 150,
+                anchor : '100%'
+            },
             items : [ {
                 xtype : 'hidden',
                 name : 'id'
@@ -223,7 +238,6 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                 xtype : 'textfield',
                 name : 'name',
                 fieldLabel : i18n.get('label.name'),
-                anchor : '100%',
                 maxLength : 30,
                 allowBlank : false,  
                 vtype : "name",
@@ -232,11 +246,11 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 					blur : function (field) {
 						if (field.isValid()) {
 						    var name = field.getValue().replace(/\s/g, "_");
-							var urlPropField = field.ownerCt.getForm().findField("urlServicePropertiesSearch");
+							var urlPropField = field.up("form").getForm().findField("urlServicePropertiesSearch");
 							if (Ext.isEmpty(urlPropField.getValue())) {
 								urlPropField.setValue("/" + name + this.propServiceDefaultUrl);
 							}
-							var urlMultiDsField = field.ownerCt.getForm().findField("urlServiceDatasetSearch");
+							var urlMultiDsField = field.up("form").getForm().findField("urlServiceDatasetSearch");
 							if (Ext.isEmpty(urlMultiDsField.getValue())) {
 								urlMultiDsField.setValue("/" + name + this.multiDSServiceDefaultUrl);
 							}
@@ -247,32 +261,27 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                 xtype : 'textfield',
                 name : 'description',
                 fieldLabel : i18n.get('label.description'),
-                anchor : '100%'
             }, {
                 xtype : 'textfield',
                 vtype : "attachment",
                 name : 'urlServicePropertiesSearch',
                 fieldLabel : i18n.get('label.urlServicePropertiesSearch'),
-                anchor : '100%',
                 maxLength : 100
             }, {
                 xtype : 'textfield',
                 vtype : "attachment",
                 name : 'urlServiceDatasetSearch',
                 fieldLabel : i18n.get('label.urlServiceDatasetSearch'),
-                anchor : '100%',
                 maxLength : 100
             }, {
                 xtype : 'textfield',
                 name : 'css',
                 fieldLabel : i18n.get('label.css'),
-                anchor : '100%',
                 maxLength : 100
             }, {
                 xtype : 'textfield',
                 name : 'nbDatasetsMax',
                 fieldLabel : i18n.get('label.nbDatasetsMax'),
-                anchor : '100%',
                 maxLength : 100
             }, this.comboCollections, this.comboDictionnaires, {
                 xtype : 'hidden',
@@ -293,19 +302,10 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 				dictionaryChanged : function (field, newValue, oldValue) {
 					this.getBubbleTarget().fireEvent("dictionaryChanged", field, newValue, oldValue);
 				}
-            }, 
-            flex : 1
-
+            }
         });
-        var httpProxyConcepts = new Ext.data.HttpProxy({
-			url : this.action == "create" ? "/tmp" : loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL') + "/" + this.collection.id + "/concepts/" + this.dictionary.id, 
-			restful : true
-        });
-        var storeConcepts = new Ext.data.JsonStore({
-	        root : 'data',
-//	        url : loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL') + "/" + config.collectionId + "/concepts/" + config.dictionaryId, 
-	        proxy : httpProxyConcepts, 
-	        restful : true, 
+        
+        this.storeConcepts = Ext.create("Ext.data.JsonStore", {
 	        remoteSort : false,
 	        fields : [ {
 	            name : 'id',
@@ -316,36 +316,31 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 	        }, {
 	            name : 'description',
 	            type : 'string'
-	        }], 
-	        autoLoad : this.action != "create"
+	        }]
 	    });	
-	    var cmConcepts = new Ext.grid.ColumnModel({
+        
+	    this.gridConcepts = Ext.create("Ext.grid.GridPanel", {
+			store : this.storeConcepts, 
+			forceFit : true,
 			columns : [{
-				header : i18n.get("label.name"), 
-				dataIndex : 'name', 
-				type : 'string'
-			}, {
-				header : i18n.get("label.description"), 
-				dataIndex : 'description', 
-				type : 'string'
-			}]
-	    });
-	    this.gridConcepts = new Ext.grid.GridPanel({
-			store : storeConcepts, 
-			cm : cmConcepts, 
+                header : i18n.get("label.name"), 
+                dataIndex : 'name', 
+                type : 'string'
+            }, {
+                header : i18n.get("label.description"), 
+                dataIndex : 'description', 
+                type : 'string'
+            }], 
 			title : i18n.get('label.sharedConcepts'), 
-			flex : 1, 
-			viewConfig : {
-				forceFit : true
-			}
+			flex : 1
 	    });
 
         
-        var firstPanel = new Ext.Panel({
+        var firstPanel = Ext.create("Ext.Panel", {
 			title : i18n.get('label.FormInfo'),
-            layout : "vbox", 
-            layoutConfig : {
-				align : "stretch"
+            layout : {
+                type : "vbox",
+                align : "stretch"
             },
 			items : [this.mainForm, this.gridConcepts], 
             listeners : {
@@ -358,7 +353,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             } 
         });
         
-        var storeProperties = new Ext.data.JsonStore({
+        var storeProperties = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'name',
                 type : 'string'
@@ -368,15 +363,17 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             }],
             autoLoad : false
         });
+        
         var smProperties = Ext.create('Ext.selection.RowModel',{
             mode : 'SINGLE'
         });
 
-        var storeTypesProperties = new Ext.data.JsonStore({
+        var storeTypesProperties = Ext.create("Ext.data.JsonStore", {
             fields : ['name'],
             data : [{name : "TEXTFIELD"}, {name : "NUMERIC_BETWEEN"}, {name : "DATE_BETWEEN"}, {name : "NUMBER_FIELD"}]
         });
-	    var comboTypesProperties = new Ext.form.ComboBox({
+        
+	    var comboTypesProperties = Ext.create("Ext.form.ComboBox", {
 	        store : storeTypesProperties, 
 	        queryMode : 'local',
 	        typeAhead : true,
@@ -390,31 +387,21 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 	        width : 55
 	    });
         
-        /*
-         * Proxy used to request a datasource
-         * @type Ext.data.HttpProxy
-         */
-        var httpProxyProperties = new Ext.data.HttpProxy({
-            url : this.urlCollections + "/" + this.collectionId + "/properties",
-            restful : true,
-            method : 'GET'
-        });
+      
         
         /**
          * A store to request all properties from a collection. 
          * The url to request properties is build as 
          *  /sitools/collections/collectionId/properties
          */
-        this.storeComboProperties = new Ext.data.JsonStore({
-            fields : [ 'id', 'name', 'description' ],
-            proxy : httpProxyProperties, 
-            root : "data"
+        this.storeComboProperties = Ext.create("Ext.data.JsonStore", {
+            fields : [ 'id', 'name', 'description' ]
         });
         
         /*
          * Combo to select Properties.
          */
-        var comboProperties = new Ext.form.ComboBox({
+        var comboProperties = Ext.create("Ext.form.ComboBox", {
             disabled : false, 
             id : "comboProperties",
             store : this.storeComboProperties,
@@ -432,8 +419,8 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             autoSelect : true
         });
 
-        var cmProperties = new Ext.grid.ColumnModel({
-            columns : [ {
+        var columnsProperties = {
+            items : [ {
                 header : i18n.get('headers.name'),
                 dataIndex : 'name',
                 editor : comboProperties
@@ -446,7 +433,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                 sortable : false,
                 width : 400
             }
-        });
+        };
         
         var tbar = {
             xtype : 'sitools.widget.GridSorterToolbar',
@@ -463,13 +450,12 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                 text : i18n.get('label.delete'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 handler : function () {
-			        var grid = this.gridProperties;
-			        var s = grid.getSelectionModel().getSelections();
-			        var i, r;
-			        for (i = 0; s[i]; i++) {
-			            r = s[i];
-			            grid.getStore().remove(r);
-			        }
+                    var recs = this.gridProperties.getSelectionModel().getSelection();
+                    if (Ext.isEmpty(recs)) {
+                        popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                        return;
+                    }
+                    this.gridProperties.getStore().remove(recs);
                 }, 
                 scope : this
             } ]
@@ -479,28 +465,38 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
          * The grid to display, create, edit properties on a multiDS search form. 
          * When activating this panel, the storeComboProperties url is build and the store is loaded.
          */
-        this.gridProperties = new Ext.grid.EditorGridPanel({
+        this.gridProperties = Ext.create("Ext.grid.Panel", {
             layout : "fit", 
             title : i18n.get('title.properties'),
             id : 'gridProperties',
             store : storeProperties,
             tbar : tbar,
-            cm : cmProperties,
+            columns : columnsProperties,
             selModel : smProperties,
             forceFit : true,
             listeners : {
 				scope : this, 
 				activate : function () {
-					this.storeComboProperties.proxy.url = this.urlCollections + "/" + this.collectionId + "/properties";
+				    
+				    this.storeComboProperties.setProxy({
+				        type : 'ajax',
+				        url : this.urlCollections + "/" + this.collectionId + "/properties",
+				        reader : {
+				            type : 'json',
+				            root : 'data'
+				        }
+				    });
 					this.storeComboProperties.reload();
 				}
-            }
-            
+            },
+            plugins : [
+               Ext.create('Ext.grid.plugin.CellEditing', {
+                   clicksToEdit: 1
+               })
+            ]            
         });
 
-        this.zoneStore = new Ext.data.JsonStore({
-            root : 'data',
-            idProperty : 'id',
+        this.zoneStore = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 id : 'id',
                 type : 'string'
@@ -540,7 +536,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
          * A Store to store all components of this form. 
          * This object is the reference of all components. 
          */
-        this.formComponentsStore = new Ext.data.JsonStore({
+        this.formComponentsStore = Ext.create("Ext.data.JsonStore", {
             root : 'data',
             fields : [ {
                 name : 'id',
@@ -553,7 +549,6 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                 type : 'string'
             }, {
                 name : 'code',
-                type : 'string'
             }, {
                 name : 'values'
             }, {
@@ -594,6 +589,9 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                 name : 'unit'
             }, {
 				name : 'extraParams'
+            }, {
+                name : 'containerPanelId',
+                type : 'string'
             }],
             autoLoad : false
         });
@@ -601,20 +599,20 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
         /**
          * An absolute panel to display the components. 
          */
-        this.absoluteLayout = new sitools.admin.forms.ComponentsDisplayPanel({
-        	zoneStore : this.zoneStore,
-        	formComponentsStore : this.formComponentsStore, 
-			storeConcepts : this.gridConcepts.getStore(), 
-			context : "project",
-			formSize : this.formSize,
-			action : this.action
+        this.absoluteLayout = Ext.create("sitools.admin.forms.ComponentsDisplayPanel", {
+            zoneStore : this.zoneStore,
+            formComponentsStore : this.formComponentsStore,
+            storeConcepts : this.gridConcepts.getStore(),
+            context : "project",
+            formSize : this.formSize,
+            action : this.action
         });
         
-        var absContainer = new Ext.Panel({
+        var absContainer = Ext.create("Ext.Panel", {
             title : i18n.get('label.disposition'),
 			flex : 1, 
 			autoScroll : true,
-			tbar : new Ext.Toolbar({
+			tbar : Ext.create("Ext.Toolbar", {
                 items : [{
                     scope : this,
                     text : i18n.get('label.changeFormSize'),
@@ -635,63 +633,25 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
          * The list with all components type. 
          * It is used to create new form Component by drag & drop. 
          */
-        this.componentListPanel = new sitools.admin.forms.componentsListPanel({
+        this.componentListPanel = Ext.create("sitools.admin.forms.componentsListPanel", {
             formComponentsStore : this.formComponentsStore,
             action : 'create', 
             context : "project", 
             storeConcepts : this.gridConcepts.getStore()
         });
         
-        var dispPanel = new Ext.Panel({
-			layout : "hbox", 
+        var dispPanel = Ext.create("Ext.Panel", {
+			layout : {
+			    type : "hbox",
+			    align : "stretch"
+			    
+			},
 			title : i18n.get('label.disposition'),
-			layoutConfig : {
-				align : "stretch"
-			}, 
 			items : [this.componentListPanel, absContainer], 
 			listeners : {
 				scope : this, 
 				activate : function () {
 					this.absoluteLayout.fireEvent('activate');
-					var absoluteLayout = this.absoluteLayout;
-//					var displayPanelDropTargetEl =  absoluteLayout.body.dom;
-//					var formComponentsStore = this.formComponentsStore;
-//					var storeConcepts = this.storeConcepts;
-//					var gridConcepts = this.gridConcepts;
-//					var displayPanelDropTarget = new Ext.dd.DropTarget(displayPanelDropTargetEl, {
-//						ddGroup     : 'gridComponentsList',
-//						notifyDrop  : function (ddSource, e, data) {
-//							var xyDrop = e.xy;
-//							var xyRef = Ext.get(absoluteLayout.body).getXY();
-//							
-//							var xyOnCreate = {
-//								x : xyDrop[0] - xyRef[0], 
-//								y : xyDrop[1] - xyRef[1]
-//							};
-//							// Reference the record (single selection) for readability
-//							var rec = ddSource.dragData.selections[0];
-//					        var ComponentWin = new sitools.admin.forms.componentPropPanel({
-//					            urlAdmin : rec.data.jsonDefinitionAdmin,
-//					            ctype : rec.data.type,
-//					            action : "create",
-//					            componentDefaultHeight : rec.data.componentDefaultHeight,
-//					            componentDefaultWidth : rec.data.componentDefaultWidth,
-//					            dimensionId : rec.data.dimensionId,
-//					            unit : rec.data.unit,
-//					            extraParams : rec.data.extraParams, 
-//					            jsAdminObject : rec.data.jsAdminObject, 
-//					            jsUserObject : rec.data.jsUserObject, 
-//					            context : "project", 
-//					            storeConcepts : gridConcepts.getStore(), 
-//					            absoluteLayout : absoluteLayout, 
-//					            record : rec, 
-//					            formComponentsStore : formComponentsStore, 
-//					            xyOnCreate : xyOnCreate
-//					        });
-//					        ComponentWin.show();
-//						}
-//					});
-					
 				}
 			}
 			
@@ -701,7 +661,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
         /**
          * The main tapPanel of the window. 
          */
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create("Ext.TabPanel", {
             height : 550,
             activeTab : 0,
             items : [firstPanel, this.gridProperties, dispPanel],
@@ -724,7 +684,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 					var rec = field.getStore().getAt(index);
 					
 					if (!Ext.isEmpty(oldValue) && newValue != oldValue && this.formComponentsStore.getCount() > 0) {
-						var tot = Ext.Msg.show({
+						Ext.Msg.show({
                             title : i18n.get('label.delete'),
                             buttons : Ext.Msg.YESNO,
                             msg : i18n.get('warning.changeCollection'),
@@ -753,7 +713,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 					var index = field.getStore().find("name", newValue);
 					var rec = field.getStore().getAt(index);
 					if (!Ext.isEmpty(oldValue) && newValue != oldValue && this.formComponentsStore.getCount() > 0) {
-						var tot = Ext.Msg.show({
+						Ext.Msg.show({
                             title : i18n.get('label.delete'),
                             buttons : Ext.Msg.YESNO,
                             msg : i18n.get('warning.changeDictionary'),
@@ -821,8 +781,16 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
      * Load the conceptsGrid store with the right url
      */
     loadConcepts : function () {
-		var url = loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL') + "/" + this.collectionId + "/concepts/" + this.dictionaryId;
-		this.gridConcepts.getStore().proxy.url = url;
+		
+		this.gridConcepts.getStore().setProxy({
+		    type : 'ajax',
+		    url : loadUrl.get('APP_URL') + loadUrl.get('APP_COLLECTIONS_URL') + "/" + this.collectionId + "/concepts/" + this.dictionaryId,
+		    reader : {
+		        type : 'json',
+		        root : 'data'		        
+		    }
+		});
+		
 		this.gridConcepts.getStore().load();
     }, 
     /**
@@ -840,7 +808,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
     },
     
     _sizeUp : function () {
-        var panelProp = new sitools.admin.forms.absoluteLayoutProp({
+        var panelProp = Ext.create("sitools.admin.forms.absoluteLayoutProp", {
             absoluteLayout : this.absoluteLayout,
             tabPanel : this.absoluteLayout.ownerCt.ownerCt.ownerCt,
             win : this,
@@ -850,7 +818,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
     },
     
     _addPanel : function () {
-        var setupAdvancedPanel = new sitools.admin.forms.setupAdvancedFormPanel({
+        var setupAdvancedPanel = Ext.create("sitools.admin.forms.setupAdvancedFormPanel", {
             parentContainer : this.absoluteLayout,
             currentPosition : this.absoluteLayout.position
         });
@@ -929,9 +897,9 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                     if (param.data.containerPanelId == component.data.containerPanelId){
                         paramObject.push({
                             type : param.data.type,
-                            code : param.data.code,
+                            code : param.data.code || [],
                             label : param.data.label,
-                            values : param.data.values,
+                            values : param.data.values || [],
                             width : param.data.width,
                             height : param.data.height,
                             xpos : param.data.xpos,
@@ -940,13 +908,13 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                             css : param.data.css,
                             jsAdminObject : param.data.jsAdminObject,
                             jsUserObject : param.data.jsUserObject,
-                            defaultValues : param.data.defaultValues,
+                            defaultValues : param.data.defaultValues || [],
                             valueSelection : param.data.valueSelection, 
                             autoComplete : param.data.autoComplete, 
                             parentParam : param.data.parentParam, 
                             dimensionId : param.data.dimensionId, 
                             unit : param.data.unit, 
-                            extraParams : param.data.extraParams,
+                            extraParams : param.data.extraParams || [],
                             containerPanelId : param.data.containerPanelId
                         });
                     }
@@ -967,37 +935,6 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
             }
         });
         
-        
-        var store = this.formComponentsStore;
-
-//        if (store.getCount() > 0) {
-//            putObject.parameters = [];
-//        }
-//        store.each(function (component) {
-//
-//            putObject.parameters.push({
-//                type : component.data.type,
-//                code : component.data.code,
-//                label : component.data.label,
-//                values : component.data.values,
-//                width : component.data.width,
-//                height : component.data.height,
-//                xpos : component.data.xpos,
-//                ypos : component.data.ypos,
-//                id : component.data.id,
-//                css : component.data.css,
-//                jsAdminObject : component.data.jsAdminObject,
-//                jsUserObject : component.data.jsUserObject,
-//                defaultValues : component.data.defaultValues,
-//                valueSelection : component.data.valueSelection, 
-//                autoComplete : component.data.autoComplete, 
-//                parentParam : component.data.parentParam, 
-//                dimensionId : component.data.dimensionId, 
-//                unit : component.data.unit, 
-//                extraParams : component.data.extraParams
-//            });
-//        });
-        
         var method = (this.action == 'modify') ? "PUT" : "POST";
 		var url = (this.action == 'modify') ? this.urlMultiDs + "/" + this.formId : this.urlMultiDs;
         Ext.Ajax.request({
@@ -1014,8 +951,6 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
 					this.close();
 					this.store.reload();
 				}
-				// Ext.Msg.alert(i18n.get('label.information'),
-				// i18n.get('msg.uservalidate'));
 			},
 			failure : alertFailure
 		});
@@ -1165,36 +1100,6 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', { extend : 'Ext.Window',
                                 }
                             }
                         }
-                        
-//                        if (data.parameters) {
-//                            var parameters = data.parameters;
-//                            var storeTablesComponents = this.formComponentsStore;
-//                            var i;
-//                            for (i = 0; i < parameters.length; i++) {
-//                                storeTablesComponents.add(new Ext.data.Record({
-//                                    type : parameters[i].type,
-//                                    code : parameters[i].code,
-//                                    label : parameters[i].label,
-//                                    values : parameters[i].values,
-//                                    width : parameters[i].width,
-//                                    height : parameters[i].height,
-//                                    xpos : parameters[i].xpos,
-//                                    ypos : parameters[i].ypos,
-//                                    id : parameters[i].id,
-//                                    css : parameters[i].css,
-//                                    jsAdminObject : parameters[i].jsAdminObject,
-//                                    jsUserObject : parameters[i].jsUserObject,
-//                                    defaultValues : parameters[i].defaultValues,
-//                                    valueSelection : parameters[i].valueSelection, 
-//                                    autoComplete : parameters[i].autoComplete, 
-//                                    parentParam : parameters[i].parentParam, 
-//                                    dimensionId : parameters[i].dimensionId, 
-//                                    unit : parameters[i].unit, 
-//                                    extraParams : parameters[i].extraParams
-//                                }));
-//
-//                            }
-//                        }
                         this.doLayout();
 
                     },

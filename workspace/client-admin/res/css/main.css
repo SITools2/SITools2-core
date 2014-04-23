@@ -168,7 +168,6 @@ pre {
 }
 
 .over-dd-form {
-	margin : 5px 2px 2px 5px;
 	background-color: #ADD2ED;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -237,7 +236,11 @@ pre {
 	-webkit-box-shadow: 1px 1px 4px 2px #84A9C4 !important;
 }
 
-.x-tool-img .dark-icons {
+.dark-icons {
+	margin-left : 5px !important;
+}
+
+.dark-icons img {
 	background-image: url(/sitools/cots/extjs4/ext-4.2.1.883/resources/ext-theme-neptune/images/tools/tool-sprites-dark.png) !important;
 }
 
