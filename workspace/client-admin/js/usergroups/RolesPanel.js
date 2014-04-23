@@ -188,8 +188,9 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
      */
     _onDelete : function () {
         var recs = this.grid.getSelectionModel().getSelection();
-        if (!recs) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+        if (Ext.isEmpty(recs)) {
+            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+            return;
         }
         this.store.remove(recs);
     },
