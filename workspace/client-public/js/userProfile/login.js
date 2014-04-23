@@ -43,13 +43,13 @@ Ext.define('sitools.userProfile.Login', {
         this.title = i18n.get('label.login');
         this.icon = loadUrl.get('APP_URL') + "/common/res/images/ux/login-big.gif";
         
-        this.combo = new Ext.form.ComboBox({
+        this.combo = Ext.create('Ext.form.field.ComboBox', {
             typeAhead : true,
             triggerAction : 'all',
             forceSelection : true,
             allowBlank : false,
             queryMode : 'local',
-            store : new Ext.data.ArrayStore({
+            store : Ext.create('Ext.data.ArrayStore', {
                 id : 0,
                 fields : [ 'myId', 'displayText' ],
                 data : [ [ 1, i18n.get('label.userPortal') ], [ 2, i18n.get('label.administration') ] ]
@@ -66,9 +66,8 @@ Ext.define('sitools.userProfile.Login', {
             this.combo.hideLabel = false;
         } else {
             this.combo.setVisible(false);
-//            this.setSize(392, 160);
-//            this.setSize(392, 175);
         }
+        
         this.items = [{
             xtype : 'form',
             border : false,
@@ -76,9 +75,6 @@ Ext.define('sitools.userProfile.Login', {
             id : 'frmLogin',
             labelWidth : 100,
             padding : "10px 10px 0px 50px",
-//            bodyStyle : "background-image: url("+loadUrl.get('APP_URL')+"/common/res/images/ux/login-big.gif);" +
-//			"background-position: top left;" +
-//			"background-repeat: no-repeat;",
             items : [{
                 xtype : 'textfield',
                 fieldLabel : i18n.get('label.login'),
@@ -123,7 +119,7 @@ Ext.define('sitools.userProfile.Login', {
                     icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
                     handler : function () {
                         Ext.getCmp('winLogin').close();
-                        var register = new sitools.userProfile.Register({
+                        var register = Ext.create('sitools.userProfile.Register', {
                             closable : this.closable,
                             url : this.register,
                             login : this.url,
@@ -140,7 +136,7 @@ Ext.define('sitools.userProfile.Login', {
             text : i18n.get('label.ready'),
             id : 'sbWinLogin',
             iconCls : 'x-status-valid',
-            height : 40,
+//            height : 40,
             items : [ {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/wadl.gif',
                 iconAlign : 'right',
@@ -149,7 +145,7 @@ Ext.define('sitools.userProfile.Login', {
                 scope : this,
                 handler : function () {
                     Ext.getCmp('winLogin').close();
-                    var reset = new sitools.userProfile.lostPassword({
+                    var reset = Ext.create('sitools.userProfile.lostPassword', {
                         closable : this.closable,
                         urlResetPassword : this.reset,
                         urlUnblacklist : this.unblacklist,
@@ -251,7 +247,6 @@ Ext.define('sitools.userProfile.Login', {
                 try {
                     var Json = Ext.decode(response.responseText);
                     if (Json.success) {
-                        // var date = new Date();
                         Ext.apply(Ext.Ajax.defaultHeaders, {
                             "Authorization" : Ext.util.Cookies.get('hashCode')
                         });
@@ -272,8 +267,6 @@ Ext.define('sitools.userProfile.Login', {
                                         Ext.Msg.alert('error login.js redirect with authorization');
                                     }
                                 });
-                                // window.location.href =
-                                // "/sitools/client-admin";
                             }
                         } else {
                             window.location.reload();
@@ -284,12 +277,7 @@ Ext.define('sitools.userProfile.Login', {
                         
                         var txt = i18n.get('warning.serverError') + ': ' + Json.message;
                         Ext.getCmp('winLogin').body.unmask();
-                        Ext.getCmp('sbWinLogin').setStatus({
-                            // text: ret.error ? ret.error :
-                            // i18n.get('warning.serverUnreachable'),
-                            text : txt,
-                            iconCls : 'x-status-error'
-                        });
+                        Ext.getCmp('sbWinLogin').setStatus({ text : txt, iconCls : 'x-status-error' });
 
                     }
                 } catch (err) {
