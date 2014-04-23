@@ -34,8 +34,8 @@ Ext.define('sitools.user.component.datasetOpensearch', {
     extend : 'Ext.panel.Panel',
     alias : 'sitools.user.component.datasetOpensearch',
     componentType : "openSearch",
-    layout : 'vbox',
-    layoutConfig : {
+    layout : {
+        type : 'vbox',
         align : 'stretch',
         pack : 'start'
     },
@@ -46,7 +46,7 @@ Ext.define('sitools.user.component.datasetOpensearch', {
         var uriSuggest = config.dataUrl + "/opensearch/suggest";
 
         var search;
-        var ds = new Ext.data.JsonStore({
+        var ds = Ext.create('Ext.data.JsonStore', {
             url : uriSuggest,
             restful : true,
             root : 'data',
@@ -64,7 +64,7 @@ Ext.define('sitools.user.component.datasetOpensearch', {
 
         var resultTpl = new Ext.XTemplate('<tpl for="."><div class="search-item">', '<h3>{name}<span> ({field} / {nb} results ) </span></h3>', '</div></tpl>');
 
-        search = new Ext.form.ComboBox({
+        search = Ext.create('Ext.form.field.ComboBox', {
             store : ds,
             displayField : 'name',
             typeAhead : false,
@@ -101,12 +101,10 @@ Ext.define('sitools.user.component.datasetOpensearch', {
                     record.data.name = record.data.field + ":" + record.data.name;
                     return true;
                 }
-
             }
-
         });
 
-        var link = new Ext.Button({
+        var link = Ext.create('Ext.button.Button', {
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png',
             scope : this,
             handler : function () {
@@ -122,7 +120,7 @@ Ext.define('sitools.user.component.datasetOpensearch', {
 
         });
 
-        var field = new Ext.form.CompositeField({
+        var field = Ext.create('Ext.form.FieldContainer', {
             fieldLabel : i18n.get("label.search"),
             anchor : '100%',
             defaults : {
@@ -133,13 +131,13 @@ Ext.define('sitools.user.component.datasetOpensearch', {
 
         var items = field;
 
-        var buttonForm = [ {
+        var buttonForm = [{
             text : i18n.get("label.search"),
             scope : this,
             handler : this._clickOnSearch
-        } ];
+        }];
 
-        var formPanel = new Ext.FormPanel({
+        var formPanel = Ext.create('Ext.form.Panel', {
             labelWidth : 75, // label settings here cascade unless
             height : 75,
             frame : true,
@@ -149,7 +147,7 @@ Ext.define('sitools.user.component.datasetOpensearch', {
 
         });
 
-        var result = new sitools.user.component.openSearchResultFeed({
+        var result = Ext.create('sitools.user.component.openSearchResultFeed', {
             input : search,
             dataUrl : config.dataUrl,
             pagging : true,
