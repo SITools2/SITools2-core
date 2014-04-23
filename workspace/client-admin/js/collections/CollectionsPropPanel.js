@@ -141,7 +141,6 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
          */
         this.formCollection = Ext.create("Ext.FormPanel", {
             title : i18n.get('label.CollectionInfo'),
-            xtype : 'form',
             border : false,
             bodyBorder : false,
             padding : 10,
@@ -172,7 +171,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
          * {Ext.Panel} mainPanel the main Item of the window
          */
         this.mainPanel = Ext.create("Ext.Panel", {
-            height : 550,
+//            height : 550,
             layout : {
                 type : "vbox",
                 align : "stretch"
