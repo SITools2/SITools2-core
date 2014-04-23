@@ -60,26 +60,8 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
         
         sitools.admin.forms.ComponentsDisplayPanel.superclass.initComponent.call(this);
 	},
-	
-	afterRender : function () {
-	    sitools.admin.forms.ComponentsDisplayPanel.superclass.afterRender.call(this);
-	 // This will make sure we only drop to the view container
-//	    var formPanelDropTargetEl =  this.getEl().dom;
-//
-//	    var formPanelDropTarget = Ext.create('Ext.dd.DropTarget', this.getEl(), {
-//	        ddGroup: 'gridComponentsList',
-//	        notifyEnter: function(ddSource, e, data) {
-//	            console.log('enter');
-//	            
-//	        },
-//	        notifyDrop  : function(ddSource, e, data){
-//	            console.log('drop');
-//	            return true;
-//	        }
-//	    });
-	},
-	
-    _activeDisposition : function () {
+
+	_activeDisposition : function () {
         var formPincipal = this.up('window').down('form > textfield[name=css]');
         this.body.addCls(formPincipal.getValue());
         this.setWidth(this.formSize.width);
@@ -87,8 +69,6 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
         this.removeAll(true);
 
         var totalHeight = 0;
-        
-        console.log("_activeDisposition");
         
         //add a first zone if none exists
         if (this.action != 'modify' && this.zoneStore.getCount() == 0) {
@@ -106,8 +86,8 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
         if (this.zoneStore.getCount() > 0) {
             this.zoneStore.each(function (rec) {
                 totalHeight += rec.data.height;
-                //if (rec.data.id!='mainpanel'){
-				var zonePanel = Ext.create("sitools.admin.forms.advancedFormPanel", {
+
+                var zonePanel = Ext.create("sitools.admin.forms.advancedFormPanel", {
 	                    containerPanelId : rec.data.containerPanelId,
 	                    title: rec.data.title,
 	                    height: rec.data.height,
@@ -122,7 +102,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 	                    absoluteLayout : this
 	                });
 				this.add(zonePanel);
-                //}
+				
             }, this);
         }
         

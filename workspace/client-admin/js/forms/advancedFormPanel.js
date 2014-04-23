@@ -182,8 +182,6 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                 containerItems[0].maskOnDisable = false;
                 // containerItems[0].initialConfig.overCls =
                 // 'over-form-component';
-                console.log("add component : id : " + component.data.id);
-                
                 var container = Ext.create("Ext.Container", {
                     width : parseInt(component.get("width"), 10),
                     height : parseInt(component.get("height"), 10),
@@ -278,7 +276,6 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
      */
     addResizer : function (component) {
 //            var resizer = new Ext.Resizable(component.getId(), {
-        console.log("add resizer : " + component.getEl().first().dom.id);
         Ext.create('Ext.resizer.Resizer', {
             el : component.getEl(),
 //                minWidth : 150,
@@ -294,7 +291,6 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
             listeners : {
                 scope : this,
                 resize : function (resizable, width, height, e) {
-                    console.log("resize");
                     var store = this.formComponentsStore;
 
                     var rec = store.getAt(store.find('id', component.getId()));
@@ -328,7 +324,6 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
      */
     addDragDrop : function (component) {
         component.getEl().on('contextmenu', this.onContextMenu, component);
-        console.log("add addDragDrop : " + component.getEl().dom.id);
         var dd = Ext.create("Ext.dd.DDProxy", component.getEl().dom.id, 'group', {
             isTarget : false
         });

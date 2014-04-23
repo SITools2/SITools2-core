@@ -37,7 +37,7 @@ Ext.define('sitools.admin.forms.absoluteLayoutProp', {
         var width = this.formSize.width;
         var height = this.formSize.height;
 
-        var form = new Ext.form.FormPanel({
+        var form = Ext.create("Ext.form.FormPanel", {
             labelWidth : 75,
             padding : 5,
             border : false,

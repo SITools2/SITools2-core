@@ -121,12 +121,17 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
 //        var component = this.findById('sitools.component.forms.definitionId');
         var component = this.componentPropPanel.down();
         if (component._onValidate(this.action, this.formComponentsStore)) {
+            this.absoluteLayout.fireEvent("activate");
             this.close();
         }
-		this.absoluteLayout.fireEvent("activate");
         
     },
     _close : function () {
+        var dom = Ext.dom.Query.select('.over-dd-form', this.absoluteLayout.getEl().dom);
+        if (!Ext.isEmpty(dom)) {
+            var el = Ext.get(dom[0]);
+            el.removeCls("over-dd-form");
+        }
         this.close();
     }
 
