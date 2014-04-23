@@ -69,6 +69,8 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
             proxy : {
                 type : 'ajax',
                 url : this.urlDatasets,
+                limitParam : undefined,
+                startParam : undefined,
                 reader : {
                     type : 'json',
                     root : "data"                    
