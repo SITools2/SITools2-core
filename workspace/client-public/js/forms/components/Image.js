@@ -30,7 +30,7 @@ Ext.define('sitools.common.forms.components.Image', {
     initComponent : function () {
         Ext.apply(this, {
             overCls : 'fieldset-child',
-            html : "<img src='" + this.label + "' height='" + this.height + "px' width='" + this.widthBox + "px'>"
+            html : "<img src='" + this.label + "' style ='height:" + this.height + "px; width:" + this.widthBox + "px;'>"
         });
         sitools.common.forms.components.Image.superclass.initComponent.apply(this, arguments);
     },

@@ -37,7 +37,9 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
     extend : 'Ext.panel.Panel',
 	y : 0,
 	position : 0,
-	padding : '5 5 5 5',
+	padding : 5,
+	border : false, 
+	bodyBorder : false,
 	bodyStyle : 'background-color : #EDF2FF;',
 	initComponent : function () {
         

@@ -176,14 +176,33 @@ sitools.admin.forms.componentsListPanel.showPreview = function (value) {
     var previewWin = Ext.create("Ext.Window", {
         title : i18n.get('label.showPreview'),
         modal : true,
-        html : "<img src ='" + value + "'>",
+        border : false,
+        resizable : false,
+        items : [{
+            xtype : 'component',
+            padding : 5,
+            border : false,
+            autoEl: {
+                id : 'preview-win',
+                tag: 'img',
+                border : false,
+                src: value
+            },
+            listeners : {
+                afterrender : function (img) {
+                    img.getEl().on('load', function () {
+                        var hiImg = img.offsetHeight;
+                        var wiImg = img.offsetWidth;
+                        img.up("window").setSize(wiImg, hiImg);
+                    });
+                }
+            }
+        }],
         layout : "fit",
-        height : "auto",
-        width : "auto",
         buttons : [ {
             text : i18n.get('label.close'),
-            handler : function () {
-                this.close();
+            handler : function (button) {
+                button.up("window").close();
             }
         } ]
     });

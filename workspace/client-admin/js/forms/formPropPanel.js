@@ -43,6 +43,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
 		width : 500, 
 		height : 500
     }, 
+    layout : 'fit',
     initComponent : function () {
         if (this.action == 'modify') {
             this.title = i18n.get('label.modifyForm');
@@ -55,10 +56,10 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                 type : 'memory',
                 reader : {
                     type : 'json',
-                    root : 'data'
+                    root : 'data',
+                    idProperty : 'id',
                 }                
             },
-//            idProperty : 'id',
             fields : [{
                 name : 'title'
             }, {
@@ -153,10 +154,12 @@ Ext.define('sitools.admin.forms.formPropPanel', {
         });
         
         this.formulairePrincipal = Ext.create("Ext.FormPanel", {
-            id : "formMainFormId", 
             border : false,
             borderBody : false,
             padding : 10,
+            defaults : {
+                padding : 5
+            },
             items : [ {
                 xtype : 'hidden',
                 name : 'id'
@@ -196,7 +199,6 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                 }                
             },
 	        remoteSort : false,
-	        autoLoad : false,
 	        fields : [ {
 	            name : 'tableName',
 	            type : 'string'
@@ -211,6 +213,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
 	    this.gridColumns = Ext.create("Ext.grid.GridPanel", {
 	        forceFit : true,
 			store : storeColumns,
+			padding : 10,
 			columns : [{
                 header : i18n.get("label.tableName"), 
                 dataIndex : 'tableName', 
@@ -231,7 +234,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
         }, this);
         
         var firstPanel = Ext.create("Ext.Panel", {
-			title : i18n.get('label.FormInfo'),
+            title : i18n.get('label.FormInfo'),
             layout : {
                 type : "vbox",
                 align : 'stretch'
@@ -260,6 +263,8 @@ Ext.define('sitools.admin.forms.formPropPanel', {
             title : i18n.get('label.disposition'),
 			flex : 1, 
 			autoScroll : true,
+			border : false, 
+		    bodyBorder : false,
 			tbar : new Ext.Toolbar({
                 items : [{
                     scope : this,
@@ -286,6 +291,8 @@ Ext.define('sitools.admin.forms.formPropPanel', {
         });
         
         var dispPanel = Ext.create("Ext.Panel", {
+            border : false,
+            bodyBorder : false,
 			layout : {
 			    type : "hbox", 
 			    align : "stretch"
@@ -304,12 +311,12 @@ Ext.define('sitools.admin.forms.formPropPanel', {
         this.tabPanel = Ext.create("Ext.TabPanel", {
             activeTab : 0,
             items : [ firstPanel, dispPanel],
-            listeners : {
-				scope : this, 
-				afterrender : function (panel) {
-					panel.setSize(this.body.getSize());
-				}
-            }
+//            listeners : {
+//				scope : this, 
+//				afterrender : function (panel) {
+//					panel.setSize(this.body.getSize());
+//				}
+//            }
         });
         this.items = [ this.tabPanel ];
 		this.buttons = [ {
@@ -323,13 +330,6 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                 this.close();
             }
         } ];
-		this.listeners = {
-			scope : this, 
-			resize : function (window, width, height) {
-				var size = window.body.getSize();
-				this.tabPanel.setSize(size);
-			} 
-		};
         sitools.admin.forms.formPropPanel.superclass.initComponent.call(this);
     },
 

@@ -183,15 +183,16 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                 // containerItems[0].initialConfig.overCls =
                 // 'over-form-component';
                 console.log("add component : id : " + component.data.id);
+                
                 var container = Ext.create("Ext.Container", {
-                    width : parseInt(component.data.width, 10),
-                    height : parseInt(component.data.height, 10),
+                    width : parseInt(component.get("width"), 10),
+                    height : parseInt(component.get("height"), 10),
                     bodyCssClass : "noborder",
                     cls : component.data.css,
                     x : x,
                     y : y,
-                    id : component.data.id,
-                    componentData : component.data,
+                    id : component.get("id"),
+                    componentData : component.getData(),
                     labelWidth : 100,
                     items : containerItems,
                     displayPanel : this,
@@ -279,7 +280,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 //            var resizer = new Ext.Resizable(component.getId(), {
         console.log("add resizer : " + component.getEl().first().dom.id);
         Ext.create('Ext.resizer.Resizer', {
-            el : component.getEl().first(),
+            el : component.getEl(),
 //                minWidth : 150,
 //                maxWidth : 1000,
 //                constrainTo : this.body,
@@ -287,6 +288,9 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 //                resizeChild : true,
             pinned : true,
             dynamic : false,
+            component : component,
+            heightIncrement : 5,
+            widthIncrement : 5,
             listeners : {
                 scope : this,
                 resize : function (resizable, width, height, e) {
@@ -294,10 +298,9 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                     var store = this.formComponentsStore;
 
                     var rec = store.getAt(store.find('id', component.getId()));
-                    var PanelPos = this.getEl().getAnchorXY();
-
                     rec.set("width", width);
                     rec.set("height", height);
+                    
                     component.down("component").setSize(width - component.getEl().getPadding('l') - component.getEl().getPadding('r'), height);
                     // redimensionner dans le cas de listbox :
                     if (rec.get("type") === "LISTBOX" || rec.get("type") === "LISTBOXMULTIPLE") {
@@ -305,6 +308,15 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 //                            multiselect.view.component.setHeight(height - component.getEl().getPadding('b') - component.getEl().getPadding('t') - 40);
                         multiselect.setHeight(height - component.getEl().getPadding('b') - component.getEl().getPadding('t') - 40);
                     }
+                    if(rec.get("type") === "IMAGE") {
+                        component.getEl().down("img").setSize(width, height);
+                    }
+                    //unlock drag&drop after resize
+                    resizable.component.ddProxy.unlock();
+                },
+                beforeResize : function (resizable, width, height, e) {
+                    //lock drag&drop when resizing
+                    resizable.component.ddProxy.lock();
                 }
             }
         });
@@ -317,36 +329,28 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
     addDragDrop : function (component) {
         component.getEl().on('contextmenu', this.onContextMenu, component);
         console.log("add addDragDrop : " + component.getEl().dom.id);
-        var dd = new Ext.dd.DDProxy(component.getEl().dom.id, 'group', {
+        var dd = Ext.create("Ext.dd.DDProxy", component.getEl().dom.id, 'group', {
             isTarget : false
         });
+        component.ddProxy = dd;
         Ext.apply(dd, {
-            win : this,
+            fieldSet : this,
             startDrag : function (x, y) {
-                var dragEl = Ext.get(this.getDragEl());
-                var el = Ext.get(this.getEl());
-
-                dragEl.applyStyles({
-                    border : '',
-                    'z-index' : this.win.ownerCt.ownerCt.lastZIndex + 1
-                });
-                dragEl.update(el.dom.innerHTML);
-                dragEl.addCls(el.dom.className);
-
-                this.constrainTo(this.win.body);
+                this.constrainTo(this.fieldSet.body);
+                this.setXTicks(this.initPageX, 10);
+                this.setYTicks(this.initPageY, 10);
             },
             afterDrag : function () {
-                console.log("drag");
                 var dragEl = Ext.get(this.getDragEl());
                 var component = Ext.get(this.getEl());
 
                 var x = dragEl.getX();
                 var y = dragEl.getY();
 
-                var store = this.win.formComponentsStore;
+                var store = this.fieldSet.formComponentsStore;
 
                 var rec = store.getAt(store.find('id', component.id));
-                var PanelPos = Ext.get(this.win.body).getAnchorXY();
+                var PanelPos = Ext.get(this.fieldSet.body).getAnchorXY();
 
                 rec.set("xpos", x - PanelPos[0]);
                 rec.set("ypos", y - PanelPos[1]);

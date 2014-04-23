@@ -34,7 +34,6 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
 	alias : 'widget.s-forms',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.FORMS,
     pageSize : 10,
     urlFormulaires : "/tmp",
     forceFit : true,
