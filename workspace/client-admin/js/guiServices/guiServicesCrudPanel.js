@@ -47,7 +47,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
         
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_GUI_SERVICES_URL');
         
-        this.store = new sitools.admin.guiServices.guiServicesStore({
+        this.store = Ext.create("sitools.admin.guiServices.guiServicesStore", {
             url : this.url,
             pageSize : this.pageSize
         });
