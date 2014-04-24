@@ -33,6 +33,7 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.Get;
 
+import fr.cnes.sitools.applications.ClientPortalApplication;
 import fr.cnes.sitools.applications.ClientUserApplication;
 import fr.cnes.sitools.client.model.FeedModelDTO;
 import fr.cnes.sitools.client.model.PortalIndexDTO;
@@ -55,7 +56,7 @@ public final class PortalIndex extends SitoolsResource {
   /**
    * The clientUserApplication
    */
-  private ClientUserApplication application;
+  private ClientPortalApplication application;
 
   @Override
   public void sitoolsDescribe() {
@@ -66,7 +67,7 @@ public final class PortalIndex extends SitoolsResource {
   @Override
   protected void doInit() {
     super.doInit();
-    application = (ClientUserApplication) this.getApplication();
+    application = (ClientPortalApplication) this.getApplication();
   }
 
   @Get
@@ -83,7 +84,7 @@ public final class PortalIndex extends SitoolsResource {
     String portalId = application.getPortalId();
     String projectList = "";
 
-    SitoolsStore<Project> store = ((ClientUserApplication) getApplication()).getStore();
+    SitoolsStore<Project> store = ((ClientPortalApplication) getApplication()).getStore();
     PortalIndexDTO pid = new PortalIndexDTO();
 
     List<FeedModel> listFeeds = this.getFeedsForPortal(portalId);

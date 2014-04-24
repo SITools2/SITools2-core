@@ -24,9 +24,7 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
-import org.restlet.engine.Engine;
 import org.restlet.ext.wadl.ApplicationInfo;
-import org.restlet.resource.Directory;
 import org.restlet.routing.Extractor;
 import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
@@ -36,7 +34,7 @@ import fr.cnes.sitools.client.ProxyRestlet;
 import fr.cnes.sitools.client.ResetPasswordIndex;
 import fr.cnes.sitools.client.SitoolsVersionResource;
 import fr.cnes.sitools.client.UnlockAccountIndex;
-import fr.cnes.sitools.common.application.StaticWebApplication;
+import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.login.LoginDetailsResource;
@@ -44,7 +42,6 @@ import fr.cnes.sitools.login.LostPasswordResource;
 import fr.cnes.sitools.login.ResetPasswordResource;
 import fr.cnes.sitools.login.UnblacklistUserResource;
 import fr.cnes.sitools.login.UnlockAccountResource;
-import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.security.EditUserProfileResource;
 import fr.cnes.sitools.security.FindRoleResource;
 import fr.cnes.sitools.security.captcha.CaptchaFilter;
@@ -58,7 +55,7 @@ import fr.cnes.sitools.server.Consts;
  * @author jp.boignard (AKKA Technologies)
  * 
  */
-public final class PublicApplication extends StaticWebApplication {
+public final class PublicApplication extends SitoolsApplication {
 
   /** The challengeToken. */
   private ChallengeToken challengeToken;
@@ -71,15 +68,11 @@ public final class PublicApplication extends StaticWebApplication {
    * 
    * @param context
    *          Restlet {@code Context}
-   * @param appPath
-   *          location of Directory to be exposed
-   * @param baseUrl
-   *          public URL for listing files of Directory
    * @throws SitoolsException
    *           if the challengeToken is null
    */
-  public PublicApplication(Context context, String appPath, String baseUrl) throws SitoolsException {
-    super(context, appPath, baseUrl);
+  public PublicApplication(Context context) throws SitoolsException {
+    super(context);
 
     challengeToken = (ChallengeToken) context.getAttributes().get("Security.challenge.ChallengeTokenContainer");
     if (challengeToken == null) {
@@ -101,7 +94,7 @@ public final class PublicApplication extends StaticWebApplication {
   @Override
   public void sitoolsDescribe() {
     setCategory(Category.USER);
-    setName("client-public");
+    setName("Public");
     setDescription("web client application for public resources used by other sitools client applications "
         + "-> Administrator must have all authorizations on this application\n"
         + "-> Public user must have at least GET and PUT authorizations on this application\n"
@@ -111,39 +104,11 @@ public final class PublicApplication extends StaticWebApplication {
   @Override
   public Restlet createInboundRoot() {
 
-    Router router = (Router) super.createInboundRoot();
+    Router router = new Router();
 
     // Create sub - restlets / applications
 
-    // ----------------------------------------------------------------
-    // FILES
-    String commonPath = new File(getAppPath() + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COMMON_PATH))
-        .getAbsolutePath().replace("\\", "/");
-    Engine.getLogger(this.getClass().getName()).info(Consts.APP_CLIENT_PUBLIC_COMMON_PATH + ":" + commonPath);
-    Directory commonDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + commonPath, getBaseUrl()
-        + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COMMON_URL));
-    commonDir.setDeeplyAccessible(true);
-    commonDir.setListingAllowed(true);
-    commonDir.setModifiable(false);
-    commonDir.setName("Client-public directoryProxy");
-    commonDir.setDescription("Exposes all the client public files");
-    router.attach(getSettings().getString(Consts.APP_CLIENT_PUBLIC_COMMON_URL), commonDir); // .setMatchingMode(Router.MODE_FIRST_MATCH);
-
-    String cotsPath = new File(getAppPath() + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_PATH))
-        .getAbsolutePath().replace("\\", "/");
-    Engine.getLogger(this.getClass().getName()).info(Consts.APP_CLIENT_PUBLIC_COTS_PATH + ":" + cotsPath);
-    Directory cotsDir = new DirectoryProxy(getContext().createChildContext(), "file:///" + cotsPath, getBaseUrl()
-        + getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_URL));
-
-    cotsDir.setDeeplyAccessible(true);
-    cotsDir.setListingAllowed(true);
-    cotsDir.setModifiable(false);
-    cotsDir.setName("Cots directoryProxy");
-    cotsDir.setDescription("Exposes all the cots files");
-    router.attach(getSettings().getString(Consts.APP_CLIENT_PUBLIC_COTS_URL), cotsDir); // .setMatchingMode(Router.MODE_FIRST_MATCH);
-
     router.attach("/login-details", LoginDetailsResource.class);
-
     String target = getBaseUrl() + "{keywords}";
 
     Redirector redirector = new Redirector(getContext(), target, Redirector.MODE_CLIENT_TEMPORARY);
@@ -191,6 +156,15 @@ public final class PublicApplication extends StaticWebApplication {
     router.attach("/captcha", CaptchaResource.class);
 
     return router;
+  }
+
+  /**
+   * Gets the public base URL (domain name).
+   * 
+   * @return String
+   */
+  public String getBaseUrl() {
+    return getSettings().getPublicHostDomain() + getSettings().getString(Consts.APP_URL);
   }
 
   @Override

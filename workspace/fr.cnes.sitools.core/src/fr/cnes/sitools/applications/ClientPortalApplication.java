@@ -1,4 +1,4 @@
-/*******************************************************************************
+     /*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -26,7 +26,6 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.resource.Directory;
-import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
 import org.restlet.routing.Template;
 
@@ -41,12 +40,12 @@ import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.server.Consts;
 
 /**
- * Application Web Client User.
+ * Application Web Client Portal.
  * 
  * @author jp.boignard (AKKA Technologies)
  * 
  */
-public final class ClientUserApplication extends StaticWebApplication {
+public final class ClientPortalApplication extends StaticWebApplication {
 
   /**
    * Project Store
@@ -78,7 +77,7 @@ public final class ClientUserApplication extends StaticWebApplication {
    * @param baseUrl
    *          public domain name when list files.
    */
-  public ClientUserApplication(final Context context, final String appPath, final String baseUrl) {
+  public ClientPortalApplication(final Context context, final String appPath, final String baseUrl) {
     super(context, appPath, baseUrl);
     // application settings
     portalId = getSettings().getString("Portal.id");
@@ -90,12 +89,14 @@ public final class ClientUserApplication extends StaticWebApplication {
     if (portalIndexFile == null || !portalIndexFile.exists()) {
       getLogger().severe("Template file for Portal/index.html not found :" + portalIndexUrl);
     }
-    projectIndexUrl = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
-        + getSettings().getString("Starter.client-user.projectIndex");
-    File projectIndexFile = new File(projectIndexUrl);
-    if (projectIndexFile == null || !projectIndexFile.exists()) {
-      getLogger().severe("Template file for Project/index.html file not found :" + projectIndexUrl);
-    }
+    
+//    projectIndexUrl = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
+//        + getSettings().getString("Starter.client-user.projectIndex");
+//    File projectIndexFile = new File(projectIndexUrl);
+//    if (projectIndexFile == null || !projectIndexFile.exists()) {
+//      getLogger().severe("Template file for Project/index.html file not found :" + projectIndexUrl);
+//    }
+    
     setUserAuthenticationNeeded(false);
 
   }
@@ -121,10 +122,10 @@ public final class ClientUserApplication extends StaticWebApplication {
 
   @Override
   public void sitoolsDescribe() {
-    setCategory(Category.USER);
-    setName("client-user");
+    setCategory(Category.PORTAL);
+    setName("client-portal");
     // setDescription("Web client application for SITools users");
-    setDescription("This application is used by users" + "-> to access the Web client application"
+    setDescription("This application is used by users" + "-> to access the Portal Web client application"
         + "-> to access the portal page" + "-> to access the desktop page");
   }
 
@@ -133,27 +134,23 @@ public final class ClientUserApplication extends StaticWebApplication {
 
     // Create a router
     Router router = new Router(getContext());
-
-    String portalTarget = getSettings().getPublicHostDomain() + getSettings().getString(Consts.APP_URL) + getSettings().getString(Consts.APP_CLIENT_PORTAL_URL)
-        + "/index.html";
-    Redirector redirector = new Redirector(getContext(), portalTarget, Redirector.MODE_CLIENT_PERMANENT);
-
     // attach the portal resource to client-user
-    router.attach("/", redirector);
+    router.attach("/", PortalIndex.class);
 
     // Redirections/Raccourcis sur certains répertoires virtuels ...
-    router.attach("/index.html", redirector).getTemplate().setMatchingMode(Template.MODE_EQUALS);
+    router.attach("/index.html", PortalIndex.class).getTemplate().setMatchingMode(Template.MODE_EQUALS);
 
-    router.attach("/{projectName}/project-index.html", ProjectIndex.class);
+//    router.attach("/{projectName}/project-index.html", ProjectIndex.class);
     router.attach("/siteMap", ClientSiteMapResource.class);
-
+    
     Directory directory = new DirectoryProxy(getContext(), "file:///" + getAppPath(), getAttachementRef());
     directory.setDeeplyAccessible(true);
     directory.setListingAllowed(true);
     directory.setModifiable(false);
-    directory.setName("Client-user directory");
-    directory.setDescription("Exposes all the client user files");
+    directory.setName("Client-portal directory");
+    directory.setDescription("Exposes all the client user files");    
     router.attach("/", directory);
+    
 
     return router;
   }

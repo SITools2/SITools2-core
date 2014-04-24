@@ -244,6 +244,8 @@ public interface Consts {
   /** path */
   String APP_CLIENT_USER_PATH = "Starter.APP_CLIENT_USER_PATH";
   /** path */
+  String APP_CLIENT_PORTAL_PATH = "Starter.APP_CLIENT_PORTAL_PATH";
+  /** path */
   String APP_DEVELOPER_PATH = "Starter.APP_DEVELOPER_PATH";
   /** path */
   String APP_DOCUMENTATION_PATH = "Starter.APP_DOCUMENTATION_PATH";
@@ -269,6 +271,8 @@ public interface Consts {
   String APP_CLIENT_PUBLIC_COTS_URL = "Starter.APP_CLIENT_PUBLIC_COTS_URL";
   /** application url */
   String APP_CLIENT_USER_URL = "Starter.APP_CLIENT_USER_URL";
+  /** application url */
+  String APP_CLIENT_PORTAL_URL = "Starter.APP_CLIENT_PORTAL_URL";
   /** application url */
   String APP_DEVELOPER_URL = "Starter.APP_DEVELOPER_URL";
   /** application url */

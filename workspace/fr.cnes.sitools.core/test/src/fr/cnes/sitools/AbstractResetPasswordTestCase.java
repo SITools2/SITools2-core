@@ -157,7 +157,6 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
       Context context = this.component.getContext().createChildContext();
 
       // Directory
-      String publicAppPath = settings.getString(Consts.APP_PATH) + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH);
       context.getAttributes().put(ContextAttributes.SETTINGS, settings);
 
       long cacheTime = settings.getLong("Security.challenge.cacheTime");
@@ -168,7 +167,7 @@ public abstract class AbstractResetPasswordTestCase extends AbstractSitoolsTestC
       challengeTokenContainer = new ChallengeTokenContainer(cacheTime, cacheSize);
       context.getAttributes().put("Security.challenge.ChallengeTokenContainer", challengeTokenContainer);
 
-      PublicApplication application = new PublicApplication(context, publicAppPath, getBaseUrl());
+      PublicApplication application = new PublicApplication(context);
 
       this.component.getDefaultHost().attach(getAttachUrl(), application);
 

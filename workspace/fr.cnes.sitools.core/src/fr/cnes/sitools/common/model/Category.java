@@ -38,6 +38,8 @@ public enum Category {
     /** Dynamic user-side  applications (e.g. datasets) */
     USER_DYNAMIC,
     /** Public applications with low security (no bad credentials check) */
-    PUBLIC
+    PUBLIC,
+    /** Portal Applications is the user/guest entry point of Sitools2 */
+    PORTAL
 }
 

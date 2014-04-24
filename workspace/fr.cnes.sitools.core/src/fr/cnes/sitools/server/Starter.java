@@ -47,6 +47,8 @@ import org.restlet.service.Service;
 
 import fr.cnes.sitools.applications.AdministratorApplication;
 import fr.cnes.sitools.applications.ClientAdminApplication;
+import fr.cnes.sitools.applications.ClientPortalApplication;
+import fr.cnes.sitools.applications.ClientPublicApplication;
 import fr.cnes.sitools.applications.ClientUserApplication;
 import fr.cnes.sitools.applications.LoginApplication;
 import fr.cnes.sitools.applications.OrdersFilesApplication;
@@ -614,14 +616,12 @@ public final class Starter {
     component.getInternalRouter().attach(settings.getString(Consts.APP_LOGIN_PATH_URL), loginApp);
 
     // -------------------------
-    // Client-public application (commons)
+    // Public application (services)
 
-    // Directory
-    String publicAppPath = appPath + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH);
     // Context
     appContext = host.getContext().createChildContext();
     appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
-    appReference = baseUrl + settings.getString(Consts.APP_CLIENT_PUBLIC_URL);
+    appReference = baseUrl;
     appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
     appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
 
@@ -635,13 +635,33 @@ public final class Starter {
     appContext.getAttributes().put("Security.challenge.ChallengeTokenContainer", challengeTokenContainer);
 
     // Application
-    PublicApplication publicApp = new PublicApplication(appContext, publicAppPath, baseRef + appReference);
+    PublicApplication publicApp = new PublicApplication(appContext);
 
     // Attachment
     appManager.attachApplication(publicApp);
 
     component.getInternalRouter().attach(settings.getString(Consts.APP_CLIENT_PUBLIC_PATH), publicApp);
+    
+    // -------------------------
+    // Client-public application (commons)
 
+    // Directory
+    String clientPublicAppPath = appPath + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH);
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appReference = baseUrl + settings.getString(Consts.APP_CLIENT_PUBLIC_URL);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+
+    // Application
+    ClientPublicApplication clientPublicApp = new ClientPublicApplication(appContext, clientPublicAppPath, baseRef + appReference);
+
+    // Attachment
+    appManager.attachApplication(clientPublicApp);
+
+    component.getInternalRouter().attach(settings.getString(Consts.APP_CLIENT_PUBLIC_PATH), clientPublicApp);
+    
     // ------------------------
     // Client-admin application
 
@@ -678,6 +698,25 @@ public final class Starter {
     // Attachment
     appManager.attachApplication(clientUserApp);
 
+    
+    // -----------------------
+    // Client-portal application
+
+    // Directory
+    String portalAppPath = appPath + settings.getString(Consts.APP_CLIENT_PORTAL_PATH);
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appReference = baseUrl + settings.getString(Consts.APP_CLIENT_PORTAL_URL);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    
+    // Application
+    ClientPortalApplication clientPortalApp = new ClientPortalApplication(appContext, portalAppPath, baseRef + appReference);
+
+    // Attachment
+    appManager.attachApplication(clientPortalApp);
+    
     // ===========================================================================
     // Gestion des utilisateurs / groupes
 
