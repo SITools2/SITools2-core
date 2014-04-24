@@ -66,6 +66,12 @@ public final class RoleCollectionResource extends AbstractRoleResource {
       // Parse object representation
       Role roleInput = getObject(representation, variant);
 
+      if (checkRoleExists(roleInput)) {
+        trace(Level.INFO, "Cannot create the profile");
+        Response response = new Response(false, "Role already exist");
+        return getRepresentation(response, variant);
+      }
+
       // Business service
       Role roleOutput = getStore().create(roleInput);
 
