@@ -41,6 +41,7 @@ Ext.define('sitools.admin.storages.storagesPropPanel', {
     modal : true,
     pageSize : 10,
     dataSets : "",
+    layout : 'fit',
     id : ID.COMPONENT_SETUP.STORAGE,
 
     initComponent : function () {
