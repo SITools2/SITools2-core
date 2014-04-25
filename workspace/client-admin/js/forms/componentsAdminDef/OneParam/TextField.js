@@ -33,8 +33,8 @@ Ext.define('sitools.admin.forms.oneParam.TextField', {
         });
         this.add(this.componentAutoComplete);
     }, 
-    onRender : function () {
-        sitools.admin.forms.oneParam.TextField.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.oneParam.TextField.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.autoComplete)) {
                 this.componentAutoComplete.setValue(this.selectedRecord.data.autoComplete);

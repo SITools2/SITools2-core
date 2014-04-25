@@ -30,14 +30,14 @@ Ext.namespace('sitools.admin.forms.multiParam');
  */
 Ext.define('sitools.admin.forms.multiParam.coneSearch', { 
     extend : 'sitools.admin.forms.multiParam.abstractForm',
-    height : 400,
+    height : 550,
 //    id : 'sitools.component.forms.definitionId',
     columnUnitName : "°", 
     //TODO améliorer ça pour que ce ne soit plus statique.
     columnDimensionId : "Angle",
     
     initComponent : function () {
-        this.winPropComponent.specificHeight = 500;
+        this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 500;
         this.labelWidth = 150;
         sitools.admin.forms.multiParam.coneSearch.superclass.initComponent.call(this);
@@ -47,8 +47,15 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
          */
         this.context.buildCombosConeSearch(this);
         
-        this.storeDimension = new Ext.data.JsonStore({
-            root : "data", 
+        this.storeDimension = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension',
+                reader : {
+                    type : 'json',
+                    root : "data" 
+                }                
+            },
             fields : [{
                 name : "id", 
                 type : "string"
@@ -62,8 +69,6 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
                 name : "dimensionHelperName", 
                 type : "string"
             }], 
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension',
-            restful : true,
             autoLoad : false, 
             listeners : {
                 scope : this, 
@@ -72,17 +77,17 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
             }
         }); 
         this.on("beforerender", this.onBeforeRender, this);
-        this.componentDefaultValue1 = new Ext.form.NumberField({
+        this.componentDefaultValue1 = Ext.create("Ext.form.NumberField", {
             fieldLabel : i18n.get('label.defaultValue') + ' (Y/RA)',
             name : 'componentDefaultValue1',
             anchor : '100%'
         });
-        this.componentDefaultValue2 = new Ext.form.NumberField({
+        this.componentDefaultValue2 = Ext.create("Ext.form.NumberField", {
             fieldLabel : i18n.get('label.defaultValue') + ' (X/DEC)',
             name : 'componentDefaultValue2',
             anchor : '100%'
         });
-        this.componentDefaultValue3 = new Ext.form.NumberField({
+        this.componentDefaultValue3 = Ext.create("Ext.form.NumberField", {
             fieldLabel : i18n.get('label.defaultValue') + ' (Z/ID)',
             name : 'componentDefaultValue3',
             anchor : '100%'
@@ -91,10 +96,11 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
         this.add(this.componentDefaultValue2);
         this.add(this.componentDefaultValue3);
         
-        this.showTargetName = new Ext.form.Checkbox({
+        this.showTargetName = Ext.create("Ext.form.Checkbox", {
             fieldLabel : i18n.get('label.showTargetName'),
             name : 'showTargetName',
             anchor : '100%', 
+            labelWidth : 150,
             listeners : {
 				scope : this, 
 				check : function (cb, checked) {
@@ -111,19 +117,18 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
 				}
             }
         });
-        this.resolveNameUrl = new Ext.form.TextField({
+        this.resolveNameUrl = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get('label.resolveNameUrl'),
             name : 'resolveNameUrl',
             anchor : '100%'
         });
-        this.coordSystem = new Ext.form.ComboBox({
+        this.coordSystem = Ext.create("Ext.form.ComboBox", {
 		    typeAhead: true,
 		    fieldLabel : i18n.get('label.coordSystem'),
             name : 'coordSystem',
             triggerAction: 'all',
 		    mode: 'local',
-		    store: new Ext.data.ArrayStore({
-		        id: 0,
+		    store: Ext.create("Ext.data.ArrayStore", {
 		        fields: [
 		            'value',
 		            'displayText'
@@ -134,14 +139,13 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
 		    displayField: 'displayText',
             anchor : '100%'
 		});
-        this.resolverName = new Ext.form.ComboBox({
+        this.resolverName = Ext.create("Ext.form.ComboBox", {
 		    typeAhead: true,
 		    fieldLabel : i18n.get('label.resolverName'),
             name : 'resolverName',
             triggerAction: 'all',
 		    mode: 'local',
-		    store: new Ext.data.ArrayStore({
-		        id: 0,
+		    store: Ext.create("Ext.data.ArrayStore", {
 		        fields: [
 		            'value',
 		            'displayText'
@@ -152,7 +156,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
 		    displayField: 'displayText',
             anchor : '100%'
 		});
-        var fieldsetResolveName = new Ext.form.FieldSet({
+        var fieldsetResolveName = Ext.create("Ext.form.FieldSet", {
 			items : [this.showTargetName, this.resolveNameUrl, this.coordSystem, this.resolverName], 
 			title : i18n.get("label.nameResolverOption"), 
 			autoHeight : true, 
@@ -162,7 +166,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
         this.add(fieldsetResolveName);
     },
     afterRender : function () {
-        sitools.admin.forms.multiParam.coneSearch.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action == 'modify') {
 			if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValue1.setValue(this.selectedRecord.data.defaultValues[0]);
@@ -193,7 +197,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
         return true;
     },
     _onDimensionLoad : function () {
-        this.dimension = new Ext.form.ComboBox({
+        this.dimension = Ext.create("Ext.form.ComboBox", {
             fieldLabel : i18n.get('label.dimension'),
             store : this.storeDimension,
             displayField : "name",
@@ -224,7 +228,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
         var defaultValue2 = Ext.isEmpty(f.findField('componentDefaultValue2')) ? "" : f.findField('componentDefaultValue2').getValue();
         var defaultValue3 = Ext.isEmpty(f.findField('componentDefaultValue3')) ? "" : f.findField('componentDefaultValue3').getValue();
 
-		var columnObjects = this.find('specificType', 'mapParam');
+		var columnObjects = this.query('component[specificType=mapParam]');
 		var code = [], unitValue, unitObject;
 		Ext.each(columnObjects, function (columnObject) {
 			code.push(columnObject.getValue());

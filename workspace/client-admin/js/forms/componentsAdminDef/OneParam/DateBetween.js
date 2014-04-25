@@ -35,7 +35,7 @@ Ext.define('sitools.admin.forms.oneParam.DateBetween', {
         this.winPropComponent.specificHeight = 430;
         this.winPropComponent.specificWidth = 400;
         sitools.admin.forms.oneParam.DateBetween.superclass.initComponent.call(this);
-        this.componentDefaultValueFrom = new sitools.widget.DateFieldWithToday({
+        this.componentDefaultValueFrom = Ext.create("sitools.widget.DateFieldWithToday", {
             fieldLabel : i18n.get('label.defaultValueFrom'),
             name : 'componentDefaultValueFrom',
             anchor : '100%', 
@@ -43,7 +43,7 @@ Ext.define('sitools.admin.forms.oneParam.DateBetween', {
             showTime : true, 
             tooltip : i18n.get('label.explainDateDefault')
         });
-        this.componentDefaultValueTo = new sitools.widget.DateFieldWithToday({
+        this.componentDefaultValueTo = Ext.create("sitools.widget.DateFieldWithToday", {
             fieldLabel : i18n.get('label.defaultValueTo'),
             name : 'componentDefaultValueTo',
             anchor : '100%', 
@@ -54,27 +54,27 @@ Ext.define('sitools.admin.forms.oneParam.DateBetween', {
 //        this.add(this.componentDefaultValueFrom);
 //        this.add(this.componentDefaultValueTo);
         
-        this.truncateDefaultValue = new Ext.form.Checkbox({
+        this.truncateDefaultValue = Ext.create("Ext.form.Checkbox", {
             fieldLabel : i18n.get('label.truncateDefaultValue'),
             name : 'truncateDefaultValue',
             anchor : '100%'
         });
 //        this.add(this.truncateDefaultValue);
-        var defaultValuesFieldset = new Ext.form.FieldSet({
+        var defaultValuesFieldset = Ext.create("Ext.form.FieldSet", {
 			items : [this.componentDefaultValueFrom, this.componentDefaultValueTo, this.truncateDefaultValue], 
 			title : i18n.get("label.defaultValue"), 
 			autoHeight : true
 		});
         this.add(defaultValuesFieldset);
         
-        this.showTime = new Ext.form.Checkbox({
+        this.showTime = Ext.create("Ext.form.Checkbox", {
             fieldLabel : i18n.get('label.showTime'),
             name : 'showTime',
             anchor : '100%'
         });
         this.add(this.showTime);
         
-        this.componentDateFormat = new Ext.form.TextField({
+        this.componentDateFormat = Ext.create("Ext.form.TextField", {
             fieldLabel : i18n.get("label.dateFormat"),
             name : "format",
             anchor : '100%',
@@ -83,22 +83,24 @@ Ext.define('sitools.admin.forms.oneParam.DateBetween', {
         this.add(this.componentDateFormat);
 
     },
-    onRender : function () {
-        sitools.admin.forms.oneParam.DateBetween.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        this.callParent(arguments);
         if (this.action == 'modify') {
             var regToday = new RegExp("^\{\\$TODAY\}");
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 if (!regToday.test(this.selectedRecord.data.defaultValues[0])) {
-                    this.componentDefaultValueFrom.setValue(Date.parseDate(this.selectedRecord.data.defaultValues[0], SITOOLS_DATE_FORMAT));
+                    this.componentDefaultValueFrom.setValue(Ext.Date.parseDate(this.selectedRecord.data.defaultValues[0], SITOOLS_DATE_FORMAT));
                 }
                 else {
-                    this.componentDefaultValueFrom.setValue(this.selectedRecord.data.defaultValues[0]);
+                    //use setRawValue to bypass date value conversion
+                    this.componentDefaultValueFrom.setRawValue(this.selectedRecord.data.defaultValues[0]);
                 }
                 if (!regToday.test(this.selectedRecord.data.defaultValues[1])) {
-                    this.componentDefaultValueTo.setValue(Date.parseDate(this.selectedRecord.data.defaultValues[1], SITOOLS_DATE_FORMAT));
+                    this.componentDefaultValueTo.setValue(Ext.Date.parseDate(this.selectedRecord.data.defaultValues[1], SITOOLS_DATE_FORMAT));
                 }
                 else {
-                    this.componentDefaultValueTo.setValue(this.selectedRecord.data.defaultValues[1]);
+                    //use setRawValue to bypass date value conversion
+                    this.componentDefaultValueTo.setRawValue(this.selectedRecord.data.defaultValues[1]);
                 }
                 
                 
@@ -146,8 +148,8 @@ Ext.define('sitools.admin.forms.oneParam.DateBetween', {
             rec.set('code', code);
             rec.set('css', css);
             
-            defaultValueFrom = Ext.isDate(defaultValueFrom) ? defaultValueFrom.format(SITOOLS_DATE_FORMAT) : defaultValueFrom;
-            defaultValueTo = Ext.isDate(defaultValueTo) ? defaultValueTo.format(SITOOLS_DATE_FORMAT) : defaultValueTo;
+            defaultValueFrom = Ext.isDate(defaultValueFrom) ? Ext.Date.format(defaultValueFrom, SITOOLS_DATE_FORMAT) : defaultValueFrom;
+            defaultValueTo = Ext.isDate(defaultValueTo) ? Ext.Date.format(defaultValueTo, SITOOLS_DATE_FORMAT) : defaultValueTo;
             
             rec.set('defaultValues', [ Ext.isEmpty(defaultValueFrom) ? null : defaultValueFrom, Ext.isEmpty(defaultValueTo) ? null : defaultValueTo ]);
             rec.set('extraParams', extraParams);
@@ -155,8 +157,9 @@ Ext.define('sitools.admin.forms.oneParam.DateBetween', {
             defaultValueFrom = Ext.isEmpty(f.findField('componentDefaultValueFrom').getValue()) ? "" : f.findField('componentDefaultValueFrom').getValue();
             defaultValueTo = Ext.isEmpty(f.findField('componentDefaultValueTo').getValue()) ? "" : f.findField('componentDefaultValueTo').getValue();
             
-            defaultValueFrom = Ext.isDate(defaultValueFrom) ? defaultValueFrom.format(SITOOLS_DATE_FORMAT) : defaultValueFrom;
-            defaultValueTo = Ext.isDate(defaultValueTo) ? defaultValueTo.format(SITOOLS_DATE_FORMAT) : defaultValueTo;
+
+            defaultValueFrom = Ext.isDate(defaultValueFrom) ? Ext.Date.format(defaultValueFrom, SITOOLS_DATE_FORMAT) : defaultValueFrom;
+            defaultValueTo = Ext.isDate(defaultValueTo) ? Ext.Date.format(defaultValueTo, SITOOLS_DATE_FORMAT) : defaultValueTo;
             
             var defaultValues = [ defaultValueFrom, defaultValueTo];
             

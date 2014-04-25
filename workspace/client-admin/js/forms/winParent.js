@@ -44,7 +44,7 @@ Ext.define('sitools.admin.forms.parentParamWin', {
                 width : 100
             }
         };
-        this.gridFormComponents = new Ext.grid.GridPanel({
+        this.gridFormComponents = Ext.create("Ext.grid.GridPanel", {
             title : i18n.get('title.gridComponents'),
             layout : 'fit', 
             id : "gridFormParentComponents",
@@ -77,13 +77,10 @@ Ext.define('sitools.admin.forms.parentParamWin', {
         }];
         sitools.admin.forms.parentParamWin.superclass.initComponent.call(this);
     }, 
-    onRender : function () {
-        sitools.admin.forms.parentParamWin.superclass.onRender.apply(this, arguments);
-    }, 
     onValidate : function () {
         if (!Ext.isEmpty(this.gridFormComponents.getSelectionModel().getLastSelected())) {
             var selected = this.gridFormComponents.getSelectionModel().getLastSelected(); 
-            this.parentParamField.setValue(selected.getData());
+            this.parentParamField.setValue(selected.get("id"));
             this.parentParamFieldDisplay.setValue(selected.get("label"));
             this.close();
         }

@@ -58,7 +58,7 @@ sitools.common.forms.formParameterToComponent = function (parameter, dataUrl, fo
         datasetCm : datasetCm, 
         context : context,
         form : form,
-        padding : 5
+//        padding : 5
 	});
 	
 	return {

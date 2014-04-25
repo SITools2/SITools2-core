@@ -30,7 +30,7 @@ sitools.common.utils.Date = {
 	 * in the template {$TODAY} + x, determine the x unit (currently it is a Day)
 	 * @type 
 	 */
-	timeInterval : Date.DAY, 
+	timeInterval : Ext.Date.DAY, 
 	/**
 	 * Transform a String value containing {$TODAY} into a valid date.
 	 * @param {String} val the string value
@@ -57,7 +57,7 @@ sitools.common.utils.Date = {
 			if (op == "-") {
 				nbJour = nbJour * -1;
 			}
-			result = result.add(this.timeInterval, nbJour); 
+			result = Ext.Date.add(result, this.timeInterval, nbJour); 
 		}
 		return result;
 

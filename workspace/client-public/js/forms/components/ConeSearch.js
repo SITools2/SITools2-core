@@ -21,7 +21,7 @@
  * @include "../AbstractComponentsWithUnit.js"
  * @include "../ComponentFactory.js"
  */
-Ext.ns('sitools.common.forms.components');
+Ext.namespace('sitools.common.forms.components');
 
 /**
  * Abstract Class to build Container to display a Cone Search. 
@@ -75,7 +75,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
         	defaultThirdValue = this.defaultValues[2];
         }
         
-	    this.raParam = new Ext.form.NumberField({
+	    this.raParam = Ext.create("Ext.form.NumberField", {
 	        fieldLabel : "RA", 
 	        allowBlank : true,
 	        decimalPrecision : 20, 
@@ -85,7 +85,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	        labelSeparator : ""
 	        
 	    });
-	    this.decParam = new Ext.form.NumberField({
+	    this.decParam = Ext.create("Ext.form.NumberField", {
 	        fieldLabel : "DEC", 
 	        allowBlank : true,
 	        decimalPrecision : 20, 
@@ -95,7 +95,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	        labelSeparator : ""
 	    });
 	    
-		this.thirdParam = new Ext.form.NumberField({
+		this.thirdParam = Ext.create("Ext.form.NumberField", {
 			fieldLabel : this.getLabelThirdParam(), 
 			allowBlank : true,
 			decimalPrecision : 20, 
@@ -104,15 +104,21 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	        labelSeparator : ""
 		});
 
-		var thirdCont = new Ext.form.CompositeField({
+		var thirdCont = Ext.create("Ext.form.FieldContainer", {
 			labelWidth : 100,
-			fieldLabel : this.getLabelThirdParam(),
+            layout: {
+                type : 'hbox',
+                defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
+            },
+            defaults : {
+                flex : 1
+            }, 
 			items : [this.thirdParam, unit], 
         	labelSeparator : ""
 		});
 		
 		//build the resolver Name
-		this.targetName = new Ext.form.TextField({
+		this.targetName = Ext.create("Ext.form.TextField", {
 			flex : 1, 
 			fieldLabel : i18n.get("label.targetName"),
 			listeners : {
@@ -123,7 +129,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 			}
 		});
 		
-		this.nameResolverButton = new Ext.Button({
+		this.nameResolverButton = Ext.create("Ext.Button", {
             scope : this,
             id : 'resolveNameBtn',
             handler : this.resolveTargetName, 
@@ -132,13 +138,19 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
             disabled : true
         });
 		
-		var targetCmp = new Ext.form.FieldSet({
+		var targetCmp = Ext.create("Ext.form.FieldSet", {
 			title : i18n.get('label.resolverName'), 
-			items : [
-				new Ext.form.CompositeField ({
-					items : [this.targetName, this.nameResolverButton]
-				})
-			]
+			items : [{
+				xtype : 'fieldcontainer',
+                layout: {
+                    type : 'hbox',
+                    defaultMargins : {top: 0, right: 5, bottom: 0, left: 0}
+                },
+                defaults : {
+                    flex : 1
+                }, 
+                items : [this.targetName, this.nameResolverButton]
+			}]
 		});
 		
 		//Load the 3 fields into a form layout in the main container items
@@ -167,7 +179,7 @@ Ext.define('sitools.common.forms.components.AbstractConeSearch', {
 	    sitools.common.forms.components.AbstractConeSearch.superclass.initComponent.apply(
 	            this, arguments);
    	    if (!Ext.isEmpty(this.label)) {
-	    	this.items.insert(0, new Ext.Container({
+	    	this.items.insert(0, Ext.create("Ext.Container", {
 	            border : false,
 	            html : this.label,
 	            width : 100

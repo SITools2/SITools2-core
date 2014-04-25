@@ -37,7 +37,7 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', {
         sitools.admin.forms.oneParam.NoValuesWithProperties.superclass.initComponent.call(this);
         this.winPropComponent.specificHeight = 500;
         this.winPropComponent.specificWidth = 400;
-        var storeProperties = new Ext.data.JsonStore({
+        var storeProperties = Ext.create("Ext.data.JsonStore", {
             fields : [ {
                 name : 'name',
                 type : 'string'
@@ -51,21 +51,21 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', {
             mode : 'SINGLE'
         });
 
-        var cmProperties = new Ext.grid.ColumnModel({
-            columns : [ {
+        var columns = {
+            items : [ {
                 header : i18n.get('headers.name'),
                 dataIndex : 'name',
-                editor : new Ext.form.TextField()
+                editor : Ext.create("Ext.form.TextField")
             }, {
                 header : i18n.get('headers.value'),
                 dataIndex : 'value',
-                editor : new Ext.form.TextField()
+                editor : Ext.create("Ext.form.TextField")
             }],
             defaults : {
                 sortable : false,
                 width : 100
             }
-        });
+        };
         
         var tbar = {
             xtype : 'toolbar',
@@ -84,27 +84,30 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', {
 			    text : i18n.get('label.delete'),
 			    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
 			    handler : function () {
-					var s = this.gridProperties.getSelectionModel().getSelections();
-			        var i, r;
-			        for (i = 0; s[i]; i++) {
-			            r = s[i];
-			            this.gridProperties.getStore().remove(r);
+			        var recs = this.gridProperties.getSelectionModel().getSelection();
+			        if (Ext.isEmpty(recs)) {
+			            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+			            return;
 			        }
+			        this.gridProperties.getStore().remove(recs);
 			    }
             } ]
         };
+        
+        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+        });
 
-        this.gridProperties = new Ext.grid.EditorGridPanel({
+        this.gridProperties = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.properties'),
             id : 'componentGridProperties',
             height : 180,
             tbar : tbar, 
             store : storeProperties,
-            cm : cmProperties,
+            columns : columns,
             selModel : smProperties,
-            viewConfig : {
-                forceFit : true
-            }
+            forceFit : true,
+            plugins : [cellEditing]
         });
         this.add(this.gridProperties);
 
@@ -113,8 +116,8 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', {
      * Load the component Values if action = modify. 
      * Load the default ExtraParams. 
      */
-    onRender : function () {
-        sitools.admin.forms.oneParam.NoValuesWithProperties.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.oneParam.NoValuesWithProperties.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             Ext.each(this.selectedRecord.data.extraParams, function (prop) {
                 var rec = {

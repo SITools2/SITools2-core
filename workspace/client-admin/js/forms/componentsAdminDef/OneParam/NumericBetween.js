@@ -45,8 +45,8 @@ Ext.define('sitools.admin.forms.oneParam.NumericBetween', {
         this.add(this.componentDefaultValueFrom);
         this.add(this.componentDefaultValueTo);
     },
-    onRender : function () {
-        sitools.admin.forms.oneParam.NumericBetween.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.oneParam.NumericBetween.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
 			if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValueFrom.setValue(this.selectedRecord.data.defaultValues[0]);

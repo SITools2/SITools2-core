@@ -106,6 +106,17 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
                 handler : this._close
             } ]
         });
+        
+        this.listeners = {
+                scope : this,
+                close : function () {
+                    var dom = Ext.dom.Query.select('.over-dd-form', this.absoluteLayout.getEl().dom);
+                    if (!Ext.isEmpty(dom)) {
+                        var el = Ext.get(dom[0]);
+                        el.removeCls("over-dd-form");
+                    }
+                }
+        }
 
         this.items = [ this.componentPropPanel ];
         
@@ -127,11 +138,6 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
         
     },
     _close : function () {
-        var dom = Ext.dom.Query.select('.over-dd-form', this.absoluteLayout.getEl().dom);
-        if (!Ext.isEmpty(dom)) {
-            var el = Ext.get(dom[0]);
-            el.removeCls("over-dd-form");
-        }
         this.close();
     }
 
