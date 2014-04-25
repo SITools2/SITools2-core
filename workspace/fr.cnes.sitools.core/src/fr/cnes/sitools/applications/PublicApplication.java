@@ -104,7 +104,7 @@ public final class PublicApplication extends SitoolsApplication {
   @Override
   public Restlet createInboundRoot() {
 
-    Router router = new Router();
+    Router router = new Router(getContext());
 
     // Create sub - restlets / applications
 
