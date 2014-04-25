@@ -1,0 +1,61 @@
+/***************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+.search-item {
+	border-color: #ffffff #ffffff #eeeeee;
+	border-style: solid;
+	border-width: 1px;
+	color: #555555;
+	font: 11px tahoma, arial, helvetica, sans-serif;
+	padding: 3px 10px;
+	white-space: normal;
+}
+
+.search-item h3 {
+	color: #222222;
+	display: block;
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-variant: inherit;
+	font-weight: bold;
+	line-height: inherit;
+}
+
+.search-item h3 span {
+	clear: none;
+	display: block;
+	float: right;
+	font-weight: normal;
+	margin: 0 0 5px 5px;
+	width: 200px;
+	font-style: italic;
+}
+
+.combo-datasetview {
+	color : #000000 !important
+}
+
+.sitoolsDescription-datasetview {
+ 	clear: both;
+    padding: 0px 0px 0px 30px;
+}
+
+.combo-datasetview-name {
+	font-size : 110%	
+}
