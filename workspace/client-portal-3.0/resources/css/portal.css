@@ -1,0 +1,135 @@
+/***************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+/*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+.x-portal .x-panel-dd-spacer {
+	margin-bottom: 10px;
+}
+
+.x-portlet {
+	margin-bottom: 10px;
+}
+
+/* Clean up the look of the portlets */
+.x-portlet .x-panel-ml {
+	padding-left: 2px;
+}
+
+.x-portlet .x-panel-mr {
+	padding-right: 2px;
+}
+
+.x-portlet .x-panel-bl {
+	padding-left: 2px;
+}
+
+.x-portlet .x-panel-br {
+	padding-right: 2px;
+}
+
+.x-portlet .x-panel-body {
+	background: white;
+}
+
+.x-portlet .x-panel-mc {
+	padding-top: 2px;
+}
+
+.x-portlet .x-panel-bc .x-panel-footer {
+	padding-bottom: 2px;
+}
+
+.x-portlet .x-panel-nofooter .x-panel-bc {
+	height: 2px;
+}
+
+.portalMainPanel {
+	background: none;
+}
+
+/*!
+ * Ext JS Library 3.2.1
+ * Copyright(c) 2006-2010 Ext JS, Inc.
+ * licensing@extjs.com
+ * http://www.extjs.com/license
+ */
+#projectDataView {
+	background-color: #fff;
+	text-shadow: #fff 0 1px 0;
+}
+
+#projectDataView ul {
+	position: relative;
+	display: block;
+	height: auto;
+	font-size: 85%;
+}
+
+#projectDataView ul li img {
+	margin-bottom: 1px;
+}
+
+#projectDataView ul li {
+	float: left;
+	padding: 8px 10px;
+	margin: 5px;
+	/*    margin: 10px 0 0 25px;*/
+	text-align: center;
+	line-height: 1.25em;
+	color: #333;
+	font-family: "Helvetica Neue", sans-serif;
+	height: 140px;
+	width: 112px;
+	overflow: hidden;
+	border-top: 1px solid transparent;
+	cursor: pointer;
+}
+
+/*#projectDataView ul li.phone-hover {
+    background-color: #eee;
+}*/
+#projectDataView ul li.x-view-selected {
+	background-color: rgba(100, 100, 100, .15);
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-top: 1px solid rgba(0, 0, 0, .15);
+}
+
+#projectDataView li strong {
+	color: #000;
+	display: block;
+}
+
+#projectDataView li span {
+	color: #999;
+}
+
+.projectUnauthorized {
+	background-image: url("/sitools/common/res/images/icons/cadenas.png");
+	background-position: left top;
+	background-repeat: no-repeat;
+}
+
+.x-slider-horz .x-slider-thumb {
+	background-image: url(images/slider-thumb.png);
+}
