@@ -47,93 +47,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>SITOOLS WEB CLIENT</title>
 
-    <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/desktop.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/res/css/portal.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/main.css">
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/reorderer/multiple-sorting.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css">
-    
-	<!-- First of javascript includes must be an adapter... -->
-    <!--script type="text/javascript" src="/cots/extjs/adapter/ext/ext-base-debug.js"></script-->
-    <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
+	<link rel="stylesheet" href="${appUrl}/client-portal/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/resources/css/ext-all-neptune-debug.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-portal/resources/css/portal.css">
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css">
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css"></link>
+	
+	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	
+	<script src="${appUrl}/client-portal/bootstrap.js"></script>
+	<script src="${appUrl}/client-portal/app.js"></script>
+	
+	<script src="${appUrl}/client-public/js/utils/def.js"></script>
+	<script src="${appUrl}/client-public/js/utils/id.js"></script>
 
-    <!-- Need the Ext itself, either debug or production version. -->
-    <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
-    <!--script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script-->
-
-<!-- --------------------------------------------------------------------------------------------------
-						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
---------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_JS_DEV_INCLUDES -->
-	<script type="text/javascript" src="${appUrl}/common/js/crypto/base64.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/crypto/MD5.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/crypto/digest.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/utils/console.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/userProfile/loginUtils.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/userProfile/register.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/userProfile/lostPassword.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/userProfile/editProfile.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/vtype.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/mif.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/utils/logout.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/feedsReader/feedsReader.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/feedsReader/rss2FeedsReader.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/feedsReader/atom1FeedsReader.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/feedsReader/feedItemDetails.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/notification/Ext.ux.Notification.js"></script>
    
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.Plugin.RemoteComponent.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/portal/Portal.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/portal/PortalColumn.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/portal/Portlet.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/siteMap.js"></script>
-	
-    <script type="text/javascript" src="js/env.js"></script>
-    <script type="text/javascript" src="js/def.js"></script>
-    <script type="text/javascript" src="js/gui.js"></script>
-    <script type="text/javascript" src="js/id.js"></script>
-	<script type="text/javascript" src="js/portal/portal.js"></script>
-	<script type="text/javascript" src="js/portal/portlets/feedReaderPortal.js"></script>
-	
-	<script type="text/javascript" src="js/portal/portlets/portalOpensearch.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/datasetOpensearch/openSearchResultFeed.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomDomQuery.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/opensearchXMLReader/CustomXMLReader.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/viewDataDetail/viewDataDetail.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/js/components/viewDataDetail/simpleViewDataDetails.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
-
-<!-- END_JS_DEV_INCLUDES -->
-  
-<!-- --------------------------------------------------------------------------------------------------
- 						A INCLURE POUR LA VERSION DE DEBUG
---------------------------------------------------------------------------------------------------- -->
-<!--	<script type="text/javascript" src="js/minified/client-user-portal-all.js"></script> -->
-	
-<!-- --------------------------------------------------------------------------------------------------
- 						A INCLURE POUR LA VERSION DE PROD
---------------------------------------------------------------------------------------------------- -->
-<!--
-	<script type="text/javascript" src="js/minified/client-user-portal-all.min.js"></script> 
--->	
 	<link rel="shortcut icon" href="${appUrl}/common/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	
   </head>
 
-  <body>
-	
-	<script type="text/javascript">
-    	Ext.onReady(function(){
-			portalApp.initAppliPortal({
-	    		siteMapRes : '${appUrl}/client-user'
-			});
-        });
-    </script>
-
-</body>
+  <body></body>
+  
 </html>
