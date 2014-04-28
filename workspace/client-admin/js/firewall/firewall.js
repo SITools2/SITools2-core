@@ -134,7 +134,7 @@ Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Pane
     onModify : function () {
         var rec = this.getSelectionModel().getSelected();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
         // var up = new

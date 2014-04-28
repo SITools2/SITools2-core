@@ -25,23 +25,21 @@
     <title>SITOOLS WEB ADMIN</title>
 
     <!-- Commom css -->
-	<!--  <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css" ></link> -->
-    <link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs4/ext-4.2.1.883/resources/css/ext-all-neptune-debug.css"></link>
+	<!--  <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/cots/extjs/resources/css/ext-all.css" ></link> -->
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/resources/css/ext-all-neptune-debug.css"></link>
 
    	<!--  ext.ux  -->
        
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/statusbar.css"></link>
-    <!--<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/spinner.css"></link>-->
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/imageChooser/imageChooser.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css"></link>
+    <!--<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/spinner.css"></link>-->
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/imageChooser/imageChooser.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/commons.css"></link>
     
     
     <!-- Sitools specific css -->
     <link rel="stylesheet" type="text/css" href="res/css/main.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/notification/css/Notification.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/lockingGrid/columnLock.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/js/widgets/sliderRange/css/ux/SliderRange.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/notification/css/Notification.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/fileUploadField/fileUploadField.css"></link>
     
     
     <link rel="stylesheet" type="text/css" href="res/css/icons.css"></link>
@@ -49,83 +47,83 @@
     <link rel="stylesheet" type="text/css" href="res/css/animated-dataview.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/animated-seeAlso.css"></link>
     -->
-   	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/main.css"></link>
+   	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/combo.css"></link>
+    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css"></link>
 	
 	<link rel="stylesheet" type="text/css" href="res/css/quickStart.css"></link>
   
 <!-- --------------------------------------------------------------------------------------------------------------------------
 					IMPORT DES LIBRAIRIES JS
 -------------------------------------------------------------------------------------------------------------------------- -->
-    <!--<script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>-->
+    <!--<script type="text/javascript" src="${appUrl}/client-public/cots/extjs/adapter/ext/ext-base.js"></script>-->
 
     <!-- Need the Ext itself, either debug or production version. -->
-<!--script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script-->
-    <!--script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script-->
+<!--script type="text/javascript" src="${appUrl}/client-public/cots/extjs/ext-all-debug.js"></script-->
+    <!--script type="text/javascript" src="${appUrl}/client-public/cots/extjs/ext-all.js"></script-->
 
-	<script type="text/javascript" src="${appUrl}/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
 	
-	<!--<script type="text/javascript" src="${appUrl}/cots/extjs4/compatibility/ext3-core-compat.js"></script>   
- 	<script type="text/javascript" src="${appUrl}/cots/extjs4/compatibility/ext3-compat.js"></script>-->
+	<!--<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/compatibility/ext3-core-compat.js"></script>   
+ 	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/compatibility/ext3-compat.js"></script>-->
 
-	<script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
-<!-- <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script> -->
+	<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.11/OpenLayers.js"></script>
+<!-- <script type="text/javascript" src="${appUrl}/client-public/cots/GeoExt/script/GeoExt.js"></script> -->
 	
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.form.MultiSelect.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widgets/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widgets/Ext.ux.form.MultiSelect.js"></script>
 
 	
     <!-- Need in debug mode, to remove in production version. -->
-    <script type="text/javascript" src="${appUrl}/common/js/utils/xpath.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/debug.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/utils/xpath.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/debug.js"></script>
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
 <!-- BEGIN_JS_DEV_INCLUDES -->
-    <script type="text/javascript" src="${appUrl}/common/js/env.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/siteMap.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/crypto/base64.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/crypto/MD5.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/crypto/digest.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/utils/console.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/utils/Utils.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/utils/Date.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/utils/reference.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/statusbar.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/sliderRange/js/ux/SliderRange.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/userProfile/loginUtils.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/userProfile/login.js"></script>	
-	<script type="text/javascript" src="${appUrl}/common/js/userProfile/lostPassword.js"></script>	
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/actionlink.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/highlighttext.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/env.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/siteMap.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/crypto/base64.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/crypto/MD5.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/crypto/digest.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/utils/console.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/utils/Utils.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/utils/Date.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/utils/reference.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/statusbar.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/sliderRange/js/ux/SliderRange.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/userProfile/loginUtils.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/userProfile/login.js"></script>	
+	<script type="text/javascript" src="${appUrl}/client-public/js/userProfile/lostPassword.js"></script>	
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/actionlink.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/highlighttext.js"></script>
     
-    <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/mif.js"></script>-->
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/textfilter.js"></script>
+    <!--<script type="text/javascript" src="${appUrl}/client-public/js/widgets/mif.js"></script>-->
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/textfilter.js"></script>
     
-    <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/spinner.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/spinnerfield.js"></script>-->
+    <!--<script type="text/javascript" src="${appUrl}/client-public/js/widgets/spinner.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/spinnerfield.js"></script>-->
     
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/panelSelectItems.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/gridUp.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.Plugin.RemoteComponent.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/lockingGrid/columnLock.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/notification/Ext.ux.Notification.js"></script>
-    <!--<script type="text/javascript" src="${appUrl}/common/js/widgets/multiSelect/Ext.ux.multiselect.js"></script>-->
-    <script type="text/javascript" src="${appUrl}/common/js/forms/formParameterToComponent.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/forms/DatasetContext.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/forms/ProjectContext.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/forms/ComponentFactory.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/forms/AbstractComponentsWithUnit.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/rowExpander.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsItems.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/utils/logout.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/imageChooser/imageChooser.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/fileUploadField/fileUploadField.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsImageSelect.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/vtype.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/version/sitoolsVersion.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsDatePicker.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/Ext.ux.form.ToolFieldSet.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/panelSelectItems.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/gridUp.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/Ext.ux.Plugin.RemoteComponent.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/lockingGrid/columnLock.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/notification/Ext.ux.Notification.js"></script>
+    <!--<script type="text/javascript" src="${appUrl}/client-public/js/widgets/multiSelect/Ext.ux.multiselect.js"></script>-->
+    <script type="text/javascript" src="${appUrl}/client-public/js/forms/formParameterToComponent.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/forms/DatasetContext.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/forms/ProjectContext.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/forms/ComponentFactory.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/forms/AbstractComponentsWithUnit.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/rowExpander.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/sitoolsItems.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/utils/logout.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/imageChooser/imageChooser.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/fileUploadField/fileUploadField.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/sitoolsImageSelect.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/vtype.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/version/sitoolsVersion.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widgets/sitoolsDatePicker.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widgets/Ext.ux.form.ToolFieldSet.js"></script>
     
     <script type="text/javascript" src="js/def.js"></script>
     <script type="text/javascript" src="js/id.js"></script>
@@ -169,7 +167,7 @@
     <script type="text/javascript" src="js/datasets/joinPanel.js"></script>
     <script type="text/javascript" src="js/datasets/gridFieldSetup.js"></script>
     <script type="text/javascript" src="js/datasets/datasetCriteria.js"></script>
-    <script type="text/javascript" src="${appUrl}/common/js/widgets/sitoolsGridView.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/widgets/sitoolsGridView.js"></script>
 	<script type="text/javascript" src="js/datasets/datasourceUtils/datasourceFactory.js"></script>
     <script type="text/javascript" src="js/datasets/datasourceUtils/jdbcUtils.js"></script>
     <script type="text/javascript" src="js/datasets/datasourceUtils/mongoDbUtils.js"></script>
@@ -181,7 +179,7 @@
     <script type="text/javascript" src="js/datasets/datasetSelectFields.js"></script>
     <script type="text/javascript" src="js/datasets/datasetsMultiTablesPanel.js"></script>
 		
-    <script type="text/javascript" src="${appUrl}/common/js/columnRenderer/behaviorEnum.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/columnRenderer/behaviorEnum.js"></script>
     <script type="text/javascript" src="js/datasets/columnRenderer/datasetLinkPanel.js"></script>
 	<script type="text/javascript" src="js/datasets/columnRenderer/urlPanel.js"></script>
 	<script type="text/javascript" src="js/datasets/columnRenderer/imagePanel.js"></script>
@@ -329,7 +327,7 @@
 	<script type="text/javascript" src="js/minified/client-admin-all-min.js"></script>
 -->
     
-	<link rel="shortcut icon" href="${appUrl}/common/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="${appUrl}/client-public/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	
   </head>
 

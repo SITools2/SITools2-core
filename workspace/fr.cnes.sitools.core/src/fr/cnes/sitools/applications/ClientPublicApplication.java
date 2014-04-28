@@ -27,29 +27,12 @@ import org.restlet.Restlet;
 import org.restlet.engine.Engine;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.resource.Directory;
-import org.restlet.routing.Extractor;
-import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
-import org.restlet.routing.Template;
 
-import fr.cnes.sitools.client.ProxyRestlet;
-import fr.cnes.sitools.client.ResetPasswordIndex;
-import fr.cnes.sitools.client.SitoolsVersionResource;
-import fr.cnes.sitools.client.UnlockAccountIndex;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.login.LoginDetailsResource;
-import fr.cnes.sitools.login.LostPasswordResource;
-import fr.cnes.sitools.login.ResetPasswordResource;
-import fr.cnes.sitools.login.UnblacklistUserResource;
-import fr.cnes.sitools.login.UnlockAccountResource;
 import fr.cnes.sitools.proxy.DirectoryProxy;
-import fr.cnes.sitools.security.EditUserProfileResource;
-import fr.cnes.sitools.security.FindRoleResource;
-import fr.cnes.sitools.security.captcha.CaptchaFilter;
-import fr.cnes.sitools.security.captcha.CaptchaResource;
-import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.server.Consts;
 
 /**

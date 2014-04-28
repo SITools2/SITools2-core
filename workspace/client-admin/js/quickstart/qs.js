@@ -34,7 +34,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                 items : [{
                     id : 'qsStart',
                     value : 'qsStart',
-                    icon : '/sitools/common/res/images/icons/logo_fav_icone.png',
+                    icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/logo_fav_icone.png',
                     scope : this,
                     enableToogle: true,
                     toggleGroup : 'steps',
@@ -57,7 +57,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                 }, {
                     id : 'qsProject',
                     value : 'qsProject',
-                    icon : '/sitools/common/res/images/icons/tree_projects.png',
+                    icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_projects.png',
                     scope : this,
                     enableToogle: true,
                     toggleGroup : 'steps',
@@ -79,7 +79,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                 }, {
                     value : 'qsDatasource',
                     id : 'qsDatasource',
-                    icon : '/sitools/common/res/images/icons/tree_databases.png',
+                    icon : '/sitools'+ loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_databases.png',
                     scope : this,
                     enableToogle: true,
                     toggleGroup : 'steps',
@@ -101,7 +101,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                 }, {
                     id : 'qsDataset',
                     value : 'qsDataset',
-                    icon : '/sitools/common/res/images/icons/tree_datasets.png',
+                    icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_datasets.png',
                     scope : this,
                     enableToogle: true,
                     toggleGroup : 'steps',
@@ -123,7 +123,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                 }, {
                     id : 'qsForm',
                     value : 'qsForm',
-                    icon : '/sitools/common/res/images/icons/tree_forms.png',
+                    icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_forms.png',
                     scope : this,
                     enableToogle: true,
                     toggleGroup : 'steps',
@@ -145,7 +145,7 @@ Ext.define('sitools.admin.quickStart.qs', {
                 }, {
                     id : 'qsSecurity',
                     value : 'qsSecurity',
-                    icon : '/sitools/common/res/images/icons/tree_userman.png',
+                    icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_userman.png',
                     scope : this,
                     enableToogle: true,
                     toggleGroup : 'steps',

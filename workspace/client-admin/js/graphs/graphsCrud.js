@@ -79,13 +79,13 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
                 scope : this,
                 handler : this._onSave,
                 xtype : 's-menuButton',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png'
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png'
             }, {
                 text : i18n.get('label.deleteGraph'),
                 scope : this,
                 handler : this._onDelete,
                 xtype : 's-menuButton',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png'
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png'
             } ]
         };
         
@@ -166,7 +166,7 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
                         Ext.Msg.alert(i18n.get('label.warning'), data.message);
                         return false;
                     } else {
-                        popupMessage("", i18n.get('label.graphSaved'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                        popupMessage("", i18n.get('label.graphSaved'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
                         this.loadGraph(projectId);
                     }
                 },

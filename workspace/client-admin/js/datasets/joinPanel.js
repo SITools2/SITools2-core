@@ -103,7 +103,7 @@ Ext.define('sitools.admin.datasets.joinPanel', {
                     } else {
                         popupMessage("",
                                 i18n.get('label.graphSaved'),
-                                loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
+                                loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_active.png');
                         
                         this.loadGraph(projectId);
                     }

@@ -83,12 +83,12 @@ Ext.define('sitools.admin.applications.applicationsRole', {
                 items : [ {
                     text : i18n.get('label.create'),
                     hidden : this.mode === 'select',
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                     handler : this._onCreateRole
                 }, {
                     text : i18n.get('label.remove'),
                     hidden : this.mode === 'select',
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                     handler : this._onDeleteRole
                 } ]
             },
@@ -169,7 +169,7 @@ Ext.define('sitools.admin.applications.applicationsRole', {
     _onDeleteRole : function () {
         var recs = this.gridAuthorizations.getSelectionModel().getSelection();
         if (recs.length === 0) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         this.gridAuthorizations.getStore().remove(recs);
     },

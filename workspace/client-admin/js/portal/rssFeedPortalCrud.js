@@ -145,7 +145,7 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
             },
             items : [ {
                 text : i18n.get('label.save'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png',
                 handler : this.onSave,
                 xtype : 's-menuButton'
             }, '->', {
@@ -200,7 +200,7 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
                 
                 popupMessage("", 
                         i18n.get('label.feedsSaved'),
-                        loadUrl.get('APP_URL') + '/common/res/images/icons/save.png');
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png');
                 
                 this.store.load();
             }

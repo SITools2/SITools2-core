@@ -87,12 +87,12 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
                 items : [{
                     text : i18n.get('label.add'),
                     hidden : this.mode == 'select',
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                     handler : this._onCreate
                 }, {
                     text : i18n.get('label.remove'),
                     hidden : this.mode == 'select',
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                     handler : this._onDelete
                 }, '->', {
                     xtype : 's-filter',
@@ -189,7 +189,7 @@ Ext.define('sitools.admin.usergroups.RolesPanel', {
     _onDelete : function () {
         var recs = this.grid.getSelectionModel().getSelection();
         if (Ext.isEmpty(recs)) {
-            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
             return;
         }
         this.store.remove(recs);

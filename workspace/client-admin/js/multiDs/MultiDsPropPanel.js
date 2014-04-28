@@ -440,7 +440,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', {
             gridId : "gridProperties",            
             items : [ {
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : function () {
 			        var grid = this.gridProperties;
 			        grid.getStore().insert(0, {});
@@ -448,11 +448,11 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', {
                 scope : this
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : function () {
                     var recs = this.gridProperties.getSelectionModel().getSelection();
                     if (Ext.isEmpty(recs)) {
-                        popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                        popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
                         return;
                     }
                     this.gridProperties.getStore().remove(recs);
@@ -616,12 +616,12 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', {
                 items : [{
                     scope : this,
                     text : i18n.get('label.changeFormSize'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/sva_exe_synchrone.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/sva_exe_synchrone.png',
                     handler : this._sizeUp
                 }, {
                     scope : this,
                     text : i18n.get('label.addAdvancedCritera'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_forms.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_forms.png',
                     handler : this._addPanel
                 }]
     

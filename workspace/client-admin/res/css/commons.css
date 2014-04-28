@@ -62,7 +62,7 @@ a.small-link {
 }
 
 .xg-hmenu-help {
-	background-image: url("/sitools/common/res/images/icons/help.png");
+	background-image: url("/sitools/client-public/res/images/icons/help.png");
 	background-position: left center;
 	background-repeat: no-repeat;
 }

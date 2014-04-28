@@ -172,7 +172,7 @@ sitools.admin.datasets.abstractDatasetWin = {
                         return;
                     }
 //                    var f = this.down('form').getForm();
-                    var f = this.formulairePrincipal.down('form').getForm();
+                    var f = this.formulairePrincipal.getForm();
                     var store = this.down('panel[id=gridColumnSelect]').getStore();
 
                     var data = Json.dataset;
@@ -207,7 +207,7 @@ sitools.admin.datasets.abstractDatasetWin = {
                     this.formulairePrincipal.loadDatasources(
                         function () {
                             if (data.datasource) {
-                                var combo = this.down('form').getComponent('comboDataSource');
+                                var combo = this.getComponent('comboDataSource');
                                 var oldValue = combo.getValue();
                                 combo.setValue(data.datasource.id);
                                 combo.fireEvent("initValue", combo, data.datasource.id);
@@ -324,7 +324,7 @@ sitools.admin.datasets.abstractDatasetWin = {
             var tableArea = Ext.get(textarea).up('table').dom;
             if (!Ext.isEmpty(tableArea.classList) && tableArea.classList.contains("ckeditor")) {
                 config.customConfig = 'config-basic.js';
-                config.width = "95%";
+                config.width = "100%";
                 config.displayDatasetLink = false;
                 return true;
             } else {

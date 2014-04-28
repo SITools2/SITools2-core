@@ -109,7 +109,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
             },
             items : [ {
                 text : i18n.get('label.authorizations'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_autorizations.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_autorizations.png',
                 handler : this.onDefineRole,
                 xtype : 's-menuButton'
             }, '->', {
@@ -142,7 +142,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
     onDefineRole : function () {
         var rec = this.getSelectionModel().getLastSelected();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = Ext.create("sitools.admin.applications.applicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,

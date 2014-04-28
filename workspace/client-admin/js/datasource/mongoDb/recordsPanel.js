@@ -142,7 +142,7 @@ Ext.define('sitools.admin.datasource.mongoDb.RecordsPanel', {
             dataIndex : metadata.data.text,
             width : 70,
             items : [{
-                icon: '/sitools/common/res/images/icons/detailJson.png',
+                icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/detailJson.png',
                 tooltip: 'Visualize',
                 handler : function (view, rowIndex, colIndex, item, evt, record) {
                     var column = view.getGridColumns()[colIndex];
@@ -191,7 +191,7 @@ Ext.define('sitools.admin.datasource.mongoDb.RecordsPanel', {
 //                    i++;
 //                }
 //                return "<span>[" + i + " " + i18n.get("label.key") + "] "
-//                        + "<img src=/sitools/common/res/images/icons/detailJson.png></span>";
+//                        + "<img src=/sitoolsloadUrl.get('APP_CLIENT_PUBLIC_URL')/res/images/icons/detailJson.png></span>";
 //            }
         });
         return column;

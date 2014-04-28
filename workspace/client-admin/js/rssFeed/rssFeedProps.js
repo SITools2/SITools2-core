@@ -308,17 +308,17 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
             },
             items : [ {
                 text : i18n.get('label.add'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreate,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }]
@@ -654,7 +654,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
     onModify : function () {
         var rec = this.getLastSelectedRecord(this.gridPanel);
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = Ext.create("sitools.admin.rssFeed.rssFeedItemProps", {
             store : this.storeItem,
@@ -671,7 +671,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProps', {
     onDelete : function () {
         var rec = this.getLastSelectedRecord(this.gridPanel);
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         this.storeItem.remove(rec);
     },

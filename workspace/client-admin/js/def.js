@@ -248,7 +248,7 @@ function showResponse(ret) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
             return false;
         }
-        popupMessage("", i18n.get(Json.message), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+        popupMessage("", i18n.get(Json.message), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         
         return true;
     } catch (err) {

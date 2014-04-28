@@ -195,7 +195,7 @@ var clientAdmin = {
 	        xtype : 'button',
 	        tooltip : i18n.get('label.logout'),
 	        itemId : 'menu_logout',
-	        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/logout.png',
+	        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/logout.png',
 	        cls : 'x-custom-button-color',
 	        handler : function () {
 	            sitools.userProfile.LoginUtils.logout();
@@ -228,7 +228,7 @@ var clientAdmin = {
 	        }, '-', {
 	            id : 'quickStart',
 	            tooltip : 'Quick Start',
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/quick_start.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/quick_start.png',
                 style : 'padding:2px',
                 cls : 'x-custom-button-color',
                 handler : function () {
@@ -258,7 +258,7 @@ var clientAdmin = {
 //                text : 'Version',
                 id : 'versionButtonId',
                 tooltip : 'Version',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/version.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/version.png',
                 style : 'padding:2px',
                 cls : 'x-custom-button-color',
                 handler : function () {
@@ -285,11 +285,11 @@ var clientAdmin = {
 //				    mainPanel.doLayout();
 			    },
 		        pressed: true,
-		        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png'
+		        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/help.png'
 		    }, /*{
 		        tooltip : 'Advanced Mode',
 		        id : 'switchModeId',
-		        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/maintenance.png',
+		        icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/maintenance.png',
 		        enableToggle: true,
 		        pressed : true,
                 style : 'padding:2px',

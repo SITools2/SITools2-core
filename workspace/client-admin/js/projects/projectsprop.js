@@ -50,23 +50,23 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     /** Default Value when creating a project. */
     defaultDescription : "SITools2 est une plate-forme web conviviale permettant de mettre en place un système de recherche et d'accès aux données à partir d'une ou plusieurs bases de données existantes. SiTools2 permet de prendre en compte et de s'adapter aux structures de nombreuses bases de données qui sont gérées dans divers centres scientifiques, et permet d'éviter des processus lourds et complexes de migration de données. <div class='field-items'> <p>L'architecture de cette plate-forme est composée&nbsp;:</p> <ol> <li>d'un serveur de données exposant des ressources,&nbsp; </li><li>d'une interface web pour l'administrateur permettant de configurer l'ensemble des fonctionnalités du serveur,&nbsp; </li><li>d'une interface web pour les utilisateurs comportant un portail qui liste les projets, avec un bureau pour chaque projet qui expose l'ensemble des services mis à disposition par l'administrateur,&nbsp; </li><li>d'un mécanisme de plugins permettant aux développeurs d'ajouter des fonctionnalités métiers aussi bien au niveau du serveur qu'au niveau du client et de les partager avec une communauté d'utilisateurs.&nbsp; </li></ol> <p>SITools2 s'articule autour de trois concepts importants&nbsp;:</p> <ul> <li>la source de données&nbsp;: infrastructure contenant les données (actuellement une base de données relationnelle accessible via l'API JDBC), </li><li>le jeu de données&nbsp;: exposition d'un sous-ensemble de la source de données par l'intermédiaire d'un service web, </li><li>le projet&nbsp;: ensemble de jeux de données. </li></ul> <p>Des services peuvent être ensuite définis à partir de ces trois concepts&nbsp;:</p> <ul> <li>définition et exposition du formulaire de recherche, </li><li>définition et exposition de la recherche OpenSearch, </li><li>définition et exposition des fonctions de conversion (unité, fonction de transfert), </li><li>définition et exposition des fonctions de filtrage, </li><li>définition et exposition de dictionnaires de données, </li><li>définition et exposition de flux RSS, </li><li>définition et exposition des plugins. </li></ul> <p>Comme tout système d'accès, il est important de pouvoir sécuriser l'accès à certaines ressources selon le profil de l'utilisateur. C'est pourquoi SITools2 implémente une gestion complète des utilisateurs (information personnalisable, espace de stockage sur le serveur de données) et permet de sécuriser l'ensemble des ressources en fonction du rôle de chaque utilisateur.</p></div>", 
     /** Default Value when creating a project. */
-    defaultHeader : '<div id="top-header" style="background-color: black;"> <a href="http://www.cnes.fr" target="_blank"> <img src="/sitools/common/res/images/entete_cnes.png" style="border: none;"> </a> </div>', 
+    defaultHeader : '<div id="top-header" style="background-color: black;"> <a href="http://www.cnes.fr" target="_blank"> <img src="/sitools/client-public/res/images/entete_cnes.png" style="border: none;"> </a> </div>', 
     /** Default Value when creating a project. */
     defaultLinks : [{
         name : "label.legalInformations", 
-        url : "/sitools/common/html/legalInformations.html"
+        url : "/sitools/client-public/html/legalInformations.html"
     }, {
         name : "label.personalInformations", 
-        url : "/sitools/common/html/personalInformations.html"
+        url : "/sitools/client-public/html/personalInformations.html"
     }, {
         name : "label.contacts", 
-        url : "/sitools/common/html/contacts.html"
+        url : "/sitools/client-public/html/contacts.html"
     }, {
         name : "label.help", 
-        url : "/sitools/common/html/help.html"
+        url : "/sitools/client-public/html/help.html"
     }, {
         name : "label.editorialInformations", 
-        url : "/sitools/common/html/editorialInformations.html"
+        url : "/sitools/client-public/html/editorialInformations.html"
     }],
     layout : 'fit',
     
@@ -143,12 +143,12 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             items : [{
                 text : i18n.get('label.add'),
                 hidden : this.mode === 'select',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this._onCreate
             }, {
                 text : i18n.get('label.remove'),
                 hidden : this.mode === 'select',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this._onDelete
             }, '->', {
                 xtype : 's-filter',
@@ -344,7 +344,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         this.allModulesAttachedBtn = Ext.create('Ext.button.Button', {
             text : this.allModulesDetached ? i18n.get('label.allDetached') : i18n.get('label.allAttached'),
             hidden : this.mode === 'select',
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
             handler : this._onAllModulesAttached, 
             scope : this
         });
@@ -352,7 +352,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         
         this.listRolesBtn = Ext.create('Ext.button.Button', {
             text : i18n.get('label.rolecrud'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_role.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_role.png',
             scope : this,
             handler : this._onRoles
         });
@@ -534,14 +534,14 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 xtype : 'textfield'
             }
         }, {
-            header : i18n.get('headers.category') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            header : i18n.get('headers.category') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'categoryModule',
             width : 100, 
             editor : {
                 xtype : 'textfield'
             }
         }, {
-            header : i18n.get('headers.divIdToDisplay') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            header : i18n.get('headers.divIdToDisplay') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'divIdToDisplay',
             width : 100, 
             editor : {
@@ -552,7 +552,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             header : i18n.get('headers.projectModuleParameters'),
             width : 100,
             items : [{
-                icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_projects_resources.png",
+                icon : loadUrl.get('APP_URL') + "loadUrl.get('APP_CLIENT_PUBLIC_URL')/res/images/icons/tree_projects_resources.png",
                 scope : this,
                 handler : function (grid, row, col, item, e) {
                     this.modulePanel.getSelectionModel().select(row);
@@ -628,12 +628,12 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 gridId : "linksPanelGrid",
                 items : [ {
                     text : i18n.get('label.create'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                     handler : this.onCreateLink,
                     scope : this
                 }, {
                     text : i18n.get('label.delete'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                     handler : this.onDeleteLink,
                     scope : this
                 }]
@@ -733,7 +733,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     _onDelete : function () {
         var recs = this.gridDataSets.getSelectionModel().getSelection();
         if (recs.length === 0) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         this.gridDataSets.getStore().remove(recs);
     },
@@ -741,7 +741,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     _onRoles : function () {
         var rec = this.modulePanel.getSelectionModel().getSelection()[0];
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var gp = Ext.create('sitools.admin.usergroups.RolesPanel', {
             mode : 'list',
@@ -753,7 +753,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     _onModuleConfig : function () {
         var rec = this.modulePanel.getSelectionModel().getSelection()[0];
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var mc = Ext.create('sitools.admin.projects.modules.ProjectModuleConfig', {
             module : rec

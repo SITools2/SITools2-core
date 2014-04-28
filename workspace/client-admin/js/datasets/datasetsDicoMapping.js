@@ -185,14 +185,14 @@ Ext.define('sitools.admin.datasets.DicoMapping', {
                     }, this.checkboxDefaultDictionary, '-'
                     , {
                     text : i18n.get('label.save'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png',
                     handler : function () {
                         this.onValidate(false);
                     },
                     disabled : this.masked
                 }, {
                     text : i18n.get('label.delete'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                     handler : this.onDelete,
                     disabled : this.masked
                 }]
@@ -433,11 +433,11 @@ Ext.define('sitools.admin.datasets.DicoMapping', {
                 },
                 items : [ {
                     text : i18n.get('label.map'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                     handler : this.onAddMapping
                 }, {
                     text : i18n.get('label.unmap'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                     handler : this.onRemoveMapping
                 }]
             },
@@ -558,7 +558,7 @@ Ext.define('sitools.admin.datasets.DicoMapping', {
                 this.loadMappingData(json.dictionaryMapping);
 				
                 return popupMessage("", i18n.get("dictionary.mapping.saved"), 
-                        loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
 
 //                new Ext.ux.Notification({
 //                    iconCls : 'x-icon-information',

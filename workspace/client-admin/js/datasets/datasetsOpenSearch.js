@@ -352,34 +352,34 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
         // définition des différents boutons en fonction des états
         this.buttonState1 = [{
             text : i18n.get('label.saveIndex'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png',
             handler : this._onSaveIndexHandler,
             xtype : 's-menuButton'
         }, {
             text : i18n.get('label.help'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/help.png',
             handler : this._onHelp,
             xtype : 's-menuButton'
         } ];
 
         this.buttonState2 = [{
             text : i18n.get('label.saveIndex'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png',
             handler : this._onUpdateIndexHandler,
             xtype : 's-menuButton'
         }, {
             text : i18n.get('label.deleteIndex'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
             handler : this._onDeleteIndex,
             xtype : 's-menuButton'
         }, {
             text : i18n.get('label.activateIndex'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_active.png',
             handler : this._onActivateIndex,
             xtype : 's-menuButton'
         }, {
             text : i18n.get('label.help'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/help.png',
             handler : this._onHelp,
             xtype : 's-menuButton'
         }];
@@ -388,17 +388,17 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
         
         this.buttonState4 = [{
             text : i18n.get('label.refreshIndex'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_refresh.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_refresh.png',
             handler : this._onRefreshIndex,
             xtype : 's-menuButton'
         }, {
             text : i18n.get('label.desactivateIndex'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png',
             handler : this._onDesactivateIndex,
             xtype : 's-menuButton'
         }, {
             text : i18n.get('label.help'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/help.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/help.png',
             handler : this._onHelp,
             xtype : 's-menuButton'
         }];
@@ -950,13 +950,13 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
                 if (!data.success) {
                     popupMessage("",  
                             data.message,
-                            loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-error.png');
+                            loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-error.png');
                     return false;
                 }
                 if (!quit) {
                     popupMessage("",  
                             i18n.get('label.indexSaved'),
-                            loadUrl.get('APP_URL') + '/common/res/images/icons/save.png');
+                            loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png');
                     
                     this.updateButtons(this.state2);
                 } else {

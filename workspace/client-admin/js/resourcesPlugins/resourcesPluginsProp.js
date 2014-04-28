@@ -710,7 +710,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                     return false;
                 }
 
-                popupMessage("", i18n.get('label.resourcePlugin' + this.parentType + 'Saved'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                popupMessage("", i18n.get('label.resourcePlugin' + this.parentType + 'Saved'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
                 
                 this.parentPanel.getStore().reload();
                 this.close();

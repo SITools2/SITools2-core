@@ -73,7 +73,7 @@ Ext.define('sitools.admin.storages.storageCopyProp', {
             xtype : 'button',
             iconAlign : 'right',
             text : i18n.get('label.storageRunCopy'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/converter.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/converter.png',
             scope : this,
             handler : this.runCopy
         } ];

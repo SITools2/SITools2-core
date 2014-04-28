@@ -86,11 +86,11 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             },
             items : [ {
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreate
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete
             } ]
         };
@@ -177,7 +177,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
     onDelete : function () {
         var recs = this.gridValues.getSelectionModel().getSelection();
         if (Ext.isEmpty(recs)) {
-            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
             return;
         }
         this.gridValues.getStore().remove(recs);

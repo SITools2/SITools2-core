@@ -42,7 +42,7 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
         if (this.action == 'modify') {
             var rec = this.record;
             if (!rec) {
-                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
             }
             jsObjName = rec.get("jsAdminObject");
             config = {

@@ -256,7 +256,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
                 width : 200,
                 sortable : false
             }, {
-                header : i18n.get('label.value') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                header : i18n.get('label.value') + ' <img title="Editable" height=14 widht=14 src="/sitools'+ loadUrl.get('APP_CLIENT_PUBLIC_URL') +'/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'value',
                 width : 100,
                 sortable : false,
@@ -397,7 +397,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
             if (newTab.id == "fieldMappingFormPanel" || newTab.id == "gridFieldMapping") {
                 var rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
                 if (!rec) {
-                    popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                    popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
 //                    var tmp = new Ext.ux.Notification({
 //                        iconCls : 'x-icon-information',
 //                        title : i18n.get('label.information'),
@@ -499,7 +499,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
         if (this.action == "create") {
             rec = this.getLastSelectedRecord(this.gridapplicationPlugin);
             if (!rec) {
-                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
 //                var tmp = new Ext.ux.Notification({
 //                    iconCls : 'x-icon-information',
 //                    title : i18n.get('label.information'),

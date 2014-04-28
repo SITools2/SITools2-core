@@ -192,7 +192,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
 
         var visible = {
             xtype : 'checkcolumn',
-            header : i18n.get('headers.visible') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            header : i18n.get('headers.visible') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'visible',
             width : 55,
             listeners : {
@@ -222,7 +222,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             width : 230,
             sortable : false
         }, {
-            header : i18n.get('label.labelEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            header : i18n.get('label.labelEditable') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'label',
             width : 140,
             editor : {
@@ -235,7 +235,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 }
             }
         }, {
-            header : i18n.get('label.categoryEditable') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            header : i18n.get('label.categoryEditable') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'category',
             width : 120,
             editor : {
@@ -248,7 +248,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 }
             }
         }, {
-            header : 'Position' + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            header : 'Position' + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             dataIndex : 'position',
             width : 100,
             editor: {
@@ -291,7 +291,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
 
         this.savePropertiesBtn = Ext.create("Ext.Button", {
             text : i18n.get('label.saveProperties'),
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/save.png',
             handler : this.onSaveProperties,
             tooltip : i18n.get('label.savePropertiesHelp'),
             xtype : 's-menuButton'
@@ -304,32 +304,32 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             },
             items : [ this.comboParents, '-', {
                 text : i18n.get('label.addServiceIhm'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create_serviceIhm.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create_serviceIhm.png',
                 handler : function () {
                     this.onCreate('GUI');
                 },
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.addServiceServer'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create_serviceServer.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create_serviceServer.png',
                 handler : function () {
                     this.onCreate('SERVER');
                 },
                 xtype : 's-menuButton'
             }, '-', {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }, this.savePropertiesBtn, '-',
             {
                 text : i18n.get('label.duplicate'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/presentation1.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/presentation1.png',
                 handler : this.onDuplicate,
                 xtype : 's-menuButton'
             }]
@@ -437,7 +437,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         var rec = this.getLastSelectedRecord();
         
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
        
 
@@ -459,7 +459,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         var arrayRecords = this.getSelectionModel().getSelection();
         
         if (Ext.isEmpty(arrayRecords)) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
         var datasetServicesCopy = new Ext.create("sitools.admin.datasets.services.datasetServicesCopyProp", {
@@ -484,7 +484,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Msg.show({
             title : i18n.get('label.delete'),
