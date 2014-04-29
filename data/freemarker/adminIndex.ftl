@@ -39,9 +39,7 @@
     <!-- Sitools specific css -->
     <link rel="stylesheet" type="text/css" href="res/css/main.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/notification/css/Notification.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/lockingGrid/columnLock.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/fileUploadField/fileUploadField.css"></link>
-    <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/sliderRange/css/ux/SliderRange.css"></link>
     
     
     <link rel="stylesheet" type="text/css" href="res/css/icons.css"></link>

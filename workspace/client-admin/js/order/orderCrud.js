@@ -113,7 +113,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
             items : [{
                 text : i18n.get('label.details'),
                 // icon: 'res/images/icons/toolbar_project_add.png',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_details.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_details.png',
                 handler : this._onDetail,
                 xtype : 's-menuButton'
             }, {
@@ -131,7 +131,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
             }, {
                 text : i18n.get('label.delete'),
                 // icon: 'res/images/icons/toolbar_project_edit.png',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }, '->', {
@@ -162,7 +162,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
     _onDetail : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.order.orderPropPanel({
             url : this.url,
@@ -176,7 +176,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
     _onActive : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.order.events({
             baseUrl : this.url + "/" + rec.data.id,
@@ -190,7 +190,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
     _onDone : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.component.order.events({
             baseUrl : this.url + "/" + rec.data.id,

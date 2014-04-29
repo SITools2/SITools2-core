@@ -115,7 +115,7 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsersPanel', {
                 },
                 items : [ {
                     text : i18n.get('label.unlockAccount'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/unlocked_user.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/unlocked_user.png',
                     handler : this._onRemoveFromBlacklist
                 }, '->', {
                     xtype : 's-filter',

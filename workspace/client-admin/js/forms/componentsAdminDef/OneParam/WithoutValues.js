@@ -41,8 +41,8 @@ Ext.define('sitools.admin.forms.oneParam.withoutValues', {
         this.add(this.componentDefaultValue);
 
     },
-    onRender : function () {
-        sitools.admin.forms.oneParam.withoutValues.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.oneParam.withoutValues.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValue.setValue(this.selectedRecord.data.defaultValues[0]);

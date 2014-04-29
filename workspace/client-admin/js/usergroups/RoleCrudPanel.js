@@ -32,7 +32,6 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
 	alias : 'widget.s-rolecrud',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.ROLE,
     forceFit : true,
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'
@@ -66,7 +65,14 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
             }, {
                 name : 'description',
                 type : 'string'
-            }]
+            }],
+            listeners : {
+                scope : this,
+                load : function (store, records) {
+                    console.dir(records);
+                }
+            }
+            
         });
 
         this.columns = {
@@ -101,17 +107,17 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
             },
             items : [{
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreate,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }, {
@@ -170,7 +176,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
     onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.usergroups.RolePropPanel({
             url : this.url + '/' + rec.data.id,
@@ -227,7 +233,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
     onUsers : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.usergroups.UsersPanel({
             mode : 'list',
@@ -243,7 +249,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
     onGroups : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var gp = new sitools.admin.usergroups.GroupsPanel({
             mode : 'list',

@@ -248,7 +248,7 @@ function showResponse(ret) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
             return false;
         }
-        popupMessage("", i18n.get(Json.message), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+        popupMessage("", i18n.get(Json.message), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         
         return true;
     } catch (err) {
@@ -357,36 +357,36 @@ Ext.override(Ext.grid.GridPanel, {
  */
 //TODO search to resolve bug tooltip on fields
 
-//Ext.override(Ext.form.field.Base, {
-//	tooltip : null, 
-//	listeners : {
-//		render: function () {
-////			Ext.form.Field.superclass.render.apply(this, arguments);
-//			
-//			if (!Ext.isEmpty(this.tooltip)) {
-//				var ttConfig = {};
-//				if (Ext.isString(this.tooltip)) {
-//					ttConfig = {
-//						html : this.tooltip, 
-//						width : 200, 
-//						dismissDelay : 5000
-//					};
-//				} 
-//				else if (Ext.isObject(this.tooltip)) {
-//                    ttConfig = this.tooltip;
-//                } else {
-//                    return;
-//                }
-//                Ext.apply(ttConfig, {
-//                    target : this.el
-//                });
-//				this.tTip = new Ext.ToolTip(ttConfig);
-//			}
-//			
+Ext.override(Ext.form.field.Base, {
+	tooltip : null, 
+	listeners : {
+		afterrender: function () {
+//			Ext.form.Field.superclass.afterrender.apply(this, arguments);
+			
+			if (!Ext.isEmpty(this.tooltip)) {
+				var ttConfig = {};
+				if (Ext.isString(this.tooltip)) {
+					ttConfig = {
+						html : this.tooltip, 
+						width : 200, 
+						dismissDelay : 5000
+					};
+				} 
+				else if (Ext.isObject(this.tooltip)) {
+                    ttConfig = this.tooltip;
+                } else {
+                    return;
+                }
+                Ext.apply(ttConfig, {
+                    target : this.el
+                });
+				this.tTip = new Ext.ToolTip(ttConfig);
+			}
+			
 //			this.callParent(arguments);
-//		}
-//	}
-//});
+		}
+	}
+});
 
 
 

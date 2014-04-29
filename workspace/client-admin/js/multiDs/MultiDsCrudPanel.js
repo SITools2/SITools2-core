@@ -38,22 +38,17 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
     pageSize : 10,
     urlMultiDs : "/tmp",
     forceFit : true,
+    mixins : {
+        utils : "js.utils.utils"
+    },
 
     initComponent : function () {
         this.baseUrlMultiDs = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
         this.urlProjects = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
         
-        this.httpProxyMultiDs = new Ext.data.HttpProxy({
-            url : this.baseUrlMultiDs,
-            restful : true,
-            method : 'GET'
-        });
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            proxy : this.httpProxyMultiDs,
+        this.store = Ext.create("Ext.data.JsonStore", {
+            pageSize : this.pageSize,
             remoteSort : true,
-            idProperty : 'id',
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -70,14 +65,24 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             } ]
         });
 
-        var storeProjects = new Ext.data.JsonStore({
+        var storeProjects = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : this.urlProjects,
+                limitParam : undefined,
+                startParam : undefined,
+                simpleSortMode : true,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'id'
+                }
+            },
             fields : [ 'id', 'name'],
-            url : this.urlProjects,
-            root : "data",
             autoLoad : true
         });
         
-        this.comboProjects = new Ext.form.ComboBox({
+        this.comboProjects = Ext.create("Ext.form.ComboBox", {
             store : storeProjects,
             displayField : 'name',
             valueField : 'id',
@@ -90,20 +95,19 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             listeners : {
                 scope : this,
                 select : function (combo, rec, index) {
-//                    this.projectId = rec.data.id;
-                    this.loadProject(rec[0].data.id);
+                    this.loadProject(rec[0].get("id"));
                 }
 
             }
         });
 
-        this.columns = new Ext.grid.ColumnModel({
+        this.columns = {
             // specify any defaults for each column
             defaults : {
                 sortable : true
             // columns are not sortable by default
             },
-            columns : [ {
+            items : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
                 width : 100,
@@ -114,7 +118,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
                 width : 400,
                 sortable : false
             } ]
-        });
+        };
 
         this.bbar = {
             xtype : 'pagingtoolbar',
@@ -132,17 +136,17 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             },
             items : [ this.comboProjects, {
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreate,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }]
@@ -157,7 +161,17 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
     },
     loadProject : function (projectId) {
         // alert (dictionaryId);
-        this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
+        
+        this.getStore().setProxy({
+            type : 'ajax',
+            url : this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'),
+            reader : {
+                type : 'json',
+                root : 'data',
+                idProperty : 'id'
+            }
+        });
+        
         this.getStore().load({
             scope : this,
             callback : function () {
@@ -172,9 +186,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
         if (Ext.isEmpty(projectId)) {
             return;
         }
-        this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
-        
-        var up = new sitools.admin.multiDs.MultiDsPropPanel({
+        var up = Ext.create("sitools.admin.multiDs.MultiDsPropPanel", {
             urlMultiDs : this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), 
             action : 'create',
             store : this.getStore()
@@ -187,29 +199,28 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
         if (Ext.isEmpty(projectId)) {
             return;
         }
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         }
-        this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
         
-        var up = new sitools.admin.multiDs.MultiDsPropPanel({
+        var up = Ext.create("sitools.admin.multiDs.MultiDsPropPanel", {
             urlMultiDs : this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL'), 
             action : 'modify',
             store : this.getStore(), 
-            formId : rec.data.id, 
-            collection : rec.data.collection, 
-            dictionary : rec.data.dictionary
+            formId : rec.get("id"), 
+            collection : rec.get("collection"), 
+            dictionary : rec.get("dictionary")
         });
         up.show(ID.PROP.MULTIDSPROP);
     },
 
     onDelete : function () {
-        var rec = this.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('formsCrud.delete'),

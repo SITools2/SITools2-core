@@ -33,12 +33,9 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
     extend : 'Ext.grid.Panel',
     width : 220,
     id: 'gridsource',
-    draggable : true,
     layout : "fit",
     title : i18n.get('title.componentList'),
     autoScroll : true, 
-    ddGroup : 'gridComponentsList',
-    enableDragDrop : true,
     forceFit : true,
     stripeRows: true,
 
@@ -114,7 +111,7 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
         
         this.viewConfig = {
             plugins: {
-                ddGroup: 'gridComponentsList',
+                dragGroup: 'gridComponentsList',
                 ptype: 'gridviewdragdrop',
                 enableDrop: false
             }
@@ -123,44 +120,6 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
         sitools.admin.forms.componentsListPanel.superclass.initComponent.call(this);
     },
     
-    
-    afterRender : function () {
-        sitools.admin.forms.componentsListPanel.superclass.afterRender.apply(this, arguments);
-        this.dd = new Ext.dd.DragDrop(this.getId(), 'gridComponentsTest', {});
-        
-        new Ext.dd.DragZone(this.getEl(), {
-            notifyDrag: function(dragsource, event, data) {
-                Ext.example.msg("drag target");
-            }
-        });
-        
-//        this.dd.addToGroup('gridComponentsTest');
-//        this.gridComponents.setSize(this.body.getSize());
-    },
-//    onValidate : function () {
-//        var rec = this.getSelectionModel().getSelected();
-//        if (!rec) {
-//            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
-//        }
-//        var ComponentWin = new sitools.admin.forms.componentPropPanel({
-//            urlAdmin : rec.data.jsonDefinitionAdmin,
-//            datasetColumnModel : this.datasetColumnModel,
-//            ctype : rec.data.type,
-//            gridFormComponents : this.gridFormComponents,
-//            action : this.action,
-//            componentDefaultHeight : rec.data.componentDefaultHeight,
-//            componentDefaultWidth : rec.data.componentDefaultWidth,
-//            dimensionId : rec.data.dimensionId,
-//            unit : rec.data.unit,
-//            extraParams : rec.data.extraParams, 
-//            jsAdminObject : rec.data.jsAdminObject, 
-//            jsUserObject : rec.data.jsUserObject, 
-//            context : this.context, 
-//            storeConcepts : this.storeConcepts
-//        });
-//        ComponentWin.show();
-//        this.close();
-//    },
     onClose : function () {
         this.close();
     }

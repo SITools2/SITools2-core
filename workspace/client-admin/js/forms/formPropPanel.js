@@ -269,12 +269,12 @@ Ext.define('sitools.admin.forms.formPropPanel', {
                 items : [{
                     scope : this,
                     text : i18n.get('label.changeFormSize'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/sva_exe_synchrone.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/sva_exe_synchrone.png',
                     handler : this._sizeUp
                 }, {
                     scope : this,
                     text : i18n.get('label.addAdvancedCritera'),
-                    icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_forms.png',
+                    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_forms.png',
                     handler : this._addPanel
                 }]
     

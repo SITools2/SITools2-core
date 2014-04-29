@@ -296,11 +296,11 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             },
             items : [{
                 text : i18n.get('label.assignUnit'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh_clue.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/refresh_clue.png',
                 handler : this.onAssignUnit
             }, {
                 text : i18n.get('label.deleteUnit'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh_clue.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/refresh_clue.png',
                 handler : this.onDeleteUnit
             }]
         });
@@ -312,15 +312,15 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             },
             items : [{
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreateColumn
             }, {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModifyColumn
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDeleteColumn
             }, {
                 text : i18n.get('label.action'), 

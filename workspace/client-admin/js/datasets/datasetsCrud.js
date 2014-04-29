@@ -128,43 +128,43 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             },
             items : [{
 	            text : i18n.get('label.create'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
 	            handler : this.onCreate
 	        }, {
 	            text : i18n.get('label.modify'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
 	            handler : this.onEdit
 	        }, {
 	            text : i18n.get('label.delete'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
 	            handler : this.onDelete
 	        }, {
 	            text : i18n.get('label.opensearch'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_open_search.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_open_search.png',
 	            handler : this.onEditOpenSearch
 	        }, {
 	            text : i18n.get('label.refresh'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_refresh.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_refresh.png',
 	            handler : this._onRefresh
 	        }, {
 	            text : i18n.get('label.active'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_active.png',
 	            handler : this._onActive
 	        }, {
 	            text : i18n.get('label.disactive'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png',
 	            handler : this._onDisactive
 	        }, {
 	            text : i18n.get('label.sqlString'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/sql_request.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/sql_request.png',
 	            handler : this._getSqlString
 	        }, {
                 text : i18n.get('label.semantic'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_dictionary.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_dictionary.png',
                 handler : this._onEditSemantic
             }, {
 	            text : i18n.get('label.duplicate'),
-	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/presentation1.png',
+	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/presentation1.png',
 	            handler : this.onDuplicate
 	        }, '->', {
                 xtype : 's-filter',
@@ -190,7 +190,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
 	onEdit : function () {
 		var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         if (rec.data.status == "ACTIVE") {
 			this.onView();
@@ -208,7 +208,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
 	onDuplicate : function () {
 		var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
         var up = Ext.create('sitools.component.datasets.datasetsMultiTablesPanel', {
@@ -252,7 +252,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     onView : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
         var up = Ext.create('sitools.component.datasets.datasetsMultiTablesPanel', {
@@ -274,7 +274,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
             return;
         }
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
         var up = Ext.create('sitools.component.datasets.datasetsMultiTablesPanel', {
@@ -322,7 +322,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
                         Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
-                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {
                     this.store.reload();
@@ -339,7 +339,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     onEditOpenSearch : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
         var up = Ext.create('sitools.admin.datasets.datasetsOpenSearch', {
@@ -357,7 +357,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onRefresh : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         if (rec.data.status != i18n.get("status.active")) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
@@ -372,7 +372,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
                         Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
-                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_refresh.png');
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_refresh.png');
                 
                 if (jsonResponse.success) {
                     this.store.reload();
@@ -388,7 +388,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onActive : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/start',
@@ -398,7 +398,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
                         Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
-                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png');
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_active.png');
                 
                 if (jsonResponse.success) {
                     this.store.reload();
@@ -414,7 +414,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onDisactive : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/stop',
@@ -424,7 +424,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
                         Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
-                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png');
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png');
                 
                 if (jsonResponse.success) {
                     this.store.reload();
@@ -440,7 +440,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _getSqlString : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/getSqlString',
@@ -478,7 +478,7 @@ Ext.define('sitools.admin.datasets.datasetsCrudPanel', {
     _onEditSemantic : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         } 
         var up = new sitools.admin.datasets.DicoMapping({
             url : this.url + '/' + rec.data.id,

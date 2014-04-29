@@ -41,7 +41,7 @@ Ext.define('sitools.component.logs.analogProp', {
                 xtype : 'button',
                 text : i18n.get('label.logGenerate'),
                 scope : this,
-                icon : '/sitools/common/res/images/icons/tree_application_plugin.png',
+                icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_application_plugin.png',
                 handler : this.refresh
             } ]
         };

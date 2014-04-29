@@ -105,7 +105,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
             },
             items : [ {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             } ]
@@ -122,7 +122,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
     onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
         var cssProp = new sitools.component.fileEditor.fileEditorProp({

@@ -299,14 +299,6 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
         sitools.component.datasets.datasetsMultiTablesPanel.superclass.initComponent.call(this);
     }, 
     /**
-     * @method
-     * Execute the parent onRender, and load the dataset, if url is set.
-     */
-    onRender : function () {
-        sitools.component.datasets.datasetsMultiTablesPanel.superclass.onRender.apply(this, arguments);
-        
-    }, 
-    /**
      * called when user click on Ok button. 
      * it will 
      * <ul class="mdetail-params">

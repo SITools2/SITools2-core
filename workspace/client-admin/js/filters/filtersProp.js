@@ -249,7 +249,7 @@ Ext.define('sitools.component.filters.filtersProp', {
                 width : 100,
                 sortable : false
             }, {
-                header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                header : i18n.get('label.value') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
                 dataIndex : 'value',
                 width : 80,
                 sortable : false,

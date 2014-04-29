@@ -38,7 +38,7 @@ Ext.define('sitools.component.fileEditor.licenceEditorProp', { extend : 'Ext.Pan
                 xtype : 'button',
                 text : i18n.get('label.save'),
                 scope : this,
-                icon : '/sitools/common/res/images/icons/save.png',
+                icon : '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/save.png',
                 handler : this.onValidate
             } ]
         });

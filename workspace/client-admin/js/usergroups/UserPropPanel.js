@@ -125,11 +125,11 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
             },
             items : [ {
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreateProperties
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDeleteProperties
             }]
         });
@@ -271,12 +271,12 @@ Ext.define('sitools.admin.usergroups.UserPropPanel', {
      * Delete the selected user property
      */
     onDeleteProperties : function () {
-        var s = this.gridProperties.getSelectionModel().getSelections();
-        var i, r;
-        for (i = 0; s[i]; i++) {
-            r = s[i];
-            this.gridProperties.getStore().remove(r);
+        var recs = this.gridProperties.getSelectionModel().getSelection();
+        if (Ext.isEmpty(recs)) {
+            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+            return;
         }
+        this.gridProperties.getStore().remove(recs);
     },
 
     /**

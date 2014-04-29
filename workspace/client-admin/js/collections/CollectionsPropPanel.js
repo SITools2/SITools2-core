@@ -96,12 +96,12 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
             items : [ {
                 text : i18n.get('label.add'),
                 hidden : this.mode == 'select',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this._onAttachDataset
             }, {
                 text : i18n.get('label.remove'),
                 hidden : this.mode == 'select',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this._onDeleteDataset
             } ]
         };
@@ -220,7 +220,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
     _onDeleteDataset : function () {
         var recs = this.getLastSelectedRecord(this.gridDataSets);
         if (recs.length === 0) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         this.gridDataSets.getStore().remove(recs);
     },

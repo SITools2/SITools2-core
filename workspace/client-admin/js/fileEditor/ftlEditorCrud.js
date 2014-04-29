@@ -43,7 +43,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
-//        this.iconCls = loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png';
+//        this.iconCls = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png';
 
          this.store = Ext.create("Ext.data.JsonStore", {
             pageSize : this.pageSize,
@@ -105,7 +105,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
             },
             items : [{
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             }]
@@ -121,7 +121,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
     onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
         var l = rec.data.name.length;

@@ -103,7 +103,7 @@ Ext.define('sitools.admin.menu.TreeMenu', {
         mainPanel.add({
             xtype : 'panel',
             width: "100%",
-            bodyCls : 'admin-bg',
+//            bodyCls : 'admin-bg',
             border : false,
             bodyBorder : false,
             items : [{

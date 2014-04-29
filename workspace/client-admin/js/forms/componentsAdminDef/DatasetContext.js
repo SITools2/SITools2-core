@@ -33,9 +33,7 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
 	 * @param {} scope the scope for this method.
 	 */
 	this.buildComboParam1 = function (scope) {
-		scope.storeColumn = new Ext.data.JsonStore({
-	        root : 'ColumnModel',
-	        idProperty : 'header',
+		scope.storeColumn = Ext.create("Ext.data.JsonStore", {
 	        remoteSort : false,
 	        fields : [ {
 	            name : 'id',
@@ -103,7 +101,7 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
                 scope.storeColumn.add(column);
             }
         }, this);
-		return new Ext.form.ComboBox({
+		return Ext.create("Ext.form.ComboBox", {
             fieldLabel : i18n.get('label.column') + "1",
             triggerAction : 'all',
             name : "PARAM1",
@@ -125,7 +123,7 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
 	this.buildCombosConeSearch = function (scope) {
 		var labels = ['X/RA', 'Y/DEC', 'Z/ID'];
         for (var i = 1; i <= 3; i++) {
-			scope['mapParam' + i] = new Ext.form.ComboBox({
+			scope['mapParam' + i] = Ext.create("Ext.form.ComboBox", {
 			    fieldLabel : labels[i - 1],
 			    triggerAction : 'all',
 			    name : "PARAM" + i,
@@ -140,9 +138,7 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
 			    
 			}); 
 			if (scope.action == "modify") {
-				Ext.apply(scope['mapParam' + i], {
-					value : scope.selectedRecord.data.code[i - 1]
-				});
+				scope['mapParam' + i].setValue(scope.selectedRecord.data.code[i - 1]);
 			}
 	        //this.setHeight(this.getHeight() + 30);
 			//this.ownerCt.ownerCt.setHeight(this.ownerCt.ownerCt.getHeight() + 30);

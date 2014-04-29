@@ -31,7 +31,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
     extend : 'Ext.Container',
     regToday : new RegExp("^\{\\$TODAY\}"), 
     initComponent : function () {
-        this.context = new sitools.common.forms.ComponentFactory(this.context);
+        this.context = Ext.create("sitools.common.forms.ComponentFactory", this.context);
         //formattage de extraParams : 
         var extraParams = {};
         Ext.each(this.extraParams, function (param) {
@@ -54,7 +54,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
         var valueFrom = this.getDefaultValue(this.defaultValues[0]) ;
 		var valueTo = this.getDefaultValue(this.defaultValues[1]) ;
 		
-        this.fieldFrom = new Ext.form.DateField({
+        this.fieldFrom = Ext.create("Ext.form.DateField", {
             allowBlank : true,
             format : dateFormat, 
             flex : 1,
@@ -69,7 +69,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
                 }
             }
         });
-        this.fieldTo = new Ext.form.DateField({
+        this.fieldTo = Ext.create("Ext.form.DateField", {
             allowBlank : true,
             format : dateFormat, 
             flex : 1,
@@ -93,19 +93,19 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 	    		case 0 : 
 	    			break;
 	    		case 1 : 
-	    			this.items.insert(0, new Ext.Container({
+	    			this.items.insert(0, Ext.create("Ext.Container", {
 			            border : false,
 			            html : labels[0],
 			            width : 100
 			        }));
 			        break;
 			    case 2 : 
-		        	this.items.insert(0, new Ext.Container({
+		        	this.items.insert(0, Ext.create("Ext.Container", {
 			            border : false,
 			            html : labels[0],
 			            width : 50
 			        }));
-		        	this.items.insert(2, new Ext.Container({
+		        	this.items.insert(2, Ext.create("Ext.Container", {
 			            border : false,
 			            html : labels[1],
 			            width : 50, 
@@ -115,12 +115,12 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 			        }));
 			        break;
 			    case 3 : 
-		        	this.items.insert(0, new Ext.Container({
+		        	this.items.insert(0, Ext.create("Ext.Container", {
 			            border : false,
 			            html : labels[0],
 			            width : 50
 			        }));
-		        	this.items.insert(1, new Ext.Container({
+		        	this.items.insert(1, Ext.create("Ext.Container", {
 			            border : false,
 			            html : labels[1],
 			            width : 50, 
@@ -128,7 +128,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 			            	"padding-left" : "10px"
 			            }
 			        }));
-			        this.items.insert(3, new Ext.Container({
+			        this.items.insert(3, Ext.create("Ext.Container", {
 			            border : false,
 			            html : labels[2],
 			            width : 50, 
@@ -202,8 +202,8 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 			return null;
 		}
 		else {
-			if (Ext.isDate(Date.parseDate(val, SITOOLS_DATE_FORMAT))) {
-				result = Date.parseDate(val, SITOOLS_DATE_FORMAT);
+			if (Ext.isDate(Ext.Date.parse(val, SITOOLS_DATE_FORMAT))) {
+				result = Ext.Date.parse(val, SITOOLS_DATE_FORMAT);
 			}
 			else {
 				if (this.regToday.test(val)) {
@@ -219,7 +219,7 @@ Ext.define('sitools.common.forms.components.DateBetween', {
 		}
 		
 		if (this.truncateDefaultValue) {
-			return result.clearTime();
+			return Ext.Date.clearTime(result);
 		}
 		else {
 			return result;

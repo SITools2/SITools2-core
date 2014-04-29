@@ -62,14 +62,14 @@ Ext.define('sitools.admin.menu.dataView', {
 				                '{iconMenu}',
 				            '</tpl>',
 				            '<tpl if="this.isEmpty(iconMenu)">',
-				                '/sitools/common/res/images/icons/menu/collections.png',
+				                '/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') +'/res/images/icons/menu/collections.png',
 				            '</tpl>',
 				            '" />',
 				            '<span>{name}</span>',
 				        '</div>',
 				    '</tpl>',
 				'</div>',
-				'<img class="icon-sitools" src="/sitools/common/res/images/icons/menu/logoSitools.png" />',
+				'<img class="icon-sitools" src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/menu/logoSitools.png" />',
 			'</div>',
         {
             compiled : true,
@@ -81,7 +81,6 @@ Ext.define('sitools.admin.menu.dataView', {
             },
             round : function (xcount) { // arrondi à l'entier supérieur
                 return Math.round(xcount);
-                
             }
         });
 	    this.tpl = tpl;

@@ -101,7 +101,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 	                    if (recIndex > -1) {
 	                        this.gridTemplates.getSelectionModel().select(recIndex);    
 	                    } else {
-	                        return popupMessage("", Ext.String.format(i18n.get('label.concept.doesnt.exists'), this.conceptTemplate.name), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+	                        return popupMessage("", Ext.String.format(i18n.get('label.concept.doesnt.exists'), this.conceptTemplate.name), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
 	                    }
 	                }
 	            }                
@@ -413,12 +413,12 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 				gridId : "gridConceptsSelect",
 				items : [{
 					text : i18n.get('label.create'),
-					icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+					icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
 					handler : this.onCreateConcept,
 					scope : this
 				}, {
 					text : i18n.get('label.delete'),
-					icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+					icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
 					handler : this.onDeleteConcept,
 					scope : this
 				}]
@@ -440,7 +440,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
             var rec = this.getLastSelectedRecord(this.gridTemplates);
             
             if (!rec && Ext.isEmpty(this.conceptTemplate)) {
-                popupMessage("", i18n.get('warning.noTemplateselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+                popupMessage("", i18n.get('warning.noTemplateselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
                 return false;
             }
         }

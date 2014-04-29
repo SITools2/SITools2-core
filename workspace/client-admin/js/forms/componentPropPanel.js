@@ -42,7 +42,7 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
         if (this.action == 'modify') {
             var rec = this.record;
             if (!rec) {
-                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+                return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
             }
             jsObjName = rec.get("jsAdminObject");
             config = {
@@ -106,6 +106,17 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
                 handler : this._close
             } ]
         });
+        
+        this.listeners = {
+                scope : this,
+                close : function () {
+                    var dom = Ext.dom.Query.select('.over-dd-form', this.absoluteLayout.getEl().dom);
+                    if (!Ext.isEmpty(dom)) {
+                        var el = Ext.get(dom[0]);
+                        el.removeCls("over-dd-form");
+                    }
+                }
+        }
 
         this.items = [ this.componentPropPanel ];
         
@@ -121,9 +132,9 @@ Ext.define('sitools.admin.forms.componentPropPanel', {
 //        var component = this.findById('sitools.component.forms.definitionId');
         var component = this.componentPropPanel.down();
         if (component._onValidate(this.action, this.formComponentsStore)) {
+            this.absoluteLayout.fireEvent("activate");
             this.close();
         }
-		this.absoluteLayout.fireEvent("activate");
         
     },
     _close : function () {

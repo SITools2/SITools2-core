@@ -281,7 +281,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
             dataIndex : 'name'
         }, {
 //            id : 'alias',
-            text : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            text : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             width : 80,
             sortable : true,
             dataIndex : 'alias',
@@ -306,7 +306,7 @@ Ext.define('sitools.admin.datasets.datasourceUtils.jdbcUtils',  {
     getCmFieldsDataset : function () {
         return [{
 //            id : 'tableAlias',
-            text : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+            text : i18n.get('headers.tableAlias') + '<img title="Editable" height=14 widht=14 src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png"/>',
             sortable : true,
             dataIndex : 'tableAlias',
             editor : {

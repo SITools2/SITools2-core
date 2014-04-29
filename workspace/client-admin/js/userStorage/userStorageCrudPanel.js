@@ -169,27 +169,27 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
             },
             items : [ {
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreate,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this.onModify,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.active'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_active.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_active.png',
                 handler : this._onActive,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.disactive'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_disactive.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png',
                 handler : this._onDisactive,
                 xtype : 's-menuButton'
             }, {
@@ -199,12 +199,12 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.refresh'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_refresh.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_refresh.png',
                 handler : this._onRefresh,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.notify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/notify.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/notify.png',
                 handler : this._onNotify,
                 xtype : 's-menuButton'
             } ]
@@ -247,7 +247,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = Ext.create("sitools.admin.userStorage.userStoragePropPanel", {
             url : this.url + '/' + rec.get("id"),
@@ -307,7 +307,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     _onActive : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.get("id") + '/start',
@@ -328,7 +328,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     _onDisactive : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.get("id") + '/stop',
@@ -349,7 +349,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     _onClean : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var tot = Ext.Msg.show({
             title : i18n.get('label.delete'),
@@ -386,7 +386,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     _onRefresh : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/refresh',
@@ -407,7 +407,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
     _onNotify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         }
         Ext.Ajax.request({
             url : this.url + '/' + rec.data.id + '/notify',

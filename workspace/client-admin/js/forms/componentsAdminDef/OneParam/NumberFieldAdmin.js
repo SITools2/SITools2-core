@@ -39,8 +39,8 @@ Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', {
         this.on("beforerender", this.onBeforeRender, this);
         this.mapParam1.on("select", this.onChangeColumn, this);
     },
-    onRender : function () {
-        sitools.admin.forms.oneParam.NumberFieldAdmin.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.oneParam.NumberFieldAdmin.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValue.setValue(this.selectedRecord.data.defaultValues[0]);

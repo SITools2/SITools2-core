@@ -48,7 +48,7 @@ Ext.define('sitools.component.graphs.graphNodeModel', {
         name : 'icon',
         convert : function (value, record) {
             if (record.get("leaf")) {
-                return loadUrl.get('APP_URL') + "/common/res/images/icons/tree_datasets.png";
+                return loadUrl.get('APP_URL') + "loadUrl.get('APP_CLIENT_PUBLIC_URL')/res/images/icons/tree_datasets.png";
             } else {
                 return undefined;
             }

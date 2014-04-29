@@ -27,7 +27,7 @@ Ext.namespace('sitools.admin.forms.noParam');
  */
 Ext.define('sitools.admin.forms.noParam.label', { 
     extend : 'Ext.form.Panel',
-    height : 120,
+    height : 250,
     border : false,
     bodyBorder : false,
     padding : 10,
@@ -57,7 +57,7 @@ Ext.define('sitools.admin.forms.noParam.label', {
             anchor : '100%',
             value : this.componentDefaultWidth
         });
-        this.winPropComponent.specificHeight = 190;
+        this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
         this.items = [ this.label, this.css ];
         if (this.action == "create") {
@@ -65,8 +65,8 @@ Ext.define('sitools.admin.forms.noParam.label', {
 		}
         sitools.admin.forms.noParam.label.superclass.initComponent.call(this);
     },
-    onRender : function () {
-        sitools.admin.forms.noParam.label.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.noParam.label.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.css.setValue(this.selectedRecord.data.css);
         }

@@ -26,7 +26,7 @@ html,body {
 }
 
 .admin-bg {
-	background:url(/sitools/common/res/wallpapers/paper.jpg) repeat left top;
+	background:url(/sitools/client-public/res/wallpapers/paper.jpg) repeat left top;
 	/* background-size: 100%;
 	background: rgb(21,127,204); Old browsers
 	background: -moz-linear-gradient(-45deg,  rgba(21,127,204,1) 0%, rgba(165,208,239,1) 100%); FF3.6+
@@ -78,7 +78,7 @@ div.subtitle {
 .s-textfilter .x-form-field-wrap .s-textfilter-text {
 	background-color: transparent;
 	background-image:
-		url("/sitools/common/res/images/icons/search-icon.png");
+		url("/sitools/client-public/res/images/icons/search-icon.png");
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	border: medium none;
@@ -91,7 +91,7 @@ div.subtitle {
 .s-textfilter .x-form-field-trigger-wrap .s-textfilter-trigger {
 	background-color: transparent;
 	background-image:
-		url("/sitools/common/res/images/icons/search-cancel.png");
+		url("/sitools/client-public/res/images/icons/search-cancel.png");
 	background-position: 0 0;
 	background-repeat: no-repeat;
 	border: medium none;
@@ -124,7 +124,7 @@ div.subtitle {
 
 .sitools-explore-datasource {
 	background-image:
-		url("/sitools/common/res/images/icons/tree_databases.png") !important;
+		url("/sitools/client-public/res/images/icons/tree_databases.png") !important;
 	height: 16px;
 	width: 16px;
 }
@@ -168,7 +168,6 @@ pre {
 }
 
 .over-dd-form {
-	margin : 5px 2px 2px 5px;
 	background-color: #ADD2ED;
 	-moz-border-radius: 2px;
 	-webkit-border-radius: 2px;
@@ -237,7 +236,11 @@ pre {
 	-webkit-box-shadow: 1px 1px 4px 2px #84A9C4 !important;
 }
 
-.x-tool-img .dark-icons {
+.dark-icons {
+	margin-left : 5px !important;
+}
+
+.dark-icons img {
 	background-image: url(/sitools/cots/extjs4/ext-4.2.1.883/resources/ext-theme-neptune/images/tools/tool-sprites-dark.png) !important;
 }
 

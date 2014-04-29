@@ -31,7 +31,8 @@ Ext.namespace('sitools.admin.datasets');
  * @extends Ext.Panel
  */
 Ext.define('sitools.admin.datasets.datasetForm', { 
-    extend : 'Ext.panel.Panel',
+    extend : 'Ext.form.Panel',
+    id : "datasetMainForm", 
     
     initComponent : function () {
 		var action = this.action;
@@ -108,94 +109,86 @@ Ext.define('sitools.admin.datasets.datasetForm', {
 				};
             }
         });
-
         Ext.apply(this, {
-            layout : 'fit', 
-            id : "datasetMainForm", 
+            border : false,
+            padding : 10,
+            autoScroll : true,
             title : i18n.get('label.datasetInfo'),
+            defaults : {
+                disabled : this.action == 'view' ? true : false
+            }, 
             items : [ {
-                xtype : 'form',
-                border : false,
-                padding : 10,
-                autoScroll : true,
-                defaults : {
-					disabled : this.action == 'view' ? true : false
-                }, 
-                items : [ {
-                    xtype : 'hidden',
-                    name : 'id'
-                }, {
-                    xtype : 'textfield',
-                    name : 'name',
-                    fieldLabel : i18n.get('label.name'),
-                    anchor : '95%',
-                    allowBlank : false,
-                    vtype : "name", 
-                    maxLength : 50
-                }, {
-                    xtype : 'textfield',
-                    name : 'description',
-                    fieldLabel : i18n.get('label.description'),
-                    anchor : '95%',
-                    maxLength : 200
-                }, {
-                    xtype : 'sitoolsSelectImage',
-                    name : 'image',
-                    vtype : "image", 
-                    fieldLabel : i18n.get('label.image'),
-                    anchor : '95%',
-                    growMax : 400
+                xtype : 'hidden',
+                name : 'id'
+            }, {
+                xtype : 'textfield',
+                name : 'name',
+                fieldLabel : i18n.get('label.name'),
+                anchor : '95%',
+                allowBlank : false,
+                vtype : "name", 
+                maxLength : 50
+            }, {
+                xtype : 'textfield',
+                name : 'description',
+                fieldLabel : i18n.get('label.description'),
+                anchor : '95%',
+                maxLength : 200
+            }, {
+                xtype : 'sitoolsSelectImage',
+                name : 'image',
+                vtype : "image", 
+                fieldLabel : i18n.get('label.image'),
+                anchor : '95%',
+                growMax : 400
 
-                }, this.comboDataSource, {
-                    xtype : 'textfield',
-                    vtype : "attachment", 
-                    name : 'sitoolsAttachementForUsers',
-                    id : 'sitoolsAttachementForUsers',
-                    fieldLabel : i18n.get('label.userAttach'),
-                    anchor : '95%',
-                    maxLength : 100
-                }, {
-                    xtype : 'checkbox',
-                    name : 'visible',
-                    id : 'visible',
-                    fieldLabel : i18n.get('label.isVisible'),
-                    anchor : '95%',
-                    maxLength : 100
-                }, {
-                    xtype : 'textfield',
-                    disabled : true,
-                    name : 'expirationDate',
-                    id : 'expirationDate',
-                    fieldLabel : i18n.get('label.expirationDate'),
-                    anchor : '95%',
-                    maxLength : 100
-                }, {
-                    xtype : 'textarea',
-                    name : 'descriptionHTML',
-                    fieldLabel : i18n.get('label.descriptionHTML'),
-                    height : 150,
-                    width : '95%',
-                    cls : 'ckeditor'
-                }, {
-                    xtype : 'hidden',
-                    name : 'dirty', 
-                    value : false
-                } ]
-            } ], 
+            }, this.comboDataSource, {
+                xtype : 'textfield',
+                vtype : "attachment", 
+                name : 'sitoolsAttachementForUsers',
+                id : 'sitoolsAttachementForUsers',
+                fieldLabel : i18n.get('label.userAttach'),
+                anchor : '95%',
+                maxLength : 100
+            }, {
+                xtype : 'checkbox',
+                name : 'visible',
+                id : 'visible',
+                fieldLabel : i18n.get('label.isVisible'),
+                anchor : '95%',
+                maxLength : 100
+            }, {
+                xtype : 'textfield',
+                disabled : true,
+                name : 'expirationDate',
+                id : 'expirationDate',
+                fieldLabel : i18n.get('label.expirationDate'),
+                anchor : '95%',
+                maxLength : 100
+            }, {
+                xtype : 'textarea',
+                name : 'descriptionHTML',
+                fieldLabel : i18n.get('label.descriptionHTML'),
+                height : 150,
+                anchor : '95%',
+                cls : 'ckeditor'
+            }, {
+                xtype : 'hidden',
+                name : 'dirty', 
+                value : false
+            } ],
             listeners : {
-				"activate" : function () {
-					if (action == 'view') {
-						this.getEl().mask();
-					}
-				}
+                "activate" : function () {
+                    if (action == 'view') {
+                        this.getEl().mask();
+                    }
+                }
             }
         });
 		
 		sitools.admin.datasets.datasetForm.superclass.initComponent.call(this);
     }, 
-    getForm : function () {
-        return this.items.items[0].getForm();
-    }, 
+    
     /**
      * Get the combo of dataSources
      * @return {Ext.form.ComboBox}

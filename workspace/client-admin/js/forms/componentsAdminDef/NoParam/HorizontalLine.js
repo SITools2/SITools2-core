@@ -28,7 +28,7 @@ Ext.namespace('sitools.admin.forms.noParam');
 Ext.define('sitools.admin.forms.noParam.hr', { 
     extend : 'Ext.form.Panel',
     alias : 'widget.sitools.admin.forms.noParam.hr',
-	height : 100,
+	height : 210,
 	border : false,
     bodyBorder : false,
     padding : 10,
@@ -53,7 +53,7 @@ Ext.define('sitools.admin.forms.noParam.hr', {
             anchor : '100%',
             value : this.componentDefaultWidth
         });
-        this.winPropComponent.specificHeight = 190;
+        this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 400;
         this.items = [ this.css ];
         if (this.action == "create") {
@@ -61,8 +61,8 @@ Ext.define('sitools.admin.forms.noParam.hr', {
 		}
         sitools.admin.forms.noParam.hr.superclass.initComponent.call(this);
     },
-    onRender : function () {
-        sitools.admin.forms.noParam.hr.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.forms.noParam.hr.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.css.setValue(this.selectedRecord.data.css);
         }

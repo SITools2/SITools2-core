@@ -94,7 +94,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
 			xtype : 'button',
 			iconAlign : 'right',
 			text : i18n.get('label.copy'),
-			icon : loadUrl.get('APP_URL') + '/common/res/images/icons/converter.png',
+			icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/converter.png',
 			copyFinish : false,
 			scope : this,
 			handler : this.runCopy
@@ -108,14 +108,14 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
         var idDest = f.findField('projDestId').getValue();
         
         if (Ext.isEmpty(idDest)) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
             
         Ext.each(this.services, function (service) {
             this.fieldset.add({
                 xtype : 'label',
                 id : service.get("id"),
-                html : '<img src="/sitools/common/res/images/icons/loading.gif"/> ' + service.get("name") + "<br>"
+                html : '<img src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/loading.gif"/> ' + service.get("name") + "<br>"
             });
         }, this);
         this.fieldset.setVisible(true);
@@ -152,9 +152,9 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
             success : function (ret) {
                 var fieldService = this.fieldset.down('label[id='+idService+']');
                 if (ret.status == 200) {
-                    fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/valid.png"/> ' + service.name + '<br>';
+                    fieldService.el.dom.innerHTML = '<img src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/valid.png"/> ' + service.name + '<br>';
                 } else {
-                    fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/search-cancel.png"/> ' + service.name + '<br>';
+                    fieldService.el.dom.innerHTML = '<img src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/search-cancel.png"/> ' + service.name + '<br>';
                 }
             },
             callback : function () {
@@ -163,7 +163,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesServicesCopyProp', { extend 
             },
             failure : function (ret) {
                 var fieldService = this.fieldset.down('label[id='+idService+']');
-                fieldService.el.dom.innerHTML = '<img src="/sitools/common/res/images/icons/search-cancel.png"/> ' + service.name + '<br>';
+                fieldService.el.dom.innerHTML = '<img src="/sitools' + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/search-cancel.png"/> '
+                        + service.name + '<br>';
             }
         });
     }

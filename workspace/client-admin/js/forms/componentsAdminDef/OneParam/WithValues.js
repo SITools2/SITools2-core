@@ -86,11 +86,11 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             },
             items : [ {
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this.onCreate
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this.onDelete
             } ]
         };
@@ -122,7 +122,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             plugins : [cellEditing]
         });
 
-        this.radio = new Ext.form.RadioGroup({
+        this.radio = Ext.create('Ext.form.RadioGroup', {
             fieldLabel : 'Values ',
             items : [ {
                 checked : true,
@@ -152,7 +152,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
                 }
             }
         });
-        var fieldSet = new Ext.form.FieldSet({
+        var fieldSet = Ext.create('Ext.form.FieldSet', {
             xtype : 'fieldset',
             title : 'Values Selections',
             anchor : '100%',
@@ -175,28 +175,19 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
         this.gridValues.getStore().insert(0, {});
     },
     onDelete : function () {
-        var s = this.gridValues.getSelectionModel().getSelections();
-        var i, r;
-        for (i = 0; s[i]; i++) {
-            r = s[i];
-            this.gridValues.getStore().remove(r);
+        var recs = this.gridValues.getSelectionModel().getSelection();
+        if (Ext.isEmpty(recs)) {
+            popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+            return;
         }
-    },
-    onRender : function () {
-        sitools.admin.forms.oneParam.withValues.superclass.onRender.apply(this, arguments);
+        this.gridValues.getStore().remove(recs);
     },
     afterRender : function () {
         sitools.admin.forms.oneParam.withValues.superclass.afterRender.apply(this, arguments);
         
         if (this.action == 'modify') {
             // gridEl = Ext.get ('componentGridValues');
-            if (this.selectedRecord.data.valueSelection == "S") {
-                this.radio.setValue('radioSpecificId', true);
-                // gridEl.mask();
-            } else {
-                this.radio.setValue('radioFromDataId', true);
-                // gridEl.unmask();
-            }
+            this.radio.setValue({'valuesType' : this.selectedRecord.data.valueSelection}); 
             var store = this.formComponentsStore;
             var recTmp;
             var parentParam = this.selectedRecord.data.parentParam;
@@ -207,8 +198,8 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
                         recTmp = rec;
                     }
                 });
-                this.parentParam.setValue(recTmp.data);
-                this.parentParamDisplay.setValue(recTmp.data.label);
+                this.parentParam.setValue(recTmp.get("id"));
+                this.parentParamDisplay.setValue(recTmp.get("label"));
 //                
             }
             
@@ -242,7 +233,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             var labelParam1 = Ext.isEmpty(f.findField('LABEL_PARAM1')) ? "" : f.findField('LABEL_PARAM1').getValue();
             var css = Ext.isEmpty(f.findField('CSS')) ? "" : f.findField('CSS').getValue();
             defaultValue = Ext.isEmpty(f.findField('componentDefaultValue')) ? "" : f.findField('componentDefaultValue').getValue();
-            valueSelection = this.radio.getValue().inputValue;
+            valueSelection = this.radio.getValue().valuesType;
             
             rec.set('label', labelParam1);
             // selectedRecord.set ('type', this.ctype);
@@ -250,7 +241,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             rec.set('css', css);
             rec.set('valueSelection', valueSelection);
             rec.set('defaultValue', defaultValue);
-            rec.set('parentParam', Ext.isEmpty(this.parentParam.value) ? null : this.parentParam.value.id);
+            rec.set('parentParam', Ext.isEmpty(this.parentParam.getValue()) ? null : this.parentParam.getValue());
             // this.selectedRecord.set ('width',
             // f.findField('width').getValue());
             grid = Ext.getCmp('componentGridValues');
@@ -292,7 +283,7 @@ Ext.define('sitools.admin.forms.oneParam.withValues', {
             code = [param1];
             valueSelection = this.radio.getValue().valuesType;
             
-            var parentParam = (Ext.isEmpty(this.parentParam.value)) ? null:this.parentParam.value.id;
+            var parentParam = (Ext.isEmpty(this.parentParam.getValue())) ? null:this.parentParam.getValue();
             
             formComponentsStore.add({
                 label : f.findField('LABEL_PARAM1').getValue(),

@@ -33,7 +33,6 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
 	alias : 'widget.s-usercrud',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.USER,
     selModel : Ext.create('Ext.selection.RowModel', {
         mode : 'SINGLE'
     }),
@@ -124,17 +123,17 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
             },
             items : [ {
                 text : i18n.get('label.create'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_create.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
                 handler : this._onCreate,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.modify'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_edit.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_edit.png',
                 handler : this._onModify,
                 xtype : 's-menuButton'
             }, {
                 text : i18n.get('label.delete'),
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
                 handler : this._onDelete,
                 xtype : 's-menuButton'
             },
@@ -142,7 +141,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
                 text : i18n.get('title.blacklistedUsers'),
                 handler : this._onBlacklistedUsers,
                 xtype : 's-menuButton',
-                icon : loadUrl.get('APP_URL') + '/common/res/images/icons/locked_user.png.png'                
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/locked_user.png.png'                
             }, '->', {
                 xtype : 's-filter',
                 emptyText : i18n.get('label.search'),
@@ -192,7 +191,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
     _onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + '/common/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         var up = new sitools.admin.usergroups.UserPropPanel({
             url : this.url + '/' + rec.data.id,
@@ -237,7 +236,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
                 var jsonResponse = Ext.decode(ret.responseText);
                 popupMessage("",  
                         Ext.String.format(i18n.get(jsonResponse.message), rec.data.name),
-                        loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png');
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png');
                 
                 if (jsonResponse.success) {
                     this.store.reload();
