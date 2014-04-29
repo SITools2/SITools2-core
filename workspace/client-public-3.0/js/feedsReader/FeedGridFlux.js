@@ -31,6 +31,11 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
     componentType : "feeds",
     border : false,
     
+    requires : ['sitools.public.feedsReader.AtomFeedReader',
+                'sitools.public.feedsReader.RssFeedReader',
+                'sitools.public.feedsReader.FeedItemDetails'
+                ],
+    
     initComponent : function () {
 
         this.layout = "fit";
@@ -40,12 +45,16 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
             gridPanel = new sitools.user.component.openSearchResultFeed(this);
         } else {
             this.listeners = {
-                rowdblclick : this.clickOnRow
+//                rowdblclick : this.clickOnRow,
             };
             if (this.feedType !== undefined && this.feedType === "atom_1.0") {
-                gridPanel = new sitools.widget.atom1FeedReader(this);
+                gridPanel = Ext.create('sitools.public.feedsReader.AtomFeedReader', {
+                    feedGrid : this
+                });
             } else {
-                gridPanel = new sitools.widget.rss2FeedReader(this);
+                gridPanel = Ext.create('sitools.public.feedsReader.RssFeedReader', {
+                    feedGrid : this
+                });
             }
         }
 
@@ -78,10 +87,12 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
         }
         // si on est pas sur le bureau
         if (Ext.isEmpty(window) || Ext.isEmpty(window.SitoolsDesk)) {
-            var component = new sitools.widget.feedItemDetails({
+            
+            var component = Ext.create('sitools.public.feedsReader.FeedItemDetails', {
                 record : rec
             });
-            var win = new Ext.Window({
+            
+            var win = Ext.create('Ext.window.Window', {
                 stateful : false,
                 title : i18n.get('label.viewFeedDetail'),
                 width : 400,
@@ -98,7 +109,7 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
             var componentCfg = {
                 record : rec
             };
-            var jsObj = sitools.widget.feedItemDetails;
+            var jsObj = sitools.public.feedsReader.FeedItemDetails;
 
             var windowConfig = {
                 id : "viewFeedDetail",
@@ -117,6 +128,6 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
     
     subscribeRss : function () {
         window.open(this.urlFeed, '_blank');
-    },
+    }
 });
 

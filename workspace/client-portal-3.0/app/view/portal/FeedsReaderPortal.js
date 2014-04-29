@@ -20,15 +20,18 @@
 
 Ext.namespace('sitools.clientportal.view.portal');
 
-Ext.define('sitools.clientportal.view.portal.feedsReaderPortal', {
+Ext.define('sitools.clientportal.view.portal.FeedsReaderPortal', {
     extend : 'Ext.panel.Panel',
-    alias : 'sitools.component.users.portal.feedsReaderPortal',
+//    alias : 'widget.feedsReaderPortal',
+    
+    requires : ['sitools.public.feedsReader.FeedGridFlux'],
     
     portalId : "idPortal",
     layout : "fit",
     initComponent : function () {
         
         var storeFeeds = Ext.create('Ext.data.JsonStore', {
+            autoLoad : true,
             fields : [ 'id', 'name', 'feedType', 'title', 'feedSource', {
                 name : 'visible',
                 type : 'boolean'
@@ -41,7 +44,6 @@ Ext.define('sitools.clientportal.view.portal.feedsReaderPortal', {
                     root : 'data'
                 }
             },
-            autoLoad : true,
             listeners : {
                 scope : this, 
                 load : function (store, records, options) {
@@ -68,7 +70,6 @@ Ext.define('sitools.clientportal.view.portal.feedsReaderPortal', {
             listeners : {
                 scope : this,
                 select : this.selectFeeds
-
             }
         });
 
@@ -90,18 +91,18 @@ Ext.define('sitools.clientportal.view.portal.feedsReaderPortal', {
         this.callParent(arguments);
     },
 
-    selectFeeds : function (combo, rec, index) {
+    selectFeeds : function (combo, records, index) {
+        var rec = records[0] || records;
+        
         this.remove(this.feedsReader);
         var url = loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL') + "/" + this.portalId + "/clientFeeds/" + rec.data.name;
 
-        this.feedsReader = Ext.create('sitools.public.widget.FeedGridFlux', {
+        this.feedsReader = Ext.create('sitools.public.feedsReader.FeedGridFlux', {
             urlFeed : url,
             feedType : rec.data.feedType,
-            feedSource : rec.data.feedSource,
-            autoLoad : true
-            
-            
+            feedSource : rec.data.feedSource
         });
+        
         this.add(this.feedsReader);
         this.doSort();
         this.doLayout();

@@ -17,14 +17,14 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext, sitools, i18n,document*/
-Ext.namespace('sitools.widget');
+Ext.namespace('sitools.public.feedsReader');
 
 /**
  * @param urlFeed :
  *            The feed URL
  */
-Ext.define('sitools.widget.feedItemDetails', {
-    extend : 'Ext.Panel',
+Ext.define('sitools.public.feedsReader.FeedItemDetails', {
+    extend : 'Ext.panel.Panel',
 
     initComponent : function () {
         this.layout = "fit";
@@ -33,8 +33,7 @@ Ext.define('sitools.widget.feedItemDetails', {
         
         if (!Ext.isEmpty(record)) {
             
-            this.store = new Ext.data.JsonStore({
-                idProperty: 'title',
+            this.store = Ext.create('Ext.data.JsonStore', {
                 fields: [
                     {name : 'title'},
                     {name : 'pubDate', type: 'date', dateFormat: 'timestamp'},
@@ -45,9 +44,16 @@ Ext.define('sitools.widget.feedItemDetails', {
                     {name : 'imageUrl'},
                     {name : 'image'}
                 ],
+                proxy : {
+                    type : 'memory',
+                    reader : {
+                        type : 'json',
+                        idProperty: 'title'
+                    }
+                },
                 listeners : {
                     scope : this,
-                    add : function (store, records, ind){
+                    add : function (store, records, ind) {
                         if (record.data.imageUrl == undefined && record.data.image != undefined){
                             record.data.image = record.data.imageUrl;
                         }
@@ -61,49 +67,49 @@ Ext.define('sitools.widget.feedItemDetails', {
             this.store.add(record);
             
             this.tpl = new Ext.XTemplate(
-                    '<tpl for=".">',
-                        '<div class="feed-article">',
-                            '<tpl if="this.isDisplayable(imageUrl)">',
-                                '<div class="feed-img">',
-                                    '<img src="{imageUrl}" title="{title}" width="70" height="70"/>',
-                                '</div>',
-                            '</tpl>',
-                            '<p class="feed-title"> {title} </p>',
-                            '<tpl if="this.isDisplayable(pubDate)">',
-                                '<div class="feed-date-detail">',
-                                    '<b> Date : </b> {pubDate} ',
-                                '</div>',
-                            '</tpl>',
-                            '<tpl if="this.isDisplayable(author)">',
-                                '<div class="feed-author">',
-                                    '<b> Author : </b> {author} ',
-                                '</div>',
-                            '</tpl>',
-                            '<div class="feed-description">',
-                                '{description}',
+                '<tpl for=".">',
+                    '<div class="feed-article">',
+                        '<tpl if="this.isDisplayable(imageUrl)">',
+                            '<div class="feed-img">',
+                                '<img src="{imageUrl}" title="{title}" width="70" height="70"/>',
                             '</div>',
-                            '<div class="feed-complementary">',
-                                '<p style="padding-bottom: 3px;"> <b> Link : </b> <a href="{link}" target="_blank" title="{title}">{link}</a> </p>',
-                                '<tpl if="this.isDisplayable(imageUrl)">',
-                                    '<p> <b> Image Url : </b> <a href="{imageUrl}" target="_blank">{imageUrl}</a> </p>',
-                                '</tpl>',
+                        '</tpl>',
+                        '<p class="feed-title"> {title} </p>',
+                        '<tpl if="this.isDisplayable(pubDate)">',
+                            '<div class="feed-date-detail">',
+                                '<b> Date : </b> {pubDate} ',
                             '</div>',
+                        '</tpl>',
+                        '<tpl if="this.isDisplayable(author)">',
+                            '<div class="feed-author">',
+                                '<b> Author : </b> {author} ',
+                            '</div>',
+                        '</tpl>',
+                        '<div class="feed-description">',
+                            '{description}',
                         '</div>',
-                    '</tpl>',
-                    {
-                        compiled : true,
-                        isDisplayable : function (item) {
-                            if (item != "" && item != undefined){
-                                return true;
-                            }
-                            else {
-                                return false;
-                            }
+                        '<div class="feed-complementary">',
+                            '<p style="padding-bottom: 3px;"> <b> Link : </b> <a href="{link}" target="_blank" title="{title}">{link}</a> </p>',
+                            '<tpl if="this.isDisplayable(imageUrl)">',
+                                '<p> <b> Image Url : </b> <a href="{imageUrl}" target="_blank">{imageUrl}</a> </p>',
+                            '</tpl>',
+                        '</div>',
+                    '</div>',
+                '</tpl>',
+                {
+                    compiled : true,
+                    isDisplayable : function (item) {
+                        if (item != "" && item != undefined){
+                            return true;
+                        }
+                        else {
+                            return false;
                         }
                     }
+                }
             );
             
-            this.feedsDataview = new Ext.DataView({
+            this.feedsDataview = Ext.create('Ext.view.View', {
               id: 'detailFeed-view',
               autoScroll : true,
               layout: 'fit',
@@ -117,7 +123,7 @@ Ext.define('sitools.widget.feedItemDetails', {
             this.items = [ this.feedsDataview ];
         }
 
-        sitools.widget.feedItemDetails.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     formatDate : function (date) {

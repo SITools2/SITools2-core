@@ -299,8 +299,6 @@ Ext.define('sitools.public.userProfile.Login', {
                 }
                 Ext.getCmp('winLogin').body.unmask();
                 Ext.getCmp('sbWinLogin').setStatus({
-                    // text: ret.error ? ret.error :
-                    // i18n.get('warning.serverUnreachable'),
                     text : txt,
                     iconCls : 'x-status-error'
                 });

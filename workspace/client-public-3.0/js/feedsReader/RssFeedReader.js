@@ -17,100 +17,104 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext, sitools, i18n,document,window,SitoolsDesk*/
-Ext.namespace('sitools.widget');
+Ext.namespace('sitools.public.feedsReader');
 
 /**
  * @param urlFeed :
  *            The feed URL
  */
-sitools.widget.rss2FeedReader = function (config) {
-    Ext.apply(this);
-    this.layout = "fit";
-    this.storeFeedsRecords = new Ext.data.Store({
-        autoLoad : true,
-        sortInfo : {field : 'pubDate', direction : "DESC"},
-        proxy : new Ext.data.HttpProxy({
-            url : config.urlFeed,
-            restful : true,
-            listeners : {
-                scope : this,
-                exception : onRequestFeedException
-            }
-        }),
-        reader : new Ext.data.XmlReader({
-            record : 'item'
-        }, [ 'title', 'author', {
-            name : 'pubDate',
-            type : 'date'
-        }, 'link', 'description', 'content', 'guid', {
-        	name : 'imageUrl',
-        	mapping : "enclosure@url"
-        }, {
-        	name : 'imageType',
-        	mapping : "enclosure@type"
-        }])
-    });
-
-    var columns = [ {
-        id : 'image',
-        header : "Image",
-        dataIndex : 'imageUrl',
-        sortable : false,
-        width : 120
-        ,
-        renderer : this.imageRenderer
-    }, {
-        id : 'title',
-        header : "Title",
-        dataIndex : 'title',
-        sortable : true,
-        width : 460,
-        scope : this,
-        renderer : this.formatTitle
-    }, {
-        header : "Author",
-        dataIndex : 'author',
-        width : 100,
-        hidden : true,
-        sortable : true
-    }, {
-        id : 'last',
-        header : "Date",
-        dataIndex : 'pubDate',
-        width : 150,
-        renderer : this.formatDate,
-        sortable : true,
-        hidden : true
-    } ];
-    
-    sitools.widget.rss2FeedReader.superclass.constructor.call(this, {
-        // height : 300,
-        columns : columns,
-        store : this.storeFeedsRecords,
-        loadMask : {
-            msg : i18n.get("label.loadingFeed")
-        },
-        sm : Ext.create('Ext.selection.RowModel',{
-            mode : 'SINGLE'
-        }),
-        autoExpandColumn : 'title',
-        hideHeaders : true,
-        viewConfig : {
-            forceFit : true,
-            enableRowBody : true,
-            showPreview : true,
-            getRowClass : this.applyRowClass
-        },
-        listeners : config.listeners
-        
-    });
-
-    // this.on('rowcontextmenu', this.onContextClick, this);
-    // this.on('beforeShow',this.loadData);
-};
-
-Ext.define('sitools.widget.rss2FeedReader', {
+Ext.define('sitools.public.feedsReader.RssFeedReader', {
     extend : 'Ext.grid.Panel',
+    autoExpandColumn : 'title',
+    hideHeaders : true,
+    forceFit : true,
+    layout : 'fit',
+    viewConfig : {
+        enableRowBody : true,
+        showPreview : true,
+//        getRowClass : this.applyRowClass
+    },
+    
+    initComponent : function () {
+
+        Ext.define('RssFeed', {
+            extend: 'Ext.data.Model',
+            fields : [ 'title', 'author', {
+                name : 'pubDate',
+                type : 'date'
+            }, 'link', 'description', 'content', 'guid', {
+                name : 'imageUrl',
+                mapping : "enclosure@url"
+            }, {
+                name : 'imageType',
+                mapping : "enclosure@type"
+            }]
+        });
+        
+        this.store = Ext.create('Ext.data.Store', {
+            autoLoad : true,
+            sorters : [{property : 'pubDate', direction : "DESC"}],
+            model : 'RssFeed',
+            proxy : {
+                type : 'ajax',
+                url : this.feedGrid.urlFeed,
+                reader : {
+                    type : 'xml',
+                    record : 'item',
+                    root : 'channel'
+                },
+                listeners : {
+                    scope : this,
+                    exception : onRequestFeedException
+                }
+            }
+        });
+
+        var columns = [{
+            id : 'image',
+            header : "Image",
+            dataIndex : 'imageUrl',
+            sortable : false,
+            width : 120
+            ,
+//            renderer : this.imageRenderer
+        }, {
+            id : 'title',
+            header : "Title",
+            dataIndex : 'title',
+            sortable : true,
+            width : 460,
+            scope : this,
+//            renderer : this.formatTitle
+        }, {
+            header : "Author",
+            dataIndex : 'author',
+            width : 100,
+            hidden : true,
+            sortable : true
+        }, {
+            id : 'last',
+            header : "Date",
+            dataIndex : 'pubDate',
+            width : 150,
+//            renderer : this.formatDate,
+            sortable : true,
+            hidden : true
+        }];
+        
+        this.columns = columns;
+        
+        this.loadMask = {
+            msg : i18n.get("label.loadingFeed")
+        };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE'
+        });
+        
+        this.callParent(arguments);
+    },
+    
     loadData : function () {
         this.loadFeed('http://feeds.feedburner.com/extblog');
         this.doLayout();
@@ -190,6 +194,6 @@ Ext.define('sitools.widget.rss2FeedReader', {
     },
     
     sortByDate : function (direction){
-        this.storeFeedsRecords.sort('pubDate', direction);
+        this.store.sort('pubDate', direction);
     }
 });
