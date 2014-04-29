@@ -49,7 +49,10 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
         });
         
         this.control({
-            'dataview' : {
+            'dataview[name="viewProjectPublic"]' : {
+                itemclick : this.openProject
+            },
+            'dataview[name="viewProjectPrivate"]' : {
                 itemclick : this.openProject
             },
             'button[name="editProfileBtn"]' : {

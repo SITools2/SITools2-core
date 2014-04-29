@@ -30,6 +30,7 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
     alias : 'widget.appfeedgridflux',
     componentType : "feeds",
     border : false,
+    bodyBorder : false,
     
     requires : ['sitools.public.feedsReader.AtomFeedReader',
                 'sitools.public.feedsReader.RssFeedReader',
@@ -44,9 +45,7 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
         if (this.feedSource !== undefined && this.feedSource === "OPENSEARCH") {
             gridPanel = new sitools.user.component.openSearchResultFeed(this);
         } else {
-            this.listeners = {
-//                rowdblclick : this.clickOnRow,
-            };
+            
             if (this.feedType !== undefined && this.feedType === "atom_1.0") {
                 gridPanel = Ext.create('sitools.public.feedsReader.AtomFeedReader', {
                     feedGrid : this

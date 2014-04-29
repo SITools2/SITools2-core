@@ -131,17 +131,18 @@ Ext.define('sitools.public.feedsReader.FeedItemDetails', {
             return '';
         }
         var now = new Date();
-        var d = now.clearTime(true);
-        if (date instanceof Date){
-            var notime = date.clearTime(true).getTime();
+        var d = Ext.Date.clearTime(now, true);
+        if (date instanceof Date) {
+            var notime = Ext.Date.clearTime(date, true).getTime();
             if (notime == d.getTime()) {
-                return 'Today ' + date.dateFormat('g:i a');
+                return 'Today ' + Ext.Date.format(date, 'g:i a');
             }
-            d = d.add('d', -6);
+            d = Ext.Date.add(d, Ext.Date.DAY, -6);
+//            d = d.add('d', -6);
             if (d.getTime() <= notime) {
-                return date.dateFormat('D g:i a');
+                return Ext.Date.format(date, 'D g:i a');
             }
-            return date.dateFormat('n/j g:i a');
+            return Ext.Date.format(date, 'n/j g:i a');
         }
         else {
             return date;

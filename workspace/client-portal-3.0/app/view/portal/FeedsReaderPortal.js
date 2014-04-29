@@ -26,8 +26,10 @@ Ext.define('sitools.clientportal.view.portal.FeedsReaderPortal', {
     
     requires : ['sitools.public.feedsReader.FeedGridFlux'],
     
-    portalId : "idPortal",
-    layout : "fit",
+    portalId : 'idPortal',
+    layout : 'fit',
+    border : false,
+    
     initComponent : function () {
         
         var storeFeeds = Ext.create('Ext.data.JsonStore', {

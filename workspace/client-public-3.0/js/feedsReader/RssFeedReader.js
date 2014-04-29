@@ -25,13 +25,13 @@ Ext.namespace('sitools.public.feedsReader');
  */
 Ext.define('sitools.public.feedsReader.RssFeedReader', {
     extend : 'Ext.grid.Panel',
-    autoExpandColumn : 'title',
-    hideHeaders : true,
+    
+    hideHeaders : false,
     forceFit : true,
     layout : 'fit',
+    border : false,
+    bodyBorder : false,
     viewConfig : {
-        enableRowBody : true,
-        showPreview : true,
 //        getRowClass : this.applyRowClass
     },
     
@@ -75,9 +75,8 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
             header : "Image",
             dataIndex : 'imageUrl',
             sortable : false,
-            width : 120
-            ,
-//            renderer : this.imageRenderer
+            width : 120 ,
+            renderer : this.imageRenderer
         }, {
             id : 'title',
             header : "Title",
@@ -111,6 +110,10 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
         this.selModel = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
+        
+        this.listeners = {
+            itemdblclick : this.clickOnRow,
+        };
         
         this.callParent(arguments);
     },
@@ -195,5 +198,46 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
     
     sortByDate : function (direction){
         this.store.sort('pubDate', direction);
+    },
+    
+    clickOnRow : function (self, record, item, rowIndex, e) {
+        e.stopEvent();
+        var rec = self.store.getAt(rowIndex);
+        if (Ext.isEmpty(rec)) {
+            return;
+        }
+        // si on est pas sur le bureau
+        if (Ext.isEmpty(window) || Ext.isEmpty(window.SitoolsDesk)) {
+            
+            var component = Ext.create('sitools.public.feedsReader.FeedItemDetails', {
+                record : rec
+            });
+            
+            var win = Ext.create('Ext.window.Window', {
+                stateful : false,
+                title : i18n.get('label.viewFeedDetail'),
+                width : 400,
+                height : 600,
+                shim : false,
+                animCollapse : false,
+                constrainHeader : true,
+                layout : 'fit',
+                modal : true
+            });
+            win.add(component);
+            win.show();
+        } else {
+            var componentCfg = {
+                record : rec
+            };
+            var jsObj = sitools.public.feedsReader.FeedItemDetails;
+
+            var windowConfig = {
+                id : "viewFeedDetail",
+                title : i18n.get('label.viewFeedDetail'),
+                saveToolbar : false
+            };
+            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
+        }
     }
 });

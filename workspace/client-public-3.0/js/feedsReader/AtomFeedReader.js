@@ -35,9 +35,8 @@ Ext.define('sitools.public.feedsReader.AtomFeedReader', {
     autoExpandColumn : 'title',
     hideHeaders : true,
     forceFit : true,
+    border : false,
     viewConfig : {
-        enableRowBody : true,
-        showPreview : true,
 //        getRowClass : this.applyRowClass
     },
 
