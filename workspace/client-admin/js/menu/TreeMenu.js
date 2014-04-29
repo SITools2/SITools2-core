@@ -26,11 +26,13 @@ Ext.namespace('sitools.admin.menu');
  */
 // TODO ExtJS3 Object > Ext.Object ? 
 Ext.define('sitools.admin.menu.TreeMenu', {
-    extend: 'Ext.layout.container.Container',
+    extend: 'Ext.tree.Panel',
+    alias : 'widget.treemenucontainer',
 
+    
+    
     constructor : function (jsonUrl) {
-        
-        var tree = Ext.create('Ext.tree.Panel', {
+        Ext.apply(this, {
             id : ID.CMP.MENU,
             component : this,
             useArrows : false,
@@ -69,7 +71,8 @@ Ext.define('sitools.admin.menu.TreeMenu', {
                 }
             }
         });
-        return tree;
+        this.callParent(this);
+        
     },
 
     /**
@@ -82,8 +85,14 @@ Ext.define('sitools.admin.menu.TreeMenu', {
         // Getting nodeName
         var nodeName = node.get('name');
         var nodeId = node.get('id');
-
-        if (!Ext.isDefined(nodeName)) {
+        this.openModule(nodeName, nodeId);       
+        
+        
+//        helpUrl = loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html";
+    },
+    
+    openModule : function (nodeName, nodeId)  {
+    	if (!Ext.isDefined(nodeName)) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('msg.nodeundefined'));
             return;
         }
@@ -149,8 +158,6 @@ Ext.define('sitools.admin.menu.TreeMenu', {
         mainPanel.add( helpPanel );
         mainPanel.doLayout();
         helpPanel.setVisible(SHOW_HELP);
-        
-//        helpUrl = loadUrl.get('APP_URL') + "/client-admin/res/help/" + LOCALE + "/" + nodeName + ".html";
     }
 
 });

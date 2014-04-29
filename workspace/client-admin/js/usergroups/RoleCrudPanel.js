@@ -65,14 +65,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
             }, {
                 name : 'description',
                 type : 'string'
-            }],
-            listeners : {
-                scope : this,
-                load : function (store, records) {
-                    console.dir(records);
-                }
-            }
-            
+            }]
         });
 
         this.columns = {
@@ -150,6 +143,8 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      */ 
     onRender : function () {
         sitools.admin.usergroups.RoleCrudPanel.superclass.onRender.apply(this, arguments);
+        
+//        debugger ;
         this.store.load({
             params : {
                 start : 0,
@@ -169,7 +164,17 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
         });
         up.show(ID.BOX.ROLE);
     },
-
+    
+    
+    doModify : function(id){
+    	var up = new sitools.admin.usergroups.RolePropPanel({
+            url : this.url + '/' + id,
+            action : 'modify',
+            store : this.store
+        });
+        up.show(ID.BOX.ROLE);
+    },
+    
     /**
      * Open a {sitools.admin.usergroups.RolePropPanel} role panel to modify an existing role
      */
@@ -178,12 +183,8 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.usergroups.RolePropPanel({
-            url : this.url + '/' + rec.data.id,
-            action : 'modify',
-            store : this.store
-        });
-        up.show(ID.BOX.ROLE);
+        this.doModify(rec.data.id);
+        
     },
 
     /**

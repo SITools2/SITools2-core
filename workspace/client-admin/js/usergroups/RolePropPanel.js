@@ -91,52 +91,48 @@ Ext.define('sitools.admin.usergroups.RolePropPanel', {
         sitools.admin.usergroups.RolePropPanel.superclass.initComponent.call(this);
     },
 
+    getRoleAsJson : function() {
+    	var f = this.down('form').getForm();
+    	if (!f.isValid()) {
+    		return null;
+    	}
+    	return f.getValues();
+    },
+    
+    
     /**
      * Action to perform on the button handler (modify or create)
      */
     onModify : function () {
-        var f = this.down('form').getForm();
-        if (!f.isValid()) {
+        var jsonRole = this.getRoleAsJson();
+        if(jsonRole==null){
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
         }
+
+        var method;
         if (this.action == 'modify') {
-            Ext.Ajax.request({
-                url : this.url,
-                method : 'PUT',
-                scope : this,
-                jsonData : f.getValues(),
-                success : function (ret) {
-                    var Json = Ext.decode(ret.responseText);
-                    if (Json.success) {
-                        this.store.reload();
-                        this.close();
-                    } else {
-                        Ext.Msg.alert(i18n.get('label.warning'), Json.message);
-                    }
-                    // Ext.Msg.alert(i18n.get('label.information'),
-                    // i18n.get('msg.uservalidate'));
-                },
-                failure : alertFailure
-            });
-        } else {
-            Ext.Ajax.request({
-                url : this.url,
-                method : 'POST',
-                scope : this,
-                jsonData : f.getValues(),
-                failure : alertFailure,
-                success : function (ret) {
-                    var Json = Ext.decode(ret.responseText);
-                    if (Json.success) {
-                        this.store.reload();
-                        this.close();
-                    } else {
-                        Ext.Msg.alert(i18n.get('label.warning'), Json.message);
-                    }
-                }
-            });
+        	method = "PUT";
+        }else {
+        	method = "POST";
         }
+        	
+        Ext.Ajax.request({
+            url : this.url,
+            method : method,
+            scope : this,
+            jsonData : jsonRole,
+            success : function (ret) {
+                var Json = Ext.decode(ret.responseText);
+                if (Json.success) {
+                    this.store.reload();
+                    this.close();
+                } else {
+                    Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+                }
+            },
+            failure : alertFailure
+        });
 
     },
 

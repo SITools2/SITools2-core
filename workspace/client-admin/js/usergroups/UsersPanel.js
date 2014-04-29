@@ -211,15 +211,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
      * Save the user of the current parent object
      */
     _onOK : function () {
-        var putObject = this.data;
-        putObject.users = [];
-        this.store.each(function (record) {
-            var resource = {
-                id : record.data.identifier
-            };
-            putObject.users.push(resource);
-        });
-        
+        var putObject = getPutObject();
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',
@@ -237,7 +229,19 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
             failure : alertFailure
         });
     },
-
+    
+    getPutObject : function () {
+    	var putObject = this.data;
+        putObject.users = [];
+        this.store.each(function (record) {
+            var resource = {
+                id : record.data.identifier
+            };
+            putObject.users.push(resource);
+        });
+        return putObject;
+    },
+ 
     /**
      * Destroy the {sitools.admin.usergroups.UsersPanel} users Panel
      */

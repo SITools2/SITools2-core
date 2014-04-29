@@ -189,7 +189,7 @@ var clientAdmin = {
 	        }
 	    }); 
 	}, 
-	initGui : function () {
+	initGui : function (callback) {
 	    
 	    var menuLogout = {
 	        xtype : 'button',
@@ -512,6 +512,8 @@ var clientAdmin = {
 
 		var menu = Ext.create("sitools.admin.menu.TreeMenu", 'res/json/menu.json');
 		treePanel.add(menu);
+
+		callback.call(this);
 //		treePanel.doLayout();
 
 	    // viewport.doLayout();
@@ -524,7 +526,7 @@ var clientAdmin = {
 /**
  * Init application Gui and logic
  */
-function initAppli() {
+function initAppli(callback) {
     //loadUrl.load('/sitools/client-admin/siteMap', clientAdmin.initGui());
     if (Ext.isEmpty(Ext.util.Cookies.get('showQuickStart'))) {
         Ext.util.Cookies.set('showQuickStart', true);
@@ -554,7 +556,7 @@ function initAppli() {
         callback : function () {
 			sql2ext.load(loadUrl.get('APP_URL') + "/conf/sql2ext.properties");
             var cb = function () {
-				clientAdmin.initGui();
+				clientAdmin.initGui(callback);
             };
             clientAdmin.initGuiServices(cb);
         }
