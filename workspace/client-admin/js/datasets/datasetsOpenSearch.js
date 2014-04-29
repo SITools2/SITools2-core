@@ -280,7 +280,7 @@ Ext.define('sitools.admin.datasets.datasetsOpenSearch', {
         this.grid = Ext.create('Ext.grid.Panel', {
             border : false,
             layout : 'fit',
-            pageSize : 10,
+            pageSize : ADMIN_PANEL_NB_ELEMENTS,
             padding : 2,
             title : 'Fields',
             urlDatasets : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),

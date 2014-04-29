@@ -25,14 +25,11 @@ Ext.define('sitools.component.order.orderCrudPanel', {
 	alias : 'widget.s-order',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel', {
-        mode : 'SINGLE'
-    }),
+    id : ID.BOX.ORDER,
     mixins : {
         utils : 'js.utils.utils'
     },
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     
     initComponent : function () {
@@ -184,7 +181,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
             store : this.getStore(),
             orderRec : rec
         });
-        up.show();
+        up.show(ID.BOX.ORDER);
     },
 
     _onDone : function () {
@@ -198,7 +195,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
             store : this.getStore(),
             orderRec : rec
         });
-        up.show();
+        up.show(ID.BOX.ORDER);
     },
     
     onDelete : function () {

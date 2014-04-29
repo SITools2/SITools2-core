@@ -34,19 +34,16 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel', {
-        mode : 'SINGLE'
-    }),
     mixins : {
         utils : 'js.utils.utils'
     },
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/groups';
         
-        this.store = new Ext.data.JsonStore({
+        this.store = Ext.create("Ext.data.JsonStore", {
             remoteSort : true,
             pageSize : this.pageSize,
             proxy : {
@@ -131,6 +128,10 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE'
+        });
         sitools.admin.usergroups.GroupCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -141,10 +142,8 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
     onRender : function () {
         sitools.admin.usergroups.GroupCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -152,7 +151,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
      * Create a new {sitools.admin.usergroups.GroupPropPanel} groupPropertyPanel to create a new group
      */
     onCreate : function () {
-        var up = new sitools.admin.usergroups.GroupPropPanel({
+        var up = Ext.create("sitools.admin.usergroups.GroupPropPanel", {
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -170,7 +169,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.usergroups.GroupPropPanel({
+        var up = Ext.create("sitools.admin.usergroups.GroupPropPanel", {
             url : this.url + '/' + rec.data.name,
             action : 'modify',
             store : this.getStore()
@@ -187,7 +186,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('msg.group.confirm.delete'), rec.data.name),
@@ -233,7 +232,7 @@ Ext.define('sitools.admin.usergroups.GroupCrudPanel', {
         
         delete rec.data.id;
         
-        var up = new sitools.admin.usergroups.UsersPanel({
+        var up = Ext.create("sitools.admin.usergroups.UsersPanel", {
             mode : 'list',
             url : this.url + '/' + rec.data.name + '/users',
             data : rec.data

@@ -35,7 +35,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel', {
 	urlParentsParams : '',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     modify : false,
     urlGrid : null,    
     mixins : {

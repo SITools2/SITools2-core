@@ -36,7 +36,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.COLLECTIONS,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
@@ -55,6 +55,7 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
                 }
             },
             remoteSort : true,
+            pageSize : this.pageSize,
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -122,6 +123,11 @@ Ext.define('sitools.admin.collections.CollectionsCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.collections.CollectionsCrudPanel.superclass.initComponent.call(this);
 
     },

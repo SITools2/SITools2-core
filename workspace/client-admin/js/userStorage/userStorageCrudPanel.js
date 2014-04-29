@@ -33,11 +33,8 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
 	alias : 'widget.s-userStorage',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel',{
-        mode : "SINGLE"
-    }),
-    pageSize : 10,
+    id : ID.BOX.USERSTORAGE,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
@@ -214,6 +211,11 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel',{
+            mode : "SINGLE"
+        });
+        
         sitools.admin.userStorage.userStorageCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -238,7 +240,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
             action : 'create',
             store : this.getStore()
         });
-        up.show(ID.BOX.PROJECTS);
+        up.show(ID.BOX.USERSTORAGE);
     },
 
     /**
@@ -351,7 +353,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('userStorageCrud.clean'), rec.data.userId),

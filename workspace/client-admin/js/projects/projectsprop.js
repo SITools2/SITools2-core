@@ -40,7 +40,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
     /** Default modal */
     modal : true,
     /** Default pageSize for Dataset Store */
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     /** Default id */
     id : ID.COMPONENT_SETUP.PROJECT,
     /** Default Value */

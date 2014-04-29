@@ -62,7 +62,12 @@ var ID = {
         COLLECTIONS : "collectionBoxId", 
         MULTIDS : "multiDsBoxId", 
         APPLICATIONPLUGIN : "applicationPluginBoxId",
-        GUISERVICES : "guiServicesBoxId"
+        GUISERVICES : "guiServicesBoxId",
+        USERSTORAGE : "userStorageBoxId",
+        ORDER : 'orderBoxId',
+        AUTHORIZATION : 'authorizationBoxId',
+        MONGODB : 'mongoDBBoxId',
+        RSSFEED : 'rssFeedBoxId'
     },
     PROP : {
         DATASETVIEW : "datasetViewPropId",

@@ -37,7 +37,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
     height : 350,
     modal : true,
     closable : false,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
     mixins : {
         utils : 'js.utils.utils'

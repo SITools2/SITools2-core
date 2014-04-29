@@ -513,7 +513,9 @@ var clientAdmin = {
 		var menu = Ext.create("sitools.admin.menu.TreeMenu", 'res/json/menu.json');
 		treePanel.add(menu);
 
-		callback.call(this);
+		if (Ext.isFunction(callback)) {
+            callback.call(this);
+        }
 //		treePanel.doLayout();
 
 	    // viewport.doLayout();

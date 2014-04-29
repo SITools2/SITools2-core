@@ -40,8 +40,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.STORAGES,
-    selModel : Ext.create('Ext.selection.RowModel'),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
@@ -233,6 +232,11 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.storages.storagesCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -252,7 +256,8 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Open a {sitools.admin.applications.applicationsRole} role panel to add a role authorization to the selected storage
      */
     onDefineRole : function () {
-        var rec = this.getLastSelectedRecord(), up = new sitools.admin.applications.applicationsRole({
+        var rec = this.getLastSelectedRecord();
+        var up = Ext.create("sitools.admin.applications.applicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });
@@ -263,7 +268,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
         if (rec.data.status == "STARTED") {
 			return Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.wrongStatus'));
         }
-        up.show(ID.BOX.APPLICATION);
+        up.show(ID.BOX.STORAGES);
     },
 
     /**
@@ -292,7 +297,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
                 }
                 var filterPlugin = data.filterPlugin;
 
-                var up = new sitools.component.filtersPlugins.filtersPluginsSingle({
+                var up = Ext.create("sitools.component.filtersPlugins.filtersPluginsSingle", {
                     action : action,
                     parentPanel : this,
                     urlFilters : this.urlFilters,
@@ -300,7 +305,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
                     parentType : 'storage',
                     filterPlugin : filterPlugin
                 });
-                up.show();
+                up.show(ID.BOX.STORAGES);
 
             },
             failure : alertFailure
@@ -313,12 +318,12 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
      * Open a {sitools.admin.storages.storagesPropPanel} storage property panel to create a new storage
      */
     onCreate : function () {
-        var up = new sitools.admin.storages.storagesPropPanel({
+        var up = Ext.create("sitools.admin.storages.storagesPropPanel", {
             url : this.url,
             action : 'create',
             store : this.getStore()
         });
-        up.show();
+        up.show(ID.BOX.STORAGES);
     },
 
     /**
@@ -329,12 +334,12 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.storages.storagesPropPanel({
+        var up = Ext.create("sitools.admin.storages.storagesPropPanel", {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()
         });
-        up.show();
+        up.show(ID.BOX.STORAGES);
     },
 
     /**
@@ -345,7 +350,7 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('storageCrud.delete'),
@@ -432,12 +437,12 @@ Ext.define('sitools.admin.storages.storagesCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.storages.storageCopyProp({
+        var up = Ext.create("sitools.admin.storages.storageCopyProp", {
             urlDirectories : this.url,
             idSrc : rec.data.id, 
             store : this.getStore()
         });
-        up.show();
+        up.show(ID.BOX.STORAGES);
     	
     }
 

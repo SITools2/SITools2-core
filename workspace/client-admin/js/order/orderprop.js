@@ -26,7 +26,7 @@ Ext.define('sitools.component.order.orderPropPanel', {
     width : 700,
     height : 500,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     dataSets : "",
     layout : 'fit', 
 

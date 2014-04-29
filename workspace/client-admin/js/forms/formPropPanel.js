@@ -37,7 +37,7 @@ Ext.define('sitools.admin.forms.formPropPanel', {
     width : 700,
     height : 580,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     autoScroll : true,
     formSize : {
 		width : 500, 

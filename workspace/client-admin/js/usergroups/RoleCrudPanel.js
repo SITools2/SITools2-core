@@ -33,13 +33,10 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     forceFit : true,
-    selModel : Ext.create('Ext.selection.RowModel',{
-        mode : 'SINGLE'
-    }),
     mixins : {
         utils : 'js.utils.utils'
     },
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ROLES_URL');
@@ -135,6 +132,11 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE'
+        });
+        
         sitools.admin.usergroups.RoleCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -143,13 +145,9 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      */ 
     onRender : function () {
         sitools.admin.usergroups.RoleCrudPanel.superclass.onRender.apply(this, arguments);
-        
-//        debugger ;
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -157,7 +155,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      * Open a {sitools.admin.usergroups.RolePropPanel} role panel to create a new role
      */
     onCreate : function () {
-        var up = new sitools.admin.usergroups.RolePropPanel({
+        var up = Ext.create("sitools.admin.usergroups.RolePropPanel", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -167,7 +165,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
     
     
     doModify : function(id){
-    	var up = new sitools.admin.usergroups.RolePropPanel({
+    	var up = Ext.create("sitools.admin.usergroups.RolePropPanel", {
             url : this.url + '/' + id,
             action : 'modify',
             store : this.store
@@ -195,7 +193,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('roleCrud.delete'), rec.data.name),
@@ -216,7 +214,7 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
      */
     doDelete : function (rec) {
         Ext.Ajax.request({
-            url : this.url + "/" + rec.data.id,
+            url : this.url + "/" + rec.get("id"),
             method : 'DELETE',
             scope : this,
             success : function (ret) {
@@ -236,9 +234,9 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.usergroups.UsersPanel({
+        var up = Ext.create("sitools.admin.usergroups.UsersPanel", {
             mode : 'list',
-            url : this.url + '/' + rec.data.id + '/users',
+            url : this.url + '/' + rec.get("id") + '/users',
             data : rec.data
         });
         up.show(ID.BOX.ROLE);
@@ -252,9 +250,9 @@ Ext.define('sitools.admin.usergroups.RoleCrudPanel', { extend :'Ext.grid.Panel',
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var gp = new sitools.admin.usergroups.GroupsPanel({
+        var gp = Ext.create("sitools.admin.usergroups.GroupsPanel", {
             mode : 'list',
-            url : this.url + '/' + rec.data.id + '/groups',
+            url : this.url + '/' + rec.get("id") + '/groups',
             data : rec.data
         });
         gp.show(ID.BOX.ROLE);

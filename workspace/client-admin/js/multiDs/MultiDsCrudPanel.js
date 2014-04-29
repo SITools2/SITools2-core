@@ -35,7 +35,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
 	border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.MULTIDS,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     urlMultiDs : "/tmp",
     forceFit : true,
     mixins : {
@@ -156,6 +156,11 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.multiDs.MultiDsCrudPanel.superclass.initComponent.call(this);
 
     },
@@ -191,7 +196,7 @@ Ext.define('sitools.admin.multiDs.MultiDsCrudPanel', { extend : 'Ext.grid.Panel'
             action : 'create',
             store : this.getStore()
         });
-        up.show(ID.BOX.FORMS);
+        up.show(ID.BOX.MULTIDS);
     },
 
     onModify : function () {

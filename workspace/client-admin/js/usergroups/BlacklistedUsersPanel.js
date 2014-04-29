@@ -37,7 +37,7 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsersPanel', {
     
     width : 700,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     height : 480,
     layout : 'fit',
 

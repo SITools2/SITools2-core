@@ -23,11 +23,10 @@ Ext.namespace('sitools.component.portal');
 Ext.define('sitools.component.portal.rssFeedPortalCrud', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-rssFeedPortal',
-    
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.RSSPORTAL,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     label : i18n.get("label.selectPortal"),
     forceFit : true,
 
@@ -36,10 +35,12 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL');
         this.urlRef = loadUrl.get('APP_FEEDS_URL');
         
-        this.store = new Ext.data.JsonStore({
+        this.store = Ext.create("Ext.data.JsonStore", {
             proxy : {
                 type : 'ajax',
                 url : '/tmp',
+                limitParam : undefined,
+                startParam : undefined,
                 reader : {
                     type : 'json',
                     root : 'data',

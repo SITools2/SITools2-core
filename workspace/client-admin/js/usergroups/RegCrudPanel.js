@@ -35,10 +35,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.REG,
     forceFit : true,
-    selModel : Ext.create('Ext.selection.RowModel', {
-        mode : 'SINGLE'
-    }),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     mixins : {
         utils : 'js.utils.utils'
     },
@@ -60,6 +57,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
         // DESTROY /users/[id] delete
         this.store = Ext.create('Ext.data.JsonStore', {
             remoteSort : true,
+            pageSize : this.pageSize, 
             proxy : {
                 type : 'ajax',
                 url : this.url,
@@ -151,19 +149,21 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
             itemdblclick : this.onModify
         };
         
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE'
+        });
+        
         this.callParent(arguments);
     },
 
     /**
      * done a specific render to load registers from the store. 
      */ 
-    onRender : function () {
-        sitools.admin.usergroups.RegCrudPanel.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        sitools.admin.usergroups.RegCrudPanel.superclass.afterRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -212,7 +212,7 @@ Ext.define('sitools.admin.usergroups.RegCrudPanel', {
             return false;
         }
         
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('label.regcrud.delete'), rec.get("identifier")),

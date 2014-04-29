@@ -36,7 +36,7 @@ Ext.define('sitools.admin.datasets.selectColumn', {
     width : 700,
     height : 480,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
 
     initComponent : function () {
         this.title = i18n.get('title.selectColumn');

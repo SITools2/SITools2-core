@@ -34,12 +34,13 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
 	alias : 'widget.s-forms',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     urlFormulaires : "/tmp",
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
     },
+    id : ID.BOX.FORMS,
 
     initComponent : function () {
         this.baseUrlFormulaires = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
@@ -50,6 +51,8 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
             proxy : {
                 type : 'ajax',
                 url : this.urlDatasets,
+                limitParam : undefined,
+                startParam : undefined,
                 reader : {
                     type :'json',
                     root : "data"
@@ -169,6 +172,11 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.forms.formsCrudPanel.superclass.initComponent.call(this);
 
     },
@@ -210,7 +218,7 @@ Ext.define('sitools.admin.forms.formsCrudPanel', {
             store : this.getStore(),
             datasetColumnModel : this.datasetColumnModel
         });
-        up.show(ID.BOX.FORMS.COMPONENTLIST);
+        up.show(ID.BOX.FORMS);
     },
 
     onDelete : function () {

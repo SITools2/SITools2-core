@@ -36,6 +36,8 @@ Ext.define('sitools.component.graphs.graphsCrudPanel', {
             proxy : {
                 type : 'ajax',
                 url : this.urlProjects,
+                limitParam : undefined,
+                startParam : undefined,
                 simpleSortMode : true,
                 reader : {
                     type : 'json',

@@ -32,14 +32,12 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
 	alias : 'widget.s-databaseJDBC',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    selModel : Ext.create('Ext.selection.RowModel',{
-        mode : 'SINGLE'
-    }),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
     },
+    id : ID.BOX.DATABASE,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_URL');
@@ -169,6 +167,11 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             scope : this, 
             itemdblclick : this._onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel',{
+            mode : "SINGLE"
+        });
+        
         sitools.admin.datasource.jdbc.DataBaseCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -186,7 +189,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             action : 'create',
             store : this.store
         });
-        dbp.show();
+        dbp.show(ID.BOX.DATABASE);
     },
 
     _onModify : function () {
@@ -204,7 +207,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             action : 'modify',
             store : this.store
         });
-        dbp.show();
+        dbp.show(ID.BOX.DATABASE);
     },
     
     _onView : function () {
@@ -217,7 +220,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             action : 'view',
             store : this.store
         });
-        up.show();
+        up.show(ID.BOX.DATABASE);
     },
 
     _onDelete : function () {
@@ -321,7 +324,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
         var dbt = Ext.create("sitools.admin.datasource.DataBaseTest", {
             url : this.url + '/' + rec.data.id + '/test'
         });
-        dbt.show();
+        dbt.show(ID.BOX.DATABASE);
     }
 
 });

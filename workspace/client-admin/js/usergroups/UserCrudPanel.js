@@ -33,18 +33,16 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
 	alias : 'widget.s-usercrud',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    selModel : Ext.create('Ext.selection.RowModel', {
-        mode : 'SINGLE'
-    }),
+    id : ID.BOX.USER,
     mixins : {
         utils : 'js.utils.utils'
     },
     forceFit : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_SECURITY_URL') + '/users';
-        
+       
         /*
          * // The new DataWriter component. var writer = new
          * Ext.data.JsonWriter({ encode: false // <-- don't return encoded JSON --
@@ -60,6 +58,7 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
         this.store = Ext.create('Ext.data.JsonStore', {
             autoLoad : true,
             remoteSort : true,
+            pageSize : this.pageSize,
             proxy : {
                 type : 'ajax',
                 url : this.url,
@@ -154,6 +153,10 @@ Ext.define('sitools.admin.usergroups.UserCrudPanel', {
             scope : this, 
             itemdblclick : this._onModify
         };
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE'
+        });
+        
         this.callParent(arguments);
 //        sitools.admin.usergroups.UserCrudPanel.superclass.initComponent.call(this);
     },

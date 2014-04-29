@@ -34,9 +34,10 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-rssFeedCrud',
     border : false,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     modify : false,
     forceFit : "true",
+    id : ID.BOX.RSSFEED,
 
     initComponent : function () {
 
@@ -81,6 +82,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             proxy : {
                 type : 'ajax',
                 url : this.url,
+                limitParam : undefined,
+                startParam : undefined,
                 reader : {
                     type : 'json',
                     root : "data"
@@ -182,6 +185,11 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.rssFeed.rssFeedCrud.superclass.initComponent.call(this);
 
     },
@@ -216,7 +224,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             url : this.url,
             urlRef : this.urlRef
         });
-        up.show();
+        up.show(ID.BOX.RSSFEED);
     },
 
     /**
@@ -237,7 +245,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             urlRef : this.urlRef,
             idFeed : rec.data.id
         });
-        up.show();
+        up.show(ID.BOX.RSSFEED);
     },
 
     /**
@@ -248,7 +256,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('feedCrud.delete'),

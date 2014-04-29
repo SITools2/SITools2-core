@@ -35,7 +35,7 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
     width : 650,
     modal : true,
     closable : false,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
 	resizable : false, 
     id : 'joinConditionWin',
     layout : 'fit',

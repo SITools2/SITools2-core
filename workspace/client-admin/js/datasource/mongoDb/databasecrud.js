@@ -33,14 +33,13 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
 	alias : 'widget.s-databaseMongoDb',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    selModel : Ext.create('Ext.selection.RowModel', {
-        mode : 'SINGLE'
-    }),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
     },
+    id : ID.BOX.MONGODB,
+    
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_MONGODB_URL');
 
@@ -147,7 +146,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
 						var win = Ext.create("sitools.admin.datasource.mongoDb.DataBaseExplorer", {
 							database : rec.getData()
 						});
-						win.show();
+						win.show(ID.BOX.MONGODB);
 					}
                 }]
             }]
@@ -208,6 +207,11 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             scope : this, 
             itemdblclick : this._onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel',{
+            mode : "SINGLE"
+        });
+        
         sitools.admin.datasource.mongoDb.DataBaseCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -225,7 +229,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             action : 'create',
             store : this.store
         });
-        dbp.show();
+        dbp.show(ID.BOX.MONGODB);
     },
 
     _onModify : function () {
@@ -243,7 +247,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             action : 'modify',
             store : this.store
         });
-        dbp.show();
+        dbp.show(ID.BOX.MONGODB);
     },
     
     _onView : function () {
@@ -256,7 +260,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             action : 'view',
             store : this.store
         });
-        up.show();
+        up.show(ID.BOX.MONGODB);
     },
 
     _onDelete : function () {
@@ -265,7 +269,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             return false;
         }
 
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('databaseCrud.delete'), rec.get("name")),
@@ -356,7 +360,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
         var dbt = new sitools.admin.datasource.DataBaseTest({
             url : this.url + '/' + rec.get("id") + '/test'
         });
-        dbt.show();
+        dbt.show(ID.BOX.MONGODB);
     }
 
 });

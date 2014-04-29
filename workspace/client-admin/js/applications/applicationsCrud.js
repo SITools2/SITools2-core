@@ -32,9 +32,9 @@ Ext.define('sitools.admin.applications.applicationsCrud', {
     alias : 'widget.s-applications',
 	border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.GROUP,
+    id : ID.BOX.APPLICATION,
     forceFit : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     mixins : {
         utils : 'js.utils.utils'
     },
@@ -179,7 +179,6 @@ Ext.define('sitools.admin.applications.applicationsCrud', {
         
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-//            return Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
         }
 
         up.show(ID.BOX.APPLICATION);

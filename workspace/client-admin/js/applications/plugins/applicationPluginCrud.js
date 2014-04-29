@@ -32,7 +32,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.APPLICATIONPLUGIN,
-    pageSize : 10,    
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,    
     modify : false,
     urlGrid : null,
     mixins : {
@@ -70,6 +70,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
         this.urlList = loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_APPLICATIONS_URL') + '/classes';
         
         this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : this.pageSize,
             proxy : {
                 type : 'ajax',
                 url : this.urlAdmin,
@@ -226,6 +227,10 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
             itemdblclick : this.onModify
         };
         
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.applications.plugins.ApplicationPluginCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -245,13 +250,13 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
      * to create a new Application plugin
      */
     onCreate : function () {
-        var up = new sitools.admin.applications.plugins.applicationPluginProp({
+        var up = Ext.create("sitools.admin.applications.plugins.applicationPluginProp", {
             action : 'create',            
             parent : this,          
             urlList : this.urlList,
             urlAdmin : this.urlAdmin
         });
-        up.show();
+        up.show(ID.BOX.APPLICATIONPLUGIN);
     },
 
     /**
@@ -268,14 +273,14 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
             return;
         }
-        var up = new sitools.admin.applications.plugins.applicationPluginProp({
+        var up = Ext.create("sitools.admin.applications.plugins.applicationPluginProp", {
             action : 'modify',
             record : rec,
             parent : this,
             urlList : this.urlList,
             urlAdmin : this.urlAdmin            
         });
-        up.show();
+        up.show(ID.BOX.APPLICATIONPLUGIN);
 
     },
 
@@ -286,9 +291,8 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-//            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('applicationPluginCrud.delete'),
@@ -326,7 +330,6 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-//            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         Ext.Ajax.request({
             url : this.urlAdmin + "/" + rec.data.id + "/start",

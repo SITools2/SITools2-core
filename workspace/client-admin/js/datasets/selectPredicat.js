@@ -34,7 +34,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
     width : 700,
     height : 480,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
 
     initComponent : function () {

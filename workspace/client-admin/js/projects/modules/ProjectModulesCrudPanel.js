@@ -33,14 +33,12 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
 	alias : 'widget.s-projectmodule',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    selModel : Ext.create('Ext.selection.RowModel',{
-        mode : 'SINGLE'
-    }),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
     },
+    id : ID.BOX.PROJECTMODULE,
     
     initComponent : function () {
         // url = '/sitools/projectModules'
@@ -173,6 +171,11 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
             scope : this, 
             itemdblclick : this._onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.projects.modules.ProjectModulesCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -197,7 +200,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
             action : 'create',
             store : this.store
         });
-        dbp.show();
+        dbp.show(ID.BOX.PROJECTMODULE);
     },
 
     /**
@@ -215,7 +218,7 @@ Ext.define('sitools.admin.projects.modules.ProjectModulesCrudPanel', {
             action : 'modify',
             store : this.store
         });
-        dbp.show();
+        dbp.show(ID.BOX.PROJECTMODULE);
     },
 
     /**

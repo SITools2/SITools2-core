@@ -25,7 +25,7 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
     width : 350,
     modal : true,
     closable : false,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
 
     initComponent : function () {
         this.title = i18n.get('label.selectDataset');

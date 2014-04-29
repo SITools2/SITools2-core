@@ -30,8 +30,9 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     selModel : Ext.create('Ext.selection.RowModel'),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
+    id : ID.BOX.AUTHORIZATION,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
@@ -148,7 +149,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });
-        up.show(ID.BOX.APPLICATION);
+        up.show(ID.BOX.AUTHORIZATION);
     },
 
     onDelete : function () {
@@ -156,7 +157,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : {
                 yes : i18n.get('label.yes'),

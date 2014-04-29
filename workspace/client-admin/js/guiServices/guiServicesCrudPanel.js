@@ -34,10 +34,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GUISERVICES,
-    selModel : Ext.create('Ext.selection.RowModel', {
-        mode : 'SINGLE'
-    }),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
@@ -122,6 +119,11 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
             scope : this, 
             itemdblclick : this._onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.guiservices.GuiServicesCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -141,7 +143,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
      *  to create a new project module
      */
     _onCreate : function () {
-        var dbp = new sitools.admin.guiservices.GuiServicesPropPanel({
+        var dbp = Ext.create("sitools.admin.guiservices.GuiServicesPropPanel", {
             action : 'create',
             store : this.store
         });
@@ -158,7 +160,7 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var dbp = new sitools.admin.guiservices.GuiServicesPropPanel({
+        var dbp = Ext.create("sitools.admin.guiservices.GuiServicesPropPanel", {
             action : 'modify',
             store : this.store,
             recordId : rec.data.id

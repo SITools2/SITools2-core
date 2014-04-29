@@ -35,7 +35,7 @@ Ext.define('sitools.admin.projects.datasetsWin', {
     width : 500,
     modal : true,
     closable : false,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
 
     initComponent : function () {

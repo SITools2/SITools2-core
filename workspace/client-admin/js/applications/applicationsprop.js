@@ -30,7 +30,7 @@ Ext.define('sitools.admin.applications.applicationsProp', {
     width : 700,
     height : 480,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     dataSets : "",
     layout : 'fit',
 

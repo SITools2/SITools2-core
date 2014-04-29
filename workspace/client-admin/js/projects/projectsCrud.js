@@ -26,8 +26,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.PROJECTS,
-    selModel : Ext.create('Ext.selection.RowModel'),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : 'js.utils.utils'
@@ -196,16 +195,19 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.component.projects.projectsCrudPanel.superclass.initComponent.call(this);
     },
 
     onRender : function () {
         sitools.component.projects.projectsCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -245,7 +247,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
         if (!rec) {
             return false;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('projectCrud.delete'), rec.data.name),
@@ -384,7 +386,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             action : 'duplicate',
             store : this.getStore()
         });
-        up.show(ID.BOX.DATASETS);
+        up.show(ID.BOX.PROJECTS);
     }
 
 });

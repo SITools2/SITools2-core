@@ -35,7 +35,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.CONVERTERS,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     modify : false,
     urlGrid : null,
     converterChainedId : {},
@@ -78,6 +78,8 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
             proxy : {
                 type : 'ajax',
                 url : this.urlDatasets,
+                limitParam : undefined,
+                startParam : undefined,
                 reader : {
                     type : 'json',
                     root : "data"
@@ -104,6 +106,8 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
                     this.getStore().setProxy({
                         type : 'ajax',
                         url : this.urlDatasets + "/" + this.datasetId + this.converterUrlPart,
+                        limitParam : undefined,
+                        startParam : undefined,
                         reader : {
                             type : 'json',
                             root : "converterChainedModel.converters",
@@ -282,7 +286,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
             converterUrlPart : this.converterUrlPart, 
             urlDatasets : this.urlDatasets
         });
-        up.show();
+        up.show(ID.BOX.CONVERTERS);
     },
 
     onSave : function () {
@@ -346,7 +350,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
             urlDatasets : this.urlDatasets,
             converterChainedId : this.converterChainedId
         });
-        up.show();
+        up.show(ID.BOX.CONVERTERS);
 
     },
 

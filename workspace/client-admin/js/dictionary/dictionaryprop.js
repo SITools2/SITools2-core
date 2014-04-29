@@ -26,7 +26,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     width : 700,
     height : 480,
     modal : true,
-    pageSize : 10,    
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,    
     templateLoaded : false,
     //the copy of the conceptTemplate contained in the dictionary (only used when action = modify)
     conceptTemplate : null,

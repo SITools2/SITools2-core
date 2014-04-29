@@ -26,10 +26,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.FORMCOMPONENTS,
-    selModel : Ext.create('Ext.selection.RowModel',{
-        mode : 'SINGLE'
-    }),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : "js.utils.utils"
@@ -147,6 +144,11 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
             scope : this, 
             itemdblclick : this._onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+                
         sitools.component.formComponents.FormComponentsCrudPanel.superclass.initComponent.call(this);
     },
 
@@ -159,7 +161,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     },
 
     _onCreate : function () {
-        var dbp = new sitools.component.formComponents.FormComponentsPropPanel({
+        var dbp = Ext.create("sitools.component.formComponents.FormComponentsPropPanel", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -173,7 +175,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var dbp = new sitools.component.formComponents.FormComponentsPropPanel({
+        var dbp = Ext.create("sitools.component.formComponents.FormComponentsPropPanel", {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store
@@ -187,7 +189,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
             return false;
         }
 
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : i18n.get('formComponentsCrud.delete'),
@@ -202,8 +204,6 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
 
     },
     doDelete : function (rec) {
-        // var rec = this.getLastSelectedRecord();
-        // if (!rec) return false;
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
             method : 'DELETE',

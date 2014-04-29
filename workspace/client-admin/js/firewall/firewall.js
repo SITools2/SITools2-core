@@ -28,7 +28,7 @@ Ext.define('sitools.component.firewall.FirewallPanel', { extend : 'Ext.grid.Pane
     selModel : Ext.create('Ext.selection.RowModel',{
         mode : 'SINGLE'
     }),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     // loadMask: true,
 
     initComponent : function () {

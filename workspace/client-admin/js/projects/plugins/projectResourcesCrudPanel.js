@@ -33,7 +33,7 @@ Ext.define('sitools.admin.projectResources.projectResourcesCrudPanel', {
     layout : 'fit',
 
     initComponent : function () {
-        var resourcePluginProject = new sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel({
+        var resourcePluginProject = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel", {
             urlParents : loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL'),
             resourcesUrlPart : loadUrl.get('APP_RESOURCES_URL'),
             urlResources : loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes',

@@ -42,7 +42,7 @@ Ext.define('sitools.admin.multiDs.MultiDsPropPanel', {
     width : 700,
     height : 700,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     id : ID.COMPONENT_SETUP.MULTIDS,
 	collectionId : null, 
 	dictionaryId : null, 

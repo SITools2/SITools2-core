@@ -34,7 +34,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.UNITS,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : 'js.utils.utils'
@@ -136,6 +136,11 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : "SINGLE"
+        });
+        
         sitools.admin.units.unitsCrudPanel.superclass.initComponent.call(this);
 
     },
@@ -146,10 +151,8 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
     onRender : function () {
         sitools.admin.units.unitsCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
@@ -157,12 +160,12 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
      * Create a new {sitools.admin.units.unitsProp} unit prop to create a new dimension
      */
     onCreate : function () {
-        var up = new sitools.admin.units.unitsProp({
+        var up = Ext.create("sitools.admin.units.unitsProp", {
             action : 'create',            
             parent : this,          
             urlAdmin : this.urlAdmin
         });
-        up.show();
+        up.show(ID.BOX.UNITS);
     },
 
     /**
@@ -174,13 +177,13 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.units.unitsProp({
+        var up = Ext.create("sitools.admin.units.unitsProp", {
             action : 'modify',
             record : rec,
             parent : this,
             urlAdmin : this.urlAdmin            
         });
-        up.show();
+        up.show(ID.BOX.UNITS);
 
     },
 
@@ -192,7 +195,7 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var tot = Ext.Msg.show({
+        Ext.Msg.show({
             title : i18n.get('label.delete'),
             buttons : Ext.Msg.YESNO,
             msg : Ext.String.format(i18n.get('unitsCrud.delete'), rec.data.name),
@@ -216,7 +219,6 @@ Ext.define('sitools.admin.units.unitsCrudPanel', {
             method : 'DELETE',
             scope : this,
             success : function (ret) {
-                var Json = Ext.decode(ret.responseText);
                 if (showResponse(ret)) {
                     this.store.reload();
                 }

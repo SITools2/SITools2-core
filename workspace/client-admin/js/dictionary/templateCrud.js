@@ -25,9 +25,8 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
 	alias : 'widget.s-template',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.GROUP,
-    selModel : Ext.create('Ext.selection.RowModel'),
-    pageSize : 10,
+    id : ID.BOX.TEMPLATE,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : 'js.utils.utils'
@@ -117,16 +116,19 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
             scope : this, 
             itemdblclick : this.onModify
         };
+        
+        this.selModel = Ext.create('Ext.selection.RowModel',{
+            mode : "SINGLE"
+        });
+        
         sitools.component.dictionary.templateCrudPanel.superclass.initComponent.call(this);
     },
 
     onRender : function () {
         sitools.component.dictionary.templateCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 

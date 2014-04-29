@@ -38,7 +38,7 @@ Ext.define('sitools.admin.collections.CollectionsPropPanel', {
 	width : 700,
     height : 580,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     dataSets : "",
 	allModulesDetached : false, 
 	allModulesInvisible : false, 

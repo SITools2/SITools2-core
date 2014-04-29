@@ -26,7 +26,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
     width : 700,
     height : 480,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
 
     initComponent : function () {

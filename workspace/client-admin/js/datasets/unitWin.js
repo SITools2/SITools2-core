@@ -33,7 +33,7 @@ Ext.define('sitools.admin.datasets.unitWin', {
     width : 600,
     height : 400,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
 
     initComponent : function () {
         this.title = i18n.get('label.units');

@@ -38,7 +38,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
     width : 700,
     height : 480,
     modal : true,
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
 	editable : false, 
 	
     initComponent : function () {

@@ -25,16 +25,15 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
 	alias : 'widget.s-dictionary',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    selModel : Ext.create('Ext.selection.RowModel'),
-    pageSize : 10,
+    pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
         utils : 'js.utils.utils'
     },
+    id : ID.BOX.DICTIONARY,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_URL');
-        
 
         this.store = Ext.create('Ext.data.JsonStore', {
             remoteSort : true,
@@ -121,16 +120,18 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
             itemdblclick : this.onModify
         };
         
+        this.selModel = Ext.create('Ext.selection.RowModel',{
+            mode : "SINGLE"
+        });
+        
         sitools.component.dictionary.dictionaryCrudPanel.superclass.initComponent.call(this);
     },
 
     onRender : function () {
         sitools.component.dictionary.dictionaryCrudPanel.superclass.onRender.apply(this, arguments);
         this.store.load({
-            params : {
-                start : 0,
-                limit : this.pageSize
-            }
+            start : 0,
+            limit : this.pageSize
         });
     },
 
