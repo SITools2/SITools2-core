@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.datasets.services');
 
 /**
  * A panel to managed Dataset resources.
- * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel
+ * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrud
  * @class sitools.admin.datasets.services.datasetServicesCrud 
  * @extends Ext.grid.GridPanel
  */
@@ -41,8 +41,12 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
     clicksToEdit: 1,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.datasets.services.datasetServicesProp',
+                'sitools.admin.resourcesPlugins.resourcesPluginsProp',
+                'sitools.admin.datasets.services.datasetServicesCopyProp'],
     
     viewConfig : {
         autoFill : true,
@@ -256,7 +260,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 typeAhead : true,
                 triggerAction : 'all',
                 queryMode : 'local',
-                store : new Ext.data.ArrayStore({
+                store : Ext.create("Ext.data.ArrayStore", {
                     id : 0,
                     fields : ['position'],
                     data : [['left'], ['right']]
@@ -298,7 +302,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         });
         
         this.tbar = {
-//            xtype : 'sitools.widget.GridSorterToolbar',
+//            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             defaults : {
                 scope : this
             },
@@ -336,7 +340,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         };
         
         this.rbar = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             alignRight : false,
             layout : {
                 pack : 'center'
@@ -347,7 +351,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             listeners : {
                 scope : this,
                 afterrender : function (toolbar) {
-                    var buttons = Ext.ComponentQuery.query('toolbar[xtype=sitools.widget.GridSorterToolbar] > button');
+                    var buttons = Ext.ComponentQuery.query('toolbar[xtype=sitools.public.widget.grid.GridSorterToolbar] > button');
                     Ext.each(buttons, function (button) {
                         button.on('click', function () {
                             if (this.getLastSelectedRecord() != undefined)
@@ -462,7 +466,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var datasetServicesCopy = new Ext.create("sitools.admin.datasets.services.datasetServicesCopyProp", {
+        var datasetServicesCopy = Ext.create("sitools.admin.datasets.services.datasetServicesCopyProp", {
             storeCombo : this.storeParents,
             services : arrayRecords,
             parentDatasetId : parentId,
@@ -552,7 +556,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             scope : this,
             success : function (ret) {
                 this.savePropertiesBtn.removeCls('not-save-textfield');
-                new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('label.datasetServicePropertiesSaved'),
@@ -584,7 +588,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             success : function (ret) {
                 var json = Ext.decode(ret.responseText);
 
-                var up = new sitools.admin.datasets.services.datasetServicesProp({
+                var up = Ext.create("sitools.admin.datasets.services.datasetServicesProp", {
                     action : 'modify',
                     record : json.guiServicePlugin,
                     parentPanel : this,
@@ -618,7 +622,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
                 var json = Ext.decode(ret.responseText);
                 var resourcePlugin = {};
                 resourcePlugin.data = json.resourcePlugin;
-                var up = new sitools.admin.resourcesPlugins.resourcesPluginsProp({
+                var up = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsProp", {
                     action : 'modify',
                     record : resourcePlugin,
                     parentPanel : this,

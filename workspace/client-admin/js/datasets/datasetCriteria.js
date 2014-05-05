@@ -33,6 +33,9 @@ Ext.namespace('sitools.admin.datasets');
 Ext.define('sitools.admin.datasets.datasetCriteria', { 
     extend: 'Ext.panel.Panel',
     
+    requires : ['sitools.admin.datasets.joinPanel',
+                'sitools.admin.datasets.PredicatsPanel'],
+    
 	initComponent : function () {
 		/**
          * The panel that displays the join conditions.

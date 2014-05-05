@@ -1,4 +1,25 @@
-Ext.define('sitools.component.datasets.joinCrudTreePanel', {
+/***************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
+ showHelp, loadUrl*/
+
+Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
     extend : 'Ext.tree.Panel',
     loader : null,
     projectId : null,
@@ -6,6 +27,8 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
     rootVisible : true,
     layout : 'fit',
     useArrows: true,
+    
+    requires : ['sitools.admin.datasets.joinConditionWin','sitools.admin.datasets.joinTableWin'],
     
     initComponent : function () {
             
@@ -176,7 +199,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             }
         };
         
-        sitools.component.datasets.joinCrudTreePanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.joinCrudTreePanel.superclass.initComponent.call(this);
     },
 
     _cxtMenuHandler : function (item) {
@@ -205,7 +228,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
             
             // this.doLayout();
-            up = new sitools.admin.datasets.joinConditionWin({
+            up = Ext.create("sitools.admin.datasets.joinConditionWin", {
                 node : node,
                 mode : 'create', 
                 storeColumnDataset : this.storeColumnDataset
@@ -225,7 +248,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
                 node = this.getSelectionModel().getSelection()[0];
 
                 // this.doLayout();
-                up = new sitools.admin.datasets.joinTableWin({
+                up = Ext.create("sitools.admin.datasets.joinTableWin", {
                     node : node,
                     mode : 'create',
                     datasetSelectTables : this.datasetSelectTables, 
@@ -247,13 +270,13 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
             
             if (node.isLeaf()) {
-                up = new sitools.admin.datasets.joinConditionWin({
+                up = Ext.create("sitools.admin.datasets.joinConditionWin", {
                     node : node,
                     mode : 'edit', 
                     storeColumnDataset : this.storeColumnDataset
                 });
             } else {
-                up = new sitools.admin.datasets.joinTableWin({
+                up = Ext.create("sitools.admin.datasets.joinTableWin", {
                     node : node,
                     mode : 'edit', 
                     datasetSelectTables : this.datasetSelectTables, 
@@ -266,7 +289,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
 //            node = item.parentMenu.contextNode;
             node = this.getSelectionModel().getSelection()[0];
             
-            up = new sitools.admin.datasets.joinTableWin({
+            up = Ext.create("sitools.admin.datasets.joinTableWin", {
                 node : node,
                 mode : 'edit-root', 
                 datasetSelectTables : this.datasetSelectTables
@@ -409,7 +432,7 @@ Ext.define('sitools.component.datasets.joinCrudTreePanel', {
         }
     }, 
     deleteJoinPanelItems : function () {
-        var root = new Ext.tree.TreeNode({
+        var root = Ext.create("Ext.tree.TreeNode", {
             text : this.name, 
             leaf : false, 
             expanded : true

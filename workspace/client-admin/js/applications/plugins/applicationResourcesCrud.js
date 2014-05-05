@@ -16,34 +16,30 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, loadUrl*/
+/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, loadUrl, ADMIN_PANEL_HEIGHT*/
 Ext.namespace('sitools.admin.applications.plugins');
 
 /**
- * @class sitools.admin.applications.plugins.applicationResourcesCrudPanel
+ * @class sitools.admin.applications.plugins.applicationResourcesCrud
  * @extends Ext.Panel
- * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel
+ * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrud
  */
-Ext.define('sitools.admin.applications.plugins.applicationResourcesCrudPanel', { 
-    extend : 'Ext.Panel', 
+Ext.define('sitools.admin.applications.plugins.applicationResourcesCrud', { 
+    extend : 'sitools.admin.resourcesPlugins.resourcesPluginsCrud', 
     alias : 'widget.s-application_resources',
     border : false,
     height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
 
     initComponent : function () {
-        var resourcePluginapplication = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel", {
+        Ext.apply(this, {
             urlParents : loadUrl.get('APP_URL') + loadUrl.get('APP_APPLICATIONS_URL'),
             urlParentsParams : '?customizable=true',
             resourcesUrlPart : loadUrl.get('APP_RESOURCES_URL'),
             urlResources : loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes',
             parentType : "application"            
         });
-
-        this.items = [ resourcePluginapplication ];
-
-        sitools.admin.applications.plugins.applicationResourcesCrudPanel.superclass.initComponent.call(this);
-
+        this.callParent(arguments);
     }
 
 });

@@ -18,20 +18,20 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.forms.componentsAdminDef');
+Ext.namespace('sitools.admin.forms.componentsAdminDef');
 /**
  * Object to build form Components administration objects in project Context (multiDatasets)
  * @class sitools.component.forms.componentsAdminDef.ProjectContext
  * 
  */
-sitools.component.forms.componentsAdminDef.ProjectContext = function () {
-	this.context = "project";
+Ext.define('sitools.component.forms.componentsAdminDef.ProjectContext', {
+	context : "project",
 	
 	/**
 	 * @method buildComboParam1 build a single 
 	 * @param {} scope the scope for this method.
 	 */
-	this.buildComboParam1 = function (scope) {
+	buildComboParam1 : function (scope) {
 		return new Ext.form.ComboBox({
             fieldLabel : i18n.get('label.concept'),
             triggerAction : 'all',
@@ -45,12 +45,12 @@ sitools.component.forms.componentsAdminDef.ProjectContext = function () {
             anchor : '100%', 
             allowBlank : false
         });
-	};
+	},
 	/**
 	 * @method buildCombosConeSearch build 3 combos 
 	 * @param {} scope the scope for this method.
 	 */
-	this.buildCombosConeSearch = function (scope) {
+	buildCombosConeSearch : function (scope) {
 		var labels = ['X/RA', 'Y/DEC', 'Z/ID'];
         for (var i = 1; i <= 3; i++) {
 			scope['mapParam' + i] = new Ext.form.ComboBox({
@@ -74,23 +74,23 @@ sitools.component.forms.componentsAdminDef.ProjectContext = function () {
 			}
 			scope.insert(i, scope['mapParam' + i]);
         }		
-	};
+	},
 
-	this.onChangeColumn = function () {
+	onChangeColumn : function () {
 		return;
-	};
+	},
 	
-	this.activeDimension = function () {
+	activeDimension : function () {
 		this.dimension.setDisabled(false);
 		this.dimension.on("select", this.context.onChangeDimension, this);
-	};
+	},
 	
-	this.onChangeDimension = function () {
+	onChangeDimension : function () {
 		this.storeUnits.proxy.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension/' + this.dimension.getValue();
 		this.storeUnits.load();
-	};
+	},
 	
-	this.buildUnit = function () {
+	buildUnit : function () {
         var httpProxyUnits = new Ext.data.HttpProxy({
 			url : loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension/' + this.dimensionId, 
 			restful : true
@@ -129,9 +129,9 @@ sitools.component.forms.componentsAdminDef.ProjectContext = function () {
         this.add(this.unitCombo);
         this.doLayout();		
         
-	};
+	},
 
-	this._onUnitLoad = function () {
+	_onUnitLoad : function () {
 		if (this.dimensionId == this.dimension.getValue()) {
 			var unit = Ext.isEmpty(this.selectedRecord) ? null : this.selectedRecord.data.unit;
 		
@@ -141,6 +141,6 @@ sitools.component.forms.componentsAdminDef.ProjectContext = function () {
 			this.unitCombo.setValue(null);
 		}
 		
-	};
+	}
 	
-};
+});

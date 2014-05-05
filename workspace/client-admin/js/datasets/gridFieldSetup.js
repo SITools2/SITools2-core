@@ -34,13 +34,19 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
     id : 'gridColumnSelect',
     layout : 'fit', 
     enableLocking : true,
+    
+    requires : ['sitools.admin.datasets.columnRendererWin',
+                'sitools.admin.datasets.unitWin',
+                'sitools.admin.datasets.columnsProp',
+                'sitools.admin.datasets.ColumnModel'],
+    
     initComponent : function () {
         this.title = i18n.get('title.gridColumn');
 
         var storeColumn = Ext.create('Ext.data.JsonStore', {
             id : 'storeColumnSelect',
             remoteSort : false,
-            model : 'DatasetModel',
+            model : 'sitools.admin.datasets.ColumnModel',
             proxy : {
                 type : 'memory',
                 reader : {
@@ -306,7 +312,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         });
         
         var tbar = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             defaults : {
                 scope : this
             },
@@ -379,11 +385,11 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         unitWin.show(ID.BOX.DATASETS);
     },
     /**
-     * Open a {@link sitools.admin.datasets.columnsPropPanel sitools.admin.datasets.columnsPropPanel} to create a new Column
+     * Open a {@link sitools.admin.datasets.columnsProp sitools.admin.datasets.columnsProp} to create a new Column
      * @method
      */
     onCreateColumn : function () {
-        var winPropColumn = Ext.create('sitools.admin.datasets.columnsPropPanel', {
+        var winPropColumn = Ext.create('sitools.admin.datasets.columnsProp', {
             action : 'create',
             store : this.getStore(), 
             datasourceUtils : this.datasourceUtils
@@ -392,7 +398,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         // this.getStore().add(new Ext.data.Record());
     },
     /**
-     * Open a {@link sitools.admin.datasets.columnsPropPanel sitools.admin.datasets.columnsPropPanel} to edit a Column
+     * Open a {@link sitools.admin.datasets.columnsProp sitools.admin.datasets.columnsProp} to edit a Column
      * @method
      */
     onModifyColumn : function () {
@@ -407,7 +413,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             return;
         }
         
-        var winPropColumn = Ext.create('sitools.admin.datasets.columnsPropPanel', {
+        var winPropColumn = Ext.create('sitools.admin.datasets.columnsProp', {
             action : 'modify',
             store : this.getStore(),
             recordColumn : rec, 

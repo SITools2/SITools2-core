@@ -73,6 +73,7 @@ sb.clearStatus(); // once completeed
 Ext.namespace('sitools.public.widget');
 
 Ext.define('sitools.public.widget.StatusBar', {
+    alternateClassName : ['Ext.ux.StatusBar'],
     extend : 'Ext.toolbar.Toolbar',
 	alias : 'widget.statusbar',
     /**

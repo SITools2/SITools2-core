@@ -112,7 +112,7 @@ Ext.define('sitools.admin.applications.applicationsProp', {
      * Load the selected record in the main form. 
      */
     afterRender : function () {
-        sitools.component.projects.ProjectsPropPanel.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.applicationRecord) {
             var f = this.down('form').getForm();
             f.loadRecord(this.applicationRecord);

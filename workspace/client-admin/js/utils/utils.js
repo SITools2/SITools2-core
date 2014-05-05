@@ -1,4 +1,4 @@
-Ext.define('js.utils.utils', {
+Ext.define('sitools.admin.utils.utils', {
 
     getLastSelectedRecord : function (grid) {
         if (!Ext.isEmpty(grid)) {

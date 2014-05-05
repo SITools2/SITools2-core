@@ -19,17 +19,17 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
 /*
- * @include "datasetViewprop.js"
+ * @include "DatasetViewsProp.js"
  */
-Ext.namespace('sitools.admin.datasetView');
+Ext.namespace('sitools.admin.datasetViews');
 
 /**
  * A Panel to show the different datasetView available in Sitools2. 
- * @requires sitools.admin.datasetView.DatasetViewPropPanel
- * @class sitools.admin.datasetView.DatasetViewsCrudPanel
+ * @requires sitools.admin.datasetViews.DatasetViewsProp
+ * @class sitools.admin.datasetViews.DatasetViewsCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', { 
+Ext.define('sitools.admin.datasetViews.DatasetViewsCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-datasetView',
     border : false,
@@ -38,8 +38,10 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.datasetViews.DatasetViewsProp'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_VIEWS_URL');
@@ -160,11 +162,11 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
             mode : "SINGLE"
         });
         
-        sitools.admin.datasetView.DatasetViewsCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.datasetViews.DatasetViewsCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.datasetView.DatasetViewsCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.datasetViews.DatasetViewsCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -172,7 +174,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
     },
 
     _onCreate : function () {
-        var dbp = Ext.create("sitools.admin.datasetView.DatasetViewPropPanel", {
+        var dbp = Ext.create("sitools.admin.datasetViews.DatasetViewsProp", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -186,7 +188,7 @@ Ext.define('sitools.admin.datasetView.DatasetViewsCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var dbp = Ext.create("sitools.admin.datasetView.DatasetViewPropPanel", {
+        var dbp = Ext.create("sitools.admin.datasetViews.DatasetViewsProp", {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store

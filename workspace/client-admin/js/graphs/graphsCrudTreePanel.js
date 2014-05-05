@@ -18,45 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.graphs');
+Ext.namespace('sitools.admin.graphs');
 
-Ext.define('sitools.component.graphs.graphNodeModel', {
-    extend : 'Ext.data.Model',
-    fields : [{
-        name :'type'
-    }, {
-        name : 'description'
-    }, {
-        name : 'image'
-    }, {
-        name : 'nbRecord'
-    }, {
-        name : 'datasetId'
-    }, {
-        name : 'imageDs'
-    }, {
-        name : 'readme'
-    }, {
-        name : 'status'
-    }, {
-        name : 'visible'
-    }, {
-        name : 'url'
-    }, {
-        name : 'text'
-    }, {
-        name : 'icon',
-        convert : function (value, record) {
-            if (record.get("leaf")) {
-                return loadUrl.get('APP_URL') + "loadUrl.get('APP_CLIENT_PUBLIC_URL')/res/images/icons/tree_datasets.png";
-            } else {
-                return undefined;
-            }
-        }
-    }]
-});
-
-Ext.define('sitools.component.graphs.graphsCrudTreePanel', { 
+Ext.define('sitools.admin.graphs.graphsCrudTreePanel', { 
     extend : 'Ext.tree.Panel',
     rootVisible : true,
     enableDD: true,           
@@ -65,10 +29,16 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
     border : false,
     bodyBorder : false,
     idGraph : null,
+    
+    requires : ["sitools.admin.graphs.graphsDatasetWin",
+                "sitools.admin.graphs.graphsNodeWin",
+                "sitools.admin.graphs.graphsDatasetWin",
+                "sitools.admin.graphs.graphNodeModel"],    
+    
     initComponent : function () {
         
         this.store = Ext.create('Ext.data.TreeStore', {
-            model : 'sitools.component.graphs.graphNodeModel',
+            model : 'sitools.admin.graphs.graphNodeModel',
             root : {
                 text : this.name,
                 expanded : true,
@@ -82,13 +52,13 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         this.menuLeafToolbar =  [{
             id : 'edit-node',
             text : i18n.get("label.modifyNode"),
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_edit.png',
             scope : this,
             handler : this._cxtMenuHandler
         }, {
             id : 'delete-node',
             text : i18n.get("label.deleteNode"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/toolbar_delete.png',
             scope : this,
             handler : this._cxtMenuHandler
         }];
@@ -96,13 +66,13 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         this.menuRootToolbar = [{
             id : 'create-node',
             text : i18n.get("label.createNode"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/add_folder.png',
             scope : this,
             handler : this._cxtMenuHandler
         }, {
             id : 'add-dataset',
             text : i18n.get("label.addDataset"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_datasets.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/add_datasets.png',
             scope : this,
             handler : this._cxtMenuHandler
         }];
@@ -135,7 +105,7 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         };
         
         
-        sitools.component.graphs.graphsCrudTreePanel.superclass.initComponent.call(this);
+        sitools.admin.graphs.graphsCrudTreePanel.superclass.initComponent.call(this);
     },
 
     loadStore : function () {
@@ -190,7 +160,7 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         case 'add-dataset':
             node = this.getSelectionModel().getSelection()[0];
 
-            up = Ext.create("sitools.component.graphs.graphsDatasetWin", {
+            up = Ext.create("sitools.admin.graphs.graphsDatasetWin", {
                 node : node,
                 url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
                 mode : 'create'
@@ -202,7 +172,7 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
         case 'create-node':
             node = this.getSelectionModel().getSelection()[0];
 
-            up = Ext.create("sitools.component.graphs.graphsNodeWin", {
+            up = Ext.create("sitools.admin.graphs.graphsNodeWin", {
                 node : node,
                 mode : 'create'
             });
@@ -213,13 +183,13 @@ Ext.define('sitools.component.graphs.graphsCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
             
             if (node.isLeaf()) {
-                up = Ext.create("sitools.component.graphs.graphsDatasetWin", {
+                up = Ext.create("sitools.admin.graphs.graphsDatasetWin", {
                     node : node,
                     url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
                     mode : 'edit'
                 });
             } else {
-                up = Ext.create("sitools.component.graphs.graphsNodeWin", {
+                up = Ext.create("sitools.admin.graphs.graphsNodeWin", {
                     node : node,
                     mode : 'edit'
                 });

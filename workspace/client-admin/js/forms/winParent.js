@@ -20,7 +20,7 @@
  showHelp */
 Ext.namespace('sitools.admin.forms');
 
-Ext.define('sitools.admin.forms.parentParamWin', { 
+Ext.define('sitools.admin.forms.winParent', { 
     extend : 'Ext.Window',
     modal : true,
     title : i18n.get('label.chooseParent'),
@@ -75,7 +75,7 @@ Ext.define('sitools.admin.forms.parentParamWin', {
                 handler : this._close
             }]
         }];
-        sitools.admin.forms.parentParamWin.superclass.initComponent.call(this);
+        sitools.admin.forms.winParent.superclass.initComponent.call(this);
     }, 
     onValidate : function () {
         if (!Ext.isEmpty(this.gridFormComponents.getSelectionModel().getLastSelected())) {

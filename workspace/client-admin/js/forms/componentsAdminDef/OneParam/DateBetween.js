@@ -18,24 +18,26 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, SITOOLS_DEFAULT_IHM_DATE_FORMAT, SITOOLS_DATE_FORMAT*/
-Ext.namespace('sitools.admin.forms.oneParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
  * 
- * @class sitools.admin.forms.oneParam.DateBetween
- * @extends sitools.admin.forms.oneParam.abstractForm
+ * @class sitools.admin.forms.componentsAdminDef.oneParam.DateBetween
+ * @extends sitools.admin.forms.componentsAdminDef.oneParam.abstract
  */
-Ext.define('sitools.admin.forms.oneParam.DateBetween', { 
-    extend : 'sitools.admin.forms.oneParam.abstractForm', 
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstract', 
     height : 330,
+    
+    require : ['sitools.public.widget.item.DateFieldWithToday'],
 //    id : "sitools.component.forms.definitionId",
     
     initComponent : function () {
         //formattage de extraParams : 
         this.winPropComponent.specificHeight = 430;
         this.winPropComponent.specificWidth = 400;
-        sitools.admin.forms.oneParam.DateBetween.superclass.initComponent.call(this);
-        this.componentDefaultValueFrom = Ext.create("sitools.widget.DateFieldWithToday", {
+        sitools.admin.forms.componentsAdminDef.oneParam.DateBetween.superclass.initComponent.call(this);
+        this.componentDefaultValueFrom = Ext.create("sitools.public.widget.item.DateFieldWithToday", {
             fieldLabel : i18n.get('label.defaultValueFrom'),
             name : 'componentDefaultValueFrom',
             anchor : '100%', 
@@ -43,7 +45,7 @@ Ext.define('sitools.admin.forms.oneParam.DateBetween', {
             showTime : true, 
             tooltip : i18n.get('label.explainDateDefault')
         });
-        this.componentDefaultValueTo = Ext.create("sitools.widget.DateFieldWithToday", {
+        this.componentDefaultValueTo = Ext.create("sitools.public.widget.item.DateFieldWithToday", {
             fieldLabel : i18n.get('label.defaultValueTo'),
             name : 'componentDefaultValueTo',
             anchor : '100%', 

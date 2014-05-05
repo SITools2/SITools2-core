@@ -40,6 +40,9 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseExplorer', {
 		align : 'stretch'
 	},
 	
+	requires : ['sitools.admin.datasource.mongoDb.CollectionExplorer',
+	            'sitools.admin.datasource.mongoDb.RecordsPanel'],
+	
     initComponent : function () {
         this.title = i18n.get('label.databaseExplorer');
         

@@ -30,10 +30,10 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
  * @cfg {string} url the url to request the database
  * @cfg {string} action the action to perform should be view, modify or create
  * @cfg {Ext.data.Store} store the store that contains all databases. 
- * @class sitools.admin.datasource.mongoDb.DataBasePropPanel
+ * @class sitools.admin.datasource.mongoDb.DataBaseProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', { 
+Ext.define('sitools.admin.datasource.mongoDb.DataBaseProp', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-databaseprop',
     width : 700,
@@ -183,10 +183,10 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBasePropPanel', {
 				this.down('form').setSize(size);
 			}
         };
-        sitools.admin.datasource.mongoDb.DataBasePropPanel.superclass.initComponent.call(this);
+        sitools.admin.datasource.mongoDb.DataBaseProp.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.datasource.mongoDb.DataBasePropPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasource.mongoDb.DataBaseProp.superclass.afterRender.apply(this, arguments);
         var frm = this.down('form');
         var basicFrm = frm.getForm();
         Ext.each(frm.items.items, function (item) {

@@ -21,7 +21,7 @@
 /*
  * @include "absoluteLayoutProp.js"
  * @include "componentsListPanel.js"
- * @include "componentPropPanel.js"
+ * @include "componentProp.js"
  * @include "../../../client-public/js/forms/formParameterToComponent.js"
  */
 Ext.namespace('sitools.admin.forms');
@@ -41,6 +41,8 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 	border : false, 
 	bodyBorder : false,
 	bodyStyle : 'background-color : #EDF2FF;',
+	requires : ['sitools.admin.forms.advancedFormPanel'],
+	
 	initComponent : function () {
         
         Ext.apply(this, {

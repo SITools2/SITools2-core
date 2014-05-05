@@ -24,18 +24,21 @@ Ext.namespace('sitools.admin.datasets.plugins');
 
 /**
  * A panel to managed Dataset resources.
- * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel
- * @class sitools.admin.datasets.plugins.resourcesCrudPanel
+ * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrud
+ * @class sitools.admin.datasets.plugins.resourcesCrud
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.plugins.resourcesCrudPanel', { extend : 'Ext.Panel',
+Ext.define('sitools.admin.datasets.plugins.datasetResourcesCrud', { 
+    extend : 'Ext.Panel',
     alias : 'widget.s-dataset_resources',
     border : false,
     height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
+    
+    requires : ['sitools.admin.resourcesPlugins.resourcesPluginsCrud'],
 
     initComponent : function () {
-        var resourcePlugindataset = new sitools.admin.resourcesPlugins.resourcesPluginsCrudPanel({
+        var resourcePlugindataset = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsCrud", {
             urlParents : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
             resourcesUrlPart : loadUrl.get('APP_RESOURCES_URL'),
             urlResources : loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes',
@@ -45,7 +48,7 @@ Ext.define('sitools.admin.datasets.plugins.resourcesCrudPanel', { extend : 'Ext.
 
         this.items = [ resourcePlugindataset ];
 
-        sitools.admin.datasets.plugins.resourcesCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.plugins.datasetResourcesCrud.superclass.initComponent.call(this);
 
     }
 

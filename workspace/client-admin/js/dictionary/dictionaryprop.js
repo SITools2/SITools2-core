@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.dictionary');
+Ext.namespace('sitools.admin.dictionary');
 
-Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
+Ext.define('sitools.admin.dictionary.dictionaryProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-dictionaryprop',
     width : 700,
@@ -31,8 +31,10 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     //the copy of the conceptTemplate contained in the dictionary (only used when action = modify)
     conceptTemplate : null,
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
+    
+    requires : ['sitools.admin.dictionary.gridPanel'],
 
     initComponent : function () {
         this.conceptTemplatesUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_TEMPLATES_URL');
@@ -173,7 +175,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
 
         };
 
-        sitools.component.dictionary.dictionaryPropPanel.superclass.initComponent.call(this);
+        sitools.admin.dictionary.dictionaryProp.superclass.initComponent.call(this);
     },
 
     onUpload : function () {
@@ -320,7 +322,7 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     },
 
     afterRender : function () {
-        sitools.component.dictionary.dictionaryPropPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.dictionary.dictionaryProp.superclass.afterRender.apply(this, arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             var i;
@@ -404,12 +406,12 @@ Ext.define('sitools.component.dictionary.dictionaryPropPanel', {
     
     
     createConceptGrid : function (template) {
-        var gridConceptsSelect = Ext.create('sitools.component.dictionary.gridPanel', {
+        var gridConceptsSelect = Ext.create('sitools.admin.dictionary.gridPanel', {
 			template : template,
 			selModel : Ext.create('Ext.selection.RowModel', {
 				mode : 'SINGLE'
 			}),
-			tbar : Ext.create('sitools.widget.GridSorterToolbar', {
+			tbar : Ext.create('sitools.public.widget.grid.GridSorterToolbar', {
 				gridId : "gridConceptsSelect",
 				items : [{
 					text : i18n.get('label.create'),

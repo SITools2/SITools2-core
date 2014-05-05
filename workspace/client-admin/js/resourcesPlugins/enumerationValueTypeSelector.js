@@ -86,7 +86,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
         }
         
         var tbar = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             hidden : ! this.editable, 
             defaults : {
                 scope : this

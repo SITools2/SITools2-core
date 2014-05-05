@@ -17,7 +17,7 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, ImageChooser*/
-Ext.namespace('sitools.component.filtersPlugins');
+Ext.namespace('sitools.admin.filtersPlugins');
 /**
  * @param action
  *            create or modify
@@ -29,10 +29,10 @@ Ext.namespace('sitools.component.filtersPlugins');
  *            the parent object url
  * @param parentType
  *            the type of the parent, string used only for i18n label
- * @class sitools.component.filtersPlugins.filtersPluginsProp
+ * @class sitools.admin.filtersPlugins.filtersPluginsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', { 
+Ext.define('sitools.admin.filtersPlugins.filtersPluginsSingle', { 
     extend : 'Ext.Window',
     width : 700,
     height : 500,
@@ -41,6 +41,9 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
     classChosen : "",
     filterPluginId : null,
     modelClassName : null,
+    mixins : {
+        utils : "sitools.admin.utils.utils"
+    },
 
     initComponent : function () {
 
@@ -59,21 +62,23 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
             expandOnDblClick : true
         };
         
-        this.gridfilterPlugin = new Ext.grid.GridPanel({
+        this.gridfilterPlugin = Ext.create("Ext.grid.GridPanel", {
             forceFit : true,
             id : 'gridfilterPlugin',
             title : i18n.get('title.filterPlugin' + this.parentType + 'Class'),
-            store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
+            store : Ext.create("Ext.data.JsonStore", {
+                proxy : {
+                    type : "ajax", 
                     url : this.urlFilters,
-                    restful : true,
-                    method : 'GET'
-                }),
-                
+                    limitParam : undefined,
+                    startParam : undefined,
+                    reader : {
+                        type : 'json',
+                        idProperty : 'id',
+                        root : 'data'
+                    }
+                },                
                 remoteSort : false,
-                idProperty : 'id',
                 fields : [ {
                     name : 'id',
                     type : 'string'
@@ -132,18 +137,12 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
             }],
             listeners : {
                 scope : this,
-                rowclick :  this.onClassClick
+                itemclick :  this.onClassClick
             }, 
             plugins : expander
         });
 
       
-        this.proxyFieldMapping = new Ext.data.HttpProxy({
-            url : "/tmp",
-            restful : true,
-            method : 'GET'
-        });
-        
         var expanderGridFieldMapping = {
             ptype: 'rowexpander',
             rowBodyTpl : new Ext.XTemplate(
@@ -219,12 +218,16 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
             layout : 'fit',
             region : 'center',
             title : i18n.get('title.parametersMapping'),
-            store : new Ext.data.JsonStore({
-                root : 'filterPlugin.parameters',
-                proxy : this.proxyFieldMapping,
+            store : Ext.create("Ext.data.JsonStore", {
+                proxy : {
+                    type : 'memory',
+                    reader : {
+                        type : 'json',
+                        idProperty : 'name'
+                    }
+                },
                 restful : true,
                 remoteSort : false,
-                idProperty : 'name',
                 fields : [ {
                     name : 'name',
                     type : 'string'
@@ -275,7 +278,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
         
         
         // set the search form
-        this.fieldMappingFormPanel = new Ext.FormPanel({
+        this.fieldMappingFormPanel = Ext.create("Ext.FormPanel", {
             height : 65,
 //            frame : true,
             defaultType : 'textfield',
@@ -291,14 +294,14 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
             region : 'north'
         });
 
-        this.fieldMappingPanel = new Ext.Panel({
+        this.fieldMappingPanel = Ext.create("Ext.Panel", {
             layout : 'border',
             id : 'fieldMappingPanel',
             title : i18n.get('title.fieldMapping'),
             items : [ this.fieldMappingFormPanel, this.gridFieldMapping ]
         });
         
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create("Ext.TabPanel", {
             activeTab : 0,
             items : (this.action == "create") ? [ this.gridfilterPlugin, this.fieldMappingPanel ] : [
                 this.fieldMappingPanel 
@@ -335,15 +338,15 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
         }; 
         this.items = [ this.tabPanel ];
 
-        sitools.component.filtersPlugins.filtersPluginsSingle.superclass.initComponent.call(this);
+        sitools.admin.filtersPlugins.filtersPluginsSingle.superclass.initComponent.call(this);
     },
 
     beforeTabChange : function (self, newTab, currentTab) {
         if (this.action == "create") {
             if (newTab.id == "fieldMappingPanel") {
-                var rec = this.gridfilterPlugin.getSelectionModel().getSelected();
+                var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
                 if (!rec) {
-                    var tmp = new Ext.ux.Notification({
+                    Ext.create("Ext.ux.Notification", {
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
                         html : i18n.get('warning.noselection'),
@@ -358,7 +361,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
     },
     onClassClick : function (self, rowIndex, e) {
         if (this.action == "create") {
-            var rec = this.gridfilterPlugin.getSelectionModel().getSelected();
+            var rec = this.getLastSelectedRecord(this.gridfilterPlugin);
             if (!rec) {
                 return false;
             }
@@ -369,7 +372,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
     },
 
     afterRender : function () {
-        sitools.component.filtersPlugins.filtersPluginsSingle.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.action == "editDelete") {
             this.fillGridAndForm(this.filterPlugin, this.action);
@@ -413,9 +416,9 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
         var parameters = [];
         var filterPlugin;
         if (this.action == "create") {
-            rec = this.gridfilterPlugin.getSelectionModel().getSelected();
+            rec = this.getLastSelectedRecord(this.gridfilterPlugin);
             if (!rec) {
-                var tmp = new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('warning.noselection'),
@@ -494,7 +497,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsSingle', {
                     return false;
                 }
 
-                var tmp = new Ext.ux.Notification({
+                Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get('label.filterPlugin' + this.parentType + 'Saved'),

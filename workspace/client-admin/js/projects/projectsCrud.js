@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.projects');
+Ext.namespace('sitools.admin.projects');
 
-Ext.define('sitools.component.projects.projectsCrudPanel', { 
+Ext.define('sitools.admin.projects.projectsCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-projects',
     border : false,
@@ -29,8 +29,10 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
+    
+    requires : ['sitools.admin.projects.ProjectsProp'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
@@ -200,11 +202,11 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
             mode : "SINGLE"
         });
         
-        sitools.component.projects.projectsCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.projects.projectsCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.component.projects.projectsCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.projects.projectsCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -212,7 +214,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
     },
 
     onCreate : function () {
-        var up = Ext.create('sitools.component.projects.ProjectsPropPanel', {
+        var up = Ext.create('sitools.admin.projects.ProjectsProp', {
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -229,7 +231,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
 //            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
 //            return;
 //        }
-        var up = Ext.create('sitools.component.projects.ProjectsPropPanel', {
+        var up = Ext.create('sitools.admin.projects.ProjectsProp', {
             url : this.url + '/' + rec.data.id,
             action : rec.data.status == 'ACTIVE' ? "view" : "modify",
             store : this.getStore(),
@@ -380,7 +382,7 @@ Ext.define('sitools.component.projects.projectsCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create('sitools.component.projects.ProjectsPropPanel', {
+        var up = Ext.create('sitools.admin.projects.ProjectsProp', {
             projectUrlToCopy : this.url + "/" + rec.data.id,
             url : this.url,
             action : 'duplicate',

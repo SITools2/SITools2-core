@@ -18,17 +18,17 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.admin.forms.oneParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
-Ext.define('sitools.admin.forms.oneParam.NumericBetween', { 
-    extend : 'sitools.admin.forms.oneParam.abstractWithUnit', 
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NumericBetween', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit', 
     height : ADMIN_PANEL_HEIGHT,
 //    id : "sitools.component.forms.definitionId",
     
     initComponent : function () {
         this.winPropComponent.specificHeight = 400;
         this.winPropComponent.specificWidth = 400;
-        sitools.admin.forms.oneParam.NumericBetween.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.NumericBetween.superclass.initComponent.call(this);
         this.componentDefaultValueFrom = new Ext.form.NumberField({
             fieldLabel : i18n.get('label.defaultValueMin'),
             name : 'componentDefaultValueFrom',
@@ -46,7 +46,7 @@ Ext.define('sitools.admin.forms.oneParam.NumericBetween', {
         this.add(this.componentDefaultValueTo);
     },
     afterRender : function () {
-        sitools.admin.forms.oneParam.NumericBetween.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.NumericBetween.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
 			if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValueFrom.setValue(this.selectedRecord.data.defaultValues[0]);

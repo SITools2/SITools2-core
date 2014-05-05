@@ -1,5 +1,5 @@
 /***************************************
-* Copyright 2011, 2012 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
 * 
@@ -37,6 +37,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
     layout : "absolute",
     autoScroll : true, 
     enableDragDrop : true,
+    requires : ['sitools.admin.forms.componentProp'],
     
     initComponent : function (config) {
 
@@ -127,7 +128,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
 				// Reference the record (single selection) for readability
 				var rec = ddSource.dragData.records[0];
 				
-		        var ComponentWin = Ext.create("sitools.admin.forms.componentPropPanel", {
+		        var ComponentWin = Ext.create("sitools.admin.forms.componentProp", {
 		            urlAdmin : rec.data.jsonDefinitionAdmin,
 		            datasetColumnModel : datasetColumnModel,
 		            ctype : rec.data.type,
@@ -176,7 +177,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                 // height = Ext.isEmpty (component.data.height) ?
                 // height :
                 // component.data.height;
-                var containerItems = [ sitools.common.forms.formParameterToComponent(component.data, null, null, this.datasetColumnModel,
+                var containerItems = [ sitools.public.forms.formParameterToComponent.getComponentFromFormParameter(component.data, null, null, this.datasetColumnModel,
                         this.context).component ];
                 containerItems[0].setDisabled(true);
                 containerItems[0].maskOnDisable = false;
@@ -208,7 +209,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
                         if (!rec) {
                             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
                         }
-                        var propComponentPanel = Ext.create("sitools.admin.forms.componentPropPanel", {
+                        var propComponentPanel = Ext.create("sitools.admin.forms.componentProp", {
                             datasetColumnModel : this.displayPanel.datasetColumnModel,
                             action : 'modify',
                             urlFormulaire : this.displayPanel.urlFormulaire,

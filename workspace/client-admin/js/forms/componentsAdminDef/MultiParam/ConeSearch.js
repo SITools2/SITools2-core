@@ -21,17 +21,16 @@
 /*
  * @include "Abstract.js"
  */
-Ext.namespace('sitools.admin.forms.multiParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.multiParam');
 
 /**
  * 
- * @class sitools.admin.forms.multiParam.coneSearch
- * @extends sitools.admin.forms.multiParam.abstractForm
+ * @class sitools.admin.forms.componentsAdminDef.multiParam.coneSearch
+ * @extends sitools.admin.forms.componentsAdminDef.multiParam.abstract
  */
-Ext.define('sitools.admin.forms.multiParam.coneSearch', { 
-    extend : 'sitools.admin.forms.multiParam.abstractForm',
+Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.coneSearch', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.multiParam.abstract',
     height : 550,
-//    id : 'sitools.component.forms.definitionId',
     columnUnitName : "°", 
     //TODO améliorer ça pour que ce ne soit plus statique.
     columnDimensionId : "Angle",
@@ -40,7 +39,7 @@ Ext.define('sitools.admin.forms.multiParam.coneSearch', {
         this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 500;
         this.labelWidth = 150;
-        sitools.admin.forms.multiParam.coneSearch.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.multiParam.coneSearch.superclass.initComponent.call(this);
         /*
          * Build all the Columns mapping for the configuration, 
          * this object needs three columns

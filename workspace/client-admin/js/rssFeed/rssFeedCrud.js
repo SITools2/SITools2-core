@@ -39,6 +39,8 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     forceFit : "true",
     id : ID.BOX.RSSFEED,
 
+    requires : ['sitools.admin.rssFeed.rssFeedProp'],
+    
     initComponent : function () {
 
         this.store = Ext.create('Ext.data.JsonStore', {
@@ -210,14 +212,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     },
 
     /**
-     * Open a {sitools.admin.rssFeed.rssFeedProps} rss property window
+     * Open a {sitools.admin.rssFeed.rssFeedProp} rss property window
      *  to create a new rss feed for the selected dataset
      */
     onCreate : function () {
         if (Ext.isEmpty(this.combobox.getValue())) {
             return;
         }
-        var up = Ext.create('sitools.admin.rssFeed.rssFeedProps', {
+        var up = Ext.create('sitools.admin.rssFeed.rssFeedProp', {
             action : 'create',
             store : this.store,
             id : this.dataId,
@@ -228,7 +230,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     },
 
     /**
-     * Open a {sitools.admin.rssFeed.rssFeedProps} rss property window
+     * Open a {sitools.admin.rssFeed.rssFeedProp} rss property window
      *  to modify an existing rss feed
      */
     onModify : function () {
@@ -237,7 +239,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var up = Ext.create('sitools.admin.rssFeed.rssFeedProps', {
+        var up = Ext.create('sitools.admin.rssFeed.rssFeedProp', {
             action : 'modify',
             store : this.store,
             id : this.dataId,

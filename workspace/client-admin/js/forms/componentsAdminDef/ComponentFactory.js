@@ -22,18 +22,25 @@
  * @include "DatasetContext.js"
  * @include "ProjectContext.js" 
  */
-Ext.namespace('sitools.component.forms.componentsAdminDef');
-
 /**
  * Basic factory to return DatasetFactory or ProjectFactory according with context. 
  * @param {String} context must be "dataset" or project"
  * @return {}
  */
-sitools.component.forms.componentsAdminDef.ComponentFactory = function (context) {
-	if (context == "dataset") {
-		return new sitools.component.forms.componentsAdminDef.DatasetContext(); 
-	}
-	if (context == "project") {
-		return new sitools.component.forms.componentsAdminDef.ProjectContext(); 
-	}
-};
+Ext.define('sitools.admin.forms.componentsAdminDef.ComponentFactory', {
+    singleton : true,
+    requires : ['sitools.admin.forms.componentsAdminDef.DatasetContext'
+                //TODO projectContext
+                /*,
+               'sitools.admin.forms.componentsAdminDef.ProjectContext'*/],
+    
+    getContext : function (context) {
+        //  sitools.user.forms.components.ComponentFactory = function (context) {
+        if (context == "dataset") {
+            return Ext.create("sitools.admin.forms.componentsAdminDef.DatasetContext"); 
+        }
+        if (context == "project") {
+            return Ext.create("sitools.admin.forms.componentsAdminDef.ProjectContext"); 
+        }    
+    }
+});

@@ -18,7 +18,7 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.projects');
+Ext.namespace('sitools.admin.projects');
 
 /**
  * Create, or Edit a Project 
@@ -27,10 +27,10 @@ Ext.namespace('sitools.component.projects');
  * @cfg {Ext.data.Store} store the store that contains all projects
  * @cfg {string} projectName the name of the selected project if action != "create"
  * @cfg {string} projectAttachement the sitoolsAttachement of the edit project. 
- * @class sitools.component.projects.ProjectsPropPanel
+ * @class sitools.admin.projects.ProjectsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.component.projects.ProjectsPropPanel', { 
+Ext.define('sitools.admin.projects.ProjectsProp', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-projectsprop',
     /** Default Width */
@@ -69,6 +69,12 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         url : "/sitools/client-public/html/editorialInformations.html"
     }],
     layout : 'fit',
+    
+    requires : ['sitools.admin.projects.datasetsWin',
+                'sitools.admin.usergroups.RolesPanel',
+                'sitools.admin.projects.modules.ProjectModuleConfig',
+                'sitools.public.widget.imageChooser.ImageChooser'
+                ],       
     
     initComponent : function () {
         var action = this.action;
@@ -358,7 +364,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         });
         
         var tbarModules = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             gridId : "gridModules", 
             items: [this.allModulesAttachedBtn, this.listRolesBtn]
         };
@@ -624,7 +630,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
         });
         
         var linksPanelTbar = {
-                xtype : 'sitools.widget.GridSorterToolbar',
+                xtype : 'sitools.public.widget.grid.GridSorterToolbar',
                 gridId : "linksPanelGrid",
                 items : [ {
                     text : i18n.get('label.create'),
@@ -712,7 +718,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
                 this.destroyCkeditor();
             }
         };        
-        sitools.component.projects.ProjectsPropPanel.superclass.initComponent.call(this);
+        sitools.admin.projects.ProjectsProp.superclass.initComponent.call(this);
     },
     /**
      * Create a {sitools.admin.projects.datasetsWin} datasetWindow to add datasets
@@ -767,7 +773,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
             config.fieldUrl.setValue(data.url);
         };
         
-        var chooser = Ext.create('ImageChooser', {
+        var chooser = Ext.create('sitools.public.widget.imageChooser.ImageChooser', {
             url : loadUrl.get('APP_URL') + '/client-admin/res/json/componentList.json',
             width : 515,
             height : 350,
@@ -995,7 +1001,7 @@ Ext.define('sitools.component.projects.ProjectsPropPanel', {
      * do a specific render to fill informations from the project.
      */
     afterRender : function () {
-        sitools.component.projects.ProjectsPropPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.projects.ProjectsProp.superclass.afterRender.apply(this, arguments);
         if (this.url) {
             var url = this.url;
             if (this.action == 'duplicate') {

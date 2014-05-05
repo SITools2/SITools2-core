@@ -18,21 +18,21 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.forms.componentsAdminDef');
+Ext.namespace('sitools.admin.forms.componentsAdminDef');
 
 /**
  * Object to build form Components administration objects in dataset Context
  * @class sitools.component.forms.componentsAdminDef.DatasetContext
  * 
  */
-sitools.component.forms.componentsAdminDef.DatasetContext = function () {
-	this.context = "dataset";
+Ext.define('sitools.admin.forms.componentsAdminDef.DatasetContext', {
+	context : "dataset",
 	
 	/**
 	 * @method buildComboParam1 build a single 
 	 * @param {} scope the scope for this method.
 	 */
-	this.buildComboParam1 = function (scope) {
+	buildComboParam1 : function (scope) {
 		scope.storeColumn = Ext.create("Ext.data.JsonStore", {
 	        remoteSort : false,
 	        fields : [ {
@@ -114,13 +114,13 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
             anchor : '100%', 
             allowBlank : false
         });
-	};
+	},
 	
 	/**
 	 * @method buildCombosConeSearch build 3 combos 
 	 * @param {} scope the scope for this method.
 	 */
-	this.buildCombosConeSearch = function (scope) {
+	buildCombosConeSearch : function (scope) {
 		var labels = ['X/RA', 'Y/DEC', 'Z/ID'];
         for (var i = 1; i <= 3; i++) {
 			scope['mapParam' + i] = Ext.create("Ext.form.ComboBox", {
@@ -145,9 +145,9 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
 
 			scope.insert(i, scope['mapParam' + i]);
         }		
-	};
+	},
 	
-	this.onChangeColumn = function () {
+	onChangeColumn : function () {
 		var storeColumns = this.storeColumn;
 		var columnAlias = this.mapParam1.getValue();
 		if (Ext.isEmpty(columnAlias)) {
@@ -171,9 +171,9 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
 			this.dimension.setDisabled(true);
 		}
 		this.columnUnit = rec.get("unit");
-    };
+    },
     
-    this.activeDimension = function () {
+    activeDimension : function () {
 		var storeColumns = this.storeColumn;
 		var columnAlias = this.mapParam1.getValue();
 		if (!Ext.isEmpty(columnAlias)) {
@@ -185,10 +185,10 @@ sitools.component.forms.componentsAdminDef.DatasetContext = function () {
                 }
             }
         }
-    };
+    },
     
-    this.buildUnit = function () {
+    buildUnit : function () {
 		return;
-    };
+    }
 
-};
+});

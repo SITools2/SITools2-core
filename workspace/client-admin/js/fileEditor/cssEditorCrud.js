@@ -24,9 +24,9 @@
  *@include "../../../public/js/env.js"
  */
 
-Ext.namespace('sitools.component.fileEditor');
+Ext.namespace('sitools.admin.fileEditor');
 
-Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel',
     alias : 'widget.s-cssEditor',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
@@ -37,8 +37,10 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
     pageSize : 15,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.fileEditor.fileEditorProp'],
 
     initComponent : function () {
         
@@ -116,7 +118,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
             itemdblclick : this.onModify
         };
         
-        sitools.component.fileEditor.cssEditorCrud.superclass.initComponent.call(this);
+        sitools.admin.fileEditor.cssEditorCrud.superclass.initComponent.call(this);
     },
 
     onModify : function () {
@@ -125,7 +127,7 @@ Ext.define('sitools.component.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Pa
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var cssProp = new sitools.component.fileEditor.fileEditorProp({
+        var cssProp = Ext.create("sitools.admin.fileEditor.fileEditorProp", {
             url : this.url + '/css/' + rec.data.id,
             fileName : rec.data.id,
             sourceEdit : true,

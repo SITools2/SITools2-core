@@ -23,12 +23,12 @@ Ext.namespace('sitools.admin.datasource.mongoDb');
 
 /**
  * Displays all databases defined. 
- * @requires sitools.admin.datasource.mongoDb.DataBasePropPanel
+ * @requires sitools.admin.datasource.mongoDb.DataBaseProp
  * @requires sitools.admin.datasource.mongoDb.DataBaseTest
- * @class sitools.admin.datasource.mongoDb.DataBaseCrudPanel
+ * @class sitools.admin.datasource.mongoDb.DataBaseCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
+Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrud', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-databaseMongoDb',
     border : false,
@@ -36,9 +36,12 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
     id : ID.BOX.MONGODB,
+    requires : ['sitools.admin.datasource.mongoDb.DataBaseProp',
+                'sitools.admin.datasource.mongoDb.DataBaseExplorer',
+                'sitools.admin.datasource.DataBaseTest'],
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_MONGODB_URL');
@@ -212,11 +215,11 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             mode : "SINGLE"
         });
         
-        sitools.admin.datasource.mongoDb.DataBaseCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.datasource.mongoDb.DataBaseCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.datasource.mongoDb.DataBaseCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.datasource.mongoDb.DataBaseCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -224,7 +227,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
     },
 
     _onCreate : function () {
-        var dbp = Ext.create("sitools.admin.datasource.mongoDb.DataBasePropPanel", {
+        var dbp = Ext.create("sitools.admin.datasource.mongoDb.DataBaseProp", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -242,7 +245,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
             this._onView();
             return;
         }
-        var dbp = Ext.create("sitools.admin.datasource.mongoDb.DataBasePropPanel", {
+        var dbp = Ext.create("sitools.admin.datasource.mongoDb.DataBaseProp", {
             url : this.url + '/' + rec.get("id"),
             action : 'modify',
             store : this.store
@@ -255,7 +258,7 @@ Ext.define('sitools.admin.datasource.mongoDb.DataBaseCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.datasource.mongoDb.DataBasePropPanel", {
+        var up = Ext.create("sitools.admin.datasource.mongoDb.DataBaseProp", {
             url : this.url + '/' + rec.get("id"),
             action : 'view',
             store : this.store

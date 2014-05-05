@@ -534,35 +534,35 @@ function initAppli(callback) {
         Ext.util.Cookies.set('showQuickStart', true);
     }
     
-	Ext.Ajax.request({
-        url : loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL'),
-        params : {
-            sort : "priority",
-            dir : "DESC"
-        }, 
-        method : "GET",
-        scope : this,
-        success : function (ret) {
-            var json = Ext.decode(ret.responseText);
-            if (!json.success) {
-                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
-                return false;
-            } else {
-                var data = json.data;                    
-                Ext.each(data, function (formComponent) {
-                    includeJs(formComponent.fileUrlAdmin);
-                    includeJs(formComponent.fileUrlUser);
-                });
-            }
-        },
-        callback : function () {
-			sql2ext.load(loadUrl.get('APP_URL') + "/conf/sql2ext.properties");
-            var cb = function () {
-				clientAdmin.initGui(callback);
-            };
-            clientAdmin.initGuiServices(cb);
-        }
-    });       
+//	Ext.Ajax.request({
+//        url : loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL'),
+//        params : {
+//            sort : "priority",
+//            dir : "DESC"
+//        }, 
+//        method : "GET",
+//        scope : this,
+//        success : function (ret) {
+//            var json = Ext.decode(ret.responseText);
+//            if (!json.success) {
+//                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectName'));
+//                return false;
+//            } else {
+//                var data = json.data;                    
+//                Ext.each(data, function (formComponent) {
+//                    includeJs(formComponent.fileUrlAdmin);
+//                    includeJs(formComponent.fileUrlUser);
+//                });
+//            }
+//        },
+//        callback : function () {
+	sql2ext.load(loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') +  "/conf/sql2ext.properties");
+    var cb = function () {
+		clientAdmin.initGui(callback);
+    };
+    clientAdmin.initGuiServices(cb);
+//        }
+//    });       
     
 }
 

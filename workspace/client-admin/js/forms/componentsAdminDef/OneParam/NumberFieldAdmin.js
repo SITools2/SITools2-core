@@ -18,17 +18,17 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.admin.forms.oneParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
-Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', { 
-    extend : 'sitools.admin.forms.oneParam.abstractWithUnit', 
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit', 
     height : 250,
 //    id : "sitools.component.forms.definitionId",
     
     initComponent : function () {
         this.winPropComponent.specificHeight = 350;
         this.winPropComponent.specificWidth = 400;
-        sitools.admin.forms.oneParam.NumberFieldAdmin.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin.superclass.initComponent.call(this);
         this.componentDefaultValue = new Ext.form.TextField({
             fieldLabel : i18n.get('label.defaultValue'),
             name : 'componentDefaultValue',
@@ -40,7 +40,7 @@ Ext.define('sitools.admin.forms.oneParam.NumberFieldAdmin', {
         this.mapParam1.on("select", this.onChangeColumn, this);
     },
     afterRender : function () {
-        sitools.admin.forms.oneParam.NumberFieldAdmin.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValue.setValue(this.selectedRecord.data.defaultValues[0]);

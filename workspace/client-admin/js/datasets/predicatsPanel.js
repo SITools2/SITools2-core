@@ -41,9 +41,15 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
     enableColumnMove : false,
     enableColumnSort : false,
     stripeRows : true,
-    selModel : Ext.create('Ext.selection.RowModel'),
+    mixins : {
+        utils : 'sitools.admin.utils.utils'
+    },
+    
+    requires : ['sitools.admin.datasets.selectPredicat'],
+    
     
     initComponent : function () {
+        this.selModel = Ext.create('Ext.selection.RowModel');
         
         id : this.gridId;
 
@@ -204,7 +210,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                 }
                 if (columnIndex == 2) {
 
-                    selectPredicatWin = new sitools.admin.datasets.selectPredicat({
+                    selectPredicatWin = Ext.create("sitools.admin.datasets.selectPredicat", {
                         field : 'leftAttribute',
                         recordPredicat : record,
                         storePredicat : this.storeSelectFields,
@@ -214,7 +220,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                 }
                 if (columnIndex == 4 && this.type == 'join') {
 
-                    selectPredicatWin = new sitools.admin.datasets.selectPredicat({
+                    selectPredicatWin =  Ext.create("sitools.admin.datasets.selectPredicat", {
                         field : 'rightAttribute',
                         recordPredicat : record,
                         storePredicat : this.storeSelectFields,
@@ -231,7 +237,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
         };
         
         this.tbar = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             defaults : {
                 scope : this
             },
@@ -244,7 +250,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                         var rowIndex = 0;
                         var selModel = this.getSelectionModel();
                         if (selModel.hasSelection()) {
-                            rowIndex = this.getStore().indexOf(selModel.getSelected()) + 1;
+                            rowIndex = this.getStore().indexOf(this.getLastSelectedRecord()) + 1;
                         }
                         
 //                        var RecordType = this.getStore().recordType;
@@ -270,10 +276,8 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                                     .get('warning.noselection'));
                             return;
                         }
-                        var s = this.getSelectionModel().getSelections();
-                        for (var i = 0, r; r = s[i]; i++) {
-                            this.store.remove(r);
-                        }
+                        var recs = this.getSelectionModel().getSelection();
+                        this.store.remove(recs);
 
                     }
                 }
@@ -290,7 +294,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                             return;
                         }
 
-                        var selectedRecords = selModel.getSelections();
+                        var selectedRecords = selModel.getSelection();
 
                         Ext.each(selectedRecords, function (record) {
                             record.set('parentheseOuvrante', " ");

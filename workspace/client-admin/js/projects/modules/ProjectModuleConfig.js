@@ -35,6 +35,8 @@ Ext.define('sitools.admin.projects.modules.ProjectModuleConfig', {
     id : ID.BOX.PROJECTMODULECONFIG,
     layout : 'fit',
     
+    requires : ['sitools.admin.common.FormParametersConfigUtil'],
+    
     initComponent : function () {
 		
         this.buttons = [{

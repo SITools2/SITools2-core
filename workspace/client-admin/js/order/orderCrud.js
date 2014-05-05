@@ -18,19 +18,22 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.order');
+Ext.namespace('sitools.admin.order');
 
-Ext.define('sitools.component.order.orderCrudPanel', { 
+Ext.define('sitools.admin.order.orderCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-order',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.ORDER,
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
+    
+    requires : ['sitools.admin.order.orderProp',
+                'sitools.admin.order.events'],
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_ADMIN_URL');
@@ -143,11 +146,11 @@ Ext.define('sitools.component.order.orderCrudPanel', {
             scope : this, 
             itemdblclick : this._onDetail
         };
-        sitools.component.order.orderCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.order.orderCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.component.order.orderCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.order.orderCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             params : {
                 start : 0,
@@ -161,7 +164,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.component.order.orderPropPanel({
+        var up = new sitools.admin.order.orderProp({
             url : this.url,
             action : 'detail',
             store : this.getStore(),
@@ -175,7 +178,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.component.order.events({
+        var up = Ext.create("sitools.admin.order.events", {
             baseUrl : this.url + "/" + rec.data.id,
             action : 'active',
             store : this.getStore(),
@@ -189,7 +192,7 @@ Ext.define('sitools.component.order.orderCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.component.order.events({
+        var up = Ext.create("sitools.admin.order.events", {
             baseUrl : this.url + "/" + rec.data.id,
             action : 'done',
             store : this.getStore(),

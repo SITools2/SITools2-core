@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.component.order');
+Ext.namespace('sitools.admin.order');
 
-Ext.define('sitools.component.order.events', { 
+Ext.define('sitools.admin.order.events', { 
     extend : 'Ext.Window',
     width : 350,
     height : 250,
@@ -68,7 +68,7 @@ Ext.define('sitools.component.order.events', {
             }
         }];
 
-        sitools.component.order.events.superclass.initComponent.call(this);
+        sitools.admin.order.events.superclass.initComponent.call(this);
 
     },
     _onValidate : function () {

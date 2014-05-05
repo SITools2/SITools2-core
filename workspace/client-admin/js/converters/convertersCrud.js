@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.converters');
 /**
  * Converters Crud Panel
  * @requires sitools.admin.converters.convertersProp
- * @class sitools.admin.converters.convertersCrudPanel
+ * @class sitools.admin.converters.convertersCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.converters.convertersCrudPanel', { 
+Ext.define('sitools.admin.converters.convertersCrud', { 
     extend : 'Ext.grid.GridPanel', 
 	alias : 'widget.s-converters',
     border : false,
@@ -43,8 +43,10 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
     conflictWarned : false,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    requires : ['sitools.admin.converters.convertersProp'], 
+    
     viewConfig : {
         autoFill : true,
         // TODO doesn't works with Neptune Theme...
@@ -224,7 +226,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
         };
 
         this.tbar = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             defaults : {
                 scope : this
             },
@@ -271,7 +273,7 @@ Ext.define('sitools.admin.converters.convertersCrudPanel', {
             itemdblclick : this.onModify
         };
 
-        sitools.admin.converters.convertersCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.converters.convertersCrud.superclass.initComponent.call(this);
 
     },
 

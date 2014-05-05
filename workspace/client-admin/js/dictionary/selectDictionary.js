@@ -18,7 +18,7 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.component.dictionary');
+Ext.namespace('sitools.admin.dictionary');
 
 /**
  * A window that displays the columns of a dataset. 
@@ -27,52 +27,55 @@ Ext.namespace('sitools.component.dictionary');
  * @cfg Ext.data.Store parentStore the store of the record
  * @cfg Ext.grid.View parentView the view of the grid
  * @cfg string url the url to request dataset
- * @class sitools.component.dictionary.selectDictionary
+ * @class sitools.admin.dictionary.selectDictionary
  * @extends Ext.Window
  */
-Ext.define('sitools.component.dictionary.selectDictionary', { 
+Ext.define('sitools.admin.dictionary.selectDictionary', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-selectDictionaryWin',
     width : 700,
     height : 480,
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
+    mixins : {
+        utils : "sitools.admin.utils.utils"
+    },
+    
 
     initComponent : function () {
         this.title = i18n.get('title.selectDictionary');
 
-        this.cmselectDictionary = new Ext.grid.ColumnModel({
-            columns : [ {
-                id : 'name',
-                header : i18n.get('headers.name'),
-                sortable : true,
-                dataIndex : 'name'
-            }, {
-                id : 'description',
-                header : i18n.get('headers.description'),
-                sortable : false,
-                dataIndex : 'description'
-            } ]
-        });
+        this.columns = [{
+            id : 'name',
+            header : i18n.get('headers.name'),
+            sortable : true,
+            dataIndex : 'name'
+        }, {
+            id : 'description',
+            header : i18n.get('headers.description'),
+            sortable : false,
+            dataIndex : 'description'
+        } ];
 
         this.smselectDictionary = Ext.create('Ext.selection.RowModel',{
             mode : 'SINGLE'
         });
 
-        this.gridselectDictionary = new Ext.grid.GridPanel({
+        this.gridselectDictionary = Ext.create("Ext.grid.GridPanel", {
             height : 380,
             autoScroll : true,
             forceFit : true,
-            store : new Ext.data.JsonStore({
-                root : 'data',
-                restful : true,
-                proxy : new Ext.data.HttpProxy({
+            store : Ext.create("Ext.data.JsonStore", {
+                proxy : {
                     url : this.url,
-                    restful : true,
-                    method : 'GET'
-                }),
+                    type : 'ajax',
+                    reader : {
+                        type : 'json',
+                        idProperty : 'id',
+                        root : 'data',
+                    }
+                },
                 remoteSort : true,
-                idProperty : 'id',
                 fields : [ {
                     name : 'id',
                     type : 'string'
@@ -85,8 +88,10 @@ Ext.define('sitools.component.dictionary.selectDictionary', {
                 } ],
                 autoLoad : true
             }),
-            cm : this.cmselectDictionary,
-            selModel : this.smselectDictionary
+            columns : this.columns,
+            selModel : Ext.create('Ext.selection.RowModel',{
+                mode : "SINGLE"
+            })
         });
 
         this.items = [ {
@@ -107,14 +112,14 @@ Ext.define('sitools.component.dictionary.selectDictionary', {
             } ]
 
         } ];
-        sitools.component.dictionary.selectDictionary.superclass.initComponent.call(this);
+        sitools.admin.dictionary.selectDictionary.superclass.initComponent.call(this);
     },
     /**
      * Method called on Ok button. 
      * update the Record and close the window
      */
     onValidate : function () {
-        var rec = this.gridselectDictionary.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord();
         if (rec !== null) {
 	        this.record.data[this.field] = rec.data.name;
 	        this.parentView.refresh();

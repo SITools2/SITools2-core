@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.dictionary');
+Ext.namespace('sitools.admin.dictionary');
 
-Ext.define('sitools.component.dictionary.templatePropPanel', { 
+Ext.define('sitools.admin.dictionary.templateProp', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-templateprop',
     width : 700,
@@ -148,7 +148,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
             } ]
 
         } ];
-        sitools.component.dictionary.templatePropPanel.superclass.initComponent.call(this);
+        sitools.admin.dictionary.templateProp.superclass.initComponent.call(this);
     },
 
     onUpload : function () {
@@ -247,7 +247,7 @@ Ext.define('sitools.component.dictionary.templatePropPanel', {
     },
 
     onRender : function () {
-        sitools.component.dictionary.templatePropPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.dictionary.templateProp.superclass.onRender.apply(this, arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             var i;

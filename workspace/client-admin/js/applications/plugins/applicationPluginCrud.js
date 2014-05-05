@@ -23,10 +23,10 @@
  */
 Ext.namespace('sitools.admin.applications.plugins');
 /**
- * @class sitools.admin.applications.plugins.ApplicationPluginCrudPanel
+ * @class sitools.admin.applications.plugins.ApplicationPluginCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', { 
+Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', { 
     extend : 'Ext.grid.GridPanel',
 	alias : 'widget.s-Application_plugins',
     border : false,
@@ -36,8 +36,10 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
     modify : false,
     urlGrid : null,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.applications.plugins.applicationPluginProp'],
     
     // Warning for version conflicts
 	conflictWarned : false,
@@ -231,14 +233,14 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrudPanel', {
             mode : "SINGLE"
         });
         
-        sitools.admin.applications.plugins.ApplicationPluginCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.applications.plugins.ApplicationPluginCrud.superclass.initComponent.call(this);
     },
 
 	/**
 	 * Load the Store on render event 
 	 */
     onRender : function () {
-        sitools.admin.applications.plugins.ApplicationPluginCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.applications.plugins.ApplicationPluginCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize

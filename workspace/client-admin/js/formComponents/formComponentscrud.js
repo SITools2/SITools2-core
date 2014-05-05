@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.formComponents');
+Ext.namespace('sitools.admin.formComponents');
 
-Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', { 
+Ext.define('sitools.admin.formComponents.FormComponentsCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-formComponents',
     border : false,
@@ -29,8 +29,10 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.formComponents.FormComponentsProp'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_FORMCOMPONENTS_URL');
@@ -149,11 +151,11 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
             mode : "SINGLE"
         });
                 
-        sitools.component.formComponents.FormComponentsCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.formComponents.FormComponentsCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.component.formComponents.FormComponentsCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.formComponents.FormComponentsCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -161,7 +163,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
     },
 
     _onCreate : function () {
-        var dbp = Ext.create("sitools.component.formComponents.FormComponentsPropPanel", {
+        var dbp = Ext.create("sitools.admin.formComponents.FormComponentsProp", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -175,7 +177,7 @@ Ext.define('sitools.component.formComponents.FormComponentsCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var dbp = Ext.create("sitools.component.formComponents.FormComponentsPropPanel", {
+        var dbp = Ext.create("sitools.admin.formComponents.FormComponentsProp", {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store

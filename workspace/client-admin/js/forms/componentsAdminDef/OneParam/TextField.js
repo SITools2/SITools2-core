@@ -18,13 +18,13 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.admin.forms.oneParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
-Ext.define('sitools.admin.forms.oneParam.TextField', { 
-    extend : 'sitools.admin.forms.oneParam.withoutValues', 
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.TextField', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.withoutValues', 
     
     initComponent : function () {
-        sitools.admin.forms.oneParam.TextField.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.TextField.superclass.initComponent.call(this);
         this.componentAutoComplete = Ext.create("Ext.form.Checkbox", {
             fieldLabel : i18n.get('label.autoComplete'),
             name : 'autoComplete',
@@ -34,7 +34,7 @@ Ext.define('sitools.admin.forms.oneParam.TextField', {
         this.add(this.componentAutoComplete);
     }, 
     afterRender : function () {
-        sitools.admin.forms.oneParam.TextField.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.TextField.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.autoComplete)) {
                 this.componentAutoComplete.setValue(this.selectedRecord.data.autoComplete);

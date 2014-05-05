@@ -17,7 +17,7 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext, includeJs, sitools, ID, i18n, document, showResponse, SITOOLS_DATE_FORMAT, SITOOLS_DEFAULT_IHM_DATE_FORMAT, alertFailure, LOCALE, ImageChooser, loadUrl*/
-Ext.namespace('sitools.component.datasets');
+Ext.namespace('sitools.admin.datasets');
 
 
 /**
@@ -26,17 +26,26 @@ Ext.namespace('sitools.component.datasets');
  * @cfg {String} action (required) "active", "modify" "view"
  * @cfg {Ext.data.Store} store (required) : the datasets store 
  * 
- * @class sitools.component.datasets.datasetsMultiTablesPanel
+ * @class sitools.admin.datasets.datasetsMultiTablesPanel
  * @requires sitools.admin.datasets.PredicatsPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', { 
-    extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.datasetsMultiTablesPanel', { 
+    extend : 'sitools.admin.datasets.abstractDatasetWin',
 	alias : 'widget.s-datasetsMultiTablesPanel',
 	layout : 'fit',
+	
+	requires : ['sitools.admin.datasets.gridFieldSetup',
+	            'sitools.admin.datasets.datasetForm',
+	            'sitools.admin.datasets.datasetSelectTables',
+	            'sitools.admin.datasets.datasetSelectFields',
+	            'sitools.admin.datasets.datasetCriteria',
+	            'sitools.admin.datasets.datasetProperties',
+	            'sitools.admin.datasets.datasetViewConfig',
+	            'sitools.admin.datasets.datasourceUtils.DatasourceFactory'],
+	
 //	closeAction : 'close',
     initComponent : function () {
-        Ext.apply(this, sitools.admin.datasets.abstractDatasetWin);
 		//do it when loadUrl is ready.
         this.urlDictionary = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_URL');
         this.urlDatasources = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_URL');
@@ -99,14 +108,14 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
                 }
             });
             
-//			if (indexAlias !== -1) {
-//				if (this.gridFields.getStore().getCount() > 0) {
-//				    panel.gridTablesDataset.columns[indexAlias].setDisabled(true);
-//				}
-//				else {
-//				    panel.gridTablesDataset.columns[indexAlias].setDisabled(false);
-//				}
-//			}
+			if (indexAlias !== -1) {
+				if (this.gridFields.getStore().getCount() > 0) {
+				    panel.gridTablesDataset.columns[indexAlias].setDisabled(true);
+				}
+				else {
+				    panel.gridTablesDataset.columns[indexAlias].setDisabled(false);
+				}
+			}
 //			
 //            panel.gridTablesDataset.getView().refresh();
 		}, this);
@@ -228,7 +237,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 						check = this.panelSelectTables.validatePanel();
 					}
 					if (! check.success) {
-			            var tmp = new Ext.ux.Notification({
+			            Ext.create("Ext.ux.Notification", {
 				            iconCls : 'x-icon-information',
 				            title : i18n.get('label.error'),
 				            html : check.message,
@@ -242,14 +251,14 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 				}, 
 				initComboDatasource : function (field, value) {
 					var datasourceType = this.formulairePrincipal.getDataSourceCombo().getDatasourceType();
-					this.datasourceUtils = new sitools.admin.datasets.datasourceUtils.DatasourceFactory(datasourceType, this);
+					this.datasourceUtils = sitools.admin.datasets.datasourceUtils.DatasourceFactory.getDatasource(datasourceType, this);
 					
 					this.panelSelectTables.fireEvent("initializeDatasource");
                     this.panelSelectFields.fireEvent("initializeDatasource");
 				}, 
 				datasourceChanged : function (field, newValue, oldValue) {
                     var datasourceType = this.formulairePrincipal.getDataSourceCombo().getDatasourceType();
-					this.datasourceUtils = new sitools.admin.datasets.datasourceUtils.DatasourceFactory(datasourceType, this);
+                    this.datasourceUtils = sitools.admin.datasets.datasourceUtils.DatasourceFactory.getDatasource(datasourceType, this);
 					
 					if (Ext.isEmpty(oldValue)) {
 						this.panelSelectTables.fireEvent("initializeDatasource");
@@ -296,7 +305,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
 
         };
         this.items = [ this.tabPanel ];
-        sitools.component.datasets.datasetsMultiTablesPanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.datasetsMultiTablesPanel.superclass.initComponent.call(this);
     }, 
     /**
      * called when user click on Ok button. 
@@ -531,7 +540,7 @@ Ext.define('sitools.component.datasets.datasetsMultiTablesPanel', {
     },
     
     onDestroy : function () {
-        sitools.component.datasets.datasetsMultiTablesPanel.superclass.onDestroy.apply(this, arguments);
+        this.callParent(arguments);
         this.destroyCkeditor();
     },
 

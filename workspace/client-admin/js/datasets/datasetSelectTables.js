@@ -32,6 +32,10 @@ Ext.namespace('sitools.admin.datasets');
  */
 Ext.define('sitools.admin.datasets.datasetSelectTables', { 
     extend : 'Ext.Panel',
+    
+    requires : ['sitools.public.widget.datasets.selectItems',
+                'sitools.public.widget.item.JsonStore'],
+    
     initComponent : function () {
 		var action = this.action;
 
@@ -99,7 +103,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', {
          * The store that contains the tables of a Dataset.
          * @type Ext.grid.ColumnModel
          */
-        this.storeTablesDataset = new sitools.widget.JsonStore({
+        this.storeTablesDataset = Ext.create("sitools.public.widget.item.JsonStore", {
             id : 'storeTablesDataset',
             fields : [ {
                 name : 'id',
@@ -138,7 +142,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', {
             })]
         });
 
-        this.displayPanelTables = Ext.create('sitools.component.datasets.selectItems', {
+        this.displayPanelTables = Ext.create('sitools.public.widget.datasets.selectItems', {
 			grid1 : this.gridTablesBDD, 
 			grid2 : this.gridTablesDataset, 
 			defaultRecord : {}

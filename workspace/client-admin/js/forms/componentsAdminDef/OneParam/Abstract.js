@@ -21,14 +21,14 @@
 /*
  * @include "../ComponentFactory.js"
  */
-Ext.namespace('sitools.admin.forms.oneParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
  * An abstract form to build one Param components
- * @class sitools.admin.forms.oneParam.abstractForm
+ * @class sitools.admin.forms.componentsAdminDef.oneParam.abstract
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.oneParam.abstractForm', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.abstract', { 
     extend : 'Ext.form.Panel',
     autoScroll : true, 
     context : null, 
@@ -36,7 +36,7 @@ Ext.define('sitools.admin.forms.oneParam.abstractForm', {
     bodyBorder : false,
     padding : 5,
     initComponent : function () {
-        this.context = new sitools.component.forms.componentsAdminDef.ComponentFactory(this.context);
+        this.context = sitools.admin.forms.componentsAdminDef.ComponentFactory.getContext(this.context);
         
         this.buttonAdd = Ext.create("Ext.Button", {
 			text : i18n.get('label.addColumn'), 
@@ -91,10 +91,10 @@ Ext.define('sitools.admin.forms.oneParam.abstractForm', {
 		}
         this.padding = 10;
 
-        sitools.admin.forms.oneParam.abstractForm.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.abstract.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.oneParam.abstractForm.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.abstract.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.labelParam1.setValue(this.selectedRecord.data.label);
             this.css.setValue(this.selectedRecord.data.css);

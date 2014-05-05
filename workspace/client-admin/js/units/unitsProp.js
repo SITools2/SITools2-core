@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.units');
  * A Panel to show dimension data from a specific dimension
  * 
  * @cfg {String} the action to perform
- * @cfg {sitools.admin.units.unitsCrudPanel} the parent
+ * @cfg {sitools.admin.units.unitsCrud} the parent
  * @cfg {String} the urlAdmin
  * @class sitools.admin.units.unitsProp
  * @extends Ext.Window
@@ -40,7 +40,7 @@ Ext.define('sitools.admin.units.unitsProp', {
     helperName : null,
     layout : 'fit',
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
 
     initComponent : function () {
@@ -164,7 +164,7 @@ Ext.define('sitools.admin.units.unitsProp', {
             title : i18n.get("title.convertersForDimension")
         });
 
-        var displayPanelConverters = new sitools.component.datasets.selectItems({
+        var displayPanelConverters = new sitools.public.widget.datasets.selectItems({
 			grid1 : this.gridConvertersFromHelper, 
 			grid2 : this.gridConverters, 
 			defaultRecord : {}

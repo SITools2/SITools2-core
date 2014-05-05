@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, includeJs*/
-Ext.namespace('sitools.component.formComponents');
+Ext.namespace('sitools.admin.formComponents');
 
-Ext.define('sitools.component.formComponents.FormComponentsPropPanel', { extend : 'Ext.Window',
+Ext.define('sitools.admin.formComponents.FormComponentsProp', { extend : 'Ext.Window',
 	alias : 'widget.s-formComponentsprop',
     width : 700,
     height : 480,
@@ -122,10 +122,10 @@ Ext.define('sitools.component.formComponents.FormComponentsPropPanel', { extend 
                 }
             } ]
         } ];
-        sitools.component.formComponents.FormComponentsPropPanel.superclass.initComponent.call(this);
+        sitools.admin.formComponents.FormComponentsProp.superclass.initComponent.call(this);
     },
     onRender : function () {
-        sitools.component.formComponents.FormComponentsPropPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.formComponents.FormComponentsProp.superclass.onRender.apply(this, arguments);
         if (this.action == 'modify') {
             var f = this.down('form').getForm();
             Ext.Ajax.request({

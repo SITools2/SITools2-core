@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.component.order');
+Ext.namespace('sitools.admin.order');
 
-Ext.define('sitools.component.order.orderPropPanel', {
+Ext.define('sitools.admin.order.orderProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-orderprop',
     width : 700,
@@ -177,11 +177,11 @@ Ext.define('sitools.component.order.orderPropPanel', {
             } ]
         } ];
         
-        sitools.component.order.orderPropPanel.superclass.initComponent.call(this);
+        sitools.admin.order.orderProp.superclass.initComponent.call(this);
     },
 
     afterRender : function () {
-        sitools.component.order.orderPropPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.order.orderProp.superclass.afterRender.apply(this, arguments);
         var f = this.down('form').getForm();
         f.loadRecord(this.orderRec);
     }

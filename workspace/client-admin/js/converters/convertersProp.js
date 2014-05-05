@@ -40,7 +40,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
     modal : true,
     resizable : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
 
     initComponent : function () {

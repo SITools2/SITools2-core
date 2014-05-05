@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.portal');
+Ext.namespace('sitools.admin.portal');
 
-Ext.define('sitools.component.portal.rssFeedPortalCrud', {
+Ext.define('sitools.admin.portal.rssFeedPortalCrud', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-rssFeedPortal',
     border : false,
@@ -161,7 +161,7 @@ Ext.define('sitools.component.portal.rssFeedPortalCrud', {
 
         this.loadRss();
 
-        sitools.component.portal.rssFeedPortalCrud.superclass.initComponent.call(this);
+        sitools.admin.portal.rssFeedPortalCrud.superclass.initComponent.call(this);
 
     },
     loadRss : function () {

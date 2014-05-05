@@ -23,17 +23,22 @@ Ext.namespace('sitools.admin.datasets.datasourceUtils');
 /**
  * @class sitools.admin.datasets.DatasourceFactory
  */
-//sitools.component.datasets.abstractDatasetWin = {
-sitools.admin.datasets.datasourceUtils.DatasourceFactory = function (datasourceType, scope) {
-	if (datasourceType.jdbc) {
-		return Ext.create('sitools.admin.datasets.datasourceUtils.jdbcUtils', {
-			scope : scope
-		});
-	}
-	if (datasourceType.mongoDb) {
-		return Ext.create('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
-			scope : scope
-		});
-	}
-
-};
+Ext.define('sitools.admin.datasets.datasourceUtils.DatasourceFactory', {
+    singleton : true,
+    requires : ['sitools.admin.datasets.datasourceUtils.jdbcUtils',
+               'sitools.admin.datasets.datasourceUtils.mongoDbUtils'],
+    
+    getDatasource : function (datasourceType, scope) {
+        //  sitools.user.forms.components.ComponentFactory = function (context) {
+        if (datasourceType.jdbc) {
+            return Ext.create('sitools.admin.datasets.datasourceUtils.jdbcUtils', {
+                scope : scope
+            });
+        }
+        if (datasourceType.mongoDb) {
+            return Ext.create('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
+                scope : scope
+            });
+        }
+    }
+});

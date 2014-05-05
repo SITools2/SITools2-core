@@ -36,6 +36,9 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
+    mixins : {
+        utils : 'sitools.admin.utils.utils'
+    },
 
     initComponent : function () {
         this.title = i18n.get('label.selectPredicat');
@@ -95,7 +98,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
     },
     onValidate : function () {
         
-        var rec = this.gridSelectPredicat.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord(this.gridSelectPredicat);
         var nomAffiche = rec.data.tableAlias ? rec.data.tableAlias : rec.data.tableName;
         nomAffiche = nomAffiche + "." + rec.data.dataIndex;
         this.recordPredicat.data.nomAffiche = nomAffiche;

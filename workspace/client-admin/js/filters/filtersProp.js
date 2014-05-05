@@ -21,16 +21,16 @@
  /*
   * @include "../datasets/selectColumn.js"
   */
-Ext.namespace('sitools.component.filters');
+Ext.namespace('sitools.admin.filters');
 
-Ext.define('sitools.component.filters.filtersProp', { 
+Ext.define('sitools.admin.filters.filtersProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
     resizable : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
 
     initComponent : function () {
@@ -344,7 +344,7 @@ Ext.define('sitools.component.filters.filtersProp', {
         
         this.items = [ this.tabPanel ];
 
-        sitools.component.filters.filtersProp.superclass.initComponent.call(this);
+        sitools.admin.filters.filtersProp.superclass.initComponent.call(this);
     },
     
     beforeTabChange : function (self, newTab, currentTab) {
@@ -396,7 +396,7 @@ Ext.define('sitools.component.filters.filtersProp', {
 
     },
     afterRender : function () {
-        sitools.component.filters.filtersProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.filters.filtersProp.superclass.afterRender.apply(this, arguments);
 
         if (this.action == "modify") {
 

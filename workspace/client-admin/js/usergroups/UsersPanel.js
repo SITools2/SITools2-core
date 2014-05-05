@@ -40,7 +40,7 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
 
     initComponent : function () {

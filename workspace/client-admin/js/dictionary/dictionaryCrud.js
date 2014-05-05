@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.dictionary');
+Ext.namespace('sitools.admin.dictionary');
 
-Ext.define('sitools.component.dictionary.dictionaryCrudPanel', { 
+Ext.define('sitools.admin.dictionary.dictionaryCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-dictionary',
     border : false,
@@ -28,9 +28,11 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
     id : ID.BOX.DICTIONARY,
+    
+    requires : ['sitools.admin.dictionary.dictionaryProp'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_URL');
@@ -124,11 +126,11 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
             mode : "SINGLE"
         });
         
-        sitools.component.dictionary.dictionaryCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.dictionary.dictionaryCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.component.dictionary.dictionaryCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.dictionary.dictionaryCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -136,7 +138,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
     },
 
     onCreate : function () {
-        var up = new sitools.component.dictionary.dictionaryPropPanel({
+        var up = new sitools.admin.dictionary.dictionaryProp({
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -150,7 +152,7 @@ Ext.define('sitools.component.dictionary.dictionaryCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var up = new sitools.component.dictionary.dictionaryPropPanel({
+        var up = new sitools.admin.dictionary.dictionaryProp({
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()

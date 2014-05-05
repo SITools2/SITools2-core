@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.filters');
+Ext.namespace('sitools.admin.filters');
 
-Ext.define('sitools.component.filters.filtersCrudPanel', { 
+Ext.define('sitools.admin.filters.filtersCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-filters',
     border : false,
@@ -34,8 +34,10 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
     // loadMask: true,
     conflictWarned : false,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.filters.filtersProp'],
     viewConfig : {
         autoFill : true, 
 //		getRowClass : function (row, index) { 
@@ -216,7 +218,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
         };
 
         this.tbar = {
-            xtype : 'sitools.widget.GridSorterToolbar',
+            xtype : 'sitools.public.widget.grid.GridSorterToolbar',
             defaults : {
                 scope : this
             },
@@ -263,7 +265,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
             itemdblclick : this.onModify
         };
         
-        sitools.component.filters.filtersCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.filters.filtersCrud.superclass.initComponent.call(this);
 
     },
 
@@ -271,7 +273,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
             return;
         }
-        var up = Ext.create("sitools.component.filters.filtersProp", {
+        var up = Ext.create("sitools.admin.filters.filtersProp", {
             action : 'create',            
             parent : this,
             datasetId : this.datasetId,
@@ -334,7 +336,7 @@ Ext.define('sitools.component.filters.filtersCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.component.filters.filtersProp", {
+        var up = Ext.create("sitools.admin.filters.filtersProp", {
             action : 'modify',
             parent : this,
             filter : rec.data,

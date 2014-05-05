@@ -24,9 +24,9 @@
  *@include "../../../public/js/env.js"
  */
 
-Ext.namespace('sitools.component.fileEditor');
+Ext.namespace('sitools.admin.fileEditor');
 
-Ext.define('sitools.component.fileEditor.ftlEditorCrud', { 
+Ext.define('sitools.admin.fileEditor.ftlEditorCrud', { 
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-ftlEditor',
     border : false,
@@ -38,8 +38,10 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
     pageSize : 15,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.fileEditor.fileEditorProp'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
@@ -116,7 +118,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
                 itemdblclick : this.onModify
             };
         
-        sitools.component.fileEditor.ftlEditorCrud.superclass.initComponent.call(this);
+        sitools.admin.fileEditor.ftlEditorCrud.superclass.initComponent.call(this);
     },
     onModify : function () {
         var rec = this.getLastSelectedRecord();
@@ -128,7 +130,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
         var from = l - 3;
         var ftlProp;
         if (rec.data.id.substring(from, l) == "txt") {
-            ftlProp = new sitools.component.fileEditor.fileEditorProp({
+            ftlProp = new sitools.admin.fileEditor.fileEditorProp({
                 url : this.url + '/ftl/' + rec.data.id,
                 fileName : rec.data.id,
                 sourceEdit : false,
@@ -138,7 +140,7 @@ Ext.define('sitools.component.fileEditor.ftlEditorCrud', {
             });
             ftlProp.show();
         } else {
-            ftlProp = new sitools.component.fileEditor.fileEditorProp({
+            ftlProp = new sitools.admin.fileEditor.fileEditorProp({
                 url : this.url + '/ftl/' + rec.data.id,
                 fileName : rec.data.id,
                 sourceEdit : true,

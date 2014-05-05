@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-/*global Ext, ann*/
+/*global Ext*/
 Ext.namespace('sitools.public.utils');
 
 Ext.define('sitools.public.utils.i18n', {
@@ -40,7 +40,6 @@ Ext.define('sitools.public.utils.i18n', {
             url : url,
             // params:'formLogin', using autorization instead
             success : function (response, opts) {
-                console.ann(response.responseText, "no response is sent");
                 i18nRef.map = i18nRef.transformsPropertiesToMap(response.responseText);
                 callback();
             },

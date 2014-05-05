@@ -38,6 +38,8 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
     padding : '5 5 5 5',
     bodyPadding : '5 5 5 5',
     
+    requires : ['sitools.public.widget.StatusBar'],
+    
     initComponent : function () {
         
         this.urlDatasets = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'); 
@@ -75,7 +77,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
             }
         });
         
-        this.bbar = Ext.create('Ext.ux.StatusBar', {
+        this.bbar = Ext.create('sitools.public.widget.StatusBar', {
             id : "status_bar_column",
             hidden : true,
             text: i18n.get("label.no_column_selected"),

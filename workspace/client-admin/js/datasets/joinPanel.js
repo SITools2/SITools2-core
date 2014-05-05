@@ -43,9 +43,11 @@ Ext.define('sitools.admin.datasets.joinPanel', {
 	layout : 'fit', 
 	height : 180,
 	
+	requires : ['sitools.admin.datasets.joinCrudTreePanel'],
+	
     initComponent : function () {
         this.title = "Join Configuration";
-        this.tree = new sitools.component.datasets.joinCrudTreePanel(this);
+        this.tree = Ext.create("sitools.admin.datasets.joinCrudTreePanel", this);
 
         this.items = [this.tree];
 		this.addEvents('contextmenu');  
@@ -57,7 +59,7 @@ Ext.define('sitools.admin.datasets.joinPanel', {
 
         this.removeAll();
 
-        this.tree = Ext.create('sitools.component.datasets.joinCrudTreePanel', {
+        this.tree = Ext.create('sitools.admin.datasets.joinCrudTreePanel', {
             datasetId : this.datasetId
         });
         

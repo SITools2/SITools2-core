@@ -21,10 +21,10 @@ Ext.namespace('sitools.admin.authorizations');
 
 /**
  * 
- * @class sitools.admin.authorizations.authorizationsCrudPanel
+ * @class sitools.admin.authorizations.authorizationsCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
+Ext.define('sitools.admin.authorizations.authorizationsCrud', {
     extend : 'Ext.grid.Panel', 
 	alias : 'widget.s-authorizations',
     border : false,
@@ -33,6 +33,8 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     id : ID.BOX.AUTHORIZATION,
+    
+    requires : ['sitools.admin.applications.applicationsRole'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
@@ -127,11 +129,11 @@ Ext.define('sitools.admin.authorizations.authorizationsCrudPanel', {
             itemdblclick : this.onDefineRole
         };
 
-        sitools.admin.authorizations.authorizationsCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.authorizations.authorizationsCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.authorizations.authorizationsCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.authorizations.authorizationsCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             params : {
                 start : 0,

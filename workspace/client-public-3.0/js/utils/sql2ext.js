@@ -30,7 +30,7 @@ Ext.define('sitools.public.utils.sql2ext', {
             url : url,
             // params:'formLogin', using autorization instead
             success : function (response, opts) {
-                ann(response.responseText, "no response is sent");
+//                ann(response.responseText, "no response is sent");
                 i18nRef.map = i18nRef.transformsPropertiesToMap(response.responseText);
             },
             failure : function (response, opts) {

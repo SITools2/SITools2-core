@@ -22,12 +22,12 @@ Ext.namespace('sitools.admin.datasource.jdbc');
 
 /**
  * Displays all databases defined. 
- * @requires sitools.admin.datasource.jdbc.DataBasePropPanel
+ * @requires sitools.admin.datasource.jdbc.DataBaseProp
  * @requires sitools.admin.datasource.jdbc.DataBaseTest
- * @class sitools.admin.datasource.jdbc.DataBaseCrudPanel
+ * @class sitools.admin.datasource.jdbc.DataBaseCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', { 
+Ext.define('sitools.admin.datasource.jdbc.DataBaseCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-databaseJDBC',
     border : false,
@@ -35,9 +35,12 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
     id : ID.BOX.DATABASE,
+    
+    requires : ['sitools.admin.datasource.jdbc.DataBaseProp',
+                'sitools.admin.datasource.DataBaseTest'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASOURCES_URL');
@@ -172,11 +175,11 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             mode : "SINGLE"
         });
         
-        sitools.admin.datasource.jdbc.DataBaseCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.datasource.jdbc.DataBaseCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.datasource.jdbc.DataBaseCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.datasource.jdbc.DataBaseCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -184,7 +187,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
     },
 
     _onCreate : function () {
-        var dbp = Ext.create("sitools.admin.datasource.jdbc.DataBasePropPanel", {
+        var dbp = Ext.create("sitools.admin.datasource.jdbc.DataBaseProp", {
             url : this.url,
             action : 'create',
             store : this.store
@@ -202,7 +205,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
             this._onView();
             return;
         }
-        var dbp = Ext.create("sitools.admin.datasource.jdbc.DataBasePropPanel", {
+        var dbp = Ext.create("sitools.admin.datasource.jdbc.DataBaseProp", {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.store
@@ -215,7 +218,7 @@ Ext.define('sitools.admin.datasource.jdbc.DataBaseCrudPanel', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.datasource.jdbc.DataBasePropPanel", {
+        var up = Ext.create("sitools.admin.datasource.jdbc.DataBaseProp", {
             url : this.url + '/' + rec.data.id,
             action : 'view',
             store : this.store

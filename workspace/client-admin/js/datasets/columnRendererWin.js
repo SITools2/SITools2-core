@@ -44,6 +44,10 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
         align : 'stretch'
     },
 
+    requires : ['sitools.admin.datasets.columnRenderer.urlPanel',
+                'sitools.admin.datasets.columnRenderer.imagePanel',
+                'sitools.admin.datasets.columnRenderer.datasetLinkPanel'],
+    
     initComponent : function () {
         
         this.title = this.columnRendererType + " " + i18n.get('label.detailColumnDefinition');

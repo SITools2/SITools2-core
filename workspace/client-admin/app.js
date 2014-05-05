@@ -17,11 +17,13 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 Ext.application({
-    name: 'clientadmin',
+    name: 'sitools',
 
     extend: 'sitools.admin.Application',
     
     paths : {
-        "sitools.admin" : "./js"
-    },
+        "sitools.admin" : "./js",
+        "sitools.public" : "../client-public/js",
+        "Ext.ux" : "../client-public/js/ux"
+    }    
 });

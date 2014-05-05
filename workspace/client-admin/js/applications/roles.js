@@ -34,6 +34,8 @@ Ext.define('sitools.admin.applications.roles', {
     closable : false,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
+    
+    requires : ['sitools.admin.authorizations.AuthorizationsModel'],
 
     initComponent : function () {
         this.title = i18n.get('label.roleWin');
@@ -127,7 +129,7 @@ Ext.define('sitools.admin.applications.roles', {
     _onOK : function () {
         Ext.each(this.grid.getSelectionModel().getSelection(), function (role) {
             if (this.storeRolesApplication.find('role', role.data.name) == -1) {
-                var record = Ext.create('AuthorizationModel', {
+                var record = Ext.create('sitools.admin.authorizations.AuthorizationsModel', {
                     role : role.data.name
                 });
 

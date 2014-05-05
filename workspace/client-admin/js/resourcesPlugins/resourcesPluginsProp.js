@@ -67,8 +67,13 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
     resourcePluginId : null,
     modelClassName : null,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.datasets.selectColumn',
+                'sitools.admin.dictionary.selectDictionary',
+                'sitools.admin.resourcesPlugins.enumerationValueTypeSelector',
+                'sitools.public.widget.grid.GridSorterToolbar'],
 
     initComponent : function () {
 
@@ -287,7 +292,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
 					type : "boolean"
                 }]
             }), 
-            tbar : Ext.create('sitools.widget.GridSorterToolbar', {
+            tbar : Ext.create('sitools.public.widget.grid.GridSorterToolbar', {
                 gridId : "gridFieldMapping"
             }),
             selModel : Ext.create('Ext.selection.RowModel'),
@@ -339,7 +344,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                             selectColumnWin.show(this);
                         }
                         else if (rec.valueType == "xs:dictionary") {
-                            var selectDictionaryWin = Ext.create("sitools.component.dictionary.selectDictionary", {
+                            var selectDictionaryWin = Ext.create("sitools.admin.dictionary.selectDictionary", {
                                 field : "value",
                                 record : record,
                                 parentStore : this.gridFieldMapping.getStore(),
@@ -391,7 +396,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                             else {
 								enumType = "E";
                             }
-                            var selectEnumWin = new sitools.admin.resourcesPlugins.enumerationValueTypeSelector({
+                            var selectEnumWin = Ext.create("sitools.admin.resourcesPlugins.enumerationValueTypeSelector", {
                                 enumType : enumType, 
                                 field : "value",
                                 fieldEnum : "valueType", 
@@ -414,7 +419,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             plugins : [expanderGridFieldMapping, cellEditing]
         });
         
-        var comboBehavior = new Ext.form.ComboBox({
+        var comboBehavior = Ext.create("Ext.form.ComboBox", {
 		    typeAhead : false,
 			fieldLabel : i18n.get("label.behavior"), 
             name : "behavior", 
@@ -435,7 +440,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
         });
         
         // set the search form
-        this.fieldMappingFormPanel = new Ext.FormPanel({
+        this.fieldMappingFormPanel = Ext.create("Ext.FormPanel", {
             height : 95,
             frame : true,
             defaultType : 'textfield',
@@ -451,7 +456,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             region : 'north'
         });
 
-        this.fieldMappingPanel = new Ext.Panel({
+        this.fieldMappingPanel = Ext.create("Ext.Panel", {
             layout : 'border',
             id : 'fieldMappingPanel',
             title : i18n.get('title.fieldMapping'),
@@ -464,7 +469,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
             }
         });
         
-        this.tabPanel = new Ext.TabPanel({
+        this.tabPanel = Ext.create("Ext.TabPanel", {
             height : 450,
             activeTab : 0,
             items : (this.action == "create") ? [ this.gridresourcePlugin, this.fieldMappingPanel ] : [

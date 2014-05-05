@@ -21,20 +21,20 @@
 /*
  * @include "WithoutValues.js"
  */
-Ext.namespace('sitools.admin.forms.oneParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
  * A Form Panel to display Administration for for form Components without Values with Properties. 
- * @class sitools.admin.forms.oneParam.NoValuesWithProperties
+ * @class sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperties
  * @extends 
  */
-Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', { 
-    extend : 'sitools.admin.forms.oneParam.withoutValues',
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperties', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.withoutValues',
     height : 400,
 //    id : "sitools.component.forms.definitionId",
     
     initComponent : function () {
-        sitools.admin.forms.oneParam.NoValuesWithProperties.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperties.superclass.initComponent.call(this);
         this.winPropComponent.specificHeight = 500;
         this.winPropComponent.specificWidth = 400;
         var storeProperties = Ext.create("Ext.data.JsonStore", {
@@ -117,7 +117,7 @@ Ext.define('sitools.admin.forms.oneParam.NoValuesWithProperties', {
      * Load the default ExtraParams. 
      */
     afterRender : function () {
-        sitools.admin.forms.oneParam.NoValuesWithProperties.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperties.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             Ext.each(this.selectedRecord.data.extraParams, function (prop) {
                 var rec = {

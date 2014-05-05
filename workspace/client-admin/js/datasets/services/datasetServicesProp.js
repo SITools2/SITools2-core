@@ -52,8 +52,10 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
     modelClassName : null,
     currentRecordId : null,
     mixins : {
-        utils : "js.utils.utils"
+        utils : "sitools.admin.utils.utils"
     },
+    
+    requires : ['sitools.admin.common.FormParametersConfigUtil'],
     
     initComponent : function () {
         this.id = "datasetServicesPropId";

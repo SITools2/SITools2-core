@@ -80,7 +80,7 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
                 width : 80,
                 sortable : true,
                 dataIndex : 'alias',
-                editor : new Ext.form.TextField({
+                editor : Ext.create("Ext.form.TextField", {
                     disabled : this.action == 'view' ? true : false
                 })
             }],

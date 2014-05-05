@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.component.dictionary');
+Ext.namespace('sitools.admin.dictionary');
 
-Ext.define('sitools.component.dictionary.templateCrudPanel', { 
+Ext.define('sitools.admin.dictionary.templateCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-template',
     border : false,
@@ -29,8 +29,10 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
+    
+    requires : ['sitools.admin.dictionary.templateProp'],
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_TEMPLATES_URL');
@@ -121,11 +123,11 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
             mode : "SINGLE"
         });
         
-        sitools.component.dictionary.templateCrudPanel.superclass.initComponent.call(this);
+        sitools.admin.dictionary.templateCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.component.dictionary.templateCrudPanel.superclass.onRender.apply(this, arguments);
+        sitools.admin.dictionary.templateCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -133,7 +135,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
     },
 
     onCreate : function () {
-        var up = new sitools.component.dictionary.templatePropPanel({
+        var up = new sitools.admin.dictionary.templateProp({
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -147,7 +149,7 @@ Ext.define('sitools.component.dictionary.templateCrudPanel', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var up = new sitools.component.dictionary.templatePropPanel({
+        var up = new sitools.admin.dictionary.templateProp({
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()

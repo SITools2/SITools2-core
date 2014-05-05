@@ -30,10 +30,10 @@ Ext.namespace('sitools.admin.datasource.jdbc');
  * @cfg {string} url the url to request the database
  * @cfg {string} action the action to perform should be view, modify or create
  * @cfg {Ext.data.Store} store the store that contains all databases. 
- * @class sitools.admin.datasource.jdbc.DataBasePropPanel
+ * @class sitools.admin.datasource.jdbc.DataBaseProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
+Ext.define('sitools.admin.datasource.jdbc.DataBaseProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-databaseprop',
 	width : 700,
@@ -239,10 +239,10 @@ Ext.define('sitools.admin.datasource.jdbc.DataBasePropPanel', {
 				this.down('form').setSize(size);
 			}
         };
-        sitools.admin.datasource.jdbc.DataBasePropPanel.superclass.initComponent.call(this);
+        sitools.admin.datasource.jdbc.DataBaseProp.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.datasource.jdbc.DataBasePropPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasource.jdbc.DataBaseProp.superclass.afterRender.apply(this, arguments);
         Ext.each(this.down('form').items.items, function (item) {
             item.disable();
         }, this);

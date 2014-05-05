@@ -28,9 +28,10 @@ Ext.namespace('sitools.admin.menu');
 Ext.define('sitools.admin.menu.TreeMenu', {
     extend: 'Ext.tree.Panel',
     alias : 'widget.treemenucontainer',
+    
+    requires : ['sitools.public.widget.item.Box',
+                'sitools.admin.menu.dataView'],
 
-    
-    
     constructor : function (jsonUrl) {
         Ext.apply(this, {
             id : ID.CMP.MENU,
@@ -102,10 +103,7 @@ Ext.define('sitools.admin.menu.TreeMenu', {
             return;
         }
         
-        // Displaying Main Panel
-        ann(mainPanel, "mainPanel is null");
-        
-        var pan_config = new sitools.admin.menu.dataView();
+        var pan_config = Ext.create("sitools.admin.menu.dataView");
         // Loading component 's-nodeName'
         mainPanel.removeAll(true);
         

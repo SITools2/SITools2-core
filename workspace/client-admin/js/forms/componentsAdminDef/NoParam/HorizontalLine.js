@@ -18,21 +18,20 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.admin.forms.noParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.noParam');
 
 /**
  * A basic form panel to define an horizontal Line
- * @class sitools.admin.forms.noParam.hr
+ * @class sitools.admin.forms.componentsAdminDef.noParam.hr
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.noParam.hr', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.noParam.hr', { 
     extend : 'Ext.form.Panel',
-    alias : 'widget.sitools.admin.forms.noParam.hr',
+    alias : 'widget.sitools.admin.forms.componentsAdminDef.noParam.hr',
 	height : 210,
 	border : false,
     bodyBorder : false,
     padding : 10,
-//    id : "sitools.component.forms.definitionId",
 	
     initComponent : function () {
         this.css = Ext.create("Ext.form.TextField", {
@@ -59,10 +58,10 @@ Ext.define('sitools.admin.forms.noParam.hr', {
         if (this.action == "create") {
 			this.items.push(this.componentDefaultHeight, this.componentDefaultWidth); 
 		}
-        sitools.admin.forms.noParam.hr.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.noParam.hr.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.noParam.hr.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.noParam.hr.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.css.setValue(this.selectedRecord.data.css);
         }

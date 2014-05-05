@@ -18,9 +18,9 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.component.graphs');
+Ext.namespace('sitools.admin.graphs');
 
-Ext.define('sitools.component.graphs.graphsDatasetWin', { 
+Ext.define('sitools.admin.graphs.graphsDatasetWin', { 
     extend : 'Ext.Window',
     width : 350,
     modal : true,
@@ -111,11 +111,11 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
             }
         } ];
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.component.graphs.graphsDatasetWin.superclass.initComponent.call(this);
+        sitools.admin.graphs.graphsDatasetWin.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.component.graphs.graphsDatasetWin.superclass.onRender.apply(this, arguments);
+        sitools.admin.graphs.graphsDatasetWin.superclass.onRender.apply(this, arguments);
         this.store.load({
             scope : this,
             params : {
@@ -157,7 +157,7 @@ Ext.define('sitools.component.graphs.graphsDatasetWin', {
 		}
 		var node;
 		if (this.mode == 'create') {
-		     node = Ext.create('sitools.component.graphs.graphNodeModel', {
+		     node = Ext.create('sitools.admin.graphs.graphNodeModel', {
 		         leaf : true
 		     });
 		}

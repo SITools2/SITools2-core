@@ -17,7 +17,7 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, ImageChooser*/
-Ext.namespace('sitools.component.filtersPlugins');
+Ext.namespace('sitools.admin.filtersPlugins');
 /**
  * @cfg {String} action
  *            create or modify
@@ -29,10 +29,11 @@ Ext.namespace('sitools.component.filtersPlugins');
  *            the parent object url
  * @param parentType
  *            the type of the parent, string used only for i18n label
- * @class sitools.component.filtersPlugins.filtersPluginsProp
+ * @class sitools.admin.filtersPlugins.filtersPluginsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.component.filtersPlugins.filtersPluginsProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.filtersPlugins.filtersPluginsProp', { 
+    extend : 'Ext.Window',
     width : 700,
     height : 480,
     modal : true,
@@ -317,7 +318,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsProp', { extend : 'Ex
 
         this.items = [ this.tabPanel ];
 
-        sitools.component.filtersPlugins.filtersPluginsProp.superclass.initComponent.call(this);
+        sitools.admin.filtersPlugins.filtersPluginsProp.superclass.initComponent.call(this);
     },
 
     beforeTabChange : function (self, newTab, currentTab) {
@@ -368,7 +369,7 @@ Ext.define('sitools.component.filtersPlugins.filtersPluginsProp', { extend : 'Ex
     },
 
     afterRender : function () {
-        sitools.component.filtersPlugins.filtersPluginsProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.filtersPlugins.filtersPluginsProp.superclass.afterRender.apply(this, arguments);
 
         if (this.action == "modify") {
             //this.filterPluginId = this.record.data.id;

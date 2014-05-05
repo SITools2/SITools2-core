@@ -118,7 +118,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
             value : 'DATABASE'
         }];
         
-        this.displayPanelFields = Ext.create('sitools.component.datasets.selectItems', {
+        this.displayPanelFields = Ext.create('sitools.public.widget.datasets.selectItems', {
 			grid1 : this.gridFieldsBDD, 
 			grid2 : this.gridFieldsDataset, 
 			defaultRecord : defaultRecord, 

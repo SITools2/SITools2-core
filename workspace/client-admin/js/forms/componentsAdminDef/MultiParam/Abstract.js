@@ -18,21 +18,21 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp*/
-Ext.namespace('sitools.admin.forms.multiParam');
+Ext.namespace('sitools.admin.forms.componentsAdminDef.multiParam');
 
 /**
  * An abstract form to define MultiParam Components
- * @class sitools.admin.forms.multiParam.abstractForm
+ * @class sitools.admin.forms.componentsAdminDef.multiParam.abstract
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.multiParam.abstractForm', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.abstract', { 
     extend : 'Ext.form.Panel',
     autoScroll : true, 
     border : false,
     bodyBorder : false,
     padding : 10,
     initComponent : function () {
-        this.context = Ext.create("sitools.component.forms.componentsAdminDef.ComponentFactory", this.context);
+        this.context = sitools.admin.forms.componentsAdminDef.ComponentFactory.getContext(this.context);
         
         this.storeColumn = Ext.create("Ext.data.JsonStore", {
             id : 'storeColumnSelect',
@@ -151,10 +151,10 @@ Ext.define('sitools.admin.forms.multiParam.abstractForm', {
 
         this.padding = 10;
 
-        sitools.admin.forms.multiParam.abstractForm.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.multiParam.abstract.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.multiParam.abstractForm.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.multiParam.abstract.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.labelParam1.setValue(this.selectedRecord.data.label);
             this.css.setValue(this.selectedRecord.data.css);

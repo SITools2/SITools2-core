@@ -36,7 +36,7 @@ Ext.define('sitools.admin.applications.applicationsCrud', {
     forceFit : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     mixins : {
-        utils : 'js.utils.utils'
+        utils : 'sitools.admin.utils.utils'
     },
     
     requires : ["sitools.admin.applications.applicationsProp",

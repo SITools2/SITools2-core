@@ -53,13 +53,14 @@ Ext.define('sitools.admin.applications.applicationsRole', {
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     
-    requires : ["sitools.admin.applications.roles"],
+    requires : ["sitools.admin.applications.roles",
+                'sitools.admin.authorizations.AuthorizationsModel'],
     
     initComponent : function () {
         this.title = i18n.get('label.authorizations') + " : " + this.applicationRecord.data.name;
         
         this.storeAuthorizations = Ext.create('Ext.data.JsonStore', {
-            model : 'AuthorizationModel',
+            model : 'sitools.admin.authorizations.AuthorizationsModel',
             autoLoad : true,
             proxy : {
                 type : 'ajax',
@@ -150,7 +151,7 @@ Ext.define('sitools.admin.applications.applicationsRole', {
             }
         } ];
 
-        sitools.admin.applications.applicationsRole.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
     },
     /**
@@ -169,7 +170,7 @@ Ext.define('sitools.admin.applications.applicationsRole', {
     _onDeleteRole : function () {
         var recs = this.gridAuthorizations.getSelectionModel().getSelection();
         if (recs.length === 0) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         }
         this.gridAuthorizations.getStore().remove(recs);
     },
