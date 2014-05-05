@@ -3,10 +3,10 @@
   <type>ONE_OR_BETWEEN</type>
   <componentDefaultHeight>25</componentDefaultHeight>
   <componentDefaultWidth>500</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.oneParam.NumberFieldAdmin</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.OneOrBetween</jsUserObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin</jsAdminObject>
+  <jsUserObject>sitools.public.forms.components.OneOrBetween</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/NumberFieldAdmin.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/OneOrBetween.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/oneOrBetween.gif</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/OneOrBetween.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/oneOrBetween.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

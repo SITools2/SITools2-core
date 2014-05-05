@@ -3,10 +3,10 @@
   <type>TEXTFIELD</type>
   <componentDefaultHeight>25</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.oneParam.TextField</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.TextField</jsUserObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.TextField</jsAdminObject>
+  <jsUserObject>sitools.public.forms.components.TextField</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/TextField.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/textfield.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/textField.gif</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/textfield.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/textField.gif</imageUrl>
   <priority>2</priority>
 </formComponent>

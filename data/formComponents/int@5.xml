@@ -3,10 +3,10 @@
   <type>LABEL</type>
   <componentDefaultHeight>20</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.noParam.label</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.Label</jsUserObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.noParam.label</jsAdminObject>
+  <jsUserObject>sitools.public.forms.components.Label</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/NoParam/Label.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/Label.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/label.gif</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/Label.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/label.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

@@ -3,10 +3,10 @@
   <type>LISTBOX</type>
   <componentDefaultHeight>100</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.oneParam.withValues</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.ListBox</jsUserObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.withValues</jsAdminObject>
+  <jsUserObject>sitools.public.forms.components.ListBox</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/WithValues.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/Listbox.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/singleListBox.gif</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/Listbox.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/singleListBox.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

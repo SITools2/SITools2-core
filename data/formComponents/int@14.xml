@@ -3,10 +3,10 @@
   <type>MAPPANEL</type>
   <componentDefaultHeight>300</componentDefaultHeight>
   <componentDefaultWidth>300</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.oneParam.NoValuesWithProperties</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.mapPanel</jsUserObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperties</jsAdminObject>
+  <jsUserObject>sitools.public.forms.components.mapPanel</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/NoValuesWithProperties.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/mapPanel.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/mapPanel.png</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/mapPanel.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/mapPanel.png</imageUrl>
   <priority>2</priority>
 </formComponent>

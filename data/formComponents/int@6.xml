@@ -3,10 +3,10 @@
   <type>IMAGE</type>
   <componentDefaultHeight>50</componentDefaultHeight>
   <componentDefaultWidth>50</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.noParam.image</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.Image</jsUserObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.noParam.image</jsAdminObject>
+  <jsUserObject>sitools.public.forms.components.Image</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/NoParam/Image.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/Image.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/image.gif</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/Image.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/image.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

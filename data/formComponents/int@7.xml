@@ -3,10 +3,10 @@
   <type>HL</type>
   <componentDefaultHeight>10</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.noParam.hr</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.Hl</jsUserObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.noParam.hr</jsAdminObject>
+  <jsUserObject>sitools.public.forms.components.Hl</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/NoParam/HorizontalLine.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/HorizontalLine.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/horizontalLine.gif</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/HorizontalLine.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/horizontalLine.gif</imageUrl>
   <priority>1</priority>
 </formComponent>
