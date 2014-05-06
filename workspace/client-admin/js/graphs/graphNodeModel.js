@@ -43,12 +43,12 @@ Ext.define('sitools.admin.graphs.graphNodeModel', {
     }, {
         name : 'text'
     }, {
-        name : 'icon',
+        name : 'iconCls',
         convert : function (value, record) {
             if (record.get("leaf")) {
-                return loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + "/res/images/icons/tree_datasets.png";
+                return "x-tree-node-dataset";
             } else {
-                return loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/folder.png';
+                return "x-tree-node-folder";
             }
         }
     }]
