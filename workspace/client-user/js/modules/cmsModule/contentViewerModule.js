@@ -90,7 +90,11 @@ Ext.define('sitools.user.modules.contentViewerModule', {
                 createNode : function(attr){
                     var isPdf = function (text) {
                         var imageRegex = /\.(pdf)$/;
-                        return (text.match(imageRegex));      
+                        if (!Ext.isEmpty(text)) {
+                            return (text.match(imageRegex));
+                        } else {
+                            return false;
+                        }
                     };
                     var listeners = {
                         scope : this,
