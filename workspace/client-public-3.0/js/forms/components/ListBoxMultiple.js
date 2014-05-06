@@ -28,7 +28,9 @@ Ext.ns('sitools.public.forms.components');
  * @extends Ext.Container
  */
 Ext.define('sitools.public.forms.components.ListBoxMultiple', {
-    extend : 'Ext.Container',requires : ['sitools.public.forms.ComponentFactory'],
+    extend : 'Ext.Container',
+    requires : ['sitools.public.forms.ComponentFactory'],
+    alternateClassName : ['sitools.common.forms.components.ListBoxMultiple'],
 
     initComponent : function () {
 		this.context = sitools.public.forms.ComponentFactory.getContext(this.context);
@@ -44,7 +46,7 @@ Ext.define('sitools.public.forms.components.ListBoxMultiple', {
 
     	var store;
         if (this.valueSelection == 'S') {
-            store = new Ext.data.ArrayStore({
+            store = Ext.create("Ext.data.ArrayStore", {
                 fields : ['value','text'],
                 data : items, 
                 valueField : 'value', 
@@ -55,7 +57,7 @@ Ext.define('sitools.public.forms.components.ListBoxMultiple', {
                 colModel : [ this.code ],
                 distinct : true
             };
-            store = new Ext.data.JsonStore({
+            store = Ext.create("Ext.data.JsonStore", {
                 fields : [ {
                     name : 'value',
                     mapping : this.code
@@ -64,15 +66,20 @@ Ext.define('sitools.public.forms.components.ListBoxMultiple', {
                     mapping : this.code
                 } ],
                 autoLoad : !Ext.isEmpty(this.dataUrl) ? true : false,
-                root : 'data',
-                restful : true,
-                url : this.dataUrl + "/records",
+                proxy : {
+                    type : 'ajax',
+                    url : this.dataUrl + "/records",
+                    reader : {
+                        type : 'json',
+                        root : 'data'
+                    }                    
+                },
                 baseParams : params, 
                 valueField : 'value', 
                 displayField : 'text'
             });
         }   
-        this.multiSelect = new Ext.ux.form.MultiSelect ({
+        this.multiSelect = Ext.create("Ext.ux.form.MultiSelect", {
 	        store : store,
 	        width : this.width,
 	        height : this.height - 10,
@@ -97,10 +104,9 @@ Ext.define('sitools.public.forms.components.ListBoxMultiple', {
 	        stype : "sitoolsFormContainer",
 	        items : [this.multiSelect]
 	    });
-	    sitools.public.forms.components.ListBoxMultiple.superclass.initComponent.apply(this,
-	            arguments);
+	    this.callParent(arguments);
    	    if (!Ext.isEmpty(this.label)) {
-	    	this.items.insert(0, new Ext.Container({
+	    	this.items.insert(0, Ext.create("Ext.Container", {
 	            border : false,
 	            html : this.label,
 	            width : 100

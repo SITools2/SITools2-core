@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef');
  * @class sitools.component.forms.componentsAdminDef.ProjectContext
  * 
  */
-Ext.define('sitools.component.forms.componentsAdminDef.ProjectContext', {
+Ext.define('sitools.admin.forms.componentsAdminDef.ProjectContext', {
 	context : "project",
 	
 	/**
@@ -32,7 +32,7 @@ Ext.define('sitools.component.forms.componentsAdminDef.ProjectContext', {
 	 * @param {} scope the scope for this method.
 	 */
 	buildComboParam1 : function (scope) {
-		return new Ext.form.ComboBox({
+		return Ext.create("Ext.form.ComboBox", {
             fieldLabel : i18n.get('label.concept'),
             triggerAction : 'all',
             name : "PARAM1",
@@ -53,7 +53,7 @@ Ext.define('sitools.component.forms.componentsAdminDef.ProjectContext', {
 	buildCombosConeSearch : function (scope) {
 		var labels = ['X/RA', 'Y/DEC', 'Z/ID'];
         for (var i = 1; i <= 3; i++) {
-			scope['mapParam' + i] = new Ext.form.ComboBox({
+			scope['mapParam' + i] = Ext.create("Ext.form.ComboBox", {
 			    fieldLabel : labels[i - 1],
 			    triggerAction : 'all',
 			    name : "PARAM" + i,
@@ -91,12 +91,7 @@ Ext.define('sitools.component.forms.componentsAdminDef.ProjectContext', {
 	},
 	
 	buildUnit : function () {
-        var httpProxyUnits = new Ext.data.HttpProxy({
-			url : loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension/' + this.dimensionId, 
-			restful : true
-		});
-        this.storeUnits = new Ext.data.JsonStore({
-            root : "dimension.sitoolsUnits", 
+        this.storeUnits = Ext.create("Ext.data.JsonStore", {
             fields : [{
                 name : "label", 
                 type : "string"
@@ -104,7 +99,14 @@ Ext.define('sitools.component.forms.componentsAdminDef.ProjectContext', {
                 name : "unitName", 
                 type : "string"
             }], 
-            proxy : httpProxyUnits, 
+            proxy : {
+                type : 'ajax',
+                url : loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL') + '/dimension/' + this.dimensionId,
+                reader : {
+                    type : 'json',
+                    root : "dimension.sitoolsUnits" 
+                }                
+            },
             autoLoad : this.action == "modify" && (!Ext.isEmpty(this.dimensionId)), 
             listeners : {
                 scope : this, 
@@ -113,7 +115,7 @@ Ext.define('sitools.component.forms.componentsAdminDef.ProjectContext', {
             }
         }); 
 		
-		this.unitCombo = new Ext.form.ComboBox({
+		this.unitCombo = Ext.create("Ext.form.ComboBox", {
             fieldLabel : i18n.get('label.unit'),
             store : this.storeUnits,
             displayField : "label",

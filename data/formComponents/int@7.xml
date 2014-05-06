@@ -5,8 +5,8 @@
   <componentDefaultWidth>400</componentDefaultWidth>
   <jsAdminObject>sitools.admin.forms.componentsAdminDef.noParam.hr</jsAdminObject>
   <jsUserObject>sitools.public.forms.components.Hl</jsUserObject>
-  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/NoParam/HorizontalLine.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/client-public/js/forms/components/HorizontalLine.js</fileUrlUser>
+  <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/NoParam/hr.js</fileUrlAdmin>
+  <fileUrlUser>/sitools/client-public/js/forms/components/HL.js</fileUrlUser>
   <imageUrl>/sitools/client-public/res/images/formComponents/horizontalLine.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

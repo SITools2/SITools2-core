@@ -28,11 +28,12 @@ Ext.ns('sitools.public.forms.components');
  * @extends Ext.Container
  */
 Ext.define('sitools.public.forms.components.DateBetween', {
-    extend : 'Ext.Container',requires : ['sitools.public.forms.ComponentFactory'],
-    requires : ['sitools.public.utils.Date'],
+    extend : 'Ext.Container',
+    requires : [ 'sitools.public.forms.ComponentFactory', 'sitools.public.utils.Date' ],
+    alternateClassName : [ 'sitools.common.forms.components.DateBetween' ],
     regToday : new RegExp("^\{\\$TODAY\}"), 
     initComponent : function () {
-        this.context = Ext.create("sitools.common.forms.ComponentFactory", this.context);
+        this.context = sitools.public.forms.ComponentFactory.getContext(this.context);
         //formattage de extraParams : 
         var extraParams = {};
         Ext.each(this.extraParams, function (param) {

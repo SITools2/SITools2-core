@@ -28,7 +28,10 @@ Ext.ns('sitools.public.forms.components');
  * @extends Ext.Container
  */
 Ext.define('sitools.public.forms.components.ComboBox', {
-    extend : 'Ext.Container',requires : ['sitools.public.forms.ComponentFactory'],
+    extend : 'Ext.Container',
+    requires : ['sitools.public.forms.ComponentFactory'],
+    alternateClassName : ['sitools.common.forms.components.ComboBox'],
+
     initComponent : function () {
 		this.context = sitools.public.forms.ComponentFactory.getContext(this.context);
         var defaultValue = "", value, items=[];

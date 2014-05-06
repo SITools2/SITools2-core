@@ -16,15 +16,21 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-Ext.application({
-    name: 'sitools',
-
-    extend: 'sitools.admin.Application',
-    
-    paths : {
-        "sitools.admin" : "./js",
-        "sitools.public" : "../client-public/js",
-        "sitools.common" : "../client-public/js",
-        "Ext.ux" : "../client-public/js/ux"
-    }    
+/*global Ext, sitools*/
+/*
+ * @include "../AbstractComponentsWithUnit.js"
+ * @include "../ComponentFactory.js"
+ */
+Ext.namespace('sitools.public.forms.components');
+/**
+ * Specification of sitools.public.forms.components.AbstractConeSearch
+ * @class sitools.public.forms.components.ConeSearchCartesien
+ * @extends sitools.public.forms.components.AbstractConeSearch
+ */
+Ext.define('sitools.public.forms.components.ConeSearchCartesien', {
+    extend : 'sitools.public.forms.components.AbstractConeSearch',
+    alternateClassName : ['sitools.common.forms.components.ConeSearchCartesien'],
+    getLabelThirdParam : function () {
+        return "SR";
+    }
 });

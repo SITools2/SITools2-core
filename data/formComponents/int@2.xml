@@ -6,7 +6,7 @@
   <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.NumericBetween</jsAdminObject>
   <jsUserObject>sitools.public.forms.components.NumericBetween</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/NumericBetween.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/client-public/js/forms/components/NumberBetween.js</fileUrlUser>
+  <fileUrlUser>/sitools/client-public/js/forms/components/NumericBetween.js</fileUrlUser>
   <imageUrl>/sitools/client-public/res/images/formComponents/numericBetween.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

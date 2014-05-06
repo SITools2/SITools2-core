@@ -6,7 +6,7 @@
   <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin</jsAdminObject>
   <jsUserObject>sitools.public.forms.components.NumberField</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/NumberFieldAdmin.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/client-public/js/forms/components/NumberFieldUser.js</fileUrlUser>
+  <fileUrlUser>/sitools/client-public/js/forms/components/NumberField.js</fileUrlUser>
   <imageUrl>/sitools/client-public/res/images/formComponents/numberField.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

@@ -27,7 +27,6 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.noParam');
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.noParam.hr', { 
     extend : 'Ext.form.Panel',
-    alias : 'widget.sitools.admin.forms.componentsAdminDef.noParam.hr',
 	height : 210,
 	border : false,
     bodyBorder : false,

@@ -45,6 +45,8 @@ Ext.ns('sitools.public.forms.components');
  */
 Ext.define('sitools.public.forms.components.OneOrBetween', {
     extend : 'sitools.common.forms.AbstractWithUnit',
+    requires : ['sitools.public.forms.ComponentFactory'],
+    alternateClassName : ['sitools.common.forms.components.OneOrBetween'],
     /**
 	 * the first value.
 	 */

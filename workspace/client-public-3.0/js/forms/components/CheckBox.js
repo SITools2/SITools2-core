@@ -30,6 +30,7 @@ Ext.ns('sitools.public.forms.components');
 Ext.define('sitools.public.forms.components.CheckBox', {
     extend : 'Ext.Container',
     requires : ['sitools.public.forms.ComponentFactory'],
+    alternateClassName : ['sitools.common.forms.components.CheckBox'],
 
     initComponent : function () {
 		this.context = sitools.public.forms.ComponentFactory.getContext(this.context);

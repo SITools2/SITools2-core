@@ -29,7 +29,9 @@ Ext.ns('sitools.public.forms.components');
  * @extends Ext.Container
  */
 Ext.define('sitools.public.forms.components.mapPanel', {
-    extend : 'Ext.Container',requires : ['sitools.public.forms.ComponentFactory'],
+    extend : 'Ext.Container',
+    requires : ['sitools.public.forms.ComponentFactory'],
+    alternateClassName : ['sitools.common.forms.components.mapPanel'],
 	defaultLayers : ["basic"], 
 	defaultWmsUrl : "http://vmap0.tiles.osgeo.org/wms/vmap0",
 	

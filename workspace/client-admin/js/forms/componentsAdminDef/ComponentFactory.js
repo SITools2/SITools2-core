@@ -29,10 +29,8 @@
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.ComponentFactory', {
     singleton : true,
-    requires : ['sitools.admin.forms.componentsAdminDef.DatasetContext'
-                //TODO projectContext
-                /*,
-               'sitools.admin.forms.componentsAdminDef.ProjectContext'*/],
+    requires : ['sitools.admin.forms.componentsAdminDef.DatasetContext',
+               'sitools.admin.forms.componentsAdminDef.ProjectContext'],
     
     getContext : function (context) {
         //  sitools.user.forms.components.ComponentFactory = function (context) {

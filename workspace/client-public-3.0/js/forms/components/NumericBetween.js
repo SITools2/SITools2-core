@@ -24,7 +24,7 @@
 Ext.ns('sitools.public.forms.components');
 
 /**
- * A number Field form component. 
+ * A number between form component. 
  * @cfg {string} parameterId Id of the future component.
  * @cfg {Array} code Array of string representing columns alias attached to this component
  * @cfg {string} type Defines wich unique type of component it is.
@@ -40,21 +40,26 @@ Ext.ns('sitools.public.forms.components');
  * @cfg {Array} defaultValues Array of default values.
  * @cfg {} datasetCm the dataset ColumnModel object
  * @requires sitools.common.forms.ComponentFactory
- * @class sitools.public.forms.components.NumberField
+ * @class sitools.public.forms.components.NumericBetween
  * @extends sitools.common.forms.AbstractWithUnit
  */
-Ext.define('sitools.public.forms.components.NumberField', {
+Ext.define('sitools.public.forms.components.NumericBetween', {
     extend : 'sitools.common.forms.AbstractWithUnit',
+    requires : ['sitools.public.forms.ComponentFactory'],
+    alternateClassName : ['sitools.common.forms.components.NumericBetween'],
+    /**
+	 * The left bound of the period.
+	 */
+    fieldFrom : null,
 
     /**
-	 * The numeric field
+	 * The right bound of the period.
 	 */
-    field : null,
-
-    initComponent : function () {
-        this.context = sitools.public.forms.ComponentFactory.getContext(this.context);
-        
-                
+    fieldTo : null,
+    
+	initComponent : function () {
+	    this.context = sitools.public.forms.ComponentFactory.getContext(this.context);
+        //formattage de extraParams : 
         var extraParams = {};
         Ext.each(this.extraParams, function (param) {
             extraParams[param.name]= param.value;
@@ -64,14 +69,42 @@ Ext.define('sitools.public.forms.components.NumberField', {
 	    
 	    var unit = this.getUnitComponent();
         
-	    this.field = new Ext.form.NumberField({
+		this.fieldFrom = new Ext.form.NumberField({
+	        allowBlank : true,
+	        flex : 1, 
+	        //height : this.height,
+	        value : this.defaultValues[0],
+	        validator : function (value) {
+		        if (Ext.isEmpty(this.ownerCt.fieldTo.getValue())) {
+			        return true;
+		        }
+		        if (value > this.ownerCt.fieldTo.getValue()) {
+			        return "invalid Value";
+		        } else {
+			        return true;
+		        }
+	        }, 
+	        decimalPrecision : 20
+	    });
+	    this.fieldTo = new Ext.form.NumberField({
 	        allowBlank : true,
 	        flex : 1,
 	        //height : this.height,
-	        value : this.defaultValues[0],
+	        value : this.defaultValues[1],
+	        validator : function (value) {
+		        if (value < this.ownerCt.fieldFrom.getValue()) {
+			        return "invalid Value";
+		        } else {
+			        return true;
+		        }
+	        }, 
 	        decimalPrecision : 20
 	    });
-	    var items = [this.field];
+	    
+	    var items = [this.fieldFrom, {
+        	html : "&nbsp;", 
+        	width : "10"
+        }, this.fieldTo];
         
         if (!Ext.isEmpty(unit)) {
         	items.push(unit);
@@ -87,16 +120,60 @@ Ext.define('sitools.public.forms.components.NumberField', {
 	        },
 	        items : items
 	    });
-	    sitools.public.forms.components.NumberField.superclass.initComponent.apply(
+	    sitools.public.forms.components.NumericBetween.superclass.initComponent.apply(
 	            this, arguments);
    	    if (!Ext.isEmpty(this.label)) {
-	    	this.items.insert(0, new Ext.Container({
-	            border : false,
-	            html : this.label,
-	            width : 100
-	        }));
+	    	var labels = this.label.split("|") || [];
+	    	switch (labels.length) {
+	    		case 0 : 
+	    			break;
+	    		case 1 : 
+	    			this.items.insert(0, new Ext.Container({
+			            border : false,
+			            html : labels[0],
+			            width : 100
+			        }));
+			        break;
+			    case 2 : 
+		        	this.items.insert(0, new Ext.Container({
+			            border : false,
+			            html : labels[0],
+			            width : 50
+			        }));
+		        	this.items.insert(2, new Ext.Container({
+			            border : false,
+			            html : labels[1],
+			            width : 50, 
+			            style : {
+			            	"padding-left" : "10px"
+			            }
+			        }));
+			        break;
+			    case 3 : 
+		        	this.items.insert(0, new Ext.Container({
+			            border : false,
+			            html : labels[0],
+			            width : 50
+			        }));
+		        	this.items.insert(1, new Ext.Container({
+			            border : false,
+			            html : labels[1],
+			            width : 50, 
+			            style : {
+			            	"padding-left" : "10px"
+			            }
+			        }));
+			        this.items.insert(3, new Ext.Container({
+			            border : false,
+			            html : labels[2],
+			            width : 50, 
+			            style : {
+			            	"padding-left" : "10px"
+			            }
+			        }));
+			        break;
+	    	}
 	    }
-
     },
 
     /**
@@ -108,24 +185,29 @@ Ext.define('sitools.public.forms.components.NumberField', {
     },
 
     /**
-     * Return if the value is defined.
+     * Return if both values are defined.
      * @method
      * @return {Boolean} 
      */
     isValueDefined : function () {
-	    if (this.fieldFrom.getValue()) {
+	    if (this.fieldFrom.getValue() && this.fieldTo.getValue()) {
 		    return true;
 	    } else {
 		    return false;
 	    }
     },
-
     /**
      * Get the selected Value
-     * @return {Numeric} the selected Value
+     * @return {} the selected Value {
+     * 	from : from value, 
+     * 	to : to value
+     * }
      */
     getSelectedValue : function () {
-	    return this.field.getValue();
+	    return {
+	        from : this.fieldFrom.getValue(),
+	        to : this.fieldTo.getValue()
+	    };
     },
     
     /**
@@ -134,19 +216,20 @@ Ext.define('sitools.public.forms.components.NumberField', {
      */
     getParameterValue : function () {
 	    var value = this.getSelectedValue();
-	    if (Ext.isEmpty(value) || Ext.isEmpty(value)) {
+	    if (Ext.isEmpty(value) || Ext.isEmpty(value.from) || Ext.isEmpty(value.to)) {
 		    return null;
 	    }
-	    var result = this.type + "|" + this.code + "|" + value;
-	    if (!Ext.isEmpty(this.userDimension) && !Ext.isEmpty(this.userUnit)){
-	    	result += "|" + this.userDimension + "|" + this.userUnit;
-	    }
+//	    var result = this.type + "|" + this.code + "|" + value.from + "|" + value.to;
+//	    if (!Ext.isEmpty(this.userDimension) && !Ext.isEmpty(this.userUnit)){
+//	    	result += "|" + this.userDimension + "|" + this.userUnit;
+//	    }
 	   	return {
 	    	type : this.type, 
 	    	code : this.code, 
-	    	value : value, 
+	    	value : value.from + "|" + value.to, 
 	    	userDimension : this.userDimension, 
 	    	userUnit : this.userUnit
 	    };
+
     }
 });

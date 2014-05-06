@@ -34,6 +34,8 @@ Ext.namespace('sitools.public.forms.components');
  */
 Ext.define('sitools.public.forms.components.AbstractConeSearch', {
     extend : 'sitools.common.forms.AbstractWithUnit',
+    requires : ['sitools.public.forms.ComponentFactory'],
+    alternateClassName : ['sitools.common.forms.components.AbstractConeSearch'],
     
     initComponent : function () {
         this.context = sitools.public.forms.ComponentFactory.getContext(this.context);
@@ -357,26 +359,4 @@ Ext.define('sitools.public.forms.components.AbstractConeSearch', {
 	
 });
 
-/**
- * Specification of sitools.public.forms.components.AbstractConeSearch
- * @class sitools.public.forms.components.ConeSearchCartesien
- * @extends sitools.public.forms.components.AbstractConeSearch
- */
-Ext.define('sitools.public.forms.components.ConeSearchCartesien', {
-    extend : 'sitools.public.forms.components.AbstractConeSearch',
-    getLabelThirdParam : function () {
-		return "SR";
-    }
-});
 
-/**
- * Specification of sitools.public.forms.components.AbstractConeSearch
- * @class sitools.public.forms.components.ConeSearchPGSphere
- * @extends sitools.public.forms.components.AbstractConeSearch
- */
-Ext.define('sitools.public.forms.components.ConeSearchPGSphere', {
-    extend : 'sitools.public.forms.components.AbstractConeSearch',
-    getLabelThirdParam : function () {
-		return "Radius";
-    }
-});

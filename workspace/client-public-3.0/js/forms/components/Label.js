@@ -25,7 +25,8 @@ Ext.ns('sitools.public.forms.components');
  * @extends Ext.Container
  */
 Ext.define('sitools.public.forms.components.Label', {
-    extend : 'Ext.Container',requires : ['sitools.public.forms.ComponentFactory'],
+    extend : 'Ext.Container',
+    alternateClassName : ['sitools.common.forms.components.Label'],
 
     initComponent : function () {
 	    Ext.apply(this, {
