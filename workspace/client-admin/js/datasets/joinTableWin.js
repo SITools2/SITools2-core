@@ -117,20 +117,20 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
         if(!Ext.isEmpty(table)) {
 	        if (this.mode == 'edit') {
 	            this.node.set('text', this.typeJointure + " " + table.data.name);
-	            this.node.raw.table = {
+	            this.node.set("table",{
 					alias : table.data.alias,
 					name : table.data.name,
 					schema : table.data.schemaName
-	            };
+	            });
                 this.destroy();
 	            
 	        } else if (this.mode == "edit-root") {
 	            this.node.set('text', table.data.name);
-	            this.node.raw.table = {
+	            this.node.set("table", {
 	                alias : table.data.alias,
 	                name : table.data.name,
 	                schema : table.data.schemaName
-	            };
+	            });
                 this.destroy();
 	
 	        } else {

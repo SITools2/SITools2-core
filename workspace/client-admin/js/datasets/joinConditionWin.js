@@ -245,7 +245,7 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
 			compareOperator : this.compareOperator.getValue()
         };
         if (this.mode == 'edit') {
-            this.node.raw.predicat = predicat;
+            this.node.set("predicat", predicat);
             this.node.set('text', this.getNodeText(predicat));
             
         } else {

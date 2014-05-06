@@ -42,20 +42,42 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
             root : {
                 text : this.name,
                 leaf : false,
-                expanded : true
+                expanded : true,
+                type : 'table'
             },
             proxy : {
                 type : 'memory',
                 reader : {
                     type : 'json'
                 }
-            }
+            }, fields : [{
+                name : 'table',
+            }, {
+                name : 'typeJointure',
+                type : 'string'
+            }, {
+                name : 'predicat'
+            }, {
+                name : 'type',
+                type : 'string'
+            }, {
+                name : 'text'
+            }, {
+                name : 'iconCls',
+                convert : function (value, record) {
+                    if (record.get("type") === "table") {
+                        return "x-tree-node-folder";
+                    } else {
+                        return "x-tree-node-dataset";
+                    }
+                }
+            }]
         });
         
         this.rootToolbarButtons = [{
             id : 'create-node',
             text : i18n.get("Add Table"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/add_folder.png',
             menu : {
                 defaults: {
                     scope : this,
@@ -90,7 +112,7 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
         }, {
             id : 'edit-root',
             text : i18n.get("label.modify"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/toolbar_edit.png',
             scope : this,
             handler: this._cxtMenuHandler
         }];
@@ -98,19 +120,19 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
         this.nodeToolbarButtons = [{
             id : 'add-joinCondition',
             text : i18n.get("Add Join Condition"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/add_datasets.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/add_datasets.png',
             scope : this,
             handler: this._cxtMenuHandler
         }, {
             id : 'edit-node',
             text : i18n.get("label.modify"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/toolbar_edit.png',
             scope : this,
             handler: this._cxtMenuHandler
         }, {
             id : 'edit-jointure',
             text : i18n.get("editJointure"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/toolbar_edit.png',
             scope : this,
             handler: this._cxtMenuHandler,
             menu : {
@@ -147,7 +169,7 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
         }, {
             id : 'delete-node',
             text : i18n.get("label.delete"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/toolbar_delete.png',
             scope : this,
             handler: this._cxtMenuHandler
         }];
@@ -155,13 +177,13 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
         this.leafToolbarButtons = [{
             id : 'edit-node',
             text : i18n.get("label.modify"),
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_edit.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/toolbar_edit.png',
             scope : this,
             handler: this._cxtMenuHandler
         }, {
             id : 'delete-node',
             text : i18n.get("label.delete"), 
-            icon : loadUrl.get('APP_URL') + '/res/images/icons/toolbar_delete.png',
+            icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/images/icons/toolbar_delete.png',
             scope : this,
             handler: this._cxtMenuHandler
         }];
@@ -206,10 +228,11 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
         var node, up;
         switch (item.id) {
         case 'delete-node':
-            var tot = Ext.Msg.show({
+            node = this.getSelectionModel().getSelection()[0];
+            Ext.Msg.show({
                 title : i18n.get('label.warning'),
                 buttons : Ext.Msg.YESNO,
-                msg : i18n.get('label.graphs.node.delete'),
+                msg : Ext.String.format(i18n.get('label.graphs.node.delete'), node.get("text")),
                 scope : this,
                 fn : function (btn, text) {
                     if (btn == 'yes') {
@@ -260,8 +283,8 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
 //                node = item.parentMenu.parentMenu.contextNode;
                 node = this.getSelectionModel().getSelection()[0];
                 
-                node.raw.typeJointure = item.id;
-                node.set('text', this.getNodeText(node.raw));
+                node.set("typeJointure", item.id);
+                node.set('text', this.getNodeText(node.getData()));
             }
             break;
 
@@ -309,20 +332,18 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
         if (storeTables.getCount() !== 0 && Ext.isEmpty(this.getRootNode().data.table)) {
             var rec = storeTables.getAt(0);
             var rootNode = this.getRootNode();
-            Ext.apply(rootNode, {
-                text : rec.data.name,
-                leaf : false, 
-                children : [], 
-                type : "table"
-            });
-            rootNode.text = rec.data.name;
-            Ext.apply(rootNode.raw, {
-                table : {
-                    name : rec.data.name,
-                    alias : rec.data.alias,
-                    schema : rec.data.schemaName
-                }
-            });
+            
+            var table = {
+                name : rec.get("name"),
+                alias : rec.get("alias"),
+                schema : rec.get("schema")
+            };
+            
+            rootNode.set("text", rec.get("schema"));
+            rootNode.set("leaf", false);
+            rootNode.set("children", []);
+            rootNode.set("type", "table");
+            rootNode.set("table",table);
             
             var i = 0;
             storeTables.each(function (rec) {
@@ -349,14 +370,10 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
         var rootNode = this.getRootNode();
         var mainTable = dataset.structure.mainTable;
         if (!Ext.isEmpty(mainTable)) {
-            Ext.apply(rootNode, {
-                text : mainTable.name,
-                leaf : false, 
-                expanded : true
-            });
-            Ext.apply(rootNode.raw, {
-                table : mainTable
-            });
+            rootNode.set("text", mainTable.name);
+            rootNode.set("leaf", false);
+            rootNode.set("expanded", true);
+            rootNode.set("table", mainTable);
         }
         Ext.each(dataset.structure.nodeList, function (node) {
             this.loadNode(node, rootNode);
@@ -364,28 +381,21 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
     }, 
     
     loadNode : function (node, parent) {
-        var treeNode;
         if (node.leaf) {
             Ext.apply(node, {
-                text : this.getNodeText(node), 
-                nodeType : "sync", 
-                expanded : true
+                text : this.getNodeText(node)
             });
-//            treeNode = new Ext.tree.TreeNode(node);
-            treeNode = node;
-            node.children = [];
-
-            parent.appendChild(treeNode);
+            parent.appendChild(node);
         }
         else {
             Ext.apply(node, {
                 text : this.getNodeText(node), 
                 nodeType : "sync", 
-                iconCls : "x-tree-node-folder", 
                 expanded : true
             });
             
             var children = node.children;
+            Ext.destroyMembers(node, "children");
             
             parent.appendChild(node);
             var nodeInserted = parent.lastChild;
@@ -412,7 +422,7 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
 
         }
         else {
-            var table = ! Ext.isEmpty(node.table) ? node.table : node.raw.table;
+            var table = ! Ext.isEmpty(node.table) ? node.table : node.get("table");
             if (!Ext.isEmpty(table)) {
                 return node.typeJointure + " " + table.name;
             }

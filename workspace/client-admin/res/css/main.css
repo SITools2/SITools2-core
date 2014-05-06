@@ -118,7 +118,13 @@ div.subtitle {
 
 .x-tree-node-folder {
 	background-image:
-		url("/sitools/cots/extjs/resources/images/default/tree/folder.gif")
+		url("/sitools/client-public/res/images/icons/folder.png")
+		!important;
+}
+
+.x-tree-node-dataset {
+	background-image:
+		url("/sitools/client-public/res/images/icons/tree_datasets.png")
 		!important;
 }
 

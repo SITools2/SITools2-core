@@ -117,30 +117,29 @@ Ext.define('sitools.admin.datasets.abstractDatasetWin', {
         if (Ext.isEmpty(root)) {
             return;
         } else if (root.isLeaf()) {
-            delete root.raw.predicat.rightAttribute.columnClass;
+            var predicat = root.get("predicat");
+            delete predicat.rightAttribute.columnClass;
             node = {
                 leaf : true,
-                predicat : root.raw.predicat,
-                type : root.raw.type
+                predicat : predicat,
+                type : root.get("type")
             };
             parent.push(node);
         } else {
 
             node = {
-                table : root.raw.table, 
-                typeJointure : root.raw.typeJointure,
+                table : root.get("table"), 
+                typeJointure : root.get("typeJointure"),
                 children : [],
                 leaf : false,
-                type : root.raw.type
+                type : root.get("type")
             };
             parent.push(node);
 
             // we call recursively getAllNodes to get all childNodes
-            var childs = root.childNodes;
-            var i;
-            for (i = 0; i < childs.length; i++) {
-                this.getAllNodes(childs[i], node.children);
-            }
+            root.eachChild(function (child) {
+                this.getAllNodes(child, node.children);
+            }, this);
         }
     },
 

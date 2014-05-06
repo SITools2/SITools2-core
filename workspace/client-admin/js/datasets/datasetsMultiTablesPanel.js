@@ -453,14 +453,14 @@ Ext.define('sitools.admin.datasets.datasetsMultiTablesPanel', {
         //Gestion des structures
         //build Default if the panel is not activated...
         this.panelWhere.getWizardJoinCondition().buildDefault();
-        this.treeStructure = this.panelWhere.getWizardJoinCondition().items.items[0];
+        this.treeStructure = this.panelWhere.down('treepanel');
         
         var mainTableNode = this.treeStructure.getRootNode();
         if (Ext.isEmpty(mainTableNode)) {
 			Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noStructure'));
 			return;
         }
-        var mainTable = mainTableNode.data.table;
+        var mainTable = mainTableNode.get("table");
         
 		var tree = [];
 
