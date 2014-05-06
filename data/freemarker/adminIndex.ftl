@@ -70,6 +70,12 @@
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 		
     <!-- Need in debug mode, to remove in production version. -->
+	
+	<script type="text/javascript">
+		Ext.Loader.setConfig('disableCaching', true);
+	</script>
+	
+	
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
