@@ -192,14 +192,7 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
      * Save the groups of the current role
      */
     _onOK : function () {
-        var putObject = this.data;
-        putObject.groups = [];
-        this.store.each(function (record) {
-            var resource = {
-                id : record.data.name
-            };
-            putObject.groups.push(resource);
-        });
+        var putObject = getPutObject();
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',
@@ -216,6 +209,19 @@ Ext.define('sitools.admin.usergroups.GroupsPanel', {
             },
             failure : alertFailure
         });
+    },
+    
+    getPutObject : function(){
+    	
+    	var putObject = this.data;
+        putObject.groups = [];
+        this.store.each(function (record) {
+            var resource = {
+                id : record.data.name
+            };
+            putObject.groups.push(resource);
+        });
+        return putObject;
     },
 
     /**
