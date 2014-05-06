@@ -260,6 +260,13 @@ Ext.define('sitools.admin.usergroups.UserProp', {
         sitools.admin.usergroups.UserProp.superclass.initComponent.call(this);
     },
     
+    getUserAsJson : function() {
+    	var f = this.down('form').getForm();
+    	if (!f.isValid()) {
+    		return null;
+    	}
+    	return f.getValues();
+    },
     /**
      * Create a new record to add a property to the current user
      */

@@ -31,9 +31,9 @@ Ext.namespace('sitools.admin.usergroups');
 Ext.define('sitools.admin.usergroups.UserCrud', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-usercrud',
+	id: ID.BOX.USER,
     border : false,
     height : ADMIN_PANEL_HEIGHT,
-    id : ID.BOX.USER,
     mixins : {
         utils : 'sitools.admin.utils.utils'
     },
@@ -191,21 +191,30 @@ Ext.define('sitools.admin.usergroups.UserCrud', {
         // i18n.get('msg.notavailable'));
     },
 
+    
+    
+    
+    _doModify : function(identifier) {
+    	  var up = Ext.create("sitools.admin.usergroups.UserProp", {
+             url : this.url + '/' + identifier,
+             action : 'modify',
+             store : this.getStore()
+         });
+         up.show(ID.BOX.USER);
+     },
+    
     /**
-     * Open a {sitools.admin.usergroups.UserProp} userPropertyPanel to modify an user
+     
+     * Open a {sitools.admin.usergroups.UserPropPanel} userPropertyPanel to modify an user
      */
     _onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.usergroups.UserProp", {
-            url : this.url + '/' + rec.data.id,
-            action : 'modify',
-            store : this.getStore()
-        });
-        up.show(ID.BOX.USER);
+        this._doModify(rec.data.identifier);
     },
+       
 
     /**
      * Diplay confirm delete Msg box and call the method doDelete
@@ -222,7 +231,7 @@ Ext.define('sitools.admin.usergroups.UserCrud', {
             scope : this,
             fn : function (btn, text) {
                 if (btn == 'yes') {
-                    this.doDelete(rec);
+                    this._doDelete(rec);
                 }
             }
 
@@ -233,7 +242,7 @@ Ext.define('sitools.admin.usergroups.UserCrud', {
      * done the delete of the passed record
      * @param rec the record to delete
      */
-    doDelete : function (rec) {
+    _doDelete : function (rec) {
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
             method : 'DELETE',

@@ -33,6 +33,7 @@ Ext.define('sitools.admin.usergroups.RoleCrud', {
 	alias : 'widget.s-rolecrud',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
+    id: ID.BOX.ROLE,
     forceFit : true,
     mixins : {
         utils : 'sitools.admin.utils.utils'
