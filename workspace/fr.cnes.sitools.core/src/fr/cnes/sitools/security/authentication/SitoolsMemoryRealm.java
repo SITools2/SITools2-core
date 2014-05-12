@@ -18,20 +18,29 @@
  ******************************************************************************/
 package fr.cnes.sitools.security.authentication;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.restlet.engine.Engine;
 import org.restlet.engine.security.RoleMapping;
 import org.restlet.security.Group;
 import org.restlet.security.Role;
 import org.restlet.security.User;
+
+import com.google.common.io.Files;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.exception.SitoolsException;
@@ -57,6 +66,15 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   /** Users and Groups store */
   private UsersAndGroupsStore storeUsersAndGroups = null;
 
+  /** Users and Groups last modified */
+  private long usersAndGroupsLastModified = 0;
+
+  /** number of threads for scheduled executor */
+  private int realmRefreshThreads;
+
+  /** period of users and groups refresh in memory realm */
+  private int realmRefreshPeriod;
+
   /**
    * Constructor
    * 
@@ -78,6 +96,30 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     // this.algorithm = settings.getAuthenticationALGORITHM();
 
     build();
+
+    if ("true".equals(getSettings().getString("Starter.WITH_REALM_REFRESH"))) {
+      setRealmRefreshThreads(Integer.parseInt(getSettings().getString("Starter.REALM_REFRESH_THREADS")));
+      setRealmRefreshPeriod(Integer.parseInt(getSettings().getString("Starter.REALM_REFRESH_PERIOD")));
+
+      ScheduledThreadPoolExecutor scheduledExecutor = (ScheduledThreadPoolExecutor) Executors
+          .newScheduledThreadPool(this.realmRefreshThreads);
+      ScheduledFuture future = scheduledExecutor.scheduleAtFixedRate(new Runnable() {
+        @Override
+        public void run() {
+
+          File file = new File(getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
+              + getSettings().getString("Starter.control-file"));
+
+          if (file.lastModified() > usersAndGroupsLastModified) {
+            System.out.println("reload cache for memory realm !");
+            refreshUsersAndGroups();
+            usersAndGroupsLastModified = file.lastModified();
+          }
+        }
+      }, 0, this.realmRefreshPeriod, TimeUnit.SECONDS);
+
+    }
+
   }
 
   /**
@@ -569,6 +611,30 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
    */
   protected UsersAndGroupsStore getStoreUsersAndGroups() {
     return storeUsersAndGroups;
+  }
+
+  public long getUsersAndGroupsLastModified() {
+    return usersAndGroupsLastModified;
+  }
+
+  public void setUsersAndGroupsLastModified(long usersAndGroupsLastModified) {
+    this.usersAndGroupsLastModified = usersAndGroupsLastModified;
+  }
+
+  public int getRealmRefreshThreads() {
+    return realmRefreshThreads;
+  }
+
+  public void setRealmRefreshThreads(int realmRefreshThreads) {
+    this.realmRefreshThreads = realmRefreshThreads;
+  }
+
+  public int getRealmRefreshPeriod() {
+    return realmRefreshPeriod;
+  }
+
+  public void setRealmRefreshPeriod(int realmRefreshPeriod) {
+    this.realmRefreshPeriod = realmRefreshPeriod;
   }
 
 }

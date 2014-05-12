@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.trigger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.restlet.Request;
@@ -31,11 +33,14 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
+import com.google.common.io.Files;
+
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.notification.TriggerResource;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.Notification;
+import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
 import fr.cnes.sitools.security.authentication.SitoolsRealm;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.userstorage.model.DiskStorage;
@@ -99,7 +104,23 @@ public class UserTrigger extends TriggerResource {
     // ====================================================
 
     if (notification.getEvent().equals("USER_UPDATED")) {
+          
       realm.refreshUsersAndGroups();
+      
+      // Modification de l'estampille temporelle du fichier de controle
+      try {
+        String fileUrl = getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/" + getSettings().getString("Starter.control-file");
+        File file = new File(fileUrl);
+        Files.touch(file);
+        if (realm instanceof SitoolsMemoryRealm) {
+          SitoolsMemoryRealm memoryRealm = (SitoolsMemoryRealm) realm;
+          memoryRealm.setUsersAndGroupsLastModified(file.lastModified());
+        } 
+      }
+      catch (IOException e) {
+        e.printStackTrace();
+      }
+      
     }
 
     // ====================================================
