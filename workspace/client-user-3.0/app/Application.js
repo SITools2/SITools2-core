@@ -73,7 +73,9 @@ Ext.define('sitools.user.Application', {
     
     // 5
     initUser : function () {
-        var storeUser = Ext.create('sitools.user.store.UserStore');
+        var storeUser = Ext.create('sitools.user.store.UserStore', {
+            storeId : 'UserStore'
+        });
         
 //        var url = sitools.user.utils.Project.getSitoolsAttachementForUsers();
 //        storeUser.setCustomUrl(loadUrl.get('APP_URL') + loadUrl.get('APP_USER_ROLE_URL'));
