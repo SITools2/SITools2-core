@@ -24,8 +24,8 @@ Ext.define('sitools.user.Application', {
     },
     
     init : function () {
-        console.log("init");
         var me = this, desktopCfg;
+        this.addMask();
         if (me.useQuickTips) {
             Ext.QuickTips.init();
         }
@@ -68,6 +68,7 @@ Ext.define('sitools.user.Application', {
 
     // 4
     initSql2ext : function () {
+        this.updateMaskText();
         sql2ext.load(loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') +  '/conf/sql2ext.properties', this.initUser, this);
     },
     
@@ -108,6 +109,31 @@ Ext.define('sitools.user.Application', {
     noticeProjectLoaded : function () {
         this.setLoaded(true);
         this.fireEvent('projectLoaded');
+        this.removeMask();
+    },
+    
+    
+    addMask : function () {
+        this.splashScreen = Ext.getBody().mask('', 'splashscreen');
+        this.splashScreen.addCls('splashscreen');
+        Ext.DomHelper.insertFirst(Ext.query('.x-mask-msg')[0],{
+            cls : 'x-splash-icon'
+        });
+    },
+    updateMaskText : function () {
+        Ext.dom.Query.selectNode('.x-mask-msg-text').innerHTML = i18n.get("label.loadingSitools");
+    },
+    removeMask : function () {
+        this.splashScreen.fadeOut({
+            duration : 1000,
+            remove : true
+        });
+        
+        this.splashScreen.next().fadeOut({
+            duration : 1000,
+            remove : true
+        });
     }
+   
 
 });

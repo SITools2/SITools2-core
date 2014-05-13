@@ -1439,3 +1439,33 @@ td.ux-taskButtons-edge {
 .x-grid3-row-warningDate {
 	color : #F63E3E !important;
 }
+
+.splashscreen {
+	background-color : white;
+	opacity : 1;
+	
+}
+
+.x-mask-msg.splashscreen,
+.x-mask-msg.splashscreen div {
+	font-size : 16px;
+	font-weight : bold;
+	padding : 30px 5px 5px 5px;
+	border: none;
+	background-color : transparent;
+	background-position: top center;
+	background-repeat: no-repeat;
+	width : 400px;
+	text-align: center;
+}
+
+.x-message-box .x-window-body .x-box-inner {
+	min-height : 110px !important;
+} 
+
+.x-splash-icon {
+	background-image: url('../images/logo_02_tailleMoyenne.png') !important;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	height: 100px;
+}

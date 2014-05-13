@@ -88,7 +88,6 @@ Ext.define('sitools.user.view.header.ModulesTaskBar', {
 //                      handler = moduleInCategory.openModule
 //                  }
                     items.push(Ext.create("Ext.button.Button", item));
-                    items.push('|');
                 }
             }
             // Le module est dans une catégorie : On crée un menu contenant tous
@@ -157,7 +156,6 @@ Ext.define('sitools.user.view.header.ModulesTaskBar', {
                                 '<button class="x-btn-text {2}" type="{1}" style="height:28px;">{0}</button>', '</em></td>', "</tr></tbody></table>")
 
                     });
-                    items.push('|');
                 }
             }
 
