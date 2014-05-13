@@ -19,15 +19,17 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-Ext.define('sitools.admin.quickStart.qsDatasource', { extend : 'Ext.panel.Panel',
+Ext.define('sitools.admin.quickStart.qsDatasource', { 
+    extend : 'Ext.panel.Panel',
     forceLayout : true, 
-    layout : "vbox",
-    border : false, 
-    layoutConfig : {
+    layout : {
+        type : "vbox",
         align : 'center',
         pack : 'start'
     },
+    border : false, 
     bodyCls : 'quickStart',
+    
     initComponent : function () {
         
         var title = new Ext.form.Label({
@@ -89,10 +91,10 @@ Ext.define('sitools.admin.quickStart.qsDatasource', { extend : 'Ext.panel.Panel'
                                     Ext.get("qs-datasource-logo").on('load', function () {
                                         
                                         imgProjet.getEl().on('mouseleave', function (e, t, o) {
-                                           t.src = "/sitools/client-admin/res/html/quickStart/icons/database-logo.png"; 
+                                           Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/database-logo.png'/>");
                                         });
                                         imgProjet.getEl().on('mouseenter', function (e, t, o) {
-                                            t.src = "/sitools/client-admin/res/html/quickStart/icons/database-logo-hover.png"; 
+                                            Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/database-logo-hover.png'/>");
                                         });
                                         imgProjet.getEl().on('click', function (e, t, o) {
                                             this.qs.openFeature("DatabaseJDBCNodeId");

@@ -19,15 +19,17 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-Ext.define('sitools.admin.quickStart.qsSecurity', { extend : 'Ext.panel.Panel',
+Ext.define('sitools.admin.quickStart.qsSecurity', {
+    extend : 'Ext.panel.Panel',
     forceLayout : true, 
-    layout : "vbox",
-    border : false, 
-    layoutConfig : {
+    layout : {
+        type : "vbox",
         align : 'center',
         pack : 'start'
     },
+    border : false, 
     bodyCls : 'quickStart',
+    
     initComponent : function () {
         
         var title = new Ext.form.Label({
@@ -75,10 +77,10 @@ Ext.define('sitools.admin.quickStart.qsSecurity', { extend : 'Ext.panel.Panel',
                         user.getEl().alignTo("start-desc", "tl", [50, 30]);
                         
                         user.getEl().on('mouseleave', function (e, t, o) {
-                            t.src = "/sitools/client-admin/res/html/quickStart/icons/user-logo.png"; 
+                            Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/user-logo.png'/>");
                          });
                         user.getEl().on('mouseenter', function (e, t, o) {
-                             t.src = "/sitools/client-admin/res/html/quickStart/icons/user-logo-hover.png"; 
+                            Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/user-logo-hover.png'/>");
                          });
                         user.getEl().on('click', function (e, t, o) {
                             this.qs.openFeature("usrNodeId");
@@ -134,10 +136,10 @@ Ext.define('sitools.admin.quickStart.qsSecurity', { extend : 'Ext.panel.Panel',
                     Ext.get("qs-group-logo").on('load', function () {
                         
                         group.getEl().on('mouseleave', function (e, t, o) {
-                           t.src = "/sitools/client-admin/res/html/quickStart/icons/group-logo.png"; 
+                           Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/group-logo.png'/>");
                         });
                         group.getEl().on('mouseenter', function (e, t, o) {
-                            t.src = "/sitools/client-admin/res/html/quickStart/icons/group-logo-hover.png"; 
+                            Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/group-logo-hover.png'/>");
                         });
                         group.getEl().on('click', function (e, t, o) {
                             this.qs.openFeature("grpNodeId");
@@ -175,10 +177,10 @@ Ext.define('sitools.admin.quickStart.qsSecurity', { extend : 'Ext.panel.Panel',
                     Ext.get("qs-role-logo").on('load', function () {
                         
                         group.getEl().on('mouseleave', function (e, t, o) {
-                           t.src = "/sitools/client-admin/res/html/quickStart/icons/role-logo.png"; 
+                            Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/role-logo.png'/>");
                         });
                         group.getEl().on('mouseenter', function (e, t, o) {
-                            t.src = "/sitools/client-admin/res/html/quickStart/icons/role-logo-hover.png"; 
+                            Ext.get(t).update("<img id='qs-projet-logo' class='bouton_action' src='/sitools/client-admin/res/html/quickStart/icons/role-logo-hover.png'/>");
                         });
                         group.getEl().on('click', function (e, t, o) {
                             this.qs.openFeature("roleNodeId");

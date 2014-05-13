@@ -24,11 +24,12 @@ Ext.define('sitools.admin.Application', {
     extend : 'Ext.app.Application',
     
     requires : [ 
-        /* UTILS */
+                /* UTILS */
         'sitools.public.utils.loadUrl',
         'sitools.public.utils.i18n',
         'sitools.public.utils.sql2ext',
         'sitools.public.utils.LoginUtils',
+        'sitools.public.utils.Logout',
         'sitools.public.crypto.Base64',
         
                 /* WIDGETS */
