@@ -17,7 +17,7 @@
  ******************************************************************************/
 /* global Ext, sitools, window */
 
-Ext.define('sitools.user.model.ResourceModel', {
+Ext.define('sitools.user.model.RoleModel', {
     extend : 'Ext.data.Model',
 
     require : [ 'sitools.user.model.ResourceModel' ],
@@ -33,10 +33,10 @@ Ext.define('sitools.user.model.ResourceModel', {
         type : 'string'
     } ],
     hasMany : [ {
-        model : 'ResourceModel',
+        model : 'sitools.user.model.ResourceModel',
         name : 'users'
     }, {
-        model : 'ResourceModel',
+        model : 'sitools.user.model.ResourceModel',
         name : 'groups'
     } ]
 });

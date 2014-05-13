@@ -39,10 +39,10 @@ Ext.define('sitools.user.model.ModuleModel', {
         type : 'string'
     } ],
     hasMany : [ {
-        model : 'RoleModel',
+        model : 'sitools.user.model.RoleModel',
         name : 'listRoles'
     }, {
-        model : 'PropertyModel',
+        model : 'sitools.user.model.PropertyModel',
         name : 'listProjectModulesConfig'
     } ]
 });

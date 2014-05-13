@@ -36,17 +36,39 @@ Ext.define("sitools.user.controller.header.HeaderController", {
     heightMaximizeDesktopMode : 0, 
     
     init : function () {
+        
+        this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
+        
+
+        this.control({
+            'moduleTaskBar button' : {
+                click : this.openModule
+            }
+        });
+        
+        this.callParent(arguments);
+    },
+    
+    
+    onProjectLoaded : function () {
+        var project = Ext.getStore('ProjectStore').getAt(0);
         Ext.create('sitools.user.view.header.Header', {
             renderTo : "x-headers",
             id : "headersCompId",
-            htmlContent : sitools.user.utils.Project.getHtmlHeader(),
-            modules : []/**projectGlobal.modules*/,
+            htmlContent : project.get('htmlHeader'),
+            modules : project.modules(),
             listeners : {
                 resize : function (me) {
                     me.setSize(SitoolsDesk.getEnteteEl().getSize());
                 }
             }
         });
-        this.callParent(arguments);
+    },
+    
+    openModule : function (button, e, opts) {
+//        alert('TODO open ' + button.text);
+        console.log('TODO open ' + button.text);
+        
+        
     }
 });

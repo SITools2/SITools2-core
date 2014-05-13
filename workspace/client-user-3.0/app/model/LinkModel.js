@@ -17,7 +17,7 @@
  ******************************************************************************/
 /* global Ext, sitools, window */
 
-Ext.define('sitools.user.model.ResourceModel', {
+Ext.define('sitools.user.model.LinkModel', {
     extend : 'Ext.data.Model',
     
     fields : [ {

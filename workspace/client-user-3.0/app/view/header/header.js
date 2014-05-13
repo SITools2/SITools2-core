@@ -77,7 +77,6 @@ Ext.define('sitools.user.view.header.Header', {
                     // var enteteEl = SitoolsDesk.getEnteteEl();
                     var enteteEl = Ext.get('x-headers');
                     me.setHeight(enteteEl.getHeight());
-                    me.doLayout();
 
                     me.heightNormalMode = enteteEl.getHeight();
                     me.heightMaximizeDesktopMode = this.NavBarsPanel.getHeight();

@@ -349,50 +349,50 @@ function getApp() {
 // Ext.WindowMgr = getDesktop().getManager();
 // Override de la méthode initEvents pour que le windowManager utilisé soit
 // toujours le même
-Ext.override(Ext.Window, {
-    initEvents : function () {
-	    Ext.Window.superclass.initEvents.call(this);
-	    if (this.animateTarget) {
-	        this.setAnimateTarget(this.animateTarget);
-	    }
-	
-	    if (this.resizable) {
-	        this.resizer = new Ext.Resizable(this.el, {
-	            minWidth: this.minWidth,
-	            minHeight: this.minHeight,
-	            handles: this.resizeHandles || 'all',
-	            pinned: true,
-	            resizeElement : this.resizerAction,
-	            handleCls: 'x-window-handle'
-	        });
-	        this.resizer.window = this;
-	        this.mon(this.resizer, 'beforeresize', this.beforeResize, this);
-	    }
-	
-	    if (this.draggable) {
-	        this.header.addClass('x-window-draggable');
-	    }
-	    this.mon(this.el, 'mousedown', this.toFront, this);
-// this.manager = this.manager || Ext.WindowMgr;
-	    var tmp = getDesktop();
-	    if (Ext.isEmpty(tmp)) {
-	        this.manager = Ext.WindowMgr;
-	    }
-	    else {
-		    this.manager = getDesktop().getManager() || Ext.WindowMgr;
-	    }
-	    this.manager.register(this);
-	    if (this.maximized) {
-	        this.maximized = false;
-	        this.maximize();
-	    }
-	    if (this.closable) {
-	        var km = this.getKeyMap();
-	        km.on(27, this.onEsc, this);
-	        km.disable();
-	    }
-	}
-});
+//Ext.override(Ext.Window, {
+//    initEvents : function () {
+//	    Ext.Window.superclass.initEvents.call(this);
+//	    if (this.animateTarget) {
+//	        this.setAnimateTarget(this.animateTarget);
+//	    }
+//	
+//	    if (this.resizable) {
+//	        this.resizer = new Ext.Resizable(this.el, {
+//	            minWidth: this.minWidth,
+//	            minHeight: this.minHeight,
+//	            handles: this.resizeHandles || 'all',
+//	            pinned: true,
+//	            resizeElement : this.resizerAction,
+//	            handleCls: 'x-window-handle'
+//	        });
+//	        this.resizer.window = this;
+//	        this.mon(this.resizer, 'beforeresize', this.beforeResize, this);
+//	    }
+//	
+//	    if (this.draggable) {
+//	        this.header.addClass('x-window-draggable');
+//	    }
+//	    this.mon(this.el, 'mousedown', this.toFront, this);
+//// this.manager = this.manager || Ext.WindowMgr;
+//	    var tmp = getDesktop();
+//	    if (Ext.isEmpty(tmp)) {
+//	        this.manager = Ext.WindowMgr;
+//	    }
+//	    else {
+//		    this.manager = getDesktop().getManager() || Ext.WindowMgr;
+//	    }
+//	    this.manager.register(this);
+//	    if (this.maximized) {
+//	        this.maximized = false;
+//	        this.maximize();
+//	    }
+//	    if (this.closable) {
+//	        var km = this.getKeyMap();
+//	        km.on(27, this.onEsc, this);
+//	        km.disable();
+//	    }
+//	}
+//});
 
 Ext.override(Ext.grid.GridPanel, {
     stripeRows : true
@@ -1125,38 +1125,38 @@ function getCartFolder (projectName) {
     return "/" + DEFAULT_ORDER_FOLDER + "/cart/" + projectName;
 }
 
-Ext.override(Ext.Window, {
-    /**
-     * Fit a window to its container (desktop)
-     * Resizing and repositionning
-     */
-    fitToDesktop : function () {
-        //resize windows to fit desktop
-        var vs = this.container.getViewSize(false);
-        var winSize = this.getSize();
-        var winPos = this.getPosition();
-        
-        var outputWinSize = winSize;
-        var outputWinPos = winPos;
-        
-        
-        if(winSize.width > vs.width) {
-            outputWinSize.width = vs.width - 5;
-        }
-
-        if(winSize.height > vs.height) {
-            outputWinSize.height = vs.height - 5;
-        }
-        this.setSize(outputWinSize.width, outputWinSize.height);
-        
-        
-        if(winPos[0] + outputWinSize.width > vs.width) {
-            outputWinPos.x = 0;
-        }
-
-        if(winPos[1] + outputWinSize.height > vs.height) {
-            outputWinPos.y = 0;
-        }
-        this.setPosition(outputWinPos.x, outputWinPos.y);
-    }
-});
+//Ext.override(Ext.Window, {
+//    /**
+//     * Fit a window to its container (desktop)
+//     * Resizing and repositionning
+//     */
+//    fitToDesktop : function () {
+//        //resize windows to fit desktop
+//        var vs = this.container.getViewSize(false);
+//        var winSize = this.getSize();
+//        var winPos = this.getPosition();
+//        
+//        var outputWinSize = winSize;
+//        var outputWinPos = winPos;
+//        
+//        
+//        if(winSize.width > vs.width) {
+//            outputWinSize.width = vs.width - 5;
+//        }
+//
+//        if(winSize.height > vs.height) {
+//            outputWinSize.height = vs.height - 5;
+//        }
+//        this.setSize(outputWinSize.width, outputWinSize.height);
+//        
+//        
+//        if(winPos[0] + outputWinSize.width > vs.width) {
+//            outputWinPos.x = 0;
+//        }
+//
+//        if(winPos[1] + outputWinSize.height > vs.height) {
+//            outputWinPos.y = 0;
+//        }
+//        this.setPosition(outputWinPos.x, outputWinPos.y);
+//    }
+//});

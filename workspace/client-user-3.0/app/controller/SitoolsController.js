@@ -34,10 +34,9 @@ Ext.define('sitools.user.controller.SitoolsController', {
         store.setCustomUrl(url);
         store.load(
                 {
+                    scope : this,
                     callback: function(records, operation, success) {
-                        // the operation object
-                        // contains all of the details of the load operation
-                        console.log(records);
+                        this.getApplication().noticeProjectLoaded();
                     }
         });
 

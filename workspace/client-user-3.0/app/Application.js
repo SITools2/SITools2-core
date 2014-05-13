@@ -15,11 +15,12 @@ Ext.define('sitools.user.Application', {
     useQuickTips : true,
     
     config : {
-        ready : true
+        ready : true,
+        loaded : true
     },
     
     init : function () {
-        alert("init");
+        console.log("init");
         var me = this, desktopCfg;
         if (me.useQuickTips) {
             Ext.QuickTips.init();
@@ -55,12 +56,17 @@ Ext.define('sitools.user.Application', {
     },
 
     initProject : function () {
-        sitools.user.utils.Project.init(this.projectReady, this);
+        sitools.user.utils.Project.init(this.projectInitialized, this);
     },
     
-    projectReady : function () {
+    projectInitialized : function () {
         this.setReady(true);
         this.fireEvent('projectInitialized');
+    },
+    
+    noticeProjectLoaded : function () {
+        this.setReady(true);
+        this.fireEvent('projectLoaded');
     }
 
 });

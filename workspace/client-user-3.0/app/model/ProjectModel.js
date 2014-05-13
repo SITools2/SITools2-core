@@ -20,7 +20,7 @@
 Ext.define('sitools.user.model.ProjectModel', {
     extend : 'Ext.data.Model',
 
-//    requires : [ 'sitools.user.model.LinkModel', 'sitools.user.model.ModuleModel', 'sitools.user.model.ResourceModel' ],
+    requires : [ 'sitools.user.model.LinkModel', 'sitools.user.model.ModuleModel', 'sitools.user.model.ResourceModel'],
 
     fields : [ {
         name : 'id',
@@ -66,21 +66,15 @@ Ext.define('sitools.user.model.ProjectModel', {
     }, {
         name : 'navigationMode',
         type : 'string'
+    }],
+    hasMany : [ {
+        model : 'sitools.user.model.ResourceModel',
+        name : 'dataSets'
     }, {
-        name : 'datasets'
-    }, {
+        model : 'sitools.user.model.ModuleModel',
         name : 'modules'
     }, {
+        model : 'sitools.user.model.LinkModel',
         name : 'links'
-    } ],
-//    hasMany : [ {
-//        model : 'ResourceModel',
-//        name : 'dataSets'
-//    }, {
-//        model : 'ModuleModel',
-//        name : 'modules'
-//    }, {
-//        model : 'LinkModel',
-//        name : 'links'
-//    } ]
+    } ]
 });
