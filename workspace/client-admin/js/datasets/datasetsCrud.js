@@ -330,7 +330,7 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var up = Ext.create('sitools.admin.datasets.datasetsOpenSearch', {
+        var up = Ext.create('sitools.admin.datasets.opensearch.opensearch', {
             url : this.url + '/' + rec.data.id,
             action : 'edit',
             store : this.getStore()

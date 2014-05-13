@@ -72,7 +72,7 @@
     <!-- Need in debug mode, to remove in production version. -->
 	
 	<script type="text/javascript">
-		Ext.Loader.setConfig('disableCaching', true);
+		Ext.Loader.setConfig('disableCaching', false);
 	</script>
 	
 	

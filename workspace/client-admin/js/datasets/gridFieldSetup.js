@@ -34,6 +34,9 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
     id : 'gridColumnSelect',
     layout : 'fit', 
     enableLocking : true,
+    mixins : {
+        utils : "sitools.admin.utils.utils"
+    },
     
     requires : ['sitools.admin.datasets.columnRendererWin',
                 'sitools.admin.datasets.unitWin',
@@ -148,24 +151,41 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             selectOnFocus : true,
             valueField : 'value',
             displayField : 'display',
+            emptyText : " ",
             listeners : {
                 scope : this, 
+                beforeselect : function (combo, record, index) {
+                    combo.oldValue = combo.lastValue;
+                },
+                click : function () {
+                  debugger;  
+                },
                 select : function (combo, record) {
+                    var selectedRecord = this.getLastSelectedRecord();
+                    if (combo.getValue() == "" || combo.getValue() == "&nbsp;"){ 
+                        combo.setValue(null);
+                        selectedRecord.set("columnRenderer", null);
+                        return;
+                    }
+                    
                     var columnRendererType = combo.getValue();
                     //get the last value, which is either the last value selected or the first value.
-                    var lastValue = (Ext.isEmpty(combo.lastValue)) ? combo.startValue   : combo.lastValue;
-                    var selectedRecord = this.getSelectionModel().getSelection()[0];
+                    var oldValue = (Ext.isEmpty(combo.oldValue)) ? combo.getStore().getAt(0) : combo.oldValue;
                     if (!Ext.isEmpty(columnRendererType)) {                
                         var colWindow = Ext.create('sitools.admin.datasets.columnRendererWin', {
                             selectedRecord : selectedRecord, 
                             gridView : this.getView(),
                             columnRendererType : columnRendererType,
                             datasetColumnStore : storeColumn,
-                            lastColumnRendererType : lastValue
+                            lastColumnRendererType : oldValue,
+                            callback : function (ok) {
+                                this.getView().refresh();
+                            },
+                            scope : this
                         });
                         colWindow.show();
-                    } 
-                }
+                    }
+                }       
             }
         };
 
@@ -402,7 +422,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
      * @method
      */
     onModifyColumn : function () {
-        var rec = this.getSelectionModel().getSelection()[0];
+        var rec = this.getLastSelectedRecord()
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;

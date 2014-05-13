@@ -176,9 +176,10 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
 			beforeclose : function () {
                 if (!this.validAction) {
 					// clear the grid record
-                    var  colRendererCategory = this.lastColumnRendererType;
+                    var colRendererCategory = this.lastColumnRendererType;
                     this.selectedRecord.set("columnRendererCategory", colRendererCategory);
-                    this.gridView.refresh();
+                    var ok = (Ext.isEmpty(this.validAction)) ? false : this.validAction;
+                    Ext.callback(this.callback, this.scope, [ok]);
                 }
 			}
 		};
@@ -198,7 +199,7 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
             if (index != -1) {
 	            this.comboBehavior.setValue(behavior);
 	            var record = this.comboBehavior.getStore().getAt(index);            
-	            this.comboBehavior.fireEvent("select", this.comboBehavior, record, index);
+	            this.comboBehavior.fireEvent("select", this.comboBehavior, [record], index);
             }
         }
     },

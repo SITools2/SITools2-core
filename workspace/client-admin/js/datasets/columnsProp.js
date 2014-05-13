@@ -163,9 +163,9 @@ Ext.define('sitools.admin.datasets.columnsProp', { extend : 'Ext.Window',
      * @inheritdoc
      * @method
      */
-    onRender : function () {
-        sitools.admin.datasets.columnsProp.superclass.onRender.apply(this, arguments);
-        if (this.action == 'modify') {
+    afterRender : function () {
+        this.callParent(arguments);
+        if (this.action === 'modify') {
             this.comboColumnType.setValue(this.recordColumn.get('specificColumnType'));
             this.columnAlias.setValue(this.recordColumn.get('columnAlias'));
             this.sqlDef.setValue(this.recordColumn.get('dataIndex'));
