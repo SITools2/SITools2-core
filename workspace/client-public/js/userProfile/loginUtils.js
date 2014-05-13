@@ -67,7 +67,6 @@ sitools.userProfile.LoginUtils = {
                 // if the parameters are not available perform classic login
                 sitools.userProfile.LoginUtils.sitoolsLogin(config);
             }
-
         });
     },
 
@@ -175,8 +174,6 @@ sitools.userProfile.LoginUtils = {
     delegateLoginLogout : function (urlTemplate) {
         var url = urlTemplate.replace("{goto}", document.URL);
         window.open(url, "_self");
-    },
-    
-    
+    }
 
 };

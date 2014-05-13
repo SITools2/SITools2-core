@@ -273,7 +273,7 @@ Ext.define('sitools.public.userProfile.Login', {
                         }
 
                     } else {
-                        utils_logout(false);
+                        sitools.public.utils.Logout.logout(false);
                         
                         var txt = i18n.get('warning.serverError') + ': ' + Json.message;
                         Ext.getCmp('winLogin').body.unmask();
@@ -285,7 +285,7 @@ Ext.define('sitools.public.userProfile.Login', {
                 }
             },
             failure : function (response, opts) {
-                utils_logout(false);
+                sitools.public.utils.Logout.logout(false);
 
                 var txt;
                 if (response.status == 200) {

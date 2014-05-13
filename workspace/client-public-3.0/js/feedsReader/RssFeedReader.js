@@ -214,14 +214,11 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
             });
             
             var win = Ext.create('Ext.window.Window', {
-                stateful : false,
                 title : i18n.get('label.viewFeedDetail'),
-                width : 400,
-                height : 600,
-                shim : false,
-                animCollapse : false,
-                constrainHeader : true,
                 layout : 'fit',
+                width : 600,
+                height : 530,
+//                constrainHeader : true,
                 modal : true
             });
             win.add(component);

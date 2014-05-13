@@ -1190,10 +1190,12 @@ td.ux-taskButtons-edge {
 	width:100% !important;
 }
 
+/* INCLUDE feed.css otherwise */
+
 /** START CSS FEED MODULE + FEED DETAILS **/
-#leftPanel {
+/* #leftPanel {
 	float : left;
-	height : 100%; /*1000px;*/	
+	height : 100%; 1000px;	
 	width : 20%;
 }
 
@@ -1209,14 +1211,14 @@ td.ux-taskButtons-edge {
 }
 
 .detailFeed-view{
-	background: rgb(250,242,230); /* Old browsers */
-	background: -moz-linear-gradient(45deg,  rgba(250,242,230,1) 6%, rgba(224,206,178,1) 29%, rgba(228,214,190,1) 32%, rgba(246,237,222,1) 75%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left bottom, right top, color-stop(6%,rgba(250,242,230,1)), color-stop(29%,rgba(224,206,178,1)), color-stop(32%,rgba(228,214,190,1)), color-stop(75%,rgba(246,237,222,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); /* IE10+ */
-	background: linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faf2e6', endColorstr='#f6edde',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	background: rgb(250,242,230); Old browsers
+	background: -moz-linear-gradient(45deg,  rgba(250,242,230,1) 6%, rgba(224,206,178,1) 29%, rgba(228,214,190,1) 32%, rgba(246,237,222,1) 75%); FF3.6+
+	background: -webkit-gradient(linear, left bottom, right top, color-stop(6%,rgba(250,242,230,1)), color-stop(29%,rgba(224,206,178,1)), color-stop(32%,rgba(228,214,190,1)), color-stop(75%,rgba(246,237,222,1))); Chrome,Safari4+
+	background: -webkit-linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); Chrome10+,Safari5.1+
+	background: -o-linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); Opera 11.10+
+	background: -ms-linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); IE10+
+	background: linear-gradient(45deg,  rgba(250,242,230,1) 6%,rgba(224,206,178,1) 29%,rgba(228,214,190,1) 32%,rgba(246,237,222,1) 75%); W3C
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faf2e6', endColorstr='#f6edde',GradientType=1 ); IE6-9 fallback on horizontal gradient
 			
 }
 
@@ -1270,7 +1272,7 @@ td.ux-taskButtons-edge {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
-}
+} */
 /** END CSS FEED MODULE + FEED DETAILS **/
 
 

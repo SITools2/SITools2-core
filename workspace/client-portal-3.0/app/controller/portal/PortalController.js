@@ -30,6 +30,7 @@
  */
 
 var portal;
+var userLogin = Ext.util.Cookies.get('userLogin');
 
 Ext.namespace('sitools.clientportal.controller.portal');
 
@@ -57,8 +58,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
             },
             'button[name="editProfileBtn"]' : {
                 click : function (button, e) {
-                    portalView = this.getView('portal.PortalView').create();
-                    var callback = Ext.Function.bind(portalView.onEditProfile, portalView, [button.identifier, button.edit]);
+                    var callback = Ext.Function.bind(this.onEditProfile, this, [button.identifier, button.edit]);
                     sitools.public.utils.LoginUtils.editProfile(callback);
                 }
             }
@@ -240,6 +240,22 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
                 }
             });
         }
+    },
+    
+    onEditProfile : function (user, url) {
+        var win = Ext.create('Ext.window.Window', {
+            modal : true,
+            width : 400,
+            height : 430,
+            resizable : false,
+            items : [Ext.create('sitools.public.userProfile.editProfile', {
+                identifier : user,
+                url : url
+            })]
+        });
+        
+        win.show();
+        
     }
     
 });

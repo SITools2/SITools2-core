@@ -1,0 +1,77 @@
+@CHARSET "UTF-8";
+
+#leftPanel {
+	float : left;
+	height : 100%;
+	width : 20%;
+}
+
+
+#menu {
+	height : 100%;
+	width : 100%;
+}
+
+
+#feeds-date {
+	padding: 5px 0px 0px 0px;
+}
+
+.detailFeed-view {
+	background:url(../wallpapers/paper.jpg) repeat left top !important;
+}
+
+.feed-article {
+	padding: 15px;
+	margin: 25px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border: 1px solid rgba(80, 80, 80, 0.1);
+	-moz-box-shadow: 5px 5px 6px 0px #656565;
+	-webkit-box-shadow: 5px 5px 6px 0px #656565;
+	-o-box-shadow: 5px 5px 6px 0px #656565;
+	box-shadow: 5px 5px 6px 0px #656565;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=134, Strength=6);
+	background-color : rgba(255, 255, 255, 0.67);
+}
+
+.feed-img{
+	float: left;
+}
+
+.feed-title{
+	text-align: center;
+	font-size: 18px;
+	padding: 14px;
+}
+
+.feed-date-detail{
+	padding-top : 5px;
+}
+
+.feed-author{
+	padding-top : 2px;
+}
+
+.feed-description{
+	padding-top: 25px;
+	padding-bottom: 15px;
+	text-indent: 18px;
+}
+
+.img-border {
+	box-shadow: inset 1px 1px 5px 2px #C0C0C1;
+}
+
+.feed-complementary{
+	padding : 10px;
+	-moz-box-shadow: inset 1px 1px 5px 2px #C0C0C1;
+	-webkit-box-shadow: inset 1px 1px 5px 2px #C0C0C1;
+	-o-box-shadow: inset 1px 1px 5px 2px #C0C0C1;
+	box-shadow: inset 1px 1px 5px 2px #C0C0C1;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#c0c0c0, Direction=135, Strength=3);
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+}

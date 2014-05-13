@@ -85,7 +85,7 @@ Ext.define('sitools.public.utils.LoginUtils', {
                         }
                     });
                         
-                    utils_logout(!delegateLogout);
+                    sitools.public.utils.Logout.logout(!delegateLogout);
                     if (delegateLogout) {
                         if (Ext.isEmpty(delegateLogoutUrl)) {
                             Ext.Msg.alert(i18n.get("label.warning"), "No Logout url defined");
@@ -97,12 +97,12 @@ Ext.define('sitools.public.utils.LoginUtils', {
                 } else {
                     // if the parameters are not available perform classic
                     // logout
-                    utils_logout(true);
+                    sitools.public.utils.Logout.logout(true);
                 }
             },
             failure : function () {
                 // if the parameters are not available perform classic logout
-                utils_logout(true);
+                sitools.public.utils.Logout.logout(true);
             }
         });
     },
