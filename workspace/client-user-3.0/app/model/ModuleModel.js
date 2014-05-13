@@ -17,19 +17,32 @@
  ******************************************************************************/
 /* global Ext, sitools, window */
 
-Ext.define('sitools.user.store.ProjectStore', {
-    extend : 'Ext.data.Store',
-    model : 'sitools.user.model.ProjectModel',
-    proxy : {
-        type : 'ajax',
-        reader : {
-            type : 'json',
-            root : 'project',
-            idProperty : 'userId'
-        }
-    },
-    
-    setCustomUrl : function (url) {
-        this.getProxy().url = url;
-    }
+Ext.define('sitools.user.model.ModuleModel', {
+    extend : 'sitools.user.model.ResourceModel',
+
+    requires : [ 'sitools.user.model.PropertyModel', 'sitools.user.model.RoleModel' ],
+
+    fields : [ {
+        name : 'priority',
+        type : 'int'
+    }, {
+        name : 'categoryModule',
+        type : 'string'
+    }, {
+        name : 'divIdToDisplay',
+        type : 'string'
+    }, {
+        name : 'xtype',
+        type : 'string'
+    }, {
+        name : 'label',
+        type : 'string'
+    } ],
+    hasMany : [ {
+        model : 'RoleModel',
+        name : 'listRoles'
+    }, {
+        model : 'PropertyModel',
+        name : 'listProjectModulesConfig'
+    } ]
 });

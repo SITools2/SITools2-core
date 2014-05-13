@@ -26,7 +26,6 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.resource.Directory;
-import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
 import org.restlet.routing.Template;
 
@@ -54,19 +53,9 @@ public final class ClientUserApplication extends StaticWebApplication {
   private SitoolsStore<Project> store = null;
 
   /**
-   * portalIndex URL
-   */
-  private String portalIndexUrl;
-
-  /**
    * ProjectIndex URL
    */
   private String projectIndexUrl;
-
-  /**
-   * Identifier of the portal
-   */
-  private String portalId;
 
   /**
    * Constructor with folder of exposed files
@@ -80,16 +69,6 @@ public final class ClientUserApplication extends StaticWebApplication {
    */
   public ClientUserApplication(final Context context, final String appPath, final String baseUrl) {
     super(context, appPath, baseUrl);
-    // application settings
-    portalId = getSettings().getString("Portal.id");
-
-    portalIndexUrl = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
-        + getSettings().getString("Starter.client-user.portalIndex");
-
-    File portalIndexFile = new File(portalIndexUrl);
-    if (portalIndexFile == null || !portalIndexFile.exists()) {
-      getLogger().severe("Template file for Portal/index.html not found :" + portalIndexUrl);
-    }
     projectIndexUrl = getSettings().getRootDirectory() + getSettings().getString(Consts.TEMPLATE_DIR)
         + getSettings().getString("Starter.client-user.projectIndex");
     File projectIndexFile = new File(projectIndexUrl);
@@ -133,18 +112,20 @@ public final class ClientUserApplication extends StaticWebApplication {
 
     // Create a router
     Router router = new Router(getContext());
-
-    String portalTarget = getSettings().getPublicHostDomain() + getSettings().getString(Consts.APP_URL) + getSettings().getString(Consts.APP_CLIENT_PORTAL_URL)
-        + "/index.html";
-    Redirector redirector = new Redirector(getContext(), portalTarget, Redirector.MODE_CLIENT_PERMANENT);
-
+    
     // attach the portal resource to client-user
-    router.attach("/", redirector);
+//    router.attach("/", ProjectIndex.class);
+    
+    router.attach("/index.html", ProjectIndex.class);
 
-    // Redirections/Raccourcis sur certains répertoires virtuels ...
-    router.attach("/index.html", redirector).getTemplate().setMatchingMode(Template.MODE_EQUALS);
-
-    router.attach("/{projectName}/project-index.html", ProjectIndex.class);
+//    String portalTarget = getSettings().getPublicHostDomain() + getSettings().getString(Consts.APP_URL) + getSettings().getString(Consts.APP_CLIENT_PORTAL_URL)
+//        + "/index.html";
+//    Redirector redirector = new Redirector(getContext(), portalTarget, Redirector.MODE_CLIENT_PERMANENT);
+//    // redirect to the portal to have the same behavior as version 2.x  
+//    router.attach("/", redirector).setMatchingMode(Template.MODE_EQUALS);
+//    // redirect to the portal to have the same behavior as version 2.x
+//    router.attach("/index.html", redirector).getTemplate().setMatchingMode(Template.MODE_EQUALS);
+    
     router.attach("/siteMap", ClientSiteMapResource.class);
 
     Directory directory = new DirectoryProxy(getContext(), "file:///" + getAppPath(), getAttachementRef());
@@ -159,30 +140,12 @@ public final class ClientUserApplication extends StaticWebApplication {
   }
 
   /**
-   * Gets the portalIndexUrl value
-   * 
-   * @return the portalIndexUrl
-   */
-  public String getPortalIndexUrl() {
-    return portalIndexUrl;
-  }
-
-  /**
    * Gets the projectIndexUrl value
    * 
    * @return the projectIndexUrl
    */
   public String getProjectIndexUrl() {
     return projectIndexUrl;
-  }
-
-  /**
-   * Get the portal identifier
-   * 
-   * @return the portal identifier
-   */
-  public String getPortalId() {
-    return portalId;
   }
 
   @Override

@@ -10,7 +10,7 @@
  * @extends Ext.panel.Panel
  * <p>This class manages the wallpaper, shortcuts and taskbar.</p>
  */
-Ext.define('Ext.ux.desktop.Desktop', {
+Ext.define('sitools.user.view.desktop.Desktop', {
     extend: 'Ext.panel.Panel',
 
     alias: 'widget.desktop',
@@ -20,7 +20,6 @@ Ext.define('Ext.ux.desktop.Desktop', {
         'Ext.menu.Menu',
         'Ext.view.View', // dataview
         'Ext.window.Window',
-
         'Ext.ux.desktop.TaskBar',
         'Ext.ux.desktop.Wallpaper'
     ],
@@ -35,9 +34,11 @@ Ext.define('Ext.ux.desktop.Desktop', {
 
     xTickSize: 1,
     yTickSize: 1,
+    
+    height : 50,
 
     app: null,
-
+    
     /**
      * @cfg {Array|Store} shortcuts
      * The items to add to the DataView. This can be a {@link Ext.data.Store Store} or a
@@ -95,7 +96,7 @@ Ext.define('Ext.ux.desktop.Desktop', {
             me.createDataView()
         ];
 
-        me.callParent();
+        me.callParent(arguments);
 
         me.shortcutsView = me.items.getAt(1);
         me.shortcutsView.on('itemclick', me.onShortcutItemClick, me);
@@ -105,12 +106,37 @@ Ext.define('Ext.ux.desktop.Desktop', {
         if (wallpaper) {
             me.setWallpaper(wallpaper, me.wallpaperStretch);
         }
+        
     },
 
     afterRender: function () {
         var me = this;
         me.callParent();
         me.el.on('contextmenu', me.onDesktopMenu, me);
+        
+        this.fitDesktop();
+    },
+    
+    /**
+     * Set the height of the different elements of the desktop, according to the screen height.
+     * @private 
+     */
+    fitDesktop : function () {
+        var el = Ext.get("x-main");
+//        var enteteEl = SitoolsDesk.getEnteteEl();
+//        var bottom = SitoolsDesk.getBottomEl();
+        
+        var enteteEl = Ext.get("x-headers");
+        var bottomEl = Ext.get("x-bottom");
+        
+        var desktopEl = Ext.get('x-desktop');
+        
+            el.setHeight(Ext.getBody().getHeight() - enteteEl.getHeight() - bottomEl.getHeight())
+            var desktopHeight = Ext.get("x-desktop-taskbar").getHeight();
+
+            desktopEl.setHeight(desktopHeight);
+           
+            this.setHeight(desktopHeight);
     },
 
     //------------------------------------------------------

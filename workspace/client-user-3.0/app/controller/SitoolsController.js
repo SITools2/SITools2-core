@@ -15,21 +15,31 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/* global Ext, sitools, window */
+Ext.define('sitools.user.controller.SitoolsController', {
 
-Ext.define('sitools.user.store.ProjectStore', {
-    extend : 'Ext.data.Store',
-    model : 'sitools.user.model.ProjectModel',
-    proxy : {
-        type : 'ajax',
-        reader : {
-            type : 'json',
-            root : 'project',
-            idProperty : 'userId'
-        }
+    extend : 'Ext.app.Controller',
+
+    stores : [ 'ProjectStore' ],
+
+    init : function () {
+        var me = this, desktopCfg;
+
+        this.getApplication().on('projectInitialized', this.loadProject, this);
     },
-    
-    setCustomUrl : function (url) {
-        this.getProxy().url = url;
+
+    loadProject : function () {
+        console.log('loadProject');
+        var url = sitools.user.utils.Project.getSitoolsAttachementForUsers();
+        var store = this.getStore("ProjectStore");
+        store.setCustomUrl(url);
+        store.load(
+                {
+                    callback: function(records, operation, success) {
+                        // the operation object
+                        // contains all of the details of the load operation
+                        console.log(records);
+                    }
+        });
+
     }
 });

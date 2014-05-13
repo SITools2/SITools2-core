@@ -8,7 +8,7 @@ Ext.Loader.addClassPathMappings({
   "Ext": "ext/src",
   "Ext.Msg": "ext/src/window/MessageBox.js",
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
-  "clientuser": "app"
+  "sitools.user": "app"
 });
 Ext.ClassManager.addNameAlternateMappings({
   "Ext.AbstractComponent": [],
@@ -827,10 +827,10 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.window.Window": [
     "Ext.Window"
   ],
-  "clientuser.Application": [],
-  "clientuser.controller.Main": [],
-  "clientuser.view.Main": [],
-  "clientuser.view.Viewport": []
+  "sitools.user.Application": [],
+  "sitools.user.controller.Main": [],
+  "sitools.user.view.Main": [],
+  "sitools.user.view.Viewport": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1817,12 +1817,12 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.window.Window": [
     "widget.window"
   ],
-  "clientuser.Application": [],
-  "clientuser.controller.Main": [],
-  "clientuser.view.Main": [
+  "sitools.user.Application": [],
+  "sitools.user.controller.Main": [],
+  "sitools.user.view.Main": [
     "widget.app-main"
   ],
-  "clientuser.view.Viewport": []
+  "sitools.user.view.Viewport": []
 });
 Ext.setVersion("ext-theme-base", "4.2.1");
 Ext.setVersion("ext-theme-classic", "4.2.1");

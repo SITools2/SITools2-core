@@ -17,19 +17,17 @@
  ******************************************************************************/
 /* global Ext, sitools, window */
 
-Ext.define('sitools.user.store.ProjectStore', {
-    extend : 'Ext.data.Store',
-    model : 'sitools.user.model.ProjectModel',
-    proxy : {
-        type : 'ajax',
-        reader : {
-            type : 'json',
-            root : 'project',
-            idProperty : 'userId'
-        }
-    },
+Ext.define('sitools.user.model.PropertyModel', {
+    extend : 'Ext.data.Model',
     
-    setCustomUrl : function (url) {
-        this.getProxy().url = url;
-    }
+    fields : [ {
+        name : 'name',
+        type : 'string'
+    }, {
+        name : 'value',
+        type : 'string'
+    }, {
+        name : 'scope',
+        type : 'string'
+    } ]
 });

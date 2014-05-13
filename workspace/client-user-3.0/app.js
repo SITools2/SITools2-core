@@ -5,11 +5,12 @@
 */
 
 Ext.application({
-    name: 'clientuser',
+    name: 'sitools.user',
 
-    extend: 'clientuser.Application',
+    extend: 'sitools.user.Application',
     
     paths : {
-        "Ext.ux" : "./ux"
+        "Ext.ux" : "./ux",
+        "sitools.public" : "../client-public/js"
     },
 });
