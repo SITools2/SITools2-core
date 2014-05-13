@@ -21,10 +21,12 @@ package fr.cnes.sitools.security.authentication;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -68,6 +70,9 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   /** Users and Groups last modified */
   private long usersAndGroupsLastModified = 0;
 
+  /** Roles last modified */
+  private long rolesLastModified = 0;
+
   /** number of threads for scheduled executor */
   private int realmRefreshThreads;
 
@@ -106,15 +111,29 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
         @Override
         public void run() {
 
-          File file = new File(getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
-              + getSettings().getString("Starter.control-file"));
+          File usersAndGroupsFile = new File(getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
+              + getSettings().getString("Starter.USERS_GROUPS_EVENT_FILE"));
+          File rolesFile = new File(getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
+              + getSettings().getString("Starter.ROLES_EVENT_FILE"));
 
-          if (file.lastModified() > usersAndGroupsLastModified) {
-            System.out.println("reload cache for memory realm !");
+          if (usersAndGroupsFile.lastModified() > usersAndGroupsLastModified) {
+            System.out.println("event detected : refresh users and groups in memory realm");
             refreshUsersAndGroups();
-            /*TODO refresh role mapping e.g. refreshRoleMappings(roleStore); */
-            usersAndGroupsLastModified = file.lastModified();
+            usersAndGroupsLastModified = usersAndGroupsFile.lastModified();
           }
+
+          if (rolesFile.lastModified() > rolesLastModified) {
+            System.out.println("event detected : refresh role mappings in memory realm");
+
+            SitoolsStore<fr.cnes.sitools.role.model.Role> rolesStore = getStoreRoles();
+
+            for (fr.cnes.sitools.role.model.Role role : rolesStore.getList()) {
+              refreshRoleMappings(role);
+            }
+
+            rolesLastModified = rolesFile.lastModified();
+          }
+
         }
       }, 0, this.realmRefreshPeriod, TimeUnit.SECONDS);
 
@@ -440,7 +459,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
 
     try {
       String fileUrl = getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
-          + getSettings().getString("Starter.control-file");
+          + getSettings().getString("Starter.USERS_GROUPS_EVENT_FILE");
       File file = new File(fileUrl);
       Files.touch(file);
 
@@ -449,7 +468,27 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     catch (IOException e) {
       e.printStackTrace();
     }
-    
+
+  }
+
+  /**
+   * updateRolesLastModified
+   */
+  @Override
+  public synchronized void updateRolesLastModified() {
+
+    try {
+      String fileUrl = getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
+          + getSettings().getString("Starter.ROLES_EVENT_FILE");
+      File file = new File(fileUrl);
+      Files.touch(file);
+
+      setRolesLastModified(file.lastModified());
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+
   }
 
   /**
@@ -653,6 +692,27 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
    */
   public void setUsersAndGroupsLastModified(long usersAndGroupsLastModified) {
     this.usersAndGroupsLastModified = usersAndGroupsLastModified;
+  }
+
+  /**
+   * Get the roles control file last modified value
+   * 
+   * @return rolesLastModified, the long value representing the time the control file was last modified, measured in
+   *         milliseconds since the epoch (00:00:00 GMT, January 1, 1970)
+   */
+  public long getRolesLastModified() {
+    return rolesLastModified;
+  }
+
+  /**
+   * Sets the roles last modified value
+   * 
+   * @param rolesLastModified
+   *          , the long value representing the time the control file was last modified, measured in milliseconds since
+   *          the epoch (00:00:00 GMT, January 1, 1970)
+   */
+  public void setRolesLastModified(long rolesLastModified) {
+    this.rolesLastModified = rolesLastModified;
   }
 
   /**

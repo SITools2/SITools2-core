@@ -114,6 +114,7 @@ public class UserTrigger extends TriggerResource {
       // update realm
       realm.removeUser(userId);
       realm.updateUsersAndGroupsLastModified();
+      realm.updateRolesLastModified();
 
       // delete user storage
       Request reqDELETE = new Request(Method.DELETE, RIAPUtils.getRiapBase()

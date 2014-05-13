@@ -428,10 +428,15 @@ public abstract class SitoolsRealm extends Realm {
   public abstract void refreshUsersAndGroups();
   
   /**
-   *  Update realm last modified information 
+   *  Update users and groups last modified information 
    */
   public abstract void updateUsersAndGroupsLastModified();
-
+  
+  /**
+   *  Update roles last modified information 
+   */
+  public abstract void updateRolesLastModified();
+  
   /**
    * Verifiers can call this event after the verification is done
    * 
@@ -451,5 +456,7 @@ public abstract class SitoolsRealm extends Realm {
   public SitoolsSettings getSettings() {
     return settings;
   }
+
+
 
 }

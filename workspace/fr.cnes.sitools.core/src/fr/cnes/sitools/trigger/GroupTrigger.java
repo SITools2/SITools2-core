@@ -76,6 +76,7 @@ public class GroupTrigger extends TriggerResource {
 
       realm.removeGroup(groupName);
       realm.updateUsersAndGroupsLastModified();
+      realm.updateRolesLastModified();
     }
 
   }
