@@ -19,7 +19,7 @@ Ext.define('sitools.user.controller.SitoolsController', {
 
     extend : 'Ext.app.Controller',
 
-    stores : [ 'ProjectStore', 'UserStore' ],
+    stores : [ 'ProjectStore' ],
 
     init : function () {
         var me = this, desktopCfg;
@@ -39,21 +39,6 @@ Ext.define('sitools.user.controller.SitoolsController', {
                         this.getApplication().noticeProjectLoaded();
                     }
         });
-        
-        this.loadUser();
-    },
-    
-    loadUser : function () {
-        var storeUser = this.getStore("UserStore");
-        
-        var url = sitools.user.utils.Project.getSitoolsAttachementForUsers();
-        storeUser.setCustomUrl(loadUrl.get('APP_URL') + loadUrl.get('APP_USER_ROLE_URL'));
-        storeUser.load({
-            callback: function(records, operation, success) {
-                // the operation object
-                // contains all of the details of the load operation
-                console.log(records);
-            }
-        });
     }
+    
 });

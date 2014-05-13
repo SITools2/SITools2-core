@@ -16,7 +16,8 @@ Ext.define("sitools.user.utils.Project", {
         sitoolsAttachementForUsers : null,
         modules : null,
         links : null,
-        htmlHeader : null
+        htmlHeader : null,
+        languages : null
     },
     
     init : function (callback, scope) {
@@ -33,7 +34,7 @@ Ext.define("sitools.user.utils.Project", {
             url : loadUrl.get('APP_URL') + '/client-user/tmp/langues.json',
             success : function (response) {
                 var json = Ext.decode(response.responseText);
-                this.languages = json.data;
+                this.languages.setLanguages(json.data);
             },
             failure : function (response) {
                 Ext.Msg.alert('Status', i18n.get('warning.serverError'));
@@ -43,6 +44,7 @@ Ext.define("sitools.user.utils.Project", {
             }
         });
     },
+    
     getUserRoles : function (cb) {
         if (Ext.isEmpty(userLogin)) {
             cb.call();
@@ -181,3 +183,5 @@ Ext.define("sitools.user.utils.Project", {
         });
     }
 });
+
+Project = sitools.user.utils.Project;

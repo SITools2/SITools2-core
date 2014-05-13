@@ -44,7 +44,13 @@ Ext.define('sitools.public.utils.i18n', {
                 Ext.callback(callback, scope);
             },
             failure : function (response, opts) {
-                Ext.Msg.alert("Error! Can't read i18n file with url :" + url);
+                if (!opts.loopOnFailure) {
+                    Ext.Msg.alert("Error! Can't read i18n file with url :" + url);
+                } else {
+                    locale.restoreDefault();
+                    url = loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/i18n/' + locale.getLocale() + '/gui.properties';
+                    i18n.load(url, callback, scope);
+                }
             }
         });
 

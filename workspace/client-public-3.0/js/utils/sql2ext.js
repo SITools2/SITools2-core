@@ -22,16 +22,15 @@ Ext.namespace('sitools.public.utils');
 Ext.define('sitools.public.utils.sql2ext', {
     singleton : true,
     map : [],
-    load : function (url) {
+    load : function (url, callback, scope) {
 
         var i18nRef = this;
         Ext.Ajax.request({
             method : 'GET',
             url : url,
-            // params:'formLogin', using autorization instead
             success : function (response, opts) {
-//                ann(response.responseText, "no response is sent");
                 i18nRef.map = i18nRef.transformsPropertiesToMap(response.responseText);
+                Ext.callback(callback, scope);
             },
             failure : function (response, opts) {
                 alert("Error! Can't read i18n file with url :" + url);
