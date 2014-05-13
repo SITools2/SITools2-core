@@ -52,6 +52,7 @@
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-portal/resources/css/portal.css">
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css">
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css"></link>
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/feed.css"></link>
 	
 	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
 	
@@ -60,9 +61,14 @@
 	
 	<script src="${appUrl}/client-public/js/utils/def.js"></script>
 	<script src="${appUrl}/client-public/js/utils/id.js"></script>
+	<script src="${appUrl}/client-public/js/widget/vtype.js"></script>
 
    
 	<link rel="shortcut icon" href="${appUrl}/common/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
+	
+	<script type="text/javascript">
+		Ext.Loader.setConfig('disableCaching', false);
+	</script>
 	
   </head>
 
