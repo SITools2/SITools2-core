@@ -60,10 +60,12 @@ public class GroupTrigger extends TriggerResource {
 
     if (notification.getEvent().equals("GROUP_CREATED")) {
       realm.refreshUsersAndGroups();
+      realm.updateUsersAndGroupsLastModified();
     }
 
     if (notification.getEvent().equals("GROUP_UPDATED")) {
       realm.refreshUsersAndGroups();
+      realm.updateUsersAndGroupsLastModified();
     }
 
     if (notification.getEvent().equals("GROUP_DELETED")) {
@@ -73,6 +75,7 @@ public class GroupTrigger extends TriggerResource {
       RIAPUtils.handle(url, new EmptyRepresentation(), Method.PUT, MediaType.APPLICATION_JAVA_OBJECT, getContext());
 
       realm.removeGroup(groupName);
+      realm.updateUsersAndGroupsLastModified();
     }
 
   }

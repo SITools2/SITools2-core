@@ -426,6 +426,11 @@ public abstract class SitoolsRealm extends Realm {
    * </p>
    */
   public abstract void refreshUsersAndGroups();
+  
+  /**
+   *  Update realm last modified information 
+   */
+  public abstract void updateUsersAndGroupsLastModified();
 
   /**
    * Verifiers can call this event after the verification is done

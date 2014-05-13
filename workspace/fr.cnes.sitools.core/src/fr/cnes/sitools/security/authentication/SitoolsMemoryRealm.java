@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
@@ -113,6 +112,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
           if (file.lastModified() > usersAndGroupsLastModified) {
             System.out.println("reload cache for memory realm !");
             refreshUsersAndGroups();
+            /*TODO refresh role mapping e.g. refreshRoleMappings(roleStore); */
             usersAndGroupsLastModified = file.lastModified();
           }
         }
@@ -433,6 +433,26 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   }
 
   /**
+   * updateUsersAndGroupsLastModified
+   */
+  @Override
+  public synchronized void updateUsersAndGroupsLastModified() {
+
+    try {
+      String fileUrl = getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
+          + getSettings().getString("Starter.control-file");
+      File file = new File(fileUrl);
+      Files.touch(file);
+
+      setUsersAndGroupsLastModified(file.lastModified());
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+  }
+
+  /**
    * Refresh users / groups
    */
   @Override
@@ -453,6 +473,7 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
 
     // rebuild authorisations ...
     build();
+
   }
 
   /**
@@ -613,26 +634,61 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     return storeUsersAndGroups;
   }
 
+  /**
+   * Get the users and groups control file last modified value
+   * 
+   * @return usersAndGroupsLastModified, the long value representing the time the control file was last modified,
+   *         measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970)
+   */
   public long getUsersAndGroupsLastModified() {
     return usersAndGroupsLastModified;
   }
 
+  /**
+   * Sets the users and groups last modified value
+   * 
+   * @param usersAndGroupsLastModified
+   *          , the long value representing the time the control file was last modified, measured in milliseconds since
+   *          the epoch (00:00:00 GMT, January 1, 1970)
+   */
   public void setUsersAndGroupsLastModified(long usersAndGroupsLastModified) {
     this.usersAndGroupsLastModified = usersAndGroupsLastModified;
   }
 
+  /**
+   * Get the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   * 
+   * @return realmRefreshThreads
+   */
   public int getRealmRefreshThreads() {
     return realmRefreshThreads;
   }
 
+  /**
+   * Sets the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   * 
+   * @param realmRefreshThreads
+   *          , the number of threads to keep in the pool, even if they are idle
+   */
   public void setRealmRefreshThreads(int realmRefreshThreads) {
     this.realmRefreshThreads = realmRefreshThreads;
   }
 
+  /**
+   * Get the period between successive executions of the ScheduledThreadPoolExecutor
+   * 
+   * @return realmRefreshPeriod
+   */
   public int getRealmRefreshPeriod() {
     return realmRefreshPeriod;
   }
 
+  /**
+   * Sets the period between successive executions of the ScheduledThreadPoolExecutor
+   * 
+   * @param realmRefreshPeriod
+   *          , the period between successive executions (in a time unit to be specified)
+   */
   public void setRealmRefreshPeriod(int realmRefreshPeriod) {
     this.realmRefreshPeriod = realmRefreshPeriod;
   }
