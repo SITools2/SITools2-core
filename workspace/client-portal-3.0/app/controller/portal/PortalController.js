@@ -204,10 +204,11 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
         var authorized = data.authorized;
         var maintenance = data.maintenance;
         var maintenanceText = data.maintenanceText;
+        var urlProject = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') +  '/index.html?project=' +projectName;
         
         if (authorized) {
             if (!maintenance) {
-                window.open(projectName + "/project-index.html");
+                window.open(urlProject);
             }
             else {
                 var alertWindow = Ext.create('Ext.window.Window', {
@@ -235,7 +236,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
                 unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
                 handler : function () {
                     if (!maintenance) {
-                        window.open(projectName + "/project-index.html");
+                        window.open(urlProject);
                     }
                 }
             });
@@ -255,7 +256,6 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
         });
         
         win.show();
-        
     }
     
 });
