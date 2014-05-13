@@ -161,5 +161,9 @@ Ext.define('sitools.public.utils.LoginUtils', {
     delegateLoginLogout : function (urlTemplate) {
         var url = urlTemplate.replace("{goto}", document.URL);
         window.open(url, "_self");
+    },
+    
+    getUserLogin : function () {
+        return Ext.util.Cookies.get('userLogin');
     }
 });

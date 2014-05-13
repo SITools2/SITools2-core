@@ -32,7 +32,7 @@ Ext.define('sitools.public.utils.i18n', {
      * @param callback No args function that will be executed
      * @returns void
      */
-    load : function (url, callback) {
+    load : function (url, callback, scope) {
     
         var i18nRef = this;
         Ext.Ajax.request({
@@ -41,7 +41,7 @@ Ext.define('sitools.public.utils.i18n', {
             // params:'formLogin', using autorization instead
             success : function (response, opts) {
                 i18nRef.map = i18nRef.transformsPropertiesToMap(response.responseText);
-                callback();
+                Ext.callback(callback, scope);
             },
             failure : function (response, opts) {
                 Ext.Msg.alert("Error! Can't read i18n file with url :" + url);
