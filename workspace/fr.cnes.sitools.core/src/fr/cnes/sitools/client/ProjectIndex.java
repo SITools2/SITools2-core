@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -81,7 +81,10 @@ public final class ProjectIndex extends SitoolsResource {
   @Override
   public void doInit() {
     super.doInit();
-    this.projectName = (String) this.getRequest().getAttributes().get("projectName");
+    this.projectName = (String) this.getRequest().getResourceRef().getQueryAsForm().getFirstValue("project", null);
+    if (this.projectName == null) {
+      throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST, "project parameter mandatory");
+    }
     setNegotiated(false);
     getVariants().add(new Variant(MediaType.TEXT_HTML));
     getVariants().add(new Variant(MediaType.ALL));
@@ -98,7 +101,7 @@ public final class ProjectIndex extends SitoolsResource {
   @Override
   public Representation get() {
 
-    getApplication().getLogger().info("get portalIndex");
+    getApplication().getLogger().info("get projectIndex");
 
     // DTO to store the informations for the index.html page
     ProjectIndexDTO pid = new ProjectIndexDTO();
