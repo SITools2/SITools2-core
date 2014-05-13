@@ -1,0 +1,65 @@
+/***************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+.sitools_footer_build_by {
+	text-align: center;
+	margin : 0px 10px 10px 10px;
+	padding-bottom: 10px;
+}
+
+.sitools_footer_build_by_textdiv {
+	color : white;
+}
+
+.sitools_footer_right{
+	text-align: center;
+	font-size: 0.9em;	
+}
+
+.sitools_footer_right a:focus, 
+.sitools_footer_right a:hover,
+.sitools_footer_right a:active,
+.sitools_footer_right a:visited,
+.sitools_footer_right a:link {
+	text-decoration: none !important;
+	color : white;
+}
+
+.sitools_footer_right a:hover {
+	color: #0081C3 !important;
+}
+
+.sitools_footer {
+	background: url(../../../client-public/res/images/bottom_cnes2.png) !important;
+	background-size: 100% 100%;
+}
+
+.no-background {
+	background-color: transparent !important;
+}
+
+/* .sitools_footer {
+background: #ffffff; Old browsers
+background: -moz-linear-gradient(-45deg,  #ffffff 0%, #050301 46%, #356aa0 100%); FF3.6+
+background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#ffffff), color-stop(46%,#050301), color-stop(100%,#356aa0)); Chrome,Safari4+
+background: -webkit-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); Chrome10+,Safari5.1+
+background: -o-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); Opera 11.10+
+background: -ms-linear-gradient(-45deg,  #ffffff 0%,#050301 46%,#356aa0 100%); IE10+
+background: linear-gradient(135deg,  #ffffff 0%,#050301 46%,#356aa0 100%); W3C
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#356aa0',GradientType=1 ); IE6-9 fallback on horizontal gradient
+} */

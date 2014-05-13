@@ -12,7 +12,7 @@ Ext.define('sitools.user.Application', {
 
     extend : 'Ext.app.Application',
 
-    controllers : ["SitoolsController", "DesktopController", 'header.HeaderController' ],
+    controllers : ["SitoolsController", "DesktopController", 'header.HeaderController', 'footer.FooterController' ],
 
     isReady : false,
     modules : null,

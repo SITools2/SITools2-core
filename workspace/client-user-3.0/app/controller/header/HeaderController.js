@@ -54,7 +54,6 @@ Ext.define("sitools.user.controller.header.HeaderController", {
         var project = Ext.getStore('ProjectStore').getAt(0);
         Ext.create('sitools.user.view.header.Header', {
             renderTo : "x-headers",
-            id : "headersCompId",
             htmlContent : project.get('htmlHeader'),
             modules : project.modules(),
             listeners : {

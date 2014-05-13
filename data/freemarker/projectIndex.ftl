@@ -28,6 +28,7 @@
     <!--<link rel="stylesheet" type="text/css" href="${appUrl}/cots/extjs/resources/css/ext-all.css">-->
 	
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/desktop.css">
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/footer.css">
 	<!--
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/statusbar.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/notification/css/Notification.css">

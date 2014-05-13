@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -145,6 +145,7 @@ public final class ProjectExpositionResource extends AbstractProjectResource {
     current.setHtmlHeader(project.getHtmlHeader());
     current.setMaintenanceText(project.getMaintenanceText());
     current.setMaintenance(project.isMaintenance());
+    current.setLinks(project.getLinks());
 
     if (project.getModules() != null) {
       List<ProjectModule> projectMod = new ArrayList<ProjectModule>();
