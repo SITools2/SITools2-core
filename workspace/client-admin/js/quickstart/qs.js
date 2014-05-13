@@ -188,7 +188,6 @@ Ext.define('sitools.admin.quickStart.qs', {
             region : 'center',
             id : "startPanel",
             layout : 'fit',
-//            autoLoad : "/sitools/client-admin/res/html/quickStart/qs-start.html"
             bodyCls : 'quickStart',
             items : [this.currentPanel],
             bbar : this.stepsBtn
@@ -218,8 +217,9 @@ Ext.define('sitools.admin.quickStart.qs', {
             var xtype = "sitools.admin.quickStart." + btn.value;
             var step = eval(xtype);
             
-            this.currentPanel =  new step();
-            this.currentPanel.qs = this;
+            this.currentPanel =  new step({
+                qs : this
+            });
             
             this.welcomePanel.removeAll();
             this.welcomePanel.add(this.currentPanel);
@@ -231,7 +231,7 @@ Ext.define('sitools.admin.quickStart.qs', {
         var containerP = mainPanel.down('[name=containerPanel]');
         var tree = treePanel.items.items[0];
         
-        var node = tree.getNodeById(nodeId);
+        var node = tree.getStore().getNodeById(nodeId);
         tree.getSelectionModel().select(node);
         
         containerP.removeAll();

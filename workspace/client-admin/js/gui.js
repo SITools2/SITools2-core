@@ -38,7 +38,7 @@ function onMenuSelect(but) {
         return;
     }
     if (but.getItemId() == 'menu_logout') {
-        utils_logout();
+        sitools.public.utils.Logout.logout();
     } else {
         Ext.Msg.alert('Click on Menu: ', but.getItemId());
     }

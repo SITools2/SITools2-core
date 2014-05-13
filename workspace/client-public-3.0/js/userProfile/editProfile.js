@@ -23,14 +23,20 @@ Ext.namespace('sitools.public.userProfile');
 Ext.define('sitools.public.userProfile.editProfile', {
     extend : 'Ext.panel.Panel',
 	padding : 5,
-	layout : 'fit', 
+	layout : 'fit',
+	border : false,
+    bodyBorder : false,
 
     initComponent : function () {
         
-        this.bbar = Ext.create('sitools.public.widget.StatusBar', {
-            text : i18n.get('label.ready'),
-            iconCls : 'x-status-valid'
-        });
+//        this.bbar = {
+//            items : ['->', {
+//                text : i18n.get('label.saveEdit'),
+//                x : 30,
+//                handler : this.saveEdit,
+//                scope : this
+//            }]
+//        };
 
         var storeProperties = Ext.create('Ext.data.JsonStore', {
             fields : [{
@@ -72,7 +78,7 @@ Ext.define('sitools.public.userProfile.editProfile', {
 
         this.gridProperties = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.properties'),
-            height : 200,
+            height : 150,
             padding : 3,
             autoScroll : true,
             clicksToEdit : 1,
@@ -160,18 +166,19 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 allowBlank : false,
                 validationEvent : '',
                 anchor : '90%'
-            }, this.gridProperties],
-            buttons : {
-                xtype : 'toolbar',
-                style : 'background-color:white;',
-                items :[{
-                    text : i18n.get('label.saveEdit'),
-                    x : 30,
-                    handler : this.saveEdit,
-                    scope : this
-                }]
-            }
+            }, this.gridProperties]
         }];
+        
+        this.buttons = {
+            xtype : 'toolbar',
+            style : 'background-color:white;',
+            items : [{
+                text : i18n.get('label.saveEdit'),
+                x : 30,
+                handler : this.saveEdit,
+                scope : this
+            }]
+        };
         
         this.callParent(arguments);
     },
@@ -180,10 +187,6 @@ Ext.define('sitools.public.userProfile.editProfile', {
         var f = this.down('form').getForm();
 
         if (!f.isValid()) {
-            this.down('statusbar').setStatus({
-                text : i18n.get('warning.checkForm'),
-                iconCls : 'x-status-error'
-            });
             return;
         }
 
@@ -199,9 +202,6 @@ Ext.define('sitools.public.userProfile.editProfile', {
 
         var changePwd = !Ext.isEmpty(putObject.secret);
         
-        this.body.mask();
-        this.down('statusbar').showBusy();
-
         Ext.Ajax.request({
             url : this.url,
             method : 'PUT',
@@ -212,42 +212,29 @@ Ext.define('sitools.public.userProfile.editProfile', {
                 if (json.success) {
                     this.ownerCt.close();
                     
-                    var notify = new Ext.ux.Notification({
-                        iconCls : 'x-icon-information',
-                        title : i18n.get('label.information'),
-                        html : json.message,
-                        autoDestroy : true,
-                        hideDelay : 1000
-                    });
+//                    var notify = new Ext.ux.Notification({
+//                        iconCls : 'x-icon-information',
+//                        title : i18n.get('label.information'),
+//                        html : json.message,
+//                        autoDestroy : true,
+//                        hideDelay : 1000
+//                    });
                     if (changePwd){ 
                         sitools.public.utils.LoginUtils.logout();
                     }
-                    notify.show(document);
-                } else {
-                    this.getEl().unmask();
-                    this.down('statusbar').setStatus({
-                        text : json.message,
-                        iconCls : 'x-status-error'
-                    });
-
+//                    notify.show(document);
                 }
                 if (this.handler !== null && this.handler !== undefined) {
                     this.handler.call(this.scope || this, putObject);
                 }
             },
             failure : function (response, opts) {
-                var txt;
                 if (response.status == 200) {
                     var ret = Ext.decode(response.responseText).message;
                     txt = i18n.get('msg.error') + ': ' + ret;
                 } else {
                     txt = i18n.get('warning.serverError') + ': ' + response.statusText;
                 }
-                this.getEl().unmask();
-                this.down('statusbar').setStatus({
-                    text : txt,
-                    iconCls : 'x-status-error'
-                });
             }
         });
     },

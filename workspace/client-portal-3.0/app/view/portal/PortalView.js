@@ -155,11 +155,11 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                     left : 10
                 },
                 html : i18n.get('label.welcome') + ' <b>' + user + '</b>'
-            }, '-', versionButton, '-', {
+            }, versionButton, '-', {
                 text : i18n.get('label.langues'),
                 cls : 'x-custom-button-color',
                 menu : menuLangues
-            }, '-', editProfileButton, '-', menuLoginLogout ]
+            }, '-', editProfileButton, (editProfileButton.hidden) ? null : '-', menuLoginLogout ]
         };
         
         /***************************************************************************
@@ -211,13 +211,13 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                         ' sitools-maintenance-portal',
                     '</tpl>',
                     '"', 
-                '</tpl>', 
+                '</tpl>',
                 '<tpl if="authorized == false">',
                     'class="project projectUnauthorized"',
                 '</tpl>', 
                 '>', 
                 '<img width="80" height="80" src="{image}" />', '<strong>{name}</strong>',
-                '<span>{description} </span>', '</li>', '</tpl>', '</ul>', 
+                '', '</li>', '</tpl>', '</ul>', 
                 {
                 compiled : true, 
                 disableFormats : true, 
@@ -230,12 +230,37 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             overItemCls : 'project-hover',
             mode : 'SINGLE',
             multiSelect : false,
-            autoScroll : true
+            autoScroll : true,
+            listeners : {
+                scope : this,
+                render : function (view) {
+                    view.tip = Ext.create('Ext.tip.ToolTip', {
+                        target: view.el,
+                        delegate: view.itemSelector,
+                        anchor : 'top',
+                        dismissDelay: 0,
+                        showDelay: 0,
+                        renderTo: Ext.getBody(),
+                        cls : 'x-custom-button-color',
+                        listeners:{
+                            beforeshow: function updateTipBody(tip) {
+                                var description = view.getRecord(tip.triggerElement).get('description');
+                                if (Ext.isEmpty(description)) {
+                                    return false;
+                                }
+                                tip.update(
+                                        view.getRecord(tip.triggerElement).get('description')
+                                );
+                            }
+                        }
+                    });
+                }
+            }
         });
         
         var portletProjetPublic = Ext.create('sitools.clientportal.view.portal.Portlet', {
 //            id : ID.PORTLET.PROJET,
-            title : i18n.get('label.portletProjetTitle'),
+            title : i18n.get('label.portletProjetPublicTitle'),
             height : 400,
             items : [ dataViewProjectPublic ],
             autoScroll : true
@@ -264,7 +289,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             
             portletProjetPrivate = Ext.create('sitools.clientportal.view.portal.Portlet', {
 //                id : ID.PORTLET.PROJET,
-                title : i18n.get('label.portletProjetTitle'),
+                title : i18n.get('label.portletProjetPrivateTitle'),
                 height : 400,
                 items : [ dataViewProjectPrivate ],
                 autoScroll : true
@@ -273,7 +298,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
         }
 
         /***************************************************************************
-         * Creation du portlet d'affichage des flux de l'archive
+         * Creation du portlet d'affichage des flux rss/atom
          */
 
         var panelFluxPortal = Ext.create('sitools.clientportal.view.portal.FeedsReaderPortal', {});
@@ -287,82 +312,6 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             items : [ panelFluxPortal ]
         };
 
-        /***************************************************************************
-         * Creation du portlet Open Search
-         */
-        
-//        var osPanel = Ext.create('sitools.component.users.portal.portalOpensearch', {
-//            dataUrl : loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL'),
-//            suggest : false,
-//            pagging : false
-//            
-//        });
-//       
-//        var portletRecherche = Ext.create('sitools.clientportal.view.portal.Portlet', {
-//            collapsed : true, 
-//            bodyCls : 'portletRecherche',
-//            id : ID.PORTLET.RECHERCHE,
-//            title : i18n.get('label.portletRechercheTitle'),        
-//            items : [ osPanel ],
-//            layout: "fit", 
-//            height : 400
-//        });
-
-        /***************************************************************************
-         * Creation des autres composants du tabPanel
-         */
-
-        var helpPanel = Ext.create('Ext.container.Container', {
-            id : 'helpPanelId',
-            title : i18n.get('label.helpTitle'),
-            autoScroll : true,
-             layout: 'fit',
-            defaults : {
-                padding : 30
-            },
-            items : [{
-                xtype : 'component',
-                autoEl: {
-                    tag: 'iframe',
-                    border : false,
-                    src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/res/html/" + locale.getLocale() + "/help.html"
-                }
-            }]
-        });
-
-        var linkPanel = Ext.create('Ext.container.Container', {
-            id : 'link',
-            title : i18n.get('label.linkTitle'),
-            autoScroll : true,
-            layout: 'fit',
-            defaults : {
-                padding : 30
-            },
-            items : [{
-                xtype : 'component',
-                autoEl: {
-                    tag: 'iframe',
-                    border : false,
-                    src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/res/html/" + locale.getLocale() + "/link.html"
-                }
-            }]
-        });
-
-        var contactPanel = Ext.create('Ext.container.Container', {
-            id : 'help',
-            title : i18n.get('label.contactTitle'),
-            autoScroll : true,
-            layout: 'fit',
-            items : [{
-                xtype : 'component',
-                autoEl: {
-                    tag: 'iframe',
-                    border : false,
-                    src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/res/html/" + locale.getLocale() + "/contact.html"
-                }
-            }]
-        });
-        
         var footerPanel = Ext.create('Ext.container.Container', {
             autoScroll : false,
             layout: 'fit',
@@ -376,7 +325,20 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                 }
             }]
         });
-
+        
+        Ext.create('Ext.fx.Animator', {
+            target: footerPanel,
+            duration: 2000,
+            keyframes: {
+                0 : {
+                    opacity : 0
+                },
+                100 : {
+                    opacity : 1
+                }
+            }
+        });
+        
         /***************************************************************************
          * Creation tabPanel Center qui contient le portal
          */
@@ -403,6 +365,33 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             }];
         }
         
+        var northPanel = Ext.create('Ext.Component', {
+            region : 'north',
+            title : i18n.get('label.freeText'),
+            autoScroll : false,
+            layout : 'fit',
+            height : 200,
+            margin : 10,
+            autoEl: {
+                tag: 'iframe',
+                border : false,
+                src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/resources/html/" + locale.getLocale() + "/freeText.html",
+            }
+        });
+        
+        Ext.create('Ext.fx.Animator', {
+            target: northPanel,
+            duration: 2000,
+            keyframes: {
+                0 : {
+                    opacity : 0
+                },
+                100 : {
+                    opacity : 1
+                }
+            }
+        });
+        
         var centerPanel = Ext.create('Ext.panel.Panel', {
             region : 'center',
             layout : 'border',
@@ -412,23 +401,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             bodyCls : 'bg-transparent-2',
             cls : 'box-shadow',
             margin : 10,
-            items : [{
-                region : 'north',
-                xtype : 'component',
-                title : i18n.get('label.freeText'),
-                autoScroll : false,
-                layout : 'fit',
-                height : 200,
-                margin : 10,
-//                defaults : {
-//                    padding : 30
-//                },
-                autoEl: {
-                    tag: 'iframe',
-                    border : false,
-                    src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/resources/html/" + locale.getLocale() + "/freeText.html",
-                }
-            }, {
+            items : [ northPanel, {
                 region : 'center',
                 baseCls : 'portalMainPanel',
                 xtype : 'portalpanel',
@@ -509,24 +482,6 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
         this.items = [ toolbar, centerPanel, southPanel ];
 
         this.callParent(arguments);
-    },
-    
-    onEditProfile : function (user, url) {
-        var win = Ext.create('Ext.window.Window', {
-            modal : true,
-            width : 400,
-            height : 405, 
-            resizable : false
-        });
-        
-        win.show();
-        
-        var edit = Ext.create('sitools.public.userProfile.editProfile', {
-            identifier : user,
-            url : url,
-            height : win.body.getHeight()
-        });
-        win.add(edit);
     }
 
 });

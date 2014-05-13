@@ -71,7 +71,7 @@ Ext.define('sitools.public.feedsReader.FeedItemDetails', {
                     '<div class="feed-article">',
                         '<tpl if="this.isDisplayable(imageUrl)">',
                             '<div class="feed-img">',
-                                '<img src="{imageUrl}" title="{title}" width="70" height="70"/>',
+                                '<img src="{imageUrl}" title="{title}" class="img-border" width="70" height="70"/>',
                             '</div>',
                         '</tpl>',
                         '<p class="feed-title"> {title} </p>',

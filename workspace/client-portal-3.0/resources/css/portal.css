@@ -85,13 +85,13 @@
 
 .projectDataView ul li {
 	float: left;
-	padding: 5px 10px;
+	padding: 10px 10px;
 	margin: 5px;
 	text-align: center;
 	line-height: 1.25em;
 	color: #333;
 	font-family: "Helvetica Neue", sans-serif;
-	height: 145px;
+	height: 122px;
 	width: 122px;
 	overflow: hidden;
 	cursor: pointer;
@@ -124,7 +124,7 @@
 
 .projectUnauthorized {
 	background-image: url("/sitools/common/res/images/icons/cadenas.png");
-	background-position: left top;
+	background-position: left bottom;
 	background-repeat: no-repeat;
 }
 
@@ -179,4 +179,9 @@
 
 .x-custom-button-color .x-btn-inner {
 	color : #F0F0F0 !important;
+}
+
+.x-toolbar-separator-horizontal {
+	border-left-color: #9CB5C7;
+	border-right-color: #9CB5C7;
 }

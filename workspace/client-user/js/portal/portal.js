@@ -195,8 +195,8 @@ sitools.Portal = function (projectsList, languages, preferences) {
 			name : project.name, 
 			description : project.description, 
 			image : project.image.url || SITOOLS_DEFAULT_PROJECT_IMAGE_URL, 
-			authorized : project.authorized, 
-			maintenance : project.maintenance, 
+			authorized : project.authorized,
+			maintenance : project.maintenance,
 			maintenanceText : project.maintenanceText
 		});
        // var record = new Ext.data.Record([ project.id, project.name, project.description, project.image.url, project.authorized ]);

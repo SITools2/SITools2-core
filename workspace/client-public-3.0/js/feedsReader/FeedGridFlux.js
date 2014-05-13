@@ -59,7 +59,8 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
 
         this.btnSubscribeRss = Ext.create('Ext.button.Button', {
             text : i18n.get('label.subscribeRss'),
-            cls : 'services-toolbar-btn',
+//            cls : 'services-toolbar-btn',
+            cls : 'x-custom-button-color',
             icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/rss.png',
             handler : this.subscribeRss
          });

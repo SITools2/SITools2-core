@@ -908,7 +908,7 @@ Ext.override(Ext.layout.BorderLayout.Region, {
 
 });
 
-Ext.ns("sitools.user");
+Ext.namespace('sitools.public.utils');
 
 /**
  * A méthod call when click on dataset Icon. Request the dataset, and open a window depending on type

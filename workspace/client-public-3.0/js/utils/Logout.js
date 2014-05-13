@@ -17,18 +17,24 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*global Ext,window*/
-function utils_logout(reload) {
-    if (Ext.isEmpty(reload)) {
-        reload = true;
+
+Ext.namespace('sitools.public.utils');
+
+Ext.define('sitools.public.utils.Logout', {
+    singleton : true,
+    logout : function (reload) {
+        if (Ext.isEmpty(reload)) {
+            reload = true;
+        }
+        Ext.util.Cookies.set('userLogin', '');
+        Ext.util.Cookies.clear('userLogin');
+        Ext.util.Cookies.set('hashCode', '');
+        localStorage.removeItem("userSessionTimeOut");
+        Ext.destroyMembers(Ext.Ajax.defaultHeaders, "Authorization");
+        if (reload) {
+            window.location.reload();
+        }   
     }
-    Ext.util.Cookies.set('userLogin', '');
-    Ext.util.Cookies.clear('userLogin');
-    Ext.util.Cookies.set('hashCode', '');
-    var date = new Date();
-    localStorage.removeItem("userSessionTimeOut");
-    Ext.destroyMembers(Ext.Ajax.defaultHeaders, "Authorization");
-    if (reload) {
-        window.location.reload();
-    }	
-	    
-}
+});
+
+utils_logout = sitools.public.utils.logout;
