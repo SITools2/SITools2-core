@@ -19,7 +19,8 @@
 Ext.namespace('sitools.public.utils');
 
 Ext.define('sitools.public.utils.LoginUtils', {
-    requires : ['sitools.public.userProfile.Login'],
+    requires : ['sitools.public.userProfile.Login',
+                'sitools.public.utils.Logout'],
     singleton : true,
     connect : function (config) {
         var url = loadUrl.get('APP_URL') + "/login-details";

@@ -197,7 +197,7 @@ Ext.define('sitools.user.view.header.ButtonsTaskBar', {
      * @returns
      */
     showProfil : function (b, e) {
-        var win = new sitools.user.component.entete.UserProfile({
+        var win = new sitools.user.view.header.UserProfile({
             buttonId : this.profileButtonId
         });
         win.show();

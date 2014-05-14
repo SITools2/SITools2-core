@@ -30,22 +30,69 @@ Ext.define("sitools.user.controller.header.HeaderController", {
     
     extend : 'Ext.app.Controller',
     
-    views : ['header.Header'],
+    views : ['header.Header', 
+             'header.UserProfile'],
     
     heightNormalMode : 0, 
-    heightMaximizeDesktopMode : 0, 
+    heightMaximizeDesktopMode : 0,
+    
+    config : {
+        HeaderView : null,
+        UserProfileView : null
+    },
     
     init : function () {
         
         this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
         
+            },
+
+			'userProfileWindow' : {
+                beforerender : function (usrProfileWindow) {
+                    usrProfileWindow.x = Ext.getBody().getWidth() - usrProfileWindow.width;
+                    usrProfileWindow.y = this.getEnteteEl().getHeight(); 
+                }
+            },
+            
+            'userProfileWindow button[name="usrProfileLogout"]' : {
+                click : function (btn) {
+                    sitools.public.utils.LoginUtils.logout();
+                }
+            },
+            
+            'userProfileWindow button[name="usrProfileLogin"]' : {
+                click : function (btn) {
+                    sitools.public.utils.LoginUtils.connect({
+                        closable : true,
+                        url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
+                        register : loadUrl.get('APP_URL') + '/inscriptions/user',
+                        reset : loadUrl.get('APP_URL') + '/lostPassword',
+                        unblacklist : loadUrl.get('APP_URL') + '/unblacklist'                    
+                    });
+                }
+            },
+            
+            'userProfileWindow button[name="usrProfileRegister"]' : {
+                click : function (btn) {
+                    var register = new sitools.public.userProfile.Register({
+                        closable : true,
+                        url : loadUrl.get('APP_URL')+ "/inscriptions/user",
+                        reset : loadUrl.get('APP_URL') + '/lostPassword',
+                        unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
+                        login : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login'
+                    });
+                    register.show();
+                }
+            }
+        });
         this.callParent(arguments);
     },
     
     
     onProjectLoaded : function () {
-        var project = Ext.getStore('ProjectStore').getAt(0);
-        Ext.create('sitools.user.view.header.Header', {
+        var project = Ext.getStore('ProjectStore').getProject();
+        
+        this.HeaderView = this.getView('header.Header').create({
             renderTo : "x-headers",
             htmlContent : project.get('htmlHeader'),
             modules : project.modules(),
@@ -55,5 +102,9 @@ Ext.define("sitools.user.controller.header.HeaderController", {
                 }
             }
         });
-    }    
+    },
+
+	getEnteteEl : function () {
+		return this.getHeaderView().getEl();
+	}
 });

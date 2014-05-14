@@ -31,5 +31,9 @@ Ext.define('sitools.user.store.ProjectStore', {
     
     setCustomUrl : function (url) {
         this.getProxy().url = url;
+    },
+    
+    getProject : function () {
+        return this.getAt(0);
     }
 });

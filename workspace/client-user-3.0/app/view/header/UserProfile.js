@@ -28,23 +28,28 @@ Ext.namespace('sitools.user.view.header');
  */
 Ext.define('sitools.user.view.header.UserProfile', {
     extend : 'Ext.window.Window',
+    alias: 'widget.userProfileWindow',
+    
     width : 450,
+    id : "userProfileWindow", 
     header : false,
+    stateful : false, 
+    shadow : false,
+    hideBorders : true, 
+    closable : false, 
+    resizable : false, 
+    border : false, 
+    bodyBorder : false, 
     
     initComponent : function () {
         
         var UserStore = Ext.data.StoreManager.get('UserStore');
+        this.user = UserStore.getAt(0);
         
-        this.user = UserStore.getAt(0) || {
-            firstName : "public", 
-            identifier : "public", 
-            email : "&nbsp;"
-        };
+        this.userPublic = this.user.get('identifier');
+        var userLanguage = locale.getLocale(), userLargeIcon;
         
-        this.userPublic = this.user.get('identifier') === "public";
-        var userLanguage = SitoolsDesk.app.language, userLargeIcon;
-        
-        Ext.each(projectGlobal.languages, function (language) {
+        Ext.each(locale.getLanguages(), function (language) {
             if (userLanguage === language.localName) {
                 userLargeIcon = language.largeIcon;
             }
@@ -54,46 +59,66 @@ Ext.define('sitools.user.view.header.UserProfile', {
         var userTasksRunning = 0;
         var userTotalTasks = 0;
         var data = [{
+            xtype : 'button',
             identifier : "language", 
             name: i18n.get("label.langues"), 
-            url : userLargeIcon, 
+            icon : userLargeIcon,
+            iconCls : 'usrProfileIcon',
             action : "changeLanguage"
         }];
         
-        this.height =  this.user.identifier === "public" ? 140 : 220; 
+        this.height =  this.user.get('identifier') === "public" ? 140 : 220;
+        this.layout = {
+            type : this.user.get('identifier') === "public" ? 'hbox' : 'vbox',
+            align : "stretch"
+        };
         
-        if (this.user.identifier !== "public") {
+//        this.x = Ext.getBody().getWidth() - this.width;
+//        this.y = SitoolsDesk.getEnteteEl().getHeight(); 
+        
+        if (this.user.get('identifier') !== "public") {
             data.push({
+                xtype : 'button',
                 identifier : "editProfile", 
                 name: i18n.get("label.editProfile"), 
-                url : '/sitools/common/res/images/icons/menu/regcrud.png', 
+                icon : '/sitools/common/res/images/icons/menu/regcrud.png', 
                 action : "editProfile",
                 comment : ""
             }, {
+                xtype : 'button',
+                width : 30,
+                height : 30,
                 identifier : "userDiskSpace", 
                 name: i18n.get('label.userDiskSpace'), 
-                url : '/sitools/common/res/images/icons/menu/dataAccess.png', 
+                icon : '/sitools/common/res/images/icons/menu/dataAccess.png',
                 action : "showDisk", 
                 comment : Ext.String.format(i18n.get("label.userDiskUse"), freeDisk, totalDisk)
             }, {
+                xtype : 'button',
+                width : 30,
+                height : 30,
                 identifier : "tasks", 
                 name: i18n.get("label.Tasks"), 
-                url : "/sitools/common/res/images/icons/menu/applications2.png", 
+                icon : "/sitools/common/res/images/icons/menu/applications2.png",
                 action : "showTasks", 
                 comment : Ext.String.format(i18n.get("label.taskRunning"), userTasksRunning, userTotalTasks)
             }, {
+                xtype : 'button',
+                width : 30,
+                height : 30,
                 identifier : "orders", 
                 name: i18n.get("label.orders"), 
-                url : "/sitools/common/res/images/icons/menu/order.png", 
+                icon : "/sitools/common/res/images/icons/menu/order.png",
                 action : "showOrders"
             });
             
         }
 
-        var store = new Ext.data.JsonStore({
+        var store = Ext.create('Ext.data.JsonStore', {
             fields : ['name', 'url', 'action', 'comment', 'identifier'],
             data : data
         });
+        
         var tpl = new Ext.XTemplate('<tpl for=".">',
                 '<div class="userButtons" id="{identifier}">',
                 '<div class="userButtons-thumb"><img src="{url}" title="{name}"></div>',
@@ -103,7 +128,7 @@ Ext.define('sitools.user.view.header.UserProfile', {
             '<div class="x-clear"></div>'
         );
         
-        var buttonsDataView = new Ext.DataView({
+        var buttonsDataView = Ext.create('Ext.view.View', {
             store: store,
             cls : "userButtonsDataview", 
             tpl: tpl,
@@ -116,7 +141,7 @@ Ext.define('sitools.user.view.header.UserProfile', {
             itemSelector: 'div.userButtons',
             listeners : {
                 scope : this, 
-                click : this.actionItemClick, 
+//                click : this.actionItemClick, 
                 afterRender : function () {
                     this.fillDiskInformations();
                     this.fillTaskInformations();
@@ -125,50 +150,30 @@ Ext.define('sitools.user.view.header.UserProfile', {
         });
         
         
-        var userInfoStore = new Ext.data.JsonStore({
+        var userInfoStore = Ext.create('Ext.data.JsonStore', {
             fields : ['firstName', 'lastName', 'image', 'email', 'identifier'],
             data : [Ext.apply(this.user, {
-                "image" : "/sitools/common/res/images/icons/menu/usersGroups.png"
+                "image" : "/sitools/client-public/res/images/icons/menu/usersGroups.png"
             })]
         });
-        var logout = new Ext.Button({
-            scope : this, 
-            text  : i18n.get('label.logout'), 
-            handler : function () {
-                sitools.userProfile.LoginUtils.logout();
-            }
-        });
-        var login = new Ext.Button({
-            scope : this, 
-            cls : "userProfileBtn", 
-            text  : i18n.get('label.login'), 
-            handler : function () {
-                sitools.userProfile.LoginUtils.connect({
-                    closable : true,
-                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
-                    register : loadUrl.get('APP_URL') + '/inscriptions/user',
-                    reset : loadUrl.get('APP_URL') + '/lostPassword',
-                    unblacklist : loadUrl.get('APP_URL') + '/unblacklist'                    
-                });             
-            }
+        
+        var logout = Ext.create('Ext.button.Button', {
+            text  : i18n.get('label.logout'),
+            name : 'usrProfileLogout'
         });
         
-        var register = new Ext.Button({
-            scope : this, 
-            cls : "userProfileBtn",
-            text  : i18n.get('label.register'), 
-            handler : function () {
-                var register = new sitools.userProfile.Register({
-                    closable : true,
-                    url : loadUrl.get('APP_URL')+ "/inscriptions/user",
-                    reset : loadUrl.get('APP_URL') + '/lostPassword',
-                    unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
-                    login : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login'
-                });
-                register.show();
-            }
+        var login = Ext.create('Ext.button.Button', {
+            text  : i18n.get('label.login'),
+            name : 'usrProfileLogin',
+            cls : "userProfileBtn"
         });
-        var closeBtn = new Ext.Button({
+        
+        var register = Ext.create('Ext.button.Button', {
+            text  : i18n.get('label.register'),
+            name : 'usrProfileRegister',
+            cls : "userProfileBtn"
+        });
+        var closeBtn = Ext.create('Ext.button.Button', {
             scope : this,
             icon : "/sitools/common/res/images/icons/close-icon.png",
             cls : 'button-transition',
@@ -185,13 +190,13 @@ Ext.define('sitools.user.view.header.UserProfile', {
             }
         });
         
-        var displayInfo = new Ext.DataView({
-            flex : 1, 
+        var displayInfo = Ext.create('Ext.view.View', {
+            flex : 1,
             logoutBtn : logout, 
-            loginBtn : login, 
-            closeBtn : closeBtn, 
-            registerBtn : register, 
-            cls : "x-panel-body", 
+            loginBtn : login,
+            closeBtn : closeBtn,
+            registerBtn : register,
+            cls : "x-panel-body",
             tpl : new Ext.XTemplate('<tpl for=".">',
                     '<div class="userProfileItem" id="{identifier}">',
                     '<div class="userProfile userProfileItem-thumb"><img style="height:60px;" src="{image}" title="{name}"></div>',
@@ -206,48 +211,67 @@ Ext.define('sitools.user.view.header.UserProfile', {
             listeners : {
                 scope : this, 
                 afterRender : function (me) {
-                    if (this.user.identifier !== "public") {
-                        me.logoutBtn.render("logBtn");
-                    }
-                    else {
-                        me.loginBtn.render("logBtn");
-                        me.registerBtn.render("logBtn");
-                    }
-                    me.closeBtn.render(this.id);
+//                    if (this.user.get('identifier') !== "public") {
+//                        me.logoutBtn.render("logBtn");
+//                    }
+//                    else {
+//                        me.loginBtn.render("logBtn");
+//                        me.registerBtn.render("logBtn");
+//                    }
+//                    me.closeBtn.render(this.id);
                 }
             }
         });
-        sitools.user.component.entete.UserProfile.superclass.initComponent.call(Ext.apply(this, {
-            id : "userProfileWindow", 
-            header : false,
-            stateful : false, 
-            shadow : false, 
-            layout : this.user.identifier === "public" ? 'hbox' : 'vbox',
-            layoutConfig : {
-                align : "stretch"
-            },
-            border : false, 
-            hideBorders : true, 
-            closable : false, 
-            x : Ext.getBody().getWidth() - this.width, 
-            y : SitoolsDesk.getEnteteEl().getHeight(), 
-            resizable : false, 
-            bodyBorder : false, 
-            listeners : {
-                scope : this, 
-                beforeRender : function () {
-                    Ext.getBody().on("click", this.interceptOnClick, this);
-                }, 
-                beforeDestroy : function (me) {
-                    Ext.getBody().un("click", this.interceptOnClick, this);
-                    Ext.getCmp(this.buttonId).enable();
+        
+        this.infoPanel = Ext.create('Ext.view.View' , {
+            flex : 1,
+            store : userInfoStore,
+            tpl : new Ext.XTemplate('<tpl for=".">',
+                    '<div class="userProfileItem" id="{identifier}">',
+                    '<div class="userProfile userProfileItem-thumb"><img style="height:60px;" src="{image}" title="{name}"></div>',
+                    '<div class="userProfile"><span class="userProfileName">{firstName} {lastName}</span>', 
+                    '<span class="userProfileEmail">{email}</span>',
+                    '<div id="logBtn"></div>', 
+                    '</div>', 
+                '</tpl>',
+                '<div class="x-clear"></div>'
+            )
+        });
+        
+        this.buttonsPanel = Ext.create('Ext.panel.Panel', {
+            layout : {
+                type : 'hbox',
+                pack : 'end',
+                align : 'stretchmax',
+                defaultMargins : {
+                    left : 10
                 }
-            }, 
-            items : [displayInfo, {
-                xtype : "panel", 
-                items : [buttonsDataView]
-            }]
-        }));
+            },
+            padding : 10,
+            bodyPadding : 10,
+            border : true,
+            items : [logout, login, register]
+        });
+        
+//        this.items = [displayInfo, {
+//            xtype : 'panel', 
+//            items : [buttonsDataView]
+//        }];
+        
+        this.items = [this.infoPanel, this.buttonsPanel];
+        
+//        this.listeners = {
+//            scope : this, 
+//            beforeRender : function () {
+//                Ext.getBody().on("click", this.interceptOnClick, this);
+//            }, 
+//            beforeDestroy : function (me) {
+//                Ext.getBody().un("click", this.interceptOnClick, this);
+//                Ext.getCmp(this.buttonId).enable();
+//            }
+//        };
+        
+        this.callParent(arguments);
         
     }, 
     /**
@@ -257,24 +281,24 @@ Ext.define('sitools.user.view.header.UserProfile', {
      * @param {HtmlElement} target the Html target element. 
      * @returns
      */
-    interceptOnClick : function (evt, target) {
-        //le click est sur le bouton pour ouvrir la fenêtre : Désactiver le bouton... et fin de l'action.
-        if (Ext.DomQuery.select("table[id=" + this.buttonId + "] button[id=" + target.id + "]").length === 1) {
-            Ext.getCmp(this.buttonId).disable();
-            return;
-        }
-        
-        //Le clic est sur un élément de la fenêtre : rien à faire. 
-        if (this.isDescendant(Ext.DomQuery.select("div[id=userProfileWindow]")[0], target)) {
-            if (evt.shiftKey && evt.ctrlKey) {
-                breakout().getBackToDesktop();
-            }
-            return;
-        }
-        
-        //Le clic est quelque part en dehors de la fenêtre, on détruit la fenêtre (-> beforeDestroy est exécuté)
-        this.destroy();
-    }, 
+//    interceptOnClick : function (evt, target) {
+//        //le click est sur le bouton pour ouvrir la fenêtre : Désactiver le bouton... et fin de l'action.
+//        if (Ext.DomQuery.select("table[id=" + this.buttonId + "] button[id=" + target.id + "]").length === 1) {
+//            Ext.getCmp(this.buttonId).disable();
+//            return;
+//        }
+//        
+//        //Le clic est sur un élément de la fenêtre : rien à faire. 
+//        if (this.isDescendant(Ext.DomQuery.select("div[id=userProfileWindow]")[0], target)) {
+//            if (evt.shiftKey && evt.ctrlKey) {
+//                breakout().getBackToDesktop();
+//            }
+//            return;
+//        }
+//        
+//        //Le clic est quelque part en dehors de la fenêtre, on détruit la fenêtre (-> beforeDestroy est exécuté)
+//        this.destroy();
+//    }, 
     /**
      * Handler of any click on the dataview used to display actions btn : 
      * Execute the method specified in each store.action attribute. 
@@ -285,26 +309,27 @@ Ext.define('sitools.user.view.header.UserProfile', {
      * @param {Ext.event} e The click event
      * @returns
      */
-    actionItemClick : function (dataView, index, node, e) {
-        try {
-            var data = dataView.getSelectedRecords()[0].data;   
-            eval("this." + data.action).call(this, dataView, index, node, e);
-        }
-        catch (err) {
-            return;
-        }
-        
-    }, 
-    isDescendant : function (parent, child) {
-        var node = child.parentNode;
-        while (node !== null) {
-            if (node === parent) {
-                return true;
-            }
-            node = node.parentNode;
-        }
-        return false;
-    }, 
+//    actionItemClick : function (dataView, index, node, e) {
+//        try {
+//            var data = dataView.getSelectedRecords()[0].data;   
+//            eval("this." + data.action).call(this, dataView, index, node, e);
+//        }
+//        catch (err) {
+//            return;
+//        }
+//        
+//    }, 
+    
+//    isDescendant : function (parent, child) {
+//        var node = child.parentNode;
+//        while (node !== null) {
+//            if (node === parent) {
+//                return true;
+//            }
+//            node = node.parentNode;
+//        }
+//        return false;
+//    }, 
     /**
      * Open a Ext.Menu.menu containing all projectGlobal.languages options. 
      * @param {Ext.DataView} dataView the clicked Dataview
