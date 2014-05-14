@@ -45,8 +45,7 @@ Ext.define("sitools.user.controller.header.HeaderController", {
         
         this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
         
-            },
-
+        this.control({
 			'userProfileWindow' : {
                 beforerender : function (usrProfileWindow) {
                     usrProfileWindow.x = Ext.getBody().getWidth() - usrProfileWindow.width;
@@ -87,7 +86,6 @@ Ext.define("sitools.user.controller.header.HeaderController", {
         });
         this.callParent(arguments);
     },
-    
     
     onProjectLoaded : function () {
         var project = Ext.getStore('ProjectStore').getProject();
