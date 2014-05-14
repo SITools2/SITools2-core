@@ -54,12 +54,8 @@ Ext.define('sitools.user.controller.SitoolsController', {
         console.log("Create module : " + module.xtype);
         
         var moduleController = this.getApplication().getController(module.xtype);
-        
         moduleController.initModule(module);
-        moduleController.init();
-        moduleController.onLaunch();
-
-
+        moduleController.onLaunch(this.getApplication());
     }
 
 });

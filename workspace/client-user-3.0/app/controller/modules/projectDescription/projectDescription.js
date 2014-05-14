@@ -30,7 +30,7 @@ Ext.define('sitools.user.controller.modules.projectDescription.projectDescriptio
     
     views : ['modules.projectDescription.projectDescription'],
     
-    init : function () {
+    onLaunch : function () {
         var project = Ext.getStore('ProjectStore').getAt(0);
         Ext.Ajax.request({
             method : "GET", 
@@ -54,10 +54,10 @@ Ext.define('sitools.user.controller.modules.projectDescription.projectDescriptio
             failure : alertFailure, 
             scope : this
         });
-        
     },
     
     initModule : function (moduleModel) {
+        console.log("initModule");
         this.callParent(arguments);
     },
     
