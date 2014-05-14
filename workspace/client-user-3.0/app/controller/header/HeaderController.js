@@ -39,13 +39,6 @@ Ext.define("sitools.user.controller.header.HeaderController", {
         
         this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
         
-
-        this.control({
-            'moduleTaskBar button' : {
-                click : this.openModule
-            }
-        });
-        
         this.callParent(arguments);
     },
     
@@ -62,12 +55,5 @@ Ext.define("sitools.user.controller.header.HeaderController", {
                 }
             }
         });
-    },
-    
-    openModule : function (button, e, opts) {
-//        alert('TODO open ' + button.text);
-        console.log('TODO open ' + button.text);
-        
-        
-    }
+    }    
 });

@@ -67,6 +67,7 @@ Ext.define('sitools.user.view.header.ModulesTaskBar', {
                         text : i18n.get(module.label),
                         iconCls : module.icon,
                         scope : module,
+                        module : module,
                         tooltip : {
                             html : i18n.get(module.description),
                             anchor : 'bottom',

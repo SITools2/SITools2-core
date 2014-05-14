@@ -24,21 +24,42 @@ Ext.define('sitools.user.controller.SitoolsController', {
     init : function () {
         var me = this, desktopCfg;
 
+        this.control({
+            'moduleTaskBar button' : {
+                click : this.openModule
+            }
+        });
+
         this.getApplication().on('projectInitialized', this.loadProject, this);
     },
 
     loadProject : function () {
-        console.log('loadProject');
         var url = sitools.user.utils.Project.getSitoolsAttachementForUsers();
         var store = this.getStore("ProjectStore");
         store.setCustomUrl(url);
-        store.load(
-                {
-                    scope : this,
-                    callback: function(records, operation, success) {
-                        this.getApplication().noticeProjectLoaded();
-                    }
+        store.load({
+            scope : this,
+            callback : function (records, operation, success) {
+                this.getApplication().noticeProjectLoaded();
+            }
         });
+    },
+
+    openModule : function (button, e, opts) {
+
+        // get the module from the button
+        console.log('TODO open ' + button.text);
+
+        var module = button.module;
+        console.log("Create module : " + module.xtype);
+        
+        var moduleController = this.getApplication().getController(module.xtype);
+        
+        moduleController.initModule(module);
+        moduleController.init();
+        moduleController.onLaunch();
+
+
     }
-    
+
 });
