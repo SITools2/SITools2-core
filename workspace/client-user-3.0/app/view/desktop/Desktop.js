@@ -92,14 +92,10 @@ Ext.define('sitools.user.view.desktop.Desktop', {
         me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
 
         me.items = [
-            { xtype: 'wallpaper', id: me.id+'_wallpaper' },
-            me.createDataView()
+            { xtype: 'wallpaper', id: me.id+'_wallpaper' }
         ];
 
         me.callParent(arguments);
-
-        me.shortcutsView = me.items.getAt(1);
-        me.shortcutsView.on('itemclick', me.onShortcutItemClick, me);
 
         var wallpaper = me.wallpaper;
         me.wallpaper = me.items.getAt(0);
@@ -141,22 +137,6 @@ Ext.define('sitools.user.view.desktop.Desktop', {
 
     //------------------------------------------------------
     // Overrideable configuration creation methods
-
-    createDataView: function () {
-        var me = this;
-        return {
-            xtype: 'dataview',
-            overItemCls: 'x-view-over',
-            trackOver: true,
-            itemSelector: me.shortcutItemSelector,
-            store: me.shortcuts,
-            style: {
-                position: 'absolute'
-            },
-            x: 0, y: 0,
-            tpl: new Ext.XTemplate(me.shortcutTpl)
-        };
-    },
 
     createDesktopMenu: function () {
         var me = this, ret = {
@@ -213,15 +193,6 @@ Ext.define('sitools.user.view.desktop.Desktop', {
             var min = item.minWindows || 0;
             item.setDisabled(count < min);
         });
-    },
-
-    onShortcutItemClick: function (dataView, record) {
-        var me = this, module = me.app.getModule(record.data.module),
-            win = module && module.createWindow();
-
-        if (win) {
-            me.restoreWindow(win);
-        }
     },
 
     onWindowClose: function(win) {
