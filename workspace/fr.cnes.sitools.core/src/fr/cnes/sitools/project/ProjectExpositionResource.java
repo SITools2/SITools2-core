@@ -146,6 +146,7 @@ public final class ProjectExpositionResource extends AbstractProjectResource {
     current.setMaintenanceText(project.getMaintenanceText());
     current.setMaintenance(project.isMaintenance());
     current.setLinks(project.getLinks());
+    current.setNavigationMode(project.getNavigationMode());
 
     if (project.getModules() != null) {
       List<ProjectModule> projectMod = new ArrayList<ProjectModule>();
