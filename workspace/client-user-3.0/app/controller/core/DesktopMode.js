@@ -15,34 +15,15 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+/*global Ext, i18n, loadUrl, getDesktop, sitools, SitoolsDesk */
+Ext.namespace('sitools.user.controller.core');
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
+Ext.define('sitools.user.controller.core.DesktopMode', {
 
-Ext.namespace('sitools.user.controller.modules');
-/**
- * Abstract Module class
- * @class sitools.user.controller.modules.Module
- * @extends Ext.Panel
- */
-Ext.define('sitools.user.controller.modules.Module', {
-    extend : 'Ext.app.Controller',
+    extend : 'sitools.user.controller.core.NavigationMode',
     
-    config : {
-        moduleModel : null,
-        viewCmp : null
-    },
-    
-    open : function () {
-        this.getApplication().getController('DesktopController').createWindow(this.getModuleModel(), this.getViewCmp());
-    },
-    
-    initModule : function (moduleModel) {
-        this.setModuleModel(moduleModel);
-    },
-    
-    /**
-     * method called when trying to save preference
-     * @returns
-     */
-    _getSettings : Ext.emptyFn
+    openComponent : Ext.emptyFn,
+    openModule : function (module, view) {
+        this.getApplication().getController('DesktopController').createWindow(module, view);
+    }
 });

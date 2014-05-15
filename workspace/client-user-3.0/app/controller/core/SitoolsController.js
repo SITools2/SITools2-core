@@ -15,7 +15,8 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-Ext.define('sitools.user.controller.SitoolsController', {
+/*global Ext, i18n, loadUrl, getDesktop, sitools, SitoolsDesk */
+Ext.define('sitools.user.controller.core.SitoolsController', {
 
     extend : 'Ext.app.Controller',
 
@@ -26,7 +27,7 @@ Ext.define('sitools.user.controller.SitoolsController', {
 
         this.control({
             'moduleTaskBar button' : {
-                click : this.openModule
+                click : this.onOpenModule
             }
         });
 
@@ -45,17 +46,22 @@ Ext.define('sitools.user.controller.SitoolsController', {
         });
     },
 
-    openModule : function (button, e, opts) {
-
-        // get the module from the button
-        console.log('TODO open ' + button.text);
-
-        var module = button.module;
-        console.log("Create module : " + module.xtype);
-        
+    openModule : function (module) {
         var moduleController = this.getApplication().getController(module.xtype);
         moduleController.initModule(module);
         moduleController.onLaunch(this.getApplication());
+    },
+    
+    openComponent : function (clazz, componentConfig, windowConfig) {
+        var moduleController = this.getApplication().getController(clazz);
+        moduleController.initComponent(componentConfig, windowConfig);
+        moduleController.onLaunch(this.getApplication());
+    },
+    
+    onOpenModule : function (button, e, opts) {
+        // get the module from the button
+        var module = button.module;
+        this.openModule(module);
     }
 
 });

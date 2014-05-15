@@ -8,11 +8,14 @@ Ext.define('sitools.user.Application', {
                  'sitools.public.utils.i18n',
                  'sitools.public.utils.loadUrl',
                  'sitools.public.utils.sql2ext',
-                 'sitools.public.utils.Locale'],
+                 'sitools.public.utils.Locale',
+                     /* CORES */
+                 
+                 ],
 
     extend : 'Ext.app.Application',
 
-    controllers : ["SitoolsController", "DesktopController", 'header.HeaderController', 'footer.FooterController' ],
+    controllers : ["core.SitoolsController", "DesktopController", 'header.HeaderController', 'footer.FooterController', 'core.NavigationModeFactory'],
 
     isReady : false,
     modules : null,

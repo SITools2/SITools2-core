@@ -26,7 +26,7 @@ Ext.namespace('sitools.user.controller.modules.datasetExplorer');
  * @extends Ext.Panel
  */
 Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
-    extend : 'sitools.user.controller.modules.Module',
+    extend : 'sitools.user.controller.modules.ModuleController',
     alias : 'sitools.user.modules.datasetExplorer',
     requires : ['sitools.user.utils.CommonTreeUtils'],
 
@@ -134,7 +134,7 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
         });
         
         this.setViewCmp(view);
-
+        
         this.open();
 
         this.callParent(arguments);

@@ -25,87 +25,73 @@
 /*global Ext, i18n, loadUrl, getDesktop, sitools, SitoolsDesk */
 Ext.define('sitools.user.utils.CommonTreeUtils', {
     singleton : true,
-    addShowData : function (node) {
-        var dataset = node.getData();
+    addShowData : function (node, dataset) {
         node.appendChild({
             id : "nodedata" + dataset.id,
             text : i18n.get('label.dataTitle'),
             winTitle : i18n.get('label.dataTitle') + " : " + dataset.name,
             leaf : true,
             type : "data",
-            datasetId : dataset.id,
-            columnModel : dataset.columnModel,
-            datasetName : dataset.name,
-            datasetDescription : dataset.description,
-            dataUrl : dataset.sitoolsAttachementForUsers, 
-            dictionaryMappings : dataset.dictionaryMappings,
+            properties : {
+                dataset : dataset
+            },
             icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_datasets.png", 
-            datasetView : dataset.datasetView, 
-            datasetViewConfig : dataset.datasetViewConfig, 
-            sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers
         });
         
     },
 
-    addShowDefinition : function (node) {
-        var dataset = node.getData();
+    addShowDefinition : function (node, dataset) {
         node.appendChild({
             id : Ext.id(),
             text : i18n.get('label.definitionTitle'),
             winTitle : i18n.get('label.definitionTitle') + " : " + dataset.name,
             leaf : true,
             type : "defi",
-            datasetId : dataset.id,
-            columnModel : dataset.columnModel,
-            datasetName : dataset.name, 
-            dictionaryMappings : dataset.dictionaryMappings,
+            properties : {
+                dataset : dataset
+            },
             icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_dictionary.png"
         });
     },
 
-    addOpensearch : function (node) {
-        var dataset = node.getData();
+    addOpensearch : function (node, dataset) {
         node.appendChild({
             id : Ext.id(),
             text : i18n.get('label.opensearch'),
             winTitle : i18n.get('label.opensearch') + " : " + dataset.name,
             leaf : true,
             type : "openSearch",
-            datasetId : dataset.id,
-            columnModel : dataset.columnModel,
-            datasetName : dataset.name,
-            dataUrl : dataset.sitoolsAttachementForUsers, 
+            properties : {
+                dataset : dataset
+            },
             icon : loadUrl.get('APP_URL') + "/common/res/images/icons/toolbar_open_search.png"
         });
     },
 
-    addForm : function (node) {
-        var dataset = node.getData();
+    addForm : function (node, dataset) {
         node.appendChild({
             text : i18n.get('label.forms'),
             children : [],
             id : Ext.id(),
             expandable : true,
-            datasetId : dataset.id,
-            columnModel : dataset.columnModel,
-            datasetName : dataset.name,
+            properties : {
+                dataset : dataset
+            },
             type : 'listForms',
         });
     },
 
     
-    addFeeds : function (node) {
+    addFeeds : function (node, dataset) {
         var dataset = node.getData();
         node.appendChild({
             id : Ext.id(),
             text : i18n.get('label.feeds'),
             leaf : false,
-            children : [ {
-                leaf : true
-            } ],
             type : 'listFeeds',
-            datasetId : dataset.id,
-            datasetName : dataset.name
+            properties : {
+                dataset : dataset
+            }
         });
     },
 
@@ -115,117 +101,114 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
      * @param node
      */
     treeAction : function (node) {
-        alert("TODO open : " + node.get("name"));
-        
-//        var desktop = getDesktop();
-//        var win = desktop.getWindow("wind" + node.id);
-//
-//        if (!win) {
-//            var componentCfg, javascriptObject;
-//            var windowConfig = {
-//				datasetId : node.attributes.datasetId,
-//				title : node.attributes.winTitle, 
-//                datasetName : node.attributes.datasetName, 
-//                datasetDescription : node.attributes.datasetDescription,
-//                type : node.attributes.type, 
-//                saveToolbar : true, 
-//                toolbarItems : []
-//            };
-//
-//            if (node.attributes.type === "data") {
-//                //open the dataView according to the dataset Configuration.
-////                javascriptObject = eval(node.attributes.datasetView.jsObject);
-//				javascriptObject = eval(SitoolsDesk.navProfile.getDatasetOpenMode(node.attributes));
-//				
-//				Ext.apply(windowConfig, {
-//					winWidth : 900, 
-//					winHeight : 400, 
-//					iconCls : "dataviews"
-//				});
-//                componentCfg = {
-//                    dataUrl : node.attributes.dataUrl,
-//                    datasetId : node.attributes.datasetId,
-//                    datasetCm : node.attributes.columnModel, 
-//                    datasetName : node.attributes.datasetName,
-//                    dictionaryMappings : node.attributes.dictionaryMappings,
-//                    datasetViewConfig : node.attributes.datasetViewConfig, 
-//                    preferencesPath : "/" + node.attributes.datasetName, 
-//                    preferencesFileName : "datasetOverview", 
-//                    sitoolsAttachementForUsers : node.attributes.sitoolsAttachementForUsers
-//                };
-//                
-//            }
-//            if (node.attributes.type === "defi") {
-//                javascriptObject = sitools.user.component.columnsDefinition;
-//                Ext.apply(windowConfig, {
-//                    id : node.attributes.type + node.attributes.datasetId, 
-//					iconCls : "semantic"
-//                });
-//                componentCfg = {
-//                    datasetId : node.attributes.datasetId,
-//                    datasetCm : node.attributes.columnModel, 
-//                    datasetName : node.attributes.datasetName,
-//                    dictionaryMappings : node.attributes.dictionaryMappings, 
-//                    preferencesPath : "/" + node.attributes.datasetName, 
-//                    preferencesFileName : "semantic"
-//                };
-//            }
-//            if (node.attributes.type === "openSearch") {
-//                javascriptObject = sitools.user.component.datasetOpensearch;
-//                Ext.apply(windowConfig, {
-//                    id : node.attributes.type + node.attributes.datasetId, 
-//					iconCls : "openSearch"
-//                });
-//                componentCfg = {
-//                    datasetId : node.attributes.datasetId,
-//                    dataUrl : node.attributes.dataUrl, 
-//                    datasetName : node.attributes.datasetName, 
-//                    preferencesPath : "/" + node.attributes.datasetName, 
-//                    preferencesFileName : "openSearch"
-//                };
-//            }
-//            if (node.attributes.type === "form") {
-//                javascriptObject = sitools.user.component.forms.mainContainer;
-//                Ext.apply(windowConfig, {
-//                    id : node.attributes.type + node.attributes.datasetId + node.attributes.formId, 
-//					iconCls : "forms"
-//                });
-//                componentCfg = {
-//                    dataUrl : node.attributes.dataUrl,
-//                    dataset : node.attributes.dataset, 
-//                    formId : node.attributes.formId,
-//                    formName : node.attributes.formName,
-//                    formParameters : node.attributes.formParameters,
-//                    formZones : node.attributes.formZones,
-//                    formWidth : node.attributes.formWidth,
-//                    formHeight : node.attributes.formHeight, 
-//                    formCss : node.attributes.formCss, 
-//                    preferencesPath : "/" + node.attributes.datasetName + "/forms", 
-//                    preferencesFileName : node.attributes.formName
-//                };
-//            }
-//            if (node.attributes.type === "feeds") {
-//                javascriptObject = sitools.widget.FeedGridFlux;
-//                var url = node.attributes.dataUrl + "/clientFeeds/" + node.attributes.feedId;
-//                Ext.apply(windowConfig, {
-//                    id : node.attributes.type + node.attributes.datasetId + node.attributes.feedId, 
-//                    iconCls : "feedsModule"
-//                });
-//                componentCfg = {
-//                    datasetId : node.attributes.datasetId,
-//                    urlFeed : url,
-//                    feedType : node.attributes.feedType, 
-//                    datasetName : node.attributes.datasetName,
-//                    feedSource : node.attributes.feedSource,
-//                    autoLoad : true
-//                };
-//
-//            }
-//            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//
-//        } else {
-//            win.toFront();
-//        }
+        var desktop = getDesktop();
+        var win = desktop.getWindow("wind" + node.get("id"));
+
+        if (!win) {
+            var componentCfg, javascriptObject;
+            var windowConfig = {
+				datasetId : node.attributes.datasetId,
+				title : node.attributes.winTitle, 
+                datasetName : node.attributes.datasetName, 
+                datasetDescription : node.attributes.datasetDescription,
+                type : node.attributes.type, 
+                saveToolbar : true, 
+                toolbarItems : []
+            };
+            switch(node.get("type")) {
+            case "data" :
+                //open the dataView according to the dataset Configuration.
+//                javascriptObject = eval(node.attributes.datasetView.jsObject);
+				javascriptObject = eval(SitoolsDesk.navProfile.getDatasetOpenMode(node.attributes));
+				
+				Ext.apply(windowConfig, {
+					winWidth : 900, 
+					winHeight : 400, 
+					iconCls : "dataviews"
+				});
+                componentCfg = {
+                    dataUrl : node.attributes.dataUrl,
+                    datasetId : node.attributes.datasetId,
+                    datasetCm : node.attributes.columnModel, 
+                    datasetName : node.attributes.datasetName,
+                    dictionaryMappings : node.attributes.dictionaryMappings,
+                    datasetViewConfig : node.attributes.datasetViewConfig, 
+                    preferencesPath : "/" + node.attributes.datasetName, 
+                    preferencesFileName : "datasetOverview", 
+                    sitoolsAttachementForUsers : node.attributes.sitoolsAttachementForUsers
+                };
+                break;
+            case "defi":
+                javascriptObject = sitools.user.component.columnsDefinition;
+                Ext.apply(windowConfig, {
+                    id : node.attributes.type + node.attributes.datasetId, 
+					iconCls : "semantic"
+                });
+                componentCfg = {
+                    datasetId : node.attributes.datasetId,
+                    datasetCm : node.attributes.columnModel, 
+                    datasetName : node.attributes.datasetName,
+                    dictionaryMappings : node.attributes.dictionaryMappings, 
+                    preferencesPath : "/" + node.attributes.datasetName, 
+                    preferencesFileName : "semantic"
+                };
+                break;
+            case "openSearch" :
+                javascriptObject = sitools.user.component.datasetOpensearch;
+                Ext.apply(windowConfig, {
+                    id : node.attributes.type + node.attributes.datasetId, 
+					iconCls : "openSearch"
+                });
+                componentCfg = {
+                    datasetId : node.attributes.datasetId,
+                    dataUrl : node.attributes.dataUrl, 
+                    datasetName : node.attributes.datasetName, 
+                    preferencesPath : "/" + node.attributes.datasetName, 
+                    preferencesFileName : "openSearch"
+                };
+                break;
+            case "form":
+                javascriptObject = sitools.user.component.forms.mainContainer;
+                Ext.apply(windowConfig, {
+                    id : node.attributes.type + node.attributes.datasetId + node.attributes.formId, 
+					iconCls : "forms"
+                });
+                componentCfg = {
+                    dataUrl : node.attributes.dataUrl,
+                    dataset : node.attributes.dataset, 
+                    formId : node.attributes.formId,
+                    formName : node.attributes.formName,
+                    formParameters : node.attributes.formParameters,
+                    formZones : node.attributes.formZones,
+                    formWidth : node.attributes.formWidth,
+                    formHeight : node.attributes.formHeight, 
+                    formCss : node.attributes.formCss, 
+                    preferencesPath : "/" + node.attributes.datasetName + "/forms", 
+                    preferencesFileName : node.attributes.formName
+                };
+                break;
+            case "feeds":
+                javascriptObject = sitools.widget.FeedGridFlux;
+                var url = node.attributes.dataUrl + "/clientFeeds/" + node.attributes.feedId;
+                Ext.apply(windowConfig, {
+                    id : node.attributes.type + node.attributes.datasetId + node.attributes.feedId, 
+                    iconCls : "feedsModule"
+                });
+                componentCfg = {
+                    datasetId : node.attributes.datasetId,
+                    urlFeed : url,
+                    feedType : node.attributes.feedType, 
+                    datasetName : node.attributes.datasetName,
+                    feedSource : node.attributes.feedSource,
+                    autoLoad : true
+                };
+                break;
+            }
+            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+
+        } else {
+            win.toFront();
+        }
     },
     
     
@@ -244,7 +227,7 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
     
     handleBeforeExpandForm : function (node) {
         var url = node.parentNode.get('url');
-        var dataset = node.parentNode.getData();
+        var dataset = node.parentNode.get('properties').dataset;
         Ext.Ajax.request({
             url : url + '/forms?media=json',
             success : function (response) {
@@ -261,7 +244,10 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
                         type : "form",
                         text : form.name,
                         node : this,
-                        properties : node.get("properties"),
+                        properties : {
+                            dataset : dataset,
+                            form : form
+                        },
                         icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_forms.png", 
                     });
                 });
@@ -272,7 +258,7 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
     
     handleBeforeExpandFeeds : function (node) {
         var url = node.parentNode.get('url');
-        var dataset = node.parentNode.getData();
+        var dataset = node.parentNode.get('properties').dataset;
         Ext.Ajax.request({
             url : url + '/feeds?media=json',
             success : function (response) {
@@ -288,7 +274,10 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
                         winTitle : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title,
                         type : "feeds",
                         text : feed.name,
-                        properties : node.get("properties"),
+                        properties : {
+                            dataset : dataset,
+                            feed : feed
+                        },
                         icon : loadUrl.get('APP_URL') + "/common/res/images/icons/rss.png"
                     });
                 });

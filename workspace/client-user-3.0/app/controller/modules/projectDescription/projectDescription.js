@@ -25,7 +25,7 @@ Ext.namespace('sitools.user.controller.modules.projectDescription');
  * @extends Ext.Panel
  */
 Ext.define('sitools.user.controller.modules.projectDescription.projectDescription', {
-    extend : 'sitools.user.controller.modules.Module',
+    extend : 'sitools.user.controller.modules.ModuleController',
     alias : 'sitools.user.modules.projectDescription',
     
     views : ['modules.projectDescription.projectDescription'],
@@ -49,7 +49,6 @@ Ext.define('sitools.user.controller.modules.projectDescription.projectDescriptio
                 this.setViewCmp(view);
                 
                 this.open();
-                
             }, 
             failure : alertFailure, 
             scope : this
