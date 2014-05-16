@@ -85,7 +85,10 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                 
                 itemclick : function ( tree, node, item, index, e, eOpts ) {
                     if(node.isLeaf()) {
-                        alert("TODO open " + node.get("type") + node.get("name"));
+                        var control  = this.getApplication().getController('sitools.user.controller.component.datasets.DatasetsController');
+                        control.onLaunch(this.getApplication());                       
+                        control.openDataset(node.get("properties").dataset)
+                        
                     }
                 }
             }
@@ -133,9 +136,7 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
             }
         });
         
-        this.setViewCmp(view);
-        
-        this.open();
+        this.open(view);
 
         this.callParent(arguments);
     },

@@ -46,8 +46,6 @@ Ext.define('sitools.user.controller.modules.projectDescription.projectDescriptio
                     autoScroll : true
                 });
                 
-                this.setViewCmp(view);
-                
                 this.open(view);
             }, 
             failure : alertFailure, 

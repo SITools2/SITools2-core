@@ -63,7 +63,6 @@ Ext.define('sitools.user.model.ResourceModel', {
         name : 'visible',
         type : 'boolean'
     }, {
-        name : 'properties',
-        type : 'string'
+        name : 'properties'
     } ]
 });
