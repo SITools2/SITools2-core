@@ -18,28 +18,30 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
 
-Ext.namespace('sitools.user.controller.modules');
+Ext.namespace('sitools.user.controller.component');
 /**
  * Abstract Module class
  * @class sitools.user.controller.modules.Module
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.controller.modules.ModuleController', {
+Ext.define('sitools.user.controller.component.ComponentController', {
     extend : 'Ext.app.Controller',
     
     config : {
-        moduleModel : null,
-        viewCmp : null
+        componentView : null,
+        project : Ext.getStore("ProjectStore").getProject()
     },
     
-    open : function (view) {
-        var project = Ext.getStore("ProjectStore").getProject();
-        var navMode = this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(project.get("navigationMode"));
-        navMode.openModule(view, this.getModuleModel());        
+    open : function (view, windowSettings) {
+        var navMode = this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(this.getProject().get("navigationMode"));
+        navMode.openComponent(view, windowSettings);
     },
     
-    initModule : function (moduleModel) {
-        this.setModuleModel(moduleModel);
+    getFormOpenMode : function () {
+        this.getApplication().getController('core.NavigationMode').getFormOpenMode(this.getProject().get("navigationMode"));
+    },
+    
+    initComponent : function () {
     },
     
     /**

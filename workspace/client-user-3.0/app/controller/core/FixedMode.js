@@ -21,5 +21,9 @@ Ext.define('sitools.user.controller.core.FixedMode', {
     extend : 'sitools.user.controller.core.NavigationMode',
     
     openComponent : Ext.emptyFn,
-    openModule : Ext.emptyFn
+    openModule : Ext.emptyFn,
+    
+    getFormOpenMode : function () {
+        return sitools.user.component.DatasetOverview;
+    },
 });

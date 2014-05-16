@@ -31,7 +31,7 @@ Ext.define('sitools.user.controller.modules.projectDescription.projectDescriptio
     views : ['modules.projectDescription.projectDescription'],
     
     onLaunch : function () {
-        var project = Ext.getStore('ProjectStore').getAt(0);
+        var project = Ext.getStore('ProjectStore').getProject();
         Ext.Ajax.request({
             method : "GET", 
             url : project.get('sitoolsAttachementForUsers'), 
@@ -41,14 +41,14 @@ Ext.define('sitools.user.controller.modules.projectDescription.projectDescriptio
 //              }
                 var json = Ext.decode(response.responseText);
                 
-                var view = Ext.create('sitools.user.view.modules.projectDescription.projectDescription',{
+                var view = Ext.create('sitools.user.view.modules.projectDescription.projectDescription', {
                     html : Ext.util.Format.htmlDecode(json.project.htmlDescription), 
                     autoScroll : true
                 });
                 
                 this.setViewCmp(view);
                 
-                this.open();
+                this.open(view);
             }, 
             failure : alertFailure, 
             scope : this

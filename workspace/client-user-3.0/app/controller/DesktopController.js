@@ -41,22 +41,22 @@ Ext.define('sitools.user.controller.DesktopController', {
         me.fireEvent('ready', me);
     },
 
-    createWindow : function (module, view) {
+    createWindow : function (view, windowConfig) {
         var desktop = this.getDesktop();
-        var win = desktop.getWindow(module.name);
+        var win = desktop.getWindow(windowConfig.name);
         if (!win) {
-            win = desktop.createWindow({
-                id : module.name,
-                title : i18n.get(module.label),
+            Ext.applyIf(windowConfig, {
+                id : windowConfig.name,
+                title : i18n.get(windowConfig.label),
                 width : 600,
                 height : 400,
                 animCollapse : false,
                 border : false,
                 hideMode : 'offsets',
-
                 layout : 'fit',
                 items : [ view ]
             });
+            win = desktop.createWindow(windowConfig);
         }
         win.show();
     },

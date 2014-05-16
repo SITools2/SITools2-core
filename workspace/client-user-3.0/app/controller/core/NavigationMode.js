@@ -24,5 +24,14 @@ Ext.define('sitools.user.controller.core.NavigationMode', {
     extend : 'Ext.app.Controller',
     
     openComponent : Ext.emptyFn,
-    openModule : Ext.emptyFn
+    openModule : Ext.emptyFn,
+    
+    getFormOpenMode : function (navMode) {
+        switch (navMode) {
+        case "desktop":
+            return this.getApplication().getController('sitools.user.controller.core.DesktopMode').getFormOpenMode();
+        case "fixed":
+            return this.getApplication().getController('sitools.user.controller.core.FixedMode').getFormOpenMode();
+        }
+    }
 });

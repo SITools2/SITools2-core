@@ -15,26 +15,39 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, i18n, loadUrl, getDesktop, sitools, SitoolsDesk */
-Ext.namespace('sitools.user.controller.core');
+/*global Ext, sitools, window */
 
-Ext.define('sitools.user.controller.core.DesktopMode', {
+Ext.define('sitools.user.model.FormModel', {
+    extend : 'Ext.data.Model',
 
-    extend : 'sitools.user.controller.core.NavigationMode',
-    
-    openComponent : function (view, windowConfig) {
-        this.getApplication().getController('DesktopController').createWindow(view, windowConfig);
-    },
-    
-    openModule : function (view, module) {
-        var windowConfig = {
-            name : module.name,
-            title : i18n.get(module.label)
-        };
-        this.getApplication().getController('DesktopController').createWindow(view, windowConfig);
-    },
-    
-    getFormOpenMode : function () {
-        return sitools.user.view.component.forms.FormsView;
-    }
+    fields : [ {
+        name : 'id',
+        type : 'string'
+    }, {
+        name : 'parent',
+        type : 'string'
+    }, {
+        name : 'name',
+        type : 'string'
+    }, {
+        name : 'css',
+        type : 'string'
+    }, {
+        name : 'description',
+        type : 'string'
+    }, {
+        name : 'width',
+        type : 'int'
+    }, {
+        name : 'height',
+        type : 'int'
+    }, {
+        name : 'parentUrl',
+        type : 'string'
+    }, {
+        name : 'parameters'
+    }, {
+        name : 'zones'
+    } ]
+
 });

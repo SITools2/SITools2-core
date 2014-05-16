@@ -9,14 +9,17 @@ Ext.define('sitools.user.Application', {
                  'sitools.public.utils.loadUrl',
                  'sitools.public.utils.sql2ext',
                  'sitools.public.utils.Locale',
-                     /* CORES */
-                 
+                 'sitools.user.utils.FormUtils'
                  ],
 
     extend : 'Ext.app.Application',
 
-    controllers : ["core.SitoolsController", "DesktopController", 'header.HeaderController', 'footer.FooterController', 'core.NavigationModeFactory'],
-
+    controllers : ["core.SitoolsController",
+                   "DesktopController", 
+                   'header.HeaderController',
+                   'footer.FooterController',
+                   'core.NavigationModeFactory'
+                   ],
     isReady : false,
     modules : null,
     useQuickTips : true,
