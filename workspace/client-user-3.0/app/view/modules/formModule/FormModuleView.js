@@ -24,7 +24,7 @@
  * @include "../../components/forms/projectForm.js"
  */
 
-Ext.namespace('sitools.user.view.modules.formsModule');
+Ext.namespace('sitools.user.view.modules.formModule');
 
 /**
  * Forms Module : 
@@ -33,7 +33,7 @@ Ext.namespace('sitools.user.view.modules.formsModule');
  * @extends Ext.grid.GridPanel
  * @requires sitools.user.component.forms.mainContainer
  */
-Ext.define('sitools.user.view.modules.formsModule.FormsModuleView', {
+Ext.define('sitools.user.view.modules.formModule.FormModuleView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.formsModuleView',
     layout : 'fit',

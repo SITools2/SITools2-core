@@ -30,7 +30,7 @@ Ext.namespace('sitools.admin.forms');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.forms.advancedFormPanel', {
-    extend : 'Ext.ux.form.ToolFieldSet',
+    extend : 'sitools.public.ux.form.ToolFieldSet',
     border : true,
     closable : true,
     style : 'background-color : white;',

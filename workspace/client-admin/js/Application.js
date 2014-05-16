@@ -49,6 +49,7 @@ Ext.define('sitools.admin.Application', {
         
         'sitools.public.widget.item.menuButton',
         'sitools.public.widget.item.TextFilter',
+        'sitools.public.ux.form.MultiSelect',
         
         /* WIDGETS TO BE INCLUDED IN OTHER FILES */
         'sitools.public.forms.formParameterToComponent',
@@ -61,7 +62,7 @@ Ext.define('sitools.admin.Application', {
         
         'sitools.public.widget.date.DatePicker',
         
-        'Ext.ux.form.ToolFieldSet',
+        'sitools.public.ux.form.ToolFieldSet',
         
         /* SITOOLS MODULES */
         'sitools.admin.applications.applicationsCrud',

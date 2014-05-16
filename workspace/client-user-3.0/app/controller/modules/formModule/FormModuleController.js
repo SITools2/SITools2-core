@@ -25,7 +25,7 @@
  * "../../components/forms/projectForm.js"
  */
 
-Ext.namespace('sitools.user.controller.modules.formsModule');
+Ext.namespace('sitools.user.controller.modules.formModule');
 
 /**
  * Forms Module : Displays All Forms depending on datasets attached to the
@@ -35,10 +35,10 @@ Ext.namespace('sitools.user.controller.modules.formsModule');
  * @extends Ext.grid.GridPanel
  * @requires sitools.user.component.forms.mainContainer
  */
-Ext.define('sitools.user.controller.modules.formsModule.FormsModuleController', {
+Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
     extend : 'sitools.user.controller.modules.ModuleController',
     
-    views : ['modules.formsModule.FormsModuleView'],
+    views : ['modules.formModule.FormModuleView'],
     
     config : {
         formStore : null,
@@ -85,7 +85,7 @@ Ext.define('sitools.user.controller.modules.formsModule.FormsModuleController', 
         this.loadFormStore();
         this.loadFormMultiDsStore();
         
-        var view = Ext.create('sitools.user.view.modules.formsModule.FormsModuleView', {
+        var view = Ext.create('sitools.user.view.modules.formModule.FormModuleView', {
             formStore : this.getFormStore(),
             formMultiDsStore : this.getFormMultiDsStore()
         });
@@ -128,6 +128,7 @@ Ext.define('sitools.user.controller.modules.formsModule.FormsModuleController', 
         if (rec.data.authorized === "false") {
             return;
         }
+        
         Ext.Ajax.request({
             url : rec.data.parentUrl,
             method : 'GET',
@@ -142,7 +143,7 @@ Ext.define('sitools.user.controller.modules.formsModule.FormsModuleController', 
 
                     var dataset = json.dataset;
                     
-                    var formController = this.getApplication().getController('component.forms.FormsController');
+                    var formController = this.getApplication().getController('component.form.FormController');
                     formController.openForm(rec.getData(true), dataset);
                     
                     return;
@@ -164,37 +165,10 @@ Ext.define('sitools.user.controller.modules.formsModule.FormsModuleController', 
         if (Ext.isEmpty(rec)) {
             return;
         }
-        var jsObj = sitools.user.component.forms.projectForm;
 
-        var componentCfg = {
-            formId : rec.data.id,
-            formName : rec.data.name,
-            formParameters : rec.data.parameters,
-            formWidth : rec.data.width,
-            formHeight : rec.data.height, 
-            formCss : rec.data.css, 
-            properties : rec.data.properties, 
-            urlServicePropertiesSearch : rec.data.urlServicePropertiesSearch, 
-            urlServiceDatasetSearch : rec.data.urlServiceDatasetSearch, 
-            dictionaryName : rec.data.dictionary.name,
-            nbDatasetsMax : rec.data.nbDatasetsMax, 
-            preferencesPath : "/formProjects", 
-            preferencesFileName : rec.data.name,
-            formZones : rec.data.zones
-        };
-        var windowSettings = {
-            type : "formProject", 
-            title : i18n.get('label.forms') + " : " + rec.data.name + ", Collection " + rec.data.collection.name,
-            id : "formProject"  + rec.data.id, 
-            saveToolbar : true, 
-            datasetName : rec.data.name, 
-            winWidth : 600, 
-            winHeight : 600, 
-            iconCls : "form"
-        };
+        var formController = this.getApplication().getController('component.form.ProjectFormController');
+        formController.openProjectForm(rec.getData(true));
         
-        SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
-        return;
     },
     
     /**

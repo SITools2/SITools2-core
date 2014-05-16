@@ -43,7 +43,7 @@ Ext.define('sitools.user.controller.DesktopController', {
 
     createWindow : function (view, windowConfig) {
         var desktop = this.getDesktop();
-        var win = desktop.getWindow(windowConfig.name);
+        var win = desktop.getWindow(windowConfig.id) || desktop.getWindow(windowConfig.name);
         if (!win) {
             Ext.applyIf(windowConfig, {
                 id : windowConfig.name,

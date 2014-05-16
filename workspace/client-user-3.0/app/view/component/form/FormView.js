@@ -24,7 +24,7 @@
  * @include "../../components/forms/projectForm.js"
  */
 
-Ext.namespace('sitools.user.view.component.forms');
+Ext.namespace('sitools.user.view.component.form');
 
 /**
  * Forms Module : 
@@ -33,7 +33,7 @@ Ext.namespace('sitools.user.view.component.forms');
  * @extends Ext.grid.GridPanel
  * @requires sitools.user.component.forms.mainContainer
  */
-Ext.define('sitools.user.view.component.forms.FormsView', {
+Ext.define('sitools.user.view.component.form.FormView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.formsView',
     layout : 'fit',
@@ -71,11 +71,13 @@ Ext.define('sitools.user.view.component.forms.FormsView', {
         var globalParams = {};
         
         Ext.iterate(panelIdObject, function(key, formParams){
-            var componentList = Ext.create('sitools.user.view.component.forms.FormContainerView', {
+            var componentList = Ext.create('sitools.user.view.component.form.FormContainerView', {
                 border: true,
                 css : this.formCss, 
                 formId : this.formId,
-                id : key
+                id : key,
+                formWidth : this.formWidth,
+                height : this.formHeight
             });
 
             if (!Ext.isEmpty(this.formZones)) {
@@ -95,7 +97,7 @@ Ext.define('sitools.user.view.component.forms.FormsView', {
             height : this.formHeight,
             css : this.formCss, 
             formId : this.formId,
-            items : [items]
+            items : items
         });
         
         if (Ext.isEmpty(this.dataset)) {
@@ -129,10 +131,8 @@ Ext.define('sitools.user.view.component.forms.FormsView', {
         
         this.buttons = [{
             text : i18n.get('label.search'),
-            scope : this,
-            handler : function () {
-                this.onSearch(this);
-            }
+            itemId : 'btnSearchForm',
+            scope : this
         }];
         
         this.bbar = Ext.create('sitools.public.widget.StatusBar', {

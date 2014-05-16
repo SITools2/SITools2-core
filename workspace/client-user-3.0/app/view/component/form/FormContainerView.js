@@ -25,7 +25,7 @@
  * "../../components/forms/projectForm.js"
  */
 
-Ext.namespace('sitools.user.view.component.forms');
+Ext.namespace('sitools.user.view.component.form');
 
 /**
  * Forms Module : Displays All Forms depending on datasets attached to the
@@ -35,7 +35,7 @@ Ext.namespace('sitools.user.view.component.forms');
  * @extends Ext.grid.GridPanel
  * @requires sitools.user.component.forms.mainContainer
  */
-Ext.define('sitools.user.view.component.forms.FormContainerView', {
+Ext.define('sitools.user.view.component.form.FormContainerView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.formContainerView',
     layout : 'fit',
@@ -43,18 +43,14 @@ Ext.define('sitools.user.view.component.forms.FormContainerView', {
     initComponent : function () {
 
         Ext.apply(this, {
-            // title: this.formName,
-            // id : "panelResultForm" + this.formId,
+            title: this.formName,
+            id : "panelResultForm" + this.formId,
             bodyCls : this.css,
-            height : this.height,
+            height : this.formHeight,
             width : this.width,
-            // border : false,
-            // bodyBorder : false,
-            // collapsible: true,
             layout : "form",
             labelWidth : 100,
             autoHeight : true,
-            // width:600,
             padding : 10,
             items : [],
 
@@ -116,10 +112,11 @@ Ext.define('sitools.user.view.component.forms.FormContainerView', {
         
         if (!Ext.isEmpty(parameters.formZones)) {
             Ext.each(parameters.formZones, function (zone) {
-                var zoneFieldset = new Ext.form.FieldSet({
+                var zoneFieldset = Ext.create('sitools.public.ux.form.ToolFieldSet', {
                     title : (!Ext.isEmpty(zone.title) ? zone.title : zone.id),
                     itemId : zone.id,
                     height : zone.height,
+                    width : this.formWidth,
                     position : zone.position,
                     style : 'background-color:#FCFCFC;',
                     cls : zone.css,
@@ -143,7 +140,7 @@ Ext.define('sitools.user.view.component.forms.FormContainerView', {
                     var x = Ext.isEmpty(param.xpos) ? x : param.xpos;
                     var containerItems = [ sitools.user.utils.FormUtils.formParameterToComponent(param, dataUrl, this.formId, this.datasetCm, context, this).component];
 
-                    var container = new Ext.Container({
+                    var container = Ext.create('Ext.container.Container', {
                         width : param.width,
                         height : param.height,
                         x : x,
@@ -193,7 +190,7 @@ Ext.define('sitools.user.view.component.forms.FormContainerView', {
      */
     isComponentsValid : function () {
         var valid = true;
-        var containers = this.find("stype", 'sitoolsFormContainer');
+        var containers = this.down('[stype="sitoolsFormContainer"]');
         Ext.each(containers, function (container) {
             if(Ext.isFunction(container.isValid)) {
                 if(!container.isValid()){

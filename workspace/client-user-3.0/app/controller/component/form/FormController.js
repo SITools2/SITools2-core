@@ -25,7 +25,7 @@
  * "../../components/forms/projectForm.js"
  */
 
-Ext.namespace('sitools.user.controller.modules.forms');
+Ext.namespace('sitools.user.controller.modules.form');
 
 /**
  * Forms Module : Displays All Forms depending on datasets attached to the
@@ -35,13 +35,16 @@ Ext.namespace('sitools.user.controller.modules.forms');
  * @extends Ext.grid.GridPanel
  * @requires sitools.user.component.forms.mainContainer
  */
-Ext.define('sitools.user.controller.component.forms.FormsController', {
+Ext.define('sitools.user.controller.component.form.FormController', {
     extend : 'sitools.user.controller.component.ComponentController',
     
-    views : ['component.forms.FormsView',
-             'component.forms.FormContainerView'],
+    views : ['component.form.FormView',
+             'component.form.FormContainerView'],
     
-
+    config : {
+        listFormView : Ext.create('Ext.util.MixedCollection')
+    },
+             
     init : function () {
         this.control({
             'formContainerView' : {
@@ -51,32 +54,15 @@ Ext.define('sitools.user.controller.component.forms.FormsController', {
             
             'formsView' : {
                 resize : this.resizeForm
+            },
+            
+            'formsView #btnSearchForm' : {
+                click : this.onSearch
             }
         });
     },
     
-
-        openForm : function (form, dataset) {
-        // var jsObj = SitoolsDesk.navProfile.getFormOpenMode();
-        //      
-        // var componentCfg = {
-        // dataUrl : dataset.sitoolsAttachementForUsers,
-        // dataset : dataset,
-        // formId : rec.data.id,
-        // formName : rec.data.name,
-        // formParameters : rec.data.parameters,
-        // formWidth : rec.data.width,
-        // formHeight : rec.data.height,
-        // formCss : rec.data.css,
-        // preferencesPath : "/" + dataset.name + "/forms",
-        // preferencesFileName : rec.data.name,
-        // formZones : rec.data.zones
-        // };
-        //
-        // SitoolsDesk.navProfile.addSpecificFormParameters(componentCfg,
-        // dataset);
-        //      
-        // SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
+    openForm : function (form, dataset) {
             
         var windowSettings = {
             datasetName : dataset.name,
@@ -86,7 +72,8 @@ Ext.define('sitools.user.controller.component.forms.FormsController', {
             saveToolbar : true,
             iconCls : "form"
         };
-        var view = Ext.create('sitools.user.view.component.forms.FormsView', {
+        
+        var view = Ext.create('sitools.user.view.component.form.FormView', {
             title : form.name,
             dataUrl : dataset.sitoolsAttachementForUsers,
             dataset : dataset,
@@ -173,16 +160,122 @@ Ext.define('sitools.user.controller.component.forms.FormsController', {
         }
     },
     
+    onSearch : function (config) {
+        
+        var valid = true;
+        
+        me = this.getComponentView();
+        
+        me.zonesPanel.items.each(function(componentList) {
+            valid = valid && componentList.isComponentsValid();            
+        },this);
+        
+        if (!valid) {
+            me.down('toolbar').setStatus({
+                text : i18n.get('label.checkformvalue'),
+                iconCls : 'x-status-error'
+            });
+            me.down('toolbar').setVisible(true);    
+            return;
+        } else {
+            me.down('toolbar').setVisible(false);
+        }
+        //Execute a request to get the dataset config 
+        Ext.Ajax.request({
+            url : me.dataUrl, 
+            method : "GET",
+            scope : this,
+            success : function (ret) {
+                var Json = Ext.decode(ret.responseText);
+                if (!Json.success) {
+                    Ext.Msg.alert(i18n.get('label.warning'), Json.message);
+                    return;
+                } else {
+                    var dataset = Json.dataset;
+                    this.doSearch(config, dataset);
+                }
+            },
+            failure : alertFailure
+        });
+    }, 
+    
     /**
-     * method called when trying to save preference
-     * 
+     * Build the query for the liveGrid and build the livegrid component
+     * @param config
      * @returns
      */
+    doSearch : function (config, dataset) {
+        var containers = this.getComponentView().down('[stype="sitoolsFormContainer"]');
+        var formParams = [];
+        var glue = "";
+        var i = 0;
+        Ext.each(containers, function (container) {
+            if (Ext.isFunction(container.getParameterValue)) {
+                var param = container.getParameterValue();
+                if (!Ext.isEmpty(param)) {
+                    formParams.push(this.paramValueToApi(param));
+                }
+            }
+        }, this);
+
+//        var desktop = getDesktop();
+//        var win = desktop.getWindow("windResultForm" + config.formId);
+//        if (win) {
+//            win.close();
+//        }
+        
+        if (Ext.isFunction(this.searchAction)) {
+            this.searchAction(formParams, dataset, this.scope);
+        }
+        else {
+            this.defaultSearchAction(formParams, dataset);
+        }
+        
+    },
+    
+    defaultSearchAction : function (formParams, dataset) {
+        var windowConfig = {
+//            id : "windResultForm" + config.formId,
+            title : i18n.get('label.dataTitle') + " : " + dataset.name, 
+            datasetName : dataset.name, 
+            type : "data", 
+            saveToolbar : true, 
+            iconCls : "dataviews"
+        };
+        
+        var control = this.getApplication().getController('sitools.user.controller.component.datasets.DatasetsController');
+        control.onLaunch(this.getApplication()); 
+        control.openDataset(dataset, windowConfig);
+    }, 
+    
     _getSettings : function () {
         return {
-            preferencesPath : "/modules", 
-            preferencesFileName : this.id
+            objectName : "forms", 
+            dataUrl : this.dataUrl,
+            dataset : this.dataset,
+            formId : this.formId,
+            formName : this.formName,
+            formParameters : this.formParameters,
+            formWidth : this.formWidth,
+            formHeight : this.formHeight, 
+            formCss : this.formCss, 
+            datasetView : this.datasetView,
+            dictionaryMappings : this.dictionaryMappings, 
+            preferencesPath : this.preferencesPath, 
+            preferencesFileName : this.preferencesFileName
         };
-
+    }, 
+    /**
+     * Build a string using a form param Value. 
+     * @param {} paramValue An object with attributes : at least type, code, value and optionnal userDimension, userUnit
+     * @return {string} something like "TEXTFIELD|ColumnAlias|value"
+     */
+    paramValueToApi : function (paramValue) {
+        var stringParam = paramValue.type + "|" + paramValue.code + "|" + paramValue.value;
+        if (!Ext.isEmpty(paramValue.userDimension) && !Ext.isEmpty(paramValue.userUnit)) {
+            stringParam += "|" + paramValue.userDimension + "|" + paramValue.userUnit.unitName; 
+        }  
+        return stringParam;
     }
+    
 });

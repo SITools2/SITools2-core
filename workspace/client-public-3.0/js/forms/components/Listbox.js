@@ -98,7 +98,7 @@ Ext.define('sitools.public.forms.components.ListBox', {
 //	    });
         
 
-        this.multiSelect =  Ext.create("Ext.ux.form.MultiSelect", {
+        this.multiSelect =  Ext.create("sitools.public.ux.form.MultiSelect", {
             anchor : '100%',
             msgTarget : 'side',
             fieldLabel : 'Multiselect',

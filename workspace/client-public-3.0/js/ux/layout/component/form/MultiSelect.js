@@ -12,19 +12,18 @@ This file may be used under the terms of the GNU General Public License version 
 If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
 
 */
+Ext.namespace('sitools.public.layout.form');
+
 /**
  * @private
- * @class Ext.ux.layout.component.form.MultiSelect
+ * @class Ext.ux.layout.component.layout.MultiSelect
  * @extends Ext.layout.component.field.Field
  * Layout class for {@link Ext.ux.form.MultiSelect} fields.
  * @private
  */
-Ext.define('Ext.ux.layout.component.form.MultiSelect', {
+Ext.define('sitools.public.ux.layout.MultiSelect', {
     extend: 'Ext.layout.component.field.Field',
-    alias: ['layout.multiselectfield'],
-
-    type: 'multiselectfield',
-
+    alias : ['layout.multiselectfield'],
     /**
      * @cfg {Number} height The height of the field. Defaults to 200.
      */

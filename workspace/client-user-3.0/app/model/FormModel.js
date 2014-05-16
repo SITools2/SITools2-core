@@ -48,6 +48,10 @@ Ext.define('sitools.user.model.FormModel', {
         name : 'parameters'
     }, {
         name : 'zones'
+    }, {
+        name : 'collection'
+    }, {
+        name : 'dictionary'
     } ]
 
 });
