@@ -122,7 +122,7 @@ public final class ClientPortalApplication extends StaticWebApplication {
 
   @Override
   public void sitoolsDescribe() {
-    setCategory(Category.PORTAL);
+    setCategory(Category.USER);
     setName("client-portal");
     // setDescription("Web client application for SITools users");
     setDescription("This application is used by users" + "-> to access the Portal Web client application"
