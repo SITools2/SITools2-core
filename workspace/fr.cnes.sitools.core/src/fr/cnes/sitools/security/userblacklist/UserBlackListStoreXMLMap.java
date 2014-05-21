@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package fr.cnes.sitools.units.dimension;
+package fr.cnes.sitools.security.userblacklist;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
  * 
  * @author jp.boignard (AKKA technologies)
  */
-public final class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> implements DimensionStoreInterface {
+public final class UserBlackListStoreXMLMap extends XmlMapStore<SitoolsDimension> implements UserBlackListStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "dimensions";
@@ -46,7 +46,7 @@ public final class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> im
    * @param context
    *          the Restlet Context
    */
-  public DimensionStoreXMLMap(Context context) {
+  public UserBlackListStoreXMLMap(Context context) {
     super(SitoolsDimension.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
@@ -60,7 +60,7 @@ public final class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> im
    * @param context
    *          the Restlet Context
    */
-  public DimensionStoreXMLMap(File location, Context context) {
+  public UserBlackListStoreXMLMap(File location, Context context) {
     super(SitoolsDimension.class, location, context);
   }
 

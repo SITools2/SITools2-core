@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -20,7 +20,6 @@ package fr.cnes.sitools.userstorage;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +72,6 @@ public final class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> imple
     aliases.put("userStorage", UserStorage.class);
     this.init(location, aliases);
   }
-  
 
   @Override
   public UserStorage create(UserStorage resource) {
@@ -82,30 +80,15 @@ public final class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> imple
       throw new RuntimeException("USERSTORAGE_USERIDENTIFIER_MANDATORY");
     }
     resource.setId(resource.getUserId());
-    
+
     return super.create(resource);
-  }
-
-  @Override
-  public UserStorage update(UserStorage userStorage) {
-
-    UserStorage current = getMap().get(userStorage.getId());
-    if (null != current) {
-      current.setStorage(userStorage.getStorage());
-      current.setStatus(userStorage.getStatus());
-    
-      getMap().remove(userStorage.getId());
-      getMap().put(current.getId(), current);
-    }
-    
-    return current;
   }
 
   @Override
   public List<UserStorage> retrieveByParent(String id) {
     throw new RuntimeException(SitoolsException.NOT_IMPLEMENTED);
   }
-  
+
   @Override
   public void sort(List<UserStorage> result, ResourceCollectionFilter filter) {
     if ((filter != null) && (filter.getSort() != null) && !filter.getSort().equals("")) {
@@ -126,9 +109,6 @@ public final class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> imple
       });
     }
   }
-  
-  
-  
 
   @Override
   public String getCollectionName() {
