@@ -169,14 +169,15 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
     if (result == null) {
       getMap().put(resource.getId(), resource);
       result = resource;
-    } else {
+    } 
+    else {
       getLog().info(getCollectionName() + " found");
     }
     return result;
   }
 
   @Override
-  public final T retrieve(String id) {
+  public T retrieve(String id) {
     T result = null;
     result = getMap().get(id);
     if (result == null) {
@@ -195,7 +196,7 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
   }
 
   @Override
-  public final boolean delete(String id) {
+  public boolean delete(String id) {
     boolean result = false;
     if (getMap().containsKey(id)) {
       getLog().info("Removing " + getCollectionName());
