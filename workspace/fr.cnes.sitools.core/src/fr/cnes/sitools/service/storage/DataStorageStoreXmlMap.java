@@ -11,6 +11,11 @@ import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.service.storage.model.StorageDirectory;
 
+/**
+ * DataStorageStoreXmlMap
+ *
+ * @author tx.chevallier
+ */
 public class DataStorageStoreXmlMap extends XmlMapStore<StorageDirectory> implements DataStorageStoreInterface {
 
   /** default location for file persistence */
