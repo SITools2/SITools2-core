@@ -39,15 +39,20 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
     },
     
     initComponent : function () {
+        if(this.action === "create"){
+            this.title = i18n.get("label.addContent");
+        }else{
+            this.title = i18n.get("label.editContent");
+        }
         
-        this.title = i18n.get("label.addContent");
+        this.nodeUuid = this.node.attributes.uuid;
         
-        this.nodeText = this.node.text;
-        
-        var browseField = new Ext.form.TriggerField({
+        this.browseField = new Ext.form.TriggerField({
             name : 'link',
-            fieldLabel : i18n.get('label.content'),
             datastorageUrl : this.datastorageUrl,
+            hidden : this.action === "create" ,
+            allowBlank : this.action === "create",
+            fieldLabel : this.action === "edit" ? i18n.get('label.contentLink') : undefined,
             onTriggerClick : function () {
 		        if (!this.disabled) {
                     
@@ -98,7 +103,31 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
                     inputValue : "page"
                 }],
                 disabled : (this.action === "edit") 
-            }, browseField]
+            },
+            {
+                fieldLabel : i18n.get('label.contentLink'),
+                name : 'createLinkType',
+                xtype : 'radiogroup',
+                columns : 2,
+                items : [{
+                    boxLabel : i18n.get("label.newPage"),
+                    name : 'link',
+                    inputValue : "newpage",
+                    checked : true
+                }, {
+                    boxLabel : i18n.get("label.existingResource"),
+                    name : 'link',
+                    inputValue : "existingresource"
+                }],
+                listeners : {
+                    scope : this,
+                    change : function (radioGroup, radioChecked) {
+                        this.browseField.setVisible(radioChecked.inputValue === "existingresource");
+                        this.browseField.allowBlank = radioChecked.inputValue !== "existingresource";
+                    }
+                },
+                hidden : (this.action === "edit") 
+            }, this.browseField]
         });
         
         
@@ -144,8 +173,8 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
     },
     
 
-    findOldNode : function (nodeName) {
-        return selectNode = this.cms.tree.getRootNode().findChild('text', nodeName, true);
+    findOldNode : function (nodeUuid) {
+        return selectNode = this.cms.tree.getRootNode().findChild('uuid', nodeUuid, true);
     },
     
     onValidate : function () {
@@ -155,38 +184,26 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
             return;
         }
         var forceRefresh = (this.action === "create");
-        var link = form.findField("link").getValue();
-        if (Ext.isEmpty(link)) {
-            Ext.Msg.show({
-                title : i18n.get('label.warning'),
-                msg : i18n.get('label.noLinkDefineCreateFile'),
-                buttons : {
-                    yes : i18n.get('label.yes'),
-                    no : i18n.get('label.no'),
-                    cancel : i18n.get('label.cancel')
-                },
-                fn : function (btnId, textButton, opt) {
-                    if (btnId === "yes") {
-                        var language = this.cms.getChosenLanguage();
-                        var form = this.form.getForm();
-                        var text = form.findField("text").getValue();
-                        var link = "/" + language + "/" + text + ".html";
-                        this.onSave(link, true, forceRefresh);
-                    } 
-                    else if (btnId === "no") {
-                        this.onSave(undefined, false, forceRefresh);
-                    }                    
-                    
-                },
-                animEl : 'elId',
+        var linkType = form.findField("createLinkType").getValue().getGroupValue();
+        if(this.action === "create" && linkType === "newpage"){
+            var language = this.cms.getChosenLanguage();
+            var text = form.findField("text").getValue();
+            var link = "/" + language + "/" + text + ".html";
+            Ext.Ajax.request({
+                url : this.cms.url + link,
+                method : "HEAD",
                 scope : this,
-                icon : Ext.MessageBox.QUESTION
-            });
+                success : function () {
+                    Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.cmsfileAlreadyExists"));
+                }, failure : function () {
+                    this.onSave(link, true, forceRefresh);
+                }
+            })
+            
         } else {
+            var link = form.findField("link").getValue();
             this.onSave(link, false, forceRefresh);
         }
-        
-        
     },
     /**
      * Method to add a file from its link. If createFile is true, also create the file on the server
@@ -226,7 +243,7 @@ sitools.user.modules.chooseFileInExplorer = Ext.extend(Ext.Window, {
         var type = form.findField("type").getValue().getGroupValue();
         var leaf = "page" === type;
         
-        this.node = this.findOldNode(this.nodeText);
+        this.node = this.findOldNode(this.nodeUuid);
         
         if (this.action === "create") {
             this.cms.addNode(this.node, leaf, text, link, createFile, true);

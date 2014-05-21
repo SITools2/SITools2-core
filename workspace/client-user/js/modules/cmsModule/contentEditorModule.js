@@ -127,7 +127,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             }),
             root : {
                 text : "root",
-                nodeType : 'async'
+                nodeType : 'async',
+                uuid : 'root'
             },
             loader : new Ext.tree.TreeLoader({
                 requestMethod : 'GET',
@@ -160,6 +161,11 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     if (Ext.isString(attr.uiProvider)) {
                         attr.uiProvider = this.uiProviders[attr.uiProvider] || eval(attr.uiProvider);
                     }
+                    if (Ext.isEmpty(attr.uuid)) {
+                        console.log(attr.text);
+                        attr.uuid = generateId();
+                        this.toReload = true;
+                    }
                     if (attr.nodeType) {
                         return new Ext.tree.TreePanel.nodeTypes[attr.nodeType](attr);
                     } else {
@@ -178,6 +184,9 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                             } else {
                                 Ext.Msg.alert(i18n.get('label.warning'), i18n.get('msg.nodeundefined'));
                             }
+                        }
+                        if (!Ext.isEmpty(this.tree.loader.toReload) && this.tree.loader.toReload) {
+                            this.createJsonTree();
                         }
                     },
                     loadException : function (loader, node, response) {
@@ -203,7 +212,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             }),
             listeners : {
                 scope : this,
-                click : function (node) {
+                beforeclick : function (node){
                     var labelSaving = this.saveLabelInfo.getEl().dom;
                     if (labelSaving.isTextModified) {
                         Ext.Msg.show({
@@ -221,15 +230,17 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                                 } else {
                                     labelSaving.innerHTML = "<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "";
                                     labelSaving.isTextModified = false;
-                                    
+                                    this.tree.selectPath(node.getPath());
                                     this.treeAction(node);
                                 }
                             }
                         });
-                    } else {
-                        this.treeAction(node);
+                        return false;
                     }
-                    
+                    return true;
+                },
+                click : function (node) {
+                        this.treeAction(node);
                 },
                 contextmenu : function (node, e) {
                     this.tree.getSelectionModel().select(node, e, true);
@@ -444,7 +455,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                             }
                         });
                     }
-                    if (contentType.contains("text")) {
+                    if (contentType.indexOf("text") > -1) {
                         
                         
                         var data = ret.responseText;
@@ -551,13 +562,15 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
 	            "link" : link,
 	            "leaf" : true,
 	            "icon" : loadUrl.get('APP_URL') + '/common/res/images/icons/valid.png',
-	            "sync" : false
+	            "sync" : false,
+	            "uuid" : generateId()
 	        });
         } else {
             nodeToAdd.appendChild({
                 "text" : text,
                 "link" : link,
                 "leaf" : false,
+                "uuid" : generateId(),
                 "children" : []
             });
         }
@@ -664,7 +677,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 leaf : root.leaf,
                 icon : root.attributes.icon,
                 sync : root.attributes.sync,
-                link : root.attributes.link
+                link : root.attributes.link,
+                uuid : root.attributes.uuid
             };
             parent.push(node);
         } else {
@@ -672,6 +686,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 text : root.text,
                 leaf : false,
                 link : root.attributes.link,
+                uuid : root.attributes.uuid,
                 children : []
             };
             parent.push(node);
@@ -970,8 +985,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             preferencesFileName : this.id
         };
 
-    }
-     
+    }     
 });
 
 /**
