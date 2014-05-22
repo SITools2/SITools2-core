@@ -33,7 +33,9 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.dataset.DataSetStoreInterface;
 import fr.cnes.sitools.dataset.DataSetStoreXML;
+import fr.cnes.sitools.dataset.DataSetStoreXMLMap;
 import fr.cnes.sitools.dataset.converter.ConverterStoreXML;
 import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.dataset.filter.FilterStoreXML;
@@ -222,10 +224,6 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_RESOURCES, storeResourcePlugins);
 
-    SitoolsStore<DataSet> storeDataSet = new DataSetStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_DATASET, storeDataSet);
-
     SitoolsStore<ConverterChainedModel> storeConv = new ConverterStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_CONVERTERS, storeConv);
@@ -305,8 +303,24 @@ public final class StoreHelper {
       storeDataStorage.saveList(storeDataStorageOLD.getList());
     }
     
+    // ======== dataset =============== 
+    
+    new File(settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR) + "/map").mkdirs();
+    DataSetStoreInterface storeDataSet = new DataSetStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR) + "/map"), context);
+    stores.put(Consts.APP_STORE_DATASET, storeDataSet);
+    
+    // migrating datasets
+    SitoolsStore<DataSet> storeDataSetOLD = new DataSetStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR)), context);
+    if (!storeDataSetOLD.getList().isEmpty()) {
+      storeDataSet.saveList(storeDataSetOLD.getList());
+    }
+    
+    // ========= dimension =============
+    
     DimensionStoreInterface storeDimensions = new DimensionStoreXMLMap(new File(
-        settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)+"/map"), context);
+        settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DIMENSION, storeDimensions);
 
     // Migrating Dimension
