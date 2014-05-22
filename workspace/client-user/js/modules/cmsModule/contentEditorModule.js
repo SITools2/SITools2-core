@@ -176,7 +176,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 },
                 listeners : {
                     scope : this,
-                    load : function (node) {
+                    load : function (treeLoader, node, response) {
                         if (!Ext.isEmpty(this.activeNode)) {
                             if (!Ext.isEmpty(node)) {
                                 this.tree.selectPath(node.getPath());
@@ -188,25 +188,34 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         if (!Ext.isEmpty(this.tree.loader.toReload) && this.tree.loader.toReload) {
                             this.createJsonTree();
                         }
+                        this.lastModified = response.getResponseHeader("Last-Modified"); 
                     },
                     loadException : function (loader, node, response) {
-                        Ext.Msg.show({
-							title : i18n.get('label.warning'),
-							msg : i18n.get('label.noJsonFileFound'),
-							buttons : {
-			                    yes : i18n.get('label.yes'),
-			                    no : i18n.get('label.no'),
-			                    cancel : i18n.get('label.cancel')
-			                },
-							fn : function (btnId, text, opt) {
-								if (btnId === "yes") {
-									this.createEmptyJson(loader.url);
-								}
-							},
-							animEl : 'elId',
-							scope : this,
-							icon : Ext.MessageBox.QUESTION
-						});
+                        if (response.status === 404) {
+                            Ext.Msg.show({
+                                title : i18n.get('label.warning'),
+                                msg : i18n.get('label.noJsonFileFound'),
+                                buttons : {
+                                    yes : i18n.get('label.yes'),
+                                    no : i18n.get('label.no'),
+                                    cancel : i18n.get('label.cancel')
+                                },
+                                fn : function (btnId, text, opt) {
+                                    if (btnId === "yes") {
+                                        this.createEmptyJson(loader.url);
+                                    }
+                                },
+                                animEl : 'elId',
+                                scope : this,
+                                icon : Ext.MessageBox.QUESTION
+                            });
+                        } 
+                        else if (response.status === 403) {
+                            Ext.Msg.alert(i18n.get("warning.serverError"), i18n.get("label.forbiddenResource"));
+                        }                        
+                        else {
+                            Ext.Msg.alert(i18n.get("warning.serverError"), i18n.get("label.invalidResource"));
+                        }
                     }
                 }
             }),
@@ -482,9 +491,11 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 },
                 failure : function (ret) {
                     var data = ret.responseText;
-                    CKEDITOR.instances[this.idTextarea].setData(data);
-//                    this.findByType('textarea')[0].setValue(data);
-                    CKEDITOR.instances[this.idTextarea].setReadOnly(true);
+                    if(!Ext.isEmpty(CKEDITOR.instances[this.idTextarea])){
+                        CKEDITOR.instances[this.idTextarea].setData(data);
+    //                    this.findByType('textarea')[0].setValue(data);
+                        CKEDITOR.instances[this.idTextarea].setReadOnly(true);
+                    }
                 }
             });
             
@@ -602,7 +613,6 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     },
     
     editNode : function (nodeToEdit, text, link, createFile, saveJson) {
-        
         nodeToEdit.setText(text);
         
 //        if (!link.match(".html") && !(link.indexOf("http://") === 0)) {
@@ -641,30 +651,62 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     },
     
     createJsonTree : function () {
-        var root = this.tree.getRootNode();
-        var tree = [];
-
-        var childs = root.childNodes;
-        var i;
-
-        for (i = 0; i < childs.length; i++) {
-            this.getAllNodes(childs[i], tree);
-        }
-        var jsonUrl = this.tree.getLoader().url;
-        
-        // Save json changed
+        //check if the json file is up to date using the lastModified date  
         Ext.Ajax.request({
-            url : jsonUrl,
-            method : 'PUT',
+            url : this.tree.loader.url,
+            method : 'HEAD',
             scope : this,
-            headers : {
-                'Content-Type' : 'application/json'
+            success : function (response, opts) {
+                if(response.getResponseHeader("Last-Modified") === this.lastModified) {
+                    this.onCreateJsonTree();
+                }
+                else {
+                    Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i></i><hr/><br/>"
+                            + i18n.get("label.treeNotSaved"), this.refreshTree, this);
+                }
             },
-            jsonData : tree,
-            failure : function (response, opts) {
-                Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
+            failure : function () {
+                Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i></i><hr/><br/>"
+                        + i18n.get("label.treeNotSaved"), this.refreshTree, this);
             }
         });
+    },
+    
+    onCreateJsonTree : function () {
+        try {
+            var root = this.tree.getRootNode();
+            var tree = [];
+    
+            var childs = root.childNodes;
+            var i;
+    
+            for (i = 0; i < childs.length; i++) {
+                this.getAllNodes(childs[i], tree);
+            }
+            var jsonUrl = this.tree.getLoader().url;
+            
+            // Save json changed
+            Ext.Ajax.request({
+                url : jsonUrl,
+                method : 'PUT',
+                scope : this,
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                jsonData : tree,
+                success : function (response, opts) {
+                    this.lastModified = response.getResponseHeader("Date");
+                },
+                failure : function (response, opts) {
+                    Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i> " + response.statusText + " </i><hr/><br/>"
+                            + i18n.get("label.treeNotSaved"), this.refreshTree, this);
+                }
+            });
+        } catch (e) {
+            Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i> " + e + " </i><hr/><br/>"
+                    + i18n.get("label.treeNotSaved"), this.refreshTree, this);
+            throw e;
+        }
     },
 
     getAllNodes : function (root, parent) {
@@ -869,6 +911,9 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             },
             headers : {
                 'Content-Type' : 'application/json'
+            },
+            success : function (response, opts) {
+                this.lastModified = response.getResponseHeader("Date");
             },
             failure : function (response, opts) {
                 Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
