@@ -96,6 +96,8 @@ import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.modules.ProjectModuleStoreXML;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.registry.AppRegistryStoreXML;
+import fr.cnes.sitools.registry.ApplicationStoreInterface;
+import fr.cnes.sitools.registry.ApplicationStoreXMLMap;
 import fr.cnes.sitools.registry.model.AppRegistry;
 import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.role.RoleStoreMapXML;
@@ -163,6 +165,9 @@ public final class StoreHelper {
     JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity, context);
     stores.put(Consts.APP_STORE_USERSANDGROUPS, storeUandG);
 
+    // ======== role  ===============
+    
+    new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR) + "/map").mkdirs();
     RoleStoreInterface storeRole = new RoleStoreMapXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)
         + "/map"), context);
     stores.put(Consts.APP_STORE_ROLE, storeRole);
@@ -173,9 +178,19 @@ public final class StoreHelper {
       storeRole.saveList(storeRoleOLD.getList());
     }
     
-    SitoolsStore<AppRegistry> storeApp = new AppRegistryStoreXML(new File(
+    // ======= application ==========
+    
+    new File(settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR) + "/map").mkdirs();
+    ApplicationStoreInterface storeApplication = new ApplicationStoreXMLMap(
+        new File(settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR) + "/map"), context);
+    stores.put(Consts.APP_STORE_REGISTRY, storeApplication);
+    
+    // Migrating Applications
+    SitoolsStore<AppRegistry> storeAppOLD = new AppRegistryStoreXML(new File(
         settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_REGISTRY, storeApp);
+    stores.put(Consts.APP_STORE_REGISTRY, storeAppOLD);
+    
+    
 
     AuthorizationStore storeAuthorization = new AuthorizationStoreXML(new File(
         settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), context);
