@@ -16,7 +16,7 @@ import fr.cnes.sitools.registry.model.AppRegistry;
 public class ApplicationStoreXMLMap extends XmlMapStore<AppRegistry> implements ApplicationStoreInterface {
 
   /** Default location */
-  private static final String COLLECTION_NAME = "datasets";
+  private static final String COLLECTION_NAME = "applications";
   
   /**
    * DataSetStoreXMLMap
