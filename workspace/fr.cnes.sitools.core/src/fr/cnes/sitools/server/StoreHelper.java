@@ -205,6 +205,10 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_TEMPLATE, storeConceptTemplate);
 
+    
+    // ======== application plugin  ===============
+    
+    new File(settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR) + "/map").mkdirs();    
     ApplicationPluginStoreInterface storeApplicationPlugin = new ApplicationPluginStoreXmlMap(new File(
         settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_PLUGINS_APPLICATIONS, storeApplicationPlugin);
@@ -236,6 +240,9 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_VIEWS, storeDsView);
 
+    // ======== portal ===============
+    
+    new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR) + "/map").mkdirs();
     PortalStoreInterface storePortal = new PortalStoreXmlMap(new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR)
         + "/map"), context);
     stores.put(Consts.APP_STORE_PORTAL, storePortal);
@@ -280,7 +287,11 @@ public final class StoreHelper {
     SitoolsStore<Order> storeOrd = new OrderStoreXML(new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR)),
         context);
     stores.put(Consts.APP_STORE_ORDER, storeOrd);
-
+    
+    
+    // ======== user storage ===============
+    
+    new File(settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR) + "/map").mkdirs();
     UserStorageStoreInterface storeUserStorage = new UserStorageStoreXmlMap(new File(
         settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_USERSTORAGE, storeUserStorage);
@@ -292,6 +303,9 @@ public final class StoreHelper {
       storeUserStorage.saveList(storeUserStorageOLD.getList());
     }
     
+    // ======== data storage ===============
+    
+    new File(settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR) + "/map").mkdirs();
     DataStorageStoreInterface storeDataStorage = new DataStorageStoreXmlMap(new File(
         settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASTORAGE, storeDataStorage);
@@ -319,6 +333,7 @@ public final class StoreHelper {
     
     // ========= dimension =============
     
+    new File(settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR) + "/map").mkdirs();
     DimensionStoreInterface storeDimensions = new DimensionStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DIMENSION, storeDimensions);
