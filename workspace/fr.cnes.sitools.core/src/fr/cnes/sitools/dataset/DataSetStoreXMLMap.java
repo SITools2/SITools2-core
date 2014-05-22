@@ -39,6 +39,18 @@ public class DataSetStoreXMLMap extends XmlSynchronizedMapStore<DataSet> impleme
   public DataSetStoreXMLMap(Class<DataSet> cl, File location, Context context) {
     super(cl, location, context);
   }
+  
+  
+  /**
+   * Constructor with file location
+   * @param location
+   *          the file location
+   * @param context
+   *          the Restlet Context
+   */
+  public DataSetStoreXMLMap(File location, Context context) {
+    super(DataSet.class, location, context);
+  }
 
   @Override
   public List<DataSet> retrieveByParent(String id) {
