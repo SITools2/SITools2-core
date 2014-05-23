@@ -21,16 +21,16 @@ package fr.cnes.sitools.tasks;
 import java.io.File;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
-import fr.cnes.sitools.common.store.SitoolsSynchronizedStoreXML;
+import fr.cnes.sitools.persistence.XmlSynchronizedMapStore;
 import fr.cnes.sitools.tasks.model.TaskModel;
 
 /**
@@ -39,8 +39,7 @@ import fr.cnes.sitools.tasks.model.TaskModel;
  * @author AKKA
  * 
  */
-@Deprecated
-public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
+public final class TaskStoreXMLMap extends XmlSynchronizedMapStore<TaskModel> implements TaskStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "tasks";
@@ -53,7 +52,7 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
    * @param context
    *          the Restlet Context
    */
-  public TaskStoreXML(File location, Context context) {
+  public TaskStoreXMLMap(File location, Context context) {
     super(TaskModel.class, location, context);
   }
 
@@ -63,7 +62,7 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
    * @param context
    *          the Restlet Context
    */
-  public TaskStoreXML(Context context) {
+  public TaskStoreXMLMap(Context context) {
     super(TaskModel.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
@@ -73,52 +72,29 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
   public TaskModel update(TaskModel taskModel) {
     TaskModel result = null;
 
-    List<TaskModel> rawList = getRawList();
-    synchronized (rawList) {
-      for (Iterator<TaskModel> it = getRawList().iterator(); it.hasNext();) {
-        TaskModel current = it.next();
-        if (current.getId().equals(taskModel.getId())) {
-          getLog().info("Updating TaskModel");
+    Map<String, TaskModel> map = getMap();
+    synchronized (map) {
+      TaskModel current = map.get(taskModel.getId());
+      result = current;
+      current.setName(taskModel.getName());
+      current.setDescription(taskModel.getDescription());
+      current.setStatus(taskModel.getStatus());
 
-          result = current;
-          current.setName(taskModel.getName());
-          current.setDescription(taskModel.getDescription());
-          current.setStatus(taskModel.getStatus());
+      current.setCustomStatus(taskModel.getCustomStatus());
+      current.setStartDate(taskModel.getStartDate());
+      current.setEndDate(taskModel.getEndDate());
+      current.setModelId(taskModel.getModelId());
+      current.setRunTypeAdministration(taskModel.getRunTypeAdministration());
+      current.setRunTypeUserInput(taskModel.getRunTypeUserInput());
 
-          current.setCustomStatus(taskModel.getCustomStatus());
-          current.setStartDate(taskModel.getStartDate());
-          current.setEndDate(taskModel.getEndDate());
-          current.setModelId(taskModel.getModelId());
-          current.setRunTypeAdministration(taskModel.getRunTypeAdministration());
-          current.setRunTypeUserInput(taskModel.getRunTypeUserInput());
-
-          current.setStatusUrl(taskModel.getStatusUrl());
-          current.setModelName(taskModel.getModelName());
-          current.setTimestamp(taskModel.getTimestamp());
-          current.setUrlResult(taskModel.getUrlResult());
-          current.setUserId(taskModel.getUserId());
-
-          it.remove();
-
-          break;
-        }
-      }
-      if (result != null) {
-        getRawList().add(result);
-      }
+      current.setStatusUrl(taskModel.getStatusUrl());
+      current.setModelName(taskModel.getModelName());
+      current.setTimestamp(taskModel.getTimestamp());
+      current.setUrlResult(taskModel.getUrlResult());
+      current.setUserId(taskModel.getUserId());
+      map.put(taskModel.getId(), current);
     }
     return result;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see fr.cnes.sitools.common.store.SitoolsStoreXML#create(fr.cnes.sitools.common.model.IResource)
-   */
-  @Override
-  public TaskModel create(TaskModel resource) {
-
-    return super.create(resource);
   }
 
   /**
@@ -130,15 +106,7 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("TaskModel", TaskModel.class);
-
     this.init(location, aliases);
-
-    /**
-     * FIXME alias xstream XStream xstream = getXstream(); xstream.omitField(DatabaseRequestParameters.class, "db");
-     * xstream.omitField(DatabaseRequestParameters.class, "dataset"); xstream.omitField(DatabaseRequestParameters.class,
-     * "baseRef");
-     */
-
   }
 
   @Override
@@ -202,8 +170,7 @@ public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
 
   @Override
   public List<TaskModel> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
-    return null;
+    throw new RuntimeException(SitoolsException.NOT_IMPLEMENTED);
   }
 
   @Override

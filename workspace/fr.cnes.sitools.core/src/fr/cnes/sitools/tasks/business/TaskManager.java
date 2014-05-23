@@ -37,6 +37,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.server.Consts;
+import fr.cnes.sitools.tasks.TaskStoreInterface;
 import fr.cnes.sitools.tasks.TaskStoreXML;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.tasks.model.TaskModel;
@@ -61,7 +62,7 @@ public final class TaskManager {
   private Map<String, Task> tasksMap;
 
   /** Store for Task models */
-  private TaskStoreXML storeTaskModel;
+  private TaskStoreInterface storeTaskModel;
 
   /** Store for ResourceModel */
   private ResourcePluginStoreXML storeResourceModel;
@@ -97,7 +98,7 @@ public final class TaskManager {
   public void init(Context context) {
     if (!isInit) {
       // this.context = context;
-      storeTaskModel = (TaskStoreXML) context.getAttributes().get(Consts.APP_STORE_TASK);
+      storeTaskModel = (TaskStoreInterface) context.getAttributes().get(Consts.APP_STORE_TASK);
 
       storeResourceModel = (ResourcePluginStoreXML) context.getAttributes().get(Consts.APP_STORE_PLUGINS_RESOURCES);
       // load existing Tasks, put the status to CANCELED if it was runnning
@@ -296,7 +297,7 @@ public final class TaskManager {
    * 
    * @return the TaskStoreXML
    */
-  public TaskStoreXML getStore() {
+  public TaskStoreInterface getStore() {
     return storeTaskModel;
   }
 

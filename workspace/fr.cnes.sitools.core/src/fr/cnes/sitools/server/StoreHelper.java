@@ -117,7 +117,9 @@ import fr.cnes.sitools.service.storage.DataStorageStore;
 import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.DataStorageStoreXmlImpl;
 import fr.cnes.sitools.service.storage.DataStorageStoreXmlMap;
+import fr.cnes.sitools.tasks.TaskStoreInterface;
 import fr.cnes.sitools.tasks.TaskStoreXML;
+import fr.cnes.sitools.tasks.TaskStoreXMLMap;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
 import fr.cnes.sitools.units.dimension.DimensionStoreXML;
@@ -373,9 +375,18 @@ public final class StoreHelper {
       storeDimensions.saveList(storeDimensionsOLD.getList());
     }
 
-    SitoolsStore<TaskModel> storeTaskModel = new TaskStoreXML(
-        new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_TASK, storeTaskModel);
+    // ========= tasks =============
+
+    new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR) + "/map").mkdirs();
+    TaskStoreInterface storeTasks = new TaskStoreXMLMap(new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR)
+        + "/map"), context);
+    stores.put(Consts.APP_STORE_TASK, storeTasks);
+
+    SitoolsStore<TaskModel> storeTaskModelOld = new TaskStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_TASK_STORE_DIR)), context);
+    if (storeTasks.getList().isEmpty()) {
+      storeTasks.saveList(storeTaskModelOld.getList());
+    }
 
     SitoolsStore<ProjectModuleModel> storeProjectModule = new ProjectModuleStoreXML(new File(
         settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR)), context);
