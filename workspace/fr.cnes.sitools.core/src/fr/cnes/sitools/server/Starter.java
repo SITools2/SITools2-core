@@ -107,7 +107,6 @@ import fr.cnes.sitools.order.OrderAdministration;
 import fr.cnes.sitools.order.UserOrderApplication;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginApplication;
-import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.filters.FilterClassPluginApplication;
 import fr.cnes.sitools.plugins.filters.FilterPluginApplication;
@@ -129,6 +128,7 @@ import fr.cnes.sitools.project.modules.ProjectModuleApplication;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.proxy.ProxySettings;
 import fr.cnes.sitools.registry.AppRegistryApplication;
+import fr.cnes.sitools.registry.ApplicationStoreInterface;
 import fr.cnes.sitools.registry.model.AppRegistry;
 import fr.cnes.sitools.role.RoleApplication;
 import fr.cnes.sitools.role.RoleStoreInterface;
@@ -137,14 +137,13 @@ import fr.cnes.sitools.security.UsersAndGroupsStore;
 import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
 import fr.cnes.sitools.security.authentication.SitoolsRealm;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
-import fr.cnes.sitools.security.authorization.AuthorizationStore;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
 import fr.cnes.sitools.security.captcha.CaptchaContainer;
 import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.security.challenge.ChallengeTokenContainer;
 import fr.cnes.sitools.security.ssl.SslFactory;
 import fr.cnes.sitools.security.userblacklist.UserBlackListApplication;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
-import fr.cnes.sitools.service.storage.DataStorageStore;
 import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.StorageAdministration;
 import fr.cnes.sitools.service.storage.StorageApplication;
@@ -161,7 +160,6 @@ import fr.cnes.sitools.trigger.UserTrigger;
 import fr.cnes.sitools.units.UnitsApplication;
 import fr.cnes.sitools.units.dimension.DimensionAdministration;
 import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
-import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
 import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
@@ -394,6 +392,15 @@ public final class Starter {
 
     // HTTPS
     component = SslFactory.addSslSupport(component, settings);
+    
+    
+    // ======
+    // Launch synchronization for the application status
+    
+//    String applicationTriggerClassname = settings.getString("Starter.synchronization.applicationTriggerClass");
+//    Class applicationTriggerClass = Class.forName(applicationTriggerClassname);
+//    applicationTriggerClass.getConstructor().newInstance();
+
 
     // ============================
     // Init Stores
@@ -498,8 +505,11 @@ public final class Starter {
     // ApplicationManager for application registering
 
     // Store
-    SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores()
+//    SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores()
+//        .get(Consts.APP_STORE_REGISTRY);
+    ApplicationStoreInterface storeApp = (ApplicationStoreInterface)settings.getStores()
         .get(Consts.APP_STORE_REGISTRY);
+        
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -526,7 +536,7 @@ public final class Starter {
     // AuthorizationApplication for application security
 
     // Store
-    AuthorizationStore storeAuthorization = (AuthorizationStore) settings.getStores().get(
+    AuthorizationStoreInterface storeAuthorization = (AuthorizationStoreInterface) settings.getStores().get(
         Consts.APP_STORE_AUTHORIZATION);
 
     // Context

@@ -46,7 +46,7 @@ public abstract class AbstractAuthorizationResource extends SitoolsResource {
   private AuthorizationApplication application = null;
 
   /** store */
-  private AuthorizationStore store = null;
+  private AuthorizationStoreInterface store = null;
 
   /** project identifier parameter */
   private String resId = null;
@@ -113,7 +113,7 @@ public abstract class AbstractAuthorizationResource extends SitoolsResource {
    * 
    * @return the store associated
    */
-  public final AuthorizationStore getStore() {
+  public final AuthorizationStoreInterface getStore() {
     return this.store;
   }
 

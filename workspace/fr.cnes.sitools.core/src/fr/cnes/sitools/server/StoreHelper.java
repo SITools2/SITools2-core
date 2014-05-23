@@ -105,7 +105,9 @@ import fr.cnes.sitools.role.RoleStoreXML;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.authorization.AuthorizationStore;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
@@ -188,14 +190,25 @@ public final class StoreHelper {
     // Migrating Applications
     SitoolsStore<AppRegistry> storeAppOLD = new AppRegistryStoreXML(new File(
         settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_REGISTRY, storeAppOLD);
+    if (!storeAppOLD.getList().isEmpty()) {
+      storeApplication.saveList(storeAppOLD.getList());
+    }
     
     
-
-    AuthorizationStore storeAuthorization = new AuthorizationStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), context);
+    // ======= authorization ==========
+    
+    new File(settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR) + "/map").mkdirs();
+    AuthorizationStoreInterface storeAuthorization = new AuthorizationStoreXMLMap(
+        new File(settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_AUTHORIZATION, storeAuthorization);
-
+    
+    // Migrating Authorizations
+    AuthorizationStore storeAuthorizationOLD = new AuthorizationStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), context);
+    if (!storeAuthorizationOLD.getList().isEmpty()) {
+      storeAuthorization.saveList(storeAuthorizationOLD.getList());
+    }
+    
     NotificationStore storeNotification = new NotificationStoreXML(new File(
         settings.getStoreDIR(Consts.APP_NOTIFICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_NOTIFICATION, storeNotification);
