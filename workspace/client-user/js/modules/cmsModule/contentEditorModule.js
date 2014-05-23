@@ -723,6 +723,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 jsonData : tree,
                 success : function (response, opts) {
                     this.lastModified = response.getResponseHeader("Date");
+                    this.treeToolbar.setTreeUpToDate(true, this.lastModified);
                 },
                 failure : function (response, opts) {
                     Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i> " + response.statusText + " </i><hr/><br/>"

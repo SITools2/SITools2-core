@@ -99,10 +99,10 @@ sitools.user.modules.cmsTreeToolbar = Ext.extend(Ext.Toolbar, {
         var date = new Date(Date.parse(dateStr));
         dateStr = date.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
         if (!upToDate) {
-            this.labelUpToDate.getEl().update(String.format("<span class='sitools-userProfile-warning-text' ext:qtip='{0}'><img src='/sitools/common/res/images/ux/warning.gif'/>{1}</span>", dateStr, i18n.get("label.treeNotUpToDate")));
+            this.labelUpToDate.getEl().update(String.format("<span class='sitools-userProfile-warning-text'>{0}{1}</span>", i18n.get("label.lastUpdate"), dateStr));
             this.labelUpToDate.addClass("x-status-warning");
         } else {
-            this.labelUpToDate.getEl().update(String.format("<span ext:qtip='{0}'>{1}</span>", dateStr, i18n.get("label.treeUpToDate")));
+            this.labelUpToDate.getEl().update(String.format("<span>{0}{1}</span>", i18n.get("label.lastUpdate"), dateStr));
             this.labelUpToDate.removeClass("x-status-warning");
         }
         
