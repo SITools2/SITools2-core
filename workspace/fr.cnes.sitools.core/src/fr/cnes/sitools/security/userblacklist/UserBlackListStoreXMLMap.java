@@ -19,26 +19,30 @@
 package fr.cnes.sitools.security.userblacklist;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import org.restlet.Context;
+import org.restlet.engine.Engine;
 
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.persistence.XmlMapStore;
-import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 
 /**
  * Storage of dimensions
  * 
  * @author jp.boignard (AKKA technologies)
  */
-public final class UserBlackListStoreXMLMap extends XmlMapStore<SitoolsDimension> implements UserBlackListStoreInterface {
+public final class UserBlackListStoreXMLMap extends XmlMapStore<UserBlackListModel> implements
+    UserBlackListStoreInterface {
 
   /** default location for file persistence */
-  private static final String COLLECTION_NAME = "dimensions";
+  private static final String COLLECTION_NAME = "userBlacklist";
+
+  /** static logger for this store implementation */
+  private static Logger log = Engine.getLogger(UserBlackListStoreXMLMap.class.getName());
 
   /**
    * Constructor without file
@@ -47,7 +51,7 @@ public final class UserBlackListStoreXMLMap extends XmlMapStore<SitoolsDimension
    *          the Restlet Context
    */
   public UserBlackListStoreXMLMap(Context context) {
-    super(SitoolsDimension.class, context);
+    super(UserBlackListModel.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
   }
@@ -61,26 +65,18 @@ public final class UserBlackListStoreXMLMap extends XmlMapStore<SitoolsDimension
    *          the Restlet Context
    */
   public UserBlackListStoreXMLMap(File location, Context context) {
-    super(SitoolsDimension.class, location, context);
+    super(UserBlackListModel.class, location, context);
   }
 
   @Override
-  public List<SitoolsDimension> retrieveByParent(String id) {
-    List<SitoolsDimension> result = new ArrayList<SitoolsDimension>();
-    for (Iterator<SitoolsDimension> it = getList().iterator(); it.hasNext();) {
-      SitoolsDimension current = it.next();
-      if (current.getParent().equals(id)) {
-        getLog().info("Parent found");
-        result.add(current);
-      }
-    }
-    return result;
+  public List<UserBlackListModel> retrieveByParent(String id) {
+    throw new RuntimeException(SitoolsException.NOT_IMPLEMENTED);
   }
 
   @Override
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
-    aliases.put("dimension", SitoolsDimension.class);
+    aliases.put("userBlackListModel", UserBlackListModel.class);
     this.init(location, aliases);
   }
 

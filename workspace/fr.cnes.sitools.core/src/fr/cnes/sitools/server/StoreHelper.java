@@ -110,7 +110,9 @@ import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreInterface;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXMLMap;
 import fr.cnes.sitools.service.storage.DataStorageStore;
 import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.DataStorageStoreXmlImpl;
@@ -167,48 +169,48 @@ public final class StoreHelper {
     JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity, context);
     stores.put(Consts.APP_STORE_USERSANDGROUPS, storeUandG);
 
-    // ======== role  ===============
-    
+    // ======== role ===============
+
     new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR) + "/map").mkdirs();
     RoleStoreInterface storeRole = new RoleStoreMapXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)
         + "/map"), context);
     stores.put(Consts.APP_STORE_ROLE, storeRole);
-   
+
     // Migrating Roles
-    SitoolsStore<Role> storeRoleOLD = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)), context);
+    SitoolsStore<Role> storeRoleOLD = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)),
+        context);
     if (!storeRoleOLD.getList().isEmpty()) {
       storeRole.saveList(storeRoleOLD.getList());
     }
-    
+
     // ======= application ==========
-    
+
     new File(settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR) + "/map").mkdirs();
-    ApplicationStoreInterface storeApplication = new ApplicationStoreXMLMap(
-        new File(settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR) + "/map"), context);
+    ApplicationStoreInterface storeApplication = new ApplicationStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_REGISTRY, storeApplication);
-    
+
     // Migrating Applications
     SitoolsStore<AppRegistry> storeAppOLD = new AppRegistryStoreXML(new File(
         settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR)), context);
     if (!storeAppOLD.getList().isEmpty()) {
       storeApplication.saveList(storeAppOLD.getList());
     }
-    
-    
+
     // ======= authorization ==========
-    
+
     new File(settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR) + "/map").mkdirs();
-    AuthorizationStoreInterface storeAuthorization = new AuthorizationStoreXMLMap(
-        new File(settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR) + "/map"), context);
+    AuthorizationStoreInterface storeAuthorization = new AuthorizationStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_AUTHORIZATION, storeAuthorization);
-    
+
     // Migrating Authorizations
     AuthorizationStore storeAuthorizationOLD = new AuthorizationStoreXML(new File(
         settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), context);
     if (!storeAuthorizationOLD.getList().isEmpty()) {
       storeAuthorization.saveList(storeAuthorizationOLD.getList());
     }
-    
+
     NotificationStore storeNotification = new NotificationStoreXML(new File(
         settings.getStoreDIR(Consts.APP_NOTIFICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_NOTIFICATION, storeNotification);
@@ -233,10 +235,9 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_TEMPLATE, storeConceptTemplate);
 
-    
-    // ======== application plugin  ===============
-    
-    new File(settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR) + "/map").mkdirs();    
+    // ======== application plugin ===============
+
+    new File(settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR) + "/map").mkdirs();
     ApplicationPluginStoreInterface storeApplicationPlugin = new ApplicationPluginStoreXmlMap(new File(
         settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_PLUGINS_APPLICATIONS, storeApplicationPlugin);
@@ -269,7 +270,7 @@ public final class StoreHelper {
     stores.put(Consts.APP_STORE_DATASETS_VIEWS, storeDsView);
 
     // ======== portal ===============
-    
+
     new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR) + "/map").mkdirs();
     PortalStoreInterface storePortal = new PortalStoreXmlMap(new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR)
         + "/map"), context);
@@ -281,7 +282,7 @@ public final class StoreHelper {
     if (!storePortalOLD.getList().isEmpty()) {
       storePortal.saveList(storePortalOLD.getList());
     }
-    
+
     SitoolsStore<FormComponent> storefc = new FormComponentsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_FORMCOMPONENT, storefc);
@@ -315,24 +316,23 @@ public final class StoreHelper {
     SitoolsStore<Order> storeOrd = new OrderStoreXML(new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR)),
         context);
     stores.put(Consts.APP_STORE_ORDER, storeOrd);
-    
-    
+
     // ======== user storage ===============
-    
+
     new File(settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR) + "/map").mkdirs();
     UserStorageStoreInterface storeUserStorage = new UserStorageStoreXmlMap(new File(
         settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_USERSTORAGE, storeUserStorage);
-    
+
     // Migrating UserStorage
     UserStorageStore storeUserStorageOLD = new UserStorageStoreXML(new File(
         settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR)), context);
-    if (!storeUserStorageOLD.getList().isEmpty()){
+    if (!storeUserStorageOLD.getList().isEmpty()) {
       storeUserStorage.saveList(storeUserStorageOLD.getList());
     }
-    
+
     // ======== data storage ===============
-    
+
     new File(settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR) + "/map").mkdirs();
     DataStorageStoreInterface storeDataStorage = new DataStorageStoreXmlMap(new File(
         settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR) + "/map"), context);
@@ -344,23 +344,23 @@ public final class StoreHelper {
     if (!storeDataStorageOLD.getList().isEmpty()) {
       storeDataStorage.saveList(storeDataStorageOLD.getList());
     }
-    
-    // ======== dataset =============== 
-    
+
+    // ======== dataset ===============
+
     new File(settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR) + "/map").mkdirs();
     DataSetStoreInterface storeDataSet = new DataSetStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASET, storeDataSet);
-    
+
     // migrating datasets
     SitoolsStore<DataSet> storeDataSetOLD = new DataSetStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR)), context);
     if (!storeDataSetOLD.getList().isEmpty()) {
       storeDataSet.saveList(storeDataSetOLD.getList());
     }
-    
+
     // ========= dimension =============
-    
+
     new File(settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR) + "/map").mkdirs();
     DimensionStoreInterface storeDimensions = new DimensionStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR) + "/map"), context);
@@ -372,7 +372,7 @@ public final class StoreHelper {
     if (!storeDimensionsOLD.getList().isEmpty()) {
       storeDimensions.saveList(storeDimensionsOLD.getList());
     }
-    
+
     SitoolsStore<TaskModel> storeTaskModel = new TaskStoreXML(
         new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_TASK, storeTaskModel);
@@ -393,9 +393,18 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_SERVICES, storeServices);
 
-    SitoolsStore<UserBlackListModel> storeUserBlacklist = new UserBlackListStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR)), context);
+    // ========= userblacklist =============
+    new File(settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR) + "/map").mkdirs();
+    UserBlackListStoreInterface storeUserBlacklist = new UserBlackListStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_USER_BLACKLIST, storeUserBlacklist);
+
+    // Migrating userblacklist
+    SitoolsStore<UserBlackListModel> storeUserBlacklistOld = new UserBlackListStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR)), context);
+    if (storeUserBlacklist.getList().isEmpty()) {
+      storeUserBlacklist.saveList(storeUserBlacklistOld.getList());
+    }
 
     if (settings.isStartWithMigration()) {
       migrateStores(stores);
@@ -414,7 +423,7 @@ public final class StoreHelper {
    * @param stores
    *          the Map of stores
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void migrateStores(Map<String, Object> stores) {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -469,7 +478,7 @@ public final class StoreHelper {
    * @throws SitoolsException
    *           if there are errors
    */
-  @SuppressWarnings({"resource", "unchecked" })
+  @SuppressWarnings({"resource", "unchecked"})
   private static void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
@@ -481,13 +490,13 @@ public final class StoreHelper {
           }
         }
         catch (Exception e) {
-//          try {
-//            storeImpl.close();
-            throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e);
-//          }
-//          catch (IOException e1) {
-//            throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e1);
-//          }
+          // try {
+          // storeImpl.close();
+          throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e);
+          // }
+          // catch (IOException e1) {
+          // throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e1);
+          // }
         }
       }
       else if (store instanceof PersistenceDao) {

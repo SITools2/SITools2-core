@@ -34,7 +34,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
-import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreInterface;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXMLMap;
 import fr.cnes.sitools.server.Consts;
 
 /**
@@ -47,7 +48,7 @@ public class UserBlackListStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static UserBlackListStoreXML store = null;
+  private static UserBlackListStoreInterface store = null;
 
   @Override
   protected String getTestRepository() {
@@ -66,7 +67,7 @@ public class UserBlackListStoreXMLTestCase extends AbstractSitoolsTestCase {
       cleanDirectory(storeDirectory);
       Context ctx = new Context();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-      store = new UserBlackListStoreXML(storeDirectory, ctx);
+      store = new UserBlackListStoreXMLMap(storeDirectory, ctx);
     }
   }
 
