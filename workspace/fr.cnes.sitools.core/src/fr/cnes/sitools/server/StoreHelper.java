@@ -301,7 +301,7 @@ public final class StoreHelper {
     // Migrating collection 
     SitoolsStore<Collection> storeCollectionsOLD = new CollectionsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
-    if (storeCollections.getList().isEmpty()) {
+    if (storeCollectionsOLD.getList().isEmpty()) {
       storeCollections.saveList(storeCollectionsOLD.getList());
     }
 

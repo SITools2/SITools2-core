@@ -53,6 +53,7 @@ import fr.cnes.sitools.applications.OrdersFilesApplication;
 import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.applications.TemporaryFolderApplication;
 import fr.cnes.sitools.applications.UploadApplication;
+import fr.cnes.sitools.collections.CollectionStoreInterface;
 import fr.cnes.sitools.collections.CollectionsApplication;
 import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.SitoolsComponent;
@@ -1172,8 +1173,8 @@ public final class Starter {
     // Gestion des Collections
 
     // Store
-    SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>) settings.getStores().get(
-        Consts.APP_STORE_COLLECTIONS);
+    //SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>) settings.getStores().get(Consts.APP_STORE_COLLECTIONS);
+    CollectionStoreInterface storeCollections = (CollectionStoreInterface) settings.getStores().get(Consts.APP_STORE_COLLECTIONS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_COLLECTIONS_URL);

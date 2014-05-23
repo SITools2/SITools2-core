@@ -9,7 +9,6 @@ import org.restlet.Context;
 
 import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.persistence.XmlMapStore;
-import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 
 
 
@@ -42,7 +41,7 @@ public class CollectionsStoreXMLMap extends XmlMapStore<Collection> implements C
   @Override
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
-    aliases.put("resourceAuthorization", Collection.class);
+    aliases.put("Collection", Collection.class);
     this.init(location, aliases);
   }
   
