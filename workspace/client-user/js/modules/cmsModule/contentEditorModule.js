@@ -31,6 +31,8 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
      */
     activeNode : null,
     
+    CHECK_TREE_DELAY : 10,
+    
     initComponent : function () {
         
         this.id = 'contentEditorID';
@@ -106,6 +108,12 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         
         var textTooltip = String.format(i18n.get('label.runCopyInfo'), this.datastorageSrc, this.datastorageDest);
         
+        this.treeToolbar = new sitools.user.modules.cmsTreeToolbar({
+            allowDataPublish : this.allowDataPublish,
+            cms : this,
+            textTooltip : textTooltip
+        });
+        
         this.tree = new Ext.tree.TreePanel({
             id : 'treepanel',
             region : 'west',
@@ -117,11 +125,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             collapsible : true,
             enableDD : true,
             title : i18n.get('label.sitePlan'),
-            tbar : new sitools.user.modules.cmsTreeToolbar({
-                allowDataPublish : this.allowDataPublish,
-                cms : this,
-                textTooltip : textTooltip
-            }),
+            tbar : this.treeToolbar,
             contextMenu: new sitools.user.modules.cmsContextMenu({
                 cms : this
             }),
@@ -188,7 +192,9 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         if (!Ext.isEmpty(this.tree.loader.toReload) && this.tree.loader.toReload) {
                             this.createJsonTree();
                         }
-                        this.lastModified = response.getResponseHeader("Last-Modified"); 
+                        this.lastModified = response.getResponseHeader("Last-Modified");
+                        this.checkTreeUpToDateTask.delay(this.CHECK_TREE_DELAY * 1000);
+                        this.treeToolbar.setTreeUpToDate(true, this.lastModified);                        
                     },
                     loadException : function (loader, node, response) {
                         if (response.status === 404) {
@@ -271,7 +277,28 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                 }
             }
         });
-
+        
+        this.checkTreeUpToDateTask = new Ext.util.DelayedTask(function(){
+            Ext.Ajax.request({
+                url : this.tree.loader.url,
+                method : 'HEAD',
+                scope : this,
+                success : function (response, opts) {
+                    var lastMod = response.getResponseHeader("Last-Modified");
+                    if (lastMod !== this.lastModified) {
+                        this.treeToolbar.setTreeUpToDate(false, lastMod);
+                    }else {
+                        this.treeToolbar.setTreeUpToDate(true, lastMod);
+                    }
+                    this.checkTreeUpToDateTask.cancel();
+                    this.checkTreeUpToDateTask.delay(this.CHECK_TREE_DELAY * 1000);
+                },
+                failure : function () {
+                    this.checkTreeUpToDateTask.cancel();
+                }
+            });
+        }, this);
+        
         Ext.QuickTips.init();
         
         this.saveButton = new Ext.Button({
