@@ -26,7 +26,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.collections.CollectionStoreInterface;
 import fr.cnes.sitools.collections.CollectionsStoreXML;
+import fr.cnes.sitools.collections.CollectionsStoreXMLMap;
 import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
@@ -288,10 +290,21 @@ public final class StoreHelper {
     SitoolsStore<FormComponent> storefc = new FormComponentsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_FORMCOMPONENT, storefc);
+    
+    // ======== collection ===============
 
-    SitoolsStore<Collection> storeCollections = new CollectionsStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
+    new File(settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)).mkdirs();
+    CollectionStoreInterface storeCollections = new CollectionsStoreXMLMap(
+        new File(settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_COLLECTIONS, storeCollections);
+        
+    // Migrating collection 
+    SitoolsStore<Collection> storeCollectionsOLD = new CollectionsStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
+    if (storeCollections.getList().isEmpty()) {
+      storeCollections.saveList(storeCollectionsOLD.getList());
+    }
+
 
     SitoolsStore<FormProject> storeFormProject = new FormProjectStoreXML(new File(
         settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR)), context);
