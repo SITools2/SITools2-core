@@ -2,6 +2,7 @@ package fr.cnes.sitools.security.authorization;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -10,19 +11,14 @@ import org.restlet.Context;
 import org.restlet.data.MediaType;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.persistence.FilePersistenceStrategy;
-import com.thoughtworks.xstream.persistence.XmlArrayList;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.dataset.DataSetStoreInterface;
-import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
-import fr.cnes.sitools.userstorage.model.UserStorage;
 
 public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization> implements AuthorizationStoreInterface {
 
@@ -126,6 +122,32 @@ public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization>
     // Tri
     sort(result, null);
 
+    return result;
+  }
+  
+  
+  @Override
+  public ResourceAuthorization update(ResourceAuthorization authorization) {
+    ResourceAuthorization result = null;
+    for (Iterator<ResourceAuthorization> it = getList().iterator(); it.hasNext();) {
+      ResourceAuthorization current = it.next();
+      if (current.getId().equals(authorization.getId())) {
+        getLog().info("Updating Authorization for resource " + current.getId());
+
+        result = current;
+        current.setName(authorization.getName());
+        current.setDescription(authorization.getDescription());
+        current.setUrl(authorization.getUrl());
+        current.setAuthorizations(authorization.getAuthorizations());
+        it.remove();
+
+        break;
+      }
+    }
+    // authorizer la creation sur le PUT
+    if (result != null) {
+      getList().add(result);
+    }
     return result;
   }
 
