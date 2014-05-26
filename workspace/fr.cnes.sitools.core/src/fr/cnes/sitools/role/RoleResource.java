@@ -119,9 +119,9 @@ public final class RoleResource extends AbstractRoleResource {
 
         // Parse object representation
         roleInput = getObject(representation, variant);
-        if (checkRoleExists(roleInput)) {
+        if (!roleInput.getName().equals(roleFromStore.getName()) && checkRoleExists(roleInput)) {
           trace(Level.INFO, "Cannot update profile information for the profile " + roleInput.getName());
-          Response response = new Response(false, "Role already exist");
+          Response response = new Response(false, "Cannot edit role name");
           return getRepresentation(response, variant);
         }
 
