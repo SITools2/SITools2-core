@@ -278,7 +278,14 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             }
         });
         
-        this.checkTreeUpToDateTask = new Ext.util.DelayedTask(function(){
+
+        this.checkTreeUpToDateTask = new Ext.util.DelayedTask(function () {
+            console.log("checkTreeUpToDateTask");
+            if (Ext.isEmpty(this.id) || this.id != 'contentEditorID' || Ext.isEmpty(this.tree) || Ext.isEmpty(this.tree.loader)
+                    || Ext.isEmpty(this.tree.loader.url)) {
+                this.checkTreeUpToDateTask.cancel();
+                return;
+            }
             Ext.Ajax.request({
                 url : this.tree.loader.url,
                 method : 'HEAD',
@@ -287,7 +294,7 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                     var lastMod = response.getResponseHeader("Last-Modified");
                     if (lastMod !== this.lastModified) {
                         this.treeToolbar.setTreeUpToDate(false, lastMod);
-                    }else {
+                    } else {
                         this.treeToolbar.setTreeUpToDate(true, lastMod);
                     }
                     this.checkTreeUpToDateTask.cancel();
