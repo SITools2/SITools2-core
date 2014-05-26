@@ -166,7 +166,6 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
                         attr.uiProvider = this.uiProviders[attr.uiProvider] || eval(attr.uiProvider);
                     }
                     if (Ext.isEmpty(attr.uuid)) {
-                        console.log(attr.text);
                         attr.uuid = generateId();
                         this.toReload = true;
                     }
@@ -280,7 +279,6 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
         
 
         this.checkTreeUpToDateTask = new Ext.util.DelayedTask(function () {
-            console.log("checkTreeUpToDateTask");
             if (Ext.isEmpty(this.id) || this.id != 'contentEditorID' || Ext.isEmpty(this.tree) || Ext.isEmpty(this.tree.loader)
                     || Ext.isEmpty(this.tree.loader.url)) {
                 this.checkTreeUpToDateTask.cancel();
@@ -999,8 +997,10 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
     
     displayViewer : function (url) {
         this.viewerEditorPanel.remove();
+        if (this.isPdf(this.newUrl) && this.islocal(this.newUrl)) {
+            this.newUrl = Ext.urlAppend(this.newUrl, "dc=" + new Date().getTime());
+        }
         this.viewerEditorPanel.setSrc(this.newUrl);
-        
         this.viewerEditorPanel.setHeight(this.contentPanel.getHeight() - 30);
         this.viewerEditorPanel.setVisible(true);
         this.viewerEditorPanel.expand(true);
@@ -1065,7 +1065,20 @@ sitools.user.modules.contentEditorModule = Ext.extend(Ext.Panel, {
             preferencesFileName : this.id
         };
 
-    }     
+    },
+    
+    isPdf : function (text) {
+        var imageRegex = /\.(pdf)$/;
+        if (!Ext.isEmpty(text)) {
+            return (text.match(imageRegex));
+        } else {
+            return false;
+        }
+    },
+    
+    islocal : function (url) {
+        return (url.indexOf("http://") == -1 && url.indexOf("https://") == -1); 
+    }
 });
 
 /**
