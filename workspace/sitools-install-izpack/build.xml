@@ -34,6 +34,10 @@
 
 	<property name="fr.cnes.sitools.core.dir"
 		value="${ROOT_DIRECTORY_LOCAL}/workspace/fr.cnes.sitools.core" />
+
+	<property name="data.dir" value="${ROOT_DIRECTORY_LOCAL}/data" />
+	<property name="freemarker.data.dir" value="${data.dir}/freemarker" />
+
 	<property name="conf.dir" value="${fr.cnes.sitools.core.dir}/conf" />
 	<property name="conf.bin.dir" value="${conf.dir}/bin" />
 	<property name="conf.jar.dir" value="${conf.dir}/jar" />
@@ -47,6 +51,7 @@
 	<property name="install.res.dir" value="${install.dir}/res" />
 	<property name="install.res.script.dir" value="${install.res.dir}/script" />
 	<property name="install.res.properties.dir" value="${install.res.dir}/properties" />
+	<property name="install.res.data.dir" value="${install.res.dir}/data" />
 	<property name="install.lib.dir" value="${install.dir}/lib" />
 	<property name="install.conf.dir" value="${install.dir}/conf" />
 	<property name="install.build.dir" value="${install.conf.dir}/build" />
@@ -69,7 +74,7 @@
 	</target>
 
 	<target name="build"
-		depends="build-jars, refresh-properties-for-install, build-shell-for-install, build-izpack-installer" />
+		depends="build-jars, refresh-properties-for-install, build-shell-for-install, build-freemarker-sources, build-izpack-installer" />
 
 	<!-- TARGET refresh-properties-for-install -->
 	<target name="refresh-properties-for-install"
@@ -123,20 +128,20 @@
 				<replacetokens>
 					<token key="ROOT_DIRECTORY" value="%{INSTALL_PATH}" />
 					<token key="VERSION" value="%{APP_VER}" />
-					<token key="PORT" value="%{host_port}" />				
-					<token key="COPYRIGHT" value="${properties.Starter.COPYRIGHT}" />				
+					<token key="PORT" value="%{host_port}" />
+					<token key="COPYRIGHT" value="${properties.Starter.COPYRIGHT}" />
 				</replacetokens>
 			</filterchain>
 		</copy>
-		
-		
+
+
 		<xslt in="${conf.build.userlib.dir}/sitools.dist.userlibraries"
 			out="${install.res.script.dir}/startSitools.sh" style="${conf.build.userlib.dir}/sitools.userlibraries.xsl"
 			force="true" processor="SaxonLiaison">
 			<param name="output" expression="shell" />
 			<param name="ROOT_DIRECTORY" expression="%INSTALL_PATH" />
 			<param name="LOG_DIRECTORY" expression="%INSTALL_PATH" />
-			<param name="PORT" expression="%{host_port}" />				
+			<param name="PORT" expression="%{host_port}" />
 			<outputproperty name="method" value="text" />
 			<outputproperty name="standalone" value="no" />
 			<outputproperty name="encoding" value="UTF-8" />
@@ -158,6 +163,49 @@
 			<classpath location="${cots.dir}/saxon/SaxonLiaison.jar" />
 		</xslt>
 	</target>
+	
+	<target name="minify-javascripts" description="build javascript and freemarker for production use">
+		
+		<subant target="" buildpath="${ROOT_DIRECTORY_LOCAL}/workspace/client-user/"/>
+		<subant target="" buildpath="${ROOT_DIRECTORY_LOCAL}/workspace/client-admin/"/>
+		<antcall target="build-freemarker-sources"/>
+	</target>
+
+	<!-- TARGET build freemarker for production use (with minified sources -->
+	<target name="build-freemarker-sources" description="build freemarker for production use (with minified sources">
+		<antcall target="configure-freemarker-as-minified">
+			<param name="name" value="adminIndex.ftl" />
+		</antcall>
+		<antcall target="configure-freemarker-as-minified">
+			<param name="name" value="portalIndex.ftl" />
+		</antcall>
+		<antcall target="configure-freemarker-as-minified">
+			<param name="name" value="projectIndex.ftl" />
+		</antcall>
+	</target>
+
+	<!--
+	Modify a specific freemarker to use production sources
+	@param name : the name of the freemarker to set to prod use
+	-->
+	<target name="configure-freemarker-as-minified" description="Modify a specific freemarker to use production sources">
+
+		<property name="freemarker.file" value="${install.res.data.dir}/freemarker/${name}" />
+		<copy file="${freemarker.data.dir}/${name}" tofile="${freemarker.file}" outputencoding="UTF-8" overwrite="true">
+		</copy>
+		<replace file="${freemarker.file}" token="&lt;!-- BEGIN_JS_DEV_INCLUDES --&gt;" value="&lt;!--">
+		</replace>
+		<replace file="${freemarker.file}" token="&lt;!-- END_JS_DEV_INCLUDES --&gt;" value="--&gt;">
+		</replace>
+		<replace file="${freemarker.file}" token="&lt;!-- BEGIN_PROD" value="">
+		</replace>
+		<replace file="${freemarker.file}" token="END PROD --&gt;" value="">
+		</replace>
+		<replace file="${freemarker.file}" token="&lt;!-- BEGIN_DEV --&gt;" value="&lt;!--">
+		</replace>
+		<replace file="${freemarker.file}" token="&lt;!-- END_DEV --&gt;" value="--&gt;">
+		</replace>
+	</target>
 
 
 
@@ -165,7 +213,8 @@
 	<!-- TARGET build-izpack-installer creates the izpack installer file -->
 
 	<target name="build-izpack-installer" description="generation de l'installeur IzPack">
-		<echo message="Build installer from file : ${install.dir}/install.xml with base dir = ${install.dir}" ></echo>
+		<echo message="Build installer from file : ${install.dir}/install.xml with base dir = ${install.dir}" >
+		</echo>
 		<property file="${install.res.properties.dir}/sitools.properties" prefix="properties" />
 		<!-- Run installer build -->
 		<izpack input="${install.dir}/install.xml"
