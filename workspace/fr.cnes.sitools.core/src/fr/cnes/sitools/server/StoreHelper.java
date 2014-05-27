@@ -42,7 +42,9 @@ import fr.cnes.sitools.dataset.converter.ConverterStoreInterface;
 import fr.cnes.sitools.dataset.converter.ConverterStoreXML;
 import fr.cnes.sitools.dataset.converter.ConverterStoreXMLMap;
 import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
+import fr.cnes.sitools.dataset.filter.FilterStoreInterface;
 import fr.cnes.sitools.dataset.filter.FilterStoreXML;
+import fr.cnes.sitools.dataset.filter.FilterStoreXMLMap;
 import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXML;
@@ -254,7 +256,7 @@ public final class StoreHelper {
     if (storeApplicationPlugin.getList().isEmpty()) {
       storeApplicationPlugin.saveList(storeApplicationPluginOLD.getList());
     }
-
+    
     SitoolsStore<FilterModel> storeFilterPlugin = new FilterPluginStoreXML(new File(
         settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_FILTERS, storeFilterPlugin);
@@ -263,7 +265,7 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_RESOURCES, storeResourcePlugins);
 
-    // ======== converter store ===============
+    // ======== dataset converter ===============
         
     new File(settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR) + "/map").mkdirs();
     ConverterStoreInterface storeConverter = new ConverterStoreXMLMap(new File(
@@ -276,12 +278,20 @@ public final class StoreHelper {
       storeConverter.saveList(storeConvOLD.getList());
     }
     
+    // ======== dataset filter ===============
     
-    
-    SitoolsStore<FilterChainedModel> storeFilter = new FilterStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
+    new File(settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR) + "/map").mkdirs();
+    FilterStoreInterface storeFilter = new FilterStoreXMLMap(new File(
+      settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_FILTERS, storeFilter);
 
+    SitoolsStore<FilterChainedModel> storeFilterOLD = new FilterStoreXML(new File(
+      settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
+    if (storeFilter.getList().isEmpty()) {
+      storeFilter.saveList(storeFilterOLD.getList());
+    }
+    
+    
     SitoolsStore<DatasetView> storeDsView = new DatasetViewStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_DATASETS_VIEWS, storeDsView);
