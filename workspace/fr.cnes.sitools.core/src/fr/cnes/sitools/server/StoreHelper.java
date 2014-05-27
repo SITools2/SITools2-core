@@ -185,7 +185,7 @@ public final class StoreHelper {
     // Migrating Roles
     SitoolsStore<Role> storeRoleOLD = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)),
         context);
-    if (!storeRoleOLD.getList().isEmpty()) {
+    if (storeRole.getList().isEmpty()) {
       storeRole.saveList(storeRoleOLD.getList());
     }
 
@@ -199,7 +199,7 @@ public final class StoreHelper {
     // Migrating Applications
     SitoolsStore<AppRegistry> storeAppOLD = new AppRegistryStoreXML(new File(
         settings.getStoreDIR(Consts.APP_APPLICATIONS_STORE_DIR)), context);
-    if (!storeAppOLD.getList().isEmpty()) {
+    if (storeApplication.getList().isEmpty()) {
       storeApplication.saveList(storeAppOLD.getList());
     }
 
@@ -213,7 +213,7 @@ public final class StoreHelper {
     // Migrating Authorizations
     AuthorizationStore storeAuthorizationOLD = new AuthorizationStoreXML(new File(
         settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), context);
-    if (!storeAuthorizationOLD.getList().isEmpty()) {
+    if (storeAuthorization.getList().isEmpty()) {
       storeAuthorization.saveList(storeAuthorizationOLD.getList());
     }
 
@@ -251,7 +251,7 @@ public final class StoreHelper {
     // Migrating ApplicationPlugin
     ApplicationPluginStore storeApplicationPluginOLD = new ApplicationPluginStoreXmlImpl(new File(
         settings.getStoreDIR(Consts.APP_PLUGINS_APPLICATIONS_STORE_DIR)), context);
-    if (!storeApplicationPluginOLD.getList().isEmpty()) {
+    if (storeApplicationPlugin.getList().isEmpty()) {
       storeApplicationPlugin.saveList(storeApplicationPluginOLD.getList());
     }
 
@@ -272,7 +272,7 @@ public final class StoreHelper {
     
     SitoolsStore<ConverterChainedModel> storeConvOLD = new ConverterStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR)), context);
-    if (!storeConvOLD.getList().isEmpty()) {
+    if (storeConverter.getList().isEmpty()) {
       storeConverter.saveList(storeConvOLD.getList());
     }
     
@@ -314,7 +314,7 @@ public final class StoreHelper {
     // Migrating collection 
     SitoolsStore<Collection> storeCollectionsOLD = new CollectionsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
-    if (storeCollectionsOLD.getList().isEmpty()) {
+    if (storeCollections.getList().isEmpty()) {
       storeCollections.saveList(storeCollectionsOLD.getList());
     }
 
@@ -355,7 +355,7 @@ public final class StoreHelper {
     // Migrating UserStorage
     UserStorageStore storeUserStorageOLD = new UserStorageStoreXML(new File(
         settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR)), context);
-    if (!storeUserStorageOLD.getList().isEmpty()) {
+    if (storeUserStorage.getList().isEmpty()) {
       storeUserStorage.saveList(storeUserStorageOLD.getList());
     }
 
@@ -369,7 +369,7 @@ public final class StoreHelper {
     // Migrating DataStorage
     DataStorageStore storeDataStorageOLD = new DataStorageStoreXmlImpl(new File(
         settings.getStoreDIR(Consts.APP_DATASTORAGE_STORE_DIR)), context);
-    if (!storeDataStorageOLD.getList().isEmpty()) {
+    if (storeDataStorage.getList().isEmpty()) {
       storeDataStorage.saveList(storeDataStorageOLD.getList());
     }
 
@@ -383,7 +383,7 @@ public final class StoreHelper {
     // migrating datasets
     SitoolsStore<DataSet> storeDataSetOLD = new DataSetStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_STORE_DIR)), context);
-    if (!storeDataSetOLD.getList().isEmpty()) {
+    if (storeDataSet.getList().isEmpty()) {
       storeDataSet.saveList(storeDataSetOLD.getList());
     }
 
@@ -397,7 +397,7 @@ public final class StoreHelper {
     // Migrating Dimension
     SitoolsStore<SitoolsDimension> storeDimensionsOLD = new DimensionStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DIMENSION_STORE_DIR)), context);
-    if (!storeDimensionsOLD.getList().isEmpty()) {
+    if (storeDimensions.getList().isEmpty()) {
       storeDimensions.saveList(storeDimensionsOLD.getList());
     }
 
