@@ -68,6 +68,7 @@ import fr.cnes.sitools.dataset.converter.ConverterApplication;
 import fr.cnes.sitools.dataset.converter.ConverterStoreInterface;
 import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.dataset.filter.FilterApplication;
+import fr.cnes.sitools.dataset.filter.FilterStoreInterface;
 import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
@@ -862,8 +863,9 @@ public final class Starter {
     // Gestion des filters attaches au dataset
 
     // Store
-    SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(
-        Consts.APP_STORE_DATASETS_FILTERS);
+//    SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(
+//        Consts.APP_STORE_DATASETS_FILTERS);
+    FilterStoreInterface storeFilter = (FilterStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASETS_FILTERS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
