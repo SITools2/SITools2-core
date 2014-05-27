@@ -63,6 +63,19 @@ or
 	$ ./sitools2-v2/workspace/fr.cnes.sitools.core/sitools start
 if `source` is not installed on your computer.
 
+## First step in SITools2
+
+### Administration UI
+
+Go to : http://{publicHostDomain}/sitools/client-admin/index.html
+
+- user : **admin** 
+- password : **admin**
+
+### Portal UI
+
+Go to : http://{publicHostDomain}/sitools/client-user/index.html
+
 ## Features
 - Client/server application
 - REST architecture
