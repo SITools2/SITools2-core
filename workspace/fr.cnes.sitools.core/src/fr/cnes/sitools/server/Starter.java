@@ -65,6 +65,7 @@ import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.DataSetAdministration;
 import fr.cnes.sitools.dataset.converter.ConverterApplication;
+import fr.cnes.sitools.dataset.converter.ConverterStoreInterface;
 import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.dataset.filter.FilterApplication;
 import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
@@ -393,15 +394,13 @@ public final class Starter {
 
     // HTTPS
     component = SslFactory.addSslSupport(component, settings);
-    
-    
+
     // ======
     // Launch synchronization for the application status
-    
-//    String applicationTriggerClassname = settings.getString("Starter.synchronization.applicationTriggerClass");
-//    Class applicationTriggerClass = Class.forName(applicationTriggerClassname);
-//    applicationTriggerClass.getConstructor().newInstance();
 
+    // String applicationTriggerClassname = settings.getString("Starter.synchronization.applicationTriggerClass");
+    // Class applicationTriggerClass = Class.forName(applicationTriggerClassname);
+    // applicationTriggerClass.getConstructor().newInstance();
 
     // ============================
     // Init Stores
@@ -419,7 +418,7 @@ public final class Starter {
     // Authentication / Authorizations
 
     // Store Role
-   RoleStoreInterface storeRole = (RoleStoreInterface) settings.getStores().get(Consts.APP_STORE_ROLE);
+    RoleStoreInterface storeRole = (RoleStoreInterface) settings.getStores().get(Consts.APP_STORE_ROLE);
 
     // Store Users and Groups
     UsersAndGroupsStore storeUandG = (UsersAndGroupsStore) settings.getStores().get(Consts.APP_STORE_USERSANDGROUPS);
@@ -506,11 +505,10 @@ public final class Starter {
     // ApplicationManager for application registering
 
     // Store
-//    SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores()
-//        .get(Consts.APP_STORE_REGISTRY);
-    ApplicationStoreInterface storeApp = (ApplicationStoreInterface)settings.getStores()
+    // SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores()
+    // .get(Consts.APP_STORE_REGISTRY);
+    ApplicationStoreInterface storeApp = (ApplicationStoreInterface) settings.getStores()
         .get(Consts.APP_STORE_REGISTRY);
-        
 
     // Context
     appContext = host.getContext().createChildContext();
@@ -641,8 +639,7 @@ public final class Starter {
 
     long cacheTime = settings.getLong("Security.challenge.cacheTime");
     long cacheSize = settings.getLong("Security.challenge.cacheSize");
-    
-    
+
     CaptchaContainer captchaContainer = new CaptchaContainer();
     appContext.getAttributes().put("Security.Captcha.CaptchaContainer", captchaContainer);
     ChallengeToken challengeTokenContainer = new ChallengeTokenContainer(cacheTime, cacheSize);
@@ -835,7 +832,9 @@ public final class Starter {
     // Gestion des converters attaches au dataset
 
     // Store
-    SitoolsStore<ConverterChainedModel> storeConv = (SitoolsStore<ConverterChainedModel>) settings.getStores().get(
+    // SitoolsStore<ConverterChainedModel> storeConv = (SitoolsStore<ConverterChainedModel>) settings.getStores().get(
+    // Consts.APP_STORE_DATASETS_CONVERTERS);
+    ConverterStoreInterface storeConv = (ConverterStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DATASETS_CONVERTERS);
 
     // Reference
@@ -1173,8 +1172,10 @@ public final class Starter {
     // Gestion des Collections
 
     // Store
-    //SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>) settings.getStores().get(Consts.APP_STORE_COLLECTIONS);
-    CollectionStoreInterface storeCollections = (CollectionStoreInterface) settings.getStores().get(Consts.APP_STORE_COLLECTIONS);
+    // SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>)
+    // settings.getStores().get(Consts.APP_STORE_COLLECTIONS);
+    CollectionStoreInterface storeCollections = (CollectionStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_COLLECTIONS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_COLLECTIONS_URL);
@@ -1590,7 +1591,8 @@ public final class Starter {
     // Administration des espaces de stockage
 
     // Store
-    UserStorageStoreInterface storeUS = (UserStorageStoreInterface) settings.getStores().get(Consts.APP_STORE_USERSTORAGE);
+    UserStorageStoreInterface storeUS = (UserStorageStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_USERSTORAGE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_USERSTORAGE_URL);
@@ -1715,7 +1717,8 @@ public final class Starter {
     // Application Data Storage
 
     // Store
-    DataStorageStoreInterface storeDataStorage = (DataStorageStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASTORAGE);
+    DataStorageStoreInterface storeDataStorage = (DataStorageStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_DATASTORAGE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASTORAGE_URL);
