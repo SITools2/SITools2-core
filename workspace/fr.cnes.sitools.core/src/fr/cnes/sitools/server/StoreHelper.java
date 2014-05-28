@@ -81,7 +81,9 @@ import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.components.FormComponentsStoreXML;
 import fr.cnes.sitools.form.components.FormComponentsStoreXMLMap;
 import fr.cnes.sitools.form.components.model.FormComponent;
+import fr.cnes.sitools.form.dataset.FormStoreInterface;
 import fr.cnes.sitools.form.dataset.FormStoreXML;
+import fr.cnes.sitools.form.dataset.FormStoreXMLMap;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.form.project.FormProjectStoreXML;
@@ -423,8 +425,19 @@ public final class StoreHelper {
         context);
     stores.put(Consts.APP_STORE_GRAPH, storeGraph);
 
-    SitoolsStore<Form> storeForm = new FormStoreXML(new File(settings.getStoreDIR(Consts.APP_FORMS_STORE_DIR)), context);
+    // ======== forms ===============
+
+    new File(settings.getStoreDIR(Consts.APP_FORMS_STORE_DIR) + "/map").mkdirs();
+    FormStoreInterface storeForm = new FormStoreXMLMap(new File(settings.getStoreDIR(Consts.APP_FORMS_STORE_DIR)
+        + "/map"), context);
     stores.put(Consts.APP_STORE_FORM, storeForm);
+
+    // Migrating forms
+    SitoolsStore<Form> storeFormOLD = new FormStoreXML(new File(settings.getStoreDIR(Consts.APP_FORMS_STORE_DIR)),
+        context);
+    if (storeForm.getList().isEmpty()) {
+      storeForm.saveList(storeFormOLD.getList());
+    }
 
     // ======== feed ===============
 

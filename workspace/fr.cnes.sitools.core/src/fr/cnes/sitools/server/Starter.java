@@ -89,6 +89,7 @@ import fr.cnes.sitools.feeds.FeedsStoreInterface;
 import fr.cnes.sitools.form.components.FormComponentsApplication;
 import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.dataset.FormApplication;
+import fr.cnes.sitools.form.dataset.FormStoreInterface;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.project.FormProjectApplication;
 import fr.cnes.sitools.form.project.FormProjectStoreInterface;
@@ -1311,8 +1312,9 @@ public final class Starter {
     // Gestion des formulaires
 
     // Store
-    SitoolsStore<Form> storeForm = (SitoolsStore<Form>) settings.getStores().get(Consts.APP_STORE_FORM);
-
+//    SitoolsStore<Form> storeForm = (SitoolsStore<Form>) settings.getStores().get(Consts.APP_STORE_FORM);
+    FormStoreInterface storeForm = (FormStoreInterface) settings.getStores().get(Consts.APP_STORE_FORM);
+    
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
         + settings.getString(Consts.APP_FORMS_URL);
