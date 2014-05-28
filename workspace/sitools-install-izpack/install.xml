@@ -73,7 +73,7 @@
 		<res id="userInputLang.xml_fra" src="install_res/userInputLang.xml_fra" />
 		<res id="CustomLangpack.xml_eng" src="install_res/CustomLangpack_eng.xml" />
 		<res id="CustomLangpack.xml_fra" src="install_res/CustomLangpack_fra.xml" />
-		<res id="HTMLInfoPanel.finishInstruction" src="install_res/finishInstruction.html" />
+<!-- 		<res id="HTMLInfoPanel.finishInstruction" src="install_res/finishInstruction.html" /> -->
 	</resources>
 
 	<conditions>
