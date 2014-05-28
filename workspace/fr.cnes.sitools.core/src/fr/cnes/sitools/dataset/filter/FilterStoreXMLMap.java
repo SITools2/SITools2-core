@@ -72,12 +72,6 @@ public final class FilterStoreXMLMap extends XmlMapStore<FilterChainedModel> imp
   }
 
   @Override
-  public FilterChainedModel update(FilterChainedModel resource) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
   public String getCollectionName() {
     return COLLECTION_NAME;
   }
