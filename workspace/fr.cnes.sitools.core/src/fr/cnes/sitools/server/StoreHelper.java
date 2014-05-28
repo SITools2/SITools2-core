@@ -51,7 +51,9 @@ import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXML;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.services.ServiceStoreXML;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
+import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreXML;
+import fr.cnes.sitools.dataset.view.DatasetViewStoreXMLMap;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXML;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
@@ -291,10 +293,19 @@ public final class StoreHelper {
       storeFilter.saveList(storeFilterOLD.getList());
     }
     
-    
-    SitoolsStore<DatasetView> storeDsView = new DatasetViewStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
+    // ======== dataset view ===============
+
+    new File(settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR) + "/map").mkdirs();
+    DatasetViewStoreInterface storeDsView = new DatasetViewStoreXMLMap(new File(
+      settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASETS_VIEWS, storeDsView);
+    
+    SitoolsStore<DatasetView> storeDsViewOLD = new DatasetViewStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
+    if (storeDsView.getList().isEmpty()) {
+      storeDsView.saveList(storeDsViewOLD.getList());
+    }
+    
 
     // ======== portal ===============
 
