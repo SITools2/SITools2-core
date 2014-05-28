@@ -65,7 +65,9 @@ import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreInterface;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreXML;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreXMLMap;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreInterface;
 import fr.cnes.sitools.dictionary.ConceptTemplateStoreXML;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreXMLMap;
 import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.DictionaryStoreXML;
 import fr.cnes.sitools.dictionary.DictionaryStoreXMLMap;
@@ -270,15 +272,26 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DICTIONARY, storeDictionary);
 
+    // Migrating dictionaries
     SitoolsStore<Dictionary> storeDictionaryOLD = new DictionaryStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR)), context);
     if (storeDictionary.getList().isEmpty()) {
       storeDictionary.saveList(storeDictionaryOLD.getList());
     }
 
-    SitoolsStore<ConceptTemplate> storeConceptTemplate = new ConceptTemplateStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
+    // ======= dictionary templates ==========
+
+    new File(settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR) + "/map").mkdirs();
+    ConceptTemplateStoreInterface storeConceptTemplate = new ConceptTemplateStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_TEMPLATE, storeConceptTemplate);
+
+    // Migrating dictionary templates
+    SitoolsStore<ConceptTemplate> storeConceptTemplateOLD = new ConceptTemplateStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
+    if (storeConceptTemplate.getList().isEmpty()) {
+      storeConceptTemplate.saveList(storeConceptTemplateOLD.getList());
+    }
 
     // ======== application plugin ===============
 
