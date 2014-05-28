@@ -55,7 +55,9 @@ import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreXML;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreXMLMap;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
+import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreInterface;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXML;
+import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXMLMap;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
@@ -229,9 +231,19 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_INSCRIPTION, storeIns);
 
-    SitoolsStore<JDBCDataSource> storeDS = new JDBCDataSourceStoreXML(new File(
+    // ======= data source ==========
+
+    new File(settings.getStoreDIR(Consts.APP_DATASOURCES_STORE_DIR) + "/map").mkdirs();
+    JDBCDataSourceStoreInterface storeDatasource = new JDBCDataSourceStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_DATASOURCES_STORE_DIR) + "/map"), context);
+    stores.put(Consts.APP_STORE_DATASOURCE, storeDatasource);
+
+    // Migrating datasource
+    SitoolsStore<JDBCDataSource> storeDatasourceOLD = new JDBCDataSourceStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASOURCES_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_DATASOURCE, storeDS);
+    if (storeDatasource.getList().isEmpty()) {
+      storeDatasource.saveList(storeDatasourceOLD.getList());
+    }
 
     SitoolsStore<MongoDBDataSource> storeMongoDBDS = new MongoDBDataSourceStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASOURCES_MONGODB_STORE_DIR)), context);
@@ -258,7 +270,7 @@ public final class StoreHelper {
     if (storeApplicationPlugin.getList().isEmpty()) {
       storeApplicationPlugin.saveList(storeApplicationPluginOLD.getList());
     }
-    
+
     SitoolsStore<FilterModel> storeFilterPlugin = new FilterPluginStoreXML(new File(
         settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_FILTERS, storeFilterPlugin);
@@ -268,44 +280,43 @@ public final class StoreHelper {
     stores.put(Consts.APP_STORE_PLUGINS_RESOURCES, storeResourcePlugins);
 
     // ======== dataset converter ===============
-        
+
     new File(settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR) + "/map").mkdirs();
     ConverterStoreInterface storeConverter = new ConverterStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASETS_CONVERTERS, storeConverter);
-    
+
     SitoolsStore<ConverterChainedModel> storeConvOLD = new ConverterStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_CONVERTERS_STORE_DIR)), context);
     if (storeConverter.getList().isEmpty()) {
       storeConverter.saveList(storeConvOLD.getList());
     }
-    
+
     // ======== dataset filter ===============
-    
+
     new File(settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR) + "/map").mkdirs();
     FilterStoreInterface storeFilter = new FilterStoreXMLMap(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR) + "/map"), context);
+        settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASETS_FILTERS, storeFilter);
 
     SitoolsStore<FilterChainedModel> storeFilterOLD = new FilterStoreXML(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
     if (storeFilter.getList().isEmpty()) {
       storeFilter.saveList(storeFilterOLD.getList());
     }
-    
+
     // ======== dataset view ===============
 
     new File(settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR) + "/map").mkdirs();
     DatasetViewStoreInterface storeDsView = new DatasetViewStoreXMLMap(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR) + "/map"), context);
+        settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASETS_VIEWS, storeDsView);
-    
+
     SitoolsStore<DatasetView> storeDsViewOLD = new DatasetViewStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASETS_VIEWS_STORE_DIR)), context);
     if (storeDsView.getList().isEmpty()) {
       storeDsView.saveList(storeDsViewOLD.getList());
     }
-    
 
     // ======== portal ===============
 
@@ -324,21 +335,20 @@ public final class StoreHelper {
     SitoolsStore<FormComponent> storefc = new FormComponentsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_FORMCOMPONENT, storefc);
-    
+
     // ======== collection ===============
 
     new File(settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)).mkdirs();
-    CollectionStoreInterface storeCollections = new CollectionsStoreXMLMap(
-        new File(settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
+    CollectionStoreInterface storeCollections = new CollectionsStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_COLLECTIONS, storeCollections);
-        
-    // Migrating collection 
+
+    // Migrating collection
     SitoolsStore<Collection> storeCollectionsOLD = new CollectionsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
     if (storeCollections.getList().isEmpty()) {
       storeCollections.saveList(storeCollectionsOLD.getList());
     }
-
 
     SitoolsStore<FormProject> storeFormProject = new FormProjectStoreXML(new File(
         settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR)), context);
