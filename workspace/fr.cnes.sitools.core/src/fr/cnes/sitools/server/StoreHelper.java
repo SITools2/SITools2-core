@@ -61,7 +61,9 @@ import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXMLMap;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
+import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreInterface;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreXML;
+import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreXMLMap;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 import fr.cnes.sitools.dictionary.ConceptTemplateStoreXML;
 import fr.cnes.sitools.dictionary.DictionaryStoreXML;
@@ -245,9 +247,19 @@ public final class StoreHelper {
       storeDatasource.saveList(storeDatasourceOLD.getList());
     }
 
-    SitoolsStore<MongoDBDataSource> storeMongoDBDS = new MongoDBDataSourceStoreXML(new File(
+    // ======= mongoDB data source ==========
+
+    new File(settings.getStoreDIR(Consts.APP_DATASOURCES_MONGODB_STORE_DIR) + "/map").mkdirs();
+    MongoDBDataSourceStoreInterface storeMongoDBDataSource = new MongoDBDataSourceStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_DATASOURCES_MONGODB_STORE_DIR) + "/map"), context);
+    stores.put(Consts.APP_STORE_DATASOURCE_MONGODB, storeMongoDBDataSource);
+
+    // Migrating MongoDB datasource
+    SitoolsStore<MongoDBDataSource> storeMongoDBDataSourceOLD = new MongoDBDataSourceStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DATASOURCES_MONGODB_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_DATASOURCE_MONGODB, storeMongoDBDS);
+    if (storeMongoDBDataSource.getList().isEmpty()) {
+      storeMongoDBDataSource.saveList(storeMongoDBDataSourceOLD.getList());
+    }
 
     SitoolsStore<Dictionary> storeDictionary = new DictionaryStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR)), context);
