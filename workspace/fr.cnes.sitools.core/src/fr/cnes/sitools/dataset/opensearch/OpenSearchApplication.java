@@ -32,6 +32,7 @@ import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.feeds.FeedsStoreXML;
+import fr.cnes.sitools.feeds.FeedsStoreXMLMap;
 
 /**
  * Application for managing OpenSearch configuration
@@ -46,7 +47,7 @@ public final class OpenSearchApplication extends SitoolsApplication {
   private SitoolsStore<Opensearch> store = null;
 
   /** Other store needed for feeds definition */
-  private FeedsStoreXML storeFeeds = null;
+  private FeedsStoreXMLMap storeFeeds = null;
   
   /** If the indexation has been cancelled */
   private boolean cancelled = false;
@@ -61,7 +62,7 @@ public final class OpenSearchApplication extends SitoolsApplication {
   public OpenSearchApplication(Context context) {
     super(context);
     this.store = (SitoolsStore<Opensearch>) context.getAttributes().get(ContextAttributes.APP_STORE);
-    this.storeFeeds = (FeedsStoreXML) context.getAttributes().get("APP_STORE_FEEDS");
+    this.storeFeeds = (FeedsStoreXMLMap) context.getAttributes().get("APP_STORE_FEEDS");
   }
 
   @Override
@@ -105,7 +106,7 @@ public final class OpenSearchApplication extends SitoolsApplication {
    * 
    * @return the storeFeeds
    */
-  public FeedsStoreXML getStoreFeed() {
+  public FeedsStoreXMLMap getStoreFeed() {
     return this.storeFeeds;
   }
   

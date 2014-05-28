@@ -86,6 +86,7 @@ import fr.cnes.sitools.dictionary.DictionaryAdministration;
 import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.feeds.FeedsApplication;
+import fr.cnes.sitools.feeds.FeedsStoreInterface;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.form.components.FormComponentsApplication;
 import fr.cnes.sitools.form.components.model.FormComponent;
@@ -1339,7 +1340,8 @@ public final class Starter {
     // Gestion des flux
 
     // Store
-    SitoolsStore<FeedModel> storeFeeds = (SitoolsStore<FeedModel>) settings.getStores().get(Consts.APP_STORE_FEED);
+    //SitoolsStore<FeedModel> storeFeeds = (SitoolsStore<FeedModel>) settings.getStores().get(Consts.APP_STORE_FEED);
+    FeedsStoreInterface storeFeeds = (FeedsStoreInterface) settings.getStores().get(Consts.APP_STORE_FEED);
 
     // attachment for Projects
 
