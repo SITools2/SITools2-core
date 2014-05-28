@@ -49,7 +49,9 @@ import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXML;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
+import fr.cnes.sitools.dataset.services.ServiceStoreInterface;
 import fr.cnes.sitools.dataset.services.ServiceStoreXML;
+import fr.cnes.sitools.dataset.services.ServiceStoreXMLMap;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreXML;
@@ -563,9 +565,18 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_GUI_SERVICES_PLUGIN, storeGuiServicePlugin);
 
-    SitoolsStore<ServiceCollectionModel> storeServices = new ServiceStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR)), context);
+    // ========= Services =============
+    new File(settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR) + "/map").mkdirs();
+    ServiceStoreInterface storeServices = new ServiceStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_SERVICES, storeServices);
+
+    // Migrating services
+    SitoolsStore<ServiceCollectionModel> storeServicesOld = new ServiceStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR)), context);
+    if (storeServices.getList().isEmpty()) {
+      storeServices.saveList(storeServicesOld.getList());
+    }
 
     // ========= userblacklist =============
     new File(settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR) + "/map").mkdirs();

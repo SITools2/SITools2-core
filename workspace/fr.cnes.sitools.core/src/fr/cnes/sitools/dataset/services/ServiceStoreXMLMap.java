@@ -19,24 +19,24 @@
 package fr.cnes.sitools.dataset.services;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.common.store.SitoolsStoreXML;
+import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
+import fr.cnes.sitools.persistence.XmlSynchronizedMapStore;
 
 /**
- * Store to store GuiServicesModel
+ * Implementation of ServiceCollectionModelStore with XStream FilePersistenceStrategy
  * 
+ * @author AKKA
  * 
- * @author m.gond
  */
-@Deprecated
-public class ServiceStoreXML extends SitoolsStoreXML<ServiceCollectionModel> {
+public final class ServiceStoreXMLMap extends XmlSynchronizedMapStore<ServiceCollectionModel> implements
+    ServiceStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "Services";
@@ -47,9 +47,9 @@ public class ServiceStoreXML extends SitoolsStoreXML<ServiceCollectionModel> {
    * @param location
    *          directory of FilePersistenceStrategy
    * @param context
-   *          the Context
+   *          the Restlet Context
    */
-  public ServiceStoreXML(File location, Context context) {
+  public ServiceStoreXMLMap(File location, Context context) {
     super(ServiceCollectionModel.class, location, context);
   }
 
@@ -57,9 +57,9 @@ public class ServiceStoreXML extends SitoolsStoreXML<ServiceCollectionModel> {
    * Default constructor
    * 
    * @param context
-   *          the Context
+   *          the Restlet Context
    */
-  public ServiceStoreXML(Context context) {
+  public ServiceStoreXMLMap(Context context) {
     super(ServiceCollectionModel.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
@@ -68,41 +68,40 @@ public class ServiceStoreXML extends SitoolsStoreXML<ServiceCollectionModel> {
   @Override
   public ServiceCollectionModel update(ServiceCollectionModel services) {
     ServiceCollectionModel result = null;
-    for (Iterator<ServiceCollectionModel> it = getRawList().iterator(); it.hasNext();) {
-      ServiceCollectionModel current = it.next();
-      if (current.getId().equals(services.getId())) {
-        result = current;
-        current.setId(services.getId());
-        current.setName(services.getName());
-        current.setDescription(services.getDescription());
-        current.setServices(services.getServices());
 
-        it.remove();
-
-        break;
-      }
-    }
-    if (result != null) {
-      getRawList().add(result);
+    Map<String, ServiceCollectionModel> map = getMap();
+    synchronized (map) {
+      ServiceCollectionModel current = map.get(services.getId());
+      result = current;
+      current.setId(services.getId());
+      current.setName(services.getName());
+      current.setDescription(services.getDescription());
+      current.setServices(services.getServices());
+      map.put(services.getId(), current);
     }
     return result;
   }
 
+  /**
+   * XStream FilePersistenceStrategy initialization
+   * 
+   * @param location
+   *          Directory
+   */
+  public void init(File location) {
+    Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
+    aliases.put("services", ServiceCollectionModel.class);
+    this.init(location, aliases);
+  }
+
   @Override
   public List<ServiceCollectionModel> retrieveByParent(String id) {
-    return null;
+    throw new RuntimeException(SitoolsException.NOT_IMPLEMENTED);
   }
 
   @Override
   public String getCollectionName() {
     return COLLECTION_NAME;
-  }
-
-  @Override
-  public void init(File location) {
-    Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
-    aliases.put("services", ServiceCollectionModel.class);
-    this.init(location, aliases);
   }
 
 }
