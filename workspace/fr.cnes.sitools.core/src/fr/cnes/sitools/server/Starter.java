@@ -91,7 +91,7 @@ import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.dataset.FormApplication;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.project.FormProjectApplication;
-import fr.cnes.sitools.form.project.model.FormProject;
+import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.inscription.InscriptionApplication;
 import fr.cnes.sitools.inscription.UserInscriptionApplication;
 import fr.cnes.sitools.inscription.model.Inscription;
@@ -1198,9 +1198,9 @@ public final class Starter {
     // Gestion des formulaires MultiDatasets
 
     // Store
-    SitoolsStore<FormProject> storeFormProject = (SitoolsStore<FormProject>) settings.getStores().get(
+    FormProjectStoreInterface storeFormProject = (FormProjectStoreInterface) settings.getStores().get(
         Consts.APP_STORE_FORMPROJECT);
-
+    
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{projectId}"
         + settings.getString(Consts.APP_FORMPROJECT_URL);

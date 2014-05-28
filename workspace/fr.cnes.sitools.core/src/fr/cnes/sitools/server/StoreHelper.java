@@ -83,7 +83,9 @@ import fr.cnes.sitools.form.components.FormComponentsStoreXMLMap;
 import fr.cnes.sitools.form.components.model.FormComponent;
 import fr.cnes.sitools.form.dataset.FormStoreXML;
 import fr.cnes.sitools.form.dataset.model.Form;
+import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.form.project.FormProjectStoreXML;
+import fr.cnes.sitools.form.project.FormProjectStoreXMLMap;
 import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.inscription.InscriptionStoreXML;
 import fr.cnes.sitools.inscription.model.Inscription;
@@ -388,9 +390,9 @@ public final class StoreHelper {
 
     // ======== collection ===============
 
-    new File(settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)).mkdirs();
+    new File(settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR) + "/map").mkdirs();
     CollectionStoreInterface storeCollections = new CollectionsStoreXMLMap(new File(
-        settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR)), context);
+        settings.getStoreDIR(Consts.APP_COLLECTIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_COLLECTIONS, storeCollections);
 
     // Migrating collection
@@ -400,9 +402,18 @@ public final class StoreHelper {
       storeCollections.saveList(storeCollectionsOLD.getList());
     }
 
-    SitoolsStore<FormProject> storeFormProject = new FormProjectStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR)), context);
+    // ======== form project ===============
+
+    new File(settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR) + "/map").mkdirs();
+    FormProjectStoreInterface storeFormProject = new FormProjectStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_FORMPROJECT, storeFormProject);
+
+    SitoolsStore<FormProject> storeFormProjectOLD = new FormProjectStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR)), context);
+    if (storeFormProject.getList().isEmpty()) {
+      storeFormProject.saveList(storeFormProjectOLD.getList());
+    }
 
     SitoolsStore<Project> storePrj = new ProjectStoreXML(new File(settings.getStoreDIR(Consts.APP_PROJECTS_STORE_DIR)),
         context);
