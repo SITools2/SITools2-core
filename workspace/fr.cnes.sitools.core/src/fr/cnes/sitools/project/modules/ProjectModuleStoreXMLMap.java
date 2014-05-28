@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.restlet.Context;
 
 import fr.cnes.sitools.common.exception.SitoolsException;
-import fr.cnes.sitools.persistence.XmlSynchronizedMapStore;
+import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 
 /**
@@ -35,7 +35,7 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
  * @author AKKA
  * 
  */
-public final class ProjectModuleStoreXMLMap extends XmlSynchronizedMapStore<ProjectModuleModel> implements
+public final class ProjectModuleStoreXMLMap extends XmlMapStore<ProjectModuleModel> implements
     ProjectModuleStoreInterface {
 
   /** default location for file persistence */
@@ -70,36 +70,34 @@ public final class ProjectModuleStoreXMLMap extends XmlSynchronizedMapStore<Proj
     ProjectModuleModel result = null;
 
     Map<String, ProjectModuleModel> map = getMap();
-    synchronized (map) {
-      ProjectModuleModel current = map.get(module.getId());
-      result = current;
-      current.setId(module.getId());
-      current.setName(module.getName());
-      current.setDescription(module.getDescription());
-      current.setTitle(module.getTitle());
+    ProjectModuleModel current = map.get(module.getId());
+    result = current;
+    current.setId(module.getId());
+    current.setName(module.getName());
+    current.setDescription(module.getDescription());
+    current.setTitle(module.getTitle());
 
-      current.setUrl(module.getUrl());
-      current.setImagePath(module.getImagePath());
-      current.setIcon(module.getIcon());
+    current.setUrl(module.getUrl());
+    current.setImagePath(module.getImagePath());
+    current.setIcon(module.getIcon());
 
-      current.setX(module.getX());
-      current.setY(module.getY());
-      current.setDefaultHeight(module.getDefaultHeight());
-      current.setDefaultWidth(module.getDefaultWidth());
+    current.setX(module.getX());
+    current.setY(module.getY());
+    current.setDefaultHeight(module.getDefaultHeight());
+    current.setDefaultWidth(module.getDefaultWidth());
 
-      current.setAuthor(module.getAuthor());
-      current.setVersion(module.getVersion());
+    current.setAuthor(module.getAuthor());
+    current.setVersion(module.getVersion());
 
-      current.setXtype(module.getXtype());
-      current.setSpecificType(module.getSpecificType());
+    current.setXtype(module.getXtype());
+    current.setSpecificType(module.getSpecificType());
 
-      current.setPriority(module.getPriority());
+    current.setPriority(module.getPriority());
 
-      current.setDependencies(module.getDependencies());
+    current.setDependencies(module.getDependencies());
 
-      current.setLabel(module.getLabel());
-      map.put(module.getId(), current);
-    }
+    current.setLabel(module.getLabel());
+    map.put(module.getId(), current);
     return result;
   }
 

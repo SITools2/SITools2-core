@@ -27,7 +27,7 @@ import org.restlet.Context;
 
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
-import fr.cnes.sitools.persistence.XmlSynchronizedMapStore;
+import fr.cnes.sitools.persistence.XmlMapStore;
 
 /**
  * Implementation of ServiceCollectionModelStore with XStream FilePersistenceStrategy
@@ -35,8 +35,7 @@ import fr.cnes.sitools.persistence.XmlSynchronizedMapStore;
  * @author AKKA
  * 
  */
-public final class ServiceStoreXMLMap extends XmlSynchronizedMapStore<ServiceCollectionModel> implements
-    ServiceStoreInterface {
+public final class ServiceStoreXMLMap extends XmlMapStore<ServiceCollectionModel> implements ServiceStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "Services";
@@ -70,15 +69,13 @@ public final class ServiceStoreXMLMap extends XmlSynchronizedMapStore<ServiceCol
     ServiceCollectionModel result = null;
 
     Map<String, ServiceCollectionModel> map = getMap();
-    synchronized (map) {
-      ServiceCollectionModel current = map.get(services.getId());
-      result = current;
-      current.setId(services.getId());
-      current.setName(services.getName());
-      current.setDescription(services.getDescription());
-      current.setServices(services.getServices());
-      map.put(services.getId(), current);
-    }
+    ServiceCollectionModel current = map.get(services.getId());
+    result = current;
+    current.setId(services.getId());
+    current.setName(services.getName());
+    current.setDescription(services.getDescription());
+    current.setServices(services.getServices());
+    map.put(services.getId(), current);
     return result;
   }
 
