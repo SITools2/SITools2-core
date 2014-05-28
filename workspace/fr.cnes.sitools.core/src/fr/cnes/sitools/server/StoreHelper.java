@@ -282,7 +282,7 @@ public final class StoreHelper {
     
     new File(settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR) + "/map").mkdirs();
     FilterStoreInterface storeFilter = new FilterStoreXMLMap(new File(
-      settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR)), context);
+      settings.getStoreDIR(Consts.APP_DATASETS_FILTERS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DATASETS_FILTERS, storeFilter);
 
     SitoolsStore<FilterChainedModel> storeFilterOLD = new FilterStoreXML(new File(
