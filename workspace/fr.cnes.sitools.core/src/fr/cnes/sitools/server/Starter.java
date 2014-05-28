@@ -84,12 +84,10 @@ import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
 import fr.cnes.sitools.dictionary.ConceptTemplateStoreInterface;
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
 import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
-import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.feeds.FeedsApplication;
 import fr.cnes.sitools.feeds.FeedsStoreInterface;
-import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.form.components.FormComponentsApplication;
-import fr.cnes.sitools.form.components.model.FormComponent;
+import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.dataset.FormApplication;
 import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.project.FormProjectApplication;
@@ -1148,7 +1146,7 @@ public final class Starter {
     // Gestion des formComponents
 
     // Store
-    SitoolsStore<FormComponent> storefc = (SitoolsStore<FormComponent>) settings.getStores().get(
+    FormComponentsStoreInterface storefc = (FormComponentsStoreInterface) settings.getStores().get(
         Consts.APP_STORE_FORMCOMPONENT);
 
     // Reference
@@ -1340,7 +1338,7 @@ public final class Starter {
     // Gestion des flux
 
     // Store
-    //SitoolsStore<FeedModel> storeFeeds = (SitoolsStore<FeedModel>) settings.getStores().get(Consts.APP_STORE_FEED);
+    // SitoolsStore<FeedModel> storeFeeds = (SitoolsStore<FeedModel>) settings.getStores().get(Consts.APP_STORE_FEED);
     FeedsStoreInterface storeFeeds = (FeedsStoreInterface) settings.getStores().get(Consts.APP_STORE_FEED);
 
     // attachment for Projects

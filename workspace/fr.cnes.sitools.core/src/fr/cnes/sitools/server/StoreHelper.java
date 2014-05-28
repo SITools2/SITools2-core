@@ -77,7 +77,9 @@ import fr.cnes.sitools.engine.SitoolsEngine;
 import fr.cnes.sitools.feeds.FeedsStoreInterface;
 import fr.cnes.sitools.feeds.FeedsStoreXML;
 import fr.cnes.sitools.feeds.FeedsStoreXMLMap;
+import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.components.FormComponentsStoreXML;
+import fr.cnes.sitools.form.components.FormComponentsStoreXMLMap;
 import fr.cnes.sitools.form.components.model.FormComponent;
 import fr.cnes.sitools.form.dataset.FormStoreXML;
 import fr.cnes.sitools.form.dataset.model.Form;
@@ -366,13 +368,23 @@ public final class StoreHelper {
     // Migrating Portal
     PortalStore storePortalOLD = new PortalStoreXmlImpl(new File(settings.getStoreDIR(Consts.APP_PORTAL_STORE_DIR)),
         context);
-    if (!storePortalOLD.getList().isEmpty()) {
+    if (storePortal.getList().isEmpty()) {
       storePortal.saveList(storePortalOLD.getList());
     }
 
-    SitoolsStore<FormComponent> storefc = new FormComponentsStoreXML(new File(
+    // ======== form components ===============
+
+    new File(settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR) + "/map").mkdirs();
+    FormComponentsStoreInterface storeFormComponents = new FormComponentsStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR) + "/map"), context);
+    stores.put(Consts.APP_STORE_FORMCOMPONENT, storeFormComponents);
+
+    // Migrating form components
+    SitoolsStore<FormComponent> storeFormComponentsOLD = new FormComponentsStoreXML(new File(
         settings.getStoreDIR(Consts.APP_FORMCOMPONENTS_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_FORMCOMPONENT, storefc);
+    if (storeFormComponents.getList().isEmpty()) {
+      storeFormComponents.saveList(storeFormComponentsOLD.getList());
+    }
 
     // ======== collection ===============
 
@@ -415,7 +427,7 @@ public final class StoreHelper {
     if (storeFeeds.getList().isEmpty()) {
       storeFeeds.saveList(storeFeedsOLD.getList());
     }
-    
+
     SitoolsStore<Opensearch> storeOS = new OpenSearchStoreXML(new File(
         settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_OPENSEARCH, storeOS);
