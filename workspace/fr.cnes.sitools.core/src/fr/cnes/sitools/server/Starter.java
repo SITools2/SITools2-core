@@ -76,12 +76,10 @@ import fr.cnes.sitools.dataset.services.ServiceApplication;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.view.DatasetViewApplication;
 import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
-import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreInterface;
-import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceAdministration;
-import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
+import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreInterface;
 import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
@@ -776,9 +774,9 @@ public final class Starter {
     // Gestion des datasouces jdbc
 
     // Store
-    // SitoolsStore<JDBCDataSource> storeDS = (SitoolsStore<JDBCDataSource>) settings.getStores().get(Consts.APP_STORE_DATASOURCE);
-    JDBCDataSourceStoreInterface storeDS = (JDBCDataSourceStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASOURCE);
-    
+    JDBCDataSourceStoreInterface storeDS = (JDBCDataSourceStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_DATASOURCE);
+
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASOURCES_URL);
 
@@ -801,7 +799,7 @@ public final class Starter {
     // Gestion des datasouces mongodb
 
     // Store
-    SitoolsStore<MongoDBDataSource> storeMongoDBDs = (SitoolsStore<MongoDBDataSource>) settings.getStores().get(
+    MongoDBDataSourceStoreInterface storeMongoDBDs = (MongoDBDataSourceStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DATASOURCE_MONGODB);
 
     // Reference
@@ -861,9 +859,10 @@ public final class Starter {
     // Gestion des filters attaches au dataset
 
     // Store
-//    SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(
-//        Consts.APP_STORE_DATASETS_FILTERS);
-    FilterStoreInterface storeFilter = (FilterStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASETS_FILTERS);
+    // SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(
+    // Consts.APP_STORE_DATASETS_FILTERS);
+    FilterStoreInterface storeFilter = (FilterStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_DATASETS_FILTERS);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
@@ -1226,9 +1225,11 @@ public final class Starter {
     // Gestion des datasets views
 
     // Store
-    //SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>) settings.getStores().get(Consts.APP_STORE_DATASETS_VIEWS);
-    DatasetViewStoreInterface storeDsView = (DatasetViewStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASETS_VIEWS);
-    
+    // SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>)
+    // settings.getStores().get(Consts.APP_STORE_DATASETS_VIEWS);
+    DatasetViewStoreInterface storeDsView = (DatasetViewStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_DATASETS_VIEWS);
+
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_VIEWS_URL);
 
