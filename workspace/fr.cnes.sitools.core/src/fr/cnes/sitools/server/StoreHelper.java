@@ -401,9 +401,19 @@ public final class StoreHelper {
     SitoolsStore<Form> storeForm = new FormStoreXML(new File(settings.getStoreDIR(Consts.APP_FORMS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_FORM, storeForm);
 
-    FeedsStoreXML storeFeeds = new FeedsStoreXML(new File(settings.getStoreDIR(Consts.APP_FEEDS_STORE_DIR)), context);
+    // ======== feed ===============
+
+    new File(settings.getStoreDIR(Consts.APP_FEEDS_STORE_DIR) + "/map").mkdirs();
+    FeedsStoreInterface storeFeeds = new FeedsStoreXMLMap(new File(settings.getStoreDIR(Consts.APP_FEEDS_STORE_DIR)
+        + "/map"), context);
     stores.put(Consts.APP_STORE_FEED, storeFeeds);
 
+    // Migrating feeds
+    FeedsStoreXML storeFeedsOLD = new FeedsStoreXML(new File(settings.getStoreDIR(Consts.APP_FEEDS_STORE_DIR)), context);
+    if (storeFeeds.getList().isEmpty()) {
+      storeFeeds.saveList(storeFeedsOLD.getList());
+    }
+    
     SitoolsStore<Opensearch> storeOS = new OpenSearchStoreXML(new File(
         settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_OPENSEARCH, storeOS);
