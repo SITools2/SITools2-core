@@ -81,6 +81,7 @@ import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreInterface;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceAdministration;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreInterface;
 import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreInterface;
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
 import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
@@ -1027,8 +1028,6 @@ public final class Starter {
     // Dictionary management
 
     // Store
-    // SitoolsStore<Dictionary> storeDictionary = (SitoolsStore<Dictionary>) settings.getStores().get(
-    // Consts.APP_STORE_DICTIONARY);
     DictionaryStoreInterface storeDictionary = (DictionaryStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DICTIONARY);
 
@@ -1077,7 +1076,7 @@ public final class Starter {
     // ConceptTemplate management
 
     // Store
-    SitoolsStore<ConceptTemplate> storeConceptTemplate = (SitoolsStore<ConceptTemplate>) settings.getStores().get(
+    ConceptTemplateStoreInterface storeConceptTemplate = (ConceptTemplateStoreInterface) settings.getStores().get(
         Consts.APP_STORE_TEMPLATE);
 
     // Reference
