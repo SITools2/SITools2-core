@@ -82,8 +82,8 @@ import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceAdministration;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreInterface;
 import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
+import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
-import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.feeds.FeedsApplication;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.form.components.FormComponentsApplication;
@@ -1027,7 +1027,9 @@ public final class Starter {
     // Dictionary management
 
     // Store
-    SitoolsStore<Dictionary> storeDictionary = (SitoolsStore<Dictionary>) settings.getStores().get(
+    // SitoolsStore<Dictionary> storeDictionary = (SitoolsStore<Dictionary>) settings.getStores().get(
+    // Consts.APP_STORE_DICTIONARY);
+    DictionaryStoreInterface storeDictionary = (DictionaryStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DICTIONARY);
 
     // Reference

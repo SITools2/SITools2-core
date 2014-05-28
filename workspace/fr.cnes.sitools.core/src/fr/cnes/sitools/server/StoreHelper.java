@@ -66,7 +66,9 @@ import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreXML;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreXMLMap;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 import fr.cnes.sitools.dictionary.ConceptTemplateStoreXML;
+import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.DictionaryStoreXML;
+import fr.cnes.sitools.dictionary.DictionaryStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.engine.SitoolsEngine;
@@ -261,9 +263,18 @@ public final class StoreHelper {
       storeMongoDBDataSource.saveList(storeMongoDBDataSourceOLD.getList());
     }
 
-    SitoolsStore<Dictionary> storeDictionary = new DictionaryStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR)), context);
+    // ======= dictionaries ==========
+
+    new File(settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR) + "/map").mkdirs();
+    DictionaryStoreInterface storeDictionary = new DictionaryStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_DICTIONARY, storeDictionary);
+
+    SitoolsStore<Dictionary> storeDictionaryOLD = new DictionaryStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_DICTIONARIES_STORE_DIR)), context);
+    if (storeDictionary.getList().isEmpty()) {
+      storeDictionary.saveList(storeDictionaryOLD.getList());
+    }
 
     SitoolsStore<ConceptTemplate> storeConceptTemplate = new ConceptTemplateStoreXML(new File(
         settings.getStoreDIR(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR)), context);
