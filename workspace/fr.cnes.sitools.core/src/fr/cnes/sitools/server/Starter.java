@@ -90,7 +90,6 @@ import fr.cnes.sitools.form.components.FormComponentsApplication;
 import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.dataset.FormApplication;
 import fr.cnes.sitools.form.dataset.FormStoreInterface;
-import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.project.FormProjectApplication;
 import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.inscription.InscriptionApplication;
@@ -123,7 +122,7 @@ import fr.cnes.sitools.portal.PortalApplication;
 import fr.cnes.sitools.portal.PortalStoreInterface;
 import fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication;
 import fr.cnes.sitools.project.ProjectAdministration;
-import fr.cnes.sitools.project.graph.model.Graph;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.modules.ProjectModuleApplication;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
@@ -1294,7 +1293,9 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storePrj);
 
     // gestion des graphs
-    SitoolsStore<Graph> storeGraph = (SitoolsStore<Graph>) settings.getStores().get(Consts.APP_STORE_GRAPH);
+    //SitoolsStore<Graph> storeGraph = (SitoolsStore<Graph>) settings.getStores().get(Consts.APP_STORE_GRAPH);
+    GraphStoreInterface storeGraph = (GraphStoreInterface) settings.getStores().get(Consts.APP_STORE_GRAPH);
+    
     appContext.getAttributes().put(Consts.APP_STORE_GRAPH, storeGraph);
 
     // Dependence clientUserApp > storePrj

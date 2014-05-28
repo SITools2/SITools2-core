@@ -114,7 +114,9 @@ import fr.cnes.sitools.portal.PortalStoreInterface;
 import fr.cnes.sitools.portal.PortalStoreXmlImpl;
 import fr.cnes.sitools.portal.PortalStoreXmlMap;
 import fr.cnes.sitools.project.ProjectStoreXML;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.graph.GraphStoreXML;
+import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.modules.ProjectModuleStoreXML;
@@ -421,9 +423,18 @@ public final class StoreHelper {
         context);
     stores.put(Consts.APP_STORE_PROJECT, storePrj);
 
-    SitoolsStore<Graph> storeGraph = new GraphStoreXML(new File(settings.getStoreDIR(Consts.APP_GRAPHS_STORE_DIR)),
-        context);
+    // ======== graphs ===============
+
+    new File(settings.getStoreDIR(Consts.APP_GRAPHS_STORE_DIR) + "/map").mkdirs();
+    GraphStoreInterface storeGraph = new GraphStoreXMLMap(new File(settings.getStoreDIR(Consts.APP_GRAPHS_STORE_DIR)
+        + "/map"), context);
     stores.put(Consts.APP_STORE_GRAPH, storeGraph);
+
+    SitoolsStore<Graph> storeGraphOLD = new GraphStoreXML(new File(settings.getStoreDIR(Consts.APP_GRAPHS_STORE_DIR)),
+        context);
+    if (storeGraph.getList().isEmpty()) {
+      storeGraph.saveList(storeGraphOLD.getList());
+    }
 
     // ======== forms ===============
 
