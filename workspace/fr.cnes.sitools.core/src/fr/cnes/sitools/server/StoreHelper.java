@@ -115,7 +115,9 @@ import fr.cnes.sitools.portal.PortalStore;
 import fr.cnes.sitools.portal.PortalStoreInterface;
 import fr.cnes.sitools.portal.PortalStoreXmlImpl;
 import fr.cnes.sitools.portal.PortalStoreXmlMap;
+import fr.cnes.sitools.project.ProjectStoreInterface;
 import fr.cnes.sitools.project.ProjectStoreXML;
+import fr.cnes.sitools.project.ProjectStoreXMLMap;
 import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.graph.GraphStoreXML;
 import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
@@ -423,9 +425,17 @@ public final class StoreHelper {
       storeFormProject.saveList(storeFormProjectOLD.getList());
     }
 
-    SitoolsStore<Project> storePrj = new ProjectStoreXML(new File(settings.getStoreDIR(Consts.APP_PROJECTS_STORE_DIR)),
-        context);
-    stores.put(Consts.APP_STORE_PROJECT, storePrj);
+    // ======== Projects ===============
+    new File(settings.getStoreDIR(Consts.APP_PROJECTS_STORE_DIR) + "/map").mkdirs();
+    ProjectStoreInterface storeProject = new ProjectStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_PROJECTS_STORE_DIR) + "/map"), context);
+    stores.put(Consts.APP_STORE_PROJECT, storeProject);
+
+    SitoolsStore<Project> storeProjectOld = new ProjectStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_PROJECTS_STORE_DIR)), context);
+    if (storeProject.getList().isEmpty()) {
+      storeProject.saveList(storeProjectOld.getList());
+    }
 
     // ======== graphs ===============
 

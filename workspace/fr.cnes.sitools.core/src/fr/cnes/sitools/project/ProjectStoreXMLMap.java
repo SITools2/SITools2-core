@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,14 +19,14 @@
 package fr.cnes.sitools.project;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.common.store.SitoolsSynchronizedStoreXML;
+import fr.cnes.sitools.common.exception.SitoolsException;
+import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.project.model.Project;
 
 /**
@@ -35,8 +35,7 @@ import fr.cnes.sitools.project.model.Project;
  * @author AKKA
  * 
  */
-@Deprecated
-public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> {
+public final class ProjectStoreXMLMap extends XmlMapStore<Project> implements ProjectStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "projects";
@@ -49,7 +48,7 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
    * @param context
    *          the Restlet Context
    */
-  public ProjectStoreXML(File location, Context context) {
+  public ProjectStoreXMLMap(File location, Context context) {
     super(Project.class, location, context);
   }
 
@@ -59,7 +58,7 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
    * @param context
    *          the Restlet Context
    */
-  public ProjectStoreXML(Context context) {
+  public ProjectStoreXMLMap(Context context) {
     super(Project.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
@@ -68,51 +67,28 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
   @Override
   public Project update(Project project) {
     Project result = null;
-    List<Project> rawList = getRawList();
-    synchronized (rawList) {
-      for (Iterator<Project> it = rawList.iterator(); it.hasNext();) {
-        Project current = it.next();
-        if (current.getId().equals(project.getId())) {
-          getLog().info("Updating Project");
 
-          result = current;
-          current.setName(project.getName());
-          current.setDescription(project.getDescription());
-          current.setImage(project.getImage());
-          current.setCss(project.getCss());
-          current.setDataSets(project.getDataSets());
-          current.setStatus(project.getStatus());
-          current.setSitoolsAttachementForUsers(project.getSitoolsAttachementForUsers());
-          current.setVisible(project.isVisible());
-          current.setModules(project.getModules());
-          current.setHtmlDescription(project.getHtmlDescription());
-          current.setMaintenanceText(project.getMaintenanceText());
-          current.setMaintenance(project.isMaintenance());
-          current.setHtmlHeader(project.getHtmlHeader());
-          current.setLinks(project.getLinks());
-          current.setFtlTemplateFile(project.getFtlTemplateFile());
-          current.setNavigationMode(project.getNavigationMode());
-          it.remove();
-
-          break;
-        }
-      }
-    }
-    if (result != null) {
-      rawList.add(result);
-    }
+    Map<String, Project> map = getMap();
+    Project current = map.get(project.getId());
+    result = current;
+    current.setName(project.getName());
+    current.setDescription(project.getDescription());
+    current.setImage(project.getImage());
+    current.setCss(project.getCss());
+    current.setDataSets(project.getDataSets());
+    current.setStatus(project.getStatus());
+    current.setSitoolsAttachementForUsers(project.getSitoolsAttachementForUsers());
+    current.setVisible(project.isVisible());
+    current.setModules(project.getModules());
+    current.setHtmlDescription(project.getHtmlDescription());
+    current.setMaintenanceText(project.getMaintenanceText());
+    current.setMaintenance(project.isMaintenance());
+    current.setHtmlHeader(project.getHtmlHeader());
+    current.setLinks(project.getLinks());
+    current.setFtlTemplateFile(project.getFtlTemplateFile());
+    current.setNavigationMode(project.getNavigationMode());
+    map.put(project.getId(), current);
     return result;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see fr.cnes.sitools.common.store.SitoolsStoreXML#create(fr.cnes.sitools.common.model.IResource)
-   */
-  @Override
-  public Project create(Project resource) {
-
-    return super.create(resource);
   }
 
   /**
@@ -129,8 +105,7 @@ public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> 
 
   @Override
   public List<Project> retrieveByParent(String id) {
-    // TODO Auto-generated method stub
-    return null;
+    throw new RuntimeException(SitoolsException.NOT_IMPLEMENTED);
   }
 
   @Override

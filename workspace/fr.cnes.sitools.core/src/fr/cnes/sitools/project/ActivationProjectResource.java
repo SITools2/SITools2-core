@@ -61,7 +61,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
   public Representation action(Representation representation, Variant variant) {
     Response response = null;
     Representation rep = null;
-    SitoolsStore<Project> store = getStore();
+    ProjectStoreInterface store = getStore();
     synchronized (store) {
       try {
         do {

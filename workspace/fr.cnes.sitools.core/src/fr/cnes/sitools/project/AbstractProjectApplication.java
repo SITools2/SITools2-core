@@ -39,7 +39,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   private String projectId = null;
 
   /** Store */
-  private SitoolsStore<Project> store = null;
+  private ProjectStoreInterface store = null;
 
   /** store for graph **/
   private SitoolsStore<Graph> graphStore = null;
@@ -53,7 +53,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   @SuppressWarnings("unchecked")
   public AbstractProjectApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Project>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.graphStore = (SitoolsStore<Graph>) context.getAttributes().get(Consts.APP_STORE_GRAPH);
   }
 
@@ -69,7 +69,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   public AbstractProjectApplication(Context context, String projectId) {
     super(context);
     this.projectId = projectId;
-    this.store = (SitoolsStore<Project>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.graphStore = (SitoolsStore<Graph>) context.getAttributes().get(Consts.APP_STORE_GRAPH);
     setCategory(Category.USER);
   }
@@ -79,7 +79,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
    * 
    * @return the ProjectStore
    */
-  public final SitoolsStore<Project> getStore() {
+  public final ProjectStoreInterface getStore() {
     return store;
   }
 

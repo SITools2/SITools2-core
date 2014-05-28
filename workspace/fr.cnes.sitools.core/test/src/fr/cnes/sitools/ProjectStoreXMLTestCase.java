@@ -33,7 +33,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.project.ProjectStoreXML;
+import fr.cnes.sitools.project.ProjectStoreInterface;
+import fr.cnes.sitools.project.ProjectStoreXMLMap;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 
@@ -47,7 +48,7 @@ public class ProjectStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static ProjectStoreXML store = null;
+  private static ProjectStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -71,7 +72,7 @@ public class ProjectStoreXMLTestCase extends AbstractSitoolsTestCase {
       cleanDirectory(storeDirectory);
       Context ctx = new Context();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
-      store = new ProjectStoreXML(storeDirectory, ctx);
+      store = new ProjectStoreXMLMap(storeDirectory, ctx);
     }
   }
 

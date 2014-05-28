@@ -57,7 +57,7 @@ public abstract class AbstractProjectResource extends SitoolsResource {
   private AbstractProjectApplication application = null;
 
   /** store */
-  private SitoolsStore<Project> store = null;
+  private ProjectStoreInterface store = null;
 
   /** project identifier parameter */
   private String projectId = null;
@@ -253,7 +253,7 @@ public abstract class AbstractProjectResource extends SitoolsResource {
    * 
    * @return the store available for this resource
    */
-  public final SitoolsStore<Project> getStore() {
+  public final ProjectStoreInterface getStore() {
     return this.store;
   }
 

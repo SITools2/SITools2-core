@@ -44,7 +44,8 @@ import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.project.ProjectAdministration;
-import fr.cnes.sitools.project.ProjectStoreXML;
+import fr.cnes.sitools.project.ProjectStoreInterface;
+import fr.cnes.sitools.project.ProjectStoreXMLMap;
 import fr.cnes.sitools.project.graph.GraphStoreXML;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.model.Project;
@@ -68,7 +69,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static ProjectStoreXML store = null;
+  private static ProjectStoreInterface store = null;
 
   /**
    * static xml store instance for the test
@@ -142,7 +143,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
 
       cleanDirectory(storeDirectory);
       storeGraph = new GraphStoreXML(storeGraphDirectory, ctx);
-      store = new ProjectStoreXML(storeDirectory, ctx);
+      store = new ProjectStoreXMLMap(storeDirectory, ctx);
 
       Map<String, Object> stores = new ConcurrentHashMap<String, Object>();
       stores.put(Consts.APP_STORE_PROJECT, store);
