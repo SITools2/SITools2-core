@@ -35,7 +35,6 @@ import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
@@ -53,7 +52,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.model.Url;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.project.modules.ProjectModuleApplication;
-import fr.cnes.sitools.project.modules.ProjectModuleStoreXML;
+import fr.cnes.sitools.project.modules.ProjectModuleStoreXMLMap;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.server.Consts;
@@ -117,7 +116,7 @@ public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestC
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         cleanDirectory(storeDirectory);
-        store = new ProjectModuleStoreXML(storeDirectory, ctx);
+        store = new ProjectModuleStoreXMLMap(storeDirectory, ctx);
 
       }
 

@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 
 /**
@@ -43,17 +42,17 @@ public abstract class AbstractProjectModuleResource extends SitoolsResource {
 
   /** parent application */
   private ProjectModuleApplication application = null;
-  
+
   /** store */
-  private SitoolsStore<ProjectModuleModel> store = null;
-  
+  private ProjectModuleStoreInterface store = null;
+
   /** ProjectModule identifier parameter */
   private String projectModuleId = null;
 
   @Override
   public final void doInit() {
     super.doInit();
-    
+
     // Declares the two variants supported
     getVariants().add(new Variant(MediaType.APPLICATION_XML));
     getVariants().add(new Variant(MediaType.APPLICATION_JSON));
@@ -68,8 +67,10 @@ public abstract class AbstractProjectModuleResource extends SitoolsResource {
   /**
    * Response to Representation
    * 
-   * @param response the server response
-   * @param media the media used
+   * @param response
+   *          the server response
+   * @param media
+   *          the media used
    * @return Representation
    */
   public final Representation getRepresentation(Response response, MediaType media) {
@@ -88,8 +89,11 @@ public abstract class AbstractProjectModuleResource extends SitoolsResource {
 
   /**
    * Get the object from representation
-   * @param representation the representation used
-   * @param variant the variant used
+   * 
+   * @param representation
+   *          the representation used
+   * @param variant
+   *          the variant used
    * @return ProjectModule
    */
   public final ProjectModuleModel getObject(Representation representation, Variant variant) {
@@ -105,14 +109,17 @@ public abstract class AbstractProjectModuleResource extends SitoolsResource {
     }
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
-      projectModuleInput = new JacksonRepresentation<ProjectModuleModel>(representation, ProjectModuleModel.class).getObject();
+      projectModuleInput = new JacksonRepresentation<ProjectModuleModel>(representation, ProjectModuleModel.class)
+          .getObject();
     }
     return projectModuleInput;
   }
 
   /**
    * Sets the value of projectModuleId
-   * @param projectModuleId the projectModuleId to set
+   * 
+   * @param projectModuleId
+   *          the projectModuleId to set
    */
   public final void setProjectModuleId(String projectModuleId) {
     this.projectModuleId = projectModuleId;
@@ -120,6 +127,7 @@ public abstract class AbstractProjectModuleResource extends SitoolsResource {
 
   /**
    * Gets the projectModuleId value
+   * 
    * @return the projectModuleId
    */
   public final String getProjectModuleId() {
@@ -128,17 +136,20 @@ public abstract class AbstractProjectModuleResource extends SitoolsResource {
 
   /**
    * Sets the value of store
-   * @param store the store to set
+   * 
+   * @param store
+   *          the store to set
    */
-  public final void setStore(SitoolsStore<ProjectModuleModel> store) {
+  public final void setStore(ProjectModuleStoreInterface store) {
     this.store = store;
   }
 
   /**
    * Gets the store value
+   * 
    * @return the store
    */
-  public final SitoolsStore<ProjectModuleModel> getStore() {
+  public final ProjectModuleStoreInterface getStore() {
     return store;
   }
 

@@ -119,7 +119,9 @@ import fr.cnes.sitools.project.graph.GraphStoreXML;
 import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.model.Project;
+import fr.cnes.sitools.project.modules.ProjectModuleStoreInterface;
 import fr.cnes.sitools.project.modules.ProjectModuleStoreXML;
+import fr.cnes.sitools.project.modules.ProjectModuleStoreXMLMap;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.registry.AppRegistryStoreXML;
 import fr.cnes.sitools.registry.ApplicationStoreInterface;
@@ -540,9 +542,18 @@ public final class StoreHelper {
       storeTasks.saveList(storeTaskModelOld.getList());
     }
 
-    SitoolsStore<ProjectModuleModel> storeProjectModule = new ProjectModuleStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR)), context);
+    // ========= ProjectModules =============
+
+    new File(settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR) + "/map").mkdirs();
+    ProjectModuleStoreInterface storeProjectModule = new ProjectModuleStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_PROJECTS_MODULES, storeProjectModule);
+
+    SitoolsStore<ProjectModuleModel> storeProjectModuleOld = new ProjectModuleStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR)), context);
+    if (storeProjectModule.getList().isEmpty()) {
+      storeProjectModule.saveList(storeProjectModuleOld.getList());
+    }
 
     SitoolsStore<GuiServiceModel> storeGuiService = new GuiServiceStoreXML(new File(
         settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR)), context);

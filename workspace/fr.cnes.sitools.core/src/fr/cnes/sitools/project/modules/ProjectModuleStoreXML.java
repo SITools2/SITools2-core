@@ -38,6 +38,7 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
  * @author AKKA Technologies
  * 
  */
+@Deprecated
 public final class ProjectModuleStoreXML extends SitoolsStoreXML<ProjectModuleModel> {
 
   /** default location for file persistence */

@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 
 /**
  * Application for managing Project Modules
@@ -41,7 +39,7 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 public final class ProjectModuleApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<ProjectModuleModel> store = null;
+  private ProjectModuleStoreInterface store = null;
 
   /**
    * Constructor
@@ -49,10 +47,9 @@ public final class ProjectModuleApplication extends SitoolsApplication {
    * @param context
    *          Restlet Host Context
    */
-  @SuppressWarnings("unchecked")
   public ProjectModuleApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<ProjectModuleModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ProjectModuleStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -71,7 +68,7 @@ public final class ProjectModuleApplication extends SitoolsApplication {
     router.attachDefault(ProjectModuleCollectionResource.class);
     router.attach("/listComponents.json", ListComponentsResource.class);
     router.attach("/{projectModuleId}", ProjectModuleResource.class);
-    
+
     // an attribute projectId should be added for filtering on Project/Role.
 
     return router;
@@ -82,7 +79,7 @@ public final class ProjectModuleApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<ProjectModuleModel> getStore() {
+  public ProjectModuleStoreInterface getStore() {
     return store;
   }
 
