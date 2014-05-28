@@ -55,7 +55,6 @@ import fr.cnes.sitools.applications.TemporaryFolderApplication;
 import fr.cnes.sitools.applications.UploadApplication;
 import fr.cnes.sitools.collections.CollectionStoreInterface;
 import fr.cnes.sitools.collections.CollectionsApplication;
-import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.SitoolsComponent;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
@@ -66,10 +65,8 @@ import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.DataSetAdministration;
 import fr.cnes.sitools.dataset.converter.ConverterApplication;
 import fr.cnes.sitools.dataset.converter.ConverterStoreInterface;
-import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.dataset.filter.FilterApplication;
 import fr.cnes.sitools.dataset.filter.FilterStoreInterface;
-import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
@@ -78,6 +75,7 @@ import fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication;
 import fr.cnes.sitools.dataset.services.ServiceApplication;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.view.DatasetViewApplication;
+import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
@@ -132,7 +130,6 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.proxy.ProxySettings;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.registry.ApplicationStoreInterface;
-import fr.cnes.sitools.registry.model.AppRegistry;
 import fr.cnes.sitools.role.RoleApplication;
 import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.security.UsersAndGroupsAdministration;
@@ -1228,9 +1225,9 @@ public final class Starter {
     // Gestion des datasets views
 
     // Store
-    SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>) settings.getStores().get(
-        Consts.APP_STORE_DATASETS_VIEWS);
-
+    //SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>) settings.getStores().get(Consts.APP_STORE_DATASETS_VIEWS);
+    DatasetViewStoreInterface storeDsView = (DatasetViewStoreInterface) settings.getStores().get(Consts.APP_STORE_DATASETS_VIEWS);
+    
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_VIEWS_URL);
 
