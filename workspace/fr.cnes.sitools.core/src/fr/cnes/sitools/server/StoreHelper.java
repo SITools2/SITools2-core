@@ -99,7 +99,9 @@ import fr.cnes.sitools.inscription.InscriptionStoreXMLMap;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.notification.store.NotificationStore;
 import fr.cnes.sitools.notification.store.NotificationStoreXML;
+import fr.cnes.sitools.order.OrderStoreInterface;
 import fr.cnes.sitools.order.OrderStoreXML;
+import fr.cnes.sitools.order.OrderStoreXMLMap;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.persistence.PersistenceDao;
 import fr.cnes.sitools.persistence.Persistent;
@@ -254,7 +256,7 @@ public final class StoreHelper {
 
     // ======= notifications ==========
     // no migration needed , already map store
-    
+
     NotificationStore storeNotification = new NotificationStoreXML(new File(
         settings.getStoreDIR(Consts.APP_NOTIFICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_NOTIFICATION, storeNotification);
@@ -265,14 +267,14 @@ public final class StoreHelper {
     InscriptionStoreInterface storeIns = new InscriptionStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_INSCRIPTION, storeIns);
-    
+
     // Migrating inscription
     SitoolsStore<Inscription> storeInsOLD = new InscriptionStoreXML(new File(
         settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR)), context);
     if (storeIns.getList().isEmpty()) {
       storeIns.saveList(storeInsOLD.getList());
-    }   
-    
+    }
+
     // ======= data source ==========
 
     new File(settings.getStoreDIR(Consts.APP_DATASOURCES_STORE_DIR) + "/map").mkdirs();
@@ -506,26 +508,34 @@ public final class StoreHelper {
     if (storeFeeds.getList().isEmpty()) {
       storeFeeds.saveList(storeFeedsOLD.getList());
     }
-    
-    // ======== open search ===============    
+
+    // ======== open search ===============
 
     new File(settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR) + "/map").mkdirs();
     OpenSearchStoreInterface storeOpenSearch = new OpenSearchStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_OPENSEARCH, storeOpenSearch);
-    
+
     // Migrating open search
     SitoolsStore<Opensearch> storeOpenSearchOLD = new OpenSearchStoreXML(new File(
         settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR)), context);
     if (storeOpenSearch.getList().isEmpty()) {
       storeOpenSearch.saveList(storeOpenSearchOLD.getList());
     }
-    
-    
-    
-    SitoolsStore<Order> storeOrd = new OrderStoreXML(new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR)),
+
+    // ======== orders ===============
+
+    new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR) + "/map").mkdirs();
+    OrderStoreInterface storeOrder = new OrderStoreXMLMap(new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR)
+        + "/map"), context);
+    stores.put(Consts.APP_STORE_ORDER, storeOrder);
+
+    // Migrating orders
+    SitoolsStore<Order> storeOrderOLD = new OrderStoreXML(new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR)),
         context);
-    stores.put(Consts.APP_STORE_ORDER, storeOrd);
+    if (storeOrder.getList().isEmpty()) {
+      storeOrder.saveList(storeOrderOLD.getList());
+    }
 
     // ======== user storage ===============
 

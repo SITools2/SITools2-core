@@ -70,7 +70,6 @@ import fr.cnes.sitools.dataset.filter.FilterStoreInterface;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
-import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.plugins.converters.ConverterPluginsApplication;
 import fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication;
 import fr.cnes.sitools.dataset.services.ServiceApplication;
@@ -105,8 +104,8 @@ import fr.cnes.sitools.notification.NotificationApplication;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.store.NotificationStore;
 import fr.cnes.sitools.order.OrderAdministration;
+import fr.cnes.sitools.order.OrderStoreInterface;
 import fr.cnes.sitools.order.UserOrderApplication;
-import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginApplication;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.filters.FilterClassPluginApplication;
@@ -1554,7 +1553,7 @@ public final class Starter {
     // Gestion des commandes Administration
 
     // Store
-    SitoolsStore<Order> storeOrd = (SitoolsStore<Order>) settings.getStores().get(Consts.APP_STORE_ORDER);
+    OrderStoreInterface storeOrd = (OrderStoreInterface) settings.getStores().get(Consts.APP_STORE_ORDER);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_ORDERS_ADMIN_URL);
