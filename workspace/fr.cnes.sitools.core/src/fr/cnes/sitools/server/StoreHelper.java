@@ -91,7 +91,9 @@ import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.form.project.FormProjectStoreXML;
 import fr.cnes.sitools.form.project.FormProjectStoreXMLMap;
 import fr.cnes.sitools.form.project.model.FormProject;
+import fr.cnes.sitools.inscription.InscriptionStoreInterface;
 import fr.cnes.sitools.inscription.InscriptionStoreXML;
+import fr.cnes.sitools.inscription.InscriptionStoreXMLMap;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.notification.store.NotificationStore;
 import fr.cnes.sitools.notification.store.NotificationStoreXML;
@@ -251,9 +253,20 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_NOTIFICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_NOTIFICATION, storeNotification);
 
-    SitoolsStore<Inscription> storeIns = new InscriptionStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR)), context);
+    // ======= inscription ==========
+
+    new File(settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR) + "/map").mkdirs();
+    InscriptionStoreInterface storeIns = new InscriptionStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_INSCRIPTION, storeIns);
+    
+    // Migrating inscription
+    SitoolsStore<Inscription> storeInsOLD = new InscriptionStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_INSCRIPTIONS_STORE_DIR)), context);
+    if (storeIns.getList().isEmpty()) {
+      storeIns.saveList(storeInsOLD.getList());
+    }   
+    
 
     // ======= data source ==========
 

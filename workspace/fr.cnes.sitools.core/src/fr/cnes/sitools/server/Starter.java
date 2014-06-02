@@ -93,8 +93,8 @@ import fr.cnes.sitools.form.dataset.FormStoreInterface;
 import fr.cnes.sitools.form.project.FormProjectApplication;
 import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.inscription.InscriptionApplication;
+import fr.cnes.sitools.inscription.InscriptionStoreInterface;
 import fr.cnes.sitools.inscription.UserInscriptionApplication;
-import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.logging.LogDataServerService;
 import fr.cnes.sitools.logging.LoggingOutputStream;
 import fr.cnes.sitools.logging.SitoolsApplicationLogFilter;
@@ -113,7 +113,6 @@ import fr.cnes.sitools.plugins.filters.FilterPluginApplication;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceApplication;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
-import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginApplication;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication;
@@ -710,8 +709,9 @@ public final class Starter {
     // Gestion des inscriptions user et admin
 
     // Store
-    SitoolsStore<Inscription> storeIns = (SitoolsStore<Inscription>) settings.getStores().get(
+    InscriptionStoreInterface storeIns = (InscriptionStoreInterface) settings.getStores().get(
         Consts.APP_STORE_INSCRIPTION);
+
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_INSCRIPTIONS_ADMIN_URL);
