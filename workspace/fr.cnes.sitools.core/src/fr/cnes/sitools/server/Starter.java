@@ -112,6 +112,7 @@ import fr.cnes.sitools.plugins.filters.FilterClassPluginApplication;
 import fr.cnes.sitools.plugins.filters.FilterPluginApplication;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceApplication;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginApplication;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
@@ -2007,8 +2008,7 @@ public final class Starter {
     // Gestion des services IHM
 
     // Store
-    SitoolsStore<GuiServiceModel> storeGuiService = (SitoolsStore<GuiServiceModel>) settings.getStores().get(
-        Consts.APP_STORE_GUI_SERVICE);
+    GuiServiceStoreInterface storeGuiService = (GuiServiceStoreInterface) settings.getStores().get(Consts.APP_STORE_GUI_SERVICE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_GUI_SERVICES_URL);
