@@ -37,7 +37,6 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
@@ -56,7 +55,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
   private GuiServicePluginApplication application = null;
 
   /** store */
-  private SitoolsStore<GuiServicePluginModel> store = null;
+  private GuiServicePluginStoreInterface store = null;
 
   /** GuiService identifier parameter */
   private String guiServicePluginId = null;
@@ -294,7 +293,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
    * @param store
    *          the store to set
    */
-  public final void setStore(SitoolsStore<GuiServicePluginModel> store) {
+  public final void setStore(GuiServicePluginStoreInterface store) {
     this.store = store;
   }
 
@@ -303,7 +302,7 @@ public abstract class AbstractGuiServicePluginResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<GuiServicePluginModel> getStore() {
+  public final GuiServicePluginStoreInterface getStore() {
     return store;
   }
 

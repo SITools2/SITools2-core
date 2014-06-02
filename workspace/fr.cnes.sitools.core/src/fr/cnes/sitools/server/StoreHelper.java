@@ -115,7 +115,9 @@ import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXML;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXMLMap;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXML;
+import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXMLMap;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXMLMap;
@@ -633,9 +635,17 @@ public final class StoreHelper {
       storeGuiService.saveList(storeGuiServiceOLD.getList());
     }
 
-    SitoolsStore<GuiServicePluginModel> storeGuiServicePlugin = new GuiServicePluginStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
+    // ========= GuiServicePlugin =============
+    new File(settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR) + "/map").mkdirs();
+    GuiServicePluginStoreInterface storeGuiServicePlugin = new GuiServicePluginStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_GUI_SERVICES_PLUGIN, storeGuiServicePlugin);
+
+    SitoolsStore<GuiServicePluginModel> storeGuiServicePluginOld = new GuiServicePluginStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
+    if (storeGuiServicePlugin.getList().isEmpty()) {
+      storeGuiServicePlugin.saveList(storeGuiServicePluginOld.getList());
+    }
 
     // ========= Services =============
     new File(settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR) + "/map").mkdirs();
