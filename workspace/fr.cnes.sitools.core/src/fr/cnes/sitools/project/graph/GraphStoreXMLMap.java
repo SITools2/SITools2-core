@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,12 +19,14 @@
 package fr.cnes.sitools.project.graph;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.project.graph.model.Graph;
 
@@ -64,7 +66,6 @@ public final class GraphStoreXMLMap extends XmlMapStore<Graph> implements GraphS
     init(defaultLocation);
   }
 
-  
   @Override
   public List<Graph> retrieveByParent(String id) {
     // TODO Auto-generated method stub
@@ -80,9 +81,26 @@ public final class GraphStoreXMLMap extends XmlMapStore<Graph> implements GraphS
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("graph", Graph.class);
-    this.init(location, aliases);    
+    this.init(location, aliases);
   }
 
-  
+  @Override
+  public Graph update(Graph graph) {
+    Graph result = null;
+    getLog().info("Updating Graph");
+
+    Map<String, Graph> map = getMap();
+    Graph current = map.get(graph.getId());
+
+    result = current;
+    current.setName(graph.getName());
+    current.setId(graph.getId());
+    current.setParent(graph.getParent());
+    current.setNodeList(graph.getNodeList());
+
+    map.put(graph.getId(), current);
+
+    return result;
+  }
 
 }
