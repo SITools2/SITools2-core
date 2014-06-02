@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,12 +19,17 @@
 package fr.cnes.sitools.form.components;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.collections.model.Collection;
+import fr.cnes.sitools.common.model.ResourceCollectionFilter;
+import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.form.components.model.FormComponent;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
@@ -39,7 +44,6 @@ public final class FormComponentsStoreXMLMap extends XmlMapStore<FormComponent> 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "formComponents";
 
-  
   /**
    * Constructor with the XML file location
    * 
@@ -63,8 +67,7 @@ public final class FormComponentsStoreXMLMap extends XmlMapStore<FormComponent> 
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
   }
-  
-  
+
   @Override
   public List<FormComponent> retrieveByParent(String id) {
     // TODO Auto-generated method stub
@@ -80,8 +83,62 @@ public final class FormComponentsStoreXMLMap extends XmlMapStore<FormComponent> 
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("formComponent", FormComponent.class);
-    this.init(location, aliases);    
+    this.init(location, aliases);
   }
 
-  
+  @Override
+  public FormComponent update(FormComponent formComponent) {
+    FormComponent result = null;
+
+    getLog().info("Updating formComponent");
+
+    Map<String, FormComponent> map = getMap();
+    FormComponent current = map.get(formComponent.getId());
+
+    result = current;
+    current.setId(formComponent.getId());
+    current.setComponentDefaultHeight(formComponent.getComponentDefaultHeight());
+    current.setComponentDefaultWidth(formComponent.getComponentDefaultWidth());
+    current.setJsAdminObject(formComponent.getJsAdminObject());
+    current.setJsUserObject(formComponent.getJsUserObject());
+    current.setImageUrl(formComponent.getImageUrl());
+    current.setType(formComponent.getType());
+    current.setFileUrlAdmin(formComponent.getFileUrlAdmin());
+    current.setFileUrlUser(formComponent.getFileUrlUser());
+    current.setPriority(formComponent.getPriority());
+
+    if (result != null) {
+      map.put(formComponent.getId(), current);
+    }
+    return result;
+  }
+
+  /**
+   * Sort the list (by default on the name)
+   * 
+   * @param result
+   *          list to be sorted
+   * @param filter
+   *          ResourceCollectionFilter with sort properties.
+   */
+  public void sort(List<FormComponent> result, ResourceCollectionFilter filter) {
+    if ((filter != null) && (filter.getSort() != null) && !filter.getSort().equals("")) {
+      Collections.sort(result, new ResourceComparator<FormComponent>(filter) {
+        @Override
+        public int compare(FormComponent arg0, FormComponent arg1) {
+          if (arg0.getType() == null) {
+            return 1;
+          }
+          if (arg1.getType() == null) {
+            return -1;
+          }
+          String s1 = (String) arg0.getType();
+          String s2 = (String) arg1.getType();
+
+          return super.compare(s1, s2);
+        }
+      });
+    }
+  }
+
 }
