@@ -75,4 +75,33 @@ public class GuiServiceStoreXMLMap extends XmlMapStore<GuiServiceModel> implemen
     this.init(location, aliases);
   }
 
+  @Override
+  public GuiServiceModel update(GuiServiceModel guiService) {
+    GuiServiceModel result = null;
+
+    Map<String, GuiServiceModel> map = getMap();
+    GuiServiceModel current = map.get(guiService.getId());
+
+    getLog().info("Updating ProjectguiService");
+
+    result = current;
+    current.setId(guiService.getId());
+    current.setName(guiService.getName());
+    current.setDescription(guiService.getDescription());
+    current.setAuthor(guiService.getAuthor());
+    current.setVersion(guiService.getVersion());
+    current.setXtype(guiService.getXtype());
+    current.setPriority(guiService.getPriority());
+    current.setDependencies(guiService.getDependencies());
+    current.setLabel(guiService.getLabel());
+    current.setIcon(guiService.getIcon());
+    current.setDefaultGuiService(guiService.isDefaultGuiService());
+    current.setDataSetSelection(guiService.getDataSetSelection());
+    current.setDefaultVisibility(guiService.isDefaultVisibility());
+
+    map.put(guiService.getId(), current);
+
+    return result;
+  }
+
 }
