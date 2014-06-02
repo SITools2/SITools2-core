@@ -30,7 +30,6 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.project.model.Project;
 
