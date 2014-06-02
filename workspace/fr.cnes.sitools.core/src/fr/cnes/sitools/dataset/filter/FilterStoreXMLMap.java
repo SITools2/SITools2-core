@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,8 +19,10 @@
 package fr.cnes.sitools.dataset.filter;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
@@ -85,7 +87,40 @@ public final class FilterStoreXMLMap extends XmlMapStore<FilterChainedModel> imp
     this.init(location, aliases);
   }
 
-  
-  
-  
+  @Override
+  public FilterChainedModel update(FilterChainedModel filter) {
+    FilterChainedModel result = null;
+
+    getLog().info("Updating FilterChainedModel");
+    Map<String, FilterChainedModel> map = getMap();
+    FilterChainedModel current = map.get(filter.getId());
+
+    if (current != null && current.getId().equals(filter.getId())) {
+
+      result = current;
+
+      current.setDescription(filter.getDescription());
+      current.setName(filter.getName());
+      current.setParent(filter.getParent());
+
+      // generate ids for filters if new filter have been added
+      // ajout des filterParameter dans le hashMap (parametersMap) et clean
+      // du arrayList (parameters)
+      if (filter.getFilters() != null) {
+        FilterModel filterModel;
+        for (Iterator<FilterModel> itConv = filter.getFilters().iterator(); itConv.hasNext();) {
+          // generate Ids
+          filterModel = itConv.next();
+          if (filterModel.getId() == null || "".equals(filterModel.getId())) {
+            filterModel.setId(UUID.randomUUID().toString());
+          }
+        }
+      }
+      current.setFilters(filter.getFilters());
+
+      map.put(filter.getId(), current);
+    }
+
+    return result;
+  }
 }
