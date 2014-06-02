@@ -43,7 +43,6 @@ import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
@@ -57,7 +56,7 @@ import fr.cnes.sitools.registry.AppRegistryApplication;
 public final class ResourcePluginResource extends AbstractResourcePluginResource {
 
   /** store */
-  private SitoolsStore<ResourceModel> store = null;
+  private ResourcePluginStoreInterface store = null;
 
   @Override
   public void doInit() {
@@ -524,7 +523,7 @@ public final class ResourcePluginResource extends AbstractResourcePluginResource
    * 
    * @return the store
    */
-  public SitoolsStore<ResourceModel> getStore() {
+  public ResourcePluginStoreInterface getStore() {
     return store;
   }
 

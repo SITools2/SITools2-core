@@ -114,6 +114,7 @@ import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXML;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
+import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXMLMap;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.portal.PortalStore;
 import fr.cnes.sitools.portal.PortalStoreInterface;
@@ -342,9 +343,18 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_PLUGINS_FILTERS, storeFilterPlugin);
 
-    SitoolsStore<ResourceModel> storeResourcePlugins = new ResourcePluginStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)), context);
+    // ======== Resources plugins ===============
+
+    new File(settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR) + "/map").mkdirs();
+    SitoolsStore<ResourceModel> storeResourcePlugins = new ResourcePluginStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_PLUGINS_RESOURCES, storeResourcePlugins);
+
+    SitoolsStore<ResourceModel> storeResourcePluginsOLD = new ResourcePluginStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)), context);
+    if (storeResourcePlugins.getList().isEmpty()) {
+      storeResourcePlugins.saveList(storeResourcePluginsOLD.getList());
+    }
 
     // ======== dataset converter ===============
 

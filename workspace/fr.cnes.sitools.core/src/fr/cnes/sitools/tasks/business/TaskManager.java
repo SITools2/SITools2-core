@@ -34,11 +34,11 @@ import org.restlet.security.User;
 
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
+import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.TaskStoreInterface;
-import fr.cnes.sitools.tasks.TaskStoreXML;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.tasks.model.TaskRunTypeAdministration;
@@ -65,7 +65,7 @@ public final class TaskManager {
   private TaskStoreInterface storeTaskModel;
 
   /** Store for ResourceModel */
-  private ResourcePluginStoreXML storeResourceModel;
+  private ResourcePluginStoreInterface storeResourceModel;
 
   // /** The current context */
   // private Context context;
@@ -100,7 +100,7 @@ public final class TaskManager {
       // this.context = context;
       storeTaskModel = (TaskStoreInterface) context.getAttributes().get(Consts.APP_STORE_TASK);
 
-      storeResourceModel = (ResourcePluginStoreXML) context.getAttributes().get(Consts.APP_STORE_PLUGINS_RESOURCES);
+      storeResourceModel = (ResourcePluginStoreInterface) context.getAttributes().get(Consts.APP_STORE_PLUGINS_RESOURCES);
       // load existing Tasks, put the status to CANCELED if it was runnning
       // or
       // pending

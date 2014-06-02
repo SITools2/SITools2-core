@@ -35,6 +35,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceModel;
  * 
  * @author m.marseille (AKKA Technologies)
  */
+@Deprecated
 public final class ResourcePluginStoreXML extends SitoolsStoreXML<ResourceModel> {
 
   /** default location for file persistence */
