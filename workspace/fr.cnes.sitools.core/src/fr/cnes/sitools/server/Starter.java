@@ -122,8 +122,8 @@ import fr.cnes.sitools.portal.PortalApplication;
 import fr.cnes.sitools.portal.PortalStoreInterface;
 import fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication;
 import fr.cnes.sitools.project.ProjectAdministration;
+import fr.cnes.sitools.project.ProjectStoreInterface;
 import fr.cnes.sitools.project.graph.GraphStoreInterface;
-import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.modules.ProjectModuleApplication;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.proxy.ProxySettings;
@@ -403,9 +403,17 @@ public final class Starter {
     // Init Stores
     Map<String, Object> stores = null;
     try {
-      stores = StoreHelper.initContext(component.getContext());
+      String storeHelperClassName = settings.getString("Starter.STORE_HELPER.CLASS_NAME", StoreHelper.class.getName());
+      Class<StoreHelperInterface> storeHelperClass = (Class<StoreHelperInterface>) Class.forName(storeHelperClassName);
+      StoreHelperInterface storeHelper = storeHelperClass.newInstance();
+      component.getLogger().info("Init stores with STORE_HELPER class : " + storeHelperClassName);
+      stores = storeHelper.initContext(component.getContext());
     }
     catch (SitoolsException e) {
+      startServerFailed(settings, component, e);
+      return;
+    }
+    catch (Exception e) {
       startServerFailed(settings, component, e);
       return;
     }
@@ -1278,7 +1286,7 @@ public final class Starter {
     // Gestion des projets
 
     // Store
-    SitoolsStore<Project> storePrj = (SitoolsStore<Project>) settings.getStores().get(Consts.APP_STORE_PROJECT);
+    ProjectStoreInterface storePrj = (ProjectStoreInterface) settings.getStores().get(Consts.APP_STORE_PROJECT);
 
     clientUserApp.setStore(storePrj);
 

@@ -19,7 +19,6 @@
 package fr.cnes.sitools.server;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -103,8 +102,6 @@ import fr.cnes.sitools.order.OrderStoreInterface;
 import fr.cnes.sitools.order.OrderStoreXML;
 import fr.cnes.sitools.order.OrderStoreXMLMap;
 import fr.cnes.sitools.order.model.Order;
-import fr.cnes.sitools.persistence.PersistenceDao;
-import fr.cnes.sitools.persistence.Persistent;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreXmlImpl;
@@ -153,7 +150,6 @@ import fr.cnes.sitools.security.authorization.AuthorizationStore;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
-import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreInterface;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
@@ -174,32 +170,26 @@ import fr.cnes.sitools.userstorage.UserStorageStore;
 import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
 import fr.cnes.sitools.userstorage.UserStorageStoreXML;
 import fr.cnes.sitools.userstorage.UserStorageStoreXmlMap;
-import fr.cnes.sitools.userstorage.model.UserStorage;
 
 /**
  * Store helper
  * 
  * @author jp.boignard (AKKA Technologies)
  */
-public final class StoreHelper {
+public class StoreHelper implements StoreHelperInterface {
 
   /**
    * Private constructor for this utility class
    */
-  private StoreHelper() {
+  public StoreHelper() {
     super();
   }
 
-  /**
-   * Initializes the context with default stores
-   * 
-   * @param context
-   *          a Restlet {@link Context}. It must contains the global {@link SitoolsSettings}
-   * @return the map of initial context
-   * @throws SitoolsException
-   *           if an error occured while creating the stores
+  /* (non-Javadoc)
+   * @see fr.cnes.sitools.server.StoreHelperInterface#initContext(org.restlet.Context)
    */
-  public static Map<String, Object> initContext(Context context) throws SitoolsException {
+  @Override
+  public Map<String, Object> initContext(Context context) throws SitoolsException {
 
     // init the SitoolsEngine in order to register all plugins
     // Expecialy the units
@@ -348,9 +338,9 @@ public final class StoreHelper {
     if (storeApplicationPlugin.getList().isEmpty()) {
       storeApplicationPlugin.saveList(storeApplicationPluginOLD.getList());
     }
-    
+
     // ======== Filter plugins ===============
-    
+
     new File(settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR) + "/map").mkdirs();
     FilterPluginStoreInterface storeFilterPlugin = new FilterPluginStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR) + "/map"), context);
@@ -701,21 +691,14 @@ public final class StoreHelper {
    * @param stores
    *          the Map of stores
    */
-  @SuppressWarnings({"resource", "unchecked"})
-  private static void migrateStores(Map<String, Object> stores) {
+  private void migrateStores(Map<String, Object> stores) {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
+        @SuppressWarnings("unchecked")
         SitoolsStore<IResource> storeImpl = (SitoolsStore<IResource>) store;
         List<IResource> list = storeImpl.getList();
         for (IResource iResource : list) {
           storeImpl.update(iResource);
-        }
-      }
-      else if (store instanceof PersistenceDao) {
-        PersistenceDao<Persistent> storeImpl = (PersistenceDao<Persistent>) store;
-        java.util.Collection<Persistent> list = storeImpl.getList();
-        for (Persistent persistent : list) {
-          storeImpl.update(persistent);
         }
       }
       else {
@@ -729,20 +712,6 @@ public final class StoreHelper {
         // storeImpl.update(persistent);
         // }
         // }
-        if (store instanceof AuthorizationStore) {
-          AuthorizationStore storeImpl = (AuthorizationStore) store;
-          List<ResourceAuthorization> authorization = storeImpl.getList();
-          for (ResourceAuthorization persistent : authorization) {
-            storeImpl.update(persistent);
-          }
-        }
-        else if (store instanceof UserStorageStoreXML) {
-          UserStorageStore storeImpl = (UserStorageStore) store;
-          List<UserStorage> userStorages = storeImpl.getList();
-          for (UserStorage userStorage : userStorages) {
-            storeImpl.update(userStorage);
-          }
-        }
       }
 
     }
@@ -756,10 +725,10 @@ public final class StoreHelper {
    * @throws SitoolsException
    *           if there are errors
    */
-  @SuppressWarnings({"resource", "unchecked"})
-  private static void readStores(Map<String, Object> stores) throws SitoolsException {
+  private void readStores(Map<String, Object> stores) throws SitoolsException {
     for (Object store : stores.values()) {
       if (store instanceof SitoolsStore) {
+        @SuppressWarnings("unchecked")
         SitoolsStore<IResource> storeImpl = (SitoolsStore<IResource>) store;
         try {
           List<IResource> list = storeImpl.getList();
@@ -777,18 +746,6 @@ public final class StoreHelper {
           // }
         }
       }
-      else if (store instanceof PersistenceDao) {
-        PersistenceDao<Persistent> storeImpl = (PersistenceDao<Persistent>) store;
-        try {
-          java.util.Collection<Persistent> list = storeImpl.getList();
-          for (Persistent persistent : list) {
-            storeImpl.get(persistent.getId());
-          }
-        }
-        catch (Exception e) {
-          throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e);
-        }
-      }
       else {
         // specific Stores
         // if (store instanceof NotificationStoreXML) {
@@ -800,46 +757,7 @@ public final class StoreHelper {
         // storeImpl.update(persistent);
         // }
         // }
-        if (store instanceof AuthorizationStore) {
-          AuthorizationStore storeImpl = (AuthorizationStore) store;
-          try {
-            List<ResourceAuthorization> authorization = storeImpl.getList();
-            for (IResource persistent : authorization) {
-              storeImpl.retrieve(persistent.getId());
-            }
-          }
-          catch (Exception e) {
-            try {
-              storeImpl.close();
-              throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e);
-
-            }
-            catch (IOException e1) {
-              throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e1);
-            }
-          }
-        }
-        else if (store instanceof UserStorageStoreXML) {
-          UserStorageStore storeImpl = (UserStorageStore) store;
-
-          try {
-            List<UserStorage> userStorages = storeImpl.getList();
-            for (UserStorage userStorage : userStorages) {
-              storeImpl.retrieve(userStorage.getUserId());
-            }
-          }
-          catch (Exception e) {
-            try {
-              storeImpl.close();
-              throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e);
-            }
-            catch (IOException e1) {
-              throw new SitoolsException("ERROR WHILE LOADING STORE : " + storeImpl.getClass().getSimpleName(), e1);
-            }
-          }
-        }
       }
-
     }
   }
 }
