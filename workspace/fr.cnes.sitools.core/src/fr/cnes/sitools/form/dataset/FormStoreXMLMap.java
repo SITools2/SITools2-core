@@ -78,7 +78,6 @@ public final class FormStoreXMLMap extends XmlMapStore<Form> implements FormStor
     aliases.put("SimpleParameter", SimpleParameter.class);
     this.init(location, aliases);
   }
-  
 
   @Override
   public List<Form> getList(ResourceCollectionFilter filter) {
@@ -129,6 +128,28 @@ public final class FormStoreXMLMap extends XmlMapStore<Form> implements FormStor
     return new ArrayList<Form>(result);
   }
 
-  
-  
+  @Override
+  public Form update(Form form) {
+    Form result = null;
+    getLog().info("Updating Form");
+    
+    Map<String, Form> map = getMap();
+    Form current = map.get(form.getId());
+
+    result = current;
+    current.setName(form.getName());
+    current.setDescription(form.getDescription());
+    current.setParent(form.getParent());
+    current.setParameters(form.getParameters());
+    current.setWidth(form.getWidth());
+    current.setHeight(form.getHeight());
+    current.setCss(form.getCss());
+    current.setParentUrl(form.getParentUrl());
+    current.setZones(form.getZones());
+    
+    map.put(form.getId(), current);
+
+    return result;
+  }
+
 }
