@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,12 +19,15 @@
 package fr.cnes.sitools.dictionary;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.collections.model.Collection;
+import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
@@ -74,7 +77,37 @@ public final class DictionaryStoreXMLMap extends XmlMapStore<Dictionary> impleme
     aliases.put("dictionary", Dictionary.class);
     this.init(location, aliases);
   }
-  
-  
-  
+
+  @Override
+  public Dictionary update(Dictionary dictionary) {
+    Dictionary result = null;
+    getLog().info("Updating dictionary");
+
+    Map<String, Dictionary> map = getMap();
+    Dictionary current = map.get(dictionary.getId());
+
+    result = current;
+    current.setName(dictionary.getName());
+    current.setDescription(dictionary.getDescription());
+    current.setConceptTemplate(dictionary.getConceptTemplate());
+    current.setConcepts(dictionary.getConcepts());
+    // loop through the concepts and assign an id for each
+    int i = 0;
+    if (current.getConcepts() != null) {
+      for (Iterator<Concept> iterator = current.getConcepts().iterator(); iterator.hasNext();) {
+        Concept concept = iterator.next();
+        concept.setId(new Integer(i++).toString());
+      }
+    }
+
+    if (result != null) {
+      map.put(dictionary.getId(), current);
+    }
+    else {
+      getLog().info("Dictionary not found.");
+    }
+
+    return result;
+  }
+
 }
