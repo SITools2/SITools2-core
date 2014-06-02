@@ -47,7 +47,9 @@ import fr.cnes.sitools.dataset.filter.FilterStoreXML;
 import fr.cnes.sitools.dataset.filter.FilterStoreXMLMap;
 import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.model.DataSet;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXML;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXMLMap;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.services.ServiceStoreInterface;
 import fr.cnes.sitools.dataset.services.ServiceStoreXML;
@@ -250,6 +252,9 @@ public final class StoreHelper {
       storeAuthorization.saveList(storeAuthorizationOLD.getList());
     }
 
+    // ======= notifications ==========
+    // no migration needed , already map store
+    
     NotificationStore storeNotification = new NotificationStoreXML(new File(
         settings.getStoreDIR(Consts.APP_NOTIFICATIONS_STORE_DIR)), context);
     stores.put(Consts.APP_STORE_NOTIFICATION, storeNotification);
@@ -268,7 +273,6 @@ public final class StoreHelper {
       storeIns.saveList(storeInsOLD.getList());
     }   
     
-
     // ======= data source ==========
 
     new File(settings.getStoreDIR(Consts.APP_DATASOURCES_STORE_DIR) + "/map").mkdirs();
@@ -502,11 +506,23 @@ public final class StoreHelper {
     if (storeFeeds.getList().isEmpty()) {
       storeFeeds.saveList(storeFeedsOLD.getList());
     }
+    
+    // ======== open search ===============    
 
-    SitoolsStore<Opensearch> storeOS = new OpenSearchStoreXML(new File(
+    new File(settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR) + "/map").mkdirs();
+    OpenSearchStoreInterface storeOpenSearch = new OpenSearchStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR) + "/map"), context);
+    stores.put(Consts.APP_STORE_OPENSEARCH, storeOpenSearch);
+    
+    // Migrating open search
+    SitoolsStore<Opensearch> storeOpenSearchOLD = new OpenSearchStoreXML(new File(
         settings.getStoreDIR(Consts.APP_OPENSEARCH_STORE_DIR)), context);
-    stores.put(Consts.APP_STORE_OPENSEARCH, storeOS);
-
+    if (storeOpenSearch.getList().isEmpty()) {
+      storeOpenSearch.saveList(storeOpenSearchOLD.getList());
+    }
+    
+    
+    
     SitoolsStore<Order> storeOrd = new OrderStoreXML(new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR)),
         context);
     stores.put(Consts.APP_STORE_ORDER, storeOrd);

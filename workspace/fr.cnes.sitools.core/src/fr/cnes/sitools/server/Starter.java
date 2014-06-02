@@ -69,6 +69,7 @@ import fr.cnes.sitools.dataset.filter.FilterApplication;
 import fr.cnes.sitools.dataset.filter.FilterStoreInterface;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.plugins.converters.ConverterPluginsApplication;
 import fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication;
@@ -712,7 +713,6 @@ public final class Starter {
     InscriptionStoreInterface storeIns = (InscriptionStoreInterface) settings.getStores().get(
         Consts.APP_STORE_INSCRIPTION);
 
-
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_INSCRIPTIONS_ADMIN_URL);
 
@@ -1201,7 +1201,7 @@ public final class Starter {
     // Store
     FormProjectStoreInterface storeFormProject = (FormProjectStoreInterface) settings.getStores().get(
         Consts.APP_STORE_FORMPROJECT);
-    
+
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_PROJECTS_URL) + "/{projectId}"
         + settings.getString(Consts.APP_FORMPROJECT_URL);
@@ -1294,9 +1294,9 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storePrj);
 
     // gestion des graphs
-    //SitoolsStore<Graph> storeGraph = (SitoolsStore<Graph>) settings.getStores().get(Consts.APP_STORE_GRAPH);
+    // SitoolsStore<Graph> storeGraph = (SitoolsStore<Graph>) settings.getStores().get(Consts.APP_STORE_GRAPH);
     GraphStoreInterface storeGraph = (GraphStoreInterface) settings.getStores().get(Consts.APP_STORE_GRAPH);
-    
+
     appContext.getAttributes().put(Consts.APP_STORE_GRAPH, storeGraph);
 
     // Dependence clientUserApp > storePrj
@@ -1314,9 +1314,9 @@ public final class Starter {
     // Gestion des formulaires
 
     // Store
-//    SitoolsStore<Form> storeForm = (SitoolsStore<Form>) settings.getStores().get(Consts.APP_STORE_FORM);
+    // SitoolsStore<Form> storeForm = (SitoolsStore<Form>) settings.getStores().get(Consts.APP_STORE_FORM);
     FormStoreInterface storeForm = (FormStoreInterface) settings.getStores().get(Consts.APP_STORE_FORM);
-    
+
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
         + settings.getString(Consts.APP_FORMS_URL);
@@ -1460,7 +1460,7 @@ public final class Starter {
     // Gestion des recherches opensearch
 
     // Store
-    SitoolsStore<Opensearch> storeOS = (SitoolsStore<Opensearch>) settings.getStores().get(Consts.APP_STORE_OPENSEARCH);
+    OpenSearchStoreInterface storeOS = (OpenSearchStoreInterface) settings.getStores().get(Consts.APP_STORE_OPENSEARCH);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
@@ -2008,7 +2008,8 @@ public final class Starter {
     // Gestion des services IHM
 
     // Store
-    GuiServiceStoreInterface storeGuiService = (GuiServiceStoreInterface) settings.getStores().get(Consts.APP_STORE_GUI_SERVICE);
+    GuiServiceStoreInterface storeGuiService = (GuiServiceStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_GUI_SERVICE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_GUI_SERVICES_URL);
