@@ -150,7 +150,8 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
             this.parametersFieldset.removeAll();
             var getParametersMethod = eval(recSelected[0].data.jsObject + ".getParameters");
             if (!Ext.isFunction(getParametersMethod)) {
-                Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod <br/>' + getParametersMethod));
+                console.log(i18n.get('label.notImplementedMethod <br/>') + getParametersMethod);
+//                Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod) + '<br/>' + getParametersMethod);
                 return;
             }
             var parameters = getParametersMethod();
@@ -178,7 +179,8 @@ Ext.define('sitools.admin.datasets.datasetViewConfig', {
             this.doLayout();
         }
         catch (err) {
-            Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod <br/>') + err);
+//            Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod') +  '<br/>' + err);
+            console.log(i18n.get('label.notImplementedMethod') +'<br/>' + err);
             return;
         }
         
