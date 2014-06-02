@@ -35,6 +35,7 @@ import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class JDBCDataSourceStoreXML extends SitoolsStoreXML<JDBCDataSource> {
 
   /** Default location for file persistence */

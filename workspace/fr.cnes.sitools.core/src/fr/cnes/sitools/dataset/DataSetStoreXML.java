@@ -41,6 +41,7 @@ import fr.cnes.sitools.dataset.model.DataSet;
  * @author AKKA
  * 
  */
+ @Deprecated
 public final class DataSetStoreXML extends SitoolsSynchronizedStoreXML<DataSet> {
 
   /** Default location */

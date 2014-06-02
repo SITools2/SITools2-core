@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -38,6 +38,7 @@ import fr.cnes.sitools.form.dataset.model.SimpleParameter;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class FormStoreXML extends SitoolsStoreXML<Form> {
 
   /** default location for file persistence */

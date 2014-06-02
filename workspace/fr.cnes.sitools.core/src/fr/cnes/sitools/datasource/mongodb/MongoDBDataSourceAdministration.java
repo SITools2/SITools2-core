@@ -29,7 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.datasource.common.SitoolsDataSourceModel;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.datasource.mongodb.business.SitoolsMongoDBDataSource;
@@ -46,7 +45,7 @@ import fr.cnes.sitools.registry.AppRegistryApplication;
 public final class MongoDBDataSourceAdministration extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<MongoDBDataSource> store = null;
+  private MongoDBDataSourceStoreInterface store = null;
 
   /** To attach RESTlet DataSource to server component. */
   private Router parentRouter = null;
@@ -59,10 +58,9 @@ public final class MongoDBDataSourceAdministration extends SitoolsApplication {
    * @param context
    *          RESTlet application context
    */
-  @SuppressWarnings("unchecked")
   public MongoDBDataSourceAdministration(Router parentRouter, Context context) {
     super(context);
-    this.store = (SitoolsStore<MongoDBDataSource>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (MongoDBDataSourceStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
 
     this.parentRouter = parentRouter;
 
@@ -169,7 +167,7 @@ public final class MongoDBDataSourceAdministration extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<MongoDBDataSource> getStore() {
+  public MongoDBDataSourceStoreInterface getStore() {
     return store;
   }
 

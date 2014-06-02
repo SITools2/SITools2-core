@@ -2,7 +2,6 @@ package fr.cnes.sitools.dataset;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -10,12 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.persistence.XmlSynchronizedMapStore;
 
 /**
@@ -89,7 +86,7 @@ public class DataSetStoreXMLMap extends XmlSynchronizedMapStore<DataSet> impleme
   public DataSet update(DataSet dataset) {
 
     DataSet result = null;
-    getLog().info("Updating DataSet");
+    getLog().finest("Updating DataSet");
     Map<String, DataSet> map = getMap();
 
     synchronized (map) {

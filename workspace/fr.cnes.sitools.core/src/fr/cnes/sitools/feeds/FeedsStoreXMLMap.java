@@ -90,7 +90,7 @@ public final class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements Fe
   public FeedModel update(FeedModel feed) {
     FeedModel result = null;
 
-    log.info("Updating FeedsModel");
+    log.finest("Updating FeedsModel");
 
     Map<String, FeedModel> map = getMap();
     FeedModel current = map.get(feed.getId());
@@ -110,6 +110,37 @@ public final class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements Fe
     current.setName(feed.getName());
 
     current.setAuthor(feed.getAuthor());
+    current.setExternalUrl(feed.getExternalUrl());
+
+    if (result != null) {
+      map.put(feed.getId(), current);
+    }
+    return result;
+  }
+
+  @Override
+  public FeedModel updateDetails(FeedModel feed) {
+    FeedModel result = null;
+
+    log.finest("Updating FeedsModel details");
+
+    Map<String, FeedModel> map = getMap();
+    FeedModel current = map.get(feed.getId());
+
+    result = current;
+    current.setId(feed.getId());
+    current.setDescription(feed.getDescription());
+    current.setEncoding(feed.getEncoding());
+    current.setFeedType(feed.getFeedType());
+    current.setImage(feed.getImage());
+    current.setLink(feed.getLink());
+    current.setLinks(feed.getLinks());
+    current.setTitle(feed.getTitle());
+    current.setUri(feed.getUri());
+    current.setVisible(feed.isVisible());
+
+    current.setAuthor(feed.getAuthor());
+
     current.setExternalUrl(feed.getExternalUrl());
 
     if (result != null) {

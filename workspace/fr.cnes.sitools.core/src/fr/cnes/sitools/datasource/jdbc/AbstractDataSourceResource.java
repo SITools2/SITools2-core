@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 
 /**
@@ -45,7 +44,7 @@ public abstract class AbstractDataSourceResource extends SitoolsResource {
   private JDBCDataSourceAdministration application = null;
   
   /** Store */
-  private SitoolsStore<JDBCDataSource> store = null;
+  private JDBCDataSourceStoreInterface store = null;
   
   /** DataSource identifier parameter */
   private String datasourceId = null;
@@ -127,7 +126,7 @@ public abstract class AbstractDataSourceResource extends SitoolsResource {
    * Gets the store value
    * @return the store
    */
-  public final SitoolsStore<JDBCDataSource> getStore() {
+  public final JDBCDataSourceStoreInterface getStore() {
     return store;
   }
 

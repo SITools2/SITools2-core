@@ -30,8 +30,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.notification.business.NotifierFilter;
 
 /**
@@ -45,7 +43,7 @@ import fr.cnes.sitools.notification.business.NotifierFilter;
 public final class DictionaryAdministration extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<Dictionary> store = null;
+  private DictionaryStoreInterface store = null;
 
   /**
    * Constructor
@@ -56,7 +54,7 @@ public final class DictionaryAdministration extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public DictionaryAdministration(Context context) {
     super(context);
-    this.store = (SitoolsStore<Dictionary>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (DictionaryStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -85,7 +83,7 @@ public final class DictionaryAdministration extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<Dictionary> getStore() {
+  public DictionaryStoreInterface getStore() {
     return store;
   }
 

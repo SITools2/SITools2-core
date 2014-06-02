@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 
 /**
@@ -45,7 +44,7 @@ public abstract class AbstractDataSourceResource extends SitoolsResource {
   private MongoDBDataSourceAdministration application = null;
   
   /** Store */
-  private SitoolsStore<MongoDBDataSource> store = null;
+  private MongoDBDataSourceStoreInterface store = null;
   
   /** DataSource identifier parameter */
   private String datasourceId = null;
@@ -127,7 +126,7 @@ public abstract class AbstractDataSourceResource extends SitoolsResource {
    * Gets the store value
    * @return the store
    */
-  public final SitoolsStore<MongoDBDataSource> getStore() {
+  public final MongoDBDataSourceStoreInterface getStore() {
     return store;
   }
 

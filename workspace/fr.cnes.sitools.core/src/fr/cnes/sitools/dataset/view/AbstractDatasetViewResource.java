@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 
 /**
@@ -45,7 +44,7 @@ public abstract class AbstractDatasetViewResource extends SitoolsResource {
   private DatasetViewApplication application = null;
   
   /** store */
-  private SitoolsStore<DatasetView> store = null;
+  private DatasetViewStoreInterface store = null;
   
   /** DatasetView identifier parameter */
   private String datasetViewId = null;
@@ -131,7 +130,7 @@ public abstract class AbstractDatasetViewResource extends SitoolsResource {
    * Sets the value of store
    * @param store the store to set
    */
-  public final void setStore(SitoolsStore<DatasetView> store) {
+  public final void setStore(DatasetViewStoreInterface store) {
     this.store = store;
   }
 
@@ -139,7 +138,7 @@ public abstract class AbstractDatasetViewResource extends SitoolsResource {
    * Gets the store value
    * @return the store
    */
-  public final SitoolsStore<DatasetView> getStore() {
+  public final DatasetViewStoreInterface getStore() {
     return store;
   }
 

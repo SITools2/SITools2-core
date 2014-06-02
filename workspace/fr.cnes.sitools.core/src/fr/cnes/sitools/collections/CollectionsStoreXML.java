@@ -38,6 +38,7 @@ import fr.cnes.sitools.common.store.SitoolsStoreXML;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class CollectionsStoreXML extends SitoolsStoreXML<Collection> {
 
   /** default location for file persistence */

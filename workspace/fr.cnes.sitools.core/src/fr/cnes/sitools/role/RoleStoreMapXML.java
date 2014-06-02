@@ -82,7 +82,7 @@ public final class RoleStoreMapXML extends XmlMapStore<Role> implements RoleStor
     result = getMap().get(role.getId());
     
     if (result != null) {
-      getLog().info("Updating role");
+      getLog().finest("Updating role");
 
       result.setName(role.getName());
       result.setDescription(role.getDescription());

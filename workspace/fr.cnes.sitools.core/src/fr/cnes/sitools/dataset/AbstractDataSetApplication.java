@@ -25,7 +25,6 @@ import org.restlet.ext.wadl.ApplicationInfo;
 
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.model.DataSet;
 
 /**
@@ -43,7 +42,7 @@ public abstract class AbstractDataSetApplication extends SitoolsParameterizedApp
   /**
    * Store
    */
-  protected SitoolsStore<DataSet> store = null;
+  protected DataSetStoreInterface store = null;
 
   /**
    * Constructor
@@ -54,7 +53,7 @@ public abstract class AbstractDataSetApplication extends SitoolsParameterizedApp
   @SuppressWarnings("unchecked")
   public AbstractDataSetApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<DataSet>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (DataSetStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   /**
@@ -71,7 +70,7 @@ public abstract class AbstractDataSetApplication extends SitoolsParameterizedApp
    * 
    * @return the store
    */
-  public final SitoolsStore<DataSet> getStore() {
+  public final DataSetStoreInterface getStore() {
     return store;
   }
 

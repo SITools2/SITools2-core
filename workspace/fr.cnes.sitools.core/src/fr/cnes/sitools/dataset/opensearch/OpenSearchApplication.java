@@ -29,9 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
-import fr.cnes.sitools.feeds.FeedsStoreXML;
 import fr.cnes.sitools.feeds.FeedsStoreXMLMap;
 
 /**
@@ -44,7 +41,7 @@ import fr.cnes.sitools.feeds.FeedsStoreXMLMap;
 public final class OpenSearchApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<Opensearch> store = null;
+  private OpenSearchStoreInterface store = null;
 
   /** Other store needed for feeds definition */
   private FeedsStoreXMLMap storeFeeds = null;
@@ -61,7 +58,7 @@ public final class OpenSearchApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public OpenSearchApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Opensearch>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (OpenSearchStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.storeFeeds = (FeedsStoreXMLMap) context.getAttributes().get("APP_STORE_FEEDS");
   }
 
@@ -97,7 +94,7 @@ public final class OpenSearchApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<Opensearch> getStore() {
+  public OpenSearchStoreInterface getStore() {
     return store;
   }
 

@@ -35,6 +35,7 @@ import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class MongoDBDataSourceStoreXML extends SitoolsStoreXML<MongoDBDataSource> {
 
   /** Default location for file persistence */

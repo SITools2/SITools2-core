@@ -33,8 +33,8 @@ import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -60,7 +60,7 @@ public class OpensearchRefreshRunnable extends OpensearchRunnable {
    * @param context
    *          the context
    */
-  public OpensearchRefreshRunnable(Opensearch os, SitoolsStore<Opensearch> store, String solrUrl, Context context,
+  public OpensearchRefreshRunnable(Opensearch os, OpenSearchStoreInterface store, String solrUrl, Context context,
       OpenSearchApplication application) {
     this.os = os;
     this.store = store;

@@ -38,6 +38,7 @@ import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class OpenSearchStoreXML extends SitoolsStoreXML<Opensearch> {
 
   /** default location for file persistence */

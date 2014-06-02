@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.form.components.model.FormComponent;
 
 /**
@@ -45,7 +44,7 @@ public abstract class AbstractFormComponentsResource extends SitoolsResource {
   private FormComponentsApplication application = null;
   
   /** store */
-  private SitoolsStore<FormComponent> store = null;
+  private FormComponentsStoreInterface store = null;
   
   /** FormComponent identifier parameter */
   private String formComponentId = null;
@@ -131,7 +130,7 @@ public abstract class AbstractFormComponentsResource extends SitoolsResource {
    * Sets the value of store
    * @param store the store to set
    */
-  public final void setStore(SitoolsStore<FormComponent> store) {
+  public final void setStore(FormComponentsStoreInterface store) {
     this.store = store;
   }
 
@@ -139,7 +138,7 @@ public abstract class AbstractFormComponentsResource extends SitoolsResource {
    * Gets the store value
    * @return the store
    */
-  public final SitoolsStore<FormComponent> getStore() {
+  public final FormComponentsStoreInterface getStore() {
     return store;
   }
 

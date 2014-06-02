@@ -40,6 +40,7 @@ import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class ConverterStoreXML extends SitoolsStoreXML<ConverterChainedModel> {
 
   /** default location for file persistence */

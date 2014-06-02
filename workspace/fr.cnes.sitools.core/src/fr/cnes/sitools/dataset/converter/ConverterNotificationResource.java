@@ -30,8 +30,6 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.notification.model.Notification;
 
 /**
@@ -42,7 +40,7 @@ import fr.cnes.sitools.notification.model.Notification;
 public final class ConverterNotificationResource extends AbstractConverterResource {
 
   /** store */
-  private SitoolsStore<ConverterChainedModel> store = null;
+  private ConverterStoreInterface store = null;
 
   @Override
   public void doInit() {
@@ -117,7 +115,7 @@ public final class ConverterNotificationResource extends AbstractConverterResour
    * 
    * @return the store
    */
-  public SitoolsStore<ConverterChainedModel> getStore() {
+  public ConverterStoreInterface getStore() {
     return store;
   }
 

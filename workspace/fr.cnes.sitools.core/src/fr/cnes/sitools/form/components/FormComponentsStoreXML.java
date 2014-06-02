@@ -38,6 +38,7 @@ import fr.cnes.sitools.form.components.model.FormComponent;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class FormComponentsStoreXML extends SitoolsStoreXML<FormComponent> {
 
   /** default location for file persistence */

@@ -36,6 +36,7 @@ import fr.cnes.sitools.dictionary.model.Dictionary;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class DictionaryStoreXML extends SitoolsStoreXML<Dictionary> {
 
   /** default location for file persistence */
