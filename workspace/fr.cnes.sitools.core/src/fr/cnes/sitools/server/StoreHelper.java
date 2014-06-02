@@ -109,7 +109,9 @@ import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreXmlImpl;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreXmlMap;
+import fr.cnes.sitools.plugins.filters.FilterPluginStoreInterface;
 import fr.cnes.sitools.plugins.filters.FilterPluginStoreXML;
+import fr.cnes.sitools.plugins.filters.FilterPluginStoreXMLMap;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXML;
@@ -346,10 +348,19 @@ public final class StoreHelper {
     if (storeApplicationPlugin.getList().isEmpty()) {
       storeApplicationPlugin.saveList(storeApplicationPluginOLD.getList());
     }
-
-    SitoolsStore<FilterModel> storeFilterPlugin = new FilterPluginStoreXML(new File(
-        settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
+    
+    // ======== Filter plugins ===============
+    
+    new File(settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR) + "/map").mkdirs();
+    FilterPluginStoreInterface storeFilterPlugin = new FilterPluginStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_PLUGINS_FILTERS, storeFilterPlugin);
+
+    SitoolsStore<FilterModel> storeFilterPluginOLD = new FilterPluginStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_PLUGINS_FILTERS_STORE_DIR)), context);
+    if (storeFilterPlugin.getList().isEmpty()) {
+      storeFilterPlugin.saveList(storeFilterPluginOLD.getList());
+    }
 
     // ======== Resources plugins ===============
 

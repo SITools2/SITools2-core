@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -27,31 +27,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.common.store.SitoolsStoreXML;
+import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 
 /**
- * Storage for filter plugins
+ * Implementation of FilterModelStore with XStream FilePersistenceStrategy
  * 
- * @author jp.boignard (AKKA Technologies)
+ * @author AKKA
+ * 
  */
-@Deprecated
-public final class FilterPluginStoreXML extends SitoolsStoreXML<FilterModel> {
+public final class FilterPluginStoreXMLMap extends XmlMapStore<FilterModel> implements FilterPluginStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "filterPlugins";
-
-  /**
-   * Default constructor
-   * 
-   * @param context
-   *          the Restlet Context
-   */
-  public FilterPluginStoreXML(Context context) {
-    super(FilterModel.class, context);
-    File defaultLocation = new File(COLLECTION_NAME);
-    init(defaultLocation);
-  }
 
   /**
    * Constructor with the XML file location
@@ -61,11 +49,45 @@ public final class FilterPluginStoreXML extends SitoolsStoreXML<FilterModel> {
    * @param context
    *          the Restlet Context
    */
-  public FilterPluginStoreXML(File location, Context context) {
+  public FilterPluginStoreXMLMap(File location, Context context) {
     super(FilterModel.class, location, context);
   }
 
+  /**
+   * Default constructor
+   * 
+   * @param context
+   *          the Restlet Context
+   */
+  public FilterPluginStoreXMLMap(Context context) {
+    super(FilterModel.class, context);
+    File defaultLocation = new File(COLLECTION_NAME);
+    init(defaultLocation);
+  }
+
   @Override
+  public FilterModel update(FilterModel filter) {
+    FilterModel result = null;
+
+    Map<String, FilterModel> map = getMap();
+    FilterModel current = map.get(filter.getId());
+    result = current;
+    current.setParent(filter.getParent());
+    current.setName(filter.getName());
+    current.setDescription(filter.getDescription());
+    current.setFilterClassName(filter.getFilterClassName());
+    current.setParametersMap(filter.getParametersMap());
+    current.setDescriptionAction(filter.getDescriptionAction());
+    map.put(filter.getId(), current);
+    return result;
+  }
+
+  /**
+   * XStream FilePersistenceStrategy initialization
+   * 
+   * @param location
+   *          Directory
+   */
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("filterPlugin", FilterModel.class);
@@ -73,46 +95,12 @@ public final class FilterPluginStoreXML extends SitoolsStoreXML<FilterModel> {
   }
 
   @Override
-  public FilterModel update(FilterModel filter) {
-    FilterModel result = null;
-    for (Iterator<FilterModel> it = getRawList().iterator(); it.hasNext();) {
-      FilterModel current = it.next();
-      if (current.getId().equals(filter.getId())) {
-        getLog().fine("Updating filter plugin");
-
-        result = current;
-        current.setParent(filter.getParent());
-        current.setName(filter.getName());
-        current.setDescription(filter.getDescription());
-        current.setFilterClassName(filter.getFilterClassName());
-        current.setParametersMap(filter.getParametersMap());
-        current.setDescriptionAction(filter.getDescriptionAction());
-        it.remove();
-        break;
-      }
-    }
-    if (result != null) {
-      getRawList().add(result);
-    }
-    return result;
-  }
-
-  /**
-   * Get the list of filters
-   * 
-   * @param id
-   *          the parent id
-   * @return the list
-   */
-  @Override
   public List<FilterModel> retrieveByParent(String id) {
     List<FilterModel> result = new ArrayList<FilterModel>();
-    for (Iterator<FilterModel> it = getRawList().iterator(); it.hasNext();) {
+    for (Iterator<FilterModel> it = getList().iterator(); it.hasNext();) {
       FilterModel current = it.next();
       if (current.getParent().equals(id)) {
-        getLog().fine("Parent found");
         result.add(current);
-
       }
     }
     return result;

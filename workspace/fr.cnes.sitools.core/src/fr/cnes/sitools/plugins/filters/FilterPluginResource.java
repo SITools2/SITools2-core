@@ -44,7 +44,6 @@ import fr.cnes.sitools.common.SitoolsMediaType;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.plugins.filters.dto.FilterModelDTO;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
@@ -58,7 +57,7 @@ import fr.cnes.sitools.registry.AppRegistryApplication;
 public final class FilterPluginResource extends AbstractFilterPluginResource {
 
   /** store */
-  private SitoolsStore<FilterModel> store = null;
+  private FilterPluginStoreInterface store = null;
 
   @Override
   public void doInit() {
@@ -494,7 +493,7 @@ public final class FilterPluginResource extends AbstractFilterPluginResource {
    * 
    * @return the store
    */
-  public SitoolsStore<FilterModel> getStore() {
+  public FilterPluginStoreInterface getStore() {
     return store;
   }
 
