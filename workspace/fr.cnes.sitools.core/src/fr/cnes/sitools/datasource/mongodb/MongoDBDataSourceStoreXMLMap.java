@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -26,15 +26,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class MongoDBDataSourceStoreXMLMap extends XmlMapStore<MongoDBDataSource>  implements MongoDBDataSourceStoreInterface {
+public final class MongoDBDataSourceStoreXMLMap extends XmlMapStore<MongoDBDataSource> implements
+    MongoDBDataSourceStoreInterface {
 
   /** Default location for file persistence */
   private static final String COLLECTION_NAME = "datasources";
-  
+
   /**
    * Constructor with the XML file location
    * 
@@ -76,6 +78,39 @@ public final class MongoDBDataSourceStoreXMLMap extends XmlMapStore<MongoDBDataS
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("mongodbdatasource", MongoDBDataSource.class);
     this.init(location, aliases);
+  }
+
+  @Override
+  public MongoDBDataSource update(MongoDBDataSource datasource) {
+    MongoDBDataSource result = null;
+
+    getLog().info("Updating DataSource");
+
+    Map<String, MongoDBDataSource> map = getMap();
+    MongoDBDataSource current = map.get(datasource.getId());
+
+    result = current;
+
+    current.setName(datasource.getName());
+    current.setDescription(datasource.getDescription());
+    current.setUrl(datasource.getUrl());
+    current.setUserLogin(datasource.getUserLogin());
+    if (datasource.getUserPassword() != null) {
+      current.setUserPassword(datasource.getUserPassword());
+    }
+    // FIXME une modification du datasource => detachement.
+    current.setStatus(datasource.getStatus());
+    current.setMaxActive(datasource.getMaxActive());
+    current.setSitoolsAttachementForUsers(datasource.getSitoolsAttachementForUsers());
+    current.setDatabaseName(datasource.getDatabaseName());
+    current.setPortNumber(datasource.getPortNumber());
+    current.setDriverClass(datasource.getDriverClass());
+    current.setAuthentication(datasource.isAuthentication());
+
+    if (result != null) {
+      map.put(datasource.getId(), current);
+    }
+    return result;
   }
 
 }
