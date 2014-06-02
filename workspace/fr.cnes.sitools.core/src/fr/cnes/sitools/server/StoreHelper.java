@@ -448,7 +448,7 @@ public final class StoreHelper {
 
     SitoolsStore<Graph> storeGraphOLD = new GraphStoreXML(new File(settings.getStoreDIR(Consts.APP_GRAPHS_STORE_DIR)),
         context);
-    
+
     if (storeGraph.getList().isEmpty()) {
       storeGraph.saveList(storeGraphOLD.getList());
     }
@@ -564,20 +564,25 @@ public final class StoreHelper {
         settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_PROJECTS_MODULES, storeProjectModule);
 
+    SitoolsStore<ProjectModuleModel> storeProjectModuleOld = new ProjectModuleStoreXML(new File(
+        settings.getStoreDIR(Consts.APP_PROJECTS_MODULES_STORE_DIR)), context);
+    if (storeProjectModule.getList().isEmpty()) {
+      storeProjectModule.saveList(storeProjectModuleOld.getList());
+    }
+
     // ========= gui services =============
 
     new File(settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR) + "/map").mkdirs();
-    GuiServiceStoreInterface storeGuiService = new GuiServiceStoreXMLMap(new File(settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR)
-        + "/map"), context);
+    GuiServiceStoreInterface storeGuiService = new GuiServiceStoreXMLMap(new File(
+        settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_GUI_SERVICE, storeGuiService);
-    
+
     // Migrating gui services
     SitoolsStore<GuiServiceModel> storeGuiServiceOLD = new GuiServiceStoreXML(new File(
         settings.getStoreDIR(Consts.APP_GUI_SERVICES_STORE_DIR)), context);
     if (storeGuiService.getList().isEmpty()) {
       storeGuiService.saveList(storeGuiServiceOLD.getList());
     }
-    
 
     SitoolsStore<GuiServicePluginModel> storeGuiServicePlugin = new GuiServicePluginStoreXML(new File(
         settings.getStoreDIR(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR)), context);
