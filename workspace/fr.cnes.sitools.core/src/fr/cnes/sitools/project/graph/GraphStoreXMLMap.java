@@ -19,14 +19,12 @@
 package fr.cnes.sitools.project.graph;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.project.graph.model.Graph;
 
