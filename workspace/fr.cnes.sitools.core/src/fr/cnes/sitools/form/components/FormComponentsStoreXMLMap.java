@@ -20,14 +20,12 @@ package fr.cnes.sitools.form.components;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.form.components.model.FormComponent;

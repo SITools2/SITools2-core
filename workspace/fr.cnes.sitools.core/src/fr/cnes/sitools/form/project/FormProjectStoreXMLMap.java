@@ -19,13 +19,15 @@
 package fr.cnes.sitools.form.project;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
+import fr.cnes.sitools.common.model.ResourceCollectionFilter;
+import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.form.dataset.model.SimpleParameter;
 import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.form.project.model.FormPropertyParameter;
@@ -80,6 +82,69 @@ public final class FormProjectStoreXMLMap extends XmlMapStore<FormProject> imple
     /* for compatibility matters */
     aliases.put("FormParameter", SimpleParameter.class);
     this.init(location, aliases);
+  }
+
+  @Override
+  public FormProject update(FormProject formProject) {
+    FormProject result = null;
+
+    Map<String, FormProject> map = getMap();
+    FormProject current = map.get(formProject.getId());
+
+    result = current;
+    // specific projetForm parameters
+    current.setDictionary(formProject.getDictionary());
+    current.setCollection(formProject.getCollection());
+    current.setParameters(formProject.getParameters());
+    current.setProperties(formProject.getProperties());
+    current.setNbDatasetsMax(formProject.getNbDatasetsMax());
+    current.setUrlServicePropertiesSearch(formProject.getUrlServicePropertiesSearch());
+    current.setUrlServiceDatasetSearch(formProject.getUrlServiceDatasetSearch());
+
+    current.setIdServicePropertiesSearch(formProject.getIdServicePropertiesSearch());
+    current.setIdServiceDatasetSearch(formProject.getIdServiceDatasetSearch());
+
+    // Common parameters
+    current.setId(formProject.getId());
+    current.setName(formProject.getName());
+    current.setDescription(formProject.getDescription());
+    current.setParent(formProject.getParent());
+    current.setParameters(formProject.getParameters());
+    current.setWidth(formProject.getWidth());
+    current.setHeight(formProject.getHeight());
+    current.setCss(formProject.getCss());
+    current.setParentUrl(formProject.getParentUrl());
+
+    current.setZones(formProject.getZones());
+
+    if (result != null) {
+      map.put(formProject.getId(), current);
+    }
+    
+    return result;
+  }
+
+  /**
+   * Sort the list (by default on the name)
+   * 
+   * @param result
+   *          list to be sorted
+   * @param filter
+   *          ResourceCollectionFilter with sort properties.
+   */
+  public void sort(List<FormProject> result, ResourceCollectionFilter filter) {
+    if ((filter != null) && (filter.getSort() != null) && !filter.getSort().equals("")) {
+      Collections.sort(result, new ResourceComparator<FormProject>(filter) {
+        @Override
+        public int compare(FormProject arg0, FormProject arg1) {
+
+          String s1 = (String) arg0.getName();
+          String s2 = (String) arg1.getName();
+
+          return super.compare(s1, s2);
+        }
+      });
+    }
   }
 
 }
