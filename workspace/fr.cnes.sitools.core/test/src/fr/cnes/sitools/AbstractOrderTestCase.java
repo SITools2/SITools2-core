@@ -52,6 +52,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.feeds.model.SitoolsFeedDateConverter;
 import fr.cnes.sitools.order.OrderAdministration;
 import fr.cnes.sitools.order.OrderStoreXML;
+import fr.cnes.sitools.order.OrderStoreXMLMap;
 import fr.cnes.sitools.order.UserOrderApplication;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.server.Consts;
@@ -68,7 +69,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static OrderStoreXML store = null;
+  private static OrderStoreXMLMap store = null;
 
   /**
    * Restlet Component for server. One for admin, one for user
@@ -144,7 +145,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         cleanDirectory(storeDirectory);
-        store = new OrderStoreXML(storeDirectory, ctx);
+        store = new OrderStoreXMLMap(storeDirectory, ctx);
       }
       
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
