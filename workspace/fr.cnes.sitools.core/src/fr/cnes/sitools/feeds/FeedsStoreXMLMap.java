@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import org.restlet.Context;
 import org.restlet.engine.Engine;
 
+import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.feeds.model.FeedAuthorModel;
 import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
@@ -64,7 +65,7 @@ public final class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements Fe
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
   }
-  
+
   @Override
   public List<FeedModel> retrieveByParent(String id) {
     // TODO Auto-generated method stub
@@ -85,6 +86,36 @@ public final class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements Fe
     this.init(location, aliases);
   }
 
-  
-  
+  @Override
+  public FeedModel update(FeedModel feed) {
+    FeedModel result = null;
+
+    log.info("Updating FeedsModel");
+
+    Map<String, FeedModel> map = getMap();
+    FeedModel current = map.get(feed.getId());
+
+    result = current;
+    current.setEntries(feed.getEntries());
+    current.setId(feed.getId());
+    current.setDescription(feed.getDescription());
+    current.setEncoding(feed.getEncoding());
+    current.setFeedType(feed.getFeedType());
+    current.setImage(feed.getImage());
+    current.setLink(feed.getLink());
+    current.setLinks(feed.getLinks());
+    current.setTitle(feed.getTitle());
+    current.setUri(feed.getUri());
+    current.setVisible(feed.isVisible());
+    current.setName(feed.getName());
+
+    current.setAuthor(feed.getAuthor());
+    current.setExternalUrl(feed.getExternalUrl());
+
+    if (result != null) {
+      map.put(feed.getId(), current);
+    }
+    return result;
+  }
+
 }
