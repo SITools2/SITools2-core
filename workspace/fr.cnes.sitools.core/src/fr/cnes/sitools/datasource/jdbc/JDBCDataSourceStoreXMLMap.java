@@ -19,12 +19,14 @@
 package fr.cnes.sitools.datasource.jdbc;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
+import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
@@ -75,6 +77,36 @@ public final class JDBCDataSourceStoreXMLMap extends XmlMapStore<JDBCDataSource>
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("jdbcdatasource", JDBCDataSource.class);
     this.init(location, aliases);
+  }
+
+  @Override
+  public JDBCDataSource update(JDBCDataSource datasource) {
+    JDBCDataSource result = null;
+    getLog().info("Updating DataSource");
+    
+    Map<String, JDBCDataSource> map = getMap();
+    JDBCDataSource current = map.get(datasource.getId());
+    
+    result = current;
+    current.setName(datasource.getName());
+    current.setDescription(datasource.getDescription());
+    current.setDriverClass(datasource.getDriverClass());
+    current.setUrl(datasource.getUrl());
+    current.setUserLogin(datasource.getUserLogin());
+    if (datasource.getUserPassword() != null) {
+      current.setUserPassword(datasource.getUserPassword());
+    }
+    // FIXME une modification du datasource => detachement.
+    current.setStatus(datasource.getStatus());
+    current.setMaxActive(datasource.getMaxActive());
+    current.setInitialSize(datasource.getInitialSize());
+    current.setSchemaOnConnection(datasource.getSchemaOnConnection());
+    current.setSitoolsAttachementForUsers(datasource.getSitoolsAttachementForUsers());
+
+    if (result != null) {
+      map.put(datasource.getId(), current);
+    }
+    return result;
   }
 
 }
