@@ -185,7 +185,7 @@ public abstract class XmlSynchronizedMapStore<T extends IResource> extends XmlMa
         result = resource;
       }
       else {
-        getLog().info(getCollectionName() + " found");
+        getLog().finest(getCollectionName() + " found");
       }
     }
     return result;
@@ -198,10 +198,10 @@ public abstract class XmlSynchronizedMapStore<T extends IResource> extends XmlMa
     synchronized (map) {
       result = map.get(id);
       if (result == null) {
-        getLog().info(getCollectionName() + " not found.");
+        getLog().finest(getCollectionName() + " not found.");
       }
       else {
-        getLog().info(getCollectionName() + " found");
+        getLog().finest(getCollectionName() + " found");
       }
     }
     return result;
@@ -222,7 +222,7 @@ public abstract class XmlSynchronizedMapStore<T extends IResource> extends XmlMa
     Map<String, T> map = getMap();
     synchronized (map) {
       if (map.containsKey(id)) {
-        getLog().info("Removing " + getCollectionName());
+        getLog().finest("Removing " + getCollectionName());
         map.remove(id);
         result = true;
       }

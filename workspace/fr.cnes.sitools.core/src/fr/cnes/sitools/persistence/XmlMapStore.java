@@ -171,7 +171,7 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
       result = resource;
     } 
     else {
-      getLog().info(getCollectionName() + " found");
+      getLog().finest(getCollectionName() + " found");
     }
     return result;
   }
@@ -181,10 +181,10 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
     T result = null;
     result = getMap().get(id);
     if (result == null) {
-      getLog().info(getCollectionName() + " not found.");
+      getLog().finest(getCollectionName() + " not found.");
     } 
     else {
-      getLog().info(getCollectionName() + " found");
+      getLog().finest(getCollectionName() + " found");
     }
     return result;
   }
@@ -199,7 +199,7 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
   public boolean delete(String id) {
     boolean result = false;
     if (getMap().containsKey(id)) {
-      getLog().info("Removing " + getCollectionName());
+      getLog().finest("Removing " + getCollectionName());
       getMap().remove(id);
       result = true;
     }
