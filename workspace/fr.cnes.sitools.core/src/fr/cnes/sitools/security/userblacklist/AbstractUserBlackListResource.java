@@ -11,7 +11,6 @@ import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 
 /**
  * Abstract resource for UserBlacklist handling
