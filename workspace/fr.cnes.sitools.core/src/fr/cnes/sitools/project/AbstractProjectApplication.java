@@ -23,8 +23,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.project.graph.model.Graph;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 
@@ -42,7 +41,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   private ProjectStoreInterface store = null;
 
   /** store for graph **/
-  private SitoolsStore<Graph> graphStore = null;
+  private GraphStoreInterface graphStore = null;
 
   /**
    * Constructor
@@ -54,7 +53,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   public AbstractProjectApplication(Context context) {
     super(context);
     this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
-    this.graphStore = (SitoolsStore<Graph>) context.getAttributes().get(Consts.APP_STORE_GRAPH);
+    this.graphStore = (GraphStoreInterface) context.getAttributes().get(Consts.APP_STORE_GRAPH);
   }
 
   /**
@@ -70,7 +69,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
     super(context);
     this.projectId = projectId;
     this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
-    this.graphStore = (SitoolsStore<Graph>) context.getAttributes().get(Consts.APP_STORE_GRAPH);
+    this.graphStore = (GraphStoreInterface) context.getAttributes().get(Consts.APP_STORE_GRAPH);
     setCategory(Category.USER);
   }
 
@@ -89,7 +88,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
    * @param graphStore
    *          the graphStore to set
    */
-  public final void setGraphStore(SitoolsStore<Graph> graphStore) {
+  public final void setGraphStore(GraphStoreInterface graphStore) {
     this.graphStore = graphStore;
   }
 
@@ -98,7 +97,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
    * 
    * @return the graphStore
    */
-  public final SitoolsStore<Graph> getGraphStore() {
+  public final GraphStoreInterface getGraphStore() {
     return graphStore;
   }
 

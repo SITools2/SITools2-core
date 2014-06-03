@@ -30,7 +30,7 @@ import org.restlet.security.User;
 
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.graph.model.GraphNodeComplete;
 import fr.cnes.sitools.project.model.Project;
@@ -69,7 +69,7 @@ public final class ProjectGraphExpositionResource extends AbstractProjectResourc
 
     Project proj = ((ProjectApplication) getApplication()).getProject();
 
-    SitoolsStore<Graph> graphStore = ((ProjectApplication) getApplication()).getGraphStore();
+    GraphStoreInterface graphStore = ((ProjectApplication) getApplication()).getGraphStore();
     Graph graph = graphStore.retrieve(proj.getId());
     if (graph != null) {
 
