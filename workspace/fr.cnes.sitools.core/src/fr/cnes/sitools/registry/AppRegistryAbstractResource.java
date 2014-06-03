@@ -29,7 +29,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
 /**
@@ -44,7 +43,7 @@ public abstract class AppRegistryAbstractResource extends SitoolsResource {
   private AppRegistryApplication application = null;
 
   /** Store */
-  private SitoolsStore<AppRegistry> store = null;
+  private ApplicationStoreInterface store = null;
 
   /** Resource id in the request */
   private String resourceId = null;
@@ -100,7 +99,7 @@ public abstract class AppRegistryAbstractResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<AppRegistry> getStore() {
+  public final ApplicationStoreInterface getStore() {
     return this.store;
   }
 

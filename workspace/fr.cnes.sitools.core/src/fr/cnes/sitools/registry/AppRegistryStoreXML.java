@@ -41,6 +41,7 @@ import fr.cnes.sitools.registry.model.AppRegistry;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class AppRegistryStoreXML extends SitoolsStoreXML<AppRegistry> {
 
   /** default location for file persistence */
