@@ -9,7 +9,6 @@ import org.restlet.resource.Put;
 
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.role.model.Role;
 
 /**
