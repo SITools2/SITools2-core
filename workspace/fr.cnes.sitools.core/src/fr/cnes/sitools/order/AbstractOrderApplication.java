@@ -22,8 +22,6 @@ import org.restlet.Context;
 
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.order.model.Order;
 
 /**
  * Abstract application for Serialization
@@ -34,7 +32,7 @@ import fr.cnes.sitools.order.model.Order;
 public abstract class AbstractOrderApplication extends SitoolsApplication {
 
   /** Store of Orders */
-  private SitoolsStore<Order> store = null;
+  private OrderStoreInterface store = null;
 
   /**
    * Default constructor of an OrderApplication
@@ -44,7 +42,7 @@ public abstract class AbstractOrderApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   protected AbstractOrderApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Order>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (OrderStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   /**
@@ -52,7 +50,7 @@ public abstract class AbstractOrderApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public final SitoolsStore<Order> getStore() {
+  public final OrderStoreInterface getStore() {
     return store;
   }
 
@@ -62,7 +60,7 @@ public abstract class AbstractOrderApplication extends SitoolsApplication {
    * @param store
    *          the store to set
    */
-  public final void setStore(SitoolsStore<Order> store) {
+  public final void setStore(OrderStoreInterface store) {
     this.store = store;
   }
 
