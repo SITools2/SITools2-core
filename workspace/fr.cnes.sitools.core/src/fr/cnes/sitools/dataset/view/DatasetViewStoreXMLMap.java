@@ -37,7 +37,7 @@ import fr.cnes.sitools.persistence.XmlMapStore;
  * @author AKKA
  * 
  */
-public final class DatasetViewStoreXMLMap extends XmlMapStore<DatasetView> implements DatasetViewStoreInterface {
+public class DatasetViewStoreXMLMap extends XmlMapStore<DatasetView> implements DatasetViewStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "datasetViews";
