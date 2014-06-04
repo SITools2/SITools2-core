@@ -38,7 +38,7 @@ import fr.cnes.sitools.persistence.XmlMapStore;
  * @author AKKA
  * 
  */
-public final class FilterStoreXMLMap extends XmlMapStore<FilterChainedModel> implements FilterStoreInterface {
+public class FilterStoreXMLMap extends XmlMapStore<FilterChainedModel> implements FilterStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "filters";
