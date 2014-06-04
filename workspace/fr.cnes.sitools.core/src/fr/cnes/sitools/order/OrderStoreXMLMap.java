@@ -75,4 +75,27 @@ public final class OrderStoreXMLMap extends XmlMapStore<Order> implements OrderS
     this.init(location, aliases);
   }
 
+  @Override
+  public Order update(Order order) {
+
+    Order result = null;
+    Map<String, Order> map = getMap();
+    Order current = map.get(order.getId());
+
+    result = current;
+    current.setUserId(order.getUserId());
+    current.setDescription(order.getDescription());
+    current.setResourceCollection(order.getResourceCollection());
+    current.setResourceDescriptor(order.getResourceDescriptor());
+    current.setStatus(order.getStatus());
+    current.setDateOrder(order.getDateOrder());
+    current.setEvents(order.getEvents());
+    current.setAdminResourceCollection(order.getAdminResourceCollection());
+
+    map.put(order.getId(), current);
+
+    return result;
+
+  }
+
 }
