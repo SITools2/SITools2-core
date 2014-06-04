@@ -36,7 +36,7 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
  * @author AKKA
  * 
  */
-public final class GuiServicePluginStoreXMLMap extends XmlMapStore<GuiServicePluginModel> implements
+public class GuiServicePluginStoreXMLMap extends XmlMapStore<GuiServicePluginModel> implements
     GuiServicePluginStoreInterface {
 
   /** default location for file persistence */

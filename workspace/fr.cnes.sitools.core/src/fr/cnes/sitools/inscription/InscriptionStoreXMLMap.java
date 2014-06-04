@@ -28,7 +28,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class InscriptionStoreXMLMap extends XmlMapStore<Inscription> implements InscriptionStoreInterface {
+public class InscriptionStoreXMLMap extends XmlMapStore<Inscription> implements InscriptionStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "inscriptions";

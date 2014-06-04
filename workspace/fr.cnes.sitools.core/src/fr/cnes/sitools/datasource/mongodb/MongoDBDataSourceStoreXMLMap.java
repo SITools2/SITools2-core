@@ -28,7 +28,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class MongoDBDataSourceStoreXMLMap extends XmlMapStore<MongoDBDataSource> implements
+public class MongoDBDataSourceStoreXMLMap extends XmlMapStore<MongoDBDataSource> implements
     MongoDBDataSourceStoreInterface {
 
   /** Default location for file persistence */

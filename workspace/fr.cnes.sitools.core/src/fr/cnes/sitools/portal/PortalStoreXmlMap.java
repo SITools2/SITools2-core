@@ -35,7 +35,7 @@ import fr.cnes.sitools.portal.model.Portal;
  * 
  * @author jp.boignard (AKKA Technologies)
  */
-public final class PortalStoreXmlMap extends XmlMapStore<Portal> implements PortalStoreInterface {
+public class PortalStoreXmlMap extends XmlMapStore<Portal> implements PortalStoreInterface {
   
   /** default location for file persistence */
   private static final String COLLECTION_NAME = Portal.class.getSimpleName().toLowerCase(); 

@@ -35,7 +35,7 @@ import fr.cnes.sitools.project.model.Project;
  * @author AKKA
  * 
  */
-public final class ProjectStoreXMLMap extends XmlMapStore<Project> implements ProjectStoreInterface {
+public class ProjectStoreXMLMap extends XmlMapStore<Project> implements ProjectStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "projects";

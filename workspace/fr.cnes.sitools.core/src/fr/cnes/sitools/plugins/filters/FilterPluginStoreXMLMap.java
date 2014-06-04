@@ -36,7 +36,7 @@ import fr.cnes.sitools.plugins.filters.model.FilterModel;
  * @author AKKA
  * 
  */
-public final class FilterPluginStoreXMLMap extends XmlMapStore<FilterModel> implements FilterPluginStoreInterface {
+public class FilterPluginStoreXMLMap extends XmlMapStore<FilterModel> implements FilterPluginStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "filterPlugins";

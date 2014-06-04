@@ -37,7 +37,7 @@ import fr.cnes.sitools.persistence.XmlMapStore;
  * @author AKKA
  * 
  */
-public final class FormComponentsStoreXMLMap extends XmlMapStore<FormComponent> implements FormComponentsStoreInterface {
+public class FormComponentsStoreXMLMap extends XmlMapStore<FormComponent> implements FormComponentsStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "formComponents";

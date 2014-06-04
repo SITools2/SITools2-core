@@ -39,7 +39,7 @@ import fr.cnes.sitools.tasks.model.TaskModel;
  * @author AKKA
  * 
  */
-public final class TaskStoreXMLMap extends XmlSynchronizedMapStore<TaskModel> implements TaskStoreInterface {
+public class TaskStoreXMLMap extends XmlSynchronizedMapStore<TaskModel> implements TaskStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "tasks";

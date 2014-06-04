@@ -31,7 +31,7 @@ import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.form.dataset.model.SimpleParameter;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class FormStoreXMLMap extends XmlMapStore<Form> implements FormStoreInterface {
+public class FormStoreXMLMap extends XmlMapStore<Form> implements FormStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "forms";

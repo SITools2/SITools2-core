@@ -37,7 +37,7 @@ import fr.cnes.sitools.userstorage.model.UserStorage;
  * 
  * @author jp.boignard (AKKA technologies)
  */
-public final class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> implements UserStorageStoreInterface {
+public class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> implements UserStorageStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = UserStorage.class.getSimpleName().toLowerCase();

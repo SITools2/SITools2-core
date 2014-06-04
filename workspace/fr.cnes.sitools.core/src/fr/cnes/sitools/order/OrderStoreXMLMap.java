@@ -28,7 +28,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class OrderStoreXMLMap extends XmlMapStore<Order> implements OrderStoreInterface {
+public class OrderStoreXMLMap extends XmlMapStore<Order> implements OrderStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "orders";

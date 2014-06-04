@@ -34,7 +34,7 @@ import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements FeedsStoreInterface {
+public class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements FeedsStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "feeds";

@@ -28,7 +28,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class JDBCDataSourceStoreXMLMap extends XmlMapStore<JDBCDataSource> implements
+public class JDBCDataSourceStoreXMLMap extends XmlMapStore<JDBCDataSource> implements
     JDBCDataSourceStoreInterface {
 
   /** Default location for file persistence */
