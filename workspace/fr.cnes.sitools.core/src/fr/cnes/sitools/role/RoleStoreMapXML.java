@@ -35,7 +35,7 @@ import fr.cnes.sitools.role.model.Role;
  * @author jp.boignard (AKKA Technologies)
  * 
  */
-public final class RoleStoreMapXML extends XmlMapStore<Role> implements RoleStoreInterface {
+public class RoleStoreMapXML extends XmlMapStore<Role> implements RoleStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "roles";
