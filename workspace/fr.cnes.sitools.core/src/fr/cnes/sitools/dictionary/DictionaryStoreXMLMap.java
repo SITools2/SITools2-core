@@ -31,7 +31,7 @@ import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class DictionaryStoreXMLMap extends XmlMapStore<Dictionary> implements DictionaryStoreInterface {
+public class DictionaryStoreXMLMap extends XmlMapStore<Dictionary> implements DictionaryStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "dictionaries";
