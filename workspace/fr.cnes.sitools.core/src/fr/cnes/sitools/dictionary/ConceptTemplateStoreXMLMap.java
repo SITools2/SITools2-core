@@ -29,7 +29,7 @@ import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
 
-public final class ConceptTemplateStoreXMLMap extends XmlMapStore<ConceptTemplate> implements ConceptTemplateStoreInterface {
+public class ConceptTemplateStoreXMLMap extends XmlMapStore<ConceptTemplate> implements ConceptTemplateStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "templates";

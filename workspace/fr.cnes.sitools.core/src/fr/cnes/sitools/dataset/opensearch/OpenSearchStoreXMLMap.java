@@ -32,7 +32,7 @@ import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
 
-public final class OpenSearchStoreXMLMap extends XmlMapStore<Opensearch> implements OpenSearchStoreInterface {
+public class OpenSearchStoreXMLMap extends XmlMapStore<Opensearch> implements OpenSearchStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "opensearch";

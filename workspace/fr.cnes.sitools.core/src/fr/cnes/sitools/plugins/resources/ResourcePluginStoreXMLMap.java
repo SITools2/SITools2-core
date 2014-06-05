@@ -36,7 +36,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceModel;
  * @author AKKA
  * 
  */
-public final class ResourcePluginStoreXMLMap extends XmlMapStore<ResourceModel> implements ResourcePluginStoreInterface {
+public class ResourcePluginStoreXMLMap extends XmlMapStore<ResourceModel> implements ResourcePluginStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "resourcePlugins";

@@ -36,7 +36,7 @@ import fr.cnes.sitools.persistence.XmlMapStore;
  * @author AKKA
  * 
  */
-public final class ConverterStoreXMLMap extends XmlMapStore<ConverterChainedModel> implements ConverterStoreInterface {
+public class ConverterStoreXMLMap extends XmlMapStore<ConverterChainedModel> implements ConverterStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "converters";

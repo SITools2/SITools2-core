@@ -35,7 +35,7 @@ import fr.cnes.sitools.role.model.Role;
  * @author jp.boignard (AKKA Technologies)
  * 
  */
-public class RoleStoreMapXML extends XmlMapStore<Role> implements RoleStoreInterface {
+public class RoleStoreXMLMap extends XmlMapStore<Role> implements RoleStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "roles";
@@ -48,7 +48,7 @@ public class RoleStoreMapXML extends XmlMapStore<Role> implements RoleStoreInter
    * @param context
    *          the Restlet Context
    */
-  public RoleStoreMapXML(File location, Context context) {
+  public RoleStoreXMLMap(File location, Context context) {
     super(Role.class, location, context);
   }
 
@@ -58,7 +58,7 @@ public class RoleStoreMapXML extends XmlMapStore<Role> implements RoleStoreInter
    * @param context
    *          the Restlet Context
    */
-  public RoleStoreMapXML(Context context) {
+  public RoleStoreXMLMap(Context context) {
     super(Role.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);

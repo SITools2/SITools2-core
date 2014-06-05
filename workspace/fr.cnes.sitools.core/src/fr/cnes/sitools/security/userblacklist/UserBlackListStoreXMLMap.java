@@ -35,7 +35,7 @@ import fr.cnes.sitools.persistence.XmlMapStore;
  * 
  * @author jp.boignard (AKKA technologies)
  */
-public final class UserBlackListStoreXMLMap extends XmlMapStore<UserBlackListModel> implements
+public class UserBlackListStoreXMLMap extends XmlMapStore<UserBlackListModel> implements
     UserBlackListStoreInterface {
 
   /** default location for file persistence */

@@ -142,7 +142,7 @@ import fr.cnes.sitools.registry.ApplicationStoreInterface;
 import fr.cnes.sitools.registry.ApplicationStoreXMLMap;
 import fr.cnes.sitools.registry.model.AppRegistry;
 import fr.cnes.sitools.role.RoleStoreInterface;
-import fr.cnes.sitools.role.RoleStoreMapXML;
+import fr.cnes.sitools.role.RoleStoreXMLMap;
 import fr.cnes.sitools.role.RoleStoreXML;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
@@ -209,7 +209,7 @@ public class StoreHelper implements StoreHelperInterface {
     // ======== role ===============
 
     new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR) + "/map").mkdirs();
-    RoleStoreInterface storeRole = new RoleStoreMapXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)
+    RoleStoreInterface storeRole = new RoleStoreXMLMap(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)
         + "/map"), context);
     stores.put(Consts.APP_STORE_ROLE, storeRole);
 

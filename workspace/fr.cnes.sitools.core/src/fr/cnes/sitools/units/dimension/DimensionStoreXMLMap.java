@@ -35,7 +35,7 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
  * 
  * @author jp.boignard (AKKA technologies)
  */
-public final class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> implements DimensionStoreInterface {
+public class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> implements DimensionStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "dimensions";

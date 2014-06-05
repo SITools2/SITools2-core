@@ -35,7 +35,7 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
  * @author AKKA
  * 
  */
-public final class ProjectModuleStoreXMLMap extends XmlMapStore<ProjectModuleModel> implements
+public class ProjectModuleStoreXMLMap extends XmlMapStore<ProjectModuleModel> implements
     ProjectModuleStoreInterface {
 
   /** default location for file persistence */

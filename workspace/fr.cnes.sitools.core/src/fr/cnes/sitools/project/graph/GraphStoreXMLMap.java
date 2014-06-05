@@ -34,7 +34,7 @@ import fr.cnes.sitools.project.graph.model.Graph;
  * @author AKKA
  * 
  */
-public final class GraphStoreXMLMap extends XmlMapStore<Graph> implements GraphStoreInterface {
+public class GraphStoreXMLMap extends XmlMapStore<Graph> implements GraphStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "graph";

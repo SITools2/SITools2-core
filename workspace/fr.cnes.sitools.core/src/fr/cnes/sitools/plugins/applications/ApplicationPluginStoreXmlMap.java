@@ -34,7 +34,7 @@ import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
  * 
  * @author jp.boignard (AKKA Technologies)
  */
-public final class ApplicationPluginStoreXmlMap extends XmlMapStore<ApplicationPluginModel> implements
+public class ApplicationPluginStoreXmlMap extends XmlMapStore<ApplicationPluginModel> implements
     ApplicationPluginStoreInterface {
 
   /** default location for file persistence */

@@ -33,7 +33,7 @@ import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.form.project.model.FormPropertyParameter;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-public final class FormProjectStoreXMLMap extends XmlMapStore<FormProject> implements FormProjectStoreInterface {
+public class FormProjectStoreXMLMap extends XmlMapStore<FormProject> implements FormProjectStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "formProject";

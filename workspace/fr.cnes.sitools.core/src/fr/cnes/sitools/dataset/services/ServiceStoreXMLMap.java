@@ -35,7 +35,7 @@ import fr.cnes.sitools.persistence.XmlMapStore;
  * @author AKKA
  * 
  */
-public final class ServiceStoreXMLMap extends XmlMapStore<ServiceCollectionModel> implements ServiceStoreInterface {
+public class ServiceStoreXMLMap extends XmlMapStore<ServiceCollectionModel> implements ServiceStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "Services";
