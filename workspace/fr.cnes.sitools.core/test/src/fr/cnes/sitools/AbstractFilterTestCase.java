@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -52,14 +52,13 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.filter.FilterApplication;
-import fr.cnes.sitools.dataset.filter.FilterStoreXML;
+import fr.cnes.sitools.dataset.filter.FilterStoreInterface;
+import fr.cnes.sitools.dataset.filter.FilterStoreXMLMap;
 import fr.cnes.sitools.dataset.filter.dto.FilterChainedModelDTO;
 import fr.cnes.sitools.dataset.filter.dto.FilterChainedOrderDTO;
 import fr.cnes.sitools.dataset.filter.dto.FilterModelDTO;
-import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.filter.model.FilterParameter;
 import fr.cnes.sitools.dataset.filter.model.FilterParameterType;
 import fr.cnes.sitools.server.Consts;
@@ -74,7 +73,7 @@ public abstract class AbstractFilterTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<FilterChainedModel> store = null;
+  private static FilterStoreInterface store = null;
 
   /**
    * datasetId to attach the application
@@ -125,7 +124,8 @@ public abstract class AbstractFilterTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_FILTERS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_FILTERS_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -147,17 +147,16 @@ public abstract class AbstractFilterTestCase extends AbstractSitoolsTestCase {
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new FilterStoreXML(storeDirectory, ctx);
+        store = new FilterStoreXMLMap(storeDirectory, ctx);
 
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
       ctx.getAttributes().put(ContextAttributes.APP_ATTACH_REF, getAttachUrl());
       this.component.getDefaultHost().attach(getAttachUrl(), new FilterApplication(ctx));
     }
-
-    
 
     if (!this.component.isStarted()) {
       this.component.start();

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -46,12 +46,12 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceEnum;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
@@ -105,7 +105,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
   public void setUp() throws Exception {
     super.setUp();
 
-    File dirStoreServices = new File(settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR));
+    File dirStoreServices = new File(settings.getStoreDIR(Consts.APP_SERVICES_STORE_DIR) + "/map");
     cleanDirectory(dirStoreServices);
 
   }
@@ -277,7 +277,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
       InstantiationException, IllegalAccessException {
 
     // change the first GUI service on the store to create it by default when creating a dataset
-    SitoolsStore<GuiServiceModel> storeGuiService = (SitoolsStore<GuiServiceModel>) settings.getStores().get(
+    GuiServiceStoreInterface storeGuiService = (GuiServiceStoreInterface) settings.getStores().get(
         Consts.APP_STORE_GUI_SERVICE);
     GuiServiceModel guiServiceModel = storeGuiService.retrieve("8c48e76b-7ce4-4af1-8c4e-a120e47d5ed8");
     guiServiceModel.setDefaultGuiService(true);
@@ -338,8 +338,7 @@ public class AbstractDatasetServicesTestCase extends AbstractDataSetManagerTestC
     return getHostUrl() + datasetUrl + settings.getString(Consts.APP_SERVICES_URL);
   }
 
-  private ServiceCollectionModel createCollectionToChangeOrder(ResourceModel resourceModel,
-      GuiServiceModel guiService) {
+  private ServiceCollectionModel createCollectionToChangeOrder(ResourceModel resourceModel, GuiServiceModel guiService) {
 
     ServiceCollectionModel collection = new ServiceCollectionModel();
     List<ServiceModel> services = new ArrayList<ServiceModel>();
