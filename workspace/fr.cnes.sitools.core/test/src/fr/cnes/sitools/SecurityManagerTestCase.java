@@ -30,7 +30,7 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.role.RoleApplication;
 import fr.cnes.sitools.role.RoleStoreInterface;
-import fr.cnes.sitools.role.RoleStoreMapXML;
+import fr.cnes.sitools.role.RoleStoreXMLMap;
 import fr.cnes.sitools.server.Consts;
 
 /**
@@ -101,7 +101,7 @@ public class SecurityManagerTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new RoleStoreMapXML(storeDirectory, ctx);
+        store = new RoleStoreXMLMap(storeDirectory, ctx);
       }
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);

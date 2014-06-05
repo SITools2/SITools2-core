@@ -66,7 +66,7 @@ import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
 import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXMLMap;
 import fr.cnes.sitools.role.RoleStoreInterface;
-import fr.cnes.sitools.role.RoleStoreMapXML;
+import fr.cnes.sitools.role.RoleStoreXMLMap;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
@@ -186,7 +186,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
 
         File roleStoreDir = new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR) + "/map");
         roleStoreDir.mkdirs();
-        RoleStoreInterface storeRole = new RoleStoreMapXML(roleStoreDir, appContextAuthorization);
+        RoleStoreInterface storeRole = new RoleStoreXMLMap(roleStoreDir, appContextAuthorization);
 
         // Realm
         smr = new SitoolsMemoryRealm(storeUandG, storeRole, settings);
