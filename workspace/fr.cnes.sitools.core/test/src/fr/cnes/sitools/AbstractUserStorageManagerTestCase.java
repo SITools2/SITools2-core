@@ -60,11 +60,13 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
+import fr.cnes.sitools.common.model.IResource;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
-import fr.cnes.sitools.userstorage.UserStorageStoreXML;
+import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
+import fr.cnes.sitools.userstorage.UserStorageStoreXMLMap;
 import fr.cnes.sitools.userstorage.model.DiskStorage;
 import fr.cnes.sitools.userstorage.model.UserStorage;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -80,7 +82,7 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
   protected static String title = "";
 
   /** static xml store instance for the test */
-  private static UserStorageStoreXML store = null;
+  private static UserStorageStoreInterface store = null;
 
   /** base url for UserStorage access. */
   private String userReference;
@@ -113,7 +115,8 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_USERSTORAGE_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_USERSTORAGE_STORE_DIR)
+        + "/map";
   }
 
   /**
@@ -136,8 +139,9 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new UserStorageStoreXML(storeDirectory, ctx);
+        store = new UserStorageStoreXMLMap(storeDirectory, ctx);
       }
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
@@ -675,7 +679,8 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
    */
   public static Representation getRepresentation(UserStorage item, MediaType media) {
     if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JacksonRepresentation<UserStorage>(item);
+      JacksonRepresentation<UserStorage> repr = new JacksonRepresentation<UserStorage>(item);
+      return repr;
     }
     else if (media.equals(MediaType.APPLICATION_XML)) {
       XStream xstream = XStreamFactory.getInstance().getXStream(media, false);

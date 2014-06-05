@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -34,7 +34,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.dictionary.DictionaryStoreXML;
+import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
+import fr.cnes.sitools.dictionary.DictionaryStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.server.Consts;
 
@@ -48,7 +49,7 @@ public class DictionaryStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static DictionaryStoreXML store = null;
+  private static DictionaryStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -57,7 +58,8 @@ public class DictionaryStoreXMLTestCase extends AbstractSitoolsTestCase {
 
   @Override
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -69,10 +71,11 @@ public class DictionaryStoreXMLTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
-      store = new DictionaryStoreXML(storeDirectory, ctx);
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      store = new DictionaryStoreXMLMap(storeDirectory, ctx);
     }
   }
 

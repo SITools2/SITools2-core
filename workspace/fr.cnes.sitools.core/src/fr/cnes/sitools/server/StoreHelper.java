@@ -169,7 +169,7 @@ import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.userstorage.UserStorageStore;
 import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
 import fr.cnes.sitools.userstorage.UserStorageStoreXML;
-import fr.cnes.sitools.userstorage.UserStorageStoreXmlMap;
+import fr.cnes.sitools.userstorage.UserStorageStoreXMLMap;
 
 /**
  * Store helper
@@ -543,7 +543,7 @@ public class StoreHelper implements StoreHelperInterface {
     // ======== user storage ===============
 
     new File(settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR) + "/map").mkdirs();
-    UserStorageStoreInterface storeUserStorage = new UserStorageStoreXmlMap(new File(
+    UserStorageStoreInterface storeUserStorage = new UserStorageStoreXMLMap(new File(
         settings.getStoreDIR(Consts.APP_USERSTORAGE_STORE_DIR) + "/map"), context);
     stores.put(Consts.APP_STORE_USERSTORAGE, storeUserStorage);
 

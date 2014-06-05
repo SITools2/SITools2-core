@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -35,7 +35,6 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Post;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.userstorage.business.UserStorageManager;
@@ -99,14 +98,14 @@ public final class UserStorageCollectionResource extends AbstractUserStorageReso
       // Business service
       UserStorage userStorageOutput = null;
       // try {
-        userStorageOutput = getStore().create(userStorageInput);
-//      }
-//      catch (SitoolsException e) {
-//        Response response = new Response(false, e.getMessage());
-//        return getRepresentation(response, variant);
-//      }
+      userStorageOutput = getStore().create(userStorageInput);
+      // }
+      // catch (SitoolsException e) {
+      // Response response = new Response(false, e.getMessage());
+      // return getRepresentation(response, variant);
+      // }
       if (userStorageOutput != null) {
- 
+
         String path = getUserStorageManagement().getRootDirectory() + "/" + userStorageOutput.getUserId(); // File.separator
         userStorageOutput.getStorage().setUserStoragePath(path);
         UserStorageManager.build(getContext(), userStorageOutput);

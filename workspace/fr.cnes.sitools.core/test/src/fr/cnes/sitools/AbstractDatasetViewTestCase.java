@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -46,7 +46,8 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dataset.view.DatasetViewApplication;
-import fr.cnes.sitools.dataset.view.DatasetViewStoreXML;
+import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
+import fr.cnes.sitools.dataset.view.DatasetViewStoreXMLMap;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -62,7 +63,7 @@ public abstract class AbstractDatasetViewTestCase extends AbstractSitoolsTestCas
   /**
    * static xml store instance for the test
    */
-  private static DatasetViewStoreXML store = null;
+  private static DatasetViewStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -75,7 +76,7 @@ public abstract class AbstractDatasetViewTestCase extends AbstractSitoolsTestCas
    * @return url
    */
   protected String getBaseUrl() {
-    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_FORMCOMPONENTS_URL);
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_VIEWS_URL);
   }
 
   /**
@@ -84,7 +85,7 @@ public abstract class AbstractDatasetViewTestCase extends AbstractSitoolsTestCas
    * @return url
    */
   protected String getAttachUrl() {
-    return SITOOLS_URL + SitoolsSettings.getInstance().getString(Consts.APP_FORMCOMPONENTS_URL);
+    return SITOOLS_URL + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_VIEWS_URL);
   }
 
   /**
@@ -93,7 +94,8 @@ public abstract class AbstractDatasetViewTestCase extends AbstractSitoolsTestCas
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_FORMCOMPONENTS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_VIEWS_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -107,23 +109,22 @@ public abstract class AbstractDatasetViewTestCase extends AbstractSitoolsTestCas
     SitoolsSettings settings = SitoolsSettings.getInstance();
     if (this.component == null) {
       this.component = createTestComponent(settings);
-      
+
       // Context
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-      
+
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
       if (store == null) {
-        store = new DatasetViewStoreXML(storeDirectory, ctx);
+        store = new DatasetViewStoreXMLMap(storeDirectory, ctx);
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 
       this.component.getDefaultHost().attach(getAttachUrl(), new DatasetViewApplication(ctx));
     }
-
-   
 
     if (!this.component.isStarted()) {
       this.component.start();

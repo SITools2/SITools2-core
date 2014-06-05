@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -35,7 +35,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.dictionary.ConceptTemplateStoreXML;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreInterface;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.Property;
@@ -50,7 +51,7 @@ public class ConceptTemplateStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static ConceptTemplateStoreXML store = null;
+  private static ConceptTemplateStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -60,7 +61,7 @@ public class ConceptTemplateStoreXMLTestCase extends AbstractSitoolsTestCase {
   @Override
   protected String getTestRepository() {
     return super.getTestRepository()
-        + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR);
+        + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR) + "/map";
   }
 
   @Before
@@ -72,10 +73,11 @@ public class ConceptTemplateStoreXMLTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
-      store = new ConceptTemplateStoreXML(storeDirectory, ctx);
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      store = new ConceptTemplateStoreXMLMap(storeDirectory, ctx);
     }
   }
 

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -39,15 +39,16 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
-import fr.cnes.sitools.dictionary.DictionaryStoreXML;
+import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
+import fr.cnes.sitools.dictionary.DictionaryStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.util.Util;
 
 public class SitoolsUtilsTestCase extends AbstractSitoolsTestCase {
-  /** DictionaryStoreXML */
-  private static DictionaryStoreXML store = null;
+  /** DictionaryStoreInterface */
+  private static DictionaryStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -83,7 +84,8 @@ public class SitoolsUtilsTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -93,8 +95,6 @@ public class SitoolsUtilsTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-
-    
 
     if (this.component == null) {
       this.component = new Component();
@@ -108,8 +108,9 @@ public class SitoolsUtilsTestCase extends AbstractSitoolsTestCase {
       context.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new DictionaryStoreXML(storeDirectory, context);
+        store = new DictionaryStoreXMLMap(storeDirectory, context);
       }
       context.getAttributes().put(ContextAttributes.APP_STORE, store);
       context.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());

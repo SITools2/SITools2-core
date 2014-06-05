@@ -37,7 +37,7 @@ import fr.cnes.sitools.userstorage.model.UserStorage;
  * 
  * @author jp.boignard (AKKA technologies)
  */
-public class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> implements UserStorageStoreInterface {
+public class UserStorageStoreXMLMap extends XmlMapStore<UserStorage> implements UserStorageStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = UserStorage.class.getSimpleName().toLowerCase();
@@ -48,7 +48,7 @@ public class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> implements 
    * @param context
    *          the Restlet Context
    */
-  public UserStorageStoreXmlMap(Context context) {
+  public UserStorageStoreXMLMap(Context context) {
     super(UserStorage.class, context);
     File defaultLocation = new File(COLLECTION_NAME);
     init(defaultLocation);
@@ -62,7 +62,7 @@ public class UserStorageStoreXmlMap extends XmlMapStore<UserStorage> implements 
    * @param context
    *          the Restlet Context
    */
-  public UserStorageStoreXmlMap(File location, Context context) {
+  public UserStorageStoreXMLMap(File location, Context context) {
     super(UserStorage.class, location, context);
   }
 

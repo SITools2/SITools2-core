@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -48,7 +48,8 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
-import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
 import fr.cnes.sitools.server.Consts;
@@ -68,7 +69,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
   /**
    * static xml store instance for the test
    */
-  private static AuthorizationStoreXML store = null;
+  private static AuthorizationStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -99,7 +100,8 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_AUTHORIZATIONS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_AUTHORIZATIONS_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -119,9 +121,10 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
       appContext.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
 
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
       if (store == null) {
-        store = new AuthorizationStoreXML(storeDirectory, appContext);
+        store = new AuthorizationStoreXMLMap(storeDirectory, appContext);
       }
 
       appContext.getAttributes().put(ContextAttributes.APP_STORE, store);

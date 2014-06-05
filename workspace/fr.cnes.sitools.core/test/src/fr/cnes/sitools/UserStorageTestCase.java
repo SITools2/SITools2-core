@@ -43,10 +43,10 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.userstorage.UserStorageStoreXML;
+import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
+import fr.cnes.sitools.userstorage.UserStorageStoreXMLMap;
 import fr.cnes.sitools.userstorage.model.DiskStorage;
 import fr.cnes.sitools.userstorage.model.UserStorage;
 import fr.cnes.sitools.userstorage.model.UserStorageStatus;
@@ -226,13 +226,13 @@ public class UserStorageTestCase extends AbstractSitoolsServerTestCase {
   public void testUserStorageBadCreate() {
     Context ctx = new Context();
     ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-    UserStorageStoreXML store = new UserStorageStoreXML(ctx);
+    UserStorageStoreInterface store = new UserStorageStoreXMLMap(ctx);
     UserStorage userStorage = new UserStorage();
     boolean exceptionThrown = false;
     try {
       store.create(userStorage);
     }
-    catch (SitoolsException se) {
+    catch (Exception se) {
       exceptionThrown = true;
       assertEquals(se.getMessage(), "USERSTORAGE_USERIDENTIFIER_MANDATORY");
     }

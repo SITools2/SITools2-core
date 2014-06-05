@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -34,7 +34,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
 import fr.cnes.sitools.server.Consts;
@@ -49,7 +50,7 @@ public class AuthorizationStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static AuthorizationStoreXML store = null;
+  private static AuthorizationStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -58,7 +59,8 @@ public class AuthorizationStoreXMLTestCase extends AbstractSitoolsTestCase {
 
   @Override
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_AUTHORIZATIONS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_AUTHORIZATIONS_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -72,8 +74,9 @@ public class AuthorizationStoreXMLTestCase extends AbstractSitoolsTestCase {
       File storeDirectory = new File(getTestRepository());
       cleanDirectory(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());      
-      store = new AuthorizationStoreXML(storeDirectory, ctx);
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      storeDirectory.mkdirs();
+      store = new AuthorizationStoreXMLMap(storeDirectory, ctx);
     }
   }
 

@@ -47,6 +47,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.notification.NotificationApplication;
 import fr.cnes.sitools.notification.model.RestletObservable;
 import fr.cnes.sitools.notification.model.RestletObserver;
+import fr.cnes.sitools.notification.store.NotificationStore;
 import fr.cnes.sitools.notification.store.NotificationStoreXML;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -60,7 +61,7 @@ public class NotificationTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static NotificationStoreXML store = null;
+  private static NotificationStore store = null;
 
   /**
    * Restlet Component for server

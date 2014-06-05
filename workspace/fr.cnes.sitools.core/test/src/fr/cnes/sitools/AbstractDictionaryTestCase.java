@@ -34,7 +34,6 @@ import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
-import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
@@ -49,7 +48,8 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
-import fr.cnes.sitools.dictionary.DictionaryStoreXML;
+import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
+import fr.cnes.sitools.dictionary.DictionaryStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.dictionary.model.Dictionary;
@@ -70,7 +70,7 @@ public abstract class AbstractDictionaryTestCase extends AbstractSitoolsTestCase
   /**
    * static xml store instance for the test
    */
-  private static DictionaryStoreXML store = null;
+  private static DictionaryStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -101,7 +101,8 @@ public abstract class AbstractDictionaryTestCase extends AbstractSitoolsTestCase
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -121,8 +122,9 @@ public abstract class AbstractDictionaryTestCase extends AbstractSitoolsTestCase
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new DictionaryStoreXML(storeDirectory, ctx);
+        store = new DictionaryStoreXMLMap(storeDirectory, ctx);
       }
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
