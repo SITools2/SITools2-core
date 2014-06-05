@@ -57,12 +57,10 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/common/res/css/combo.css">
     
 	<!-- First of javascript includes must be an adapter... -->
-    <!--script type="text/javascript" src="/cots/extjs/adapter/ext/ext-base-debug.js"></script-->
+	<!-- BEGIN_DEV --> 
     <script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
-
-    <!-- Need the Ext itself, either debug or production version. -->
-    <script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
-    <!--script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script-->
+	<script type="text/javascript" src="${appUrl}/cots/extjs/ext-all-debug.js"></script>
+    <!-- END_DEV --> 
 
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
@@ -118,9 +116,11 @@
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
-<!--
-	<script type="text/javascript" src="js/minified/client-user-portal-all.min.js"></script> 
--->	
+<!-- BEGIN_PROD
+	<script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
+	<script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script>
+	<script type="text/javascript" src="js/minified/client-user-portal-all.min.js"></script> 	
+END PROD -->	
 	<link rel="shortcut icon" href="${appUrl}/common/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	
   </head>

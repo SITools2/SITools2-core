@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2014-04-04
-Version                              : 2.4
+Date                                 : 2014-05-28
+Version                              : 2.4.1
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -15,7 +15,17 @@ Role/Function                        : Adaptable web interface for scientific da
 Reference tag                        : (2.4)
 
 2/ Changes
-
+_________________
+-2.4.1 (2014-05-28)
+	* Enhancements : 
+		- Content editor improved for multi user use
+		- Cannot update the name of a role
+		- Error thrown when an unknown role is attached to an application
+		- Minified javascript sources used by default with IzPack install
+		
+	* API changes :
+		- update freemarker to version 2.3.20
+	
 _________________
 -2.4 (2014-04-04)
 	* New features :

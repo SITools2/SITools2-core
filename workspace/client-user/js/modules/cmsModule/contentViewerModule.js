@@ -87,7 +87,11 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
                 createNode : function(attr){
                     var isPdf = function (text) {
                         var imageRegex = /\.(pdf)$/;
-                        return (text.match(imageRegex));      
+                        if (!Ext.isEmpty(text)) {
+                            return (text.match(imageRegex));
+                        } else {
+                            return false;
+                        }
                     };
                     var listeners = {
                         scope : this,
@@ -246,12 +250,14 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
             return;
         }
         
-        nodeLink += "?processTemplate=true";
-        
         var url = nodeLink;
-        if (url.indexOf("http://") === -1) {
-            url = this.CONST_URLDATASTORAGE + "/" + nodeLink;    
-            
+        if (this.isLocal(url)) {
+            url = this.CONST_URLDATASTORAGE + "/" + nodeLink;
+            if(this.isPdf(url)){
+                url = Ext.urlAppend(url, "dc=" + new Date().getTime());
+            } else {
+                url = Ext.urlAppend(url, "processTemplate=true");
+            }
         }
         
         this.htmlReader.remove();
@@ -283,6 +289,18 @@ sitools.user.modules.contentViewerModule = Ext.extend(Ext.Panel, {
             preferencesFileName : this.id
         };
 
+    },
+    isPdf : function (text) {
+        var imageRegex = /\.(pdf)$/;
+        if (!Ext.isEmpty(text)) {
+            return (text.match(imageRegex));
+        } else {
+            return false;
+        }
+    },
+    
+    isLocal : function (url) {
+        return (url.indexOf("http://") == -1 && url.indexOf("https://") == -1); 
     }
     
 });
