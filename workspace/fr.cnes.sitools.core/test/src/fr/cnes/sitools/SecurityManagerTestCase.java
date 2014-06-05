@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -28,10 +28,9 @@ import org.restlet.data.Protocol;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.role.RoleApplication;
-import fr.cnes.sitools.role.RoleStoreXML;
-import fr.cnes.sitools.role.model.Role;
+import fr.cnes.sitools.role.RoleStoreInterface;
+import fr.cnes.sitools.role.RoleStoreMapXML;
 import fr.cnes.sitools.server.Consts;
 
 /**
@@ -44,7 +43,7 @@ public class SecurityManagerTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Role> store = null;
+  private static RoleStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -75,7 +74,7 @@ public class SecurityManagerTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_ROLES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_ROLES_STORE_DIR) + "/map";
   }
 
   @Before
@@ -86,7 +85,6 @@ public class SecurityManagerTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
 
     if (this.component == null) {
       this.component = new Component();
@@ -98,13 +96,14 @@ public class SecurityManagerTestCase extends AbstractSitoolsTestCase {
       // Context
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-      
+
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new RoleStoreXML(storeDirectory, ctx);
+        store = new RoleStoreMapXML(storeDirectory, ctx);
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 
       this.component.getDefaultHost().attach(getAttachUrl(), new RoleApplication(ctx));
