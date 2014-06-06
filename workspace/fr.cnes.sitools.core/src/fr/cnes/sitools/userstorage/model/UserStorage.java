@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -48,7 +48,7 @@ public final class UserStorage implements IResource, Serializable {
   // private boolean listingAllowed; // true
   // private boolean modifiable; // true
   // private boolean deeplyAccessible; // true
- 
+
   /**
    * Gets the identifier value
    * 
@@ -66,7 +66,7 @@ public final class UserStorage implements IResource, Serializable {
   @Override
   public void setId(String id) {
     this.userId = id;
-    
+
   }
 
   @Override
@@ -80,8 +80,6 @@ public final class UserStorage implements IResource, Serializable {
     // TODO Auto-generated method stub
     return null;
   }
-  
-  
 
   /**
    * Sets the value of identifier
@@ -129,6 +127,14 @@ public final class UserStorage implements IResource, Serializable {
    */
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public void setName(String name) {
+
+  }
+
+  public void setDescription(String name) {
+    
   }
 
 }

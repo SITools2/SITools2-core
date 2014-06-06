@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -147,7 +147,7 @@ public abstract class AbstractSitoolsServerTestCase {
 
     LOGGER.info("Clean XML files in directory " + dir.getAbsolutePath());
     try {
-      FileUtils.cleanDirectory(dir, new String[] { "xml" }, false);
+      FileUtils.cleanDirectory(dir, new String[] {"xml"}, false);
     }
     catch (IOException e) {
       Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
@@ -174,6 +174,37 @@ public abstract class AbstractSitoolsServerTestCase {
     catch (IOException e) {
       Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
           "Unable to clean " + dir.getPath() + "\n cause:" + e.getMessage());
+    }
+  }
+
+  /**
+   * Try to remove files from directory
+   * 
+   * @param rootDir
+   *          directory to be cleaned
+   */
+  public static void cleanMapDirectories(File rootDir) {
+    if (rootDir == null) {
+      LOGGER.warning("Null directory");
+      return;
+    }
+
+    try {
+      if (rootDir.getName().equals("map")) {
+        FileUtils.cleanDirectory(rootDir, new String[] {"xml"}, false);
+      }
+
+      LOGGER.info("Clean XML files in maps directory " + rootDir.getAbsolutePath());
+      File[] children = rootDir.listFiles();
+      for (File file : children) {
+        if (file.isDirectory()) {
+          cleanMapDirectories(file);
+        }
+      }
+    }
+    catch (IOException e) {
+      Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
+          "Unable to clean " + rootDir.getPath() + "\n cause:" + e.getMessage());
     }
   }
 

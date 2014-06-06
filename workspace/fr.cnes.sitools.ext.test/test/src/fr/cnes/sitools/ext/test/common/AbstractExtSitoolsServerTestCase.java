@@ -58,6 +58,8 @@ public abstract class AbstractExtSitoolsServerTestCase extends AbstractSitoolsSe
 
     settings.setStoreDIR(TEST_FILES_REPOSITORY + "_ext");
     settings.setTmpFolderUrl(settings.getStoreDIR(Consts.APP_TMP_FOLDER_DIR));
+    
+    cleanMapDirectories(fileCible);
 
     AbstractSitoolsServerTestCase.start();
   }
