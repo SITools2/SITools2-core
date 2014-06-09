@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -160,7 +160,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResource() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-    IOException, InterruptedException {
+      IOException, InterruptedException {
 
     // FIXME faire en XML aussi
     setMediaTest(MediaType.APPLICATION_JSON);
@@ -198,7 +198,8 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   /**
-   * Test the Order resource with the resource parameters given as a file in the userstorage
+   * Test the Order resource with the resource parameters given as a file in the
+   * userstorage
    * 
    * @throws ClassNotFoundException
    *           if the class cannot be found
@@ -213,14 +214,14 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceWithFile() throws ClassNotFoundException, InstantiationException,
-    IllegalAccessException, IOException, InterruptedException {
+      IllegalAccessException, IOException, InterruptedException {
 
     // FIXME faire en XML aussi
     setMediaTest(MediaType.APPLICATION_JSON);
     createUserStorage(userLogin);
     assertNoneTasks(userLogin, password);
     assertNoneOrder();
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000A", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("5");
 
@@ -266,7 +267,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceZip() throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-    IOException, InterruptedException {
+      IOException, InterruptedException {
     setMediaTest(MediaType.APPLICATION_JSON);
 
     createUserStorage(userLogin);
@@ -278,7 +279,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
     createUserStorage(userLogin);
     assertNoneTasks(userLogin, password);
     assertNoneOrder();
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000B", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, true);
 
     create(taskResource, getBaseDatasetUrl());
@@ -317,14 +318,14 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceWithRange() throws ClassNotFoundException, InstantiationException,
-    IllegalAccessException, IOException, InterruptedException {
+      IllegalAccessException, IOException, InterruptedException {
 
     // FIXME faire en XML aussi
     setMediaTest(MediaType.APPLICATION_JSON);
     createUserStorage(userLogin);
     assertNoneTasks(userLogin, password);
     assertNoneOrder();
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000C", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("10");
 
@@ -368,11 +369,11 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceWithDownloadLimit() throws ClassNotFoundException, InstantiationException,
-    IllegalAccessException, IOException, InterruptedException {
+      IllegalAccessException, IOException, InterruptedException {
 
     setMediaTest(MediaType.APPLICATION_JSON);
     assertNoneTasks(userLogin, password);
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000D", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("5");
 
@@ -407,11 +408,11 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceWithDownloadLimitNoLimitRequest() throws ClassNotFoundException, InstantiationException,
-    IllegalAccessException, IOException, InterruptedException {
+      IllegalAccessException, IOException, InterruptedException {
 
     setMediaTest(MediaType.APPLICATION_JSON);
     assertNoneTasks(userLogin, password);
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000E", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("5");
 
@@ -615,8 +616,8 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   /**
-   * Assert if the FileOrdered have been copied It gets the list of files from the order, and gets the file described in
-   * the list of files
+   * Assert if the FileOrdered have been copied It gets the list of files from
+   * the order, and gets the file described in the list of files
    * 
    * @param order
    *          the order to assert
@@ -731,8 +732,8 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   /**
-   * Assert if the FileOrdered have been copied It gets the list of files from the order, and gets the file described in
-   * the list of files
+   * Assert if the FileOrdered have been copied It gets the list of files from
+   * the order, and gets the file described in the list of files
    * 
    * @param order
    *          the order to assert
@@ -840,7 +841,8 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
   }
 
   /**
-   * REST API Response Representation wrapper for single or multiple items expexted
+   * REST API Response Representation wrapper for single or multiple items
+   * expexted
    * 
    * @param media
    *          MediaType expected
