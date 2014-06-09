@@ -220,7 +220,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
     createUserStorage(userLogin);
     assertNoneTasks(userLogin, password);
     assertNoneOrder();
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000A", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("5");
 
@@ -278,7 +278,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
     createUserStorage(userLogin);
     assertNoneTasks(userLogin, password);
     assertNoneOrder();
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000B", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, true);
 
     create(taskResource, getBaseDatasetUrl());
@@ -324,7 +324,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
     createUserStorage(userLogin);
     assertNoneTasks(userLogin, password);
     assertNoneOrder();
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000C", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("10");
 
@@ -372,7 +372,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
 
     setMediaTest(MediaType.APPLICATION_JSON);
     assertNoneTasks(userLogin, password);
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000D", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("5");
 
@@ -411,7 +411,7 @@ public class OrderResourceTestCase extends AbstractTaskResourceTestCase {
 
     setMediaTest(MediaType.APPLICATION_JSON);
     assertNoneTasks(userLogin, password);
-    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
+    ResourceModel taskResource = createResourceModel(orderResourceModelClassName, "1000E", urlAttach);
     taskResource = fillOrderResourceParameters(taskResource, false);
     taskResource.getParameterByName("too_many_selected_threshold").setValue("5");
 
