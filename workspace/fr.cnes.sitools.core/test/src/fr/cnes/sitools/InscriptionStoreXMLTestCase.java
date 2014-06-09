@@ -72,6 +72,7 @@ public class InscriptionStoreXMLTestCase extends AbstractSitoolsTestCase {
       File storeDirectory = new File(getTestRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       store = new InscriptionStoreXMLMap(storeDirectory, ctx);

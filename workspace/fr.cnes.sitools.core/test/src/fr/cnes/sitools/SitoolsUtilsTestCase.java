@@ -110,6 +110,7 @@ public class SitoolsUtilsTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new DictionaryStoreXMLMap(storeDirectory, context);
       }
       context.getAttributes().put(ContextAttributes.APP_STORE, store);

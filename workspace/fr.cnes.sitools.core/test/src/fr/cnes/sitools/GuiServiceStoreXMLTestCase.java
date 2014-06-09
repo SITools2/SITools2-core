@@ -71,6 +71,7 @@ public class GuiServiceStoreXMLTestCase extends AbstractSitoolsTestCase {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       store = new GuiServiceStoreXMLMap(storeDirectory, ctx);

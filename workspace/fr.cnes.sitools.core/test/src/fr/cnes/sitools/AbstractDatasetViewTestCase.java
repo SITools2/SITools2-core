@@ -117,6 +117,7 @@ public abstract class AbstractDatasetViewTestCase extends AbstractSitoolsTestCas
       File storeDirectory = new File(getTestRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       if (store == null) {
         store = new DatasetViewStoreXMLMap(storeDirectory, ctx);
       }

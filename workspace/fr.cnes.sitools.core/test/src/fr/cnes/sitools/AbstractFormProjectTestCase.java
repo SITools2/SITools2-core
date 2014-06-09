@@ -102,7 +102,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
-      cleanDirectory(storeDirectory);
+      cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
     }
   }
 

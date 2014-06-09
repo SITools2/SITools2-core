@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -115,6 +115,7 @@ public abstract class AbstractGuiServiceDeclareTestCase extends AbstractSitoolsT
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new GuiServiceStoreXML(storeDirectory, ctx);
 
       }

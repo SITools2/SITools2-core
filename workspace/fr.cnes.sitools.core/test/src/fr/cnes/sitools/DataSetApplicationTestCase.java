@@ -123,6 +123,7 @@ public class DataSetApplicationTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository() + "/map");
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new DataSetStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);

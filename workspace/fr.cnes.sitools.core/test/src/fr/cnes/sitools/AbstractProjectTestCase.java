@@ -142,6 +142,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
 
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       storeGraph = new GraphStoreXML(storeGraphDirectory, ctx);
       store = new ProjectStoreXMLMap(storeDirectory, ctx);
 
@@ -303,7 +304,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     if (!docAPI.appendResponse(result)) {
-      
+
       Response response = GetResponseUtils.getResponseProject(getMediaTest(), result, Project.class);
       assertTrue(response.getSuccess());
       Project prj = (Project) response.getItem();

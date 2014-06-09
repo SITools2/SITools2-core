@@ -124,12 +124,14 @@ public class TaskManagerTestCase extends AbstractSitoolsTestCase {
       File storeDirectory = new File(getStoreTaskResourceRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       storeTask = new TaskStoreXMLMap(storeDirectory, component.getContext());
     }
     if (storeResource == null) {
       File storeDirectory = new File(getStoreTaskRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       storeResource = new ResourcePluginStoreXMLMap(storeDirectory, component.getContext());
     }
 

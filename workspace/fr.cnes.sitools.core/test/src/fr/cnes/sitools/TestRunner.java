@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -22,17 +22,19 @@ import org.junit.runner.JUnitCore;
 
 /**
  * Class to run the tests
- *
+ * 
  * @author m.marseille (AKKA technologies)
  */
 public class TestRunner {
-  
+
   /**
    * Main thread
-   * @param args command line arguments
+   * 
+   * @param args
+   *          command line arguments
    */
   public static void main(String[] args) {
     JUnitCore.runClasses(AbstractAllTests.class);
   }
-  
+
 }

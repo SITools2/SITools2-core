@@ -101,6 +101,7 @@ public class SecurityManagerTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new RoleStoreXMLMap(storeDirectory, ctx);
       }
 

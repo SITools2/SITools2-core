@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -112,11 +112,11 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
+
     SitoolsSettings settings = SitoolsSettings.getInstance();
     if (this.component == null) {
       this.component = createTestComponent(settings);
-      
+
       // Context
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
@@ -124,6 +124,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new FormStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
@@ -202,7 +203,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     param = new ParameterDTO();
     code.remove("id1");
     code.add("id2");
-    /**Radio */
+    /** Radio */
     param.setCode(code);
     param.setType("RADIO");
     params.add(param);
@@ -219,11 +220,9 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     av2.add(v2);
     param.setValues(av2);
     params.add(param);
-    
-    
+
     /** NoSelection */
-    
-    
+
     item.setParameters(params);
     return item;
   }
@@ -274,7 +273,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     RIAPUtils.exhaust(result);
     cr.release();
   }
-  
+
   /**
    * Invoke GET
    * 
@@ -282,21 +281,21 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
    *          FormDTO
    */
   public void retrieveByName(FormDTO item) {
-    
+
     Reference ref = new Reference(String.format(getBaseUrl(), dataSetId));
     ref.addQueryParameter("query", "name");
-    
+
     ClientResource cr = new ClientResource(ref);
-    
+
     Representation result = cr.get(MediaType.APPLICATION_JSON);
-       
+
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
     Response response = getResponse(MediaType.APPLICATION_JSON, result, FormDTO.class, true);
     assertTrue(response.getSuccess());
     assertEquals(new Integer(1), response.getTotal());
-    
+
     RIAPUtils.exhaust(result);
     cr.release();
 

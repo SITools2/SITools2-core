@@ -118,6 +118,7 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
       File storeDirectory = new File(getTestRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       if (store == null) {
         store = new FormComponentsStoreXMLMap(storeDirectory, ctx);
       }

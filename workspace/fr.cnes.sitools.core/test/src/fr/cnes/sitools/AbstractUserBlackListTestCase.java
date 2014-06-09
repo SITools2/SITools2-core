@@ -112,7 +112,7 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
   public void setUp() throws Exception {
     super.setUp();
     File storeDirectory = new File(getTestRepository());
-    cleanDirectory(storeDirectory);
+    cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
 
     RequestCounter counter = (RequestCounter) settings.getStores().get(Consts.SECURITY_FILTER_USER_BLACKLIST_CONTAINER);
     counter.remove(userId);

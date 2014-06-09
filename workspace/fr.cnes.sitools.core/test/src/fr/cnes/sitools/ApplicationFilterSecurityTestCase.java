@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -47,12 +47,10 @@ import fr.cnes.sitools.util.RIAPUtils;
 public class ApplicationFilterSecurityTestCase extends SitoolsServerTestCase {
 
   /** Client admin url, Client admin is an application configured for intranet */
-  private static final String CLIENT_ADMIN = SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_ADMIN_URL)
-      + "/";
+  private static final String CLIENT_ADMIN = SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_ADMIN_URL) + "/";
 
   /** Client user url, Client user is an application configured for extranet */
-  private static final String CLIENT_USER = SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_USER_URL)
-      + "/";
+  private static final String CLIENT_USER = SitoolsSettings.getInstance().getString(Consts.APP_CLIENT_USER_URL) + "/";
 
   /**
    * Test

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -40,7 +40,8 @@ public class SecurityEncryptionTestCase extends TestCase {
   public void testDigestSSHACryptingAlgorithm() {
     String password = "ulisse2010";
     String salt = "salt";
-//    String encoded = "{SSHA}" + fr.cnes.sitools.util.Base64.encodeBytes((DigestUtils.toSha1(password + salt) + salt).getBytes());
+    // String encoded = "{SSHA}" + fr.cnes.sitools.util.Base64.encodeBytes((DigestUtils.toSha1(password + salt) +
+    // salt).getBytes());
     // assertEquals("", encoded);
 
     String expected = "{MD5}0c0MW1lbDoe0rqrYxc30Rw==";
@@ -53,9 +54,10 @@ public class SecurityEncryptionTestCase extends TestCase {
   }
 
   /**
-   * DigestMD5 used by LDAP is a combination of javax.security instead of Restlet DigestUtils.toMd5
-   * and base64.
-   * @param password password to encode
+   * DigestMD5 used by LDAP is a combination of javax.security instead of Restlet DigestUtils.toMd5 and base64.
+   * 
+   * @param password
+   *          password to encode
    * @return encoded password
    */
   private String digestMd5(final String password) {
@@ -66,11 +68,9 @@ public class SecurityEncryptionTestCase extends TestCase {
       digest.update(password.getBytes());
       // base64 = new BASE64Encoder().encode(digest.digest());
       // base64 = fr.cnes.sitools.util.Base64Sun.encode(digest.digest());
-//      base64 = fr.cnes.sitools.util.Base64.encodeBytes(digest.digest());
-      byte[] bytes =  org.apache.commons.codec.binary.Base64.encodeBase64(digest.digest());
+      // base64 = fr.cnes.sitools.util.Base64.encodeBytes(digest.digest());
+      byte[] bytes = org.apache.commons.codec.binary.Base64.encodeBase64(digest.digest());
       base64 = new String(bytes);
-
-
 
     }
     catch (NoSuchAlgorithmException e) {

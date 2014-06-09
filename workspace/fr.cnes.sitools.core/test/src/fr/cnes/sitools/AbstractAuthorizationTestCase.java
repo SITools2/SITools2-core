@@ -123,6 +123,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
       File storeDirectory = new File(getTestRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       if (store == null) {
         store = new AuthorizationStoreXMLMap(storeDirectory, appContext);
       }

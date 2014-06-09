@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -58,7 +58,8 @@ public class JDBCDataSourceStoreXMLTestCase extends AbstractSitoolsTestCase {
 
   @Override
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASOURCES_STORE_DIR) + "/map";
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASOURCES_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -72,8 +73,9 @@ public class JDBCDataSourceStoreXMLTestCase extends AbstractSitoolsTestCase {
       File storeDirectory = new File(getTestRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       store = new JDBCDataSourceStoreXMLMap(storeDirectory, ctx);
     }
   }

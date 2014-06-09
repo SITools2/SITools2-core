@@ -119,6 +119,7 @@ public abstract class AbstractConceptTemplateTestCase extends AbstractSitoolsTes
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new ConceptTemplateStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);

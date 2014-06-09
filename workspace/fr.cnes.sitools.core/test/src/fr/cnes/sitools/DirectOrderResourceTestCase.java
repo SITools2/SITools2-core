@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -196,7 +196,7 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceUnknowArchiveType() throws ClassNotFoundException, InstantiationException,
-    IllegalAccessException {
+      IllegalAccessException {
     resourceModel = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
     resourceModel = fillOrderResourceParameters(resourceModel);
     resourceModel.getParameterByName("too_many_selected_threshold").setValue("10");
@@ -217,7 +217,7 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceTooManyFileLimitNotReachedOrdered() throws ClassNotFoundException,
-    InstantiationException, IllegalAccessException {
+      InstantiationException, IllegalAccessException {
     resourceModel = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
     resourceModel = fillOrderResourceParameters(resourceModel);
     resourceModel.getParameterByName("too_many_selected_threshold").setValue("5");
@@ -237,7 +237,7 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
    */
   @Test
   public void testOrderResourceTooManyFileOrdered() throws ClassNotFoundException, InstantiationException,
-    IllegalAccessException {
+      IllegalAccessException {
     resourceModel = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
     resourceModel = fillOrderResourceParameters(resourceModel);
     resourceModel.getParameterByName("too_many_selected_threshold").setValue("2");
@@ -261,7 +261,7 @@ public class DirectOrderResourceTestCase extends AbstractTaskResourceTestCase {
    *           if there is an error while Instantiating a new TaskResourceModel
    */
   private void testOrder(MediaType mediaType, String archiveType) throws ClassNotFoundException,
-    InstantiationException, IllegalAccessException {
+      InstantiationException, IllegalAccessException {
     resourceModel = createResourceModel(orderResourceModelClassName, "1000", urlAttach);
     resourceModel = fillOrderResourceParameters(resourceModel);
     create(resourceModel, getBaseDatasetUrl());

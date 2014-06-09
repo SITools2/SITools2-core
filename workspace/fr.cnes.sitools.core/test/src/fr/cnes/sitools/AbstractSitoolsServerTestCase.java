@@ -178,7 +178,7 @@ public abstract class AbstractSitoolsServerTestCase {
   }
 
   /**
-   * Try to remove files from directory
+   * Try to remove files from all the map directories under rootDir
    * 
    * @param rootDir
    *          directory to be cleaned
@@ -206,6 +206,16 @@ public abstract class AbstractSitoolsServerTestCase {
       Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
           "Unable to clean " + rootDir.getPath() + "\n cause:" + e.getMessage());
     }
+  }
+
+  /**
+   * Try to remove files from all the map directories under rootDirPath
+   * 
+   * @param rootDirPath
+   *          the path of the directory to be cleaned
+   */
+  public static void cleanMapDirectories(String rootDirPath) {
+    cleanDirectory(new File(rootDirPath));
   }
 
   /**
@@ -298,6 +308,8 @@ public abstract class AbstractSitoolsServerTestCase {
     setUpDataDirectory(source, cible);
     settings.setStoreDIR(TEST_FILES_REPOSITORY);
     settings.setTmpFolderUrl(settings.getStoreDIR(Consts.APP_TMP_FOLDER_DIR));
+
+    cleanMapDirectories(cible);
 
     if (!isSecure()) {
       settings.setSecured(false);

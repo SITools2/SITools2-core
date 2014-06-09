@@ -124,6 +124,7 @@ public abstract class AbstractDictionaryTestCase extends AbstractSitoolsTestCase
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new DictionaryStoreXMLMap(storeDirectory, ctx);
       }
 

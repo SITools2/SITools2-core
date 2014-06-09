@@ -149,6 +149,7 @@ public abstract class AbstractFilterTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new FilterStoreXMLMap(storeDirectory, ctx);
 
       }

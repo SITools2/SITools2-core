@@ -142,6 +142,7 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository());
         File storeProjectDirectory = new File(getTestProjectRepository());
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new GraphStoreXML(storeDirectory, ctx);
         storeProject = new ProjectStoreXML(storeProjectDirectory, ctx);
 

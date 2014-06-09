@@ -119,6 +119,7 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
       // clean directory prior to the test
       File storeDirectory = new File(getTestRepository());
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       if (store == null) {
         store = new RoleStoreXML(storeDirectory, ctx);
       }

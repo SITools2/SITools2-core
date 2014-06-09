@@ -141,6 +141,7 @@ public abstract class AbstractUserStorageManagerTestCase extends AbstractSitools
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new UserStorageStoreXMLMap(storeDirectory, ctx);
       }
 

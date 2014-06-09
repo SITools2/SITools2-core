@@ -123,7 +123,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
-        cleanDirectory(storeDirectory);
+        cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
         store = new GuiServicePluginStoreXMLMap(storeDirectory, ctx);
 
       }

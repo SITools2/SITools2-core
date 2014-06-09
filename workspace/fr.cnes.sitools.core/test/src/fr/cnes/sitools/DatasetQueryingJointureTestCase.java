@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -44,13 +44,14 @@ public class DatasetQueryingJointureTestCase extends AbstractDataSetManagerTestC
   /** Test title */
   protected static final String TITLE = "Dataset Filter API with JSON format";
 
-  /** url attachment of the dataset with MySQL datasource with join*/
+  /** url attachment of the dataset with MySQL datasource with join */
   private static String urlAttachJoin = "/dataset/tests/joinTest";
 
   /**
    * Mysql Dataset Id
    */
   private String datasetId = "datasetJoinId";
+
   /**
    * absolute url for dataset management REST API
    * 
@@ -93,17 +94,20 @@ public class DatasetQueryingJointureTestCase extends AbstractDataSetManagerTestC
     deleteDataset(datasetId);
   }
 
-
   /**
-   * Create and activate a Dataset for Mysql datasource with join. This dataset is created on the HEADERS, IAPDATASET and OBJECT_CLASS table
+   * Create and activate a Dataset for Mysql datasource with join. This dataset is created on the HEADERS, IAPDATASET
+   * and OBJECT_CLASS table
    * 
-   * @param typeJointure the join
-   * @param urlAttach the url Attachement
+   * @param typeJointure
+   *          the join
+   * @param urlAttach
+   *          the url Attachement
    * @return the DataSet created
    * @throws InterruptedException
    *           if something is wrong
    */
-  private DataSet createDatasetHeadersJoinMySQL(TypeJointure typeJointure, String urlAttach) throws InterruptedException {
+  private DataSet createDatasetHeadersJoinMySQL(TypeJointure typeJointure, String urlAttach)
+      throws InterruptedException {
     DataSet item = CreateDatasetUtil.createDatasetHeadersJoinMySQL(datasetId, urlAttach, typeJointure);
 
     persistDataset(item);
@@ -111,11 +115,15 @@ public class DatasetQueryingJointureTestCase extends AbstractDataSetManagerTestC
 
     return item;
   }
+
   /**
-   * Create and activate a Dataset for Pg datasource with join. This dataset is created on the HEADERS, IAPDATASET and OBJECT_CLASS table
+   * Create and activate a Dataset for Pg datasource with join. This dataset is created on the HEADERS, IAPDATASET and
+   * OBJECT_CLASS table
    * 
-   * @param typeJointure the join
-   * @param urlAttach the url Attachement
+   * @param typeJointure
+   *          the join
+   * @param urlAttach
+   *          the url Attachement
    * @return the DataSet created
    * @throws InterruptedException
    *           if something is wrong
@@ -130,130 +138,143 @@ public class DatasetQueryingJointureTestCase extends AbstractDataSetManagerTestC
   }
 
   /**
-   * Test DataSet on Inner Join 
-   * @throws InterruptedException 
+   * Test DataSet on Inner Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetInnerJoin() throws InterruptedException {
     createDatasetHeadersJoinMySQL(TypeJointure.INNER_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 5046);
-    
+
   }
+
   /**
-   * Test DataSet on Join 
-   * @throws InterruptedException 
+   * Test DataSet on Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetLeftJoin() throws InterruptedException {
     createDatasetHeadersJoinMySQL(TypeJointure.LEFT_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 5062);
-    
+
   }
 
   /**
-   * Test DataSet on left Join 
-   * @throws InterruptedException 
+   * Test DataSet on left Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetRightJoin() throws InterruptedException {
     createDatasetHeadersJoinMySQL(TypeJointure.RIGHT_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 5064);
-    
+
   }
 
   /**
-   * Test DataSet on left outer Join 
-   * @throws InterruptedException 
+   * Test DataSet on left outer Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetleftOuterJoin() throws InterruptedException {
     createDatasetHeadersJoinMySQL(TypeJointure.LEFT_OUTER_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 5062);
-    
+
   }
+
   /**
-   * Test DataSet on right outer Join 
-   * @throws InterruptedException 
+   * Test DataSet on right outer Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetrightOuterJoin() throws InterruptedException {
     createDatasetHeadersJoinMySQL(TypeJointure.RIGHT_OUTER_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 5064);
-    
+
   }
 
   /**
-   * Test DataSet on inner Join 
-   * @throws InterruptedException 
+   * Test DataSet on inner Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetInnerJoinPg() throws InterruptedException {
     createDatasetHeadersJoinPG(TypeJointure.INNER_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 4689);
-    
+
   }
 
   /**
-   * Test DataSet on right outer Join 
-   * @throws InterruptedException 
+   * Test DataSet on right outer Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetRightOuterJoinPg() throws InterruptedException {
     createDatasetHeadersJoinPG(TypeJointure.RIGHT_OUTER_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 4707);
-    
+
   }
-  
+
   /**
-   * Test DataSet on right Join 
-   * @throws InterruptedException 
+   * Test DataSet on right Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetRightJoinPg() throws InterruptedException {
     createDatasetHeadersJoinPG(TypeJointure.RIGHT_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 4707);
-    
+
   }
+
   /**
-   * Test DataSet on left Join 
-   * @throws InterruptedException 
+   * Test DataSet on left Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetLeftJoinPg() throws InterruptedException {
     createDatasetHeadersJoinPG(TypeJointure.LEFT_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 5062);
-    
+
   }
+
   /**
-   * Test DataSet on left outer Join 
-   * @throws InterruptedException 
+   * Test DataSet on left outer Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetLeftOuterJoinPg() throws InterruptedException {
     createDatasetHeadersJoinPG(TypeJointure.LEFT_OUTER_JOIN, urlAttachJoin);
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 5062);
-    
+
   }
-  
 
 }

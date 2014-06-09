@@ -65,6 +65,7 @@ public class UserBlackListStoreXMLTestCase extends AbstractSitoolsTestCase {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       store = new UserBlackListStoreXMLMap(storeDirectory, ctx);

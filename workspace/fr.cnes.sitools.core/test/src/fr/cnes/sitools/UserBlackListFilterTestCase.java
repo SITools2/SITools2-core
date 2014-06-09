@@ -60,6 +60,7 @@ public class UserBlackListFilterTestCase extends AbstractSitoolsServerTestCase {
     super.setUp();
     File storeDirectory = new File(getTestRepository());
     cleanDirectory(storeDirectory);
+    cleanMapDirectories(storeDirectory);
   }
 
   /**

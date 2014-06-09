@@ -224,6 +224,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
         File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_TASK_STORE_DIR) + "/map");
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new TaskStoreXMLMap(storeDirectory, appContext);
       }
 
@@ -232,6 +233,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
             + "/map");
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         storeResource = new ResourcePluginStoreXMLMap(storeDirectory, appContext);
       }
 

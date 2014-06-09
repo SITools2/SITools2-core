@@ -148,6 +148,7 @@ public abstract class AbstractConverterTestCase extends AbstractSitoolsTestCase 
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new ConverterStoreXMLMap(storeDirectory, ctx);
 
       }

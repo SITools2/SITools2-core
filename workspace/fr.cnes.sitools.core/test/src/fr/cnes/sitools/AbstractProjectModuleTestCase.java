@@ -116,6 +116,7 @@ public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestC
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new ProjectModuleStoreXMLMap(storeDirectory, ctx);
 
       }

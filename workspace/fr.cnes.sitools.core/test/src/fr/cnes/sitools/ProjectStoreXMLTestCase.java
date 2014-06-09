@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -70,8 +70,9 @@ public class ProjectStoreXMLTestCase extends AbstractSitoolsTestCase {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       store = new ProjectStoreXMLMap(storeDirectory, ctx);
     }
   }

@@ -97,7 +97,7 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
   // */
   // public void setUp() throws Exception {
   // File storeDirectory = new File(getTestRepository());
-  // cleanDirectory(storeDirectory);
+  // cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
   // if (store == null) {
   // store = new JDBCDataSourceStoreXML(storeDirectory);
   // }

@@ -132,7 +132,7 @@ public class OpenSearchTestCase extends AbstractSitoolsTestCase {
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
-        cleanDirectory(storeDirectory);
+        cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
         store = new OpenSearchStoreXMLMap(storeDirectory, ctx);
       }
 

@@ -144,7 +144,7 @@ public abstract class AbstractOrderTestCase extends AbstractSitoolsTestCase {
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
-        cleanDirectory(storeDirectory);
+        cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
         store = new OrderStoreXMLMap(storeDirectory, ctx);
       }
       

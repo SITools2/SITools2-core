@@ -37,6 +37,7 @@ import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.server.Consts;
+
 ;
 
 /**
@@ -72,6 +73,7 @@ public class GraphStoreXMLTestCase extends AbstractSitoolsTestCase {
       File storeDirectory = new File(getTestRepository());
       storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       store = new GraphStoreXMLMap(storeDirectory, ctx);

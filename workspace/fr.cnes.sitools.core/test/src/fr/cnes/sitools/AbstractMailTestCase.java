@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -43,7 +43,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 
 /**
  * Test for mail API
- *
+ * 
  * @author m.marseille (AKKA Technologies)
  */
 public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase {
@@ -71,7 +71,7 @@ public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase
    * Invoke POST on root URL
    */
   private void postMail() {
-    
+
     // Create mail
     Mail mail = new Mail();
     List<String> toList = new ArrayList<String>();
@@ -80,15 +80,15 @@ public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase
     mail.setFrom("JunitTest");
     mail.setToList(toList);
     mail.setBody("Test");
-    
+
     Representation rep = getRepresentation(mail, getMediaTest());
     ClientResource cr = new ClientResource(getBaseUrl());
     Representation result = cr.post(rep, getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
-    
+
   }
-  
+
   /**
    * Response to Representation
    * 
@@ -111,7 +111,7 @@ public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase
       return null;
     }
   }
-  
+
   /**
    * Configure XStream mapping of a Response object
    * 
@@ -122,7 +122,7 @@ public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase
     xstream.autodetectAnnotations(false);
     xstream.alias("response", Response.class);
   }
-  
+
   /**
    * REST API Response Representation wrapper for single or multiple items expexted
    * 
@@ -147,7 +147,7 @@ public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase
       xstream.autodetectAnnotations(false);
       xstream.alias("response", Response.class);
       xstream.alias("mailconfig", MailConfiguration.class);
-      
+
       xstream.alias("item", dataClass);
       xstream.alias("item", Object.class, dataClass);
 
@@ -172,5 +172,4 @@ public abstract class AbstractMailTestCase extends AbstractSitoolsServerTestCase
     }
   }
 
-  
 }

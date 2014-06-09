@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -77,7 +77,7 @@ public class SitoolsServerStartWithProxyTest {
 
   /** settings for the tests */
   private static SitoolsSettings settings = null;
-  
+
   /**
    * system property name for test port
    */
@@ -234,8 +234,6 @@ public class SitoolsServerStartWithProxyTest {
   public void tearDown() throws Exception {
     //
   }
-
-
 
   /**
    * Before class load

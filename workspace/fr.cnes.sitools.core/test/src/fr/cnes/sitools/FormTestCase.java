@@ -119,7 +119,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         storeDirectory.mkdirs();
-        cleanDirectory(storeDirectory);
+        cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
         store = new FormStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);

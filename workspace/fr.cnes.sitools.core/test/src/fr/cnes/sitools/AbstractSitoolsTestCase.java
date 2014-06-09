@@ -411,4 +411,45 @@ public abstract class AbstractSitoolsTestCase {
     return component;
   }
 
+  /**
+   * Try to remove files from all the map directories under rootDir
+   * 
+   * @param rootDir
+   *          directory to be cleaned
+   */
+  public static void cleanMapDirectories(File rootDir) {
+    if (rootDir == null) {
+      LOGGER.warning("Null directory");
+      return;
+    }
+
+    try {
+      if (rootDir.getName().equals("map")) {
+        FileUtils.cleanDirectory(rootDir, new String[] {"xml"}, false);
+      }
+
+      LOGGER.info("Clean XML files in maps directory " + rootDir.getAbsolutePath());
+      File[] children = rootDir.listFiles();
+      for (File file : children) {
+        if (file.isDirectory()) {
+          cleanMapDirectories(file);
+        }
+      }
+    }
+    catch (IOException e) {
+      Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
+          "Unable to clean " + rootDir.getPath() + "\n cause:" + e.getMessage());
+    }
+  }
+
+  /**
+   * Try to remove files from all the map directories under rootDirPath
+   * 
+   * @param rootDirPath
+   *          the path of the directory to be cleaned
+   */
+  public static void cleanMapDirectories(String rootDirPath) {
+    cleanDirectory(new File(rootDirPath));
+  }
+
 }
