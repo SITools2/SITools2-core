@@ -202,8 +202,9 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
       this.component.getContext().getAttributes().put("APP_REALM", smr);
 
       if (storeAuthorization == null) {
-        storeAuthorization = new AuthorizationStoreXMLMap(new File(
-            settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR) + "/map"), appContextAuthorization);
+        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_AUTHORIZATIONS_STORE_DIR)
+            + "/map");
+        storeAuthorization = new AuthorizationStoreXMLMap(storeDirectory, appContextAuthorization);
       }
 
       appContextAuthorization.getAttributes().put(ContextAttributes.APP_STORE, storeAuthorization);

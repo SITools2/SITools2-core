@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -224,9 +224,8 @@ public class UserStorageTestCase extends AbstractSitoolsServerTestCase {
    */
   @Test
   public void testUserStorageBadCreate() {
-    Context ctx = new Context();
-    ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-    UserStorageStoreInterface store = new UserStorageStoreXMLMap(ctx);
+    UserStorageStoreInterface store = (UserStorageStoreInterface) settings.getStores()
+        .get(Consts.APP_STORE_USERSTORAGE);
     UserStorage userStorage = new UserStorage();
     boolean exceptionThrown = false;
     try {

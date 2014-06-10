@@ -20,6 +20,7 @@ package fr.cnes.sitools.userstorage;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +31,7 @@ import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.persistence.XmlMapStore;
+import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.userstorage.model.UserStorage;
 
 /**
@@ -113,6 +115,20 @@ public class UserStorageStoreXMLMap extends XmlMapStore<UserStorage> implements 
   @Override
   public String getCollectionName() {
     return COLLECTION_NAME;
+  }
+
+  @Override
+  public UserStorage update(UserStorage userStorage) {
+    UserStorage result = null;
+
+    Map<String, UserStorage> map = getMap();
+    UserStorage current = map.get(userStorage.getId());
+    result = current;
+    current.setStorage(userStorage.getStorage());
+    current.setStatus(userStorage.getStatus());
+    
+    map.put(userStorage.getId(), current);
+    return result;
   }
 
 }

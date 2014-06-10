@@ -34,6 +34,7 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
+import fr.cnes.sitools.common.model.Url;
 import fr.cnes.sitools.dataset.view.model.DatasetView;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.FileCopyUtils;
@@ -134,6 +135,8 @@ public class SitoolsServerWithMigrationTestCase extends AbstractSitoolsServerTes
       xstream.autodetectAnnotations(false);
       xstream.alias("response", Response.class);
       xstream.alias("datasetView", DatasetView.class);
+      xstream.alias("url", Url.class);
+      
 
       // Parce que les annotations ne sont apparemment prises en compte
       xstream.omitField(Response.class, "itemName");
