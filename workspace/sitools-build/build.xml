@@ -307,7 +307,7 @@
 
 		<antcall target="tar-gz">
 			<param name="title" value="${sitools.project.title}" />
-			<param name="dir" value="${distribution.dir}" />
+			<param name="dir" value="${distribution.sources.dir}" />
 			<param name="version" value="${sitools.project.tag}" />
 		</antcall>
 	</target>
