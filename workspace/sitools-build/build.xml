@@ -296,7 +296,7 @@
 		<property name="archive.path" value="${dir}/${title}-${version}.tar.gz"/>
 		<echo message="generating archive ${archive.path}"/>
 		<tar destfile="${archive.path}" compression="gzip">
-			<fileset dir="${dir}">
+			<fileset dir="${dir}/sources">
 				<exclude name="**/documentation/javadoc/**"/>
 				<exclude name=".git/**"/>
 			</fileset>
@@ -307,7 +307,7 @@
 
 		<antcall target="tar-gz">
 			<param name="title" value="${sitools.project.title}" />
-			<param name="dir" value="${distribution.sources.dir}" />
+			<param name="dir" value="${distribution.dir}" />
 			<param name="version" value="${sitools.project.tag}" />
 		</antcall>
 	</target>
