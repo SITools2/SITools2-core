@@ -23,14 +23,11 @@
 ===
 ==============================================================================
 -->
-<project name="fr.cnes.sitools.build" default="build" basedir=".">
+<project name="fr.cnes.sitools.build" default="build-git" basedir=".">
 
 
 	<!-- Chargement du build.properties ( contient le HOST ) -->
 	<property file="build.properties" prefix="sitools" />
-	<property name="ant-svn.dir" value="lib"/>
-	<property name="repos.new.url" value="${sitools.Svn.tags.url}/${sitools.Version.tag}"/>
-	<property name="repos.ref.url" value="${sitools.Svn.branches.url}/${sitools.Version.reference}"/>
 	<property name="repos.new.tag" value="${sitools.Version.tag}"/>
 	<property name="repos.ref.tag" value="${sitools.Version.reference}"/>
 	<property name="repos.new.revision" value="${sitools.Revision.current}"/>
@@ -41,17 +38,12 @@
 	<property name="conf.dir" value="${fr.cnes.sitools.core.dir}/conf"/>
 
 	<!-- Initialization of SVN-ant libraries -->
-	<path id="path.svnant">
-		<pathelement location="${ant-svn.dir}/svnant.jar"/>
-		<pathelement location="${ant-svn.dir}/javahl_1.7.5.1.jar"/>
-		<!-- 		<pathelement location="${ant-svn.dir}/svnkit_1.7.5.jar"/> -->
-		<!-- 		<pathelement location="${ant-svn.dir}/ganymed.jar"/> -->
-		<pathelement location="${ant-svn.dir}/svnClientAdapter.jar"/>
-	</path>
-	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="path.svnant"/>
 
 	<!-- Creating distribution folder from tag -->
 	<property name="distribution.dir" value="DISTRIBUTION-${sitools.project.tag}"/>
+
+	<!-- Creating distribution folder from tag -->
+	<property name="distribution.sources.dir" value="${distribution.dir}/sources"/>
 
 	<!-- Creating distribution folder from tag for astronomy -->
 	<property name="distribution.astro.dir" value="DISTRIBUTION-ASTRO-${sitools.project.tag}"/>
@@ -64,8 +56,6 @@
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 			MAIN Target 
 		+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<target name="build" depends="init, export, izpack, javadoc, file-list, tar-gz, checksum" description="Création d'une distribution" />
-
 	<target name="build-git" depends="init-git-core, export-git-core, izpack, javadoc, file-list-git-core, tar-gz-core, checksum-core" description="Création d'une distribution" />
 
 	<target name="build-git-ext-astro" depends="init-git-astro, export-git-astro, file-list-git-astro, tar-gz-astro, checksum-astro" description="Création d'une distribution" />
@@ -80,10 +70,11 @@
 		<echo message="preparing folders ..."/>
 		<delete dir="${distribution.dir}"/>
 		<mkdir dir="${distribution.dir}"/>
-		<mkdir dir="${distribution.dir}/cots"/>
-		<mkdir dir="${distribution.dir}/data"/>
-		<mkdir dir="${distribution.dir}/database"/>
-		<mkdir dir="${distribution.dir}/workspace"/>
+		<mkdir dir="${distribution.sources.dir}"/>
+		<mkdir dir="${distribution.sources.dir}/cots"/>
+		<mkdir dir="${distribution.sources.dir}/data"/>
+		<mkdir dir="${distribution.sources.dir}/database"/>
+		<mkdir dir="${distribution.sources.dir}/workspace"/>
 	</target>
 	
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -113,78 +104,16 @@
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Target for init before import/ Basicaly remove some files that we don't want to be commited
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<target name="init-import" description="Initiatialisation avant l'import sur sourceforge" >
-		<delete>
-			<fileset 
-				dir="${distribution.dir}"
-				includesfile="list_files_to_delete_before_import.properties" />
-		</delete>
-	</target>
-
-	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		Target for SVN export 
-	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<target name="export" depends="init" description="Tache SVN d exportation du la version actuelle">
-		<svnSetting
-	          username="${sitools.username}"
-	          password="${sitools.password}"
-	          id="svn.settings"
-			  client="javahl"
-	      />
-		<!-- Export part -->
-		<echo message="cots export started ...${sitools.username}"/>
-		<svn refid="svn.settings">
-			<export
-				srcUrl="${repos.new.url}/cots"
-				destPath="${distribution.dir}/cots"
-				force="true"
-				revision="${repos.new.revision}"/>
-		</svn>
-		<echo message="cots exported"/>
-		<echo message="data export started ..."/>
-		<svn refid="svn.settings">
-			<export
-				srcUrl="${repos.new.url}/data"
-				destPath="${distribution.dir}/data"
-				force="true"
-				revision="${repos.new.revision}"
-			/>
-		</svn>
-		<echo message="data exported"/>
-		<echo message="database export started ..."/>
-		<svn refid="svn.settings">
-			<export
-				srcUrl="${repos.new.url}/database"
-				destPath="${distribution.dir}/database"
-				force="true"
-				revision="${repos.new.revision}"
-			/>
-		</svn>
-		<echo message="database exported"/>
-		<echo message="workspace export started ..."/>
-		<svn refid="svn.settings">
-			<export
-				srcUrl="${repos.new.url}/workspace"
-				destPath="${distribution.dir}/workspace"
-				force="true"
-				revision="${repos.new.revision}"
-			/>
-		</svn>
-		<echo message="workspace exported"/>
-		<echo message="SVN export from branch/tag ${repos.new.revision} done"/>
-
-	</target>
-
 	<target name="export-git" description="Tache GIT d'export de la version actuelle">
 		<exec executable="scripts/clone-tag.bat" osfamily="windows" failonerror="true">
 			<arg value="${url}"/>
-			<arg value="${dir}"/>
+			<arg value="${distribution.sources.dir}"/>
 			<arg value="${tag}"/>
 		</exec>
 
 		<exec executable="scripts/clone-tag.sh" osfamily="unix" failonerror="true">
 			<arg value="${url}"/>
-			<arg value="${dir}"/>
+			<arg value="${distribution.sources.dir}"/>
 			<arg value="${tag}"/>
 		</exec>
 
@@ -196,7 +125,6 @@
 			<param name="dir" value="${distribution.dir}"/>
 			<param name="tag" value="${repos.new.tag}"/>
 		</antcall>
-
 	</target>
 
 	<target name="export-git-astro" description="Tache GIT d'export de la version actuelle de l'extension astronomy">
@@ -216,184 +144,6 @@
 	</target>
 
 
-	<target name="import-all" depends="init-import"
-		description="Tache SVN de déploiement de la version actuelle sur Sourceforge">
-
-		<echo message="Import of Sitools2 to the sourceforge repository">
-		</echo>
-		<echo message="Repository : ${sitools.sourceforge.url}"  >
-		</echo>
-		<echo message="Username : ${sitools.sourceforge.username}"  >
-		</echo>
-		<echo message="Starting ...."  >
-		</echo>
-
-		<svnSetting 
-			username="${sitools.sourceforge.username}"
-			password="${sitools.sourceforge.password}"
-			id="svn.settings" 
-			client="javahl"
-		/>
-		<!-- DATA -->
-		<echo message="data import started ...${sitools.sourceforge.username}" />
-		<svn refid="svn.settings">
-			<import url="${sitools.sourceforge.url}/data" path="${distribution.dir}/data"
-				message="Import of data version ${sitools.project.tag}" />
-		</svn>
-		<echo message="data imported" />
-
-		<!-- DATABASE -->
-		<echo message="database import started ...${sitools.sourceforge.username}" />
-		<svn refid="svn.settings">
-			<import url="${sitools.sourceforge.url}/database" path="${distribution.dir}/database"
-				message="Import of database version ${sitools.project.tag}" />
-		</svn>
-		<echo message="database imported" />
-
-		<!-- COTS -->
-		<echo message="cots import started ...${sitools.sourceforge.username}"/>
-		<svn refid="svn.settings">
-			<import
-				url="${sitools.sourceforge.url}/cots"
-				path="${distribution.dir}/cots"
-				message="Import of cots version ${sitools.project.tag}"/>
-		</svn>
-		<echo message="cots imported"/>
-
-		<!-- WORKSPACE -->
-		<echo message="workspace import started ...${sitools.sourceforge.username}"/>
-		<svn refid="svn.settings">
-			<import
-				url="${sitools.sourceforge.url}/workspace"
-				path="${distribution.dir}/workspace"
-				message="Import of workspace version ${sitools.project.tag}"/>
-		</svn>
-		<echo message="workspace imported"/>
-	</target>
-
-
-	<!-- TARGET FOR DATA ONLY -->
-	<target name="import-data" depends="init-import"
-		description="Tache SVN de déploiement du dossier data de la version actuelle sur Sourceforge">
-
-		<echo message="Import of Sitools2 to the sourceforge repository">
-		</echo>
-		<echo message="Repository : ${sitools.sourceforge.url}"  >
-		</echo>
-		<echo message="Username : ${sitools.sourceforge.username}"  >
-		</echo>
-		<echo message="Starting ...."  >
-		</echo>
-
-		<svnSetting 
-			username="${sitools.sourceforge.username}"
-			password="${sitools.sourceforge.password}"
-			id="svn.settings" 
-			client="javahl"
-		/>
-		<!-- DATA -->
-		<echo message="data import started ...${sitools.sourceforge.username}" />
-		<svn refid="svn.settings">
-			<import url="${sitools.sourceforge.url}/data" path="${distribution.dir}/data"
-				message="Import of data version ${sitools.project.tag}" />
-		</svn>
-		<echo message="data imported" />
-	</target>
-
-	<!-- TARGET FOR DATABASE ONLY -->
-	<target name="import-database" depends="init-import"
-		description="Tache SVN de déploiement du dossier database de la version actuelle sur Sourceforge">
-
-		<echo message="Import of Sitools2 to the sourceforge repository">
-		</echo>
-		<echo message="Repository : ${sitools.sourceforge.url}"  >
-		</echo>
-		<echo message="Username : ${sitools.sourceforge.username}"  >
-		</echo>
-		<echo message="Starting ...."  >
-		</echo>
-
-		<svnSetting 
-			username="${sitools.sourceforge.username}"
-			password="${sitools.sourceforge.password}"
-			id="svn.settings"
-			client="javahl"
-		/>
-
-		<!-- DATABASE -->
-		<echo message="database import started ...${sitools.sourceforge.username}" />
-		<svn refid="svn.settings">
-			<import url="${sitools.sourceforge.url}/database" path="${distribution.dir}/database"
-				message="Import of database version ${sitools.project.tag}" />
-		</svn>
-		<echo message="database imported" />
-	</target>
-
-
-	<!-- TARGET FOR COTS ONLY -->
-	<target name="import-cots" depends="init-import"
-		description="Tache SVN de déploiement du dossier cots de la version actuelle sur Sourceforge">
-
-		<echo message="Import of Sitools2 to the sourceforge repository">
-		</echo>
-		<echo message="Repository : ${sitools.sourceforge.url}"  >
-		</echo>
-		<echo message="Username : ${sitools.sourceforge.username}"  >
-		</echo>
-		<echo message="Starting ...."  >
-		</echo>
-
-		<svnSetting 
-			username="${sitools.sourceforge.username}"
-			password="${sitools.sourceforge.password}"
-			id="svn.settings"
-			client="javahl"
-		/>
-
-		<!-- COTS -->
-		<echo message="cots import started ...${sitools.sourceforge.username}"/>
-		<svn refid="svn.settings">
-			<import
-				url="${sitools.sourceforge.url}/cots"
-				path="${distribution.dir}/cots"
-				message="Import of cots version ${sitools.project.tag}"/>
-		</svn>
-		<echo message="cots imported"/>
-	</target>
-
-	<!-- TARGET FOR WORKSPACE ONLY -->
-	<target name="import-workspace" depends="init-import"
-		description="Tache SVN de déploiement du dossier workspace de la version actuelle sur Sourceforge">
-
-		<echo message="Import of Sitools2 to the sourceforge repository">
-		</echo>
-		<echo message="Repository : ${sitools.sourceforge.url}"  >
-		</echo>
-		<echo message="Username : ${sitools.sourceforge.username}"  >
-		</echo>
-		<echo message="Starting ...."  >
-		</echo>
-
-		<svnSetting 
-			username="${sitools.sourceforge.username}"
-			password="${sitools.sourceforge.password}"
-			id="svn.settings"
-			client="javahl"
-		/>
-
-		<!-- WORKSPACE -->
-		<echo message="workspace import started ...${sitools.sourceforge.username}"/>
-		<svn refid="svn.settings">
-			<import
-				url="${sitools.sourceforge.url}/workspace"
-				path="${distribution.dir}/workspace"
-				message="Import of workspace version ${sitools.project.tag}"/>
-		</svn>
-		<echo message="workspace imported"/>
-	</target>
-
-
-
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Targets for IzPack 
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -408,17 +158,17 @@
 		<mkdir dir="tmp/workspace"/>
 		<!-- Copying needed projects and resources -->
 		<copy todir="tmp/cots">
-			<fileset dir="${distribution.dir}/cots"/>
+			<fileset dir="${distribution.sources.dir}/cots"/>
 		</copy>
 		<copy todir="tmp/data">
-			<fileset dir="${distribution.dir}/data"/>
+			<fileset dir="${distribution.sources.dir}/data"/>
 		</copy>
 		<copy todir="tmp/database">
-			<fileset dir="${distribution.dir}/database"/>
+			<fileset dir="${distribution.sources.dir}/database"/>
 		</copy>
 		<copy todir="tmp/workspace">
 			<fileset 
-				dir="${distribution.dir}/workspace" 
+				dir="${distribution.sources.dir}/workspace" 
 				excludes="**/fr.cnes.sitools.s*/** **/sitools-build/** **/sitools-t*/** **/tools/**"/>
 		</copy>
 	</target>
@@ -480,51 +230,6 @@
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 		Target for file lists and README.txt 
 	+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<target name="file-list" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
-		<svnSetting
-	          username="${sitools.username}"
-	          password="${sitools.password}"
-	          id="svn.settings"
-	          client="javahl"
-	      />
-		<echo message="moving files to ${distribution.dir}"/>
-		<copy todir="${distribution.dir}">
-			<fileset dir="files" includes="**/*.txt **/*.jar">
-			</fileset>
-		</copy>
-		<delete dir="files" includes="**/*.jar"/>
-
-		<svn refid="svn.settings">
-			<!-- if new is on the trunk; else 
-				newUrl="${sitools.Svn.tags.url}/${sitools.Version.tag}"
-				 -->
-			<DiffSummarizeSitoolsForCNES 
-				oldUrl="${repos.ref.url}"
-				newUrl="${repos.new.url}"
-				oldTargetRevision="${repos.ref.revision}"
-				newTargetRevision="${repos.new.revision}"
-				outFile="${distribution.dir}/list-diff.txt"
-			/>
-		</svn>
-
-		<delete file="${distribution.dir}/list-diff.txt"/>
-
-		<path id="list.files">
-			<fileset dir="${distribution.dir}">
-				<include name="**/*.*"/>
-			</fileset>
-		</path>
-		<property name="files" refid="list.files"/>
-		<pathconvert property="list" refid="list.files" pathsep="&#x0A;">
-			<mapper>
-				<globmapper from='${sitools.ROOT_DIRECTORY}/*' to="*" handledirsep="true"/>
-			</mapper>
-		</pathconvert>
-		<echo message="Files : &#x0A;${list}" append="true" file="${distribution.dir}/list-file.txt"/>
-
-	</target>
-
-
 	<target name="file-list-git" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
 		<exec executable="scripts/diff-files.bat" osfamily="windows" failonerror="true">
 			<arg value="${reference}"/>
@@ -558,8 +263,12 @@
 		<antcall target="file-list-git">
 			<param name="reference" value="${sitools.Version.reference}" />
 			<param name="tag" value="${sitools.Version.tag}" />
-			<param name="dir" value="${distribution.dir}" />
+			<param name="dir" value="${distribution.sources.dir}" />
 		</antcall>
+		
+		<move todir="${distribution.dir}">
+		    <fileset dir="${distribution.sources.dir}" includes="*.txt"/>
+		</move>
 	</target>
 
 	<target name="file-list-git-astro" description="Genere la liste des fichiers, le README et la liste des fichiers A/M/D">
@@ -683,9 +392,9 @@
 
 
 	<path id="javadoc">
-		<pathelement location="${distribution.dir}/workspace/fr.cnes.sitools.core/src"/>
-		<pathelement location="${distribution.dir}/workspace/fr.cnes.sitools.extensions/src"/>
-		<pathelement location="${distribution.dir}/workspace/libraries/javax.measure_0.9.5/src"/>
+		<pathelement location="${distribution.sources.dir}/workspace/fr.cnes.sitools.core/src"/>
+		<pathelement location="${distribution.sources.dir}/workspace/fr.cnes.sitools.extensions/src"/>
+		<pathelement location="${distribution.sources.dir}/workspace/libraries/javax.measure_0.9.5/src"/>
 	</path>
 
 	<!-- Target for Javadoc -->
@@ -703,18 +412,18 @@
 			bottom="Copyright &amp;copy; ${year} ${owner}. All Rights Reserved.">
 			<classpath>
 				<path>
-					<fileset dir="${distribution.dir}/cots/restlet-2.0.5-patched">
+					<fileset dir="${distribution.sources.dir}/cots/restlet-2.0.5-patched">
 						<include name="**/*.jar"/>
 					</fileset>
 				</path>
 				<path>
-					<fileset dir="${distribution.dir}/workspace/libraries">
+					<fileset dir="${distribution.sources.dir}/workspace/libraries">
 						<include name="**/*.jar"/>
 						<exclude name="org.apache.solr_3.1.0/*.jar"/>
 					</fileset>
 				</path>
 				<path>
-					<fileset dir="${distribution.dir}/workspace/org.restlet.ext.solr">
+					<fileset dir="${distribution.sources.dir}/workspace/org.restlet.ext.solr">
 						<include name="**/*.jar"/>
 					</fileset>
 				</path>
