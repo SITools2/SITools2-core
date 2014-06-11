@@ -4,12 +4,12 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 import org.restlet.Context;
+import org.restlet.engine.Engine;
 
-import fr.cnes.sitools.dataset.model.DataSet;
-import fr.cnes.sitools.feeds.model.FeedAuthorModel;
-import fr.cnes.sitools.feeds.model.FeedEntryModel;
+import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
@@ -17,6 +17,9 @@ public class ApplicationStoreXMLMap extends XmlMapStore<AppRegistry> implements 
 
   /** Default location */
   private static final String COLLECTION_NAME = "applications";
+  
+  /** static logger for this store implementation */
+  private static Logger log = Engine.getLogger(ApplicationStoreXMLMap.class.getName());
   
   /**
    * DataSetStoreXMLMap
@@ -64,9 +67,32 @@ public class ApplicationStoreXMLMap extends XmlMapStore<AppRegistry> implements 
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("manager", AppRegistry.class);
-    aliases.put("FeedEntryModel", FeedEntryModel.class);
-    aliases.put("author", FeedAuthorModel.class);
     this.init(location, aliases);
   }
+  
+  @Override
+  public AppRegistry update(AppRegistry manager) {
+    AppRegistry result = null;
+
+    log.finest("Updating FeedsModel");
+
+    Map<String, AppRegistry> map = getMap();
+    AppRegistry current = map.get(manager.getId());
+
+    result = current;
+    
+    current.setName(manager.getName());
+    current.setDescription(manager.getDescription());
+    current.setLastUpdate(manager.getLastUpdate());
+    current.setResources(manager.getResources());
+
+    if (result != null) {
+      map.put(manager.getId(), current);
+    }
+    return result;
+  }
+  
+  
+  
 
 }
