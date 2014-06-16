@@ -279,7 +279,6 @@ sitools.admin.datasets.services.datasetServicesCrud = Ext.extend(Ext.grid.Editor
 
         this.savePropertiesBtn = new Ext.Button({
             text : i18n.get('label.saveProperties'),
-            id : 'tocard',
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
             handler : this.onSaveProperties,
             tooltip : i18n.get('label.savePropertiesHelp'),
