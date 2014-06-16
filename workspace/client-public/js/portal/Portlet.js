@@ -36,6 +36,7 @@ Ext.ux.Portlet = Ext.extend(Ext.Panel, {
     easing : 'backIn',
     transparent : false,
     minHeight : 10,
+    resizable : true,
 
     onRender : function (ct, position) {
 	    Ext.ux.Portlet.superclass.onRender.call(this, ct, position);
@@ -46,17 +47,19 @@ Ext.ux.Portlet = Ext.extend(Ext.Panel, {
 		    return Ext.DomHelper.append(this.dom, config, true);
 	    };
 
-	    this.resizer = new Ext.Resizable(this.el, {
-	        animate : true,
-	        duration : this.duration,
-	        easing : this.easing,
-	        handles : 's',
-	        transparent : this.transparent,
-	        heightIncrement : this.heightIncrement,
-	        minHeight : this.minHeight || 100,
-	        pinned : this.pinned
-	    });
-	    this.resizer.on('resize', this.onResizer, this);
+	    if (this.resizable) {
+	        this.resizer = new Ext.Resizable(this.el, {
+	            animate : true,
+	            duration : this.duration,
+	            easing : this.easing,
+	            handles : 's',
+	            transparent : this.transparent,
+	            heightIncrement : this.heightIncrement,
+	            minHeight : this.minHeight || 100,
+	            pinned : this.pinned
+	        });
+	        this.resizer.on('resize', this.onResizer, this);
+	    }
 
 	    Ext.Element.prototype.createProxy = createProxyProtoType;
 	    // 2008.1.11 xm
