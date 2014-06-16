@@ -126,6 +126,11 @@ public final class Project implements IResource, Serializable {
   /** File name of the template for the project */
   private String navigationMode = null;
 
+  /** Order to display projects in portal */
+  private Integer priority;
+  
+  /** Categorize project in a portlet with this name */
+  private String categoryProject;
   /**
    * Default constructor
    */
@@ -533,4 +538,36 @@ public final class Project implements IResource, Serializable {
     this.navigationMode = navigationMode;
   }
 
+  /**
+   * Gets the priority value
+   * @return the priority
+   */
+  public Integer getPriority() {
+    return priority;
+  }
+
+  /**
+   * Sets the value of priority
+   * @param priority the priority to set
+   */
+  public void setPriority(Integer priority) {
+    this.priority = priority;
+  }
+
+  /**
+   * Gets the categoryProject value
+   * @return the categoryProject
+   */
+  public String getCategoryProject() {
+    return categoryProject;
+  }
+
+  /**
+   * Sets the value of categoryProject
+   * @param categoryProject the categoryProject to set
+   */
+  public void setCategoryProject(String categoryProject) {
+    this.categoryProject = categoryProject;
+  }
+  
 }
