@@ -18,8 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.security.authentication;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,18 +26,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.restlet.engine.Engine;
 import org.restlet.engine.security.RoleMapping;
 import org.restlet.security.Group;
 import org.restlet.security.Role;
 import org.restlet.security.User;
-
-import com.google.common.io.Files;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.exception.SitoolsException;
@@ -65,18 +57,6 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   /** Users and Groups store */
   private UsersAndGroupsStore storeUsersAndGroups = null;
 
-  /** Users and Groups last modified */
-  private long usersAndGroupsLastModified = 0;
-
-  /** Roles last modified */
-  private long rolesLastModified = 0;
-
-  /** number of threads for scheduled executor */
-  private int realmRefreshThreads;
-
-  /** period of users and groups refresh in memory realm */
-  private int realmRefreshPeriod;
-
   /**
    * Constructor
    * 
@@ -98,45 +78,6 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     // this.algorithm = settings.getAuthenticationALGORITHM();
 
     build();
-
-    if ("true".equals(getSettings().getString("Starter.WITH_REALM_REFRESH"))) {
-      setRealmRefreshThreads(Integer.parseInt(getSettings().getString("Starter.REALM_REFRESH_THREADS")));
-      setRealmRefreshPeriod(Integer.parseInt(getSettings().getString("Starter.REALM_REFRESH_PERIOD")));
-
-      ScheduledThreadPoolExecutor scheduledExecutor = (ScheduledThreadPoolExecutor) Executors
-          .newScheduledThreadPool(this.realmRefreshThreads);
-      ScheduledFuture future = scheduledExecutor.scheduleAtFixedRate(new Runnable() {
-        @Override
-        public void run() {
-
-          File usersAndGroupsFile = new File(getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
-              + getSettings().getString("Starter.USERS_GROUPS_EVENT_FILE"));
-          File rolesFile = new File(getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
-              + getSettings().getString("Starter.ROLES_EVENT_FILE"));
-
-          if (usersAndGroupsFile.lastModified() > usersAndGroupsLastModified) {
-            System.out.println("event detected : refresh users and groups in memory realm");
-            refreshUsersAndGroups();
-            usersAndGroupsLastModified = usersAndGroupsFile.lastModified();
-          }
-
-          if (rolesFile.lastModified() > rolesLastModified) {
-            System.out.println("event detected : refresh role mappings in memory realm");
-
-            SitoolsStore<fr.cnes.sitools.role.model.Role> rolesStore = getStoreRoles();
-
-            for (fr.cnes.sitools.role.model.Role role : rolesStore.getList()) {
-              refreshRoleMappings(role);
-            }
-
-            rolesLastModified = rolesFile.lastModified();
-          }
-
-        }
-      }, 0, this.realmRefreshPeriod, TimeUnit.SECONDS);
-
-    }
-
   }
 
   /**
@@ -450,46 +391,6 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
   }
 
   /**
-   * updateUsersAndGroupsLastModified
-   */
-  @Override
-  public synchronized void updateUsersAndGroupsLastModified() {
-
-    try {
-      String fileUrl = getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
-          + getSettings().getString("Starter.USERS_GROUPS_EVENT_FILE");
-      File file = new File(fileUrl);
-      Files.touch(file);
-
-      setUsersAndGroupsLastModified(file.lastModified());
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-
-  }
-
-  /**
-   * updateRolesLastModified
-   */
-  @Override
-  public synchronized void updateRolesLastModified() {
-
-    try {
-      String fileUrl = getSettings().getString("Starter.EXTERNAL_STORE_DIR") + "/"
-          + getSettings().getString("Starter.ROLES_EVENT_FILE");
-      File file = new File(fileUrl);
-      Files.touch(file);
-
-      setRolesLastModified(file.lastModified());
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-
-  }
-
-  /**
    * Refresh users / groups
    */
   @Override
@@ -510,7 +411,6 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
 
     // rebuild authorisations ...
     build();
-
   }
 
   /**
@@ -600,9 +500,15 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
         Resource res = (Resource) iterator.next();
         try {
           fr.cnes.sitools.security.model.Group groupStore = storeUsersAndGroups.getGroupById(res.getId());
-          Group group = findGroup(groupStore.getName());
-          if (group != null) {
-            map(group, role);
+          if (groupStore != null) {
+            Group group = findGroup(groupStore.getName());
+            if (group != null) {
+              map(group, role);
+            }
+          }
+          else {
+            Engine.getLogger(this.getClass().getName()).warning(
+                "Unknow Group ; " + res.getId() + " please remove it from the role : " + roleStore.getName());
           }
         }
         catch (SitoolsException e) {
@@ -671,84 +577,14 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
     return storeUsersAndGroups;
   }
 
-  /**
-   * Get the users and groups control file last modified value
-   * 
-   * @return usersAndGroupsLastModified, the long value representing the time the control file was last modified,
-   *         measured in milliseconds since the epoch (00:00:00 GMT, January 1, 1970)
-   */
-  public long getUsersAndGroupsLastModified() {
-    return usersAndGroupsLastModified;
+  @Override
+  public void updateUsersAndGroupsLastModified() {
+    // nothing to do
   }
 
-  /**
-   * Sets the users and groups last modified value
-   * 
-   * @param usersAndGroupsLastModified
-   *          , the long value representing the time the control file was last modified, measured in milliseconds since
-   *          the epoch (00:00:00 GMT, January 1, 1970)
-   */
-  public void setUsersAndGroupsLastModified(long usersAndGroupsLastModified) {
-    this.usersAndGroupsLastModified = usersAndGroupsLastModified;
-  }
-
-  /**
-   * Get the roles control file last modified value
-   * 
-   * @return rolesLastModified, the long value representing the time the control file was last modified, measured in
-   *         milliseconds since the epoch (00:00:00 GMT, January 1, 1970)
-   */
-  public long getRolesLastModified() {
-    return rolesLastModified;
-  }
-
-  /**
-   * Sets the roles last modified value
-   * 
-   * @param rolesLastModified
-   *          , the long value representing the time the control file was last modified, measured in milliseconds since
-   *          the epoch (00:00:00 GMT, January 1, 1970)
-   */
-  public void setRolesLastModified(long rolesLastModified) {
-    this.rolesLastModified = rolesLastModified;
-  }
-
-  /**
-   * Get the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
-   * 
-   * @return realmRefreshThreads
-   */
-  public int getRealmRefreshThreads() {
-    return realmRefreshThreads;
-  }
-
-  /**
-   * Sets the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
-   * 
-   * @param realmRefreshThreads
-   *          , the number of threads to keep in the pool, even if they are idle
-   */
-  public void setRealmRefreshThreads(int realmRefreshThreads) {
-    this.realmRefreshThreads = realmRefreshThreads;
-  }
-
-  /**
-   * Get the period between successive executions of the ScheduledThreadPoolExecutor
-   * 
-   * @return realmRefreshPeriod
-   */
-  public int getRealmRefreshPeriod() {
-    return realmRefreshPeriod;
-  }
-
-  /**
-   * Sets the period between successive executions of the ScheduledThreadPoolExecutor
-   * 
-   * @param realmRefreshPeriod
-   *          , the period between successive executions (in a time unit to be specified)
-   */
-  public void setRealmRefreshPeriod(int realmRefreshPeriod) {
-    this.realmRefreshPeriod = realmRefreshPeriod;
+  @Override
+  public void updateRolesLastModified() {
+    // nothing to do
   }
 
 }
