@@ -42,16 +42,17 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.project.ProjectAdministration;
 import fr.cnes.sitools.project.ProjectStoreInterface;
 import fr.cnes.sitools.project.ProjectStoreXMLMap;
-import fr.cnes.sitools.project.graph.GraphStoreXML;
-import fr.cnes.sitools.project.graph.model.Graph;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
+import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.model.ProjectModule;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.registry.AppRegistryStoreXML;
+import fr.cnes.sitools.registry.ApplicationStoreInterface;
+import fr.cnes.sitools.registry.ApplicationStoreXMLMap;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
@@ -74,7 +75,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Graph> storeGraph = null;
+  private static GraphStoreInterface storeGraph = null;
 
   /**
    * Restlet Component for server
@@ -143,7 +144,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
 
       cleanDirectory(storeDirectory);
       cleanMapDirectories(storeDirectory);
-      storeGraph = new GraphStoreXML(storeGraphDirectory, ctx);
+      storeGraph = new GraphStoreXMLMap(storeGraphDirectory, ctx);
       store = new ProjectStoreXMLMap(storeDirectory, ctx);
 
       Map<String, Object> stores = new ConcurrentHashMap<String, Object>();
@@ -159,7 +160,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
       // ApplicationManager for application registering
 
       // Store
-      AppRegistryStoreXML storeApp = new AppRegistryStoreXML(appRegistry, ctx);
+      ApplicationStoreInterface storeApp = new ApplicationStoreXMLMap(appRegistry, ctx);
 
       // Context
       Context appContext = component.getContext().createChildContext();
