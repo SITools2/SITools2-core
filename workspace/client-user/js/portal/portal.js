@@ -226,7 +226,11 @@ var portletCollection = new Ext.util.MixedCollection();
             
             portletObject.portlet = this.createPortlet(portletObject);
             
-            portletCollection.add(project.categoryProject, portletObject);
+            if (portletObject.category == "Public") {
+                portletCollection.insert(0, project.categoryProject, portletObject);
+            } else {
+                portletCollection.add(project.categoryProject, portletObject);
+            }
             
         } else { // just adding record to the portletObject store
             var portletObject = portletCollection.get(project.categoryProject);
@@ -236,7 +240,6 @@ var portletCollection = new Ext.util.MixedCollection();
             }
         }
     }, this);
-    console.dir(portletCollection);
 
 //    var portletProjet = new Ext.ux.Portlet({
 //        id : ID.PORTLET.PROJET,
