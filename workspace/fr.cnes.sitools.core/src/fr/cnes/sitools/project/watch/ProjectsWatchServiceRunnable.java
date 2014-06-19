@@ -19,13 +19,17 @@
 package fr.cnes.sitools.project.watch;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.project.ProjectAdministration;
+import fr.cnes.sitools.project.ProjectApplication;
 import fr.cnes.sitools.project.ProjectStoreInterface;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.service.watch.SitoolsWatchServiceRunnableInterface;
@@ -39,6 +43,8 @@ public class ProjectsWatchServiceRunnable implements SitoolsWatchServiceRunnable
 
   /** The settings. */
   private SitoolsSettings settings;
+
+  /** ProjectAdministration */
   private ProjectAdministration projectApp;
 
   /**
@@ -46,6 +52,8 @@ public class ProjectsWatchServiceRunnable implements SitoolsWatchServiceRunnable
    * 
    * @param settings
    *          the settings
+   * @param app
+   *          the projectAdministration
    */
   public ProjectsWatchServiceRunnable(SitoolsSettings settings, ProjectAdministration app) {
     this.settings = settings;
@@ -60,12 +68,14 @@ public class ProjectsWatchServiceRunnable implements SitoolsWatchServiceRunnable
   @Override
   public void execute() {
     try {
-      File appFileEvent = this.projectApp.getProjectsEventFile();
+      File appFileEvent = this.projectApp.getEventFile();
 
-      long lastProjectRefresh = this.projectApp.getLastProjectsRefresh();
+      long lastProjectRefresh = this.projectApp.getLastRefresh();
 
       if (appFileEvent != null && appFileEvent.lastModified() > lastProjectRefresh) {
         System.out.println("c'est parti pour le refresh des projets");
+
+        Map<String, ProjectApplication> projectApps = getAllProjectApplication();
 
         ProjectStoreInterface store = this.projectApp.getStore();
         List<Project> projects = store.getList();
@@ -86,7 +96,13 @@ public class ProjectsWatchServiceRunnable implements SitoolsWatchServiceRunnable
 
           }
         }
-        this.projectApp.setLastProjectsRefresh(appFileEvent.lastModified());
+        this.projectApp.setLastRefresh(appFileEvent.lastModified());
+
+        // remove the datasets that doesn't exists anymore
+        for (ProjectApplication app : projectApps.values()) {
+          System.out.println("DETACH DEFINITIVELY " + app.getProject().getName());
+          projectApp.detachProjectDefinitif(app.getProject(), true);
+        }
       }
 
     }
@@ -95,6 +111,22 @@ public class ProjectsWatchServiceRunnable implements SitoolsWatchServiceRunnable
           "Error while watching for changing files", e);
     }
 
+  }
+
+  /**
+   * Gets all the ProjectApplication in the appRegistry
+   * 
+   * @return all the ProjectApplication in the appRegistry
+   */
+  private Map<String, ProjectApplication> getAllProjectApplication() {
+    Map<String, SitoolsApplication> allApps = getSettings().getAppRegistry().getApplications();
+    Map<String, ProjectApplication> datasetApps = new HashMap<String, ProjectApplication>();
+    for (SitoolsApplication app : allApps.values()) {
+      if (app instanceof ProjectApplication) {
+        datasetApps.put(app.getId(), (ProjectApplication) app);
+      }
+    }
+    return datasetApps;
   }
 
   /**

@@ -50,7 +50,6 @@ import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.model.ProjectModule;
 import fr.cnes.sitools.registry.AppRegistryApplication;
-import fr.cnes.sitools.registry.AppRegistryStoreXML;
 import fr.cnes.sitools.registry.ApplicationStoreInterface;
 import fr.cnes.sitools.registry.ApplicationStoreXMLMap;
 import fr.cnes.sitools.server.Consts;

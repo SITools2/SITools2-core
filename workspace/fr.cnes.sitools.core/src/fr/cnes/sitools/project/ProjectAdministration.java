@@ -21,6 +21,7 @@ package fr.cnes.sitools.project;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -57,17 +58,23 @@ public final class ProjectAdministration extends AbstractProjectApplication {
   /** host parent router */
   private Router parentRouter = null;
 
+  // ************************************************************
+  // ATTRIBUTES USED FOR SYNCHRONIZATION AND SCALABILITY
+
   /** lastProjectRefresh timestamp */
-  private long lastProjectRefresh = 0;
+  private long lastRefresh = 0;
 
   /** The service used for synchronization */
   private ScheduledThreadWatchService scheduledService;
 
   /** The period of time before each refresh */
-  private int projectRefreshPeriod;
+  private int refreshPeriod;
 
   /** The number of threads used to check for refresh */
-  private int projectRefreshThreads;
+  private int refreshThreads;
+
+  // END OF ATTRIBUTES USED FOR SYNCHRONIZATION AND SCALABILITY
+  // ************************************************************
 
   /**
    * Category
@@ -94,13 +101,24 @@ public final class ProjectAdministration extends AbstractProjectApplication {
     Project[] projects = getStore().getArray();
     for (int i = 0; i < projects.length; i++) {
       if ("ACTIVE".equals(projects[i].getStatus())) {
-        attachProject(projects[i]);
+        attachProject(projects[i], true);
       }
     }
 
     if (isAppsRefreshSync()) {
-      setProjectsRefreshThreads(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_THREADS")));
-      setProjectsRefreshPeriod(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_PERIOD")));
+      setRefreshThreads(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_THREADS")));
+      setRefreshPeriod(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_PERIOD")));
+
+      // set the rolesLastModified
+      File appFile = getEventFile();
+      if (appFile != null && appFile.exists()) {
+        setLastRefresh(appFile.lastModified());
+      }
+
+      ProjectsWatchServiceRunnable runnable = new ProjectsWatchServiceRunnable(getSettings(), this);
+
+      scheduledService = new ScheduledThreadWatchService(runnable, this.refreshThreads, this.refreshPeriod,
+          TimeUnit.SECONDS);
     }
 
   }
@@ -112,31 +130,10 @@ public final class ProjectAdministration extends AbstractProjectApplication {
    */
   @Override
   public synchronized void start() throws Exception {
-    if (isStopped()) {
-      if (isAppsRefreshSync()) {
-        // set the rolesLastModified
-        File appFile = getProjectsEventFile();
-        if (appFile != null && appFile.exists()) {
-          setLastProjectsRefresh(appFile.lastModified());
-        }
-
-        ProjectsWatchServiceRunnable runnable = new ProjectsWatchServiceRunnable(getSettings(), this);
-
-        scheduledService = new ScheduledThreadWatchService(runnable, this.projectRefreshThreads,
-            this.projectRefreshPeriod, TimeUnit.SECONDS);
-        scheduledService.start();
-      }
+    if (isStopped() && isAppsRefreshSync()) {
+      scheduledService.start();
     }
     super.start();
-  }
-
-  /**
-   * True is sitools is in Application refresh mode, false otherwise
-   * 
-   * @return True is sitools is in Application refresh mode, false otherwise
-   */
-  private boolean isAppsRefreshSync() {
-    return Boolean.parseBoolean(getSettings().getString("Starter.APPS_REFRESH", "false"));
   }
 
   /*
@@ -215,8 +212,9 @@ public final class ProjectAdministration extends AbstractProjectApplication {
     ProjectApplication proja = new ProjectApplication(appContext, proj.getId());
 
     getSettings().getAppRegistry().attachApplication(proja);
+
     if (!isSynchro) {
-      updateProjectsLastModified();
+      updateLastModified();
     }
   }
 
@@ -245,23 +243,31 @@ public final class ProjectAdministration extends AbstractProjectApplication {
   @Override
   public void detachProject(Project project, boolean isSynchro) {
     ProjectApplication proja = (ProjectApplication) getSettings().getAppRegistry().getApplication(project.getId());
-    getSettings().getAppRegistry().detachApplication(proja);
-    if (!isSynchro) {
-      updateProjectsLastModified();
+    if (proja != null) {
+      proja.getContext().getAttributes().put("IS_SYNCHRO", new Boolean(isSynchro));
+      getSettings().getAppRegistry().detachApplication(proja);
+      if (!isSynchro) {
+        updateLastModified();
+      }
     }
   }
 
-  /**
-   * Detach the ProjectApplication according to the given Project object
-   * 
-   * @param proj
-   *          Project object
-   */
+  @Override
   public void detachProjectDefinitif(Project proj) {
+    detachProjectDefinitif(proj, false);
+  }
+
+  @Override
+  public void detachProjectDefinitif(Project proj, boolean isSynchro) {
     ProjectApplication proja = (ProjectApplication) getSettings().getAppRegistry().getApplication(proj.getId());
     if (proja != null) {
+      proja.getContext().getAttributes().put("IS_SYNCHRO", new Boolean(isSynchro));
       getSettings().getAppRegistry().detachApplication(proja);
       proja.unregister();
+
+      if (!isSynchro) {
+        updateLastModified();
+      }
     }
   }
 
@@ -275,31 +281,43 @@ public final class ProjectAdministration extends AbstractProjectApplication {
     return result;
   }
 
+  // ************************************************************
+  // METHOD USED FOR SYNCHRONIZATION AND SCALABILITY
+
   /**
-   * Gets the lastApplicationRefresh value
+   * True is sitools is in Application refresh mode, false otherwise
    * 
-   * @return the lastApplicationRefresh
+   * @return True is sitools is in Application refresh mode, false otherwise
    */
-  public long getLastProjectsRefresh() {
-    return lastProjectRefresh;
+  private boolean isAppsRefreshSync() {
+    return Boolean.parseBoolean(getSettings().getString("Starter.APPS_REFRESH", "false"));
   }
 
   /**
-   * Sets the value of lastApplicationRefresh
+   * Gets the lastRefresh value
    * 
-   * @param lastApplicationRefresh
-   *          the lastApplicationRefresh to set
+   * @return the lastRefresh
    */
-  public void setLastProjectsRefresh(long lastApplicationRefresh) {
-    this.lastProjectRefresh = lastApplicationRefresh;
+  public long getLastRefresh() {
+    return lastRefresh;
   }
 
   /**
-   * Get the projectEventFile
+   * Sets the value of lastRefresh
    * 
-   * @return the projectEventFile
+   * @param lastRefresh
+   *          the lastRefresh to set
    */
-  public File getProjectsEventFile() {
+  public void setLastRefresh(long lastRefresh) {
+    this.lastRefresh = lastRefresh;
+  }
+
+  /**
+   * Get the eventFile
+   * 
+   * @return the eventFile
+   */
+  public File getEventFile() {
     String fileUrl = getSettings().getStoreDIR("Starter.PROJECTS_EVENT_FILE");
     File file = new File(fileUrl);
     return file;
@@ -308,54 +326,54 @@ public final class ProjectAdministration extends AbstractProjectApplication {
   /**
    * Get the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
    * 
-   * @return applicationRefreshThreads
+   * @return number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
    */
-  public int getProjectsRefreshThreads() {
-    return projectRefreshThreads;
+  public int getRefreshThreads() {
+    return refreshThreads;
   }
 
   /**
    * Sets the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
    * 
-   * @param projectsRefreshThreads
+   * @param refreshThreads
    *          , the number of threads to keep in the pool, even if they are idle
    */
-  public void setProjectsRefreshThreads(int projectsRefreshThreads) {
-    this.projectRefreshThreads = projectsRefreshThreads;
+  public void setRefreshThreads(int refreshThreads) {
+    this.refreshThreads = refreshThreads;
   }
 
   /**
    * Get the period between successive executions of the ScheduledThreadPoolExecutor
    * 
-   * @return applicationRefreshPeriod
+   * @return the period between successive executions of the ScheduledThreadPoolExecutor
    */
-  public int getProjectsRefreshPeriod() {
-    return projectRefreshPeriod;
+  public int getRefreshPeriod() {
+    return refreshPeriod;
   }
 
   /**
    * Sets the period between successive executions of the ScheduledThreadPoolExecutor
    * 
-   * @param projectsRefreshPeriod
+   * @param refreshPeriod
    *          , the period between successive executions (in a time unit to be specified)
    */
-  public void setProjectsRefreshPeriod(int projectsRefreshPeriod) {
-    this.projectRefreshPeriod = projectsRefreshPeriod;
+  public void setRefreshPeriod(int refreshPeriod) {
+    this.refreshPeriod = refreshPeriod;
   }
 
   /**
-   * updateUsersAndGroupsLastModified
+   * updateLastModified
    */
-  public synchronized void updateProjectsLastModified() {
+  public synchronized void updateLastModified() {
     if (isAppsRefreshSync()) {
       try {
-        File file = getProjectsEventFile();
+        File file = getEventFile();
         Files.touch(file);
         // pour eviter un refresh de l'instance courante à chaque modification
-        setLastProjectsRefresh(file.lastModified());
+        setLastRefresh(file.lastModified());
       }
       catch (IOException e) {
-        e.printStackTrace();
+        getLogger().log(Level.WARNING, "Error while updating last refresh file ", e);
       }
     }
   }

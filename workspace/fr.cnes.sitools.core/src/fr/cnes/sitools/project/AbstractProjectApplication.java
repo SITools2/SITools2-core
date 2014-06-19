@@ -126,6 +126,17 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   public abstract void detachProjectDefinitif(Project ds);
 
   /**
+   * Detach the ProjectApplication corresponding with the Project given object
+   * 
+   * @param ds
+   *          Project object
+   * 
+   * @param isSynchro
+   *          true not to update the store when detaching the project
+   */
+  public abstract void detachProjectDefinitif(Project ds, boolean isSynchro);
+
+  /**
    * Gets the projectId value
    * 
    * @return the projectId

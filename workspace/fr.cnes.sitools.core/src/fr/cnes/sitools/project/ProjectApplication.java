@@ -169,6 +169,12 @@ public final class ProjectApplication extends AbstractProjectApplication {
   }
 
   @Override
+  public void detachProjectDefinitif(Project ds, boolean synchro) {
+    // TODO Auto-generated method stub
+    // NE PAS IMPLEMENTER >> uniquement via l'administration
+  }
+
+  @Override
   public synchronized void start() throws Exception {
     super.start();
     boolean isSynchro = getIsSynchro();
@@ -178,6 +184,7 @@ public final class ProjectApplication extends AbstractProjectApplication {
         if (!isSynchro) {
           proj.setStatus("ACTIVE");
           proj.setLastStatusUpdate(new Date());
+          this.project = proj;
           getStore().update(proj);
         }
       }
@@ -216,6 +223,7 @@ public final class ProjectApplication extends AbstractProjectApplication {
         if (!isSynchro) {
           proj.setStatus("ACTIVE");
           proj.setLastStatusUpdate(new Date());
+          this.project = proj;
           getStore().update(proj);
         }
       }
