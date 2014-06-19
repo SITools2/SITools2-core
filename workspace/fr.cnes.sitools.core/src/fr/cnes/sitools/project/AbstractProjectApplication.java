@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -133,5 +133,25 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   public final String getProjectId() {
     return projectId;
   }
+
+  /**
+   * Detach the ProjectApplication corresponding with the Project given object
+   * 
+   * @param project
+   *          Project object
+   * @param isSynchro
+   *          true not to update the store when detaching the project
+   */
+  public abstract void detachProject(Project project, boolean isSynchro);
+
+  /**
+   * Create and attach a new ProjectApplication
+   * 
+   * @param project
+   *          Project object
+   * @param isSynchro
+   *          true not to update the store when detaching the project
+   */
+  public abstract void attachProject(Project project, boolean isSynchro);
 
 }

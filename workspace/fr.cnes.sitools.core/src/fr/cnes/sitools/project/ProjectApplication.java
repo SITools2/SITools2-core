@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -17,6 +17,8 @@
  * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 package fr.cnes.sitools.project;
+
+import java.util.Date;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -121,15 +123,15 @@ public final class ProjectApplication extends AbstractProjectApplication {
     Redirector redirector = new Redirector(getContext(), target);
     router.attach("/listComponents.json", redirector);
 
-    //list of projectModuleModel from store => Actually used
+    // list of projectModuleModel from store => Actually used
     router.attach("/projectModules", ProjectListProjectModulesResource.class);
-    
-    //list of datasetViews from datasets used in the project
+
+    // list of datasetViews from datasets used in the project
     router.attach("/datasetViews", ProjectListDatasetViewsResource.class);
-    
-    //list of guiservices from datasets used in the project
+
+    // list of guiservices from datasets used in the project
     router.attach("/guiServices", ProjectListGuiServicesResource.class);
-    
+
     // attach dynamic resources
     attachParameterizedResources(router);
 
@@ -149,6 +151,18 @@ public final class ProjectApplication extends AbstractProjectApplication {
   }
 
   @Override
+  public void attachProject(Project ds, boolean synchro) {
+    // TODO Auto-generated method stub
+    // NE PAS IMPLEMENTER >> uniquement via l'administration
+  }
+
+  @Override
+  public void detachProject(Project ds, boolean synchro) {
+    // TODO Auto-generated method stub
+    // NE PAS IMPLEMENTER >> uniquement via l'administration
+  }
+
+  @Override
   public void detachProjectDefinitif(Project ds) {
     // TODO Auto-generated method stub
     // NE PAS IMPLEMENTER >> uniquement via l'administration
@@ -157,19 +171,26 @@ public final class ProjectApplication extends AbstractProjectApplication {
   @Override
   public synchronized void start() throws Exception {
     super.start();
+    boolean isSynchro = getIsSynchro();
     if (isStarted()) {
       Project proj = getStore().retrieve(getId());
       if (proj != null) {
-        proj.setStatus("ACTIVE");
-        getStore().update(proj);
+        if (!isSynchro) {
+          proj.setStatus("ACTIVE");
+          proj.setLastStatusUpdate(new Date());
+          getStore().update(proj);
+        }
       }
     }
     else {
       getLogger().warning("ProjectApplication should be started.");
       Project proj = getStore().retrieve(getId());
       if (proj != null) {
-        proj.setStatus("INACTIVE");
-        getStore().update(proj);
+        if (!isSynchro) {
+          proj.setStatus("INACTIVE");
+          proj.setLastStatusUpdate(new Date());
+          getStore().update(proj);
+        }
       }
     }
   }
@@ -177,22 +198,42 @@ public final class ProjectApplication extends AbstractProjectApplication {
   @Override
   public synchronized void stop() throws Exception {
     super.stop();
+    boolean isSynchro = getIsSynchro();
     if (isStopped()) {
       Project proj = getStore().retrieve(getId());
       if (proj != null) {
-        proj.setStatus("INACTIVE");
-        getStore().update(proj);
+        if (!isSynchro) {
+          proj.setStatus("INACTIVE");
+          proj.setLastStatusUpdate(new Date());
+          getStore().update(proj);
+        }
       }
     }
     else {
       getLogger().warning("ProjectApplication should be stopped.");
       Project proj = getStore().retrieve(getId());
       if (proj != null) {
-        proj.setStatus("ACTIVE");
-        getStore().update(proj);
+        if (!isSynchro) {
+          proj.setStatus("ACTIVE");
+          proj.setLastStatusUpdate(new Date());
+          getStore().update(proj);
+        }
       }
     }
 
+  }
+
+  /**
+   * Return true if the application is in synchro mode, false otherwise
+   * 
+   * @return true if the application is in synchro mode, false otherwise
+   */
+  private boolean getIsSynchro() {
+    Object dontUpdateStatusDate = getContext().getAttributes().get("IS_SYNCHRO");
+    if (dontUpdateStatusDate == null) {
+      return false;
+    }
+    return ((Boolean) dontUpdateStatusDate);
   }
 
   /**

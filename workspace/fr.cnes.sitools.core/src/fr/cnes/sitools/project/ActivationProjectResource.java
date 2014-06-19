@@ -81,9 +81,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
             try {
               getProjectApplication().attachProject(proj);
 
-              proj.setStatus("ACTIVE"); // TODO dans le start application.
-
-              Project projResult = store.update(proj);
+              Project projResult = store.retrieve(getProjectId());
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.update.success");
@@ -111,8 +109,6 @@ public final class ActivationProjectResource extends AbstractProjectResource {
               // Par mesure de securite
               try {
                 getProjectApplication().detachProject(proj);
-                proj.setStatus("INACTIVE"); // TODO dans le stop application.
-                store.update(proj);
               }
               catch (Exception e) {
                 trace(Level.INFO, "Cannot stop the project " + proj.getName());
@@ -127,8 +123,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
             // FIXME Transaction de desactivation d'un project
             try {
               getProjectApplication().detachProject(proj);
-              proj.setStatus("INACTIVE"); // TODO dans le stop application.
-              Project projResult = store.update(proj);
+              Project projResult = store.retrieve(getProjectId());
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.stop.success");
