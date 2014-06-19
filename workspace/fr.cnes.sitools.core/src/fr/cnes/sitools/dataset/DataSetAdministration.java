@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,6 +18,11 @@
  ******************************************************************************/
 package fr.cnes.sitools.dataset;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -27,10 +32,14 @@ import org.restlet.ext.wadl.DocumentationInfo;
 import org.restlet.routing.Filter;
 import org.restlet.routing.Router;
 
+import com.google.common.io.Files;
+
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.dataset.model.DataSet;
+import fr.cnes.sitools.dataset.watch.DataSetsWatchServiceRunnable;
 import fr.cnes.sitools.notification.business.NotifierFilter;
+import fr.cnes.sitools.service.watch.ScheduledThreadWatchService;
 
 /**
  * Application for managing DataSets Dependencies : DataSets
@@ -44,6 +53,24 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
 
   /** host parent router */
   private Router parentRouter = null;
+
+  // ************************************************************
+  // ATTRIBUTES USED FOR SYNCHRONIZATION AND SCALABILITY
+
+  /** lastRefresh timestamp */
+  private long lastRefresh = 0;
+
+  /** The service used for synchronization */
+  private ScheduledThreadWatchService scheduledService;
+
+  /** The period of time to wait between each refresh */
+  private int refreshPeriod;
+
+  /** The number of threads used to check for refresh */
+  private int refreshThreads;
+
+  // END OF ATTRIBUTES USED FOR SYNCHRONIZATION AND SCALABILITY
+  // ************************************************************
 
   /**
    * Constructor with parentRouter
@@ -60,9 +87,51 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
     DataSet[] datasets = store.getArray();
     for (int i = 0; i < datasets.length; i++) {
       if ("ACTIVE".equals(datasets[i].getStatus())) {
-        attachDataSet(datasets[i]);
+        attachDataSet(datasets[i], true);
       }
     }
+
+    if (isAppsRefreshSync()) {
+      setRefreshThreads(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_THREADS")));
+      setRefreshPeriod(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_PERIOD")));
+
+      // set the rolesLastModified
+      File appFile = getEventFile();
+      if (appFile != null && appFile.exists()) {
+        setLastRefresh(appFile.lastModified());
+      }
+
+      DataSetsWatchServiceRunnable runnable = new DataSetsWatchServiceRunnable(getSettings(), this);
+
+      scheduledService = new ScheduledThreadWatchService(runnable, this.refreshThreads, this.refreshPeriod,
+          TimeUnit.SECONDS);
+    }
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.common.application.SitoolsApplication#start()
+   */
+  @Override
+  public synchronized void start() throws Exception {
+    if (isStopped() && isAppsRefreshSync()) {
+      scheduledService.start();
+    }
+    super.start();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see fr.cnes.sitools.common.application.SitoolsApplication#stop()
+   */
+  @Override
+  public synchronized void stop() throws Exception {
+    if (isStarted() && isAppsRefreshSync()) {
+      scheduledService.stop();
+    }
+    super.stop();
   }
 
   @Override
@@ -98,15 +167,8 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
     return filter;
   }
 
-  /**
-   * Create and attach a DataSetApplication according to the given DataSet object
-   * 
-   * @param ds
-   *          DataSet object
-   */
   @Override
-  public void attachDataSet(DataSet ds) {
-
+  public void attachDataSet(DataSet ds, boolean isSynchro) {
     if ((ds.getSitoolsAttachementForUsers() == null) || ds.getSitoolsAttachementForUsers().equals("")) {
       ds.setSitoolsAttachementForUsers("/" + ds.getId());
       store.update(ds);
@@ -130,6 +192,7 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
 
     // to allow SVA to request the Dataset with cookie authentification.
     appContext.getAttributes().put(ContextAttributes.COOKIE_AUTHENTICATION, Boolean.TRUE);
+    appContext.getAttributes().put("IS_SYNCHRO", new Boolean(isSynchro));
 
     DataSetApplication dsa = new DataSetApplication(appContext, ds.getId());
 
@@ -138,6 +201,34 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
     // Attach the application with RIAP access
     getSettings().getComponent().getInternalRouter().attach(ds.getSitoolsAttachementForUsers(), dsa);
 
+    if (!isSynchro) {
+      updateLastModified();
+    }
+  }
+
+  @Override
+  public void detachDataSet(DataSet ds, boolean isSynchro) {
+    DataSetApplication dsa = (DataSetApplication) getSettings().getAppRegistry().getApplication(ds.getId());
+    if (dsa != null) {
+      dsa.getContext().getAttributes().put("IS_SYNCHRO", new Boolean(isSynchro));
+      getSettings().getComponent().getInternalRouter().detach(dsa);
+      getSettings().getAppRegistry().detachApplication(dsa);
+
+      if (!isSynchro) {
+        updateLastModified();
+      }
+    }
+  }
+
+  /**
+   * Create and attach a DataSetApplication according to the given DataSet object
+   * 
+   * @param ds
+   *          DataSet object
+   */
+  @Override
+  public void attachDataSet(DataSet ds) {
+    attachDataSet(ds, false);
   }
 
   /**
@@ -148,24 +239,25 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
    */
   @Override
   public void detachDataSet(DataSet ds) {
-    DataSetApplication dsa = (DataSetApplication) getSettings().getAppRegistry().getApplication(ds.getId());
-    getSettings().getComponent().getInternalRouter().detach(dsa);
-    getSettings().getAppRegistry().detachApplication(dsa);
+    detachDataSet(ds, false);
   }
 
-  /**
-   * Detach the DataSetApplication according to the given DataSet object
-   * 
-   * @param ds
-   *          DataSet object
-   */
+  @Override
   public void detachDataSetDefinitif(DataSet ds) {
+    detachDataSet(ds, false);
+  }
+
+  @Override
+  public void detachDataSetDefinitif(DataSet ds, boolean isSynchro) {
     DataSetApplication dsa = (DataSetApplication) getSettings().getAppRegistry().getApplication(ds.getId());
-
     if (dsa != null) {
+      dsa.getContext().getAttributes().put("IS_SYNCHRO", new Boolean(isSynchro));
       getSettings().getAppRegistry().detachApplication(dsa);
-
       dsa.unregister();
+
+      if (!isSynchro) {
+        updateLastModified();
+      }
     }
   }
 
@@ -176,6 +268,103 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
     docInfo.setTitle("API documentation.");
     result.getDocumentations().add(docInfo);
     return result;
+  }
+
+  // ************************************************************
+  // METHOD USED FOR SYNCHRONIZATION AND SCALABILITY
+
+  /**
+   * True is sitools is in Application refresh mode, false otherwise
+   * 
+   * @return True is sitools is in Application refresh mode, false otherwise
+   */
+  private boolean isAppsRefreshSync() {
+    return Boolean.parseBoolean(getSettings().getString("Starter.APPS_REFRESH", "false"));
+  }
+
+  /**
+   * Gets the lastRefresh value
+   * 
+   * @return the lastRefresh
+   */
+  public long getLastRefresh() {
+    return lastRefresh;
+  }
+
+  /**
+   * Sets the value of lastRefresh
+   * 
+   * @param lastRefresh
+   *          the lastRefresh to set
+   */
+  public void setLastRefresh(long lastRefresh) {
+    this.lastRefresh = lastRefresh;
+  }
+
+  /**
+   * Get the eventFile
+   * 
+   * @return the eventFile
+   */
+  public File getEventFile() {
+    String fileUrl = getSettings().getStoreDIR("Starter.DATASETS_EVENT_FILE");
+    File file = new File(fileUrl);
+    return file;
+  }
+
+  /**
+   * Get the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   * 
+   * @return number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   */
+  public int getRefreshThreads() {
+    return refreshThreads;
+  }
+
+  /**
+   * Sets the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   * 
+   * @param refreshThreads
+   *          , the number of threads to keep in the pool, even if they are idle
+   */
+  public void setRefreshThreads(int refreshThreads) {
+    this.refreshThreads = refreshThreads;
+  }
+
+  /**
+   * Get the period between successive executions of the ScheduledThreadPoolExecutor
+   * 
+   * @return the period between successive executions of the ScheduledThreadPoolExecutor
+   */
+  public int getRefreshPeriod() {
+    return refreshPeriod;
+  }
+
+  /**
+   * Sets the period between successive executions of the ScheduledThreadPoolExecutor
+   * 
+   * @param refreshPeriod
+   *          , the period between successive executions (in a time unit to be specified)
+   */
+  public void setRefreshPeriod(int refreshPeriod) {
+    this.refreshPeriod = refreshPeriod;
+  }
+
+  /**
+   * updateLastModified
+   */
+  public synchronized void updateLastModified() {
+    if (isAppsRefreshSync()) {
+      try {
+        File file = getEventFile();
+        Files.touch(file);
+        // pour eviter un refresh de l'instance courante à chaque modification
+        setLastRefresh(file.lastModified());
+      }
+      catch (IOException e) {
+        getLogger().log(Level.WARNING, "Error while updating last refresh file ", e);
+      }
+    }
   }
 
 }

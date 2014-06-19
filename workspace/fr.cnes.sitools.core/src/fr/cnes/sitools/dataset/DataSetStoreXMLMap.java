@@ -81,7 +81,6 @@ public class DataSetStoreXMLMap extends XmlSynchronizedMapStore<DataSet> impleme
     this.init(location, aliases);
   }
 
-  
   @Override
   public DataSet update(DataSet dataset) {
 
@@ -116,6 +115,7 @@ public class DataSetStoreXMLMap extends XmlSynchronizedMapStore<DataSet> impleme
       current.setStructure(dataset.getStructure());
       current.setProperties(dataset.getProperties());
       current.setDatasetViewConfig(dataset.getDatasetViewConfig());
+      current.setLastStatusUpdate(dataset.getLastStatusUpdate());
 
       if (result != null) {
 
@@ -133,8 +133,7 @@ public class DataSetStoreXMLMap extends XmlSynchronizedMapStore<DataSet> impleme
 
     return result;
   }
-  
-  
+
   /**
    * Sort the list (by default on the name)
    * 
@@ -148,6 +147,5 @@ public class DataSetStoreXMLMap extends XmlSynchronizedMapStore<DataSet> impleme
       Collections.sort(result, new ResourceComparator<DataSet>(filter));
     }
   }
-  
 
 }

@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -50,7 +50,6 @@ public abstract class AbstractDataSetApplication extends SitoolsParameterizedApp
    * @param context
    *          RESTlet Application Context
    */
-  @SuppressWarnings("unchecked")
   public AbstractDataSetApplication(Context context) {
     super(context);
     this.store = (DataSetStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
@@ -91,12 +90,44 @@ public abstract class AbstractDataSetApplication extends SitoolsParameterizedApp
   public abstract void detachDataSet(DataSet ds);
 
   /**
+   * Create and attach a new DataSetApplication
+   * 
+   * @param ds
+   *          DataSet object
+   * @param isSynchro
+   *          true not to update the store when attaching the dataset
+   */
+  public abstract void attachDataSet(DataSet ds, boolean isSynchro);
+
+  /**
+   * Detach the DataSetApplication corresponding with the DataSet given object
+   * 
+   * @param ds
+   *          DataSet object
+   * 
+   * @param isSynchro
+   *          true not to update the store when detaching the dataset
+   */
+  public abstract void detachDataSet(DataSet ds, boolean isSynchro);
+
+  /**
    * Detach the DataSetApplication corresponding with the DataSet given object
    * 
    * @param ds
    *          DataSet object
    */
   public abstract void detachDataSetDefinitif(DataSet ds);
+
+  /**
+   * Detach the DataSetApplication corresponding with the DataSet given object
+   * 
+   * @param ds
+   *          DataSet object
+   * 
+   * @param isSynchro
+   *          true not to update the store when detaching the dataset
+   */
+  public abstract void detachDataSetDefinitif(DataSet ds, boolean isSynchro);
 
   @Override
   public ApplicationInfo getApplicationInfo(Request request, Response response) {
