@@ -74,7 +74,7 @@ public class ApplicationStoreXMLMap extends XmlMapStore<AppRegistry> implements 
   public AppRegistry update(AppRegistry manager) {
     AppRegistry result = null;
 
-    log.finest("Updating FeedsModel");
+    log.finest("Updating Application");
 
     Map<String, AppRegistry> map = getMap();
     AppRegistry current = map.get(manager.getId());

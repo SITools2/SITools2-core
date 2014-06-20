@@ -93,8 +93,9 @@ public class ProjectsWatchServiceRunnable implements SitoolsWatchServiceRunnable
               System.out.println("INACTIVE " + project.getName());
               projectApp.detachProject(project, true);
             }
-
           }
+          // remove the handled datasets application (dataset still exists)
+          projectApps.remove(project.getId());
         }
         this.projectApp.setLastRefresh(appFileEvent.lastModified());
 
@@ -120,13 +121,13 @@ public class ProjectsWatchServiceRunnable implements SitoolsWatchServiceRunnable
    */
   private Map<String, ProjectApplication> getAllProjectApplication() {
     Map<String, SitoolsApplication> allApps = getSettings().getAppRegistry().getApplications();
-    Map<String, ProjectApplication> datasetApps = new HashMap<String, ProjectApplication>();
+    Map<String, ProjectApplication> projectApps = new HashMap<String, ProjectApplication>();
     for (SitoolsApplication app : allApps.values()) {
       if (app instanceof ProjectApplication) {
-        datasetApps.put(app.getId(), (ProjectApplication) app);
+        projectApps.put(app.getId(), (ProjectApplication) app);
       }
     }
-    return datasetApps;
+    return projectApps;
   }
 
   /**
