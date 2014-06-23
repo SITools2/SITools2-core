@@ -213,6 +213,7 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
       dsa.getContext().getAttributes().put("IS_SYNCHRO", new Boolean(isSynchro));
       getSettings().getComponent().getInternalRouter().detach(dsa);
       getSettings().getAppRegistry().detachApplication(dsa);
+      dsa.unregister();
 
       if (!isSynchro) {
         updateLastModified();
