@@ -81,7 +81,10 @@ public class OrderStoreXMLMap extends XmlMapStore<Order> implements OrderStoreIn
     Order result = null;
     Map<String, Order> map = getMap();
     Order current = map.get(order.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
     result = current;
     current.setUserId(order.getUserId());
     current.setDescription(order.getDescription());

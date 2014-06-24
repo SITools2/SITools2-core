@@ -81,11 +81,14 @@ public class MongoDBDataSourceStoreXMLMap extends XmlMapStore<MongoDBDataSource>
   public MongoDBDataSource update(MongoDBDataSource datasource) {
     MongoDBDataSource result = null;
 
-    getLog().info("Updating DataSource");
 
     Map<String, MongoDBDataSource> map = getMap();
     MongoDBDataSource current = map.get(datasource.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating DataSource");
     result = current;
 
     current.setName(datasource.getName());

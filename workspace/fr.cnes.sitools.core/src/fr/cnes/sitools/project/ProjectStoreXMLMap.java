@@ -70,6 +70,12 @@ public class ProjectStoreXMLMap extends XmlMapStore<Project> implements ProjectS
 
     Map<String, Project> map = getMap();
     Project current = map.get(project.getId());
+
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+
     result = current;
     current.setName(project.getName());
     current.setDescription(project.getDescription());

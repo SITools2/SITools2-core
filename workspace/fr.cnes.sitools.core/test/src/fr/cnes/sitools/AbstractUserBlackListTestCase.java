@@ -94,7 +94,7 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
    * @return path
    */
   protected String getTestRepository() {
-    return settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR);
+    return settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR) + "/map";
   }
 
   /*
@@ -112,7 +112,9 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
   public void setUp() throws Exception {
     super.setUp();
     File storeDirectory = new File(getTestRepository());
-    cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
+    storeDirectory.mkdirs();
+    cleanDirectory(storeDirectory);
+    cleanMapDirectories(storeDirectory);
 
     RequestCounter counter = (RequestCounter) settings.getStores().get(Consts.SECURITY_FILTER_USER_BLACKLIST_CONTAINER);
     counter.remove(userId);
@@ -199,9 +201,9 @@ public abstract class AbstractUserBlackListTestCase extends AbstractSitoolsServe
       captcha = getCaptcha();
 
       unlockAccount(token, newUserPwd, captcha);
-      
+
       captcha = getCaptcha();
-      //token is supposed to be invalid now
+      // token is supposed to be invalid now
       unlockAccountBadToken(token, captcha);
 
       checkUserNotBlacklisted(userId, newUserPwd);

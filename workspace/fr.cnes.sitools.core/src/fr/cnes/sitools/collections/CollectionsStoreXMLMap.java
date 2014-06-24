@@ -15,22 +15,18 @@ import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.persistence.XmlMapStore;
 
-
-
 public class CollectionsStoreXMLMap extends XmlMapStore<Collection> implements CollectionStoreInterface {
 
-  
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "collections";
-  
+
   public CollectionsStoreXMLMap(Class<Collection> cl, File location, Context context) {
     super(cl, location, context);
   }
-  
+
   public CollectionsStoreXMLMap(File location, Context context) {
     super(Collection.class, location, context);
   }
-
 
   @Override
   public List<Collection> retrieveByParent(String id) {
@@ -48,16 +44,18 @@ public class CollectionsStoreXMLMap extends XmlMapStore<Collection> implements C
     aliases.put("Collection", Collection.class);
     this.init(location, aliases);
   }
-  
-  
+
   @Override
   public Collection update(Collection collection) {
     Collection result = null;
-    getLog().info("Updating collection");
-    
+
     Map<String, Collection> map = getMap();
     Collection current = map.get(collection.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating collection");
     result = current;
     current.setId(collection.getId());
     current.setName(collection.getName());
@@ -65,10 +63,10 @@ public class CollectionsStoreXMLMap extends XmlMapStore<Collection> implements C
     current.setDataSets(collection.getDataSets());
 
     map.put(collection.getId(), current);
-    
+
     return result;
   }
-  
+
   /**
    * Sort the list (by default on the name)
    * 

@@ -90,11 +90,13 @@ public class FeedsStoreXMLMap extends XmlMapStore<FeedModel> implements FeedsSto
   public FeedModel update(FeedModel feed) {
     FeedModel result = null;
 
-    log.finest("Updating FeedsModel");
-
     Map<String, FeedModel> map = getMap();
     FeedModel current = map.get(feed.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    log.finest("Updating FeedsModel");
     result = current;
     current.setEntries(feed.getEntries());
     current.setId(feed.getId());

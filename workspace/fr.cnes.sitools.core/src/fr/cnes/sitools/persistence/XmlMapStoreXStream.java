@@ -74,6 +74,7 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
   public XmlMapStoreXStream(Context context) {
     super();
     this.context = context;
+    log = Engine.getLogger(this.getClass().getName());
   }
 
   /**

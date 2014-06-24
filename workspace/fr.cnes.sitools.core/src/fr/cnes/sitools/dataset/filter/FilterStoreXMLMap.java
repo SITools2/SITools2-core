@@ -91,11 +91,14 @@ public class FilterStoreXMLMap extends XmlMapStore<FilterChainedModel> implement
   public FilterChainedModel update(FilterChainedModel filter) {
     FilterChainedModel result = null;
 
-    getLog().info("Updating FilterChainedModel");
     Map<String, FilterChainedModel> map = getMap();
     FilterChainedModel current = map.get(filter.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
     if (current != null && current.getId().equals(filter.getId())) {
+      getLog().info("Updating FilterChainedModel");
 
       result = current;
 

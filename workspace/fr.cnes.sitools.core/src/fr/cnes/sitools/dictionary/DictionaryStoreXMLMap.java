@@ -81,10 +81,14 @@ public class DictionaryStoreXMLMap extends XmlMapStore<Dictionary> implements Di
   @Override
   public Dictionary update(Dictionary dictionary) {
     Dictionary result = null;
-    getLog().info("Updating dictionary");
 
     Map<String, Dictionary> map = getMap();
     Dictionary current = map.get(dictionary.getId());
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating dictionary");
 
     result = current;
     current.setName(dictionary.getName());

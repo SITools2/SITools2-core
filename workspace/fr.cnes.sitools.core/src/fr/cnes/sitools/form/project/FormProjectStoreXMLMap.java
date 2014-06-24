@@ -90,7 +90,10 @@ public class FormProjectStoreXMLMap extends XmlMapStore<FormProject> implements 
 
     Map<String, FormProject> map = getMap();
     FormProject current = map.get(formProject.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
     result = current;
     // specific projetForm parameters
     current.setDictionary(formProject.getDictionary());

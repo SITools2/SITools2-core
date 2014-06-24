@@ -108,7 +108,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR) + "/map";
   }
 
   /**
@@ -117,7 +117,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestGraphRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GRAPHS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GRAPHS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -143,9 +143,12 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
       // Context
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-
+      storeGraphDirectory.mkdirs();
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
       cleanMapDirectories(storeDirectory);
+      cleanDirectory(storeGraphDirectory);
+      cleanMapDirectories(storeGraphDirectory);
       storeGraph = new GraphStoreXMLMap(storeGraphDirectory, ctx);
       store = new ProjectStoreXMLMap(storeDirectory, ctx);
 

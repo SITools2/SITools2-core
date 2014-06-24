@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -80,22 +80,23 @@ public class RoleStoreXMLMap extends XmlMapStore<Role> implements RoleStoreInter
   public Role update(Role role) {
     Role result = null;
     result = getMap().get(role.getId());
-    
-    if (result != null) {
-      getLog().finest("Updating role");
-
-      result.setName(role.getName());
-      result.setDescription(role.getDescription());
-      result.setUsers(role.getUsers());
-      result.setGroups(role.getGroups());
-
-      getMap().put(role.getId(), role);
+    if (result == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
     }
+    getLog().finest("Updating role");
+
+    result.setName(role.getName());
+    result.setDescription(role.getDescription());
+    result.setUsers(role.getUsers());
+    result.setGroups(role.getGroups());
+
+    getMap().put(role.getId(), role);
     return result;
   }
 
   /**
-   *  NOT APPLICABLE FOR ROLES
+   * NOT APPLICABLE FOR ROLES
    */
   @Override
   public List<Role> retrieveByParent(String id) {

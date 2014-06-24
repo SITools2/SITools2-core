@@ -85,10 +85,14 @@ public class GraphStoreXMLMap extends XmlMapStore<Graph> implements GraphStoreIn
   @Override
   public Graph update(Graph graph) {
     Graph result = null;
-    getLog().info("Updating Graph");
 
     Map<String, Graph> map = getMap();
     Graph current = map.get(graph.getId());
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating Graph");
 
     result = current;
     current.setName(graph.getName());

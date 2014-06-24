@@ -94,7 +94,8 @@ public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestC
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_MODULES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_MODULES_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -115,6 +116,7 @@ public abstract class AbstractProjectModuleTestCase extends AbstractSitoolsTestC
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
         cleanMapDirectories(storeDirectory);
         store = new ProjectModuleStoreXMLMap(storeDirectory, ctx);

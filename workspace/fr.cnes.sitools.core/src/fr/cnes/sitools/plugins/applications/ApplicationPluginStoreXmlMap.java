@@ -39,7 +39,7 @@ public class ApplicationPluginStoreXmlMap extends XmlMapStore<ApplicationPluginM
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "plugins_applications";
-  
+
   /**
    * Constructor without file
    * 
@@ -70,7 +70,7 @@ public class ApplicationPluginStoreXmlMap extends XmlMapStore<ApplicationPluginM
     aliases.put("ApplicationPluginModel", ApplicationPluginModel.class);
     this.init(location, aliases);
 
- // TODO --> instead autodetecteAnnotations use alias.put * here
+    // TODO --> instead autodetecteAnnotations use alias.put * here
     getXstream().autodetectAnnotations(true);
   }
 

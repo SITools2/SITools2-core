@@ -96,7 +96,7 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_ROLES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_ROLES_STORE_DIR) + "/map";
   }
 
   @Before

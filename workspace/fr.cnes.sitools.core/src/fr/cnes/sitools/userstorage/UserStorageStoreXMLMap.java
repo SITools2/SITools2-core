@@ -123,10 +123,16 @@ public class UserStorageStoreXMLMap extends XmlMapStore<UserStorage> implements 
 
     Map<String, UserStorage> map = getMap();
     UserStorage current = map.get(userStorage.getId());
+
+    if (result == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+
     result = current;
     current.setStorage(userStorage.getStorage());
     current.setStatus(userStorage.getStatus());
-    
+
     map.put(userStorage.getId(), current);
     return result;
   }

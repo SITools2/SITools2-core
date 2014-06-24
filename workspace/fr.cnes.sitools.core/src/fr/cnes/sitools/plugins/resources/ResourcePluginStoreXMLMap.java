@@ -71,6 +71,12 @@ public class ResourcePluginStoreXMLMap extends XmlMapStore<ResourceModel> implem
 
     Map<String, ResourceModel> map = getMap();
     ResourceModel current = map.get(resource.getId());
+    
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    
     result = current;
     current.setId(resource.getId());
     current.setName(resource.getName());

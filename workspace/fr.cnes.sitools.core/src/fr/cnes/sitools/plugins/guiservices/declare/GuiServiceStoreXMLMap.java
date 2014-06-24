@@ -81,7 +81,10 @@ public class GuiServiceStoreXMLMap extends XmlMapStore<GuiServiceModel> implemen
 
     Map<String, GuiServiceModel> map = getMap();
     GuiServiceModel current = map.get(guiService.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
     getLog().info("Updating ProjectguiService");
 
     result = current;

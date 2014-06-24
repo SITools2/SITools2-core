@@ -68,9 +68,14 @@ public class FilterPluginStoreXMLMap extends XmlMapStore<FilterModel> implements
   @Override
   public FilterModel update(FilterModel filter) {
     FilterModel result = null;
-
     Map<String, FilterModel> map = getMap();
     FilterModel current = map.get(filter.getId());
+    
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    
     result = current;
     current.setParent(filter.getParent());
     current.setName(filter.getName());

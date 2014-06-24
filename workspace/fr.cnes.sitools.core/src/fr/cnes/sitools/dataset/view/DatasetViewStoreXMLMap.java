@@ -87,11 +87,14 @@ public class DatasetViewStoreXMLMap extends XmlMapStore<DatasetView> implements 
   @Override
   public DatasetView update(DatasetView datasetView) {
     DatasetView result = null;
-    getLog().info("Updating datasetView");
 
     Map<String, DatasetView> map = getMap();
     DatasetView current = map.get(datasetView.getId());
-
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating datasetView");
     result = current;
 
     current.setId(datasetView.getId());

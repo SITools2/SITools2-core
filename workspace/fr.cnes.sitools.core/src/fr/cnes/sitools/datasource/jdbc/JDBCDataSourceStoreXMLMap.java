@@ -80,10 +80,14 @@ public class JDBCDataSourceStoreXMLMap extends XmlMapStore<JDBCDataSource> imple
   @Override
   public JDBCDataSource update(JDBCDataSource datasource) {
     JDBCDataSource result = null;
-    getLog().info("Updating DataSource");
-    
     Map<String, JDBCDataSource> map = getMap();
     JDBCDataSource current = map.get(datasource.getId());
+    
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating DataSource");
     
     result = current;
     current.setName(datasource.getName());

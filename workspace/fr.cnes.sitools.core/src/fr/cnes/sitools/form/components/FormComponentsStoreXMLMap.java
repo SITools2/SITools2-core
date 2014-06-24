@@ -88,11 +88,14 @@ public class FormComponentsStoreXMLMap extends XmlMapStore<FormComponent> implem
   public FormComponent update(FormComponent formComponent) {
     FormComponent result = null;
 
-    getLog().info("Updating formComponent");
-
     Map<String, FormComponent> map = getMap();
     FormComponent current = map.get(formComponent.getId());
 
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating formComponent");
     result = current;
     current.setId(formComponent.getId());
     current.setComponentDefaultHeight(formComponent.getComponentDefaultHeight());

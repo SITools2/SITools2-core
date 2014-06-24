@@ -80,12 +80,15 @@ public class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> implemen
   @Override
   public SitoolsDimension update(SitoolsDimension resource) {
     SitoolsDimension result = null;
-
-    getLog().finest("Updating SitoolsDimension");
-
     Map<String, SitoolsDimension> map = getMap();
     SitoolsDimension current = map.get(resource.getId());
 
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().finest("Updating SitoolsDimension");
+    
     result = current;
     current.setDimensionHelperName(resource.getDimensionHelperName());
     current.setName(resource.getName());

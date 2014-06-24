@@ -35,8 +35,7 @@ import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
  * @author AKKA
  * 
  */
-public class ProjectModuleStoreXMLMap extends XmlMapStore<ProjectModuleModel> implements
-    ProjectModuleStoreInterface {
+public class ProjectModuleStoreXMLMap extends XmlMapStore<ProjectModuleModel> implements ProjectModuleStoreInterface {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "ProjectModules";
@@ -71,6 +70,12 @@ public class ProjectModuleStoreXMLMap extends XmlMapStore<ProjectModuleModel> im
 
     Map<String, ProjectModuleModel> map = getMap();
     ProjectModuleModel current = map.get(module.getId());
+
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+
     result = current;
     current.setId(module.getId());
     current.setName(module.getName());

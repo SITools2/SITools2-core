@@ -237,7 +237,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
   }
 
   /**
-   * Invoke PUT
+   * Invoke POST
    * 
    * @param item
    *          RsourceAuthorization
@@ -252,8 +252,8 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
       putDocAPI(getBaseUrl() + "/" + item.getId(), "", rep, parameters, getBaseUrl() + "/%identifier%");
     }
     else {
-      ClientResource cr = new ClientResource(getBaseUrl() + "/" + item.getId());
-      Representation result = cr.put(rep, getMediaTest());
+      ClientResource cr = new ClientResource(getBaseUrl());
+      Representation result = cr.post(rep, getMediaTest());
       assertNotNull(result);
       assertTrue(cr.getStatus().isSuccess());
       Response response = getResponse(getMediaTest(), result, ResourceAuthorization.class, false);

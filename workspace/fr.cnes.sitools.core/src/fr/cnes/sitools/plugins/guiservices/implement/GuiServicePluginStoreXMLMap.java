@@ -69,9 +69,15 @@ public class GuiServicePluginStoreXMLMap extends XmlMapStore<GuiServicePluginMod
   @Override
   public GuiServicePluginModel update(GuiServicePluginModel guiService) {
     GuiServicePluginModel result = null;
-
+    
     Map<String, GuiServicePluginModel> map = getMap();
     GuiServicePluginModel current = map.get(guiService.getId());
+    
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    
     result = current;
     current.setId(guiService.getId());
     current.setName(guiService.getName());

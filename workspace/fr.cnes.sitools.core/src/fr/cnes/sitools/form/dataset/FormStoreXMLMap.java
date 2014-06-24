@@ -131,10 +131,14 @@ public class FormStoreXMLMap extends XmlMapStore<Form> implements FormStoreInter
   @Override
   public Form update(Form form) {
     Form result = null;
-    getLog().info("Updating Form");
     
     Map<String, Form> map = getMap();
     Form current = map.get(form.getId());
+    if (current == null) {
+      getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
+    }
+    getLog().info("Updating Form");
 
     result = current;
     current.setName(form.getName());
