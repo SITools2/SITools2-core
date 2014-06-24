@@ -54,8 +54,10 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.dto.ResourcePluginDescriptionDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
+import fr.cnes.sitools.project.model.MinimalProjectPriorityDTO;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.model.ProjectModule;
+import fr.cnes.sitools.project.model.ProjectPriorityDTO;
 import fr.cnes.sitools.properties.model.SitoolsProperty;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.Group;
@@ -980,4 +982,74 @@ public class GetResponseUtils {
     }
   }
 
+  // ------------------------------------------------------------
+  // PROJECT PRIORITY DTO MODEL
+
+  /**
+   * REST API Response wrapper for single item expected.
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected in the item property of the Response object
+   * @return Response the response.
+   */
+  public static Response getResponseProjectPriorityDTO(MediaType media, Representation representation, Class<?> dataClass) {
+    return getResponseProjectPriorityDTO(media, representation, dataClass, false);
+  }
+
+  /**
+   * REST API Response Representation wrapper for single or multiple items expexted
+   * 
+   * @param media
+   *          MediaType expected
+   * @param representation
+   *          service response representation
+   * @param dataClass
+   *          class expected for items of the Response object
+   * @param isArray
+   *          if true wrap the data property else wrap the item property
+   * @return Response
+   */
+  public static Response getResponseProjectPriorityDTO(MediaType media, Representation representation, Class<?> dataClass,
+      boolean isArray) {
+    try {
+      if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
+        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+        return null;
+      }
+
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
+      xstream.autodetectAnnotations(false);
+      xstream.alias("response", Response.class);
+      xstream.alias("minimalProjectPriorityList", MinimalProjectPriorityDTO.class);
+
+      if (isArray) {
+        xstream.addImplicitCollection(Response.class, "data", dataClass);
+      }
+      else {
+        xstream.alias("item", dataClass);
+        xstream.alias("item", Object.class, dataClass);
+
+        if (media.equals(MediaType.APPLICATION_JSON)) {
+          xstream.addImplicitCollection(MinimalProjectPriorityDTO.class, "minimalProjectPriorityList", ProjectPriorityDTO.class);
+        }
+
+      }
+      xstream.aliasField("data", Response.class, "data");
+
+      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
+      rep.setXstream(xstream);
+
+      Response response = rep.getObject("response");
+
+      return response;
+
+    }
+    finally {
+      RIAPUtils.exhaust(representation);
+    }
+  }
 }

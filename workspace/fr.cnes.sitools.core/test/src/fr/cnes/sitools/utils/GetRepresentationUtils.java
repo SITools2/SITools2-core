@@ -39,6 +39,7 @@ import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.project.model.Project;
+import fr.cnes.sitools.project.model.ProjectPriorityDTO;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.security.model.Group;
 import fr.cnes.sitools.security.model.User;
@@ -422,6 +423,45 @@ public class GetRepresentationUtils {
     // xstream.addImplicitCollection(Project.class, "dataSets", Resource.class);
     // xstream.aliasField("dataSets", Project.class, "dataSets");
     // xstream.aliasField("image", Project.class, "image");
+  }
+
+  // -----------------------------------------------------------
+  // PROJECT
+  /**
+   * Builds XML or JSON Representation of Project for Create and Update methods.
+   * 
+   * @param item
+   *          Project
+   * @param media
+   *          APPLICATION_XML or APPLICATION_JSON
+   * @return XML or JSON Representation
+   */
+  public static Representation getRepresentationProjectPriorityDTO(ProjectPriorityDTO item, MediaType media) {
+    if (media.equals(MediaType.APPLICATION_JSON)) {
+      return new JacksonRepresentation<ProjectPriorityDTO>(item);
+    }
+    else if (media.equals(MediaType.APPLICATION_XML)) {
+      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
+      XstreamRepresentation<ProjectPriorityDTO> rep = new XstreamRepresentation<ProjectPriorityDTO>(media, item);
+      configureProjectPriorityDTO(xstream);
+      rep.setXstream(xstream);
+      return rep;
+    }
+    else {
+      Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
+      return null; // TODO complete test with ObjectRepresentation
+    }
+  }
+
+  /**
+   * Configures XStream mapping for Response object with Project content.
+   * 
+   * @param xstream
+   *          XStream
+   */
+  private static void configureProjectPriorityDTO(XStream xstream) {
+    xstream.autodetectAnnotations(false);
+    xstream.alias("response", Response.class);
   }
 
 }

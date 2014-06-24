@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,8 +48,10 @@ import fr.cnes.sitools.project.ProjectStoreInterface;
 import fr.cnes.sitools.project.ProjectStoreXMLMap;
 import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
+import fr.cnes.sitools.project.model.MinimalProjectPriorityDTO;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.model.ProjectModule;
+import fr.cnes.sitools.project.model.ProjectPriorityDTO;
 import fr.cnes.sitools.registry.AppRegistryApplication;
 import fr.cnes.sitools.registry.ApplicationStoreInterface;
 import fr.cnes.sitools.registry.ApplicationStoreXMLMap;
@@ -253,6 +256,93 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
   }
 
   /**
+   * Test CRUD Project with JSon format exchanges.
+   */
+  @Test
+  public void testPriorityAndCategory() {
+    docAPI.setActive(false);
+    try {
+      assertNone();
+      Project item = createObject("new_project");
+      create(item);
+      ProjectPriorityDTO projectDTO = createProjectPriorityDTO(item);
+      updatePriority(projectDTO);
+      retrieveProjectPriority(projectDTO, item);
+
+      delete(item);
+      assertNone();
+      createWadl(getBaseUrl(), "projects_admin");
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  private void retrieveProjectPriority(ProjectPriorityDTO projectDTO, Project item) {
+    String url = getBaseUrl() + "/" + item.getId();
+    ClientResource cr = new ClientResource(url);
+    docAPI.appendRequest(Method.GET, cr);
+
+    Representation result = cr.get(getMediaTest());
+    if (!docAPI.appendResponse(result)) {
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponseProject(getMediaTest(), result, Project.class);
+      assertTrue(response.getSuccess());
+      Project prj = (Project) response.getItem();
+
+      assertEquals(item.getName(), prj.getName());
+      assertEquals(item.getDescription(), prj.getDescription());
+
+      boolean checkPriority = false;
+      for (MinimalProjectPriorityDTO minimalProject : projectDTO.getMinimalProjectPriorityList()) {
+        if (minimalProject.getId().equals(item.getId())) {
+          checkPriority = true;
+          assertEquals(minimalProject.getPriority(), prj.getPriority());
+          assertEquals(minimalProject.getCategoryProject(), prj.getCategoryProject());
+        }
+      }
+      assertTrue(checkPriority);
+
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  private void updatePriority(ProjectPriorityDTO projectDTO) {
+    Representation rep = GetRepresentationUtils.getRepresentationProjectPriorityDTO(projectDTO, getMediaTest());
+    ClientResource cr = new ClientResource(getBaseUrl());
+    docAPI.appendRequest(Method.PUT, cr, rep);
+
+    Representation result = cr.put(rep, getMediaTest());
+    if (!docAPI.appendResponse(result)) {
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponse(getMediaTest(), result, getMediaTest());
+      assertTrue(response.getSuccess());
+
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  private ProjectPriorityDTO createProjectPriorityDTO(Project p) {
+    List<MinimalProjectPriorityDTO> list = new ArrayList<MinimalProjectPriorityDTO>();
+    MinimalProjectPriorityDTO minimalProject = new MinimalProjectPriorityDTO();
+
+    minimalProject.setId(p.getId());
+    minimalProject.setCategoryProject("MyCategory");
+    minimalProject.setPriority(25);
+
+    list.add(minimalProject);
+    ProjectPriorityDTO projectDTO = new ProjectPriorityDTO();
+    projectDTO.setMinimalProjectPriorityList(list);
+
+    return projectDTO;
+  }
+
+  /**
    * Create an object for tests
    * 
    * @param id
@@ -283,6 +373,8 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
     projectModule1.setDescription("a new project");
     modules.add(projectModule1);
     item.setModules(modules);
+    item.setCategoryProject("MyCategory");
+    item.setPriority(1);
 
     return item;
   }

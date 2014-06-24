@@ -195,7 +195,6 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
         projectFromStore.setPriority(m.getPriority());
         getStore().update(projectFromStore);
       }
-      
       // Response
       response = new Response(true, "Priority and Category successfully updated");
       return getRepresentation(response, variant);
