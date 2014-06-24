@@ -18,11 +18,15 @@
  ******************************************************************************/
 package fr.cnes.sitools.registry;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -33,11 +37,16 @@ import org.restlet.ext.wadl.DocumentationInfo;
 import org.restlet.routing.Router;
 import org.restlet.routing.VirtualHost;
 
+import com.google.common.io.Files;
+
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.model.Resource;
+import fr.cnes.sitools.dataset.watch.DataSetsWatchServiceRunnable;
 import fr.cnes.sitools.registry.model.AppRegistry;
+import fr.cnes.sitools.registry.watch.AppRegistryWatchServiceRunnable;
+import fr.cnes.sitools.service.watch.ScheduledThreadWatchService;
 
 /**
  * ApplicationManager
@@ -95,7 +104,19 @@ public final class AppRegistryApplication extends SitoolsApplication {
    * Single object in the store
    */
   private AppRegistry resourceManager = null;
+  
+  /** last refresh */
+  private long authorizationsLastModified = 0;
+  
+  /** The service used for synchronization */
+  private ScheduledThreadWatchService scheduledService;
 
+  /** The period of time to wait between each refresh */
+  private int refreshPeriod;
+
+  /** The number of threads used to check for refresh */
+  private int refreshThreads;
+  
   /**
    * Constructor
    * 
@@ -114,6 +135,24 @@ public final class AppRegistryApplication extends SitoolsApplication {
       resourceManager = new AppRegistry();
       store.create(resourceManager);
     }
+    
+    if (isAppsRefreshSync()) {
+      setRefreshThreads(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_THREADS")));
+      setRefreshPeriod(Integer.parseInt(getSettings().getString("Starter.APPS_REFRESH_PERIOD")));
+
+      // set the rolesLastModified
+      File appFile = getEventFile();
+      if (appFile != null && appFile.exists()) {
+        setAuthorizationsLastModified(appFile.lastModified());
+      }
+
+      AppRegistryWatchServiceRunnable runnable = new AppRegistryWatchServiceRunnable(getSettings(), this);
+
+      scheduledService = new ScheduledThreadWatchService(runnable, this.refreshThreads, this.refreshPeriod,
+          TimeUnit.SECONDS);
+      scheduledService.start();
+    }
+    
   }
 
   @Override
@@ -484,5 +523,89 @@ public final class AppRegistryApplication extends SitoolsApplication {
     result.getDocumentations().add(docInfo);
     return result;
   }
+  
+  /**
+   * updateAuthorizationLastModified
+   */
+  public void updateAuthorizationLastModified(){
+    if (isAppsRefreshSync()) {
+      try {
+        File file = getEventFile();
+        Files.touch(file);
+        // pour eviter un refresh de l'instance courante à chaque modification
+        setAuthorizationsLastModified(file.lastModified());
+      }
+      catch (IOException e) {
+        getLogger().log(Level.WARNING, "Error while updating last refresh file ", e);
+      }
+    }
+  }
+  
+  /**
+   * True is sitools is in Application refresh mode, false otherwise
+   * @return True is sitools is in Application refresh mode, false otherwise
+   */
+  private boolean isAppsRefreshSync() {
+    return Boolean.parseBoolean(getSettings().getString("Starter.APPS_REFRESH", "false"));
+  }
+  
+  /**
+   * Get the eventFile
+   * @return the eventFile
+   */
+  public File getEventFile() {
+    String fileUrl = getSettings().getStoreDIR("Starter.AUTHORIZATIONS_EVENT_FILE");
+    File file = new File(fileUrl);
+    return file;
+  }
+  
+  /**
+   * Get the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   * 
+   * @return number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   */
+  public int getRefreshThreads() {
+    return refreshThreads;
+  }
+
+  /**
+   * Sets the number of threads to keep in the scheduled pool (ScheduledThreadPoolExecutor)
+   * 
+   * @param refreshThreads
+   *          , the number of threads to keep in the pool, even if they are idle
+   */
+  public void setRefreshThreads(int refreshThreads) {
+    this.refreshThreads = refreshThreads;
+  }
+
+  /**
+   * Get the period between successive executions of the ScheduledThreadPoolExecutor
+   * 
+   * @return the period between successive executions of the ScheduledThreadPoolExecutor
+   */
+  public int getRefreshPeriod() {
+    return refreshPeriod;
+  }
+
+  /**
+   * Sets the period between successive executions of the ScheduledThreadPoolExecutor
+   * 
+   * @param refreshPeriod
+   *          , the period between successive executions (in a time unit to be specified)
+   */
+  public void setRefreshPeriod(int refreshPeriod) {
+    this.refreshPeriod = refreshPeriod;
+  }
+
+  public long getAuthorizationsLastModified() {
+    return authorizationsLastModified;
+  }
+
+  public void setAuthorizationsLastModified(long authorizationsLastModified) {
+    this.authorizationsLastModified = authorizationsLastModified;
+  }
+
+  
+  
 
 }
