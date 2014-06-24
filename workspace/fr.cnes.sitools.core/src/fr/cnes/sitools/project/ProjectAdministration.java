@@ -216,6 +216,8 @@ public final class ProjectAdministration extends AbstractProjectApplication {
     if (!isSynchro) {
       updateLastModified();
     }
+    // get rid of the IS_SYNCHRO attributes for further operations on the project
+    appContext.getAttributes().remove("IS_SYNCHRO");
   }
 
   /**

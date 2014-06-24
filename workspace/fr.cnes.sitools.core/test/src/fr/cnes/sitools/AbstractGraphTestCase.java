@@ -50,13 +50,13 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.project.ProjectAdministration;
-import fr.cnes.sitools.project.ProjectStoreXML;
-import fr.cnes.sitools.project.graph.GraphStoreXML;
+import fr.cnes.sitools.project.ProjectStoreInterface;
+import fr.cnes.sitools.project.ProjectStoreXMLMap;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
+import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.project.graph.model.GraphNodeComplete;
-import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -72,11 +72,11 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Graph> store = null;
+  private static GraphStoreInterface store = null;
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Project> storeProject = null;
+  private static ProjectStoreInterface storeProject = null;
 
   /** specific project identifier for test purpose. */
   private static String projectId = "350f9f7e-834f-4825-a218-03916c790e71";
@@ -110,7 +110,7 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GRAPHS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GRAPHS_STORE_DIR) + "/map";
   }
 
   /**
@@ -119,7 +119,7 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestProjectRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -141,10 +141,12 @@ public abstract class AbstractGraphTestCase extends AbstractSitoolsTestCase {
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         File storeProjectDirectory = new File(getTestProjectRepository());
+        storeDirectory.mkdirs();
+        storeProjectDirectory.mkdirs();
         cleanDirectory(storeDirectory);
         cleanMapDirectories(storeDirectory);
-        store = new GraphStoreXML(storeDirectory, ctx);
-        storeProject = new ProjectStoreXML(storeProjectDirectory, ctx);
+        store = new GraphStoreXMLMap(storeDirectory, ctx);
+        storeProject = new ProjectStoreXMLMap(storeProjectDirectory, ctx);
 
         Map<String, Object> stores = new ConcurrentHashMap<String, Object>();
         stores.put(Consts.APP_STORE_PROJECT, storeProject);

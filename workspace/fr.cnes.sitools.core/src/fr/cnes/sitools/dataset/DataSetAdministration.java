@@ -204,6 +204,8 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
     if (!isSynchro) {
       updateLastModified();
     }
+    // get rid of the IS_SYNCHRO attributes for further operations on the dataset
+    appContext.getAttributes().remove("IS_SYNCHRO");
   }
 
   @Override

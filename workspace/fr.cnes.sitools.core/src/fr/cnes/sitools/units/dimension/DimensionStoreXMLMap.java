@@ -78,6 +78,28 @@ public class DimensionStoreXMLMap extends XmlMapStore<SitoolsDimension> implemen
   }
 
   @Override
+  public SitoolsDimension update(SitoolsDimension resource) {
+    SitoolsDimension result = null;
+
+    getLog().finest("Updating SitoolsDimension");
+
+    Map<String, SitoolsDimension> map = getMap();
+    SitoolsDimension current = map.get(resource.getId());
+
+    result = current;
+    current.setDimensionHelperName(resource.getDimensionHelperName());
+    current.setName(resource.getName());
+    current.setDescription(resource.getDescription());
+    current.setUnitConverters(resource.getUnitConverters());
+    current.setUnits(resource.getUnits());
+
+    if (result != null) {
+      map.put(resource.getId(), current);
+    }
+    return result;
+  }
+
+  @Override
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("dimension", SitoolsDimension.class);

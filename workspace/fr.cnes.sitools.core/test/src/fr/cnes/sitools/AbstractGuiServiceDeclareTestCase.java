@@ -34,7 +34,6 @@ import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
-import org.restlet.data.Protocol;
 import org.restlet.engine.Engine;
 import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.ext.xstream.XstreamRepresentation;
@@ -50,9 +49,9 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Dependencies;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.model.Url;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceApplication;
-import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXML;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreXMLMap;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -62,7 +61,7 @@ public abstract class AbstractGuiServiceDeclareTestCase extends AbstractSitoolsT
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<GuiServiceModel> store = null;
+  private static GuiServiceStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -93,7 +92,8 @@ public abstract class AbstractGuiServiceDeclareTestCase extends AbstractSitoolsT
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GUI_SERVICES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GUI_SERVICES_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -114,9 +114,10 @@ public abstract class AbstractGuiServiceDeclareTestCase extends AbstractSitoolsT
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
         cleanMapDirectories(storeDirectory);
-        store = new GuiServiceStoreXML(storeDirectory, ctx);
+        store = new GuiServiceStoreXMLMap(storeDirectory, ctx);
 
       }
 
