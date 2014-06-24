@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -72,11 +73,11 @@ public class AuthorizationStoreXMLTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
       cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-      storeDirectory.mkdirs();
       store = new AuthorizationStoreXMLMap(storeDirectory, ctx);
     }
   }
@@ -106,7 +107,18 @@ public class AuthorizationStoreXMLTestCase extends AbstractSitoolsTestCase {
     item.setName("test_Name_modified");
     item.setDescription("test_Description_modified");
 
+    RoleAndMethodsAuthorization rama = new RoleAndMethodsAuthorization();
+    rama.setRole("ProductOwner_bis");
+    rama.setGetMethod(true);
+    rama.setHeadMethod(true);
+    rama.setOptionsMethod(true);
+    rama.setPostMethod(true); // can post new user stories.
+    rama.setPutMethod(false);
+    rama.setDeleteMethod(false);
+    item.getAuthorizations().add(rama);
+
     update(item);
+    retrieve(item);
     delete(item);
     assertNone();
   }
@@ -195,6 +207,45 @@ public class AuthorizationStoreXMLTestCase extends AbstractSitoolsTestCase {
     ResourceAuthorization result = store.retrieve(item.getId());
     assertNotNull(result);
     assertEquals(item.getId(), result.getId());
+    
+    assertAuthorization(item.getAuthorizations(), result.getAuthorizations());
+  }
+
+
+  private void assertAuthorization(ArrayList<RoleAndMethodsAuthorization> expected,
+      ArrayList<RoleAndMethodsAuthorization> actual) {
+
+    assertNotNull(actual);
+    for (RoleAndMethodsAuthorization ramaExpected : expected) {
+      RoleAndMethodsAuthorization ramaActual = findRama(actual, ramaExpected);
+      assertNotNull(ramaActual);
+      assertRama(ramaExpected, ramaActual);
+    }
+
+  }
+
+  private void assertRama(RoleAndMethodsAuthorization ramaExpected, RoleAndMethodsAuthorization ramaActual) {
+    assertEquals(ramaExpected.getRole(), ramaActual.getRole());
+    assertEquals(ramaExpected.getDescription(), ramaActual.getDescription());
+    assertEquals(ramaExpected.getAllMethod(), ramaActual.getAllMethod());
+    assertEquals(ramaExpected.getDeleteMethod(), ramaActual.getDeleteMethod());
+    assertEquals(ramaExpected.getGetMethod(), ramaActual.getGetMethod());
+    assertEquals(ramaExpected.getHeadMethod(), ramaActual.getHeadMethod());
+    assertEquals(ramaExpected.getOptionsMethod(), ramaActual.getOptionsMethod());
+    assertEquals(ramaExpected.getPostMethod(), ramaActual.getPostMethod());
+    assertEquals(ramaExpected.getPutMethod(), ramaActual.getPutMethod());
+  }
+
+  private RoleAndMethodsAuthorization findRama(ArrayList<RoleAndMethodsAuthorization> actual,
+      RoleAndMethodsAuthorization ramaExpected) {
+    RoleAndMethodsAuthorization out = null;
+    for (RoleAndMethodsAuthorization roleAndMethodsAuthorization : actual) {
+      if (roleAndMethodsAuthorization.getRole().equals(ramaExpected.getRole())) {
+        out = roleAndMethodsAuthorization;
+        break;
+      }
+    }
+    return out;
   }
 
   /**
@@ -208,6 +259,7 @@ public class AuthorizationStoreXMLTestCase extends AbstractSitoolsTestCase {
     assertNotNull(result);
     assertEquals(item.getName(), result.getName());
     assertEquals(item.getDescription(), result.getDescription());
+    assertAuthorization(item.getAuthorizations(), result.getAuthorizations());
   }
 
   /**

@@ -2,7 +2,6 @@ package fr.cnes.sitools.security.authorization;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,18 +62,16 @@ public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization>
     super(ResourceAuthorization.class, location, context);
   }
 
-
   @Override
   public String getCollectionName() {
     return COLLECTION_NAME;
   }
-  
+
   @Override
   public List<ResourceAuthorization> retrieveByParent(String id) {
     // TODO Auto-generated method stub
     return null;
   }
-
 
   @Override
   public void init(File location) {
@@ -124,29 +121,26 @@ public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization>
 
     return result;
   }
-  
-  
+
   @Override
   public ResourceAuthorization update(ResourceAuthorization authorization) {
+
     ResourceAuthorization result = null;
-    for (Iterator<ResourceAuthorization> it = getList().iterator(); it.hasNext();) {
-      ResourceAuthorization current = it.next();
-      if (current.getId().equals(authorization.getId())) {
-        getLog().info("Updating Authorization for resource " + current.getId());
 
-        result = current;
-        current.setName(authorization.getName());
-        current.setDescription(authorization.getDescription());
-        current.setUrl(authorization.getUrl());
-        current.setAuthorizations(authorization.getAuthorizations());
-        it.remove();
+    Map<String, ResourceAuthorization> map = getMap();
+    ResourceAuthorization current = map.get(authorization.getId());
 
-        break;
-      }
-    }
+    getLog().finest("Updating Authorization for resource " + current.getId());
+
+    result = current;
+    current.setName(authorization.getName());
+    current.setDescription(authorization.getDescription());
+    current.setUrl(authorization.getUrl());
+    current.setAuthorizations(authorization.getAuthorizations());
+
     // authorizer la creation sur le PUT
     if (result != null) {
-      getList().add(result);
+      map.put(result.getId(), result);
     }
     return result;
   }
