@@ -10,9 +10,10 @@ version() {
 
 usage() {
     echo "USAGE"
-    echo "  ${prog} <start|stop|restart|status> [-migration]"
+    echo "  ${prog} <start|stop|restart|status> [-migration|-scalable]"
     echo "PARAMETERS:"
-    echo " -migration : used to start Sitools2 in migration mode to skip XML fields that are not in the models anymore"
+    echo " -migration : start Sitools2 in migration mode to skip XML fields that are not in the models anymore"
+    echo " -scalable : start Sitools2 in scalability mode"
     echo " --version : display the version"    
     echo " "
 }
@@ -67,8 +68,8 @@ start() {
 	    local SITOOLS_START="./${SITOOLS}"
             [ ! -x ${SITOOLS_START} ] && echo "Cannot start ${SITOOLS_START}" && exit 1
             echo -e "Starting ${SITOOLS_START} ${1}...\c "
-            nohup ${SITOOLS_START} ${1} 2>&1 >> ${LOG} &
-            if [ ${?} -ne 0 ];then
+            ${SITOOLS_START} ${1} 2>&1 >> ${LOG}
+            if [ $? -ne 0 ];then
                 echo "[ERROR]" | tee -a ${LOG}
                 echo "A problem happens: cannot start ${SITOOLS_START} ..." | tee -a ${LOG}
                 echo "Please, check the script before starting." | tee -a ${LOG}
