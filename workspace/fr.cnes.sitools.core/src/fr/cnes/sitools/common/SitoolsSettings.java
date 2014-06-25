@@ -28,7 +28,6 @@ import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentHashMap;
 
-import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.registry.AppRegistryApplication;

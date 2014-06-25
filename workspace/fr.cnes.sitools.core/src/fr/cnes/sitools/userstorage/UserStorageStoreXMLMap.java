@@ -20,7 +20,6 @@ package fr.cnes.sitools.userstorage;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,7 +30,6 @@ import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.ResourceComparator;
 import fr.cnes.sitools.persistence.XmlMapStore;
-import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.userstorage.model.UserStorage;
 
 /**
@@ -124,7 +122,7 @@ public class UserStorageStoreXMLMap extends XmlMapStore<UserStorage> implements 
     Map<String, UserStorage> map = getMap();
     UserStorage current = map.get(userStorage.getId());
 
-    if (result == null) {
+    if (current == null) {
       getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
       return null;
     }
