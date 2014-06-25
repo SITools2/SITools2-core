@@ -68,7 +68,6 @@ public class AuthorizationTrigger extends TriggerResource {
         SitoolsApplication app = registry.getApplication(application);
         registry.reattachApplication(app);
       }
-      registry.updateAuthorizationLastModified();
     }
   }
 }
