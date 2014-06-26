@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.plugins.applications.model;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -49,6 +50,8 @@ public final class ApplicationPluginModel extends ExtensionModel<ApplicationPlug
 
   /** category of the application plugin */
   private Category category; // = Category.ADMIN_DYNAMIC;
+
+  private Date lastStatusUpdate;
 
   /**
    * Default constructor
@@ -132,6 +135,25 @@ public final class ApplicationPluginModel extends ExtensionModel<ApplicationPlug
    */
   public Category getCategory() {
     return category;
+  }
+
+  /**
+   * Gets the lastStatusUpdate value
+   * 
+   * @return the lastStatusUpdate
+   */
+  public Date getLastStatusUpdate() {
+    return lastStatusUpdate;
+  }
+
+  /**
+   * Sets the value of lastStatusUpdate
+   * 
+   * @param lastStatusUpdate
+   *          the lastStatusUpdate to set
+   */
+  public void setLastStatusUpdate(Date lastStatusUpdate) {
+    this.lastStatusUpdate = lastStatusUpdate;
   }
 
 }

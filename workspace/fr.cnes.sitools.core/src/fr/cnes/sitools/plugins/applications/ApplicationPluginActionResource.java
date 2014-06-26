@@ -112,8 +112,7 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
             break;
           }
           if (getResourceApplication().isStarted()) {
-            model.setStatus("ACTIVE");
-            store.update(model);
+            model = store.retrieve(model.getId());
 
             ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
             response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
@@ -133,10 +132,9 @@ public class ApplicationPluginActionResource extends AbstractApplicationPluginRe
             trace(Level.INFO, "Cannot stop the application plugin ");
             break;
           }
-
           getResourceApplication().detachApplication(model);
-          model.setStatus("INACTIVE");
-          store.update(model);
+          
+          model = store.retrieve(model.getId());
           ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(model);
           response = new Response(true, appModelOutDTO, ApplicationPluginModelDTO.class, "ApplicationPluginModel");
           response.setMessage("appPlugin.stop.success");
