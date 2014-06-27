@@ -2,6 +2,7 @@ package fr.cnes.sitools.security.authorization;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -139,6 +140,7 @@ public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization>
     current.setDescription(authorization.getDescription());
     current.setUrl(authorization.getUrl());
     current.setAuthorizations(authorization.getAuthorizations());
+    current.setLastAuthorizationUpdate(new Date());
 
     // authorizer la creation sur le PUT
     if (result != null) {

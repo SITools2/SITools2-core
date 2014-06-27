@@ -21,6 +21,7 @@ package fr.cnes.sitools.security.authorization;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -131,6 +132,7 @@ public final class AuthorizationStoreXML extends Paginable<ResourceAuthorization
         current.setDescription(authorization.getDescription());
         current.setUrl(authorization.getUrl());
         current.setAuthorizations(authorization.getAuthorizations());
+        current.setLastAuthorizationUpdate(new Date());
         it.remove();
 
         break;
