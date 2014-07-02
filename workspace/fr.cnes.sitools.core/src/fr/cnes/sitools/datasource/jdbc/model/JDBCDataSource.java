@@ -19,6 +19,7 @@
 package fr.cnes.sitools.datasource.jdbc.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -47,6 +48,10 @@ public final class JDBCDataSource extends SitoolsDataSourceModel implements Seri
    * schema to use for filtering database structures
    */
   private String schemaOnConnection;
+  
+  /** The date of the last status update */
+  private Date lastStatusUpdate;
+
 
   /**
    * Default constructor
@@ -107,5 +112,23 @@ public final class JDBCDataSource extends SitoolsDataSourceModel implements Seri
     resource.setUrl(this.getSitoolsAttachementForUsers());
     return resource;
   }
+  
+  /**
+   * Gets the lastStatusUpdate value
+   * @return the lastStatusUpdate
+   */
+  public Date getLastStatusUpdate() {
+    return lastStatusUpdate;
+  }
+
+  /**
+   * Sets the value of lastStatusUpdate
+   * @param lastStatusUpdate
+   *          the lastStatusUpdate to set
+   */
+  public void setLastStatusUpdate(Date lastStatusUpdate) {
+    this.lastStatusUpdate = lastStatusUpdate;
+  }
+
 
 }

@@ -19,6 +19,7 @@
 package fr.cnes.sitools.datasource.jdbc;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -104,6 +105,7 @@ public class JDBCDataSourceStoreXMLMap extends XmlMapStore<JDBCDataSource> imple
     current.setInitialSize(datasource.getInitialSize());
     current.setSchemaOnConnection(datasource.getSchemaOnConnection());
     current.setSitoolsAttachementForUsers(datasource.getSitoolsAttachementForUsers());
+    current.setLastStatusUpdate(new Date());
 
     if (result != null) {
       map.put(datasource.getId(), current);
