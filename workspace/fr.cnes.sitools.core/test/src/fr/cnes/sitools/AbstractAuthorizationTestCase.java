@@ -35,16 +35,10 @@ import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 import org.restlet.engine.Engine;
-import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
 
-import com.thoughtworks.xstream.XStream;
-
 import fr.cnes.sitools.common.SitoolsSettings;
-import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
-import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
@@ -54,6 +48,8 @@ import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.authorization.client.RoleAndMethodsAuthorization;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
+import fr.cnes.sitools.utils.GetRepresentationUtils;
+import fr.cnes.sitools.utils.GetResponseUtils;
 
 /**
  * Test for authorizations
@@ -381,55 +377,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
    * @return Response
    */
   public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(getMediaTest()) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("authorization", ResourceAuthorization.class);
-      xstream.alias("resourceAuthorization", ResourceAuthorization.class);
-      xstream.alias("authorize", RoleAndMethodsAuthorization.class);
-
-      // Parce que les annotations ne sont apparemment prises en compte
-      xstream.omitField(Response.class, "itemName");
-      xstream.omitField(Response.class, "itemClass");
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-        if (media.equals(MediaType.APPLICATION_JSON)) {
-          xstream.addImplicitCollection(ResourceAuthorization.class, "authorizations",
-              RoleAndMethodsAuthorization.class);
-        }
-
-        if (dataClass == ResourceAuthorization.class) {
-          xstream.aliasField("authorization", Response.class, "item");
-        }
-      }
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-
-        return response;
-      }
-      else {
-        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null; // TODO complete test with ObjectRepresentation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
-    }
+    return GetResponseUtils.getResponseResourceAuthorization(media, representation, dataClass, isArray);
   }
 
   /**
@@ -442,35 +390,7 @@ public abstract class AbstractAuthorizationTestCase extends AbstractSitoolsTestC
    * @return XML or JSON Representation
    */
   public static Representation getRepresentation(ResourceAuthorization item, MediaType media) {
-    if (media.equals(MediaType.APPLICATION_JSON)) {
-      return new JacksonRepresentation<ResourceAuthorization>(item);
-    }
-    else if (media.equals(MediaType.APPLICATION_XML)) {
-      XStream xstream = XStreamFactory.getInstance().getXStream(media, false);
-      XstreamRepresentation<ResourceAuthorization> rep = new XstreamRepresentation<ResourceAuthorization>(media, item);
-      configure(xstream);
-      rep.setXstream(xstream);
-      return rep;
-    }
-    else {
-      Engine.getLogger(ResourceAuthorization.class.getName()).warning("Only JSON or XML supported in tests");
-      return null; // TODO complete test with ObjectRepresentation
-    }
-  }
-
-  /**
-   * Configure Xstream for XML
-   * 
-   * @param xstream
-   *          the xstream to configure
-   */
-  public static void configure(XStream xstream) {
-    xstream.autodetectAnnotations(false);
-    xstream.alias("response", Response.class);
-
-    // Parce que les annotations ne sont apparemment prises en compte
-    xstream.omitField(Response.class, "itemName");
-    xstream.omitField(Response.class, "itemClass");
+    return GetRepresentationUtils.getRepresentationResourceAuthorization(item, media);
   }
 
 }

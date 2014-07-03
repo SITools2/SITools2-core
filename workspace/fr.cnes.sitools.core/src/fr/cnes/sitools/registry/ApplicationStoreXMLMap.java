@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 import org.restlet.Context;
 import org.restlet.engine.Engine;
 
-import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.persistence.XmlMapStore;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
