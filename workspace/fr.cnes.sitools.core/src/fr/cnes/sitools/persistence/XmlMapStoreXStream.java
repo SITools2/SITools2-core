@@ -181,8 +181,7 @@ public abstract class XmlMapStoreXStream<E extends IResource> {
    * 
    * @return the list
    */
-  public final List<E> getList() {
-    
+  public List<E> getList() {    
     ArrayList<E> result = Lists.newArrayList(map.values());
     sort(result, null);
     return result;

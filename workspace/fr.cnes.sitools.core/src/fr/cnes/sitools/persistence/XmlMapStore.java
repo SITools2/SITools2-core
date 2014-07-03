@@ -74,7 +74,7 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
 
   @SuppressWarnings("unchecked")
   @Override
-  public final T[] getArray() {
+  public T[] getArray() {
     T[] result = null;
     if ((getMap() != null) && (getMap().size() > 0)) {
       T[] array = (T[]) Array.newInstance(persistentClass, getMap().size());
@@ -88,7 +88,7 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
 
   @SuppressWarnings("unchecked")
   @Override
-  public final T[] getArray(ResourceCollectionFilter filter) {
+  public T[] getArray(ResourceCollectionFilter filter) {
     List<T> resultList = getList(filter);
 
     T[] result = null;
@@ -144,7 +144,7 @@ public abstract class XmlMapStore<T extends IResource> extends XmlMapStoreXStrea
 
 
   @Override
-  public final List<T> saveList(List<T> os) {
+  public List<T> saveList(List<T> os) {
     Iterator<T> iterator = os.iterator();
     while (iterator.hasNext()) {
       T e = iterator.next();
