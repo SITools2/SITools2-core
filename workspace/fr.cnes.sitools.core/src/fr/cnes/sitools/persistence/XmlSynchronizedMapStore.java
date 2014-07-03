@@ -79,7 +79,7 @@ public abstract class XmlSynchronizedMapStore<T extends IResource> extends XmlMa
 
   @SuppressWarnings("unchecked")
   @Override
-  public final T[] getArray() {
+  public T[] getArray() {
     T[] result = null;
     Map<String, T> map = getMap();
     synchronized (map) {
@@ -96,7 +96,7 @@ public abstract class XmlSynchronizedMapStore<T extends IResource> extends XmlMa
 
   @SuppressWarnings("unchecked")
   @Override
-  public final T[] getArray(ResourceCollectionFilter filter) {
+  public T[] getArray(ResourceCollectionFilter filter) {
     List<T> resultList = getList(filter);
 
     T[] result = null;
@@ -155,7 +155,7 @@ public abstract class XmlSynchronizedMapStore<T extends IResource> extends XmlMa
   }
 
   @Override
-  public final List<T> saveList(List<T> os) {
+  public List<T> saveList(List<T> os) {
     Iterator<T> iterator = os.iterator();
     while (iterator.hasNext()) {
       T e = iterator.next();
