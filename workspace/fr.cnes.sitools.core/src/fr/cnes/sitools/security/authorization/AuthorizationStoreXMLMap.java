@@ -132,6 +132,7 @@ public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization>
     ResourceAuthorization current = map.get(authorization.getId());
     if (current == null) {
       getLog().warning("Cannot update " + COLLECTION_NAME + " that doesn't already exists");
+      return null;
     }
     getLog().finest("Updating Authorization for resource " + current.getId());
 
