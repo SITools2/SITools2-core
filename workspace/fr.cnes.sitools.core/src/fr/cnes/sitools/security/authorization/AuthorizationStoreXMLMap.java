@@ -141,7 +141,7 @@ public class AuthorizationStoreXMLMap extends XmlMapStore<ResourceAuthorization>
     current.setDescription(authorization.getDescription());
     current.setUrl(authorization.getUrl());
     current.setAuthorizations(authorization.getAuthorizations());
-    current.setLastAuthorizationUpdate(new Date());
+    current.setLastAuthorizationUpdate(authorization.getLastAuthorizationUpdate());
 
     // authorizer la creation sur le PUT
     if (result != null) {

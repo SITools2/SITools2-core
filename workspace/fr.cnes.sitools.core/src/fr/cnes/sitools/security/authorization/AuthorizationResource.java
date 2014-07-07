@@ -18,6 +18,7 @@
  ******************************************************************************/
 package fr.cnes.sitools.security.authorization;
 
+import java.util.Date;
 import java.util.logging.Level;
 
 import org.restlet.data.Status;
@@ -115,6 +116,7 @@ public final class AuthorizationResource extends AbstractAuthorizationResource {
     try {
       if (representation != null) {
         ResourceAuthorization authorizationInput = getObject(representation);
+        authorizationInput.setLastAuthorizationUpdate(new Date());
 
         // Business service
         if (authorizationInput.getAuthorizations() == null) {
