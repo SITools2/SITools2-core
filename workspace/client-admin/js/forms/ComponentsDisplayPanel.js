@@ -70,7 +70,8 @@ sitools.admin.forms.ComponentsDisplayPanel = Ext.extend(Ext.Panel, {
 
 		if (this.action != 'modify') {
 			var mainPanel = new sitools.admin.forms.advancedFormPanel({
-				containerPanelId : 'main',
+//				containerPanelId : 'main',
+				containerPanelId : Ext.id(),
 				title : i18n.get('label.mainForm'),
 				height : 300,
 				border : true,
