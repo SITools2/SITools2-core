@@ -74,7 +74,7 @@
 	</target>
 
 	<target name="build"
-		depends="build-jars, refresh-properties-for-install, build-shell-for-install, build-freemarker-sources, build-izpack-installer" />
+		depends="build-jars, refresh-properties-for-install, build-shell-for-install, minify-javascripts, build-izpack-installer" />
 
 	<!-- TARGET refresh-properties-for-install -->
 	<target name="refresh-properties-for-install"
