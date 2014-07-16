@@ -44,7 +44,7 @@
     <!--
     <link rel="stylesheet" type="text/css" href="res/css/animated-dataview.css"></link>
     <link rel="stylesheet" type="text/css" href="res/css/animated-seeAlso.css"></link>
-    -->
+    --y
    	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/combo.css"></link>
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css"></link>
 	
@@ -89,7 +89,7 @@
     
     <!--<script type="text/javascript" src="${appUrl}/client-public/js/widgets/Ext.ux.Plugin.RemoteComponent.js"></script>-->
     <!--<script type="text/javascript" src="${appUrl}/client-public/js/widgets/multiSelect/Ext.ux.multiselect.js"></script>-->
-    <script type="text/javascript" src="${appUrl}/client-public/js/utils/logout.js"></script>
+    <script type="text/javascript" src="${appUrl}/client-public/js/utils/Logout.js"></script>
     <script type="text/javascript" src="${appUrl}/client-public/js/widget/vtype.js"></script>
 	
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/grid/SitoolsView.js"></script>
