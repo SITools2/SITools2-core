@@ -71,10 +71,10 @@
 	
 <!-- BEGIN_JS_DEV_INCLUDES -->
 	<script type="text/javascript" src="${appUrl}/client-public/js/utils/reference.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/app/utils/def.js"></script>
-	<script src="${appUrl}/client-user/bootstrap.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-user/app/utils/Def.js"></script>
+	<script src="${appUrl}/client-user/Bootstrap.js"></script>
         <!-- </x-bootstrap> -->
-        <script src="${appUrl}/client-user/app.js"></script>
+        <script src="${appUrl}/client-user/App.js"></script>
 <!-- END_JS_DEV_INCLUDES -->
  
 <!-- --------------------------------------------------------------------------------------------------

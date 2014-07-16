@@ -99,12 +99,12 @@
     <script type="text/javascript" src="js/gui.js"></script>
     <script type="text/javascript" src="js/tools.js"></script>
 	<script type="text/javascript" src="js/menu/seeAlso.js"></script>
-	<script type="text/javascript" src="js/quickstart/qsStart.js"></script>
-	<script type="text/javascript" src="js/quickstart/qsProject.js"></script>
-	<script type="text/javascript" src="js/quickstart/qsDatasource.js"></script>
-	<script type="text/javascript" src="js/quickstart/qsDataset.js"></script>
-	<script type="text/javascript" src="js/quickstart/qsSecurity.js"></script>
-	<script type="text/javascript" src="js/quickstart/qsForm.js"></script>
+	<script type="text/javascript" src="js/quickstart/QsStart.js"></script>
+	<script type="text/javascript" src="js/quickstart/QsProject.js"></script>
+	<script type="text/javascript" src="js/quickstart/QsDatasource.js"></script>
+	<script type="text/javascript" src="js/quickstart/QsDataset.js"></script>
+	<script type="text/javascript" src="js/quickstart/QsSecurity.js"></script>
+	<script type="text/javascript" src="js/quickstart/QsForm.js"></script>
 	
 	
 	<script type="text/javascript" src="app.js"></script>	
