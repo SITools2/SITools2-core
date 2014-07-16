@@ -55,7 +55,7 @@ start() {
 	   status
         elif [ ${response} -eq 0 ];then
            rm ${SITOOLS_PID} 
-	   start
+	   start ${1}
         elif [ ${response} -eq 2 ];then
 	   status
         else 
