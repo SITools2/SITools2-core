@@ -25,11 +25,11 @@ Ext.namespace('sitools.admin.converters');
 
 /**
  * Converters Crud Panel
- * @requires sitools.admin.converters.convertersProp
- * @class sitools.admin.converters.convertersCrud
+ * @requires sitools.admin.converters.ConvertersProp
+ * @class sitools.admin.converters.ConvertersCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.converters.convertersCrud', { 
+Ext.define('sitools.admin.converters.ConvertersCrud', { 
     extend : 'Ext.grid.GridPanel', 
 	alias : 'widget.s-converters',
     border : false,
@@ -45,7 +45,7 @@ Ext.define('sitools.admin.converters.convertersCrud', {
     mixins : {
         utils : "sitools.admin.utils.utils"
     },
-    requires : ['sitools.admin.converters.convertersProp'], 
+    requires : ['sitools.admin.converters.ConvertersProp'], 
     
     viewConfig : {
         autoFill : true,
@@ -273,7 +273,7 @@ Ext.define('sitools.admin.converters.convertersCrud', {
             itemdblclick : this.onModify
         };
 
-        sitools.admin.converters.convertersCrud.superclass.initComponent.call(this);
+        sitools.admin.converters.ConvertersCrud.superclass.initComponent.call(this);
 
     },
 
@@ -281,7 +281,7 @@ Ext.define('sitools.admin.converters.convertersCrud', {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
             return;
         }
-        var up = Ext.create("sitools.admin.converters.convertersProp", {
+        var up = Ext.create("sitools.admin.converters.ConvertersProp", {
             action : 'create',
             parent : this,
             datasetId : this.datasetId,
@@ -342,7 +342,7 @@ Ext.define('sitools.admin.converters.convertersCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.converters.convertersProp", {
+        var up = Ext.create("sitools.admin.converters.ConvertersProp", {
             action : 'modify',
             parent : this,
             converter : rec.data,

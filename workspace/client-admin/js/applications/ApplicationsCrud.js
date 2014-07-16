@@ -22,12 +22,12 @@ Ext.namespace('sitools.admin.applications');
 
 /**
  * A Panel to display all sitools Applications. 
- * @class sitools.admin.applications.applicationsCrud
+ * @class sitools.admin.applications.ApplicationsCrud
  * @extends Ext.grid.GridPanel
- * @requires sitools.admin.applications.applicationsProp
- * @requires sitools.admin.applications.applicationsRole
+ * @requires sitools.admin.applications.ApplicationsProp
+ * @requires sitools.admin.applications.ApplicationsRole
  */
-Ext.define('sitools.admin.applications.applicationsCrud', { 
+Ext.define('sitools.admin.applications.ApplicationsCrud', { 
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-applications',
 	border : false,
@@ -39,9 +39,9 @@ Ext.define('sitools.admin.applications.applicationsCrud', {
         utils : 'sitools.admin.utils.utils'
     },
     
-    requires : ["sitools.admin.applications.applicationsProp",
+    requires : ["sitools.admin.applications.ApplicationsProp",
                 "sitools.admin.applications.ApplicationModel",
-                "sitools.admin.applications.applicationsRole"], 
+                "sitools.admin.applications.ApplicationsRole"], 
                 
 
     initComponent : function () {
@@ -144,17 +144,17 @@ Ext.define('sitools.admin.applications.applicationsCrud', {
             enableGroupingMenu: false
         }];
         
-        sitools.admin.applications.applicationsCrud.superclass.initComponent.call(this);
+        sitools.admin.applications.ApplicationsCrud.superclass.initComponent.call(this);
     },
 
     /**
      * Called when user click on Authorizations button
-     * Open a {sitools.admin.applications.applicationsRole} window.
+     * Open a {sitools.admin.applications.ApplicationsRole} window.
      * @return {}
      */
     onDefineRole : function () {
         var rec = this.getLastSelectedRecord();
-        var up = new sitools.admin.applications.applicationsRole({
+        var up = new sitools.admin.applications.ApplicationsRole({
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });
@@ -168,12 +168,12 @@ Ext.define('sitools.admin.applications.applicationsCrud', {
 
     /**
      * Called when user click on Details button
-     * Open a {sitools.admin.applications.applicationsProp} window.
+     * Open a {sitools.admin.applications.ApplicationsProp} window.
      * @return {}
      */
     onDetails : function () {
         var rec = this.getLastSelectedRecord();
-        var up = new sitools.admin.applications.applicationsProp({
+        var up = new sitools.admin.applications.ApplicationsProp({
             applicationRecord : rec
         });
         

@@ -21,10 +21,10 @@ Ext.namespace('sitools.admin.authorizations');
 
 /**
  * 
- * @class sitools.admin.authorizations.authorizationsCrud
+ * @class sitools.admin.authorizations.AuthorizationsCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.authorizations.authorizationsCrud', {
+Ext.define('sitools.admin.authorizations.AuthorizationsCrud', {
     extend : 'Ext.grid.Panel', 
 	alias : 'widget.s-authorizations',
     border : false,
@@ -34,7 +34,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrud', {
     forceFit : true,
     id : ID.BOX.AUTHORIZATION,
     
-    requires : ['sitools.admin.applications.applicationsRole'],
+    requires : ['sitools.admin.applications.ApplicationsRole'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_AUTHORIZATIONS_URL');
@@ -129,11 +129,11 @@ Ext.define('sitools.admin.authorizations.authorizationsCrud', {
             itemdblclick : this.onDefineRole
         };
 
-        sitools.admin.authorizations.authorizationsCrud.superclass.initComponent.call(this);
+        sitools.admin.authorizations.AuthorizationsCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.authorizations.authorizationsCrud.superclass.onRender.apply(this, arguments);
+        sitools.admin.authorizations.AuthorizationsCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             params : {
                 start : 0,
@@ -147,7 +147,7 @@ Ext.define('sitools.admin.authorizations.authorizationsCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.applications.applicationsRole", {
+        var up = Ext.create("sitools.admin.applications.ApplicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });

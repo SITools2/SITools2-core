@@ -48,7 +48,7 @@ Ext.define('sitools.admin.storages.storagesCrud', {
     
     requires : ['sitools.admin.filtersPlugins.filtersPluginsSingle',
                 'sitools.admin.storages.storagesProp',
-                'sitools.admin.applications.applicationsRole',
+                'sitools.admin.applications.ApplicationsRole',
                 'sitools.admin.storages.plugins.storageCopyProp'],
 
     initComponent : function () {
@@ -258,11 +258,11 @@ Ext.define('sitools.admin.storages.storagesCrud', {
     },
     
     /**
-     * Open a {sitools.admin.applications.applicationsRole} role panel to add a role authorization to the selected storage
+     * Open a {sitools.admin.applications.ApplicationsRole} role panel to add a role authorization to the selected storage
      */
     onDefineRole : function () {
         var rec = this.getLastSelectedRecord();
-        var up = Ext.create("sitools.admin.applications.applicationsRole", {
+        var up = Ext.create("sitools.admin.applications.ApplicationsRole", {
             urlAuthorizations : this.urlAuthorizations + "/" + rec.data.id,
             applicationRecord : rec
         });

@@ -65,12 +65,12 @@ Ext.define('sitools.admin.Application', {
         'sitools.public.ux.form.ToolFieldSet',
         
         /* SITOOLS MODULES */
-        'sitools.admin.applications.applicationsCrud',
-        'sitools.admin.authorizations.authorizationsCrud',
+        'sitools.admin.applications.ApplicationsCrud',
+        'sitools.admin.authorizations.AuthorizationsCrud',
         'sitools.admin.collections.CollectionsCrud',
         'sitools.admin.applications.plugins.ApplicationPluginCrud',
-        'sitools.admin.applications.plugins.applicationResourcesCrud',
-        'sitools.admin.converters.convertersCrud',
+        'sitools.admin.applications.plugins.ApplicationResourcesCrud',
+        'sitools.admin.converters.ConvertersCrud',
         'sitools.admin.datasetViews.DatasetViewsCrud',
         'sitools.admin.datasource.jdbc.DataBaseCrud',
         'sitools.admin.datasource.mongoDb.DataBaseCrud',

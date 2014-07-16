@@ -39,7 +39,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.applications.plugins.applicationPluginProp'],
+    requires : ['sitools.admin.applications.plugins.ApplicationPluginProp'],
     
     // Warning for version conflicts
 	conflictWarned : false,
@@ -248,11 +248,11 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', {
     },
 
     /**
-     * Open a {sitools.admin.applications.plugins.applicationPluginProp} window
+     * Open a {sitools.admin.applications.plugins.ApplicationPluginProp} window
      * to create a new Application plugin
      */
     onCreate : function () {
-        var up = Ext.create("sitools.admin.applications.plugins.applicationPluginProp", {
+        var up = Ext.create("sitools.admin.applications.plugins.ApplicationPluginProp", {
             action : 'create',            
             parent : this,          
             urlList : this.urlList,
@@ -262,7 +262,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', {
     },
 
     /**
-     * Open a {sitools.admin.applications.plugins.applicationPluginProp} window
+     * Open a {sitools.admin.applications.plugins.ApplicationPluginProp} window
      * to edit an Application plugin
      */
     onModify : function () {
@@ -275,7 +275,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginCrud', {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));
             return;
         }
-        var up = Ext.create("sitools.admin.applications.plugins.applicationPluginProp", {
+        var up = Ext.create("sitools.admin.applications.plugins.ApplicationPluginProp", {
             action : 'modify',
             record : rec,
             parent : this,

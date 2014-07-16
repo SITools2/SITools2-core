@@ -42,11 +42,11 @@ Ext.define('sitools.admin.applications.customCheckColumn', {
  * A window to display Roles and authorizations for each options. 
  * @cfg {string} urlAuthorizations  
  * @cfg {Ext.data.Record} applicationRecord
- * @class sitools.admin.applications.applicationsRole
+ * @class sitools.admin.applications.ApplicationsRole
  * @extends Ext.Window
  * @requires sitools.admin.applications.roles
  */
-Ext.define('sitools.admin.applications.applicationsRole', { 
+Ext.define('sitools.admin.applications.ApplicationsRole', { 
     extend : 'Ext.Window', 
     width : 700,
     height : 480,

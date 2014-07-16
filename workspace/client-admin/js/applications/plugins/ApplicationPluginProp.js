@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.applications.plugins');
  * @cfg {} parent The componennt caller 
  * @cfg {string} urlList the url of application plugins 
  * @cfg {string} urlAdmin 
- * @class sitools.admin.applications.plugins.applicationPluginProp
+ * @class sitools.admin.applications.plugins.ApplicationPluginProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.applications.plugins.applicationPluginProp', { 
+Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -385,7 +385,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
         
         this.items = [ this.tabPanel ];
 
-        sitools.admin.applications.plugins.applicationPluginProp.superclass.initComponent.call(this);
+        sitools.admin.applications.plugins.ApplicationPluginProp.superclass.initComponent.call(this);
     },
 
     /**
@@ -447,7 +447,7 @@ Ext.define('sitools.admin.applications.plugins.applicationPluginProp', {
      * Requests the selected plugin Application properties
      */
     afterRender : function () {
-        sitools.admin.applications.plugins.applicationPluginProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.applications.plugins.ApplicationPluginProp.superclass.afterRender.apply(this, arguments);
 
         if (this.action == "modify") {
             this.applicationPluginId = this.record.data.id;

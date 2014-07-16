@@ -30,10 +30,10 @@ Ext.namespace('sitools.admin.converters');
  * @cfg {string} datasetId The Dataset Id 
  * @cfg {string} converterUrlPart The string to add to convert dataset url to converters url
  * @cfg {string} urlDatasets the url of the datasets collection resource. 
- * @class sitools.admin.converters.convertersProp
+ * @class sitools.admin.converters.ConvertersProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.converters.convertersProp', {
+Ext.define('sitools.admin.converters.ConvertersProp', {
     extend : 'Ext.Window', 
     width : 700,
     height : 480,
@@ -344,7 +344,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
         }; 
         this.items = [ this.tabPanel ];
 
-        sitools.admin.converters.convertersProp.superclass.initComponent.call(this);
+        sitools.admin.converters.ConvertersProp.superclass.initComponent.call(this);
     },
 
     /**
@@ -406,7 +406,7 @@ Ext.define('sitools.admin.converters.convertersProp', {
      * load the selected converter properties
      */
     afterRender : function () {
-        sitools.admin.converters.convertersProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.converters.ConvertersProp.superclass.afterRender.apply(this, arguments);
 
         if (this.action == "modify") {
 
