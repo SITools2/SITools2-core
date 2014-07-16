@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-Ext.define('sitools.admin.quickStart.qsForm', { 
+Ext.define('sitools.admin.quickStart.QsForm', { 
     extend : 'Ext.panel.Panel',
     forceLayout : true, 
     layout : {
