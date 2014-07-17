@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, loadUrl*/
 Ext.namespace('sitools.admin.storages.plugins');
 
-Ext.define('sitools.admin.storages.plugins.storageFiltersCrud', { extend : 'Ext.panel.Panel',
+Ext.define('sitools.admin.storages.plugins.StorageFiltersCrud', { extend : 'Ext.panel.Panel',
     alias : 'widget.s-storage_filters',
     border : false,
     height : ADMIN_PANEL_HEIGHT,    

@@ -93,7 +93,7 @@ Ext.define('sitools.admin.Application', {
         'sitools.admin.projects.resourcesPlugins.ProjectResourcesCrud',
         'sitools.admin.resourcesPlugins.ResourcesPluginsCrud',
         'sitools.admin.rssFeed.RssFeedCrud',
-////        'sitools.admin.storages.plugins.storageFiltersCrud',
+////        'sitools.admin.storages.plugins.StorageFiltersCrud',
         'sitools.admin.storages.StoragesCrud',
         'sitools.admin.units.UnitsCrud',
         'sitools.admin.usergroups.GroupCrud',

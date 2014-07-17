@@ -21,14 +21,14 @@
 Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
- * @requires sitools.admin.forms.winParent
+ * @requires sitools.admin.forms.WinParent
  * @class sitools.admin.forms.componentsAdminDef.oneParam.WithValues
  * @extends sitools.admin.forms.componentsAdminDef.oneParam.Abstract
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', { 
     extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract',
     alias : 'widget.sitools.admin.forms.componentsAdminDef.oneParam.WithValues',
-    requires : ['sitools.admin.forms.winParent'],
+    requires : ['sitools.admin.forms.WinParent'],
 //    id : "sitools.component.forms.definitionId",
     height : 450,
     initComponent : function () {
@@ -47,7 +47,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
             disabled : this.context.context == "project"
         });
         this.parentParamDisplay.onTriggerClick = function (event) {
-            var winParent = Ext.create("sitools.admin.forms.winParent", {
+            var winParent = Ext.create("sitools.admin.forms.WinParent", {
                 parentParamField : this.ownerCt.parentParam, 
                 parentParamFieldDisplay : this,
                 store : formComponentsStore,

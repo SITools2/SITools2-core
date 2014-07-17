@@ -20,7 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.admin.datasource.mongoDb');
 
-Ext.define('sitools.admin.datasource.mongoDb.fieldsModel', {
+Ext.define('sitools.admin.datasource.mongoDb.FieldsModel', {
     extend : 'Ext.data.Model',
     fields : [{
         name : 'type'
@@ -50,7 +50,7 @@ Ext.define('sitools.admin.datasource.mongoDb.CollectionExplorer', {
 		this.url = !Ext.isEmpty(this.collection) ? this.collection.url + "/metadata" : null;
 		
 		this.store = Ext.create('Ext.data.TreeStore', {
-            model : 'sitools.admin.datasource.mongoDb.fieldsModel',
+            model : 'sitools.admin.datasource.mongoDb.FieldsModel',
 //            root : {
 //                text : this.name,
 //                expanded : true,
