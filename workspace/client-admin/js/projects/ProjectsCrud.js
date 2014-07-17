@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.projects');
 
-Ext.define('sitools.admin.projects.projectsCrud', { 
+Ext.define('sitools.admin.projects.ProjectsCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-projects',
     border : false,
@@ -202,11 +202,11 @@ Ext.define('sitools.admin.projects.projectsCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.projects.projectsCrud.superclass.initComponent.call(this);
+        sitools.admin.projects.ProjectsCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.projects.projectsCrud.superclass.onRender.apply(this, arguments);
+        sitools.admin.projects.ProjectsCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize

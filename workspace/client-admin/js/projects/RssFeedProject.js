@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.projects');
 
-Ext.define('sitools.admin.projects.rssFeedProject', { 
+Ext.define('sitools.admin.projects.RssFeedProject', { 
 	alias : 'widget.s-rssFeedProjects',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
