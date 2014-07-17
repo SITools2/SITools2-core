@@ -23,13 +23,13 @@ Ext.namespace('sitools.admin.datasets.datasourceUtils');
 /**
  * @class sitools.admin.datasets.DatasourceFactory
  */
-Ext.define('sitools.admin.datasets.datasourceUtils.mongoDbUtils', { 
+Ext.define('sitools.admin.datasets.datasourceUtils.MongoDbUtils', { 
     extend : 'Ext.util.Observable', 
 	isJdbc : false,
 	isMongoDb : true, 
 	constructor : function (config) {
 		Ext.apply(this, config.scope);
-		sitools.admin.datasets.datasourceUtils.jdbcUtils.superclass.constructor.call(this);
+		sitools.admin.datasets.datasourceUtils.JdbcUtils.superclass.constructor.call(this);
 	}, 
 
 	logInfo : function () {

@@ -270,7 +270,7 @@ Ext.define('sitools.admin.filters.FiltersProp', {
                     var rec = record.data;
                     
                     if (cellIndex == 3 && rec.parameterType != "PARAMETER_INTERN") {
-                        var selectColumnWin = Ext.create("sitools.admin.datasets.selectColumn", {
+                        var selectColumnWin = Ext.create("sitools.admin.datasets.SelectColumn", {
                             field : "attachedColumn",
                             record : storeRecord,
                             parentStore : this.gridFieldMapping.getStore(),

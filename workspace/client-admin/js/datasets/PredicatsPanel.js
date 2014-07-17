@@ -45,7 +45,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
         utils : 'sitools.admin.utils.utils'
     },
     
-    requires : ['sitools.admin.datasets.selectPredicat'],
+    requires : ['sitools.admin.datasets.SelectPredicat'],
     
     
     initComponent : function () {
@@ -210,7 +210,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                 }
                 if (columnIndex == 2) {
 
-                    selectPredicatWin = Ext.create("sitools.admin.datasets.selectPredicat", {
+                    selectPredicatWin = Ext.create("sitools.admin.datasets.SelectPredicat", {
                         field : 'leftAttribute',
                         recordPredicat : record,
                         storePredicat : this.storeSelectFields,
@@ -220,7 +220,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
                 }
                 if (columnIndex == 4 && this.type == 'join') {
 
-                    selectPredicatWin =  Ext.create("sitools.admin.datasets.selectPredicat", {
+                    selectPredicatWin =  Ext.create("sitools.admin.datasets.SelectPredicat", {
                         field : 'rightAttribute',
                         recordPredicat : record,
                         storePredicat : this.storeSelectFields,

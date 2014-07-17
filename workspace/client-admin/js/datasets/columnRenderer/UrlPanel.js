@@ -24,10 +24,10 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * Form panel used to fill specific information from a datasetLink columnRenderer
  * @cfg {String} behaviorType (required) : the type of the behavior selected (dsLink ou dsIconLink)
  * @cfg {Object} columnRenderer : the columnRenderer Object to load if we modify the value
- * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
+ * @class sitools.admin.datasets.columnRenderer.DatasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', { 
+Ext.define('sitools.admin.datasets.columnRenderer.UrlPanel', { 
         extend : 'Ext.panel.Panel',
 		flex : 1,
 		layout : "fit",
@@ -105,7 +105,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', {
             
             this.items = [this.formPanel];            
             
-            sitools.admin.datasets.columnRenderer.urlPanel.superclass.initComponent.call(this);
+            sitools.admin.datasets.columnRenderer.UrlPanel.superclass.initComponent.call(this);
         
         },
         /**
@@ -146,7 +146,7 @@ Ext.define('sitools.admin.datasets.columnRenderer.urlPanel', {
 		},
         
         afterRender : function () {
-            sitools.admin.datasets.columnRenderer.urlPanel.superclass.afterRender.apply(this, arguments);
+            sitools.admin.datasets.columnRenderer.UrlPanel.superclass.afterRender.apply(this, arguments);
             if (!Ext.isEmpty(this.columnRenderer) && this.columnRenderer.behavior == this.behaviorType) {
                 var form = this.formPanel.getForm();
                 var record = {};

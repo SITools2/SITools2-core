@@ -27,21 +27,21 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {Ext.data.Store} store (required) : the datasets store 
  * @cfg {String} urlDatasources The url of the JDBC datasources
  * @cfg {String} urlDatasourcesMongoDB The url of the MongoDB datasources
- * @class sitools.admin.datasets.datasetForm
+ * @class sitools.admin.datasets.DatasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetCriteria', { 
+Ext.define('sitools.admin.datasets.DatasetCriteria', { 
     extend: 'Ext.panel.Panel',
     
-    requires : ['sitools.admin.datasets.joinPanel',
+    requires : ['sitools.admin.datasets.JoinPanel',
                 'sitools.admin.datasets.PredicatsPanel'],
     
 	initComponent : function () {
 		/**
          * The panel that displays the join conditions.
-         * @type sitools.admin.datasets.joinPanel
+         * @type sitools.admin.datasets.JoinPanel
          */
-        this.wizardJoinCondition = Ext.create('sitools.admin.datasets.joinPanel', {
+        this.wizardJoinCondition = Ext.create('sitools.admin.datasets.JoinPanel', {
 			datasetId : this.scope.datasetId, 
 			datasetSelectTables : this.scope.panelSelectTables, 
 			action : this.scope.action,
@@ -191,7 +191,7 @@ Ext.define('sitools.admin.datasets.datasetCriteria', {
             }
         };
         
-        sitools.admin.datasets.datasetCriteria.superclass.initComponent.call(this);
+        sitools.admin.datasets.DatasetCriteria.superclass.initComponent.call(this);
     }, 
     /**
      * Returns the wizard panel 

@@ -274,7 +274,7 @@ Ext.define('sitools.admin.converters.ConvertersProp', {
                     var storeRecord = grid.getStore().getAt(rowIndex);
                     var rec = storeRecord.data;
                     if (columnIndex == 3 && rec.parameterType != "CONVERTER_PARAMETER_INTERN") {
-                        var selectColumnWin = Ext.create('sitools.admin.datasets.selectColumn', {
+                        var selectColumnWin = Ext.create('sitools.admin.datasets.SelectColumn', {
                             field : "attachedColumn",
                             record : storeRecord,
                             parentStore : this.gridFieldMapping.getStore(),

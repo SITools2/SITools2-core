@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.datasets');
 
 /**
  * @deprecated
- * @class sitools.admin.datasets.dictionaryWin
+ * @class sitools.admin.datasets.DictionaryWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.dictionaryWin', { 
+Ext.define('sitools.admin.datasets.DictionaryWin', { 
     extend : 'Ext.Window', 
 	alias : 'widget.s-datasetsdictionary',
     width : 700,
@@ -154,7 +154,7 @@ Ext.define('sitools.admin.datasets.dictionaryWin', {
             } ]
 
         } ];
-        sitools.admin.datasets.dictionaryWin.superclass.initComponent.call(this);
+        sitools.admin.datasets.DictionaryWin.superclass.initComponent.call(this);
     },
     loadNotions : function (dictionaryId) {
         // alert (dictionaryId);

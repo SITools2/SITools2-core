@@ -27,10 +27,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {Ext.data.Store} store (required) : the datasets store 
  * @cfg {String} urlDatasources The url of the JDBC datasources
  * @cfg {String} urlDatasourcesMongoDB The url of the MongoDB datasources
- * @class sitools.admin.datasets.datasetForm
+ * @class sitools.admin.datasets.DatasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetSelectTables', { 
+Ext.define('sitools.admin.datasets.DatasetSelectTables', { 
     extend : 'Ext.Panel',
     
     requires : ['sitools.public.widget.datasets.selectItems',
@@ -74,7 +74,7 @@ Ext.define('sitools.admin.datasets.datasetSelectTables', {
             }
         });
 		
-		sitools.admin.datasets.datasetSelectTables.superclass.initComponent.call(this);
+		sitools.admin.datasets.DatasetSelectTables.superclass.initComponent.call(this);
     }, 
     loadInitialData : function () {
 		var data = this.scope.initialData;

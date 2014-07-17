@@ -24,10 +24,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg Ext.data.Record recordColumn The record to edit
  * @cfg Ext.grid.View viewColumn The grid view to refresh
  * @cfg string urlDimension The Url of the dimension to get all the units. 
- * @class sitools.admin.datasets.unitWin
+ * @class sitools.admin.datasets.UnitWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.unitWin', { 
+Ext.define('sitools.admin.datasets.UnitWin', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-datasetsUnits',
     width : 600,
@@ -152,7 +152,7 @@ Ext.define('sitools.admin.datasets.unitWin', {
                 this.close();
             }
         }];
-        sitools.admin.datasets.unitWin.superclass.initComponent.call(this);
+        sitools.admin.datasets.UnitWin.superclass.initComponent.call(this);
     },
     
     loadUnits : function (dimensionId) {

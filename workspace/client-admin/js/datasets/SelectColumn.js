@@ -27,10 +27,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg Ext.data.Store parentStore the store of the record
  * @cfg Ext.grid.View parentView the view of the grid
  * @cfg string url the url to request dataset
- * @class sitools.admin.datasets.selectColumn
+ * @class sitools.admin.datasets.SelectColumn
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.selectColumn', { 
+Ext.define('sitools.admin.datasets.SelectColumn', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-datasetscolumnwin',
     width : 700,
@@ -120,7 +120,7 @@ Ext.define('sitools.admin.datasets.selectColumn', {
             } ]
 
         } ];
-        sitools.admin.datasets.selectColumn.superclass.initComponent.call(this);
+        sitools.admin.datasets.SelectColumn.superclass.initComponent.call(this);
     },
     /**
      * Method called on Ok button. 

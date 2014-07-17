@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.datasets');
                 storeColumnDataset 
  * @cfg {String} mode (required) should be "edit" or "create"
  * @cfg {Ext.data.Store} storeColumnDataset (required) the store of dataset columns
- * @class sitools.admin.datasets.joinConditionWin
+ * @class sitools.admin.datasets.JoinConditionWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.joinConditionWin', { 
+Ext.define('sitools.admin.datasets.JoinConditionWin', { 
     extend : 'Ext.Window',
     // url + mode + storeref
     width : 650,
@@ -172,7 +172,7 @@ Ext.define('sitools.admin.datasets.joinConditionWin', {
         } ]
 		;
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.datasets.joinConditionWin.superclass.initComponent.call(this);
+        sitools.admin.datasets.JoinConditionWin.superclass.initComponent.call(this);
     },
 
     /**

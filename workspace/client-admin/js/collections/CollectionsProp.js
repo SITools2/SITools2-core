@@ -202,10 +202,10 @@ Ext.define('sitools.admin.collections.CollectionsProp', {
         sitools.admin.collections.CollectionsProp.superclass.initComponent.call(this);
     },
     /**
-     * Create a {sitools.admin.projects.datasetsWin} datasetWindow to add datasets
+     * Create a {sitools.admin.projects.DatasetsWin} datasetWindow to add datasets
      */
     _onAttachDataset : function () {
-        var up = Ext.create("sitools.admin.projects.datasetsWin", {
+        var up = Ext.create("sitools.admin.projects.DatasetsWin", {
             mode : 'select',
             url : loadUrl.get('APP_URL') + '/datasets',
             storeDatasets : this.gridDataSets.getStore()

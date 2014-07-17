@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.projects');
  * @cfg {String} the url where get the resource
  * @cfg {String}, the type of mode
  * @cfg {Ext.data.JsonStore} storeDatasets, the store with all datasets of the project
- * @class sitools.admin.projects.datasetsWin
+ * @class sitools.admin.projects.DatasetsWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.projects.datasetsWin', { 
+Ext.define('sitools.admin.projects.DatasetsWin', { 
     extend : 'Ext.window.Window',
     // url + mode + storeref
     width : 500,
@@ -128,14 +128,14 @@ Ext.define('sitools.admin.projects.datasetsWin', {
         } ];
         
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.projects.datasetsWin.superclass.initComponent.call(this);
+        sitools.admin.projects.DatasetsWin.superclass.initComponent.call(this);
     },
 
     /**
      * done a specific render to load datasets informations. 
      */
     onRender : function () {
-        sitools.admin.projects.datasetsWin.superclass.onRender.apply(this, arguments);
+        sitools.admin.projects.DatasetsWin.superclass.onRender.apply(this, arguments);
         this.store.load({
             scope : this,
             params : {

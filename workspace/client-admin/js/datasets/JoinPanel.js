@@ -32,10 +32,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {Ext.grid.GridPanel} datasetSelectTables (required) The Panel that shows dataset tables
  * @cfg {string} action (required) 
  * @cfg {Ext.data.Store} storeColumnDataset (required) The store of the dataset columns
- * @class sitools.admin.datasets.joinPanel
+ * @class sitools.admin.datasets.JoinPanel
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.joinPanel', { 
+Ext.define('sitools.admin.datasets.JoinPanel', { 
     extend : 'Ext.panel.Panel',
     border : false,
     urlJDBC : loadUrl.get('APP_URL') + "/",
@@ -43,23 +43,23 @@ Ext.define('sitools.admin.datasets.joinPanel', {
 	layout : 'fit', 
 	height : 180,
 	
-	requires : ['sitools.admin.datasets.joinCrudTreePanel'],
+	requires : ['sitools.admin.datasets.JoinCrudTreePanel'],
 	
     initComponent : function () {
         this.title = "Join Configuration";
-        this.tree = Ext.create("sitools.admin.datasets.joinCrudTreePanel", this);
+        this.tree = Ext.create("sitools.admin.datasets.JoinCrudTreePanel", this);
 
         this.items = [this.tree];
 		this.addEvents('contextmenu');  
         
-        sitools.admin.datasets.joinPanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.JoinPanel.superclass.initComponent.call(this);
     },
 
     loadGraph : function () {
 
         this.removeAll();
 
-        this.tree = Ext.create('sitools.admin.datasets.joinCrudTreePanel', {
+        this.tree = Ext.create('sitools.admin.datasets.JoinCrudTreePanel', {
             datasetId : this.datasetId
         });
         

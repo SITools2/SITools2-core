@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {String} datasetId (required) the datasetId
  * @cfg {Ext.grid.GridPanel} datasetSelectTables (required) the Panel that displays all Tables
  * @cfg {String} action (required) Should be 'create' or 'modify'
- * @class sitools.admin.datasets.joinTableWin
+ * @class sitools.admin.datasets.JoinTableWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.joinTableWin', { 
+Ext.define('sitools.admin.datasets.JoinTableWin', { 
     extend : 'Ext.Window',
     width : 350,
     height : ADMIN_PANEL_HEIGHT, 
@@ -105,7 +105,7 @@ Ext.define('sitools.admin.datasets.joinTableWin', {
             scope : this
         } ];
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.datasets.joinTableWin.superclass.initComponent.call(this);
+        sitools.admin.datasets.JoinTableWin.superclass.initComponent.call(this);
     },
 
     /**

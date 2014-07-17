@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {String} action (required) "active", "modify" "view"
  * @cfg {String} urlDatasetViews the url to request all dataviews available
  * @cfg {Array} viewConfigParamsValue An array containing all params value for view Config
- * @class sitools.admin.datasets.datasetForm
+ * @class sitools.admin.datasets.DatasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetServicesConfig', { 
+Ext.define('sitools.admin.datasets.DatasetServicesConfig', { 
     extend : 'Ext.form.Panel', 
     padding : 10, 
     
@@ -134,7 +134,7 @@ Ext.define('sitools.admin.datasets.datasetServicesConfig', {
             }
         });
         
-        sitools.admin.datasets.datasetServicesConfig.superclass.initComponent.call(this);
+        sitools.admin.datasets.DatasetServicesConfig.superclass.initComponent.call(this);
 
 
     }, 

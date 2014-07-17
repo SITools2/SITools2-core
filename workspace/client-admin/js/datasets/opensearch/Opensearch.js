@@ -42,7 +42,7 @@ Ext.define('sitools.admin.datasets.opensearch.Opensearch', {
     },
     bodyStyle : 'background: #FFF;',
     
-    requires : ['sitools.admin.datasets.opensearch.relativeLink'],
+    requires : ['sitools.admin.datasets.opensearch.RelativeLink'],
 
     initComponent : function () {
 
@@ -232,7 +232,7 @@ Ext.define('sitools.admin.datasets.opensearch.Opensearch', {
                         
                         var record = records[0];
                         if (record.data.textRssField == "linkField") {
-                            var tmp = Ext.create('sitools.admin.datasets.opensearch.relativeLink', {
+                            var tmp = Ext.create('sitools.admin.datasets.opensearch.RelativeLink', {
                                 selectedRecord : this.getLastSelectedRecord(this.grid)
                             });
                             tmp.show();

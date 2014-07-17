@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.datasets');
 
 /**
  * A simple panel with an {@link sitools.admin.rssFeed.RssFeedCrud} component
- * @class sitools.admin.datasets.rssFeedDatasets
+ * @class sitools.admin.datasets.RssFeedDatasets
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.rssFeedDataset', { 
+Ext.define('sitools.admin.datasets.RssFeedDataset', { 
 	alias : 'widget.s-rssFeedDatasets',
     border : false,
     height : ADMIN_PANEL_HEIGHT,

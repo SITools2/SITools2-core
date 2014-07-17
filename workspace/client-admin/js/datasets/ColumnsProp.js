@@ -42,10 +42,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {String} action (required) should be 'create' or 'modifiy'
  * @cfg {Ext.data.JsonStore} store (required) the store of the columns of the dataset
  * @cfg {Ext.data.Record} recordColumn (required) the selected record
- * @class sitools.admin.datasets.columnsProp
+ * @class sitools.admin.datasets.ColumnsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.columnsProp', { extend : 'Ext.Window',
+Ext.define('sitools.admin.datasets.ColumnsProp', { extend : 'Ext.Window',
     width : 600,
     height : ADMIN_PANEL_HEIGHT,
     modal : true,
@@ -155,7 +155,7 @@ Ext.define('sitools.admin.datasets.columnsProp', { extend : 'Ext.Window',
                 }
             } ]
         } ];
-        sitools.admin.datasets.columnsProp.superclass.initComponent.call(this);
+        sitools.admin.datasets.ColumnsProp.superclass.initComponent.call(this);
     },
 
     /**

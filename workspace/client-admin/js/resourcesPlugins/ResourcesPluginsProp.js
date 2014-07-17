@@ -70,7 +70,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.datasets.selectColumn',
+    requires : ['sitools.admin.datasets.SelectColumn',
                 'sitools.admin.dictionary.SelectDictionary',
                 'sitools.admin.resourcesPlugins.EnumerationValueTypeSelector',
                 'sitools.public.widget.grid.GridSorterToolbar'],
@@ -334,7 +334,7 @@ Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
                     var rec = record.data;
                     if (cellIndex == 3) {
                         if (rec.valueType == "xs:dataset.columnAlias") {
-                            var selectColumnWin = Ext.create("sitools.admin.datasets.selectColumn", {
+                            var selectColumnWin = Ext.create("sitools.admin.datasets.SelectColumn", {
                                 field : "value",
                                 record : record,
                                 parentStore : this.gridFieldMapping.getStore(),

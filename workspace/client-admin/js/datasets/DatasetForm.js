@@ -27,10 +27,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {Ext.data.Store} store (required) : the datasets store 
  * @cfg {String} urlDatasources The url of the JDBC datasources
  * @cfg {String} urlDatasourcesMongoDB The url of the MongoDB datasources
- * @class sitools.admin.datasets.datasetForm
+ * @class sitools.admin.datasets.DatasetForm
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetForm', { 
+Ext.define('sitools.admin.datasets.DatasetForm', { 
     extend : 'Ext.form.Panel',
     id : "datasetMainForm", 
     
@@ -186,7 +186,7 @@ Ext.define('sitools.admin.datasets.datasetForm', {
             }
         });
 		
-		sitools.admin.datasets.datasetForm.superclass.initComponent.call(this);
+		sitools.admin.datasets.DatasetForm.superclass.initComponent.call(this);
     }, 
     
     /**

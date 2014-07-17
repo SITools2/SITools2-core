@@ -23,10 +23,10 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
 /**
  * Form panel used to fill specific information from a datasetLink columnRenderer
  * @cfg {String} behaviorType (required) : the type of the behavior selected (datasetLink ou datasetIconLink)
- * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
+ * @class sitools.admin.datasets.columnRenderer.DatasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', { 
+Ext.define('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', { 
     extend : 'Ext.panel.Panel', 
     flex : 1,
     layout : {
@@ -203,11 +203,11 @@ Ext.define('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
         
         this.items.push(this.gridColumns);
         
-        sitools.admin.datasets.columnRenderer.datasetLinkPanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.columnRenderer.DatasetLinkPanel.superclass.initComponent.call(this);
     },
     
     afterRender : function () {
-        sitools.admin.datasets.columnRenderer.datasetLinkPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasets.columnRenderer.DatasetLinkPanel.superclass.afterRender.apply(this, arguments);
         
         if (!Ext.isEmpty(this.columnRenderer) && this.columnRenderer.behavior == this.behaviorType) {
             if (this.columnRenderer.behavior == ColumnRendererEnum.DATASET_ICON_LINK

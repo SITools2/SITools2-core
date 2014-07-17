@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {Ext.data.Record} selectedRecord (required) the selected Column
  * @cfg {Ext.grid.View} gridView (required) : the view to refresh when saving
  * @cfg {boolean} withImage : true if this link is with image
- * @class sitools.admin.datasets.datasetUrlWin
+ * @class sitools.admin.datasets.DatasetUrlWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.datasetUrlWin', { 
+Ext.define('sitools.admin.datasets.DatasetUrlWin', { 
     extend : 'Ext.Window',
     width : 400,
     height : 400,
@@ -185,13 +185,13 @@ Ext.define('sitools.admin.datasets.datasetUrlWin', {
             } ]
 
         } ];
-        sitools.admin.datasets.datasetUrlWin.superclass.initComponent.call(this);
+        sitools.admin.datasets.DatasetUrlWin.superclass.initComponent.call(this);
     },
     /**
      * Load the selectedRecord if not empty
      */
     afterRender : function () {
-        sitools.admin.datasets.datasetUrlWin.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasets.DatasetUrlWin.superclass.afterRender.apply(this, arguments);
         if (!Ext.isEmpty(this.selectedRecord) && !Ext.isEmpty(this.selectedRecord.data) && !Ext.isEmpty(this.selectedRecord.data.image)) {
             var rec = {};
             var form = this.formImage.getForm();

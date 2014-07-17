@@ -70,7 +70,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
     }],
     layout : 'fit',
     
-    requires : ['sitools.admin.projects.datasetsWin',
+    requires : ['sitools.admin.projects.DatasetsWin',
                 'sitools.admin.usergroups.RolesPanel',
                 'sitools.admin.projects.modules.ProjectModuleConfig',
                 'sitools.public.widget.imageChooser.ImageChooser'
@@ -721,10 +721,10 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
         sitools.admin.projects.ProjectsProp.superclass.initComponent.call(this);
     },
     /**
-     * Create a {sitools.admin.projects.datasetsWin} datasetWindow to add datasets
+     * Create a {sitools.admin.projects.DatasetsWin} datasetWindow to add datasets
      */
     _onCreate : function () {
-        var up = Ext.create('sitools.admin.projects.datasetsWin', {
+        var up = Ext.create('sitools.admin.projects.DatasetsWin', {
             mode : 'select',
             url : loadUrl.get('APP_URL') + '/datasets',
             storeDatasets : this.gridDataSets.getStore()

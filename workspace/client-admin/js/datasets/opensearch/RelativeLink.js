@@ -21,7 +21,7 @@
 Ext.namespace('sitools.admin.datasets.opensearch');
 
 
-Ext.define('sitools.admin.datasets.opensearch.relativeLink', { 
+Ext.define('sitools.admin.datasets.opensearch.RelativeLink', { 
     extend : 'Ext.window.Window',
     modal : true,
     width : 200,
@@ -58,10 +58,10 @@ Ext.define('sitools.admin.datasets.opensearch.relativeLink', {
         
         this.items = [this.formRelative];
         
-        sitools.admin.datasets.opensearch.relativeLink.superclass.initComponent.call(this);
+        sitools.admin.datasets.opensearch.RelativeLink.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.datasets.opensearch.relativeLink.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasets.opensearch.RelativeLink.superclass.afterRender.apply(this, arguments);
         if (!Ext.isEmpty(this.selectedRecord) && !Ext.isEmpty(this.selectedRecord.data)) {
             var rec = {};
             var form = this.formRelative.getForm();

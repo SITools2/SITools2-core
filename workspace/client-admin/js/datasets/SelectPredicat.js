@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg Ext.data.Record recordPredicat the record to edit
  * @cfg Ext.data.Store storePredicat the store that contains the record
  * @cfg Ext.grid.View the view of the parent grid 
- * @class sitools.admin.datasets.selectPredicat
+ * @class sitools.admin.datasets.SelectPredicat
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.selectPredicat', { 
+Ext.define('sitools.admin.datasets.SelectPredicat', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-datasetspredicat',
     width : 700,
@@ -94,7 +94,7 @@ Ext.define('sitools.admin.datasets.selectPredicat', {
             }]
         }];
         
-        sitools.admin.datasets.selectPredicat.superclass.initComponent.call(this);
+        sitools.admin.datasets.SelectPredicat.superclass.initComponent.call(this);
     },
     onValidate : function () {
         

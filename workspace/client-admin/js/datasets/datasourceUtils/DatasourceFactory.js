@@ -25,18 +25,18 @@ Ext.namespace('sitools.admin.datasets.datasourceUtils');
  */
 Ext.define('sitools.admin.datasets.datasourceUtils.DatasourceFactory', {
     singleton : true,
-    requires : ['sitools.admin.datasets.datasourceUtils.jdbcUtils',
-               'sitools.admin.datasets.datasourceUtils.mongoDbUtils'],
+    requires : ['sitools.admin.datasets.datasourceUtils.JdbcUtils',
+               'sitools.admin.datasets.datasourceUtils.MongoDbUtils'],
     
     getDatasource : function (datasourceType, scope) {
         //  sitools.user.forms.components.ComponentFactory = function (context) {
         if (datasourceType.jdbc) {
-            return Ext.create('sitools.admin.datasets.datasourceUtils.jdbcUtils', {
+            return Ext.create('sitools.admin.datasets.datasourceUtils.JdbcUtils', {
                 scope : scope
             });
         }
         if (datasourceType.mongoDb) {
-            return Ext.create('sitools.admin.datasets.datasourceUtils.mongoDbUtils', {
+            return Ext.create('sitools.admin.datasets.datasourceUtils.MongoDbUtils', {
                 scope : scope
             });
         }

@@ -21,9 +21,9 @@ Ext.namespace('sitools.admin.datasets');
 
 
 /**
- * @class sitools.admin.datasets.abstractDatasetWin
+ * @class sitools.admin.datasets.AbstractDatasetWin
  */
-Ext.define('sitools.admin.datasets.abstractDatasetWin', {
+Ext.define('sitools.admin.datasets.AbstractDatasetWin', {
     extend : 'Ext.Window',
 	/**
 	 * @cfg minWidth

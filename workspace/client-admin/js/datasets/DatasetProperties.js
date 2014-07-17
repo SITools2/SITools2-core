@@ -22,11 +22,11 @@ Ext.namespace('sitools.admin.datasets');
 
 /**
  * Define the dataset properties gridPanel 
- * @class sitools.admin.datasets.datasetProperties
+ * @class sitools.admin.datasets.DatasetProperties
  * @extends Ext.grid.GridPanel
  */
 // ExtJS4.3 'Ext.grid.EditorGridPanel'
-Ext.define('sitools.admin.datasets.datasetProperties', { 
+Ext.define('sitools.admin.datasets.DatasetProperties', { 
     extend : 'Ext.grid.Panel',
     
     initComponent : function () {
@@ -190,7 +190,7 @@ Ext.define('sitools.admin.datasets.datasetProperties', {
         
         });
         
-		sitools.admin.datasets.datasetProperties.superclass.initComponent.call(this);
+		sitools.admin.datasets.DatasetProperties.superclass.initComponent.call(this);
     }, 
     /**
      * A method called on create button of the property grid. 

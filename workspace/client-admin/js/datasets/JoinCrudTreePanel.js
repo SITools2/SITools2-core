@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
 
-Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
+Ext.define('sitools.admin.datasets.JoinCrudTreePanel', {
     extend : 'Ext.tree.Panel',
     loader : null,
     projectId : null,
@@ -28,7 +28,8 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
     layout : 'fit',
     useArrows: true,
     
-    requires : ['sitools.admin.datasets.joinConditionWin','sitools.admin.datasets.joinTableWin'],
+    requires : ['sitools.admin.datasets.JoinConditionWin',
+                'sitools.admin.datasets.JoinTableWin'],
     
     initComponent : function () {
             
@@ -221,7 +222,7 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
             }
         };
         
-        sitools.admin.datasets.joinCrudTreePanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.JoinCrudTreePanel.superclass.initComponent.call(this);
     },
 
     _cxtMenuHandler : function (item) {
@@ -251,7 +252,7 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
             
             // this.doLayout();
-            up = Ext.create("sitools.admin.datasets.joinConditionWin", {
+            up = Ext.create("sitools.admin.datasets.JoinConditionWin", {
                 node : node,
                 mode : 'create', 
                 storeColumnDataset : this.storeColumnDataset
@@ -271,7 +272,7 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
                 node = this.getSelectionModel().getSelection()[0];
 
                 // this.doLayout();
-                up = Ext.create("sitools.admin.datasets.joinTableWin", {
+                up = Ext.create("sitools.admin.datasets.JoinTableWin", {
                     node : node,
                     mode : 'create',
                     datasetSelectTables : this.datasetSelectTables, 
@@ -293,13 +294,13 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
             
             if (node.isLeaf()) {
-                up = Ext.create("sitools.admin.datasets.joinConditionWin", {
+                up = Ext.create("sitools.admin.datasets.JoinConditionWin", {
                     node : node,
                     mode : 'edit', 
                     storeColumnDataset : this.storeColumnDataset
                 });
             } else {
-                up = Ext.create("sitools.admin.datasets.joinTableWin", {
+                up = Ext.create("sitools.admin.datasets.JoinTableWin", {
                     node : node,
                     mode : 'edit', 
                     datasetSelectTables : this.datasetSelectTables, 
@@ -312,7 +313,7 @@ Ext.define('sitools.admin.datasets.joinCrudTreePanel', {
 //            node = item.parentMenu.contextNode;
             node = this.getSelectionModel().getSelection()[0];
             
-            up = Ext.create("sitools.admin.datasets.joinTableWin", {
+            up = Ext.create("sitools.admin.datasets.JoinTableWin", {
                 node : node,
                 mode : 'edit-root', 
                 datasetSelectTables : this.datasetSelectTables

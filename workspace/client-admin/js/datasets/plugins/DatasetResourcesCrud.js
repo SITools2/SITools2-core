@@ -28,7 +28,7 @@ Ext.namespace('sitools.admin.datasets.plugins');
  * @class sitools.admin.datasets.plugins.resourcesCrud
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.plugins.datasetResourcesCrud', { 
+Ext.define('sitools.admin.datasets.plugins.DatasetResourcesCrud', { 
     extend : 'Ext.Panel',
     alias : 'widget.s-dataset_resources',
     border : false,
@@ -48,7 +48,7 @@ Ext.define('sitools.admin.datasets.plugins.datasetResourcesCrud', {
 
         this.items = [ resourcePlugindataset ];
 
-        sitools.admin.datasets.plugins.datasetResourcesCrud.superclass.initComponent.call(this);
+        sitools.admin.datasets.plugins.DatasetResourcesCrud.superclass.initComponent.call(this);
 
     }
 

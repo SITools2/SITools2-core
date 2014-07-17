@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.datasets');
 
 /**
  * Define the window of the dataset Configuration
- * @class sitools.admin.datasets.datasetSelectFields
+ * @class sitools.admin.datasets.DatasetSelectFields
  * @extends Ext.Panel
  */
-Ext.define('sitools.admin.datasets.datasetSelectFields', { 
+Ext.define('sitools.admin.datasets.DatasetSelectFields', { 
     extend : 'Ext.Panel',
     initComponent : function () {
         
@@ -65,7 +65,7 @@ Ext.define('sitools.admin.datasets.datasetSelectFields', {
         
 		
 		
-		sitools.admin.datasets.datasetSelectTables.superclass.initComponent.call(this);
+		sitools.admin.datasets.DatasetSelectTables.superclass.initComponent.call(this);
     }, 
     loadInitialData : function () {
 		//nothing to do...

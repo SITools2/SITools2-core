@@ -31,17 +31,17 @@ Ext.namespace('sitools.admin.datasets');
  * @extends Ext.Window
  */
 Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', { 
-    extend : 'sitools.admin.datasets.abstractDatasetWin',
+    extend : 'sitools.admin.datasets.AbstractDatasetWin',
 	alias : 'widget.s-datasetsMultiTablesPanel',
 	layout : 'fit',
 	
-	requires : ['sitools.admin.datasets.gridFieldSetup',
-	            'sitools.admin.datasets.datasetForm',
-	            'sitools.admin.datasets.datasetSelectTables',
-	            'sitools.admin.datasets.datasetSelectFields',
-	            'sitools.admin.datasets.datasetCriteria',
-	            'sitools.admin.datasets.datasetProperties',
-	            'sitools.admin.datasets.datasetViewConfig',
+	requires : ['sitools.admin.datasets.GridFieldSetup',
+	            'sitools.admin.datasets.DatasetForm',
+	            'sitools.admin.datasets.DatasetSelectTables',
+	            'sitools.admin.datasets.DatasetSelectFields',
+	            'sitools.admin.datasets.DatasetCriteria',
+	            'sitools.admin.datasets.DatasetProperties',
+	            'sitools.admin.datasets.DatasetViewConfig',
 	            'sitools.admin.datasets.datasourceUtils.DatasourceFactory'],
 	
 //	closeAction : 'close',
@@ -67,7 +67,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         /**
          * Construction de la grille Fields Setup
          */
-        this.gridFields = Ext.create('sitools.admin.datasets.gridFieldSetup', {
+        this.gridFields = Ext.create('sitools.admin.datasets.GridFieldSetup', {
 			urlDictionary : this.urlDictionary, 
 			urlDimension : this.urlDimension, 
 			action : action, 
@@ -84,7 +84,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 		/**
 		 * The main form of the dataset definition. 
 		 */
-		this.formulairePrincipal = Ext.create('sitools.admin.datasets.datasetForm', {
+		this.formulairePrincipal = Ext.create('sitools.admin.datasets.DatasetForm', {
 			urlDatasetViews : this.urlDatasetViews, 
 			action : this.action, 
 			urlDatasources : this.urlDatasources, 
@@ -94,7 +94,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 		
 		
 
-        this.panelSelectTables = Ext.create('sitools.admin.datasets.datasetSelectTables', {
+        this.panelSelectTables = Ext.create('sitools.admin.datasets.DatasetSelectTables', {
             scope : this,
             action : this.action
         });
@@ -131,7 +131,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
         // !!! le store de cette grille est le meme que celui de fields
         // setup....
 		
-        this.panelSelectFields = Ext.create('sitools.admin.datasets.datasetSelectFields', {
+        this.panelSelectFields = Ext.create('sitools.admin.datasets.DatasetSelectFields', {
 			scope : this, 
 			gridFieldsDataset : this.gridFields.getStore(),
             action : this.action
@@ -139,7 +139,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 
         
         
-        this.panelWhere = Ext.create('sitools.admin.datasets.datasetCriteria', {
+        this.panelWhere = Ext.create('sitools.admin.datasets.DatasetCriteria', {
 			scope : this, 
 			layout : {
 			    type : "vbox",
@@ -155,7 +155,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
 			}
 		});
 		
-		this.gridProperties = Ext.create('sitools.admin.datasets.datasetProperties', {
+		this.gridProperties = Ext.create('sitools.admin.datasets.DatasetProperties', {
 			action : this.action
 		});
 		
@@ -194,7 +194,7 @@ Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             }
         }); 
         
-        this.viewConfigPanel = Ext.create('sitools.admin.datasets.datasetViewConfig', {
+        this.viewConfigPanel = Ext.create('sitools.admin.datasets.DatasetViewConfig', {
 			urlDatasetViews : this.urlDatasetViews, 
 			action : this.action
         });

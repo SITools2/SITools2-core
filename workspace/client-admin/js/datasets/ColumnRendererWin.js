@@ -31,10 +31,10 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {Ext.data.JsonStore} datasetColumnStore (required) : the store of the column chosen for the current dataset 
  * @cfg {String} columnRendererType (required) : the type of the columnRenderer (Image, URL or datasetLink)
  * @cfg {String} lastColumnRendererType (required) : the type of columnRenderer configured before calling this window
- * @class sitools.admin.datasets.columnRendererWin
+ * @class sitools.admin.datasets.ColumnRendererWin
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.columnRendererWin', { 
+Ext.define('sitools.admin.datasets.ColumnRendererWin', { 
     extend : 'Ext.Window',
     width : 400,
     height : 600,
@@ -44,9 +44,9 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
         align : 'stretch'
     },
 
-    requires : ['sitools.admin.datasets.columnRenderer.urlPanel',
-                'sitools.admin.datasets.columnRenderer.imagePanel',
-                'sitools.admin.datasets.columnRenderer.datasetLinkPanel'],
+    requires : ['sitools.admin.datasets.columnRenderer.UrlPanel',
+                'sitools.admin.datasets.columnRenderer.ImagePanel',
+                'sitools.admin.datasets.columnRenderer.DatasetLinkPanel'],
     
     initComponent : function () {
         
@@ -109,14 +109,14 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
                     var columnRenderer = this.selectedRecord.get("columnRenderer");
                     switch (this.columnRendererType) {
 				    case "URL" :
-                        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.urlPanel', {
+                        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.UrlPanel', {
                             behaviorType : value,
                             title : i18n.get("label.behaviorDetails"),
                             columnRenderer : columnRenderer
                         });
 				        break;
 				    case "Image" :
-				        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.imagePanel', {
+				        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.ImagePanel', {
                             behaviorType : value,
                             title : i18n.get("label.behaviorDetails"),
                             datasetColumnStore : this.datasetColumnStore,
@@ -124,7 +124,7 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
                         });                     
                         break;				        
 				    case "DataSetLink" :
-				        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.datasetLinkPanel', {
+				        this.panelDetails = Ext.create('sitools.admin.datasets.columnRenderer.DatasetLinkPanel', {
                             behaviorType : value,
                             title : i18n.get("label.behaviorDetails"),
                             columnRenderer : columnRenderer
@@ -184,11 +184,11 @@ Ext.define('sitools.admin.datasets.columnRendererWin', {
 			}
 		};
 
-        sitools.admin.datasets.columnRendererWin.superclass.initComponent.call(this);
+        sitools.admin.datasets.ColumnRendererWin.superclass.initComponent.call(this);
     },
     
     afterRender : function () {
-        sitools.admin.datasets.columnRendererWin.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasets.ColumnRendererWin.superclass.afterRender.apply(this, arguments);
         var columnRenderer = this.selectedRecord.get("columnRenderer");
         if (!Ext.isEmpty(columnRenderer)) {
             var behavior = columnRenderer.behavior;

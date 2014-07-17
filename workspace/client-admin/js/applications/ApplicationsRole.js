@@ -25,7 +25,7 @@ Ext.namespace('sitools.admin.applications');
 /**
  * A specific checkColumn that is displayed only when allMethod is not checked
  */
-Ext.define('sitools.admin.applications.customCheckColumn', {
+Ext.define('sitools.admin.applications.CustomCheckColumn', {
     extend : 'Ext.grid.column.CheckColumn',
     alias : 'widget.appCheckColumn',
     renderer : function (value, meta, rec) {

@@ -24,12 +24,12 @@
 Ext.namespace('sitools.admin.datasets');
 
 /**
- * @class sitools.admin.datasets.gridFieldSetup
+ * @class sitools.admin.datasets.GridFieldSetup
  * @cfg {String} urlDictionary (required) the Url to request directories
  * @cfg {String} action (required) modify, view, or create
  * @cfg {String} urlDataset (required) the url to get the dataset definition 
  */
-Ext.define('sitools.admin.datasets.gridFieldSetup', {
+Ext.define('sitools.admin.datasets.GridFieldSetup', {
     extend : 'Ext.grid.Panel',
     id : 'gridColumnSelect',
     layout : 'fit', 
@@ -38,9 +38,9 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.datasets.columnRendererWin',
-                'sitools.admin.datasets.unitWin',
-                'sitools.admin.datasets.columnsProp',
+    requires : ['sitools.admin.datasets.ColumnRendererWin',
+                'sitools.admin.datasets.UnitWin',
+                'sitools.admin.datasets.ColumnsProp',
                 'sitools.admin.datasets.ColumnModel'],
     
     initComponent : function () {
@@ -172,7 +172,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
                     //get the last value, which is either the last value selected or the first value.
                     var oldValue = (Ext.isEmpty(combo.oldValue)) ? combo.getStore().getAt(0) : combo.oldValue;
                     if (!Ext.isEmpty(columnRendererType)) {                
-                        var colWindow = Ext.create('sitools.admin.datasets.columnRendererWin', {
+                        var colWindow = Ext.create('sitools.admin.datasets.ColumnRendererWin', {
                             selectedRecord : selectedRecord, 
                             gridView : this.getView(),
                             columnRendererType : columnRendererType,
@@ -382,11 +382,11 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             }
         };
         
-        sitools.admin.datasets.gridFieldSetup.superclass.initComponent.call(this);
+        sitools.admin.datasets.GridFieldSetup.superclass.initComponent.call(this);
     },
     
     /**
-     * Open a sitools.admin.datasets.unitWin to assign a unit to the selected column.
+     * Open a sitools.admin.datasets.UnitWin to assign a unit to the selected column.
      * @method
      */
     onAssignUnit : function () {
@@ -397,7 +397,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             return;
         }
 
-        var unitWin = Ext.create('sitools.admin.datasets.unitWin', {
+        var unitWin = Ext.create('sitools.admin.datasets.UnitWin', {
             recordColumn : rec,
             viewColumn : grid.getView(),
             urlDimension : this.urlDimension
@@ -405,11 +405,11 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         unitWin.show(ID.BOX.DATASETS);
     },
     /**
-     * Open a {@link sitools.admin.datasets.columnsProp sitools.admin.datasets.columnsProp} to create a new Column
+     * Open a {@link sitools.admin.datasets.ColumnsProp sitools.admin.datasets.ColumnsProp} to create a new Column
      * @method
      */
     onCreateColumn : function () {
-        var winPropColumn = Ext.create('sitools.admin.datasets.columnsProp', {
+        var winPropColumn = Ext.create('sitools.admin.datasets.ColumnsProp', {
             action : 'create',
             store : this.getStore(), 
             datasourceUtils : this.datasourceUtils
@@ -418,7 +418,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
         // this.getStore().add(new Ext.data.Record());
     },
     /**
-     * Open a {@link sitools.admin.datasets.columnsProp sitools.admin.datasets.columnsProp} to edit a Column
+     * Open a {@link sitools.admin.datasets.ColumnsProp sitools.admin.datasets.ColumnsProp} to edit a Column
      * @method
      */
     onModifyColumn : function () {
@@ -433,7 +433,7 @@ Ext.define('sitools.admin.datasets.gridFieldSetup', {
             return;
         }
         
-        var winPropColumn = Ext.create('sitools.admin.datasets.columnsProp', {
+        var winPropColumn = Ext.create('sitools.admin.datasets.ColumnsProp', {
             action : 'modify',
             store : this.getStore(),
             recordColumn : rec, 

@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.datasets.columnRenderer');
  * @cfg {String} behaviorType (required) : the type of the behavior selected (ImgNoThumb, ImgAutoThumb and ImgThumbSQL)
  * @cfg {Ext.data.JsonStore} datasetColumnStore (required) : the store of the column chosen for the current dataset
  * @cfg {Object} columnRenderer : the columnRenderer Object to load if we modify the value
- * @class sitools.admin.datasets.columnRenderer.datasetLinkPanel
+ * @class sitools.admin.datasets.columnRenderer.DatasetLinkPanel
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', {
+Ext.define('sitools.admin.datasets.columnRenderer.ImagePanel', {
     extend : 'Ext.Panel',
     flex : 1,
     layout : {
@@ -77,12 +77,12 @@ Ext.define('sitools.admin.datasets.columnRenderer.imagePanel', {
             break;
         }
 
-        sitools.admin.datasets.columnRenderer.imagePanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.columnRenderer.ImagePanel.superclass.initComponent.call(this);
 
     },
 
     afterRender : function () {
-        sitools.admin.datasets.columnRenderer.imagePanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasets.columnRenderer.ImagePanel.superclass.afterRender.apply(this, arguments);
         if (!Ext.isEmpty(this.columnRenderer) && this.columnRenderer.behavior == this.behaviorType) {
             switch (this.behaviorType) {
             case ColumnRendererEnum.IMAGE_NO_THUMB:
