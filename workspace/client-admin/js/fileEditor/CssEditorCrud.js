@@ -26,7 +26,8 @@
 
 Ext.namespace('sitools.admin.fileEditor');
 
-Ext.define('sitools.admin.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel',
+Ext.define('sitools.admin.fileEditor.CssEditorCrud', { 
+    extend : 'Ext.grid.Panel',
     alias : 'widget.s-cssEditor',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
@@ -118,7 +119,7 @@ Ext.define('sitools.admin.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel'
             itemdblclick : this.onModify
         };
         
-        sitools.admin.fileEditor.cssEditorCrud.superclass.initComponent.call(this);
+        sitools.admin.fileEditor.CssEditorCrud.superclass.initComponent.call(this);
     },
 
     onModify : function () {

@@ -21,7 +21,7 @@
 
 Ext.namespace('sitools.admin.fileEditor');
 
-Ext.define('sitools.admin.fileEditor.licenceEditorCrud', { extend : 'Ext.Panel',
+Ext.define('sitools.admin.fileEditor.LicenceEditorCrud', { extend : 'Ext.Panel',
     alias : 'widget.s-licenceEditor',
     border : false,
     height : 480,
@@ -51,13 +51,13 @@ Ext.define('sitools.admin.fileEditor.licenceEditorCrud', { extend : 'Ext.Panel',
         
         this.items = [this.fileEditor];
         
-        sitools.admin.fileEditor.licenceEditorCrud.superclass.initComponent.call(this);
+        sitools.admin.fileEditor.LicenceEditorCrud.superclass.initComponent.call(this);
         
         
     },
     
     afterRender : function () {
-        sitools.admin.fileEditor.licenceEditorCrud.superclass.afterRender.apply(this, arguments);
+        sitools.admin.fileEditor.LicenceEditorCrud.superclass.afterRender.apply(this, arguments);
         if (this.url) {
             Ext.Ajax.request({
                 url : this.url + '/cgu.html',

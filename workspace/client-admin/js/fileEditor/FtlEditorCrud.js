@@ -26,7 +26,7 @@
 
 Ext.namespace('sitools.admin.fileEditor');
 
-Ext.define('sitools.admin.fileEditor.ftlEditorCrud', { 
+Ext.define('sitools.admin.fileEditor.FtlEditorCrud', { 
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-ftlEditor',
     border : false,
@@ -118,7 +118,7 @@ Ext.define('sitools.admin.fileEditor.ftlEditorCrud', {
                 itemdblclick : this.onModify
             };
         
-        sitools.admin.fileEditor.ftlEditorCrud.superclass.initComponent.call(this);
+        sitools.admin.fileEditor.FtlEditorCrud.superclass.initComponent.call(this);
     },
     onModify : function () {
         var rec = this.getLastSelectedRecord();
