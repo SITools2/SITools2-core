@@ -129,6 +129,6 @@ Ext.define('sitools.admin.quickStart.QsProject', {
         
         this.items = [title, desc, img];
         
-        sitools.admin.quickStart.qsProject.superclass.initComponent.call(this);
+        sitools.admin.quickStart.QsProject.superclass.initComponent.call(this);
     }
 });

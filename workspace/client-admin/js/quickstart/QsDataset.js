@@ -124,7 +124,7 @@ Ext.define('sitools.admin.quickStart.QsDataset', {
         
         this.items = [title, desc, img];
         
-        sitools.admin.quickStart.qsDataset.superclass.initComponent.call(this);
+        sitools.admin.quickStart.QsDataset.superclass.initComponent.call(this);
     }
 });
 

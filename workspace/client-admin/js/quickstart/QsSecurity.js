@@ -205,7 +205,7 @@ Ext.define('sitools.admin.quickStart.QsSecurity', {
         
         this.items = [title, desc, imgUser, imgShare, imgGroup, imgRole];
         
-        sitools.admin.quickStart.qsSecurity.superclass.initComponent.call(this);
+        sitools.admin.quickStart.QsSecurity.superclass.initComponent.call(this);
     }    
 });
 

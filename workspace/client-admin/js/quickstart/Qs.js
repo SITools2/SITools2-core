@@ -180,7 +180,7 @@ Ext.define('sitools.admin.quickStart.Qs', {
                 
         };
         
-        this.currentPanel = new sitools.admin.quickStart.qsStart({
+        this.currentPanel = new sitools.admin.quickStart.QsStart({
             qs : this
         });
         
@@ -203,11 +203,11 @@ Ext.define('sitools.admin.quickStart.Qs', {
         
         this.items = [this.welcomePanel/*, this.stepsPanel*/];
         
-        sitools.admin.quickStart.qs.superclass.initComponent.call(this);
+        sitools.admin.quickStart.Qs.superclass.initComponent.call(this);
     },
     
     afterRender : function () {
-        sitools.admin.quickStart.qs.superclass.afterRender.apply(this, arguments);
+        sitools.admin.quickStart.Qs.superclass.afterRender.apply(this, arguments);
     },
     
     manageSteps : function (btn, pressed) {
