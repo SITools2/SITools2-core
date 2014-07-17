@@ -21,7 +21,7 @@
 
 Ext.namespace('sitools.component.logs');
 
-Ext.define('sitools.admin.logs.analogProp', { 
+Ext.define('sitools.admin.logs.AnalogProp', { 
     extend : 'Ext.panel.Panel',
     alias : 'widget.s-analog',
     height : 480,
@@ -48,7 +48,7 @@ Ext.define('sitools.admin.logs.analogProp', {
         
         this.items = [this.createLogPanel()];
         
-        sitools.admin.logs.analogProp.superclass.initComponent.call(this);
+        sitools.admin.logs.AnalogProp.superclass.initComponent.call(this);
         
     },
 
