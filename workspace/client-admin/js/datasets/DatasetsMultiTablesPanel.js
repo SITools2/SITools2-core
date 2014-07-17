@@ -26,11 +26,11 @@ Ext.namespace('sitools.admin.datasets');
  * @cfg {String} action (required) "active", "modify" "view"
  * @cfg {Ext.data.Store} store (required) : the datasets store 
  * 
- * @class sitools.admin.datasets.datasetsMultiTablesPanel
+ * @class sitools.admin.datasets.DatasetsMultiTablesPanel
  * @requires sitools.admin.datasets.PredicatsPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.datasetsMultiTablesPanel', { 
+Ext.define('sitools.admin.datasets.DatasetsMultiTablesPanel', { 
     extend : 'sitools.admin.datasets.abstractDatasetWin',
 	alias : 'widget.s-datasetsMultiTablesPanel',
 	layout : 'fit',
@@ -305,7 +305,7 @@ Ext.define('sitools.admin.datasets.datasetsMultiTablesPanel', {
 
         };
         this.items = [ this.tabPanel ];
-        sitools.admin.datasets.datasetsMultiTablesPanel.superclass.initComponent.call(this);
+        sitools.admin.datasets.DatasetsMultiTablesPanel.superclass.initComponent.call(this);
     }, 
     /**
      * called when user click on Ok button. 

@@ -41,7 +41,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
 	border : false, 
 	bodyBorder : false,
 	bodyStyle : 'background-color : #EDF2FF;',
-	requires : ['sitools.admin.forms.advancedFormPanel'],
+	requires : ['sitools.admin.forms.AdvancedFormPanel'],
 	
 	initComponent : function () {
         
@@ -89,7 +89,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
             this.zoneStore.each(function (rec) {
                 totalHeight += rec.data.height;
 
-                var zonePanel = Ext.create("sitools.admin.forms.advancedFormPanel", {
+                var zonePanel = Ext.create("sitools.admin.forms.AdvancedFormPanel", {
 	                    containerPanelId : rec.data.containerPanelId,
 	                    title: rec.data.title,
 	                    height: rec.data.height,

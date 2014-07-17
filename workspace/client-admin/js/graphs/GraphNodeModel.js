@@ -18,7 +18,7 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.define('sitools.admin.graphs.graphNodeModel', {
+Ext.define('sitools.admin.graphs.GraphNodeModel', {
     extend : 'Ext.data.Model',
     fields : [{
         name :'type'

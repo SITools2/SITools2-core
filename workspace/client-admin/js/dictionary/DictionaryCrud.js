@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.dictionary');
 
-Ext.define('sitools.admin.dictionary.dictionaryCrud', { 
+Ext.define('sitools.admin.dictionary.DictionaryCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-dictionary',
     border : false,
@@ -32,7 +32,7 @@ Ext.define('sitools.admin.dictionary.dictionaryCrud', {
     },
     id : ID.BOX.DICTIONARY,
     
-    requires : ['sitools.admin.dictionary.dictionaryProp'],
+    requires : ['sitools.admin.dictionary.DictionaryProp'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_URL');
@@ -126,11 +126,11 @@ Ext.define('sitools.admin.dictionary.dictionaryCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.dictionary.dictionaryCrud.superclass.initComponent.call(this);
+        sitools.admin.dictionary.DictionaryCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.dictionary.dictionaryCrud.superclass.onRender.apply(this, arguments);
+        sitools.admin.dictionary.DictionaryCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -138,7 +138,7 @@ Ext.define('sitools.admin.dictionary.dictionaryCrud', {
     },
 
     onCreate : function () {
-        var up = new sitools.admin.dictionary.dictionaryProp({
+        var up = new sitools.admin.dictionary.DictionaryProp({
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -152,7 +152,7 @@ Ext.define('sitools.admin.dictionary.dictionaryCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var up = new sitools.admin.dictionary.dictionaryProp({
+        var up = new sitools.admin.dictionary.DictionaryProp({
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()

@@ -30,10 +30,10 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @cfg {string} url The url to Save the data
  * @cfg {string} action The action should be modify or create
  * @cfg {Ext.data.Store} store The storages store 
- * @class sitools.admin.datasets.services.datasetServicesCopyProp
+ * @class sitools.admin.datasets.services.DatasetServicesCopyProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', { 
+Ext.define('sitools.admin.datasets.services.DatasetServicesCopyProp', { 
     extend : 'Ext.Window', 
 	alias : 'widget.s-storage_copy',
 	width : 350,
@@ -102,11 +102,11 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCopyProp', {
     	}, this);
     	
     	
-        sitools.admin.datasets.services.datasetServicesCopyProp.superclass.initComponent.call(this);
+        sitools.admin.datasets.services.DatasetServicesCopyProp.superclass.initComponent.call(this);
     },
     
     afterRender : function () {
-        sitools.admin.datasets.services.datasetServicesCopyProp.superclass.afterRender.apply(this, arguments);        
+        sitools.admin.datasets.services.DatasetServicesCopyProp.superclass.afterRender.apply(this, arguments);        
         this.getAllServicesDescription();
     },
     

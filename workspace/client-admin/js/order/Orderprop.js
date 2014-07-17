@@ -20,7 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.admin.order');
 
-Ext.define('sitools.admin.order.orderProp', {
+Ext.define('sitools.admin.order.OrderProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-orderprop',
     width : 700,
@@ -177,11 +177,11 @@ Ext.define('sitools.admin.order.orderProp', {
             } ]
         } ];
         
-        sitools.admin.order.orderProp.superclass.initComponent.call(this);
+        sitools.admin.order.OrderProp.superclass.initComponent.call(this);
     },
 
     afterRender : function () {
-        sitools.admin.order.orderProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.order.OrderProp.superclass.afterRender.apply(this, arguments);
         var f = this.down('form').getForm();
         f.loadRecord(this.orderRec);
     }

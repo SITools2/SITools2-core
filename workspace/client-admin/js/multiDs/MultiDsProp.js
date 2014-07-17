@@ -55,12 +55,12 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
     }, 
     
     requires : ['sitools.admin.forms.ComponentsDisplayPanel',
-                'sitools.admin.forms.componentsListPanel',
-                'sitools.admin.forms.absoluteLayoutProp',
-                'sitools.admin.forms.setupAdvancedFormPanel',
-                'sitools.admin.forms.componentsAdminDef.multiParam.abstract',
-                'sitools.admin.forms.componentsAdminDef.oneParam.abstract',
-                'sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit',
+                'sitools.admin.forms.ComponentsListPanel',
+                'sitools.admin.forms.AbsoluteLayoutProp',
+                'sitools.admin.forms.SetupAdvancedFormPanel',
+                'sitools.admin.forms.componentsAdminDef.multiParam.Abstract',
+                'sitools.admin.forms.componentsAdminDef.oneParam.Abstract',
+                'sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit',
                 'sitools.admin.forms.componentsAdminDef.ComponentFactory'],
     
     initComponent : function () {
@@ -642,7 +642,7 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
          * The list with all components type. 
          * It is used to create new form Component by drag & drop. 
          */
-        this.componentListPanel = Ext.create("sitools.admin.forms.componentsListPanel", {
+        this.componentListPanel = Ext.create("sitools.admin.forms.ComponentsListPanel", {
             formComponentsStore : this.formComponentsStore,
             action : 'create', 
             context : "project", 
@@ -817,7 +817,7 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
     },
     
     _sizeUp : function () {
-        var panelProp = Ext.create("sitools.admin.forms.absoluteLayoutProp", {
+        var panelProp = Ext.create("sitools.admin.forms.AbsoluteLayoutProp", {
             absoluteLayout : this.absoluteLayout,
             tabPanel : this.absoluteLayout.ownerCt.ownerCt.ownerCt,
             win : this,
@@ -827,7 +827,7 @@ Ext.define('sitools.admin.multiDs.MultiDsProp', {
     },
     
     _addPanel : function () {
-        var setupAdvancedPanel = Ext.create("sitools.admin.forms.setupAdvancedFormPanel", {
+        var setupAdvancedPanel = Ext.create("sitools.admin.forms.SetupAdvancedFormPanel", {
             parentContainer : this.absoluteLayout,
             currentPosition : this.absoluteLayout.position
         });

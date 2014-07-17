@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  * @param resourcesUrlPart, the url of thes resources part
  * @param urlResources, the url of the resources listing
  * @param parentType, the type of the parent, string used only for i18n label
- * @class sitools.admin.resourcesPlugins.resourcesPluginsCrud
+ * @class sitools.admin.resourcesPlugins.ResourcesPluginsCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', { 
+Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-plugins_resources',
 	urlParentsParams : '',
@@ -42,8 +42,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.resourcesPlugins.resourcesPluginsProp',
-                'sitools.admin.resourcesPlugins.resourcesServicesCopyProp'],
+    requires : ['sitools.admin.resourcesPlugins.ResourcesPluginsProp',
+                'sitools.admin.resourcesPlugins.ResourcesServicesCopyProp'],
     
     // Warning for version conflicts
     conflictWarned : false,
@@ -270,7 +270,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', {
             itemdblclick : this.onModify
         };
         
-        sitools.admin.resourcesPlugins.resourcesPluginsCrud.superclass.initComponent.call(this);
+        sitools.admin.resourcesPlugins.ResourcesPluginsCrud.superclass.initComponent.call(this);
 
     },
 
@@ -278,11 +278,11 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', {
      * done a specific render to load resources plugins from the store. 
      */ 
     onRender : function () {
-        sitools.admin.resourcesPlugins.resourcesPluginsCrud.superclass.onRender.apply(this, arguments);        
+        sitools.admin.resourcesPlugins.ResourcesPluginsCrud.superclass.onRender.apply(this, arguments);        
     },
 
     /**
-     * Open a {sitools.admin.resourcesPlugins.resourcesPluginsProp} resource plugin property window
+     * Open a {sitools.admin.resourcesPlugins.ResourcesPluginsProp} resource plugin property window
      *  to create a new resource for the selected dataset in the comboBox
      */
     onCreate : function () {
@@ -293,7 +293,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', {
         
         var urlParent = this.urlParents + "/" + parentId;    
         
-        var up = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsProp", {
+        var up = Ext.create("sitools.admin.resourcesPlugins.ResourcesPluginsProp", {
             action : 'create',            
             parentPanel : this,          
             urlResources : this.urlResources,
@@ -307,7 +307,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', {
     },
 
     /**
-     * Open a {sitools.admin.resourcesPlugins.resourcesPluginsProp} resource plugin property window
+     * Open a {sitools.admin.resourcesPlugins.ResourcesPluginsProp} resource plugin property window
      *  to modify a resource for the selected dataset in the comboBox
      */
     onModify : function () {
@@ -326,7 +326,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', {
             return;
         }
         var urlParent = this.urlParents + "/" + parentId;
-        var up = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsProp", {
+        var up = Ext.create("sitools.admin.resourcesPlugins.ResourcesPluginsProp", {
             action : 'modify',
             record : rec,
             parentPanel : this,          
@@ -354,7 +354,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         }
         
-        var projectServicesCopy = Ext.create("sitools.admin.resourcesPlugins.resourcesServicesCopyProp", {
+        var projectServicesCopy = Ext.create("sitools.admin.resourcesPlugins.ResourcesServicesCopyProp", {
             storeCombo : this.storeParents,
             services : arrayRecords,
             parentProjectId : parentId,

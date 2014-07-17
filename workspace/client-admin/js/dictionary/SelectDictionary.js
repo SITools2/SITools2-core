@@ -27,10 +27,10 @@ Ext.namespace('sitools.admin.dictionary');
  * @cfg Ext.data.Store parentStore the store of the record
  * @cfg Ext.grid.View parentView the view of the grid
  * @cfg string url the url to request dataset
- * @class sitools.admin.dictionary.selectDictionary
+ * @class sitools.admin.dictionary.SelectDictionary
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.dictionary.selectDictionary', { 
+Ext.define('sitools.admin.dictionary.SelectDictionary', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-selectDictionaryWin',
     width : 700,
@@ -112,7 +112,7 @@ Ext.define('sitools.admin.dictionary.selectDictionary', {
             } ]
 
         } ];
-        sitools.admin.dictionary.selectDictionary.superclass.initComponent.call(this);
+        sitools.admin.dictionary.SelectDictionary.superclass.initComponent.call(this);
     },
     /**
      * Method called on Ok button. 

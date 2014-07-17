@@ -20,7 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.admin.order');
 
-Ext.define('sitools.admin.order.events', { 
+Ext.define('sitools.admin.order.Events', { 
     extend : 'Ext.Window',
     width : 350,
     height : 250,
@@ -68,7 +68,7 @@ Ext.define('sitools.admin.order.events', {
             }
         }];
 
-        sitools.admin.order.events.superclass.initComponent.call(this);
+        sitools.admin.order.Events.superclass.initComponent.call(this);
 
     },
     _onValidate : function () {

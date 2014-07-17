@@ -27,10 +27,10 @@ Ext.namespace('sitools.admin.rssFeed');
  * @param parent, the grid parent
  * @param action, the type of action ( create or modify )
  * @param rec, the record to load in case of edit ( optional )
- * @class sitools.admin.rssFeed.rssFeedItemProp
+ * @class sitools.admin.rssFeed.RssFeedItemProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.rssFeed.rssFeedItemProp', { 
+Ext.define('sitools.admin.rssFeed.RssFeedItemProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -166,14 +166,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedItemProp', {
             }
         }];
         
-        sitools.admin.rssFeed.rssFeedItemProp.superclass.initComponent.call(this);
+        sitools.admin.rssFeed.RssFeedItemProp.superclass.initComponent.call(this);
     },
 
     /**
      * If the "action" is "modify", fill fields with the record data
      */
     afterRender : function () {
-        sitools.admin.rssFeed.rssFeedItemProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.rssFeed.RssFeedItemProp.superclass.afterRender.apply(this, arguments);
         if (this.action == "modify") {
             var form = this.formPanel.getForm();
 

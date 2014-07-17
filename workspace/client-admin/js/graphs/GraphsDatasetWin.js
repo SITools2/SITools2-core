@@ -157,7 +157,7 @@ Ext.define('sitools.admin.graphs.GraphsDatasetWin', {
 		}
 		var node;
 		if (this.mode == 'create') {
-		     node = Ext.create('sitools.admin.graphs.graphNodeModel', {
+		     node = Ext.create('sitools.admin.graphs.GraphNodeModel', {
 		         leaf : true
 		     });
 		}

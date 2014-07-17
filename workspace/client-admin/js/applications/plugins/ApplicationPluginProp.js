@@ -40,8 +40,8 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.dictionary.selectDictionary',
-                'sitools.admin.resourcesPlugins.enumerationValueTypeSelector'],
+    requires : ['sitools.admin.dictionary.SelectDictionary',
+                'sitools.admin.resourcesPlugins.EnumerationValueTypeSelector'],
 
     initComponent : function () {
 
@@ -275,7 +275,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
                     
                     if (this.gridFieldMapping.columns[cellIndex].text == "Value") {
                         if (rec.valueType == "xs:dictionary") {
-                            var selectDictionaryWin = new sitools.admin.dictionary.selectDictionary({
+                            var selectDictionaryWin = new sitools.admin.dictionary.SelectDictionary({
                                 field : "value",
                                 record : storeRecord,
                                 parentStore : this.gridFieldMapping.getStore(),
@@ -285,7 +285,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
                             selectDictionaryWin.show(ID.BOX.DATASETS);
                         }
                         else if (rec.valueType == "xs:boolean") {
-                            var selectBooleanWin = Ext.create("sitools.admin.resourcesPlugins.enumerationValueTypeSelector",{
+                            var selectBooleanWin = Ext.create("sitools.admin.resourcesPlugins.EnumerationValueTypeSelector",{
                                 field : "value",
                                 record : storeRecord,
                                 parentView : this.gridFieldMapping.getView(),
@@ -328,7 +328,7 @@ Ext.define('sitools.admin.applications.plugins.ApplicationPluginProp', {
                             else {
 								enumType = "E";
                             }
-                            var selectEnumWin = Ext.create("sitools.admin.resourcesPlugins.enumerationValueTypeSelector", {
+                            var selectEnumWin = Ext.create("sitools.admin.resourcesPlugins.EnumerationValueTypeSelector", {
                                 enumType : enumType, 
                                 field : "value",
                                 fieldEnum : "valueType", 

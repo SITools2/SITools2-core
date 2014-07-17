@@ -24,12 +24,12 @@ Ext.namespace('sitools.admin.units');
  * A Panel to show dimension data from a specific dimension
  * 
  * @cfg {String} the action to perform
- * @cfg {sitools.admin.units.unitsCrud} the parent
+ * @cfg {sitools.admin.units.UnitsCrud} the parent
  * @cfg {String} the urlAdmin
- * @class sitools.admin.units.unitsProp
+ * @class sitools.admin.units.UnitsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.units.unitsProp', { 
+Ext.define('sitools.admin.units.UnitsProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -311,7 +311,7 @@ Ext.define('sitools.admin.units.unitsProp', {
             }
         });
         this.items = [ this.tabPanel ];
-        sitools.admin.units.unitsProp.superclass.initComponent.call(this);
+        sitools.admin.units.UnitsProp.superclass.initComponent.call(this);
     },
 
     beforeTabChange : function (self, newTab, currentTab) {
@@ -363,7 +363,7 @@ Ext.define('sitools.admin.units.unitsProp', {
      * Set the dimension information if the action is "modify"
      */
     afterRender : function () {
-        sitools.admin.units.unitsProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.units.UnitsProp.superclass.afterRender.apply(this, arguments);
 
         if (this.action == "modify") {
             this.unitsId = this.record.data.id;

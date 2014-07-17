@@ -27,7 +27,7 @@ Ext.namespace('sitools.admin.datasets.DictionaryMapping');
  * @class sitools.admin.datasets.DicoMapping
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.DictionaryMapping.dictionaryMapping', { 
+Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-DicoMapping',
     width : 800,

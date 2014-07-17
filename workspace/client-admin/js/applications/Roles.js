@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.applications');
 /**
  * A window to display roles and add any selected roles to a parameter store. 
  * @cfg {Ext.data.JsonStore} storeRolesApplication The store to add records. 
- * @class sitools.admin.applications.roles
+ * @class sitools.admin.applications.Roles
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.applications.roles', { 
+Ext.define('sitools.admin.applications.Roles', { 
     extend : 'Ext.Window',
     // url + mode + storeref
     width : 500,
@@ -100,14 +100,14 @@ Ext.define('sitools.admin.applications.roles', {
         }];                
         
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.applications.roles.superclass.initComponent.call(this);
+        sitools.admin.applications.Roles.superclass.initComponent.call(this);
     },
 
     /**
      * Loads the store 
      */
     onRender : function () {
-        sitools.admin.applications.roles.superclass.onRender.apply(this, arguments);
+        sitools.admin.applications.Roles.superclass.onRender.apply(this, arguments);
         this.store.load({
             scope : this,
             params : {

@@ -29,10 +29,10 @@ Ext.namespace('sitools.admin.rssFeed');
  * @cfg store, the CRUD store
  * @cfg action, the type of action ( create or modify )
  * @cfg idFeed, the id of the Feed to load in case of edit ( optional )
- * @class sitools.admin.rssFeed.rssFeedProp
+ * @class sitools.admin.rssFeed.RssFeedProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.rssFeed.rssFeedProp', { 
+Ext.define('sitools.admin.rssFeed.RssFeedProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -43,7 +43,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProp', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.rssFeed.rssFeedItemProp'],
+    requires : ['sitools.admin.rssFeed.RssFeedItemProp'],
 
     initComponent : function () {
 
@@ -363,14 +363,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedProp', {
             }
         }];
 
-        sitools.admin.rssFeed.rssFeedProp.superclass.initComponent.call(this);
+        sitools.admin.rssFeed.RssFeedProp.superclass.initComponent.call(this);
     },
     
     /**
      * done a specific render to load rss informations. 
      */
     afterRender : function () {
-        sitools.admin.rssFeed.rssFeedProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.rssFeed.RssFeedProp.superclass.afterRender.apply(this, arguments);
         if (this.action == "modify") {
             Ext.Ajax.request({
                 url : this.url + "/" + this.id + this.urlRef + "/" + this.idFeed,
@@ -637,11 +637,11 @@ Ext.define('sitools.admin.rssFeed.rssFeedProp', {
     }, 
 
     /**
-     * Create a {sitools.admin.rssFeed.rssFeedItemProp} rss item property field
+     * Create a {sitools.admin.rssFeed.RssFeedItemProp} rss item property field
      *  to create a property
      */
     onCreate : function () {
-        var up = Ext.create("sitools.admin.rssFeed.rssFeedItemProp", {
+        var up = Ext.create("sitools.admin.rssFeed.RssFeedItemProp", {
             store : this.storeItem,
             parent : this.gridPanel,
             action : "create"
@@ -650,7 +650,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProp', {
     },
     
     /**
-     * Open a {sitools.admin.rssFeed.rssFeedItemProp} rss item property field
+     * Open a {sitools.admin.rssFeed.RssFeedItemProp} rss item property field
      *  to modify a property
      */
     onModify : function () {
@@ -658,7 +658,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedProp', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.rssFeed.rssFeedItemProp", {
+        var up = Ext.create("sitools.admin.rssFeed.RssFeedItemProp", {
             store : this.storeItem,
             parent : this.gridPanel,
             action : "modify",

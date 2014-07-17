@@ -38,10 +38,10 @@ Ext.namespace('sitools.admin.datasets.services');
  *            the parent id
  * @param parentType
  *            the type of the parent, string used only for i18n label
- * @class sitools.admin.datasets.services.datasetServicesProp
+ * @class sitools.admin.datasets.services.DatasetServicesProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.services.datasetServicesProp', { 
+Ext.define('sitools.admin.datasets.services.DatasetServicesProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -250,7 +250,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
         
         this.items = [ this.tabPanel ];
 
-        sitools.admin.datasets.services.datasetServicesProp.superclass.initComponent.call(this);
+        sitools.admin.datasets.services.DatasetServicesProp.superclass.initComponent.call(this);
     },
 
     /**
@@ -320,7 +320,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesProp', {
             this.gridDatasetServices.getStore().load();
         }
         
-        sitools.admin.datasets.services.datasetServicesProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasets.services.DatasetServicesProp.superclass.afterRender.apply(this, arguments);
     },
 
     /**

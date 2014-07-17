@@ -24,10 +24,10 @@ Ext.namespace('sitools.admin.datasets.opensearch');
  * Define an openSearch on a Dataset.
  * @cfg {String} url (required) The url of the dataset 
  * @cfg {Ext.data.Store} store (required) The store that contains all datasets.
- * @class sitools.admin.datasets.opensearch.opensearch
+ * @class sitools.admin.datasets.opensearch.Opensearch
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.datasets.opensearch.opensearch', { 
+Ext.define('sitools.admin.datasets.opensearch.Opensearch', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-datasetsOpenSearch',
     width : 800,
@@ -440,7 +440,7 @@ Ext.define('sitools.admin.datasets.opensearch.opensearch', {
         }, this);
 
         
-        sitools.admin.datasets.opensearch.opensearch.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
@@ -449,7 +449,7 @@ Ext.define('sitools.admin.datasets.opensearch.opensearch', {
      * Call loadModification if success.
      */
     onRender : function () {
-        sitools.admin.datasets.opensearch.opensearch.superclass.onRender.apply(this, arguments);
+        this.callParent(arguments);
         this.objectList = {};
 
         // sinon on charge le dataset

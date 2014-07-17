@@ -30,10 +30,10 @@ Ext.namespace('sitools.admin.resourcesPlugins');
  *            the parent record
  * @param enumeration
  *            the complete enumeration value
- * @class sitools.admin.resourcesPlugins.enumerationValueTypeSelector
+ * @class sitools.admin.resourcesPlugins.EnumerationValueTypeSelector
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', { 
+Ext.define('sitools.admin.resourcesPlugins.EnumerationValueTypeSelector', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -148,7 +148,7 @@ Ext.define('sitools.admin.resourcesPlugins.enumerationValueTypeSelector', {
             scope : this
         };
         
-        sitools.admin.resourcesPlugins.enumerationValueTypeSelector.superclass.initComponent.call(this);
+        sitools.admin.resourcesPlugins.EnumerationValueTypeSelector.superclass.initComponent.call(this);
     },
     
     /**

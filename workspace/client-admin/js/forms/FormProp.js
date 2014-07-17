@@ -293,7 +293,7 @@ Ext.define('sitools.admin.forms.FormProp', {
 			items : [this.componentsDisplayPanel]
         });
         
-        this.componentListPanel = Ext.create("sitools.admin.forms.componentsListPanel", {
+        this.componentListPanel = Ext.create("sitools.admin.forms.ComponentsListPanel", {
             datasetColumnModel : this.datasetColumnModel,
             formComponentsStore : this.formComponentsStore,
             action : 'create', 
@@ -484,7 +484,7 @@ Ext.define('sitools.admin.forms.FormProp', {
     },
     
     _sizeUp : function () {
-        var panelProp = Ext.create("sitools.admin.forms.absoluteLayoutProp", {
+        var panelProp = Ext.create("sitools.admin.forms.AbsoluteLayoutProp", {
             absoluteLayout : this.componentsDisplayPanel,
             tabPanel : this.componentsDisplayPanel.ownerCt.ownerCt.ownerCt,
             win : this,
@@ -494,7 +494,7 @@ Ext.define('sitools.admin.forms.FormProp', {
     },
     
     _addPanel : function () {
-        var setupAdvancedPanel = Ext.create("sitools.admin.forms.setupAdvancedFormPanel", {
+        var setupAdvancedPanel = Ext.create("sitools.admin.forms.SetupAdvancedFormPanel", {
             parentContainer : this.componentsDisplayPanel,
             currentPosition : this.componentsDisplayPanel.position
         });

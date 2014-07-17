@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.forms');
 /**
  * A window to present all form Components type
  * @cfg {Ext.data.JsonStore} storeConcepts the store with concepts
- * @class sitools.admin.forms.componentsListPanel
+ * @class sitools.admin.forms.ComponentsListPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.advancedFormPanel', {
+Ext.define('sitools.admin.forms.AdvancedFormPanel', {
     extend : 'sitools.public.ux.form.ToolFieldSet',
     border : true,
     closable : true,
@@ -96,11 +96,11 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
             activate : this.onActivate
         };
         
-        sitools.admin.forms.advancedFormPanel.superclass.initComponent.call(this);
+        sitools.admin.forms.AdvancedFormPanel.superclass.initComponent.call(this);
     },
 
     afterRender : function () {
-        sitools.admin.forms.advancedFormPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.AdvancedFormPanel.superclass.afterRender.apply(this, arguments);
 
         var ddGroup = this.ddGroup;
         var datasetColumnModel = this.datasetColumnModel;
@@ -363,7 +363,7 @@ Ext.define('sitools.admin.forms.advancedFormPanel', {
         }
         var zoneRec = this.absoluteLayout.zoneStore.getAt(zoneToRemove);
         
-        var setupAdvancedPanel = Ext.create("sitools.admin.forms.setupAdvancedFormPanel", {
+        var setupAdvancedPanel = Ext.create("sitools.admin.forms.SetupAdvancedFormPanel", {
             parentContainer : this.absoluteLayout,
             action : 'modify',
             zone : zoneRec.data

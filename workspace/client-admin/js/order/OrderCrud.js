@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.order');
 
-Ext.define('sitools.admin.order.orderCrud', { 
+Ext.define('sitools.admin.order.OrderCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-order',
     border : false,
@@ -32,8 +32,8 @@ Ext.define('sitools.admin.order.orderCrud', {
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     forceFit : true,
     
-    requires : ['sitools.admin.order.orderProp',
-                'sitools.admin.order.events'],
+    requires : ['sitools.admin.order.OrderProp',
+                'sitools.admin.order.Events'],
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_ADMIN_URL');
@@ -146,11 +146,11 @@ Ext.define('sitools.admin.order.orderCrud', {
             scope : this, 
             itemdblclick : this._onDetail
         };
-        sitools.admin.order.orderCrud.superclass.initComponent.call(this);
+        sitools.admin.order.OrderCrud.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.order.orderCrud.superclass.onRender.apply(this, arguments);
+        sitools.admin.order.OrderCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             params : {
                 start : 0,
@@ -164,7 +164,7 @@ Ext.define('sitools.admin.order.orderCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = new sitools.admin.order.orderProp({
+        var up = new sitools.admin.order.OrderProp({
             url : this.url,
             action : 'detail',
             store : this.getStore(),
@@ -178,7 +178,7 @@ Ext.define('sitools.admin.order.orderCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.order.events", {
+        var up = Ext.create("sitools.admin.order.Events", {
             baseUrl : this.url + "/" + rec.data.id,
             action : 'active',
             store : this.getStore(),
@@ -192,7 +192,7 @@ Ext.define('sitools.admin.order.orderCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.order.events", {
+        var up = Ext.create("sitools.admin.order.Events", {
             baseUrl : this.url + "/" + rec.data.id,
             action : 'done',
             store : this.getStore(),

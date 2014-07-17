@@ -21,7 +21,7 @@
 
 Ext.namespace('sitools.admin.fileEditor');
 
-Ext.define('sitools.admin.fileEditor.fileEditorProp', { 
+Ext.define('sitools.admin.fileEditor.FileEditorProp', { 
     extend : 'Ext.Window',
     alias : 'widget.s-fileEditorProp',
     width : 700,
@@ -100,13 +100,13 @@ Ext.define('sitools.admin.fileEditor.fileEditorProp', {
         
         Ext.tip.QuickTipManager.init();
         
-        sitools.admin.fileEditor.fileEditorProp.superclass.initComponent.call(this);
+        sitools.admin.fileEditor.FileEditorProp.superclass.initComponent.call(this);
         
         
     },
     
     onRender : function () {
-        sitools.admin.fileEditor.fileEditorProp.superclass.onRender.apply(this, arguments);
+        sitools.admin.fileEditor.FileEditorProp.superclass.onRender.apply(this, arguments);
         
         if (this.url) {
             Ext.Ajax.request({

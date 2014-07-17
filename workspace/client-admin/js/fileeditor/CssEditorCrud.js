@@ -40,7 +40,7 @@ Ext.define('sitools.admin.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel'
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.fileEditor.fileEditorProp'],
+    requires : ['sitools.admin.fileEditor.FileEditorProp'],
 
     initComponent : function () {
         
@@ -127,7 +127,7 @@ Ext.define('sitools.admin.fileEditor.cssEditorCrud', { extend : 'Ext.grid.Panel'
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var cssProp = Ext.create("sitools.admin.fileEditor.fileEditorProp", {
+        var cssProp = Ext.create("sitools.admin.fileEditor.FileEditorProp", {
             url : this.url + '/css/' + rec.data.id,
             fileName : rec.data.id,
             sourceEdit : true,

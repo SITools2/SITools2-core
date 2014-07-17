@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.userStorage');
  * 
  * @cfg {String} the url where get the resource
  * @cfg {Ext.data.JsonStore} the store where saved the user storage data
- * @class sitools.admin.userStorage.userStorageCrud
+ * @class sitools.admin.userStorage.UserStorageCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.userStorage.userStorageCrud', { 
+Ext.define('sitools.admin.userStorage.UserStorageCrud', { 
     extend :'Ext.grid.Panel',
 	alias : 'widget.s-userStorage',
     border : false,
@@ -40,7 +40,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.userStorage.userStorageProp'],
+    requires : ['sitools.admin.userStorage.UserStorageProp'],
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_URL') + '/users';
@@ -218,14 +218,14 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.userStorage.userStorageCrud.superclass.initComponent.call(this);
+        sitools.admin.userStorage.UserStorageCrud.superclass.initComponent.call(this);
     },
 
     /**
      * do a specific render to load informations from the store. 
      */
     afterRender : function () {
-        sitools.admin.userStorage.userStorageCrud.superclass.afterRender.apply(this, arguments);
+        sitools.admin.userStorage.UserStorageCrud.superclass.afterRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize,
@@ -234,10 +234,10 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
     },
 
     /**
-     * Create a {sitools.admin.userStorage.userStorageProp} user Storage to add to the storage
+     * Create a {sitools.admin.userStorage.UserStorageProp} user Storage to add to the storage
      */
     onCreate : function () {
-        var up = Ext.create("sitools.admin.userStorage.userStorageProp", {
+        var up = Ext.create("sitools.admin.userStorage.UserStorageProp", {
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -246,14 +246,14 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
     },
 
     /**
-     * Modify the selected {sitools.admin.userStorage.userStorageProp} user Storage
+     * Modify the selected {sitools.admin.userStorage.UserStorageProp} user Storage
      */
     onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.userStorage.userStorageProp", {
+        var up = Ext.create("sitools.admin.userStorage.UserStorageProp", {
             url : this.url + '/' + rec.get("id"),
             userStorageRec : rec,
             action : 'modify',
@@ -306,7 +306,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
     },
     
     /**
-     * Activate the selected {sitools.admin.userStorage.userStorageProp} user Storage
+     * Activate the selected {sitools.admin.userStorage.UserStorageProp} user Storage
      */
     _onActive : function () {
         var rec = this.getLastSelectedRecord();
@@ -327,7 +327,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
     },
 
     /**
-     * Deactivate the selected {sitools.admin.userStorage.userStorageProp} user Storage
+     * Deactivate the selected {sitools.admin.userStorage.UserStorageProp} user Storage
      */
     _onDisactive : function () {
         var rec = this.getLastSelectedRecord();
@@ -348,7 +348,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
     },
     
     /**
-     * Delete all files from the selected {sitools.admin.userStorage.userStorageProp} user Storage
+     * Delete all files from the selected {sitools.admin.userStorage.UserStorageProp} user Storage
      */
     _onClean : function () {
         var rec = this.getLastSelectedRecord();
@@ -385,7 +385,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
     },
     
     /**
-     * Refresh the selected {sitools.admin.userStorage.userStorageProp} user Storage
+     * Refresh the selected {sitools.admin.userStorage.UserStorageProp} user Storage
      */
     _onRefresh : function () {
         var rec = this.getLastSelectedRecord();
@@ -406,7 +406,7 @@ Ext.define('sitools.admin.userStorage.userStorageCrud', {
     },
     
     /**
-     * Notify the selected {sitools.admin.userStorage.userStorageProp} user Storage by e-mail
+     * Notify the selected {sitools.admin.userStorage.UserStorageProp} user Storage by e-mail
      */
     _onNotify : function () {
         var rec = this.getLastSelectedRecord();

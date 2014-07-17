@@ -31,10 +31,10 @@ Ext.namespace('sitools.admin.storages');
  * @cfg {String} the urlFilters of classes filters
  * @cfg {String} the urlParents of instances filters
  * @cfg {Ext.data.JsonStore} the store where saved the user storage data
- * @class sitools.admin.storages.storagesCrud
+ * @class sitools.admin.storages.StoragesCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.storages.storagesCrud', { 
+Ext.define('sitools.admin.storages.StoragesCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-storages',
     border : false,
@@ -47,7 +47,7 @@ Ext.define('sitools.admin.storages.storagesCrud', {
     },
     
     requires : ['sitools.admin.filtersPlugins.filtersPluginsSingle',
-                'sitools.admin.storages.storagesProp',
+                'sitools.admin.storages.StoragesProp',
                 'sitools.admin.applications.ApplicationsRole',
                 'sitools.admin.storages.plugins.storageCopyProp'],
 
@@ -242,14 +242,14 @@ Ext.define('sitools.admin.storages.storagesCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.storages.storagesCrud.superclass.initComponent.call(this);
+        sitools.admin.storages.StoragesCrud.superclass.initComponent.call(this);
     },
 
     /**
      * do a specific render to load storages from the store. 
      */
     afterRender : function () {
-        sitools.admin.storages.storagesCrud.superclass.afterRender.apply(this, arguments);
+        sitools.admin.storages.StoragesCrud.superclass.afterRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize,
@@ -320,10 +320,10 @@ Ext.define('sitools.admin.storages.storagesCrud', {
     },    
     
     /**
-     * Open a {sitools.admin.storages.storagesProp} storage property panel to create a new storage
+     * Open a {sitools.admin.storages.StoragesProp} storage property panel to create a new storage
      */
     onCreate : function () {
-        var up = Ext.create("sitools.admin.storages.storagesProp", {
+        var up = Ext.create("sitools.admin.storages.StoragesProp", {
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -332,14 +332,14 @@ Ext.define('sitools.admin.storages.storagesCrud', {
     },
 
     /**
-     * Open a {sitools.admin.storages.storagesProp} storage property panel to create a new storage
+     * Open a {sitools.admin.storages.StoragesProp} storage property panel to create a new storage
      */
     onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.storages.storagesProp", {
+        var up = Ext.create("sitools.admin.storages.StoragesProp", {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore()

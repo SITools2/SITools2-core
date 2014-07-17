@@ -44,7 +44,7 @@ Ext.define('sitools.admin.applications.customCheckColumn', {
  * @cfg {Ext.data.Record} applicationRecord
  * @class sitools.admin.applications.ApplicationsRole
  * @extends Ext.Window
- * @requires sitools.admin.applications.roles
+ * @requires sitools.admin.applications.Roles
  */
 Ext.define('sitools.admin.applications.ApplicationsRole', { 
     extend : 'Ext.Window', 
@@ -53,7 +53,7 @@ Ext.define('sitools.admin.applications.ApplicationsRole', {
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     
-    requires : ["sitools.admin.applications.roles",
+    requires : ["sitools.admin.applications.Roles",
                 'sitools.admin.authorizations.AuthorizationsModel'],
     
     initComponent : function () {
@@ -158,7 +158,7 @@ Ext.define('sitools.admin.applications.ApplicationsRole', {
      * Adds a record to the role store. 
      */
     _onCreateRole : function () {
-        var winRole = Ext.create("sitools.admin.applications.roles", {
+        var winRole = Ext.create("sitools.admin.applications.Roles", {
             storeRolesApplication : this.gridAuthorizations.getStore()
         });
         winRole.show();

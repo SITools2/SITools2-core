@@ -27,10 +27,10 @@ Ext.namespace("sitools.admin.forms");
  * @cfg {Ext.Panel} absoluteLayout The panel to change size
  * @cfg {Ext.TabPanel} tabPanel The main TabPanel
  * @cfg {Ext.Window} win The window to define a form.
- * @class sitools.admin.forms.absoluteLayoutProp
+ * @class sitools.admin.forms.AbsoluteLayoutProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.absoluteLayoutProp', { 
+Ext.define('sitools.admin.forms.AbsoluteLayoutProp', { 
     extend : 'Ext.Window',
     modal : true,
     initComponent : function () {
@@ -73,7 +73,7 @@ Ext.define('sitools.admin.forms.absoluteLayoutProp', {
             handler : this._onCancel
         }];
         
-        sitools.admin.forms.absoluteLayoutProp.superclass.initComponent.call(this);
+        sitools.admin.forms.AbsoluteLayoutProp.superclass.initComponent.call(this);
 
     },
     _onValidate : function () {

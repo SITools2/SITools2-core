@@ -25,11 +25,11 @@ Ext.namespace('sitools.admin.datasets.services');
 /**
  * A panel to managed Dataset resources.
  * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrud
- * @class sitools.admin.datasets.services.datasetServicesCrud 
+ * @class sitools.admin.datasets.services.DatasetServicesCrud 
  * @extends Ext.grid.GridPanel
  */
 // ExtJS4.3 'Ext.grid.EditorGridPanel'
-Ext.define('sitools.admin.datasets.services.datasetServicesCrud', { 
+Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-dataset_services',
     border : false,
@@ -44,9 +44,9 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.datasets.services.datasetServicesProp',
-                'sitools.admin.resourcesPlugins.resourcesPluginsProp',
-                'sitools.admin.datasets.services.datasetServicesCopyProp'],
+    requires : ['sitools.admin.datasets.services.DatasetServicesProp',
+                'sitools.admin.resourcesPlugins.ResourcesPluginsProp',
+                'sitools.admin.datasets.services.DatasetServicesCopyProp'],
     
     viewConfig : {
         autoFill : true,
@@ -386,7 +386,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             }
         };
 
-        sitools.admin.datasets.services.datasetServicesCrud.superclass.initComponent.call(this);
+        sitools.admin.datasets.services.DatasetServicesCrud.superclass.initComponent.call(this);
     },
     
     /**
@@ -404,7 +404,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
         var urlParent = this.urlDatasets + "/" + parentId;
 
         if (type === "GUI") {
-            var gui = Ext.create("sitools.admin.datasets.services.datasetServicesProp", {
+            var gui = Ext.create("sitools.admin.datasets.services.DatasetServicesProp", {
                 action : 'create',
                 parentPanel : this,
                 parentType : this.parentType,
@@ -466,7 +466,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var datasetServicesCopy = Ext.create("sitools.admin.datasets.services.datasetServicesCopyProp", {
+        var datasetServicesCopy = Ext.create("sitools.admin.datasets.services.DatasetServicesCopyProp", {
             storeCombo : this.storeParents,
             services : arrayRecords,
             parentDatasetId : parentId,
@@ -588,7 +588,7 @@ Ext.define('sitools.admin.datasets.services.datasetServicesCrud', {
             success : function (ret) {
                 var json = Ext.decode(ret.responseText);
 
-                var up = Ext.create("sitools.admin.datasets.services.datasetServicesProp", {
+                var up = Ext.create("sitools.admin.datasets.services.DatasetServicesProp", {
                     action : 'modify',
                     record : json.guiServicePlugin,
                     parentPanel : this,

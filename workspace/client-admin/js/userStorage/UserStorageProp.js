@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.userStorage');
  * @cfg {String} the action to perform
  * @cfg {String} the url where get the resource
  * @cfg {Ext.data.JsonStore} the store where get the record
- * @class sitools.admin.userStorage.userStorageProp
+ * @class sitools.admin.userStorage.UserStorageProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.userStorage.userStorageProp', {
+Ext.define('sitools.admin.userStorage.UserStorageProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-userStoragesprop',
     width : 700,
@@ -138,11 +138,11 @@ Ext.define('sitools.admin.userStorage.userStorageProp', {
             }
         }];
         
-        sitools.admin.userStorage.userStorageProp.superclass.initComponent.call(this);
+        sitools.admin.userStorage.UserStorageProp.superclass.initComponent.call(this);
     },
     
     /**
-     * Save {sitools.admin.userStorage.userStorageProp} user Storage in function of the action (create,modify)
+     * Save {sitools.admin.userStorage.UserStorageProp} user Storage in function of the action (create,modify)
      */
     onValidate : function () {
         var f = this.down('form').getForm();
@@ -200,7 +200,7 @@ Ext.define('sitools.admin.userStorage.userStorageProp', {
      * Delete the user field if the action is modify
      */
     afterRender : function () {
-        sitools.admin.userStorage.userStorageProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.userStorage.UserStorageProp.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             var f = this.down('form').getForm();
             f.loadRecord(this.userStorageRec);

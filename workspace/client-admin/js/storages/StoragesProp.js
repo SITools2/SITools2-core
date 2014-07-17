@@ -30,10 +30,10 @@ Ext.namespace('sitools.admin.storages');
  * @cfg {string} url The url to Save the data
  * @cfg {string} action The action should be modify or create
  * @cfg {Ext.data.Store} store The storages store 
- * @class sitools.admin.storages.storagesProp
+ * @class sitools.admin.storages.StoragesProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.storages.storagesProp', { 
+Ext.define('sitools.admin.storages.StoragesProp', { 
     extend : 'Ext.Window',
 	alias : 'widget.s-storagesprop',
     width : 700,
@@ -115,7 +115,7 @@ Ext.define('sitools.admin.storages.storagesProp', {
                 }
             } ]
         } ];
-        sitools.admin.storages.storagesProp.superclass.initComponent.call(this);
+        sitools.admin.storages.StoragesProp.superclass.initComponent.call(this);
     },
     /**
      * Validate the modification. 
@@ -177,7 +177,7 @@ Ext.define('sitools.admin.storages.storagesProp', {
 	 * Load the selected storage in case of modification.
 	 */
     onRender : function () {
-        sitools.admin.storages.storagesProp.superclass.onRender.apply(this, arguments);
+        sitools.admin.storages.StoragesProp.superclass.onRender.apply(this, arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             if (this.action == 'modify') {

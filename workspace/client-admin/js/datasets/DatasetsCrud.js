@@ -27,10 +27,10 @@ Ext.namespace('sitools.admin.datasets');
 
 /**
  * Displays the list of all the datasets in the Administration
- * @class sitools.admin.datasets.datasetsCrud
+ * @class sitools.admin.datasets.DatasetsCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.datasets.datasetsCrud', { 
+Ext.define('sitools.admin.datasets.DatasetsCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-datasets',
     border : false,
@@ -41,9 +41,9 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
     mixins : {
         utils : 'sitools.admin.utils.utils'
     },
-    requires : ['sitools.admin.datasets.datasetsMultiTablesPanel',
-                'sitools.admin.datasets.opensearch.opensearch',
-                'sitools.admin.datasets.DictionaryMapping.dictionaryMapping'],
+    requires : ['sitools.admin.datasets.DatasetsMultiTablesPanel',
+                'sitools.admin.datasets.opensearch.Opensearch',
+                'sitools.admin.datasets.dictionaryMapping.DictionaryMapping'],
     
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
@@ -169,11 +169,11 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
             itemdblclick : this.onEdit
         };
         
-        sitools.admin.datasets.datasetsCrud.superclass.initComponent.call(this);
+        sitools.admin.datasets.DatasetsCrud.superclass.initComponent.call(this);
     },
 	/**
 	 * Called when double click on a dataset, or the edit Button
-	 * Will open {@link sitools.admin.datasets.datasetsMultiTablesPanel} window.
+	 * Will open {@link sitools.admin.datasets.DatasetsMultiTablesPanel} window.
 	 * @method
 	 * @return {}
 	 */
@@ -191,7 +191,7 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
     }, 
 	/**
 	 * Called when click on duplicate Button
-	 * Will open {@link sitools.admin.datasets.datasetsMultiTablesPanel} window.
+	 * Will open {@link sitools.admin.datasets.DatasetsMultiTablesPanel} window.
 	 * @method
 	 * @return {}
 	 */
@@ -201,7 +201,7 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var up = Ext.create('sitools.admin.datasets.datasetsMultiTablesPanel', {
+        var up = Ext.create('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             datasetUrlToCopy : this.url + "/" + rec.data.id,
             action : 'duplicate',
             store : this.getStore(), 
@@ -214,7 +214,7 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
      * @method
      */
     afterRender : function () {
-        sitools.admin.datasets.datasetsCrud.superclass.afterRender.apply(this, arguments);
+        sitools.admin.datasets.DatasetsCrud.superclass.afterRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -226,7 +226,7 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
      * @method
      */
     onCreate : function () {
-        var up = Ext.create('sitools.admin.datasets.datasetsMultiTablesPanel', {
+        var up = Ext.create('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             url : this.url,
             action : 'create',
             store : this.getStore()
@@ -243,7 +243,7 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var up = Ext.create('sitools.admin.datasets.datasetsMultiTablesPanel', {
+        var up = Ext.create('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             url : this.url + '/' + rec.data.id,
             action : 'view',
             store : this.getStore(), 
@@ -265,7 +265,7 @@ Ext.define('sitools.admin.datasets.datasetsCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var up = Ext.create('sitools.admin.datasets.datasetsMultiTablesPanel', {
+        var up = Ext.create('sitools.admin.datasets.DatasetsMultiTablesPanel', {
             url : this.url + '/' + rec.data.id,
             action : 'modify',
             store : this.getStore(), 

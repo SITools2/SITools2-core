@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.units');
  * 
  * @cfg {String} the urlAdmin where get the resource
  * @cfg {Ext.data.JsonStore} the store where saved the dimensions data
- * @class sitools.admin.units.unitsCrud
+ * @class sitools.admin.units.UnitsCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.units.unitsCrud', { 
+Ext.define('sitools.admin.units.UnitsCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-units',
     border : false,
@@ -40,7 +40,7 @@ Ext.define('sitools.admin.units.unitsCrud', {
         utils : 'sitools.admin.utils.utils'
     },
     
-    requires : ['sitools.admin.units.unitsProp'],
+    requires : ['sitools.admin.units.UnitsProp'],
     
     initComponent : function () {
         this.urlAdmin = loadUrl.get('APP_URL') + loadUrl.get('APP_DIMENSIONS_ADMIN_URL');
@@ -143,7 +143,7 @@ Ext.define('sitools.admin.units.unitsCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.units.unitsCrud.superclass.initComponent.call(this);
+        sitools.admin.units.UnitsCrud.superclass.initComponent.call(this);
 
     },
 
@@ -151,7 +151,7 @@ Ext.define('sitools.admin.units.unitsCrud', {
      * done a specific render to load dimensions from the store. 
      */
     onRender : function () {
-        sitools.admin.units.unitsCrud.superclass.onRender.apply(this, arguments);
+        sitools.admin.units.UnitsCrud.superclass.onRender.apply(this, arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -159,10 +159,10 @@ Ext.define('sitools.admin.units.unitsCrud', {
     },
 
     /**
-     * Create a new {sitools.admin.units.unitsProp} unit prop to create a new dimension
+     * Create a new {sitools.admin.units.UnitsProp} unit prop to create a new dimension
      */
     onCreate : function () {
-        var up = Ext.create("sitools.admin.units.unitsProp", {
+        var up = Ext.create("sitools.admin.units.UnitsProp", {
             action : 'create',            
             parent : this,          
             urlAdmin : this.urlAdmin
@@ -171,7 +171,7 @@ Ext.define('sitools.admin.units.unitsCrud', {
     },
 
     /**
-     * Create a new {sitools.admin.units.unitsProp} unit prop to modify a dimension
+     * Create a new {sitools.admin.units.UnitsProp} unit prop to modify a dimension
      */
     onModify : function () {
         var rec = this.getLastSelectedRecord();
@@ -179,7 +179,7 @@ Ext.define('sitools.admin.units.unitsCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.units.unitsProp", {
+        var up = Ext.create("sitools.admin.units.UnitsProp", {
             action : 'modify',
             record : rec,
             parent : this,

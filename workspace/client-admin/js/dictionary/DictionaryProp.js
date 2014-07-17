@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.dictionary');
 
-Ext.define('sitools.admin.dictionary.dictionaryProp', {
+Ext.define('sitools.admin.dictionary.DictionaryProp', {
     extend : 'Ext.Window',
 	alias : 'widget.s-dictionaryprop',
     width : 700,
@@ -175,7 +175,7 @@ Ext.define('sitools.admin.dictionary.dictionaryProp', {
 
         };
 
-        sitools.admin.dictionary.dictionaryProp.superclass.initComponent.call(this);
+        sitools.admin.dictionary.DictionaryProp.superclass.initComponent.call(this);
     },
 
     onUpload : function () {
@@ -322,7 +322,7 @@ Ext.define('sitools.admin.dictionary.dictionaryProp', {
     },
 
     afterRender : function () {
-        sitools.admin.dictionary.dictionaryProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.dictionary.DictionaryProp.superclass.afterRender.apply(this, arguments);
         if (this.url) {
             // var gs = this.groupStore, qs = this.quotaStore;
             var i;

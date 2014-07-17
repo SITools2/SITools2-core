@@ -33,12 +33,12 @@ Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', {
     requires : ["sitools.admin.graphs.GraphsDatasetWin",
                 "sitools.admin.graphs.GraphsNodeWin",
                 "sitools.admin.graphs.GraphsDatasetWin",
-                "sitools.admin.graphs.graphNodeModel"],    
+                "sitools.admin.graphs.GraphNodeModel"],    
     
     initComponent : function () {
         
         this.store = Ext.create('Ext.data.TreeStore', {
-            model : 'sitools.admin.graphs.graphNodeModel',
+            model : 'sitools.admin.graphs.GraphNodeModel',
             root : {
                 text : this.name,
                 expanded : true,

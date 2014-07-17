@@ -29,10 +29,10 @@ Ext.namespace('sitools.admin.filtersPlugins');
  *            the parent object url
  * @param parentType
  *            the type of the parent, string used only for i18n label
- * @class sitools.admin.filtersPlugins.filtersPluginsProp
+ * @class sitools.admin.filtersPlugins.FiltersPluginsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.filtersPlugins.filtersPluginsSingle', { 
+Ext.define('sitools.admin.filtersPlugins.FiltersPluginsSingle', { 
     extend : 'Ext.Window',
     width : 700,
     height : 500,
@@ -338,7 +338,7 @@ Ext.define('sitools.admin.filtersPlugins.filtersPluginsSingle', {
         }; 
         this.items = [ this.tabPanel ];
 
-        sitools.admin.filtersPlugins.filtersPluginsSingle.superclass.initComponent.call(this);
+        sitools.admin.filtersPlugins.FiltersPluginsSingle.superclass.initComponent.call(this);
     },
 
     beforeTabChange : function (self, newTab, currentTab) {

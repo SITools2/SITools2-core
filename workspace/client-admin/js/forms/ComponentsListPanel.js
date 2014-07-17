@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.forms');
 /**
  * A window to present all form Components type
  * @cfg {Ext.data.JsonStore} storeConcepts the store with concepts
- * @class sitools.admin.forms.componentsListPanel
+ * @class sitools.admin.forms.ComponentsListPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.componentsListPanel', { 
+Ext.define('sitools.admin.forms.ComponentsListPanel', { 
     extend : 'Ext.grid.Panel',
     width : 220,
     id: 'gridsource',
@@ -103,7 +103,7 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
             header : i18n.get('headers.image'),
             dataIndex : 'imageUrl',
             renderer : function (value) {
-                return "<a href='#' onClick='sitools.admin.forms.componentsListPanel.showPreview(\"" + value + "\"); return false;'>" + i18n.get('label.preview') + "</a>";
+                return "<a href='#' onClick='sitools.admin.forms.ComponentsListPanel.showPreview(\"" + value + "\"); return false;'>" + i18n.get('label.preview') + "</a>";
             }, 
             width : 70
         }];
@@ -117,7 +117,7 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
             }
         };
 
-        sitools.admin.forms.componentsListPanel.superclass.initComponent.call(this);
+        sitools.admin.forms.ComponentsListPanel.superclass.initComponent.call(this);
     },
     
     onClose : function () {
@@ -131,7 +131,7 @@ Ext.define('sitools.admin.forms.componentsListPanel', {
  * @static
  * @param {string} value
  */
-sitools.admin.forms.componentsListPanel.showPreview = function (value) {
+sitools.admin.forms.ComponentsListPanel.showPreview = function (value) {
     var previewWin = Ext.create("Ext.Window", {
         title : i18n.get('label.showPreview'),
         modal : true,

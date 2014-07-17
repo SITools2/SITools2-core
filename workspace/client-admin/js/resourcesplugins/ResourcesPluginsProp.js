@@ -22,7 +22,7 @@
  */
 Ext.namespace('sitools.admin.resourcesPlugins');
 
-Ext.define('sitools.admin.resourcesPlugins.customCheckColumn', {
+Ext.define('sitools.admin.resourcesPlugins.CustomCheckColumn', {
     extend : 'Ext.grid.column.CheckColumn',
     renderer : function (value, meta, rec) {
         var toShow = rec.get("type") === "PARAMETER_USER_INPUT";
@@ -54,10 +54,10 @@ Ext.define('sitools.admin.resourcesPlugins.customCheckColumn', {
  *            the parent id
  * @param parentType
  *            the type of the parent, string used only for i18n label
- * @class sitools.admin.resourcesPlugins.resourcesPluginsProp
+ * @class sitools.admin.resourcesPlugins.ResourcesPluginsProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
+Ext.define('sitools.admin.resourcesPlugins.ResourcesPluginsProp', {
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -71,8 +71,8 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
     },
     
     requires : ['sitools.admin.datasets.selectColumn',
-                'sitools.admin.dictionary.selectDictionary',
-                'sitools.admin.resourcesPlugins.enumerationValueTypeSelector',
+                'sitools.admin.dictionary.SelectDictionary',
+                'sitools.admin.resourcesPlugins.EnumerationValueTypeSelector',
                 'sitools.public.widget.grid.GridSorterToolbar'],
 
     initComponent : function () {
@@ -323,7 +323,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                 editor : {
                     xtype : 'textfield'
                 }
-            }, Ext.create("sitools.admin.resourcesPlugins.customCheckColumn", {
+            }, Ext.create("sitools.admin.resourcesPlugins.CustomCheckColumn", {
                 header : i18n.get('headers.userUpdatable'),
                 dataIndex : 'userUpdatable',
                 width : 55                
@@ -344,7 +344,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                             selectColumnWin.show(this);
                         }
                         else if (rec.valueType == "xs:dictionary") {
-                            var selectDictionaryWin = Ext.create("sitools.admin.dictionary.selectDictionary", {
+                            var selectDictionaryWin = Ext.create("sitools.admin.dictionary.SelectDictionary", {
                                 field : "value",
                                 record : record,
                                 parentStore : this.gridFieldMapping.getStore(),
@@ -354,7 +354,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                             selectDictionaryWin.show(this);
                         }
                         else if (rec.valueType == "xs:boolean") {
-                            var selectBooleanWin = Ext.create("sitools.admin.resourcesPlugins.enumerationValueTypeSelector", {
+                            var selectBooleanWin = Ext.create("sitools.admin.resourcesPlugins.EnumerationValueTypeSelector", {
                                 field : "value",
                                 record : record,
                                 parentView : this.gridFieldMapping.getView(),
@@ -396,7 +396,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
                             else {
 								enumType = "E";
                             }
-                            var selectEnumWin = Ext.create("sitools.admin.resourcesPlugins.enumerationValueTypeSelector", {
+                            var selectEnumWin = Ext.create("sitools.admin.resourcesPlugins.EnumerationValueTypeSelector", {
                                 enumType : enumType, 
                                 field : "value",
                                 fieldEnum : "valueType", 
@@ -503,7 +503,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
         
         this.items = [ this.tabPanel ];
 
-        sitools.admin.resourcesPlugins.resourcesPluginsProp.superclass.initComponent.call(this);
+        sitools.admin.resourcesPlugins.ResourcesPluginsProp.superclass.initComponent.call(this);
     },
 
     /**
@@ -570,7 +570,7 @@ Ext.define('sitools.admin.resourcesPlugins.resourcesPluginsProp', {
      * If "action" is "modify", load data from record into the form else load empty form
      */
     afterRender : function () {
-        sitools.admin.resourcesPlugins.resourcesPluginsProp.superclass.afterRender.apply(this, arguments);
+        sitools.admin.resourcesPlugins.ResourcesPluginsProp.superclass.afterRender.apply(this, arguments);
 
         if (this.action == "modify") {
             this.fillGridAndForm(this.record.data, this.action);

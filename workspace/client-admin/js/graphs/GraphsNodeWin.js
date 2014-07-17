@@ -113,7 +113,7 @@ Ext.define('sitools.admin.graphs.GraphsNodeWin', {
             this.node.set('image', image);
 
         } else {
-            var newNode = Ext.create('sitools.admin.graphs.graphNodeModel', {
+            var newNode = Ext.create('sitools.admin.graphs.GraphNodeModel', {
                 text : values.name,
                 image : image,
                 description : values.description,

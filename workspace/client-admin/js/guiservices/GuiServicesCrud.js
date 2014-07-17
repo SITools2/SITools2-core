@@ -40,14 +40,14 @@ Ext.define('sitools.admin.guiservices.GuiServicesCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ["sitools.admin.guiServices.guiServicesStore"/*,
-                "sitools.admin.guiServices.guiServicesProp"*/],
+    requires : ["sitools.admin.guiServices.GuiServicesStore"/*,
+                "sitools.admin.guiServices.GuiServicesProp"*/],
 
     initComponent : function () {
         
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_GUI_SERVICES_URL');
         
-        this.store = Ext.create("sitools.admin.guiServices.guiServicesStore", {
+        this.store = Ext.create("sitools.admin.guiServices.GuiServicesStore", {
             url : this.url,
             pageSize : this.pageSize
         });

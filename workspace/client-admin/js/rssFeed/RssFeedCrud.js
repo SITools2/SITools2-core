@@ -27,10 +27,10 @@ Ext.namespace('sitools.admin.rssFeed');
  * @cfg : url , the url to get the list of DataSets, Projects or archive
  * @cfg : label , the label to display ( Select DataSet ... )
  * @cfg : urlRef , the relative url of the RSS API
- * @class sitools.admin.rssFeed.rssFeedCrud
+ * @class sitools.admin.rssFeed.RssFeedCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.rssFeed.rssFeedCrud', { 
+Ext.define('sitools.admin.rssFeed.RssFeedCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-rssFeedCrud',
     border : false,
@@ -39,7 +39,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     forceFit : "true",
     id : ID.BOX.RSSFEED,
 
-    requires : ['sitools.admin.rssFeed.rssFeedProp'],
+    requires : ['sitools.admin.rssFeed.RssFeedProp'],
     
     initComponent : function () {
 
@@ -192,7 +192,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.rssFeed.rssFeedCrud.superclass.initComponent.call(this);
+        sitools.admin.rssFeed.RssFeedCrud.superclass.initComponent.call(this);
 
     },
 
@@ -212,14 +212,14 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     },
 
     /**
-     * Open a {sitools.admin.rssFeed.rssFeedProp} rss property window
+     * Open a {sitools.admin.rssFeed.RssFeedProp} rss property window
      *  to create a new rss feed for the selected dataset
      */
     onCreate : function () {
         if (Ext.isEmpty(this.combobox.getValue())) {
             return;
         }
-        var up = Ext.create('sitools.admin.rssFeed.rssFeedProp', {
+        var up = Ext.create('sitools.admin.rssFeed.RssFeedProp', {
             action : 'create',
             store : this.store,
             id : this.dataId,
@@ -230,7 +230,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
     },
 
     /**
-     * Open a {sitools.admin.rssFeed.rssFeedProp} rss property window
+     * Open a {sitools.admin.rssFeed.RssFeedProp} rss property window
      *  to modify an existing rss feed
      */
     onModify : function () {
@@ -239,7 +239,7 @@ Ext.define('sitools.admin.rssFeed.rssFeedCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
 
-        var up = Ext.create('sitools.admin.rssFeed.rssFeedProp', {
+        var up = Ext.create('sitools.admin.rssFeed.RssFeedProp', {
             action : 'modify',
             store : this.store,
             id : this.dataId,

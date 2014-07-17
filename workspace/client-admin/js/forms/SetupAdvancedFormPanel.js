@@ -24,10 +24,10 @@ Ext.namespace("sitools.admin.forms");
  * A simple window to edit Absolute Layout Size.
  * @cfg {sitools.admin.forms.ComponentsDisplayPanel} parentContainer
  * @cfg {Integer} the last zone position
- * @class sitools.admin.forms.setupAdvancedFormPanel
+ * @class sitools.admin.forms.SetupAdvancedFormPanel
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
+Ext.define('sitools.admin.forms.SetupAdvancedFormPanel', {
     extend : 'Ext.Window',
     modal : true,
     height : 230,
@@ -101,12 +101,12 @@ Ext.define('sitools.admin.forms.setupAdvancedFormPanel', {
                 handler : this._onCancel
             }];
         
-        sitools.admin.forms.setupAdvancedFormPanel.superclass.initComponent.call(this);
+        sitools.admin.forms.SetupAdvancedFormPanel.superclass.initComponent.call(this);
 
     },
     
     afterRender : function () {
-        sitools.admin.forms.setupAdvancedFormPanel.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.SetupAdvancedFormPanel.superclass.afterRender.apply(this, arguments);
         if (this.action === 'modify') {
             this.form.getForm().setValues(this.zone);
         }

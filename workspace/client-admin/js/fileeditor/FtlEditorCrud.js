@@ -41,7 +41,7 @@ Ext.define('sitools.admin.fileEditor.ftlEditorCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.fileEditor.fileEditorProp'],
+    requires : ['sitools.admin.fileEditor.FileEditorProp'],
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_ADMINISTRATOR_URL');
@@ -130,7 +130,7 @@ Ext.define('sitools.admin.fileEditor.ftlEditorCrud', {
         var from = l - 3;
         var ftlProp;
         if (rec.data.id.substring(from, l) == "txt") {
-            ftlProp = new sitools.admin.fileEditor.fileEditorProp({
+            ftlProp = new sitools.admin.fileEditor.FileEditorProp({
                 url : this.url + '/ftl/' + rec.data.id,
                 fileName : rec.data.id,
                 sourceEdit : false,
@@ -140,7 +140,7 @@ Ext.define('sitools.admin.fileEditor.ftlEditorCrud', {
             });
             ftlProp.show();
         } else {
-            ftlProp = new sitools.admin.fileEditor.fileEditorProp({
+            ftlProp = new sitools.admin.fileEditor.FileEditorProp({
                 url : this.url + '/ftl/' + rec.data.id,
                 fileName : rec.data.id,
                 sourceEdit : true,
