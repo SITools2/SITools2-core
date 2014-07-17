@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.portal');
 
-Ext.define('sitools.admin.portal.rssFeedPortalCrud', {
+Ext.define('sitools.admin.portal.RssFeedPortalCrud', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.s-rssFeedPortal',
     border : false,
@@ -161,7 +161,7 @@ Ext.define('sitools.admin.portal.rssFeedPortalCrud', {
 
         this.loadRss();
 
-        sitools.admin.portal.rssFeedPortalCrud.superclass.initComponent.call(this);
+        sitools.admin.portal.RssFeedPortalCrud.superclass.initComponent.call(this);
 
     },
     loadRss : function () {
