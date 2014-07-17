@@ -21,7 +21,7 @@
 Ext.namespace('sitools.admin.datasets');
 
 /**
- * A simple panel with an {@link sitools.admin.rssFeed.rssFeedCrud} component
+ * A simple panel with an {@link sitools.admin.rssFeed.RssFeedCrud} component
  * @class sitools.admin.datasets.rssFeedDatasets
  * @extends Ext.Panel
  */
@@ -32,7 +32,7 @@ Ext.define('sitools.admin.datasets.rssFeedDataset', {
     id : ID.BOX.RSSPROJECT,
     layout : 'fit',
     
-    extend : 'sitools.admin.rssFeed.rssFeedCrud',
+    extend : 'sitools.admin.rssFeed.RssFeedCrud',
 
     initComponent : function () {
         Ext.apply(this, {

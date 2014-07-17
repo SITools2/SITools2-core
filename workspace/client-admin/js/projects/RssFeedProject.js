@@ -27,7 +27,7 @@ Ext.define('sitools.admin.projects.rssFeedProject', {
     id : ID.BOX.RSSPROJECT,
     layout : 'fit',
     
-    extend : 'sitools.admin.rssFeed.rssFeedCrud',
+    extend : 'sitools.admin.rssFeed.RssFeedCrud',
 
     constructor : function () {
         Ext.apply(this, {

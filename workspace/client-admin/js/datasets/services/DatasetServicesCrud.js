@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.datasets.services');
 
 /**
  * A panel to managed Dataset resources.
- * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrud
+ * @requires sitools.admin.resourcesPlugins.ResourcesPluginsCrud
  * @class sitools.admin.datasets.services.DatasetServicesCrud 
  * @extends Ext.grid.GridPanel
  */

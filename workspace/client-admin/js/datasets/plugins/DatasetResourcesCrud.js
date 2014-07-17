@@ -24,7 +24,7 @@ Ext.namespace('sitools.admin.datasets.plugins');
 
 /**
  * A panel to managed Dataset resources.
- * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrud
+ * @requires sitools.admin.resourcesPlugins.ResourcesPluginsCrud
  * @class sitools.admin.datasets.plugins.resourcesCrud
  * @extends Ext.Panel
  */
@@ -35,10 +35,10 @@ Ext.define('sitools.admin.datasets.plugins.datasetResourcesCrud', {
     height : ADMIN_PANEL_HEIGHT,    
     layout : 'fit',
     
-    requires : ['sitools.admin.resourcesPlugins.resourcesPluginsCrud'],
+    requires : ['sitools.admin.resourcesPlugins.ResourcesPluginsCrud'],
 
     initComponent : function () {
-        var resourcePlugindataset = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsCrud", {
+        var resourcePlugindataset = Ext.create("sitools.admin.resourcesPlugins.ResourcesPluginsCrud", {
             urlParents : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL'),
             resourcesUrlPart : loadUrl.get('APP_RESOURCES_URL'),
             urlResources : loadUrl.get('APP_URL') + loadUrl.get('APP_PLUGINS_RESOURCES_URL') + '/classes',

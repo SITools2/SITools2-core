@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.applications.plugins');
 /**
  * @class sitools.admin.applications.plugins.ApplicationResourcesCrud
  * @extends Ext.Panel
- * @requires sitools.admin.resourcesPlugins.resourcesPluginsCrud
+ * @requires sitools.admin.resourcesPlugins.ResourcesPluginsCrud
  */
 Ext.define('sitools.admin.applications.plugins.ApplicationResourcesCrud', { 
-    extend : 'sitools.admin.resourcesPlugins.resourcesPluginsCrud', 
+    extend : 'sitools.admin.resourcesPlugins.ResourcesPluginsCrud', 
     alias : 'widget.s-application_resources',
     border : false,
     height : ADMIN_PANEL_HEIGHT,    

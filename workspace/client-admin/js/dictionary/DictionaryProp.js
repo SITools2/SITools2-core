@@ -34,7 +34,7 @@ Ext.define('sitools.admin.dictionary.DictionaryProp', {
         utils : 'sitools.admin.utils.utils'
     },
     
-    requires : ['sitools.admin.dictionary.gridPanel'],
+    requires : ['sitools.admin.dictionary.GridPanel'],
 
     initComponent : function () {
         this.conceptTemplatesUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_DICTIONARIES_TEMPLATES_URL');
@@ -406,7 +406,7 @@ Ext.define('sitools.admin.dictionary.DictionaryProp', {
     
     
     createConceptGrid : function (template) {
-        var gridConceptsSelect = Ext.create('sitools.admin.dictionary.gridPanel', {
+        var gridConceptsSelect = Ext.create('sitools.admin.dictionary.GridPanel', {
 			template : template,
 			selModel : Ext.create('Ext.selection.RowModel', {
 				mode : 'SINGLE'

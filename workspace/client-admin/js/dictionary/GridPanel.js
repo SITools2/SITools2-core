@@ -26,10 +26,10 @@ Ext.namespace('sitools.admin.dictionary');
  *            true if the grid is editable, false otherwise
  * @param url
  *            the url of the store
- * @class sitools.admin.dictionary.gridPanel
+ * @class sitools.admin.dictionary.GridPanel
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.dictionary.gridPanel', {
+Ext.define('sitools.admin.dictionary.GridPanel', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.dictionaryGridPanel',
     template : null,
@@ -46,7 +46,7 @@ Ext.define('sitools.admin.dictionary.gridPanel', {
         
         this.plugins = [cellEditing];
         
-        sitools.admin.dictionary.gridPanel.superclass.initComponent.call(this);
+        sitools.admin.dictionary.GridPanel.superclass.initComponent.call(this);
     },
     
     getStoreConcepts : function (template, url) {

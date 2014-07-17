@@ -46,10 +46,10 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.filtersPlugins.filtersPluginsSingle',
+    requires : ['sitools.admin.filtersPlugins.FiltersPluginsSingle',
                 'sitools.admin.storages.StoragesProp',
                 'sitools.admin.applications.ApplicationsRole',
-                'sitools.admin.storages.plugins.storageCopyProp'],
+                'sitools.admin.storages.plugins.StorageCopyProp'],
 
     initComponent : function () {
         
@@ -277,7 +277,7 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
     },
 
     /**
-     * Open a {sitools.admin.filtersPlugins.filtersPluginsSingle} filter plugin panel to add a filter plugin to the selected storage
+     * Open a {sitools.admin.filtersPlugins.FiltersPluginsSingle} filter plugin panel to add a filter plugin to the selected storage
      */
     onDefineFilter : function (item, e) {
         var rec = this.getLastSelectedRecord();
@@ -302,7 +302,7 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
                 }
                 var filterPlugin = data.filterPlugin;
 
-                var up = Ext.create("sitools.admin.filtersPlugins.filtersPluginsSingle", {
+                var up = Ext.create("sitools.admin.filtersPlugins.FiltersPluginsSingle", {
                     action : action,
                     parentPanel : this,
                     urlFilters : this.urlFilters,
@@ -442,7 +442,7 @@ Ext.define('sitools.admin.storages.StoragesCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.storages.plugins.storageCopyProp", {
+        var up = Ext.create("sitools.admin.storages.plugins.StorageCopyProp", {
             urlDirectories : this.url,
             idSrc : rec.data.id, 
             store : this.getStore()

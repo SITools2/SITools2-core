@@ -297,7 +297,7 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         this.dictionaryId = rec.data.id;
         var templateConcept = rec.data.conceptTemplate;
         
-        this.gridDictionaryConcept = Ext.create('sitools.admin.dictionary.gridPanel', {
+        this.gridDictionaryConcept = Ext.create('sitools.admin.dictionary.GridPanel', {
             template : templateConcept,
             editable : false,
             url : this.urlDictionaries + "/" + this.dictionaryId,
