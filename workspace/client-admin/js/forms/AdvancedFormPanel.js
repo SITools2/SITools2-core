@@ -37,7 +37,7 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
     layout : "absolute",
     autoScroll : true, 
     enableDragDrop : true,
-    requires : ['sitools.admin.forms.componentProp'],
+    requires : ['sitools.admin.forms.ComponentProp'],
     
     initComponent : function (config) {
 
@@ -128,7 +128,7 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
 				// Reference the record (single selection) for readability
 				var rec = ddSource.dragData.records[0];
 				
-		        var ComponentWin = Ext.create("sitools.admin.forms.componentProp", {
+		        var ComponentWin = Ext.create("sitools.admin.forms.ComponentProp", {
 		            urlAdmin : rec.data.jsonDefinitionAdmin,
 		            datasetColumnModel : datasetColumnModel,
 		            ctype : rec.data.type,
@@ -209,7 +209,7 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
                         if (!rec) {
                             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
                         }
-                        var propComponentPanel = Ext.create("sitools.admin.forms.componentProp", {
+                        var propComponentPanel = Ext.create("sitools.admin.forms.ComponentProp", {
                             datasetColumnModel : this.displayPanel.datasetColumnModel,
                             action : 'modify',
                             urlFormulaire : this.displayPanel.urlFormulaire,

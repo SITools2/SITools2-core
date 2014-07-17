@@ -29,10 +29,10 @@ Ext.namespace('sitools.admin.forms');
  * @cfg {string} collectionId the collectionId 
  * @cfg {Ext.data.Record} record The record to edit.
  * @cfg {} xyOnCreate An object containing xy position to create the new component.
- * @class sitools.admin.forms.componentProp
+ * @class sitools.admin.forms.ComponentProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.componentProp', { 
+Ext.define('sitools.admin.forms.ComponentProp', { 
     extend : 'Ext.Window',
     modal : true,
     layout : 'fit',
@@ -120,12 +120,12 @@ Ext.define('sitools.admin.forms.componentProp', {
 
         this.items = [ this.componentProp ];
         
-        sitools.admin.forms.componentProp.superclass.initComponent.call(this);
+        sitools.admin.forms.ComponentProp.superclass.initComponent.call(this);
     },
     afterRender : function () {
         this.height = this.specificHeight;
         this.width = this.specificWidth;
-        sitools.admin.forms.componentProp.superclass.afterRender.call(this);
+        sitools.admin.forms.ComponentProp.superclass.afterRender.call(this);
     },
 
     onValidate : function () {
