@@ -23,7 +23,7 @@
   */
 Ext.namespace('sitools.admin.filters');
 
-Ext.define('sitools.admin.filters.filtersProp', { 
+Ext.define('sitools.admin.filters.FiltersProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 480,
@@ -344,7 +344,7 @@ Ext.define('sitools.admin.filters.filtersProp', {
         
         this.items = [ this.tabPanel ];
 
-        sitools.admin.filters.filtersProp.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     beforeTabChange : function (self, newTab, currentTab) {
@@ -396,7 +396,7 @@ Ext.define('sitools.admin.filters.filtersProp', {
 
     },
     afterRender : function () {
-        sitools.admin.filters.filtersProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
 
         if (this.action == "modify") {
 

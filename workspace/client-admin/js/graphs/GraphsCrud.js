@@ -20,14 +20,14 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.graphs');
 
-Ext.define('sitools.admin.graphs.graphsCrud', { 
+Ext.define('sitools.admin.graphs.GraphsCrud', { 
     extend : 'Ext.panel.Panel',
 	alias : 'widget.s-graphs',
     border : false,
     height : ADMIN_PANEL_HEIGHT,
     id : ID.BOX.GRAPHS,
     
-    requires : ['sitools.admin.graphs.graphsCrudTreePanel'],
+    requires : ['sitools.admin.graphs.GraphsCrudTreePanel'],
     
     initComponent : function () {
         this.urlProjects = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
@@ -110,7 +110,7 @@ Ext.define('sitools.admin.graphs.graphsCrud', {
         this.buttons = [ ];
         
         
-        sitools.admin.graphs.graphsCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
     },
 
@@ -121,7 +121,7 @@ Ext.define('sitools.admin.graphs.graphsCrud', {
 
         this.removeAll();
 
-        this.tree = Ext.create("sitools.admin.graphs.graphsCrudTreePanel", {
+        this.tree = Ext.create("sitools.admin.graphs.GraphsCrudTreePanel", {
             name : projectName,
             projectId : projectId,
             graphsCrud : this

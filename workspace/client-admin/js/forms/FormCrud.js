@@ -20,16 +20,16 @@
  showHelp, loadUrl*/
 /*
  * @include "../id.js"
- * @include "formProp.js"
+ * @include "FormProp.js"
  */
 Ext.namespace('sitools.admin.forms');
 
 /**
  * A GridPanel to display all forms. 
- * @class sitools.admin.forms.formCrud
+ * @class sitools.admin.forms.FormCrud
  * @extends Ext.grid.GridPanel
  */
-Ext.define('sitools.admin.forms.formCrud', { 
+Ext.define('sitools.admin.forms.FormCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-forms',
     border : false,
@@ -42,7 +42,7 @@ Ext.define('sitools.admin.forms.formCrud', {
     },
     id : ID.BOX.FORMS,
     
-    requires : ['sitools.admin.forms.formProp'],
+    requires : ['sitools.admin.forms.FormProp'],
 
     initComponent : function () {
         this.baseUrlFormulaires = loadUrl.get('APP_URL') + loadUrl.get('APP_DATASETS_URL');
@@ -179,7 +179,7 @@ Ext.define('sitools.admin.forms.formCrud', {
             mode : "SINGLE"
         });
         
-        sitools.admin.forms.formCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
     },
     loadFormulaires : function (datasetId) {
@@ -193,7 +193,7 @@ Ext.define('sitools.admin.forms.formCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var up = Ext.create("sitools.admin.forms.formProp", {
+        var up = Ext.create("sitools.admin.forms.FormProp", {
             urlFormulaire : this.urlFormulaires,
             action : 'create',
             store : this.getStore(),
@@ -208,7 +208,7 @@ Ext.define('sitools.admin.forms.formCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
-        var up = Ext.create("sitools.admin.forms.formProp", {
+        var up = Ext.create("sitools.admin.forms.FormProp", {
             urlFormulaire : this.baseUrlFormulaires + '/' + this.datasetId + '/forms/' + rec.get("id"),
             action : 'modify',
             store : this.getStore(),

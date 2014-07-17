@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.graphs');
 
-Ext.define('sitools.admin.graphs.graphsCrudTreePanel', { 
+Ext.define('sitools.admin.graphs.GraphsCrudTreePanel', { 
     extend : 'Ext.tree.Panel',
     rootVisible : true,
     enableDD: true,           
@@ -30,9 +30,9 @@ Ext.define('sitools.admin.graphs.graphsCrudTreePanel', {
     bodyBorder : false,
     idGraph : null,
     
-    requires : ["sitools.admin.graphs.graphsDatasetWin",
-                "sitools.admin.graphs.graphsNodeWin",
-                "sitools.admin.graphs.graphsDatasetWin",
+    requires : ["sitools.admin.graphs.GraphsDatasetWin",
+                "sitools.admin.graphs.GraphsNodeWin",
+                "sitools.admin.graphs.GraphsDatasetWin",
                 "sitools.admin.graphs.graphNodeModel"],    
     
     initComponent : function () {
@@ -105,7 +105,7 @@ Ext.define('sitools.admin.graphs.graphsCrudTreePanel', {
         };
         
         
-        sitools.admin.graphs.graphsCrudTreePanel.superclass.initComponent.call(this);
+        sitools.admin.graphs.GraphsCrudTreePanel.superclass.initComponent.call(this);
     },
 
     loadStore : function () {
@@ -160,7 +160,7 @@ Ext.define('sitools.admin.graphs.graphsCrudTreePanel', {
         case 'add-dataset':
             node = this.getSelectionModel().getSelection()[0];
 
-            up = Ext.create("sitools.admin.graphs.graphsDatasetWin", {
+            up = Ext.create("sitools.admin.graphs.GraphsDatasetWin", {
                 node : node,
                 url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
                 mode : 'create'
@@ -172,7 +172,7 @@ Ext.define('sitools.admin.graphs.graphsCrudTreePanel', {
         case 'create-node':
             node = this.getSelectionModel().getSelection()[0];
 
-            up = Ext.create("sitools.admin.graphs.graphsNodeWin", {
+            up = Ext.create("sitools.admin.graphs.GraphsNodeWin", {
                 node : node,
                 mode : 'create'
             });
@@ -183,13 +183,13 @@ Ext.define('sitools.admin.graphs.graphsCrudTreePanel', {
             node = this.getSelectionModel().getSelection()[0];
             
             if (node.isLeaf()) {
-                up = Ext.create("sitools.admin.graphs.graphsDatasetWin", {
+                up = Ext.create("sitools.admin.graphs.GraphsDatasetWin", {
                     node : node,
                     url : loadUrl.get('APP_URL') + '/projects/' + this.projectId + '?media=json',
                     mode : 'edit'
                 });
             } else {
-                up = Ext.create("sitools.admin.graphs.graphsNodeWin", {
+                up = Ext.create("sitools.admin.graphs.GraphsNodeWin", {
                     node : node,
                     mode : 'edit'
                 });

@@ -20,7 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.component.projects');
 
-Ext.define('sitools.admin.graphs.graphsNodeWin', { 
+Ext.define('sitools.admin.graphs.GraphsNodeWin', { 
     extend : 'Ext.Window',
     width : 350,
     modal : true,
@@ -73,16 +73,16 @@ Ext.define('sitools.admin.graphs.graphsNodeWin', {
 
         this.items = [ this.formPanel ];
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.graphs.graphsNodeWin.superclass.initComponent.call(this);
+        sitools.admin.graphs.GraphsNodeWin.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.graphs.graphsNodeWin.superclass.onRender.apply(this, arguments);
+        sitools.admin.graphs.GraphsNodeWin.superclass.onRender.apply(this, arguments);
     },
 
     afterRender : function () {
 
-        sitools.admin.graphs.graphsNodeWin.superclass.afterRender.apply(this, arguments);
+        sitools.admin.graphs.GraphsNodeWin.superclass.afterRender.apply(this, arguments);
 
         if (this.mode == 'edit') {
             var node = this.node;

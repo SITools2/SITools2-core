@@ -29,10 +29,10 @@ Ext.namespace('sitools.admin.forms');
 
 /**
  * 
- * @class sitools.admin.forms.formProp
+ * @class sitools.admin.forms.FormProp
  * @extends Ext.Window
  */
-Ext.define('sitools.admin.forms.formProp', { 
+Ext.define('sitools.admin.forms.FormProp', { 
     extend : 'Ext.Window',
     width : 700,
     height : 580,
@@ -46,12 +46,12 @@ Ext.define('sitools.admin.forms.formProp', {
     layout : 'fit',
     
     requires : ['sitools.admin.forms.ComponentsDisplayPanel',
-                'sitools.admin.forms.componentsListPanel',
-                'sitools.admin.forms.absoluteLayoutProp',
-                'sitools.admin.forms.setupAdvancedFormPanel',
-                'sitools.admin.forms.componentsAdminDef.multiParam.abstract',
-                'sitools.admin.forms.componentsAdminDef.oneParam.abstract',
-                'sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit',
+                'sitools.admin.forms.ComponentsListPanel',
+                'sitools.admin.forms.AbsoluteLayoutProp',
+                'sitools.admin.forms.SetupAdvancedFormPanel',
+                'sitools.admin.forms.componentsAdminDef.multiParam.Abstract',
+                'sitools.admin.forms.componentsAdminDef.oneParam.Abstract',
+                'sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit',
                 'sitools.admin.forms.componentsAdminDef.ComponentFactory'],
     
     
@@ -341,11 +341,11 @@ Ext.define('sitools.admin.forms.formProp', {
                 this.close();
             }
         } ];
-        sitools.admin.forms.formProp.superclass.initComponent.call(this);
+		this.callParent(arguments);
     },
 
     afterRender : function () {
-        sitools.admin.forms.formProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         
         if (this.urlFormulaire) {
             // Si l'objet est en modification, on charge l'objet en question

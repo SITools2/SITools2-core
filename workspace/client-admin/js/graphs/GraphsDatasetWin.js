@@ -20,7 +20,7 @@
  showHelp*/
 Ext.namespace('sitools.admin.graphs');
 
-Ext.define('sitools.admin.graphs.graphsDatasetWin', { 
+Ext.define('sitools.admin.graphs.GraphsDatasetWin', { 
     extend : 'Ext.Window',
     width : 350,
     modal : true,
@@ -111,11 +111,11 @@ Ext.define('sitools.admin.graphs.graphsDatasetWin', {
             }
         } ];
         // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.graphs.graphsDatasetWin.superclass.initComponent.call(this);
+        sitools.admin.graphs.GraphsDatasetWin.superclass.initComponent.call(this);
     },
 
     onRender : function () {
-        sitools.admin.graphs.graphsDatasetWin.superclass.onRender.apply(this, arguments);
+        sitools.admin.graphs.GraphsDatasetWin.superclass.onRender.apply(this, arguments);
         this.store.load({
             scope : this,
             params : {

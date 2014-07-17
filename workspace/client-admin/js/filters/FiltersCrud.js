@@ -20,7 +20,7 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.admin.filters');
 
-Ext.define('sitools.admin.filters.filtersCrud', { 
+Ext.define('sitools.admin.filters.FiltersCrud', { 
     extend : 'Ext.grid.Panel',
 	alias : 'widget.s-filters',
     border : false,
@@ -37,7 +37,7 @@ Ext.define('sitools.admin.filters.filtersCrud', {
         utils : "sitools.admin.utils.utils"
     },
     
-    requires : ['sitools.admin.filters.filtersProp'],
+    requires : ['sitools.admin.filters.FiltersProp'],
     viewConfig : {
         autoFill : true, 
 //		getRowClass : function (row, index) { 
@@ -265,7 +265,7 @@ Ext.define('sitools.admin.filters.filtersCrud', {
             itemdblclick : this.onModify
         };
         
-        sitools.admin.filters.filtersCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
     },
 
