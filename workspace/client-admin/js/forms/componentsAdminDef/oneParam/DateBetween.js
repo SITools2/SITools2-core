@@ -23,10 +23,10 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 /**
  * 
  * @class sitools.admin.forms.componentsAdminDef.oneParam.DateBetween
- * @extends sitools.admin.forms.componentsAdminDef.oneParam.abstract
+ * @extends sitools.admin.forms.componentsAdminDef.oneParam.Abstract
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.DateBetween', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstract', 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract', 
     height : 330,
     
     require : ['sitools.public.widget.item.DateFieldWithToday'],

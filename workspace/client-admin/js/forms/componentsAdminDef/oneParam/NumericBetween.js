@@ -21,7 +21,7 @@
 Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NumericBetween', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit', 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit', 
     height : ADMIN_PANEL_HEIGHT,
 //    id : "sitools.component.forms.definitionId",
     

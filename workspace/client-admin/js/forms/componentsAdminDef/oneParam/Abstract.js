@@ -25,10 +25,10 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
  * An abstract form to build one Param components
- * @class sitools.admin.forms.componentsAdminDef.oneParam.abstract
+ * @class sitools.admin.forms.componentsAdminDef.oneParam.Abstract
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.abstract', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.Abstract', { 
     extend : 'Ext.form.Panel',
     autoScroll : true, 
     context : null, 
@@ -91,10 +91,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.abstract', {
 		}
         this.padding = 10;
 
-        sitools.admin.forms.componentsAdminDef.oneParam.abstract.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.Abstract.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.abstract.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.Abstract.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.labelParam1.setValue(this.selectedRecord.data.label);
             this.css.setValue(this.selectedRecord.data.css);

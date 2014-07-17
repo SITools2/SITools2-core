@@ -29,14 +29,14 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
  * Another Abstract formPanel to define one param components with unit. 
- * @class sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit
- * @extends sitools.admin.forms.componentsAdminDef.oneParam.abstract
+ * @class sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit
+ * @extends sitools.admin.forms.componentsAdminDef.oneParam.Abstract
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstract',
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract',
     
     initComponent : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit.superclass.initComponent.call(this);
         this.storeDimension = Ext.create("Ext.data.JsonStore", {
             proxy : {
                 type : 'ajax',

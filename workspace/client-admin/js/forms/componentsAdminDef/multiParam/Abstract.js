@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.multiParam');
 
 /**
  * An abstract form to define MultiParam Components
- * @class sitools.admin.forms.componentsAdminDef.multiParam.abstract
+ * @class sitools.admin.forms.componentsAdminDef.multiParam.Abstract
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.abstract', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.Abstract', { 
     extend : 'Ext.form.Panel',
     autoScroll : true, 
     border : false,
@@ -151,10 +151,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.abstract', {
 
         this.padding = 10;
 
-        sitools.admin.forms.componentsAdminDef.multiParam.abstract.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.multiParam.Abstract.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.multiParam.abstract.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.multiParam.Abstract.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.labelParam1.setValue(this.selectedRecord.data.label);
             this.css.setValue(this.selectedRecord.data.css);

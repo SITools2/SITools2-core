@@ -21,7 +21,7 @@
 Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.TextField', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.withoutValues', 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues', 
     
     initComponent : function () {
         sitools.admin.forms.componentsAdminDef.oneParam.TextField.superclass.initComponent.call(this);

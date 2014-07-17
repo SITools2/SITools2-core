@@ -22,17 +22,17 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
  * @requires sitools.admin.forms.winParent
- * @class sitools.admin.forms.componentsAdminDef.oneParam.withValues
- * @extends sitools.admin.forms.componentsAdminDef.oneParam.abstract
+ * @class sitools.admin.forms.componentsAdminDef.oneParam.WithValues
+ * @extends sitools.admin.forms.componentsAdminDef.oneParam.Abstract
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.withValues', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstract',
-    alias : 'widget.sitools.admin.forms.componentsAdminDef.oneParam.withValues',
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract',
+    alias : 'widget.sitools.admin.forms.componentsAdminDef.oneParam.WithValues',
     requires : ['sitools.admin.forms.winParent'],
 //    id : "sitools.component.forms.definitionId",
     height : 450,
     initComponent : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.withValues.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.WithValues.superclass.initComponent.call(this);
         var urlFormulaire = this.winPropComponent.urlFormulaire;
         var formComponentsStore = this.formComponentsStore;
         
@@ -184,7 +184,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.withValues', {
         this.gridValues.getStore().remove(recs);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.withValues.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.WithValues.superclass.afterRender.apply(this, arguments);
         
         if (this.action == 'modify') {
             // gridEl = Ext.get ('componentGridValues');

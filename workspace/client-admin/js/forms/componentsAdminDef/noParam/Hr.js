@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.noParam');
 
 /**
  * A basic form panel to define an horizontal Line
- * @class sitools.admin.forms.componentsAdminDef.noParam.hr
+ * @class sitools.admin.forms.componentsAdminDef.noParam.Hr
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.noParam.hr', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.noParam.Hr', { 
     extend : 'Ext.form.Panel',
 	height : 210,
 	border : false,
@@ -57,10 +57,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.noParam.hr', {
         if (this.action == "create") {
 			this.items.push(this.componentDefaultHeight, this.componentDefaultWidth); 
 		}
-        sitools.admin.forms.componentsAdminDef.noParam.hr.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.noParam.Hr.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.noParam.hr.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.noParam.Hr.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.css.setValue(this.selectedRecord.data.css);
         }

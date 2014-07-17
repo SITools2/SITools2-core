@@ -29,7 +29,7 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
  * @extends 
  */
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperties', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.withoutValues',
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues',
     height : 400,
 //    id : "sitools.component.forms.definitionId",
     

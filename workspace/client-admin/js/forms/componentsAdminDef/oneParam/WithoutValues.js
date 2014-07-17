@@ -22,17 +22,17 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 /**
  * A Form Panel to display Administration for for form Components without Values. 
- * @class sitools.admin.forms.componentsAdminDef.oneParam.withoutValues
- * @extends sitools.admin.forms.componentsAdminDef.oneParam.abstract
+ * @class sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues
+ * @extends sitools.admin.forms.componentsAdminDef.oneParam.Abstract
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.withoutValues', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstract', 
+Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.Abstract', 
     height : 250,
 //    id : "sitools.component.forms.definitionId",
     initComponent : function () {
         this.winPropComponent.specificHeight = 350;
         this.winPropComponent.specificWidth = 400;
-        sitools.admin.forms.componentsAdminDef.oneParam.withoutValues.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues.superclass.initComponent.call(this);
         this.componentDefaultValue = new Ext.form.TextField({
             fieldLabel : i18n.get('label.defaultValue'),
             name : 'componentDefaultValue',
@@ -42,7 +42,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.withoutValues', {
 
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.oneParam.withoutValues.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.oneParam.WithoutValues.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             if (!Ext.isEmpty(this.selectedRecord.data.defaultValues)) {
                 this.componentDefaultValue.setValue(this.selectedRecord.data.defaultValues[0]);

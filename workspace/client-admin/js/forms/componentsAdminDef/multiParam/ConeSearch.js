@@ -25,11 +25,11 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.multiParam');
 
 /**
  * 
- * @class sitools.admin.forms.componentsAdminDef.multiParam.coneSearch
- * @extends sitools.admin.forms.componentsAdminDef.multiParam.abstract
+ * @class sitools.admin.forms.componentsAdminDef.multiParam.ConeSearch
+ * @extends sitools.admin.forms.componentsAdminDef.multiParam.Abstract
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.coneSearch', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.multiParam.abstract',
+Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.ConeSearch', { 
+    extend : 'sitools.admin.forms.componentsAdminDef.multiParam.Abstract',
     height : 550,
     columnUnitName : "°", 
     //TODO améliorer ça pour que ce ne soit plus statique.
@@ -39,7 +39,7 @@ Ext.define('sitools.admin.forms.componentsAdminDef.multiParam.coneSearch', {
         this.winPropComponent.specificHeight = this.height;
         this.winPropComponent.specificWidth = 500;
         this.labelWidth = 150;
-        sitools.admin.forms.componentsAdminDef.multiParam.coneSearch.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.multiParam.ConeSearch.superclass.initComponent.call(this);
         /*
          * Build all the Columns mapping for the configuration, 
          * this object needs three columns

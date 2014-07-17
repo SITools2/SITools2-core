@@ -21,7 +21,7 @@
 Ext.namespace('sitools.admin.forms.componentsAdminDef.oneParam');
 
 Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NumberFieldAdmin', { 
-    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.abstractWithUnit', 
+    extend : 'sitools.admin.forms.componentsAdminDef.oneParam.AbstractWithUnit', 
     height : 250,
 //    id : "sitools.component.forms.definitionId",
     

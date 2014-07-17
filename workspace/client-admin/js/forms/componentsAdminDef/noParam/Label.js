@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.noParam');
 
 /**
  * A basic formPanel to define a label Component
- * @class sitools.admin.forms.componentsAdminDef.noParam.label
+ * @class sitools.admin.forms.componentsAdminDef.noParam.Label
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.noParam.label', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.noParam.Label', { 
     extend : 'Ext.form.Panel',
     height : 250,
     border : false,
@@ -62,10 +62,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.noParam.label', {
         if (this.action == "create") {
 			this.items.push(this.componentDefaultHeight, this.componentDefaultWidth); 
 		}
-        sitools.admin.forms.componentsAdminDef.noParam.label.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.noParam.Label.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.noParam.label.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.noParam.Label.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.css.setValue(this.selectedRecord.data.css);
         }

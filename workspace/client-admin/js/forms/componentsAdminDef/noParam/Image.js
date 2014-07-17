@@ -22,10 +22,10 @@ Ext.namespace('sitools.admin.forms.componentsAdminDef.noParam');
 
 /**
  * A basic form panel to define an image Component
- * @class sitools.admin.forms.componentsAdminDef.noParam.image
+ * @class sitools.admin.forms.componentsAdminDef.noParam.Image
  * @extends Ext.form.FormPanel
  */
-Ext.define('sitools.admin.forms.componentsAdminDef.noParam.image', { 
+Ext.define('sitools.admin.forms.componentsAdminDef.noParam.Image', { 
     extend : 'Ext.form.Panel',
     height : 210,
     border : false,
@@ -61,10 +61,10 @@ Ext.define('sitools.admin.forms.componentsAdminDef.noParam.image', {
         if (this.action == "create") {
 			this.items.push(this.componentDefaultHeight, this.componentDefaultWidth); 
 		}
-        sitools.admin.forms.componentsAdminDef.noParam.image.superclass.initComponent.call(this);
+        sitools.admin.forms.componentsAdminDef.noParam.Image.superclass.initComponent.call(this);
     },
     afterRender : function () {
-        sitools.admin.forms.componentsAdminDef.noParam.image.superclass.afterRender.apply(this, arguments);
+        sitools.admin.forms.componentsAdminDef.noParam.Image.superclass.afterRender.apply(this, arguments);
         if (this.action == 'modify') {
             this.css.setValue(this.selectedRecord.data.css);
             this.urlImage.setValue(this.selectedRecord.data.label);
