@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-Ext.define('sitools.admin.quickStart.QsSecurity', {
+Ext.define('sitools.admin.quickstart.QsSecurity', {
     extend : 'Ext.panel.Panel',
     forceLayout : true, 
     layout : {
@@ -205,7 +205,7 @@ Ext.define('sitools.admin.quickStart.QsSecurity', {
         
         this.items = [title, desc, imgUser, imgShare, imgGroup, imgRole];
         
-        sitools.admin.quickStart.QsSecurity.superclass.initComponent.call(this);
+        sitools.admin.quickstart.QsSecurity.superclass.initComponent.call(this);
     }    
 });
 

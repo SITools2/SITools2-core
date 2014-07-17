@@ -234,7 +234,7 @@ var clientAdmin = {
                 handler : function () {
                     mainPanel.removeAll();
                     
-                    var quickStartPanel = Ext.create('sitools.admin.quickStart.Qs', {
+                    var quickStartPanel = Ext.create('sitools.admin.quickstart.Qs', {
                         id : ID.PANEL.QUICKSTART,
                         width : "100%",
                         flex : 1
@@ -417,7 +417,7 @@ var clientAdmin = {
         var mainPanelItems = [];
         
         if (Ext.util.Cookies.get('showQuickStart') == "true") {
-            var quickStartPanel = Ext.create('sitools.admin.quickStart.Qs', {
+            var quickStartPanel = Ext.create('sitools.admin.quickstart.Qs', {
                 id : ID.PANEL.QUICKSTART,
                 border : false,
                 bodyBorder : false,

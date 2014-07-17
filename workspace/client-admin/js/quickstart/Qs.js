@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-Ext.define('sitools.admin.quickStart.Qs', { 
+Ext.define('sitools.admin.quickstart.Qs', { 
     extend : 'Ext.panel.Panel',
     layout : 'border',
     bodyCls : 'quickStart',
@@ -180,7 +180,7 @@ Ext.define('sitools.admin.quickStart.Qs', {
                 
         };
         
-        this.currentPanel = new sitools.admin.quickStart.QsStart({
+        this.currentPanel = new sitools.admin.quickstart.QsStart({
             qs : this
         });
         
@@ -203,18 +203,18 @@ Ext.define('sitools.admin.quickStart.Qs', {
         
         this.items = [this.welcomePanel/*, this.stepsPanel*/];
         
-        sitools.admin.quickStart.Qs.superclass.initComponent.call(this);
+        sitools.admin.quickstart.Qs.superclass.initComponent.call(this);
     },
     
     afterRender : function () {
-        sitools.admin.quickStart.Qs.superclass.afterRender.apply(this, arguments);
+        sitools.admin.quickstart.Qs.superclass.afterRender.apply(this, arguments);
     },
     
     manageSteps : function (btn, pressed) {
         if (pressed) {
 //            this.welcomePanel.autoLoad = "/sitools/client-admin/res/html/quickStart/qs-" + btn.value +".html";
 //            this.welcomePanel.doAutoLoad();
-            var xtype = "sitools.admin.quickStart." + btn.value;
+            var xtype = "sitools.admin.quickstart." + btn.value;
             var step = eval(xtype);
             
             this.currentPanel =  new step({

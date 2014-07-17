@@ -19,7 +19,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure*/
 Ext.namespace('sitools.admin.quickStart');
 
-Ext.define('sitools.admin.quickStart.QsProject', { 
+Ext.define('sitools.admin.quickstart.QsProject', { 
     extend : 'Ext.panel.Panel',
     forceLayout : true, 
     layout : {
@@ -129,6 +129,6 @@ Ext.define('sitools.admin.quickStart.QsProject', {
         
         this.items = [title, desc, img];
         
-        sitools.admin.quickStart.QsProject.superclass.initComponent.call(this);
+        sitools.admin.quickstart.QsProject.superclass.initComponent.call(this);
     }
 });
