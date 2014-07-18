@@ -13,14 +13,7 @@
   <y>0</y>
   <icon>projectDescriptionModule</icon>
   <specificType>projectDescription</specificType>
-  <xtype>sitools.user.modules.projectDescription</xtype>
-  <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/projectDescription/projectDescription.js</url>
-      </url>
-    </js>
-    <css/>
-  </dependencies>
+  <xtype>sitools.user.controller.modules.projectDescription.ProjectDescription</xtype>
+  <dependencies/>
   <priority>0</priority>
 </projectModule>

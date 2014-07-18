@@ -24,6 +24,6 @@ Ext.namespace('sitools.user.view.modules.projectDescription');
  * @class sitools.user.modules.projectDescription
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.view.modules.projectDescription.projectDescription', {
+Ext.define('sitools.user.view.modules.projectDescription.ProjectDescription', {
     extend : 'Ext.panel.Panel'
 });

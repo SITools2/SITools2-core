@@ -13,14 +13,7 @@
   <y>0</y>
   <icon>datasetExplorerModule</icon>
   <specificType>truc</specificType>
-  <xtype>sitools.user.modules.datasetExplorer</xtype>
-  <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/dataSetExplorer/dataSetExplorer.js</url>
-      </url>
-    </js>
-    <css/>
-  </dependencies>
+  <xtype>sitools.user.controller.modules.datasetExplorer.DatasetExplorer</xtype>
+  <dependencies/>
   <priority>0</priority>
 </projectModule>
