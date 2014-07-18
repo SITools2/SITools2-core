@@ -28,7 +28,7 @@ Ext.define('sitools.user.controller.modules.projectDescription.ProjectDescriptio
     extend : 'sitools.user.controller.modules.ModuleController',
     alias : 'sitools.user.modules.projectDescription',
     
-    views : ['modules.projectDescription.projectDescription'],
+    views : ['modules.projectDescription.ProjectDescription'],
     
     onLaunch : function () {
         var project = Ext.getStore('ProjectStore').getProject();
@@ -41,7 +41,7 @@ Ext.define('sitools.user.controller.modules.projectDescription.ProjectDescriptio
 //              }
                 var json = Ext.decode(response.responseText);
                 
-                var view = Ext.create('sitools.user.view.modules.projectDescription.projectDescription', {
+                var view = Ext.create('sitools.user.view.modules.projectDescription.ProjectDescription', {
                     html : Ext.util.Format.htmlDecode(json.project.htmlDescription), 
                     autoScroll : true
                 });
