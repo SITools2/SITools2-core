@@ -52,7 +52,7 @@ sitools.user.component.forms.mainContainer = function (config) {
     // New Form model with zones
     if (!Ext.isEmpty(this.formZones)){
         Ext.each(this.formZones, function(formParam) { 
-            var containerId = formParam.containerPanelId;
+            var containerId = formParam.id;
             if (Ext.isEmpty(panelIdObject[containerId])){
                 panelIdObject[containerId] = [];
             }

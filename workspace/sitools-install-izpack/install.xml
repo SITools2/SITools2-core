@@ -27,7 +27,7 @@
 	<jar src="lib/hsqldb.jar" />
 	<info>
 		<appname>Sitools2</appname>
-		<appversion>2.4</appversion>
+		<appversion>2.4.1</appversion>
 		<authors>
 			<author email="" name="CNES" />
 			<author email="" name="Akka Technologies" />
@@ -73,6 +73,7 @@
 		<res id="userInputLang.xml_fra" src="install_res/userInputLang.xml_fra" />
 		<res id="CustomLangpack.xml_eng" src="install_res/CustomLangpack_eng.xml" />
 		<res id="CustomLangpack.xml_fra" src="install_res/CustomLangpack_fra.xml" />
+<!-- 		<res id="HTMLInfoPanel.finishInstruction" src="install_res/finishInstruction.html" /> -->
 	</resources>
 
 	<conditions>
@@ -135,6 +136,7 @@
 		<panel classname="InstallPanel" />
 		<!-- Panel to create databases -->
 		<!--<panel classname="DatabasePanel" />-->
+		<!-- <panel classname="HTMLInfoPanel" id="finishInstruction"/> --> 
 		<panel classname="FinishPanel" />
 	</panels>
 	<variables>
@@ -264,6 +266,7 @@
 			<file override="true" src="$resPath/data/userstorage/int@1.xml"
 				targetdir="$INSTALL_PATH/data/userstorage" />
 			<fileset override="update" dir="res/data/storage" targetdir="$INSTALL_PATH/data/storage" />
+			<fileset override="update" dir="res/data/freemarker" targetdir="$INSTALL_PATH/data/freemarker" />
 			<parsable encoding="UTF-8"
 				targetfile="$INSTALL_PATH/data/userstorage/int@0.xml" type="xml" />
 			<parsable encoding="UTF-8"

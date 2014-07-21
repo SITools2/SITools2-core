@@ -34,6 +34,8 @@ Ext.define('sitools.user.modules.contentEditorModule', {
      */
     activeNode : null,
     
+    CHECK_TREE_DELAY : 10,
+    
     initComponent : function () {
         
         this.id = 'contentEditorID';
@@ -109,6 +111,12 @@ Ext.define('sitools.user.modules.contentEditorModule', {
         
         var textTooltip = Ext.String.format(i18n.get('label.runCopyInfo'), this.datastorageSrc, this.datastorageDest);
         
+        this.treeToolbar = new sitools.user.modules.cmsTreeToolbar({
+            allowDataPublish : this.allowDataPublish,
+            cms : this,
+            textTooltip : textTooltip
+        });
+        
         this.tree = new Ext.tree.TreePanel({
             id : 'treepanel',
             region : 'west',
@@ -120,17 +128,14 @@ Ext.define('sitools.user.modules.contentEditorModule', {
             collapsible : true,
             enableDD : true,
             title : i18n.get('label.sitePlan'),
-            tbar : new sitools.user.modules.cmsTreeToolbar({
-                allowDataPublish : this.allowDataPublish,
-                cms : this,
-                textTooltip : textTooltip
-            }),
+            tbar : this.treeToolbar,
             contextMenu: new sitools.user.modules.cmsContextMenu({
                 cms : this
             }),
             root : {
                 text : "root",
-                nodeType : 'async'
+                nodeType : 'async',
+                uuid : 'root'
             },
             loader : new Ext.tree.TreeLoader({
                 requestMethod : 'GET',
@@ -163,6 +168,10 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                     if (Ext.isString(attr.uiProvider)) {
                         attr.uiProvider = this.uiProviders[attr.uiProvider] || eval(attr.uiProvider);
                     }
+                    if (Ext.isEmpty(attr.uuid)) {
+                        attr.uuid = generateId();
+                        this.toReload = true;
+                    }
                     if (attr.nodeType) {
                         return new Ext.tree.TreePanel.nodeTypes[attr.nodeType](attr);
                     } else {
@@ -173,7 +182,7 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                 },
                 listeners : {
                     scope : this,
-                    load : function (node) {
+                    load : function (treeLoader, node, response) {
                         if (!Ext.isEmpty(this.activeNode)) {
                             if (!Ext.isEmpty(node)) {
                                 this.tree.selectPath(node.getPath());
@@ -182,31 +191,45 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                                 Ext.Msg.alert(i18n.get('label.warning'), i18n.get('msg.nodeundefined'));
                             }
                         }
+                        if (!Ext.isEmpty(this.tree.loader.toReload) && this.tree.loader.toReload) {
+                            this.createJsonTree();
+                        }
+                        this.lastModified = response.getResponseHeader("Last-Modified");
+                        this.checkTreeUpToDateTask.delay(this.CHECK_TREE_DELAY * 1000);
+                        this.treeToolbar.setTreeUpToDate(true, this.lastModified);                        
                     },
                     loadException : function (loader, node, response) {
-                        Ext.Msg.show({
-							title : i18n.get('label.warning'),
-							msg : i18n.get('label.noJsonFileFound'),
-							buttons : {
-			                    yes : i18n.get('label.yes'),
-			                    no : i18n.get('label.no'),
-			                    cancel : i18n.get('label.cancel')
-			                },
-							fn : function (btnId, text, opt) {
-								if (btnId === "yes") {
-									this.createEmptyJson(loader.url);
-								}
-							},
-							animEl : 'elId',
-							scope : this,
-							icon : Ext.MessageBox.QUESTION
-						});
+                        if (response.status === 404) {
+                            Ext.Msg.show({
+                                title : i18n.get('label.warning'),
+                                msg : i18n.get('label.noJsonFileFound'),
+                                buttons : {
+                                    yes : i18n.get('label.yes'),
+                                    no : i18n.get('label.no'),
+                                    cancel : i18n.get('label.cancel')
+                                },
+                                fn : function (btnId, text, opt) {
+                                    if (btnId === "yes") {
+                                        this.createEmptyJson(loader.url);
+                                    }
+                                },
+                                animEl : 'elId',
+                                scope : this,
+                                icon : Ext.MessageBox.QUESTION
+                            });
+                        } 
+                        else if (response.status === 403) {
+                            Ext.Msg.alert(i18n.get("warning.serverError"), i18n.get("label.forbiddenResource"));
+                        }                        
+                        else {
+                            Ext.Msg.alert(i18n.get("warning.serverError"), i18n.get("label.invalidResource"));
+                        }
                     }
                 }
             }),
             listeners : {
                 scope : this,
-                click : function (node) {
+                beforeclick : function (node){
                     var labelSaving = this.saveLabelInfo.getEl().dom;
                     if (labelSaving.isTextModified) {
                         Ext.Msg.show({
@@ -224,15 +247,17 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                                 } else {
                                     labelSaving.innerHTML = "<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "";
                                     labelSaving.isTextModified = false;
-                                    
+                                    this.tree.selectPath(node.getPath());
                                     this.treeAction(node);
                                 }
                             }
                         });
-                    } else {
-                        this.treeAction(node);
+                        return false;
                     }
-                    
+                    return true;
+                },
+                click : function (node) {
+                        this.treeAction(node);
                 },
                 contextmenu : function (node, e) {
                     this.tree.getSelectionModel().select(node, e, true);
@@ -254,7 +279,34 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                 }
             }
         });
+        
 
+        this.checkTreeUpToDateTask = new Ext.util.DelayedTask(function () {
+            if (Ext.isEmpty(this.id) || this.id != 'contentEditorID' || Ext.isEmpty(this.tree) || Ext.isEmpty(this.tree.loader)
+                    || Ext.isEmpty(this.tree.loader.url)) {
+                this.checkTreeUpToDateTask.cancel();
+                return;
+            }
+            Ext.Ajax.request({
+                url : this.tree.loader.url,
+                method : 'HEAD',
+                scope : this,
+                success : function (response, opts) {
+                    var lastMod = response.getResponseHeader("Last-Modified");
+                    if (lastMod !== this.lastModified) {
+                        this.treeToolbar.setTreeUpToDate(false, lastMod);
+                    } else {
+                        this.treeToolbar.setTreeUpToDate(true, lastMod);
+                    }
+                    this.checkTreeUpToDateTask.cancel();
+                    this.checkTreeUpToDateTask.delay(this.CHECK_TREE_DELAY * 1000);
+                },
+                failure : function () {
+                    this.checkTreeUpToDateTask.cancel();
+                }
+            });
+        }, this);
+        
         Ext.QuickTips.init();
         
         this.saveButton = new Ext.Button({
@@ -447,7 +499,7 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                             }
                         });
                     }
-                    if (contentType.contains("text")) {
+                    if (contentType.indexOf("text") > -1) {
                         
                         
                         var data = ret.responseText;
@@ -474,9 +526,11 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                 },
                 failure : function (ret) {
                     var data = ret.responseText;
-                    CKEDITOR.instances[this.idTextarea].setData(data);
-//                    this.findByType('textarea')[0].setValue(data);
-                    CKEDITOR.instances[this.idTextarea].setReadOnly(true);
+                    if(!Ext.isEmpty(CKEDITOR.instances[this.idTextarea])){
+                        CKEDITOR.instances[this.idTextarea].setData(data);
+    //                    this.findByType('textarea')[0].setValue(data);
+                        CKEDITOR.instances[this.idTextarea].setReadOnly(true);
+                    }
                 }
             });
             
@@ -554,13 +608,15 @@ Ext.define('sitools.user.modules.contentEditorModule', {
 	            "link" : link,
 	            "leaf" : true,
 	            "icon" : loadUrl.get('APP_URL') + '/common/res/images/icons/valid.png',
-	            "sync" : false
+	            "sync" : false,
+	            "uuid" : generateId()
 	        });
         } else {
             nodeToAdd.appendChild({
                 "text" : text,
                 "link" : link,
                 "leaf" : false,
+                "uuid" : generateId(),
                 "children" : []
             });
         }
@@ -592,7 +648,6 @@ Ext.define('sitools.user.modules.contentEditorModule', {
     },
     
     editNode : function (nodeToEdit, text, link, createFile, saveJson) {
-        
         nodeToEdit.setText(text);
         
 //        if (!link.match(".html") && !(link.indexOf("http://") === 0)) {
@@ -631,30 +686,63 @@ Ext.define('sitools.user.modules.contentEditorModule', {
     },
     
     createJsonTree : function () {
-        var root = this.tree.getRootNode();
-        var tree = [];
-
-        var childs = root.childNodes;
-        var i;
-
-        for (i = 0; i < childs.length; i++) {
-            this.getAllNodes(childs[i], tree);
-        }
-        var jsonUrl = this.tree.getLoader().url;
-        
-        // Save json changed
+        //check if the json file is up to date using the lastModified date  
         Ext.Ajax.request({
-            url : jsonUrl,
-            method : 'PUT',
+            url : this.tree.loader.url,
+            method : 'HEAD',
             scope : this,
-            headers : {
-                'Content-Type' : 'application/json'
+            success : function (response, opts) {
+                if(response.getResponseHeader("Last-Modified") === this.lastModified) {
+                    this.onCreateJsonTree();
+                }
+                else {
+                    Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i></i><hr/><br/>"
+                            + i18n.get("label.treeNotSaved"), this.refreshTree, this);
+                }
             },
-            jsonData : tree,
-            failure : function (response, opts) {
-                Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
+            failure : function () {
+                Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i></i><hr/><br/>"
+                        + i18n.get("label.treeNotSaved"), this.refreshTree, this);
             }
         });
+    },
+    
+    onCreateJsonTree : function () {
+        try {
+            var root = this.tree.getRootNode();
+            var tree = [];
+    
+            var childs = root.childNodes;
+            var i;
+    
+            for (i = 0; i < childs.length; i++) {
+                this.getAllNodes(childs[i], tree);
+            }
+            var jsonUrl = this.tree.getLoader().url;
+            
+            // Save json changed
+            Ext.Ajax.request({
+                url : jsonUrl,
+                method : 'PUT',
+                scope : this,
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+                jsonData : tree,
+                success : function (response, opts) {
+                    this.lastModified = response.getResponseHeader("Date");
+                    this.treeToolbar.setTreeUpToDate(true, this.lastModified);
+                },
+                failure : function (response, opts) {
+                    Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i> " + response.statusText + " </i><hr/><br/>"
+                            + i18n.get("label.treeNotSaved"), this.refreshTree, this);
+                }
+            });
+        } catch (e) {
+            Ext.Msg.alert(i18n.get("label.warning"), i18n.get("label.errorSavingJsonTree") + "<br/><hr/><i> " + e + " </i><hr/><br/>"
+                    + i18n.get("label.treeNotSaved"), this.refreshTree, this);
+            throw e;
+        }
     },
 
     getAllNodes : function (root, parent) {
@@ -667,7 +755,8 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                 leaf : root.leaf,
                 icon : root.attributes.icon,
                 sync : root.attributes.sync,
-                link : root.attributes.link
+                link : root.attributes.link,
+                uuid : root.attributes.uuid
             };
             parent.push(node);
         } else {
@@ -675,6 +764,7 @@ Ext.define('sitools.user.modules.contentEditorModule', {
                 text : root.text,
                 leaf : false,
                 link : root.attributes.link,
+                uuid : root.attributes.uuid,
                 children : []
             };
             parent.push(node);
@@ -858,6 +948,9 @@ Ext.define('sitools.user.modules.contentEditorModule', {
             headers : {
                 'Content-Type' : 'application/json'
             },
+            success : function (response, opts) {
+                this.lastModified = response.getResponseHeader("Date");
+            },
             failure : function (response, opts) {
                 Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
             }
@@ -907,8 +1000,10 @@ Ext.define('sitools.user.modules.contentEditorModule', {
     
     displayViewer : function (url) {
         this.viewerEditorPanel.remove();
+        if (this.isPdf(this.newUrl) && this.islocal(this.newUrl)) {
+            this.newUrl = Ext.urlAppend(this.newUrl, "dc=" + new Date().getTime());
+        }
         this.viewerEditorPanel.setSrc(this.newUrl);
-        
         this.viewerEditorPanel.setHeight(this.contentPanel.getHeight() - 30);
         this.viewerEditorPanel.setVisible(true);
         this.viewerEditorPanel.expand(true);
@@ -973,8 +1068,20 @@ Ext.define('sitools.user.modules.contentEditorModule', {
             preferencesFileName : this.id
         };
 
+    },
+    
+    isPdf : function (text) {
+        var imageRegex = /\.(pdf)$/;
+        if (!Ext.isEmpty(text)) {
+            return (text.match(imageRegex));
+        } else {
+            return false;
+        }
+    },
+    
+    islocal : function (url) {
+        return (url.indexOf("http://") == -1 && url.indexOf("https://") == -1); 
     }
-     
 });
 
 /**

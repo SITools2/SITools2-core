@@ -4,7 +4,7 @@
   <description></description>
   <status>ACTIVE</status>
   <driverClass>org.postgresql.Driver</driverClass>
-  <url>jdbc:postgresql://odysseus2.silogic.fr:5432/CNES_SIG</url>
+  <url>jdbc:postgresql://odysseus2.akka.eu:5432/CNES_SIG</url>
   <userLogin>postgres</userLogin>
   <userPassword>postgres</userPassword>
   <sitoolsAttachementForUsers>/cnes_sig</sitoolsAttachementForUsers>

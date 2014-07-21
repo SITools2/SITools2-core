@@ -3,7 +3,7 @@
   <name>mongodb</name>
   <description></description>
   <status>ACTIVE</status>
-  <url>odysseus2.silogic.fr</url>
+  <url>odysseus2.akka.eu</url>
   <userLogin>sitools</userLogin>
   <userPassword>sitools</userPassword>
   <sitoolsAttachementForUsers>/db/mongodb</sitoolsAttachementForUsers>

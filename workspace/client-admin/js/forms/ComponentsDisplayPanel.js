@@ -75,7 +75,7 @@ Ext.define('sitools.admin.forms.ComponentsDisplayPanel', {
         //add a first zone if none exists
         if (this.action != 'modify' && this.zoneStore.getCount() == 0) {
 			var initialZone = {
-				containerPanelId : 'main',
+				containerPanelId : Ext.id(),
 				title : i18n.get('label.mainForm'),
 				height : 300,
 				collapsible : false,

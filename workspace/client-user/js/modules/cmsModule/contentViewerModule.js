@@ -253,12 +253,14 @@ Ext.define('sitools.user.modules.contentViewerModule', {
             return;
         }
         
-        nodeLink += "?processTemplate=true";
-        
         var url = nodeLink;
-        if (url.indexOf("http://") === -1) {
-            url = this.CONST_URLDATASTORAGE + "/" + nodeLink;    
-            
+        if (this.isLocal(url)) {
+            url = this.CONST_URLDATASTORAGE + "/" + nodeLink;
+            if(this.isPdf(url)){
+                url = Ext.urlAppend(url, "dc=" + new Date().getTime());
+            } else {
+                url = Ext.urlAppend(url, "processTemplate=true");
+            }
         }
         
         this.htmlReader.remove();
@@ -290,6 +292,18 @@ Ext.define('sitools.user.modules.contentViewerModule', {
             preferencesFileName : this.id
         };
 
+    },
+    isPdf : function (text) {
+        var imageRegex = /\.(pdf)$/;
+        if (!Ext.isEmpty(text)) {
+            return (text.match(imageRegex));
+        } else {
+            return false;
+        }
+    },
+    
+    isLocal : function (url) {
+        return (url.indexOf("http://") == -1 && url.indexOf("https://") == -1); 
     }
     
 });

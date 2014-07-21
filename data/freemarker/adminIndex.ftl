@@ -122,9 +122,15 @@
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
-<!--
+<!-- BEGIN_PROD
+	<script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
+	<script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script>
+	<script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
+    <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>
+	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
+	
 	<script type="text/javascript" src="js/minified/client-admin-all-min.js"></script>
--->
+END PROD -->
     
 	<link rel="shortcut icon" href="${appUrl}/client-public/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	

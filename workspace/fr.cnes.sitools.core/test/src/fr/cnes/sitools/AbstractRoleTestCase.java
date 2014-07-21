@@ -19,11 +19,11 @@
 package fr.cnes.sitools;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -318,7 +318,7 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
       assertTrue(cr.getStatus().isSuccess());
 
       Response response = GetResponseUtils.getResponseRole(getMediaTest(), result, Role.class);
-      assertTrue(response.getSuccess());
+      assertTrue(response.getMessage(), response.getSuccess());
       Role role = (Role) response.getItem();
       assertEquals(item.getName(), role.getName());
       assertEquals(item.getDescription(), role.getDescription());

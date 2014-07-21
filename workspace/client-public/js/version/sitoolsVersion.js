@@ -41,7 +41,7 @@ Ext.define('sitools.component.version.sitoolsVersion', {
         });
         
         var website = new Ext.form.Label({
-            html : '<a href="http://www.sitools2.sourceforge.net">sitools2.sourceforge.net</>'
+            html : '<b>' + i18n.get("label.website") +  '</b> : <a href="http://sitools2.github.io/">http://sitools2.github.io/</>'
         });
         
         this.versionLabel = new Ext.form.Label({            

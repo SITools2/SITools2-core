@@ -27,9 +27,8 @@ Ext.namespace('sitools.user.modules');
  * @extends Ext.Toolbar
  */
 sitools.user.modules.cmsTreeToolbar = Ext.extend(Ext.Toolbar, {
-    
+
     initComponent : function () {
-        
         var storeLanguage = new Ext.data.JsonStore({
             fields : [ 'text', 'locale'],
             autoLoad : false
@@ -68,7 +67,11 @@ sitools.user.modules.cmsTreeToolbar = Ext.extend(Ext.Toolbar, {
         
         this.comboLanguage.setValue(locale.getLocale());
         
+        
+        this.labelUpToDate = new Ext.form.Label();
+        
         this.items = [ this.comboLanguage, '->', 
+                       this.labelUpToDate, "&nbsp;",
 	        {
 	            xtype : 'button',
 	            iconAlign : 'right',
@@ -89,6 +92,20 @@ sitools.user.modules.cmsTreeToolbar = Ext.extend(Ext.Toolbar, {
     
     
         sitools.user.modules.cmsTreeToolbar.superclass.initComponent.call(this);
+    },
+    
+
+    setTreeUpToDate : function (upToDate, dateStr) {
+        var date = new Date(Date.parse(dateStr));
+        dateStr = date.format(SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+        if (!upToDate) {
+            this.labelUpToDate.getEl().update(String.format("<span class='sitools-userProfile-warning-text'>{0}{1}</span>", i18n.get("label.lastUpdate"), dateStr));
+            this.labelUpToDate.addClass("x-status-warning");
+        } else {
+            this.labelUpToDate.getEl().update(String.format("<span>{0}{1}</span>", i18n.get("label.lastUpdate"), dateStr));
+            this.labelUpToDate.removeClass("x-status-warning");
+        }
+        
     }
     
     

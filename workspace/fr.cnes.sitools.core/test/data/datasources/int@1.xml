@@ -4,7 +4,7 @@
   <description>base de test pour mysql</description>
   <status>ACTIVE</status>
   <driverClass>org.gjt.mm.mysql.Driver</driverClass>
-  <url>jdbc:mysql://odysseus2.silogic.fr:3306/cnes-test</url>
+  <url>jdbc:mysql://odysseus2.akka.eu:3306/cnes-test</url>
   <userLogin>sitools</userLogin>
   <userPassword>sitools</userPassword>
   <sitoolsAttachementForUsers>/sitools/users/resources/datasources/dbMysql</sitoolsAttachementForUsers>

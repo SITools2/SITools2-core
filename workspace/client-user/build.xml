@@ -10,31 +10,34 @@
 	for more details. == == You should have received a copy of the GNU General 
 	Public License == along with SITools2. If not, see <http://www.gnu.org/licenses/>. 
 	==================================== -->
-<project name="fr.cnes.sitools.client-user" basedir=".">
+<project name="fr.cnes.sitools.client-user" basedir="." default="js.jsMinifyUser">
 	<taskdef name="jsmin"
 	        classname="net.matthaynes.jsmin.JSMin_Task"
 	        classpath="../../cots/jsMin/jsmin.0.2.4.jar"/>
 	<property name="appUrl" value=".." />
+	<!-- PORTAL -->
 	<target name="js.concatPortal">
-		<copy tofile="jsDevIncludes" file="../../data/freemarker/portalIndex.ftl" overwrite="true"/>
-		<replaceregexp file="jsDevIncludes" flags="s" match=".*&lt;!-- BEGIN_JS_DEV_INCLUDES --&gt;" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="s" match="&lt;!-- END_JS_DEV_INCLUDES --&gt;.*" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="mg" match="^.*&lt;script type=&quot;text/javascript&quot; src=&quot;" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="mg" match="&quot;&gt;&lt;/script&gt;.*$" replace=""/>
-		<replaceregexp file="jsDevIncludes" flags="mg" match="/common/" replace="/client-public/"/>
-		<loadfile property="jsDevIncludesList" srcFile="jsDevIncludes" >
+		<copy tofile="jsDevIncludesPortal" file="../../data/freemarker/portalIndex.ftl" overwrite="true"/>
+		<replaceregexp file="jsDevIncludesPortal" flags="s" match=".*&lt;!-- BEGIN_JS_DEV_INCLUDES --&gt;" replace=""/>
+		<replaceregexp file="jsDevIncludesPortal" flags="s" match="&lt;!-- END_JS_DEV_INCLUDES --&gt;.*" replace=""/>
+		<replaceregexp file="jsDevIncludesPortal" flags="mg" match="^.*&lt;script type=&quot;text/javascript&quot; src=&quot;" replace=""/>
+		<replaceregexp file="jsDevIncludesPortal" flags="mg" match="&quot;&gt;&lt;/script&gt;.*$" replace=""/>
+		<replaceregexp file="jsDevIncludesPortal" flags="mg" match="/common/" replace="/client-public/"/>
+		<loadfile property="jsDevIncludesPortalListPortal" srcFile="jsDevIncludesPortal" >
 			<filterchain>
 				<expandproperties />
 			</filterchain>
 		</loadfile>
 		<concat destfile="./js/minified/client-user-portal-all.js">
-			<filelist dir="./" files="${jsDevIncludesList}" />
+			<filelist dir="./" files="${jsDevIncludesPortalListPortal}" />
 		</concat>
-		<delete file="jsDevIncludes"/>
+		<delete file="jsDevIncludesPortal"/>
 	</target>
 	<target name="js.jsMinifyPortal" depends="js.concatPortal">
 		<jsmin srcfile="./js/minified/client-user-portal-all.js" suffix="true" />
 	</target>
+	
+	<!-- CLIENT-USER -->
 	<target name="js.concatProject">
 		<copy tofile="jsDevIncludes" file="../../data/freemarker/projectIndex.ftl" overwrite="true"/>
 		<replaceregexp file="jsDevIncludes" flags="s" match=".*&lt;!-- BEGIN_JS_DEV_INCLUDES --&gt;" replace=""/>
@@ -54,6 +57,8 @@
 	</target>
 	<target name="js.jsMinifyProject" depends="js.concatProject">
 		<jsmin srcfile="./js/minified/client-user-project-all.js" suffix="true" />
+	</target>
+	<target name="js.jsMinifyUser" depends="js.jsMinifyProject,js.jsMinifyPortal">
 	</target>
 	
 </project>

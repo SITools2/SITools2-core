@@ -10,7 +10,7 @@
 	for more details. == == You should have received a copy of the GNU General 
 	Public License == along with SITools2. If not, see <http://www.gnu.org/licenses/>. 
 	==================================== -->
-<project name="fr.cnes.sitools.client-admin" basedir=".">
+<project name="fr.cnes.sitools.client-admin" basedir="." default="js.minify">
 	<property name="appUrl" value=".." />
 	<target name="js.concat">
 		<copy tofile="jsDevIncludes" file="../../data/freemarker/adminIndex.ftl" overwrite="true"/>
