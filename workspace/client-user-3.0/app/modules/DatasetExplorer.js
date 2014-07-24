@@ -16,17 +16,38 @@
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
+/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
 
-Ext.namespace('sitools.user.controller.modules.projectDescription');
+Ext.namespace('sitools.user.controller.modules.datasetExplorer');
 /**
- * ProjectDescription Module
- * @class sitools.user.modules.projectDescription
+ * datasetExplorer Module
+ * 
+ * @class sitools.user.modules.datasetExplorer
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.controller.modules.projectDescription.ProjectDescription', {
-    extend : 'Ext.app.Controller',
-    alias : 'sitools.user.modules.projectDescription',
+Ext.define('sitools.user.modules.DatasetExplorer', {
+    extend : 'sitools.user.core.Module',
     
-    views : ['modules.projectDescription.ProjectDescription']
+    controllers : ['sitools.user.controller.modules.datasetExplorer.DatasetExplorer'],
+
+    init : function () {
+        var view = Ext.create('sitools.user.view.modules.datasetExplorer.DatasetExplorer');
+        
+        this.show(view);
+
+        this.callParent(arguments);
+    },
+
+    /**
+     * method called when trying to save preference
+     * 
+     * @returns
+     */
+    _getSettings : function () {
+        return {
+            preferencesPath : "/modules",
+            preferencesFileName : this.id
+        };
+
+    }
 });

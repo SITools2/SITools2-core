@@ -18,31 +18,54 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
 
-Ext.namespace('sitools.user.controller.component');
+Ext.namespace('sitools.user.core.Component');
 /**
  * Abstract Module class
  * @class sitools.user.controller.modules.Module
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.controller.component.ComponentController', {
-    extend : 'Ext.app.Controller',
+Ext.define('sitools.user.core.Component', {
+    mixins: {
+        observable: 'Ext.util.Observable'
+    },
     
     config : {
         componentView : null,
-        project : Ext.getStore("ProjectStore").getProject()
+        project : Ext.getStore("ProjectStore").getProject(),
+        controllers : [],
+        application : null
     },
     
-    open : function (view, windowSettings) {
+    /**
+     * Show the following view with the following windowSettings
+     */
+    show : function (view, windowSettings) {
         var navMode = this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(this.getProject().get("navigationMode"));
         navMode.openComponent(view, windowSettings);
+    },
+    
+    /**
+     * Initialize the module
+     * 
+     * @param application
+     *            the application
+     * @moduleModel moduleModel
+     */
+    create : function (application) {
+        this.setApplication(application);
+        // initialize all controllers
+        if (!Ext.isEmpty(this.getControllers())) {
+            Ext.each(this.getControllers(), function (controller) {
+                this.getApplication().getController(controller).onLaunch();
+            }, this);
+        }
     },
     
     getFormOpenMode : function () {
         this.getApplication().getController('core.NavigationMode').getFormOpenMode(this.getProject().get("navigationMode"));
     },
     
-    initComponent : function () {
-    },
+    init : Ext.emptyFn,
     
     /**
      * method called when trying to save preference

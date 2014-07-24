@@ -15,18 +15,9 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+/*global Ext, sitools, window */
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
-
-Ext.namespace('sitools.user.controller.modules.projectDescription');
-/**
- * ProjectDescription Module
- * @class sitools.user.modules.projectDescription
- * @extends Ext.Panel
- */
-Ext.define('sitools.user.controller.modules.projectDescription.ProjectDescription', {
-    extend : 'Ext.app.Controller',
-    alias : 'sitools.user.modules.projectDescription',
-    
-    views : ['modules.projectDescription.ProjectDescription']
+Ext.define('sitools.user.model.DatasetServicesModel', {
+    extend : 'Ext.data.Model',
+    fields : [ 'id', 'type', 'name', 'description', 'icon', 'label', 'category', 'visible', 'position', 'dataSetSelection' ]
 });

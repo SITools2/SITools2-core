@@ -46,10 +46,10 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         });
     },
 
-    openModule : function (module) {
-        var moduleController = this.getApplication().getController(module.xtype);
-        moduleController.initModule(module);
-        moduleController.onLaunch(this.getApplication());
+    openModule : function (moduleModel) {
+        var module = Ext.create(moduleModel.xtype);
+        module.create(this.getApplication(), moduleModel);
+        module.init();
     },
     
     openComponent : function (clazz, componentConfig, windowConfig) {

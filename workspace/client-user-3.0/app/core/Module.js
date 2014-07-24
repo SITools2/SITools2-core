@@ -18,28 +18,56 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
 
-Ext.namespace('sitools.user.controller.modules');
+Ext.namespace('sitools.user.core');
 /**
  * Abstract Module class
- * @class sitools.user.controller.modules.Module
- * @extends Ext.Panel
+ * @class sitools.user.core.Module
  */
-Ext.define('sitools.user.controller.modules.ModuleController', {
-    extend : 'Ext.app.Controller',
+Ext.define('sitools.user.core.Module', {
+    mixins: {
+        observable: 'Ext.util.Observable'
+    },
     
     config : {
         moduleModel : null,
-        viewCmp : null
+        viewCmp : null,
+        application : null,
+        controllers : []
     },
     
-    open : function (view) {
+    /**
+     * Show the given view
+     * 
+     * @param view
+     *            the view to show
+     */
+    show : function (view) {
         var project = Ext.getStore("ProjectStore").getProject();
         var navMode = this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(project.get("navigationMode"));
         navMode.openModule(view, this.getModuleModel());        
     },
     
-    initModule : function (moduleModel) {
+    /**
+     * Method to override to initialize the module
+     */
+    init : Ext.emptyFn,
+
+    /**
+     * Initialize the module
+     * 
+     * @param application
+     *            the application
+     * @moduleModel moduleModel
+     */
+    create : function (application, moduleModel) {
         this.setModuleModel(moduleModel);
+        this.setApplication(application);
+        // initialize all controllers
+        if (!Ext.isEmpty(this.getControllers())) {
+            Ext.each(this.getControllers(), function (controller) {
+                this.getApplication().getController(controller).onLaunch();
+            }, this);
+        }        
     },
     
     /**

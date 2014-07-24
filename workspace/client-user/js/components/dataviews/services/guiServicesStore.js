@@ -67,10 +67,11 @@ sitools.user.component.dataviews.services.GuiServicesStore = Ext.extend(Ext.data
                 type : 'int'
             }, {
                 name : 'dataSetSelection'
-            }, {
+            }/*, {
                 name : 'dependencies'
-            }, {
-                name : 'defaultVisibility'
+            }*/, {
+                name : 'defaultVisibility',
+                type : 'boolean'
             }, {
                 name : 'parametersMap'
             }]

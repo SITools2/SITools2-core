@@ -15,18 +15,26 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
-
-Ext.namespace('sitools.user.controller.modules.projectDescription');
-/**
- * ProjectDescription Module
- * @class sitools.user.modules.projectDescription
- * @extends Ext.Panel
+/*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, showHelp, ann, mainPanel, helpUrl:true, loadUrl, SHOW_HELP
  */
-Ext.define('sitools.user.controller.modules.projectDescription.ProjectDescription', {
-    extend : 'Ext.app.Controller',
-    alias : 'sitools.user.modules.projectDescription',
+
+Ext.define('sitools.user.store.DatasetServicesStore', {
+    extend : 'Ext.data.Store',
+    model : 'sitools.user.model.DatasetServicesModel',
+
+    constructor : function (config) {
+        Ext.apply(config, {
+            proxy : {
+                url : config.datasetUrl + "/services",
+                type : 'ajax',
+                reader : {
+                    type : 'json',
+                    root : 'ServiceCollectionModel.services',
+                    idProperty : 'id'
+                }
+            }
+        });
+        this.callParent([config]);
+    }
     
-    views : ['modules.projectDescription.ProjectDescription']
 });

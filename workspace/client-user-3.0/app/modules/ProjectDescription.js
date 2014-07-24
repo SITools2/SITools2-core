@@ -18,41 +18,46 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
 
-Ext.namespace('sitools.user.view.modules.datasetExplorer');
+Ext.namespace('sitools.user.controller.modules.projectDescription');
 /**
  * ProjectDescription Module
  * @class sitools.user.modules.projectDescription
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.view.modules.datasetExplorer.DatasetExplorer', {
-    extend : 'Ext.tree.Panel',
-    layout : 'fit',
-    itemId : 'datasetExplorer',
+Ext.define('sitools.user.modules.ProjectDescription', {
+    extend : 'sitools.user.core.Module',
     
-    initComponent : function () {
-        
+    controllers : ['sitools.user.controller.modules.projectDescription.ProjectDescription'],
+    
+    init : function () {
         var project = Ext.getStore('ProjectStore').getProject();
-        this.store = Ext.create("sitools.user.store.DatasetTreeStore");
-        
-        this.setRootNode({
-            text : 'datasets',
-            leaf : 'false'
-        });  
-        
         Ext.Ajax.request({
-            url : project.get('sitoolsAttachementForUsers') + '/datasets',
-            method : 'GET',
-            scope : this,
+            method : "GET", 
+            url : project.get('sitoolsAttachementForUsers'), 
             success : function (response) {
-                var datasets = Ext.decode(response.responseText).data;
-                Ext.each(datasets, function(dataset){
-                    dataset.text = dataset.name;
-                    this.getRootNode().appendChild(dataset);
-                }, this);
-            }
+                var json = Ext.decode(response.responseText);
+                
+                var view = Ext.create('sitools.user.view.modules.projectDescription.ProjectDescription', {
+                    html : Ext.util.Format.htmlDecode(json.project.htmlDescription), 
+                    autoScroll : true
+                });
+                
+                this.show(view);
+            }, 
+            failure : alertFailure, 
+            scope : this
         });
-        
-        
-        this.callParent(arguments);
+    },   
+    
+    /**
+     * method called when trying to save preference
+     * @returns
+     */
+    _getSettings : function () {
+        return {
+            preferencesPath : "/modules", 
+            preferencesFileName : this.id
+        };
+
     }
 });

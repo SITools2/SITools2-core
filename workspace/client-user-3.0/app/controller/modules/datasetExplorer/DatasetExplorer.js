@@ -26,11 +26,9 @@ Ext.namespace('sitools.user.controller.modules.datasetExplorer');
  * @extends Ext.Panel
  */
 Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
-    extend : 'sitools.user.controller.modules.ModuleController',
+    extend : 'Ext.app.Controller',
     alias : 'sitools.user.modules.datasetExplorer',
     requires : ['sitools.user.utils.CommonTreeUtils'],
-
-    store : [ 'DatasetTreeStore' ],
 
     views : [ 'modules.datasetExplorer.DatasetExplorer' ],
 
@@ -38,7 +36,6 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
         this.control({
             'treepanel#datasetExplorer' : {
                 beforeitemexpand : function (node, opts) {
-                    console.log("beforeExpand");
                     if (node.isRoot()) {
 //                        this.getStore('DatasetTreeStore').reload();
                         return;
@@ -52,7 +49,6 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                             url : node.get('url'),
                             scope : this,
                             success : function (response) {
-                                console.log("treePanel add nodes");
                                 var dataset = Ext.decode(response.responseText).dataset;
                                 commonTreeUtils.addShowData(node, dataset);
     //                            SitoolsDesk.navProfile.manageDatasetExplorerShowDefinitionAndForms(commonTreeUtils, node, dataset);
@@ -85,10 +81,10 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                 
                 itemclick : function ( tree, node, item, index, e, eOpts ) {
                     if(node.isLeaf()) {
-                        var control  = this.getApplication().getController('sitools.user.controller.component.datasets.DatasetsController');
-                        control.onLaunch(this.getApplication());                       
-                        control.openDataset(node.get("properties").dataset)
-                        
+                        var dataset = node.get("properties").dataset;
+                        var datasetViewComponent  = Ext.create(dataset.datasetView.jsObject);
+                        datasetViewComponent.create(this.getApplication());
+                        datasetViewComponent.init(dataset);
                     }
                 }
             }
@@ -108,53 +104,6 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                 }
             }
         });
-
-    },
-
-    onLaunch : function () {
-        var project = Ext.getStore('ProjectStore').getProject();
-        var store = this.getStore("DatasetTreeStore");
-        
-        var view = Ext.create('sitools.user.view.modules.datasetExplorer.DatasetExplorer', {
-            store : store
-        });
-        
-        view.setRootNode({
-            text : 'datasets',
-            leaf : 'false'
-        });  
-        
-        Ext.Ajax.request({
-            url : project.get('sitoolsAttachementForUsers') + '/datasets',
-            method : 'GET',
-            scope : this,
-            success : function (response) {
-                var datasets = Ext.decode(response.responseText).data;
-                Ext.each(datasets, function(dataset){
-                    view.getRootNode().appendChild(dataset);
-                });
-            }
-        });
-        
-        this.open(view);
-
-        this.callParent(arguments);
-    },
-
-    initModule : function (moduleModel) {
-        this.callParent(arguments);
-    },
-
-    /**
-     * method called when trying to save preference
-     * 
-     * @returns
-     */
-    _getSettings : function () {
-        return {
-            preferencesPath : "/modules",
-            preferencesFileName : this.id
-        };
 
     }
 });
