@@ -13,7 +13,7 @@
   <y>0</y>
   <icon>projectDescriptionModule</icon>
   <specificType>projectDescription</specificType>
-  <xtype>sitools.user.controller.modules.projectDescription.ProjectDescription</xtype>
+  <xtype>sitools.user.modules.ProjectDescription</xtype>
   <dependencies/>
   <priority>0</priority>
 </projectModule>

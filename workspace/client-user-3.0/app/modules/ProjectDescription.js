@@ -18,7 +18,7 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
 
-Ext.namespace('sitools.user.controller.modules.projectDescription');
+Ext.namespace('sitools.user.modules.projectDescription');
 /**
  * ProjectDescription Module
  * @class sitools.user.modules.projectDescription

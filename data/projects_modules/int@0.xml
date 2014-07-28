@@ -13,7 +13,7 @@
   <y>0</y>
   <icon>datasetExplorerModule</icon>
   <specificType>truc</specificType>
-  <xtype>sitools.user.controller.modules.datasetExplorer.DatasetExplorer</xtype>
+  <xtype>sitools.user.modules.DatasetExplorer</xtype>
   <dependencies/>
   <priority>0</priority>
 </projectModule>
