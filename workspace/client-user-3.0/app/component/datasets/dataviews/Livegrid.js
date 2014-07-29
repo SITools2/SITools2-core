@@ -143,7 +143,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                         columnAlias : item.columnAlias,
                         dataIndexSitools : item.dataIndex,
                         dataIndex : item.columnAlias,
-                        header : item.header,
+                        text : item.header,
                         width : item.width,
                         sortable : item.sortable,
                         hidden : hidden,

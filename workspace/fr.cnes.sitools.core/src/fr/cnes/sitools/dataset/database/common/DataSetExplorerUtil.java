@@ -504,8 +504,7 @@ public class DataSetExplorerUtil {
         return orders;
       }
 
-      ObjectMapper mapper = new ObjectMapper();
-      orders = mapper.readValue(sortParam, Multisort.class);
+      orders = deserializeOrderBy(sortParam);
 
       for (Sort sort : orders.getOrdersList()) {
         Column col = application.getDataSet().findByColumnAlias(sort.getField());
@@ -530,6 +529,20 @@ public class DataSetExplorerUtil {
     }
     return orders;
 
+  }
+
+  private Multisort deserializeOrderBy(String sortParam) throws IOException {
+    Multisort orders;
+    ObjectMapper mapper = new ObjectMapper();
+    try {
+      orders = mapper.readValue(sortParam, Multisort.class);
+    }
+    catch (IOException e) {
+      Sort[] sortList = mapper.readValue(sortParam, Sort[].class);
+      orders = new Multisort();
+      orders.setOrdersList(sortList);
+    }
+    return orders;
   }
 
   /**

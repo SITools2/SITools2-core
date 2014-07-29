@@ -41,6 +41,19 @@ Ext.define('sitools.user.store.DataviewsStore', {
                     type : 'json',
                     id : config.primaryKey,
                     root : 'data'
+                },
+                encodeSorters: function(sorters) {
+                    var min = [],
+                        length = sorters.length,
+                        i = 0;
+
+                    for (; i < length; i++) {
+                        min[i] = {
+                            field : sorters[i].property,
+                            direction: sorters[i].direction
+                        };
+                    }
+                    return this.applyEncoding(min);
                 }
             },
             listeners : {
@@ -98,5 +111,4 @@ Ext.define('sitools.user.store.DataviewsStore', {
     addParamsToUrl : function (params) {
 		this.getProxy().url += params;
     }
-
 });

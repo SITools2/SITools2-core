@@ -9,7 +9,8 @@ Ext.define('sitools.user.Application', {
                  'sitools.public.utils.loadUrl',
                  'sitools.public.utils.sql2ext',
                  'sitools.public.utils.Locale',
-                 'sitools.user.utils.FormUtils'
+                 'sitools.user.utils.FormUtils',
+                 'sitools.public.utils.PopupMessage'
                  ],
 
     extend : 'Ext.app.Application',

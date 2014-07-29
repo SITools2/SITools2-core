@@ -6,13 +6,9 @@
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
-  <xtype>sitools.user.component.dataviews.services.sorterService</xtype>
+  <xtype>sitools.user.component.datasets.services.SorterService</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/sorterService.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>1</priority>

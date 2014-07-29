@@ -51,7 +51,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
     callService : function (button) {
         if (button.typeService === 'SERVER') {
             this.serverServiceUtil.callServerService(button.idService, this.dataview.getSelections());
-        } else {
+        } else if (button.typeService === 'GUI') {
             this.callGuiService(button);
         }
     },
@@ -71,13 +71,13 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
         var guiServiceStore = button.up('toolbar').getGuiServiceStore();
         var service = guiServiceStore.getById(idService);
         if (Ext.isEmpty(service)) {
-            new Ext.ux.Notification({
+            popupMessage({
                 iconCls : 'x-icon-information',
                 title : i18n.get('label.warning'),
                 html : i18n.get("label.cannot-find-guiservice"),
                 autoDestroy : true,
                 hideDelay : 1000
-            }).show(document);
+            });
             return;
         }
         
@@ -88,19 +88,17 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
         
         var dataview = button.up("livegridView");
         
-        var JsObj = Ext.create(guiServicePlugin.xtype);
-        
-        var config = Ext.apply(guiServicePlugin, {
-            columnModel : this.dataview.getColumnModel(),
-            store : this.dataview.getStore(),
-            dataview : this.dataview,
-            origin : this.origin,
-            record : record,
-            columnAlias : columnAlias
-        });
+        Ext.require(guiServicePlugin.xtype, function (serviceObj) {
+            var config = Ext.apply(guiServicePlugin, {
+                columnModel : dataview.columns,
+                store : dataview.getStore(),
+                dataview : dataview,
+                origin : this.origin,
+                record : record,
+                columnAlias : columnAlias
+            });
 
-        JsObj.executeAsService(config);            
-    },
-
-
+            serviceObj.executeAsService(config);     
+        }, this);
+    }
 });

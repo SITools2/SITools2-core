@@ -127,7 +127,7 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
   /**
    * Test Dataset exploration API
    */
-  // @Test
+  @Test
   public void testSQL() {
     docAPI.setActive(false);
     DataSet ds = getDataset(getBaseUrlDataset());
@@ -143,6 +143,10 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
     getRecordsDistinct(url, "aperture", 4);
     getRecordsDistinctUnknownColumn(url, "testtest");
     getRecordsUnknownColumn(url, "aperture", "testtest");
+    
+    getRecordsWithSort(url);
+    getRecordsWithMultiSort(url);
+    getRecordsWithSimpleMultiSort(url);
 
     getRecordsWithConverterExecution(ds, "ra_targ");
 
@@ -407,6 +411,65 @@ public abstract class AbstractDatasetExplorerTestCase extends AbstractDataSetMan
     else {
       queryDatasetRequestUrl(urlAttachDataset + "/records", "?start=2&limit=5", 5);
 
+    }
+  }
+  /**
+   * Get a set of records with a start and a limit and a sorting feature
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithSort(String urlAttachDataset) {
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("start", "start record number");
+      parameters.put("limit", "number of records to send, including the starting one");
+      String uri = getHostUrl() + urlAttachDataset;
+      this.retrieveDocAPI(uri + "/records?start=2&limit=5", "", parameters,
+          String.format(uri, "/records?start=2&limit=5"));
+    }
+    else {
+      queryDatasetRequestUrl(urlAttachDataset + "/records", "?start=0&limit=1&sort=targname&dir=ASC", 1);
+    }
+  }
+  
+  /**
+   * Get a set of records with a start and a limit and a multi sorting feature
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithMultiSort(String urlAttachDataset) {
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("start", "start record number");
+      parameters.put("limit", "number of records to send, including the starting one");
+      String uri = getHostUrl() + urlAttachDataset;
+      this.retrieveDocAPI(uri + "/records?start=2&limit=5", "", parameters,
+          String.format(uri, "/records?start=2&limit=5"));
+    }
+    else {
+      queryDatasetRequestUrl(urlAttachDataset + "/records", "?start=0&limit=1&sort={\"ordersList\":[{\"field\":\"targname\", \"direction\":\"ASC\"}, {\"field\":\"dateobs\", \"direction\":\"DESC\"}]}", 1);
+    }
+  }
+  
+  /**
+   * Get a set of records with a start and a limit and a simple multi sorting feature
+   * 
+   * @param urlAttachDataset
+   *          the url attachment of the dataset
+   */
+  private void getRecordsWithSimpleMultiSort(String urlAttachDataset) {
+    if (docAPI.isActive()) {
+      Map<String, String> parameters = new LinkedHashMap<String, String>();
+      parameters.put("start", "start record number");
+      parameters.put("limit", "number of records to send, including the starting one");
+      String uri = getHostUrl() + urlAttachDataset;
+      this.retrieveDocAPI(uri + "/records?start=2&limit=5", "", parameters,
+          String.format(uri, "/records?start=2&limit=5"));
+    }
+    else {
+      queryDatasetRequestUrl(urlAttachDataset + "/records", "?start=0&limit=1&sort=[{\"field\":\"targname\", \"direction\":\"ASC\"}, {\"field\":\"dateobs\", \"direction\":\"DESC\"}]", 1);
     }
   }
 

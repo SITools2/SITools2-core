@@ -1317,38 +1317,38 @@ function getCartFolder (projectName) {
     return "/" + DEFAULT_ORDER_FOLDER + "/cart/" + projectName;
 }
 
-Ext.override(Ext.window.Window, {
-    /**
-     * Fit a window to its container (desktop)
-     * Resizing and repositionning
-     */
-    fitToDesktop : function () {
-        //resize windows to fit desktop
-        var vs = this.container.getViewSize(false);
-        var winSize = this.getSize();
-        var winPos = this.getPosition();
-        
-        var outputWinSize = winSize;
-        var outputWinPos = winPos;
-        
-        
-        if(winSize.width > vs.width) {
-            outputWinSize.width = vs.width - 5;
-        }
-
-        if(winSize.height > vs.height) {
-            outputWinSize.height = vs.height - 5;
-        }
-        this.setSize(outputWinSize.width, outputWinSize.height);
-        
-        
-        if(winPos[0] + outputWinSize.width > vs.width) {
-            outputWinPos.x = 0;
-        }
-
-        if(winPos[1] + outputWinSize.height > vs.height) {
-            outputWinPos.y = 0;
-        }
-        this.setPosition(outputWinPos.x, outputWinPos.y);
-    }
-});
+//Ext.override(Ext.window.Window, {
+//    /**
+//     * Fit a window to its container (desktop)
+//     * Resizing and repositionning
+//     */
+//    fitToDesktop : function () {
+//        //resize windows to fit desktop
+//        var vs = this.container.getViewSize(false);
+//        var winSize = this.getSize();
+//        var winPos = this.getPosition();
+//        
+//        var outputWinSize = winSize;
+//        var outputWinPos = winPos;
+//        
+//        
+//        if(winSize.width > vs.width) {
+//            outputWinSize.width = vs.width - 5;
+//        }
+//
+//        if(winSize.height > vs.height) {
+//            outputWinSize.height = vs.height - 5;
+//        }
+//        this.setSize(outputWinSize.width, outputWinSize.height);
+//        
+//        
+//        if(winPos[0] + outputWinSize.width > vs.width) {
+//            outputWinPos.x = 0;
+//        }
+//
+//        if(winPos[1] + outputWinSize.height > vs.height) {
+//            outputWinPos.y = 0;
+//        }
+//        this.setPosition(outputWinPos.x, outputWinPos.y);
+//    }
+//});

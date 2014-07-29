@@ -31,6 +31,7 @@ Ext.define('sitools.admin.Application', {
         'sitools.public.utils.LoginUtils',
         'sitools.public.utils.Logout',
         'sitools.public.crypto.Base64',
+        'sitools.public.utils.PopupMessage',
         
                 /* WIDGETS */
         'sitools.public.widget.StatusBar',
