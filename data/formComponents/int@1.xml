@@ -3,7 +3,7 @@
   <type>RADIO</type>
   <componentDefaultHeight>25</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.withValues</jsAdminObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.WithValues</jsAdminObject>
   <jsUserObject>sitools.public.forms.components.Radio</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/WithValues.js</fileUrlAdmin>
   <fileUrlUser>/sitools/client-public/js/forms/components/Radio.js</fileUrlUser>

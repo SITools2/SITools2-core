@@ -3,7 +3,7 @@
   <type>HL</type>
   <componentDefaultHeight>10</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.componentsAdminDef.noParam.hr</jsAdminObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.noParam.Hr</jsAdminObject>
   <jsUserObject>sitools.public.forms.components.Hl</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/NoParam/hr.js</fileUrlAdmin>
   <fileUrlUser>/sitools/client-public/js/forms/components/HL.js</fileUrlUser>

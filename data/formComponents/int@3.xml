@@ -3,7 +3,7 @@
   <type>LISTBOXMULTIPLE</type>
   <componentDefaultHeight>100</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
-  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.withValues</jsAdminObject>
+  <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.WithValues</jsAdminObject>
   <jsUserObject>sitools.public.forms.components.ListBoxMultiple</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/WithValues.js</fileUrlAdmin>
   <fileUrlUser>/sitools/client-public/js/forms/components/ListBoxMultiple.js</fileUrlUser>
