@@ -36,7 +36,11 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
     requires : ['sitools.user.view.component.datasets.dataviews.LivegridView',
                 'sitools.user.store.DataviewsStore'],
     
-    init : function (dataset) {
+    /**
+     * @require dataset
+     * @optionnal formParams
+     */
+    init : function (dataset, formParams) {
         
         var dataviewConfig = sitoolsUtils.arrayProperties2Object(dataset.datasetViewConfig);
 
@@ -47,7 +51,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         var datasetStore = Ext.create("sitools.user.store.DataviewsStore", {
             fields : fields,
             urlAttach : dataset.sitoolsAttachementForUsers,
-            primaryKey : primaryKey
+            primaryKey : primaryKey,
+            formParams : formParams
         });
         
         var windowSettings = {
@@ -60,6 +65,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             winHeight : 400,
             iconCls : "dataviews"
         };
+        
         var view = Ext.create('sitools.user.view.component.datasets.dataviews.LivegridView', {
             dataset : dataset,
             store : datasetStore,
@@ -73,7 +79,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         this.setComponentView(view);
         this.show(view, windowSettings);
     },
-
+    
     /**
      * @param {Array}
      *            ColumnModel of the grid

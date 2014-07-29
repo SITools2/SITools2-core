@@ -36,20 +36,15 @@ Ext.namespace('sitools.user.controller.modules.formModule');
  * @requires sitools.user.component.forms.mainContainer
  */
 Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
-    extend : 'sitools.user.controller.modules.ModuleController',
+	extend : 'Ext.app.Controller',
     
     views : ['modules.formModule.FormModuleView'],
-    
-    config : {
-        formStore : null,
-        formMultiDsStore : null
-    },
     
     init : function () {
         this.control({
             'formsModuleView button[name="btnViewForm"]' : {
-                click : function () {
-                    var rec = this.getViewCmp().gridFormsDs.getSelectionModel().getSelection()[0];
+                click : function (btn) {
+                    var rec = btn.up('formsModuleView').gridFormsDs.getSelectionModel().getSelection()[0];
                     if (Ext.isEmpty(rec)) {
                         return;
                     }
@@ -58,8 +53,8 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
             },
             
             'formsModuleView button[name="btnViewFormMultiDs"]' : {
-                click : function () {
-                    var rec = this.getViewCmp().gridFormsMultiDs.getSelectionModel().getSelection()[0];
+                click : function (btn) {
+                    var rec = btn.up('formsModuleView').gridFormsMultiDs.getSelectionModel().getSelection()[0];
                     if (Ext.isEmpty(rec)) {
                         return;
                     }
@@ -77,49 +72,14 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
                 itemdblclick : function (grid, record) {
                     this.showDetailMultiDs(record);
                 }
+            },
+            'formsModuleView' : {
+            	afterrender : function (fmView) {
+            		fmView.formStore.load();
+            		fmView.formMultiDsStore.load();
+            	}
             }
         });
-    },
-    
-    onLaunch : function () {
-        this.loadFormStore();
-        this.loadFormMultiDsStore();
-        
-        var view = Ext.create('sitools.user.view.modules.formModule.FormModuleView', {
-            formStore : this.getFormStore(),
-            formMultiDsStore : this.getFormMultiDsStore()
-        });
-        
-        this.setViewCmp(view);
-        
-        this.open(view);
-        
-    },
-    
-    initModule : function (moduleModel) {
-        this.callParent(arguments);
-    },
-    
-    loadFormStore : function () {
-        var formStore = Ext.create('sitools.user.store.FormStore');
-        var project = Ext.getStore('ProjectStore').getProject();
-        var url = project.get('sitoolsAttachementForUsers') + '/forms'; 
-        
-        this.setFormStore(formStore);
-        
-        formStore.setCustomUrl(url);
-        formStore.load();
-    },
-    
-    loadFormMultiDsStore : function () {
-        var formMultiDsStore = Ext.create('sitools.user.store.FormStore');
-        var project = Ext.getStore('ProjectStore').getProject();
-        var url = project.get('sitoolsAttachementForUsers') + '/formsProject';
-        
-        this.setFormMultiDsStore(formMultiDsStore);
-        
-        formMultiDsStore.setCustomUrl(url);
-        formMultiDsStore.load();
     },
     
     /** CONTROL VIEW METHODS * */
@@ -143,8 +103,10 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
 
                     var dataset = json.dataset;
                     
-                    var formController = this.getApplication().getController('component.form.FormController');
-                    formController.openForm(rec.getData(true), dataset);
+                    var formComponent = Ext.create('sitools.user.component.form.FormComponent');
+                    formComponent.create(this.getApplication());
+                    formComponent.init(rec.getData(true), dataset);
+//                    formController.openForm(rec.getData(true), dataset);
                     
                     return;
 //                }
@@ -166,7 +128,7 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
             return;
         }
 
-        var formController = this.getApplication().getController('component.form.ProjectFormController');
+        var formController = Ext.create('sitools.user.component.form.FormComponent');
         formController.openProjectForm(rec.getData(true));
         
     },

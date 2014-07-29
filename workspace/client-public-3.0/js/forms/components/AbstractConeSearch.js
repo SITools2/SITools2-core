@@ -30,10 +30,10 @@ Ext.namespace('sitools.public.forms.components');
  *      - sitools.public.forms.components.ConeSearchPGSphere
  * @requires sitools.common.forms.ComponentFactory
  * @class sitools.public.forms.components.AbstractConeSearch
- * @extends sitools.common.forms.AbstractWithUnit
+ * @extends sitools.public.forms.AbstractWithUnit
  */
 Ext.define('sitools.public.forms.components.AbstractConeSearch', {
-    extend : 'sitools.common.forms.AbstractWithUnit',
+    extend : 'sitools.public.forms.AbstractWithUnit',
     requires : ['sitools.public.forms.ComponentFactory'],
     alternateClassName : ['sitools.common.forms.components.AbstractConeSearch'],
     

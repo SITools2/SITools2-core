@@ -49,18 +49,18 @@ Ext.define('sitools.user.view.component.form.FormView', {
         var panelIdObject = {};
         
         // New Form model with zones
-        if (!Ext.isEmpty(this.formZones)){
-            Ext.each(this.formZones, function(formParam) { 
+        if (!Ext.isEmpty(this.formZones)) {
+            Ext.each(this.formZones, function (formParam) { 
                 var containerId = formParam.containerPanelId;
-                if (Ext.isEmpty(panelIdObject[containerId])){
+                if (Ext.isEmpty(panelIdObject[containerId])) {
                     panelIdObject[containerId] = [];
                 }
                 panelIdObject[containerId].push(formParam);
             });
         } else { // old form model
-            Ext.each(this.formParameters, function(formParam) { 
+            Ext.each(this.formParameters, function (formParam) { 
                 var containerId = formParam.containerPanelId;
-                if (Ext.isEmpty(panelIdObject[containerId])){
+                if (Ext.isEmpty(panelIdObject[containerId])) {
                     panelIdObject[containerId] = [];
                 }
                 panelIdObject[containerId].push(formParam);
@@ -70,7 +70,7 @@ Ext.define('sitools.user.view.component.form.FormView', {
         var items = [];
         var globalParams = {};
         
-        Ext.iterate(panelIdObject, function(key, formParams){
+        Ext.iterate(panelIdObject, function (key, formParams) {
             var componentList = Ext.create('sitools.user.view.component.form.FormContainerView', {
                 border: true,
                 css : this.formCss, 

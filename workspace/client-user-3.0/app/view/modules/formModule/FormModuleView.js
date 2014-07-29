@@ -40,6 +40,15 @@ Ext.define('sitools.user.view.modules.formModule.FormModuleView', {
     
     initComponent : function () {
         
+         var project = Ext.getStore('ProjectStore').getProject();
+         
+         this.formStore = Ext.create('sitools.user.store.FormStore');
+         this.formStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/forms');
+    	
+         this.formMultiDsStore = Ext.create('sitools.user.store.FormStore');
+         this.formMultiDsStore.setCustomUrl(project.get('sitoolsAttachementForUsers') + '/formsProject');
+         
+         
         var cmFormDs = [{
             header : "",
             dataIndex : 'authorized',

@@ -41,10 +41,10 @@ Ext.ns('sitools.public.forms.components');
  * @cfg {} datasetCm the dataset ColumnModel object
  * @requires sitools.common.forms.ComponentFactory
  * @class sitools.public.forms.components.NumericBetween
- * @extends sitools.common.forms.AbstractWithUnit
+ * @extends sitools.public.forms.AbstractWithUnit
  */
 Ext.define('sitools.public.forms.components.NumericBetween', {
-    extend : 'sitools.common.forms.AbstractWithUnit',
+    extend : 'sitools.public.forms.AbstractWithUnit',
     requires : ['sitools.public.forms.ComponentFactory'],
     alternateClassName : ['sitools.common.forms.components.NumericBetween'],
     /**

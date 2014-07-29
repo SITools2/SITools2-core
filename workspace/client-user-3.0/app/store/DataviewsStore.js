@@ -79,12 +79,24 @@ Ext.define('sitools.user.store.DataviewsStore', {
                                 "ordersList" : [ this.sortInfo ]
                             });
                         }
-
+                    }
+                    
+                    // adding optional form parameters 
+                    if (!Ext.isEmpty(store.formParams)) {
+                    	Ext.apply(operation.params, store.formParams);
                     }
                 }
             }
         });
         this.callParent([ config ]);
+    },
+    
+    setCustomUrl : function (url) {
+        this.getProxy().url = url;
+    },
+    
+    addParamsToUrl : function (params) {
+		this.getProxy().url += params;
     }
 
 });

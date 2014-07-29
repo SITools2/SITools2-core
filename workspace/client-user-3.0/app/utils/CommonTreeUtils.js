@@ -227,7 +227,7 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
     
     handleBeforeExpandForm : function (node) {
         var url = node.parentNode.get('url');
-        var dataset = node.parentNode.get('properties').dataset;
+        var dataset = node.get('properties').dataset;
         Ext.Ajax.request({
             url : url + '/forms?media=json',
             success : function (response) {

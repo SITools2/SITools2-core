@@ -20,11 +20,11 @@
 
 /**
  * Abstract class to build Sitools form components with units.
- * @class sitools.common.forms.AbstractWithUnit
+ * @class sitools.public.forms.AbstractWithUnit
  * @extends Ext.Container
  */
 Ext.define('sitools.public.forms.AbstractWithUnit', {
-    alternateClassName : ['sitools.common.forms.AbstractWithUnit'],
+    alternateClassName : ['sitools.public.forms.AbstractWithUnit'],
    extend : 'Ext.Container',
    dimensionId : null,
    userUnit : null, 
@@ -47,7 +47,7 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
             }]
         });
                     
-        sitools.common.forms.AbstractWithUnit.superclass.initComponent.call(this);
+        sitools.public.forms.AbstractWithUnit.superclass.initComponent.call(this);
    },
    /**
     * Load all units available with a given dimension.

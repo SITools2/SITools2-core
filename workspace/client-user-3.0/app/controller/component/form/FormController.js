@@ -36,7 +36,7 @@ Ext.namespace('sitools.user.controller.modules.form');
  * @requires sitools.user.component.forms.mainContainer
  */
 Ext.define('sitools.user.controller.component.form.FormController', {
-    extend : 'sitools.user.controller.component.ComponentController',
+	extend : 'Ext.app.Controller',
     
     views : ['component.form.FormView',
              'component.form.FormContainerView'],
@@ -60,39 +60,6 @@ Ext.define('sitools.user.controller.component.form.FormController', {
                 click : this.onSearch
             }
         });
-    },
-    
-    openForm : function (form, dataset) {
-            
-        var windowSettings = {
-            datasetName : dataset.name,
-            type : "form",
-            title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name,
-            id : "form" + dataset.id + form.id,
-            saveToolbar : true,
-            iconCls : "form"
-        };
-        
-        var view = Ext.create('sitools.user.view.component.form.FormView', {
-            title : form.name,
-            dataUrl : dataset.sitoolsAttachementForUsers,
-            dataset : dataset,
-            formId : form.id,
-            id : form.id,
-            formName : form.name,
-            formParameters : form.parameters,
-            formZones : form.zones,
-            formWidth : form.width,
-            formHeight : form.height,
-            formCss : form.css,
-            preferencesPath : "/" + dataset.name + "/forms",
-            preferencesFileName : form.name,
-            // searchAction : this.searchAction,
-            scope : this
-        });
-
-        this.setComponentView(view);
-        this.open(view, windowSettings);
     },
     
     componentChanged : function (formContainer, componentChanged) {
@@ -160,11 +127,11 @@ Ext.define('sitools.user.controller.component.form.FormController', {
         }
     },
     
-    onSearch : function (config) {
+    onSearch : function (btn) {
         
         var valid = true;
         
-        me = this.getComponentView();
+        me = btn.up('formsView');
         
         me.zonesPanel.items.each(function(componentList) {
             valid = valid && componentList.isComponentsValid();            
@@ -192,7 +159,7 @@ Ext.define('sitools.user.controller.component.form.FormController', {
                     return;
                 } else {
                     var dataset = Json.dataset;
-                    this.doSearch(config, dataset);
+                    this.doSearch(me, dataset);
                 }
             },
             failure : alertFailure
@@ -204,8 +171,8 @@ Ext.define('sitools.user.controller.component.form.FormController', {
      * @param config
      * @returns
      */
-    doSearch : function (config, dataset) {
-        var containers = this.getComponentView().down('[stype="sitoolsFormContainer"]');
+    doSearch : function (formView, dataset) {
+        var containers = formView.query('[stype="sitoolsFormContainer"]');
         var formParams = [];
         var glue = "";
         var i = 0;
@@ -218,22 +185,21 @@ Ext.define('sitools.user.controller.component.form.FormController', {
             }
         }, this);
 
-//        var desktop = getDesktop();
-//        var win = desktop.getWindow("windResultForm" + config.formId);
-//        if (win) {
-//            win.close();
-//        }
+        var allObjectParams = {};
+        Ext.each(formParams, function (param, index, arrayParams) {
+        	allObjectParams["p[" + index + "]"] = param;
+        });
         
         if (Ext.isFunction(this.searchAction)) {
-            this.searchAction(formParams, dataset, this.scope);
+            this.searchAction(allObjectParams, dataset, this.scope);
         }
         else {
-            this.defaultSearchAction(formParams, dataset);
+            this.defaultSearchAction(allObjectParams, dataset);
         }
         
     },
     
-    defaultSearchAction : function (formParams, dataset) {
+    defaultSearchAction : function (allObjectParams, dataset) {
         var windowConfig = {
 //            id : "windResultForm" + config.formId,
             title : i18n.get('label.dataTitle') + " : " + dataset.name, 
@@ -243,9 +209,14 @@ Ext.define('sitools.user.controller.component.form.FormController', {
             iconCls : "dataviews"
         };
         
-        var control = this.getApplication().getController('sitools.user.controller.component.datasets.DatasetsController');
-        control.onLaunch(this.getApplication()); 
-        control.openDataset(dataset, windowConfig);
+        
+        var datasetViewComponent = Ext.create(dataset.datasetView.jsObject);
+        datasetViewComponent.create(this.getApplication());
+        datasetViewComponent.init(dataset, allObjectParams);
+        
+//        var control = this.getApplication().getController(dataset.datasetView.jsObject);
+//        control.onLaunch(this.getApplication()); 
+//        control.openDataset(dataset, windowConfig);
     }, 
     
     _getSettings : function () {
