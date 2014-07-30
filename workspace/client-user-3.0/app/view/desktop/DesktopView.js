@@ -6,11 +6,11 @@
  */
 
 /**
- * @class Ext.ux.desktop.Desktop
+ * @class Ext.ux.desktop.DesktopView
  * @extends Ext.panel.Panel
  * <p>This class manages the wallpaper, shortcuts and taskbar.</p>
  */
-Ext.define('sitools.user.view.desktop.Desktop', {
+Ext.define('sitools.user.view.desktop.DesktopView', {
     extend: 'Ext.panel.Panel',
 
     alias: 'widget.desktop',
@@ -431,5 +431,13 @@ Ext.define('sitools.user.view.desktop.Desktop', {
         }
 
         me.taskbar.setActiveButton(activeWindow && activeWindow.taskButton);
-    }
+    },
+    
+    getDesktopEl : function () {
+		return Ext.get('x-desktop');
+	},
+	
+	getDesktopAndTaskBarEl : function () {
+		return Ext.get('x-desktop-taskbar');
+	}
 });

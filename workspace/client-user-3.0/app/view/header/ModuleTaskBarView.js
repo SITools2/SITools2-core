@@ -23,7 +23,7 @@
  * @class sitools.user.component.entete.NavBar
  * @extends Ext.Toolbar
  */
-Ext.define('sitools.user.view.header.ModulesTaskBar', {
+Ext.define('sitools.user.view.header.ModuleTaskBarView', {
     extend : 'Ext.Toolbar',
     alias: 'widget.moduleTaskBar',
     

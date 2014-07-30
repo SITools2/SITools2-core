@@ -26,7 +26,7 @@ Ext.namespace('sitools.user.view.header');
  * @class sitools.user.component.entete.UserProfile
  * @extends Ext.Window
  */
-Ext.define('sitools.user.view.header.UserProfile', {
+Ext.define('sitools.user.view.header.UserProfileView', {
     extend : 'Ext.window.Window',
     alias: 'widget.userProfileWindow',
     
@@ -223,7 +223,7 @@ Ext.define('sitools.user.view.header.UserProfile', {
             }
         });
         
-        this.infoPanel = Ext.create('Ext.view.View' , {
+        this.infoPanel = Ext.create('Ext.view.View', {
             flex : 1,
             store : userInfoStore,
             tpl : new Ext.XTemplate('<tpl for=".">',
@@ -259,7 +259,7 @@ Ext.define('sitools.user.view.header.UserProfile', {
 //        }];
         
         this.items = [this.infoPanel, this.buttonsPanel];
-        
+//        
 //        this.listeners = {
 //            scope : this, 
 //            beforeRender : function () {
@@ -274,13 +274,13 @@ Ext.define('sitools.user.view.header.UserProfile', {
         this.callParent(arguments);
         
     }, 
-    /**
-     * while this window is active, checked if any click is done on this window, or somewhere Else. 
-     * 
-     * @param {Ext.event} evt the clic Event. 
-     * @param {HtmlElement} target the Html target element. 
-     * @returns
-     */
+//    /**
+//     * while this window is active, checked if any click is done on this window, or somewhere Else. 
+//     * 
+//     * @param {Ext.event} evt the clic Event. 
+//     * @param {HtmlElement} target the Html target element. 
+//     * @returns
+//     */
 //    interceptOnClick : function (evt, target) {
 //        //le click est sur le bouton pour ouvrir la fenêtre : Désactiver le bouton... et fin de l'action.
 //        if (Ext.DomQuery.select("table[id=" + this.buttonId + "] button[id=" + target.id + "]").length === 1) {

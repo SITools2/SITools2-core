@@ -23,8 +23,9 @@
  * @class sitools.user.component.entete.NavBarButtons
  * @extends Ext.Toolbar
  */
-Ext.define('sitools.user.view.header.ButtonsTaskBar', {
+Ext.define('sitools.user.view.header.ButtonTaskBarView', {
     extend : 'Ext.Toolbar',
+    alias: 'widget.buttonTaskBarView',
     
     requires : ['sitools.public.utils.LoginUtils'],
     /**
@@ -41,16 +42,14 @@ Ext.define('sitools.user.view.header.ButtonsTaskBar', {
             this.width = '204px';
         }
         
-        
         /**
          * The btn to open profileWindow
          */
         this.profilButton = Ext.create("Ext.Button", {
+        	name : 'profilBtn',
             scope : this, 
-            handler : this.showProfil, 
             iconCls : 'navBarButtons-icon',
             cls : 'navBarTransition',
-//            scale : "medium", 
             icon : "/sitools/common/res/images/icons/navBarButtons/user-icon.png", 
             tooltip : {
                 html : i18n.get('label.profil'), 
@@ -113,16 +112,8 @@ Ext.define('sitools.user.view.header.ButtonsTaskBar', {
         
         /**A specialized btn to switch between normal and maximize mode */
         this.maximizeButton = Ext.create('Ext.Button', {
-//            scope : this, 
-            iconCls : 'navBarButtons-icon',
-            handler : function () {
-                if (SitoolsDesk.desktopMaximizeMode) {
-                    SitoolsDesk.getDesktop().minimize(); 
-                }
-                else {
-                    SitoolsDesk.getDesktop().maximize();    
-                }
-            }, 
+			name : 'maximizeBtn',
+			iconCls : 'navBarButtons-icon',
 //            icon : SitoolsDesk.desktopMaximizeMode ? "/sitools/common/res/images/icons/navBarButtons/mini-icon.png" : "/sitools/common/res/images/icons/navBarButtons/maxi-icon.png",  
             tooltip : {
             	id : 'tooltipId',
@@ -190,19 +181,6 @@ Ext.define('sitools.user.view.header.ButtonsTaskBar', {
         return this.maximizeButton;
     }, 
     
-    /**
-     * Handler of profileBtn : Open the sitools.user.component.entete.UserProfile window
-     * @param {Ext.Button} b The pressed btn
-     * @param {Ext.event} e the click Event. 
-     * @returns
-     */
-    showProfil : function (b, e) {
-        var win = new sitools.user.view.header.UserProfile({
-            buttonId : this.profileButtonId
-        });
-        win.show();
-    }, 
-
     /**
      * Handler of Save Btn. If admin Role : open a menu, else save desktop. 
      * @param {Ext.Button} btn The pressed btn

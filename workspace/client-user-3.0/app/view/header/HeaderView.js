@@ -23,32 +23,33 @@
  * @class sitools.user.component.entete.NavBar
  * @extends Ext.Toolbar
  */
-Ext.define('sitools.user.view.header.Header', {
+Ext.define('sitools.user.view.header.HeaderView', {
     extend : 'Ext.Panel',
-
-    requires : [ 'sitools.user.view.header.ButtonsTaskBar', 'sitools.user.view.header.ModulesTaskBar' ],
-
+    alias : 'widget.headerView',
+    
+    requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.ModuleTaskBarView' ],
     height : 0,
 
     initComponent : function () {
 
-        this.navBarModule = Ext.create("sitools.user.view.header.ModulesTaskBar", {
+        this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
             modules : this.modules,
             observer : this
         });
 
-        this.navToolbarButtons = Ext.create("sitools.user.view.header.ButtonsTaskBar", {
+        this.navToolbarButtons = Ext.create('sitools.user.view.header.ButtonTaskBarView', {
             observer : this,
             width : '162px' // width without save button
         });
 
         this.NavBarsPanel = Ext.create('Ext.Toolbar', {
+        	name : 'navbarPanels',
             padding : 0,
             border : false,
             listeners : {
-                scope : this,
-                maximizeDesktop : this.onMaximizeDesktopNavbar,
-                minimizeDesktop : this.onMinimizeDesktopNavbar
+//                scope : this,
+//                maximizeDesktop : this.onMaximizeDesktopNavbar,
+//                minimizeDesktop : this.onMinimizeDesktopNavbar
             },
             items : [ this.navBarModule, this.navToolbarButtons ]
         });
@@ -73,25 +74,25 @@ Ext.define('sitools.user.view.header.Header', {
             },
             listeners : {
                 scope : this,
-                afterRender : function (me) {
-                    // var enteteEl = SitoolsDesk.getEnteteEl();
-                    var enteteEl = Ext.get('x-headers');
-                    me.setHeight(enteteEl.getHeight());
-
-                    me.heightNormalMode = enteteEl.getHeight();
-                    me.heightMaximizeDesktopMode = this.NavBarsPanel.getHeight();
-                },
-
-                maximizeDesktop : this.onMaximizeDesktop,
-                minimizeDesktop : this.onMinimizeDesktop,
-                windowResize : function (me) {
-                    if (!Ext.isEmpty(this.userContainer) && this.userContainer.isVisible()) {
-                        this.userContainer.hide();
-                    }
-                },
-                desktopReady : function (me) {
-                    this.entetePanel.fireEvent("desktopReady", this.navToolbarButtons);
-                }
+//                afterRender : function (me) {
+//                    // var enteteEl = SitoolsDesk.getEnteteEl();
+//                    var enteteEl = Ext.get('x-headers');
+//                    me.setHeight(enteteEl.getHeight());
+//
+//                    me.heightNormalMode = enteteEl.getHeight();
+//                    me.heightMaximizeDesktopMode = this.NavBarsPanel.getHeight();
+//                },
+//
+//                maximizeDesktop : this.onMaximizeDesktop,
+//                minimizeDesktop : this.onMinimizeDesktop,
+//                windowResize : function (me) {
+//                    if (!Ext.isEmpty(this.userContainer) && this.userContainer.isVisible()) {
+//                        this.userContainer.hide();
+//                    }
+//                },
+//                desktopReady : function (me) {
+//                    this.entetePanel.fireEvent("desktopReady", this.navToolbarButtons);
+//                }
             }
         });
 
