@@ -50,24 +50,24 @@ Ext.define("sitools.user.controller.header.HeaderController", {
         	
         	/* HeaderView events */
         	'headerView' : {
-//        		afterRender : function (me) {
-//                    // var enteteEl = SitoolsDesk.getEnteteEl();
-//                    var enteteEl = Ext.get('x-headers');
-//                    me.setHeight(enteteEl.getHeight());
-//
-//                    me.heightNormalMode = enteteEl.getHeight();
-//                    me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
-//                },
-//                maximizeDesktop : this.onMaximizeDesktop,
-//                minimizeDesktop : this.onMinimizeDesktop,
-//                windowResize : function (me) {
-//                    if (!Ext.isEmpty(me.userContainer) && me.userContainer.isVisible()) {
-//                        me.userContainer.hide();
-//                    }
-//                },
-//                desktopReady : function (me) {
-//                    me.entetePanel.fireEvent("desktopReady", me.navToolbarButtons);
-//                }
+        		afterrender : function (me) {
+                    // var enteteEl = SitoolsDesk.getEnteteEl();
+                    var enteteEl = Ext.get('x-headers');
+                    me.setHeight(enteteEl.getHeight());
+
+                    me.heightNormalMode = enteteEl.getHeight();
+                    me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
+                },
+                maximizeDesktop : this.onMaximizeDesktop,
+                minimizeDesktop : this.onMinimizeDesktop,
+                windowResize : function (me) {
+                    if (!Ext.isEmpty(me.userContainer) && me.userContainer.isVisible()) {
+                        me.userContainer.hide();
+                    }
+                },
+                desktopReady : function (me) {
+                    me.entetePanel.fireEvent("desktopReady", me.navToolbarButtons);
+                }
         	},
         	
         	'headerView toolbar[name=navbarPanels]' : {
@@ -178,31 +178,35 @@ Ext.define("sitools.user.controller.header.HeaderController", {
      * listeners of maximizeDesktop event :
      */
     onMaximizeDesktop : function () {
-        this.entetePanel.hide();
-        this.container.setHeight(this.heightMaximizeDesktopMode);
-        this.setHeight(this.heightMaximizeDesktopMode);
-        this.NavBarsPanel.fireEvent("maximizeDesktop");
+    	var me = this.getHeaderView();
+    	
+    	me.entetePanel.hide();
+    	me.container.setHeight(me.heightMaximizeDesktopMode);
+    	me.setHeight(this.heightMaximizeDesktopMode);
+    	me.NavBarsPanel.fireEvent("maximizeDesktop");
         // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
-        if (this.userContainer) {
-            this.userContainer.fireEvent("maximizeDesktop", this.userContainer, this.navToolbarButtons);
-            this.userContainer = null;
+        if (me.userContainer) {
+        	me.userContainer.fireEvent("maximizeDesktop", me.userContainer, me.navToolbarButtons);
+        	me.userContainer = null;
         }
-        this.doLayout();
+//        me.doLayout();
     },
     /**
      * listeners of minimizeDesktop event :
      */
     onMinimizeDesktop : function () {
-        this.entetePanel.setVisible(true);
-        this.container.dom.style.height = "";
-        this.setHeight(this.heightNormalMode);
-        this.NavBarsPanel.fireEvent("minimizeDesktop");
+    	var me = this.getHeaderView();
+    	
+    	me.entetePanel.setVisible(true);
+    	me.container.dom.style.height = "";
+    	me.setHeight(me.heightNormalMode);
+    	me.NavBarsPanel.fireEvent("minimizeDesktop");
         // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
-        if (this.userContainer) {
-            this.userContainer.fireEvent("minimizeDesktop", this.userContainer, this.navToolbarButtons);
-            this.userContainer = null;
+        if (me.userContainer) {
+        	me.userContainer.fireEvent("minimizeDesktop", me.userContainer, me.navToolbarButtons);
+        	me.userContainer = null;
         }
-        this.doLayout();
+//        me.doLayout();
 
     },
 	
@@ -210,15 +214,19 @@ Ext.define("sitools.user.controller.header.HeaderController", {
      * listeners of maximizeDesktop event
      */
     onMaximizeDesktopNavbar : function () {
-        this.navBarModule.fireEvent("maximizeDesktop");
-        this.navToolbarButtons.fireEvent("maximizeDesktop");
+    	var me = this.getHeaderView();
+    	
+    	me.navBarModule.fireEvent("maximizeDesktop");
+    	me.navToolbarButtons.fireEvent("maximizeDesktop");
     },
 
     /**
      * listeners of minimizeDesktop event
      */
     onMinimizeDesktopNavbar : function () {
-        this.navBarModule.fireEvent("minimizeDesktop");
-        this.navToolbarButtons.fireEvent("minimizeDesktop");
+    	var me = this.getHeaderView();
+    	
+    	me.navBarModule.fireEvent("minimizeDesktop");
+    	me.navToolbarButtons.fireEvent("minimizeDesktop");
     }
 });

@@ -56,7 +56,6 @@ Ext.define('sitools.user.Application', {
                 "X-User-Agent" : "Sitools"
             };
         }
-        
         this.initSiteMap();
     },
     
@@ -110,7 +109,6 @@ Ext.define('sitools.user.Application', {
     	sitools.user.core.Project.init(this.projectInitialized, this);
     },
     
-    
     projectInitialized : function () {
         this.setReady(true);
         this.fireEvent('projectInitialized');
@@ -122,7 +120,6 @@ Ext.define('sitools.user.Application', {
         this.removeMask();
     },
     
-    
     addMask : function () {
         this.splashScreen = Ext.getBody().mask('', 'splashscreen');
         this.splashScreen.addCls('splashscreen');
@@ -130,9 +127,11 @@ Ext.define('sitools.user.Application', {
             cls : 'x-splash-icon'
         });
     },
+    
     updateMaskText : function () {
         Ext.dom.Query.selectNode('.x-mask-msg-text').innerHTML = i18n.get("label.loadingSitools");
     },
+    
     removeMask : function () {
         this.splashScreen.fadeOut({
             duration : 1000,
@@ -145,5 +144,4 @@ Ext.define('sitools.user.Application', {
         });
     }
    
-
 });
