@@ -35,7 +35,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     },
 
     loadProject : function () {
-        var url = sitools.user.utils.Project.getSitoolsAttachementForUsers();
+        var url = Project.getSitoolsAttachementForUsers();
         var store = this.getStore("ProjectStore");
         store.setCustomUrl(url);
         store.load({

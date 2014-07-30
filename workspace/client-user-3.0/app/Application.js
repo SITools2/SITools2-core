@@ -3,15 +3,18 @@ Ext.define('sitools.user.Application', {
 
     requires : [ 'Ext.container.Viewport', 
                  
-                         /* UTILS */
-                 'sitools.user.utils.Project', 
+                 /* CORE */
+                 'sitools.user.core.Project', 
+                 
+                 /* UTILS */
                  'sitools.public.utils.i18n',
                  'sitools.public.utils.loadUrl',
                  'sitools.public.utils.sql2ext',
                  'sitools.public.utils.Locale',
                  'sitools.user.utils.FormUtils',
-                 'sitools.public.utils.PopupMessage'
-                 ],
+                 'sitools.public.crypto.Base64',
+                 'sitools.public.utils.UserStorage',
+                 'sitools.public.utils.PopupMessage'                 ],
 
     extend : 'Ext.app.Application',
 
@@ -104,7 +107,7 @@ Ext.define('sitools.user.Application', {
     
     // 6
     initProject : function () {
-        sitools.user.utils.Project.init(this.projectInitialized, this);
+    	sitools.user.core.Project.init(this.projectInitialized, this);
     },
     
     

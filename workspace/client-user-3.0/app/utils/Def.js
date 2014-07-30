@@ -49,6 +49,8 @@ var SITOOLS_DEFAULT_PROJECT_IMAGE_URL = "/sitools/res/images/sitools2_logo.png";
  */
 var DEFAULT_NEAR_LIMIT_SIZE = 100;
 
+userLogin = Ext.util.Cookies.get('userLogin');
+
 Ext.BLANK_IMAGE_URL = '/sitools/cots/extjs/resources/images/default/s.gif';
 Ext.USE_NATIVE_JSON  = DEFAULT_NATIVEJSON;
 Ext.Ajax.timeout = DEFAULT_TIMEOUT;

@@ -82,4 +82,4 @@ Ext.define('sitools.public.utils.UserStorage', {
 });
 
 
-var userStorage = sitools.public.utils.UserStorage;
+userStorage = sitools.public.utils.UserStorage;

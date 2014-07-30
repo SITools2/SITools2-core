@@ -30,8 +30,9 @@ Ext.define("sitools.user.controller.header.HeaderController", {
     
     extend : 'Ext.app.Controller',
     
-    views : ['header.Header', 
-             'header.UserProfile'],
+    views : ['header.HeaderView', 
+             'header.UserProfileView',
+             'header.ButtonTaskBarView'],
     
     heightNormalMode : 0, 
     heightMaximizeDesktopMode : 0,
@@ -46,10 +47,42 @@ Ext.define("sitools.user.controller.header.HeaderController", {
         this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
         
         this.control({
+        	
+        	/* HeaderView events */
+        	'headerView' : {
+//        		afterRender : function (me) {
+//                    // var enteteEl = SitoolsDesk.getEnteteEl();
+//                    var enteteEl = Ext.get('x-headers');
+//                    me.setHeight(enteteEl.getHeight());
+//
+//                    me.heightNormalMode = enteteEl.getHeight();
+//                    me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
+//                },
+//                maximizeDesktop : this.onMaximizeDesktop,
+//                minimizeDesktop : this.onMinimizeDesktop,
+//                windowResize : function (me) {
+//                    if (!Ext.isEmpty(me.userContainer) && me.userContainer.isVisible()) {
+//                        me.userContainer.hide();
+//                    }
+//                },
+//                desktopReady : function (me) {
+//                    me.entetePanel.fireEvent("desktopReady", me.navToolbarButtons);
+//                }
+        	},
+        	
+        	'headerView toolbar[name=navbarPanels]' : {
+        		maximizeDesktop : this.onMaximizeDesktopNavbar,
+                minimizeDesktop : this.onMinimizeDesktopNavbar
+        	},
+        	
+        	/* UserProfilerView events */
 			'userProfileWindow' : {
                 beforerender : function (usrProfileWindow) {
                     usrProfileWindow.x = Ext.getBody().getWidth() - usrProfileWindow.width;
                     usrProfileWindow.y = this.getEnteteEl().getHeight(); 
+                },
+                blur : function (userProfileWindow) {
+                	this.close();
                 }
             },
             
@@ -82,7 +115,42 @@ Ext.define("sitools.user.controller.header.HeaderController", {
                     });
                     register.show();
                 }
-            }
+            },
+            
+            'userProfileWindow button[name="usrProfileRegister"]' : {
+                click : function (btn) {
+                    var register = new sitools.public.userProfile.Register({
+                        closable : true,
+                        url : loadUrl.get('APP_URL')+ "/inscriptions/user",
+                        reset : loadUrl.get('APP_URL') + '/lostPassword',
+                        unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
+                        login : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login'
+                    });
+                    register.show();
+                }
+            },
+            
+            /* ButtonTaskbarView events */
+            'buttonTaskBarView button[name=profilBtn]' : {
+            	click : function (btn) {
+            		var win = Ext.create('sitools.user.view.header.UserProfileView', {
+                        buttonId : btn.id
+                    });
+                    win.show();
+            	}
+            },
+            
+			'buttonTaskBarView button[name=maximizeBtn]' : {
+				click : function (btn) {
+					if (Project.navigationMode) {
+						this.getApplication().getController('DesktopController').minimize(); 
+					}
+					else {
+						this.getApplication().getController('DesktopController').maximize();    
+					}
+				}
+			}
+            
         });
         this.callParent(arguments);
     },
@@ -90,7 +158,7 @@ Ext.define("sitools.user.controller.header.HeaderController", {
     onProjectLoaded : function () {
         var project = Ext.getStore('ProjectStore').getProject();
         
-        this.HeaderView = this.getView('header.Header').create({
+        this.HeaderView = this.getView('header.HeaderView').create({
             renderTo : "x-headers",
             htmlContent : project.get('htmlHeader'),
             modules : project.modules(),
@@ -104,5 +172,53 @@ Ext.define("sitools.user.controller.header.HeaderController", {
 
 	getEnteteEl : function () {
 		return this.getHeaderView().getEl();
-	}
+	},
+	
+	 /**
+     * listeners of maximizeDesktop event :
+     */
+    onMaximizeDesktop : function () {
+        this.entetePanel.hide();
+        this.container.setHeight(this.heightMaximizeDesktopMode);
+        this.setHeight(this.heightMaximizeDesktopMode);
+        this.NavBarsPanel.fireEvent("maximizeDesktop");
+        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
+        if (this.userContainer) {
+            this.userContainer.fireEvent("maximizeDesktop", this.userContainer, this.navToolbarButtons);
+            this.userContainer = null;
+        }
+        this.doLayout();
+    },
+    /**
+     * listeners of minimizeDesktop event :
+     */
+    onMinimizeDesktop : function () {
+        this.entetePanel.setVisible(true);
+        this.container.dom.style.height = "";
+        this.setHeight(this.heightNormalMode);
+        this.NavBarsPanel.fireEvent("minimizeDesktop");
+        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
+        if (this.userContainer) {
+            this.userContainer.fireEvent("minimizeDesktop", this.userContainer, this.navToolbarButtons);
+            this.userContainer = null;
+        }
+        this.doLayout();
+
+    },
+	
+	/**
+     * listeners of maximizeDesktop event
+     */
+    onMaximizeDesktopNavbar : function () {
+        this.navBarModule.fireEvent("maximizeDesktop");
+        this.navToolbarButtons.fireEvent("maximizeDesktop");
+    },
+
+    /**
+     * listeners of minimizeDesktop event
+     */
+    onMinimizeDesktopNavbar : function () {
+        this.navBarModule.fireEvent("minimizeDesktop");
+        this.navToolbarButtons.fireEvent("minimizeDesktop");
+    }
 });

@@ -22,7 +22,7 @@ Ext.define('sitools.user.controller.DesktopController', {
     requires : [ 'Ext.window.MessageBox', 
                  'Ext.ux.modules.Settings' ],
 
-    views : [ "desktop.Desktop" ],
+    views : [ 'desktop.DesktopView' ],
 
     init : function () {
         var me = this, desktopCfg;
@@ -33,7 +33,7 @@ Ext.define('sitools.user.controller.DesktopController', {
             renderTo : 'x-desktop'
         });
 
-        me.desktop = Ext.create('sitools.user.view.desktop.Desktop', desktopCfg);
+        me.desktop = Ext.create('sitools.user.view.desktop.DesktopView', desktopCfg);
 
         Ext.EventManager.on(window, 'beforeunload', me.onUnload, me);
 
@@ -141,5 +141,33 @@ Ext.define('sitools.user.controller.DesktopController', {
             desktop : this.desktop
         });
         dlg.show();
-    }
+    },
+    
+    minimize : function () {
+		this.getApplication().getController('HeaderController').getHeaderViewView().fireEvent("minimizeDesktop");
+//		SitoolsDesk.getBottomComp().fireEvent("minimizeDesktop");
+		
+		Ext.DomQuery.select("div[stype=freeDiv]").each(function (freeDiv) {
+			freeDiv.style.height = "";
+			freeDiv.style.width = "";
+		});
+		
+		//Revenir à la taille initiale de la zone desktopAndTaskbar
+		this.getDesktopAndTaskBarEl().dom.style.height="";
+		this.getDesktopAndTaskBarEl().dom.style.width="";
+		
+		this.getDesktopEl().setWidth("");
+		
+		layout();
+		if (SitoolsDesk.getDesktop().activePanel) {
+			SitoolsDesk.getDesktop().activePanel.fireEvent("resizeDesktop", SitoolsDesk.getDesktop().activePanel);
+		}
+		
+		SitoolsDesk.getDesktop().taskbar.tbPanel.ownerCt.doLayout()
+		
+		SitoolsDesk.app.getModulesInDiv().each(function (moduleInDiv) {
+			moduleInDiv.fireEvent("minimizeDesktop", moduleInDiv);
+		});
+		
+	}
 });
