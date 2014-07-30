@@ -84,21 +84,19 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
         var guiServicePlugin = {};
         Ext.apply(guiServicePlugin, service.data);
         
-        console.log("TODO execute : " + guiServicePlugin.xtype);
-        
         var dataview = button.up("livegridView");
         
-        Ext.require(guiServicePlugin.xtype, function (serviceObj) {
-            var config = Ext.apply(guiServicePlugin, {
-                columnModel : dataview.columns,
-                store : dataview.getStore(),
-                dataview : dataview,
-                origin : this.origin,
-                record : record,
-                columnAlias : columnAlias
-            });
+        var serviceObj = Ext.create(guiServicePlugin.xtype);
+        serviceObj.create(this.getApplication());
+        var config = Ext.apply(guiServicePlugin, {
+            columnModel : dataview.columns,
+            store : dataview.getStore(),
+            dataview : dataview,
+            origin : this.origin,
+            record : record,
+            columnAlias : columnAlias
+        });
 
-            serviceObj.executeAsService(config);     
-        }, this);
+        serviceObj.executeAsService(config);     
     }
 });
