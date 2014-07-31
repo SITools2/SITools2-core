@@ -28,6 +28,8 @@ Ext.define('sitools.user.store.DataviewsStore', {
     autoLoad : true,
     pageSize : 300,
     buffered : true,
+    
+    paramPrefix : "filter",
 
     constructor : function (config) {
         config = Ext.apply({}, config);
@@ -98,6 +100,11 @@ Ext.define('sitools.user.store.DataviewsStore', {
                     if (!Ext.isEmpty(store.formParams)) {
                     	Ext.apply(operation.params, store.formParams);
                     }
+                    
+                    if (!Ext.isEmpty(store.servicefilters) && Ext.isFunction(store.servicefilters.getFilterData)) {
+                        var params = this.buildQuery(store.servicefilters.getFilterData());
+                        Ext.apply(operation.params, params);
+                    }
                 }
             }
         });
@@ -110,5 +117,25 @@ Ext.define('sitools.user.store.DataviewsStore', {
     
     addParamsToUrl : function (params) {
 		this.getProxy().url += params;
+    },
+    
+    buildQuery : function (filters) {
+        if (Ext.isEmpty(filters)) {
+            return;
+        }
+        var p = {}, i, f, root, dataPrefix, key, tmp,
+            len = filters.length;
+
+        for (i = 0; i < len; i++) {
+            f = filters[i];
+            root = [this.paramPrefix, '[', i, ']'].join('');
+            p[root + '[columnAlias]'] = f.columnAlias;
+
+            dataPrefix = root + '[data]';
+            for (key in f.data) {
+                p[[dataPrefix, '[', key, ']'].join('')] = f.data[key];
+            }
+        }
+        return p;
     }
 });
