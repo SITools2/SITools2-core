@@ -99,37 +99,37 @@ Ext.define('sitools.user.view.header.HeaderView', {
         this.callParent(arguments);
     },
 
-    /**
-     * listeners of maximizeDesktop event :
-     */
-    onMaximizeDesktop : function () {
-        this.entetePanel.hide();
-        this.container.setHeight(this.heightMaximizeDesktopMode);
-        this.setHeight(this.heightMaximizeDesktopMode);
-        this.NavBarsPanel.fireEvent("maximizeDesktop");
-        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
-        if (this.userContainer) {
-            this.userContainer.fireEvent("maximizeDesktop", this.userContainer, this.navToolbarButtons);
-            this.userContainer = null;
-        }
-        this.doLayout();
-    },
-    /**
-     * listeners of minimizeDesktop event :
-     */
-    onMinimizeDesktop : function () {
-        this.entetePanel.setVisible(true);
-        this.container.dom.style.height = "";
-        this.setHeight(this.heightNormalMode);
-        this.NavBarsPanel.fireEvent("minimizeDesktop");
-        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
-        if (this.userContainer) {
-            this.userContainer.fireEvent("minimizeDesktop", this.userContainer, this.navToolbarButtons);
-            this.userContainer = null;
-        }
-        this.doLayout();
-
-    },
+//    /**
+//     * listeners of maximizeDesktop event :
+//     */
+//    onMaximizeDesktop : function () {
+//        this.entetePanel.hide();
+//        this.container.setHeight(this.heightMaximizeDesktopMode);
+//        this.setHeight(this.heightMaximizeDesktopMode);
+//        this.NavBarsPanel.fireEvent("maximizeDesktop");
+//        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
+//        if (this.userContainer) {
+//            this.userContainer.fireEvent("maximizeDesktop", this.userContainer, this.navToolbarButtons);
+//            this.userContainer = null;
+//        }
+//        this.doLayout();
+//    },
+//    /**
+//     * listeners of minimizeDesktop event :
+//     */
+//    onMinimizeDesktop : function () {
+//        this.entetePanel.setVisible(true);
+//        this.container.dom.style.height = "";
+//        this.setHeight(this.heightNormalMode);
+//        this.NavBarsPanel.fireEvent("minimizeDesktop");
+//        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
+//        if (this.userContainer) {
+//            this.userContainer.fireEvent("minimizeDesktop", this.userContainer, this.navToolbarButtons);
+//            this.userContainer = null;
+//        }
+//        this.doLayout();
+//
+//    },
 
     showUserContainer : function (navBar) {
         var tpl, textToDisplay = i18n.get("label.welcome"), userContainerHeight, userContainerWidth;
