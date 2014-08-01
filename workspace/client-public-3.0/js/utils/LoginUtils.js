@@ -168,3 +168,5 @@ Ext.define('sitools.public.utils.LoginUtils', {
         return Ext.util.Cookies.get('userLogin');
     }
 });
+
+LoginUtils = sitools.public.utils.LoginUtils;

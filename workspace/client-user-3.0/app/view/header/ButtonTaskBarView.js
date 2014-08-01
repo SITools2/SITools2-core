@@ -61,13 +61,9 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         itemsButtons.push(this.profilButton);
         
         this.versionButton = Ext.create('Ext.Button', {
+        	name : 'versionBtn',
             iconCls : 'navBarButtons-icon',
-//            scale : "medium", 
-            id : "versionBtnId",
             icon : "/sitools/common/res/images/icons/navBarButtons/version-icon.png", 
-            handler : function () {
-                showVersion();
-            }, 
             tooltip : {
                 html : i18n.get('label.version'), 
                 anchor : 'bottom', 

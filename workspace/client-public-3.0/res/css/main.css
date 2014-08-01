@@ -280,10 +280,10 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 .userButtons-thumb {
 	background: transparent;
 	padding: 3px;
-	height: 45px;
+	height: 50px;
 }
 
-.userButtons-thumb img{
+.userButtons-thumb img {
 	height: 50px;
 }
 
@@ -317,10 +317,13 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 
 .userButtonsPointer {
 	cursor : pointer;
+	transition: width .5s cubic-bezier( .4, 1, .4, 1);
 }
 
 .userButtons-name {
 	display: block;
+	font-size: 11px;
+	color : #222;
 }
 
 .userButtons-comment {

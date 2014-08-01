@@ -4,7 +4,8 @@ Ext.define('sitools.user.Application', {
     requires : [ 'Ext.container.Viewport', 
                  
                  /* CORE */
-                 'sitools.user.core.Project', 
+                 'sitools.user.core.Project',
+                 'sitools.user.core.Desktop',
                  
                  /* UTILS */
                  'sitools.public.utils.i18n',
@@ -12,17 +13,21 @@ Ext.define('sitools.user.Application', {
                  'sitools.public.utils.sql2ext',
                  'sitools.public.utils.Locale',
                  'sitools.user.utils.FormUtils',
+                 'sitools.public.utils.LoginUtils',
                  'sitools.public.crypto.Base64',
                  'sitools.public.utils.UserStorage',
-                 'sitools.public.utils.PopupMessage'                 ],
+                 'sitools.public.utils.PopupMessage',              
+                 'sitools.public.utils.Version'              
+                 ],
 
     extend : 'Ext.app.Application',
 
-    controllers : ["core.SitoolsController",
+    controllers : ['core.SitoolsController',
                    "DesktopController", 
                    'header.HeaderController',
                    'footer.FooterController',
-                   'core.NavigationModeFactory'
+                   'core.NavigationModeFactory',
+                   'header.UserPersonalController'
                    ],
     isReady : false,
     modules : null,

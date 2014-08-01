@@ -431,13 +431,6 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         }
 
         me.taskbar.setActiveButton(activeWindow && activeWindow.taskButton);
-    },
+    }
     
-    getDesktopEl : function () {
-		return Ext.get('x-desktop');
-	},
-	
-	getDesktopAndTaskBarEl : function () {
-		return Ext.get('x-desktop-taskbar');
-	}
 });

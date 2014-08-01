@@ -559,7 +559,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             header : i18n.get('headers.projectModuleParameters'),
             width : 100,
             items : [{
-                icon : loadUrl.get('APP_URL') + "loadUrl.get('APP_CLIENT_PUBLIC_URL')/res/images/icons/tree_projects_resources.png",
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + "/res/images/icons/tree_projects_resources.png",
                 scope : this,
                 handler : function (grid, row, col, item, e) {
                     this.modulePanel.getSelectionModel().select(row);
@@ -571,10 +571,15 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             renderer : function (value, metadata, record, rowInd, colInd, store) {
                 if (record.data.xtype) {
                     try {
-                        var getParametersMethod = eval(record.data.xtype + ".getParameters");
-                        if (!Ext.isFunction(getParametersMethod)) {
-                            metadata.style = 'display:none;';
-                        }
+                    	var module = Ext.create(record.data.xtype);
+                    		if (!Ext.isFunction(module.getParameters)) {
+                                metadata.style = 'display:none;';
+                            }
+                    	
+//                        var getParametersMethod = eval(record.data.xtype + ".getParameters");
+//                        if (!Ext.isFunction(getParametersMethod)) {
+//                            metadata.style = 'display:none;';
+//                        }
                     }
                     catch (err) {
                         metadata.style = 'display:none;';
@@ -1204,9 +1209,9 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             }, this);
         
         if (!Ext.isEmpty(listDependencies)) {
-            includeJsForceOrder(listDependencies, 0, function () {
-//                this.modulePanel.getView().refresh();
-            }, this);
+//            includeJsForceOrder(listDependencies, 0, function () {
+////                this.modulePanel.getView().refresh();
+//            }, this);
         }
     },
     

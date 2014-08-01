@@ -36,6 +36,7 @@ Ext.define('sitools.public.utils.Locale', {
             success : function (response) {
                 var json = Ext.decode(response.responseText);
                 locale.setLanguages(json.data);
+                Project.setLanguages(json.data)
                 
                 Ext.callback(callback, scope);
             },

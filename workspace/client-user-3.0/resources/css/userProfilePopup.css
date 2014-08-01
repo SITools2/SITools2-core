@@ -1,0 +1,56 @@
+/***************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+
+.userIcon {
+	background-image: url(/sitools/client-public/res/images/icons/menu/usersGroups.png) !important;
+}
+
+.loginIcon {
+	background-image: url(/sitools/client-user/resources/icons/session/login.png) !important;
+}
+
+.logoutIcon {
+	background-image: url(/sitools/client-user/resources/icons/session/logout.png) !important;
+}
+
+.registerIcon {
+	background-image: url(/sitools/client-user/resources/icons/session/register.png) !important;
+}
+
+.personalIcon {
+	background-image: url(/sitools/client-user/resources/icons/session/personal.png) !important;
+}
+
+.languageMenuIcon {
+	background-image: url(/sitools/client-user/resources/icons/session/language.png) !important;
+}
+
+.userMenuCls {
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	color : #222;
+}
+
+.menuItemCls .x-menu-item-text{
+	font-size: 12px;
+	line-height: 32px;
+	padding-left: 8px;
+	color : #222;
+}

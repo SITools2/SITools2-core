@@ -34,8 +34,8 @@ Ext.define("sitools.user.controller.header.HeaderController", {
              'header.UserProfileView',
              'header.ButtonTaskBarView'],
     
-    heightNormalMode : 0, 
-    heightMaximizeDesktopMode : 0,
+    heightNormalMode : 0,
+    heightMaximizeDesktopMode : 44,
     
     config : {
         HeaderView : null,
@@ -82,17 +82,17 @@ Ext.define("sitools.user.controller.header.HeaderController", {
                     usrProfileWindow.y = this.getEnteteEl().getHeight(); 
                 },
                 blur : function (userProfileWindow) {
-                	this.close();
+                	userProfileWindow.close();
                 }
             },
             
-            'userProfileWindow button[name="usrProfileLogout"]' : {
+            'userProfileWindow menuitem[name="usrProfileLogout"]' : {
                 click : function (btn) {
                     sitools.public.utils.LoginUtils.logout();
                 }
             },
             
-            'userProfileWindow button[name="usrProfileLogin"]' : {
+            'userProfileWindow menuitem[name="usrProfileLogin"]' : {
                 click : function (btn) {
                     sitools.public.utils.LoginUtils.connect({
                         closable : true,
@@ -104,7 +104,7 @@ Ext.define("sitools.user.controller.header.HeaderController", {
                 }
             },
             
-            'userProfileWindow button[name="usrProfileRegister"]' : {
+            'userProfileWindow menuitem[name="usrProfileRegister"]' : {
                 click : function (btn) {
                     var register = new sitools.public.userProfile.Register({
                         closable : true,
@@ -117,37 +117,48 @@ Ext.define("sitools.user.controller.header.HeaderController", {
                 }
             },
             
-            'userProfileWindow button[name="usrProfileRegister"]' : {
+            'userProfileWindow menuitem[name="usrProfilePersonal"]' : {
                 click : function (btn) {
-                    var register = new sitools.public.userProfile.Register({
-                        closable : true,
-                        url : loadUrl.get('APP_URL')+ "/inscriptions/user",
-                        reset : loadUrl.get('APP_URL') + '/lostPassword',
-                        unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
-                        login : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login'
+                	var menu = btn.up('userProfileWindow');
+                	
+                    var personnalController = this.getApplication().getController('header.UserPersonalController')
+                    var personalView = personnalController.getView('header.UserPersonalView').create({
+                    	user : menu.user
                     });
-                    register.show();
+                    
+                    personalView.show();
                 }
             },
             
             /* ButtonTaskbarView events */
             'buttonTaskBarView button[name=profilBtn]' : {
-            	click : function (btn) {
-            		var win = Ext.create('sitools.user.view.header.UserProfileView', {
-                        buttonId : btn.id
-                    });
-                    win.show();
-            	}
+            	click : function(btn) {
+            		var usrProfileWin = Ext.ComponentQuery.query('userProfileWindow')[0];
+					if (Ext.isEmpty(usrProfileWin) || !usrProfileWin.isVisible()) {
+						var win = this.getView('header.UserProfileView').create({
+							buttonId : btn.id
+						});
+						win.show();
+					}
+				}
             },
             
 			'buttonTaskBarView button[name=maximizeBtn]' : {
 				click : function (btn) {
-					if (Project.navigationMode) {
-						this.getApplication().getController('DesktopController').minimize(); 
+					if (Desktop.getDesktopSize() == 'minimize') {
+						this.getApplication().getController('DesktopController').maximize();
+						Desktop.setDesktopSize('maximize');
 					}
 					else {
-						this.getApplication().getController('DesktopController').maximize();    
+						this.getApplication().getController('DesktopController').minimize(); 
+						Desktop.setDesktopSize('minimize');
 					}
+				}
+			},
+			
+			'buttonTaskBarView button[name=versionBtn]' : {
+				click : function (btn) {
+					Ext.create('sitools.public.utils.Version').show();
 				}
 			}
             
@@ -181,15 +192,17 @@ Ext.define("sitools.user.controller.header.HeaderController", {
     	var me = this.getHeaderView();
     	
     	me.entetePanel.hide();
-    	me.container.setHeight(me.heightMaximizeDesktopMode);
+    	me.container.setHeight(this.heightMaximizeDesktopMode);
     	me.setHeight(this.heightMaximizeDesktopMode);
+    	
     	me.NavBarsPanel.fireEvent("maximizeDesktop");
-        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
+        
+    	// this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
         if (me.userContainer) {
         	me.userContainer.fireEvent("maximizeDesktop", me.userContainer, me.navToolbarButtons);
         	me.userContainer = null;
         }
-//        me.doLayout();
+        me.doLayout();
     },
     /**
      * listeners of minimizeDesktop event :
