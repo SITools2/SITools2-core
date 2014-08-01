@@ -125,7 +125,8 @@ Ext.define('sitools.admin.usergroups.RegProp', { extend : 'Ext.Window',
             columns : cmProperties,
             selModel : smProperties,
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-                clicksToEdit: 1
+                clicksToEdit: 1,
+                pluginId : 'cellEditing'
             })],
             flex : 1
         });
@@ -204,6 +205,15 @@ Ext.define('sitools.admin.usergroups.RegProp', { extend : 'Ext.Window',
     },
     onCreateProperties : function () {
         this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), {});
+        
+        var rowIndex = this.gridProperties.getStore().getCount() -1;
+        
+        this.gridProperties.getView().focusRow(rowIndex);
+
+        this.gridProperties.getPlugin('cellEditing').startEditByPosition({
+            row: rowIndex, 
+            column: 0
+        });
     },
     onDeleteProperties : function () {
         var selections = this.gridProperties.getSelectionModel().getSelection();

@@ -115,7 +115,8 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
             selModel : smProperties,
             forceFit : true,
             plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-                clicksToEdit: 1
+                clicksToEdit: 1,
+                pluginId : 'cellEditing'
             })], 
             listeners : {
 				scope : this, 
@@ -200,7 +201,17 @@ Ext.define('sitools.admin.datasets.DatasetProperties', {
         var e = {
 			type : "String"
         };
-        this.getStore().insert(0, e);
+        var rowIndex = 0;
+
+        this.getStore().insert(rowIndex, e);
+        
+        
+        this.getView().focusRow(rowIndex);
+        
+        this.getPlugin('cellEditing').startEditByPosition({
+            row: rowIndex,
+            column: 0
+        });
     },
     /**
      * Called on delete button of the property grid. 

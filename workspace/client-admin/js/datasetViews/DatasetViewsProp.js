@@ -194,22 +194,6 @@ Ext.define('sitools.admin.datasetViews.DatasetViewsProp', {
             },
             failure : alertFailure
         });
-    },
-    
-    /**
-     * Add a new Record to the dependencies property of a project module
-     */
-    onCreateDependencies : function () {
-        this.gridDependencies.getStore().insert(this.gridDependencies.getStore().getCount(), {});
-    },
-    
-    /**
-     * Delete the selected dependency of a project module
-     */
-    onDeleteDependencies : function () {
-        var recs = this.gridDependencies.getSelectionModel().getSelection();
-        this.gridDependencies.getStore().remove(recs);        
     }
-
 });
 

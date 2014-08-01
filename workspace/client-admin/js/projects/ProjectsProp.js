@@ -521,7 +521,8 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
         });
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
+            clicksToEdit: 1,
+            pluginId : 'cellEditing'
         });
         
         var columnsProjectModules = [attached, {
@@ -653,7 +654,8 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             forceFit : true,
             plugins : [
                Ext.create('Ext.grid.plugin.CellEditing', {
-                   clicksToEdit: 1
+                   clicksToEdit: 1,
+                   pluginId : 'cellEditing'
             })],
             columns : [{            
                     header : i18n.get('headers.name'),
@@ -1164,6 +1166,15 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
      */
     onCreateLink : function () {
         this.linksPanel.getStore().insert(this.linksPanel.getStore().getCount(), {});
+        
+        var rowIndex = this.linksPanel.getStore().getCount() -1;
+        
+        this.linksPanel.getView().focusRow(rowIndex);
+
+        this.linksPanel.getPlugin('cellEditing').startEditByPosition({
+            row: rowIndex, 
+            column: 0
+        });
     },
     
     /**

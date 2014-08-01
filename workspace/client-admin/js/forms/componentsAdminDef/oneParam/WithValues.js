@@ -97,7 +97,8 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
         };
 
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
+            clicksToEdit: 1,
+            pluginId : 'cellEditing'
         });
         
         this.gridValues = Ext.create('Ext.grid.Panel', {
@@ -173,7 +174,18 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.WithValues', {
         this.add(this.gridValues);
     },
     onCreate : function () {
-        this.gridValues.getStore().insert(0, {});
+        var rowIndex = 0;
+        
+        this.gridValues.getStore().insert(rowIndex, {
+            availableFor : []
+        });
+        
+        this.gridValues.getView().focusRow(rowIndex);
+
+        this.gridValues.getPlugin('cellEditing').startEditByPosition({
+            row: rowIndex, 
+            column: 0
+        });
     },
     onDelete : function () {
         var recs = this.gridValues.getSelectionModel().getSelection();

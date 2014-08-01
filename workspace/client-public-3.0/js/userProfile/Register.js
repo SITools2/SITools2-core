@@ -31,8 +31,8 @@ Ext.define('sitools.public.userProfile.Register', {
     extend : 'Ext.window.Window',
 	alias : 'widget.s-register',
 	layout: 'hbox',
-	width: 420,
-	height: 500,
+	width: 500,
+	height: 550,
 	resizable: false,
 	closable: false,
 	modal: true,
@@ -47,16 +47,11 @@ Ext.define('sitools.public.userProfile.Register', {
 			iconCls: 'x-status-valid'
 		});
 	    
-	    this.captcha = Ext.create('Ext.Component', {
-	        id : 'captchaBox',
-	        autoEl: {
-	            tag: 'img',
-	            src: this.captchaUrl + '&_dc=' + new Date().getTime()
-	        },
-	        fieldLabel : i18n.get('label.captcha'),
+	    this.captcha = Ext.create('Ext.Img', {
+	        itemId : 'captchaBox',
+	        src: this.captchaUrl + '&_dc=' + new Date().getTime(),
 	        height : 50,
-	        width : 300,
-	        anchor: '100%'
+	        width : 200	        
 	    });
 	    
 	    this.items = [{
@@ -65,16 +60,18 @@ Ext.define('sitools.public.userProfile.Register', {
 			border: false,
 			bodyBorder : false,
 			buttonAlign: 'center',
-			id: 'frmRegister',
-			padding : 5,
+			itemId: 'frmRegister',
+			padding : 15,
 			width: 400,
-			height : 430,
-			labelWidth: 120,
+			defaults : {
+                labelWidth : 150,
+                anchor: '100%'
+            },
 			items: [{
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.login'),
 				name: 'identifier',
-				id: 'regLogin',
+				itemId: 'regLogin',
 				allowBlank: false,
 	            vtype: 'uniquelogin',
 	            anchor: '100%'
@@ -82,16 +79,14 @@ Ext.define('sitools.public.userProfile.Register', {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.firstName'),
 				name: 'firstName',
-				id: 'regFirstName',
+				itemId: 'regFirstName',
 				allowBlank: false,
-	            anchor: '100%'
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.lastName'),
 				name: 'lastName',
-				id: 'regLastName',
+				itemId: 'regLastName',
 				allowBlank: false,
-	            anchor: '100%'
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.password'),
@@ -99,8 +94,7 @@ Ext.define('sitools.public.userProfile.Register', {
 				allowBlank: false,
 				inputType: 'password',
 	            vtype: 'passwordComplexity',
-	            id: 'pass1',
-	            anchor: '100%'
+	            itemId: 'pass1',
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.confirmPassword'),
@@ -108,64 +102,65 @@ Ext.define('sitools.public.userProfile.Register', {
 				submitValue: false,
 				allowBlank: false,
 				inputType: 'password',
-	            id: 'pass2',
+	            itemId: 'pass2',
 	            initialPassField: 'pass1',
 	            vtype: 'password',
-	            anchor: '100%'
 			}, {
 				xtype: 'textfield',
 				fieldLabel: i18n.get('label.email'),
-	            id: 'regEmail',
+	            itemId: 'regEmail',
 				name: 'email',
 				vtype: 'uniqueemail',
 				allowBlank: false,
 	            validationEvent: '',
-	            anchor: '100%'
 			}, {
                 xtype : 'textfield',
                 name : 'organisation',
                 fieldLabel : i18n.get('label.organisation'),
-                anchor : '100%'
             }, {
 				xtype: 'textarea',
 				fieldLabel: i18n.get('label.comment'),
-	            id: 'regComment',
+	            itemId: 'regComment',
 				name: 'comment',
 	            validationEvent: '',
 	            height: 40,
-	            anchor: '100%'
-			}, 
-			    this.captcha,
-			{
-			    xtype: 'button',
-			    text: i18n.get('label.captchaReload'),
-			    icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/refresh.png',
-			    x : 150,
-			    padding : '5px 0px 0px 0px',
-			    arrowAlign : 'right',
-			    reloadUrl : this.captchaUrl,
-                handler : function () {
-                    Ext.util.Cookies.clear('captcha');
-                    var box = Ext.get('captchaBox');
-                    box.dom.src = this.reloadUrl + '&_dc=' + new Date().getTime();
-                    box.slideIn('l');
-                }
+			}, {
+			    fieldLabel : i18n.get('label.captcha'),
+	            xtype : 'fieldcontainer',
+	            layout : {
+	                type : 'hbox'
+	            },
+	            items : [this.captcha,{
+	                xtype: 'button',
+	                itemId : 'reload',
+	                text: i18n.get('label.captchaReload'),
+	                icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/refresh.png',
+	                arrowAlign : 'right',
+	                reloadUrl : this.captchaUrl,
+	                width: 90,
+	                height : 30,
+	                margin : '10 0 10 10',
+	                handler : function (button) {
+	                    Ext.util.Cookies.clear('captcha');
+	                    var box = button.up("form").down("image");
+	                    box.setSrc(this.reloadUrl + '&_dc=' + new Date().getTime());
+	                    box.getEl().slideIn('l');
+	                }
+	            }]
 			},
 			{
                 xtype: 'textfield',
                 fieldLabel: i18n.get('label.fieldCaptcha'),
                 name: 'captcha',
-                id: 'captcha',
+                itemId: 'captcha',
                 allowBlank: false,
-                anchor: '100%'
             },
             {
 				xtype: 'checkbox',
 				fieldLabel: Ext.String.format(i18n.get('label.acceptCGU'), URL_CGU),
-	            id: 'acceptCGU',
+	            itemId: 'acceptCGU',
 				name: 'acceptCGU',
 	            height: 40,
-	            anchor: '100%', 
 	            submitValue : false
 			}],
 			buttons: {
@@ -239,14 +234,14 @@ Ext.define('sitools.public.userProfile.Register', {
         	success: function (response, opts) {
 	    		var json = Ext.decode(response.responseText);
 	    		if (json.success){
-	    		    new Ext.ux.Notification({
+	    		    popupMessage({
                         iconCls : 'x-icon-information',
                         title : i18n.get('label.information'),
                         html : i18n.get('label.registerSent'),
                         autoDestroy : true,
                         hideDelay : 1000
-                    }).show(document);
-	    			Ext.getCmp('winRegister').close();
+                    });
+	    			this.close();
 	    		}
 	    		else {
 					this.getEl().unmask();
@@ -282,12 +277,13 @@ Ext.define('sitools.public.userProfile.Register', {
     
     reloadCaptcha : function () {
         Ext.util.Cookies.clear('captcha');
-        var box = Ext.get('captchaBox');
-        box.dom.src = this.captchaUrl + '&_dc=' + new Date().getTime();
-        box.slideIn('l');
+        var box = this.down("form image");
+        var button = this.down("button#reload");
+        box.setSrc(button.reloadUrl + '&_dc=' + new Date().getTime());
+        box.getEl().slideIn('l');
         
-        var f = Ext.getCmp('frmRegister').getForm();
-        var capt = f.findField('captcha').setValue("");
+        //clear the captcha value
+        this.down("form textfield#captcha").setValue("");
 
     }
 });

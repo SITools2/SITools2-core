@@ -75,7 +75,8 @@ Ext.define('sitools.admin.utils.DependenciesPanel', {
         });
         
         this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
+            clicksToEdit: 1,
+            pluginId : 'cellEditing'
         })];
         
         sitools.admin.utils.DependenciesPanel.superclass.initComponent.call(this);
@@ -86,6 +87,14 @@ Ext.define('sitools.admin.utils.DependenciesPanel', {
      */
     onCreateDependencies : function () {
         this.getStore().insert(this.getStore().getCount(), {});
+        var rowIndex = this.getStore().getCount() -1;
+        
+        this.getView().focusRow(rowIndex);
+        
+        this.getPlugin('cellEditing').startEditByPosition({
+            row: rowIndex, 
+            column: 0
+        });
     },
     
     /**

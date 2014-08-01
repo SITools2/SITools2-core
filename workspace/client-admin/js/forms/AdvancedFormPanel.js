@@ -373,9 +373,9 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
     
     deletePanel : function () {
         var parentContainer = this.absoluteLayout;
+        
 
-        var zoneToRemove = parentContainer.zoneStore.find('containerPanelId', this.containerPanelId);
-        parentContainer.zoneStore.removeAt(zoneToRemove);
+        
 
         this.formComponentsStore.each(function (component) {
             if (!Ext.isEmpty(component)) {
@@ -384,10 +384,16 @@ Ext.define('sitools.admin.forms.AdvancedFormPanel', {
                 }
             }
         }, this);
+        
+        if (parentContainer.zoneStore.getCount() > 1) {
+            var zoneToRemove = parentContainer.zoneStore.find('containerPanelId', this.containerPanelId);
+            parentContainer.zoneStore.removeAt(zoneToRemove);
+            parentContainer.remove(this, true);
+        }
 
-        parentContainer.remove(this, true);
+        
 //        this.destroy();
-//        parentContainer.fireEvent('activate');
+        parentContainer.fireEvent('activate');
 //        parentContainer.doLayout();
     }
 });

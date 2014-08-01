@@ -47,7 +47,8 @@ Ext.define('sitools.admin.forms.SetupAdvancedFormPanel', {
                 name : 'title',
                 id : "title",
                 fieldLabel : i18n.get('label.titleCriteria'),
-                anchor : "100%"
+                anchor : "100%",
+                allowBlank : false
             }, {
                 xtype : 'textfield',
                 name : 'height',
@@ -101,12 +102,12 @@ Ext.define('sitools.admin.forms.SetupAdvancedFormPanel', {
                 handler : this._onCancel
             }];
         
-        sitools.admin.forms.SetupAdvancedFormPanel.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
     },
     
     afterRender : function () {
-        sitools.admin.forms.SetupAdvancedFormPanel.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.action === 'modify') {
             this.form.getForm().setValues(this.zone);
         }
@@ -114,6 +115,9 @@ Ext.define('sitools.admin.forms.SetupAdvancedFormPanel', {
     
     _onValidate : function () {
         var f = this.form.getForm();
+        if (!f.isValid()) {
+            return;
+        }
         
         var title = f.findField('title').getValue();
         var isCollapsible = f.findField('collapseFieldset').getValue();

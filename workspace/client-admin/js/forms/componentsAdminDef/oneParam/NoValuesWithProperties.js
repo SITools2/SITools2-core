@@ -77,7 +77,16 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperti
 			    text : i18n.get('label.create'),
 			    icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
 			    handler : function () {
-					this.gridProperties.getStore().insert(0, {});
+			        var rowIndex = 0;
+			        
+			        this.gridProperties.getStore().insert(rowIndex, {});
+			        
+					this.gridProperties.getView().focusRow(rowIndex);
+
+					this.gridProperties.getPlugin('cellEditing').startEditByPosition({
+					    row: rowIndex, 
+					    column: 0
+					});
 			    }
 			}, {
 				scope : this, 
@@ -95,7 +104,8 @@ Ext.define('sitools.admin.forms.componentsAdminDef.oneParam.NoValuesWithProperti
         };
         
         var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
+            clicksToEdit: 1,
+            pluginId : 'cellEditing'
         });
 
         this.gridProperties = Ext.create('Ext.grid.Panel', {

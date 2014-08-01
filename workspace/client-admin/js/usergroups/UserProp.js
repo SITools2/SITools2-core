@@ -133,6 +133,11 @@ Ext.define('sitools.admin.usergroups.UserProp', {
                 handler : this.onDeleteProperties
             }]
         });
+        
+        this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1,
+            pluginId : 'cellEditing'
+        });
 
         this.gridProperties = Ext.create('Ext.grid.Panel', {
             title : i18n.get('title.properties'),
@@ -146,9 +151,7 @@ Ext.define('sitools.admin.usergroups.UserProp', {
             selModel : smProperties = Ext.create('Ext.selection.RowModel',{
                 mode : 'SINGLE'
             }),
-            plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-                clicksToEdit: 1
-            })],
+            plugins : [this.cellEditing],
             flex : 1
         });
         
@@ -231,7 +234,7 @@ Ext.define('sitools.admin.usergroups.UserProp', {
                     checked : false,
                     listeners : {
                         scope : this,
-                        check : function (checkbox, checked) {
+                        change : function (checkbox, checked) {
                             var f = this.down('form').getForm();
                             f.findField('secret').setDisabled(checked);
                             f.findField('confirmSecret').setDisabled(checked);
@@ -272,6 +275,15 @@ Ext.define('sitools.admin.usergroups.UserProp', {
      */
     onCreateProperties : function () {
         this.gridProperties.getStore().insert(this.gridProperties.getStore().getCount(), {});
+        
+        var rowIndex = this.gridProperties.getStore().getCount() -1;
+        
+        this.gridProperties.getView().focusRow(rowIndex);
+        
+        this.gridProperties.getPlugin('cellEditing').startEditByPosition({
+            row: rowIndex, 
+            column: 0
+        });
     },
     
     /**

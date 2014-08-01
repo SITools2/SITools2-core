@@ -83,7 +83,7 @@ Ext.apply(Ext.form.field.VTypes, {
 
     password : function(val, field) {
         if (field.initialPassField) {
-            var pwd = Ext.getCmp(field.initialPassField);
+            var pwd = field.up('form').down('textfield#'+field.initialPassField);
             return (val == pwd.getValue());
         }
         return true;

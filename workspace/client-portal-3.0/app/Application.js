@@ -15,6 +15,7 @@ Ext.define('sitools.clientportal.Application', {
         'sitools.public.utils.LoginUtils',
         'sitools.public.utils.Logout',
         'sitools.public.utils.UserStorage',
+        'sitools.public.utils.PopupMessage',
         
                 /* WIDGETS */
         'sitools.public.widget.StatusBar',
