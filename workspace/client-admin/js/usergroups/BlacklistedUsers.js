@@ -34,7 +34,9 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
     extend : 'Ext.window.Window',
     alias : 'widget.s-blacklistedusers',
     // url + mode + storeref
-    
+    mixins : {
+        utils : 'sitools.admin.utils.utils'
+    },
     width : 700,
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
@@ -44,11 +46,17 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
     initComponent : function () {
         this.title = i18n.get("title.blacklistedUsers");
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            restful : true,
-            idProperty : 'identifier',
-            url : this.url,
+        this.store = Ext.create("Ext.data.JsonStore", {
+            proxy : {
+                type : 'ajax',
+                url : this.url,
+                reader : {
+                    type : 'json',
+                    root : 'data',
+                    idProperty : 'identifier'
+                        
+                }
+            },
             fields : [ {
                 name : 'id',
                 type : 'string'
@@ -67,12 +75,13 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
                 type : 'boolean'
             } ]
         });
-        this.grid = new Ext.grid.GridPanel({
-            viewConfig : {
-                forceFit : true
-            },
+        
+        this.grid = Ext.create("Ext.grid.GridPanel", {
+            forceFit : true,
             layout : 'fit',
-            sm : new Ext.grid.RowSelectionModel(),
+            sm : Ext.create('Ext.selection.RowModel', {
+                mode : 'SINGLE'
+            }),
             store : this.store,
             columns : [ {
                 header : i18n.get('label.login'),
@@ -99,7 +108,7 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
                     
             } ],
             bbar : {
-                xtype : 'paging',
+                xtype : 'pagingtoolbar',
                 pageSize : this.pageSize,
                 store : this.store,
                 displayInfo : true,
@@ -131,29 +140,25 @@ Ext.define('sitools.admin.usergroups.BlacklistedUsers', {
                 scope : this,
                 handler : this.destroy
             }];
-        // this.relayEvents(this.store, ['destroy', 'save', 'update']);
-        sitools.admin.usergroups.BlacklistedUsers.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     /**
      * done a specific render to load users from the store. 
      */ 
-    onRender : function () {
-        sitools.admin.usergroups.BlacklistedUsers.superclass.onRender.apply(this, arguments);
+    afterRender : function () {
+        this.callParent(arguments);
         this.store.load({
             scope : this,
             params : {
                 start : 0,
                 limit : this.pageSize
-            },
-            callback : function (records) {
-                console.dir(records);
             }
         });
     },
     
     _onRemoveFromBlacklist : function () {
-        var rec = this.grid.getSelectionModel().getSelected();
+        var rec = this.getLastSelectedRecord(this.grid);
         if (!rec) {
             return false;
         }
