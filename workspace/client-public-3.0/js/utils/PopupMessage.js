@@ -29,7 +29,7 @@ Ext.define('sitools.public.utils.PopupMessage', {
             return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p><span style="padding:6px;"><img src="' + i +'"/></span>' + s + '</p></div>';
         } 
         else if (iclass) {
-            return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box ' + iclass + '"><h3>' + t + '</h3><p>' + s + '</p></div>';
+            return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p><span style="padding:0px 12px 0px 12px;" class="'+iclass+'"></span>' + s + '</p></div>';
         }
         else {
             return '<div class="msg ' + Ext.baseCSSPrefix + 'border-box"><h3>' + t + '</h3><p>' + s + '</p></div>';

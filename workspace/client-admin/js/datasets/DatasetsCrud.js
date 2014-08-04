@@ -198,7 +198,7 @@ Ext.define('sitools.admin.datasets.DatasetsCrud', {
 	onDuplicate : function () {
 		var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         }
         
         var up = Ext.create('sitools.admin.datasets.DatasetsMultiTablesPanel', {
@@ -468,7 +468,7 @@ Ext.define('sitools.admin.datasets.DatasetsCrud', {
         if (!rec) {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         } 
-        var up = Ext.create("sitools.admin.datasets.DicoMapping", {
+        var up = Ext.create("sitools.admin.datasets.dictionaryMapping.DictionaryMapping", {
             url : this.url + '/' + rec.data.id,
             masked : (rec.data.status == "ACTIVE")
         });

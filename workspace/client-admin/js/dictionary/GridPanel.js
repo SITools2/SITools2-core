@@ -34,6 +34,7 @@ Ext.define('sitools.admin.dictionary.GridPanel', {
     alias : 'widget.dictionaryGridPanel',
     template : null,
     forceFit : true,
+    layout : 'fit',
     initComponent : function () {
         
         this.store = this.getStoreConcepts(this.template, this.url);
@@ -93,6 +94,7 @@ Ext.define('sitools.admin.dictionary.GridPanel', {
         }
         
         var storeConcept = Ext.create('Ext.data.JsonStore', {
+            url : this.url,
 			fields : fields,
 			proxy : proxy,
 			// on surchage la fonction load

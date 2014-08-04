@@ -24,6 +24,7 @@ body{
 }
 .x-icon-information{
 	background-image:url(../images/information.gif) ! important;
+	background-repeat: no-repeat;
 }
 .x-notification .x-window-body{
 	z-index: 11000 !important;

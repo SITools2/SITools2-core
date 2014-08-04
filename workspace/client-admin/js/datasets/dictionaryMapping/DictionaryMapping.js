@@ -18,7 +18,7 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, 
  showHelp, loadUrl*/
-Ext.namespace('sitools.admin.datasets.DictionaryMapping');
+Ext.namespace('sitools.admin.datasets.dictionaryMapping');
 
 /**
  * A window to determine the mapping between dataset columns and dictionnary concept
@@ -42,6 +42,9 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         type : 'vbox',
         align : 'stretch',
         pack : 'start'
+    },
+    mixins : {
+        utils : 'sitools.admin.utils.utils'
     },
     
     initComponent : function () {
@@ -89,16 +92,17 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
             flex : 1,
             title : i18n.get("label.datasetColumn"),
             forceFit : true,
+            layout : 'fit',
             listeners : {
                 scope : this,
                 mappingsSelected : function (grid, columnsId) {
                     var selModel = grid.getSelectionModel();
-                    selModel.clearSelections();
+                    selModel.deselectAll();
                     var records = [];
                     Ext.each(columnsId, function (columnId) {
                         records.push(grid.getStore().getById(columnId));                         
                     });
-                    selModel.selectRecords(records);           
+                    selModel.select(records);           
                 }
             }
 //            ,
@@ -152,7 +156,8 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         this.gridDictionaryConcept = Ext.create('Ext.panel.Panel', {
             id : 'gridDictionaryConcept',
             flex : 2,
-            title : i18n.get("label.dictionaryConcepts")
+            title : i18n.get("label.dictionaryConcepts"),
+            layout : 'fit'
         });
         
         this.checkboxDefaultDictionary = Ext.create('Ext.form.field.Checkbox', {
@@ -166,8 +171,8 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         this.choicePanel = Ext.create('Ext.panel.Panel', {
             items : [this.gridDatasetColumn, this.gridDictionaryConcept],
             flex : 1,
-            layout : "hbox",
-            layoutConfig : {
+            layout : {
+                type : 'hbox',
                 align : 'stretch',
                 pack : 'start'
             },
@@ -209,49 +214,6 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         });
         
         
-        /** ###################################### */
-        /** Concepts Mapping */
-        /** ###################################### */
-        
-        // NEVER USED ??!
-        
-//        var storeMapping = Ext.create('Ext.data.JsonStore', {
-//            proxy : {
-//                type : 'ajax',
-//                url : this.urlConcepts,
-//                reader : {
-//                    type : 'json',
-//                    root : 'ColumnModel',
-//                    idProperty : 'concatColConcept'
-//                }
-//            },
-//            fields : [{
-//                name : 'concatColConcept',
-//                type : 'string'
-//            }, {
-//                name : 'columnId',
-//                type : 'string'
-//            }, {
-//                name : 'conceptsId'                
-//            }, {
-//                name : 'conceptName'                
-//            }]
-//        });
-//        
-//        var cmMapping = {
-//            items : [ {
-//                header : i18n.get('label.columnAlias'),
-//                dataIndex : 'columnId',
-//                width : 100,
-//                sortable : true
-//            }, {
-//                header : i18n.get('label.conceptName'),
-//                dataIndex : 'conceptName',
-//                width : 100,
-//                sortable : true
-//            } ]
-//        };
-        
         //temporary definition of gridMapping to diplay the title
         this.gridMapping = Ext.create('Ext.panel.Panel', {
             flex : 1,
@@ -281,7 +243,7 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
             }
         }];
         
-        sitools.admin.datasets.DicoMapping.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     //##############################################
@@ -294,6 +256,7 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
      */
     createDictionaryConceptGrid : function (rec) {
         //refresh dico grid
+        rec = rec[0];
         this.dictionaryId = rec.data.id;
         var templateConcept = rec.data.conceptTemplate;
         
@@ -310,12 +273,12 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
                 scope : this,
                 mappingsSelected : function (grid, conceptsId) {
                     var selModel = grid.getSelectionModel();
-                    selModel.clearSelections();
+                    selModel.deselectAll();
                     var records = [];
                     Ext.each(conceptsId, function (conceptId) {
                         records.push(grid.getStore().getById(conceptId));                         
                     });
-                    selModel.selectRecords(records);           
+                    selModel.select(records);           
                 }           
             }
         });
@@ -342,10 +305,10 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
      */
     createMappingGrid : function () {
         var store = this.gridDictionaryConcept.getStore();
-        var fieldsDicoConcept = store.fields;
+        var fieldsDicoConcept = store.model.getFields();
         
         var fields = [];
-        fieldsDicoConcept.each(function (record) {
+        Ext.each(fieldsDicoConcept, function (record) {
             fields.push({
                 name : record.name,
                 type : record.type.type
@@ -364,12 +327,12 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
             name : 'idMapping',
             type : 'string'
         });
+        fields.push({
+            name : 'conceptId',
+            type : 'string'
+        });
         
         var storeMapping = Ext.create('Ext.data.Store', {
-            reader : {
-                type : 'json',
-                idProperty : 'idMapping'
-            },
             fields : fields,
             sorters : [{
                 property: 'columnAlias',
@@ -392,39 +355,42 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
             groupField: 'columnAlias'
         });
         
-        var cmConfig = this.gridDictionaryConcept.getColumnModel().config;
+        storeMapping.model.idProperty = "idMapping";
         
-        var cmConfigNew = cmConfig.clone();       
+        var cmConfig = this.gridDictionaryConcept.columns;
+        var cmConfigNew = [];
+        Ext.each(cmConfig, function (column) {
+           cmConfigNew.push(column.initialConfig); 
+        });
+        
         
 //        Ext.each(cmConfigNew, function (col) {
 //			col.resizable = true;
 //		});
         
-        cmConfigNew.push(Ext.create('Ext.grid.column.Column', {
+        cmConfigNew.push({
             header : i18n.get('label.columnAlias'),
             dataIndex : 'columnAlias',
             width : 100,
             sortable : true,
             hidden : true,
             resizable : true
-        }));
-        
-        var cmMapping = Ext.create('Ext.grid.ColumnModel', {
-            items : cmConfigNew
         });
         
         this.remove(this.gridMapping);
         
         var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
-            startCollapsed : true,
-            groupHeaderTpl: '{text} ({[values.rs.length]} {[values.rs.length > 1 ? "Items" : "Item"]})'
+            startCollapsed : false,
+            groupHeaderTpl: 'Column alias: {name} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
         });
         
         this.gridMapping = Ext.create('Ext.grid.Panel', {
             store : storeMapping,
-            columns : cmMapping,
+            columns : cmConfigNew,
             flex : 1,
             title : i18n.get("label.mappingConceptColumn"),
+            forceFit : true,
+            layout : 'fit',
             tbar : {
                 xtype : 'toolbar',
                 defaults : {
@@ -458,7 +424,7 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
 //                scope : this,
 //                columnSelected : function (grid, columnsId) {
 //                    var selModel = grid.getSelectionModel();
-//                    selModel.clearSelections();
+//                    selModel.deselectAll();
 //                    var records = [];
 //                    Ext.each(columnsId, function (columnId) {
 //                        var index = grid.getStore().find("columnId", columnId);
@@ -470,14 +436,13 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
 //                }
 //            },
             selModel : Ext.create('Ext.selection.RowModel', {
+                mode : "SINGLE",
 				listeners : {
 					scope : this,
-					rowselect : this.gridMappingRowSelectionModelListener,
-                    rowdeselect : this.gridMappingRowSelectionModelListener
+					selectionchange : this.gridMappingRowSelectionModelListener
 				}
 			})
         });
-        
         this.add(this.gridMapping);
         
         
@@ -488,13 +453,12 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
      * @param Number rowIndex
      * @param Ext.data.Record record
      */
-    gridMappingRowSelectionModelListener : function (sm, rowIndex, record) {
-        var records = sm.getSelections();
+    gridMappingRowSelectionModelListener : function (sm, records) {
         var columnsId = [];
         var conceptsId = [];
         Ext.each(records, function (rec) {
             columnsId.push(rec.get("columnId"));
-            conceptsId.push(rec.get("id"));
+            conceptsId.push(rec.get("conceptId"));
         });
         this.gridDatasetColumn.fireEvent('mappingsSelected',    this.gridDatasetColumn, columnsId);
         this.gridDictionaryConcept.fireEvent('mappingsSelected',    this.gridDictionaryConcept, conceptsId);
@@ -535,7 +499,7 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         storeMapping.each(function (mapping) {
             var rec = {
                 columnId : mapping.get("columnId"),
-                conceptId : mapping.get("id")
+                conceptId : mapping.get("conceptId")
             };
             
             jsonObject.mapping.push(rec);
@@ -556,21 +520,16 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
 				}
                 
                 this.loadMappingData(json.dictionaryMapping);
-				
-                return popupMessage("", i18n.get("dictionary.mapping.saved"), 
-                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
-
-//                new Ext.ux.Notification({
-//                    iconCls : 'x-icon-information',
-//                    title : i18n.get('label.information'),
-//                    html : i18n.get("dictionary.mapping.saved"),
-//                    autoDestroy : true,
-//                    hideDelay : 1000
-//                }).show(document);
                 
-//                if (quit) {
-//                    this.close();
-//                }
+                
+				
+                popupMessage(i18n.get("label.information"), i18n.get("dictionary.mapping.saved"), 
+                        loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+                
+                if (quit) {
+                    this.close();
+                }
+                return;
 			},
 			failure : alertFailure
 		});
@@ -615,13 +574,13 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
                             json.message);
                     return;
                 }
-                new Ext.ux.Notification({
+                popupMessage({
                     iconCls : 'x-icon-information',
                     title : i18n.get('label.information'),
                     html : i18n.get("dictionary.mapping.deleted"),
                     autoDestroy : true,
                     hideDelay : 1000
-                }).show(document);
+                });
                 this.loadMappingData();
             },
             failure : alertFailure
@@ -682,12 +641,16 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
                 var rec = {
                         idMapping : idNewRec,
                         columnAlias : column.get('columnAlias'),
-                        columnId : column.get('id')
+                        columnId : column.get('id'),
+                        conceptId : concept.get('id'),
+                        id : idNewRec
                 };
                 Ext.iterate(concept.data, function (key, value) {
-                    rec[key] = value;
+                    if (key !== "id") {
+                        rec[key] = value;
+                    }
                 });
-                storeGridMapping.add(rec, rec.data.idMapping);                     
+                storeGridMapping.add(rec);                     
                 
             });
             storeGridMapping.sort();
@@ -701,10 +664,10 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
      */
     onAddMapping : function () {
         // first let's loop on the column grid to get all the selected rows
-        var columnSelected = this.gridDatasetColumn.getSelectionModel().getSelections();
+        var columnSelected = this.getLastSelectedRecord(this.gridDatasetColumn);
         
         //then loop on the concept grid to get all the selected rows
-        var conceptSelected = this.gridDictionaryConcept.getSelectionModel().getSelections();
+        var conceptSelected = this.getLastSelectedRecord(this.gridDictionaryConcept);
         
         var storeGridMapping = this.gridMapping.getStore();
         //calculate all the combination and create records on the mapping grid
@@ -715,13 +678,16 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
                     var rec = {
 	                    idMapping : idNewRec,
 	                    columnAlias : column.get('columnAlias'),
-                        columnId : column.get('id')
+                        columnId : column.get('id'),
+                        conceptId : concept.get('id')
 	                };
                     Ext.iterate(concept.data, function (key, value) {
-                        rec[key] = value;
+                        if(key !== "id") {
+                            rec[key] = value;
+                        }
                     });
                     this.isModified = true;
-                    storeGridMapping.add(rec, rec.data.idMapping);
+                    storeGridMapping.add(rec);
                 }
             }, this);
         }, this);
@@ -735,7 +701,7 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
      */
     onRemoveMapping : function () {
         var grid = this.gridMapping;
-        var mappingSelected = grid.getSelectionModel().getSelections();
+        var mappingSelected = grid.getSelectionModel().getSelection();
         if (mappingSelected.length === 0) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
@@ -743,8 +709,8 @@ Ext.define('sitools.admin.datasets.dictionaryMapping.DictionaryMapping', {
         this.isModified = true;
         grid.getStore().remove(mappingSelected);  
         
-        this.gridDatasetColumn.getSelectionModel().clearSelections();
-        this.gridDictionaryConcept.getSelectionModel().clearSelections();
+        this.gridDatasetColumn.getSelectionModel().deselectAll();
+        this.gridDictionaryConcept.getSelectionModel().deselectAll();
         grid.getStore().sort();
     }   
     
