@@ -59,6 +59,19 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                 mouseover : function (btn, e) {
 //                    btn.tTip = null;
                 }
+            },
+            'component#columnItem menucheckitem' : {
+                checkchange : function (item, checked) {
+                    if (checked) {
+                        var view = item.up('livegridView');
+                        var colModel = extColModelToSrv(view.columns);
+                        view.getStore().load({
+                            params : {
+                                colModel : Ext.JSON.encode(colModel)
+                            }
+                        });
+                    }
+                }
             }
         });
     }

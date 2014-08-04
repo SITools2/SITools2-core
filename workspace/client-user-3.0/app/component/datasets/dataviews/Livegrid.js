@@ -175,7 +175,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         var i = 0;
         if (!Ext.isEmpty(listeColonnes)) {
             Ext.each(listeColonnes, function (item, index, totalItems) {
-                fields[i] = new Ext.data.Field({
+                fields[i] = Ext.create("Ext.data.Field", {
                     name : item.columnAlias,
                     primaryKey : item.primaryKey,
                     type : sql2ext.get(item.sqlColumnType)
