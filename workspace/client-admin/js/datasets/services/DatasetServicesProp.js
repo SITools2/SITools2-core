@@ -337,7 +337,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
         var rec, datasetServiceIhm = {};
         
         if (this.action === "create") {
-            rec = this.getLastSelectedRecord();
+            rec = this.getLastSelectedRecord(this.gridDatasetServices);
             if (!rec) {
                 Ext.create("Ext.ux.Notification", {
                     iconCls : 'x-icon-information',

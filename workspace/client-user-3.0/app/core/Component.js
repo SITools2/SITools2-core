@@ -31,7 +31,7 @@ Ext.define('sitools.user.core.Component', {
     
     config : {
         componentView : null,
-        project : Ext.getStore("ProjectStore").getProject(),
+        project : null,
         controllers : [],
         application : null
     },
@@ -53,6 +53,7 @@ Ext.define('sitools.user.core.Component', {
      */
     create : function (application) {
         this.setApplication(application);
+        this.setProject(Ext.getStore("ProjectStore").getProject());
         // initialize all controllers
         if (!Ext.isEmpty(this.getControllers())) {
             Ext.each(this.getControllers(), function (controller) {

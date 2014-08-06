@@ -68,69 +68,84 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
     },
 
     buildViewConfig : function (recSelected) {
+        this.parametersFieldset.removeAll();
+            
         try {
-            this.parametersFieldset.removeAll();
-
-            var getParametersMethod = eval(recSelected.xtype + ".getParameters");
-
-            if (!Ext.isFunction(getParametersMethod)) {
-                Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod'));
-                return;
-            }
-
-            var parameters = getParametersMethod();
-
-            if (Ext.isEmpty(parameters)) {
-                //this.parametersFieldset.setVisible(false);
-                this.parametersFieldset.add({
-                    xtype : 'label',
-                    html : '<h2 style="text-align:center;">'+ i18n.get('label.noParameter')+ '</h2>'
-                });
-            } else {
-                this.parametersFieldset.setVisible(true);
-            }
-            Ext.each(parameters, function (param) {
-
-                if (!Ext.isEmpty(this.parametersList)) {
-                    // on recharge les parametres définis par l'utilisateur
-                    Ext.iterate(this.parametersList, function (cmp) {
-                        if (cmp.name == param.config.name) {
-                            var customValue = cmp.value;
+            Ext.syncRequire(recSelected.xtype, function(classz) {
+                    if(Ext.isEmpty(classz)){
+                        this.parametersFieldset.add({
+                            xtype : 'label',
+                            html : '<h2 style="text-align:center;">'+ i18n.get('label.cannotLoadClass')+ '</h2>'
+                        });
+                        return;
+                    }
+                    var getParametersMethod = classz.getParameters;
+                    
+                    if (!Ext.isFunction(getParametersMethod)) {
+                        this.parametersFieldset.add({
+                            xtype : 'label',
+                            html : '<h2 style="text-align:center;">'+ i18n.get('label.noParameter')+ '</h2>'
+                        });
+                        return;
+                    }
+                    
+                    var parameters = getParametersMethod();
+                    
+                    if (Ext.isEmpty(parameters)) {
+                        //this.parametersFieldset.setVisible(false);
+                        this.parametersFieldset.add({
+                            xtype : 'label',
+                            html : '<h2 style="text-align:center;">'+ i18n.get('label.noParameter')+ '</h2>'
+                        });
+                        return;
+                    } else {
+                        this.parametersFieldset.setVisible(true);
+                    }
+                    Ext.each(parameters, function (param) {
+                        
+                        if (!Ext.isEmpty(this.parametersList)) {
+                            // on recharge les parametres définis par l'utilisateur
+                            Ext.iterate(this.parametersList, function (cmp) {
+                                if (cmp.name == param.config.name) {
+                                    var customValue = cmp.value;
+                                    var config = Ext.applyIf(param.config, {
+                                        anchor : "100%"
+                                    });
+                                    var p = Ext.create(param.jsObj, config);
+                                    
+                                    p.setValue(customValue);
+                                    this.parametersFieldset.add(p);
+                                }
+                            }, this);
+                        } else {
+                            // on charge les parametres par défaut définis dans le
+                            // projectModule
+                            // var parameterValue =
+                            // this.findDefaultParameterValue(param);
                             var config = Ext.applyIf(param.config, {
                                 anchor : "100%"
                             });
-                            var p = Ext.create(jsObj, config);
-
-                            p.setValue(customValue);
+                            
+                            var p = Ext.create(param.jsObj, config);
+                            // if (!Ext.isEmpty(parameterValue)) {
+                            // p.setValue(parameterValue);
+                            // }
                             this.parametersFieldset.add(p);
                         }
+                        
                     }, this);
-                } else {
-                    // on charge les parametres par défaut définis dans le
-                    // projectModule
-                    // var parameterValue =
-                    // this.findDefaultParameterValue(param);
-                    var config = Ext.applyIf(param.config, {
-                        anchor : "100%"
-                    });
-
-                    var p = Ext.create(param.jsObj, config);
-                    // if (!Ext.isEmpty(parameterValue)) {
-                    // p.setValue(parameterValue);
-                    // }
-                    this.parametersFieldset.add(p);
-                }
-
             }, this);
-
-            this.doLayout();
         } catch (err) {
+            this.parametersFieldset.add({
+                xtype : 'label',
+                html : '<h2 style="text-align:center;">'+ i18n.get('label.error.creating.form.parameter')+ '</h2>'
+            });
             throw err;
             // Ext.Msg.alert(i18n.get('label.error'),
             // i18n.get('label.notImplementedMethod'));
             // return;
         }
-
+            
     },
 
     getParametersValue : function () {

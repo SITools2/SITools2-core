@@ -78,7 +78,6 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
     
     initComponent : function () {
         var action = this.action;
-        
         if (this.action === 'view') {
             this.title = i18n.get('label.viewProject');
         }
@@ -412,7 +411,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             }], 
             listeners : {
                 scope : this, 
-                load : function (store) {
+                load : function (store, records) {
                     this.loadNonAvailableProjects(store);
                     if (this.action === "create") {
                         this._onAllModulesAttached();
@@ -467,6 +466,9 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             {
                 name : 'dirty',
                 type : 'boolean'
+            }, {
+                name : 'hasParameters',
+                type : 'boolean'
             }], 
             listeners : {
                 scope : this,
@@ -479,6 +481,16 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                         this.allModulesAttachedBtn.setText(i18n.get("label.Attached"));
                         this.allModulesDetached = false;
                     }
+                    // check if the projects has some parameters to configure
+                    Ext.each(records, function (module) {
+                       
+                        Ext.syncRequire(module.get("xtype"), function (classz) {
+                            if (!Ext.isEmpty(classz)) {
+                                module.set('hasParameters', Ext.isFunction(classz.getParameters));
+                            }
+                        }, this);
+                        
+                    }, this);
                 },
                 update : function (store, record) {
                     var index = store.indexOf(record);
@@ -569,22 +581,8 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
             }],
             scope : this,
             renderer : function (value, metadata, record, rowInd, colInd, store) {
-                if (record.data.xtype) {
-                    try {
-                    	var module = Ext.create(record.data.xtype);
-                    		if (!Ext.isFunction(module.getParameters)) {
-                                metadata.style = 'display:none;';
-                            }
-                    	
-//                        var getParametersMethod = eval(record.data.xtype + ".getParameters");
-//                        if (!Ext.isFunction(getParametersMethod)) {
-//                            metadata.style = 'display:none;';
-//                        }
-                    }
-                    catch (err) {
-                        metadata.style = 'display:none;';
-                        return;
-                    }
+        		if (!record.get('hasParameters')) {
+                    metadata.style = 'display:none;';
                 }
                 return;
             }
@@ -710,7 +708,16 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 handler : function () {
                     this.close();
                 }
-            } ]        
+            } ],
+            listeners : {
+                scope : this,
+                tabchange : function (tabPanel, newPanel, oldPanel) {
+                    if(newPanel.getId() == "gridModules") {
+                        console.log("refresh the grid");
+                        newPanel.getView().refresh();
+                    }
+                }
+            }
         });
         
         this.items = [this.tabPanel];
@@ -889,53 +896,11 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                     record.set('dirty', false);
 
                     // Si la méthode getParameter du projectModule est implémenté on récupère les paramètres
-                    if (record.data.xtype) {
-                        var getParametersMethod;
-                        try {
-                            if (!Ext.isFunction(eval(record.data.xtype))) {
-                                record.set('dirty', true);
-                                Ext.Msg.alert(i18n.get('label.warning'), Ext.String.format(i18n.get('label.undefinedModule'), record.data.name));
-                                correctlyParamModule = false;
-                            }
-                            getParametersMethod = eval(record.data.xtype + ".getParameters");
-                        }
-                        catch (err) {
-                            var tmp = null;
-                        }
-                        if (Ext.isFunction(getParametersMethod)) {
-                            var listProjectModulesConfig;
-                            if (record.data.listProjectModulesConfig != undefined && record.data.listProjectModulesConfig.length != 0){
-                                listProjectModulesConfig = record.data.listProjectModulesConfig;
+                    if (record.get("hasParameters")) {
+                        var listProjectModulesConfig;
+                        if (record.data.listProjectModulesConfig != undefined && record.data.listProjectModulesConfig.length != 0){
+                            listProjectModulesConfig = record.data.listProjectModulesConfig;
 
-                                putObject.modules.push({
-                                    description : record.data.description,
-                                    id : record.data.id,
-                                    name : record.data.name,
-                                    visible : record.data.visible,
-                                    priority : i, 
-                                    listRoles : record.data.listRoles, 
-                                    categoryModule : record.data.categoryModule, 
-                                    divIdToDisplay : record.data.divIdToDisplay,
-                                    xtype : record.data.xtype,
-                                    listProjectModulesConfig : listProjectModulesConfig,
-                                    label : record.data.label
-                                });
-                            }
-                            else {
-//                                var ind = storeModule.indexOf(record);
-//                                var row = this.modulePanel.getView().getRow(ind);
-//                                row.style.color = "#FF0033";
-                                record.set('dirty', true);
-                                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.needToParamModule'));
-                                correctlyParamModule = false;
-                                
-                                var htmlLineEl = this.modulePanel.getView().getNode(record);
-                                var el = Ext.get(htmlLineEl);
-                                el.addCls('red-row');
-                            }
-                            
-                        }
-                        else {
                             putObject.modules.push({
                                 description : record.data.description,
                                 id : record.data.id,
@@ -946,9 +911,23 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                                 categoryModule : record.data.categoryModule, 
                                 divIdToDisplay : record.data.divIdToDisplay,
                                 xtype : record.data.xtype,
+                                listProjectModulesConfig : listProjectModulesConfig,
                                 label : record.data.label
                             });
                         }
+                        else {
+//                                var ind = storeModule.indexOf(record);
+//                                var row = this.modulePanel.getView().getRow(ind);
+//                                row.style.color = "#FF0033";
+                            record.set('dirty', true);
+                            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.needToParamModule'));
+                            correctlyParamModule = false;
+                            
+                            var htmlLineEl = this.modulePanel.getView().getNode(record);
+                            var el = Ext.get(htmlLineEl);
+                            el.addCls('red-row');
+                        }
+                            
                     }
                     else {
                         putObject.modules.push({
@@ -960,6 +939,8 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                             listRoles : record.data.listRoles, 
                             categoryModule : record.data.categoryModule, 
                             divIdToDisplay : record.data.divIdToDisplay,
+                            xtype : record.data.xtype,
+                            label : record.data.label
                         });
                     }
                     
@@ -1196,23 +1177,10 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
     loadNonAvailableProjects : function (store) {
         var listDependencies = [];
         store.each(function (rec) {
-            // Chargement des dependances pour permettre le parametrage du module dans le projet 
-            // pour eviter de recharger la page
-            
-                if (!Ext.isEmpty(rec.get('dependencies') && !Ext.isEmpty(rec.get('dependencies').js))) {
-                    listDependencies = listDependencies.concat(rec.get('dependencies').js);
-                }
-                
-                if (this.storeProjectModules.findExact("name", rec.get('name')) === -1) {
-                    this.storeProjectModules.add(rec);
-                }
-            }, this);
-        
-        if (!Ext.isEmpty(listDependencies)) {
-//            includeJsForceOrder(listDependencies, 0, function () {
-////                this.modulePanel.getView().refresh();
-//            }, this);
-        }
+            if (this.storeProjectModules.findExact("name", rec.get('name')) === -1) {
+                this.storeProjectModules.add(rec);
+            }
+        }, this);
     },
     
 

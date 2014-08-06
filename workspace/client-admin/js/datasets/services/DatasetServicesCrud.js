@@ -417,7 +417,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
             gui.show();
         }
         else if (type === "SERVER") {
-            var server = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsProp", {
+            var server = Ext.create("sitools.admin.resourcesPlugins.ResourcesPluginsProp", {
                 action : 'create',
                 parentPanel : this,
                 urlResources : this.urlAllServicesSERVER,

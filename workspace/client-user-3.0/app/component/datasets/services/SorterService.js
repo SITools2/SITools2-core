@@ -36,12 +36,14 @@ Ext.define('sitools.user.component.datasets.services.SorterService', {
     controllers : ['sitools.user.controller.component.datasets.services.SorterServiceController'],
     alias : 'sitools.user.component.dataviews.services.sorterService',
     
+    statics : {
+        getParameters : function () {
+            return [];
+        }
+    },
+    
     executeAsService : function (config) {
         var sorterTool = Ext.create("sitools.user.view.component.datasets.services.SorterServiceView", config);
         sorterTool.show();
     }
 });
-
-sitools.user.component.datasets.services.SorterService.getParameters = function () {
-    return [];
-};
