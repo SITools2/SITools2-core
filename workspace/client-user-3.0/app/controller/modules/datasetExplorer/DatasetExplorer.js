@@ -28,7 +28,10 @@ Ext.namespace('sitools.user.controller.modules.datasetExplorer');
 Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
     extend : 'Ext.app.Controller',
     alias : 'sitools.user.modules.datasetExplorer',
-    requires : ['sitools.user.utils.CommonTreeUtils'],
+    requires : ['sitools.user.utils.CommonTreeUtils',
+                'sitools.user.component.datasets.columnDefinition.ColumnsDefinition',
+                'sitools.user.component.form.FormComponent',
+                'sitools.user.component.feeds.FeedComponent'],
 
     views : [ 'modules.datasetExplorer.DatasetExplorer' ],
 
@@ -51,6 +54,7 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                             success : function (response) {
                                 var dataset = Ext.decode(response.responseText).dataset;
                                 commonTreeUtils.addShowData(node, dataset);
+                                commonTreeUtils.addShowDefinition(node, dataset);
     //                            SitoolsDesk.navProfile.manageDatasetExplorerShowDefinitionAndForms(commonTreeUtils, node, dataset);
     
                                 Ext.Ajax.request({
@@ -81,10 +85,54 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                 
                 itemclick : function ( tree, node, item, index, e, eOpts ) {
                     if(node.isLeaf()) {
-                        var dataset = node.get("properties").dataset;
-                        var datasetViewComponent  = Ext.create(dataset.datasetView.jsObject);
-                        datasetViewComponent.create(this.getApplication());
-                        datasetViewComponent.init(dataset);
+                        
+                        switch(node.get("type")) {
+                        case "data" :
+                            var dataset = node.get("properties").dataset;
+                            var datasetViewComponent  = Ext.create(dataset.datasetView.jsObject);
+                            datasetViewComponent.create(this.getApplication());
+                            datasetViewComponent.init(dataset);
+                            break;
+                        case "defi" : 
+                            var columnDefinition  = Ext.create("sitools.user.component.datasets.columnDefinition.ColumnsDefinition");
+                            columnDefinition.create(this.getApplication());
+                            var dataset = node.get("properties").dataset;
+                            var configService = {
+                                datasetId : dataset.id,
+                                datasetDescription : dataset.description,
+                                datasetCm : dataset.columnModel,
+                                datasetName : dataset.name,
+                                dictionaryMappings : dataset.dictionaryMappings,
+                                preferencesPath : "/" + dataset.name,
+                                preferencesFileName : "semantic"
+                            };
+                            columnDefinition.init(configService);
+                            break;
+                        case 'form' :
+                            var dataset = node.get("properties").dataset;
+                            var form = node.get("properties").form;
+                            var formComponent = Ext.create('sitools.user.component.form.FormComponent');
+                            formComponent.create(this.getApplication());
+                            formComponent.init(form, dataset);
+                            break;
+                        case 'feeds' :
+                            var dataset = node.get("properties").dataset;
+                            var feed = node.get("properties").feed;
+                            var feedComponent = Ext.create('sitools.user.component.feeds.FeedComponent');
+                            feedComponent.create(this.getApplication());
+                            
+                            var url = dataset.sitoolsAttachementForUsers + "/clientFeeds/" + feed.name;
+                            
+                            var configFeed = {
+                                parentId : dataset.id,
+                                parentName : dataset.name,
+                                feed : feed,
+                                url : url
+                            }
+                            
+                            feedComponent.init(configFeed);
+                            break;
+                        }
                     }
                 }
             }

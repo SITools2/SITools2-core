@@ -24,11 +24,12 @@ Ext.namespace('sitools.user.component.dataviews.services');
  * @class sitools.widget.filterTool
  * @extends Ext.Window
  */
-Ext.define('sitools.user.view.component.datasets.columnsDefinition.ColumnsDefinition', {
+Ext.define('sitools.user.view.component.datasets.columnsDefinition.ColumnsDefinitionView', {
     extend : 'Ext.grid.GridPanel',
     alias : 'sitools.user.component.columnsDefinition',
     
     layout : 'fit',
+    forceFit : true,
     
     componentType : "defi",
     

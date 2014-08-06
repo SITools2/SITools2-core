@@ -41,7 +41,6 @@ Ext.define('sitools.user.component.datasets.columnDefinition.ColumnsDefinition',
         }
     },
     
-    
     /**
      * 
      * @param config
@@ -64,7 +63,7 @@ Ext.define('sitools.user.component.datasets.columnDefinition.ColumnsDefinition',
             id : "defi" + config.datasetId
         };
         
-        var columnDef = Ext.create("sitools.user.view.component.datasets.columnsDefinition.ColumnsDefinition", config);
+        var columnDef = Ext.create("sitools.user.view.component.datasets.columnsDefinition.ColumnsDefinitionView", config);
         this.show(columnDef, windowConfig);
     },
     

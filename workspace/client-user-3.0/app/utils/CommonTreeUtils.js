@@ -83,12 +83,12 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
 
     
     addFeeds : function (node, dataset) {
-        var dataset = node.getData();
         node.appendChild({
             id : Ext.id(),
             text : i18n.get('label.feeds'),
-            leaf : false,
             type : 'listFeeds',
+            expandable : true,
+            children : [],
             properties : {
                 dataset : dataset
             }
@@ -240,7 +240,6 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
                 Ext.each(forms.data, function (form) {
                     node.appendChild({
                         leaf : true,
-                        winTitle : i18n.get('label.forms') + " : " + dataset.name + "." + form.name,
                         type : "form",
                         text : form.name,
                         node : this,
@@ -258,7 +257,7 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
     
     handleBeforeExpandFeeds : function (node) {
         var url = node.parentNode.get('url');
-        var dataset = node.parentNode.get('properties').dataset;
+        var dataset = node.get('properties').dataset;
         Ext.Ajax.request({
             url : url + '/feeds?media=json',
             success : function (response) {
@@ -271,7 +270,6 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
                 Ext.each(feeds.data, function (feed) {
                     node.appendChild({
                         leaf : true,
-                        winTitle : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title,
                         type : "feeds",
                         text : feed.name,
                         properties : {
