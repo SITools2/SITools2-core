@@ -120,7 +120,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                     if (Ext.isArray(dictionnaryMappings) && !Ext.isEmpty(dictionnaryMappings)) {
                         var dico = dictionnaryMappings[0];
                         var dicoMapping = dico.mapping || [];
-                        dicoMapping.each(function (mapping) {
+                        Ext.each(dicoMapping, function (mapping) {
                             if (item.columnAlias == mapping.columnAlias) {
                                 var concept = mapping.concept || {};
                                 if (!Ext.isEmpty(concept.description)) {

@@ -6,16 +6,9 @@
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/tree_dictionary.png</icon>
-  <xtype>sitools.user.component.dataviews.services.columnsDefinitionService</xtype>
+  <xtype>sitools.user.component.datasets.columnDefinition.ColumnsDefinition</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/components/columnsDefinition/dependencies/columnsDefinition.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/columnsDefinitionService.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>1</priority>
