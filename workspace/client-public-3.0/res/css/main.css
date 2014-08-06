@@ -565,3 +565,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 #msg-div .msg p {
     margin: 0;
 }
+
+.sort-desc {
+    background-image: url("../images/icons/sort_desc.png") !important;
+}
+
+.sort-asc {
+    background-image: url("../images/icons/sort_asc.png") !important;
+}

@@ -13,13 +13,9 @@
   <y>0</y>
   <icon>feedsModule</icon>
   <specificType>ProjectsFeeds</specificType>
-  <xtype>sitools.user.modules.feedsReaderProject</xtype>
+  <xtype>sitools.user.modules.FeedsProjectModule</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/feedsReader/feedReaderProject.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>4</priority>

@@ -13,22 +13,9 @@
   <y>0</y>
   <icon>formsModule</icon>
   <specificType></specificType>
-  <xtype>sitools.user.modules.formsModule</xtype>
+  <xtype>sitools.user.modules.FormModule</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/formsModule/formsModule.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/components/forms/projectForm.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/tmp/getBackToDesktop.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/components/forms/resultsProjectForm.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>5</priority>

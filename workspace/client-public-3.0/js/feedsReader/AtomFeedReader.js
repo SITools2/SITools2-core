@@ -118,9 +118,9 @@ Ext.define('sitools.public.feedsReader.AtomFeedReader', {
             header : "Date",
             dataIndex : 'pubDate',
             width : 150,
-            renderer : this.formatDate,
             sortable : true,
-            hidden : true
+            hidden : true,
+            format : SITOOLS_DEFAULT_IHM_DATE_FORMAT
         }];
         
         this.columns = columns;
@@ -212,34 +212,6 @@ Ext.define('sitools.public.feedsReader.AtomFeedReader', {
             }
         }
         return 'x-grid3-row-collapsed';
-    },
-
-    /**
-     * Custom date format
-     * 
-     * @param {Date}
-     *            date the input date
-     * @return {String} the date formated
-     */
-    formatDate : function (date) {
-        if (!date) {
-            return '';
-        }
-        var now = new Date();
-        var d = now.clearTime(true);
-        if (date instanceof Date) {
-            var notime = date.clearTime(true).getTime();
-            if (notime == d.getTime()) {
-                return 'Today ' + date.dateFormat('g:i a');
-            }
-            d = d.add('d', -6);
-            if (d.getTime() <= notime) {
-                return date.dateFormat('D g:i a');
-            }
-            return date.dateFormat('n/j g:i a');
-        } else {
-            return date;
-        }
     },
 
     /**

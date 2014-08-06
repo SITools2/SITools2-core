@@ -18,20 +18,20 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
 
-Ext.namespace('sitools.user.modules');
+Ext.namespace('sitools.user.modules.FeedsProjectModule');
 /**
  * datasetExplorer Module
  * 
- * @class sitools.user.modules.datasetExplorer
- * @extends Ext.Panel
+ * @class sitools.user.modules.FeedsProjectModule
+ * @extends sitools.user.core.Module
  */
-Ext.define('sitools.user.modules.FormModule', {
+Ext.define('sitools.user.modules.FeedsProjectModule', {
     extend : 'sitools.user.core.Module',
     
-    controllers : ['sitools.user.controller.modules.formModule.FormModuleController'],
+    controllers : ['sitools.user.controller.modules.feedsProjectModule.FeedsProjectModuleController'],
 
     init : function () {
-        var view = Ext.create('sitools.user.view.modules.formModule.FormModuleView');
+        var view = Ext.create('sitools.user.view.modules.feedsProjectModule.FeedsProjectModuleView');
         
         this.show(view);
 

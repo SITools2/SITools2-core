@@ -15,39 +15,29 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+/* global Ext, sitools, window */
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
-
-Ext.namespace('sitools.user.modules');
-/**
- * datasetExplorer Module
- * 
- * @class sitools.user.modules.datasetExplorer
- * @extends Ext.Panel
- */
-Ext.define('sitools.user.modules.FormModule', {
-    extend : 'sitools.user.core.Module',
+Ext.define('sitools.user.model.FeedModel', {
+    extend : 'Ext.data.Model',
     
-    controllers : ['sitools.user.controller.modules.formModule.FormModuleController'],
-
-    init : function () {
-        var view = Ext.create('sitools.user.view.modules.formModule.FormModuleView');
-        
-        this.show(view);
-
-        this.callParent(arguments);
-    },
-
-    /**
-     * method called when trying to save preference
-     * 
-     * @returns
-     */
-    _getSettings : function () {
-        return {
-            preferencesPath : "/modules",
-            preferencesFileName : this.id
-        };
-
-    }
+    fields : [{
+        name : 'id',
+        type : 'string'
+    }, {
+        name : 'feedType',
+        type : 'string'
+    },{
+        name : 'title',
+        type : 'string'
+    },{
+        name : 'feedSource',
+        type : 'string'
+    },{
+        name : 'name',
+        type : 'string'
+    },{
+        name : 'url',
+        type : 'string'
+    }]
+    
 });
