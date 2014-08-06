@@ -22,23 +22,23 @@
 }
 
 .loginIcon {
-	background-image: url(/sitools/client-user/resources/icons/session/login.png) !important;
+	background-image: url(/sitools/client-user/resources/images/icons/session/login.png) !important;
 }
 
 .logoutIcon {
-	background-image: url(/sitools/client-user/resources/icons/session/logout.png) !important;
+	background-image: url(/sitools/client-user/resources/images/icons/session/logout.png) !important;
 }
 
 .registerIcon {
-	background-image: url(/sitools/client-user/resources/icons/session/register.png) !important;
+	background-image: url(/sitools/client-user/resources/images/icons/session/register.png) !important;
 }
 
 .personalIcon {
-	background-image: url(/sitools/client-user/resources/icons/session/personal.png) !important;
+	background-image: url(/sitools/client-user/resources/images/icons/session/personal.png) !important;
 }
 
 .languageMenuIcon {
-	background-image: url(/sitools/client-user/resources/icons/session/language.png) !important;
+	background-image: url(/sitools/client-user/resources/images/icons/session/language.png) !important;
 }
 
 .userMenuCls {

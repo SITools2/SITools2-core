@@ -290,8 +290,28 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
                 stateful: false,
                 isWindow: true,
                 constrainHeader: true,
+                constrain : true,
                 minimizable: true,
-                maximizable: true
+                maximizable: true,
+                listeners : {
+                	resizeDesktop : function (me, newW, newH) {
+                		var deskWidth = Desktop.getDesktopEl().getWidth();
+                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').taskbar.getHeight();
+                		
+                		if (me.getWidth() > deskWidth) {
+                			me.setWidth(deskWidth);
+                		}
+                		
+                		if (me.getHeight() > deskHeight) {
+                			me.setHeight(deskHeight);
+                		}
+                        
+                        var child = me.items.items[0];
+                        if (child && child.getEl()) {
+                            child.fireEvent("resize", child, me.body.getWidth(), me.body.getHeight(), child.getWidth(), child.getHeight());
+                        }
+                    }
+                }
             });
 
         cls = cls || Ext.window.Window;

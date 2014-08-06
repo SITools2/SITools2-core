@@ -157,24 +157,23 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
      * Open a window in the desktop with the sitools.userProfile.editProfile object. 
      */
     onEditProfile : function () {
-        var componentCfg = {
-            identifier : userLogin,
-            url : '/sitools/editProfile/' + userLogin,
-            handler : function (user) {
-                projectGlobal.user = user;
-            }
-        };
-        var jsObj = Ext.create('sitools.public.userProfile.editProfile');
 
-        var windowConfig = {
-            title : i18n.get('label.editProfile'),
-            saveToolbar : false,
-            iconCls : "editProfile"
-        };
+        var profile = Ext.create('Ext.window.Window', {
+        	title : i18n.get('label.editProfile'),
+        	renderTo : Desktop.getDesktopEl(),
+            width : 400,
+            height : 430,
+            resizable : false,
+            items : [Ext.create('sitools.public.userProfile.editProfile', {
+                identifier : userLogin,
+                url : loadUrl.get('APP_URL') + '/editProfile/' + userLogin
+            })]
+        });
         
-        this.getApplication().getController('sitools.user.controller.DesktopController').createWindow(jsObj, windowConfig);
+        profile.show();
+        
+//        this.getApplication().getController('sitools.user.controller.DesktopController').createWindow(jsObj, windowConfig);
 
-        this.destroy();
     },
     
     /**
@@ -185,14 +184,22 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
      * @param {Ext.event} e The click event
      */
     showTasks : function () {
-        var jsObj = Ext.create('sitools.user.view.header.userProfile.TaskView');
-        var windowConfig = {
-            title : i18n.get('label.Tasks'),
-            saveToolbar : false, 
-            iconCls : 'tasks'
-        };
-        this.getApplication().getController('sitools.user.controller.DesktopController').createWindow(jsObj, windowConfig);
-        this.destroy();
+        
+        var tasks = Ext.create('Ext.window.Window', {
+        	title : i18n.get('label.Tasks'),
+        	renderTo : Desktop.getDesktopEl(),
+            width : 600,
+            height : 430,
+            items : [{
+            	xtype : 'container',
+            	layout : 'fit',
+            	items : [Ext.create('sitools.user.view.header.userProfile.TaskView')]
+            }]
+        });
+        
+        tasks.show();
+        
+//        this.getApplication().getController('sitools.user.controller.DesktopController').createWindow(jsObj, windowConfig);
         
     },
     
@@ -236,6 +243,9 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
 //	     try {
 	          var data = dataView.getSelectionModel().getSelection()[0].data;   
 	          eval("this." + data.action).call(this, dataView, index, node, e);
+
+	          dataView.up('window').destroy();
+
 //	     }
 //	     catch (err) {
 //	          return;

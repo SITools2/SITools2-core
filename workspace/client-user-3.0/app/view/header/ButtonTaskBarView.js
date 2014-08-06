@@ -50,7 +50,8 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             scope : this, 
             iconCls : 'navBarButtons-icon',
             cls : 'navBarTransition',
-            icon : "/sitools/common/res/images/icons/navBarButtons/user-icon.png", 
+            icon : "/sitools/common/res/images/icons/navBarButtons/user-icon.png",
+            scale : 'medium',
             tooltip : {
                 html : i18n.get('label.profil'), 
                 anchor : 'bottom', 
@@ -64,6 +65,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         	name : 'versionBtn',
             iconCls : 'navBarButtons-icon',
             icon : "/sitools/common/res/images/icons/navBarButtons/version-icon.png", 
+            scale : 'medium',
             tooltip : {
                 html : i18n.get('label.version'), 
                 anchor : 'bottom', 
@@ -77,8 +79,8 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
                 scope : this, 
                 iconCls : 'navBarButtons-icon',
                 handler : this.saveAction, 
-//                scale : "medium", 
                 icon : "/sitools/common/res/images/icons/navBarButtons/save-icon.png", 
+                scale : 'medium',
                 tooltip : {
                     html : i18n.get('label.save'), 
                     anchor : 'bottom', 
@@ -91,13 +93,13 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         
         this.helpButton = Ext.create('Ext.Button', {
             iconCls : 'navBarButtons-icon',
-//            scale : "medium", 
             scope : this, 
             icon : "/sitools/common/res/images/icons/navBarButtons/help-icon.png", 
 //            handler : SitoolsDesk.showHelp,
             handler : function () {
                 alert('todo');
             },
+            scale : 'medium',
             tooltip : {
                 html : i18n.get('label.help'), 
                 anchor : 'bottom', 
@@ -110,20 +112,21 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         this.maximizeButton = Ext.create('Ext.Button', {
 			name : 'maximizeBtn',
 			iconCls : 'navBarButtons-icon',
-//            icon : SitoolsDesk.desktopMaximizeMode ? "/sitools/common/res/images/icons/navBarButtons/mini-icon.png" : "/sitools/common/res/images/icons/navBarButtons/maxi-icon.png",  
-            tooltip : {
+            icon : (Desktop.getDesktopMaximized() == false) ? "/sitools/common/res/images/icons/navBarButtons/mini-icon.png" : "/sitools/common/res/images/icons/navBarButtons/maxi-icon.png",  
+            scale : 'medium',
+    		tooltip : {
             	id : 'tooltipId',
-//                html : SitoolsDesk.desktopMaximizeMode ? i18n.get('label.maximize') : i18n.get('label.minimize'), 
+                html : (Desktop.getDesktopMaximized() == false) ? i18n.get('label.maximize') : i18n.get('label.minimize'), 
                 anchor : 'bottom',
                 trackMouse : false,
                 listeners : {
                 	show : function (tooltip){
-		                if (SitoolsDesk.desktopMaximizeMode) {
-                			tooltip.update(i18n.get('label.minimize'));
-		                }
-		                else {
-	                		tooltip.update(i18n.get('label.maximize'));
-		                }
+//		                if (SitoolsDesk.desktopMaximizeMode) {
+//                			tooltip.update(i18n.get('label.minimize'));
+//		                }
+//		                else {
+//	                		tooltip.update(i18n.get('label.maximize'));
+//		                }
                 	}
                 }
             }
@@ -132,7 +135,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         
         this.callParent(Ext.apply(this,  {
             id : 'navBarButtonsId',
-            enableOverflow: true,
+            cls : 'navBar_bg',
 //            defaults : {
 //                overCls : "x-navBar-items-over", 
 //                ctCls : "x-navBar-items-ct"
@@ -144,8 +147,8 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             width : this.width,
             listeners : {
                 scope : this, 
-                maximizeDesktop : this.onMaximizeDesktop, 
-                minimizeDesktop : this.onMinimizeDesktop 
+//                maximizeDesktop : this.onMaximizeDesktop, 
+//                minimizeDesktop : this.onMinimizeDesktop 
             }, 
             border : false
         }));

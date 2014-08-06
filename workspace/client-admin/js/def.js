@@ -447,27 +447,27 @@ function onClickOption(urloption) {
 }
 
 function includeJs(url) {
-	if (Ext.isEmpty(url)) {
-		return;
-	}
-	var trouve = false;
-	var targetEl = "script";
-	var targetAttr = "src";
-	var scripts = document.getElementsByTagName(targetEl);
-	var script;
-	for (var i = scripts.length; i > 0; i--) {
-        script = scripts[i - 1];
-        if (script && script.getAttribute(targetAttr) !== null && script.getAttribute(targetAttr).indexOf(url) != -1) {
-            trouve = true;
-        }
-    }
-	if (!trouve) {
-        var head = document.getElementsByTagName('head')[0];
-        script = document.createElement('script');
-        script.setAttribute('src', url);
-        script.setAttribute('type', 'text/javascript');
-        head.appendChild(script);
-    }
+//	if (Ext.isEmpty(url)) {
+//		return;
+//	}
+//	var trouve = false;
+//	var targetEl = "script";
+//	var targetAttr = "src";
+//	var scripts = document.getElementsByTagName(targetEl);
+//	var script;
+//	for (var i = scripts.length; i > 0; i--) {
+//        script = scripts[i - 1];
+//        if (script && script.getAttribute(targetAttr) !== null && script.getAttribute(targetAttr).indexOf(url) != -1) {
+//            trouve = true;
+//        }
+//    }
+//	if (!trouve) {
+//        var head = document.getElementsByTagName('head')[0];
+//        script = document.createElement('script');
+//        script.setAttribute('src', url);
+//        script.setAttribute('type', 'text/javascript');
+//        head.appendChild(script);
+//    }
 }
 /**
  * Include JS scripts in the given order and trigger callback when all scripts are loaded  
@@ -477,43 +477,51 @@ function includeJs(url) {
  * @param scope {Object} the scope of the callback
  */
 function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
-    //Test if all inclusions are done for this list of urls
-    if (indexAInclure < ConfUrls.length) {
-        var url = ConfUrls[indexAInclure].url;
-        
-        var trouve = false;
-        var targetEl = "script";
-        var targetAttr = "src";
-        var scripts = document.getElementsByTagName(targetEl);
-        var script;
-        for (var i = scripts.length; i > 0; i--) {
-            script = scripts[i - 1];
-            if (script && script.getAttribute(targetAttr) !== null && script.getAttribute(targetAttr).indexOf(url) != -1) {
-                trouve = true;
-            }
-        }
-        if (!trouve) {
-            // if not : include the Js Script
-            var DSLScript = document.createElement("script");
-            DSLScript.type = "text/javascript";
-            DSLScript.onload = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
-            DSLScript.onreadystatechange = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
-            DSLScript.onerror = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
-            DSLScript.src = url;
-
-            var headID = document.getElementsByTagName('head')[0];
-           headID.appendChild(DSLScript);           
-        } else {
-            includeJsForceOrder(ConfUrls, indexAInclure + 1, callback, scope);
-        }
-    } else {
-        if (!Ext.isEmpty(callback)) {
-            if (Ext.isEmpty(scope)) {
-                callback.call();
-            } else {
-                callback.call(scope);
-            }
-        }
+//    //Test if all inclusions are done for this list of urls
+//    if (indexAInclure < ConfUrls.length) {
+//        var url = ConfUrls[indexAInclure].url;
+//        
+//        var trouve = false;
+//        var targetEl = "script";
+//        var targetAttr = "src";
+//        var scripts = document.getElementsByTagName(targetEl);
+//        var script;
+//        for (var i = scripts.length; i > 0; i--) {
+//            script = scripts[i - 1];
+//            if (script && script.getAttribute(targetAttr) !== null && script.getAttribute(targetAttr).indexOf(url) != -1) {
+//                trouve = true;
+//            }
+//        }
+//        if (!trouve) {
+//            // if not : include the Js Script
+//            var DSLScript = document.createElement("script");
+//            DSLScript.type = "text/javascript";
+//            DSLScript.onload = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+//            DSLScript.onreadystatechange = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+//            DSLScript.onerror = Ext.Function.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+//            DSLScript.src = url;
+//
+//            var headID = document.getElementsByTagName('head')[0];
+//           headID.appendChild(DSLScript);           
+//        } else {
+////            includeJsForceOrder(ConfUrls, indexAInclure + 1, callback, scope);
+//        }
+//    } else {
+//        if (!Ext.isEmpty(callback)) {
+//            if (Ext.isEmpty(scope)) {
+//                callback.call();
+//            } else {
+//                callback.call(scope);
+//            }
+//        }
+//    }
+    
+    if (!Ext.isEmpty(callback)) {
+    	if (Ext.isEmpty(scope)) {
+    		callback.call();
+    	} else {
+    		callback.call(scope);
+    	}
     }
 }
 

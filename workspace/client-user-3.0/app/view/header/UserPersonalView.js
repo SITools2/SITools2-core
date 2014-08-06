@@ -110,6 +110,10 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
     	
 	    this.items = [dataview];
 	    
+	    this.mon(Ext.getBody(), 'click', function(el, e){
+        	this.destroy();
+        }, this);
+	    
         this.callParent(arguments);
     }
    

@@ -26,9 +26,32 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         var me = this, desktopCfg;
 
         this.control({
-            'moduleTaskBar button' : {
+            'moduleTaskBar button[cls=x-navBar-items]' : {
                 click : this.onOpenModule
-            }
+            },
+            
+            'moduleTaskBar #sitoolsButton' : {
+				click : function (btn) {
+					var dvModules = Ext.create('sitools.user.view.header.ModuleDataView');
+					dvModules.show();
+				}
+			},
+			'moduleDataview' : {
+				blur : function (window) {
+					window.hide();
+					Desktop.getDesktopEl().unmask();
+				},
+				afterrender : function (window) {
+					window.focus();
+				}
+			},
+			'moduleDataview dataview' : {
+				itemclick : function (dataview, moduleRecord, item) {
+					dataview.up('window').hide();
+					Desktop.getDesktopEl().unmask();
+					this.openModule(moduleRecord.data);
+				}
+			}
         });
 
         this.getApplication().on('projectInitialized', this.loadProject, this);

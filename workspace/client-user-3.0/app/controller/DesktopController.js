@@ -25,6 +25,8 @@ Ext.define('sitools.user.controller.DesktopController', {
     views : [ 'desktop.DesktopView' ],
 
     init : function () {
+    	
+    	
         var me = this, desktopCfg;
 
         desktopCfg = me.getDesktopConfig();
@@ -36,6 +38,7 @@ Ext.define('sitools.user.controller.DesktopController', {
         me.desktopView = Ext.create('sitools.user.view.desktop.DesktopView', desktopCfg);
 
         Ext.EventManager.on(window, 'beforeunload', me.onUnload, me);
+        Ext.EventManager.onWindowResize(this.fireResize, this);
 
         me.isReady = true;
         me.fireEvent('ready', me);
@@ -58,6 +61,12 @@ Ext.define('sitools.user.controller.DesktopController', {
             });
             win = desktopView.createWindow(windowConfig);
         }
+        
+        Desktop.setActivePanel(win);
+        win.on('beforeclose', function (winToClose) {
+        	Desktop.setActivePanel(null);
+        }, this);
+        
         win.show();
     },
 
@@ -113,7 +122,7 @@ Ext.define('sitools.user.controller.DesktopController', {
                 scope : me
             } ],
 
-            wallpaper : 'resources/wallpapers/Blue-Sencha.jpg',
+            wallpaper : 'resources/wallpapers/space.jpg',
             wallpaperStretch : false
         });
     },
@@ -124,12 +133,7 @@ Ext.define('sitools.user.controller.DesktopController', {
         };
 
         Ext.apply(cfg, me.taskbarConfig);
-        return Ext.apply(cfg, {
-            trayItems : [ {
-                xtype : 'trayclock',
-                flex : 1
-            } ]
-        });
+        return cfg;
     },
 
     onLogout : function () {
@@ -177,12 +181,14 @@ Ext.define('sitools.user.controller.DesktopController', {
     
 	maximize : function () {
     	var headerController = this.getApplication().getController('header.HeaderController');
+    	var footerController = this.getApplication().getController('footer.FooterController');
 		
+    	
 //		Desktop.getEnteteComp().fireEvent("maximizeDesktop");
 //		Desktop.getBottomComp().fireEvent("maximizeDesktop");
 		
 		headerController.onMaximizeDesktop();
-//    	headerController.onMinimizeDesktop();
+    	footerController.onMaximizeDesktop();
 		
 		var arrayFreeDiv = Ext.DomQuery.select("div[stype=freeDiv]");
 		if (!Ext.isEmpty(arrayFreeDiv)) {
@@ -199,18 +205,29 @@ Ext.define('sitools.user.controller.DesktopController', {
 			});
 		}
 		
+		var desktopMaxHeight = Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - this.desktopView.taskbar.getHeight();
+		var desktopMaxWidth = Ext.getBody().getWidth();
+		
+		var desktopTaskBarMaxHeight = Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - this.desktopView.taskbar.getHeight();
+			
 		//Agrandir la zone desktopAndTaskbar
 		Desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight());
 		Desktop.getDesktopAndTaskBarEl().setWidth(Ext.getBody().getWidth());
-		Desktop.getDesktopEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - Desktop.getTaskbarEl().getHeight());
-		Desktop.getDesktopEl().setWidth(Ext.getBody().getWidth());
+		Desktop.getDesktopEl().setHeight(desktopMaxHeight);
+		Desktop.getDesktopEl().setWidth(desktopMaxWidth);
 		
-		Desktop.getBottomEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - Desktop.getTaskbarEl().getHeight());
-		Desktop.getTaskbarEl().setY(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - Desktop.getTaskbarEl().getHeight());
+		Desktop.getBottomEl().setHeight(desktopTaskBarMaxHeight);
 		
+		// useless for the moment
+		//Desktop.getTaskbarEl().setY(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - Desktop.getTaskbarEl().getHeight());
 		
-		if (Desktop.getActivePanel()) {
-			Desktop.getActivePanel().fireEvent("resizeDesktop", SitoolsDesk.getActivePanel());
+		Desktop.getMainDesktop().setHeight(desktopMaxHeight);
+		
+		this.desktopView.fitDesktop();
+		
+		if (Desktop.getActivePanel() && Desktop.getActivePanel().maximized) {
+			Desktop.getActivePanel().setHeight(desktopMaxHeight);
+			Desktop.getActivePanel().setWidth(desktopMaxWidth);
 		}
 		
 //		this.getManager().each(function (win) {
@@ -225,9 +242,11 @@ Ext.define('sitools.user.controller.DesktopController', {
 	
     minimize : function () {
     	var headerController = this.getApplication().getController('header.HeaderController');
+    	var footerController = this.getApplication().getController('footer.FooterController');
+
     	
     	headerController.onMinimizeDesktop();
-//		SitoolsDesk.getBottomComp().fireEvent("minimizeDesktop");
+    	footerController.onMinimizeDesktop();
 		
 		var arrayFreeDiv = Ext.dom.Query.select("div[stype=freeDiv]");
 		
@@ -238,23 +257,79 @@ Ext.define('sitools.user.controller.DesktopController', {
 			});
 		}
 		
-		//Revenir à la taille initiale de la zone desktopAndTaskbar
+		//Revenir Ã  la taille initiale de la zone desktopAndTaskbar
 		Desktop.getDesktopAndTaskBarEl().dom.style.height = "";
 		Desktop.getDesktopAndTaskBarEl().dom.style.width = "";
 		
 		Desktop.getDesktopEl().setWidth("");
 		
-		this.layout();
-		if (Desktop.getActivePanel()) {
-			Desktop.getActivePanel().fireEvent("resizeDesktop", Desktop.getActivePanel());
-		}
 		
 //		SitoolsDesk.getDesktop().taskbar.tbPanel.ownerCt.doLayout()
+		
+		this.desktopView.fitDesktop();
+		
+		this.desktopView.windows.each(function (win) {
+			if (win.getHeight() > Desktop.getDesktopEl().getHeight()) {
+				win.setHeight(Desktop.getDesktopEl().getHeight() - this.desktopView.taskbar.getHeight());
+			}
+			if (win.getWidth() > Desktop.getDesktopEl().getWidth()) {
+				win.setWidth(Desktop.getDesktopEl().getWidth());
+			}
+		}, this);
 		
 		if (!Ext.isEmpty(Desktop.getModulesInDiv())) {
 			Desktop.getModulesInDiv().each(function (moduleInDiv) {
 				moduleInDiv.fireEvent("minimizeDesktop", moduleInDiv);
 			});
 		}
+	},
+	
+	/**
+	 * Called on a desktop Resize. 
+	 * It will redefine the height and size of desktop Element. 
+	 * Fires events for each component so that they can resize according to their container
+	 * Fires event resizeDesktop on activePanel
+	 * Fires event resize on entete and bottom component.
+	 * Fires event resize on each module representation included in a specific Div  
+	 */
+	fireResize : function (newW, newH) {
+		
+		if (Desktop.getDesktopMaximized() == true) {
+			Desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight());
+			Desktop.getDesktopAndTaskBarEl().setWidth(Ext.getBody().getWidth());
+	
+			Desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight());
+			Desktop.getDesktopEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight());
+			Desktop.getDesktopEl().setWidth(Ext.getBody().getWidth());
+		}
+		this.desktopView.fitDesktop();
+		
+		this.desktopView.windows.each(function (win) {
+			if (win.getWidth() > Desktop.getDesktopEl().getWidth() || win.getHeight() > Desktop.getDesktopEl().getHeight()) {
+				win.fireEvent("resizeDesktop", win, newW, newH);
+			}
+		});
+		
+		var headerController = this.getApplication().getController('header.HeaderController');
+    	var footerController = this.getApplication().getController('footer.FooterController');
+		
+    	var headerView = headerController.getHeaderView();
+    	var footerView = footerController.getFooterView();
+    	
+    	headerView.fireEvent("resize", headerView, newW, newH);
+    	
+    	headerView.NavBarsPanel.setWidth(Ext.getBody().getWidth());
+    	
+    	headerView.fireEvent("windowResize", headerView, newW, newH);
+
+    	footerView.fireEvent("resize", footerView, newW, newH);
+		
+    	footerView.fireEvent("windowResize", footerView, newW, newH);
+		
+//		for (var int = 0; int < projectGlobal.modulesInDiv.length; int++) {
+//			var module = projectGlobal.modulesInDiv[int];
+//			var panel = Ext.getCmp(module.id);
+//			panel.fireEvent("resize", panel, newW, newH);
+//		}
 	}
 });

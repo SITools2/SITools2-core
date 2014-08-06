@@ -28,7 +28,11 @@ Ext.define("sitools.user.controller.footer.FooterController", {
 
     extend : 'Ext.app.Controller',
 
-    views : ['footer.Footer'],
+    views : ['footer.FooterView'],
+    
+    config : {
+    	FooterView : null
+    },
     
 
     heightNormalMode : 0,
@@ -68,7 +72,7 @@ Ext.define("sitools.user.controller.footer.FooterController", {
         });
         
         this.control({
-            'container#panelLeft' : {
+            'container#leftPanel' : {
                 afterrender : function (panel) {
                     Ext.get("sitools_logo").on('load', function () {
                         Ext.get("sitools_logo").alignTo(panel.getEl(), "c-c", [ -60, 2 ]);
@@ -111,12 +115,12 @@ Ext.define("sitools.user.controller.footer.FooterController", {
                         me.setHeight(0);
                     } else {
                         me.setSize(Ext.get(me.renderTo).getSize());
-                        Ext.get("sitools_logo").alignTo(me.down('container#panelLeft').getEl(), "c-c");
-                        me.down("panel#sitools_build_by").alignTo(me.down('panel#panelMiddle').getEl(), "c-c");
+                        Ext.get("sitools_logo").alignTo(me.down('container#leftPanel').getEl(), "c-c");
+                        me.down("panel#sitools_build_by").alignTo(me.down('panel#middlePanel').getEl(), "c-c");
 
                         var fr = Ext.get("sitools_footer_right");
                         if (Ext.isDefined(fr) && !Ext.isEmpty(fr)) {
-                            fr.alignTo(me.down('panel#panelRight').getEl(), "c-c");
+                            fr.alignTo(me.down('panel#rightPanel').getEl(), "c-c");
                         }
                     }
                 },
@@ -131,18 +135,21 @@ Ext.define("sitools.user.controller.footer.FooterController", {
     onProjectLoaded : function () {
         this.fillLinks();
         this.versionUrl = loadUrl.get('APP_URL') + '/version';
-        Ext.create('sitools.user.view.footer.Footer', {
-        });
+        this.FooterView = Ext.create('sitools.user.view.footer.FooterView', {});
        
     },
     onMaximizeDesktop : function () {
-        this.container.setHeight(0);
-        this.hide();
+    	var footerView = this.getFooterView();
+    	
+        this.getFooterView().container.setHeight(0);
+        this.getFooterView().hide();
     },
     onMinimizeDesktop : function () {
-        this.container.dom.style.height = "";
-        // this.setSize(SitoolsDesk.getBottomEl().getSize());
-        this.show();
+    	var footerView = this.getFooterView();
+    	
+    	footerView.container.dom.style.height = "";
+    	footerView.setSize(Desktop.getBottomEl().getSize());
+    	footerView.show();
     },
     fillLinks : function () {
         var project = Ext.getStore('ProjectStore').getAt(0);

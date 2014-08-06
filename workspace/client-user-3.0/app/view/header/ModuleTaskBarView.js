@@ -32,16 +32,12 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
         var categories = this.categorizeModules();
 
         var homeButton = Ext.create('Ext.Button', {
-            handler : function () {
-                projectGlobal.getPreferences(function () {
-                    SitoolsDesk.removeActivePanel();
-                    SitoolsDesk.removeAllWindows();
-                    SitoolsDesk.loadPreferences();
-                });
-            },
+        	itemId : 'sitoolsButton',
             scale : "medium",
-            icon : "/sitools/common/res/images/icons/button-home.png",
-            iconCls : 'navBarButtons-icon',
+//            icon : "/sitools/common/res/images/sitools_logo24.png",
+//            iconCls : 'navBarButtons-icon',
+            cls : 'sitools_button',
+            iconCls : 'sitools_button_img',
             tooltip : {
                 html : i18n.get("label.homeButton"),
                 anchor : 'bottom',
@@ -163,7 +159,7 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
         });
 
         this.callParent(Ext.apply(this, {
-            id : "navBarId",
+//            id : "navBarId",
             enableOverflow : true,
             // defaults : {
             // overCls : "x-navBar-items-over",
@@ -174,6 +170,7 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
             // overCls : "x-navBar-over",
             // ctCls : "x-navBar-ct",
             flex : 1,
+            cls : 'navBar_bg',
             listeners : {
                 scope : this,
                 afterRender : function (me) {

@@ -23,7 +23,7 @@ Ext.define('sitools.user.Application', {
     extend : 'Ext.app.Application',
 
     controllers : ['core.SitoolsController',
-                   "DesktopController", 
+                   'DesktopController',
                    'header.HeaderController',
                    'footer.FooterController',
                    'core.NavigationModeFactory',

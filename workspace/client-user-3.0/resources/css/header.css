@@ -16,16 +16,34 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-Ext.application({
-    name: 'sitools',
+.navBar_bg {
+	background: repeat-x scroll 0 0 rgba(250, 248, 248, 0.5);
+	/* 	background-image: url("/sitools/client-user/resources/images/taskbar/taskbar_bg.png"); */
+}
 
-    extend: 'sitools.admin.Application',
-    
-    paths : {
-        "sitools.admin" : "./js",
-        "sitools.public" : "../client-public/js",
-        "sitools.common" : "../client-public/js",
-        "sitools.user" : "../client-user/app",
-        "Ext.ux" : "../client-public/js/ux"
-    }    
-});
+#navBar_shadow {
+	height: 43px;
+	background: repeat-x scroll 0 39px rgba(0, 0, 0, 0);
+	background-image:
+		url("/sitools/client-user/resources/images/taskbar/taskbar_shadow.png");
+}
+
+.sitools_button {
+	padding: 4px 4px 4px 4px;
+	border: none;
+	background-color: rgba(255, 255, 255, 0.2);
+	background-image: none;
+}
+
+.sitools_button:HOVER {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.sitools_button_img {
+	background-image: url("/sitools/common/res/images/sitools_logo24.png");
+}
+
+.sitools_button_img:HOVER {
+	background-image:
+		url("/sitools/common/res/images/sitools_logo24_hover.png");
+}

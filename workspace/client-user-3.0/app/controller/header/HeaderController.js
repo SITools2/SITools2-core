@@ -23,10 +23,10 @@ Ext.namespace('sitools.user.controller.header');
  * Populate the div x-headers of the sitools Desktop. 
  * @cfg {String} htmlContent html content of the headers, 
  * @cfg {Array} modules the modules list
- * @class sitools.user.component.entete.Entete
+ * @class sitools.user.controller.header.HeaderController
  * @extends Ext.Panel
  */
-Ext.define("sitools.user.controller.header.HeaderController", {
+Ext.define('sitools.user.controller.header.HeaderController', {
     
     extend : 'Ext.app.Controller',
     
@@ -57,7 +57,9 @@ Ext.define("sitools.user.controller.header.HeaderController", {
 
                     me.heightNormalMode = enteteEl.getHeight();
                     me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
+                    
                 },
+                
                 maximizeDesktop : this.onMaximizeDesktop,
                 minimizeDesktop : this.onMinimizeDesktop,
                 windowResize : function (me) {
@@ -106,7 +108,7 @@ Ext.define("sitools.user.controller.header.HeaderController", {
             
             'userProfileWindow menuitem[name="usrProfileRegister"]' : {
                 click : function (btn) {
-                    var register = new sitools.public.userProfile.Register({
+                    var register = Ext.create('sitools.public.userProfile.Register', {
                         closable : true,
                         url : loadUrl.get('APP_URL')+ "/inscriptions/user",
                         reset : loadUrl.get('APP_URL') + '/lostPassword',
@@ -145,13 +147,13 @@ Ext.define("sitools.user.controller.header.HeaderController", {
             
 			'buttonTaskBarView button[name=maximizeBtn]' : {
 				click : function (btn) {
-					if (Desktop.getDesktopSize() == 'minimize') {
+					if (Desktop.getDesktopMaximized() == false) {
 						this.getApplication().getController('DesktopController').maximize();
-						Desktop.setDesktopSize('maximize');
+						Desktop.setDesktopMaximized(true);
 					}
 					else {
 						this.getApplication().getController('DesktopController').minimize(); 
-						Desktop.setDesktopSize('minimize');
+						Desktop.setDesktopMaximized(false);
 					}
 				}
 			},
@@ -161,7 +163,6 @@ Ext.define("sitools.user.controller.header.HeaderController", {
 					Ext.create('sitools.public.utils.Version').show();
 				}
 			}
-            
         });
         this.callParent(arguments);
     },
@@ -202,7 +203,6 @@ Ext.define("sitools.user.controller.header.HeaderController", {
         	me.userContainer.fireEvent("maximizeDesktop", me.userContainer, me.navToolbarButtons);
         	me.userContainer = null;
         }
-        me.doLayout();
     },
     /**
      * listeners of minimizeDesktop event :
@@ -213,14 +213,14 @@ Ext.define("sitools.user.controller.header.HeaderController", {
     	me.entetePanel.setVisible(true);
     	me.container.dom.style.height = "";
     	me.setHeight(me.heightNormalMode);
+    	
     	me.NavBarsPanel.fireEvent("minimizeDesktop");
-        // this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
+        
+    	// this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
         if (me.userContainer) {
         	me.userContainer.fireEvent("minimizeDesktop", me.userContainer, me.navToolbarButtons);
         	me.userContainer = null;
         }
-//        me.doLayout();
-
     },
 	
 	/**

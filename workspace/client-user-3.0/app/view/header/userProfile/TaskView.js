@@ -24,12 +24,12 @@ Ext.define('sitools.user.view.header.userProfile.TaskView', {
 	extend : 'Ext.grid.Panel',
     border : false,
     sm : Ext.create('Ext.selection.RowModel'),
-    layout : {
-        type : 'vbox',
-        align : 'stretch'
-    },
+//    layout : {
+//        type : 'vbox',
+//        align : 'stretch'
+//    },
+    layout : 'fit',
     forceFit : true,
-    height : 430,
     pageSize : 10,
 
     initComponent : function () {
@@ -155,7 +155,7 @@ Ext.define('sitools.user.view.header.userProfile.TaskView', {
         this.callParent(arguments);
     },
 
-    onRender : function () {
+    afterRender : function () {
         this.callParent(arguments);
         this.store.load({
             params : {

@@ -37,6 +37,9 @@ Ext.define('sitools.user.model.ModuleModel', {
     }, {
         name : 'label',
         type : 'string'
+    }, {
+        name : 'icon',
+        type : 'string'
     } ],
     hasMany : [ {
         model : 'sitools.user.model.RoleModel',

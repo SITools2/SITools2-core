@@ -24,7 +24,7 @@
  * @extends Ext.Toolbar
  */
 
-Ext.define('sitools.user.view.footer.Footer', {
+Ext.define('sitools.user.view.footer.FooterView', {
     extend : 'Ext.panel.Panel',
     itemId : 'footer',
 
@@ -49,15 +49,15 @@ Ext.define('sitools.user.view.footer.Footer', {
                 items : [
                         {
                             xtype : 'panel',
+                            itemId : 'leftPanel',
                             border : false,
                             flex : 0.5,
                             html : "<img id='sitools_logo' src='" + loadUrl.get("APP_URL") + "/res/images/logo_01_petiteTaille.png' alt='sitools_logo'/>",
                             bodyCls : 'no-background',
-                            itemId : 'panelLeft'
                         },
                         {
                             xtype : 'panel',
-                            itemId : 'panelMiddle',
+                            itemId : 'middlePanel',
                             border : false,
                             flex : 1,
                             bodyCls : 'no-background',
@@ -77,8 +77,8 @@ Ext.define('sitools.user.view.footer.Footer', {
                             } ]
                         },
                         {   
-                            itemId: 'rightPanel',
                             xtype : 'panel',
+                            itemId: 'rightPanel',
                             border : false,
                             flex : 0.5,
                             bodyCls : 'no-background',

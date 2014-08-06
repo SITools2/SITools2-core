@@ -32,6 +32,8 @@ Ext.define('sitools.user.view.header.HeaderView', {
 
     initComponent : function () {
 
+    	this.navBarHeight = 44;
+    	
         this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
             modules : this.modules,
             observer : this
@@ -44,24 +46,27 @@ Ext.define('sitools.user.view.header.HeaderView', {
 
         this.NavBarsPanel = Ext.create('Ext.Toolbar', {
         	name : 'navbarPanels',
+        	cls : 'navBar_bg',
             padding : 0,
             border : false,
-            listeners : {
-//                scope : this,
-//                maximizeDesktop : this.onMaximizeDesktopNavbar,
-//                minimizeDesktop : this.onMinimizeDesktopNavbar
-            },
             items : [ this.navBarModule, this.navToolbarButtons ]
         });
 
-        this.entetePanel = Ext.create("Ext.Panel", {
+        this.entetePanel = Ext.create("Ext.panel.Panel", {
+        	style : 'overflow : visible;',
             html : this.htmlContent,
             border : false,
-            layout : "fit",
             flex : 1,
             listeners : {
                 scope : this,
-                desktopReady : this.showUserContainer
+                desktopReady : this.showUserContainer,
+                boxready : function (header, width, height) {
+                	var totalHeaderHeight = header.getHeight() + this.navBarHeight;
+                	header.setHeight(totalHeaderHeight);
+                	
+                	header.getEl().select('div').setHeight(totalHeaderHeight);
+                	header.getEl().select('img').setHeight(totalHeaderHeight);
+                }
             }
         });
 

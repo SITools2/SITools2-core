@@ -120,7 +120,7 @@ var clientAdmin = {
                 } else {
                     var data = json.data;                    
                     Ext.each(data, function (guiservice) {
-                        includeJsForceOrder(guiservice.dependencies.js, 0);
+//                        includeJsForceOrder(guiservice.dependencies.js, 0);
                     });
                     
                 }
@@ -147,7 +147,7 @@ var clientAdmin = {
                 } else {
                     var data = json.data;                    
                     Ext.each(data, function (datasetViewComponent) {
-                    	includeJsForceOrder(datasetViewComponent.dependencies.js, 0);
+//                    	includeJsForceOrder(datasetViewComponent.dependencies.js, 0);
                     });
                     
                 }
@@ -179,7 +179,7 @@ var clientAdmin = {
                     var data = json.data;                    
                     Ext.each(data, function (projectModuleComponent) {
                     	if (!Ext.isEmpty(projectModuleComponent.dependencies.js)) {
-                    		includeJsForceOrder(projectModuleComponent.dependencies.js, 0);
+//                    		includeJsForceOrder(projectModuleComponent.dependencies.js, 0);
                     	}
                     });
                 }

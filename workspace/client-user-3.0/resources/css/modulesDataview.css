@@ -1,0 +1,20 @@
+
+.moduleDv {
+	width: 165px;
+	height: 120px;
+	padding: 16px 8px 0px 8px;
+	float: left;
+	cursor: pointer;
+}
+
+.moduleDvText {
+	color: #272727;
+	font-size: 15px;
+	text-align: center;
+	text-shadow: 0.1em 0.1em 0.1em #9B9B9B;
+	padding-top: 10px;
+}
+
+.modulesDataview {
+	background-color: rgba(255, 255, 255, 0.72);
+}

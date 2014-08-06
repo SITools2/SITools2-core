@@ -28,6 +28,8 @@ Ext.define('sitools.user.core.Desktop', {
 	config : {
 		activePanel : null,
 		modulesInDiv : [],
+		
+		sitoolsDesktop : Ext.get("sitools-desktop"),
 		mainDesktop : Ext.get("x-main"),
 		
 		desktopEl : Ext.get('x-desktop'),
@@ -43,7 +45,7 @@ Ext.define('sitools.user.core.Desktop', {
 		
 		shortcutsEl : Ext.get('x-shortcuts'),
 		
-		desktopSize : 'minimize'
+		desktopMaximized : false
 	}
 
 });
