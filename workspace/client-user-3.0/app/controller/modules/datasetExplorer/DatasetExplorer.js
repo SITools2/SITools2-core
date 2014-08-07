@@ -29,9 +29,10 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
     extend : 'Ext.app.Controller',
     alias : 'sitools.user.modules.datasetExplorer',
     requires : ['sitools.user.utils.CommonTreeUtils',
-                'sitools.user.component.datasets.columnDefinition.ColumnsDefinition',
+                'sitools.user.component.datasets.columnsDefinition.ColumnsDefinition',
                 'sitools.user.component.form.FormComponent',
-                'sitools.user.component.feeds.FeedComponent'],
+                'sitools.user.component.feeds.FeedComponent',
+                'sitools.user.component.datasets.opensearch.Opensearch'],
 
     views : [ 'modules.datasetExplorer.DatasetExplorer' ],
 
@@ -94,7 +95,7 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                             datasetViewComponent.init(dataset);
                             break;
                         case "defi" : 
-                            var columnDefinition  = Ext.create("sitools.user.component.datasets.columnDefinition.ColumnsDefinition");
+                            var columnDefinition  = Ext.create("sitools.user.component.datasets.columnsDefinition.ColumnsDefinition");
                             columnDefinition.create(this.getApplication());
                             var dataset = node.get("properties").dataset;
                             var configService = {
@@ -131,6 +132,22 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                             }
                             
                             feedComponent.init(configFeed);
+                            break;
+                            
+                        case 'openSearch' : 
+                            
+                            var dataset = node.get("properties").dataset;
+                            var opensearchComponent = Ext.create('sitools.user.component.datasets.opensearch.Opensearch');
+                            opensearchComponent.create(this.getApplication());
+                            
+                            var config = {
+                                datasetId : dataset.id,
+                                dataUrl : dataset.sitoolsAttachementForUsers, 
+                                datasetName : dataset.name, 
+                                preferencesPath : "/" + dataset.name, 
+                                preferencesFileName : "openSearch"
+                            };
+                            opensearchComponent.init(config);
                             break;
                         }
                     }

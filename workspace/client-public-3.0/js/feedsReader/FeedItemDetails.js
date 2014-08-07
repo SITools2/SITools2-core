@@ -34,16 +34,7 @@ Ext.define('sitools.public.feedsReader.FeedItemDetails', {
         if (!Ext.isEmpty(record)) {
             
             this.store = Ext.create('Ext.data.JsonStore', {
-                fields: [
-                    {name : 'title'},
-                    {name : 'pubDate', type: 'date', dateFormat: 'timestamp'},
-                    {name : 'published', type: 'date', dateFormat: 'timestamp'},
-                    {name : 'author'}, 
-                    {name : 'link'},
-                    {name : 'description'},
-                    {name : 'imageUrl'},
-                    {name : 'image'}
-                ],
+                model : 'sitools.public.feedsReader.FeedItemModel',
                 proxy : {
                     type : 'memory',
                     reader : {

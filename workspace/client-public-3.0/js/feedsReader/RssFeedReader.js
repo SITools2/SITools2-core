@@ -26,6 +26,8 @@ Ext.namespace('sitools.public.feedsReader');
 Ext.define('sitools.public.feedsReader.RssFeedReader', {
     extend : 'Ext.grid.Panel',
     
+    requires : ['sitools.public.feedsReader.FeedItemModel'],
+    
     hideHeaders : false,
     forceFit : true,
     layout : 'fit',
@@ -37,24 +39,10 @@ Ext.define('sitools.public.feedsReader.RssFeedReader', {
     
     initComponent : function () {
 
-        Ext.define('RssFeed', {
-            extend: 'Ext.data.Model',
-            fields : [ 'title', 'author', {
-                name : 'pubDate',
-                type : 'date'
-            }, 'link', 'description', 'content', 'guid', {
-                name : 'imageUrl',
-                mapping : "enclosure@url"
-            }, {
-                name : 'imageType',
-                mapping : "enclosure@type"
-            }]
-        });
-        
         this.store = Ext.create('Ext.data.Store', {
             autoLoad : true,
             sorters : [{property : 'pubDate', direction : "DESC"}],
-            model : 'RssFeed',
+            model : 'sitools.public.feedsReader.FeedItemModel',
             proxy : {
                 type : 'ajax',
                 url : this.feedGrid.urlFeed,

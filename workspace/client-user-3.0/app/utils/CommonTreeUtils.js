@@ -58,7 +58,6 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
         node.appendChild({
             id : Ext.id(),
             text : i18n.get('label.opensearch'),
-            winTitle : i18n.get('label.opensearch') + " : " + dataset.name,
             leaf : true,
             type : "openSearch",
             properties : {
