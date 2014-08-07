@@ -56,16 +56,17 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
             // Le module n'appartient pas à une catégorie: inclusion en tant que
             // bouton dans le menu.
             if (Ext.isEmpty(category.category)) {
-                var module = modules[0].getData();
+//                var module = modules[0].getData();
+                var module = modules[0];
 //                var xtype = module.xtype;
-                if (Ext.isEmpty(module.divIdToDisplay)) {
+                if (Ext.isEmpty(module.data.divIdToDisplay)) {
                     var item = {
-                        text : i18n.get(module.label),
-                        iconCls : module.icon,
+                        text : i18n.get(module.data.label),
+                        iconCls : module.data.icon,
                         scope : module,
                         module : module,
                         tooltip : {
-                            html : i18n.get(module.description),
+                            html : i18n.get(module.data.description),
                             anchor : 'bottom',
                             trackMouse : false
                         },
@@ -77,7 +78,7 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
                                 '<td class="ux-taskbutton-right"><i>&#160;</i></td>', "</tr></tbody></table>")
 
                     };
-                    var xtype = module.xtype;
+                    var xtype = module.data.xtype;
 //                        var func = xtype + ".openModule";
 //                      if (Ext.isFunction(eval(func))) {
 //                      handler = eval(func);

@@ -49,7 +49,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 				itemclick : function (dataview, moduleRecord, item) {
 					dataview.up('window').hide();
 					Desktop.getDesktopEl().unmask();
-					this.openModule(moduleRecord.data);
+					this.openModule(moduleRecord);
 				}
 			}
         });
@@ -70,7 +70,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     },
 
     openModule : function (moduleModel) {
-        var module = Ext.create(moduleModel.xtype);
+        var module = Ext.create(moduleModel.data.xtype);
         module.create(this.getApplication(), moduleModel);
         module.init();
     },
