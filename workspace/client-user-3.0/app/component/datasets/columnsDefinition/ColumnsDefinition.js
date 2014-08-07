@@ -18,7 +18,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, loadUrl, extColModelToStorage, SitoolsDesk, sql2ext
  */
 
-Ext.namespace('sitools.user.component.datasets.columnDefinition');
+Ext.namespace('sitools.user.component.datasets.columnsDefinition');
 
 /**
  * Window that contains a tools to sort a store
@@ -31,7 +31,7 @@ Ext.namespace('sitools.user.component.datasets.columnDefinition');
  * @class sitools.user.component.datasets.services.SorterService
  * @extends Ext.Window
  */
-Ext.define('sitools.user.component.datasets.columnDefinition.ColumnsDefinition', {
+Ext.define('sitools.user.component.datasets.columnsDefinition.ColumnsDefinition', {
     extend : 'sitools.user.core.Component',
 //    controllers : ['sitools.user.controller.component.datasets.services.SorterServiceController'],
     alias : 'sitools.user.component.dataviews.services.columnsDefinitionService',
@@ -64,6 +64,7 @@ Ext.define('sitools.user.component.datasets.columnDefinition.ColumnsDefinition',
         };
         
         var columnDef = Ext.create("sitools.user.view.component.datasets.columnsDefinition.ColumnsDefinitionView", config);
+        this.setComponentView(columnDef);
         this.show(columnDef, windowConfig);
     },
     
