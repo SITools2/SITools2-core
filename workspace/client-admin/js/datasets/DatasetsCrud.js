@@ -128,11 +128,7 @@ Ext.define('sitools.admin.datasets.DatasetsCrud', {
 	            text : i18n.get('label.delete'),
 	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_delete.png',
 	            handler : this.onDelete
-	        }, {
-	            text : i18n.get('label.opensearch'),
-	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_open_search.png',
-	            handler : this.onEditOpenSearch
-	        }, {
+	        },'-' , {
 	            text : i18n.get('label.refresh'),
 	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_refresh.png',
 	            handler : this._onRefresh
@@ -144,24 +140,42 @@ Ext.define('sitools.admin.datasets.DatasetsCrud', {
 	            text : i18n.get('label.disactive'),
 	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png',
 	            handler : this._onDisactive
-	        }, {
-	            text : i18n.get('label.sqlString'),
-	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/sql_request.png',
-	            handler : this._getSqlString
-	        }, {
-                text : i18n.get('label.semantic'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_dictionary.png',
-                handler : this._onEditSemantic
-            }, {
-	            text : i18n.get('label.duplicate'),
-	            icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/presentation1.png',
-	            handler : this.onDuplicate
 	        }, '->', {
                 xtype : 's-filter',
                 emptyText : i18n.get('label.search'),
                 store : this.store,
                 pageSize : this.pageSize
             }]
+        };
+        
+        this.rbar = {
+            xtype : 'toolbar',
+            name : 'datasetActionToolbar',
+            width : 125,
+            defaults : {
+                scope : this
+            },
+            layout : {
+                pack : 'start',
+                align : 'stretch'
+            },
+            items : [{
+                text : i18n.get('label.opensearch'),
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_open_search.png',
+                handler : this.onEditOpenSearch
+            }, {
+                text : i18n.get('label.sqlString'),
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/sql_request.png',
+                handler : this._getSqlString
+            }, {
+                text : i18n.get('label.semantic'),
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/tree_dictionary.png',
+                handler : this._onEditSemantic
+            }, {
+                text : i18n.get('label.duplicate'),
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/presentation1.png',
+                handler : this.onDuplicate
+            } ]
         };
 
 		this.listeners = {
@@ -330,7 +344,7 @@ Ext.define('sitools.admin.datasets.DatasetsCrud', {
             return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
         }
         
-        var up = Ext.create('sitools.admin.datasets.opensearch.opensearch', {
+        var up = Ext.create('sitools.admin.datasets.opensearch.Opensearch', {
             url : this.url + '/' + rec.data.id,
             action : 'edit',
             store : this.getStore()
