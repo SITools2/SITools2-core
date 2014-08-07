@@ -10,7 +10,7 @@ Ext.application({
     extend: 'sitools.user.Application',
     
     paths : {
-        "Ext.ux" : "./ux",
+        "Ext.ux" : "../client-public/js/ux",
         "sitools.public" : "../client-public/js"
     },
 });

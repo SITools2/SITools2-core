@@ -108,7 +108,8 @@ Ext.define('Ext.ux.modules.Settings', {
                         child('resources/wallpapers/desk.jpg'),
                         child('resources/wallpapers/desktop.jpg'),
                         child('resources/wallpapers/desktop2.jpg'),
-                        child('resources/wallpapers/sky.jpg')
+                        child('resources/wallpapers/sky.jpg'),
+                        child('resources/wallpapers/moonwalk_poney.gif')
                     ]
                 }
             })
