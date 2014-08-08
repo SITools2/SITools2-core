@@ -50,13 +50,8 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             scope : this, 
             iconCls : 'navBarButtons-icon',
             cls : 'navBarTransition',
-            icon : "/sitools/common/res/images/icons/navBarButtons/user-icon.png",
+            icon : "/sitools/common/res/images/icons/general/user.png",
             scale : 'medium',
-            tooltip : {
-                html : i18n.get('label.profil'), 
-                anchor : 'bottom', 
-                trackMouse : false
-            }, 
             id : this.profileButtonId
         });
         itemsButtons.push(this.profilButton);
@@ -72,20 +67,15 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
                 trackMouse : false
             }
         });
-        itemsButtons.push(this.versionButton);
+//        itemsButtons.push(this.versionButton);
         
         if (!Ext.isEmpty(userLogin)) {
             this.saveButton = Ext.create('Ext.Button', {
                 scope : this, 
                 iconCls : 'navBarButtons-icon',
                 handler : this.saveAction, 
-                icon : "/sitools/common/res/images/icons/navBarButtons/save-icon.png", 
+                icon : "/sitools/common/res/images/icons/general/save.png", 
                 scale : 'medium',
-                tooltip : {
-                    html : i18n.get('label.save'), 
-                    anchor : 'bottom', 
-                    trackMouse : false
-                }, 
                 id : "saveBtnId"
             });
             itemsButtons.push(this.saveButton);
@@ -106,7 +96,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
                 trackMouse : false
             }
         });
-        itemsButtons.push(this.helpButton);
+//        itemsButtons.push(this.helpButton);
         
         /**A specialized btn to switch between normal and maximize mode */
         this.maximizeButton = Ext.create('Ext.Button', {
@@ -131,7 +121,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
                 }
             }
         });
-        itemsButtons.push(this.maximizeButton);
+//        itemsButtons.push(this.maximizeButton);
         
         this.callParent(Ext.apply(this,  {
             id : 'navBarButtonsId',

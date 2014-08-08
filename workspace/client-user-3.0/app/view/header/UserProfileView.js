@@ -34,6 +34,7 @@ Ext.define('sitools.user.view.header.UserProfileView', {
     height : 137,
     border : false,
     plain : true,
+    closeAction : 'hide',
     
     initComponent : function () {
         
@@ -85,7 +86,7 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         
         var menuLangues = Ext.create('Ext.menu.Menu', {
             plain : true,
-            border : false,
+            border : false
         });
         
         Ext.each(Project.getLanguages(), function (language) {

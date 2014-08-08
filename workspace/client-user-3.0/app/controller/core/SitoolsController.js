@@ -36,8 +36,8 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
             
             'moduleTaskBar #sitoolsButton' : {
 				click : function (btn) {
-					var dvModules = Ext.create('sitools.user.view.header.ModuleDataView');
-					dvModules.show();
+					this.dvModules = Ext.create('sitools.user.view.header.ModuleDataView');
+					this.dvModules.show();
 				}
 			},
 			'moduleDataview' : {
@@ -54,6 +54,20 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 					dataview.up('window').hide();
 					Desktop.getDesktopEl().unmask();
 					this.openModule(moduleRecord);
+				}
+			},
+			
+			'moduleDataview toolbar button[name=versionBtn]' : {
+				click : function (btn) {
+					btn.up('moduleDataview').close();
+					Ext.create('sitools.public.utils.Version').show();
+				}
+			},
+			
+			'moduleDataview toolbar button[name=helpBtn]' : {
+				click : function (btn) {
+					btn.up('moduleDataview').close();
+					Ext.create('sitools.public.utils.Help').show();
 				}
 			}
         });

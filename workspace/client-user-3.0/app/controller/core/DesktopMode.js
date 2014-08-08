@@ -32,7 +32,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
             title : i18n.get(module.get('title')),
             width : module.get('defaultWidth'),
             height : module.get('defaultHeight'),
-            icon : module.get('icon'),
+            iconCls : module.get('icon'),
             label : module.get('label'),
             x : module.get('x'),
             y : module.get('y')

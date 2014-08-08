@@ -41,33 +41,83 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
     	
     	this.renderTo = Desktop.getMainDesktop();
     	
-    	this.width = (Desktop.getDesktopEl().getWidth() * 2) / 3,
+    	this.width = (Desktop.getDesktopEl().getWidth() * 2) / 2.5,
     	this.height = (Desktop.getDesktopEl().getHeight() * 2) / 3,
         
-    	this.store = Ext.getStore('ProjectStore').getProject().modulesStore;
+    	this.store = Ext.data.StoreManager.lookup("ModulesStore");
 
         this.dataview = Ext.create('Ext.view.View', {
             store: this.store,
             itemSelector: 'div.moduleDv',
-            tpl: [
+            tpl: new Ext.XTemplate (
                 '<tpl for=".">',
                         '<div class="moduleDv">',
-                        	'<img src="/sitools/common/res/images/sitools-logo-big.png" height=72 />',
+                        	'<div class="moduleDvImg {icon}" height=72>',
+//                        		'<img src="/sitools/common/res/images/sitools-logo-big.png" height=72 />',
+//                        		'<div class="{icon}" height=72> </div>',
+                        	'</div>',
 	                        '<div class="moduleDvText">',
 	                        	'{name}',
 	                    	'</div>',
                         '</div>',
-                '</tpl>',
-            ]
+                '</tpl>'
+                )
+        });
+        
+        
+        var versionButton = Ext.create('Ext.Button', {
+        	name : 'versionBtn',
+            iconCls : 'version-icon-dv', 
+            scale : 'large',
+            tooltip : {
+                text : i18n.get('label.version'), 
+                anchor : 'bottom'
+            }
+        });
+        
+        var helpButton = Ext.create('Ext.Button', {
+        	name : 'helpBtn',
+            iconCls : 'help-icon-dv', 
+//            handler : SitoolsDesk.showHelp,
+            scope : this, 
+            handler : function () {
+                alert('todo');
+            },
+            scale : 'large',
+            tooltip : {
+                text : i18n.get('label.help'), 
+                anchor : 'bottom'
+            }
+        });
+        
+        this.bbar = Ext.create('Ext.toolbar.Toolbar', {
+        	cls : 'modulesDataview',
+        	border : false,
+        	items : [versionButton, helpButton]
         });
         
         this.items = [this.dataview];
         
         this.mon(Ext.getBody(), 'click', function(el, e){
-        	this.hide();
+        	this.close();
         }, this, { delegate: '.x-mask' });
         
+        Ext.create('Ext.fx.Anim', {
+        	target: this,
+        	duration: 300,
+        	from: {
+        		opacity: 0,
+        		width : this.width / 2,
+        		height : this.height / 2
+        	},
+        	to: {
+        		opacity: 1,
+        		width : this.width,
+        		height : this.height
+        	}
+        });
+        
         this.callParent();
-    },
-  
+    }
+    
 });

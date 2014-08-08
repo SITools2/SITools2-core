@@ -977,15 +977,15 @@ td.ux-taskButtons-edge {
 }
 
 .navBarButtons-icon:HOVER {
-	-webkit-transform: scale(1.09);
+	/* -webkit-transform: scale(1.09);
 	-moz-transform: scale(1.09);
 	-ms-transform: scale(1.09);
 	-o-transform: scale(1.09);
-	transform: scale(1.09);
+	transform: scale(1.09); */
 	z-index:5;
-	opacity: .7;
-    -moz-opacity: .7;
-    filter:alpha(opacity=70);
+	opacity: .85;
+    -moz-opacity: .85;
+    filter:alpha(opacity=85);
 }
 
 .navBarButtons-icon:ACTIVE {

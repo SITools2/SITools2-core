@@ -66,7 +66,7 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
                         scope : module,
                         module : module,
                         tooltip : {
-                            html : i18n.get(module.data.description),
+                            text : i18n.get(module.data.description),
                             anchor : 'bottom',
                             trackMouse : false
                         },

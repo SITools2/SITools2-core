@@ -1,4 +1,11 @@
 
+.moduleDvImg {
+	width : 72px;
+	height : 72px;
+	margin : auto;
+	background-size: 72px 72px !important;
+}
+
 .moduleDv {
 	width: 165px;
 	height: 120px;
@@ -7,14 +14,38 @@
 	cursor: pointer;
 }
 
+.moduleDv:HOVER .moduleDvText {
+	text-shadow: 0.1em 0.1em 0.1em #9B9B9B !important;
+}
+
+.moduleDv:HOVER {
+	opacity : .85;
+}
+
 .moduleDvText {
 	color: #272727;
 	font-size: 15px;
 	text-align: center;
-	text-shadow: 0.1em 0.1em 0.1em #9B9B9B;
+	text-shadow: 0.1em 0.1em 0.1em #CFCFCF;
 	padding-top: 10px;
 }
 
 .modulesDataview {
-	background-color: rgba(255, 255, 255, 0.72);
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.version-icon-dv {
+	background-image: url(/sitools/common/res/images/icons/general/version.png);
+}
+
+.version-icon-dv:HOVER {
+	opacity : .85
+}
+
+.help-icon-dv {
+	background-image: url(/sitools/common/res/images/icons/general/help.png);
+}
+
+.help-icon-dv:HOVER {
+	opacity : .85
 }
