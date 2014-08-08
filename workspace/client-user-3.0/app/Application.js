@@ -7,17 +7,20 @@ Ext.define('sitools.user.Application', {
                  'sitools.user.core.Project',
                  'sitools.user.core.Desktop',
                  
-                 /* UTILS */
+                 /* UTILS PUBLIC */
                  'sitools.public.utils.i18n',
                  'sitools.public.utils.loadUrl',
                  'sitools.public.utils.sql2ext',
                  'sitools.public.utils.Locale',
-                 'sitools.user.utils.FormUtils',
                  'sitools.public.utils.LoginUtils',
                  'sitools.public.crypto.Base64',
                  'sitools.public.utils.UserStorage',
                  'sitools.public.utils.PopupMessage',              
-                 'sitools.public.utils.Version'              
+                 'sitools.public.utils.Version',
+                 
+                 /* UTILS USER */
+                 'sitools.user.utils.FormUtils',
+                 'sitools.user.utils.ServerServiceUtils'
                  ],
 
     extend : 'Ext.app.Application',
@@ -61,6 +64,8 @@ Ext.define('sitools.user.Application', {
                 "X-User-Agent" : "Sitools"
             };
         }
+        
+        Desktop.setApplication(this);
         this.initSiteMap();
     },
     
