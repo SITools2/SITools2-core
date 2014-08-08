@@ -27,11 +27,11 @@ Ext.namespace('sitools.user.modules');
 Ext.define('sitools.user.modules.DataStorageExplorer', {
     extend : 'sitools.user.core.Module',
     
-//    controllers : ['sitools.user.controller.modules.projectDescription.ProjectDescription'],
+    controllers : ['sitools.user.controller.modules.dataStorageExplorer.DataStorageExplorerController'],
     
     init : function () {
     	
-        var datastorageXplorer = Ext.create('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', {
+        var datastorageXplorer = Ext.create('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerView', {
         	moduleModel : this.getModuleModel()
         });
         this.show(datastorageXplorer);

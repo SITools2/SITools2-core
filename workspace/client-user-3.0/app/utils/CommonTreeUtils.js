@@ -76,7 +76,7 @@ Ext.define('sitools.user.utils.CommonTreeUtils', {
             properties : {
                 dataset : dataset
             },
-            type : 'listForms',
+            type : 'listForms'
         });
     },
 

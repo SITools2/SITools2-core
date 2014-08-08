@@ -4,4 +4,4 @@
  * support development time inspection of css output.
  */
 @import '/sitools/cots/extjs4/ext-4.2.1.883/resources/css/ext-all-neptune-debug.css';
-@import 'ux/desktop/css/desktop.css';
+@import '/sitools/client-public/js/ux/desktop/css/desktop.css';

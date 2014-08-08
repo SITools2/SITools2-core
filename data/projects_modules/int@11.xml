@@ -11,16 +11,9 @@
 	<x>0</x>
 	<y>0</y>
 	<icon>datastorageExplorerModule</icon>
-	<xtype>sitools.user.modules.datastorageExplorer</xtype>
+	<xtype>sitools.user.modules.DataStorageExplorer</xtype>
 	<dependencies>
-		<js>
-			<url>
-				<url>/sitools/client-user/js/modules/cmsModule/datastorageExplorer.js</url>
-			</url>
-			<url>
-				<url>/sitools/client-user/js/modules/cmsModule/datastorageUploadFile.js</url>
-			</url>
-		</js>
+		<js/>
 		<css/>
 	</dependencies>
 	<priority>8</priority>

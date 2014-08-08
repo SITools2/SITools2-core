@@ -132,12 +132,12 @@ Ext.define('Ext.ux.IFrame', {
             // We need to be sure we remove all our events from the iframe on unload or we're going to LEAK!
             Ext.EventManager.on(this.getWin(), 'beforeunload', me.cleanupListeners, me);
 
-            this.el.unmask();
+//            this.el.unmask();
             this.fireEvent('load', this);
 
         } else if(me.src && me.src != '') {
 
-            this.el.unmask();
+//            this.el.unmask();
             this.fireEvent('error', this);
         }
 
@@ -174,7 +174,7 @@ Ext.define('Ext.ux.IFrame', {
 
         if (me.fireEvent('beforeload', me, src) !== false) {
             if (text && me.el) {
-                me.el.mask(text);
+//                me.el.mask(text);
             }
 
             frame.src = me.src = (src || me.src);

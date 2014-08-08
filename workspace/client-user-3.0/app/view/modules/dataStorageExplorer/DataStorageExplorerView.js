@@ -17,20 +17,24 @@
  ******************************************************************************/
 /*global Ext, sitools, i18n, loadUrl, locale, Reference */
 
-Ext.namespace('sitools.user.view.modules.datastorageExplorer');
+Ext.namespace('sitools.user.view.modules.dataStorageExplorer');
 /**
  * Datastorage Explorer Module
  * 
- * @class sitools.user.view.modules.datastorageExplorer.DataStorageExplorer
+ * @class sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerView
  * @extends Ext.panel.Panel
  */
-Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', {
+Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerView', {
     extend : 'Ext.panel.Panel',
     requires : ["sitools.user.model.DataStorageExplorerTreeModel"],
-    alias : 'widget.datastorageExplorer',
+    alias : 'widget.dataStorageExplorer',
 
     autoScroll : true,
-    layout : 'border',
+    layout : {
+        type : 'hbox',
+        align : 'stretch'
+    },
+    
     initComponent : function () {
         
         var noPreviewAvailableUrlTemplate = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/html/{locale}/noPreviewAvailable.html";
@@ -51,87 +55,33 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
         
         this.uplButton = {
             xtype : 'button',
-            id : 'uplButton',
+            itemId : 'uplButton',
             icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/image_add.png',
             text : i18n.get('label.uploadFile'),
-            tooltip : i18n.get('label.uploadFile'),
-            scope : this,
-            handler : function () {
-                var nodeSel = this.tree.getSelectionModel().getSelection()[0];
-                if (!Ext.isEmpty(nodeSel)) {
-                    this.onUpload(nodeSel);
-                } else {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
-                }
-            }
+            tooltip : i18n.get('label.uploadFile')
         };
 
         this.dwlButton = {
             xtype : 'button',
-            id : 'dwlButton',
+            itemId : 'dwlButton',
             icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/download.png',
             text : i18n.get('label.downloadFile'),
-            tooltip : i18n.get('label.downloadFile'),
-            scope : this,
-            handler : function () {
-                var nodeSel = this.tree.getSelectionModel().getSelection()[0];
-                if (!Ext.isEmpty(nodeSel)) {
-                    var rec = this.dataview.getStore().getById(nodeSel.id);
-                    // the record exists in the dataview, lets show it
-                    if (nodeSel.leaf === "true") {
-                        if (!Ext.isEmpty(rec)) {
-                            sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
-                        } else {
-                            this.loadDataview(nodeSel.parentNode);
-                            rec = this.dataview.getStore().getById(nodeSel.id);
-                            sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
-                        }
-                    }
-                } else {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
-                }
-            }
+            tooltip : i18n.get('label.downloadFile')
         };
 
         this.delButton = {
             xtype : 'button',
-            id : 'delButton',
+            itemId : 'delButton',
             iconCls : 'delete-icon',
             text : i18n.get('label.delete'),
-            tooltip : i18n.get('label.delete'),
-            scope : this,
-            handler : function () {
-                var node = this.tree.getSelectionModel().getSelection()[0];
-                if (!Ext.isEmpty(node)) {
-                    Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.name + " ?", function (btn) {
-                        if (btn === 'yes') {
-                            if (!this.isRootNode(node)) {
-                                this.deleteNode(node);
-                            } else {
-                                Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.cannotDeleteRootNode'));
-                            }
-                        }
-                    }, this);
-                } else {
-                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
-                }
-            }
+            tooltip : i18n.get('label.delete')
         };
         
         this.createFolderButton = {
                 xtype : 'button',
                 id : 'createFolderButton',
                 icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/createFolder.png',
-                text : i18n.get('label.createFolder'),
-                scope : this,
-                handler : function () {
-                    var node = this.tree.getSelectionModel().getSelection()[0];
-                    if (!Ext.isEmpty(node)) {
-                        this.onCreateFolder(node);
-                    } else {
-                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
-                    }
-                } 
+                text : i18n.get('label.createFolder')
             };
 
         this.tbar = Ext.create('Ext.toolbar.Toolbar', {
@@ -140,17 +90,11 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
         });
 
         
-        Ext.data.NodeInterface.decorate(sitools.user.model.DataStorageExplorerTreeModel);
-        
-        this.treeStore = Ext.create('Ext.data.TreeStore', {
-        	model : 'sitools.user.model.DataStorageExplorerTreeModel'
-        });
+        this.treeStore = Ext.create('sitools.user.store.DatastorageTreeStore');
         
         this.tree = Ext.create('Ext.tree.Panel', {
             region : 'west',
-            animate : true,
             width : 300,
-            expanded : true,
             autoScroll : true,
             bodyStyle : 'background-color:white;',
             store : this.treeStore,
@@ -158,113 +102,19 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
                 text : this.nameDatastorage,
                 leaf : false,
                 url : this.datastorageUrl,
-                name : this.nameDatastorage
+                name : this.nameDatastorage,
+                commonStoreId : Ext.id(),
+                id : Ext.id()
             },
-            rootVisible : true,
             split : true,
             collapsible : true,
-            listeners : {
-                scope : this,
-//                beforeload : function (node) {
-//                    return node.isRoot || Ext.isDefined(node.attributes.children);
-//                },
-                beforeitemexpand : function (node, opts) {
-                    this.tree.getSelectionModel().clearSelections();
-                    node.removeAll();
-                    
-                    var reference = new Reference(node.raw.url);
-                    var url = reference.getFile();
-                    Ext.Ajax.request({
-                        params : {
-                            index : ""
-                        },
-                        url : url,
-                        headers : {
-                            'Accept' : 'application/json+sitools-directory'
-                        },
-                        method : 'GET',
-                        scope : this,
-                        success : function (ret) {
-                            try {
-                                var Json = Ext.decode(ret.responseText);
-                                
-                                //first append the folders
-                                Ext.each(Json, function (child) {
-                              	  if (Ext.isEmpty(child.leaf)) {
-                              		  child.leaf = false;
-                              		  child.children = [];
-                              	  }
-                              	  
-                                    if (!child.leaf) {
-                                        var nodeAdded = this.appendChild(child, node);
-                                        child.id = nodeAdded.id;
-                                    }
-                                }, this);
-                                
-                                //then append the files
-                                Ext.each(Json, function (child) {
-                                    if (child.leaf) {
-                                        var nodeAdded = this.appendChild(child, node);
-                                        child.id = nodeAdded.id;
-                                    }
-                                }, this);
-                                
-                                this.loadDataview(node);
-                                
-                                // if there is a node to select prior to the expanding of the node
-                                var nodeToSelect = this.tree.getSelectionModel().getSelection()[0]; 
-                                if (nodeToSelect && nodeToSelect.get('leaf') === "true") {
-                                    var name = nodeToSelect.get('name');
-                                    var callback = this.callbackForceSelectNodeOtherDirectory.bind(this, name);
-//                                    this.tree.expandPath(node.getPath(), undefined, '/', callback);
-                                    node.expand(false);
-                                } else {
-                                	node.expand(false);
-                                    // just expand the current path
-//                                    this.tree.expandPath(node.getPath());
-                                }
-                                return true;
-                                
-                            } catch (err) {
-                                throw err;
-                            }
-                        },
-                        failure : function (ret) {
-                            return null;
-                        }
-                    });
-                    return true;
-                },
-                itemclick : function (view, node, item, e) {
-                    
-                    this.manageToolbar(node);
-                    if (node.get('text').match(/\.(fits)$/)) {
-                        var sitoolsFitsViewer = new sitools.user.component.dataviews.services.sitoolsFitsViewer({
-                            nodeFits : node
-                        });
-                        sitoolsFitsViewer.show();
-                    }
-                    
-                    var rec = this.dataview.getStore().getById(node.get('commondStoreId'));
-                    this.dataview.select(rec, false);
-                    
-                    if (this.isOpenable(node.get('text'))) {
-                        if (!Ext.isEmpty(rec)) {
-                            this.displayFile(rec);
-                        } else {
-                            this.reloadNode(node.parentNode);
-                            
-                        }
-                    } else {
-//                        this.detailPanel.setTitle(i18n.get('label.defaultTitleDetailPanel'));
-                        this.detailPanel.setSrc(this.noPreviewAvailableUrl);
-//                        this.detailPanel.doLayout();
-                    }
-                }
-            }
+            collapseDirection : "left",
+            selModel : Ext.create("Ext.selection.TreeModel", {
+                allowDeselect : true,
+                mode : "SINGLE"
+            })
+            
         });
-
-        Ext.QuickTips.init();
 
         this.store = Ext.create('Ext.data.JsonStore', {
             proxy : {
@@ -275,37 +125,7 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
                     'Accept' : 'application/json+sitools-directory'
                 }
             },
-            fields : [ {
-                name : 'text',
-                mapping : 'text'
-            },
-            {
-                name : 'name',
-                mapping : 'name'
-            }, {
-                name : 'lastmod',
-                mapping : 'lastmod',
-                type : 'date',
-                dateFormat : 'timestamp'
-            }, {
-                name : 'leaf',
-                mapping : 'leaf'
-            }, {
-                name : 'url',
-                mapping : 'url'
-            }, {
-                name : 'size',
-                mapping : 'size',
-                type : 'float'
-            }, {
-                name : 'cls',
-                mapping : 'cls'
-            }, {
-                name : 'id',
-                mapping : 'id'
-            }, {
-            	name : 'commonStoreId'
-            } ]
+            model : 'sitools.user.model.DataStorageExplorerTreeModel'
         });
 
         this.tpl = new Ext.XTemplate('<tpl for=".">',
@@ -399,9 +219,9 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
         });
 
         this.dataview = Ext.create('Ext.view.View', {
-            id : 'file-view',
+            itemId : 'file-view',
             autoScroll : true,
-            height : 350,
+            flex : 1,
             region : 'center',
             store : this.store,
             mode : 'SINGLE',
@@ -410,34 +230,19 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
 //            overItemCls:'x-view-over-ds',
             itemSelector : 'div.dv-datastorage-wrap',
             emptyText : i18n.get('label.nothingToDisplay'),
-            style : 'background-color: #9DC6E4;',
-            listeners : {
-                scope : this,
-                itemclick : function (dv, record, item, index, e) {
-                    dv.select(record, false);
-                    
-                    var treeNode = this.treeStore.getRootNode().findChild('commonStoreId', record.get('commonStoreId'));
-                    // if (rec.data.cls){
-                    // this.tree.fireEvent('beforeexpandnode', treeNode);
-                    // }
-                    this.tree.getSelectionModel().select(treeNode, e, true);
-                    this.tree.fireEvent('itemclick', this.tree.getView(), treeNode, e);
-                }
-            }
+            style : 'background-color: #9DC6E4;'
         });
-
+        
+        
+        
         this.detailPanel = Ext.create('Ext.ux.IFrame', {
         	title : i18n.get('label.defaultTitleDetailPanel'),
-            id : 'detail-view',
-            region : 'south',
-            collapsible : true,
-//            collapsed : true,
-            height : 350,
-//            flex : 1,
+            itemId : 'detail-view',
+            layout : 'fit',
             autoScroll : true,            
-            split : true,
-            cls : 'detail-panel-datastorage',
             src : this.noPreviewAvailableUrl,
+            border : false,
+            bodyBorder : false,
             tools : [{
                 id : 'plus',
                 qtip : i18n.get("label.showInWindow"),
@@ -447,42 +252,43 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
                 }
             } ]
         });
-
-        this.contentPanel = Ext.create('Ext.panel.Panel', {
-            id : 'content-view',
-            layout : 'border',
-            region : 'center',
-            items : [ this.dataview, this.detailPanel ]
+        
+        this.detailPanelContainer = Ext.create("Ext.panel.Panel", {
+            layout : 'fit',
+            items : [this.detailPanel],
+            border : false,
+            bodyBorder : false,
+            split : true,
+            collapsible : true,
+            collapsed : true,
+            height : 350,
+//            cls : 'detail-panel-datastorage',
         });
 
-        this.items = [ this.tree, this.contentPanel ];
+        this.contentPanel = Ext.create('Ext.panel.Panel', {
+            itemId : 'content-view',
+            layout : {
+                type :'vbox',
+                align : 'stretch'
+            },
+            flex : 1,
+            autoScroll : false,
+            border : false,
+            bodyBorder : false,
+            items : [ this.dataview,{
+                xtype: 'splitter'   // A splitter between the two child items
+            }, this.detailPanelContainer ]
+        });
+
+        this.items = [ this.tree,
+            {
+                xtype: 'splitter'   // A splitter between the two child items
+            },
+            this.contentPanel];
 
         this.callParent(arguments);
     },
     
-    appendChild : function (child, parent) {
-        var reference = new Reference(child.url);
-        var url = reference.getFile();
-        
-        
-        var name = decodeURIComponent(child.text);
-        var text = name;
-        if (child.leaf) {
-            text += "<span style='font-style:italic'> (" + Ext.util.Format.fileSize(child.size) + ")</span>";
-        }
-        
-        return parent.appendChild({
-        	commonStoreId : Ext.id(),
-            cls : child.cls,
-            text : text,
-            name : name,
-            url : url,
-            leaf : child.leaf,
-            size : child.size,
-            lastmod : child.lastmod
-        });
-    },
-
     isImage : function (name) {
         var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
         return name.match(imageRegex);            
@@ -591,30 +397,10 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
     },
 
     displayFile : function (rec) {
-//        this.detailPanel.setTitle(rec.data.name);
-        this.detailPanel.setSrc(rec.data.url);
-         this.detailPanel.expand(true);
-        this.detailPanel.setHeight(350);
-        this.detailPanel.doLayout();
-    },
-
-    loadDataview : function (parent) {
-        var Json = [];
-        Ext.each(parent.childNodes, function (child) {
-//            Json.push(child.attributes);
-            Json.push(child.raw);
-        });
-        
-//        this.dataview.getStore().loadData(Json);
-        this.dataview.getStore().removeAll();
-        Ext.each(Json, function (rec) {
-        	this.dataview.getStore().add(rec);
-        }, this);
-        
-        
-        //clear any file already displayed
-//        this.detailPanel.setTitle(i18n.get('label.defaultTitleDetailPanel'));
-        this.detailPanel.setSrc(this.noPreviewAvailableUrl);
+        this.detailPanelContainer.setTitle(rec.data.name);
+        this.detailPanel.load(rec.get("url"));
+        this.detailPanelContainer.expand(true);
+        this.detailPanelContainer.setHeight(350);
     },
 
     detachPanel : function (panel) {
@@ -633,9 +419,14 @@ Ext.define('sitools.user.view.modules.datastorageExplorer.DataStorageExplorer', 
     			node : node
     	};
     	
-        this.tree.getStore().load(options, function () {
-            node.expand(true);
-        }, this);
+//        this.tree.getStore().load(options, function () {
+//            node.expand(true);
+//        }, this);
+    	if (!node.isLeaf()) {
+    	    node.collapse(false, function() {
+    	        node.expand();
+    	    });
+    	}
     },
 
     /**

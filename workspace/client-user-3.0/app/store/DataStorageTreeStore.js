@@ -15,28 +15,16 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, sitools, window*/
+/*global Ext, sitools, window */
 
-Ext.define('sitools.user.model.DataStorageExplorerTreeModel', {
-	extend : 'sitools.user.model.ResourceModel',
-	idProperty : 'commonStoreId',
-	fields : [{
-		name : 'text',
-		mapping : 'name'
-	},{
-        name : 'leaf',
-        type :'boolean'
-    }, {
-		name : 'size'
-	}, {
-		name : 'url'
-	}, {
-        name : 'lastmod',
-        type : 'date',
-        dateFormat : 'timestamp'
-    }, {
-        name : 'cls'
-    }, {
-    	name : 'commonStoreId'
-    } ]
+Ext.define('sitools.user.store.DatastorageTreeStore', {
+    extend : 'Ext.data.TreeStore',
+    model : 'sitools.user.model.DataStorageExplorerTreeModel',
+    proxy : {
+        type : 'memory',
+        reader : {
+            type : 'json',
+            idProperty : 'commonStoreId'
+        }
+    }
 });
