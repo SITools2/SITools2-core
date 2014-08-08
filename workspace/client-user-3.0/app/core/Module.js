@@ -44,6 +44,7 @@ Ext.define('sitools.user.core.Module', {
     show : function (view) {
         var project = Ext.getStore("ProjectStore").getProject();
         var navMode = this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(project.get("navigationMode"));
+        
         navMode.openModule(view, this.getModuleModel());        
     },
     

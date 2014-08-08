@@ -28,9 +28,16 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
     
     openModule : function (view, module) {
         var windowConfig = {
-            name : module.name,
-            title : i18n.get(module.label)
+            name : module.get('name'),
+            title : i18n.get(module.get('title')),
+            width : module.get('defaultWidth'),
+            height : module.get('defaultHeight'),
+            icon : module.get('icon'),
+            label : module.get('label'),
+            x : module.get('x'),
+            y : module.get('y')
         };
+        
         this.getApplication().getController('DesktopController').createWindow(view, windowConfig);
     },
     

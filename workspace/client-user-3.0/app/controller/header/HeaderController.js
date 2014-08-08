@@ -170,10 +170,13 @@ Ext.define('sitools.user.controller.header.HeaderController', {
     onProjectLoaded : function () {
         var project = Ext.getStore('ProjectStore').getProject();
         
+        var modulesStore = Ext.data.StoreManager.lookup("ModulesStore");
+        
         this.HeaderView = this.getView('header.HeaderView').create({
             renderTo : "x-headers",
             htmlContent : project.get('htmlHeader'),
-            modules : project.modules(),
+//            modules : project.modules(),
+            modules : modulesStore,
             listeners : {
                 resize : function (me) {
                     me.setSize(SitoolsDesk.getEnteteEl().getSize());

@@ -20,13 +20,17 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 
     extend : 'Ext.app.Controller',
 
-    stores : [ 'ProjectStore' ],
+    stores : [ 'ProjectStore', 'ModulesStore' ],
 
     init : function () {
         var me = this, desktopCfg;
 
         this.control({
             'moduleTaskBar button[cls=x-navBar-items]' : {
+                click : this.onOpenModule
+            },
+            
+            'moduleTaskBar menuitem' : {
                 click : this.onOpenModule
             },
             
@@ -64,9 +68,22 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         store.load({
             scope : this,
             callback : function (records, operation, success) {
-                this.getApplication().noticeProjectLoaded();
+            	this.loadModules();
             }
         });
+    },
+    
+    loadModules : function () {
+    	var store = this.getStore("ModulesStore");
+    	var url = Project.getSitoolsAttachementForUsers() + loadUrl.get('APP_PROJECTS_MODULES_URL');
+        store.setCustomUrl(url);
+        
+        store.load({
+        	scope : this,
+        	callback : function (records, operation, success) {
+                this.getApplication().noticeProjectLoaded();
+            }
+        })
     },
 
     openModule : function (moduleModel) {

@@ -26,6 +26,7 @@ Ext.define('sitools.user.core.Desktop', {
 	singleton : true,
 
 	config : {
+		application : null,
 		activePanel : null,
 		modulesInDiv : [],
 		

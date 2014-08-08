@@ -55,6 +55,7 @@ Ext.define('sitools.user.controller.DesktopController', {
                 height : 400,
                 animCollapse : false,
                 border : false,
+                bodyBorder : false,
                 hideMode : 'offsets',
                 layout : 'fit',
                 items : [ view ]

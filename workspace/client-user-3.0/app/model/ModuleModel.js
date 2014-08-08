@@ -37,9 +37,32 @@ Ext.define('sitools.user.model.ModuleModel', {
     }, {
         name : 'label',
         type : 'string'
+    },{
+    	name : 'name',
+    	type : 'string'
+    }, {
+    	name : 'title',
+    	type : 'string'
     }, {
         name : 'icon',
         type : 'string'
+    }, {
+    	name : 'defaultWidth',
+    	type : 'int'
+    }, {
+    	name : 'defaultHeight',
+    	type : 'int'
+    }, {
+    	name : 'icon',
+    	type : 'string'
+    }, {
+    	name : 'x',
+    	type : 'int'
+    }, {
+    	name : 'y',
+    	type : 'int'
+    }, {
+    	name : 'dependencies'
     } ],
     hasMany : [ {
         model : 'sitools.user.model.RoleModel',

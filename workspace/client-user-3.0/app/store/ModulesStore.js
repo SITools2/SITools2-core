@@ -15,15 +15,37 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/*global Ext, i18n, loadUrl, getDesktop, sitools, SitoolsDesk */
-Ext.define('sitools.user.controller.core.FixedMode', {
+/* global Ext, sitools, window */
 
-    extend : 'sitools.user.controller.core.NavigationMode',
+Ext.define('sitools.user.store.ModulesStore', {
+    extend : 'Ext.data.Store',
+    model : 'sitools.user.model.ModuleModel',
+    proxy : {
+        type : 'ajax',
+        reader : {
+            type : 'json',
+            root : 'data',
+            idProperty : 'id'
+        }
+    },
+    listeners : {
+    	load : function (store, records, success) {
+    		var modulesStore = Ext.data.StoreManager.lookup("ProjectStore").getProject().modules();
+    		
+    		modulesStore.each(function (moduleFromProject) {
+    			Ext.each(records, function (moduleToCheck) {
+    				if (moduleFromProject.get('xtype') === moduleToCheck.get('xtype')) {
+    					Ext.applyIf(moduleToCheck, moduleFromProject);
+    					store.add(moduleToCheck);
+    				}
+    			});
+    		});
+    		
+    		
+    	}
+    },
     
-    openComponent : Ext.emptyFn,
-    openModule : Ext.emptyFn,
-    
-    getFormOpenMode : function () {
-        return sitools.user.component.DatasetOverview;
+    setCustomUrl : function (url) {
+        this.getProxy().url = url;
     }
 });
