@@ -104,9 +104,9 @@ Ext.define('sitools.user.controller.modules.dataStorageExplorer.DataStorageExplo
                     });
                     return true;
                 },
-                itemclick : function (view, node, item, e) {
+                itemclick : function (tree, node, item, e) {
                     
-                    var self = view.up('dataStorageExplorer');
+                    var self = tree.up('dataStorageExplorer');
                     
                     self.manageToolbar(node);
                     if (node.get('text').match(/\.(fits)$/)) {
@@ -133,6 +133,32 @@ Ext.define('sitools.user.controller.modules.dataStorageExplorer.DataStorageExplo
                         self.detailPanelContainer.setTitle(i18n.get('label.defaultTitleDetailPanel'));
                         self.detailPanel.setSrc(this.noPreviewAvailableUrl);
                     }
+                }
+            },
+            "dataStorageExplorer button#createFolderButton" : {
+                click :  function (button) {
+                    var view = button.up("dataStorageExplorer");
+                    
+                    var url = null;
+                    if (node.attributes.leaf == true) {
+                        url = node.parentNode.attributes.url;
+                    } else if (node.attributes.cls) {
+                        url = node.attributes.url;
+                    } else if (node.isRoot) {
+                        url = this.datastorageUrl;
+                        if (url.charAt(url.length - 1) != "/") {
+                            url = url + "/";
+                        }
+                    }
+                    
+                    var createFolderWin = new sitools.user.modules.datastorageCreateFolder({
+                        url : url,
+                        scope : this,
+                        callback : function () {
+                            this.reloadNode(node);
+                        }
+                    });
+                    createFolderWin.show();
                 }
             },
             
@@ -168,25 +194,25 @@ Ext.define('sitools.user.controller.modules.dataStorageExplorer.DataStorageExplo
                     }
                 }
             },
-            "dataStorageExplorer button#delButton" : {
-                click :  function (button) {
-                    var view = button.up("dataStorageExplorer");
-                    var node = view.tree.getSelectionModel().getLastSelected();
-                    if (!Ext.isEmpty(node)) {
-                        Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.name + " ?", function (btn) {
-                            if (btn === 'yes') {
-                                if (!this.isRootNode(node)) {
-                                    view.deleteNode(node);
-                                } else {
-                                    Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.cannotDeleteRootNode'));
-                                }
-                            }
-                        }, this);
-                    } else {
-                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
-                    }
-                }
-            },
+//            "dataStorageExplorer button#delButton" : {
+//                click :  function (button) {
+//                    var view = button.up("dataStorageExplorer");
+//                    var node = view.tree.getSelectionModel().getLastSelected();
+//                    if (!Ext.isEmpty(node)) {
+//                        Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + node.attributes.name + " ?", function (btn) {
+//                            if (btn === 'yes') {
+//                                if (!this.isRootNode(node)) {
+//                                    view.deleteNode(node);
+//                                } else {
+//                                    Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.cannotDeleteRootNode'));
+//                                }
+//                            }
+//                        }, this);
+//                    } else {
+//                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+//                    }
+//                }
+//            },
             "dataStorageExplorer button#delButton" : {
                 click :  function (button) {
                     var view = button.up("dataStorageExplorer");

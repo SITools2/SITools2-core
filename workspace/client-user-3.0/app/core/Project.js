@@ -39,7 +39,8 @@ Ext.define('sitools.user.core.Project', {
         modules : null,
         links : null,
         htmlHeader : null,
-        languages : null
+        languages : null,
+        navigationMode : null
     },
     
     init : function (callback, scope) {
@@ -97,7 +98,8 @@ Ext.define('sitools.user.core.Project', {
                 callback : cb
             });   
         }
-    }, 
+    },
+    
     initProjectName : function () {
         if (this.projectName === null) {
             // get the relative url
@@ -112,6 +114,7 @@ Ext.define('sitools.user.core.Project', {
         }
         return this.projectName;
     },
+    
     /**
      * Get the name of a project from the server
      */
@@ -132,7 +135,7 @@ Ext.define('sitools.user.core.Project', {
                     this.htmlHeader = data.project.htmlHeader;
                     this.links = data.project.links;
                     this.navigationMode = data.project.navigationMode;
-                    Ext.callback(callback, scope);
+//                    Ext.callback(callback, scope);
                 }
 //                    var topEl = Ext.get('toppanel');
 //                    topEl.update(Ext.util.Format.htmlDecode(data.project.htmlHeader));
@@ -162,46 +165,55 @@ Ext.define('sitools.user.core.Project', {
                 else {
                     Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noProjectError'));
                 }
-            }            
+            },
+            callback : function (opts, success, response) {
+            	if (success) {
+            		this.initPreferences(callback, scope);
+            	}
+            }
         });
-    },    
-    initPreferences : function (callback) {
+    },
+    
+    initPreferences : function (callback, scope) {
         if (!Ext.isEmpty(userLogin)) {
-            var filePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + projectGlobal.projectName;
+            var filePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + this.projectName;
             var fileName = "desktop";
             var success = function (ret) {
                 try {
                     this.preferences = Ext.decode(ret.responseText);
-                    Ext.callback(callback);
+                    Ext.callback(callback, scope);
                 } catch (err) {
-                    Ext.callback(callback);
+                    Ext.callback(callback, scope);
                 }
             };
             
             var failure = function (ret) {
-                this.getPublicPreferences(callback);
+            	this.initPublicPreferences(callback, scope);
             };
+            UserStorage.get(fileName, filePath, this, success, failure);
             
-            userStorage.get(fileName, filePath, this, success, failure);
         } else {
-            this.getPublicPreferences(callback);
+        	this.initPublicPreferences(callback, scope);
         }
-    }, 
-    initPublicPreferences : function (callback) {
+    },
+    
+    initPublicPreferences : function (callback, scope) {
         var AppPublicStorage = loadUrl.get('APP_PUBLIC_STORAGE_URL') + "/files";
+        
         Ext.Ajax.request({
-//                    url : "/sitools/userstorage/" + userLogin + "/" + DEFAULT_PREFERENCES_FOLDER + "/" + this.projectName + "/desktop?media=json",
             url : loadUrl.get('APP_URL') + AppPublicStorage + "/" + DEFAULT_PREFERENCES_FOLDER + "/" + this.projectName + "/desktop?media=json",
             method : 'GET',
             scope : this,
             success : function (ret) {
                 try {
-                    this.preferences = Ext.decode(ret.responseText);
+                	this.setPreferences(Ext.decode(ret.responseText));
                 } catch (err) {
-                    this.preferences = null;
+                    this.setPreferences(null);
                 }
             }, 
-            callback : callback
+            callback : function () {
+                Ext.callback(callback, scope);
+            }
         });
     }
 });

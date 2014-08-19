@@ -204,7 +204,7 @@ Ext.define('sitools.user.modules.AddToCartModuleView', {
     }, 
     
     loadOrderFile : function () {
-        userStorage.get(this.user + "_CartSelections.json", getCartFolder(Project.projectName), this, this.setCartOrdersFile);
+        UserStorage.get(this.user + "_CartSelections.json", getCartFolder(Project.projectName), this, this.setCartOrdersFile);
     },
     
     /**
@@ -460,7 +460,7 @@ Ext.define('sitools.user.modules.AddToCartModuleView', {
     },
     
     onDelete : function () {
-        userStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.setCartOrdersFile, Ext.emptyFn, this.deleteOrder);
+        UserStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.setCartOrdersFile, Ext.emptyFn, this.deleteOrder);
     },
     
     /**
@@ -530,7 +530,7 @@ Ext.define('sitools.user.modules.AddToCartModuleView', {
         });
         this.cartOrderFile.selections = collCartSelections.items;
         
-        userStorage.set(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this.cartOrderFile, this.onRefresh, this);
+        UserStorage.set(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this.cartOrderFile, this.onRefresh, this);
     },
     
     /**

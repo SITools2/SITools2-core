@@ -79,7 +79,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
         
         this.createFolderButton = {
                 xtype : 'button',
-                id : 'createFolderButton',
+                itemId : 'createFolderButton',
                 icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/createFolder.png',
                 text : i18n.get('label.createFolder')
             };
@@ -109,11 +109,12 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             split : true,
             collapsible : true,
             collapseDirection : "left",
+            forceFit : true,
+            rowLines : true,
             selModel : Ext.create("Ext.selection.TreeModel", {
                 allowDeselect : true,
                 mode : "SINGLE"
             })
-            
         });
 
         this.store = Ext.create('Ext.data.JsonStore', {
@@ -226,7 +227,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             store : this.store,
             mode : 'SINGLE',
             tpl : this.tpl,
-            selectedClass : "datastorageSelectionClass",
+            selectedItemCls : "datastorageSelectionClass",
 //            overItemCls:'x-view-over-ds',
             itemSelector : 'div.dv-datastorage-wrap',
             emptyText : i18n.get('label.nothingToDisplay'),
@@ -325,30 +326,6 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
 
     },
     
-    onCreateFolder : function (node) {
-
-        var url = null;
-        if (node.attributes.leaf == true) {
-            url = node.parentNode.attributes.url;
-        } else if (node.attributes.cls) {
-            url = node.attributes.url;
-        } else if (node.isRoot) {
-            url = this.datastorageUrl;
-            if (url.charAt(url.length - 1) != "/") {
-                url = url + "/";
-            }
-        }
-        
-        var createFolderWin = new sitools.user.modules.datastorageCreateFolder({
-            url : url,
-            scope : this,
-            callback : function () {
-                this.reloadNode(node);
-            }
-        });
-        createFolderWin.show();
-    },
-
     deleteNode : function (node) {
 
         var deleteUrl = "";

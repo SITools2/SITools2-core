@@ -95,7 +95,7 @@ Ext.define('sitools.user.modules.CartSelectionDetailsView', {
                 	type : 'json',
                 	root : 'data'
                 }
-            }),
+            },
             baseParams : this.params,
             restful : true,
             fields : fields

@@ -102,7 +102,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         this.maximizeButton = Ext.create('Ext.Button', {
 			name : 'maximizeBtn',
 			iconCls : 'navBarButtons-icon',
-            icon : (Desktop.getDesktopMaximized() == false) ? "/sitools/common/res/images/icons/navBarButtons/mini-icon.png" : "/sitools/common/res/images/icons/navBarButtons/maxi-icon.png",  
+            icon : (Desktop.getDesktopMaximized() == false) ? "/sitools/common/res/images/icons/navBarButtons/mini.png" : "/sitools/common/res/images/icons/navBarButtons/maxi.png",  
             scale : 'medium',
     		tooltip : {
             	id : 'tooltipId',
@@ -121,7 +121,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
                 }
             }
         });
-//        itemsButtons.push(this.maximizeButton);
+        itemsButtons.push(this.maximizeButton);
         
         this.callParent(Ext.apply(this,  {
             id : 'navBarButtonsId',
@@ -177,30 +177,56 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
      * @returns
      */
     saveAction : function (btn, event) {
-        if (!Ext.isEmpty(userLogin) && projectGlobal && projectGlobal.isAdmin) {
-            var ctxMenu = new Ext.menu.Menu({
-                items: ['<b class="menu-title">' + i18n.get('label.chooseSaveType') + '</b>', '-',
-                {
+//        if (!Ext.isEmpty(userLogin) && projectGlobal && projectGlobal.isAdmin) {
+    	if (!Ext.isEmpty(userLogin)) {
+    		
+    		var saveLabel = Ext.create('Ext.menu.Item', {
+            	text : i18n.get('label.chooseSaveType'),
+            	plain : false,
+            	canActivate : false,
+            	cls : 'userMenuCls'
+            });
+    		
+            var ctxMenu = Ext.create('Ext.menu.Menu', {
+            	border : false,
+                plain : true,
+                closeAction : 'hide',
+                items: [saveLabel, {
+                	xtype : 'menuseparator',
+                	separatorCls : 'customMenuSeparator'
+        		}, {
                     text: i18n.get("label.myself"),
+                    cls : 'menuItemCls',
+                    iconCls : 'saveUserIcon',
                     handler : function () {
-                        SitoolsDesk.app.saveWindowSettings();
+                        Desktop.saveWindowSettings();
                     }
                 }, {
+                	xtype : 'menuseparator',
+                	separatorCls : 'customMenuSeparator'
+        		}, {
                     text: i18n.get("label.publicUser"),
+                    cls : 'menuItemCls',
+                    iconCls : 'savePublicIcon',
                     handler : function () {
-                        SitoolsDesk.app.saveWindowSettings(true);
+                    	Desktop.saveWindowSettings(true);
                     }
                 }, {
+                	xtype : 'menuseparator',
+                	separatorCls : 'customMenuSeparator'
+        		}, {
                     text : i18n.get('label.deletePublicPref'),
+                    cls : 'menuItemCls',
+                    iconCls : 'deleteSaveIcon',
                     handler : function () {
-                        publicStorage.remove();
+                        PublicStorage.remove();
                     }
                 }] 
             });
-            ctxMenu.showAt([event.getXY()[0], SitoolsDesk.getEnteteEl().getHeight()]);
+            ctxMenu.showAt([event.getXY()[0], Desktop.getEnteteEl().getHeight()]);
         }
         else {
-            SitoolsDesk.app.saveWindowSettings();
+            Desktop.saveWindowSettings();
         }
     }
     

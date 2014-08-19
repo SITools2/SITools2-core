@@ -104,14 +104,17 @@ Ext.define('sitools.user.view.header.UserProfileView', {
                     var userPreferences = {};
                     userPreferences.language = language.localName;
                     if (!Ext.isEmpty(userLogin)) {
-                        userStorage.set(loadUrl.get('APP_PORTAL_URL'),  "/" + DEFAULT_PREFERENCES_FOLDER + loadUrl.get('APP_PORTAL_URL'), userPreferences, callback);
+                        UserStorage.set(loadUrl.get('APP_PORTAL_URL'),  "/" + DEFAULT_PREFERENCES_FOLDER + loadUrl.get('APP_PORTAL_URL'), userPreferences, callback);
                     } else {
                         window.location.reload();
                     }
 
                 },
                 icon : language.image
-            });
+            }, {
+            	xtype : 'menuseparator',
+            	separatorCls : 'customMenuSeparator'
+    		});
         }, this);
         
         var language = Ext.create('Ext.menu.Item', {
@@ -147,7 +150,16 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         
         var logoUserUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/menu/usersGroups.png';
         
-        this.items = [userLabel, '-', logout, login, '-', register, personal,  '-', language];
+        this.items = [userLabel, {
+        	xtype : 'menuseparator',
+        	separatorCls : 'customMenuSeparator'
+		}, logout, login, {
+        	xtype : 'menuseparator',
+        	separatorCls : 'customMenuSeparator'
+		}, register, personal, {
+        	xtype : 'menuseparator',
+        	separatorCls : 'customMenuSeparator'
+		}, language];
         
         this.callParent(arguments);
     }

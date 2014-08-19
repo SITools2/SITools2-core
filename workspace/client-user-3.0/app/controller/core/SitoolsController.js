@@ -73,8 +73,11 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         });
 
         this.getApplication().on('projectInitialized', this.loadProject, this);
+        this.getApplication().on('footerLoaded', Desktop.loadPreferences, this);
+        
     },
-
+    
+    // 8
     loadProject : function () {
         var url = Project.getSitoolsAttachementForUsers();
         var store = this.getStore("ProjectStore");
@@ -87,6 +90,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         });
     },
     
+    // 9
     loadModules : function () {
     	var store = this.getStore("ModulesStore");
     	var url = Project.getSitoolsAttachementForUsers() + loadUrl.get('APP_PROJECTS_MODULES_URL');

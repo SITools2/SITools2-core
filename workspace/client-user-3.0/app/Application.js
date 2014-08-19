@@ -15,6 +15,7 @@ Ext.define('sitools.user.Application', {
                  'sitools.public.utils.LoginUtils',
                  'sitools.public.crypto.Base64',
                  'sitools.public.utils.UserStorage',
+                 'sitools.public.utils.PublicStorage',
                  'sitools.public.utils.PopupMessage',              
                  'sitools.public.utils.Version',
                  
@@ -67,6 +68,9 @@ Ext.define('sitools.user.Application', {
         
         Desktop.setApplication(this);
         this.initSiteMap();
+        
+        
+        Ext.util.Observable.capture(this, function(evname) {console.log(evname, arguments);})
     },
     
     // 1
@@ -119,11 +123,13 @@ Ext.define('sitools.user.Application', {
     	sitools.user.core.Project.init(this.projectInitialized, this);
     },
     
+    // 7
     projectInitialized : function () {
         this.setReady(true);
-        this.fireEvent('projectInitialized');
+        this.fireEvent('projectInitialized'); // listened by SitoolsController
     },
     
+    // 10
     noticeProjectLoaded : function () {
         this.setLoaded(true);
         this.fireEvent('projectLoaded');

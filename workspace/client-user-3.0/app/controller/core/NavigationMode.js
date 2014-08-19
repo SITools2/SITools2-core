@@ -25,6 +25,7 @@ Ext.define('sitools.user.controller.core.NavigationMode', {
     
     openComponent : Ext.emptyFn,
     openModule : Ext.emptyFn,
+    getDesktopSettings : Ext.emptyFn,
     
     getFormOpenMode : function (navMode) {
         switch (navMode) {

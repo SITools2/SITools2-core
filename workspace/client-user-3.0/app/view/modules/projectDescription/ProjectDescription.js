@@ -25,5 +25,18 @@ Ext.namespace('sitools.user.view.modules.projectDescription');
  * @extends Ext.Panel
  */
 Ext.define('sitools.user.view.modules.projectDescription.ProjectDescription', {
-    extend : 'Ext.panel.Panel'
+    extend : 'Ext.panel.Panel',
+    
+    /**
+     * method called when trying to save preference
+     * 
+     * @returns
+     */
+    _getSettings : function () {
+        return {
+            preferencesPath : "/modules",
+            preferencesFileName : this.id
+        };
+
+    }
 });

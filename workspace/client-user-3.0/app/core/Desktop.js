@@ -47,8 +47,205 @@ Ext.define('sitools.user.core.Desktop', {
 		shortcutsEl : Ext.get('x-shortcuts'),
 		
 		desktopMaximized : false
-	}
+	},
+	
+	getNavMode : function () {
+		return this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(Project.getNavigationMode());
+	},
+	
+	 /**
+     * Load the module Window corresponding to the project Preference. 1 - load
+     * the module Windows 2 - load the Component windows (actually only "data",
+     * "form" && "formProject" type window)
+     */
+    loadPreferences : function () {
+    	if (Ext.isEmpty(Project.preferences)) {
+    		return;
+    	}
+    	
+    	if (Project.preferences.projectSettings.desktopMaximizedMode) {
+    		this.getApplication().getController('DesktopController').maximize();
+			Desktop.setDesktopMaximized(true);
+    	}
+    	
+    	// Chargement des composants ouverts.
+        Ext.each(Project.preferences.windowSettings, function (pref) {
+            // 1° cas : les fenêtres de modules
+            if (Ext.isEmpty(pref.windowSettings.typeWindow)) {
+            	
+            	var moduleId = pref.windowSettings.moduleId;
+            	var module = Ext.StoreManager.lookup('ModulesStore').getById(moduleId);
+            	
+            	
+            	if (!Ext.isEmpty(module)) {
+            		Ext.apply(module.data, {
+            			defaultHeight : pref.windowSettings.size.height,
+            			defaultWidth : pref.windowSettings.size.width,
+            			x : pref.windowSettings.position.x,
+            			y : pref.windowSettings.position.y
+            		});
+            		
+            		Desktop.getApplication().getController('core.SitoolsController').openModule(module);
+            	}
+//                var moduleId = pref.windowSettings.moduleId;
 
+//                var module = SitoolsDesk.app.getModule(moduleId);
+//                if (!Ext.isEmpty(module) && Ext.isEmpty(module.divIdToDisplay)) {
+//                	
+//                    var win = module.openModule();
+//                    var pos = pref.windowSettings.position;
+//                    var size = pref.windowSettings.size;
+//
+//                    // TODO, refactoring, set size in openmodule method.... like
+//                    // for typeWindow=data (dataset window)
+//                    if (pos !== null && size !== null) {
+//                        pos = Ext.decode(pos);
+//                        size = Ext.decode(size);
+//
+//                        win.setPosition(pos[0], pos[1]);
+//                        win.setSize(size);
+//
+////                        getDesktop().layout();
+//                    }
+//                }
+            }
+            // les autres fenêtres : on nne traite que les cas
+            // windowSettings.typeWindow == "data"
+            else {
+                var type = pref.windowSettings.typeWindow;
+                var componentCfg, jsObj, windowSettings;
+                if (type === "data") {
+                    var datasetUrl = pref.componentSettings.datasetUrl;
+                    Ext.Ajax.request({
+                        method : "GET",
+                        url : datasetUrl,
+                        success : function (ret) {
+                            var Json = Ext.decode(ret.responseText);
+                            if (showResponse(ret)) {
+                                var dataset = Json.dataset;
+                                var componentCfg, javascriptObject;
+                                var windowConfig = {
+                                    datasetName : dataset.name,
+                                    datasetDescription : dataset.description,
+                                    type : type,
+                                    saveToolbar : true,
+                                    toolbarItems : [],
+                                    iconCls : "dataviews"
+                                };
+
+                                javascriptObject = eval(dataset.datasetView.jsObject);
+
+                                // add the toolbarItems configuration
+                                Ext.apply(windowConfig, {
+                                    id : type + dataset.id
+                                });
+
+                                if (dataset.description !== "") {
+                                    windowConfig.title = dataset.description;
+                                } else {
+                                    windowConfig.title = "Diplay data :" + dataset.name;
+                                }
+                                componentCfg = {
+                                    dataUrl : dataset.sitoolsAttachementForUsers,
+                                    datasetId : dataset.id,
+                                    datasetCm : dataset.columnModel,
+                                    datasetName : dataset.name,
+                                    datasetViewConfig : dataset.datasetViewConfig,
+                                    dictionaryMappings : dataset.dictionaryMappings,
+                                    preferencesPath : "/" + dataset.name,
+                                    preferencesFileName : "datasetOverview"
+                                };
+                                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+
+                            }
+                        },
+                        failure : alertFailure
+                    });
+                }
+                if (type === "formProject") {
+                    jsObj = sitools.user.component.forms.projectForm;
+                    componentCfg = {
+                        formId : pref.componentSettings.formId,
+                        formName : pref.componentSettings.formName,
+                        formParameters : pref.componentSettings.formParameters,
+                        formWidth : pref.componentSettings.formWidth,
+                        formHeight : pref.componentSettings.formHeight,
+                        formCss : pref.componentSettings.formCss,
+                        properties : pref.componentSettings.properties,
+                        urlServicePropertiesSearch : pref.componentSettings.urlServicePropertiesSearch,
+                        urlServiceDatasetSearch : pref.componentSettings.urlServiceDatasetSearch,
+                        preferencesPath : pref.componentSettings.preferencesPath,
+                        preferencesFileName : pref.componentSettings.preferencesFileName,
+                        formZones : pref.componentSettings.formZones
+                    };
+                    windowSettings = {
+                        type : "formProject",
+                        title : i18n.get('label.forms') + " : " + pref.componentSettings.formName,
+                        id : "formProject" + pref.componentSettings.formId,
+                        saveToolbar : true,
+                        datasetName : pref.componentSettings.formName,
+                        winWidth : 600,
+                        winHeight : 600,
+                        iconCls : "form"
+                    };
+                    SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
+
+                }
+                if (type === "form") {
+                    jsObj = sitools.user.component.forms.mainContainer;
+                    componentCfg = {
+                        dataUrl : pref.componentSettings.dataUrl,
+                        dataset : pref.componentSettings.dataset,
+                        formId : pref.componentSettings.formId,
+                        formName : pref.componentSettings.formName,
+                        formParameters : pref.componentSettings.formParameters,
+                        formZones : pref.componentSettings.zones,
+                        formWidth : pref.componentSettings.formWidth,
+                        formHeight : pref.componentSettings.formHeight,
+                        formCss : pref.componentSettings.formCss,
+                        preferencesPath : pref.componentSettings.preferencesPath,
+                        preferencesFileName : pref.componentSettings.preferencesFileName
+                    };
+
+                    windowSettings = {
+                        datasetName : pref.componentSettings.dataset.name,
+                        type : "form",
+                        title : i18n.get('label.forms') + " : " + pref.componentSettings.dataset.name + "." + pref.componentSettings.formName,
+                        id : "form" + pref.componentSettings.dataset.id + pref.componentSettings.formId,
+                        saveToolbar : true,
+                        iconCls : "form"
+                    };
+                    
+                    SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
+                }
+            }
+        });
+
+    },
+
+	saveWindowSettings : function (forPublicUser) {
+		var desktopSettings = this.getNavMode().getDesktopSettings(forPublicUser);
+
+		userPreferences = {};
+		userPreferences.windowSettings = desktopSettings;
+		var projectSettings = {};
+//		if (!Ext.isEmpty(SitoolsDesk.getDesktop().activePanel)) {
+//			projectSettings.activeModuleId = SitoolsDesk.getDesktop().activePanel.id;
+//		}
+		projectSettings.desktopMaximizedMode = this.getDesktopMaximized();
+		projectSettings.navigationMode = Project.getNavigationMode();
+
+		userPreferences.projectSettings = projectSettings;
+		
+		if (forPublicUser) {
+			PublicStorage.set("desktop", "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName(),
+					userPreferences);
+		} else {
+			UserStorage.set("desktop", "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName(),
+					userPreferences);
+		}
+	}
+	
 });
 
 Desktop = sitools.user.core.Desktop;

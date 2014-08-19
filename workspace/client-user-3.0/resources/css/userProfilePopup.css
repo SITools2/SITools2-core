@@ -41,6 +41,27 @@
 	background-image: url(/sitools/client-user/resources/images/icons/session/language.png) !important;
 }
 
+.saveUserIcon {
+	background-image: url(/sitools/client-user/resources/images/icons/general/save_user.png) !important;
+}
+
+.deleteSaveIcon {
+	background-image: url(/sitools/client-user/resources/images/icons/general/delete_save.png) !important;
+}
+
+.savePublicIcon {
+	background-image: url(/sitools/client-user/resources/images/icons/general/save_public.png) !important;
+}
+
+.customMenuSeparator {
+	height: 1px;
+	background-color: #FFF;
+	margin: 2px 0;
+	padding: 0;
+	border-top: solid 1px #D5D5D5;
+	box-shadow: #F0F8FF 1px 1px 1px 1px;
+}
+
 .userMenuCls {
 	font-size: 14px;
 	font-weight: bold;

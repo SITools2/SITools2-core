@@ -54,5 +54,18 @@ Ext.define('sitools.user.view.modules.datasetExplorer.DatasetExplorer', {
         
         
         this.callParent(arguments);
+    },
+    
+    /**
+     * method called when trying to save preference
+     * @returns
+     */
+    _getSettings : function () {
+		return {
+            preferencesPath : "/modules", 
+            preferencesFileName : this.id,
+            xtype : this.$className
+        };
+
     }
 });

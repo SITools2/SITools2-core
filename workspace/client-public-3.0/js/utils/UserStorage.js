@@ -20,13 +20,15 @@ Ext.namespace('sitools.public.utils');
 
 Ext.define('sitools.public.utils.UserStorage', {
     singleton : true,
+    
     set : function (filename, filepath, content, callback, scope) {
-        userStorage.setData(filename, filepath, content, callback, scope, "json");
+        UserStorage.setData(filename, filepath, content, callback, scope, "json");
     },
+    
     setXML : function (filename, filepath, content, callback, scope) {
-        userStorage.setData(filename, filepath, content, callback, scope, "xml");
+        UserStorage.setData(filename, filepath, content, callback, scope, "xml");
     },
-    //private
+    
     setData : function (filename, filepath, content, callback, scope, type) {
         var config = {
                 url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files",
@@ -43,6 +45,8 @@ Ext.define('sitools.public.utils.UserStorage', {
                         Ext.Msg.alert(i18n.get('label.warning'), Json.message);
                         return;
                     } else {
+                        popupMessage(i18n.get('label.information'), Json.message, null, 'x-icon-information');;
+
 //                        var notify = new Ext.ux.Notification({
 //                            iconCls : 'x-icon-information',
 //                            title : i18n.get('label.information'),
@@ -69,6 +73,7 @@ Ext.define('sitools.public.utils.UserStorage', {
         
         Ext.Ajax.request(config);
     },
+    
     get : function (fileName, filePath, scope, success, failure, callback) {
         Ext.Ajax.request({
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files" + filePath + "/" + fileName,
@@ -82,4 +87,4 @@ Ext.define('sitools.public.utils.UserStorage', {
 });
 
 
-userStorage = sitools.public.utils.UserStorage;
+UserStorage = sitools.public.utils.UserStorage;

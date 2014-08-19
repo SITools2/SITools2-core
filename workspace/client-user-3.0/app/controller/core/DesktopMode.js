@@ -28,6 +28,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
     
     openModule : function (view, module) {
         var windowConfig = {
+    		id: module.get('id'),
             name : module.get('name'),
             title : i18n.get(module.get('title')),
             width : module.get('defaultWidth'),
@@ -43,5 +44,24 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
     
     getFormOpenMode : function () {
         return sitools.user.view.component.forms.FormsView;
+    },
+    
+    getDesktopSettings : function (forPublicUser) {
+        var desktopSettings = [];
+    	Ext.WindowManager.each(function (window) {
+            var componentSettings;
+            if (!Ext.isEmpty(window.specificType) && (window.specificType === 'componentWindow' || window.specificType === 'moduleWindow')) {
+                // Bug 3358501 : add a test on Window.saveSettings.
+                if (Ext.isFunction(window.saveSettings)) {
+//                    var component = window.get(0);
+                    var component = window.items.items[0];
+
+                    componentSettings = component._getSettings();
+                    componentSettings.preferencesFileName = this.name;
+                    desktopSettings.push(window.saveSettings(componentSettings, forPublicUser));
+                }
+            }
+        });
+        return desktopSettings;
     }
 });

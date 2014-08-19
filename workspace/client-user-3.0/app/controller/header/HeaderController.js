@@ -150,10 +150,12 @@ Ext.define('sitools.user.controller.header.HeaderController', {
 					if (Desktop.getDesktopMaximized() == false) {
 						this.getApplication().getController('DesktopController').maximize();
 						Desktop.setDesktopMaximized(true);
+						btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/mini.png")
 					}
 					else {
 						this.getApplication().getController('DesktopController').minimize(); 
 						Desktop.setDesktopMaximized(false);
+						btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/maxi.png")
 					}
 				}
 			},
@@ -164,6 +166,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
 				}
 			}
         });
+        
         this.callParent(arguments);
     },
     
@@ -183,6 +186,8 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 }
             }
         });
+        
+        this.getApplication().fireEvent('headerLoaded');
     },
 
 	getEnteteEl : function () {

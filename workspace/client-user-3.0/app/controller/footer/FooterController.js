@@ -33,7 +33,6 @@ Ext.define("sitools.user.controller.footer.FooterController", {
     config : {
     	FooterView : null
     },
-    
 
     heightNormalMode : 0,
     heightMaximizeDesktopMode : 0,
@@ -64,7 +63,7 @@ Ext.define("sitools.user.controller.footer.FooterController", {
 
     init : function () {
         
-        this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
+        this.getApplication().on('headerLoaded', this.onProjectLoaded, this);
 
         Ext.create('Ext.data.Store', {
             fields : [ 'name', 'url' ],
@@ -129,21 +128,25 @@ Ext.define("sitools.user.controller.footer.FooterController", {
             }
         });
         
-        
         this.callParent(arguments);
     },
+    
     onProjectLoaded : function () {
         this.fillLinks();
         this.versionUrl = loadUrl.get('APP_URL') + '/version';
         this.FooterView = Ext.create('sitools.user.view.footer.FooterView', {});
+        
+        this.getApplication().fireEvent('footerLoaded');
        
     },
+    
     onMaximizeDesktop : function () {
     	var footerView = this.getFooterView();
     	
         this.getFooterView().container.setHeight(0);
         this.getFooterView().hide();
     },
+    
     onMinimizeDesktop : function () {
     	var footerView = this.getFooterView();
     	
@@ -151,6 +154,7 @@ Ext.define("sitools.user.controller.footer.FooterController", {
     	footerView.setSize(Desktop.getBottomEl().getSize());
     	footerView.show();
     },
+    
     fillLinks : function () {
         var project = Ext.getStore('ProjectStore').getAt(0);
         var projectLinks = project.links();
@@ -158,5 +162,5 @@ Ext.define("sitools.user.controller.footer.FooterController", {
         projectLinks.each(function (link) {
             linkStore.add(link);
         }, this);
-    },
+    }
 });
