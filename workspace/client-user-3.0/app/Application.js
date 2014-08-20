@@ -68,9 +68,6 @@ Ext.define('sitools.user.Application', {
         
         Desktop.setApplication(this);
         this.initSiteMap();
-        
-        
-        Ext.util.Observable.capture(this, function(evname) {console.log(evname, arguments);})
     },
     
     // 1

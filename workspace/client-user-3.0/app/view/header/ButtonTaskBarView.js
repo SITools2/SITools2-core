@@ -37,6 +37,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         
         var itemsButtons = [];
         var userLogin = sitools.public.utils.LoginUtils.getUserLogin();
+        
         if (!Ext.isEmpty(userLogin)) {
             // width with save button
             this.width = '204px';
@@ -52,7 +53,10 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             cls : 'navBarTransition',
             icon : "/sitools/common/res/images/icons/general/user.png",
             scale : 'medium',
-            id : this.profileButtonId
+            id : this.profileButtonId,
+            handler : function (btn) {
+            	this.desktopController.fireEvent('profilBtnClicked', btn);
+			}
         });
         itemsButtons.push(this.profilButton);
         
@@ -61,6 +65,9 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             iconCls : 'navBarButtons-icon',
             icon : "/sitools/common/res/images/icons/navBarButtons/version-icon.png", 
             scale : 'medium',
+            handler : function (btn) {
+            	this.desktopController.fireEvent('versionBtnClicked', btn);
+			},
             tooltip : {
                 html : i18n.get('label.version'), 
                 anchor : 'bottom', 
@@ -73,7 +80,9 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             this.saveButton = Ext.create('Ext.Button', {
                 scope : this, 
                 iconCls : 'navBarButtons-icon',
-                handler : this.saveAction, 
+                handler : function (btn, evt) {
+                	this.desktopController.fireEvent('saveBtnClicked', btn, evt);
+    			}, 
                 icon : "/sitools/common/res/images/icons/general/save.png", 
                 scale : 'medium',
                 id : "saveBtnId"
@@ -104,6 +113,10 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
 			iconCls : 'navBarButtons-icon',
             icon : (Desktop.getDesktopMaximized() == false) ? "/sitools/common/res/images/icons/navBarButtons/mini.png" : "/sitools/common/res/images/icons/navBarButtons/maxi.png",  
             scale : 'medium',
+            scope : this, 
+            handler : function (btn) {
+            	this.desktopController.fireEvent('maximizedBtnClicked', btn);
+			},
     		tooltip : {
             	id : 'tooltipId',
                 html : (Desktop.getDesktopMaximized() == false) ? i18n.get('label.maximize') : i18n.get('label.minimize'), 
@@ -125,7 +138,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         
         this.callParent(Ext.apply(this,  {
             id : 'navBarButtonsId',
-            cls : 'navBar_bg',
+            cls : 'buttonTaskbar-bg',
 //            defaults : {
 //                overCls : "x-navBar-items-over", 
 //                ctCls : "x-navBar-items-ct"
@@ -168,66 +181,6 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
      */
     getMaximizeButton : function () {
         return this.maximizeButton;
-    }, 
-    
-    /**
-     * Handler of Save Btn. If admin Role : open a menu, else save desktop. 
-     * @param {Ext.Button} btn The pressed btn
-     * @param {Ext.event} event the click Event. 
-     * @returns
-     */
-    saveAction : function (btn, event) {
-//        if (!Ext.isEmpty(userLogin) && projectGlobal && projectGlobal.isAdmin) {
-    	if (!Ext.isEmpty(userLogin)) {
-    		
-    		var saveLabel = Ext.create('Ext.menu.Item', {
-            	text : i18n.get('label.chooseSaveType'),
-            	plain : false,
-            	canActivate : false,
-            	cls : 'userMenuCls'
-            });
-    		
-            var ctxMenu = Ext.create('Ext.menu.Menu', {
-            	border : false,
-                plain : true,
-                closeAction : 'hide',
-                items: [saveLabel, {
-                	xtype : 'menuseparator',
-                	separatorCls : 'customMenuSeparator'
-        		}, {
-                    text: i18n.get("label.myself"),
-                    cls : 'menuItemCls',
-                    iconCls : 'saveUserIcon',
-                    handler : function () {
-                        Desktop.saveWindowSettings();
-                    }
-                }, {
-                	xtype : 'menuseparator',
-                	separatorCls : 'customMenuSeparator'
-        		}, {
-                    text: i18n.get("label.publicUser"),
-                    cls : 'menuItemCls',
-                    iconCls : 'savePublicIcon',
-                    handler : function () {
-                    	Desktop.saveWindowSettings(true);
-                    }
-                }, {
-                	xtype : 'menuseparator',
-                	separatorCls : 'customMenuSeparator'
-        		}, {
-                    text : i18n.get('label.deletePublicPref'),
-                    cls : 'menuItemCls',
-                    iconCls : 'deleteSaveIcon',
-                    handler : function () {
-                        PublicStorage.remove();
-                    }
-                }] 
-            });
-            ctxMenu.showAt([event.getXY()[0], Desktop.getEnteteEl().getHeight()]);
-        }
-        else {
-            Desktop.saveWindowSettings();
-        }
     }
     
 });

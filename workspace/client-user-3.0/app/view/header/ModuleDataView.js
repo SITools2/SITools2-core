@@ -33,13 +33,13 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
     header : false,
     resizable : false,
     autoScroll : true,
-    cls : 'modulesDataview',
-    bodyCls : 'modulesDataview',
+    cls : 'modulesDataview modulesDataview-bg',
+    bodyCls : 'modulesDataview-bg',
     modal : true,
     
     initComponent : function () {
     	
-    	this.renderTo = Desktop.getMainDesktop();
+    	this.renderTo = Desktop.getDesktopEl();
     	
     	this.width = (Desktop.getDesktopEl().getWidth() * 2) / 2.5,
     	this.height = (Desktop.getDesktopEl().getHeight() * 2) / 3,
@@ -91,7 +91,7 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
         });
         
         this.bbar = Ext.create('Ext.toolbar.Toolbar', {
-        	cls : 'modulesDataview',
+        	cls : 'modulesDataview-bg',
         	border : false,
         	items : [versionButton, helpButton]
         });

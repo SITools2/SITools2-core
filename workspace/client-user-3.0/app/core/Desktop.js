@@ -222,6 +222,59 @@ Ext.define('sitools.user.core.Desktop', {
         });
 
     },
+    
+    
+    loadModulesInDiv : function () {
+		Ext.each(Project.modulesInDiv, function (module) {
+			
+			var contentEl = Ext.get(module.get('divIdToDisplay'));
+			if (Ext.isEmpty(contentEl)) {
+				Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n
+										.get('label.invalidModuleDivId'),
+								module.name, module.divIdToDisplay));
+			} else {
+				
+				var moduleComponent = Ext.create(module.get('xtype'));
+				moduleComponent.create(Desktop.getApplication(), module.data);
+				var view = moduleComponent.createViewForDiv();
+				
+				module = Ext.create('Ext.panel.Panel', {
+					id : module.id,
+					border : false,
+					cls : "sitools-module-panel",
+					layout : 'fit',
+					renderTo : module.get('divIdToDisplay'),
+					height : contentEl.getHeight(),
+					width : contentEl.getWidth(),
+                    items : [ view ],
+//                    items : [{
+//                    	layout : 'fit',
+//                    	xtype : module.get('xtype'),
+//                    	listProjectModulesConfig : module.listProjectModulesConfig,
+//                    	moduleProperties : module.properties
+//                    }],
+					listeners : {
+						resize : function (me) {
+							if (!Desktop.getDesktopMaximized() && module.container) {
+								me.setSize(Ext.get(module.container).getSize());
+							}
+						},
+						maximizeDesktop : function (me) {
+							me.hide();
+						},
+						minimizeDesktop : function (me) {
+						    if (module.container) {
+                                me.setSize(Ext.get(module.container).getSize());
+                            }
+							me.show();
+						}
+					}
+
+				});
+//				SitoolsDesk.app.modulesInDiv.push(module);
+			}
+		});
+	},
 
 	saveWindowSettings : function (forPublicUser) {
 		var desktopSettings = this.getNavMode().getDesktopSettings(forPublicUser);

@@ -36,8 +36,15 @@ Ext.define('sitools.user.store.ModulesStore', {
     			Ext.each(records, function (moduleToCheck) {
     				if (moduleFromProject.get('xtype') === moduleToCheck.get('xtype')) {
     					Ext.applyIf(moduleToCheck, moduleFromProject);
+    					
     					store.add(moduleToCheck);
+    					
+    					if (!Ext.isEmpty(moduleFromProject.get('divIdToDisplay'))) { // adding modulesInDiv to Project
+    						moduleToCheck.data.divIdToDisplay = moduleFromProject.data.divIdToDisplay;
+    						Project.modulesInDiv.push(moduleToCheck);
+    					}
     				}
+    				
     			});
     		});
     		

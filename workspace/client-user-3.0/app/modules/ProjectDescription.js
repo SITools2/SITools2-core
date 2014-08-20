@@ -32,22 +32,47 @@ Ext.define('sitools.user.modules.ProjectDescription', {
     init : function () {
         var project = Ext.getStore('ProjectStore').getProject();
         Ext.Ajax.request({
-            method : "GET", 
+            method : "GET",
             url : project.get('sitoolsAttachementForUsers'), 
             success : function (response) {
                 var json = Ext.decode(response.responseText);
                 
-                var view = Ext.create('sitools.user.view.modules.projectDescription.ProjectDescription', {
+                this.view = Ext.create('sitools.user.view.modules.projectDescription.ProjectDescription', {
                     html : Ext.util.Format.htmlDecode(json.project.htmlDescription), 
                     autoScroll : true
                 });
                 
-                this.show(view);
+                this.show(this.view);
             }, 
             failure : alertFailure, 
             scope : this
         });
-    },   
+    },
+    
+    createViewForDiv : function () {
+    	var project = Ext.getStore('ProjectStore').getProject();
+    	
+        Ext.Ajax.request({
+            method : "GET",
+            url : project.get('sitoolsAttachementForUsers'), 
+            scope : this,
+            success : function (response) {
+                var json = Ext.decode(response.responseText);
+                
+                this.view = Ext.create('sitools.user.view.modules.projectDescription.ProjectDescription', {
+                    html : Ext.util.Format.htmlDecode(json.project.htmlDescription), 
+                    autoScroll : true
+                });
+                
+            },
+            callback : function (success) {
+            	if (success) {
+            		return this.view;
+            	}
+            },
+            failure : alertFailure
+        });
+    },
     
     /**
      * method called when trying to save preference

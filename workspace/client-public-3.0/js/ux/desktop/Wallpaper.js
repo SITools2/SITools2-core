@@ -27,6 +27,7 @@ Ext.define('Ext.ux.desktop.Wallpaper', {
         var me = this;
         me.callParent();
         me.setWallpaper(me.wallpaper, me.stretch);
+        me.setHeight(Desktop.getDesktopAndTaskBarEl().getHeight());
     },
 
     applyState: function () {

@@ -30,8 +30,13 @@
 	padding-top: 10px;
 }
 
-.modulesDataview {
+.modulesDataview-bg {
 	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.modulesDataview {
+	border-color: rgba(56, 146, 211, 0.16);
+	box-shadow: rgba(56, 146, 211, 0.25) 0px 0px 4px 2px;
 }
 
 .version-icon-dv {

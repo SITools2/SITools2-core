@@ -14,6 +14,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     extend: 'Ext.panel.Panel',
 
     alias: 'widget.desktop',
+    
+    requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.ModuleTaskBarView' ],
 
     uses: [
         'Ext.util.MixedCollection',
@@ -84,7 +86,34 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var me = this;
         me.windowMenu = Ext.create("Ext.menu.Menu", me.createWindowMenu());
 
-        me.bbar = me.taskbar = Ext.create("Ext.ux.desktop.TaskBar", me.taskbarConfig);
+        this.taskbar = Ext.create("Ext.ux.desktop.TaskBar", me.taskbarConfig);
+        
+        this.navToolbarButtons = Ext.create('sitools.user.view.header.ButtonTaskBarView', {
+            desktopController : this.desktopController,
+            width : 90 // width without save button
+        });
+        
+        this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
+        	desktopController : this.desktopController,
+        	width : 50,
+            observer : this
+        });
+        
+        this.NavBarsPanel = Ext.create('Ext.panel.Panel', {
+        	name : 'navbarPanels',
+        	cls : 'allTaskbars-bg',
+            padding : 0,
+            border : false,
+            layout : {
+                type : "hbox",
+                align : "stretch"
+            },
+            items : [ this.navBarModule, this.taskbar, this.navToolbarButtons ]
+        });
+        
+        me.taskbar = this.taskbar;
+        me.tbar = this.NavBarsPanel;
+        
         me.taskbar.windowMenu = me.windowMenu;
 
         me.windows = Ext.create("Ext.util.MixedCollection");
@@ -92,7 +121,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
 
         me.items = [
-            { xtype: 'wallpaper', id: me.id+'_wallpaper' }
+            { xtype: 'wallpaper', id: me.id+'_wallpaper', taskbar : this.taskbar }
         ];
 
         me.callParent(arguments);

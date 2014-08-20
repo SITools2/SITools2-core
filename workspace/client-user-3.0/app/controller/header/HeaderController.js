@@ -35,7 +35,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
              'header.ButtonTaskBarView'],
     
     heightNormalMode : 0,
-    heightMaximizeDesktopMode : 44,
+    heightMaximizeDesktopMode : 0,
     
     config : {
         HeaderView : null,
@@ -45,6 +45,17 @@ Ext.define('sitools.user.controller.header.HeaderController', {
     init : function () {
         
         this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
+        
+        this.listen({
+        	controller : {
+        		'#DesktopControllerId' : {
+        			profilBtnClicked : this.profilBtnClicked,
+        			versionBtnClicked : this.versionBtnClicked,
+        			maximizedBtnClicked : this.maximizedBtnClicked,
+        			saveBtnClicked : this.saveBtnClicked
+        		}
+        	}
+        });
         
         this.control({
         	
@@ -56,7 +67,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     me.setHeight(enteteEl.getHeight());
 
                     me.heightNormalMode = enteteEl.getHeight();
-                    me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
+//                    me.heightMaximizeDesktopMode = me.NavBarsPanel.getHeight();
                     
                 },
                 
@@ -72,19 +83,18 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 }
         	},
         	
-        	'headerView toolbar[name=navbarPanels]' : {
-        		maximizeDesktop : this.onMaximizeDesktopNavbar,
-                minimizeDesktop : this.onMinimizeDesktopNavbar
-        	},
+//        	'headerView toolbar[name=navbarPanels]' : {
+//        		maximizeDesktop : this.onMaximizeDesktopNavbar,
+//                minimizeDesktop : this.onMinimizeDesktopNavbar
+//        	},
         	
         	/* UserProfilerView events */
 			'userProfileWindow' : {
                 beforerender : function (usrProfileWindow) {
-                    usrProfileWindow.x = Ext.getBody().getWidth() - usrProfileWindow.width;
-                    usrProfileWindow.y = this.getEnteteEl().getHeight(); 
-                },
-                blur : function (userProfileWindow) {
-                	userProfileWindow.close();
+                	var taskbarHeight = this.getController('DesktopController').desktopView.taskbar.getHeight();
+                	
+                    usrProfileWindow.x = Desktop.getDesktopEl().getWidth() - usrProfileWindow.width;
+                    usrProfileWindow.y = this.getEnteteEl().getHeight() + taskbarHeight; 
                 }
             },
             
@@ -130,46 +140,100 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     
                     personalView.show();
                 }
-            },
-            
-            /* ButtonTaskbarView events */
-            'buttonTaskBarView button[name=profilBtn]' : {
-            	click : function(btn) {
-            		var usrProfileWin = Ext.ComponentQuery.query('userProfileWindow')[0];
-					if (Ext.isEmpty(usrProfileWin) || !usrProfileWin.isVisible()) {
-						var win = this.getView('header.UserProfileView').create({
-							buttonId : btn.id
-						});
-						win.show();
-					}
-				}
-            },
-            
-			'buttonTaskBarView button[name=maximizeBtn]' : {
-				click : function (btn) {
-					if (Desktop.getDesktopMaximized() == false) {
-						this.getApplication().getController('DesktopController').maximize();
-						Desktop.setDesktopMaximized(true);
-						btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/mini.png")
-					}
-					else {
-						this.getApplication().getController('DesktopController').minimize(); 
-						Desktop.setDesktopMaximized(false);
-						btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/maxi.png")
-					}
-				}
-			},
-			
-			'buttonTaskBarView button[name=versionBtn]' : {
-				click : function (btn) {
-					Ext.create('sitools.public.utils.Version').show();
-				}
-			}
+            }
         });
         
         this.callParent(arguments);
     },
     
+    /** Button Taskbar Events **/
+    
+    profilBtnClicked : function (btn) {
+		var usrProfileWin = Ext.ComponentQuery.query('userProfileWindow')[0];
+		if (Ext.isEmpty(usrProfileWin) || !usrProfileWin.isVisible()) {
+			var win = this.getView('header.UserProfileView').create({
+				buttonId : btn.id
+			});
+			win.show();
+		}
+	},
+	
+	versionBtnClicked : function (btn) {
+		Ext.create('sitools.public.utils.Version').show();
+	},
+	
+	maximizedBtnClicked : function (btn) {
+		if (Desktop.getDesktopMaximized() == false) {
+			this.getApplication().getController('DesktopController').maximize();
+			Desktop.setDesktopMaximized(true);
+			btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/mini.png")
+		}
+		else {
+			this.getApplication().getController('DesktopController').minimize(); 
+			Desktop.setDesktopMaximized(false);
+			btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/maxi.png")
+		}
+	},
+	
+	saveBtnClicked : function (btn, event) {
+//	        if (!Ext.isEmpty(userLogin) && projectGlobal && projectGlobal.isAdmin) {
+    	if (!Ext.isEmpty(userLogin)) {
+    		
+    		var saveLabel = Ext.create('Ext.menu.Item', {
+            	text : i18n.get('label.chooseSaveType'),
+            	plain : false,
+            	canActivate : false,
+            	cls : 'userMenuCls'
+            });
+    		
+            var ctxMenu = Ext.create('Ext.menu.Menu', {
+            	border : false,
+                plain : true,
+                width : 260,
+                closeAction : 'hide',
+                items: [saveLabel, {
+                	xtype : 'menuseparator',
+                	separatorCls : 'customMenuSeparator'
+        		}, {
+                    text: i18n.get("label.myself"),
+                    cls : 'menuItemCls',
+                    iconCls : 'saveUserIcon',
+                    handler : function () {
+                        Desktop.saveWindowSettings();
+                    }
+                }, {
+                	xtype : 'menuseparator',
+                	separatorCls : 'customMenuSeparator'
+        		}, {
+                    text: i18n.get("label.publicUser"),
+                    cls : 'menuItemCls',
+                    iconCls : 'savePublicIcon',
+                    handler : function () {
+                    	Desktop.saveWindowSettings(true);
+                    }
+                }, {
+                	xtype : 'menuseparator',
+                	separatorCls : 'customMenuSeparator'
+        		}, {
+                    text : i18n.get('label.deletePublicPref'),
+                    cls : 'menuItemCls',
+                    iconCls : 'deleteSaveIcon',
+                    handler : function () {
+                        PublicStorage.remove();
+                    }
+                }] 
+            });
+            
+            var taskbarHeight = this.getController('DesktopController').desktopView.taskbar.getHeight();
+            ctxMenu.showAt([Desktop.getDesktopEl().getWidth() - ctxMenu.width, Desktop.getEnteteEl().getHeight() + taskbarHeight]);
+        }
+        else {
+            Desktop.saveWindowSettings();
+        }
+    },
+    
+	/****/
+	
     onProjectLoaded : function () {
         var project = Ext.getStore('ProjectStore').getProject();
         
@@ -204,7 +268,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
     	me.container.setHeight(this.heightMaximizeDesktopMode);
     	me.setHeight(this.heightMaximizeDesktopMode);
     	
-    	me.NavBarsPanel.fireEvent("maximizeDesktop");
+//    	me.NavBarsPanel.fireEvent("maximizeDesktop");
         
     	// this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
         if (me.userContainer) {
@@ -222,7 +286,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
     	me.container.dom.style.height = "";
     	me.setHeight(me.heightNormalMode);
     	
-    	me.NavBarsPanel.fireEvent("minimizeDesktop");
+//    	me.NavBarsPanel.fireEvent("minimizeDesktop");
         
     	// this.userContainer.setVisible(! SitoolsDesk.desktopMaximizeMode);
         if (me.userContainer) {

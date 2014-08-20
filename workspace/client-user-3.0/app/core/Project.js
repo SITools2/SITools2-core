@@ -40,64 +40,14 @@ Ext.define('sitools.user.core.Project', {
         links : null,
         htmlHeader : null,
         languages : null,
-        navigationMode : null
+        navigationMode : null,
+        modulesInDiv : []
     },
     
+    // 1
     init : function (callback, scope) {
         this.projectName = this.initProjectName();
         this.initProjectInfo(callback, scope);
-    },
-
-    initLanguages : function () {
-        Ext.Ajax.request({
-            scope : this,
-            method : "GET",
-            /* /sitools/client-user */
-//                url : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/tmp/langues.json',
-            url : loadUrl.get('APP_URL') + '/client-user/tmp/langues.json',
-            success : function (response) {
-                var json = Ext.decode(response.responseText);
-                this.languages.setLanguages(json.data);
-            },
-            failure : function (response) {
-                Ext.Msg.alert('Status', i18n.get('warning.serverError'));
-            }, 
-            callback : function () {
-                this.getPreferences(this.callback);
-            }
-        });
-    },
-    
-    getUserRoles : function (cb) {
-        if (Ext.isEmpty(userLogin)) {
-            cb.call();
-        } 
-        else {
-            Ext.Ajax.request({
-                url : loadUrl.get('APP_URL') + loadUrl.get("APP_USER_ROLE_URL"),
-                method : "GET",
-                scope : this,
-                success : function (ret) {
-                    var json = Ext.decode(ret.responseText);
-                    if (!json.success) {
-                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.errorGettingUserRoles'));
-                        return false;
-                    } else {
-                        this.user = json.user;        
-                        if (Ext.isEmpty(this.user.roles)) {
-                            return;
-                        }
-                        for (var index = 0; index < this.user.roles.length; index++) {
-                            var role = this.user.roles[index];
-                            if (role.name === "Administrator") {
-                                this.isAdmin = true;
-                            }
-                        }
-                    }
-                },
-                callback : cb
-            });   
-        }
     },
     
     initProjectName : function () {
@@ -114,10 +64,8 @@ Ext.define('sitools.user.core.Project', {
         }
         return this.projectName;
     },
-    
-    /**
-     * Get the name of a project from the server
-     */
+
+    // 2
     initProjectInfo : function (callback, scope) {
         Ext.Ajax.request({
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL') + '/projects/' + this.projectName,
@@ -174,6 +122,7 @@ Ext.define('sitools.user.core.Project', {
         });
     },
     
+    // 3
     initPreferences : function (callback, scope) {
         if (!Ext.isEmpty(userLogin)) {
             var filePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + this.projectName;
@@ -197,6 +146,7 @@ Ext.define('sitools.user.core.Project', {
         }
     },
     
+    // 4
     initPublicPreferences : function (callback, scope) {
         var AppPublicStorage = loadUrl.get('APP_PUBLIC_STORAGE_URL') + "/files";
         
@@ -215,7 +165,40 @@ Ext.define('sitools.user.core.Project', {
                 Ext.callback(callback, scope);
             }
         });
+    },
+    
+    getUserRoles : function (cb) {
+        if (Ext.isEmpty(userLogin)) {
+            cb.call();
+        } 
+        else {
+            Ext.Ajax.request({
+                url : loadUrl.get('APP_URL') + loadUrl.get("APP_USER_ROLE_URL"),
+                method : "GET",
+                scope : this,
+                success : function (ret) {
+                    var json = Ext.decode(ret.responseText);
+                    if (!json.success) {
+                        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.errorGettingUserRoles'));
+                        return false;
+                    } else {
+                        this.user = json.user;        
+                        if (Ext.isEmpty(this.user.roles)) {
+                            return;
+                        }
+                        for (var index = 0; index < this.user.roles.length; index++) {
+                            var role = this.user.roles[index];
+                            if (role.name === "Administrator") {
+                                this.isAdmin = true;
+                            }
+                        }
+                    }
+                },
+                callback : cb
+            });   
+        }
     }
+    
 });
 
 Project = sitools.user.core.Project;

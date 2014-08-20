@@ -44,13 +44,13 @@ Ext.define('sitools.user.view.header.HeaderView', {
             width : '162px' // width without save button
         });
 
-        this.NavBarsPanel = Ext.create('Ext.Toolbar', {
-        	name : 'navbarPanels',
-        	cls : 'navBar_bg',
-            padding : 0,
-            border : false,
-            items : [ this.navBarModule, this.navToolbarButtons ]
-        });
+//        this.NavBarsPanel = Ext.create('Ext.Toolbar', {
+//        	name : 'navbarPanels',
+//        	cls : 'navBar_bg',
+//            padding : 0,
+//            border : false,
+////            items : [ this.navBarModule, this.navToolbarButtons ]
+//        });
 
         this.entetePanel = Ext.create("Ext.panel.Panel", {
         	style : 'overflow : visible;',
@@ -59,24 +59,14 @@ Ext.define('sitools.user.view.header.HeaderView', {
             flex : 1,
             listeners : {
                 scope : this,
-                desktopReady : this.showUserContainer,
-                boxready : function (header, width, height) {
-                	var totalHeaderHeight = header.getHeight() + this.navBarHeight;
-                	header.setHeight(totalHeaderHeight);
-                	
-                	header.getEl().select('div').setHeight(totalHeaderHeight);
-                	header.getEl().select('img').setHeight(totalHeaderHeight);
-                }
+                desktopReady : this.showUserContainer
             }
         });
 
         Ext.apply(this, {
-            items : [ this.entetePanel, this.NavBarsPanel ],
+            items : [ this.entetePanel, /*this.NavBarsPanel*/ ],
             border : false,
-            layout : {
-                type : "vbox",
-                align : "stretch"
-            },
+            layout : 'fit',
             listeners : {
                 scope : this,
 //                afterRender : function (me) {

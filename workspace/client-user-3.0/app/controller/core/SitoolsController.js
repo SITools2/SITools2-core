@@ -40,15 +40,21 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 					this.dvModules.show();
 				}
 			},
+			
 			'moduleDataview' : {
 				blur : function (window) {
 					window.hide();
 					Desktop.getDesktopEl().unmask();
 				},
 				afterrender : function (window) {
+				},
+				boxready : function (window) {
+					window.center();
 					window.focus();
+					
 				}
 			},
+			
 			'moduleDataview dataview' : {
 				itemclick : function (dataview, moduleRecord, item) {
 					dataview.up('window').hide();
@@ -74,6 +80,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 
         this.getApplication().on('projectInitialized', this.loadProject, this);
         this.getApplication().on('footerLoaded', Desktop.loadPreferences, this);
+        this.getApplication().on('footerLoaded', Desktop.loadModulesInDiv, this);
         
     },
     

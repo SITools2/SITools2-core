@@ -22,16 +22,17 @@ Ext.define('Ext.ux.desktop.TaskBar', {
 
     alias: 'widget.taskbar',
 
-    cls: 'ux-taskbar',
+    cls: 'ux-taskbar moduleTaskbar-bg',
 
     /**
      * @cfg {String} startBtnText
      * The text for the Start Button.
      */
     startBtnText: 'Start',
-
+    border : false,
     initComponent: function () {
         var me = this;
+        me.flex = 1;
         
         me.windowBar = new Ext.toolbar.Toolbar(me.getWindowBarConfig());
 
@@ -96,9 +97,9 @@ Ext.define('Ext.ux.desktop.TaskBar', {
             iconCls: win.iconCls,
             enableToggle: true,
             toggleGroup: 'all',
-            width: 140,
+            width: 45,
             margins: '0 2 0 3',
-            text: Ext.util.Format.ellipsis(win.title, 20),
+//            text: Ext.util.Format.ellipsis(win.title, 20),
             listeners: {
                 click: this.onWindowBtnClick,
                 scope: this
@@ -108,6 +109,17 @@ Ext.define('Ext.ux.desktop.TaskBar', {
 
         var cmp = this.windowBar.add(config);
         cmp.toggle(true);
+        
+        var tooltipCfg = {
+        	html : win.title,
+        	target : cmp.getEl(),
+        	anchor : 'bottom',
+        	showDelay : 20,
+        	hideDelay : 50,
+        	dismissDelay : 0
+        };
+        Ext.create('Ext.tip.ToolTip', tooltipCfg);
+        
         return cmp;
     },
 

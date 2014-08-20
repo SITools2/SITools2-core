@@ -29,156 +29,155 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
     
     initComponent : function () {
         var items = [];
-        var categories = this.categorizeModules();
+//        var categories = this.categorizeModules();
 
         var homeButton = Ext.create('Ext.Button', {
         	itemId : 'sitoolsButton',
             scale : "medium",
-//            icon : "/sitools/common/res/images/sitools_logo24.png",
-//            iconCls : 'navBarButtons-icon',
             cls : 'sitools_button',
             iconCls : 'sitools_button_img',
             tooltip : {
-                html : i18n.get("label.homeButton"),
-                anchor : 'bottom',
-                trackMouse : false
+                text : i18n.get('label.mainMenu'),
+                anchor : 'bottom'
             },
             template : new Ext.Template('<table cellspacing="0" class="x-btn {3}" style="padding-left:5px;"><tbody><tr>', '<td><i>&#160;</i></td>',
                     '<td><em class="{5} unselectable="on">', '<button type="{1}" style="height:28px; width:28px;">{0}</button>', '</em></td>',
                     '<td><i>&#160;</i></td>', "</tr></tbody></table>")
         });
         items.push(homeButton);
-        items.push('|');
+        
+        
+//        items.push('|');
 
-        Ext.each(categories, function (category) {
-            var modules = category.modules;
-
-            // Le module n'appartient pas à une catégorie: inclusion en tant que
-            // bouton dans le menu.
-            if (Ext.isEmpty(category.category)) {
-//                var module = modules[0].getData();
-                var module = modules[0];
-//                var xtype = module.xtype;
-                if (Ext.isEmpty(module.data.divIdToDisplay)) {
-                    var item = {
-                        text : i18n.get(module.data.label),
-                        iconCls : module.data.icon,
-                        scope : module,
-                        module : module,
-                        tooltip : {
-                            text : i18n.get(module.data.description),
-                            anchor : 'bottom',
-                            trackMouse : false
-                        },
-                        cls : "x-navBar-items",
-                        clickEvent : 'mousedown',
-                        template : new Ext.Template('<table cellspacing="0" class="x-btn {3}"><tbody><tr>',
-                                '<td class="ux-taskbutton-left"><i>&#160;</i></td>', '<td class="ux-taskbutton-center"><em class="{5} unselectable="on">',
-                                '<button class="x-btn-text {2}" type="{1}" style="height:28px;">{0}</button>', '</em></td>',
-                                '<td class="ux-taskbutton-right"><i>&#160;</i></td>', "</tr></tbody></table>")
-
-                    };
-                    var xtype = module.data.xtype;
-//                        var func = xtype + ".openModule";
-//                      if (Ext.isFunction(eval(func))) {
-//                      handler = eval(func);
-//                  } else {
-//                      handler = moduleInCategory.openModule
-//                  }
-                    items.push(Ext.create("Ext.button.Button", item));
-                }
-            }
-            // Le module est dans une catégorie : On crée un menu contenant tous
-            // les modules de la catégorie
-            else {
-                var menuItems = [];
-                Ext.each(category.modules, function (moduleInCategory) {
-                    moduleInCategory = moduleInCategory.getData();
-                        if (Ext.isEmpty(moduleInCategory)) {
-                            return;
-                        }
-
-                        if (Ext.isEmpty(moduleInCategory.divIdToDisplay)) {
-                            var item = {
-                                text : i18n.get(moduleInCategory.label),
-
-                                iconCls : moduleInCategory.icon,
-                                scope : this
-                            };
-
-                            // Test spécifique pour savoir si on doit inclure un
-                            // sous menu :
-                            var xtype = moduleInCategory.xtype;
-                            if (Ext.isEmpty(xtype)) {
-                                return;
-                            }
-//                            var Func = eval(xtype + ".getStaticParameters");
-//                            if (Ext.isFunction(Func)) {
-//                                var staticParameters = Func();
-//                                if (staticParameters && staticParameters.showAsMenu) {
-//                                    Ext.apply(item, {
-//                                        menu : {
-//                                            xtype : moduleInCategory.xtype,
-//                                            cls : "sitools-navbar-menu"
-//                                        }
-//                                    });
-//                                } else {
-//                                    Ext.apply(item, {
-//                                        handler : moduleInCategory.openModule
-//                                    });
-//                                }
+//        Ext.each(categories, function (category) {
+//            var modules = category.modules;
+//
+//            // Le module n'appartient pas à une catégorie: inclusion en tant que
+//            // bouton dans le menu.
+//            if (Ext.isEmpty(category.category)) {
+////                var module = modules[0].getData();
+//                var module = modules[0];
+////                var xtype = module.xtype;
+//                if (Ext.isEmpty(module.data.divIdToDisplay)) {
+//                    var item = {
+//                        text : i18n.get(module.data.label),
+//                        iconCls : module.data.icon,
+//                        scope : module,
+//                        module : module,
+//                        tooltip : {
+//                            text : i18n.get(module.data.description),
+//                            anchor : 'bottom',
+//                            trackMouse : false
+//                        },
+//                        cls : "x-navBar-items",
+//                        clickEvent : 'mousedown',
+//                        template : new Ext.Template('<table cellspacing="0" class="x-btn {3}"><tbody><tr>',
+//                                '<td class="ux-taskbutton-left"><i>&#160;</i></td>', '<td class="ux-taskbutton-center"><em class="{5} unselectable="on">',
+//                                '<button class="x-btn-text {2}" type="{1}" style="height:28px;">{0}</button>', '</em></td>',
+//                                '<td class="ux-taskbutton-right"><i>&#160;</i></td>', "</tr></tbody></table>")
+//
+//                    };
+//                    var xtype = module.data.xtype;
+////                        var func = xtype + ".openModule";
+////                      if (Ext.isFunction(eval(func))) {
+////                      handler = eval(func);
+////                  } else {
+////                      handler = moduleInCategory.openModule
+////                  }
+//                    items.push(Ext.create("Ext.button.Button", item));
+//                }
+//            }
+//            // Le module est dans une catégorie : On crée un menu contenant tous
+//            // les modules de la catégorie
+//            else {
+//                var menuItems = [];
+//                Ext.each(category.modules, function (moduleInCategory) {
+//                    moduleInCategory = moduleInCategory.getData();
+//                        if (Ext.isEmpty(moduleInCategory)) {
+//                            return;
+//                        }
+//
+//                        if (Ext.isEmpty(moduleInCategory.divIdToDisplay)) {
+//                            var item = {
+//                                text : i18n.get(moduleInCategory.label),
+//
+//                                iconCls : moduleInCategory.icon,
+//                                scope : this
+//                            };
+//
+//                            // Test spécifique pour savoir si on doit inclure un
+//                            // sous menu :
+//                            var xtype = moduleInCategory.xtype;
+//                            if (Ext.isEmpty(xtype)) {
+//                                return;
 //                            }
-
-//                            func = xtype + ".openModule";
-//                            if (Ext.isFunction(eval(func))) {
-//                                handler = eval(func);
-//                            } else {
-//                                handler = moduleInCategory.openModule
-//                            }
-                            menuItems.push(Ext.create("Ext.button.Button", item));
-
-                        }
-
-                });
-                if (!Ext.isEmpty(menuItems)) {
-                    var menu = Ext.create('Ext.menu.Menu', {
-                        items : menuItems,
-                        cls : "sitools-navbar-menu"
-                    });
-                    items.push({
-                        text : category.category,
-                        menu : menu,
-                        cls : "x-navBar-items",
-                        template : new Ext.Template('<table cellspacing="0" class="x-btn {3}"><tbody><tr>',
-                                '<td class="ux-taskbutton-center"><em class="{2} unselectable="on">',
-                                '<button class="x-btn-text {2}" type="{1}" style="height:28px;">{0}</button>', '</em></td>', "</tr></tbody></table>")
-
-                    });
-                }
-            }
-
-        });
+////                            var Func = eval(xtype + ".getStaticParameters");
+////                            if (Ext.isFunction(Func)) {
+////                                var staticParameters = Func();
+////                                if (staticParameters && staticParameters.showAsMenu) {
+////                                    Ext.apply(item, {
+////                                        menu : {
+////                                            xtype : moduleInCategory.xtype,
+////                                            cls : "sitools-navbar-menu"
+////                                        }
+////                                    });
+////                                } else {
+////                                    Ext.apply(item, {
+////                                        handler : moduleInCategory.openModule
+////                                    });
+////                                }
+////                            }
+//
+////                            func = xtype + ".openModule";
+////                            if (Ext.isFunction(eval(func))) {
+////                                handler = eval(func);
+////                            } else {
+////                                handler = moduleInCategory.openModule
+////                            }
+//                            menuItems.push(Ext.create("Ext.button.Button", item));
+//
+//                        }
+//
+//                });
+//                if (!Ext.isEmpty(menuItems)) {
+//                    var menu = Ext.create('Ext.menu.Menu', {
+//                        items : menuItems,
+//                        cls : "sitools-navbar-menu"
+//                    });
+//                    items.push({
+//                        text : category.category,
+//                        menu : menu,
+//                        cls : "x-navBar-items",
+//                        template : new Ext.Template('<table cellspacing="0" class="x-btn {3}"><tbody><tr>',
+//                                '<td class="ux-taskbutton-center"><em class="{2} unselectable="on">',
+//                                '<button class="x-btn-text {2}" type="{1}" style="height:28px;">{0}</button>', '</em></td>', "</tr></tbody></table>")
+//
+//                    });
+//                }
+//            }
+//
+//        });
 
         this.callParent(Ext.apply(this, {
-//            id : "navBarId",
             enableOverflow : true,
+            items : items,
+            cls : 'sitoolsTaskbar-bg',
+            border : false
+//            id : "navBarId",
             // defaults : {
             // overCls : "x-navBar-items-over",
             // ctCls : "x-navBar-items-ct"
             // },
-            items : items,
             // cls : "x-navBar",
             // overCls : "x-navBar-over",
             // ctCls : "x-navBar-ct",
-            flex : 1,
-            cls : 'navBar_bg',
-            listeners : {
-                scope : this,
-                afterRender : function (me) {
-                    this.observer.fireEvent("navBarRendered", me);
-                }
-            },
-            border : false
+//            flex : 1,
+//            listeners : {
+//                scope : this,
+//                afterRender : function (me) {
+//                    this.observer.fireEvent("navBarRendered", me);
+//                }
+//            }
         }));
     },
     /**

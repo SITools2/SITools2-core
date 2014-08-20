@@ -33,8 +33,8 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/userProfilePopup.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/header.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/modulesDataview.css"></link>
-
-
+		<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/resources/css/taskbars.css"></link>
+		
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css"></link>
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/feed.css"></link>
 

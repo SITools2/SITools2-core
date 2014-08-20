@@ -28,16 +28,21 @@ Ext.namespace('sitools.user.modules.datasetExplorer');
 Ext.define('sitools.user.modules.DatasetExplorer', {
     extend : 'sitools.user.core.Module',
     
+    requires : ['sitools.user.controller.modules.datasetExplorer.DatasetExplorer'],
     controllers : ['sitools.user.controller.modules.datasetExplorer.DatasetExplorer'],
 
     init : function () {
-        var view = Ext.create('sitools.user.view.modules.datasetExplorer.DatasetExplorer');
+        this.setViewCmp(Ext.create('sitools.user.view.modules.datasetExplorer.DatasetExplorer'));
         
-        this.show(view);
+        this.show(this.getViewCmp());
 
         this.callParent(arguments);
     },
-
+    
+    createViewForDiv : function () {
+    	return Ext.create('sitools.user.view.modules.datasetExplorer.DatasetExplorer');
+    },
+    
     /**
      * method called when trying to save preference
      * 

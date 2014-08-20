@@ -31,6 +31,7 @@ Ext.define('sitools.user.view.footer.FooterView', {
     heightNormalMode : 0,
     heightMaximizeDesktopMode : 0,
     border : false,
+    bodyBorder : false,
     layout : {
         type : "hbox",
         align : 'stretch',
@@ -53,7 +54,7 @@ Ext.define('sitools.user.view.footer.FooterView', {
                             border : false,
                             flex : 0.5,
                             html : "<img id='sitools_logo' src='" + loadUrl.get("APP_URL") + "/res/images/logo_01_petiteTaille.png' alt='sitools_logo'/>",
-                            bodyCls : 'no-background',
+                            bodyCls : 'no-background'
                         },
                         {
                             xtype : 'panel',

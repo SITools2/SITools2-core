@@ -25,7 +25,7 @@ Ext.define('sitools.user.controller.DesktopController', {
     views : [ 'desktop.DesktopView' ],
 
     init : function () {
-    	
+    	this.id = 'DesktopControllerId';
     	
         var me = this, desktopCfg;
 
@@ -33,6 +33,8 @@ Ext.define('sitools.user.controller.DesktopController', {
 
         Ext.apply(desktopCfg, {
             renderTo : 'x-desktop'
+        }, {
+        	desktopController : me
         });
 
         me.desktopView = Ext.create('sitools.user.view.desktop.DesktopView', desktopCfg);
@@ -210,13 +212,13 @@ Ext.define('sitools.user.controller.DesktopController', {
 			});
 		}
 		
-		var desktopMaxHeight = Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - this.desktopView.taskbar.getHeight();
+		var desktopMaxHeight = Ext.getBody().getHeight()/* - Desktop.getEnteteEl().getHeight() - this.desktopView.taskbar.getHeight()*/;
 		var desktopMaxWidth = Ext.getBody().getWidth();
 		
-		var desktopTaskBarMaxHeight = Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight() - this.desktopView.taskbar.getHeight();
+		var desktopTaskBarMaxHeight = Ext.getBody().getHeight()/* - Desktop.getEnteteEl().getHeight() - this.desktopView.taskbar.getHeight()*/;
 			
 		//Agrandir la zone desktopAndTaskbar
-		Desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight());
+		Desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody().getHeight()/* - Desktop.getEnteteEl().getHeight()*/);
 		Desktop.getDesktopAndTaskBarEl().setWidth(Ext.getBody().getWidth());
 		Desktop.getDesktopEl().setHeight(desktopMaxHeight);
 		Desktop.getDesktopEl().setWidth(desktopMaxWidth);
@@ -323,7 +325,7 @@ Ext.define('sitools.user.controller.DesktopController', {
     	
     	headerView.fireEvent("resize", headerView, newW, newH);
     	
-    	headerView.NavBarsPanel.setWidth(Ext.getBody().getWidth());
+//    	headerView.NavBarsPanel.setWidth(Ext.getBody().getWidth());
     	
     	headerView.fireEvent("windowResize", headerView, newW, newH);
 

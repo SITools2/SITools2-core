@@ -71,6 +71,8 @@ Ext.define('sitools.user.core.Module', {
         }        
     },
     
+    createViewForDiv : Ext.emptyFn,
+    
     /**
      * method called when trying to save preference
      * @returns
