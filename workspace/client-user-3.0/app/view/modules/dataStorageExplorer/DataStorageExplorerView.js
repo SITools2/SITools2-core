@@ -300,39 +300,13 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
         return name.match(imageRegex);            
     },
 
-    onUpload : function (node) {
-
-        var urlUpload = null;
-        if (node.attributes.leaf === "true") {
-            urlUpload = node.parentNode.attributes.url;
-        } else if (node.attributes.cls) {
-            urlUpload = node.attributes.url;
-        } else if (node.isRoot) {
-            urlUpload = this.datastorageUrl;
-            if (urlUpload.charAt(urlUpload.length - 1) != "/") {
-                urlUpload = urlUpload + "/";
-            }
-        }
-        
-        var uploadWin = new sitools.user.modules.datastorageUploadFile({
-            urlUpload : urlUpload,
-            scope : this,
-            callback : function () {
-                this.reloadNode(node);
-            }
-        });
-        
-        uploadWin.show();
-
-    },
-    
     deleteNode : function (node) {
 
         var deleteUrl = "";
-        if (node.attributes.leaf === "true") {
-            deleteUrl = node.attributes.url;
-        } else if (node.attributes.cls) {
-            deleteUrl = node.attributes.url;
+        if (node.isLeaf()) {
+            deleteUrl = node.get('url');
+        } else if (node.get('cls')) {
+            deleteUrl = node.get('url');
         }
         
         Ext.Ajax.request({
@@ -341,18 +315,12 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             scope : this,
             success : function (ret) {
                 var ind = this.store.find('id', node.id);
+                node.remove();
                 this.store.removeAt(ind);
-                node.remove(true);
 
                 this.dataview.refresh();
-
-                new Ext.ux.Notification({
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.fileDeleted'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                
+                popupMessage(i18n.get('label.information'), i18n.get('label.fileDeleted'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
             },
             failure : function (response, opts) {
                 Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
