@@ -93,6 +93,7 @@ Ext.define('sitools.user.view.component.form.FormView', {
         }, this);
         
         this.zonesPanel = Ext.create('Ext.panel.Panel', {
+            autoScroll : true,
             width : this.formWidth,
             height : this.formHeight,
             css : this.formCss, 

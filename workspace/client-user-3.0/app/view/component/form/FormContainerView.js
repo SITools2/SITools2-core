@@ -38,21 +38,22 @@ Ext.namespace('sitools.user.view.component.form');
 Ext.define('sitools.user.view.component.form.FormContainerView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.formContainerView',
-    layout : 'fit',
 
     initComponent : function () {
 
         Ext.apply(this, {
-            title: this.formName,
+//            title: this.formName,
             id : "panelResultForm" + this.formId,
             bodyCls : this.css,
             height : this.formHeight,
             width : this.width,
-            layout : "form",
+            border : false,
+            bodyBorder : false,
+            layout : 'form',
             labelWidth : 100,
-            autoHeight : true,
             padding : 10,
             items : [],
+            autoScroll : true,
 
             /** The parameters retrieved from server. * */
             parameters : []

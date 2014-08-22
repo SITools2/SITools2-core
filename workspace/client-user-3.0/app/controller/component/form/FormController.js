@@ -209,6 +209,12 @@ Ext.define('sitools.user.controller.component.form.FormController', {
             iconCls : "dataviews"
         };
         
+//        var existingDataset;
+//        if (existingDataset = Ext.getCmp(dataset.id)) {
+//        	existingDataset.close(function () {
+//                alert('ta merer');
+//            });
+//        }
         
         var datasetViewComponent = Ext.create(dataset.datasetView.jsObject);
         datasetViewComponent.create(this.getApplication());

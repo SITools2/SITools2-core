@@ -44,7 +44,6 @@ Ext.define('sitools.user.component.form.FormComponent', {
         };
         
         var view = Ext.create('sitools.user.view.component.form.FormView', {
-            title : form.name,
             dataUrl : dataset.sitoolsAttachementForUsers,
             dataset : dataset,
             formId : form.id,

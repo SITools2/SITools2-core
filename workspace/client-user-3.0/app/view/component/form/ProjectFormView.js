@@ -100,6 +100,7 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
          * The panel that displays all form components as defined by the administrator. 
          */
         this.zonesPanel = Ext.create('Ext.panel.Panel', {
+        	autoScroll : true,
             width : this.formWidth,
             height : this.formHeight,
             css : this.formCss,
