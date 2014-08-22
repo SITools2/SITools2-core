@@ -46,7 +46,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
         
         this.getApplication().on('projectLoaded', this.onProjectLoaded, this);
         
-        this.listen({
+        this.listen({ // listen action handle by DesktopController
         	controller : {
         		'#DesktopControllerId' : {
         			profilBtnClicked : this.profilBtnClicked,
@@ -133,12 +133,18 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 click : function (btn) {
                 	var menu = btn.up('userProfileWindow');
                 	
-                    var personnalController = this.getApplication().getController('header.UserPersonalController')
-                    var personalView = personnalController.getView('header.UserPersonalView').create({
-                    	user : menu.user
-                    });
-                    
-                    personalView.show();
+                	var userPersonalComponent = Ext.create('sitools.user.component.personal.UserPersonalComponent');
+                	userPersonalComponent.create(this.getApplication());
+                	userPersonalComponent.init({
+                		user : menu.user
+                	});
+                	
+//                    var personnalController = this.getApplication().getController('header.UserPersonalController');
+//                    var personalView = personnalController.getView('header.UserPersonalView').create({
+//                    	user : menu.user
+//                    });
+//                    
+//                    personalView.show();
                 }
             }
         });

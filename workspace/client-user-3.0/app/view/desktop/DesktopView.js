@@ -169,6 +169,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
     createDesktopMenu: function () {
         var me = this, ret = {
+    		border : false,
             items: me.contextMenuItems || []
         };
 
@@ -187,6 +188,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var me = this;
         return {
             defaultAlign: 'br-tr',
+            border : false,
             items: [
                 { text: 'Restore', handler: me.onWindowMenuRestore, scope: me },
                 { text: 'Minimize', handler: me.onWindowMenuMinimize, scope: me },

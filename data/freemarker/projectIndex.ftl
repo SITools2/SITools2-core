@@ -77,6 +77,7 @@
     <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>-->
 	
 	<script type="text/javascript" src="${appUrl}/client-public/js/widgets/ckeditor/ckeditor.js"></script>
+	<script src="${appUrl}/client-public/js/widget/vtype.js"></script>
 	
 <!-- BEGIN_JS_DEV_INCLUDES -->
 	<script type="text/javascript" src="${appUrl}/client-public/js/utils/reference.js"></script>

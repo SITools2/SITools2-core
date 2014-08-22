@@ -69,10 +69,19 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
         	name : 'versionBtn',
             iconCls : 'version-icon-dv', 
             scale : 'large',
-            tooltip : {
-                text : i18n.get('label.version'), 
-                anchor : 'bottom'
-            }
+            listeners : {
+				afterrender : function (btn) {
+					var tooltipCfg = {
+							html : i18n.get('label.version'),
+							target : btn.getEl(),
+							anchor : 'bottom',
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
         });
         
         var helpButton = Ext.create('Ext.Button', {
@@ -84,38 +93,61 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
                 alert('todo');
             },
             scale : 'large',
-            tooltip : {
-                text : i18n.get('label.help'), 
-                anchor : 'bottom'
-            }
+            listeners : {
+				afterrender : function (btn) {
+					var tooltipCfg = {
+							html : i18n.get('label.help'),
+							target : btn.getEl(),
+							anchor : 'bottom',
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
         });
         
         this.bbar = Ext.create('Ext.toolbar.Toolbar', {
         	cls : 'modulesDataview-bg',
+        	layout:{
+                pack: 'center'
+            },
         	border : false,
         	items : [versionButton, helpButton]
         });
         
+        this.listeners = {
+        	scope : this,
+        	render : function (wind) {
+        		wind.getEl().slideIn('t', {
+        	         easing: 'easeOut',
+        	         duration: 300
+        	     });
+    	    }
+    	};
+        
         this.items = [this.dataview];
         
-        this.mon(Ext.getBody(), 'click', function(el, e){
+        this.mon(Ext.getBody(), 'click', function(el, e) {
         	this.close();
         }, this, { delegate: '.x-mask' });
         
-        Ext.create('Ext.fx.Anim', {
-        	target: this,
-        	duration: 300,
-        	from: {
-        		opacity: 0,
-        		width : this.width / 2,
-        		height : this.height / 2
-        	},
-        	to: {
-        		opacity: 1,
-        		width : this.width,
-        		height : this.height
-        	}
-        });
+//        Ext.create('Ext.fx.Anim', {
+//        	target: this,
+//        	easing : 'easeIn',
+//        	duration: 300,
+//        	from: {
+//        		opacity: 0,
+//        		width : this.width / 2,
+//        		height : this.height / 2
+//        	},
+//        	to: {
+//        		opacity: 1,
+//        		width : this.width,
+//        		height : this.height
+//        	}
+//        });
         
         this.callParent();
     }

@@ -49,49 +49,58 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         this.profilButton = Ext.create("Ext.Button", {
         	name : 'profilBtn',
             scope : this, 
-            iconCls : 'navBarButtons-icon',
-            cls : 'navBarTransition',
+//            cls : 'navBarTransition',
             icon : "/sitools/common/res/images/icons/general/user.png",
             scale : 'medium',
             id : this.profileButtonId,
             handler : function (btn) {
             	this.desktopController.fireEvent('profilBtnClicked', btn);
+			},
+			listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('headers.options');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
 			}
         });
         itemsButtons.push(this.profilButton);
         
-        this.versionButton = Ext.create('Ext.Button', {
-        	name : 'versionBtn',
-            iconCls : 'navBarButtons-icon',
-            icon : "/sitools/common/res/images/icons/navBarButtons/version-icon.png", 
-            scale : 'medium',
-            handler : function (btn) {
-            	this.desktopController.fireEvent('versionBtnClicked', btn);
-			},
-            tooltip : {
-                html : i18n.get('label.version'), 
-                anchor : 'bottom', 
-                trackMouse : false
-            }
-        });
-//        itemsButtons.push(this.versionButton);
-        
         if (!Ext.isEmpty(userLogin)) {
             this.saveButton = Ext.create('Ext.Button', {
                 scope : this, 
-                iconCls : 'navBarButtons-icon',
                 handler : function (btn, evt) {
                 	this.desktopController.fireEvent('saveBtnClicked', btn, evt);
     			}, 
                 icon : "/sitools/common/res/images/icons/general/save.png", 
                 scale : 'medium',
-                id : "saveBtnId"
+                id : "saveBtnId",
+                listeners : {
+    				afterrender : function (btn) {
+    					var label = i18n.get('label.snapshotDesktop');
+    					var tooltipCfg = {
+    							html : label,
+    							target : btn.getEl(),
+    							anchor : 'bottom',
+    							showDelay : 20,
+    							hideDelay : 50,
+    							dismissDelay : 0
+    					};
+    					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+    				}
+    			}
             });
             itemsButtons.push(this.saveButton);
         }
         
         this.helpButton = Ext.create('Ext.Button', {
-            iconCls : 'navBarButtons-icon',
             scope : this, 
             icon : "/sitools/common/res/images/icons/navBarButtons/help-icon.png", 
 //            handler : SitoolsDesk.showHelp,
@@ -117,22 +126,20 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             handler : function (btn) {
             	this.desktopController.fireEvent('maximizedBtnClicked', btn);
 			},
-    		tooltip : {
-            	id : 'tooltipId',
-                html : (Desktop.getDesktopMaximized() == false) ? i18n.get('label.maximize') : i18n.get('label.minimize'), 
-                anchor : 'bottom',
-                trackMouse : false,
-                listeners : {
-                	show : function (tooltip){
-//		                if (SitoolsDesk.desktopMaximizeMode) {
-//                			tooltip.update(i18n.get('label.minimize'));
-//		                }
-//		                else {
-//	                		tooltip.update(i18n.get('label.maximize'));
-//		                }
-                	}
-                }
-            }
+			listeners : {
+				afterrender : function (btn) {
+					var label = (Desktop.getDesktopMaximized() == false) ? i18n.get('label.maximize') : i18n.get('label.manimize');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
         });
         itemsButtons.push(this.maximizeButton);
         

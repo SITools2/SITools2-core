@@ -98,7 +98,7 @@ Ext.define('Ext.ux.desktop.TaskBar', {
             enableToggle: true,
             toggleGroup: 'all',
             width: 45,
-            margins: '0 2 0 3',
+//            margins: '0 2 0 3',
 //            text: Ext.util.Format.ellipsis(win.title, 20),
             listeners: {
                 click: this.onWindowBtnClick,

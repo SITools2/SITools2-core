@@ -29,37 +29,33 @@ Ext.namespace('sitools.user.view.header');
  * @extends Ext.Window
  */
 Ext.define('sitools.user.view.header.UserPersonalView', {
-    extend : 'Ext.window.Window',
+    extend : 'Ext.panel.Panel',
     alias: 'widget.userPersonalWindow',
     
-    width : 320,
-    height : 150,
     border : false,
-    bodyBorder : false,
-    header : false,
-    layout : 'fit',
-    resizable : false,
-    draggable : false,
+    layout : {
+        type : 'hbox',
+        align : 'stretch'
+    },
     
     initComponent : function () {
         
-		var freeDisk = 0;
+    	var freeDisk = 0;
 		var totalDisk = 0;
 		var userTasksRunning = 0;
 		var userTotalTasks = 0;
-        var data = [];
+    	
+    	var data = [];
         
     	data.push({
             xtype : 'button',
             identifier : "editProfile", 
             name: i18n.get("label.editProfile"), 
             icon : '/sitools/common/res/images/icons/menu/regcrud.png', 
-            action : "editProfile",
+            action : "onEditProfile",
             comment : ""
         }, {
             xtype : 'button',
-            width : 30,
-            height : 30,
             identifier : "userDiskSpace", 
             name: i18n.get('label.userDiskSpace'), 
             icon : '/sitools/common/res/images/icons/menu/dataAccess.png',
@@ -67,8 +63,6 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
             comment : Ext.String.format(i18n.get("label.userDiskUse"), freeDisk, totalDisk)
         }, {
             xtype : 'button',
-            width : 30,
-            height : 30,
             identifier : "tasks", 
             name: i18n.get("label.Tasks"), 
             icon : "/sitools/common/res/images/icons/menu/applications2.png",
@@ -76,45 +70,154 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
             comment : Ext.String.format(i18n.get("label.taskRunning"), userTasksRunning, userTotalTasks)
         }, {
             xtype : 'button',
-            width : 30,
-            height : 30,
             identifier : "orders", 
             name: i18n.get("label.orders"), 
             icon : "/sitools/common/res/images/icons/menu/order.png",
             action : "showOrders"
         });
         
-	    var store = Ext.create('Ext.data.JsonStore', {
+	    this.storeAction = Ext.create('Ext.data.JsonStore', {
 	        fields : ['name', 'icon', 'action', 'comment', 'identifier'],
 	        data : data
 	    });
-	    
-	    var tpl = new Ext.XTemplate('<tpl for=".">',
-	            '<div class="userButtons" id="{identifier}">',
-	            '<div class="userButtons-thumb"><img src="{icon}" title="{name}"></div>',
-	            '<span class="userButtons-name">{name}</span>', 
-	            '<span class="userButtons-comment">{comment}</span></div>',
-	        '</tpl>',
-	        '<div class="x-clear"></div>'
-	    );
-	    
-	    var dataview = Ext.create('Ext.view.View', {
-	        store: store,
-	        cls : "userButtonsDataview", 
-	        tpl: tpl,
-	        border : false,
-	        overItemCls: 'userButtonsPointer',
-	        emptyText: 'No images to display', 
-	        itemSelector: 'div.userButtons'
-	    });
     	
-	    this.items = [dataview];
+		this.gridAction = Ext.create('Ext.grid.Panel', {
+			itemId : 'gridAction',
+			width : 170,
+			hideHeaders : true,
+			border : false,
+			bodyBorder : false,
+			syncRowHeight : false,
+			store: this.storeAction,
+            columns: [{
+                dataIndex: 'icon',
+                width : 40,
+                border : false,
+                renderer : function (value, meta, record) {
+                	return "<img height=24 src='" + value + "'/>";
+                }
+            }, {
+                dataIndex: 'name',
+                border : false,
+                flex: 1
+            }],
+            listeners : {
+            	scope : this,
+            	itemclick : this.actionItemClick
+            }
+		});
+		
+		this.contentPanel = Ext.create('Ext.panel.Panel', {
+			flex : 1,
+			autoScroll : true,
+			border : false
+		});
 	    
-	    this.mon(Ext.getBody(), 'click', function(el, e){
-        	this.destroy();
-        }, this);
-	    
+		this.items = [ this.gridAction, {
+			xtype : 'splitter',
+			style : 'background-color:#EBEBEB;'
+		}, this.contentPanel];
+		
         this.callParent(arguments);
+    },
+    
+    actionItemClick : function (grid, record, item, index, e) {
+    	var data = grid.getSelectionModel().getSelection()[0].data;   
+    	eval("this." + data.action).call(this, grid, record, index);
+	},
+    
+    /**
+     * Edit the profile of the user depending on the server configuration
+    * @param {Ext.DataView} dataView the clicked Dataview
+     * @param {numeric} index the index of the clicked node
+     * @param {Html Element} node the clicked html element 
+     * @param {Ext.event} e The click event
+     */
+    editProfile : function (grid, record, index) {
+        if (userLogin === "public") {
+            return;
+        }
+        
+        var callback = Ext.Function.bind(this.onEditProfile, this, [grid, record, index]);        
+        sitools.public.utils.LoginUtils.editProfile(callback);
+        
+    },
+    
+    /**
+     * Open a window in the desktop with the sitools.userProfile.editProfile object. 
+     */
+    onEditProfile : function (grid, record, index) {
+
+    	var editProfileView = {
+        	xtype : 'container',
+        	items : [Ext.create('sitools.public.userProfile.editProfile', {
+                identifier : userLogin,
+                url : loadUrl.get('APP_URL') + '/editProfile/' + userLogin
+            })]
+        };
+    	
+    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	contentPanel.removeAll();
+    	contentPanel.add(editProfileView);
+    },
+    
+    /**
+     * Open a window in the desktop with the sitools.user.component.entete.userProfile.tasks object. 
+     * @param {Ext.DataView} dataView the clicked Dataview
+     * @param {numeric} index the index of the clicked node
+     * @param {Html Element} node the clicked html element 
+     * @param {Ext.event} e The click event
+     */
+    showTasks : function (grid, record, index) {
+        
+    	var taskView = {
+        	xtype : 'container',
+        	items : [Ext.create('sitools.user.view.header.userProfile.TaskView')]
+        };
+    	
+    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	contentPanel.removeAll();
+    	contentPanel.add(taskView);
+    },
+    
+    /**
+     * Open a window in the desktop with the sitools.user.component.entete.userProfile.diskSpace object. 
+     * @param {Ext.DataView} dataView the clicked Dataview
+     * @param {numeric} index the index of the clicked node
+     * @param {Html Element} node the clicked html element 
+     * @param {Ext.event} e The click event
+     */
+    showDisk : function (grid, record, index) {
+    	
+    	var diskSpaceView = {
+        	xtype : 'container',
+        	items : [Ext.create('sitools.user.view.header.userProfile.DiskSpaceView')]
+        };
+    	
+    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	contentPanel.removeAll();
+    	contentPanel.add(diskSpaceView);
+    	
+    }, 
+    
+    /**
+     * Open a window in the desktop with the sitools.user.component.entete.userProfile.diskSpace object. 
+     * @param {Ext.DataView} dataView the clicked Dataview
+     * @param {numeric} index the index of the clicked node
+     * @param {Html Element} node the clicked html element 
+     * @param {Ext.event} e The click event
+     */
+    showOrders : function (grid, record, index) {
+
+    	var orderView = {
+        	xtype : 'container',
+        	items : [Ext.create('sitools.user.view.header.userProfile.OrderView')]
+        };
+    	
+    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	contentPanel.removeAll();
+    	contentPanel.add(orderView);
+    	
     }
    
 });

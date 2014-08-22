@@ -36,6 +36,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
             
             'moduleTaskBar #sitoolsButton' : {
 				click : function (btn) {
+					btn.toggle();
 					this.dvModules = Ext.create('sitools.user.view.header.ModuleDataView');
 					this.dvModules.show();
 				}

@@ -15,7 +15,7 @@
 }
 
 .moduleDv:HOVER .moduleDvText {
-	text-shadow: 0.1em 0.1em 0.1em #9B9B9B !important;
+	text-shadow: 0.1em 0.1em 0.1em #002 !important;
 }
 
 .moduleDv:HOVER {
@@ -23,20 +23,20 @@
 }
 
 .moduleDvText {
-	color: #272727;
+	color: #FFF;
 	font-size: 15px;
 	text-align: center;
-	text-shadow: 0.1em 0.1em 0.1em #CFCFCF;
+	text-shadow: 0.1em 0.1em 0.1em #000;
 	padding-top: 10px;
 }
 
 .modulesDataview-bg {
-	background-color: rgba(255, 255, 255, 0.5);
+	background-color: transparent;
 }
 
 .modulesDataview {
-	border-color: rgba(56, 146, 211, 0.16);
-	box-shadow: rgba(56, 146, 211, 0.25) 0px 0px 4px 2px;
+	border-color: transparent;
+	/*box-shadow: rgba(56, 146, 211, 0.25) 0px 0px 4px 2px;*/
 }
 
 .version-icon-dv {
@@ -53,4 +53,9 @@
 
 .help-icon-dv:HOVER {
 	opacity : .85
+}
+
+.x-mask {
+	opacity: 0.8;
+	background: #525252;
 }

@@ -27,35 +27,20 @@ Ext.namespace('sitools.user.controller.header');
  * @extends Ext.Panel
  */
 Ext.define('sitools.user.controller.header.UserPersonalController', {
-    
     extend : 'Ext.app.Controller',
     
     views : ['header.UserPersonalView'],
     
     init : function () {
         
-        this.control({
-            
-            'userPersonalWindow' : {
-            	beforerender : function (userPersonalWindow) {
-            		userPersonalWindow.x = Ext.getBody().getWidth() - userPersonalWindow.width;
-            		userPersonalWindow.y = Desktop.getEnteteEl().getHeight(); 
-            	},
-            	
-            	blur : function (userPersonalWindow) {
-            		userPersonalWindow.close();
-            	}
-            },
-            
-            'userPersonalWindow dataview' : {
-            	viewready : function (dataview) {
-            		this.fillDiskInformations();
-            		this.fillTaskInformations();
-	            },
-	            itemclick : this.actionItemClick
-            }
-            
-        });
+    	//TODO pb call two times each event so instanciate two times each component 
+//        this.control({
+//        	
+//            'userPersonalWindow > grid > gridview' : {
+//	            itemclick : this.actionItemClick
+//            }
+//            
+//        });
         this.callParent(arguments);
     },
     
@@ -143,12 +128,12 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
      * @param {Html Element} node the clicked html element 
      * @param {Ext.event} e The click event
      */
-    editProfile : function (dataView, index, node, e) {
+    editProfile : function (grid, record, index) {
         if (userLogin === "public") {
             return;
         }
         
-        var callback = Ext.Function.bind(this.onEditProfile, this);        
+        var callback = Ext.Function.bind(this.onEditProfile, this, [grid, record, index]);        
         sitools.public.utils.LoginUtils.editProfile(callback);
         
     },
@@ -156,24 +141,19 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
     /**
      * Open a window in the desktop with the sitools.userProfile.editProfile object. 
      */
-    onEditProfile : function () {
+    onEditProfile : function (grid, record, index) {
 
-        var profile = Ext.create('Ext.window.Window', {
-        	title : i18n.get('label.editProfile'),
-        	renderTo : Desktop.getDesktopEl(),
-            width : 400,
-            height : 430,
-            resizable : false,
-            items : [Ext.create('sitools.public.userProfile.editProfile', {
+    	var editProfileView = {
+        	xtype : 'container',
+        	items : [Ext.create('sitools.public.userProfile.editProfile', {
                 identifier : userLogin,
                 url : loadUrl.get('APP_URL') + '/editProfile/' + userLogin
             })]
-        });
-        
-        profile.show();
-        
-//        this.getApplication().getController('sitools.user.controller.DesktopController').createWindow(jsObj, windowConfig);
-
+        };
+    	
+    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	contentPanel.removeAll();
+    	contentPanel.add(editProfileView);
     },
     
     /**
@@ -183,24 +163,16 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
      * @param {Html Element} node the clicked html element 
      * @param {Ext.event} e The click event
      */
-    showTasks : function () {
+    showTasks : function (grid, record, index) {
         
-        var tasks = Ext.create('Ext.window.Window', {
-        	title : i18n.get('label.Tasks'),
-        	renderTo : Desktop.getDesktopEl(),
-            width : 600,
-            height : 430,
-            items : [{
-            	xtype : 'container',
-            	layout : 'fit',
-            	items : [Ext.create('sitools.user.view.header.userProfile.TaskView')]
-            }]
-        });
-        
-        tasks.show();
-        
-//        this.getApplication().getController('sitools.user.controller.DesktopController').createWindow(jsObj, windowConfig);
-        
+    	var taskView = {
+        	xtype : 'container',
+        	items : [Ext.create('sitools.user.view.header.userProfile.TaskView')]
+        };
+    	
+    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	contentPanel.removeAll();
+    	contentPanel.add(taskView);
     },
     
     /**
@@ -210,7 +182,7 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
      * @param {Html Element} node the clicked html element 
      * @param {Ext.event} e The click event
      */
-    showDisk : function () {
+    showDisk : function (grid, record, index) {
         var jsObj = sitools.user.component.entete.userProfile.diskSpace;
         var windowConfig = {
             title : i18n.get('label.userSpace'),
@@ -228,27 +200,21 @@ Ext.define('sitools.user.controller.header.UserPersonalController', {
      * @param {Html Element} node the clicked html element 
      * @param {Ext.event} e The click event
      */
-    showOrders : function () {
-        var jsObj = sitools.user.component.entete.userProfile.viewOrderPanel;
-        var windowConfig = {
-            title : i18n.get('label.ordersHistory'),
-            saveToolbar : false, 
-//            iconCls : "orders"
+    showOrders : function (grid, record, index) {
+
+    	var orderView = {
+        	xtype : 'container',
+        	items : [Ext.create('sitools.user.view.header.userProfile.OrderView')]
         };
-        SitoolsDesk.addDesktopWindow(windowConfig, {}, jsObj, true);
-        this.destroy();
+    	
+    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	contentPanel.removeAll();
+    	contentPanel.add(orderView);
+    	
     },
     
-    actionItemClick : function (dataView, index, node, e) {
-//	     try {
-	          var data = dataView.getSelectionModel().getSelection()[0].data;   
-	          eval("this." + data.action).call(this, dataView, index, node, e);
-
-	          dataView.up('window').destroy();
-
-//	     }
-//	     catch (err) {
-//	          return;
-//	     }
+    actionItemClick : function (grid, record, item, index, e) {
+          var data = grid.getSelectionModel().getSelection()[0].data;   
+          eval("this." + data.action).call(this, grid, record, index);
 	 }
 });
