@@ -91,7 +91,7 @@ Ext.define('sitools.admin.applications.ApplicationsCrud', {
             dataIndex : "url",
             sortable : false,
             items : [{
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/wadl.gif',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/wadl.png',
                 tooltip : i18n.get('WADL'),
                 scope : this,
                 handler : function (view, rowIndex, colIndex, item, e, record, row) {

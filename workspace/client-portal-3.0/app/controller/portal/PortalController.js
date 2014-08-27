@@ -162,7 +162,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
             });
         };
         
-        userStorage.get("portal", filePath, this, success, failure, callback);
+        UserStorage.get("portal", filePath, this, success, failure, callback);
         
     },
     

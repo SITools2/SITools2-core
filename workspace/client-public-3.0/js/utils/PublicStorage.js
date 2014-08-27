@@ -39,15 +39,6 @@ Ext.define('sitools.public.utils.PublicStorage', {
                     return;
                 } else {
                     popupMessage(i18n.get('label.information'), Json.message, null, 'x-icon-information');;
-
-//                    var notify = new Ext.ux.Notification({
-//                        iconCls : 'x-icon-information',
-//                        title : i18n.get('label.information'),
-//                        html : Json.message,
-//                        autoDestroy : true,
-//                        hideDelay : 1000
-//                    });
-//                    notify.show(document);
                 }
             },
             failure : function () {
@@ -81,41 +72,14 @@ Ext.define('sitools.public.utils.PublicStorage', {
             scope : this,
             success : function (ret) {
                 popupMessage(i18n.get('label.information'), i18n.get("label.publicUserPrefDeleted"), null, 'x-icon-information');;
-
-//                var notify = new Ext.ux.Notification({
-//                    iconCls : 'x-icon-information',
-//                    title : i18n.get('label.information'),
-//                    html : i18n.get("label.publicUserPrefDeleted"),
-//                    autoDestroy : true,
-//                    hideDelay : 1000
-//                });
-//                notify.show(document);
             },
             failure : function (ret) {
                 //cas normal... 
 				if (ret.status === 404) {
                     popupMessage(i18n.get('label.information'), i18n.get("label.publicUserPrefDeleted"), null, 'x-icon-information');;
-
-//					var notify = new Ext.ux.Notification({
-//				        iconCls : 'x-icon-information',
-//				        title : i18n.get('label.information'),
-//				        html : i18n.get("label.publicUserPrefDeleted"),
-//				        autoDestroy : true,
-//				        hideDelay : 1000
-//				    });
-//				    notify.show(document);
 				}
 				else {
                     popupMessage(i18n.get('label.error'), ret.responseText, null, 'x-icon-error');;
-
-//					var notifye = new Ext.ux.Notification({
-//				        iconCls : 'x-icon-error',
-//				        title : i18n.get('label.error'),
-//				        html : ret.responseText,
-//				        autoDestroy : true,
-//				        hideDelay : 1000
-//				    });
-//				    notifye.show(document);
 				}
                 
             }

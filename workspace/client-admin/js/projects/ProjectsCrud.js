@@ -225,7 +225,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
     onModify : function () {
         var rec = this.getLastSelectedRecord();
         if (!rec) {
-            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
+            return popupMessage("", i18n.get('warning.noselection'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
         }
 //        if (rec.data.status == i18n.get('status.active')) {
 //            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.wrongStatus'));

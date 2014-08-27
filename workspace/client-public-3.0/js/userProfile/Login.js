@@ -41,7 +41,7 @@ Ext.define('sitools.public.userProfile.Login', {
     
     initComponent : function () {
         this.title = i18n.get('label.login');
-        this.icon = loadUrl.get('APP_URL') + "/client-public/common/res/images/ux/login-big.gif";
+        this.iconCls = 'userPersonalIcon';
         
         this.combo = Ext.create('Ext.form.field.ComboBox', {
             typeAhead : true,
@@ -109,6 +109,7 @@ Ext.define('sitools.public.userProfile.Login', {
                 style : 'background-color:white;',
                 items : [{
                     text : i18n.get('label.login'),
+                    iconCls : 'loginIcon',
                     scale : 'large',
                     handler : this.getAuth,
                     scope : this
@@ -138,7 +139,7 @@ Ext.define('sitools.public.userProfile.Login', {
             iconCls : 'x-status-valid',
 //            height : 40,
             items : [ {
-                icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/wadl.gif',
+                icon : loadUrl.get('APP_URL') + '/client-public/common/res/images/icons/wadl.png',
                 iconAlign : 'right',
                 text : i18n.get("label.needHelp"),
                 hidden : (!this.reset || !this.unblacklist),

@@ -83,6 +83,29 @@ Ext.define('sitools.public.utils.UserStorage', {
             failure : failure, 
             callback : callback
         });
+    },
+    
+    remove : function () {
+        this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files/preferences" + "?recursive=true";
+        
+        Ext.Ajax.request({
+            url : this.url,
+            method : 'DELETE',
+            scope : this,
+            success : function (ret) {
+                popupMessage(i18n.get('label.information'), i18n.get("label.userPrefDeleted"), null, 'x-icon-information');;
+            },
+            failure : function (ret) {
+                //cas normal... 
+				if (ret.status === 404) {
+                    popupMessage(i18n.get('label.information'), i18n.get("label.userPrefDeleted"), null, 'x-icon-information');;
+				}
+				else {
+                    popupMessage(i18n.get('label.error'), ret.responseText, null, 'x-icon-error');;
+				}
+                
+            }
+        });
     }
 });
 

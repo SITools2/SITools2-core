@@ -200,7 +200,8 @@ Ext.define('sitools.admin.usergroups.UsersPanel', {
             this.storeref.add(newrecs);
         }
         if (this.mode == "selectUnique") {
-            var rec = this.getLastSelectedRecord();
+//            var rec = this.getLastSelectedRecord();
+            var rec = this.grid.getSelectionModel().getSelection()[0];
             this.displayField.setValue(rec.data.firstName + " " + rec.data.lastName);
             this.valueField.setValue(rec.data.identifier);
         }
