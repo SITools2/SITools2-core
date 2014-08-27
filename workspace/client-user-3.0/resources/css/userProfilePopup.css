@@ -16,6 +16,10 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
+.userPersonalIcon {
+	background-image: url(/sitools/common/res/images/icons/general/user.png) !important;
+	background-size : 15px 15px;
+}
 
 .userIcon {
 	background-image: url(/sitools/client-public/res/images/icons/menu/usersGroups.png) !important;

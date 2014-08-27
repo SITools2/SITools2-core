@@ -29,6 +29,7 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         store : null,
         guiServiceStore : null
     },
+    border : false,
     
     initComponent : function () {
         var store = Ext.create("sitools.user.store.DatasetServicesStore", {
@@ -140,6 +141,7 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
                 text : category,
                 cls : 'services-toolbar-btn',
                 menu : new Ext.menu.Menu({
+                	border : false,
                     showSeparator : false
                 }),
                 iconAlign : "right",

@@ -31,12 +31,8 @@
 .sitools_button {
 	padding: 4px 4px 4px 4px;
 	border: none;
-	background-color: rgba(255, 255, 255, 0.2);
+	background-color: transparent;
 	background-image: none;
-}
-
-.sitools_button:HOVER {
-	background-color: rgba(255, 255, 255, 0.5);
 }
 
 .sitools_button_img {
@@ -44,6 +40,57 @@
 }
 
 .sitools_button_img:HOVER {
-	background-image:
-		url("/sitools/common/res/images/sitools_logo24_hover.png");
+	background-image: url("/sitools/common/res/images/sitools_logo24_hover.png");
+}
+
+.sitools_button_img:ACTIVE {
+	background-image: url("/sitools/common/res/images/sitools_logo24_hover.png");
+}
+
+.user_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/user.png");
+}
+
+.user_button_img:HOVER {
+	background-image: url("/sitools/common/res/images/icons/general/saturate/user.png");
+}
+
+.save_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/save.png");
+}
+
+.save_button_img:HOVER {
+	background-image: url("/sitools/common/res/images/icons/general/saturate/save.png");
+}
+
+.maxi_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/maxi.png");
+}
+
+.maxi_button_img:HOVER {
+	background-image: url("/sitools/common/res/images/icons/general/saturate/maxi.png");
+}
+
+.mini_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/mini.png");
+}
+
+.mini_button_img:HOVER {
+	background-image: url("/sitools/common/res/images/icons/general/saturate/mini.png");
+}
+
+.delete_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/delete.png");
+}
+
+.delete_button_img:HOVER {
+	background-image: url("/sitools/common/res/images/icons/general/saturate/delete.png");
+}
+
+.desktop_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/desktop.png");
+}
+
+.desktop_button_img:HOVER {
+	background-image: url("/sitools/common/res/images/icons/general/saturate/desktop.png");
 }

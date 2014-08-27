@@ -91,22 +91,27 @@ Ext.define('sitools.user.view.header.userProfile.TaskView', {
             items : [{
                 text : i18n.get('label.delete'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
+                scope : this,
                 handler : this._onDelete
             }, {
                 text : i18n.get('label.clean'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_clean.png',
+                scope : this,
                 handler : this._onClean
             }, {
                 text : i18n.get('label.viewResult'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/view_result.png',
+                scope : this,
                 handler : this._onViewResult
             }, {
                 text : i18n.get('label.viewStatusDetails'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_details.png',
+                scope : this,
                 handler : this._onViewStatusDetails
             }, {
                 text : i18n.get('label.setFinish'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/set_finish.png',
+                scope : this,
                 handler : this._onFinish
             }]
         };
@@ -147,6 +152,7 @@ Ext.define('sitools.user.view.header.userProfile.TaskView', {
         });
 
     },
+    
     doDelete : function (rec) {
         Ext.Ajax.request({
             url : this.url + "/" + rec.data.id,
@@ -163,12 +169,13 @@ Ext.define('sitools.user.view.header.userProfile.TaskView', {
             failure : alertFailure
         });
     },
+    
     _onViewResult : function () {
         var rec = this.getSelectionModel().getSelection()[0];
         if (!rec) {
             return false;
         }
-        if (!Ext.isEmpty(rec.data.urlResult)) {
+        if (!Ext.isEmpty(rec.get('urlResult'))) {
             var orderUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_ORDERS_USER_URL');
             if (rec.data.urlResult.indexOf(orderUrl) != -1) {
                 this._showOrderDetails(rec.data.urlResult);
@@ -189,7 +196,7 @@ Ext.define('sitools.user.view.header.userProfile.TaskView', {
             return false;
         }
         Ext.Ajax.request({
-            url : this.url + "/" + rec.data.id + "?action=finish",
+            url : this.url + "/" + rec.get('id') + "?action=finish",
             method : 'PUT',
             scope : this,
             success : function (ret) {
@@ -253,6 +260,7 @@ Ext.define('sitools.user.view.header.userProfile.TaskView', {
             title : i18n.get("label.taskDetails") + ":" + rec.data.id, 
             iconCls : "dataDetail"
         };
+        
         SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);        
         
     },

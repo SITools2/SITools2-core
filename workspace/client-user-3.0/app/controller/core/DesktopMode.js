@@ -23,6 +23,15 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
     extend : 'sitools.user.controller.core.NavigationMode',
     
     openComponent : function (view, windowConfig) {
+    	Ext.apply(windowConfig, {
+    		x : (windowConfig.position) || undefined,
+    		y : (windowConfig.position)  || undefined,
+    		width : (windowConfig.size)  || undefined,
+    		height : (windowConfig.size)  || undefined,
+    		specificType : 'componentWindow'
+    	});
+    	
+    	Ext.apply(windowConfig, this.getStatefullComponentConfig());
         this.getApplication().getController('DesktopController').createWindow(view, windowConfig);
     },
     
@@ -36,9 +45,11 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
             iconCls : module.get('icon'),
             label : module.get('label'),
             x : module.get('x'),
-            y : module.get('y')
+            y : module.get('y'),
+            specificType : 'moduleWindow'
         };
         
+        Ext.apply(windowConfig, this.getStatefullWindowConfig());
         this.getApplication().getController('DesktopController').createWindow(view, windowConfig);
     },
     
@@ -63,5 +74,110 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
             }
         });
         return desktopSettings;
-    }
+    },
+    
+    getStatefullWindowConfig : function () {
+		return {
+			saveSettings : function (componentSettings, forPublicUser) {
+			    if (Ext.isEmpty(userLogin)) {
+				    Ext.Msg.alert(i18n.get('label.warning', 'label.needLogin'));
+				    return;
+			    }
+			    
+			    // TODO find a better way to set the right Y position
+			    var position = {
+		    		x : this.getX(),
+		    		y : this.getY()
+			    };
+			    
+			    var size = {
+		    		height : this.getHeight(),
+		    		width : this.getWidth()
+			    };
+
+			    var putObject = {};
+
+			    // putObject['datasetId'] = datasetId;
+			    // putObject['componentType'] = componentType;
+			    putObject.componentSettings = componentSettings;
+
+			    putObject.windowSettings = {};
+			    putObject.windowSettings.size = size;
+			    putObject.windowSettings.position = position;
+			    putObject.windowSettings.specificType = this.specificType;
+			    putObject.windowSettings.moduleId = this.getId();
+			    putObject.windowSettings.typeWindow = this.typeWindow;
+			    putObject.windowSettings.maximized = this.maximized;
+			    
+			    var baseFilePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName();
+			    
+			    var filePath = componentSettings.preferencesPath;
+			    var fileName = componentSettings.preferencesFileName;
+			    if (Ext.isEmpty(filePath) || Ext.isEmpty(fileName)) {
+			    	return;
+			    }
+			    
+			    filePath = baseFilePath + filePath;
+			    
+			    if (forPublicUser) {
+			    	PublicStorage.set(fileName, filePath, putObject);
+			    }
+			    else {
+			    	UserStorage.set(fileName, filePath, putObject);
+			    }
+			    return putObject;
+		    }
+		};
+	},
+	
+	getStatefullComponentConfig : function () {
+		return {
+			saveSettings : function (componentSettings, forPublicUser) {
+			    if (Ext.isEmpty(userLogin)) {
+				    Ext.Msg.alert(i18n.get('label.warning', 'label.needLogin'));
+				    return;
+			    }
+			    
+			    // TODO find a better way to set the right Y position
+			    var position = {
+		    		x : this.getX(),
+		    		y : this.getY()
+			    };
+			    
+			    var size = {
+		    		height : this.getHeight(),
+		    		width : this.getWidth()
+			    };
+
+			    var putObject = {};
+			    putObject.componentSettings = componentSettings;
+
+			    putObject.windowSettings = {};
+			    putObject.windowSettings.size = size;
+			    putObject.windowSettings.position = position;
+			    putObject.windowSettings.specificType = this.specificType;
+			    putObject.windowSettings.componentId = this.getId();
+			    putObject.windowSettings.typeWindow = this.typeWindow;
+			    putObject.windowSettings.maximized = this.maximized;
+			    
+			    var baseFilePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName();
+			    
+			    var filePath = componentSettings.preferencesPath;
+			    var fileName = componentSettings.preferencesFileName;
+			    if (Ext.isEmpty(filePath) || Ext.isEmpty(fileName)) {
+			    	return;
+			    }
+			    
+			    filePath = baseFilePath + filePath;
+			    
+			    if (forPublicUser) {
+			    	PublicStorage.set(fileName, filePath, putObject);
+			    }
+			    else {
+			    	UserStorage.set(fileName, filePath, putObject);
+			    }
+			    return putObject;
+		    }
+		};
+	}
 });

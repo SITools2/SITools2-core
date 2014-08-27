@@ -106,7 +106,6 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
                 commonStoreId : Ext.id(),
                 id : Ext.id()
             },
-            split : true,
             collapsible : true,
             collapseDirection : "left",
             forceFit : true,
@@ -259,7 +258,6 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             items : [this.detailPanel],
             border : false,
             bodyBorder : false,
-            split : true,
             collapsible : true,
             collapsed : true,
             height : 350,
@@ -276,16 +274,16 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             autoScroll : false,
             border : false,
             bodyBorder : false,
-            items : [ this.dataview,{
-                xtype: 'splitter'   // A splitter between the two child items
-            }, this.detailPanelContainer ]
+            items : [ this.dataview, {
+    			xtype : 'splitter',
+    			style : 'background-color:#EBEBEB;'
+    		}, this.detailPanelContainer ]
         });
 
-        this.items = [ this.tree,
-            {
-                xtype: 'splitter'   // A splitter between the two child items
-            },
-            this.contentPanel];
+        this.items = [ this.tree, {
+			xtype : 'splitter',
+			style : 'background-color:#EBEBEB;'
+		}, this.contentPanel];
 
         this.callParent(arguments);
     },
@@ -406,7 +404,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
         tb.removeAll();
         tb.add(this.createFolderButton);
         
-        if (node.leaf !== "true") {
+        if (!node.isLeaf()) {
             tb.insert(1, this.uplButton);
             if (!this.isRootNode(node)) {
                 tb.insert(2, this.delButton);

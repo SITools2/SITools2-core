@@ -21,20 +21,21 @@
  * extColModelToJsonColModel, loadUrl
  */
 
-Ext.namespace('sitools.user.view.header');
+Ext.namespace('sitools.user.view.component.personal');
 
 /**
- * @cfg {String} buttonId the id of the button that displays the window
- * @class sitools.user.component.entete.UserProfile
- * @extends Ext.Window
+ * All personal user information (space, tasks, commands, profile)
+ * @class sitools.user.view.component.personal.UserPersonalView
+ * @extends Ext.panel.Panel
  */
-Ext.define('sitools.user.view.header.UserPersonalView', {
+Ext.define('sitools.user.view.component.personal.UserPersonalView', {
     extend : 'Ext.panel.Panel',
-    alias: 'widget.userPersonalWindow',
+    alias: 'widget.userPersonal',
     
     border : false,
     layout : {
         type : 'hbox',
+        pack : 'start',
         align : 'stretch'
     },
     
@@ -109,6 +110,7 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
 		
 		this.contentPanel = Ext.create('Ext.panel.Panel', {
 			flex : 1,
+			layout : 'fit',
 			autoScroll : true,
 			border : false
 		});
@@ -148,15 +150,12 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
      */
     onEditProfile : function (grid, record, index) {
 
-    	var editProfileView = {
-        	xtype : 'container',
-        	items : [Ext.create('sitools.public.userProfile.editProfile', {
+    	var editProfileView = Ext.create('sitools.public.userProfile.editProfile', {
                 identifier : userLogin,
                 url : loadUrl.get('APP_URL') + '/editProfile/' + userLogin
-            })]
-        };
+            });
     	
-    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	var contentPanel = grid.up('userPersonal').contentPanel;
     	contentPanel.removeAll();
     	contentPanel.add(editProfileView);
     },
@@ -170,12 +169,9 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
      */
     showTasks : function (grid, record, index) {
         
-    	var taskView = {
-        	xtype : 'container',
-        	items : [Ext.create('sitools.user.view.header.userProfile.TaskView')]
-        };
+    	var taskView = Ext.create('sitools.user.view.header.userProfile.TaskView');
     	
-    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	var contentPanel = grid.up('userPersonal').contentPanel;
     	contentPanel.removeAll();
     	contentPanel.add(taskView);
     },
@@ -188,13 +184,10 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
      * @param {Ext.event} e The click event
      */
     showDisk : function (grid, record, index) {
+
+    	var diskSpaceView = Ext.create('sitools.user.view.header.userProfile.DiskSpaceView');
+    	var contentPanel = grid.up('userPersonal').contentPanel;
     	
-    	var diskSpaceView = {
-        	xtype : 'container',
-        	items : [Ext.create('sitools.user.view.header.userProfile.DiskSpaceView')]
-        };
-    	
-    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
     	contentPanel.removeAll();
     	contentPanel.add(diskSpaceView);
     	
@@ -209,15 +202,25 @@ Ext.define('sitools.user.view.header.UserPersonalView', {
      */
     showOrders : function (grid, record, index) {
 
-    	var orderView = {
-        	xtype : 'container',
-        	items : [Ext.create('sitools.user.view.header.userProfile.OrderView')]
-        };
+    	var orderView = Ext.create('sitools.user.view.header.userProfile.OrderView');
     	
-    	var contentPanel = grid.up('userPersonalWindow').contentPanel;
+    	var contentPanel = grid.up('userPersonal').contentPanel;
     	contentPanel.removeAll();
     	contentPanel.add(orderView);
     	
+    },
+    
+    /**
+     * method called when trying to save preference
+     * 
+     * @returns
+     */
+    _getSettings : function () {
+        return {
+            preferencesPath : "/components",
+            preferencesFileName : this.id,
+            componentClazz : this.componentClazz
+        };
     }
    
 });

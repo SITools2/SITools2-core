@@ -46,7 +46,8 @@ Ext.define('sitools.user.core.Desktop', {
 		
 		shortcutsEl : Ext.get('x-shortcuts'),
 		
-		desktopMaximized : false
+		desktopMaximized : false,
+		showDesktopAction : 'minimize'
 	},
 	
 	getNavMode : function () {
@@ -87,6 +88,12 @@ Ext.define('sitools.user.core.Desktop', {
             		
             		Desktop.getApplication().getController('core.SitoolsController').openModule(module);
             	}
+            	else if (!Ext.isEmpty(pref.windowSettings.componentId)) {
+            		
+            		var cmpSettings = pref.componentSettings;
+            		Desktop.getApplication().getController('core.SitoolsController').openComponent(cmpSettings.componentClazz, cmpSettings, pref.windowSettings);
+
+            	}
 //                var moduleId = pref.windowSettings.moduleId;
 
 //                var module = SitoolsDesk.app.getModule(moduleId);
@@ -120,44 +127,44 @@ Ext.define('sitools.user.core.Desktop', {
                         method : "GET",
                         url : datasetUrl,
                         success : function (ret) {
+                        	
                             var Json = Ext.decode(ret.responseText);
-                            if (showResponse(ret)) {
-                                var dataset = Json.dataset;
-                                var componentCfg, javascriptObject;
-                                var windowConfig = {
-                                    datasetName : dataset.name,
-                                    datasetDescription : dataset.description,
-                                    type : type,
-                                    saveToolbar : true,
-                                    toolbarItems : [],
-                                    iconCls : "dataviews"
-                                };
+                            var dataset = Json.dataset;
+                            var componentCfg = {}, windowConfig = {};
+                            
+                            Ext.apply(windowConfig, pref.windowSettings, {
+                                datasetName : dataset.name,
+                                datasetDescription : dataset.description,
+                                type : type,
+                                saveToolbar : true,
+                                toolbarItems : [],
+                                iconCls : "dataviews",
+                            	id : type + dataset.id // add the toolbarItems configuration
+                            });
 
-                                javascriptObject = eval(dataset.datasetView.jsObject);
+//                            javascriptObject = eval(dataset.datasetView.jsObject);
 
-                                // add the toolbarItems configuration
-                                Ext.apply(windowConfig, {
-                                    id : type + dataset.id
-                                });
-
-                                if (dataset.description !== "") {
-                                    windowConfig.title = dataset.description;
-                                } else {
-                                    windowConfig.title = "Diplay data :" + dataset.name;
-                                }
-                                componentCfg = {
-                                    dataUrl : dataset.sitoolsAttachementForUsers,
-                                    datasetId : dataset.id,
-                                    datasetCm : dataset.columnModel,
-                                    datasetName : dataset.name,
-                                    datasetViewConfig : dataset.datasetViewConfig,
-                                    dictionaryMappings : dataset.dictionaryMappings,
-                                    preferencesPath : "/" + dataset.name,
-                                    preferencesFileName : "datasetOverview"
-                                };
-                                SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
+                            if (dataset.description !== "") {
+                                windowConfig.title = dataset.description;
+                            } else {
+                                windowConfig.title = "Diplay data :" + dataset.name;
                             }
+                            
+                            Ext.apply(componentCfg, pref.componentSettings, {
+//                                dataUrl : dataset.sitoolsAttachementForUsers,
+                                id : dataset.id,
+                                columnModel : dataset.columnModel,
+                                name : dataset.name,
+                                sitoolsAttachementForUsers : datasetUrl,
+                                datasetViewConfig : dataset.datasetViewConfig,
+                                dictionaryMappings : dataset.dictionaryMappings,
+                                preferencesPath : "/" + dataset.name,
+                                preferencesFileName : "datasetOverview"
+                            });
+                            
+                            var cmpSettings = pref.componentSettings;
+                    		Desktop.getApplication().getController('core.SitoolsController').openComponent(cmpSettings.componentClazz, componentCfg, pref.windowSettings);
+//                            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
                         },
                         failure : alertFailure
                     });
@@ -222,7 +229,6 @@ Ext.define('sitools.user.core.Desktop', {
         });
 
     },
-    
     
     loadModulesInDiv : function () {
 		Ext.each(Project.modulesInDiv, function (module) {
@@ -297,6 +303,40 @@ Ext.define('sitools.user.core.Desktop', {
 			UserStorage.set("desktop", "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName(),
 					userPreferences);
 		}
+	},
+	
+	clearDesktop : function () {
+		Ext.WindowManager.each(function (window) {
+			if (window.xtype == 'window') {
+				window.close();
+			}
+		});
+	},
+	
+	showDesktop : function () {
+		if (Desktop.getShowDesktopAction() == 'minimize') {
+			Desktop.minifyAllWindows();
+			Desktop.setShowDesktopAction('restore');
+		} else {
+			Desktop.restoreAllWindows();
+			Desktop.setShowDesktopAction('minimize');
+		}
+	},
+	
+	minifyAllWindows : function () {
+		Ext.WindowManager.each(function (window) {
+			if (window.xtype == 'window') {
+				window.minimize();
+			}
+		});
+	},
+	
+	restoreAllWindows : function () {
+		Ext.WindowManager.each(function (window) {
+			if (window.xtype == 'window') {
+				window.show();
+			}
+		});
 	}
 	
 });

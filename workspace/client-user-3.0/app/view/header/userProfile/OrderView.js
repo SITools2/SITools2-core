@@ -30,7 +30,6 @@ Ext.define('sitools.user.view.header.userProfile.OrderView', {
     autoScroll : true,
     forceFit : true,
     layout : 'fit',
-    height : 300,
 
     initComponent : function () {
     	

@@ -39,6 +39,10 @@
 	/*box-shadow: rgba(56, 146, 211, 0.25) 0px 0px 4px 2px;*/
 }
 
+.toolbarBtnModules {
+	background : transparent;
+	border : none;
+}
 .version-icon-dv {
 	background-image: url(/sitools/common/res/images/icons/general/version.png);
 }

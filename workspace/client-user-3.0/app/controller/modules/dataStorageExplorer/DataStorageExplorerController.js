@@ -185,19 +185,9 @@ Ext.define('sitools.user.controller.modules.dataStorageExplorer.DataStorageExplo
             "dataStorageExplorer button#dwlButton" : {
                 click :  function (button) {
                     var view = button.up("dataStorageExplorer");
-                    var nodeSel = view.tree.getSelectionModel().getLastSelected();
+                    var nodeSel = view.tree.getSelectionModel().getSelection()[0];
                     if (!Ext.isEmpty(nodeSel)) {
-                        var rec = view.dataview.getStore().getById(nodeSel.id);
-                        // the record exists in the dataview, lets show it
-                        if (nodeSel.leaf === "true") {
-                            if (!Ext.isEmpty(rec)) {
-                                sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
-                            } else {
-                                this.loadDataview(nodeSel.parentNode);
-                                rec = this.dataview.getStore().getById(nodeSel.id);
-                                sitools.user.component.dataviews.dataviewUtils.downloadFile(rec.data.url);
-                            }
-                        }
+                    	downloadFile(nodeSel.get('url'));
                     } else {
                         Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
                     }

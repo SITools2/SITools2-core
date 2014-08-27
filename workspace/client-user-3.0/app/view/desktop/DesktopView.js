@@ -95,7 +95,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         
         this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
         	desktopController : this.desktopController,
-        	width : 50,
+        	width : 90,
             observer : this
         });
         
@@ -121,7 +121,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
 
         me.items = [
-            { xtype: 'wallpaper', id: me.id+'_wallpaper', taskbar : this.taskbar }
+            { xtype: 'wallpaper', id: 'wallpaperId', taskbar : this.taskbar }
         ];
 
         me.callParent(arguments);

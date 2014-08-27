@@ -30,33 +30,23 @@ Ext.namespace('sitools.user.component.services');
 Ext.define('sitools.user.component.personal.UserPersonalComponent', {
     extend : 'sitools.user.core.Component',
     
-    controllers : ['sitools.user.controller.header.UserPersonalController'],
+    controllers : ['sitools.user.controller.component.personal.UserPersonalController'],
     
-    init : function (componentCfg) {
+    init : function (componentConfig, windowConfig) {
         
-    	var windowConfig = {
-                title : i18n.get('label.personal'), 
-                icon : "/sitools/common/res/images/icons/general/user.png",
-                width : 600,
-                height : 450
-            };
+    	var windowBaseConfig = {
+            title : i18n.get('label.personal'),
+            name : 'userPersonalComponent', /* REQUIRE */
+            iconCls : 'userPersonalIcon',
+            width : 700,
+            height : 450
+        };
+    	Ext.applyIf(windowBaseConfig, windowConfig);
         
-        var view = Ext.create('sitools.user.view.header.UserPersonalView', componentCfg);
+        var view = Ext.create('sitools.user.view.component.personal.UserPersonalView', componentConfig);
 
         this.setComponentView(view);
-        this.show(view, windowConfig);
-    },
-
-    /**
-     * method called when trying to save preference
-     * 
-     * @returns
-     */
-    _getSettings : function () {
-        return {
-            preferencesPath : "/modules",
-            preferencesFileName : this.id
-        };
-
+        this.show(view, windowBaseConfig);
     }
+
 });

@@ -218,6 +218,7 @@ Ext.define('sitools.user.controller.component.form.FormController', {
         
         var datasetViewComponent = Ext.create(dataset.datasetView.jsObject);
         datasetViewComponent.create(this.getApplication());
+        dataset.formParams = allObjectParams;
         datasetViewComponent.init(dataset, allObjectParams);
         
 //        var control = this.getApplication().getController(dataset.datasetView.jsObject);

@@ -17,7 +17,7 @@ Ext.define('sitools.user.Application', {
                  'sitools.public.utils.UserStorage',
                  'sitools.public.utils.PublicStorage',
                  'sitools.public.utils.PopupMessage',              
-                 'sitools.public.utils.Version',
+                 'sitools.public.version.Version',
                  
                  /* UTILS USER */
                  'sitools.user.utils.FormUtils',
@@ -31,7 +31,7 @@ Ext.define('sitools.user.Application', {
                    'header.HeaderController',
                    'footer.FooterController',
                    'core.NavigationModeFactory',
-                   'header.UserPersonalController'
+                   'component.personal.UserPersonalController'
                    ],
     isReady : false,
     modules : null,

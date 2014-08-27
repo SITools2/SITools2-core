@@ -165,19 +165,19 @@ Ext.define('sitools.user.controller.header.HeaderController', {
 	},
 	
 	versionBtnClicked : function (btn) {
-		Ext.create('sitools.public.utils.Version').show();
+		Ext.create('sitools.public.version.Version').show();
 	},
 	
 	maximizedBtnClicked : function (btn) {
 		if (Desktop.getDesktopMaximized() == false) {
 			this.getApplication().getController('DesktopController').maximize();
 			Desktop.setDesktopMaximized(true);
-			btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/mini.png")
+			btn.setIconCls('mini_button_img');
 		}
 		else {
 			this.getApplication().getController('DesktopController').minimize(); 
 			Desktop.setDesktopMaximized(false);
-			btn.setIcon(loadUrl.get('APP_URL') + "/common/res/images/icons/navBarButtons/maxi.png")
+			btn.setIconCls('maxi_button_img');
 		}
 	},
 	
@@ -206,6 +206,16 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     iconCls : 'saveUserIcon',
                     handler : function () {
                         Desktop.saveWindowSettings();
+                    }
+                }, {
+                	xtype : 'menuseparator',
+                	separatorCls : 'customMenuSeparator'
+        		}, {
+                    text : i18n.get('label.deleteUserPref'),
+                    cls : 'menuItemCls',
+                    iconCls : 'deleteSaveIcon',
+                    handler : function () {
+                        UserStorage.remove();
                     }
                 }, {
                 	xtype : 'menuseparator',

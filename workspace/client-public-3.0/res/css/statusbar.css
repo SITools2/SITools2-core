@@ -17,33 +17,15 @@
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
 /*!
- * Ext JS Library 3.2.1
+ * Ext JS Library 4.2.1
  * Copyright(c) 2006-2010 Ext JS, Inc.
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-/* StatusBar - structure */
-.x-statusbar .x-status-text {
-    cursor: default;
-/*
-    height: 21px;
-    line-height: 21px;
-    padding: 0 4px;
-*/
-}
-.x-statusbar .x-status-busy {
+
+.x-status-busy {
     padding-left: 25px !important;
     background: transparent no-repeat 3px 2px;
-}
-
-.x-toolbar div.xtb-text
-
-.x-statusbar .x-status-text-panel {
-    border-top: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    border-left: 1px solid;
-    padding: 2px 8px 2px 5px;
 }
 
 /* StatusBar word processor example styles */
@@ -64,12 +46,12 @@
 
 /* StatusBar form validation example styles */
 
-.x-statusbar .x-status-error {
+.x-status-error {
     cursor: pointer;
     padding-left: 25px !important;
     background: transparent no-repeat 3px 0px;
 }
-.x-statusbar .x-status-valid {
+.x-status-valid {
     padding-left: 25px !important;
     background: transparent no-repeat 3px 0px;
 }
@@ -103,10 +85,10 @@
 
 /* StatusBar - visual */
 
-.x-statusbar .x-status-busy {
+.x-status-busy {
     background-image: url(../images/ux/loading.gif);
 }
-.x-statusbar .x-status-text-panel {
+.x-status-text-panel {
     border-color: #99bbe8 #fff #fff #99bbe8;
 }
 
@@ -124,23 +106,23 @@
 
 /* StatusBar form validation example styles */
 
-.x-statusbar .x-status-error {
+.x-status-error {
     color: #C33;
     background-image: url(../images/ux/exclamation.gif);
 }
 
-.x-statusbar .x-status-warning {
+.x-status-warning {
     color: orange;
     background-image: url(../images/ux/warning.gif);
 }
 
-.x-statusbar .x-status-warning {
+.x-status-warning {
     cursor: pointer;
     padding-left: 25px !important;
     background: transparent no-repeat 3px 2px;
 }
 
-.x-statusbar .x-status-valid {
+.x-status-valid {
     background-image: url(../images/ux/accept.png);
 }
 .x-status-error-list {

@@ -36,15 +36,75 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
             scale : "medium",
             cls : 'sitools_button',
             iconCls : 'sitools_button_img',
-            tooltip : {
-                text : i18n.get('label.mainMenu'),
-                anchor : 'bottom'
-            },
-            template : new Ext.Template('<table cellspacing="0" class="x-btn {3}" style="padding-left:5px;"><tbody><tr>', '<td><i>&#160;</i></td>',
-                    '<td><em class="{5} unselectable="on">', '<button type="{1}" style="height:28px; width:28px;">{0}</button>', '</em></td>',
-                    '<td><i>&#160;</i></td>', "</tr></tbody></table>")
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.mainMenu');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : -5,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
         });
         items.push(homeButton);
+        
+        var cleanDesktopButton = Ext.create('Ext.Button', {
+            action : "minimize",
+            id : 'btn-cleanDesktop',
+            iconCls : 'delete_button_img',
+            cls : 'sitools_button',
+            handler : function (btn) {
+            	Desktop.clearDesktop();
+            },
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.removeActiveModule');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : -10,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+        items.push(cleanDesktopButton);
+        
+        var showDesktopButton = Ext.create('Ext.Button', {
+            action : "minimize",
+            id : 'btn-showDesk',
+            iconCls : 'desktop_button_img',
+            cls : 'sitools_button',
+            handler : function (btn) {
+            	Desktop.showDesktop();
+            },
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get("label.showDesktopButton");
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : -10,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+        items.push(showDesktopButton);
         
         
 //        items.push('|');

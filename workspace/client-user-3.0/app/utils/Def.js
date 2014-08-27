@@ -348,6 +348,29 @@ function getApp() {
 	}
 }
 
+
+/**
+ * Use a spcialized MIF to download datas...
+ * @param {String} url the url to request.
+ */
+function downloadFile(url) {
+    if (Ext.getCmp("mifToDownload")) {
+        Ext.getCmp("mifToDownload").destroy();
+    }
+    
+    var forceDlParam = "forceDownload=true";
+    var defaultSrc = url + ((url.indexOf("?") === -1) ? "?" : "&") + forceDlParam;
+    
+    var mifToDownload = Ext.create('Ext.ux.IFrame', {
+        layout : 'fit',
+        id : "mifToDownload", 
+        region : 'center',
+        src : defaultSrc, 
+        renderTo : Ext.getBody(), 
+        cls : 'x-hidden'
+    });
+}
+
 // Ext.WindowMgr = getDesktop().getManager();
 // Override de la méthode initEvents pour que le windowManager utilisé soit
 // toujours le même
@@ -410,12 +433,6 @@ Ext.data.Types.DATEASSTRING = {
 	type : "dateAsString"
 	
 };
-
-
-
-
-
-
 
 /**
  * Build a {Ext.grid.ColumnModel} columnModel with a dataset informations
@@ -493,9 +510,6 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, data
     });
     return cm;
 }
-
-
-
 
 /*Ext.override(Ext.menu.DateMenu, {
     initComponent : function () {

@@ -26,51 +26,140 @@ Ext.namespace('sitools.user.view.header.userProfile');
  */
 Ext.define('sitools.user.view.header.userProfile.DiskSpaceView', {
 	extend : 'Ext.panel.Panel',
+	alias : 'widget.diskSpace',
     requires : ["sitools.user.model.DataStorageExplorerTreeModel"],
 
 	autoScroll : true,
 	border : false,
-	height : 400,
 	layout : {
 		type : 'hbox',
+		pack : 'start',
 		align : 'stretch'
 	},
 
     initComponent : function () {
-        this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";
-
+        this.AppUserStorage = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";
         
-//        this.tbar = new Ext.ux.StatusBar({
-//            statusAlign: 'right'              
-//        });
+        var localeStr = locale.getLocale();
+        var noPreviewAvailableUrlTemplate = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/html/{locale}/noPreviewAvailable.html";
+        this.noPreviewAvailableUrl = noPreviewAvailableUrlTemplate.replace("{locale}", localeStr); 
         
-        this.tbar = {
-    		xtype : 'toolbar',
-    		border : false,
-    		items : [{
-                text : i18n.get('label.refreshResource'),
-                scope : this,
-                handler : this._onRefresh
-            }, {
-                text : i18n.get('label.deleteResource'),
-                scope : this,
-                handler : this._onDelete
-            }]
+        this.uplButton = {
+            xtype : 'button',
+            itemId : 'uplButton',
+            icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/image_add.png',
+            text : i18n.get('label.uploadFile'),
+            tooltip : i18n.get('label.uploadFile'),
+            scope : this,
+            handler : function (button, e) {
+                var nodeSel = this.tree.getSelectionModel().getSelection()[0];
+                
+                if (!Ext.isEmpty(nodeSel)) {
+                    this.onUpload(this, nodeSel, e);
+                } else {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+                }
+            }
         };
+
+        this.dwlButton = {
+            xtype : 'button',
+            itemId : 'dwlButton',
+            icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/download.png',
+            text : i18n.get('label.downloadFile'),
+            tooltip : i18n.get('label.downloadFile'),
+            scope : this,
+            handler : function (button) {
+                var record = view.tree.getSelectionModel().getSelection()[0];
+                
+                if (!Ext.isEmpty(record)) {
+                    if (record.isLeaf()) {
+                        sitools.user.component.dataviews.dataviewUtils.downloadFile(record.get('url'));
+                    }
+                } else {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+                }
+            }
+        };
+
+        this.delButton = {
+            xtype : 'button',
+            itemId : 'delButton',
+            iconCls : 'delete-icon',
+            text : i18n.get('label.delete'),
+            tooltip : i18n.get('label.delete'),
+            scope : this,
+            handler : function (button) {
+                var node = this.tree.getSelectionModel().getSelection()[0];
+                
+                if (!Ext.isEmpty(node)) {
+                    Ext.Msg.confirm(i18n.get('label.info'), i18n.get('label.sureDelete') + '<b>' + node.get('name') + '</b>' + " ?", function (btn) {
+                        if (btn === 'yes') {
+                            if (!node.isRoot()) {
+                                this.deleteNode(node);
+                            } else {
+                                Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.cannotDeleteRootNode'));
+                            }
+                        }
+                    }, this);
+                } else {
+                    Ext.Msg.alert(i18n.get('label.warning'), i18n.get('label.noneNodeSelected'));
+                }
+            }
+        };
+        
+        this.createFolderButton = {
+                xtype : 'button',
+                itemId : 'createFolderButton',
+                icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/createFolder.png',
+                text : i18n.get('label.createFolder'),
+                scope : this,
+                handler : function (button, e) {
+                    var node = this.tree.getSelectionModel().getSelection()[0];
+
+                    var url = null;
+                    if (node.isLeaf()) {
+                        url = node.parentNode.get('url');
+                    } else if (node.get('cls')) {
+                        url = node.get('url');
+                    } else if (node.isRoot()) {
+                        url = this.AppUserStorage;
+                        if (url.charAt(url.length - 1) != "/") {
+                            url = url + "/";
+                        }
+                    }
+                    
+                    var datastorageCreateFolder = Ext.ComponentQuery.query('datastorageCreateFolder')[0];
+            		if (Ext.isEmpty(datastorageCreateFolder) || !datastorageCreateFolder.isVisible()) {
+            			var menu = Ext.create('sitools.user.view.modules.dataStorageExplorer.DataStorageCreateFolderView', {
+            				url : url,
+                            scope : this,
+                            callback : function () {
+                            	this.reloadNode(node);
+                            }
+            			});
+            			menu.showAt(e.getX(), e.getY(), true);
+            		}
+                }
+            };
+
+        this.tbar = Ext.create('Ext.toolbar.Toolbar', {
+            cls : "services-toolbar",
+            items : [ '->']
+        });
         
         this.treeStore = Ext.create('sitools.user.store.DatastorageTreeStore');
         
         this.tree = Ext.create('Ext.tree.Panel', {
-            region : 'west',
-            width : 300,
+            width : 200,
             autoScroll : true,
             bodyStyle : 'background-color:white;',
             store : this.treeStore,
             root : {
                 text : "UserStorage",
                 leaf : false,
-                url :this.AppUserStorage,
-                commonStoreId : Ext.id(),
+                url : this.AppUserStorage,
+                name : this.nameDatastorage,
                 id : Ext.id()
             },
             split : true,
@@ -79,258 +168,192 @@ Ext.define('sitools.user.view.header.userProfile.DiskSpaceView', {
             forceFit : true,
             rowLines : true,
             selModel : Ext.create("Ext.selection.TreeModel", {
+                allowDeselect : true,
                 mode : "SINGLE"
             }),
             listeners : {
-//               beforeload : function (node) {
-//                   return node.isRoot || Ext.isDefined(node.attributes.children);
-//               },
-               beforeitemexpand : function (node) {
-                   node.removeAll();
-                   var reference = new Reference(node.get('url'));
-                   var url = loadUrl.get('APP_URL') + reference.getFile();
-                   Ext.Ajax.request({
-                       url : url,
-                       method : 'GET',
-                       scope : this,
-                       success : function (ret) {
-                           try {
-                               var Json = Ext.decode(ret.responseText);
-                               Ext.each(Json, function (child) {
-                                   var text = child.text;
-                                   if (child.cls == "folder") {
-                                	   child.leaf = false;
-                                   } else {
-                                	   child.leaf = true;
-                                   }
-                                   
-                                   if (child.leaf) {
-                                       text += "<span style='font-style:italic'> (" + Ext.util.Format.fileSize(child.size) + ")</span>";
-                                   }
-                                   var reference = new Reference(child.url);
-                                   var url = reference.getFile();
-                                   node.appendChild({
-                                       cls : child.cls,
-                                       text : decodeURIComponent(text),
-                                       url : url,
-                                       leaf : child.leaf,
-                                       expandable : true,
-                                       children : []
-                                   });
-                               });
-                               return true;
-                           } catch (err) {
-                               Ext.Msg.alert(i18n.get('warning'), err);
-                               return false;
-                           }
-                       },
-                       failure : function (ret) {
-                           return null;
-                       }
-                   });
-                   return true;
-               }
+            	scope : this,
+            	beforeitemexpand : function (node, opts) {
+                    
+                    node.removeAll();
+                    
+                    var reference = new Reference(node.get("url"));
+                    var url = reference.getFile();
+                    Ext.Ajax.request({
+                        params : {
+                            index : ""
+                        },
+                        url : url,
+                        headers : {
+                            'Accept' : 'application/json+sitools-directory'
+                        },
+                        method : 'GET',
+                        scope : this,
+                        success : function (ret) {
+                            try {
+                                var Json = Ext.decode(ret.responseText);
+                                
+                                //first append the folders
+                                Ext.each(Json, function (child) {
+                                    if (Ext.isEmpty(child.leaf)) {
+                                        child.leaf = false;
+                                    }
+                                    child.children = [];
+                                    if (!child.leaf) {
+                                        var nodeAdded = this.appendChild(child, node);
+                                        child.id = nodeAdded.id;
+                                    }
+                                }, this);
+                                
+                                //then append the files
+                                Ext.each(Json, function (child) {
+                                    if (child.leaf) {
+                                        var nodeAdded = this.appendChild(child, node);
+                                        child.id = nodeAdded.id;
+                                    }
+                                }, this);
+                                
+                                this.detailPanel.setSrc(this.noPreviewAvailableUrl);
+                                
+                                // if there is a node to select prior to the expanding of the node
+                                var nodeToSelect = this.tree.getSelectionModel().getLastSelected(); 
+                                if (nodeToSelect && nodeToSelect.get('leaf') === "true") {
+                                    var name = nodeToSelect.get('name');
+                                    var callback = this.callbackForceSelectNodeOtherDirectory.bind(this, name);
+                                    node.expand(false);
+                                } else {
+                                  node.expand(false);
+                                }
+                                return true;
+                                
+                            } catch (err) {
+                                throw err;
+                            }
+                        },
+                        failure : function (ret) {
+                            return null;
+                        }
+                    });
+                    return true;
+                },
+                
+                itemclick : function (tree, record, item, index, e) {
+                    
+                    this.manageToolbar(record);
+                    
+                    if (this.isOpenable(record.get('name'))) {
+                        if (!Ext.isEmpty(record)) {
+                        	this.displayFile(record);
+                        } else {
+                        	this.reloadNode(record.parentNode);
+                        }
+                    } else {
+                    	this.detailPanelContainer.setTitle(i18n.get('label.defaultTitleDetailPanel'));
+                    	this.detailPanel.load(this.noPreviewAvailableUrl);
+                    }
+                }
             }
         });
 
-        this.store = Ext.create('Ext.data.JsonStore', {
-            proxy : {
-            	type : 'ajax',
-                method : 'GET',
-                url :this.AppUserStorage,
-                headers : {
-//                    'Accept' : 'application/json+sitools-directory'
+        this.detailPanel = Ext.create('Ext.ux.IFrame', {
+        	title : i18n.get('label.defaultTitleDetailPanel'),
+            itemId : 'detail-view',
+            autoScroll : true,            
+            src : this.noPreviewAvailableUrl,
+            border : false,
+            bodyBorder : false,
+            tools : [{
+                id : 'plus',
+                qtip : i18n.get("label.showInWindow"),
+                scope : this,
+                handler : function (event, toolEl, panel) {
+                    this.detachPanel(panel);
                 }
-            },
-            model : 'sitools.user.model.DataStorageExplorerTreeModel'
+            } ]
         });
-
-        this.tpl = new Ext.XTemplate('<tpl for=".">',
-            '<div class="dv-datastorage-wrap" id="{name}">',
-                '<div class="dv-datastorage">',
-                    '<tpl if="this.isLeaf(leaf)">',
-                        '<tpl if="this.isImage(url)">',
-                            '<img src="{url}" alt="{name}" title="{[this.formatTitle(values)]}" width="60" height="60"/>',
-                        '</tpl>',
-                        '<tpl if="!this.isImage(name)">',
-                            '<img src="/sitools/client-user/resources/images/cmsModule/{[this.getIcon(values.name)]}" width="60" height="60" alt="{name}" title="{[this.formatTitle(values)]}">',
-                        '</tpl>',
-                    '</tpl>',
-                    '<tpl if="!this.isLeaf(leaf)">',
-                        '<img src="/sitools/client-user/resources/images/cmsModule/folder.png" width="60" height="60" title="{[this.formatTitle(values)]}">',
-                    '</tpl>',
-                    '<span class="dv-datastorage">{name}</span>',
-                '</div>',
-            '</div>',
-        '</tpl>',
-        '<div class="x-clear"></div>', {
-            isLeaf : function (leaf) {
-                return leaf;
-            },
-            isImage : function (name) {
-                var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
-                return (name.match(imageRegex));
-            },
-            isPdf : function (name) {
-                var imageRegex = /\.(pdf)$/;
-                return (name.match(imageRegex));
-            },
-            formatDate : function (dateText) {
-                var date = new Date(dateText);
-                return Ext.Date.format(date,SITOOLS_DEFAULT_IHM_DATE_FORMAT);
-            },
-            formatTitle : function(values) {
-                var str = values.name + "\n" + i18n.get("label.lastModif") + " : " + this.formatDate(values.lastmod);
-                if(values.leaf){
-                    str += "\n" + i18n.get("label.fileSize") + " : " + Ext.util.Format.fileSize(values.size);
-                }
-                return str;
-            },
-            isPpt : function (text) {
-                var imageRegex = /\.(ppt|pptx)$/;
-                return (text.match(imageRegex));
-            },
-            isWord : function (text) {
-                var imageRegex = /\.(doc|docx)$/;
-                return (text.match(imageRegex));
-            },
-            isExcel : function (text) {
-                var imageRegex = /\.(xls|xlsx)$/;
-                return (text.match(imageRegex));
-            },
-            isHtml : function (text) {
-                var imageRegex = /\.(html)$/;
-                return (text.match(imageRegex));
-            },
-            isTxt : function (text) {
-                var imageRegex = /\.(txt)$/;
-                return (text.match(imageRegex));
-            },
-            isLink : function (type) {
-                return (type == "LINK");
-            },
-            isFile : function (type) {
-                return (type == "FILE");
-            },
-            getIcon : function (name) {
-                var icon = "file-dv.png";
-                if (!Ext.isEmpty(name)) {
-                    if (this.isPdf(name)) {
-                        icon = "pdf.png";
-                    } else if (this.isPpt(name)) {
-                        icon = "powerpoint.png";
-                    } else if (this.isWord(name)) {
-                        icon = "word.png";
-                    } else if (this.isExcel(name)) {
-                        icon = "excel.png";
-                    }
-                    else if (this.isHtml(name)) {
-                        icon = "html.png";
-                    }
-                    else if (this.isTxt(name)) {
-                        icon = "text.png";
-                    }
-                }
-                return icon;
-            }
-        });
-
-        this.dataview = Ext.create('Ext.view.View', {
-            itemId : 'file-view',
-            autoScroll : true,
+        
+        this.detailPanelContainer = Ext.create("Ext.panel.Panel", {
+            items : [this.detailPanel],
+            layout : 'fit',
             flex : 1,
-            region : 'center',
-            store : this.store,
-            mode : 'SINGLE',
-            tpl : this.tpl,
-            selectedItemCls : "datastorageSelectionClass",
-//            overItemCls:'x-view-over-ds',
-            itemSelector : 'div.dv-datastorage-wrap',
-            emptyText : i18n.get('label.nothingToDisplay'),
-            style : 'background-color: #9DC6E4;'
+            border : false,
+            bodyBorder : false,
+            bbar : []
         });
-        
-        this.items = [ this.tree ];
-        
-//        Ext.apply(this, {
-//            expanded : true,
-//            useArrows : true,
-//            autoScroll : true,
-//            layout : 'fit', 
-//            animate : true,
-//            enableDD : false,
-//            containerScroll : true,
-//            //frame : true,
-////            loader : new Ext.tree.TreeLoader(),
-//            rootVisible : true,
-//            root : {
-//                text : userLogin,
-//                children : [],
-//                nodeType : 'async',
-//                url : loadUrl.get('APP_URL') + this.AppUserStorage + "/"
-//            },
-//
-//            // auto create TreeLoader
-//            listeners : {
-//                scope : this,
-//                beforeload : function (node) {
-//                    return node.isRoot || Ext.isDefined(node.attributes.children);
-//                },
-//                beforeexpandnode : function (node) {
-//                    node.removeAll();
-//                    var reference = new Reference(node.attributes.url);
-//                    var url = reference.getFile();
-//                    Ext.Ajax.request({
-//                        url : url,
-//                        method : 'GET',
-//                        scope : this,
-//                        success : function (ret) {
-//                            try {
-//                                var Json = Ext.decode(ret.responseText);
-//                                Ext.each(Json, function (child) {
-//                                    var text = child.text;
-//                                    if (child.leaf) {
-//                                        text += "<span style='font-style:italic'> (" + Ext.util.Format.fileSize(child.size) + ")</span>";
-//                                    }
-//                                    var reference = new Reference(child.url);
-//                                    var url = reference.getFile();
-//                                    node.appendChild({
-//                                        cls : child.cls,
-//                                        text : decodeURIComponent(text),
-//                                        url : url,
-//                                        leaf : child.leaf,
-//                                        children : [],
-//                                        checked : child.checked
-//                                    });
-//                                });
-//                                return true;
-//                            } catch (err) {
-//                                Ext.Msg.alert(i18n.get('warning'), err);
-//                                return false;
-//                            }
-//                        },
-//                        failure : function (ret) {
-//                            return null;
-//                        }
-//                    });
-//                    return true;
-//                }, 
-//                click : function (n) {
-//                    if (n.attributes.leaf) {
-//                        var url = n.attributes.url;
-//                        viewFileContent(url, n.attributes.text);
-//                    }
-//                }
-//            }
-//        });
+
+        this.items = [ this.tree, {
+			xtype : 'splitter',
+			style : 'background-color:#EBEBEB;'
+		}, this.detailPanelContainer];
 
         this.callParent(arguments);
 
     },
     
-    render : function () {
-    	this.reloadNode(this.tree.getRootNode());
-    	this.callParent(arguments);
+    isImage : function (name) {
+        var imageRegex = /\.(png|jpg|jpeg|gif|bmp)$/;
+        return name.match(imageRegex);            
+    },
+
+    isOpenable : function (name) {
+        var imageRegex = /\.(txt|json|html|css|xml|pdf|png|jpg|jpeg|gif|bmp)$/;
+        return name.match(imageRegex);            
+    },
+
+    deleteNode : function (node) {
+
+        var deleteUrl = "";
+        if (node.isLeaf()) {
+            deleteUrl = node.get('url');
+        } else if (node.get('cls')) {
+            deleteUrl = node.get('url');
+        }
+        
+        Ext.Ajax.request({
+            url : deleteUrl + "?recursive=true",
+            method : 'DELETE',
+            scope : this,
+            success : function (ret) {
+            	this.reloadNode(node.parentNode);
+            	
+                popupMessage(i18n.get('label.information'), i18n.get('label.fileDeleted'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+            },
+            callback : function () {
+            	this.setUserStorageSize();
+            },
+            failure : function (response, opts) {
+                Ext.Msg.alert(response.status + " " + response.statusText, response.responseText);
+            }
+        });
+
+    },
+
+    formatSize : function (size) {
+        if (size < 1024) {
+            return size + " bytes";
+        } else {
+            return (Math.round(((size * 10) / 1024)) / 10) + " KB";
+        }
+    },
+
+    formatLastModified : function (lastmod) {
+        return new Date(lastmod).format("d/m/Y g:i a");
+    },
+
+    displayFile : function (rec) {
+        this.detailPanelContainer.setTitle(rec.data.name);
+        this.detailPanel.load(rec.get("url"));
+    },
+
+    detachPanel : function (panel) {
+        var customConfig = {
+            title : panel.title,
+            id : panel.title,
+            modal : true,
+            iconCls : 'dataDetail'
+        };
+    
+        sitools.user.component.dataviews.dataviewUtils.showDisplayableUrl(panel.frameEl.src, true, customConfig);
     },
     
     reloadNode : function (node) {
@@ -347,78 +370,151 @@ Ext.define('sitools.user.view.header.userProfile.DiskSpaceView', {
     	    });
     	}
     },
+
+    callbackForceSelectNodeOtherDirectory : function (name, success, parentNode) {
+        var node = parentNode.findChild("name", name);
+        this.tree.fireEvent("click", node);
+    },
+    
+    render : function () {
+        this.reloadNode(this.tree.getRootNode());
+        this.setUserStorageSize();
+        
+        this.callParent(arguments);
+    },
+    
+    afterRender : function () {
+    	this.tree.getSelectionModel().select(0);
+    	this.manageToolbar(this.tree.getRootNode());
+    	
+    	this.callParent(arguments);
+    },
     
     isRootNode : function (node) { 
         return this.tree.getRootNode() === node;        
     },
     
-//    onRender : function () {
-//        this.callParent(arguments);
-//        this.setUserStorageSize();
-//    },
-//    
-//    setUserStorageSize : function () {
-//        Ext.Ajax.request({
-//            method : "GET",
-//            scope : this,
-//            url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace("{identifier}", userLogin) + "/status", 
-//            success : function (ret) {
-//                var json = Ext.decode(ret.responseText);
-//                if (!json.success) {
-//                    return;
-//                }
-//                var storage = json.userstorage.storage;
-//                var totalSpace = storage.quota;
-//                var usedSpace = storage.busyUserSpace;
-//                var pourcentage = usedSpace / totalSpace * 100;
-//                var cls = null; 
-//                
-//                if (pourcentage >= 90 && pourcentage < 100) {
-//                    cls = "x-status-warning";
-//                }
-//                else if (pourcentage > 100) {
-//                    cls = "x-status-error";
-//                }
-//                var str = Ext.String.format(i18n.get('label.diskSpaceLong'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
-//                
-//                this.getTopToolbar().setText(str);
-//                this.getTopToolbar().setIcon(cls);
-//                this.doLayout();
-//            }
-//        });
-//    },
-//    
-//    _onRefresh : function () {
-//        this.getRootNode().collapse();
-//        this.setUserStorageSize();
-//        // this.treePanel.getLoader().load(this.treePanel.getRootNode());
-//    },
-//
-//    _onDelete : function () {
-//        var selNodes = this.getChecked();
-//        if (selNodes.length === 0) {
-//            return;
-//        }
-//
-//        Ext.each(selNodes, function (node) {
-//            Ext.Ajax.request({
-//                method : 'DELETE',
-//                url : node.attributes.url + "?recursive=true",                
-//                scope : this,
-//                success : function (response, opts) {
-//                    var notify = new Ext.ux.Notification({
-//                        iconCls : 'x-icon-information',
-//                        title : i18n.get('label.information'),
-//                        html : i18n.get('label.resourceDeleted'),
-//                        autoDestroy : true,
-//                        hideDelay : 1000
-//                    });
-//                    notify.show(document);
-//                    node.destroy();
-//                },
-//                failure : alertFailure
-//            }, this);
-//        });
-//    }
+    manageToolbar : function (node) {
+        var tb = this.down('toolbar');
+        tb.removeAll();
+        tb.add(this.createFolderButton);
+        
+        if (!node.isLeaf()) {
+            tb.insert(1, this.uplButton);
+            if (!this.isRootNode(node)) {
+                tb.insert(2, this.delButton);
+            }
+            this.reloadNode(node);
+        } else {
+            tb.insert(1, this.dwlButton);
+            tb.insert(2, this.delButton);
+        }
+        tb.doLayout();
+    },
+    
+    appendChild : function (child, parent) {
+        var reference = new Reference(child.url);
+        var url = reference.getFile();
+        
+        var name = decodeURIComponent(child.text);
+        var text = name;
+        if (child.leaf) {
+            text += "<span style='font-style:italic'> (" + Ext.util.Format.fileSize(child.size) + ")</span>";
+        }
+        
+        var result = parent.appendChild({
+            commonStoreId : Ext.id(),
+            cls : child.cls,
+            text : text,
+            name : name,
+            url : url,
+            leaf : child.leaf,
+            size : child.size,
+            lastmod : child.lastmod,
+            expandable : !child.leaf
+        });
+        
+        return result;
+    },
+    
+    onUpload : function (view, node, e) {
+
+        var urlUpload = null;
+        if (node.isLeaf()) {
+            urlUpload = node.parentNode.get('url');
+            
+        } else if (node.get('cls')) {
+            urlUpload = node.get('url');
+            
+        } else if (node.isRoot()) {
+            urlUpload = this.AppUserStorage;
+            if (urlUpload.charAt(urlUpload.length - 1) != "/") {
+                urlUpload = urlUpload + "/";
+            }
+        }
+        
+        var datastorageUploadFile = Ext.ComponentQuery.query('datastorageUploadFile')[0];
+		if (Ext.isEmpty(datastorageUploadFile) || !datastorageUploadFile.isVisible()) {
+			var menu = Ext.create('sitools.user.view.modules.dataStorageExplorer.DataStorageUploadFileView', {
+				urlUpload : urlUpload,
+	            scope : view,
+	            callback : function () {
+	            	view.reloadNode(node);
+	            	view.setUserStorageSize
+	            }
+			});
+			menu.showAt(e.getX(), e.getY(), true);
+		}
+        
+    },
+    
+    setUserStorageSize : function () {
+        Ext.Ajax.request({
+            method : "GET",
+            scope : this,
+            url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace("{identifier}", userLogin) + "/status", 
+            success : function (ret) {
+                var json = Ext.decode(ret.responseText);
+                if (!json.success) {
+                    return;
+                }
+                var storage = json.userstorage.storage;
+                var totalSpace = storage.quota;
+                var usedSpace = storage.busyUserSpace;
+                var pourcentage = usedSpace / totalSpace * 100;
+                var cls = null; 
+                
+                if (pourcentage >= 90 && pourcentage < 100) {
+                    cls = "x-status-warning";
+                }
+                else if (pourcentage > 100) {
+                    cls = "x-status-error";
+                }
+                var str = Ext.String.format(i18n.get('label.diskSpaceLong'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
+                
+                var label = Ext.create('Ext.form.Label', {
+                	html : str,
+                	componentCls : cls
+                });
+                
+                var toolbar = this.detailPanelContainer.down('toolbar');
+                toolbar.removeAll();
+                toolbar.add(label);
+            }
+        });
+    },
+    
+    /**
+     * method called when trying to save preference
+     * 
+     * @returns
+     */
+    _getSettings : function () {
+        return {
+            preferencesPath : "/components",
+            preferencesFileName : this.id
+        };
+
+    }
 
 });

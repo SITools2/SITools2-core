@@ -47,8 +47,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 					window.hide();
 					Desktop.getDesktopEl().unmask();
 				},
-				afterrender : function (window) {
-				},
 				boxready : function (window) {
 					window.center();
 					window.focus();
@@ -67,7 +65,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 			'moduleDataview toolbar button[name=versionBtn]' : {
 				click : function (btn) {
 					btn.up('moduleDataview').close();
-					Ext.create('sitools.public.utils.Version').show();
+					Ext.create('sitools.public.version.Version').show();
 				}
 			},
 			
@@ -118,10 +116,10 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         module.init();
     },
     
-    openComponent : function (clazz, componentConfig, windowConfig) {
-        var moduleController = this.getApplication().getController(clazz);
-        moduleController.initComponent(componentConfig, windowConfig);
-        moduleController.onLaunch(this.getApplication());
+    openComponent : function (componentClazz, componentConfig, windowConfig) {
+        var component = Ext.create(componentClazz);
+        component.create(this.getApplication());
+        component.init(componentConfig, windowConfig);
     },
     
     onOpenModule : function (button, e, opts) {

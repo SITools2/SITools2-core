@@ -75,8 +75,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             }
         };
         
-
-        
         this.tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
             enableOverflow: true,
             datasetUrl : this.dataset.sitoolsAttachementForUsers
@@ -120,4 +118,18 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         array.push(new Ext.toolbar.Separator());
         return array;
     },
+    
+    /**
+     * method called when trying to save preference
+     * 
+     * @returns
+     */
+    _getSettings : function () {
+        return {
+            preferencesPath : "/components",
+            preferencesFileName : this.id,
+            componentClazz : this.componentClazz,
+            datasetUrl : this.dataset.sitoolsAttachementForUsers
+        };
+    }
 });

@@ -646,38 +646,20 @@ td.ux-taskButtons-edge {
     cursor:default;
 }
 
+#btn-cleanDesktop {
+	top: 16px !important;
+	left: 60px !important;
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px !important;
+	position: absolute !important;
+}
+
 #btn-showDesk {
-	margin : -1px !important;
-	-moz-box-shadow: 2px 2px 5px 2px #343434;   
-	-webkit-box-shadow: 2px 2px 2px 2px #343434;   -o-box-shadow: 2px 2px 5px 2px #343434;   
-	box-shadow: 2px 2px 4px 0px #343434;   filter:progid:DXImageTransform.Microsoft.Shadow(color=#343434, Direction=134, Strength=5);
-	opacity: .7;
-    -moz-opacity: .7;
-    filter:alpha(opacity=70);
-	
-	background: -moz-linear-gradient(-45deg,  rgba(151,153,160,1) 0%, rgba(183,184,191,0.94) 16%, rgba(135,136,145,0.86) 37%, rgba(112,114,121,0.81) 50%, rgba(199,202,209,0.62) 99%, rgba(199,202,209,0.62) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(151,153,160,1)), color-stop(16%,rgba(183,184,191,0.94)), color-stop(37%,rgba(135,136,145,0.86)), color-stop(50%,rgba(112,114,121,0.81)), color-stop(99%,rgba(199,202,209,0.62)), color-stop(100%,rgba(199,202,209,0.62))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(-45deg,  rgba(151,153,160,1) 0%,rgba(183,184,191,0.94) 16%,rgba(135,136,145,0.86) 37%,rgba(112,114,121,0.81) 50%,rgba(199,202,209,0.62) 99%,rgba(199,202,209,0.62) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(-45deg,  rgba(151,153,160,1) 0%,rgba(183,184,191,0.94) 16%,rgba(135,136,145,0.86) 37%,rgba(112,114,121,0.81) 50%,rgba(199,202,209,0.62) 99%,rgba(199,202,209,0.62) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(-45deg,  rgba(151,153,160,1) 0%,rgba(183,184,191,0.94) 16%,rgba(135,136,145,0.86) 37%,rgba(112,114,121,0.81) 50%,rgba(199,202,209,0.62) 99%,rgba(199,202,209,0.62) 100%); /* IE10+ */
-	background: linear-gradient(135deg,  rgba(151,153,160,1) 0%,rgba(183,184,191,0.94) 16%,rgba(135,136,145,0.86) 37%,rgba(112,114,121,0.81) 50%,rgba(199,202,209,0.62) 99%,rgba(199,202,209,0.62) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9799a0', endColorstr='#9ec7cad1',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-}
-
-#btn-showDesk:HOVER {
-	background: -moz-linear-gradient(-45deg,  rgba(199,202,209,0.62) 0%, rgba(199,202,209,0.62) 1%, rgba(149,150,160,0.81) 50%, rgba(151,151,160,0.86) 64%, rgba(208,208,216,0.93) 83%, rgba(151,153,160,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(199,202,209,0.62)), color-stop(1%,rgba(199,202,209,0.62)), color-stop(50%,rgba(149,150,160,0.81)), color-stop(64%,rgba(151,151,160,0.86)), color-stop(83%,rgba(208,208,216,0.93)), color-stop(100%,rgba(151,153,160,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(-45deg,  rgba(199,202,209,0.62) 0%,rgba(199,202,209,0.62) 1%,rgba(149,150,160,0.81) 50%,rgba(151,151,160,0.86) 64%,rgba(208,208,216,0.93) 83%,rgba(151,153,160,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(-45deg,  rgba(199,202,209,0.62) 0%,rgba(199,202,209,0.62) 1%,rgba(149,150,160,0.81) 50%,rgba(151,151,160,0.86) 64%,rgba(208,208,216,0.93) 83%,rgba(151,153,160,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(-45deg,  rgba(199,202,209,0.62) 0%,rgba(199,202,209,0.62) 1%,rgba(149,150,160,0.81) 50%,rgba(151,151,160,0.86) 64%,rgba(208,208,216,0.93) 83%,rgba(151,153,160,1) 100%); /* IE10+ */
-	background: linear-gradient(135deg,  rgba(199,202,209,0.62) 0%,rgba(199,202,209,0.62) 1%,rgba(149,150,160,0.81) 50%,rgba(151,151,160,0.86) 64%,rgba(208,208,216,0.93) 83%,rgba(151,153,160,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9ec7cad1', endColorstr='#9799a0',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-}
-
-#btn-showDesk:ACTIVE {
-	opacity: .5;
-    -moz-opacity: .5;
-    filter:alpha(opacity=50);
+	top: 16px !important;
+	left: 39px !important;
+	padding: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px !important;
+	position: absolute !important;
 }
 
 .ux-toolmenu-sep {

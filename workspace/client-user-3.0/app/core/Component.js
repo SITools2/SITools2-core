@@ -40,16 +40,21 @@ Ext.define('sitools.user.core.Component', {
      * Show the following view with the following windowSettings
      */
     show : function (view, windowSettings) {
+    	
+    	if (Ext.isEmpty(windowSettings.name)) {
+    		windowSettings.name = "name_" + Ext.id()
+    	}
+    	view.componentClazz = this.$className;
+    	
         var navMode = this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(this.getProject().get("navigationMode"));
         navMode.openComponent(view, windowSettings);
     },
     
     /**
-     * Initialize the module
+     * Initialize the component
      * 
      * @param application
      *            the application
-     * @moduleModel moduleModel
      */
     create : function (application) {
         this.setApplication(application);

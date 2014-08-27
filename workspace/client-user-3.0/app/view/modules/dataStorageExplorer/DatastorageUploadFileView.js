@@ -33,7 +33,8 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageUploadFileV
     border : false,
     closeAction : 'hide',
     plain : true,
-
+    style : 'box-shadow: rgb(43, 43, 43) 0px 0px 6px;',
+    
     initComponent : function () {
 
     	this.items = [{
@@ -115,7 +116,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageUploadFileV
 
                 },
                 failure : function (response) {
-                    Ext.Msg.alert(i18n.get('label.error'));
+                    Ext.Msg.alert(i18n.get('label.error'), response.responseText);
                 }
             });
         }

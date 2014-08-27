@@ -26,10 +26,10 @@ Ext.namespace('sitools.user.controller.header');
  * @class sitools.user.component.entete.Entete
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.controller.header.UserPersonalController', {
+Ext.define('sitools.user.controller.component.personal.UserPersonalController', {
     extend : 'Ext.app.Controller',
     
-    views : ['header.UserPersonalView'],
+    views : ['component.personal.UserPersonalView'],
     
     init : function () {
         

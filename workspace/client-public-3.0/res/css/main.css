@@ -345,7 +345,8 @@ body,a,p,span,div,td,input,select,label,th,button,dt,em {
 
 .sitools_footer_right{
 	text-align: center;
-	font-size: 0.9em;	
+	font-size: 0.9em;
+	padding-top: 10px;
 }
 
 .sitools_footer_right a:focus, 

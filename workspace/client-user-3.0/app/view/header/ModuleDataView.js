@@ -33,6 +33,7 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
     header : false,
     resizable : false,
     autoScroll : true,
+    shadow : false,
     cls : 'modulesDataview modulesDataview-bg',
     bodyCls : 'modulesDataview-bg',
     modal : true,
@@ -42,7 +43,7 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
     	this.renderTo = Desktop.getDesktopEl();
     	
     	this.width = (Desktop.getDesktopEl().getWidth() * 2) / 2.5,
-    	this.height = (Desktop.getDesktopEl().getHeight() * 2) / 3,
+    	this.height = (Desktop.getDesktopEl().getHeight() * 2) / 4,
         
     	this.store = Ext.data.StoreManager.lookup("ModulesStore");
 
@@ -52,32 +53,61 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
             tpl: new Ext.XTemplate (
                 '<tpl for=".">',
                         '<div class="moduleDv">',
-                        	'<div class="moduleDvImg {icon}" height=72>',
-//                        		'<img src="/sitools/common/res/images/sitools-logo-big.png" height=72 />',
-//                        		'<div class="{icon}" height=72> </div>',
-                        	'</div>',
+                        '<tpl if="!this.isEmpty(icon)">',
+                        	'<div class="moduleDvImg {icon}" height=72></div>',
+                    	'<tpl else>',
+                    		'<div class="moduleDvImg">',
+                    			'<img src="/sitools/common/res/images/sitools-logo-big.png" height=72 />',
+                			'</div>',
+                		'</tpl>',
 	                        '<div class="moduleDvText">',
 	                        	'{name}',
 	                    	'</div>',
                         '</div>',
-                '</tpl>'
-                )
+                '</tpl>',{
+                	isEmpty : function (text) {
+                		return Ext.isEmpty(text)
+                	}
+            }),
+            listeners : {
+            	render : function (view) {
+            		view.tip = Ext.create('Ext.tip.ToolTip', {
+            	        target: view.el,
+            	        delegate: view.itemSelector,
+            	        anchor : 'bottom',
+            	        anchorOffset : 50,
+            	        showDelay : 20,
+						hideDelay : 50,
+						dismissDelay : 0,
+            	        renderTo: Ext.getBody(),
+            	        listeners:{
+            	            beforeshow: function updateTipBody(tip){
+            	                tip.update(
+            	                    view.getRecord(tip.triggerElement).get('description')
+            	                );
+            	            }
+            	        }
+            	    });
+            	}
+            }
+            
         });
         
         
         var versionButton = Ext.create('Ext.Button', {
         	name : 'versionBtn',
-            iconCls : 'version-icon-dv', 
+            iconCls : 'version-icon-dv',
+            cls : 'toolbarBtnModules',
             scale : 'large',
             listeners : {
 				afterrender : function (btn) {
 					var tooltipCfg = {
-							html : i18n.get('label.version'),
-							target : btn.getEl(),
-							anchor : 'bottom',
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
+						html : i18n.get('label.version'),
+						target : btn.getEl(),
+						anchor : 'bottom',
+						showDelay : 20,
+						hideDelay : 50,
+						dismissDelay : 0
 					};
 					Ext.create('Ext.tip.ToolTip', tooltipCfg);
 				}
@@ -86,7 +116,8 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
         
         var helpButton = Ext.create('Ext.Button', {
         	name : 'helpBtn',
-            iconCls : 'help-icon-dv', 
+            iconCls : 'help-icon-dv',
+            cls : 'toolbarBtnModules',
 //            handler : SitoolsDesk.showHelp,
             scope : this, 
             handler : function () {
@@ -96,12 +127,12 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
             listeners : {
 				afterrender : function (btn) {
 					var tooltipCfg = {
-							html : i18n.get('label.help'),
-							target : btn.getEl(),
-							anchor : 'bottom',
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
+						html : i18n.get('label.help'),
+						target : btn.getEl(),
+						anchor : 'bottom',
+						showDelay : 20,
+						hideDelay : 50,
+						dismissDelay : 0
 					};
 					Ext.create('Ext.tip.ToolTip', tooltipCfg);
 				}
