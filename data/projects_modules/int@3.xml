@@ -5,21 +5,15 @@
   <label>label.projectServices</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <imagePath></imagePath>
   <title>Project Services</title>
   <defaultWidth>450</defaultWidth>
   <defaultHeight>350</defaultHeight>
   <x>0</x>
   <y>0</y>
   <icon>projectServicesModule</icon>
-  <specificType></specificType>
-  <xtype>sitools.user.modules.projectServices</xtype>
+  <xtype>sitools.user.modules.ProjectService</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/resourcesPlugins/projectServices.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>7</priority>

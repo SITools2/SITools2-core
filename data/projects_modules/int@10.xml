@@ -5,36 +5,15 @@
   <label>label.contentEditor</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <imagePath></imagePath>
   <title>Content Editor</title>
   <defaultWidth>1000</defaultWidth>
   <defaultHeight>600</defaultHeight>
   <x>0</x>
   <y>0</y>
   <icon>contentEditorModule</icon>
-  <specificType></specificType>
-  <xtype>sitools.user.modules.contentEditorModule</xtype>
+  <xtype>sitools.user.modules.ContentEditor</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/cmsTreeToolbar.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/cmsContextMenu.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/contentEditorModule.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/chooseFileInExplorer.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/datastorageBrowser.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/datastorageUploadFile.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>6</priority>

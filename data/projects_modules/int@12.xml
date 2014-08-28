@@ -11,16 +11,9 @@
   <x>20</x>
   <y>20</y>
   <icon>addToCartModule</icon>
-  <xtype>sitools.user.modules.addToCartModule</xtype>
+  <xtype>sitools.user.modules.AddToCartModule</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/addToCartModule/cartSelectionDetails.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/addToCartModule/addToCartModule.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>0</priority>
