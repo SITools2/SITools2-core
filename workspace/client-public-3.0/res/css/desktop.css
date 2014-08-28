@@ -358,7 +358,7 @@ html, body {
 	background-repeat: no-repeat;
 }
 .contentEditorModule {
-    background-image:url( /sitools/common/res/images/icons/32x32/content-editor_32.png ) !important;
+    background-image:url( /sitools/common/res/images/desktop/72x72/content_editor.png ) !important;
     background-size: 18px 18px;
 	background-position: left !important;
 	background-repeat: no-repeat;

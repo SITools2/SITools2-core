@@ -169,7 +169,7 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
      */
     showTasks : function (grid, record, index) {
         
-    	var taskView = Ext.create('sitools.user.view.header.userProfile.TaskView');
+    	var taskView = Ext.create('sitools.user.view.component.personal.TaskView');
     	
     	var contentPanel = grid.up('userPersonal').contentPanel;
     	contentPanel.removeAll();
@@ -185,7 +185,7 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
      */
     showDisk : function (grid, record, index) {
 
-    	var diskSpaceView = Ext.create('sitools.user.view.header.userProfile.DiskSpaceView');
+    	var diskSpaceView = Ext.create('sitools.user.view.component.personal.DiskSpaceView');
     	var contentPanel = grid.up('userPersonal').contentPanel;
     	
     	contentPanel.removeAll();
@@ -202,7 +202,7 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
      */
     showOrders : function (grid, record, index) {
 
-    	var orderView = Ext.create('sitools.user.view.header.userProfile.OrderView');
+    	var orderView = Ext.create('sitools.user.view.component.personal.OrderView');
     	
     	var contentPanel = grid.up('userPersonal').contentPanel;
     	contentPanel.removeAll();

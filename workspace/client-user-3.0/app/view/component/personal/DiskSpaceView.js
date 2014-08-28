@@ -18,16 +18,16 @@
 ***************************************/
 /*global Ext, sitools, i18n, userLogin, document, alertFailure, SitoolsDesk, userLogin, DEFAULT_ORDER_FOLDER, loadUrl, viewFileContent, Reference*/
 
-Ext.namespace('sitools.user.view.header.userProfile');
+Ext.namespace('sitools.user.view.component.personal');
 
 /**
  * @class sitools.user.component.entete.userProfile.diskSpace
  * @extends Ext.tree.TreePanel
  */
-Ext.define('sitools.user.view.header.userProfile.DiskSpaceView', {
+Ext.define('sitools.user.view.component.personal.DiskSpaceView', {
 	extend : 'Ext.panel.Panel',
 	alias : 'widget.diskSpace',
-    requires : ["sitools.user.model.DataStorageExplorerTreeModel"],
+    requires : ['sitools.user.model.DataStorageExplorerTreeModel'],
 
 	autoScroll : true,
 	border : false,

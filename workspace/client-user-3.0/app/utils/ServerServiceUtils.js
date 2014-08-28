@@ -371,14 +371,25 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                     var componentCfg = {
                         task : task
                     };
-                    var jsObj = sitools.user.component.dataviews.goToTaskPanel;
-        
+                    
+//                    var jsObj = sitools.user.component.dataviews.goToTaskPanel;
+//        
                     var windowConfig = {
                         title : i18n.get('label.info'),
                         saveToolbar : false,
-                        iconCls : "datasetRessource"
+                        iconCls : "datasetRessource",
+                        modal : true,
+                        width : 500,
+                        height : 450
                     };
-                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
+                    
+                    var navMode = Desktop.getApplication().getController('core.NavigationModeFactory').getNavigationMode(Project.navigationMode);
+                    
+                    var goToTaskView = Ext.create('sitools.user.view.component.personal.GoToTaskView', componentCfg);
+                    
+                    navMode.openComponent(goToTaskView, windowConfig);
+                    
+//                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj, true);
                 }
             },
             failure : function (response, opts) {
@@ -391,10 +402,6 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                     });
             },
             callback : function () {
-                
-                if (Ext.getBody().isMasked()) {
-                    Ext.getBody().unmask();
-                }
                 callback.call();
             }
 

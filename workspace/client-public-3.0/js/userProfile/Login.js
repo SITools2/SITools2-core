@@ -83,8 +83,9 @@ Ext.define('sitools.public.userProfile.Login', {
                 allowBlank : false,
                 anchor : '80%',
                 listeners : {
-                    afterrender : function (login) {
-                        login.focus(false, 300);
+                    scope : this,
+                    afterrender : function (textfield) {
+                        Ext.defer(textfield.focus, 500, textfield);
                     }
                 }
             }, {

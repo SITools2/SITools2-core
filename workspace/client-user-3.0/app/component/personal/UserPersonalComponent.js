@@ -38,7 +38,7 @@ Ext.define('sitools.user.component.personal.UserPersonalComponent', {
             title : i18n.get('label.personal'),
             name : 'userPersonalComponent', /* REQUIRE */
             iconCls : 'userPersonalIcon',
-            width : 700,
+            width : 800,
             height : 450
         };
     	Ext.applyIf(windowBaseConfig, windowConfig);

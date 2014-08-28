@@ -23,11 +23,11 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
     extend : 'sitools.user.controller.core.NavigationMode',
     
     openComponent : function (view, windowConfig) {
-    	Ext.apply(windowConfig, {
-    		x : (windowConfig.position) || undefined,
-    		y : (windowConfig.position)  || undefined,
-    		width : (windowConfig.size)  || undefined,
-    		height : (windowConfig.size)  || undefined,
+    	Ext.applyIf(windowConfig, {
+    		x : (!Ext.isEmpty(windowConfig.position)) ? windowConfig.position.x : undefined,
+    		y : (!Ext.isEmpty(windowConfig.position)) ? windowConfig.position.y : undefined,
+    		width : (!Ext.isEmpty(windowConfig.size)) ? windowConfig.size.width : undefined,
+    		height : (!Ext.isEmpty(windowConfig.size)) ? windowConfig.size.height : undefined,
     		specificType : 'componentWindow'
     	});
     	

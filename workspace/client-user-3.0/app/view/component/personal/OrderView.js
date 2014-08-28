@@ -18,10 +18,12 @@
 ***************************************/
 /*global Ext, sitools, i18n, alert, showResponse, alertFailure, SitoolsDesk, loadUrl*/
 
-Ext.namespace('sitools.user.view.header.userProfile');
+Ext.namespace('sitools.user.view.component.personal');
 
-Ext.define('sitools.user.view.header.userProfile.OrderView', {
+Ext.define('sitools.user.view.component.personal.OrderView', {
 	extend : 'Ext.grid.Panel',
+	
+	requires : ['sitools.user.model.OrderModel'],
 	
     border : false,
     selModel : Ext.create('Ext.selection.RowModel'),

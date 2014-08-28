@@ -60,7 +60,7 @@ Ext.define('sitools.user.controller.modules.projectService.ProjectServiceControl
         }, this);
         
         view.up('projectService').serviceServerUtil.projectServiceController = this;
-        view.up('projectService').serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters);
+        view.up('projectService').serviceServerUtil.resourceClick(resource, url, method, runTypeUserInput, parameters, null, Ext.emptyFn);
 	}
     
 });

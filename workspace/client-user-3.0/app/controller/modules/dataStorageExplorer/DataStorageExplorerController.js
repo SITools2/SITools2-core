@@ -304,16 +304,5 @@ Ext.define('sitools.user.controller.modules.dataStorageExplorer.DataStorageExplo
 			});
 			menu.showAt(e.getX(), e.getY(), true);
 		}
-        
-//        var uploadWin = Ext.create('sitools.user.view.modules.dataStorageExplorer.DataStorageUploadFileView', {
-//            urlUpload : urlUpload,
-//            scope : this,
-//            callback : function () {
-//                this.reloadNode(node);
-//            }
-//        });
-//        
-//        uploadWin.show();
-
     }
 });
