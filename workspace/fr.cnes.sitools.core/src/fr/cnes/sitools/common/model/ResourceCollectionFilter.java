@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -75,12 +75,12 @@ public final class ResourceCollectionFilter {
    * totalCount OUT
    */
   private Integer totalCount = null;
-  
+
   /**
    * searching mode (strict, startwith (default))
    */
   private String mode = "startwith";
-  
+
   /**
    * Constructor with Request.
    * 
@@ -106,7 +106,7 @@ public final class ResourceCollectionFilter {
 
     String porder = form.getFirstValue("dir");
     this.order = (porder != null) ? Reference.decode(porder, CharacterSet.UTF_8) : null;
-    
+
     String pmode = form.getFirstValue("mode");
     this.setMode((pmode != null) ? Reference.decode(pmode, CharacterSet.UTF_8) : null);
 
@@ -127,9 +127,10 @@ public final class ResourceCollectionFilter {
     this.start = startIndex;
     this.query = queryStr;
   }
-  
+
   /**
    * Gets the filterMode value
+   * 
    * @return the filterMode
    */
   public int getFilterMode() {
@@ -138,7 +139,9 @@ public final class ResourceCollectionFilter {
 
   /**
    * Sets the value of filterMode
-   * @param filterMode the filterMode to set
+   * 
+   * @param filterMode
+   *          the filterMode to set
    */
   public void setFilterMode(int filterMode) {
     this.filterMode = filterMode;
@@ -156,11 +159,14 @@ public final class ResourceCollectionFilter {
   public String toSQL(String req, String fieldName) {
 
     if ((query != null) && !query.equals("")) {
-
+      String queryLowerCase = query.toLowerCase();
       req += req.contains(" WHERE ") ? " AND " : " WHERE ";
-      req += fieldName + " LIKE '" + query + "%'";
+      req += "lower(" + fieldName + ")" + " LIKE '" + queryLowerCase + "%'";
     }
 
+    if (order != null && sort != null) {
+      req += " ORDER BY " + sort + " " + order;
+    }
     if (limit > 0) {
       req += " LIMIT " + limit;
     }
@@ -173,8 +179,11 @@ public final class ResourceCollectionFilter {
 
   /**
    * To SQL count
-   * @param req request
-   * @param fieldName field name
+   * 
+   * @param req
+   *          request
+   * @param fieldName
+   *          field name
    * @return request
    */
   public String toSqlCount(String req, String fieldName) {
@@ -325,7 +334,9 @@ public final class ResourceCollectionFilter {
 
   /**
    * Sets the value of request
-   * @param request the request to set
+   * 
+   * @param request
+   *          the request to set
    */
   public void setRequest(Request request) {
     this.request = request;
@@ -333,6 +344,7 @@ public final class ResourceCollectionFilter {
 
   /**
    * Gets the request value
+   * 
    * @return the request
    */
   public Request getRequest() {
@@ -341,7 +353,9 @@ public final class ResourceCollectionFilter {
 
   /**
    * Sets the value of mode
-   * @param mode the mode to set
+   * 
+   * @param mode
+   *          the mode to set
    */
   public void setMode(String mode) {
     this.mode = mode;
@@ -349,6 +363,7 @@ public final class ResourceCollectionFilter {
 
   /**
    * Gets the mode value
+   * 
    * @return the mode
    */
   public String getMode() {

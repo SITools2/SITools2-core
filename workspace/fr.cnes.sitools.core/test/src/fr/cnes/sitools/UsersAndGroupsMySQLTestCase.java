@@ -20,9 +20,7 @@ package fr.cnes.sitools;
 
 import org.junit.After;
 import org.junit.Before;
-import org.restlet.Component;
 import org.restlet.Context;
-import org.restlet.data.Protocol;
 
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
