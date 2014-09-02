@@ -148,7 +148,7 @@ Ext.define('sitools.user.view.component.personal.DiskSpaceView', {
             items : [ '->']
         });
         
-        this.treeStore = Ext.create('sitools.user.store.DatastorageTreeStore');
+        this.treeStore = Ext.create('sitools.user.store.DataStorageTreeStore');
         
         this.tree = Ext.create('Ext.tree.Panel', {
             width : 200,

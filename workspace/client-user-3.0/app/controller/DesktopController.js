@@ -25,25 +25,31 @@ Ext.define('sitools.user.controller.DesktopController', {
     views : [ 'desktop.DesktopView' ],
 
     init : function () {
+    	
+        this.getApplication().on('projectInitialized', this.realInit, this);
+    	this.callParent(arguments);
+    },
+    
+    realInit : function () {
     	this.id = 'DesktopControllerId';
     	
-        var me = this, desktopCfg;
-
-        desktopCfg = me.getDesktopConfig();
-
-        Ext.apply(desktopCfg, {
-            renderTo : 'x-desktop'
-        }, {
-        	desktopController : me
-        });
-
-        me.desktopView = Ext.create('sitools.user.view.desktop.DesktopView', desktopCfg);
-
-        Ext.EventManager.on(window, 'beforeunload', me.onUnload, me);
-        Ext.EventManager.onWindowResize(this.fireResize, this);
-
-        me.isReady = true;
-        me.fireEvent('ready', me);
+    	var me = this, desktopCfg;
+    	
+    	desktopCfg = me.getDesktopConfig();
+    	
+    	Ext.apply(desktopCfg, {
+    		renderTo : 'x-desktop'
+    	}, {
+    		desktopController : me
+    	});
+    	
+    	me.desktopView = Ext.create('sitools.user.view.desktop.DesktopView', desktopCfg);
+    	
+    	Ext.EventManager.on(window, 'beforeunload', me.onUnload, me);
+    	Ext.EventManager.onWindowResize(this.fireResize, this);
+    	
+    	me.isReady = true;
+    	me.fireEvent('ready', me);
     },
 
     createWindow : function (view, windowConfig) {
@@ -61,6 +67,8 @@ Ext.define('sitools.user.controller.DesktopController', {
                 bodyBorder : false,
                 hideMode : 'offsets',
                 layout : 'fit',
+//                renderTo : Desktop.getDesktopEl(),
+//                constrainTo : Desktop.getDesktopEl(),
                 items : [ view ]
             });
             
@@ -73,6 +81,40 @@ Ext.define('sitools.user.controller.DesktopController', {
         }, this);
         
         win.show();
+    },
+    
+    createPanel : function (view, windowConfig) {
+        var desktopView = this.getDesktopView();
+        var panel = desktopView.getWindow(windowConfig.id) || desktopView.getWindow(windowConfig.name);
+        
+        if (!panel) {
+            Ext.applyIf(windowConfig, {
+                id : windowConfig.name,
+                title : i18n.get(windowConfig.label),
+                maximized : true,
+                header : {
+                	border : false,
+                	height : 0,
+                },
+                hideMode : 'offsets',
+                layout : 'fit',
+//                renderTo : Desktop.getDesktopEl(),
+//                constrainTo : Desktop.getDesktopEl(),
+                items : [ view ],
+                height : Desktop.getDesktopEl().getHeight()/* - desktopView.taskbar.getHeight()*/,
+                width : Desktop.getDesktopEl().getWidth()
+            });
+            
+            panel = desktopView.createPanel(windowConfig);
+        }
+        
+        Desktop.setActivePanel(panel);
+        
+        panel.on('beforeclose', function (winToClose) {
+        	Desktop.setActivePanel(null);
+        }, this);
+        
+        panel.show();
     },
 
     /**
@@ -139,17 +181,6 @@ Ext.define('sitools.user.controller.DesktopController', {
 
         Ext.apply(cfg, me.taskbarConfig);
         return cfg;
-    },
-
-    onLogout : function () {
-        Ext.Msg.confirm('Logout', 'Are you sure you want to logout?');
-    },
-
-    onSettings : function () {
-        var dlg = Ext.create('Ext.ux.modules.Settings', {
-            desktop : this.desktopView
-        });
-        dlg.show();
     },
     
     /**

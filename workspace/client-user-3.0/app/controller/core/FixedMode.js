@@ -20,19 +20,31 @@ Ext.define('sitools.user.controller.core.FixedMode', {
 
     extend : 'sitools.user.controller.core.NavigationMode',
     
-    openComponent : function (view, panelConfig) {
-        this.getApplication().getController('DesktopController').createPanel(view, panelConfig);
+    openComponent : function (view, windowConfig) {
+    	Ext.applyIf(windowConfig, {
+    		x : (!Ext.isEmpty(windowConfig.position)) ? windowConfig.position.x : undefined,
+    		y : (!Ext.isEmpty(windowConfig.position)) ? windowConfig.position.y : undefined,
+    		width : (!Ext.isEmpty(windowConfig.size)) ? windowConfig.size.width : undefined,
+    		height : (!Ext.isEmpty(windowConfig.size)) ? windowConfig.size.height : undefined,
+    		specificType : 'componentWindow'
+    	});
+    	
+    	Ext.apply(windowConfig, this.getStatefullComponentConfig());
+        this.getApplication().getController('DesktopController').createPanel(view, windowConfig);
     },
     
     openModule : function (view, module) {
-        var panelConfig = {
+        var windowConfig = {
     		id: module.get('id'),
             name : module.get('name'),
             title : i18n.get(module.get('title')),
             iconCls : module.get('icon'),
-            label : module.get('label')
+            label : module.get('label'),
+            specificType : 'moduleWindow'
         };
-        this.getApplication().getController('DesktopController').createPanel(view, panelConfig);
+        
+        Ext.apply(windowConfig, this.getStatefullWindowConfig());
+        this.getApplication().getController('DesktopController').createPanel(view, windowConfig);
     },
     
     getFormOpenMode : function () {
@@ -41,6 +53,9 @@ Ext.define('sitools.user.controller.core.FixedMode', {
     
     getDesktopSettings : function (forPublicUser) {
         var desktopSettings = [];
+        
+//        var activePanel = this.getApplication().getController('DesktopController').desktopView.getActiveWindow();
+        
     	Ext.WindowManager.each(function (window) {
             var componentSettings;
             if (!Ext.isEmpty(window.specificType) && (window.specificType === 'componentWindow' || window.specificType === 'moduleWindow')) {
@@ -56,5 +71,110 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             }
         });
         return desktopSettings;
-    }
+    },
+    
+    getStatefullWindowConfig : function () {
+		return {
+			saveSettings : function (componentSettings, forPublicUser) {
+			    if (Ext.isEmpty(userLogin)) {
+				    Ext.Msg.alert(i18n.get('label.warning', 'label.needLogin'));
+				    return;
+			    }
+			    
+			    // TODO find a better way to set the right Y position
+			    var position = {
+		    		x : this.getX(),
+		    		y : this.getY()
+			    };
+			    
+			    var size = {
+		    		height : this.getHeight(),
+		    		width : this.getWidth()
+			    };
+
+			    var putObject = {};
+
+			    // putObject['datasetId'] = datasetId;
+			    // putObject['componentType'] = componentType;
+			    putObject.componentSettings = componentSettings;
+
+			    putObject.windowSettings = {};
+			    putObject.windowSettings.size = size;
+			    putObject.windowSettings.position = position;
+			    putObject.windowSettings.specificType = this.specificType;
+			    putObject.windowSettings.moduleId = this.getId();
+			    putObject.windowSettings.typeWindow = this.typeWindow;
+			    putObject.windowSettings.maximized = this.maximized;
+			    
+			    var baseFilePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName();
+			    
+			    var filePath = componentSettings.preferencesPath;
+			    var fileName = componentSettings.preferencesFileName;
+			    if (Ext.isEmpty(filePath) || Ext.isEmpty(fileName)) {
+			    	return;
+			    }
+			    
+			    filePath = baseFilePath + filePath;
+			    
+			    if (forPublicUser) {
+			    	PublicStorage.set(fileName, filePath, putObject);
+			    }
+			    else {
+			    	UserStorage.set(fileName, filePath, putObject);
+			    }
+			    return putObject;
+		    }
+		};
+	},
+	
+	getStatefullComponentConfig : function () {
+		return {
+			saveSettings : function (componentSettings, forPublicUser) {
+			    if (Ext.isEmpty(userLogin)) {
+				    Ext.Msg.alert(i18n.get('label.warning', 'label.needLogin'));
+				    return;
+			    }
+			    
+			    // TODO find a better way to set the right Y position
+			    var position = {
+		    		x : this.getX(),
+		    		y : this.getY()
+			    };
+			    
+			    var size = {
+		    		height : this.getHeight(),
+		    		width : this.getWidth()
+			    };
+
+			    var putObject = {};
+			    putObject.componentSettings = componentSettings;
+
+			    putObject.windowSettings = {};
+			    putObject.windowSettings.size = size;
+			    putObject.windowSettings.position = position;
+			    putObject.windowSettings.specificType = this.specificType;
+			    putObject.windowSettings.componentId = this.getId();
+			    putObject.windowSettings.typeWindow = this.typeWindow;
+			    putObject.windowSettings.maximized = this.maximized;
+			    
+			    var baseFilePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName();
+			    
+			    var filePath = componentSettings.preferencesPath;
+			    var fileName = componentSettings.preferencesFileName;
+			    if (Ext.isEmpty(filePath) || Ext.isEmpty(fileName)) {
+			    	return;
+			    }
+			    
+			    filePath = baseFilePath + filePath;
+			    
+			    if (forPublicUser) {
+			    	PublicStorage.set(fileName, filePath, putObject);
+			    }
+			    else {
+			    	UserStorage.set(fileName, filePath, putObject);
+			    }
+			    return putObject;
+		    }
+		};
+	}
 });

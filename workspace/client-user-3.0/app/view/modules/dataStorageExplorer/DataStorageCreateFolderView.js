@@ -92,7 +92,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageCreateFolde
 
                 },
                 failure : function (response) {
-                    Ext.Msg.alert(i18n.get('label.error'));
+                    Ext.Msg.alert(i18n.get('label.error'), response.responseText);
                 }
             });
         }

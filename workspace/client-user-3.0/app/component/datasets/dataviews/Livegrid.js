@@ -17,7 +17,7 @@
  ******************************************************************************/
 /*global Ext, sitools, i18n, document, projectGlobal, SitoolsDesk, userLogin, DEFAULT_PREFERENCES_FOLDER, loadUrl, sql2ext, sitoolsUtils*/
 
-Ext.namespace('sitools.user.controller.modules.datasets.dataviews');
+Ext.namespace('sitools.user.component.datasets.dataviews');
 
 /**
  * Datasets Module : Displays All Datasets depending on datasets attached to the
@@ -160,7 +160,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                         schema : item.schema,
                         tableName : item.tableName,
                         tableAlias : item.tableAlias,
-                        id : item.id,
+//                        id : item.id,
                         primaryKey : item.primaryKey,
                         previewColumn : item.previewColumn,
                         filter : item.filter,

@@ -90,7 +90,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
         });
 
         
-        this.treeStore = Ext.create('sitools.user.store.DatastorageTreeStore');
+        this.treeStore = Ext.create('sitools.user.store.DataStorageTreeStore');
         
         this.tree = Ext.create('Ext.tree.Panel', {
             region : 'west',

@@ -26,13 +26,13 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         var me = this, desktopCfg;
 
         this.control({
-            'moduleTaskBar button[cls=x-navBar-items]' : {
-                click : this.onOpenModule
-            },
-            
-            'moduleTaskBar menuitem' : {
-                click : this.onOpenModule
-            },
+//            'moduleTaskBar button[cls=x-navBar-items]' : {
+//                click : this.onOpenModule
+//            },
+//            
+//            'moduleTaskBar menuitem' : {
+//                click : this.onOpenModule
+//            },
             
             'moduleTaskBar #sitoolsButton' : {
 				click : function (btn) {

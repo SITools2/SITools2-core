@@ -34,7 +34,7 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
         var homeButton = Ext.create('Ext.Button', {
         	itemId : 'sitoolsButton',
             scale : "medium",
-            cls : 'sitools_button',
+            cls : 'sitools_button_main',
             iconCls : 'sitools_button_img',
             listeners : {
 				afterrender : function (btn) {
@@ -43,7 +43,7 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
 							html : label,
 							target : btn.getEl(),
 							anchor : 'bottom',
-							anchorOffset : -5,
+							anchorOffset : 10,
 							showDelay : 20,
 							hideDelay : 50,
 							dismissDelay : 0
@@ -53,49 +53,104 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
 			}
         });
         items.push(homeButton);
+        items.push('-');
         
-        var cleanDesktopButton = Ext.create('Ext.Button', {
+        if (Project.getNavigationMode() == 'fixed') { // adding navigation button
+        	this.width = 180;
+        	
+        	var previousButton = Ext.create('Ext.button.Button', {
+                scope : this, 
+                handler : function () {
+                	Desktop.activePreviousPanel();
+                }, 
+                scale : "medium", 
+                cls : 'sitools_button_main',
+                iconCls : 'previous_button_img',
+                listeners : {
+    				afterrender : function (btn) {
+    					var label = i18n.get('label.previous');
+    					var tooltipCfg = {
+    							html : label,
+    							target : btn.getEl(),
+    							anchor : 'bottom',
+    							anchorOffset : 5,
+    							showDelay : 20,
+    							hideDelay : 50,
+    							dismissDelay : 0
+    					};
+    					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+    				}
+    			}
+            });
+            items.push(previousButton);
+
+        	
+            var nextButton = Ext.create('Ext.button.Button', {
+                scope : this, 
+                handler : function () {
+                	Desktop.activeNextPanel();
+                }, 
+                scale : "medium",
+                cls : 'sitools_button_main',
+                iconCls : 'next_button_img',
+                listeners : {
+    				afterrender : function (btn) {
+    					var label = i18n.get('label.next');
+    					var tooltipCfg = {
+    							html : label,
+    							target : btn.getEl(),
+    							anchor : 'bottom',
+    							anchorOffset : 5,
+    							showDelay : 20,
+    							hideDelay : 50,
+    							dismissDelay : 0
+    					};
+    					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+    				}
+    			}
+            });
+            items.push(nextButton);
+        }
+        
+        var cleanDesktopButton = Ext.create('Ext.menu.Item', {
             action : "minimize",
-            id : 'btn-cleanDesktop',
+            text : i18n.get('label.removeActiveModule'),
             iconCls : 'delete_button_img',
-            cls : 'sitools_button',
+            cls : 'menuItemCls',
             handler : function (btn) {
             	Desktop.clearDesktop();
-            },
-            listeners : {
-				afterrender : function (btn) {
-					var label = i18n.get('label.removeActiveModule');
-					var tooltipCfg = {
-							html : label,
-							target : btn.getEl(),
-							anchor : 'bottom',
-							anchorOffset : -10,
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
-					};
-					Ext.create('Ext.tip.ToolTip', tooltipCfg);
-				}
-			}
+            }
         });
-        items.push(cleanDesktopButton);
         
-        var showDesktopButton = Ext.create('Ext.Button', {
+        var showDesktopButton = Ext.create('Ext.menu.Item', {
             action : "minimize",
-            id : 'btn-showDesk',
+            text : i18n.get("label.showDesktopButton"),
             iconCls : 'desktop_button_img',
-            cls : 'sitools_button',
+            cls : 'menuItemCls',
             handler : function (btn) {
             	Desktop.showDesktop();
+            }
+        });
+        
+        var moreButton = Ext.create('Ext.Button', {
+            id : 'btn-more',
+            iconCls : 'more_button_img',
+            cls : (Project.getNavigationMode() == 'fixed') ? 'sitools_button more_button_fixedMode' : 'sitools_button',
+            arrowCls : null,
+            menu : {
+            	xtype : 'menu',
+            	border : false,
+            	plain : true,
+            	items : [cleanDesktopButton, showDesktopButton]
             },
             listeners : {
 				afterrender : function (btn) {
-					var label = i18n.get("label.showDesktopButton");
+					var label = i18n.get('label.moreAction');
 					var tooltipCfg = {
 							html : label,
 							target : btn.getEl(),
 							anchor : 'bottom',
-							anchorOffset : -10,
+							anchorOffset : 5,
 							showDelay : 20,
 							hideDelay : 50,
 							dismissDelay : 0
@@ -104,140 +159,13 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
 				}
 			}
         });
-        items.push(showDesktopButton);
+        items.push(moreButton);
         
-        
-//        items.push('|');
-
-//        Ext.each(categories, function (category) {
-//            var modules = category.modules;
-//
-//            // Le module n'appartient pas à une catégorie: inclusion en tant que
-//            // bouton dans le menu.
-//            if (Ext.isEmpty(category.category)) {
-////                var module = modules[0].getData();
-//                var module = modules[0];
-////                var xtype = module.xtype;
-//                if (Ext.isEmpty(module.data.divIdToDisplay)) {
-//                    var item = {
-//                        text : i18n.get(module.data.label),
-//                        iconCls : module.data.icon,
-//                        scope : module,
-//                        module : module,
-//                        tooltip : {
-//                            text : i18n.get(module.data.description),
-//                            anchor : 'bottom',
-//                            trackMouse : false
-//                        },
-//                        cls : "x-navBar-items",
-//                        clickEvent : 'mousedown',
-//                        template : new Ext.Template('<table cellspacing="0" class="x-btn {3}"><tbody><tr>',
-//                                '<td class="ux-taskbutton-left"><i>&#160;</i></td>', '<td class="ux-taskbutton-center"><em class="{5} unselectable="on">',
-//                                '<button class="x-btn-text {2}" type="{1}" style="height:28px;">{0}</button>', '</em></td>',
-//                                '<td class="ux-taskbutton-right"><i>&#160;</i></td>', "</tr></tbody></table>")
-//
-//                    };
-//                    var xtype = module.data.xtype;
-////                        var func = xtype + ".openModule";
-////                      if (Ext.isFunction(eval(func))) {
-////                      handler = eval(func);
-////                  } else {
-////                      handler = moduleInCategory.openModule
-////                  }
-//                    items.push(Ext.create("Ext.button.Button", item));
-//                }
-//            }
-//            // Le module est dans une catégorie : On crée un menu contenant tous
-//            // les modules de la catégorie
-//            else {
-//                var menuItems = [];
-//                Ext.each(category.modules, function (moduleInCategory) {
-//                    moduleInCategory = moduleInCategory.getData();
-//                        if (Ext.isEmpty(moduleInCategory)) {
-//                            return;
-//                        }
-//
-//                        if (Ext.isEmpty(moduleInCategory.divIdToDisplay)) {
-//                            var item = {
-//                                text : i18n.get(moduleInCategory.label),
-//
-//                                iconCls : moduleInCategory.icon,
-//                                scope : this
-//                            };
-//
-//                            // Test spécifique pour savoir si on doit inclure un
-//                            // sous menu :
-//                            var xtype = moduleInCategory.xtype;
-//                            if (Ext.isEmpty(xtype)) {
-//                                return;
-//                            }
-////                            var Func = eval(xtype + ".getStaticParameters");
-////                            if (Ext.isFunction(Func)) {
-////                                var staticParameters = Func();
-////                                if (staticParameters && staticParameters.showAsMenu) {
-////                                    Ext.apply(item, {
-////                                        menu : {
-////                                            xtype : moduleInCategory.xtype,
-////                                            cls : "sitools-navbar-menu"
-////                                        }
-////                                    });
-////                                } else {
-////                                    Ext.apply(item, {
-////                                        handler : moduleInCategory.openModule
-////                                    });
-////                                }
-////                            }
-//
-////                            func = xtype + ".openModule";
-////                            if (Ext.isFunction(eval(func))) {
-////                                handler = eval(func);
-////                            } else {
-////                                handler = moduleInCategory.openModule
-////                            }
-//                            menuItems.push(Ext.create("Ext.button.Button", item));
-//
-//                        }
-//
-//                });
-//                if (!Ext.isEmpty(menuItems)) {
-//                    var menu = Ext.create('Ext.menu.Menu', {
-//                        items : menuItems,
-//                        cls : "sitools-navbar-menu"
-//                    });
-//                    items.push({
-//                        text : category.category,
-//                        menu : menu,
-//                        cls : "x-navBar-items",
-//                        template : new Ext.Template('<table cellspacing="0" class="x-btn {3}"><tbody><tr>',
-//                                '<td class="ux-taskbutton-center"><em class="{2} unselectable="on">',
-//                                '<button class="x-btn-text {2}" type="{1}" style="height:28px;">{0}</button>', '</em></td>', "</tr></tbody></table>")
-//
-//                    });
-//                }
-//            }
-//
-//        });
-
         this.callParent(Ext.apply(this, {
             enableOverflow : true,
             items : items,
             cls : 'sitoolsTaskbar-bg',
             border : false
-//            id : "navBarId",
-            // defaults : {
-            // overCls : "x-navBar-items-over",
-            // ctCls : "x-navBar-items-ct"
-            // },
-            // cls : "x-navBar",
-            // overCls : "x-navBar-over",
-            // ctCls : "x-navBar-ct",
-//            flex : 1,
-//            listeners : {
-//                scope : this,
-//                afterRender : function (me) {
-//                    this.observer.fireEvent("navBarRendered", me);
-//                }
-//            }
         }));
     },
     /**

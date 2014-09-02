@@ -187,14 +187,15 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     createWindowMenu: function () {
         var me = this;
         return {
-            defaultAlign: 'br-tr',
+//            defaultAlign: 'bl-l?',
             border : false,
+            plain : true,
             items: [
-                { text: 'Restore', handler: me.onWindowMenuRestore, scope: me },
-                { text: 'Minimize', handler: me.onWindowMenuMinimize, scope: me },
-                { text: 'Maximize', handler: me.onWindowMenuMaximize, scope: me },
+                { text: i18n.get('label.restore'), handler: me.onWindowMenuRestore, scope: me },
+                { text: i18n.get('label.minimize'), handler: me.onWindowMenuMinimize, scope: me },
+                { text: i18n.get('label.maximize'), handler: me.onWindowMenuMaximize, scope: me },
                 '-',
-                { text: 'Close', handler: me.onWindowMenuClose, scope: me }
+                { text: i18n.get('label.close'), handler: me.onWindowMenuClose, scope: me }
             ],
             listeners: {
                 beforeshow: me.onWindowMenuBeforeShow,
@@ -390,6 +391,72 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
         return win;
     },
+    
+    createPanel: function(config, cls) {
+        var me = this, win, cfg = Ext.applyIf(config || {}, {
+                stateful: false,
+                constrain : true,
+                border : false,
+                bodyBorder : false,
+                constrainHeader: true,
+                floating : true,
+                listeners : {
+                	resizeDesktop : function (me, newW, newH) {
+                		var deskWidth = Desktop.getDesktopEl().getWidth();
+                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').taskbar.getHeight();
+                		
+                		if (me.getWidth() > deskWidth) {
+                			me.setWidth(deskWidth);
+                		}
+                		
+                		if (me.getHeight() > deskHeight) {
+                			me.setHeight(deskHeight);
+                		}
+                        
+                        var child = me.items.items[0];
+                        if (child && child.getEl()) {
+                            child.fireEvent("resize", child, me.body.getWidth(), me.body.getHeight(), child.getWidth(), child.getHeight());
+                        }
+                    }
+                }
+            });
+
+        cls = cls || Ext.panel.Panel;
+        win = me.add(new cls(cfg));
+
+        me.windows.add(win);
+
+        win.taskButton = me.taskbar.addTaskButton(win);
+        win.animateTarget = win.taskButton.el;
+
+        win.on({
+            activate: me.updateActiveWindow,
+            beforeshow: me.updateActiveWindow,
+            deactivate: me.updateActiveWindow,
+            minimize: me.minimizeWindow,
+            destroy: me.onWindowClose,
+            scope: me
+        });
+        
+        win.on({
+            single: true
+        });
+
+        // replace normal window close w/fadeOut animation:
+        win.doClose = function ()  {
+            win.doClose = Ext.emptyFn; // dblclick can call again...
+            win.el.disableShadow();
+            win.el.fadeOut({
+                listeners: {
+                    afteranimate: function () {
+                        win.destroy();
+                    }
+                }
+            });
+        };
+
+        return win;
+    },
 
     getActiveWindow: function () {
         var win = null,
@@ -400,7 +467,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
             // components in the stack.
 
             zmgr.eachTopDown(function (comp) {
-                if (comp.isWindow && !comp.hidden) {
+            	// have to also manage Panel in fixe mode
+                if ((comp.isWindow || comp instanceof Ext.panel.Panel)  && !comp.hidden) {
                     win = comp;
                     return false;
                 }

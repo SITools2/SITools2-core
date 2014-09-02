@@ -118,7 +118,7 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
             textTooltip : textTooltip
         });
         
-        this.treeStore = Ext.create('sitools.user.store.DatastorageTreeStore');
+        this.treeStore = Ext.create('sitools.user.store.DataStorageTreeStore');
         
         this.tree = Ext.create('Ext.tree.Panel', {
         	title : i18n.get('label.sitePlan'),

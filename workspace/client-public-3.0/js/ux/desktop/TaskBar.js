@@ -1,17 +1,26 @@
-/*!
- * Ext JS Library 4.0
- * Copyright(c) 2006-2011 Sencha Inc.
- * licensing@sencha.com
- * http://www.sencha.com/license
- */
-
+/***************************************
+ * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+ * 
+ * This file is part of SITools2.
+ * 
+ * SITools2 is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SITools2 is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+ ***************************************/
 /**
  * @class Ext.ux.desktop.TaskBar
  * @extends Ext.toolbar.Toolbar
  */
 Ext.define('Ext.ux.desktop.TaskBar', {
-    // This must be a toolbar. we rely on acquired toolbar classes and inherited toolbar methods for our
-    // child items to instantiate and render correctly.
     extend: 'Ext.toolbar.Toolbar',
 
     requires: [
@@ -25,11 +34,11 @@ Ext.define('Ext.ux.desktop.TaskBar', {
     cls: 'ux-taskbar moduleTaskbar-bg',
 
     /**
-     * @cfg {String} startBtnText
-     * The text for the Start Button.
+     * The toggled button in the taskbar
      */
-    startBtnText: 'Start',
+    activeButton: null,
     border : false,
+    
     initComponent: function () {
         var me = this;
         me.flex = 1;
@@ -54,7 +63,7 @@ Ext.define('Ext.ux.desktop.TaskBar', {
             flex: 1,
             height : 25,
             cls: 'ux-desktop-windowbar',
-            items: [ '&#160;' ],
+            items: [],
             layout: { overflowHandler: 'Scroller' }
         };
     },
@@ -91,8 +100,32 @@ Ext.define('Ext.ux.desktop.TaskBar', {
             win.toFront();
         }
     },
+    
+    onPanelBtnClick : function (btn) {
+        var win = btn.win;
 
-    addTaskButton: function(win) {
+        if (win.minimized || win.hidden) {
+            win.show(null, function() {
+                btn.enable();
+            });
+            
+        } else if (win.active) {
+            win.on('hide', function() {
+                btn.enable();
+            }, null, {single: true});
+            
+        } else {
+            win.toFront();
+        }
+    },
+
+    addTaskButton: function (win) {
+    	
+    	var clickEvent = this.onWindowBtnClick;
+    	if (win instanceof Ext.panel.Panel) {
+    		clickEvent = this.onPanelBtnClick; // click event in fixe mode
+    	}
+    	
         var config = {
             iconCls: win.iconCls,
             enableToggle: true,
@@ -101,7 +134,7 @@ Ext.define('Ext.ux.desktop.TaskBar', {
 //            margins: '0 2 0 3',
             text: Ext.util.Format.ellipsis(win.title, 20),
             listeners: {
-                click: this.onWindowBtnClick,
+                click: clickEvent,
                 scope: this
             },
             win: win
@@ -123,7 +156,7 @@ Ext.define('Ext.ux.desktop.TaskBar', {
         return cmp;
     },
 
-    removeTaskButton: function (btn) {
+    removeTaskButton : function (btn) {
         var found, me = this;
         me.windowBar.items.each(function (item) {
             if (item === btn) {
@@ -137,9 +170,10 @@ Ext.define('Ext.ux.desktop.TaskBar', {
         return found;
     },
 
-    setActiveButton: function(btn) {
+    setActiveButton : function (btn) {
         if (btn) {
             btn.toggle(true);
+            this.activeButton = btn;
         } else {
             this.windowBar.items.each(function (item) {
                 if (item.isButton) {
@@ -147,61 +181,37 @@ Ext.define('Ext.ux.desktop.TaskBar', {
                 }
             });
         }
+    },
+    
+    getActiveButton : function () {
+    	return this.activeButton;
+    },
+    
+    getNextButton : function () {
+    	var nextIndex;
+    	
+    	var activeIndex = this.windowBar.items.indexOf(this.activeButton);
+    	
+    	if (this.windowBar.items.last() == this.activeButton) {
+    		return; // do nothing when last button
+    	} else {
+    		nextIndex = activeIndex + 1;
+    	}
+    	
+    	return this.windowBar.items.getAt(nextIndex);
+    },
+    
+    getPreviousButton : function () {
+    	var previousIndex;
+    	
+    	var activeIndex = this.windowBar.items.indexOf(this.activeButton);
+    	
+    	if (this.windowBar.items.first() == this.activeButton) {
+    		return; // do nothing when first button
+    	} else {
+    		previousIndex = activeIndex - 1;
+    	}
+    	
+    	return this.windowBar.items.getAt(previousIndex);
     }
 });
-
-///**
-// * @class Ext.ux.desktop.TrayClock
-// * @extends Ext.toolbar.TextItem
-// * This class displays a clock on the toolbar.
-// */
-//Ext.define('Ext.ux.desktop.TrayClock', {
-//    extend: 'Ext.toolbar.TextItem',
-//
-//    alias: 'widget.trayclock',
-//
-//    cls: 'ux-desktop-trayclock',
-//
-//    html: '&#160;',
-//
-//    timeFormat: 'g:i A',
-//
-//    tpl: '{time}',
-//
-//    initComponent: function () {
-//        var me = this;
-//
-//        me.callParent();
-//
-//        if (typeof(me.tpl) == 'string') {
-//            me.tpl = new Ext.XTemplate(me.tpl);
-//        }
-//    },
-//
-//    afterRender: function () {
-//        var me = this;
-//        Ext.Function.defer(me.updateTime, 100, me);
-//        me.callParent();
-//    },
-//
-//    onDestroy: function () {
-//        var me = this;
-//
-//        if (me.timer) {
-//            window.clearTimeout(me.timer);
-//            me.timer = null;
-//        }
-//
-//        me.callParent();
-//    },
-//
-//    updateTime: function () {
-//        var me = this, time = Ext.Date.format(new Date(), me.timeFormat),
-//            text = me.tpl.apply({ time: time });
-//        if (me.lastText != text) {
-//            me.setText(text);
-//            me.lastText = text;
-//        }
-//        me.timer = Ext.Function.defer(me.updateTime, 10000, me);
-//    }
-//});

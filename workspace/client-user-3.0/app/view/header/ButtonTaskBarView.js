@@ -46,7 +46,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         /**
          * The btn to open profileWindow
          */
-        this.profilButton = Ext.create("Ext.Button", {
+        this.profilButton = Ext.create("Ext.button.Button", {
         	name : 'profilBtn',
             scope : this, 
             cls : 'sitools_button',
@@ -75,7 +75,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         itemsButtons.push(this.profilButton);
         
         if (!Ext.isEmpty(userLogin)) {
-            this.saveButton = Ext.create('Ext.Button', {
+            this.saveButton = Ext.create('Ext.button.Button', {
                 scope : this, 
                 handler : function (btn, evt) {
                 	this.desktopController.fireEvent('saveBtnClicked', btn, evt);
@@ -102,25 +102,8 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
             itemsButtons.push(this.saveButton);
         }
         
-        this.helpButton = Ext.create('Ext.Button', {
-            scope : this,
-            cls : 'sitools_button',
-            icon : "/sitools/common/res/images/icons/navBarButtons/help-icon.png", 
-//            handler : SitoolsDesk.showHelp,
-            handler : function () {
-                alert('todo');
-            },
-            scale : 'medium',
-            tooltip : {
-                html : i18n.get('label.help'), 
-                anchor : 'bottom', 
-                trackMouse : false
-            }
-        });
-//        itemsButtons.push(this.helpButton);
-        
-        /**A specialized btn to switch between normal and maximize mode */
-        this.maximizeButton = Ext.create('Ext.Button', {
+        /** A specialized btn to switch between normal and maximize mode */
+        this.maximizeButton = Ext.create('Ext.button.Button', {
 			name : 'maximizeBtn',
 			cls : 'sitools_button',
             iconCls : (Desktop.getDesktopMaximized() != false) ? "mini_button_img" : "maxi_button_img",  
@@ -149,20 +132,8 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         this.callParent(Ext.apply(this,  {
             id : 'navBarButtonsId',
             cls : 'buttonTaskbar-bg',
-//            defaults : {
-//                overCls : "x-navBar-items-over", 
-//                ctCls : "x-navBar-items-ct"
-//            }, 
             items : itemsButtons, 
-//            cls : "x-navBar-buttons", 
-//            overCls : "x-navBar-over", 
-//            ctCls : "x-navBar-ct", 
             width : this.width,
-            listeners : {
-                scope : this, 
-//                maximizeDesktop : this.onMaximizeDesktop, 
-//                minimizeDesktop : this.onMinimizeDesktop 
-            }, 
             border : false
         }));
     }, 
@@ -172,7 +143,6 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
      */
     onMaximizeDesktop : function () {
         this.maximizeButton.setIcon("/sitools/common/res/images/icons/navBarButtons/mini-icon.png");
-        //SitoolsDesk.desktopMaximizeMode = true;
         this.maximizeButton.tooltip.html = i18n.get('label.minimize');
     },
     
@@ -181,7 +151,6 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
      */
     onMinimizeDesktop : function () {
         this.maximizeButton.setIcon("/sitools/common/res/images/icons/navBarButtons/maxi-icon.png");
-      //  SitoolsDesk.desktopMaximizeMode = false;
         this.maximizeButton.tooltip.html = i18n.get('label.maximize');
     },
     

@@ -307,7 +307,7 @@ Ext.define('sitools.user.core.Desktop', {
 	
 	clearDesktop : function () {
 		Ext.WindowManager.each(function (window) {
-			if (window.xtype == 'window') {
+			if (window instanceof Ext.window.Window || window instanceof Ext.panel.Panel) {
 				window.close();
 			}
 		});
@@ -327,18 +327,38 @@ Ext.define('sitools.user.core.Desktop', {
 		Ext.WindowManager.each(function (window) {
 			if (window.xtype == 'window') {
 				window.minimize();
+			} else if (window instanceof Ext.panel.Panel) {
+				window.hide();
 			}
 		});
 	},
 	
 	restoreAllWindows : function () {
 		Ext.WindowManager.each(function (window) {
-			if (window.xtype == 'window') {
+			if (window.xtype == 'window' || window instanceof Ext.panel.Panel) {
 				window.show();
 			}
 		});
-	}
+	},
 	
+	activeNextPanel : function () {
+		var desktopController = this.getApplication().getController('DesktopController');
+		var nextButton = desktopController.desktopView.taskbar.getNextButton();
+		
+		if (nextButton) {
+			nextButton.fireEvent('click', nextButton);
+		}
+	},
+	
+	activePreviousPanel : function () {
+		var desktopController = this.getApplication().getController('DesktopController');
+		var previousButton = desktopController.desktopView.taskbar.getPreviousButton();
+		
+		if (previousButton) {
+			previousButton.fireEvent('click', previousButton);
+		}
+		
+	}
 });
 
 Desktop = sitools.user.core.Desktop;

@@ -346,7 +346,7 @@ html, body {
 	background-repeat: no-repeat;
 }
 .projectServicesModule {
-    background-image:url( /sitools/common/res/images/icons/32x32/tree_application_resource_32.png ) !important;
+    background-image:url( /sitools/common/res/images/desktop/72x72/project_services.png ) !important;
     background-size: 18px 18px;
 	background-position: left !important;
 	background-repeat: no-repeat;
@@ -646,20 +646,20 @@ td.ux-taskButtons-edge {
     cursor:default;
 }
 
-#btn-cleanDesktop {
-	top: 16px !important;
-	left: 60px !important;
+#btn-more {
 	padding: 0px 0px 0px 0px;
 	margin: 0px 0px 0px 0px !important;
 	position: absolute !important;
 }
 
-#btn-showDesk {
+.more_button_desktopMode {
 	top: 16px !important;
-	left: 39px !important;
-	padding: 0px 0px 0px 0px;
-	margin: 0px 0px 0px 0px !important;
-	position: absolute !important;
+	left: 58px !important;
+}
+
+.more_button_fixedMode {
+	top: 16px !important;
+	left: 150px !important;
 }
 
 .ux-toolmenu-sep {

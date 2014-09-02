@@ -17,7 +17,7 @@
  ******************************************************************************/
 /*global Ext, sitools, window */
 
-Ext.define('sitools.user.store.DatastorageTreeStore', {
+Ext.define('sitools.user.store.DataStorageTreeStore', {
     extend : 'Ext.data.TreeStore',
     model : 'sitools.user.model.DataStorageExplorerTreeModel',
     proxy : {
