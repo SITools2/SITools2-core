@@ -18,6 +18,33 @@
 /* global Ext, sitools, window */
 
 /**
+ * Specific JsonReader to handle totalProperty reading.
+ * Total property is saved after the first page is read.
+ * Then we use that totalProperty until another first is read. 
+ * 
+ * @private
+ */
+Ext.define('sitools.user.store.DataviewsJsonReader', {
+	
+	extend : 'Ext.data.reader.Json',
+	alias : 'reader.dataviewsreader',
+	
+	constructor : function () {
+    	this.callParent(arguments);
+    	this.extractTotal = this.getTotal;
+        
+        this.getTotal = function (data) {
+        	var total = this.extractTotal(data);
+        	if(Ext.isEmpty(total)) {
+        		return this.total;
+        	}
+        	this.total = total;
+        	return total;
+        }
+    }
+});
+
+/**
  * @class sitools.user.store.DataviewsStore
  * @config fields the list of fields for the store
  * @config urlAttach the url attachment
@@ -40,7 +67,7 @@ Ext.define('sitools.user.store.DataviewsStore', {
                 type : 'ajax',
                 url : config.urlAttach + "/records",
                 reader : {
-                    type : 'json',
+                    type : 'dataviewsreader',
                     id : config.primaryKey,
                     root : 'data'
                 },
