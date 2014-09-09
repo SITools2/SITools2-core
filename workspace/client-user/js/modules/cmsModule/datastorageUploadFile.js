@@ -124,7 +124,7 @@ sitools.user.modules.datastorageUploadFile = Ext.extend(Ext.Window, {
 
                             },
                             failure : function (response) {
-                                Ext.Msg.alert(i18n.get('label.error'));
+                                Ext.Msg.alert(i18n.get('label.error'), response.responseText);
                             }
                         });
                     }

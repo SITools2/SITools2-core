@@ -32,15 +32,7 @@ Ext.define('sitools.user.component.datasets.services.FilterService', {
     requires : ['sitools.user.view.component.datasets.services.FilterServiceView'],
     statics : {
         getParameters : function () {
-            return [{
-                jsObj : "Ext.form.TextField", 
-                config : {
-                    anchor : "100%", 
-                    fieldLabel : i18n.get("label.warning_nb_records"), 
-                    value : "qsqsdqsd",
-                    name : "warning_nb_records"
-                }
-            }];
+            return [];
         }
     },
     

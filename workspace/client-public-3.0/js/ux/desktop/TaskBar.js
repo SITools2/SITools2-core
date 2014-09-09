@@ -121,9 +121,9 @@ Ext.define('Ext.ux.desktop.TaskBar', {
 
     addTaskButton: function (win) {
     	
-    	var clickEvent = this.onWindowBtnClick;
-    	if (win instanceof Ext.panel.Panel) {
-    		clickEvent = this.onPanelBtnClick; // click event in fixe mode
+    	var clickEvent = this.onPanelBtnClick;
+    	if (win instanceof Ext.window.Window) {
+    		clickEvent = this.onWindowBtnClick; // click event in fixe mode
     	}
     	
         var config = {

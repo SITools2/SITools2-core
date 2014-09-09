@@ -574,3 +574,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .sort-asc {
     background-image: url("../images/icons/sort_asc.png") !important;
 }
+
+.loginIcon {
+	background-image: url(/sitools/client-user/resources/images/icons/session/login.png) !important;
+}

@@ -646,22 +646,6 @@ td.ux-taskButtons-edge {
     cursor:default;
 }
 
-#btn-more {
-	padding: 0px 0px 0px 0px;
-	margin: 0px 0px 0px 0px !important;
-	position: absolute !important;
-}
-
-.more_button_desktopMode {
-	top: 16px !important;
-	left: 58px !important;
-}
-
-.more_button_fixedMode {
-	top: 16px !important;
-	left: 150px !important;
-}
-
 .ux-toolmenu-sep {
 	background-color:#18191a;
 	border-bottom:1px solid #858789;

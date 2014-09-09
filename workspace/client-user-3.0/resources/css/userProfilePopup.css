@@ -25,10 +25,6 @@
 	background-image: url(/sitools/client-public/res/images/icons/menu/usersGroups.png) !important;
 }
 
-.loginIcon {
-	background-image: url(/sitools/client-user/resources/images/icons/session/login.png) !important;
-}
-
 .logoutIcon {
 	background-image: url(/sitools/client-user/resources/images/icons/session/logout.png) !important;
 }
