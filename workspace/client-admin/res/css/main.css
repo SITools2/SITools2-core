@@ -92,7 +92,7 @@ div.subtitle {
 	background-image: none !important;
 }
 
-.s-textfilter .x-form-trigger-wrap-focus .x-form-trigger {
+.s-textfilterCancel {
 	background-color: transparent;
 	background-image:
 		url("/sitools/client-public/res/images/icons/search-cancel.png") !important;

@@ -47,8 +47,8 @@ Ext.define('sitools.public.widget.item.TextFilter', {
 	initEvents:function(){
 		this.callParent(arguments);
 		this.mon(this.el,"keyup",this.filter,this,{buffer:this.queryDelay});
-		this.mon(this.el,"keydown",this.keydownevent,this);
 	},
+	
 	
 	setPageSize:function(size){
 		this.pageSize=size;
@@ -72,6 +72,11 @@ Ext.define('sitools.public.widget.item.TextFilter', {
 	filter: function(){
 		var b=this.getValue();
 		var a = {};
+		if (b.length > 0) {
+			this.el.down("." + this.triggerCls).addCls("s-textfilterCancel");
+		}else {
+			this.el.down("." + this.triggerCls).removeCls("s-textfilterCancel");
+		}
 		if(!this.store){
 			return;
 		}
