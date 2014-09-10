@@ -69,12 +69,14 @@ Ext.define('sitools.public.forms.components.ListBox', {
                 proxy : {
                     type : 'ajax',
                     url : this.dataUrl + "/records",
+                    limitParam : undefined,
+                    startParam : undefined,
+                    extraParams : params,
                     reader : {
                         type : 'json',
                         root : 'data'
                     }                    
                 },
-                baseParams : params, 
                 valueField : 'value', 
                 displayField : 'text'
             });
@@ -98,7 +100,7 @@ Ext.define('sitools.public.forms.components.ListBox', {
 //	    });
         
 
-        this.multiSelect =  Ext.create("sitools.public.ux.form.MultiSelect", {
+        this.multiSelect =  Ext.create("Ext.ux.form.MultiSelect", {
             anchor : '100%',
             msgTarget : 'side',
             fieldLabel : 'Multiselect',

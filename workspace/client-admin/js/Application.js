@@ -50,7 +50,7 @@ Ext.define('sitools.admin.Application', {
         
         'sitools.public.widget.item.menuButton',
         'sitools.public.widget.item.TextFilter',
-        'sitools.public.ux.form.MultiSelect',
+        'Ext.ux.form.MultiSelect',
         
         /* WIDGETS TO BE INCLUDED IN OTHER FILES */
         'sitools.public.forms.formParameterToComponent',

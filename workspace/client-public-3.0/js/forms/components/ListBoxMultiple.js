@@ -69,12 +69,14 @@ Ext.define('sitools.public.forms.components.ListBoxMultiple', {
                 proxy : {
                     type : 'ajax',
                     url : this.dataUrl + "/records",
+                    extraParams : params,
+                    limitParam : undefined,
+                    startParam : undefined,
                     reader : {
                         type : 'json',
                         root : 'data'
                     }                    
                 },
-                baseParams : params, 
                 valueField : 'value', 
                 displayField : 'text'
             });

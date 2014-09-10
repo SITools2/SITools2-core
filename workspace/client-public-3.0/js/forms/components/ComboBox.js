@@ -45,7 +45,7 @@ Ext.define('sitools.public.forms.components.ComboBox', {
 
 		var store;
 	    if (this.valueSelection == 'S') {
-		    store = new Ext.data.ArrayStore({
+		    store = Ext.create("Ext.data.ArrayStore", {
 		        fields : [ 'id', 'value' ],
 		        sortInfo: {
 		            field: 'value',
@@ -60,7 +60,7 @@ Ext.define('sitools.public.forms.components.ComboBox', {
 		    };
 
 	        
-		    store = new Ext.data.JsonStore({
+		    store = Ext.create("Ext.data.JsonStore", {
 		        fields : [ {
 		            name : 'id',
 		            mapping : this.code
@@ -68,15 +68,23 @@ Ext.define('sitools.public.forms.components.ComboBox', {
 		            name : 'value',
 		            mapping : this.code
 		        } ],
-		        sortInfo: {
-                    field: 'value',
+		        sorters: [{
+                    property : 'value',
                     direction: 'ASC'
-                },
+                }],
+                remoteSort : false,
 		        autoLoad : !Ext.isEmpty(this.dataUrl) ? true : false,
-		        root : 'data',
-		        restful : true,
-		        url : this.dataUrl + "/records",
-		        baseParams : params, 
+        		proxy : {
+                    type : 'ajax',
+                    url : this.dataUrl + "/records",
+                    extraParams : params,
+                    limitParam : undefined,
+                    startParam : undefined,
+                    reader : {
+                        type : 'json',
+                        root : 'data'
+                    }                    
+                },
 		        listeners : {
 		            load : function () {
 		                this.insert (0, [new Ext.data.Record({id : "", value : ""})]);    
@@ -86,16 +94,13 @@ Ext.define('sitools.public.forms.components.ComboBox', {
 		    
 		    
 	    }
-	    this.combo = new Ext.form.ComboBox ({
+	    this.combo = Ext.create("Ext.form.ComboBox", {
 	        store : store,
 	        parameterId : this.parameterId, 
 	        sParentParam : this.parentParam, 
 	        valueField : 'id',
 	        displayField : 'value',
-	        typeAhead : true,
 	        queryMode : 'local',
-	        triggerAction : 'all',
-	        selectOnFocus : true,
 	        allowBlank : true,
 	        editable : this.valueSelection=="S" ? true : false,
 	        autoSelect : false,
@@ -103,6 +108,7 @@ Ext.define('sitools.public.forms.components.ComboBox', {
 	        height : this.height,
 	        value : defaultValue,
 			stype : "sitoolsFormItem", 
+			selectOnFocus : true,
 	        /**
 			 * The Parent Window.
 			 */
@@ -126,10 +132,9 @@ Ext.define('sitools.public.forms.components.ComboBox', {
 	        overCls : 'fieldset-child',
 	    	items : [this.combo]
 	    });
-	    sitools.public.forms.components.ComboBox.superclass.initComponent.apply(this,
-	            arguments);
+	    this.callParent(arguments);
    	    if (!Ext.isEmpty(this.label)) {
-	    	this.items.insert(0, new Ext.Container({
+	    	this.items.insert(0, Ext.create("Ext.Container", {
 	            border : false,
 	            html : this.label,
 	            width : 100

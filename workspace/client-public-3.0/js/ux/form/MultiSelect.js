@@ -1,9 +1,9 @@
 
-Ext.namespace('sitools.public.ux.form');
+Ext.namespace('Ext.ux.form');
 /**
  * A control that allows selection of multiple items in a list.
  */
-Ext.define('sitools.public.ux.form.MultiSelect', {
+Ext.define('Ext.ux.form.MultiSelect', {
     
     extend: 'Ext.form.FieldContainer',
     

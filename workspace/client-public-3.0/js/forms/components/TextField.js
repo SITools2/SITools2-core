@@ -44,12 +44,14 @@ Ext.define('sitools.public.forms.components.TextField', {
             proxy : {
                 type : 'ajax',
                 url : this.dataUrl + '/records',
+                extraParams : params,
+                limitParam : undefined,
+                startParam : undefined,
                 reader : {
                     type : 'json',
                     root : 'data'
                 }
             },
-            baseParams : params,
             fields : [ {
                 name : 'id',
                 mapping : this.code[0]

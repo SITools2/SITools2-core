@@ -88,8 +88,8 @@ div.subtitle {
 	padding-left: 18px;
 } */
 
-.x-form-trigger {
-	background-image: none !important;
+.s-textfilter .x-form-trigger {
+	background-image: none;
 }
 
 .s-textfilterCancel {
@@ -100,7 +100,6 @@ div.subtitle {
 	background-repeat: no-repeat;
 	border: medium none;
 	height: 20px;
-	top: 2;
 }
 
 .x-tree-node-leaf .x-tree-node-icon {
