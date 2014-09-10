@@ -21,14 +21,11 @@ Ext.namespace('sitools.public.widget.item');
 Ext.define('sitools.public.widget.item.TextFilter', {
     extend : 'Ext.form.field.Trigger',
 	alias : 'widget.s-filter',
-	ctCls:"s-textfilter",
-	cls:"s-textfilter-text",
-	triggerConfig:{tag:"div", cls:"x-form-trigger s-textfilter-trigger"},
+	baseCls :"s-textfilter",
+//	cls:"s-textfilter-text",
+	triggerCls : "s-textfilter-trigger",
+//	triggerConfig:{tag:"div", cls:"x-form-trigger s-textfilter-trigger"},
 	enableKeyEvents:true,
-	listeners:{
-		keyup: { fn:function(tf,a) {tf.setVisible((tf.getValue()!==""));} },
-		render: { fn:function(tf) {tf.hide();} }
-	},
 	queryDelay:500,
 	queryAction:"find",
 	enumAction:"enum",
@@ -38,7 +35,7 @@ Ext.define('sitools.public.widget.item.TextFilter', {
 	pageSize:"",
 	
 	constructor:function(params){
-		sitools.public.widget.item.TextFilter.superclass.constructor.call(this,params);
+		this.callParent(arguments);
 		if(this.store&&!this.localFilter){
 			this.mon(this.store,"beforeload",this.onBeforeLoad,this);
 		}
@@ -48,8 +45,9 @@ Ext.define('sitools.public.widget.item.TextFilter', {
 	},
 	
 	initEvents:function(){
-		sitools.public.widget.item.TextFilter.superclass.initEvents.call(this);
+		this.callParent(arguments);
 		this.mon(this.el,"keyup",this.filter,this,{buffer:this.queryDelay});
+		this.mon(this.el,"keydown",this.keydownevent,this);
 	},
 	
 	setPageSize:function(size){
@@ -99,16 +97,17 @@ Ext.define('sitools.public.widget.item.TextFilter', {
 	},
 	
 	reset: function(){
-		sitools.public.widget.item.TextFilter.superclass.reset.call(this);
-		if(this.localFilterField===false&&this.store){
+		console.log("reset");
+		this.callParent(arguments);
+		if (this.localFilterField === false && this.store) {
 			this.store.clearFilter(false);
 		}
 	},
 	
 	onTriggerClick: function(){
+		console.log("onTriggerClick");
 		if(this.getValue()){
 			this.setValue("");
-			this.trigger.hide();
 			this.filter();
 		}
 	}

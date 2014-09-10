@@ -75,28 +75,32 @@ div.subtitle {
 	border: 1px solid #99BBE8;
 }
 
-.s-textfilter .x-form-field-wrap .s-textfilter-text {
+/* .s-textfilter-text {
 	background-color: transparent;
 	background-image:
 		url("/sitools/client-public/res/images/icons/search-icon.png");
-	background-position: 0 0;
+	background-position: 0 0 !important;
 	background-repeat: no-repeat;
 	border: medium none;
 	font-size: 11px;
 	height: 18px !important;
 	line-height: 14px;
 	padding-left: 18px;
+} */
+
+.x-form-trigger {
+	background-image: none !important;
 }
 
-.s-textfilter .x-form-field-trigger-wrap .s-textfilter-trigger {
+.s-textfilter .x-form-trigger-wrap-focus .x-form-trigger {
 	background-color: transparent;
 	background-image:
-		url("/sitools/client-public/res/images/icons/search-cancel.png");
-	background-position: 0 0;
+		url("/sitools/client-public/res/images/icons/search-cancel.png") !important;
+	background-position: 0 0 !important;
 	background-repeat: no-repeat;
 	border: medium none;
 	height: 20px;
-	right: 0;
+	top: 2;
 }
 
 .x-tree-node-leaf .x-tree-node-icon {
