@@ -84,11 +84,11 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
 				    return;
 			    }
 			    
-			    // TODO find a better way to set the right Y position
+			    var winPosition = this.getPosition(true); 
 			    var position = {
-		    		x : this.getX(),
-		    		y : this.getY()
-			    };
+					x : winPosition[0],
+					y : winPosition[1],
+				}
 			    
 			    var size = {
 		    		height : this.getHeight(),
@@ -125,6 +125,19 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
 			    else {
 			    	UserStorage.set(fileName, filePath, putObject);
 			    }
+			    
+			    //save the parameters to the current module
+			    var module = Ext.StoreManager.lookup('ModulesStore').getById(this.getId());
+            	
+            	if (!Ext.isEmpty(module)) {
+            		Ext.apply(module.data, {
+            			defaultHeight : putObject.windowSettings.size.height,
+            			defaultWidth : putObject.windowSettings.size.width,
+            			x : putObject.windowSettings.position.x,
+            			y : putObject.windowSettings.position.y
+            		});
+            	}
+			    
 			    return putObject;
 		    }
 		};
@@ -138,11 +151,12 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
 				    return;
 			    }
 			    
-			    // TODO find a better way to set the right Y position
+			    var winPosition = this.getPosition(true); 
+
 			    var position = {
-		    		x : this.getX(),
-		    		y : this.getY()
-			    };
+					x : winPosition[0],
+					y : winPosition[1],
+				}
 			    
 			    var size = {
 		    		height : this.getHeight(),

@@ -321,7 +321,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var me = this, win, cfg = Ext.applyIf(config || {}, {
                 stateful: false,
                 isWindow: true,
-                constrainHeader: true,
+//                constrainHeader: true,
                 constrain : true,
                 minimizable: true,
                 maximizable: true,
@@ -551,5 +551,4 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
         me.taskbar.setActiveButton(activeWindow && activeWindow.taskButton);
     }
-    
 });
