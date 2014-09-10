@@ -68,6 +68,7 @@
 			<entry key="Starter.DATABASE_USER" value="${DATABASE_USER}" />
 			<entry key="Starter.DATABASE_PASSWORD" value="${DATABASE_PASSWORD}" />
 			<entry key="Starter.DATABASE_SCHEMA" value="${DATABASE_SCHEMA}" />
+			<entry key="Starter.DATABASE_DRIVER" value="${DATABASE_DRIVER}" />
 			<entry key="Starter.PUBLIC_HOST_DOMAIN" value="${PUBLIC_HOST_DOMAIN}" />
 			<entry key="Starter.HOST_PORT" value="${HOST_PORT}" />
 			<entry key="Security.Intranet.net" value="${SECURITY_INTRANET_NET}" />

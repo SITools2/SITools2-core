@@ -5,6 +5,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import org.junit.Test;
 import org.restlet.Component;
 import org.restlet.data.Form;
@@ -79,10 +84,16 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
    */
   @Test
   public void testCRUDUsers() {
-    createUser();
-    retrieveUser();
-    updateUser();
-    deleteUser();
+    try {
+      createUser();
+      retrieveUser();
+      sortUsers();
+      filterUsers();
+      updateUser();
+    }
+    finally {
+      deleteUser();
+    }
   }
 
   /**
@@ -94,10 +105,16 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
   @Test
   public synchronized void testCRUDGroups() throws InterruptedException {
     wait(10000);
-    createGroup();
-    retrieveGroup();
-    updateGroup();
-    deleteGroup();
+    try {
+      createGroup();
+      retrieveGroup();
+      sortGroups();
+      filterGroups();
+      updateGroup();
+    }
+    finally {
+      deleteGroup();
+    }
   }
 
   /**
@@ -167,7 +184,7 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
    * Invoke POST
    */
   public void createUser() {
-    User myUser = new User("test-identifier", "mOtDePaSsE1", "Prénom", "Nom", "m.gond@akka.eu");
+    User myUser = new User("test-identifier", "mOtDePaSsE1", "Prénom", "Nom test identifier", "m.gond@akka.eu");
     ClientResource crUsers = new ClientResource(getBaseUrl() + "/users");
 
     Representation result = crUsers.post(getRepresentationJSON(myUser));
@@ -188,7 +205,7 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
    * Invoke GET
    */
   public void retrieveUser() {
-    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "m.gond@akka.eu");
+    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom test identifier", "m.gond@akka.eu");
     ClientResource cr = new ClientResource(getBaseUrl() + "/users/" + myUser.getIdentifier());
     Representation result = cr.get(MediaType.APPLICATION_JSON);
     assertNotNull(result);
@@ -203,6 +220,162 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
     assertEquals(resultUser.getLastName(), myUser.getLastName());
     assertNull(resultUser.getSecret()); // secret is private
     assertEquals(resultUser.getEmail(), myUser.getEmail());
+  }
+
+  /**
+   * Invoke GET
+   */
+  public void filterUsers() {
+    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom test identifier", "m.gond@akka.eu");
+    ClientResource cr = new ClientResource(getBaseUrl() + "/users?action=find&query=nom test");
+    Representation result = cr.get(MediaType.APPLICATION_JSON);
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+
+    Response response = GetResponseUtils.getResponseUserOrGroup(MediaType.APPLICATION_JSON, result, User.class, true);
+    assertTrue(response.getSuccess());
+    assertNotNull(response.getData());
+    assertEquals(1, response.getData().size());
+
+    User resultUser = (User) response.getData().get(0);
+    assertEquals(resultUser.getIdentifier(), myUser.getIdentifier());
+    assertEquals(resultUser.getFirstName(), myUser.getFirstName());
+    assertEquals(resultUser.getLastName(), myUser.getLastName());
+    assertNull(resultUser.getSecret()); // secret is private
+    assertEquals(resultUser.getEmail(), myUser.getEmail());
+  }
+
+  /**
+   * Invoke GET
+   */
+  public void sortUsers() {
+    List<User> usersSortedFromServer = getUserListFromServer(true);
+    List<User> usersNotSorted = getUserListFromServer(false);
+
+    Collections.sort(usersNotSorted, new Comparator<User>() {
+      @Override
+      public int compare(User u1, User u2) {
+        return u1.getIdentifier().compareTo(u2.getIdentifier());
+      }
+    });
+
+    assertEquals(usersNotSorted.size(), usersSortedFromServer.size());
+
+    System.out.println("USERS FROM SERVER SORTED LOCALLY");
+    for (User user : usersNotSorted) {
+      System.out.println(user.getIdentifier() + ",");
+    }
+
+    System.out.println("USERS FROM SERVER SORTED REMOTELLY");
+    for (User user : usersSortedFromServer) {
+      System.out.println(user.getIdentifier() + ",");
+    }
+
+    int i = 0;
+    while (i < usersNotSorted.size()) {
+      assertEquals(usersNotSorted.get(i).getIdentifier(), usersSortedFromServer.get(i).getIdentifier());
+      i++;
+    }
+
+  }
+
+  private List<User> getUserListFromServer(boolean sorted) {
+    String url = getBaseUrl() + "/users?start=0&limit=100&action=enum";
+    if (sorted) {
+      url += "&sort=identifier&dir=ASC";
+    }
+    ClientResource cr = new ClientResource(url);
+    Representation result = cr.get(MediaType.APPLICATION_JSON);
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+
+    Response response = GetResponseUtils.getResponseUserOrGroup(MediaType.APPLICATION_JSON, result, User.class, true);
+    assertTrue(response.getSuccess());
+    assertNotNull(response.getData());
+    return getList(response.getData());
+  }
+
+  // / GROUPS
+
+  /**
+   * Invoke GET
+   */
+  public void filterGroups() {
+
+    Group myGroup = new Group("test-groupName", "test-groupDescription");
+    ClientResource crGroups = new ClientResource(getBaseUrl() + "/groups?action=find&query=test-group");
+
+    Representation result = crGroups.get(MediaType.APPLICATION_JSON);
+    assertTrue(crGroups.getStatus().isSuccess());
+    assertNotNull(result);
+
+    Response response = GetResponseUtils.getResponseUserOrGroup(MediaType.APPLICATION_JSON, result, Group.class, true);
+    assertTrue(response.getSuccess());
+    assertNotNull(response.getData());
+
+    assertEquals(1, response.getData().size());
+
+    Group group = (Group) response.getData().get(0);
+    assertEquals(group.getName(), myGroup.getName());
+    assertEquals(group.getDescription(), myGroup.getDescription());
+  }
+
+  /**
+   * Invoke GET
+   */
+  public void sortGroups() {
+    List<Group> groupsSortedFromServer = getGroupListFromServer(true);
+    List<Group> groupNotSorted = getGroupListFromServer(false);
+
+    Collections.sort(groupNotSorted, new Comparator<Group>() {
+      @Override
+      public int compare(Group g1, Group g2) {
+        return g1.getName().compareTo(g2.getName());
+      }
+    });
+
+    assertEquals(groupNotSorted.size(), groupsSortedFromServer.size());
+
+    System.out.println("GROUPS FROM SERVER SORTED LOCALLY");
+    for (Group group : groupNotSorted) {
+      System.out.println(group.getName() + ",");
+    }
+
+    System.out.println("GROUPS FROM SERVER SORTED REMOTELLY");
+    for (Group group : groupsSortedFromServer) {
+      System.out.println(group.getName() + ",");
+    }
+
+    int i = 0;
+    while (i < groupNotSorted.size()) {
+      assertEquals(groupNotSorted.get(i).getName(), groupsSortedFromServer.get(i).getName());
+      i++;
+    }
+
+  }
+
+  private List<Group> getGroupListFromServer(boolean sorted) {
+    String url = getBaseUrl() + "/groups?start=0&limit=100&action=enum";
+    if (sorted) {
+      url += "&sort=name&dir=ASC";
+    }
+    ClientResource cr = new ClientResource(url);
+    Representation result = cr.get(MediaType.APPLICATION_JSON);
+    assertNotNull(result);
+    assertTrue(cr.getStatus().isSuccess());
+
+    Response response = GetResponseUtils.getResponseUserOrGroup(MediaType.APPLICATION_JSON, result, Group.class, true);
+    assertTrue(response.getSuccess());
+    assertNotNull(response.getData());
+    return getList(response.getData());
+  }
+
+  private <T> List<T> getList(ArrayList<Object> data) {
+    ArrayList<T> users = new ArrayList<T>();
+    for (Object object : data) {
+      users.add((T) object);
+    }
+    return users;
   }
 
   /**
@@ -233,7 +406,7 @@ public abstract class AbstractUsersAndGroupsTestCase extends AbstractSitoolsTest
    * Invoke DELETE
    */
   public void deleteUser() {
-    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom", "prenom.nom@societe.fr");
+    User myUser = new User("test-identifier", "mOtDePaSsE", "Prénom", "Nom test identifier", "prenom.nom@societe.fr");
     ClientResource cr = new ClientResource(getBaseUrl() + "/users/" + myUser.getIdentifier());
     Representation resultRepresentation = cr.delete(MediaType.APPLICATION_JSON);
     assertNotNull(resultRepresentation);

@@ -179,11 +179,14 @@ public final class ResourceCollectionFilter {
   public String toSQL(String req, String fieldName) {
 
     if ((query != null) && !query.equals("")) {
-
+      String queryLowerCase = query.toLowerCase();
       req += req.contains(" WHERE ") ? " AND " : " WHERE ";
-      req += fieldName + " LIKE '" + query + "%'";
+      req += "lower(" + fieldName + ")" + " LIKE '" + queryLowerCase + "%'";
     }
 
+    if (order != null && sort != null) {
+      req += " ORDER BY " + sort + " " + order;
+    }
     if (limit > 0) {
       req += " LIMIT " + limit;
     }
