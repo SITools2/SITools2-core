@@ -50,10 +50,11 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     
     initComponent : function () {
         
-        this.selModel = new Ext.create("Ext.selection.CheckboxModel", {
+        this.selModel = new Ext.create("sitools.user.view.component.datasets.dataviews.CheckboxModel", {
             checkOnly : true,
             pruneRemoved : false,
-            gridView : this
+            gridView : this,
+            showHeaderCheckbox : true
         });
         
         this.bbar = {
