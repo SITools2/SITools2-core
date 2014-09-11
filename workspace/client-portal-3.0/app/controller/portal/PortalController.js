@@ -95,8 +95,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
             scope : this,
             method : "GET",
             /* /sitools/client-user */
-//            url : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/tmp/langues.json',
-            url : loadUrl.get('APP_URL') + '/client-user/tmp/langues.json',
+            url : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/tmp/langues.json',
             success : function (response) {
                 this.languages = Ext.decode(response.responseText).data;
                 if (this.autoChainAjaxRequest) {

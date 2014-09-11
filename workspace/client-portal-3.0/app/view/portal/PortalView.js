@@ -93,7 +93,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                         window.location.reload();
                     };
                     var date = new Date();
-                    Ext.util.Cookies.set('language', language.localName, Ext.Date.add(date, Date.MINUTE, 20));
+                    Ext.util.Cookies.set('language', language.localName, Ext.Date.add(date, Ext.Date.MINUTE, 20));
                     locale.setLocale(language.localName);
                     userPreferences = {};
                     userPreferences.language = language.localName;

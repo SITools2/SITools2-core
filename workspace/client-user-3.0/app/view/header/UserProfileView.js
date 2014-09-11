@@ -100,7 +100,7 @@ Ext.define('sitools.user.view.header.UserProfileView', {
                         window.location.reload();
                     };
                     var date = new Date();
-                    Ext.util.Cookies.set('language', language.localName, Ext.Date.add(date, Date.MINUTE, 20));
+                    Ext.util.Cookies.set('language', language.localName, Ext.Date.add(date, Ext.Date.MINUTE, 20));
                     var userPreferences = {};
                     userPreferences.language = language.localName;
                     if (!Ext.isEmpty(userLogin)) {
@@ -118,7 +118,7 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         }, this);
         
         var language = Ext.create('Ext.menu.Item', {
-        	text : 'Language',
+        	text : i18n.get("label.language"),
         	itemId : 'languageMenuId',
             identifier : "language", 
             name: i18n.get("label.langues"), 
