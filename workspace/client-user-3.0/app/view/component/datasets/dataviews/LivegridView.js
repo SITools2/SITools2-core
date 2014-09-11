@@ -42,6 +42,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     bodyBorder : false,
     border : false,
     plugins: {
+    	pluginId : 'renderer',
         ptype : 'bufferedrenderer',
         trailingBufferZone: 20,  // Keep 20 rows rendered in the table behind scroll
         leadingBufferZone: 50   // Keep 50 rows rendered in the table ahead of scroll
@@ -54,7 +55,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             checkOnly : true,
             pruneRemoved : false,
             gridView : this,
-            showHeaderCheckbox : true
+            showHeaderCheckbox : true,
+            mode : 'MULTI'
         });
         
         this.bbar = {
@@ -116,7 +118,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             name : "tipsLivegrid",
             icon : loadUrl.get('APP_URL') + '/common/res/images/icons/information.gif'
         });
-        array.push(new Ext.toolbar.Separator());
+        array.push("-");
         return array;
     },
     

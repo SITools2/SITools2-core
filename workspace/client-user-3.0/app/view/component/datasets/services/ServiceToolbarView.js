@@ -27,7 +27,8 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
     
     config : {
         store : null,
-        guiServiceStore : null
+        guiServiceStore : null,
+        sortedRecords : null
     },
     border : false,
     
@@ -40,7 +41,11 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         
         store.load({
             scope : this,
-            callback : this.onLoadServices
+            callback : function (records, operation, success) {
+            	var recs = this.sortServices(records);
+            	this.setSortedRecords(recs);
+            	this.onLoadServices(recs)
+            }
         });
         
         
@@ -61,16 +66,13 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         toolbar.add(customToolbarButtons);
     },
     
-    onLoadServices : function (records, operation, success) {
-        
-        records = this.sortServices(records);
-        
-        var icon, category, menu = this, btn = {};
+    onLoadServices : function (records) {
+        var icon, category, menu = this, btn, cfg = [];
         Ext.each(records, function (item) {
-            menu = this;
+            menu = cfg;
             
             if (item instanceof Ext.toolbar.Item || !this.isService(item)) {
-                menu.add(item);
+            	menu.push(item);
                 return;
             }
             
@@ -83,10 +85,10 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
             }
             
             if (!Ext.isEmpty(category = item.get('category'))) {
-                menu = this.getMenu(category);
+                menu = this.getMenu(category, cfg);
             }
             
-            
+            btn = {};
             if (!Ext.isEmpty(icon = item.get('icon'))) {
                 Ext.apply(btn, {
                     iconCls : 'btn-format-icon',
@@ -99,16 +101,18 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
                 typeService : item.get('type'),
                 text : i18n.get(item.get('label')),
                 cls : 'services-toolbar-btn',
-                icon : icon
+                icon : icon,
+                xtype :'button'
             });
             
-            menu.add(btn);
+            menu.push(btn);
             
             if (this.id === menu.id) {
-                this.add(' ');
+            	menu.push(' ');
             }
             
         }, this);
+        this.add(cfg);
     },
     
     /**
@@ -119,12 +123,9 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
             return;
         }
         
-        var records = [];
+        var records = this.getSortedRecords();
         this.removeAll();
         
-        this.store.each(function (rec) {
-            records.push(rec); 
-        });
         this.onLoadServices(records);
     },
     
@@ -132,27 +133,42 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         return item instanceof sitools.user.model.DatasetServicesModel;
     },
     
-    getMenu : function (category) {
-        var buttonSearch = this.down('button[category=' + category + ']');
+    getMenu : function (category, cfg) {
+        var buttonSearch = this.findButtonInCfg(category, cfg);
         var button;
         if (Ext.isEmpty(buttonSearch)) {
-            button = new Ext.Button({
+            button = {
+            		xtype : "button",
                 category : category,
                 text : category,
                 cls : 'services-toolbar-btn',
-                menu : new Ext.menu.Menu({
+                menu : {
                 	border : false,
-                    showSeparator : false
-                }),
+                    showSeparator : false,
+                    items : []
+                },
                 iconAlign : "right",
                 clickEvent : 'mousedown'
-            });
-            this.add(button);
-            this.add(' ');
+            };
+            cfg.push(button);
+            cfg.push(' ');
         } else {
             button = buttonSearch;
         }
-        return button.menu;
+        return button.menu.items;
+    },
+    
+    
+    findButtonInCfg : function (category, cfg) {
+    	var result = null;
+    	Ext.each(cfg, function(item) {
+    		if(item.xtype == "button" && item.category == category){
+    			result = item;
+    			return;
+    		}
+    	});    	
+    	return result;
+    	
     },
     
     /**
@@ -163,15 +179,17 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
      */
     sortServices : function (records) {
         var tbRight = [], tb = [];
-        tb.push(this.addAdditionalButton());
+        tb = tb.concat(this.addAdditionalButton());
         Ext.each(records, function (item) {
-            if (item.get('position') === 'left' || Ext.isEmpty(item.get('position'))) {
-                tb.push(item);
-            } else {
-                tbRight.push(item);
-            }
+        	if (item.get("visible")) {
+	            if (item.get('position') === 'left' || Ext.isEmpty(item.get('position'))) {
+	                tb.push(item);
+	            } else {
+	                tbRight.push(item);
+	            }
+        	}
         });
-        tb.push(Ext.create("Ext.toolbar.Fill"));
+        tb.push("->");
         
         return tb.concat(tbRight);
     },

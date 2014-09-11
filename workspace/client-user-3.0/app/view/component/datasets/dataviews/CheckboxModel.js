@@ -23,10 +23,6 @@ Ext.namespace('sitools.user.view.component.datasets.dataviews');
 Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
     extend: 'Ext.selection.CheckboxModel',
     
-    // Provides differentiation of logic between MULTI, SIMPLE and SINGLE
-    // selection modes. Requires that an event be passed so that we can know
-    // if user held ctrl or shift.
-    
     constructor: function(){
         var me = this;
         me.callParent(arguments);   
@@ -36,6 +32,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
      * Add the header checkbox to the header row
      * @private
      * @param {Boolean} initial True if we're binding for the first time.
+     * SITOOLS PATCH : patched to enable header checkbox even if we have a buffered store 
      */
     addCheckbox: function(view, initial){
         var me = this,
@@ -62,6 +59,10 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
         }
     },
     
+    /**
+     * SITOOLS PATCH :
+     * Handle MULTI mode without ctrl key. It is now possible to select multiple ranges and also to deselect using ranges
+     */
     //Suppress all events on selection
     selectWithEvent: function(record, e) {
         var me = this,
@@ -77,24 +78,25 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
         switch (me.selectionMode) {
             case 'MULTI':
                 if (shift && start) {
-                    me.selectRange(start, record, ctrl);
-                } else if (ctrl && isSelected) {
-                    me.doDeselect(record, false);
-                } else if (ctrl) {
-                    me.doSelect(record, true, false);
-                } else if (isSelected && !shift && !ctrl && len > 1) {
-                    toDeselect = [];
-                    
-                    for (i = 0; i < len; ++i) {
-                        item = selected[i];
-                        if (item !== record) {
-                            toDeselect.push(item);    
-                        }
-                    }
-                    
-                    me.doDeselect(toDeselect, true);
-                } else if (!isSelected) {
-                    me.doSelect(record, false, true);
+                	if (me.isSelected(start)) {
+                		me.selectRange(start, record, true);
+                	} else {
+                		me.deselectRange(start, record);
+                	}
+                } 
+                else if (isSelected) {
+                	//if all records were selected, deselect everything and select the record clicked
+                	if (me.markAll) {
+                		me.suspendEvents(false);
+                		me.deselectAll();
+                		me.resumeEvents();
+                        me.doSelect(record, true);
+                	}
+                	else {
+                		me.doDeselect(record);
+                	}
+                } else {
+                    me.doSelect(record, true);
                 }
                 break;
             case 'SIMPLE':
@@ -121,12 +123,47 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
         // start of any range created from now on.
         // If we drop to no records selected, then there is no range start any more.
         if (!shift) {
-            if (me.isSelected(record)) {
-                me.selectionStart = record;
-            } else {
-                me.selectionStart = null;
-            }
+        	me.selectionStart = record;
         }
+    },
+    
+    /**
+     * SITOOLS PATCH do nothing, handle in the onHeaderClick method
+     */
+    updateHeaderState: Ext.emptyFn,
+    
+    /**
+     * Toggle between selecting all and deselecting all when clicking on
+     * a checkbox header.
+     * SITOOLS PATCH : Handle the header click
+     */
+    onHeaderClick: function(headerCt, header, e) {
+        if (header.isCheckerHd) {
+            e.stopEvent();
+            var me = this,
+                isChecked = header.el.hasCls(Ext.baseCSSPrefix + 'grid-hd-checker-on');
+                
+            // Prevent focus changes on the view, since we're selecting/deselecting all records
+            me.preventFocus = true;
+            if (isChecked) {
+                me.deselectAll(true);
+            } else {
+                me.selectAll(true);
+            }
+            delete me.preventFocus;
+        }
+    },
+    
+    /**
+     * Update selection to deal with simulated selection of all records 
+     */
+    updateSelection : function () {
+    	if(this.markAll) {
+    		var renderer = this.gridView.getPlugin('renderer');
+            var firstIndex = renderer.getFirstVisibleRowIndex();
+            var lastIndex = renderer.getLastVisibleRowIndex();
+            this.selectRange(firstIndex, lastIndex, false);
+    	}
     },
     
     /**
@@ -134,12 +171,44 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
      * {@link Ext.grid.AbstractSelectionModel#isLocked is not locked}.
      */
     selectAll : function () {
-        this.clearSelections();
         this.markAll = true;
-
-        if (this.headerCheckbox) {
-            this.headerCheckbox.addClass('x-grid3-hd-checker-on');
-        }
-        Ext.ux.grid.livegrid.CheckboxSelectionModel.superclass.selectAll.call(this, true);
+        this.updateSelection();
+        this.toggleUiHeader(this.markAll);
+        this.callParent();
     },
+    
+    deselectAll : function () {
+    	this.markAll = false;
+    	this.toggleUiHeader(this.markAll);
+    	this.callParent();
+    },
+    
+    /**
+     * SITOOLS PATCH : patched to enable MULTI selection mode (not enable by default)
+     */
+    processSelection: function(view, record, item, index, e){
+        var me = this,
+            checker = e.getTarget(me.checkSelector),
+            mode;
+            
+        // checkOnly set, but we didn't click on a checker.
+        if (me.checkOnly && !checker) {
+            return;
+        }
+
+        if (checker) {
+            mode = me.getSelectionMode();
+            // dont change the mode if its single otherwise
+            // we would get multiple selection
+//            if (mode !== 'SINGLE') {
+//                me.setSelectionMode('SIMPLE');
+//            }
+            me.selectWithEvent(record, e);
+            me.setSelectionMode(mode);
+        } else {
+            me.selectWithEvent(record, e);
+        }
+    }
+    
+    
 });

@@ -72,6 +72,20 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                         });
                     }
                 }
+            },
+            'livegridView' : {
+            	resize : function (view) {
+            		view.getSelectionModel().updateSelection();
+            	},
+            	afterrender: function (view) {
+            		view.getView().getEl().on('scroll', function () {
+            			view.getSelectionModel().updateSelection();
+            		}, view);
+            		
+            		view.on('scroll', function () {
+            			view.getSelectionModel().updateSelection();
+            		}, view);
+				}
             }
         });
     }
