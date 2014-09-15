@@ -6,13 +6,9 @@
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/tree_orders.png</icon>
-  <xtype>sitools.user.component.dataviews.services.addToCartService</xtype>
+  <xtype>sitools.user.component.datasets.services.AddToCartService</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/addToCartService.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>1</priority>

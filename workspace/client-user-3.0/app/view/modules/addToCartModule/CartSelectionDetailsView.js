@@ -36,80 +36,80 @@ Ext.define('sitools.user.modules.CartSelectionDetailsView', {
     disableSelection : true,
     initComponent : function () {
 
-        this.selectionId = this.selection.data.selectionId;
-        
-        this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";
-        this.recordsFileUrl = loadUrl.get('APP_URL') + this.AppUserStorage + "/"
-            + DEFAULT_ORDER_FOLDER + "/records/" + userLogin + "_" + this.selectionId + "_records.json";
-        
-        this.viewConfig = {
-            autoFill : (this.columnModel.length > 8) ? false : true,
-            listeners : {
-                scope : this,
-                refresh : function (view) {
-                    this.getEl().unmask();
-                }
-            }
-        };
-       
-        var fields = [];
-        var columns = [];
-        
-        Ext.each(this.columnModel, function (item, index, totalItems) {
-            if (Ext.isEmpty(item.columnRenderer) ||  ColumnRendererEnum.NO_CLIENT_ACCESS != item.columnRenderer.behavior) {
-                var field = {name : item.columnAlias};
-                fields.push(field);
-                item.dataIndex = item.columnAlias;
-                item.renderer = function (value, metadata, record, rowIndex, colIndex, store) {
-                    if(value.length > 10) {
-                        metadata.attr = 'ext:qtip="' + value + '" ext:qwidth="auto"';
-                    }
-                    return value;
-                };
-                columns.push(Ext.create('Ext.grid.column.Column', 
-                    item
-            	});
-            }
-        });
-        
-//        this.colModel = new Ext.grid.ColumnModel({
-//            columns : columns
+//        this.selectionId = this.selection.data.selectionId;
+//        
+//        this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";
+//        this.recordsFileUrl = loadUrl.get('APP_URL') + this.AppUserStorage + "/"
+//            + DEFAULT_ORDER_FOLDER + "/records/" + userLogin + "_" + this.selectionId + "_records.json";
+//        
+//        this.viewConfig = {
+//            autoFill : (this.columnModel.length > 8) ? false : true,
+//            listeners : {
+//                scope : this,
+//                refresh : function (view) {
+//                    this.getEl().unmask();
+//                }
+//            }
+//        };
+//       
+//        var fields = [];
+//        var columns = [];
+//        
+//        Ext.each(this.columnModel, function (item, index, totalItems) {
+//            if (Ext.isEmpty(item.columnRenderer) ||  ColumnRendererEnum.NO_CLIENT_ACCESS != item.columnRenderer.behavior) {
+//                var field = {name : item.columnAlias};
+//                fields.push(field);
+//                item.dataIndex = item.columnAlias;
+//                item.renderer = function (value, metadata, record, rowIndex, colIndex, store) {
+//                    if(value.length > 10) {
+//                        metadata.attr = 'ext:qtip="' + value + '" ext:qwidth="auto"';
+//                    }
+//                    return value;
+//                };
+//                columns.push(Ext.create('Ext.grid.column.Column', 
+//                    item
+//            	});
+//            }
 //        });
-                
-        this.colModel = columns;
-        
-        this.primaryKey = this.getPrimaryKeyFromCm(this.colModel);
-        this.sm = null;
-        
-        this.params = Ext.urlDecode(this.selections);
-        
-        var colModel = extColModelToSrv(this.columnModel);
-        this.params.colModel = Ext.util.JSON.encode(colModel);
-        
-        this.store = Ext.create('Ext.data.JsonStore', {
-            proxy : {
-            	type : 'ajax',
-                method : 'GET',
-                url : this.url,
-                reader : {
-                	type : 'json',
-                	root : 'data'
-                }
-            },
-            baseParams : this.params,
-            restful : true,
-            fields : fields
-            
-        });
-
-        this.bbar = {
-            xtype : 'paging',
-            pageSize : 300,
-            store : this.store,
-            displayInfo : true,
-            displayMsg : i18n.get('paging.display'),
-            emptyMsg : i18n.get('paging.empty')
-        };
+//        
+////        this.colModel = new Ext.grid.ColumnModel({
+////            columns : columns
+////        });
+//                
+//        this.colModel = columns;
+//        
+//        this.primaryKey = this.getPrimaryKeyFromCm(this.colModel);
+//        this.sm = null;
+//        
+//        this.params = Ext.urlDecode(this.selections);
+//        
+//        var colModel = extColModelToSrv(this.columnModel);
+//        this.params.colModel = Ext.util.JSON.encode(colModel);
+//        
+//        this.store = Ext.create('Ext.data.JsonStore', {
+//            proxy : {
+//            	type : 'ajax',
+//                method : 'GET',
+//                url : this.url,
+//                reader : {
+//                	type : 'json',
+//                	root : 'data'
+//                }
+//            },
+//            baseParams : this.params,
+//            restful : true,
+//            fields : fields
+//            
+//        });
+//
+//        this.bbar = {
+//            xtype : 'paging',
+//            pageSize : 300,
+//            store : this.store,
+//            displayInfo : true,
+//            displayMsg : i18n.get('paging.display'),
+//            emptyMsg : i18n.get('paging.empty')
+//        };
         
         sitools.user.modules.cartSelectionDetails.superclass.initComponent.call(this);
     },
