@@ -46,7 +46,7 @@ public final class UserStorageApplication extends SitoolsApplication {
   private String rootDirectory;
 
   /** User accounts database with quota constraints and status */
-  private UserStorageStore store = null;
+  private UserStorageStoreInterface store = null;
 
   /**
    * Constructor
@@ -56,7 +56,7 @@ public final class UserStorageApplication extends SitoolsApplication {
    */
   public UserStorageApplication(Context context) {
     super(context);
-    this.store = (UserStorageStore) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (UserStorageStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.rootDirectory = (String) context.getAttributes().get("USER_STORAGE_ROOT");
     // this.getMetadataService().addExtension("gz", MediaType.APPLICATION_GNU_ZIP, true);
   }
@@ -112,7 +112,7 @@ public final class UserStorageApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public UserStorageStore getStore() {
+  public UserStorageStoreInterface getStore() {
     return store;
   }
 
@@ -122,7 +122,7 @@ public final class UserStorageApplication extends SitoolsApplication {
    * @param store
    *          the store to set
    */
-  public void setStore(UserStorageStore store) {
+  public void setStore(UserStorageStoreInterface store) {
     this.store = store;
   }
 

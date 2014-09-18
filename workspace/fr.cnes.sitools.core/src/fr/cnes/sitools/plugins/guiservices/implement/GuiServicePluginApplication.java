@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 
 /**
  * Application used to manage GuiServices on datasets
@@ -41,7 +39,7 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
 public class GuiServicePluginApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<GuiServicePluginModel> store = null;
+  private GuiServicePluginStoreInterface store = null;
 
   /**
    * Constructor
@@ -49,10 +47,9 @@ public class GuiServicePluginApplication extends SitoolsApplication {
    * @param context
    *          Restlet Host Context
    */
-  @SuppressWarnings("unchecked")
   public GuiServicePluginApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<GuiServicePluginModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (GuiServicePluginStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -81,7 +78,7 @@ public class GuiServicePluginApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<GuiServicePluginModel> getStore() {
+  public GuiServicePluginStoreInterface getStore() {
     return store;
   }
 

@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 
 /**
  * Exposition of Filters
@@ -40,7 +38,7 @@ import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 public final class FilterApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<FilterChainedModel> store = null;
+  private FilterStoreInterface store = null;
 
   /**
    * Application associated to a filter
@@ -51,7 +49,7 @@ public final class FilterApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public FilterApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<FilterChainedModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (FilterStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -86,7 +84,7 @@ public final class FilterApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<FilterChainedModel> getStore() {
+  public FilterStoreInterface getStore() {
     return store;
   }
 

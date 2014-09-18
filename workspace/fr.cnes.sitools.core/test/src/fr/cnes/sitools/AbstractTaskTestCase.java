@@ -61,22 +61,23 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
-import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
-import fr.cnes.sitools.role.RoleStoreXML;
-import fr.cnes.sitools.role.model.Role;
+import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
+import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXMLMap;
+import fr.cnes.sitools.role.RoleStoreInterface;
+import fr.cnes.sitools.role.RoleStoreXMLMap;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
-import fr.cnes.sitools.security.authorization.AuthorizationStore;
-import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
-import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
-import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXML;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreInterface;
+import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXMLMap;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.tasks.TaskStoreXML;
+import fr.cnes.sitools.tasks.TaskStoreInterface;
+import fr.cnes.sitools.tasks.TaskStoreXMLMap;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.tasks.business.TaskManager;
@@ -91,21 +92,21 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static TaskStoreXML store = null;
+  private static TaskStoreInterface store = null;
 
   /**
    * static xml store instance for the test
    */
-  private static ResourcePluginStoreXML storeResource = null;
+  private static ResourcePluginStoreInterface storeResource = null;
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<UserBlackListModel> storeBlacklist = null;
+  private static UserBlackListStoreInterface storeBlacklist = null;
 
   /** The SitoolsMemoryRealm */
   private static SitoolsMemoryRealm smr = null;
   /** AuthorizationStore */
-  private AuthorizationStore storeAuthorization;
+  private AuthorizationStoreInterface storeAuthorization;
 
   /**
    * Restlet Component for server
@@ -183,8 +184,9 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
         JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity,
             appContextAuthorization);
 
-        SitoolsStore<Role> storeRole = new RoleStoreXML(new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR)),
-            appContextAuthorization);
+        File roleStoreDir = new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR) + "/map");
+        roleStoreDir.mkdirs();
+        RoleStoreInterface storeRole = new RoleStoreXMLMap(roleStoreDir, appContextAuthorization);
 
         // Realm
         smr = new SitoolsMemoryRealm(storeUandG, storeRole, settings);
@@ -200,8 +202,9 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
       this.component.getContext().getAttributes().put("APP_REALM", smr);
 
       if (storeAuthorization == null) {
-        storeAuthorization = new AuthorizationStoreXML(new File(
-            settings.getStoreDIR(Consts.APP_AUTHORIZATIONS_STORE_DIR)), appContextAuthorization);
+        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_AUTHORIZATIONS_STORE_DIR)
+            + "/map");
+        storeAuthorization = new AuthorizationStoreXMLMap(storeDirectory, appContextAuthorization);
       }
 
       appContextAuthorization.getAttributes().put(ContextAttributes.APP_STORE, storeAuthorization);
@@ -219,22 +222,28 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
       appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
 
       if (store == null) {
-        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_TASK_STORE_DIR));
+        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_TASK_STORE_DIR) + "/map");
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new TaskStoreXML(storeDirectory, appContext);
+        cleanMapDirectories(storeDirectory);
+        store = new TaskStoreXMLMap(storeDirectory, appContext);
       }
 
       if (storeResource == null) {
-        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR));
+        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)
+            + "/map");
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        storeResource = new ResourcePluginStoreXML(storeDirectory, appContext);
+        cleanMapDirectories(storeDirectory);
+        storeResource = new ResourcePluginStoreXMLMap(storeDirectory, appContext);
       }
 
       if (storeBlacklist == null) {
         File storeBlacklistDirectory = new File(getTestRepository()
-            + settings.getString(Consts.APP_USER_BLACKLIST_STORE_DIR));
+            + settings.getString(Consts.APP_USER_BLACKLIST_STORE_DIR) + "/map");
+        storeBlacklistDirectory.mkdirs();
         cleanDirectory(storeBlacklistDirectory);
-        storeBlacklist = new UserBlackListStoreXML(storeBlacklistDirectory, appContext);
+        storeBlacklist = new UserBlackListStoreXMLMap(storeBlacklistDirectory, appContext);
       }
 
       settings.getStores().put(Consts.APP_STORE_USER_BLACKLIST, storeBlacklist);

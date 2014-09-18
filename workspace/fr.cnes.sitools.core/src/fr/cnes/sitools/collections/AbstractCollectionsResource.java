@@ -33,7 +33,6 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -50,7 +49,7 @@ public abstract class AbstractCollectionsResource extends SitoolsResource {
   private CollectionsApplication application = null;
 
   /** store */
-  private SitoolsStore<Collection> store = null;
+  private CollectionStoreInterface store = null;
 
   /** Collection identifier parameter */
   private String collectionId = null;
@@ -143,7 +142,7 @@ public abstract class AbstractCollectionsResource extends SitoolsResource {
    * @param store
    *          the store to set
    */
-  public final void setStore(SitoolsStore<Collection> store) {
+  public final void setStore(CollectionStoreInterface store) {
     this.store = store;
   }
 
@@ -152,7 +151,7 @@ public abstract class AbstractCollectionsResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<Collection> getStore() {
+  public final CollectionStoreInterface getStore() {
     return store;
   }
 

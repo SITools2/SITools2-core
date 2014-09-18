@@ -56,7 +56,7 @@ public abstract class AbstractStorageResource extends SitoolsResource {
   private String directoryId;
 
   /** Store of the application */
-  private DataStorageStore store;
+  private DataStorageStoreInterface store;
 
   /**
    * Initialize the resource
@@ -140,7 +140,7 @@ public abstract class AbstractStorageResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final DataStorageStore getStore() {
+  public final DataStorageStoreInterface getStore() {
     return this.store;
   }
 

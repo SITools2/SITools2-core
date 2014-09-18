@@ -20,7 +20,7 @@ package fr.cnes.sitools.service.storage.runnables;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.service.storage.DataStorageStore;
+import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.StorageAdministration;
 import fr.cnes.sitools.service.storage.model.StorageDirectory;
 
@@ -35,7 +35,7 @@ public abstract class StorageRunnable implements Runnable {
   /** Storage object */
   protected StorageDirectory sd;
   /** StorageDirectory store */
-  protected DataStorageStore store;
+  protected DataStorageStoreInterface store;
   /** SolrUrl */
   protected String solrUrl;
   /** Context */

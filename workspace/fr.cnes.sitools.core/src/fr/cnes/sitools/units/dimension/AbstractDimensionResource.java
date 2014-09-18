@@ -34,7 +34,6 @@ import com.thoughtworks.xstream.mapper.ClassAliasingMapper;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 import fr.cnes.sitools.units.dimension.model.SitoolsUnit;
 
@@ -48,7 +47,7 @@ public abstract class AbstractDimensionResource extends SitoolsResource {
   private AbstractDimensionApplication dimApp;
   
   /** Storage for resources */
-  private SitoolsStore<SitoolsDimension> store;
+  private DimensionStoreInterface store;
   
   
   @Override
@@ -76,7 +75,7 @@ public abstract class AbstractDimensionResource extends SitoolsResource {
    * Gets the store value
    * @return the store
    */
-  public final SitoolsStore<SitoolsDimension> getStore() {
+  public final DimensionStoreInterface getStore() {
     return store;
   }
   

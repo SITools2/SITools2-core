@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.view.model.DatasetView;
 
 /**
  * Application for managing FormComponent
@@ -43,7 +41,7 @@ import fr.cnes.sitools.dataset.view.model.DatasetView;
 public final class DatasetViewApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<DatasetView> store = null;
+  private DatasetViewStoreInterface store = null;
 
   /**
    * Constructor
@@ -54,7 +52,7 @@ public final class DatasetViewApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public DatasetViewApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<DatasetView>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (DatasetViewStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -83,7 +81,7 @@ public final class DatasetViewApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<DatasetView> getStore() {
+  public DatasetViewStoreInterface getStore() {
     return store;
   }
 

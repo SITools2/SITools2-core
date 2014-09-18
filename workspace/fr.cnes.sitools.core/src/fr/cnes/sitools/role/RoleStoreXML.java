@@ -35,6 +35,7 @@ import fr.cnes.sitools.role.model.Role;
  * @author jp.boignard (AKKA Technologies)
  * 
  */
+@Deprecated
 public final class RoleStoreXML extends SitoolsStoreXML<Role> {
 
   /** default location for file persistence */

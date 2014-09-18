@@ -39,15 +39,6 @@ public interface AuthorizationStore extends Closeable {
   ResourceAuthorization[] getArray();
 
   /**
-   * Method for getting objects according to the XQuery
-   * 
-   * @param xquery
-   *          String with XQuery syntax
-   * @return Array
-   */
-  ResourceAuthorization[] getArrayByXQuery(String xquery);
-
-  /**
    * Method for getting authorizations according to the specified filter
    * 
    * @param filter
@@ -88,14 +79,6 @@ public interface AuthorizationStore extends Closeable {
    * @return List of authorization
    */
   List<ResourceAuthorization> getListByType(ResourceCollectionFilter filter, String resourceType);
-  /**
-   * Method for getting authorization with XQuery request syntax
-   * 
-   * @param xquery
-   *          String
-   * @return List of authorization
-   */
-  List<ResourceAuthorization> getListByXQuery(String xquery);
 
   /**
   * Method for getting authorizations according to the pagination criteria

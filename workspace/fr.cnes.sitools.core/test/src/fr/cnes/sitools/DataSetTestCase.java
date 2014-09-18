@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.After;
@@ -132,12 +133,13 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
     item.setDescription("description_modified");
     update(item);
     startDs();
+    item.setLastStatusUpdate(new Date());
     item.setStatus("ACTIVE");
     getExpositionDs(item);
     getSql();
     refreshDs();
     checkProperties();
-    stopDs();
+    stopDs(item);
     delete(item);
     assertNone();
     createWadl(getBaseDatasetUrl(), "datasets_admin");
@@ -323,8 +325,11 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
   /**
    * Invoke PUT
    * 
+   * @param dataset
+   *          the dataset to assert
+   * 
    */
-  public void stopDs() {
+  public void stopDs(DataSet dataset) {
     ClientResource cr = new ClientResource(getBaseDatasetUrl() + "/10000012345648/stop");
     Representation result = cr.put(null, MediaType.APPLICATION_JSON);
     assertTrue(cr.getStatus().isSuccess());
@@ -336,6 +341,7 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(response.getItem());
     DataSet ds = (DataSet) response.getItem();
     assertEquals("INACTIVE", ds.getStatus());
+    assertTrue(dataset.getLastStatusUpdate().before(ds.getLastStatusUpdate()));
     RIAPUtils.exhaust(result);
     cr.release();
   }
@@ -355,6 +361,7 @@ public class DataSetTestCase extends AbstractSitoolsServerTestCase {
     assertNotNull(response.getItem());
     DataSet ds = (DataSet) response.getItem();
     assertEquals("ACTIVE", ds.getStatus());
+    assertNotNull(ds.getLastStatusUpdate());
     RIAPUtils.exhaust(result);
     cr.release();
   }

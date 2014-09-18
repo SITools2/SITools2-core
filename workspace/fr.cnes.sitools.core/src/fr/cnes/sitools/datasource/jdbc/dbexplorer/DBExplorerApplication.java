@@ -18,15 +18,20 @@
  ******************************************************************************/
 package fr.cnes.sitools.datasource.jdbc.dbexplorer;
 
+import java.util.Date;
+
 import org.restlet.Context;
 import org.restlet.Restlet;
 import org.restlet.resource.ServerResource;
 import org.restlet.routing.Router;
 import org.restlet.security.MemoryRealm;
 
+import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
+import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreInterface;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
+import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 
 /**
  * Finder mapping a database resource
@@ -82,6 +87,7 @@ public final class DBExplorerApplication extends SitoolsApplication {
    * Delete granted
    */
   private volatile boolean deleteAllowed = modifiable;
+  
 
   /**
    * -------------------------------------------------------------------------- --------------------
@@ -300,5 +306,82 @@ public final class DBExplorerApplication extends SitoolsApplication {
     setDescription("Finder mapping a database resource.");
     setCategory(Category.ADMIN_DYNAMIC);
   }
+  
+  @Override
+  public synchronized void start() throws Exception {
+    super.start();
+    boolean isSynchro = getIsSynchro();
+    JDBCDataSourceStoreInterface store = (JDBCDataSourceStoreInterface) getContext().getAttributes().get(
+        ContextAttributes.APP_STORE);
+    if (isStarted()) {
+      JDBCDataSource datasource = store.retrieve(getId());
+      if (datasource != null) {
+        if (!isSynchro) {
+          datasource.setStatus("ACTIVE");
+          datasource.setLastStatusUpdate(new Date());
+//          this.dataSource = datasource;
+          store.update(datasource);
+        }
+      }
+    }
+    else {
+      getLogger().warning("DBExplorerApplication should be started.");
+      JDBCDataSource datasource = store.retrieve(getId());
+      if (datasource != null) {
+        if (!isSynchro) {
+          datasource.setStatus("INACTIVE");
+          datasource.setLastStatusUpdate(new Date());
+          store.update(datasource);
+        }
+      }
+    }
+  }
+
+  @Override
+  public synchronized void stop() throws Exception {
+    super.stop();
+    boolean isSynchro = getIsSynchro();
+    JDBCDataSourceStoreInterface store = (JDBCDataSourceStoreInterface) getContext().getAttributes().get(
+        ContextAttributes.APP_STORE);
+    if (isStopped()) {
+      JDBCDataSource datasource = store.retrieve(getId());
+      if (datasource != null) {
+        if (!isSynchro) {
+          datasource.setStatus("INACTIVE");
+          datasource.setLastStatusUpdate(new Date());
+          store.update(datasource);
+        }
+      }
+    }
+    else {
+      getLogger().warning("DBExplorerApplication should be stopped.");
+      JDBCDataSource datasource = store.retrieve(getId());
+      if (datasource != null) {
+        if (!isSynchro) {
+          datasource.setStatus("ACTIVE");
+          datasource.setLastStatusUpdate(new Date());
+//          this.dataSource = datasource;
+          store.update(datasource);
+        }
+      }
+    }
+
+  }
+
+  /**
+   * Return true if the application is in synchro mode, false otherwise
+   * 
+   * @return true if the application is in synchro mode, false otherwise
+   */
+  private boolean getIsSynchro() {
+    Object dontUpdateStatusDate = getContext().getAttributes().get("IS_SYNCHRO");
+    if (dontUpdateStatusDate == null) {
+      return false;
+    }
+    return ((Boolean) dontUpdateStatusDate);
+  }
+  
+
+
 
 }

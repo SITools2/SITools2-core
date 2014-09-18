@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -138,8 +138,10 @@ public abstract class AbstractSitoolsServerTestCase {
    * 
    * @param dir
    *          directory to be cleaned
+   * @param recursive
+   *          true to go through all children of dir, false otherwise
    */
-  public static void cleanDirectory(File dir) {
+  public static void cleanDirectory(File dir, boolean recursive) {
     if (dir == null) {
       LOGGER.warning("Null directory");
       return;
@@ -147,7 +149,43 @@ public abstract class AbstractSitoolsServerTestCase {
 
     LOGGER.info("Clean XML files in directory " + dir.getAbsolutePath());
     try {
-      FileUtils.cleanDirectory(dir, new String[] { "xml" }, false);
+      FileUtils.cleanDirectory(dir, new String[] {"xml"}, recursive);
+    }
+    catch (IOException e) {
+      Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
+          "Unable to clean " + dir.getPath() + "\n cause:" + e.getMessage());
+    }
+  }
+
+  /**
+   * Try to remove files from directory
+   * 
+   * @param dir
+   *          directory to be cleaned
+   */
+  public static void cleanDirectory(File dir) {
+    cleanDirectory(dir, false);
+  }
+
+  /**
+   * Supprime tous les fichiers du repertoire.
+   * 
+   * @param dir
+   *          File directory to clean up
+   * @param recursive
+   *          true to go through all children of dir, false otherwise
+   * 
+   * 
+   */
+  public static void cleanDirectoryAll(File dir, boolean recursive) {
+    if (dir == null) {
+      LOGGER.warning("Null directory");
+      return;
+    }
+
+    LOGGER.info("Clean directory " + dir.getAbsolutePath());
+    try {
+      FileUtils.cleanDirectory(dir, new String[] {}, recursive);
     }
     catch (IOException e) {
       Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
@@ -162,19 +200,48 @@ public abstract class AbstractSitoolsServerTestCase {
    *          File directory to clean up
    */
   public static void cleanDirectoryAll(File dir) {
-    if (dir == null) {
+    cleanDirectoryAll(dir, false);
+  }
+
+  /**
+   * Try to remove files from all the map directories under rootDir
+   * 
+   * @param rootDir
+   *          directory to be cleaned
+   */
+  public static void cleanMapDirectories(File rootDir) {
+    if (rootDir == null) {
       LOGGER.warning("Null directory");
       return;
     }
 
-    LOGGER.info("Clean directory " + dir.getAbsolutePath());
     try {
-      FileUtils.cleanDirectory(dir, new String[] {}, false);
+      if (rootDir.getName().equals("map")) {
+        FileUtils.cleanDirectory(rootDir, new String[] {"xml"}, false);
+      }
+
+      LOGGER.info("Clean XML files in maps directory " + rootDir.getAbsolutePath());
+      File[] children = rootDir.listFiles();
+      for (File file : children) {
+        if (file.isDirectory()) {
+          cleanMapDirectories(file);
+        }
+      }
     }
     catch (IOException e) {
       Engine.getLogger(AbstractSitoolsServerTestCase.class.getName()).warning(
-          "Unable to clean " + dir.getPath() + "\n cause:" + e.getMessage());
+          "Unable to clean " + rootDir.getPath() + "\n cause:" + e.getMessage());
     }
+  }
+
+  /**
+   * Try to remove files from all the map directories under rootDirPath
+   * 
+   * @param rootDirPath
+   *          the path of the directory to be cleaned
+   */
+  public static void cleanMapDirectories(String rootDirPath) {
+    cleanDirectory(new File(rootDirPath));
   }
 
   /**
@@ -186,7 +253,7 @@ public abstract class AbstractSitoolsServerTestCase {
    *          String directory path
    */
   public static void setUpDataDirectory(String source, String cible) {
-    cleanDirectoryAll(new File(cible));
+    cleanDirectory(new File(cible), true);
     LOGGER.info("Copy files from:" + source + " cible:" + cible);
     File cibleFile = new File(cible);
     if (!cibleFile.exists()) {

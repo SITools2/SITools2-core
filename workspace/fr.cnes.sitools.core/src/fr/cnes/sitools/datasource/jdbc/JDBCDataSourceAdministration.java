@@ -29,7 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.datasource.jdbc.dbexplorer.DBExplorerApplication;
@@ -44,7 +43,7 @@ import fr.cnes.sitools.registry.AppRegistryApplication;
 public final class JDBCDataSourceAdministration extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<JDBCDataSource> store = null;
+  private JDBCDataSourceStoreInterface store = null;
 
   /** To attach RESTlet DataSource to server component. */
   private Router parentRouter = null;
@@ -57,10 +56,9 @@ public final class JDBCDataSourceAdministration extends SitoolsApplication {
    * @param context
    *          RESTlet application context
    */
-  @SuppressWarnings("unchecked")
   public JDBCDataSourceAdministration(Router parentRouter, Context context) {
     super(context);
-    this.store = (SitoolsStore<JDBCDataSource>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (JDBCDataSourceStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
 
     this.parentRouter = parentRouter;
 
@@ -167,7 +165,7 @@ public final class JDBCDataSourceAdministration extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<JDBCDataSource> getStore() {
+  public JDBCDataSourceStoreInterface getStore() {
     return store;
   }
 

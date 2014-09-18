@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.form.project.dto.FormProjectAdminDTO;
 import fr.cnes.sitools.form.project.model.FormProject;
 
@@ -52,7 +51,7 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
   private FormProjectApplication application = null;
 
   /** store */
-  private SitoolsStore<FormProject> store = null;
+  private FormProjectStoreInterface store = null;
 
   /** The projectId parameter */
   private String projectId = null;
@@ -165,7 +164,7 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
    * @param store
    *          the store to set
    */
-  public final void setStore(SitoolsStore<FormProject> store) {
+  public final void setStore(FormProjectStoreInterface store) {
     this.store = store;
   }
 
@@ -174,7 +173,7 @@ public abstract class AbstractFormProjectResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<FormProject> getStore() {
+  public final FormProjectStoreInterface getStore() {
     return store;
   }
 

@@ -64,7 +64,7 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
     try {
 
       if (getAppId() != null) {
-        ApplicationPluginModel appModel = getStore().get(getAppId());
+        ApplicationPluginModel appModel = getStore().retrieve(getAppId());
         Response response = null;
         if (appModel != null) {
           ApplicationPluginModelDTO appModelOutDTO = getApplicationModelDTO(appModel);
@@ -126,7 +126,7 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
 
         // get the classname from the store
         if (appInput.getClassName() == null || appInput.getClassName().equals("")) {
-          ApplicationPluginModel modelStored = getStore().get(appInput.getId());
+          ApplicationPluginModel modelStored = getStore().retrieve(appInput.getId());
           appInput.setClassName(modelStored.getClassName());
         }
 
@@ -141,7 +141,7 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         }
         // END OF THE VALIDATION PART
 
-        ApplicationPluginModel app = getStore().get(getAppId());
+        ApplicationPluginModel app = getStore().retrieve(getAppId());
         if ("ACTIVE".equals(app.getStatus())) {
           Response response = new Response(false, "APP_PLUGIN_ACTIVE");
           return getRepresentation(response, variant);
@@ -151,9 +151,9 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
         appInput.setName(app.getName());
         appInput.setDescription(app.getDescription());
 
-        getStore().save(appInput);
+        getStore().update(appInput);
 
-        appOutput = getStore().get(getAppId());
+        appOutput = getStore().retrieve(getAppId());
 
       }
 
@@ -194,11 +194,11 @@ public final class ApplicationPluginResource extends AbstractApplicationPluginRe
   public Representation deleteAppPlugin(Variant variant) {
     try {
 
-      ApplicationPluginModel appOutput = getStore().get(getAppId());
+      ApplicationPluginModel appOutput = getStore().retrieve(getAppId());
       Response response;
       if (appOutput != null) {
         // Business service
-        getStore().delete(appOutput);
+        getStore().delete(appOutput.getId());
         getResourceApplication().detachApplicationDefinively(appOutput);
         trace(Level.INFO, "Delete application plugin " + appOutput.getName());
         response = new Response(true, "ApplicationPluginModel.delete.success");

@@ -42,6 +42,7 @@ import fr.cnes.sitools.order.model.Order;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class OrderStoreXML extends SitoolsStoreXML<Order> {
 
   /** default location for file persistence */

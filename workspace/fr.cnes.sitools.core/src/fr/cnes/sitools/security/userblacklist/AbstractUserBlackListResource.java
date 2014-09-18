@@ -11,7 +11,6 @@ import fr.cnes.sitools.common.SitoolsCommonDateConverter;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 
 /**
  * Abstract resource for UserBlacklist handling
@@ -25,7 +24,7 @@ public abstract class AbstractUserBlackListResource extends SitoolsResource {
   private UserBlackListApplication application = null;
 
   /** store */
-  private SitoolsStore<UserBlackListModel> store = null;
+  private UserBlackListStoreInterface store = null;
 
   /** user identifier parameter */
   private String userId = null;
@@ -61,7 +60,7 @@ public abstract class AbstractUserBlackListResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public SitoolsStore<UserBlackListModel> getStore() {
+  public UserBlackListStoreInterface getStore() {
     return store;
   }
 

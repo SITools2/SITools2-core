@@ -39,6 +39,7 @@ import fr.cnes.sitools.inscription.model.Inscription;
  * @author jp.boignard (AKKA Technologies)
  * 
  */
+@Deprecated
 public final class InscriptionStoreXML extends SitoolsStoreXML<Inscription> {
 
   /** default location for file persistence */

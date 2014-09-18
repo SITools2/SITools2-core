@@ -35,7 +35,6 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Event;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.order.model.Order;
 
 /**
@@ -54,7 +53,7 @@ public abstract class AbstractOrderResource extends SitoolsResource {
   /**
    * Store associated
    */
-  private SitoolsStore<Order> store = null;
+  private OrderStoreInterface store = null;
 
   /**
    * Id of the order
@@ -192,7 +191,7 @@ public abstract class AbstractOrderResource extends SitoolsResource {
    * Get the store attached to the application
    * @return the order store
    */
-  public final SitoolsStore<Order> getStore() {
+  public final OrderStoreInterface getStore() {
     return this.store;
   }
   

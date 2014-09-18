@@ -28,6 +28,7 @@ import fr.cnes.sitools.AbstractSitoolsServerTestCase;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.server.Starter;
+import fr.cnes.sitools.util.FileCopyUtils;
 
 public abstract class AbstractExtSitoolsServerTestCase extends AbstractSitoolsServerTestCase {
 
@@ -51,13 +52,15 @@ public abstract class AbstractExtSitoolsServerTestCase extends AbstractSitoolsSe
     // Copy the test directory from the core project
     source = settings.getRootDirectory() + "/workspace/fr.cnes.sitools.core/test/data";
 
-    setUpDataDirectory(source, cible);
+    FileCopyUtils.copyAFolderExclude(source, cible, ".svn");
     // Copy the test directory from the ext project
     String sourceExtTest = settings.getRootDirectory() + "/workspace/fr.cnes.sitools.ext.test/test/data";
-    setUpDataDirectory(sourceExtTest, cible);
+    FileCopyUtils.copyAFolderExclude(sourceExtTest, cible, ".svn");
 
     settings.setStoreDIR(TEST_FILES_REPOSITORY + "_ext");
     settings.setTmpFolderUrl(settings.getStoreDIR(Consts.APP_TMP_FOLDER_DIR));
+    
+    cleanMapDirectories(fileCible);
 
     AbstractSitoolsServerTestCase.start();
   }

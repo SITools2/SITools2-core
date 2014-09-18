@@ -81,7 +81,7 @@ public class MongoDBDatasetTestCase extends AbstractSitoolsServerTestCase {
   /**
    * Absolute path location for data set store files
    * 
-   * @return path     
+   * @return path
    */
   protected String getTestRepository() {
     return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_STORE_DIR);

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -47,6 +47,7 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.notification.NotificationApplication;
 import fr.cnes.sitools.notification.model.RestletObservable;
 import fr.cnes.sitools.notification.model.RestletObserver;
+import fr.cnes.sitools.notification.store.NotificationStore;
 import fr.cnes.sitools.notification.store.NotificationStoreXML;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -60,7 +61,7 @@ public class NotificationTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static NotificationStoreXML store = null;
+  private static NotificationStore store = null;
 
   /**
    * Restlet Component for server
@@ -101,7 +102,6 @@ public class NotificationTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
 
     if (this.component == null) {
       this.component = new Component();
@@ -119,13 +119,14 @@ public class NotificationTestCase extends AbstractSitoolsTestCase {
       // Context
       Context appContext = this.component.getContext().createChildContext();
       appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
-      
+
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
         cleanDirectory(storeDirectory);
+        cleanMapDirectories(storeDirectory);
         store = new NotificationStoreXML(storeDirectory, appContext);
       }
-      
+
       appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, getAttachUrl());
       appContext.getAttributes().put(ContextAttributes.APP_REGISTER, false);
       appContext.getAttributes().put(ContextAttributes.APP_STORE, store);
@@ -136,8 +137,7 @@ public class NotificationTestCase extends AbstractSitoolsTestCase {
       // Attachment
       this.component.getDefaultHost().attach(getAttachUrl(), notificationApplication);
 
-      component.getInternalRouter()
-          .attach(settings.getString(Consts.APP_NOTIFICATIONS_URL), notificationApplication);
+      component.getInternalRouter().attach(settings.getString(Consts.APP_NOTIFICATIONS_URL), notificationApplication);
 
     }
 

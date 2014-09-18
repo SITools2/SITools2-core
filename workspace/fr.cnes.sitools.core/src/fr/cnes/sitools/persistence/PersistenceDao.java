@@ -19,6 +19,7 @@
 package fr.cnes.sitools.persistence;
 
 import java.util.Collection;
+import java.util.List;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 
@@ -28,6 +29,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
  * @author AKKA
  * 
  * @param <E>
+ * @deprecated use SitoolsStore<E extends IResource> instead
  */
 public interface PersistenceDao<E extends Persistent> {
 
@@ -53,8 +55,10 @@ public interface PersistenceDao<E extends Persistent> {
    * 
    * @param o
    *          the element to save
+   *          
+   * @return E
    */
-  void update(E o);
+  E update(E o);
 
   /**
    * Save a collection of elements
@@ -62,21 +66,21 @@ public interface PersistenceDao<E extends Persistent> {
    * @param os
    *          the collection to save
    */
-  void saveAll(Collection<E> os);
+  void saveAll(List<E> os);
 
   /**
    * Get the list of elements
    * 
    * @return the list
    */
-  Collection<E> getList();
+  List<E> getList();
   
   /**
    * Get the list of elements
    * @param filter query filter
    * @return the list
    */
-  Collection<E> getList(ResourceCollectionFilter filter);
+  List<E> getList(ResourceCollectionFilter filter);
 
   /**
    * Get the list of elements
@@ -84,7 +88,7 @@ public interface PersistenceDao<E extends Persistent> {
    * @param result the full result list
    * @return the list 
    */
-  Collection<E> getPage(ResourceCollectionFilter filter, Collection<E> result);
+  List<E> getPage(ResourceCollectionFilter filter, Collection<E> result);
     
   /**
    * Delete an element

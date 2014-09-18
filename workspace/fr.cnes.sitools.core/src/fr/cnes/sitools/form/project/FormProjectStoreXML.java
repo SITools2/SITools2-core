@@ -41,6 +41,7 @@ import fr.cnes.sitools.form.project.model.FormPropertyParameter;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class FormProjectStoreXML extends SitoolsStoreXML<FormProject> {
 
   /** default location for file persistence */

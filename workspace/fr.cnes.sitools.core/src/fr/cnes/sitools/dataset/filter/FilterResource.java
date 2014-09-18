@@ -34,7 +34,6 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.filter.dto.FilterModelDTO;
 import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
@@ -48,7 +47,7 @@ import fr.cnes.sitools.dataset.filter.model.FilterModel;
  */
 public final class FilterResource extends AbstractFilterResource {
   /** The FilterStore */
-  private SitoolsStore<FilterChainedModel> store;
+  private FilterStoreInterface store;
 
   /** Filter identifier parameter */
   private String filterId = null;
@@ -320,7 +319,7 @@ public final class FilterResource extends AbstractFilterResource {
    * 
    * @return the store
    */
-  public SitoolsStore<FilterChainedModel> getStore() {
+  public FilterStoreInterface getStore() {
     return store;
   }
 

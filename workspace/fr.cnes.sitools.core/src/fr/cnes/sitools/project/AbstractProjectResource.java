@@ -35,13 +35,14 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.project.graph.model.GraphNodeComplete;
+import fr.cnes.sitools.project.model.MinimalProjectPriorityDTO;
 import fr.cnes.sitools.project.model.Project;
+import fr.cnes.sitools.project.model.ProjectPriorityDTO;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -57,7 +58,7 @@ public abstract class AbstractProjectResource extends SitoolsResource {
   private AbstractProjectApplication application = null;
 
   /** store */
-  private SitoolsStore<Project> store = null;
+  private ProjectStoreInterface store = null;
 
   /** project identifier parameter */
   private String projectId = null;
@@ -138,6 +139,34 @@ public abstract class AbstractProjectResource extends SitoolsResource {
     else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
       // Parse the JSON representation to get the bean
       projectInput = new JacksonRepresentation<Project>(representation, Project.class).getObject();
+    }
+    return projectInput;
+  }
+  
+  /**
+   * Get the object from the representation
+   * 
+   * @param representation
+   *          the representation to use
+   * @param variant
+   *          the variant to use
+   * @return a project
+   */
+  public final ProjectPriorityDTO getListObject(Representation representation, Variant variant) {
+    ProjectPriorityDTO projectInput = null;
+    if (MediaType.APPLICATION_XML.isCompatible(representation.getMediaType())) {
+      // Parse the XML representation to get the bean
+      XstreamRepresentation<ProjectPriorityDTO> repXML = new XstreamRepresentation<ProjectPriorityDTO>(representation);
+      XStream xstream = XStreamFactory.getInstance().getXStreamReader(MediaType.APPLICATION_XML);
+      xstream.autodetectAnnotations(false);
+      xstream.alias("minimalProjectPriorityList", MinimalProjectPriorityDTO.class);
+
+      repXML.setXstream(xstream);
+      projectInput = repXML.getObject();
+    }
+    else if (MediaType.APPLICATION_JSON.isCompatible(representation.getMediaType())) {
+      // Parse the JSON representation to get the bean
+      projectInput = new JacksonRepresentation<ProjectPriorityDTO>(representation, ProjectPriorityDTO.class).getObject();
     }
     return projectInput;
   }
@@ -253,7 +282,7 @@ public abstract class AbstractProjectResource extends SitoolsResource {
    * 
    * @return the store available for this resource
    */
-  public final SitoolsStore<Project> getStore() {
+  public final ProjectStoreInterface getStore() {
     return this.store;
   }
 

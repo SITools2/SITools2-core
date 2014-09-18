@@ -25,7 +25,6 @@ import com.thoughtworks.xstream.XStream;
 
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.inscription.model.Inscription;
 
 /**
@@ -36,7 +35,7 @@ import fr.cnes.sitools.inscription.model.Inscription;
 public abstract class InscriptionResource extends SitoolsResource {
 
   /** store */
-  private SitoolsStore<Inscription> store = null;
+  private InscriptionStoreInterface store = null;
 
   /** inscription id request parameter */
   private String inscriptionId = null;
@@ -89,7 +88,7 @@ public abstract class InscriptionResource extends SitoolsResource {
    * Gets the store value
    * @return the store
    */
-  public final SitoolsStore<Inscription> getStore() {
+  public final InscriptionStoreInterface getStore() {
     return store;
   }
 

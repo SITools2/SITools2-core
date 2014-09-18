@@ -178,4 +178,22 @@ public final class DataSetAdministration extends AbstractDataSetApplication {
     return result;
   }
 
+  @Override
+  public void attachDataSet(DataSet ds, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void detachDataSet(DataSet ds, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void detachDataSetDefinitif(DataSet ds, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    
+  }
+
 }

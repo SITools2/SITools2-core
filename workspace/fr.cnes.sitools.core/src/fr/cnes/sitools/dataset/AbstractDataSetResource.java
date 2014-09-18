@@ -35,7 +35,6 @@ import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.DictionaryMapping;
@@ -56,7 +55,7 @@ public abstract class AbstractDataSetResource extends SitoolsResource {
   protected volatile AbstractDataSetApplication application = null;
 
   /** Store */
-  protected volatile SitoolsStore<DataSet> store = null;
+  protected volatile DataSetStoreInterface store = null;
 
   /** DataSet identifier parameter */
   protected volatile String datasetId = null;

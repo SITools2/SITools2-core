@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -43,10 +43,10 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Dependencies;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.common.model.Url;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginApplication;
-import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXML;
+import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreInterface;
+import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginStoreXMLMap;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -58,7 +58,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<GuiServicePluginModel> store = null;
+  private static GuiServicePluginStoreInterface store = null;
 
   /** The parent ID */
   private static final String PARENT_ID = "5555";
@@ -97,7 +97,7 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + settings.getString(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR);
+    return super.getTestRepository() + settings.getString(Consts.APP_GUI_SERVICES_PLUGIN_STORE_DIR) + "/map";
   }
 
   @Before
@@ -122,8 +122,9 @@ public abstract class AbstractGuiServiceImplementTestCase extends AbstractSitool
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
-        cleanDirectory(storeDirectory);
-        store = new GuiServicePluginStoreXML(storeDirectory, ctx);
+        storeDirectory.mkdirs();
+        cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
+        store = new GuiServicePluginStoreXMLMap(storeDirectory, ctx);
 
       }
 

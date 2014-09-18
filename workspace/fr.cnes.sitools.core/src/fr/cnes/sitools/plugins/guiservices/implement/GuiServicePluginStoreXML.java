@@ -35,6 +35,7 @@ import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel
  * 
  * @author m.gond
  */
+@Deprecated
 public class GuiServicePluginStoreXML extends SitoolsStoreXML<GuiServicePluginModel> {
 
   /** default location for file persistence */

@@ -26,7 +26,6 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.filter.dto.FilterModelDTO;
 import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.dataset.filter.model.FilterModel;
@@ -43,7 +42,7 @@ public final class FilterActivationResource extends AbstractFilterResource {
   private String filterId = null;
   
   /** The FilterStore */
-  private SitoolsStore<FilterChainedModel> store;
+  private FilterStoreInterface store;
 
   /**
    * Initiate the resource
@@ -174,7 +173,7 @@ public final class FilterActivationResource extends AbstractFilterResource {
    * 
    * @return the store
    */
-  public SitoolsStore<FilterChainedModel> getStore() {
+  public FilterStoreInterface getStore() {
     return store;
   }
 }

@@ -46,7 +46,7 @@ public final class AuthorizationApplication extends SitoolsApplication {
   private static String defaultAuthorization = "default";
 
   /** Store */
-  private AuthorizationStore store = null;
+  private AuthorizationStoreInterface store = null;
 
   /**
    * Constructor
@@ -56,7 +56,7 @@ public final class AuthorizationApplication extends SitoolsApplication {
    */
   public AuthorizationApplication(Context context) {
     super(context);
-    this.store = (AuthorizationStore) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (AuthorizationStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -86,7 +86,7 @@ public final class AuthorizationApplication extends SitoolsApplication {
    * Gets the store value
    * @return the store
    */
-  public AuthorizationStore getStore() {
+  public AuthorizationStoreInterface getStore() {
     return store;
   }
 

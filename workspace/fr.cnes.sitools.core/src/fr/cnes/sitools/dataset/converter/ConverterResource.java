@@ -33,7 +33,6 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.converter.dto.ConverterModelDTO;
 import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
@@ -51,7 +50,7 @@ public final class ConverterResource extends AbstractConverterResource {
   private String converterId = null;
 
   /** store */
-  private SitoolsStore<ConverterChainedModel> store = null;
+  private ConverterStoreInterface store = null;
 
   @Override
   public void sitoolsDescribe() {
@@ -304,7 +303,7 @@ public final class ConverterResource extends AbstractConverterResource {
    * 
    * @return the store
    */
-  public SitoolsStore<ConverterChainedModel> getStore() {
+  public ConverterStoreInterface getStore() {
     return store;
   }
 

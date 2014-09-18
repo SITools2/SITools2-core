@@ -41,7 +41,8 @@ public class TemplateTestCase extends AbstractSitoolsServerTestCase {
   /**
    * test retrieve css
    * 
-   * @throws Exception exception
+   * @throws Exception
+   *           exception
    */
   @Test
   public void testRetrieveCss() throws Exception {
@@ -51,7 +52,8 @@ public class TemplateTestCase extends AbstractSitoolsServerTestCase {
   /**
    * test retrieve ftl
    * 
-   * @throws Exception exception
+   * @throws Exception
+   *           exception
    */
   @Test
   public void testRetrieveFtl() throws Exception {
@@ -61,7 +63,8 @@ public class TemplateTestCase extends AbstractSitoolsServerTestCase {
   /**
    * test retrieve cgu
    * 
-   * @throws Exception exception
+   * @throws Exception
+   *           exception
    */
   @Test
   public void testRetrieveCgu() throws Exception {
@@ -71,8 +74,10 @@ public class TemplateTestCase extends AbstractSitoolsServerTestCase {
   /**
    * retrieve
    * 
-   * @param attachment string
-   * @throws IOException exception
+   * @param attachment
+   *          string
+   * @throws IOException
+   *           exception
    */
   public void retrieve(String attachment) throws IOException {
 

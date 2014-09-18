@@ -26,11 +26,17 @@ package fr.cnes.sitools.common.exception;
  */
 public class SitoolsException extends Exception {
 
+  /** RuntimeException message to be thrown when a method is not implemented */
+  public static final String NOT_IMPLEMENTED = "NOT IMPLEMENTED";
+  
+//  /** RuntimeException message to be thrown when a method is not applicable for a class */
+//  public static final String NOT_APPLICABLE = "NOT APPLICABLE";
+  
   /**
    * serialVersionUID.
    */
   private static final long serialVersionUID = 1L;
-
+  
   /**
    * Constructor with message and cause thrown.
    * 

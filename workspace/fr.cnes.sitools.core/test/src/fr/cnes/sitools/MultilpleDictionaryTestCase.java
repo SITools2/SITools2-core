@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -283,7 +283,7 @@ public class MultilpleDictionaryTestCase extends AbstractSitoolsServerTestCase {
   private static void configure(XStream xstream) {
     xstream.autodetectAnnotations(false);
     xstream.alias("response", Response.class);
-    xstream.alias("dictionary", Dictionary.class);    
+    xstream.alias("dictionary", Dictionary.class);
   }
 
 }

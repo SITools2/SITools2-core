@@ -55,8 +55,8 @@ import fr.cnes.sitools.applications.OrdersFilesApplication;
 import fr.cnes.sitools.applications.PublicApplication;
 import fr.cnes.sitools.applications.TemporaryFolderApplication;
 import fr.cnes.sitools.applications.UploadApplication;
+import fr.cnes.sitools.collections.CollectionStoreInterface;
 import fr.cnes.sitools.collections.CollectionsApplication;
-import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.SitoolsComponent;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
@@ -66,37 +66,37 @@ import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.DataSetAdministration;
 import fr.cnes.sitools.dataset.converter.ConverterApplication;
-import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
+import fr.cnes.sitools.dataset.converter.ConverterStoreInterface;
 import fr.cnes.sitools.dataset.filter.FilterApplication;
-import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
+import fr.cnes.sitools.dataset.filter.FilterStoreInterface;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
-import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
 import fr.cnes.sitools.dataset.plugins.converters.ConverterPluginsApplication;
 import fr.cnes.sitools.dataset.plugins.filters.FilterPluginsApplication;
 import fr.cnes.sitools.dataset.services.ServiceApplication;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.view.DatasetViewApplication;
-import fr.cnes.sitools.dataset.view.model.DatasetView;
+import fr.cnes.sitools.dataset.view.DatasetViewStoreInterface;
 import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceAdministration;
-import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
+import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreInterface;
 import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceAdministration;
-import fr.cnes.sitools.datasource.mongodb.model.MongoDBDataSource;
+import fr.cnes.sitools.datasource.mongodb.MongoDBDataSourceStoreInterface;
 import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreInterface;
 import fr.cnes.sitools.dictionary.DictionaryAdministration;
-import fr.cnes.sitools.dictionary.model.ConceptTemplate;
-import fr.cnes.sitools.dictionary.model.Dictionary;
+import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
 import fr.cnes.sitools.feeds.FeedsApplication;
-import fr.cnes.sitools.feeds.model.FeedModel;
+import fr.cnes.sitools.feeds.FeedsStoreInterface;
 import fr.cnes.sitools.form.components.FormComponentsApplication;
-import fr.cnes.sitools.form.components.model.FormComponent;
+import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
 import fr.cnes.sitools.form.dataset.FormApplication;
-import fr.cnes.sitools.form.dataset.model.Form;
+import fr.cnes.sitools.form.dataset.FormStoreInterface;
 import fr.cnes.sitools.form.project.FormProjectApplication;
-import fr.cnes.sitools.form.project.model.FormProject;
+import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.inscription.InscriptionApplication;
+import fr.cnes.sitools.inscription.InscriptionStoreInterface;
 import fr.cnes.sitools.inscription.UserInscriptionApplication;
-import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.logging.LogDataServerService;
 import fr.cnes.sitools.logging.LoggingOutputStream;
 import fr.cnes.sitools.logging.SitoolsApplicationLogFilter;
@@ -106,46 +106,46 @@ import fr.cnes.sitools.notification.NotificationApplication;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.store.NotificationStore;
 import fr.cnes.sitools.order.OrderAdministration;
+import fr.cnes.sitools.order.OrderStoreInterface;
 import fr.cnes.sitools.order.UserOrderApplication;
-import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.plugins.applications.ApplicationPluginApplication;
-import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.filters.FilterClassPluginApplication;
 import fr.cnes.sitools.plugins.filters.FilterPluginApplication;
 import fr.cnes.sitools.plugins.filters.model.FilterModel;
 import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceApplication;
-import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
+import fr.cnes.sitools.plugins.guiservices.declare.GuiServiceStoreInterface;
 import fr.cnes.sitools.plugins.guiservices.implement.GuiServicePluginApplication;
 import fr.cnes.sitools.plugins.guiservices.implement.model.GuiServicePluginModel;
 import fr.cnes.sitools.plugins.resources.ResourceClassPluginApplication;
 import fr.cnes.sitools.plugins.resources.ResourcePluginApplication;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.portal.PortalApplication;
-import fr.cnes.sitools.portal.PortalStore;
+import fr.cnes.sitools.portal.PortalStoreInterface;
 import fr.cnes.sitools.portal.multidatasets.opensearch.MultiDsOsApplication;
 import fr.cnes.sitools.project.ProjectAdministration;
-import fr.cnes.sitools.project.graph.model.Graph;
-import fr.cnes.sitools.project.model.Project;
+import fr.cnes.sitools.project.ProjectStoreInterface;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.modules.ProjectModuleApplication;
 import fr.cnes.sitools.project.modules.model.ProjectModuleModel;
 import fr.cnes.sitools.proxy.ProxySettings;
 import fr.cnes.sitools.registry.AppRegistryApplication;
-import fr.cnes.sitools.registry.model.AppRegistry;
+import fr.cnes.sitools.registry.ApplicationStoreInterface;
 import fr.cnes.sitools.role.RoleApplication;
-import fr.cnes.sitools.role.model.Role;
+import fr.cnes.sitools.role.RoleStoreInterface;
 import fr.cnes.sitools.security.UsersAndGroupsAdministration;
 import fr.cnes.sitools.security.UsersAndGroupsStore;
 import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
 import fr.cnes.sitools.security.authentication.SitoolsRealm;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
-import fr.cnes.sitools.security.authorization.AuthorizationStore;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
 import fr.cnes.sitools.security.captcha.CaptchaContainer;
 import fr.cnes.sitools.security.challenge.ChallengeToken;
 import fr.cnes.sitools.security.challenge.ChallengeTokenContainer;
 import fr.cnes.sitools.security.ssl.SslFactory;
 import fr.cnes.sitools.security.userblacklist.UserBlackListApplication;
 import fr.cnes.sitools.security.userblacklist.UserBlackListModel;
-import fr.cnes.sitools.service.storage.DataStorageStore;
+import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.StorageAdministration;
 import fr.cnes.sitools.service.storage.StorageApplication;
 import fr.cnes.sitools.solr.SolrApplication;
@@ -160,10 +160,10 @@ import fr.cnes.sitools.trigger.RoleTrigger;
 import fr.cnes.sitools.trigger.UserTrigger;
 import fr.cnes.sitools.units.UnitsApplication;
 import fr.cnes.sitools.units.dimension.DimensionAdministration;
-import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
+import fr.cnes.sitools.units.dimension.DimensionStoreInterface;
 import fr.cnes.sitools.userstorage.UserStorageApplication;
 import fr.cnes.sitools.userstorage.UserStorageManagement;
-import fr.cnes.sitools.userstorage.UserStorageStore;
+import fr.cnes.sitools.userstorage.UserStorageStoreInterface;
 
 /**
  * Server Starting class.
@@ -394,13 +394,28 @@ public final class Starter {
     // HTTPS
     component = SslFactory.addSslSupport(component, settings);
 
+    // ======
+    // Launch synchronization for the application status
+
+    // String applicationTriggerClassname = settings.getString("Starter.synchronization.applicationTriggerClass");
+    // Class applicationTriggerClass = Class.forName(applicationTriggerClassname);
+    // applicationTriggerClass.getConstructor().newInstance();
+
     // ============================
     // Init Stores
     Map<String, Object> stores = null;
     try {
-      stores = StoreHelper.initContext(component.getContext());
+      String storeHelperClassName = settings.getString("Starter.STORE_HELPER.CLASS_NAME", StoreHelper.class.getName());
+      Class<StoreHelperInterface> storeHelperClass = (Class<StoreHelperInterface>) Class.forName(storeHelperClassName);
+      StoreHelperInterface storeHelper = storeHelperClass.newInstance();
+      component.getLogger().info("Init stores with STORE_HELPER class : " + storeHelperClassName);
+      stores = storeHelper.initContext(component.getContext());
     }
     catch (SitoolsException e) {
+      startServerFailed(settings, component, e);
+      return;
+    }
+    catch (Exception e) {
       startServerFailed(settings, component, e);
       return;
     }
@@ -410,7 +425,7 @@ public final class Starter {
     // Authentication / Authorizations
 
     // Store Role
-    SitoolsStore<Role> storeRole = (SitoolsStore<Role>) settings.getStores().get(Consts.APP_STORE_ROLE);
+    RoleStoreInterface storeRole = (RoleStoreInterface) settings.getStores().get(Consts.APP_STORE_ROLE);
 
     // Store Users and Groups
     UsersAndGroupsStore storeUandG = (UsersAndGroupsStore) settings.getStores().get(Consts.APP_STORE_USERSANDGROUPS);
@@ -497,7 +512,9 @@ public final class Starter {
     // ApplicationManager for application registering
 
     // Store
-    SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores()
+    // SitoolsStore<AppRegistry> storeApp = (SitoolsStore<AppRegistry>) settings.getStores()
+    // .get(Consts.APP_STORE_REGISTRY);
+    ApplicationStoreInterface storeApp = (ApplicationStoreInterface) settings.getStores()
         .get(Consts.APP_STORE_REGISTRY);
 
     // Context
@@ -525,7 +542,7 @@ public final class Starter {
     // AuthorizationApplication for application security
 
     // Store
-    AuthorizationStore storeAuthorization = (AuthorizationStore) settings.getStores().get(
+    AuthorizationStoreInterface storeAuthorization = (AuthorizationStoreInterface) settings.getStores().get(
         Consts.APP_STORE_AUTHORIZATION);
 
     // Context
@@ -627,8 +644,7 @@ public final class Starter {
 
     long cacheTime = settings.getLong("Security.challenge.cacheTime");
     long cacheSize = settings.getLong("Security.challenge.cacheSize");
-    
-    
+
     CaptchaContainer captchaContainer = new CaptchaContainer();
     appContext.getAttributes().put("Security.Captcha.CaptchaContainer", captchaContainer);
     ChallengeToken challengeTokenContainer = new ChallengeTokenContainer(cacheTime, cacheSize);
@@ -740,7 +756,7 @@ public final class Starter {
     // Gestion des inscriptions user et admin
 
     // Store
-    SitoolsStore<Inscription> storeIns = (SitoolsStore<Inscription>) settings.getStores().get(
+    InscriptionStoreInterface storeIns = (InscriptionStoreInterface) settings.getStores().get(
         Consts.APP_STORE_INSCRIPTION);
 
     // Reference
@@ -805,7 +821,7 @@ public final class Starter {
     // Gestion des datasouces jdbc
 
     // Store
-    SitoolsStore<JDBCDataSource> storeDS = (SitoolsStore<JDBCDataSource>) settings.getStores().get(
+    JDBCDataSourceStoreInterface storeDS = (JDBCDataSourceStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DATASOURCE);
 
     // Reference
@@ -830,7 +846,7 @@ public final class Starter {
     // Gestion des datasouces mongodb
 
     // Store
-    SitoolsStore<MongoDBDataSource> storeMongoDBDs = (SitoolsStore<MongoDBDataSource>) settings.getStores().get(
+    MongoDBDataSourceStoreInterface storeMongoDBDs = (MongoDBDataSourceStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DATASOURCE_MONGODB);
 
     // Reference
@@ -860,7 +876,9 @@ public final class Starter {
     // Gestion des converters attaches au dataset
 
     // Store
-    SitoolsStore<ConverterChainedModel> storeConv = (SitoolsStore<ConverterChainedModel>) settings.getStores().get(
+    // SitoolsStore<ConverterChainedModel> storeConv = (SitoolsStore<ConverterChainedModel>) settings.getStores().get(
+    // Consts.APP_STORE_DATASETS_CONVERTERS);
+    ConverterStoreInterface storeConv = (ConverterStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DATASETS_CONVERTERS);
 
     // Reference
@@ -888,7 +906,9 @@ public final class Starter {
     // Gestion des filters attaches au dataset
 
     // Store
-    SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(
+    // SitoolsStore<FilterChainedModel> storeFilter = (SitoolsStore<FilterChainedModel>) settings.getStores().get(
+    // Consts.APP_STORE_DATASETS_FILTERS);
+    FilterStoreInterface storeFilter = (FilterStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DATASETS_FILTERS);
 
     // Reference
@@ -917,7 +937,7 @@ public final class Starter {
     // Et exposition des plugins d'ApplicationPlugin
 
     // Store
-    ApplicationPluginStore appPluginStore = (ApplicationPluginStore) settings.getStores().get(
+    ApplicationPluginStoreInterface appPluginStore = (ApplicationPluginStoreInterface) settings.getStores().get(
         Consts.APP_STORE_PLUGINS_APPLICATIONS);
 
     // Reference
@@ -1054,7 +1074,7 @@ public final class Starter {
     // Dictionary management
 
     // Store
-    SitoolsStore<Dictionary> storeDictionary = (SitoolsStore<Dictionary>) settings.getStores().get(
+    DictionaryStoreInterface storeDictionary = (DictionaryStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DICTIONARY);
 
     // Reference
@@ -1102,7 +1122,7 @@ public final class Starter {
     // ConceptTemplate management
 
     // Store
-    SitoolsStore<ConceptTemplate> storeConceptTemplate = (SitoolsStore<ConceptTemplate>) settings.getStores().get(
+    ConceptTemplateStoreInterface storeConceptTemplate = (ConceptTemplateStoreInterface) settings.getStores().get(
         Consts.APP_STORE_TEMPLATE);
 
     // Reference
@@ -1127,7 +1147,7 @@ public final class Starter {
     // Informations du portail
 
     // Store
-    PortalStore storePortal = (PortalStore) settings.getStores().get(Consts.APP_STORE_PORTAL);
+    PortalStoreInterface storePortal = (PortalStoreInterface) settings.getStores().get(Consts.APP_STORE_PORTAL);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_PORTAL_URL);
@@ -1173,7 +1193,7 @@ public final class Starter {
     // Gestion des formComponents
 
     // Store
-    SitoolsStore<FormComponent> storefc = (SitoolsStore<FormComponent>) settings.getStores().get(
+    FormComponentsStoreInterface storefc = (FormComponentsStoreInterface) settings.getStores().get(
         Consts.APP_STORE_FORMCOMPONENT);
 
     // Reference
@@ -1198,7 +1218,9 @@ public final class Starter {
     // Gestion des Collections
 
     // Store
-    SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>) settings.getStores().get(
+    // SitoolsStore<Collection> storeCollections = (SitoolsStore<Collection>)
+    // settings.getStores().get(Consts.APP_STORE_COLLECTIONS);
+    CollectionStoreInterface storeCollections = (CollectionStoreInterface) settings.getStores().get(
         Consts.APP_STORE_COLLECTIONS);
 
     // Reference
@@ -1223,7 +1245,7 @@ public final class Starter {
     // Gestion des formulaires MultiDatasets
 
     // Store
-    SitoolsStore<FormProject> storeFormProject = (SitoolsStore<FormProject>) settings.getStores().get(
+    FormProjectStoreInterface storeFormProject = (FormProjectStoreInterface) settings.getStores().get(
         Consts.APP_STORE_FORMPROJECT);
 
     // Reference
@@ -1250,7 +1272,9 @@ public final class Starter {
     // Gestion des datasets views
 
     // Store
-    SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>) settings.getStores().get(
+    // SitoolsStore<DatasetView> storeDsView = (SitoolsStore<DatasetView>)
+    // settings.getStores().get(Consts.APP_STORE_DATASETS_VIEWS);
+    DatasetViewStoreInterface storeDsView = (DatasetViewStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DATASETS_VIEWS);
 
     // Reference
@@ -1301,7 +1325,7 @@ public final class Starter {
     // Gestion des projets
 
     // Store
-    SitoolsStore<Project> storePrj = (SitoolsStore<Project>) settings.getStores().get(Consts.APP_STORE_PROJECT);
+    ProjectStoreInterface storePrj = (ProjectStoreInterface) settings.getStores().get(Consts.APP_STORE_PROJECT);
 
     clientUserApp.setStore(storePrj);
 
@@ -1316,7 +1340,9 @@ public final class Starter {
     appContext.getAttributes().put(ContextAttributes.APP_STORE, storePrj);
 
     // gestion des graphs
-    SitoolsStore<Graph> storeGraph = (SitoolsStore<Graph>) settings.getStores().get(Consts.APP_STORE_GRAPH);
+    // SitoolsStore<Graph> storeGraph = (SitoolsStore<Graph>) settings.getStores().get(Consts.APP_STORE_GRAPH);
+    GraphStoreInterface storeGraph = (GraphStoreInterface) settings.getStores().get(Consts.APP_STORE_GRAPH);
+
     appContext.getAttributes().put(Consts.APP_STORE_GRAPH, storeGraph);
 
     // Dependence clientUserApp > storePrj
@@ -1334,7 +1360,8 @@ public final class Starter {
     // Gestion des formulaires
 
     // Store
-    SitoolsStore<Form> storeForm = (SitoolsStore<Form>) settings.getStores().get(Consts.APP_STORE_FORM);
+    // SitoolsStore<Form> storeForm = (SitoolsStore<Form>) settings.getStores().get(Consts.APP_STORE_FORM);
+    FormStoreInterface storeForm = (FormStoreInterface) settings.getStores().get(Consts.APP_STORE_FORM);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
@@ -1361,7 +1388,8 @@ public final class Starter {
     // Gestion des flux
 
     // Store
-    SitoolsStore<FeedModel> storeFeeds = (SitoolsStore<FeedModel>) settings.getStores().get(Consts.APP_STORE_FEED);
+    // SitoolsStore<FeedModel> storeFeeds = (SitoolsStore<FeedModel>) settings.getStores().get(Consts.APP_STORE_FEED);
+    FeedsStoreInterface storeFeeds = (FeedsStoreInterface) settings.getStores().get(Consts.APP_STORE_FEED);
 
     // attachment for Projects
 
@@ -1478,7 +1506,7 @@ public final class Starter {
     // Gestion des recherches opensearch
 
     // Store
-    SitoolsStore<Opensearch> storeOS = (SitoolsStore<Opensearch>) settings.getStores().get(Consts.APP_STORE_OPENSEARCH);
+    OpenSearchStoreInterface storeOS = (OpenSearchStoreInterface) settings.getStores().get(Consts.APP_STORE_OPENSEARCH);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASETS_URL) + "/{datasetId}"
@@ -1572,7 +1600,7 @@ public final class Starter {
     // Gestion des commandes Administration
 
     // Store
-    SitoolsStore<Order> storeOrd = (SitoolsStore<Order>) settings.getStores().get(Consts.APP_STORE_ORDER);
+    OrderStoreInterface storeOrd = (OrderStoreInterface) settings.getStores().get(Consts.APP_STORE_ORDER);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_ORDERS_ADMIN_URL);
@@ -1615,7 +1643,8 @@ public final class Starter {
     // Administration des espaces de stockage
 
     // Store
-    UserStorageStore storeUS = (UserStorageStore) settings.getStores().get(Consts.APP_STORE_USERSTORAGE);
+    UserStorageStoreInterface storeUS = (UserStorageStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_USERSTORAGE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_USERSTORAGE_URL);
@@ -1740,7 +1769,8 @@ public final class Starter {
     // Application Data Storage
 
     // Store
-    DataStorageStore storeDataStorage = (DataStorageStore) settings.getStores().get(Consts.APP_STORE_DATASTORAGE);
+    DataStorageStoreInterface storeDataStorage = (DataStorageStoreInterface) settings.getStores().get(
+        Consts.APP_STORE_DATASTORAGE);
 
     // Reference
     appReference = baseUrl + settings.getString(Consts.APP_DATASTORAGE_URL);
@@ -2000,7 +2030,7 @@ public final class Starter {
     // Dimension Management
 
     // Store
-    SitoolsStore<SitoolsDimension> storeDimension = (SitoolsStore<SitoolsDimension>) settings.getStores().get(
+    DimensionStoreInterface storeDimension = (DimensionStoreInterface) settings.getStores().get(
         Consts.APP_STORE_DIMENSION);
 
     // Reference
@@ -2024,7 +2054,7 @@ public final class Starter {
     // Gestion des services IHM
 
     // Store
-    SitoolsStore<GuiServiceModel> storeGuiService = (SitoolsStore<GuiServiceModel>) settings.getStores().get(
+    GuiServiceStoreInterface storeGuiService = (GuiServiceStoreInterface) settings.getStores().get(
         Consts.APP_STORE_GUI_SERVICE);
 
     // Reference

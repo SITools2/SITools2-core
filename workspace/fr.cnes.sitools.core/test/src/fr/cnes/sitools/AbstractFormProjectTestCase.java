@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -47,12 +47,11 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.ExtensionModel;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
+import fr.cnes.sitools.form.project.FormProjectStoreInterface;
 import fr.cnes.sitools.form.project.dto.FormProjectAdminDTO;
 import fr.cnes.sitools.form.project.dto.FormPropertyParameterDTO;
 import fr.cnes.sitools.form.project.model.FormParameter;
-import fr.cnes.sitools.form.project.model.FormProject;
 import fr.cnes.sitools.plugins.resources.dto.ResourceModelDTO;
 import fr.cnes.sitools.plugins.resources.dto.ResourcePluginDescriptionDTO;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
@@ -63,7 +62,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<FormProject> store = null;
+  private static FormProjectStoreInterface store = null;
 
   /** The settings */
   private SitoolsSettings settings = SitoolsSettings.getInstance();
@@ -81,7 +80,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
    */
   protected String getBaseUrl() {
     return super.getBaseUrl() + settings.getString(Consts.APP_PROJECTS_URL) + "/" + projectId
-      + settings.getString(Consts.APP_FORMPROJECT_URL);
+        + settings.getString(Consts.APP_FORMPROJECT_URL);
   }
 
   /**
@@ -90,7 +89,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR);
+    return settings.getStoreDIR(Consts.APP_FORMPROJECT_STORE_DIR) + "/map";
   }
 
   @Before
@@ -103,13 +102,13 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
-      cleanDirectory(storeDirectory);
+      cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
     }
   }
 
   protected String getResourceBaseUrl() {
     return super.getBaseUrl() + settings.getString(Consts.APP_PROJECTS_URL) + "/" + projectId
-      + settings.getString(Consts.APP_RESOURCES_URL);
+        + settings.getString(Consts.APP_RESOURCES_URL);
   }
 
   /**
@@ -223,7 +222,6 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     param2.setLabel("param2");
     parameters.add(param2);
 
-    
     formProject.setParameters(parameters);
 
     return formProject;
@@ -360,9 +358,9 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
     assertParameterValue(dtoServiceSearch.getParameters(), "dictionary", formProjectOut.getDictionary().getId());
     assertParameterValue(dtoServiceSearch.getParameters(), "collection", formProjectOut.getCollection().getId());
     assertParameterValue(dtoServiceSearch.getParameters(), "nbThreads",
-      settings.getString(Consts.DEFAULT_THREAD_POOL_SIZE));
+        settings.getString(Consts.DEFAULT_THREAD_POOL_SIZE));
     assertParameterValue(dtoServiceSearch.getParameters(), "nbDatasetsMax", formProjectOut.getNbDatasetsMax()
-      .toString());
+        .toString());
 
     // PROPERTIES SERVICE
     String idServiceProperties = formProjectOut.getIdServicePropertiesSearch();
@@ -555,7 +553,7 @@ public class AbstractFormProjectTestCase extends AbstractSitoolsServerTestCase {
    * @return Response
    */
   public static Response getResponseResourceModelDTO(MediaType media, Representation representation,
-    Class<?> dataClass, boolean isArray) {
+      Class<?> dataClass, boolean isArray) {
     try {
       if (!media.isCompatible(MediaType.APPLICATION_JSON) && !media.isCompatible(MediaType.APPLICATION_XML)) {
         Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");

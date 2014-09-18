@@ -20,7 +20,6 @@ package fr.cnes.sitools.service.storage;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.restlet.Context;
@@ -48,7 +47,7 @@ public final class DataStorageStoreXmlImpl extends XmlPersistenceDaoImpl<Storage
   }
 
   @Override
-  public Collection<StorageDirectory> getList(ResourceCollectionFilter filter) {
+  public List<StorageDirectory> getList(ResourceCollectionFilter filter) {
 
     List<StorageDirectory> result = new ArrayList<StorageDirectory>();
     if ((getList() == null) || (getList().size() <= 0) || (filter.getStart() > getList().size())) {

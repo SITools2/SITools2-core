@@ -12,7 +12,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.business.NotifierFilter;
 
 /**
@@ -23,7 +22,7 @@ import fr.cnes.sitools.notification.business.NotifierFilter;
 public class UserBlackListApplication extends SitoolsApplication {
 
   /** store */
-  private SitoolsStore<UserBlackListModel> store = null;
+  private UserBlackListStoreInterface store = null;
 
   /**
    * Category
@@ -35,7 +34,7 @@ public class UserBlackListApplication extends SitoolsApplication {
   public UserBlackListApplication(Context context) {
     super(context);
 
-    this.store = (SitoolsStore<UserBlackListModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (UserBlackListStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -74,7 +73,7 @@ public class UserBlackListApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<UserBlackListModel> getStore() {
+  public UserBlackListStoreInterface getStore() {
     return store;
   }
 

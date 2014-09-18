@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -40,7 +40,8 @@ import fr.cnes.sitools.AbstractSitoolsTestCase;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
-import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXML;
+import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
+import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXMLMap;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.tasks.business.TaskManager;
@@ -68,12 +69,12 @@ public class TaskManagerTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static TaskStoreXML storeTask = null;
+  private static TaskStoreInterface storeTask = null;
 
   /**
    * static xml store instance for the test
    */
-  private static ResourcePluginStoreXML storeResource = null;
+  private static ResourcePluginStoreInterface storeResource = null;
 
   /**
    * Restlet Component for server
@@ -86,7 +87,7 @@ public class TaskManagerTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getStoreTaskResourceRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_TASK_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_TASK_STORE_DIR) + "/map";
   }
 
   /**
@@ -95,7 +96,8 @@ public class TaskManagerTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getStoreTaskRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)
+        + "/map";
   }
 
   private SitoolsSettings settings = SitoolsSettings.getInstance();
@@ -120,13 +122,17 @@ public class TaskManagerTestCase extends AbstractSitoolsTestCase {
 
     if (storeTask == null) {
       File storeDirectory = new File(getStoreTaskResourceRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
-      storeTask = new TaskStoreXML(storeDirectory, component.getContext());
+      cleanMapDirectories(storeDirectory);
+      storeTask = new TaskStoreXMLMap(storeDirectory, component.getContext());
     }
     if (storeResource == null) {
       File storeDirectory = new File(getStoreTaskRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
-      storeResource = new ResourcePluginStoreXML(storeDirectory, component.getContext());
+      cleanMapDirectories(storeDirectory);
+      storeResource = new ResourcePluginStoreXMLMap(storeDirectory, component.getContext());
     }
 
     if (!this.component.isStarted()) {

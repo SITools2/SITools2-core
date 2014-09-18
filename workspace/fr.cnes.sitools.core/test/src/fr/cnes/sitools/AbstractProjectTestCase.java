@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,15 +43,18 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.project.ProjectAdministration;
-import fr.cnes.sitools.project.ProjectStoreXML;
-import fr.cnes.sitools.project.graph.GraphStoreXML;
-import fr.cnes.sitools.project.graph.model.Graph;
+import fr.cnes.sitools.project.ProjectStoreInterface;
+import fr.cnes.sitools.project.ProjectStoreXMLMap;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
+import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
+import fr.cnes.sitools.project.model.MinimalProjectPriorityDTO;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.project.model.ProjectModule;
+import fr.cnes.sitools.project.model.ProjectPriorityDTO;
 import fr.cnes.sitools.registry.AppRegistryApplication;
-import fr.cnes.sitools.registry.AppRegistryStoreXML;
+import fr.cnes.sitools.registry.ApplicationStoreInterface;
+import fr.cnes.sitools.registry.ApplicationStoreXMLMap;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 import fr.cnes.sitools.utils.GetRepresentationUtils;
@@ -68,12 +72,12 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static ProjectStoreXML store = null;
+  private static ProjectStoreInterface store = null;
 
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Graph> storeGraph = null;
+  private static GraphStoreInterface storeGraph = null;
 
   /**
    * Restlet Component for server
@@ -104,7 +108,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR) + "/map";
   }
 
   /**
@@ -113,7 +117,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestGraphRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GRAPHS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_GRAPHS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -139,10 +143,14 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
       // Context
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-
+      storeGraphDirectory.mkdirs();
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
-      storeGraph = new GraphStoreXML(storeGraphDirectory, ctx);
-      store = new ProjectStoreXML(storeDirectory, ctx);
+      cleanMapDirectories(storeDirectory);
+      cleanDirectory(storeGraphDirectory);
+      cleanMapDirectories(storeGraphDirectory);
+      storeGraph = new GraphStoreXMLMap(storeGraphDirectory, ctx);
+      store = new ProjectStoreXMLMap(storeDirectory, ctx);
 
       Map<String, Object> stores = new ConcurrentHashMap<String, Object>();
       stores.put(Consts.APP_STORE_PROJECT, store);
@@ -157,7 +165,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
       // ApplicationManager for application registering
 
       // Store
-      AppRegistryStoreXML storeApp = new AppRegistryStoreXML(appRegistry, ctx);
+      ApplicationStoreInterface storeApp = new ApplicationStoreXMLMap(appRegistry, ctx);
 
       // Context
       Context appContext = component.getContext().createChildContext();
@@ -251,6 +259,93 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
   }
 
   /**
+   * Test CRUD Project with JSon format exchanges.
+   */
+  @Test
+  public void testPriorityAndCategory() {
+    docAPI.setActive(false);
+    try {
+      assertNone();
+      Project item = createObject("new_project");
+      create(item);
+      ProjectPriorityDTO projectDTO = createProjectPriorityDTO(item);
+      updatePriority(projectDTO);
+      retrieveProjectPriority(projectDTO, item);
+
+      delete(item);
+      assertNone();
+      createWadl(getBaseUrl(), "projects_admin");
+    }
+    catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  private void retrieveProjectPriority(ProjectPriorityDTO projectDTO, Project item) {
+    String url = getBaseUrl() + "/" + item.getId();
+    ClientResource cr = new ClientResource(url);
+    docAPI.appendRequest(Method.GET, cr);
+
+    Representation result = cr.get(getMediaTest());
+    if (!docAPI.appendResponse(result)) {
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponseProject(getMediaTest(), result, Project.class);
+      assertTrue(response.getSuccess());
+      Project prj = (Project) response.getItem();
+
+      assertEquals(item.getName(), prj.getName());
+      assertEquals(item.getDescription(), prj.getDescription());
+
+      boolean checkPriority = false;
+      for (MinimalProjectPriorityDTO minimalProject : projectDTO.getMinimalProjectPriorityList()) {
+        if (minimalProject.getId().equals(item.getId())) {
+          checkPriority = true;
+          assertEquals(minimalProject.getPriority(), prj.getPriority());
+          assertEquals(minimalProject.getCategoryProject(), prj.getCategoryProject());
+        }
+      }
+      assertTrue(checkPriority);
+
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  private void updatePriority(ProjectPriorityDTO projectDTO) {
+    Representation rep = GetRepresentationUtils.getRepresentationProjectPriorityDTO(projectDTO, getMediaTest());
+    ClientResource cr = new ClientResource(getBaseUrl());
+    docAPI.appendRequest(Method.PUT, cr, rep);
+
+    Representation result = cr.put(rep, getMediaTest());
+    if (!docAPI.appendResponse(result)) {
+      assertNotNull(result);
+      assertTrue(cr.getStatus().isSuccess());
+      Response response = GetResponseUtils.getResponse(getMediaTest(), result, getMediaTest());
+      assertTrue(response.getSuccess());
+
+      RIAPUtils.exhaust(result);
+    }
+
+  }
+
+  private ProjectPriorityDTO createProjectPriorityDTO(Project p) {
+    List<MinimalProjectPriorityDTO> list = new ArrayList<MinimalProjectPriorityDTO>();
+    MinimalProjectPriorityDTO minimalProject = new MinimalProjectPriorityDTO();
+
+    minimalProject.setId(p.getId());
+    minimalProject.setCategoryProject("MyCategory");
+    minimalProject.setPriority(25);
+
+    list.add(minimalProject);
+    ProjectPriorityDTO projectDTO = new ProjectPriorityDTO();
+    projectDTO.setMinimalProjectPriorityList(list);
+
+    return projectDTO;
+  }
+
+  /**
    * Create an object for tests
    * 
    * @param id
@@ -281,6 +376,8 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
     projectModule1.setDescription("a new project");
     modules.add(projectModule1);
     item.setModules(modules);
+    item.setCategoryProject("MyCategory");
+    item.setPriority(1);
 
     return item;
   }
@@ -302,7 +399,7 @@ public abstract class AbstractProjectTestCase extends AbstractSitoolsTestCase {
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     if (!docAPI.appendResponse(result)) {
-      
+
       Response response = GetResponseUtils.getResponseProject(getMediaTest(), result, Project.class);
       assertTrue(response.getSuccess());
       Project prj = (Project) response.getItem();

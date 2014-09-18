@@ -36,7 +36,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.feeds.model.FeedAuthorModel;
 import fr.cnes.sitools.feeds.model.FeedCollectionModel;
 import fr.cnes.sitools.feeds.model.FeedEntryModel;
@@ -59,7 +58,7 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
   private FeedsApplication application = null;
 
   /** store */
-  private SitoolsStore<FeedModel> store = null;
+  private FeedsStoreInterface store = null;
   /** feeds identifier parameter */
 
   private String feedsId = null;
@@ -339,7 +338,7 @@ public abstract class AbstractFeedsResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<FeedModel> getStore() {
+  public final FeedsStoreInterface getStore() {
     return store;
   }
 

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -34,7 +34,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.dataset.DataSetStoreXML;
+import fr.cnes.sitools.dataset.DataSetStoreInterface;
+import fr.cnes.sitools.dataset.DataSetStoreXMLMap;
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.datasource.jdbc.model.Structure;
@@ -50,7 +51,7 @@ public class DataSetStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static DataSetStoreXML store = null;
+  private static DataSetStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -59,7 +60,7 @@ public class DataSetStoreXMLTestCase extends AbstractSitoolsTestCase {
 
   @Override
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -71,10 +72,12 @@ public class DataSetStoreXMLTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
-      store = new DataSetStoreXML(storeDirectory, ctx);
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      store = new DataSetStoreXMLMap(storeDirectory, ctx);
     }
   }
 

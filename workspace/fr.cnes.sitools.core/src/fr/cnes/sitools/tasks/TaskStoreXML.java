@@ -39,6 +39,7 @@ import fr.cnes.sitools.tasks.model.TaskModel;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class TaskStoreXML extends SitoolsSynchronizedStoreXML<TaskModel> {
 
   /** default location for file persistence */

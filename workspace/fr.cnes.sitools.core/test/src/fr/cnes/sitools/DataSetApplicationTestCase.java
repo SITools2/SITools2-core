@@ -40,9 +40,9 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.DataSetAdministration;
-import fr.cnes.sitools.dataset.DataSetStoreXML;
+import fr.cnes.sitools.dataset.DataSetStoreInterface;
+import fr.cnes.sitools.dataset.DataSetStoreXMLMap;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -62,7 +62,7 @@ public class DataSetApplicationTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<DataSet> store = null;
+  private static DataSetStoreInterface store = null;
 
   /**
    * dataSourceId for the test
@@ -120,9 +120,11 @@ public class DataSetApplicationTestCase extends AbstractSitoolsTestCase {
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       if (store == null) {
-        File storeDirectory = new File(getTestRepository());
+        File storeDirectory = new File(getTestRepository() + "/map");
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new DataSetStoreXML(storeDirectory, ctx);
+        cleanMapDirectories(storeDirectory);
+        store = new DataSetStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 

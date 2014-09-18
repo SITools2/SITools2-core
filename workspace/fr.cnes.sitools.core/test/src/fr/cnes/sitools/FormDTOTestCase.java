@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -44,13 +44,12 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.form.dataset.FormApplication;
-import fr.cnes.sitools.form.dataset.FormStoreXML;
+import fr.cnes.sitools.form.dataset.FormStoreInterface;
+import fr.cnes.sitools.form.dataset.FormStoreXMLMap;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
 import fr.cnes.sitools.form.dataset.dto.ValueDTO;
-import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -66,7 +65,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Form> store = null;
+  private static FormStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -102,7 +101,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_FORMS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_FORMS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -113,18 +112,20 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
+
     SitoolsSettings settings = SitoolsSettings.getInstance();
     if (this.component == null) {
       this.component = createTestComponent(settings);
-      
+
       // Context
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new FormStoreXML(storeDirectory, ctx);
+        cleanMapDirectories(storeDirectory);
+        store = new FormStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 
@@ -202,7 +203,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     param = new ParameterDTO();
     code.remove("id1");
     code.add("id2");
-    /**Radio */
+    /** Radio */
     param.setCode(code);
     param.setType("RADIO");
     params.add(param);
@@ -219,11 +220,9 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     av2.add(v2);
     param.setValues(av2);
     params.add(param);
-    
-    
+
     /** NoSelection */
-    
-    
+
     item.setParameters(params);
     return item;
   }
@@ -274,7 +273,7 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
     RIAPUtils.exhaust(result);
     cr.release();
   }
-  
+
   /**
    * Invoke GET
    * 
@@ -282,21 +281,21 @@ public class FormDTOTestCase extends AbstractSitoolsTestCase {
    *          FormDTO
    */
   public void retrieveByName(FormDTO item) {
-    
+
     Reference ref = new Reference(String.format(getBaseUrl(), dataSetId));
     ref.addQueryParameter("query", "name");
-    
+
     ClientResource cr = new ClientResource(ref);
-    
+
     Representation result = cr.get(MediaType.APPLICATION_JSON);
-       
+
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
 
     Response response = getResponse(MediaType.APPLICATION_JSON, result, FormDTO.class, true);
     assertTrue(response.getSuccess());
     assertEquals(new Integer(1), response.getTotal());
-    
+
     RIAPUtils.exhaust(result);
     cr.release();
 

@@ -47,9 +47,9 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
-import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXML;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXMLMap;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
 import fr.cnes.sitools.server.Consts;
@@ -67,7 +67,7 @@ public class OpenSearchTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Opensearch> store = null;
+  private static OpenSearchStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -107,7 +107,8 @@ public class OpenSearchTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_OPENSEARCH_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_OPENSEARCH_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -130,8 +131,9 @@ public class OpenSearchTestCase extends AbstractSitoolsTestCase {
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
-        cleanDirectory(storeDirectory);
-        store = new OpenSearchStoreXML(storeDirectory, ctx);
+        storeDirectory.mkdirs();
+        cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
+        store = new OpenSearchStoreXMLMap(storeDirectory, ctx);
       }
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);

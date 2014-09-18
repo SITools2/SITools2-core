@@ -38,6 +38,7 @@ import fr.cnes.sitools.dataset.filter.model.FilterParameter;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class FilterStoreXML extends SitoolsStoreXML<FilterChainedModel> {
 
   /** default location for file persistence */

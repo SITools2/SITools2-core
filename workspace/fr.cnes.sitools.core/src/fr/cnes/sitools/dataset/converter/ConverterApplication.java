@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 
 /**
  * Exposition of converters
@@ -40,7 +38,7 @@ import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 public final class ConverterApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<ConverterChainedModel> store = null;
+  private ConverterStoreInterface store = null;
 
   /**
    * Application associated to a converter
@@ -51,7 +49,7 @@ public final class ConverterApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public ConverterApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<ConverterChainedModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ConverterStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -83,7 +81,7 @@ public final class ConverterApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<ConverterChainedModel> getStore() {
+  public ConverterStoreInterface getStore() {
     return store;
   }
 

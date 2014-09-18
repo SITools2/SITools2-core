@@ -71,7 +71,7 @@ public final class StorageResource extends AbstractStorageResource {
     }
 
     // Retrieve it
-    StorageDirectory dir = getStore().get(dirId);
+    StorageDirectory dir = getStore().retrieve(dirId);
     if (dir == null) {
       response = new Response(false, "directory.not.found");
       return getRepresentation(response, variant);
@@ -110,7 +110,7 @@ public final class StorageResource extends AbstractStorageResource {
 
     Response response = null;
 
-    StorageDirectory directory = getStore().get(getDirectoryId());
+    StorageDirectory directory = getStore().retrieve(getDirectoryId());
 
     if (directory == null) {
       response = new Response(false, "directory.not.found");
@@ -171,7 +171,7 @@ public final class StorageResource extends AbstractStorageResource {
         Parameter idDest = this.getQuery().getFirst("idDest");
 
         if (idDest != null) {
-          StorageDirectory directoryDest = getStore().get(idDest.getValue());
+          StorageDirectory directoryDest = getStore().retrieve(idDest.getValue());
 
           File fichierSrc = new LocalReference(getSettings().getFormattedString(directory.getLocalPath())).getFile();
           File fichierDest = new LocalReference(directoryDest.getLocalPath()).getFile();
@@ -281,7 +281,7 @@ public final class StorageResource extends AbstractStorageResource {
     Response response = null;
 
     // Getting the current directory to detach it
-    StorageDirectory dirToDetach = getStore().get(getDirectoryId());
+    StorageDirectory dirToDetach = getStore().retrieve(getDirectoryId());
 
     if (dirToDetach == null) {
       response = new Response(true, dirToDetach, StorageDirectory.class, "directory");
@@ -295,7 +295,7 @@ public final class StorageResource extends AbstractStorageResource {
     }
 
     // Store
-    getStore().delete(dirToDetach);
+    getStore().delete(dirToDetach.getId());
 
     // Notify observers
     Notification notification = new Notification();

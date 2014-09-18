@@ -41,6 +41,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.plugins.applications.business.AbstractApplicationPlugin;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -55,7 +56,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 public final class ApplicationPluginApplication extends SitoolsApplication {
 
   /** Store */
-  private ApplicationPluginStore store = null;
+  private ApplicationPluginStoreInterface store = null;
 
   /** host parent router */
   private Router parentRouter = null;
@@ -72,7 +73,7 @@ public final class ApplicationPluginApplication extends SitoolsApplication {
    */
   public ApplicationPluginApplication(Router parentRouter, Context context) {
     super(context);
-    this.store = (ApplicationPluginStore) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ApplicationPluginStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     this.parentRouter = parentRouter;
 
     // start all ApplicationPlugins
@@ -154,7 +155,7 @@ public final class ApplicationPluginApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public ApplicationPluginStore getStore() {
+  public ApplicationPluginStoreInterface getStore() {
     return store;
   }
 

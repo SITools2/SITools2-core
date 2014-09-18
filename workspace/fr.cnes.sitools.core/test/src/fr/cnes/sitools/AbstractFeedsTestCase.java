@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -248,8 +248,7 @@ public abstract class AbstractFeedsTestCase extends AbstractSitoolsServerTestCas
     AbstractFeedsResource.sortEntries(item);
     FeedModel itemEntriesSorted = createObjectEntriesSorted(dataId, "1000001");
     assertEntries(item.getEntries(), itemEntriesSorted.getEntries());
-    
-    
+
   }
 
   /**
@@ -323,7 +322,7 @@ public abstract class AbstractFeedsTestCase extends AbstractSitoolsServerTestCas
 
     return item;
   }
-  
+
   /**
    * Create an object for tests
    * 
@@ -379,8 +378,6 @@ public abstract class AbstractFeedsTestCase extends AbstractSitoolsServerTestCas
     entry1.setPublishedDate(DateUtils.parse("2013-01-01T00:00:00.000"));
     entry1.setLink("link1");
     entries.add(entry1);
-
-
 
     item.setEntries(entries);
 

@@ -39,6 +39,8 @@ import fr.cnes.sitools.persistence.Paginable;
  * @param <T>
  *          object class to be stored
  * @author m.marseille (AKKA technologies)
+ * 
+ * @deprecated use XmlSynchronized<List or Map>Store instead
  */
 public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends Paginable<T> implements SitoolsStore<T> {
 
@@ -91,12 +93,6 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
     }
 
     return result;
-  }
-
-  @Override
-  public final T[] getArrayByXQuery(String xquery) {
-    getLog().severe("getArrayByXQuery NOT IMPLEMENTED");
-    return null;
   }
 
   @SuppressWarnings("unchecked")
@@ -235,4 +231,12 @@ public abstract class SitoolsSynchronizedStoreXML<T extends IResource> extends P
    */
   public abstract String getCollectionName();
 
+  
+  @Override
+  public List<T> saveList(List<T> resources) {
+    getRawList().clear();
+    getRawList().addAll(resources);
+    return getRawList();
+  }
+  
 }

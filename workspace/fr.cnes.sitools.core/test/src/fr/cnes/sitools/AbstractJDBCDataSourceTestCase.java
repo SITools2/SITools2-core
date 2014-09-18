@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -28,7 +28,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.restlet.Component;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.engine.Engine;
@@ -43,7 +42,6 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXML;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -62,16 +60,6 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
    * Nombre de datasources definies initialement dans /data/datasources
    */
   private static int expectedDatasources = 3;
-  
-  /**
-   * static xml store instance for the test
-   */
-  private static JDBCDataSourceStoreXML store = null;
-
-  /**
-   * Restlet Component for server
-   */
-  private Component component = null;
 
   /**
    * relative url for dataset management REST API
@@ -97,90 +85,91 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASOURCES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASOURCES_STORE_DIR)
+        + "/map";
   }
 
-//  @Before
-//  @Override
-//  /**
-//   * Create component, store and application and start server
-//   * @throws java.lang.Exception
-//   */
-//  public void setUp() throws Exception {
-//    File storeDirectory = new File(getTestRepository());
-//    cleanDirectory(storeDirectory);
-//    if (store == null) {
-//      store = new JDBCDataSourceStoreXML(storeDirectory);
-//    }
-//
-//    if (this.component == null) {
-//      this.component = new Component();
-//      this.component.getServers().add(Protocol.HTTP, getTestPort());
-//      this.component.getClients().add(Protocol.HTTP);
-//      this.component.getClients().add(Protocol.FILE);
-//      this.component.getClients().add(Protocol.CLAP);
-//
-//      
-//      
-//      SitoolsSettings settings = SitoolsSettings.getInstance();
-//      
-//      // Context
-//      Context ctx = this.component.getContext().createChildContext();
-//      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-//
-//      ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
-//
-//      
-//      // =============================================================
-//      // Create applications
-//
-//      // ===========================================================================
-//      // ApplicationManager for application registering
-//
-//      // Store
-//      AppRegistryStore storeApp = (AppRegistryStore) settings.getStores().get(Consts.APP_STORE_REGISTRY);
-//
-//      // Context
-//      Context appContext = component.getContext().createChildContext();
-//      String appReference = getBaseUrl() + settings.getString(Consts.APP_APPLICATIONS_URL);
-//      appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
-//      appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
-//      appContext.getAttributes().put(ContextAttributes.APP_STORE, storeApp);
-//
-//      // Application
-//      AppRegistryApplication appManager = new AppRegistryApplication(appContext);
-//      appManager.setHost(host);
-//
-//      // for applications whose attach / detach themselves other applications to
-//      // the virtualhost.
-//      settings.setAppRegistry(appManager);
-//
-//      // Attachment => GOTO the end
-//
-//      component.getInternalRouter().attach(settings.getString(Consts.APP_APPLICATIONS_URL), appManager);
-//      
-//      
-//      
-//      this.component.getDefaultHost().attach(getAttachUrl(),
-//          new JDBCDataSourceAdministration(this.component.getDefaultHost(), ctx));
-//    }
-//
-//    if (!this.component.isStarted()) {
-//      this.component.start();
-//    }
-//  }
-//
-//  @After
-//  @Override
-//  /**
-//   * Stop server
-//   * @throws java.lang.Exception
-//   */
-//  public void tearDown() throws Exception {
-//    super.tearDown();
-//    this.component.stop();
-//    this.component = null;
-//  }
+  // @Before
+  // @Override
+  // /**
+  // * Create component, store and application and start server
+  // * @throws java.lang.Exception
+  // */
+  // public void setUp() throws Exception {
+  // File storeDirectory = new File(getTestRepository());
+  // cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
+  // if (store == null) {
+  // store = new JDBCDataSourceStoreXML(storeDirectory);
+  // }
+  //
+  // if (this.component == null) {
+  // this.component = new Component();
+  // this.component.getServers().add(Protocol.HTTP, getTestPort());
+  // this.component.getClients().add(Protocol.HTTP);
+  // this.component.getClients().add(Protocol.FILE);
+  // this.component.getClients().add(Protocol.CLAP);
+  //
+  //
+  //
+  // SitoolsSettings settings = SitoolsSettings.getInstance();
+  //
+  // // Context
+  // Context ctx = this.component.getContext().createChildContext();
+  // ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+  //
+  // ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
+  //
+  //
+  // // =============================================================
+  // // Create applications
+  //
+  // // ===========================================================================
+  // // ApplicationManager for application registering
+  //
+  // // Store
+  // AppRegistryStore storeApp = (AppRegistryStore) settings.getStores().get(Consts.APP_STORE_REGISTRY);
+  //
+  // // Context
+  // Context appContext = component.getContext().createChildContext();
+  // String appReference = getBaseUrl() + settings.getString(Consts.APP_APPLICATIONS_URL);
+  // appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+  // appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+  // appContext.getAttributes().put(ContextAttributes.APP_STORE, storeApp);
+  //
+  // // Application
+  // AppRegistryApplication appManager = new AppRegistryApplication(appContext);
+  // appManager.setHost(host);
+  //
+  // // for applications whose attach / detach themselves other applications to
+  // // the virtualhost.
+  // settings.setAppRegistry(appManager);
+  //
+  // // Attachment => GOTO the end
+  //
+  // component.getInternalRouter().attach(settings.getString(Consts.APP_APPLICATIONS_URL), appManager);
+  //
+  //
+  //
+  // this.component.getDefaultHost().attach(getAttachUrl(),
+  // new JDBCDataSourceAdministration(this.component.getDefaultHost(), ctx));
+  // }
+  //
+  // if (!this.component.isStarted()) {
+  // this.component.start();
+  // }
+  // }
+  //
+  // @After
+  // @Override
+  // /**
+  // * Stop server
+  // * @throws java.lang.Exception
+  // */
+  // public void tearDown() throws Exception {
+  // super.tearDown();
+  // this.component.stop();
+  // this.component = null;
+  // }
 
   /**
    * Test CRUD DataSource with JSon format exchanges.
@@ -293,7 +282,7 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
       create(item2);
       JDBCDataSource item3 = createObject("3000000");
       create(item3);
-      assertCount(expectedDatasources+3);
+      assertCount(expectedDatasources + 3);
 
       delete(item1);
       delete(item2);
@@ -499,35 +488,35 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     consumeRepresentation(result);
-    
+
     resource = dbAttachement + "/schemas/sitools";
     cr = new ClientResource(resource);
     result = cr.get(getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     consumeRepresentation(result);
-    
+
     resource = dbAttachement + "/schemas/sitools/tables";
     cr = new ClientResource(resource);
     result = cr.get(getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     consumeRepresentation(result);
-    
+
     resource = dbAttachement + "/schemas/sitools/tables/USERS";
     cr = new ClientResource(resource);
     result = cr.get(getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     consumeRepresentation(result);
-    
+
     resource = dbAttachement + "/schemas/sitools/tables/USERS/records";
     cr = new ClientResource(resource);
     result = cr.get(getMediaTest());
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     consumeRepresentation(result);
-    
+
     resource = dbAttachement + "/schemas/sitools/tables/USERS/dataset";
     /** default dataset */
     cr = new ClientResource(resource);
@@ -535,25 +524,22 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
     assertNotNull(result);
     assertTrue(cr.getStatus().isSuccess());
     consumeRepresentation(result);
-    
+
     RIAPUtils.exhaust(result);
-    
-/*
- *     router.attachDefault(targetClass);
-    router.attach("/{tableName}", targetClass);
-//    router.attach("/{tableName}/records", targetClass);
-//    router.attach("/{tableName}/records/{record}", targetClass);
 
-    // with schema (depends on database.schemaOnConnection if given)
-    router.attach("/schemas/{schemaName}", targetClass);
-    router.attach("/schemas/{schemaName}/tables", targetClass);
-    router.attach("/schemas/{schemaName}/tables/{tableName}", targetClass);
-//    router.attach("/schemas/{schemaName}/tables/{tableName}/records", targetClass);
-//    router.attach("/schemas/{schemaName}/tables/{tableName}/records/{record}", targetClass);
-
-    router.attach("/schemas/{schemaName}/tables/{tableName}/dataset", DataSetWrapperResource.class);
-
- */
+    /*
+     * router.attachDefault(targetClass); router.attach("/{tableName}", targetClass); //
+     * router.attach("/{tableName}/records", targetClass); // router.attach("/{tableName}/records/{record}",
+     * targetClass);
+     * 
+     * // with schema (depends on database.schemaOnConnection if given) router.attach("/schemas/{schemaName}",
+     * targetClass); router.attach("/schemas/{schemaName}/tables", targetClass);
+     * router.attach("/schemas/{schemaName}/tables/{tableName}", targetClass); //
+     * router.attach("/schemas/{schemaName}/tables/{tableName}/records", targetClass); //
+     * router.attach("/schemas/{schemaName}/tables/{tableName}/records/{record}", targetClass);
+     * 
+     * router.attach("/schemas/{schemaName}/tables/{tableName}/dataset", DataSetWrapperResource.class);
+     */
   }
 
   /**
@@ -717,7 +703,7 @@ public abstract class AbstractJDBCDataSourceTestCase extends AbstractSitoolsServ
     xstream.autodetectAnnotations(false);
     xstream.alias("jdbcdatasource", JDBCDataSource.class);
   }
-  
+
   /**
    * 
    * @param representation

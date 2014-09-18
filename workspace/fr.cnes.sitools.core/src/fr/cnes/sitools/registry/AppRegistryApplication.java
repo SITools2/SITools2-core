@@ -37,7 +37,6 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.model.Resource;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
 /**
@@ -80,7 +79,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
   /**
    * Store
    */
-  private SitoolsStore<AppRegistry> store = null;
+  private ApplicationStoreInterface store = null;
 
   /**
    * Application instances (not stored)
@@ -106,7 +105,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public AppRegistryApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<AppRegistry>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ApplicationStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
 
     if ((store.getList() != null) && (store.getList().size() >= 1)) {
       resourceManager = store.getList().get(0);
@@ -149,7 +148,7 @@ public final class AppRegistryApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<AppRegistry> getStore() {
+  public ApplicationStoreInterface getStore() {
     return store;
   }
 

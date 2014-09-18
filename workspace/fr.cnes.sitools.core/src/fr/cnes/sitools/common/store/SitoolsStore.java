@@ -18,7 +18,6 @@
  ******************************************************************************/
 package fr.cnes.sitools.common.store;
 
-import java.io.Closeable;
 import java.util.List;
 
 import fr.cnes.sitools.common.model.IResource;
@@ -26,24 +25,19 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 
 /**
  * Base class for Store interfaces
+ * All implementations must provide classical CRUD operations
+ * 
  * @param <T> Class derived from IResource to allow basic fields for serialization
+ * 
  * @author m.marseille (AKKA technologies)
  */
-public interface SitoolsStore<T extends IResource> extends Closeable {
+public interface SitoolsStore<T extends IResource> {
   
   /**
    * Method for getting all objects
    * @return Array
    */
   T[] getArray();
-
-  /**
-   * Method for getting objects according to the XQuery
-   * @param xquery
-   *          String with XQuery syntax
-   * @return Array
-   */
-  T[] getArrayByXQuery(String xquery);
 
   /**
    * Method for getting objects according to the specified filter
@@ -68,6 +62,14 @@ public interface SitoolsStore<T extends IResource> extends Closeable {
   List<T> getList(ResourceCollectionFilter filter);
 
   /**
+   * Method for saving all objects
+   * @param resources
+   *          input
+   * @return ArrayList of saved objects
+   */
+  List<T> saveList(List<T> resources);  
+  
+  /**
    * Method for getting objects according to the pagination criteria
    * 
    * @param filter
@@ -79,16 +81,7 @@ public interface SitoolsStore<T extends IResource> extends Closeable {
   List<T> getPage(ResourceCollectionFilter filter, List<T> resources);
 
   /**
-   * Method for getting objects with XQuery request syntax
-   * 
-   * @param xquery
-   *          String
-   * @return ArrayList of objects
-   */
-  List<T> getListByXQuery(String xquery);
-
-  /**
-   * Method for creating a object
+   * Method for creating an object
    * 
    * @param resource
    *          input
@@ -104,6 +97,13 @@ public interface SitoolsStore<T extends IResource> extends Closeable {
    * @return retrieved object
    */
   T retrieve(String id);
+  
+  /**
+   * Get the list of object by parent ID
+   * @param id the parent ID
+   * @return the list of resource objects
+   */
+  List<T> retrieveByParent(String id);
 
   /**
    * Method for updating a object
@@ -113,7 +113,7 @@ public interface SitoolsStore<T extends IResource> extends Closeable {
    * @return updated object
    */
   T update(T resource);
-
+  
   /**
    * Method for deleting a object by its id
    * 
@@ -123,12 +123,4 @@ public interface SitoolsStore<T extends IResource> extends Closeable {
    */
   boolean delete(String id);
   
-  /**
-   * Get the list of object by parent ID
-   * @param id the parent ID
-   * @return the list of resource objects
-   */
-  List<T> retrieveByParent(String id);
-
-
 }

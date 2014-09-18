@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 
 /**
  * Application handling request of dynamic resources attachment
@@ -40,7 +38,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 public final class ResourcePluginApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<ResourceModel> store = null;
+  private ResourcePluginStoreInterface store = null;
 
   /**
    * Application associated to a converter
@@ -48,10 +46,9 @@ public final class ResourcePluginApplication extends SitoolsApplication {
    * @param context
    *          application context
    */
-  @SuppressWarnings("unchecked")
   public ResourcePluginApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<ResourceModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ResourcePluginStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -67,12 +64,12 @@ public final class ResourcePluginApplication extends SitoolsApplication {
 
     router.attachDefault(ResourcePluginResource.class);
 
-//    // GET : gets the list of registered resources
-//    router.attach("/list", ResourceClassPluginCollectionResource.class);
-//
-//    // GET : gets the representation of a registered class of application
-//    router.attach("/list/{resourceClass}", ResourceClassPluginResource.class);
-    
+    // // GET : gets the list of registered resources
+    // router.attach("/list", ResourceClassPluginCollectionResource.class);
+    //
+    // // GET : gets the representation of a registered class of application
+    // router.attach("/list/{resourceClass}", ResourceClassPluginResource.class);
+
     router.attach("/{resourcePluginId}", ResourcePluginResource.class);
     router.attach("/{resourcePluginId}/notify", ResourcePluginNotificationResource.class);
 
@@ -84,7 +81,7 @@ public final class ResourcePluginApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<ResourceModel> getStore() {
+  public ResourcePluginStoreInterface getStore() {
     return store;
   }
 

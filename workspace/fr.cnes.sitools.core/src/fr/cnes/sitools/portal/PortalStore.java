@@ -24,6 +24,8 @@ import fr.cnes.sitools.persistence.PersistenceDao;
  * Specialized Portal persistence interface
  *
  * @author jp.boignard (AKKA Technologies)
+ * 
+ * @deprecated use PortalStoreInterface instead
  */
 public interface PortalStore extends PersistenceDao<fr.cnes.sitools.portal.model.Portal> {
 

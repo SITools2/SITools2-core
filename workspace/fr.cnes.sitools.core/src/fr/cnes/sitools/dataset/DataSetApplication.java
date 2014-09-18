@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -19,6 +19,7 @@
 package fr.cnes.sitools.dataset;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -229,6 +230,24 @@ public final class DataSetApplication extends AbstractDataSetApplication {
     // NE PAS IMPLEMENTER >> uniquement via l'administration
   }
 
+  @Override
+  public void detachDataSetDefinitif(DataSet ds, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    // NE PAS IMPLEMENTER >> uniquement via l'administration
+  }
+
+  @Override
+  public void attachDataSet(DataSet ds, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    // NE PAS IMPLEMENTER >> uniquement via l'administration
+  }
+
+  @Override
+  public void detachDataSet(DataSet ds, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    // NE PAS IMPLEMENTER >> uniquement via l'administration
+  }
+
   /**
    * Gets the converterChained value
    * 
@@ -255,19 +274,27 @@ public final class DataSetApplication extends AbstractDataSetApplication {
   @Override
   public synchronized void start() throws Exception {
     super.start();
+    boolean isSynchro = getIsSynchro();
     if (isStarted()) {
       DataSet dataset = store.retrieve(getId());
       if (dataset != null) {
-        dataset.setStatus("ACTIVE");
-        store.update(dataset);
+        if (!isSynchro) {
+          dataset.setStatus("ACTIVE");
+          dataset.setLastStatusUpdate(new Date());
+          this.dataSet = dataset;
+          store.update(dataset);
+        }
       }
     }
     else {
       getLogger().warning("DataSetApplication should be started.");
       DataSet dataset = store.retrieve(getId());
       if (dataset != null) {
-        dataset.setStatus("INACTIVE");
-        store.update(dataset);
+        if (!isSynchro) {
+          dataset.setStatus("INACTIVE");
+          dataset.setLastStatusUpdate(new Date());
+          store.update(dataset);
+        }
       }
     }
   }
@@ -275,22 +302,43 @@ public final class DataSetApplication extends AbstractDataSetApplication {
   @Override
   public synchronized void stop() throws Exception {
     super.stop();
+    boolean isSynchro = getIsSynchro();
     if (isStopped()) {
       DataSet dataset = store.retrieve(getId());
       if (dataset != null) {
-        dataset.setStatus("INACTIVE");
-        store.update(dataset);
+        if (!isSynchro) {
+          dataset.setStatus("INACTIVE");
+          dataset.setLastStatusUpdate(new Date());
+          store.update(dataset);
+        }
       }
     }
     else {
       getLogger().warning("DataSetApplication should be stopped.");
       DataSet dataset = store.retrieve(getId());
       if (dataset != null) {
-        dataset.setStatus("ACTIVE");
-        store.update(dataset);
+        if (!isSynchro) {
+          dataset.setStatus("ACTIVE");
+          dataset.setLastStatusUpdate(new Date());
+          this.dataSet = dataset;
+          store.update(dataset);
+        }
       }
     }
 
+  }
+
+  /**
+   * Return true if the application is in synchro mode, false otherwise
+   * 
+   * @return true if the application is in synchro mode, false otherwise
+   */
+  private boolean getIsSynchro() {
+    Object dontUpdateStatusDate = getContext().getAttributes().get("IS_SYNCHRO");
+    if (dontUpdateStatusDate == null) {
+      return false;
+    }
+    return ((Boolean) dontUpdateStatusDate);
   }
 
   @Override

@@ -43,11 +43,11 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStoreXML;
 import fr.cnes.sitools.dataset.dto.DataSetExpositionDTO;
 import fr.cnes.sitools.dataset.model.ColumnConceptMapping;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.model.DictionaryMapping;
+import fr.cnes.sitools.dictionary.DictionaryStoreInterface;
 import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.dictionary.model.Dictionary;
@@ -166,8 +166,7 @@ public abstract class AbstractDataSetDictionaryMappingTestCase extends AbstractD
       getMappingAssertConcepts(item.getId(), dicoMapping.getDictionaryId(), 3, "1", 2);
 
       // dedlete a concept in the dictionary and check that the entry is deleted in the mapping
-      @SuppressWarnings("unchecked")
-      SitoolsStoreXML<Dictionary> store = (SitoolsStoreXML<Dictionary>) SitoolsSettings.getInstance().getStores()
+      DictionaryStoreInterface store = (DictionaryStoreInterface) SitoolsSettings.getInstance().getStores()
           .get(Consts.APP_STORE_DICTIONARY);
 
       Dictionary dico = store.retrieve(dictionaryId_1);

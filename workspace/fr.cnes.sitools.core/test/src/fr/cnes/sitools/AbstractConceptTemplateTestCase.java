@@ -46,7 +46,8 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.dictionary.ConceptTemplateAdministration;
-import fr.cnes.sitools.dictionary.ConceptTemplateStoreXML;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreInterface;
+import fr.cnes.sitools.dictionary.ConceptTemplateStoreXMLMap;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.Property;
@@ -65,7 +66,7 @@ public abstract class AbstractConceptTemplateTestCase extends AbstractSitoolsTes
   /**
    * static xml store instance for the test
    */
-  private static ConceptTemplateStoreXML store = null;
+  private static ConceptTemplateStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -97,7 +98,7 @@ public abstract class AbstractConceptTemplateTestCase extends AbstractSitoolsTes
    */
   protected String getTestRepository() {
     return super.getTestRepository()
-        + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR);
+        + SitoolsSettings.getInstance().getString(Consts.APP_DICTIONARIES_TEMPLATES_STORE_DIR) + "/map";
   }
 
   @Before
@@ -116,8 +117,10 @@ public abstract class AbstractConceptTemplateTestCase extends AbstractSitoolsTes
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new ConceptTemplateStoreXML(storeDirectory, ctx);
+        cleanMapDirectories(storeDirectory);
+        store = new ConceptTemplateStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());

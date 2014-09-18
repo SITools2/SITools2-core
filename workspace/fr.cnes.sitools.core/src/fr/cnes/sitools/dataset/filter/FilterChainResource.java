@@ -44,7 +44,6 @@ import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.SitoolsMediaType;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.filter.dto.FilterChainedModelDTO;
 import fr.cnes.sitools.dataset.filter.dto.FilterChainedOrderDTO;
@@ -60,7 +59,7 @@ import fr.cnes.sitools.dataset.filter.model.FilterModel;
  */
 public final class FilterChainResource extends AbstractFilterResource {
   /** The FilterStore */
-  private SitoolsStore<FilterChainedModel> store;
+  private FilterStoreInterface store;
 
   /**
    * Initiate the resource
@@ -468,7 +467,7 @@ public final class FilterChainResource extends AbstractFilterResource {
    * 
    * @return the store
    */
-  public SitoolsStore<FilterChainedModel> getStore() {
+  public FilterStoreInterface getStore() {
     return store;
   }
 

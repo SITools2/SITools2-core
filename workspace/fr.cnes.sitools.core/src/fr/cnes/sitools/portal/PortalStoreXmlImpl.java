@@ -29,6 +29,8 @@ import fr.cnes.sitools.portal.model.Portal;
  * Specialized XML Persistence implementation of PortalStore.
  * 
  * @author jp.boignard (AKKA Technologies)
+ * 
+ * @deprecated use PortalStoreXmlMap
  */
 public final class PortalStoreXmlImpl extends XmlPersistenceDaoImpl<Portal> implements PortalStore {
 

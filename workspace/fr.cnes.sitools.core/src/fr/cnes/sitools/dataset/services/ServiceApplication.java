@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 
 /**
  * Application used to manage GuiServices on datasets
@@ -41,7 +39,7 @@ import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 public class ServiceApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<ServiceCollectionModel> store = null;
+  private ServiceStoreInterface store = null;
 
   /**
    * Constructor
@@ -49,10 +47,9 @@ public class ServiceApplication extends SitoolsApplication {
    * @param context
    *          Restlet Host Context
    */
-  @SuppressWarnings("unchecked")
   public ServiceApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<ServiceCollectionModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ServiceStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -72,7 +69,7 @@ public class ServiceApplication extends SitoolsApplication {
     router.attach("/server/{resourcePluginId}", ServerServiceResource.class);
     router.attach("/gui", GuiServiceCollectionResource.class);
     router.attach("/gui/{guiServiceId}", GuiServiceResource.class);
-    
+
     router.attach("/notify", ServiceNotificationResource.class);
 
     return router;
@@ -83,7 +80,7 @@ public class ServiceApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<ServiceCollectionModel> getStore() {
+  public ServiceStoreInterface getStore() {
     return store;
   }
 

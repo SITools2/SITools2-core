@@ -30,8 +30,6 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dataset.filter.model.FilterChainedModel;
 import fr.cnes.sitools.notification.model.Notification;
 
 /**
@@ -41,7 +39,7 @@ import fr.cnes.sitools.notification.model.Notification;
  */
 public final class FilterNotificationResource extends AbstractFilterResource {
   /** The FilterStore */
-  private SitoolsStore<FilterChainedModel> store;
+  private FilterStoreInterface store;
 
   /**
    * Initiate the resource
@@ -120,7 +118,7 @@ public final class FilterNotificationResource extends AbstractFilterResource {
    * 
    * @return the store
    */
-  public SitoolsStore<FilterChainedModel> getStore() {
+  public FilterStoreInterface getStore() {
     return store;
   }
 

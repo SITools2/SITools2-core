@@ -31,7 +31,7 @@ import org.restlet.ext.xstream.XstreamRepresentation;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.service.storage.DataStorageStore;
+import fr.cnes.sitools.service.storage.DataStorageStoreInterface;
 import fr.cnes.sitools.service.storage.StorageAdministration;
 import fr.cnes.sitools.service.storage.model.StorageDirectory;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -58,7 +58,7 @@ public class IndexRefreshRunnable extends StorageRunnable {
    * @param context
    *          the context
    */
-  public IndexRefreshRunnable(StorageDirectory sd, DataStorageStore store, String solrUrl, Context context,
+  public IndexRefreshRunnable(StorageDirectory sd, DataStorageStoreInterface store, String solrUrl, Context context,
       StorageAdministration application) {
     this.sd = sd;
     this.store = store;

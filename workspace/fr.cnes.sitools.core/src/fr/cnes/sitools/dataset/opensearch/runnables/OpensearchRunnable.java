@@ -20,8 +20,8 @@ package fr.cnes.sitools.dataset.opensearch.runnables;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.opensearch.OpenSearchApplication;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 
 /**
@@ -35,7 +35,7 @@ public abstract class OpensearchRunnable implements Runnable {
   /** Opensearch object */
   protected Opensearch os;
   /** opensearch store */
-  protected SitoolsStore<Opensearch> store;
+  protected OpenSearchStoreInterface store;
   /** SolrUrl */
   protected String solrUrl;
   /** Context */
