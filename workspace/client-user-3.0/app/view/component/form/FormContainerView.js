@@ -69,36 +69,36 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
          */
         'componentChanged');
 
-//        this.on('componentChanged', function (formContainer, componentChanged) {
-//            // look for all the childrens of the component
-//            var childrens = formContainer.find("parentParam", componentChanged.parameterId);
-//            // For each children, add a query string on the componentChanged
-//            // value and reset children Value.
-//            // Also, fire the event ComponentChanged for the children to cascade
-//            // changes.
-//            Ext.each(childrens, function (children) {
-//                if (children.valueSelection == 'D') {
-//                    var store = children.find("stype", "sitoolsFormItem")[0].store;
-//
-//                    var baseParams = store.baseParams;
-//
-//                    if (!Ext.isEmpty(componentChanged.getSelectedValue())) {
-//                        var filter = componentChanged.getParameterValue();
-//                        baseParams["p[0]"] = this.paramToAPI(filter);
-//                    } else {
-//                        baseParams["p[0]"] = null;
-//                    }
-//                    store.baseParams = baseParams;
-//                    children.setSelectedValue(null);
-//                    store.reload({
-//                        callback : function () {
-//                            formContainer.fireEvent('componentChanged', formContainer, children);
-//                        }
-//                    });
-//
-//                }
-//            }, this);
-//        });
+        this.on('componentChanged', function (formContainer, componentChanged) {
+            // look for all the childrens of the component
+            var childrens = formContainer.find("parentParam", componentChanged.parameterId);
+            // For each children, add a query string on the componentChanged
+            // value and reset children Value.
+            // Also, fire the event ComponentChanged for the children to cascade
+            // changes.
+            Ext.each(childrens, function (children) {
+                if (children.valueSelection == 'D') {
+                    var store = children.find("stype", "sitoolsFormItem")[0].store;
+
+                    var baseParams = store.baseParams;
+
+                    if (!Ext.isEmpty(componentChanged.getSelectedValue())) {
+                        var filter = componentChanged.getParameterValue();
+                        baseParams["p[0]"] = this.paramToAPI(filter);
+                    } else {
+                        baseParams["p[0]"] = null;
+                    }
+                    store.baseParams = baseParams;
+                    children.setSelectedValue(null);
+                    store.reload({
+                        callback : function () {
+                            formContainer.fireEvent('componentChanged', formContainer, children);
+                        }
+                    });
+
+                }
+            }, this);
+        });
         
         this.callParent(arguments);
     },
@@ -142,6 +142,7 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
                     var containerItems = [ sitools.user.utils.FormUtils.formParameterToComponent(param, dataUrl, this.formId, this.datasetCm, context, this).component];
 
                     var container = Ext.create('Ext.container.Container', {
+                    	border : false,
                         width : param.width,
                         height : param.height,
                         x : x,
@@ -166,6 +167,7 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
                 var containerItems = [ sitools.user.utils.FormUtils.formParameterToComponent(parameter, dataUrl, this.formId, this.datasetCm, context, this).component];
                 
                 var container = Ext.create('Ext.container.Container', {
+                	border : false,
                     width : parameter.width,
                     height : parameter.height,
                     x : x,
@@ -178,6 +180,7 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
             }, this);
         }
     }, 
+    
     paramToAPI : function (paramValue) {
         var stringParam = paramValue.type + "|" + paramValue.code + "|" + paramValue.value;
         if (!Ext.isEmpty(paramValue.userDimension) && !Ext.isEmpty(paramValue.userUnit)) {
@@ -185,6 +188,7 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
         }  
         return stringParam;
     },
+    
     /**
      * Check that all the components are valid
      * @return {boolean} true if all components are valid, false otherwise

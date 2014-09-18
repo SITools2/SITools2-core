@@ -1435,3 +1435,29 @@ td.ux-taskButtons-edge {
 	margin-bottom: 15px;
 	height: 100px;
 }
+
+.moduleInDiv {
+	box-shadow: #818181 -3px 0px 7px 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: -moz-linear-gradient(-45deg, rgba(179,179,179,1) 0%, rgba(173,173,173,1) 50%, rgba(165,165,165,1) 51%, rgba(201,201,201,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(179,179,179,1)), color-stop(50%,rgba(173,173,173,1)), color-stop(51%,rgba(165,165,165,1)), color-stop(100%,rgba(201,201,201,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg, rgba(179,179,179,1) 0%,rgba(173,173,173,1) 50%,rgba(165,165,165,1) 51%,rgba(201,201,201,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(-45deg, rgba(179,179,179,1) 0%,rgba(173,173,173,1) 50%,rgba(165,165,165,1) 51%,rgba(201,201,201,1) 100%); /* Opera 11.10+ */
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+	background: -moz-linear-gradient(-45deg, rgba(201,201,201,1) 0%, rgba(165,165,165,1) 49%, rgba(173,173,173,1) 50%, rgba(179,179,179,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(201,201,201,1)), color-stop(49%,rgba(165,165,165,1)), color-stop(50%,rgba(173,173,173,1)), color-stop(100%,rgba(179,179,179,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg, rgba(201,201,201,1) 0%,rgba(165,165,165,1) 49%,rgba(173,173,173,1) 50%,rgba(179,179,179,1) 100%); /* Chrome10+,Safari5.1+ */
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: -moz-linear-gradient(-45deg, rgba(201,213,201,1) 0%, rgba(165,165,165,1) 49%, rgba(173,173,173,1) 50%, rgba(179,179,179,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(201,213,201,1)), color-stop(49%,rgba(165,165,165,1)), color-stop(50%,rgba(173,173,173,1)), color-stop(100%,rgba(179,179,179,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(-45deg, rgba(201,213,201,1) 0%,rgba(165,165,165,1) 49%,rgba(173,173,173,1) 50%,rgba(179,179,179,1) 100%); /* Chrome10+,Safari5.1+ */
+}

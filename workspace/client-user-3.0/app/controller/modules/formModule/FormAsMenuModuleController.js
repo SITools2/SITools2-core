@@ -15,20 +15,34 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse*/
-
-Ext.namespace('sitools.user.view.modules.projectDescription');
-/**
- * ProjectDescription Module
- * @class sitools.user.modules.projectDescription
- * @extends Ext.Panel
+/*
+ * global Ext, sitools, i18n, document, projectGlobal, SitoolsDesk, userLogin,
+ * DEFAULT_PREFERENCES_FOLDER, loadUrl
  */
-Ext.define('sitools.user.view.modules.projectDescription.ProjectDescription', {
-    extend : 'Ext.panel.Panel',
+/*
+ * @include "../../sitoolsProject.js" @include "../../desktop/desktop.js"
+ * @include "../../components/forms/forms.js" @include
+ * "../../components/forms/projectForm.js"
+ */
+
+Ext.namespace('sitools.user.controller.modules.formModule');
+
+/**
+ * Forms Module : Displays All Forms depending on datasets attached to the
+ * project.
+ * 
+ * @class sitools.user.modules.formsModule
+ * @extends Ext.grid.GridPanel
+ * @requires sitools.user.component.forms.mainContainer
+ */
+Ext.define('sitools.user.controller.modules.formModule.FormAsMenuModuleController', {
+	extend : 'Ext.app.Controller',
     
-    border : false,
-    bodyBorder : false,
+    views : ['modules.formModule.FormAsMenuModuleView'],
+    
+    init : function () {
+        this.control();
+    },
     
     /**
      * method called when trying to save preference
@@ -37,9 +51,11 @@ Ext.define('sitools.user.view.modules.projectDescription.ProjectDescription', {
      */
     _getSettings : function () {
         return {
-            preferencesPath : "/modules",
+            preferencesPath : "/modules", 
             preferencesFileName : this.id
         };
 
     }
+    
+    
 });

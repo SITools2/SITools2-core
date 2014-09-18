@@ -29,7 +29,7 @@
 }
 
 .sitools_button_main {
-	/*padding: 4px 4px 4px 12px;*/
+	padding: 3px 0px 0px 0px;
 	border: none;
 	background-color: transparent;
 	background-image: none;
@@ -94,6 +94,14 @@
 	background-image: url("/sitools/common/res/images/icons/general/saturate/delete.png");
 }
 
+.delete_button_small_img {
+	background-image: url("/sitools/common/res/images/icons/general/delete16x16.png");
+}
+
+.delete_button_small_img:HOVER {
+	background-image: url("/sitools/common/res/images/icons/general/saturate/delete16x16.png");
+}
+
 .desktop_button_img {
 	background-image: url("/sitools/common/res/images/icons/general/desktop.png");
 }
@@ -124,6 +132,14 @@
 
 .previous_button_img:HOVER {
 	background-image: url("/sitools/common/res/images/icons/general/saturate/previous.png");
+}
+
+.version-icon {
+	background-image: url(/sitools/common/res/images/icons/general/version.png);
+}
+
+.help-icon {
+	background-image: url(/sitools/common/res/images/icons/general/help.png);
 }
 
 #btn-more {

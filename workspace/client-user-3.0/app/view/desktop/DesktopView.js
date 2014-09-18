@@ -118,7 +118,9 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
         me.windows = Ext.create("Ext.util.MixedCollection");
 
-        me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
+        if (Project.getNavigationMode() == 'desktop') {
+        	me.contextMenu = Ext.create("Ext.menu.Menu", me.createDesktopMenu());
+        }
 
         me.items = [
             { xtype: 'wallpaper', id: 'wallpaperId', taskbar : this.taskbar }
@@ -137,7 +139,10 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     afterRender: function () {
         var me = this;
         me.callParent();
-        me.el.on('contextmenu', me.onDesktopMenu, me);
+        
+        if (Project.getNavigationMode() == 'desktop') {
+        	me.el.on('contextmenu', me.onDesktopMenu, me);
+        }
         
         this.fitDesktop();
     },
@@ -156,12 +161,12 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         
         var desktopEl = Ext.get('x-desktop');
         
-            el.setHeight(Ext.getBody().getHeight() - enteteEl.getHeight() - bottomEl.getHeight())
-            var desktopHeight = Ext.get("x-desktop-taskbar").getHeight();
+        el.setHeight(Ext.getBody().getHeight() - enteteEl.getHeight() - bottomEl.getHeight());
+        var desktopHeight = Ext.get("x-desktop-taskbar").getHeight();
 
-            desktopEl.setHeight(desktopHeight);
-           
-            this.setHeight(desktopHeight);
+        desktopEl.setHeight(desktopHeight);
+       
+        this.setHeight(desktopHeight);
     },
 
     //------------------------------------------------------
@@ -178,8 +183,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         }
 
         ret.items.push(
-                { text: 'Tile', handler: me.tileWindows, scope: me, minWindows: 1 },
-                { text: 'Cascade', handler: me.cascadeWindows, scope: me, minWindows: 1 })
+                { text: i18n.get('label.tile'), handler: me.tileWindows, scope: me, minWindows: 1 },
+                { text: i18n.get('label.cascade'), handler: me.cascadeWindows, scope: me, minWindows: 1 })
 
         return ret;
     },
@@ -405,13 +410,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
                 		var deskWidth = Desktop.getDesktopEl().getWidth();
                 		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').taskbar.getHeight();
                 		
-                		if (me.getWidth() > deskWidth) {
-                			me.setWidth(deskWidth);
-                		}
-                		
-                		if (me.getHeight() > deskHeight) {
-                			me.setHeight(deskHeight);
-                		}
+                		me.setWidth(deskWidth);
+                		me.setHeight(deskHeight);
                         
                         var child = me.items.items[0];
                         if (child && child.getEl()) {

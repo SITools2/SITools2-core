@@ -52,6 +52,17 @@ Ext.define('sitools.user.model.FormModel', {
         name : 'collection'
     }, {
         name : 'dictionary'
+    }, {
+        name : 'urlServicePropertiesSearch', 
+        type : 'string'
+    }, {
+        name : 'urlServiceDatasetSearch', 
+        type : 'string'
+    }, {
+		name : 'authorized'	
+    }, {
+        name : 'nbDatasetsMax', 
+        type : 'int'
     } ]
 
 });

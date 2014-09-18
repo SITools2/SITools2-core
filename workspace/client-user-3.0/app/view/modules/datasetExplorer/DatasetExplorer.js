@@ -29,6 +29,9 @@ Ext.define('sitools.user.view.modules.datasetExplorer.DatasetExplorer', {
     layout : 'fit',
     itemId : 'datasetExplorer',
     
+    border : false,
+    bodyBorder : false,
+    
     initComponent : function () {
         
         var project = Ext.getStore('ProjectStore').getProject();

@@ -24,17 +24,17 @@
  * @extends Ext.Container
  */
 Ext.define('sitools.public.forms.AbstractWithUnit', {
-    alternateClassName : ['sitools.public.forms.AbstractWithUnit'],
-   extend : 'Ext.Container',
+   alternateClassName : ['sitools.public.forms.AbstractWithUnit'],
+   extend : 'Ext.container.Container',
    dimensionId : null,
-   userUnit : null, 
+   userUnit : null,
    userDimension : null,
    
    initComponent : function () {
 		this.userDimension = this.dimensionId;
 		this.userUnit = this.unit;
 		
-		this.storeUnits = new Ext.data.JsonStore({
+		this.storeUnits = Ext.create('Ext.data.JsonStore', {
             id : 'storeUnitSelect',
             root : 'dimension.units',
             idProperty : 'id',
@@ -46,8 +46,8 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
                 type : 'string'
             }]
         });
-                    
-        sitools.public.forms.AbstractWithUnit.superclass.initComponent.call(this);
+        
+		this.callParent(arguments);
    },
    /**
     * Load all units available with a given dimension.
@@ -92,8 +92,8 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
      */
     showWinUnits : function (event) {
 
-        var cmUnits = new Ext.grid.ColumnModel({
-            columns : [ {
+        var cmUnits = {
+            items : [ {
                 header : i18n.get('headers.name'),
                 dataIndex : 'label',
                 width : 100
@@ -102,26 +102,26 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
                 sortable : true,
                 width : 100
             }
-        });
+        };
 
         var smUnits = Ext.create('Ext.selection.RowModel',{
             mode : 'SINGLE'
         });
 
-        this.gridUnits = new Ext.grid.GridPanel({
+        this.gridUnits = Ext.create('Ext.grid.Panel', {
             autoScroll : true,
             store : this.storeUnits,
-            cm : cmUnits,
+            columns : cmUnits,
             sm : smUnits, 
             layout : 'fit', 
             listeners : {
-                scope : this, 
-                rowClick : function (grid, rowIndex) {
+                scope : this,
+                itemclick : function (grid, record, item, rowIndex) {
                     this.onValidateUnits();
                 }
             }
         });
-        var winUnit = new Ext.Window({
+        var winUnit = Ext.create('Ext.window.Window', {
             layout : 'fit', 
             width : 200, 
             title : i18n.get('title.unitList'),
@@ -149,11 +149,12 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
      * update the label of the button withe the new unit
      */
     onValidateUnits : function () {
-        var rec = this.gridUnits.getSelectionModel().getSelected();
+        var rec = this.gridUnits.getSelectionModel().getSelection()[0];
         if (Ext.isEmpty(rec)) {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noSelection'));
             return;
         }
+        
         this.userUnit = rec.data;
         this.userDimension = this.dimensionName;
         var btn = this.getEl().query("button")[0];
@@ -200,7 +201,7 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
                     //this.userDimension = this.dimensionId;
                 }
             });
-            unit = new Ext.Container({
+            unit = Ext.create('Ext.container.Container', {
             	layout : "hbox", 
             	layoutConfig : {
             		pack : "center", 
@@ -213,7 +214,7 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
         }
         else {
             if (!Ext.isEmpty(columnUnit)) {
-                unit = new Ext.Container({
+                unit = Ext.create('Ext.container.Container', {
 		    		html : columnUnit.label, 
 		    		margins : {top:0, right:0, bottom:0, left:10}, 
 	        		flex : 1
@@ -222,10 +223,8 @@ Ext.define('sitools.public.forms.AbstractWithUnit', {
             else {
                 unit = null;
             }
-            
         }
         return unit;
-    	
     }
 });
 

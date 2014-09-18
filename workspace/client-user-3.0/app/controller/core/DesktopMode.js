@@ -76,6 +76,42 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
         return desktopSettings;
     },
     
+    minimize : function (desktopView) {
+		desktopView.windows.each(function (win) {
+			
+			if (win.maximized) {
+				win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+				win.setWidth(Desktop.getDesktopEl().getWidth());
+			}
+			
+			if (win.getHeight() > Desktop.getDesktopEl().getHeight()) {
+				win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+			}
+			if (win.getWidth() > Desktop.getDesktopEl().getWidth()) {
+				win.setWidth(Desktop.getDesktopEl().getWidth());
+			}
+			
+		}, this);
+    },
+    
+    maximize : function (desktopView) {
+    	desktopView.windows.each(function (win) {
+		
+			if (win.maximized) {
+				win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+				win.setWidth(Desktop.getDesktopEl().getWidth());
+			}
+			
+			if (win.getHeight() > Desktop.getDesktopEl().getHeight()) {
+				win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+			}
+			if (win.getWidth() > Desktop.getDesktopEl().getWidth()) {
+				win.setWidth(Desktop.getDesktopEl().getWidth());
+			}
+		
+    	}, this);
+    },
+    
     getStatefullWindowConfig : function () {
 		return {
 			saveSettings : function (componentSettings, forPublicUser) {
@@ -87,7 +123,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
 			    var winPosition = this.getPosition(true); 
 			    var position = {
 					x : winPosition[0],
-					y : winPosition[1],
+					y : winPosition[1]
 				}
 			    
 			    var size = {
@@ -193,5 +229,136 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
 			    return putObject;
 		    }
 		};
-	}
+	},
+	
+	createButtonsLeftTaskbar : function () {
+		var buttons = [];
+		
+		var homeButton = Ext.create('Ext.Button', {
+        	itemId : 'sitoolsButton',
+            scale : "medium",
+            cls : 'sitools_button_main',
+            iconCls : 'sitools_button_img',
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.mainMenu');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : 10,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+		buttons.push(homeButton);
+        
+        var cleanDesktopButton = Ext.create('Ext.menu.Item', {
+            action : "minimize",
+            text : i18n.get('label.removeActiveModule'),
+            iconCls : 'delete_button_small_img',
+            cls : 'menuItemCls',
+            handler : function (btn) {
+            	Desktop.clearDesktop();
+            }
+        });
+        
+        var showDesktopButton = Ext.create('Ext.menu.Item', {
+            action : "minimize",
+            text : i18n.get("label.showDesktopButton"),
+            iconCls : 'desktop_button_img',
+            cls : 'menuItemCls',
+            handler : function (btn) {
+            	Desktop.showDesktop();
+            }
+        });
+        
+        buttons.push('-');
+        
+        var moreButton = Ext.create('Ext.Button', {
+//            id : 'btn-more',
+            iconCls : 'more_button_img',
+            cls : 'sitools_button_main',
+            arrowCls : null,
+            menu : {
+            	xtype : 'menu',
+            	border : false,
+            	plain : true,
+            	items : [cleanDesktopButton, showDesktopButton]
+            },
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.moreAction');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : 5,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+        buttons.push(moreButton);
+        
+        return buttons;
+	},
+	
+    /**
+     * @return the specific JS View to display dataset
+     */
+    getDatasetOpenMode : function (dataset) {
+        return dataset.datasetView.jsObject;
+    },
+	
+	/**
+     * Specific multiDataset search context methods
+     */
+    multiDataset : {
+    	
+        /**
+         * Returns the right object to show multiDs results
+         * 
+         * @returns
+         */
+        getObjectResults : function () {
+            return sitools.user.view.component.form.ResultProjectForm;
+        },
+        
+        /**
+         * Handler of the button show data in the
+         * {sitools.user.component.forms.resultsProjectForm} object
+         * 
+         * @param {Ext.grid.GridPanel}
+         *            grid the grid results
+         * @param {int}
+         *            rowIndex the index of the clicked row
+         * @param {int}
+         *            colIndex the index of the column
+         * @returns
+         */
+        showDataset : function (grid, rowIndex, colIndex) {
+            var rec = grid.getStore().getAt(rowIndex);
+            if (Ext.isEmpty(rec)) {
+                return;
+            }
+            if (rec.get('status') == "REQUEST_ERROR") {
+                return;
+            }
+            
+            var url = rec.get("url");
+            sitools.user.utils.DatasetUtils.openDataset(url, {
+//                formMultiDsParams : this.formMultiDsParams
+                formParams : this.formMultiDsParams
+            });
+        }
+    }
+	
 });

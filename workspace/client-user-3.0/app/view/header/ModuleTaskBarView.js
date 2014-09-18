@@ -28,139 +28,14 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
     alias: 'widget.moduleTaskBar',
     
     initComponent : function () {
-        var items = [];
+    	
+    	if (Project.getNavigationMode() == 'fixed') {
+    		this.width = 170;
+    	}
+    	
+        var items =  Desktop.getNavMode().createButtonsLeftTaskbar();
 //        var categories = this.categorizeModules();
 
-        var homeButton = Ext.create('Ext.Button', {
-        	itemId : 'sitoolsButton',
-            scale : "medium",
-            cls : 'sitools_button_main',
-            iconCls : 'sitools_button_img',
-            listeners : {
-				afterrender : function (btn) {
-					var label = i18n.get('label.mainMenu');
-					var tooltipCfg = {
-							html : label,
-							target : btn.getEl(),
-							anchor : 'bottom',
-							anchorOffset : 10,
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
-					};
-					Ext.create('Ext.tip.ToolTip', tooltipCfg);
-				}
-			}
-        });
-        items.push(homeButton);
-        items.push('-');
-        
-        if (Project.getNavigationMode() == 'fixed') { // adding navigation button
-        	this.width = 180;
-        	
-        	var previousButton = Ext.create('Ext.button.Button', {
-                scope : this, 
-                handler : function () {
-                	Desktop.activePreviousPanel();
-                }, 
-                scale : "medium", 
-                cls : 'sitools_button_main',
-                iconCls : 'previous_button_img',
-                listeners : {
-    				afterrender : function (btn) {
-    					var label = i18n.get('label.previous');
-    					var tooltipCfg = {
-    							html : label,
-    							target : btn.getEl(),
-    							anchor : 'bottom',
-    							anchorOffset : 5,
-    							showDelay : 20,
-    							hideDelay : 50,
-    							dismissDelay : 0
-    					};
-    					Ext.create('Ext.tip.ToolTip', tooltipCfg);
-    				}
-    			}
-            });
-            items.push(previousButton);
-
-        	
-            var nextButton = Ext.create('Ext.button.Button', {
-                scope : this, 
-                handler : function () {
-                	Desktop.activeNextPanel();
-                }, 
-                scale : "medium",
-                cls : 'sitools_button_main',
-                iconCls : 'next_button_img',
-                listeners : {
-    				afterrender : function (btn) {
-    					var label = i18n.get('label.next');
-    					var tooltipCfg = {
-    							html : label,
-    							target : btn.getEl(),
-    							anchor : 'bottom',
-    							anchorOffset : 5,
-    							showDelay : 20,
-    							hideDelay : 50,
-    							dismissDelay : 0
-    					};
-    					Ext.create('Ext.tip.ToolTip', tooltipCfg);
-    				}
-    			}
-            });
-            items.push(nextButton);
-        }
-        
-        var cleanDesktopButton = Ext.create('Ext.menu.Item', {
-            action : "minimize",
-            text : i18n.get('label.removeActiveModule'),
-            iconCls : 'delete_button_img',
-            cls : 'menuItemCls',
-            handler : function (btn) {
-            	Desktop.clearDesktop();
-            }
-        });
-        
-        var showDesktopButton = Ext.create('Ext.menu.Item', {
-            action : "minimize",
-            text : i18n.get("label.showDesktopButton"),
-            iconCls : 'desktop_button_img',
-            cls : 'menuItemCls',
-            handler : function (btn) {
-            	Desktop.showDesktop();
-            }
-        });
-        
-        var moreButton = Ext.create('Ext.Button', {
-            id : 'btn-more',
-            iconCls : 'more_button_img',
-            cls : (Project.getNavigationMode() == 'fixed') ? 'sitools_button more_button_fixedMode' : 'sitools_button',
-            arrowCls : null,
-            menu : {
-            	xtype : 'menu',
-            	border : false,
-            	plain : true,
-            	items : [cleanDesktopButton, showDesktopButton]
-            },
-            listeners : {
-				afterrender : function (btn) {
-					var label = i18n.get('label.moreAction');
-					var tooltipCfg = {
-							html : label,
-							target : btn.getEl(),
-							anchor : 'bottom',
-							anchorOffset : 5,
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
-					};
-					Ext.create('Ext.tip.ToolTip', tooltipCfg);
-				}
-			}
-        });
-        items.push(moreButton);
-        
         this.callParent(Ext.apply(this, {
             enableOverflow : true,
             items : items,

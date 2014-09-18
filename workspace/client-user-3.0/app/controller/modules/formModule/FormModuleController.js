@@ -128,8 +128,9 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
             return;
         }
 
-        var formController = Ext.create('sitools.user.component.form.FormComponent');
-        formController.openProjectForm(rec.getData(true));
+        var formComponent = Ext.create('sitools.user.component.form.FormComponent');
+        formComponent.create(this.getApplication());
+        formComponent.openProjectForm(rec.getData(true));
         
     },
     

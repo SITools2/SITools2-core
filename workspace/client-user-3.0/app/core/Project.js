@@ -100,7 +100,7 @@ Ext.define('sitools.user.core.Project', {
                         icon : Ext.MessageBox.INFO,
                         fn : function (response) {
                             if (response === 'ok') {
-                                sitools.userProfile.LoginUtils.connect({
+                            	sitools.public.utils.LoginUtils.connect({
                                     url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
                                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
                                     reset : loadUrl.get('APP_URL') + '/lostPassword',

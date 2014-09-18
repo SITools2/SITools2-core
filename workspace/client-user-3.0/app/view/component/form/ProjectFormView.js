@@ -57,7 +57,8 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
         // New Form model with zones
         if (!Ext.isEmpty(this.formZones)) {
             Ext.each(this.formZones, function (formParam) {
-                var containerId = formParam.containerPanelId;
+//                var containerId = formParam.containerPanelId;
+                var containerId = formParam.id;
                 if (Ext.isEmpty(panelIdObject[containerId])) {
                     panelIdObject[containerId] = [];
                 }
@@ -105,7 +106,8 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
             height : this.formHeight,
             css : this.formCss,
             formId : this.formId,
-            items : [ items ]
+            border : false,
+            items : items
         });
 
         var displayComponentPanel = Ext.create('Ext.panel.Panel', {
@@ -114,7 +116,8 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
             region : "center",
             flex : 2,
             autoScroll : true,
-            items : this.zonesPanel,
+            border : false,
+            items : [this.zonesPanel],
             layout : "absolute"
         });
 
@@ -129,6 +132,7 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
             labelWidth : 100,
             flex : 2,
             autoScroll : true,
+            border : false,
             defaults : {
                 labelSeparator : ""
             },
@@ -256,7 +260,7 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
                     });
                 },
                 multiDsSearchDone : function () {
-                    this.searchButton.setDisabled(false);
+//                    this.searchButton.setDisabled(false);
                 }
 
             },

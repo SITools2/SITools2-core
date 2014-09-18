@@ -30,8 +30,8 @@ Ext.define('sitools.user.view.header.UserProfileView', {
     extend : 'Ext.menu.Menu',
     alias: 'widget.userProfileWindow',
     
-    width : 150,
-    height : 137,
+//    width : 150,
+//    height : 220,
     border : false,
     plain : true,
     closeAction : 'hide',
@@ -55,7 +55,6 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         var logout = Ext.create('Ext.menu.Item', {
             text  : i18n.get('label.logout'),
             name : 'usrProfileLogout',
-            hidden : (userIdentifier == "public"),
             iconCls : 'logoutIcon',
         	cls : 'menuItemCls'
         });
@@ -63,7 +62,6 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         var login = Ext.create('Ext.menu.Item', {
             text  : i18n.get('label.login'),
             name : 'usrProfileLogin',
-            hidden : (userIdentifier != "public"),
             iconCls : 'loginIcon',
         	cls : 'menuItemCls'
         });
@@ -71,7 +69,6 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         var register = Ext.create('Ext.menu.Item', {
             text  : i18n.get('label.register'),
             name : 'usrProfileRegister',
-            hidden : (userIdentifier != "public"),
             iconCls : 'registerIcon',
             cls : 'menuItemCls'
         });
@@ -79,7 +76,6 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         var personal = Ext.create('Ext.menu.Item', {
             text  : i18n.get('label.personal'),
             name : 'usrProfilePersonal',
-            hidden : (userIdentifier == "public"),
             iconCls : 'personalIcon',
             cls : 'menuItemCls'
         });
@@ -87,6 +83,20 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         var menuLangues = Ext.create('Ext.menu.Menu', {
             plain : true,
             border : false
+        });
+        
+        var help = Ext.create('Ext.menu.Item', {
+            text  : i18n.get('label.help'),
+            name : 'usrProfileHelp',
+            iconCls : 'help-icon',
+            cls : 'menuItemCls'
+        });
+        
+        var version = Ext.create('Ext.menu.Item', {
+            text  : i18n.get('label.version'),
+            name : 'usrProfileVersion',
+            iconCls : 'version-icon',
+            cls : 'menuItemCls'
         });
         
         Ext.each(Project.getLanguages(), function (language) {
@@ -150,16 +160,45 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         
         var logoUserUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + '/res/images/icons/menu/usersGroups.png';
         
-        this.items = [userLabel, {
-        	xtype : 'menuseparator',
-        	separatorCls : 'customMenuSeparator'
-		}, logout, login, {
-        	xtype : 'menuseparator',
-        	separatorCls : 'customMenuSeparator'
-		}, register, personal, {
-        	xtype : 'menuseparator',
-        	separatorCls : 'customMenuSeparator'
-		}, language];
+        var menuItems;
+        if (userIdentifier == "public") {
+        	menuItems = [userLabel, {
+            	xtype : 'menuseparator',
+            	separatorCls : 'customMenuSeparator'
+    		}, login, {
+            	xtype : 'menuseparator',
+            	separatorCls : 'customMenuSeparator'
+    		}, register, {
+            	xtype : 'menuseparator',
+            	separatorCls : 'customMenuSeparator'
+    		}, language, {
+            	xtype : 'menuseparator',
+            	separatorCls : 'customMenuSeparator'
+    		}, help, {
+            	xtype : 'menuseparator',
+            	separatorCls : 'customMenuSeparator'
+    		}, version];
+        	
+        } else {
+        	menuItems = [userLabel, {
+	        	xtype : 'menuseparator',
+	        	separatorCls : 'customMenuSeparator'
+			}, personal, {
+	        	xtype : 'menuseparator',
+	        	separatorCls : 'customMenuSeparator'
+			}, language, {
+	        	xtype : 'menuseparator',
+	        	separatorCls : 'customMenuSeparator'
+			}, help, {
+	        	xtype : 'menuseparator',
+	        	separatorCls : 'customMenuSeparator'
+			}, version, {
+	        	xtype : 'menuseparator',
+	        	separatorCls : 'customMenuSeparator'
+			}, logout];	
+        }
+        
+        this.items = menuItems;
         
         this.callParent(arguments);
     }

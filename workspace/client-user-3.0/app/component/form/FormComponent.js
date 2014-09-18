@@ -30,7 +30,8 @@ Ext.namespace('sitools.user.controller.modules.datasets.dataviews');
 Ext.define('sitools.user.component.form.FormComponent', {
     extend : 'sitools.user.core.Component',
     
-    controllers : ['sitools.user.controller.component.form.FormController'],
+    controllers : ['sitools.user.controller.component.form.FormController',
+                   'sitools.user.controller.component.form.ProjectFormController'],
     
     init : function (form, dataset) {
         
@@ -60,6 +61,39 @@ Ext.define('sitools.user.component.form.FormComponent', {
             scope : this
         });
 
+        this.setComponentView(view);
+        this.show(view, windowSettings);
+    },
+    
+    openProjectForm : function (form) {
+    	 var windowSettings = {
+            type : "formProject", 
+            title : i18n.get('label.forms') + " : " + form.name + ", Collection " + form.collection.name,
+            id : "formProject"  + form.id, 
+            saveToolbar : true, 
+            datasetName : form.name, 
+            winWidth : 600, 
+            winHeight : 600, 
+            iconCls : "form"
+        };
+        
+        var view = Ext.create('sitools.user.view.component.form.ProjectFormView', {
+            formId : form.id,
+            formName : form.name,
+            formParameters : form.parameters,
+            formWidth : form.width,
+            formHeight : form.height, 
+            formCss : form.css, 
+            properties : form.properties, 
+            urlServicePropertiesSearch : form.urlServicePropertiesSearch, 
+            urlServiceDatasetSearch : form.urlServiceDatasetSearch, 
+            dictionaryName : form.dictionary.name,
+            nbDatasetsMax : form.nbDatasetsMax, 
+            preferencesPath : "/formProjects", 
+            preferencesFileName : form.name,
+            formZones : form.zones
+        });
+        
         this.setComponentView(view);
         this.show(view, windowSettings);
     },

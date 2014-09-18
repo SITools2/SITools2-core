@@ -67,11 +67,15 @@ Ext.define('sitools.admin.forms.componentsAdminDef.ProjectContext', {
 			    allowBlank : false 
 			    
 			}); 
+//			if (scope.action == "modify") {
+//				Ext.apply(scope['mapParam' + i], {
+//					value : scope.selectedRecord.data.code[i - 1]
+//				});
+//			}
 			if (scope.action == "modify") {
-				Ext.apply(scope['mapParam' + i], {
-					value : scope.selectedRecord.data.code[i - 1]
-				});
+				scope['mapParam' + i].setValue(scope.selectedRecord.data.code[i - 1]);
 			}
+			
 			scope.insert(i, scope['mapParam' + i]);
         }		
 	},

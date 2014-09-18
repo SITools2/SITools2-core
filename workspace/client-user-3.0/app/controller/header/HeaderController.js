@@ -90,11 +90,12 @@ Ext.define('sitools.user.controller.header.HeaderController', {
         	
         	/* UserProfilerView events */
 			'userProfileWindow' : {
-                beforerender : function (usrProfileWindow) {
+                boxready : function (usrProfileWindow) {
                 	var taskbarHeight = this.getController('DesktopController').desktopView.taskbar.getHeight();
                 	
-                    usrProfileWindow.x = Desktop.getDesktopEl().getWidth() - usrProfileWindow.width;
-                    usrProfileWindow.y = this.getEnteteEl().getHeight() + taskbarHeight; 
+                	var x = Desktop.getDesktopEl().getWidth() - usrProfileWindow.getWidth();
+            		var y = this.getEnteteEl().getHeight() + taskbarHeight;
+                    usrProfileWindow.setPosition(x, y);
                 }
             },
             
@@ -138,13 +139,6 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 	userPersonalComponent.init({
                 		user : menu.user
                 	});
-                	
-//                    var personnalController = this.getApplication().getController('header.UserPersonalController');
-//                    var personalView = personnalController.getView('header.UserPersonalView').create({
-//                    	user : menu.user
-//                    });
-//                    
-//                    personalView.show();
                 }
             }
         });

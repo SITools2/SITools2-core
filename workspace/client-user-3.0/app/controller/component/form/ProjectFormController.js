@@ -36,13 +36,16 @@ Ext.namespace('sitools.user.controller.modules.form');
  * @requires sitools.user.component.forms.mainContainer
  */
 Ext.define('sitools.user.controller.component.form.ProjectFormController', {
-    extend : 'sitools.user.controller.component.ComponentController',
+	extend : 'Ext.app.Controller',
     
-    views : ['component.form.ProjectFormView'],
+    views : ['component.form.ProjectFormView',
+             'component.form.OverviewResultProjectForm',
+             'component.form.ResultProjectForm'],
     
     init : function () {
         this.control({
-            'projectformview #displayPanelId' : {
+//        	'projectformview #displayPanelId' : {
+            'projectformview' : {
                 resize : this.resizeForm
             },
             
@@ -50,60 +53,28 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                 click : this.propertySearch
             },
             
-            'formsView #btnSearchForm' : {
+            'projectformview #btnSearchForm' : {
                 click : this.onSearch
             }
         });
     },
     
-    openProjectForm : function (form) {
+    resizeForm :  function (displayPanel, width, height, oldWidth, oldHeight) {
         
-        var windowSettings = {
-            type : "formProject", 
-            title : i18n.get('label.forms') + " : " + form.name + ", Collection " + form.collection.name,
-            id : "formProject"  + form.id, 
-            saveToolbar : true, 
-            datasetName : form.name, 
-            winWidth : 600, 
-            winHeight : 600, 
-            iconCls : "form"
-        };
-        
-        var view = Ext.create('sitools.user.view.component.form.ProjectFormView', {
-            formId : form.id,
-            formName : form.name,
-            formParameters : form.parameters,
-            formWidth : form.width,
-            formHeight : form.height, 
-            formCss : form.css, 
-            properties : form.properties, 
-            urlServicePropertiesSearch : form.urlServicePropertiesSearch, 
-            urlServiceDatasetSearch : form.urlServiceDatasetSearch, 
-            dictionaryName : form.dictionary.name,
-            nbDatasetsMax : form.nbDatasetsMax, 
-            preferencesPath : "/formProjects", 
-            preferencesFileName : form.name,
-            formZones : form.zones
-        });
-        
-        this.setComponentView(view);
-        this.open(view, windowSettings);
-    },
-    
-    resizeForm :  function () {
-        var view = this.getComponentView();
-        
-        if (!Ext.isEmpty(view.zonesPanel.getEl())) {
-            var cmpChildSize = view.zonesPanel.getSize();
-            var size = view.body.getSize();
+        if (!Ext.isEmpty(displayPanel.zonesPanel.getEl())) {
+        	
+            var cmpChildSize = displayPanel.zonesPanel.getSize();
+            var size = displayPanel.body.getSize();
             var xpos = 0, ypos = 0;
+            
             if (size.height > cmpChildSize.height) {
                 ypos = (size.height - cmpChildSize.height) / 2;
             }
             if (size.width > cmpChildSize.width) {
                 xpos = (size.width - cmpChildSize.width) / 2;
             }
-            view.zonesPanel.setPosition(xpos, ypos);
+            
+            displayPanel.zonesPanel.setPosition(xpos, ypos);
         }
     }, 
     
@@ -113,13 +84,16 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
      * @returns
      */
     onSearch : function (button) {
-        button.setDisabled(true);
-        var containers = this.find("stype", 'sitoolsFormContainer');
+//        button.setDisabled(true);
+        
+        var projectformview = button.up('projectformview');
+        var containers = projectformview.down('[stype="sitoolsFormContainer"]');
+        
         var formMultiDsParams = [];
         var glue = "";
         var i = 0;
         var datasets = [];
-        this.datasetPanel.getStore().each(function (rec) {
+        projectformview.datasetPanel.getStore().each(function (rec) {
             if (rec.get("visible")) {
                 datasets.push(rec.get('id'));
             }
@@ -130,48 +104,45 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             return;
         }
         
-        if (! Ext.isEmpty(this.nbDatasetsMax) && datasets.length > this.nbDatasetsMax) {          
-            Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.toManyDatasetsAllowed'), this.nbDatasetsMax));
+        if (!Ext.isEmpty(projectformview.nbDatasetsMax) && datasets.length > projectformview.nbDatasetsMax) {          
+            Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.toManyDatasetsAllowed'), projectformview.nbDatasetsMax));
             button.setDisabled(false);
             return;
         }
         var valid = true;
         
-        this.zonesPanel.items.each(function(componentList){
+        projectformview.zonesPanel.items.each(function(componentList) {
             valid = valid && componentList.isComponentsValid();            
-        },this);
+        },projectformview);
         
         if (!valid) {
-            this.getBottomToolbar().setStatus({
+        	projectformview.down('toolbar').setStatus({
                 text : i18n.get('label.checkformvalue'),
                 iconCls : 'x-status-error'
             });
-            this.getBottomToolbar().setVisible(true);    
+        	projectformview.down('toolbar').setVisible(true);    
             button.setDisabled(false);
             return;
         } else {
-            this.getBottomToolbar().setVisible(false);
+        	projectformview.down('toolbar').setVisible(false);
         }
         
         Ext.each(containers, function (container) {
-            // var f = form.getForm();
-
             if (Ext.isFunction(container.getParameterValue)) {
                 var param = container.getParameterValue();
                 
                 if (!Ext.isEmpty(param)) {
-                    formMultiDsParams.push(this.paramValueToApi(param));
+                    formMultiDsParams.push(this.paramValueToApi(param, projectformview));
                 }
             }
         }, this);
         
-        var urlService = projectGlobal.sitoolsAttachementForUsers + this.urlServiceDatasetSearch;
+        var urlService = Project.sitoolsAttachementForUsers + projectformview.urlServiceDatasetSearch;
         
         var params = {};
         params.datasetsList = datasets.join("|");
 
         i = 0;
-        
         if (!Ext.isEmpty(formMultiDsParams)) {
             Ext.each(formMultiDsParams, function (param) {
                 params["c[" + i + "]"] = param;
@@ -194,23 +165,30 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                         Ext.Msg.alert(i18n.get('label.error'), json.message);
                         return;
                     }
-                    var jsObj = SitoolsDesk.navProfile.multiDataset.getObjectResults();
+                    
+//                    var jsObj = SitoolsDesk.navProfile.multiDataset.getObjectResults();
+                    var jsObj = Desktop.getNavMode().multiDataset.getObjectResults();
+                    
                     var componentCfg = {
                         urlTask : json.TaskModel.statusUrl,
-                        formId : this.formId,
+                        formId : projectformview.formId,
                         formMultiDsParams : formMultiDsParams,
                         datasets : datasets, 
-                        formName : this.formName, 
+                        formName : projectformview.formName, 
                         callerId : this.id
                     };
 
                     var windowConfig = {
-                        id : "windMultiDsResultForm" + this.formId, 
-                        title : i18n.get('label.MultiDsResultForm') + " : " + this.formName, 
+                        id : "windMultiDsResultForm" + projectformview.formId, 
+                        title : i18n.get('label.MultiDsResultForm') + " : " + projectformview.formName, 
                         saveToolbar : false, 
                         iconCls : "dataviews"
                     };
-                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+                    
+                    var viewResultForm = Ext.create(jsObj, componentCfg);
+                    
+                    Desktop.getNavMode().openComponent(viewResultForm, windowConfig);
+//                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
                     
                 }
                 catch (err) {
@@ -221,11 +199,12 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                 
             failure : alertFailure
         });
-        var desktop = getDesktop();
-        var win = desktop.getWindow("windMultiDsResultForm" + this.formId);
-        if (win) {
-            win.close();
-        }
+        
+//        var desktop = getDesktop();
+//        var win = desktop.getWindow("windMultiDsResultForm" + this.formId);
+//        if (win) {
+//            win.close();
+//        }
 
     },
     /**
@@ -257,8 +236,8 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
      * @param {} paramValue An object with attributes : at least type, code, value and optionnal userDimension, userUnit
      * @return {string} something like "TEXTFIELD|ColumnAlias|value"
      */
-    paramValueToApi : function (paramValue) {
-        var stringParam = paramValue.type + "|" + this.dictionaryName + "," + paramValue.code + "|" + paramValue.value;
+    paramValueToApi : function (paramValue, projectformview) {
+        var stringParam = paramValue.type + "|" + projectformview.dictionaryName + "," + paramValue.code + "|" + paramValue.value;
         if (!Ext.isEmpty(paramValue.userDimension) && !Ext.isEmpty(paramValue.userUnit)) {
             stringParam += "|" + paramValue.userDimension + "|" + paramValue.userUnit.unitName; 
         }  

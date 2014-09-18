@@ -38,6 +38,10 @@ Ext.define('sitools.user.modules.AddToCartModule', {
         this.callParent(arguments);
     },
 
+    createViewForDiv : function () {
+    	return Ext.create('sitools.user.modules.AddToCartModuleView');
+    },
+    
     /**
      * method called when trying to save preference
      * 

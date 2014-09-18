@@ -38,6 +38,8 @@ Ext.define('sitools.user.view.modules.projectService.ProjectServiceView', {
 	alias : 'widget.projectService',
 
 	layout : 'fit',
+	border : false,
+	bodyBorder : false,
 	
 	initComponent : function () {
 		this.url = Project.sitoolsAttachementForUsers + "/services";

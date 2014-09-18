@@ -26,13 +26,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         var me = this, desktopCfg;
 
         this.control({
-//            'moduleTaskBar button[cls=x-navBar-items]' : {
-//                click : this.onOpenModule
-//            },
-//            
-//            'moduleTaskBar menuitem' : {
-//                click : this.onOpenModule
-//            },
             
             'moduleTaskBar #sitoolsButton' : {
 				click : function (btn) {
@@ -55,10 +48,10 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 			},
 			
 			'moduleDataview dataview' : {
-				itemclick : function (dataview, moduleRecord, item) {
+				itemclick : function (dataview, moduleRecord, item, index, event) {
+					this.openModule(moduleRecord, event);
 					dataview.up('window').hide();
 					Desktop.getDesktopEl().unmask();
-					this.openModule(moduleRecord);
 				}
 			},
 			
@@ -110,10 +103,10 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         })
     },
 
-    openModule : function (moduleModel) {
+    openModule : function (moduleModel, event) {
         var module = Ext.create(moduleModel.data.xtype);
         module.create(this.getApplication(), moduleModel);
-        module.init();
+        module.init(event);
     },
     
     openComponent : function (componentClazz, componentConfig, windowConfig) {

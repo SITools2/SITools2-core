@@ -43,21 +43,6 @@
 	background : transparent;
 	border : none;
 }
-.version-icon-dv {
-	background-image: url(/sitools/common/res/images/icons/general/version.png);
-}
-
-.version-icon-dv:HOVER {
-	opacity : .85
-}
-
-.help-icon-dv {
-	background-image: url(/sitools/common/res/images/icons/general/help.png);
-}
-
-.help-icon-dv:HOVER {
-	opacity : .85
-}
 
 .x-mask {
 	opacity: 0.8;

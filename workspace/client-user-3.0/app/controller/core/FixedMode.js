@@ -54,23 +54,51 @@ Ext.define('sitools.user.controller.core.FixedMode', {
     getDesktopSettings : function (forPublicUser) {
         var desktopSettings = [];
         
-//        var activePanel = this.getApplication().getController('DesktopController').desktopView.getActiveWindow();
+        var activePanel = Ext.WindowManager.getActive();
         
     	Ext.WindowManager.each(function (window) {
             var componentSettings;
             if (!Ext.isEmpty(window.specificType) && (window.specificType === 'componentWindow' || window.specificType === 'moduleWindow')) {
-                // Bug 3358501 : add a test on Window.saveSettings.
-                if (Ext.isFunction(window.saveSettings)) {
-//                    var component = window.get(0);
+                if (Ext.isFunction(window.saveSettings) && window != Ext.WindowManager.getActive()) {
                     var component = window.items.items[0];
 
                     componentSettings = component._getSettings();
-                    componentSettings.preferencesFileName = this.name;
+                    componentSettings.preferencesFileName = component.$className;
                     desktopSettings.push(window.saveSettings(componentSettings, forPublicUser));
                 }
             }
         });
+    	
+    	if (!Ext.isEmpty(activePanel.specificType) && (activePanel.specificType === 'componentWindow' || activePanel.specificType === 'moduleWindow')) {
+            if (Ext.isFunction(activePanel.saveSettings)) {
+            	 var component = activePanel.items.items[0];
+
+                 componentSettings = component._getSettings();
+                 componentSettings.preferencesFileName = component.$className;
+                 desktopSettings.push(activePanel.saveSettings(componentSettings, forPublicUser));
+            	
+            }
+    	}
+    	
         return desktopSettings;
+    },
+    
+    minimize : function (desktopView) {
+    	desktopView.windows.each(function (win) {
+			
+			win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+			win.setWidth(Desktop.getDesktopEl().getWidth());
+			
+		}, this);
+    },
+    
+    maximize : function (desktopView) {
+    	desktopView.windows.each(function (win) {
+		
+			win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+			win.setWidth(Desktop.getDesktopEl().getWidth());
+		
+    	}, this);
     },
     
     getStatefullWindowConfig : function () {
@@ -176,5 +204,243 @@ Ext.define('sitools.user.controller.core.FixedMode', {
 			    return putObject;
 		    }
 		};
-	}
+	},
+	
+	createButtonsLeftTaskbar : function () {
+		var buttons = [];
+		
+		var homeButton = Ext.create('Ext.Button', {
+        	itemId : 'sitoolsButton',
+            scale : "medium",
+            cls : 'sitools_button_main',
+            iconCls : 'sitools_button_img',
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.mainMenu');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : 10,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+		buttons.push(homeButton);
+        
+        var cleanDesktopButton = Ext.create('Ext.menu.Item', {
+            action : "minimize",
+            text : i18n.get('label.removeActiveModule'),
+            iconCls : 'delete_button_small_img',
+            cls : 'menuItemCls',
+            handler : function (btn) {
+            	Desktop.clearDesktop();
+            }
+        });
+        
+        var showDesktopButton = Ext.create('Ext.menu.Item', {
+            action : "minimize",
+            text : i18n.get("label.showDesktopButton"),
+            iconCls : 'desktop_button_img',
+            cls : 'menuItemCls',
+            handler : function (btn) {
+            	Desktop.showDesktop();
+            }
+        });
+        
+        var moreButton = Ext.create('Ext.Button', {
+            iconCls : 'more_button_img',
+            cls : 'sitools_button_main',
+            arrowCls : null,
+            menu : {
+            	xtype : 'menu',
+            	border : false,
+            	plain : true,
+            	items : [cleanDesktopButton, showDesktopButton]
+            },
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.moreAction');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : 5,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+        buttons.push(moreButton);
+        
+        buttons.push('-');
+        
+    	var previousButton = Ext.create('Ext.button.Button', {
+            scope : this, 
+            handler : function () {
+            	Desktop.activePreviousPanel();
+            }, 
+            scale : "medium", 
+            cls : 'sitools_button_main',
+            iconCls : 'previous_button_img',
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.previousWindow');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : 5,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+    	buttons.push(previousButton);
+
+    	
+        var nextButton = Ext.create('Ext.button.Button', {
+            scope : this, 
+            handler : function () {
+            	Desktop.activeNextPanel();
+            }, 
+            scale : "medium",
+            cls : 'sitools_button_main',
+            iconCls : 'next_button_img',
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.nextWindow');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : 5,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+        buttons.push(nextButton);
+            
+        var removeCurrentButton = Ext.create('Ext.button.Button', {
+            scope : this,
+            handler : function () {
+            	var desktopView = Desktop.getApplication().getController('DesktopController').desktopView;
+            	var active;
+            	if (active = desktopView.getActiveWindow()) {
+            		active.close();
+            	}
+            }, 
+            scale : "medium",
+            cls : 'sitools_button_main',
+            iconCls : 'delete_button_img',
+            listeners : {
+				afterrender : function (btn) {
+					var label = i18n.get('label.removeCurrentPanel');
+					var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							anchorOffset : 5,
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+					};
+					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+				}
+			}
+        });
+        buttons.push(removeCurrentButton);
+        
+        return buttons;
+	},
+	
+    /**
+     * @return the specific JS View to display dataset
+     */
+    getDatasetOpenMode : function (dataset) {
+        return sitools.user.component.DatasetOverview;
+    },
+	
+	/**
+     * Specific multiDataset search context methods
+     */
+    multiDataset : {
+    	
+        /**
+         * Returns the right object to show multiDs results
+         * @returns
+         */
+        getObjectResults : function () {
+            return sitools.user.view.component.form.OverviewResultProjectForm;
+        }, 
+        
+        /**
+         * Handler of the button show data in the {sitools.user.component.forms.resultsProjectForm} object 
+         * @param {Ext.grid.GridPanel} grid the grid results
+         * @param {int} rowIndex the index of the clicked row
+         * @param {int} colIndex the index of the column
+         * @returns
+         */
+        showDataset : function (grid, rowIndex, colIndex) {
+            var rec = grid.getStore().getAt(rowIndex);
+            if (Ext.isEmpty(rec)) {
+                return;
+            }
+            if (rec.get('status') == "REQUEST_ERROR") {
+                return;
+            }
+            
+            Ext.Ajax.request({
+                method : "GET", 
+                url : rec.get('url'), 
+                scope : this, 
+                success : function (ret) {
+                    var Json = Ext.decode(ret.responseText);
+                    if (showResponse(ret)) {
+                        var dataset = Json.dataset;
+                        var componentCfg, JsObj;
+                        
+                        JsObj = eval(dataset.datasetView.jsObject);
+                        componentCfg = {
+                            title : dataset.name, 
+                            closable : true, 
+                            dataUrl : dataset.sitoolsAttachementForUsers,
+                            datasetId : dataset.Id,
+                            datasetCm : dataset.columnModel, 
+                            datasetName : dataset.name,
+                            dictionaryMappings : dataset.dictionaryMappings,
+                            datasetViewConfig : dataset.datasetViewConfig, 
+                            sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers, 
+                            formMultiDsParams : this.formMultiDsParams
+                        };
+                        var dataview = new JsObj(componentCfg);
+                        
+                        this.ownerCt.southPanel.add(dataview);
+                        this.ownerCt.southPanel.setVisible(true);
+                        this.ownerCt.southPanel.expand();
+                        this.ownerCt.southPanel.setActiveTab(this.ownerCt.southPanel.items.length - 1);
+                        this.ownerCt.doLayout();
+                    }
+                }, 
+                failure : alertFailure
+            });
+
+        }
+        
+    }
+	
 });

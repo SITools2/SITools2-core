@@ -21,7 +21,8 @@ Ext.define('sitools.user.Application', {
                  
                  /* UTILS USER */
                  'sitools.user.utils.FormUtils',
-                 'sitools.user.utils.ServerServiceUtils'
+                 'sitools.user.utils.ServerServiceUtils',
+                 'sitools.user.utils.DatasetUtils'
                  ],
 
     extend : 'Ext.app.Application',

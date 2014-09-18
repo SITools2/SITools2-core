@@ -40,6 +40,8 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
     
     initComponent : function () {
     	
+    	Ext.EventManager.onWindowResize(this.resizeDataview, this);
+    	
     	this.renderTo = Desktop.getDesktopEl();
     	
     	this.width = (Desktop.getDesktopEl().getWidth() * 2) / 2.5,
@@ -164,23 +166,19 @@ Ext.define('sitools.user.view.header.ModuleDataView', {
         	this.close();
         }, this, { delegate: '.x-mask' });
         
-//        Ext.create('Ext.fx.Anim', {
-//        	target: this,
-//        	easing : 'easeIn',
-//        	duration: 300,
-//        	from: {
-//        		opacity: 0,
-//        		width : this.width / 2,
-//        		height : this.height / 2
-//        	},
-//        	to: {
-//        		opacity: 1,
-//        		width : this.width,
-//        		height : this.height
-//        	}
-//        });
-        
         this.callParent();
+    },
+    
+    resizeDataview : function (desktopWidth, desktopHeight) {
+    	
+    	var newWidth = (desktopWidth * 2) / 2.5;
+    	var newHeight = (desktopHeight * 2) / 4;
+    	
+    	this.setWidth(newWidth);
+    	this.setHeight(newHeight);
+    	
+    	this.center();
+    	this.doComponentLayout();
     }
     
 });

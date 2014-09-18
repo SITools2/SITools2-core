@@ -227,7 +227,6 @@ Ext.define('sitools.user.core.Desktop', {
                 }
             }
         });
-
     },
     
     loadModulesInDiv : function () {
@@ -235,8 +234,7 @@ Ext.define('sitools.user.core.Desktop', {
 			
 			var contentEl = Ext.get(module.get('divIdToDisplay'));
 			if (Ext.isEmpty(contentEl)) {
-				Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n
-										.get('label.invalidModuleDivId'),
+				Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.invalidModuleDivId'),
 								module.name, module.divIdToDisplay));
 			} else {
 				
@@ -247,7 +245,7 @@ Ext.define('sitools.user.core.Desktop', {
 				module = Ext.create('Ext.panel.Panel', {
 					id : module.id,
 					border : false,
-					cls : "sitools-module-panel",
+					cls : "moduleInDiv",
 					layout : 'fit',
 					renderTo : module.get('divIdToDisplay'),
 					height : contentEl.getHeight(),
@@ -277,7 +275,7 @@ Ext.define('sitools.user.core.Desktop', {
 					}
 
 				});
-//				SitoolsDesk.app.modulesInDiv.push(module);
+				Desktop.modulesInDiv.push(module);
 			}
 		});
 	},
@@ -306,7 +304,8 @@ Ext.define('sitools.user.core.Desktop', {
 	},
 	
 	clearDesktop : function () {
-		Ext.WindowManager.each(function (window) {
+		Desktop.getApplication().getController('DesktopController').desktopView.windows.each(function (window) {
+//		Ext.WindowManager.each(function (window) {
 			if (window instanceof Ext.window.Window || window instanceof Ext.panel.Panel) {
 				window.close();
 			}
@@ -324,7 +323,8 @@ Ext.define('sitools.user.core.Desktop', {
 	},
 	
 	minifyAllWindows : function () {
-		Ext.WindowManager.each(function (window) {
+		Desktop.getApplication().getController('DesktopController').desktopView.windows.each(function (window) {
+//		Ext.WindowManager.each(function (window) {
 			if (window.xtype == 'window') {
 				window.minimize();
 			} else if (window instanceof Ext.panel.Panel) {
@@ -334,7 +334,8 @@ Ext.define('sitools.user.core.Desktop', {
 	},
 	
 	restoreAllWindows : function () {
-		Ext.WindowManager.each(function (window) {
+		Desktop.getApplication().getController('DesktopController').desktopView.windows.each(function (window) {
+//		Ext.WindowManager.each(function (window) {
 			if (window.xtype == 'window' || window instanceof Ext.panel.Panel) {
 				window.show();
 			}

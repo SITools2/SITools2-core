@@ -139,6 +139,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             height : 55,
             border : false,
             bodyBorder : false,
+            enableOverflow : true,
             margin : 10,
             items : [{
                 xtype : 'label',
@@ -370,12 +371,14 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             title : i18n.get('label.freeText'),
             autoScroll : false,
             layout : 'fit',
-            height : 200,
+            flex : .4,
+//            height : 200,
             margin : 10,
             autoEl: {
                 tag: 'iframe',
                 border : false,
-                src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/resources/html/" + locale.getLocale() + "/freeText.html",
+                autoScroll : false,
+                src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PORTAL_URL') + "/resources/html/" + locale.getLocale() + "/freeText.html"
             }
         });
         
@@ -405,7 +408,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                 region : 'center',
                 baseCls : 'portalMainPanel',
                 xtype : 'portalpanel',
-                margins : '35 5 5 0',
+                margins : '20 5 5 0',
                 layout : 'fit',
                 defaults : {
                     style : 'padding:10px 0 10px 10px'
@@ -425,59 +428,6 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             autoScroll : false,
             items : [footerPanel]
         };
-        
-//        var mainPanel = Ext.create('Ext.tab.Panel', {
-//            baseCls : 'portalMainPanel',
-//            region : 'center',
-//            activeTab : 0,
-//            items : [{
-//                xtype : 'panel',
-//                baseCls : 'portalMainPanel',
-//                autoScroll : false,
-//                title : i18n.get('label.portalTitle'),
-//                layout : 'border',
-//                items : [{
-//                    region : 'north',
-//                    xtype : 'component',
-//                    title : i18n.get('label.freeText'),
-//                    autoScroll : false,
-//                    layout : 'fit',
-//                    y : 30,
-//                    height : 200,
-//                    defaults : {
-//                        padding : 30
-//                    },
-//                    autoEl: {
-//                        tag: 'iframe',
-//                        border : false,
-//                        y : 30,
-//                        src: loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL') + "/res/html/" + locale.getLocale() + "/freeText.html",
-//                    }
-//                }, {
-//                    region : 'center',
-//                    baseCls : 'portalMainPanel',
-//                    bodyStyle : 'background-color: transparent !important;',
-//                    xtype : 'portalpanel',
-//                    id : 'portalId',
-//                    margins : '35 5 5 0',
-//                    layout : 'fit',
-//                    defaults : {
-//                        style : 'padding:10px 0 10px 10px'
-//                    },
-//                    items : [{
-//                        columnWidth : 0.50,
-//                        style : 'padding:10px 0 10px 10px',
-//                        // baseCls : 'portalMainPanel',
-//                        items : [ portletProjet ]
-//                    }, {
-//                        columnWidth : 0.50,
-//                        style : 'padding:10px',
-//                        // baseCls : 'portalMainPanel',
-//                        items : [ portletFluxPortal/*, portletRecherche*/]
-//                    }]
-//                }]
-//            }, contactPanel, linkPanel, helpPanel ]
-//        });
         
         this.items = [ toolbar, centerPanel, southPanel ];
 
