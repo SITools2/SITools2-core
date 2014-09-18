@@ -35,6 +35,7 @@ import fr.cnes.sitools.plugins.guiservices.declare.model.GuiServiceModel;
  * 
  * @author m.gond
  */
+@Deprecated
 public class GuiServiceStoreXML extends SitoolsStoreXML<GuiServiceModel> {
 
   /** default location for file persistence */

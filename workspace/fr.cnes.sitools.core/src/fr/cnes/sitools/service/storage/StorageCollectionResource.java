@@ -103,7 +103,7 @@ public final class StorageCollectionResource extends AbstractStorageResource {
     inputdir.setStatus("STARTED");
 
     // Store it
-    getStore().save(inputdir);
+    getStore().update(inputdir);
     
     if (getStorageApplication() != null) {
       getStorageApplication().initDirectory(inputdir);

@@ -152,6 +152,8 @@ public final class DataSet implements IResource, Serializable {
   /** List of dataset View Config */
   @XStreamAlias("datasetViewConfig")
   private List<Property> datasetViewConfig = new ArrayList<Property>();
+  
+  private Date lastStatusUpdate;
 
   /**
    * Constructor : return an initialized DataSet, depending of the Id
@@ -804,6 +806,22 @@ public final class DataSet implements IResource, Serializable {
    */
   public void setDatasetViewConfig(List<Property> datasetViewConfig) {
     this.datasetViewConfig = datasetViewConfig;
+  }
+
+  /**
+   * Gets the lastStatusUpdate value
+   * @return the lastStatusUpdate
+   */
+  public Date getLastStatusUpdate() {
+    return lastStatusUpdate;
+  }
+
+  /**
+   * Sets the value of lastStatusUpdate
+   * @param lastStatusUpdate the lastStatusUpdate to set
+   */
+  public void setLastStatusUpdate(Date lastStatusUpdate) {
+    this.lastStatusUpdate = lastStatusUpdate;
   }
 
 }

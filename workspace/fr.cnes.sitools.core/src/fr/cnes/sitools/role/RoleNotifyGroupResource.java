@@ -9,7 +9,6 @@ import org.restlet.resource.Put;
 
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.role.model.Role;
 
 /**
@@ -46,7 +45,7 @@ public class RoleNotifyGroupResource extends AbstractRoleResource {
    */
   @Put
   public Representation deleteGroupFromRoles(Representation representation, Variant variant) {
-    SitoolsStore<Role> store = getStore();
+    RoleStoreInterface store = getStore();
     List<Role> rolesFromStore = store.getList();
     List<Role> roles = new ArrayList<Role>(rolesFromStore);
     for (Role role : roles) {
@@ -66,7 +65,7 @@ public class RoleNotifyGroupResource extends AbstractRoleResource {
    * @param store
    *          the store
    */
-  private void deleteGroupFromRole(Role role, String groupId, SitoolsStore<Role> store) {
+  private void deleteGroupFromRole(Role role, String groupId, RoleStoreInterface store) {
     List<Resource> groups = role.getGroups();
     if (groups != null) {
       for (Resource resource : groups) {

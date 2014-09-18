@@ -33,7 +33,7 @@ import org.restlet.routing.Router;
 import org.restlet.routing.TemplateRoute;
 
 import fr.cnes.sitools.common.resource.SitoolsParameterizedResource;
-import fr.cnes.sitools.common.store.SitoolsStore;
+import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
 import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameter;
 import fr.cnes.sitools.plugins.resources.model.ResourceParameterType;
@@ -107,9 +107,9 @@ public abstract class SitoolsParameterizedApplication extends SitoolsApplication
    */
   public final void attachParameterizedResources(Router router) {
 
-    SitoolsStore<ResourceModel> resourceStore = (SitoolsStore<ResourceModel>) this.getPluginStore();
+    ResourcePluginStoreInterface resourceStore = (ResourcePluginStoreInterface) this.getPluginStore();
     if (resourceStore == null) {
-      getLogger().warning("SitoolsStore<ResourceModel> not found");
+      getLogger().warning("ResourcePluginStoreInterface not found");
       return;
     }
 
@@ -192,8 +192,8 @@ public abstract class SitoolsParameterizedApplication extends SitoolsApplication
    * @return the pluginStore
    */
   @SuppressWarnings("unchecked")
-  public final SitoolsStore<ResourceModel> getPluginStore() {
-    return (SitoolsStore<ResourceModel>) getSettings().getStores().get(Consts.APP_STORE_PLUGINS_RESOURCES);
+  public final ResourcePluginStoreInterface getPluginStore() {
+    return (ResourcePluginStoreInterface) getSettings().getStores().get(Consts.APP_STORE_PLUGINS_RESOURCES);
   }
 
   /**

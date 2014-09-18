@@ -30,8 +30,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.notification.business.NotifierFilter;
 
 /**
@@ -45,7 +43,7 @@ import fr.cnes.sitools.notification.business.NotifierFilter;
 public final class ConceptTemplateAdministration extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<ConceptTemplate> store = null;
+  private ConceptTemplateStoreInterface store = null;
 
   /**
    * Constructor
@@ -56,7 +54,7 @@ public final class ConceptTemplateAdministration extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public ConceptTemplateAdministration(Context context) {
     super(context);
-    this.store = (SitoolsStore<ConceptTemplate>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (ConceptTemplateStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -85,7 +83,7 @@ public final class ConceptTemplateAdministration extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<ConceptTemplate> getStore() {
+  public ConceptTemplateStoreInterface getStore() {
     return store;
   }
 

@@ -38,6 +38,7 @@ import fr.cnes.sitools.dataset.view.model.DatasetView;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class DatasetViewStoreXML extends SitoolsStoreXML<DatasetView> {
 
   /** default location for file persistence */

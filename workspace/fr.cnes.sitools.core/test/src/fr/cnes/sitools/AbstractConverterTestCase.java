@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -52,14 +52,13 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.common.validator.ConstraintViolation;
 import fr.cnes.sitools.dataset.converter.ConverterApplication;
-import fr.cnes.sitools.dataset.converter.ConverterStoreXML;
+import fr.cnes.sitools.dataset.converter.ConverterStoreInterface;
+import fr.cnes.sitools.dataset.converter.ConverterStoreXMLMap;
 import fr.cnes.sitools.dataset.converter.dto.ConverterChainedModelDTO;
 import fr.cnes.sitools.dataset.converter.dto.ConverterChainedOrderDTO;
 import fr.cnes.sitools.dataset.converter.dto.ConverterModelDTO;
-import fr.cnes.sitools.dataset.converter.model.ConverterChainedModel;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameter;
 import fr.cnes.sitools.dataset.converter.model.ConverterParameterType;
 import fr.cnes.sitools.server.Consts;
@@ -74,7 +73,7 @@ public abstract class AbstractConverterTestCase extends AbstractSitoolsTestCase 
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<ConverterChainedModel> store = null;
+  private static ConverterStoreInterface store = null;
 
   /**
    * datasetId to attach the application
@@ -125,7 +124,7 @@ public abstract class AbstractConverterTestCase extends AbstractSitoolsTestCase 
    */
   protected String getTestRepository() {
     return super.getTestRepository()
-        + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_CONVERTERS_STORE_DIR);
+        + SitoolsSettings.getInstance().getString(Consts.APP_DATASETS_CONVERTERS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -147,17 +146,17 @@ public abstract class AbstractConverterTestCase extends AbstractSitoolsTestCase 
 
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new ConverterStoreXML(storeDirectory, ctx);
+        cleanMapDirectories(storeDirectory);
+        store = new ConverterStoreXMLMap(storeDirectory, ctx);
 
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
       ctx.getAttributes().put(ContextAttributes.APP_ATTACH_REF, getAttachUrl());
       this.component.getDefaultHost().attach(getAttachUrl(), new ConverterApplication(ctx));
     }
-
-    
 
     if (!this.component.isStarted()) {
       this.component.start();

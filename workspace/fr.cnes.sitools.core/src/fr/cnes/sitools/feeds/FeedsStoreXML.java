@@ -39,6 +39,7 @@ import fr.cnes.sitools.feeds.model.FeedModel;
  * @author m.gond (AKKA Technologies)
  * 
  */
+@Deprecated
 public final class FeedsStoreXML extends SitoolsStoreXML<FeedModel> {
 
   /** default location for file persistence */

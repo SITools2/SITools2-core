@@ -220,7 +220,7 @@ public final class FileCopyUtils {
       // create output directory is not exists
       folder = new File(outputFolder);
       if (!folder.exists()) {
-        folder.mkdir();
+        folder.mkdirs();
       }
 
       // get the zip file content

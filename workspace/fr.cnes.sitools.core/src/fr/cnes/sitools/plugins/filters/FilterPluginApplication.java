@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.plugins.filters.model.FilterModel;
 
 /**
  * Application handling request of dynamic filters attachment
@@ -40,7 +38,7 @@ import fr.cnes.sitools.plugins.filters.model.FilterModel;
 public final class FilterPluginApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<FilterModel> store = null;
+  private FilterPluginStoreInterface store = null;
 
   /**
    * Application associated to a converter
@@ -48,10 +46,9 @@ public final class FilterPluginApplication extends SitoolsApplication {
    * @param context
    *          application context
    */
-  @SuppressWarnings("unchecked")
   public FilterPluginApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<FilterModel>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (FilterPluginStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -77,7 +74,7 @@ public final class FilterPluginApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<FilterModel> getStore() {
+  public FilterPluginStoreInterface getStore() {
     return store;
   }
 

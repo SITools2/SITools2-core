@@ -60,6 +60,7 @@ public class UserBlackListFilterTestCase extends AbstractSitoolsServerTestCase {
     super.setUp();
     File storeDirectory = new File(getTestRepository());
     cleanDirectory(storeDirectory);
+    cleanMapDirectories(storeDirectory);
   }
 
   /**
@@ -68,7 +69,7 @@ public class UserBlackListFilterTestCase extends AbstractSitoolsServerTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR);
+    return settings.getStoreDIR(Consts.APP_USER_BLACKLIST_STORE_DIR) + "/map";
   }
 
   /**

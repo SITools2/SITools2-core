@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -28,9 +28,7 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.model.Notification;
-import fr.cnes.sitools.plugins.resources.model.ResourceModel;
 
 /**
  * Resource handling notifications on resource plugins
@@ -38,7 +36,7 @@ import fr.cnes.sitools.plugins.resources.model.ResourceModel;
  * @author m.marseille (AKKA Technologies)
  */
 public final class ResourcePluginNotificationResource extends AbstractResourcePluginResource {
-  
+
   @Override
   public void sitoolsDescribe() {
     setName("ResourcePluginNotificationResource");
@@ -64,8 +62,8 @@ public final class ResourcePluginNotificationResource extends AbstractResourcePl
         notification = getNotificationObject(representation);
       }
       if ((notification != null) && "DELETED".equals(notification.getStatus())) {
-        SitoolsStore<ResourceModel> store = ((ResourcePluginApplication) getApplication()).getStore();
-        
+        ResourcePluginStoreInterface store = ((ResourcePluginApplication) getApplication()).getStore();
+
         // Business service
         boolean ok = store.delete(getResourcePluginId());
         if (ok) {

@@ -61,7 +61,7 @@ public final class StorageApplication extends SitoolsApplication {
   private Map<String, Restlet> securedDirectories = new ConcurrentHashMap<String, Restlet>();
 
   /** RESTlet storage */
-  private DataStorageStore store;
+  private DataStorageStoreInterface store;
 
   /** Internal router for directory attachment */
   private Router route;
@@ -79,7 +79,7 @@ public final class StorageApplication extends SitoolsApplication {
     this.getMetadataService().addExtension("html", MediaType.TEXT_HTML, true);
     // this.getMetadataService().addExtension("gz", MediaType.APPLICATION_GNU_ZIP, true);
 
-    this.store = (DataStorageStore) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (DataStorageStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
     if (this.store == null) {
       getLogger().warning("Missing APP_STORE in StorageApplication context");
     }
@@ -197,7 +197,7 @@ public final class StorageApplication extends SitoolsApplication {
     catch (Exception io) {
       getLogger().log(Level.WARNING, io.getMessage(), io);
       storageDirectory.setStatus("ERROR");
-      store.save(storageDirectory);
+      store.update(storageDirectory);
     }
 
   }
@@ -349,7 +349,7 @@ public final class StorageApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public DataStorageStore getStore() {
+  public DataStorageStoreInterface getStore() {
     return store;
   }
 

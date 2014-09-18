@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -23,7 +23,7 @@ import org.junit.BeforeClass;
 /**
  * 
  * 
- *
+ * 
  * @author jp.boignard
  */
 public class AbstractSitoolsServerInsecureTestCase extends AbstractSitoolsServerTestCase {

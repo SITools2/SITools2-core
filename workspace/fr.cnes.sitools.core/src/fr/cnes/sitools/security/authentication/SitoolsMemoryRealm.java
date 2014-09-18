@@ -500,9 +500,15 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
         Resource res = (Resource) iterator.next();
         try {
           fr.cnes.sitools.security.model.Group groupStore = storeUsersAndGroups.getGroupById(res.getId());
-          Group group = findGroup(groupStore.getName());
-          if (group != null) {
-            map(group, role);
+          if (groupStore != null) {
+            Group group = findGroup(groupStore.getName());
+            if (group != null) {
+              map(group, role);
+            }
+          }
+          else {
+            Engine.getLogger(this.getClass().getName()).warning(
+                "Unknow Group ; " + res.getId() + " please remove it from the role : " + roleStore.getName());
           }
         }
         catch (SitoolsException e) {
@@ -569,6 +575,16 @@ public class SitoolsMemoryRealm extends SitoolsRealm {
    */
   protected UsersAndGroupsStore getStoreUsersAndGroups() {
     return storeUsersAndGroups;
+  }
+
+  @Override
+  public void updateUsersAndGroupsLastModified() {
+    // nothing to do
+  }
+
+  @Override
+  public void updateRolesLastModified() {
+    // nothing to do
   }
 
 }

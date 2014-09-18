@@ -2,19 +2,40 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2014-05-28
-Version                              : 2.4.1
+Date                                 : 2014-07-08
+Version                              : 2.4.1-scalable
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
 Repository url                       : https://github.com/SITools2/core-v2.git
-Project page                         : http://sitools2.sourceforge.net/
+Project page                         : http://sitools2.github.io/
 Classification                       : Not Confidential - Opensource GPL V3
 Characteristics                      : Standalone, Java, ExtJS
 Role/Function                        : Adaptable web interface for scientific data exposition.
 Reference tag                        : (2.4)
 
 2/ Changes
+
+_________________
+-2.4.1-scalable (2014-07-08)
+	* New features :
+		- Possibility to run multiple SITools2 on the same data folder
+		- Synchronization on multiple instances of :
+			- DataSets
+			- Projects
+			- Users/Groups
+			- Authorizations
+			- DataSources
+			- Applications plugins
+	
+	* Enhancements :
+		- Stores uses map interface to simplify file naming
+		- data are automatically loaded from old directory
+		- StoreHelper can be configured in sitools.properties file
+		
+	* API changes :
+		- data folder are now data/<datatype>/map
+
 _________________
 -2.4.1 (2014-05-28)
 	* Enhancements : 

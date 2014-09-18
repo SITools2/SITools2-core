@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -105,6 +106,8 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
       assertApplicationDontExists(proj.getId());
       // activate project
       activateProject(proj);
+      proj.setStatus("ACTIVE");
+      proj.setLastStatusUpdate(new Date());
       // check application is active
       assertApplicationActive(proj.getId());
       // activate project but get an error
@@ -289,9 +292,10 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
       assertTrue(cr.getStatus().isSuccess());
       Response response = getResponse(getMediaTest(), result, Project.class);
       assertTrue(response.getSuccess());
-
+      
       Project projOut = (Project) response.getItem();
       assertEquals("ACTIVE", projOut.getStatus());
+      assertNotNull(projOut.getLastStatusUpdate());
       RIAPUtils.exhaust(result);
     }
   }
@@ -354,6 +358,7 @@ public abstract class AbstractProjectApplicationTestCase extends AbstractSitools
       assertTrue(response.getSuccess());
       Project projOut = (Project) response.getItem();
       assertEquals("INACTIVE", projOut.getStatus());
+      assertTrue(proj.getLastStatusUpdate().before(projOut.getLastStatusUpdate()));
       RIAPUtils.exhaust(result);
     }
   }

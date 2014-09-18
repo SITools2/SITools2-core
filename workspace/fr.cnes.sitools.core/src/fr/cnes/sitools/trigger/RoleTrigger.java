@@ -58,14 +58,17 @@ public class RoleTrigger extends TriggerResource {
     
     if (notification.getEvent().equals("ROLE_DELETED")) {
       realm.removeRole(role.getName());
+      realm.updateRolesLastModified();
     }
 
     if (notification.getEvent().equals("ROLE_USERS_UPDATED")) {
       realm.refreshRoleMappings(role);
+      realm.updateRolesLastModified();
     }
     
     if (notification.getEvent().equals("ROLE_GROUPS_UPDATED")) {
       realm.refreshRoleMappings(role);
+      realm.updateRolesLastModified();
     }
   }
 }

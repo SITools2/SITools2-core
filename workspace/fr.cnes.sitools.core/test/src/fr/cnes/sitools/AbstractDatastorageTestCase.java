@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -85,7 +85,8 @@ public abstract class AbstractDatastorageTestCase extends SitoolsServerTestCase 
    * @return the admin datastorage url
    */
   protected String getAdminDataStorageBaseUrl() {
-    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_DATASTORAGE_ADMIN_URL) + "/directories";
+    return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_DATASTORAGE_ADMIN_URL)
+        + "/directories";
   }
 
   /**
@@ -110,7 +111,8 @@ public abstract class AbstractDatastorageTestCase extends SitoolsServerTestCase 
     retrieveStorageDirectory(storage.getId());
     queryStorage(storage, fileToQuery);
     changeStatus(storage, "stop");
-    FilterModelDTO filter = createFilterModelDTO(storage, storageCustomModelFilterClass, storageCustomFilterClass, false);
+    FilterModelDTO filter = createFilterModelDTO(storage, storageCustomModelFilterClass, storageCustomFilterClass,
+        false);
     actOnCustomFilter(storage, filter, "POST");
     retrieveCustomFilter(storage, filter);
     changeStatus(storage, "start");
@@ -337,7 +339,8 @@ public abstract class AbstractDatastorageTestCase extends SitoolsServerTestCase 
    *          set the filter as authorized or not
    * @return a new FilterModelDTO
    */
-  private FilterModelDTO createFilterModelDTO(StorageDirectory storage, String className, String filterClassName, boolean authorized) {
+  private FilterModelDTO createFilterModelDTO(StorageDirectory storage, String className, String filterClassName,
+      boolean authorized) {
     FilterModelDTO filterModel = new FilterModelDTO();
 
     filterModel.setClassName(className);

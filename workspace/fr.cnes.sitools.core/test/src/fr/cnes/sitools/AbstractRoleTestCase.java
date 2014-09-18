@@ -19,7 +19,6 @@
 package fr.cnes.sitools;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -40,9 +39,9 @@ import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Resource;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.role.RoleApplication;
-import fr.cnes.sitools.role.RoleStoreXML;
+import fr.cnes.sitools.role.RoleStoreInterface;
+import fr.cnes.sitools.role.RoleStoreXMLMap;
 import fr.cnes.sitools.role.model.Role;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -60,7 +59,7 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Role> store = null;
+  private static RoleStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -97,7 +96,7 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_ROLES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_ROLES_STORE_DIR) + "/map";
   }
 
   @Before
@@ -118,9 +117,11 @@ public abstract class AbstractRoleTestCase extends AbstractSitoolsTestCase {
 
       // clean directory prior to the test
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       if (store == null) {
-        store = new RoleStoreXML(storeDirectory, ctx);
+        store = new RoleStoreXMLMap(storeDirectory, ctx);
       }
 
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);

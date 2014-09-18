@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -21,6 +21,7 @@ package fr.cnes.sitools.project.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -125,6 +126,15 @@ public final class Project implements IResource, Serializable {
 
   /** File name of the template for the project */
   private String navigationMode = null;
+
+  /** Order to display projects in portal */
+  private Integer priority;
+
+  /** Categorize project in a portlet with this name */
+  private String categoryProject;
+
+  /** The date of the last status update */
+  private Date lastStatusUpdate;
 
   /**
    * Default constructor
@@ -531,6 +541,63 @@ public final class Project implements IResource, Serializable {
    */
   public void setNavigationMode(String navigationMode) {
     this.navigationMode = navigationMode;
+  }
+
+  /**
+   * Gets the priority value
+   * 
+   * @return the priority
+   */
+  public Integer getPriority() {
+    return priority;
+  }
+
+  /**
+   * Sets the value of priority
+   * 
+   * @param priority
+   *          the priority to set
+   */
+  public void setPriority(Integer priority) {
+    this.priority = priority;
+  }
+
+  /**
+   * Gets the categoryProject value
+   * 
+   * @return the categoryProject
+   */
+  public String getCategoryProject() {
+    return categoryProject;
+  }
+
+  /**
+   * Sets the value of categoryProject
+   * 
+   * @param categoryProject
+   *          the categoryProject to set
+   */
+  public void setCategoryProject(String categoryProject) {
+    this.categoryProject = categoryProject;
+  }
+
+  /**
+   * Gets the lastStatusUpdate value
+   * 
+   * @return the lastStatusUpdate
+   */
+  public Date getLastStatusUpdate() {
+    return lastStatusUpdate;
+  }
+
+  /**
+   * Sets the value of lastStatusUpdate
+   * 
+   * @param lastStatusUpdate
+   *          the lastStatusUpdate to set
+   */
+  public void setLastStatusUpdate(Date lastStatusUpdate) {
+    this.lastStatusUpdate = lastStatusUpdate;
   }
 
 }

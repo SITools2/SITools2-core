@@ -30,6 +30,7 @@ import fr.cnes.sitools.userstorage.model.UserStorage;
  * 
  * @author jp.boignard (AKKA Technologies)
  * 
+ * @deprecated use UserStorageStoreInterface
  */
 public interface UserStorageStore extends Closeable {
   /**
@@ -38,15 +39,6 @@ public interface UserStorageStore extends Closeable {
    * @return Array
    */
   UserStorage[] getArray();
-
-  /**
-   * Method for getting objects according to the XQuery
-   * 
-   * @param xquery
-   *          String with XQuery syntax
-   * @return Array
-   */
-  UserStorage[] getArrayByXQuery(String xquery);
 
   /**
    * Method for getting userStorages according to the specified filter
@@ -83,15 +75,6 @@ public interface UserStorageStore extends Closeable {
    * @return ArrayList of userStorage
    */
   List<UserStorage> getPage(ResourceCollectionFilter filter, List<UserStorage> userStorages);
-
-  /**
-   * Method for getting userStorage with XQuery request syntax
-   * 
-   * @param xquery
-   *          String
-   * @return ArrayList of userStorage
-   */
-  List<UserStorage> getListByXQuery(String xquery);
 
   /**
    * Method for creating a UserStorage

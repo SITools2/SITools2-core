@@ -43,12 +43,11 @@ import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.form.dataset.FormApplication;
-import fr.cnes.sitools.form.dataset.FormStoreXML;
+import fr.cnes.sitools.form.dataset.FormStoreInterface;
+import fr.cnes.sitools.form.dataset.FormStoreXMLMap;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
-import fr.cnes.sitools.form.dataset.model.Form;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
 
@@ -64,7 +63,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static SitoolsStore<Form> store = null;
+  private static FormStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -95,7 +94,7 @@ public class FormTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_FORMS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_FORMS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -119,8 +118,9 @@ public class FormTestCase extends AbstractSitoolsTestCase {
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
-        cleanDirectory(storeDirectory);
-        store = new FormStoreXML(storeDirectory, ctx);
+        storeDirectory.mkdirs();
+        cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
+        store = new FormStoreXMLMap(storeDirectory, ctx);
       }
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 

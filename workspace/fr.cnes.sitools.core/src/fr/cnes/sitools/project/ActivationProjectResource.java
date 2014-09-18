@@ -30,7 +30,6 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.model.Notification;
 import fr.cnes.sitools.project.model.Project;
 
@@ -61,7 +60,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
   public Representation action(Representation representation, Variant variant) {
     Response response = null;
     Representation rep = null;
-    SitoolsStore<Project> store = getStore();
+    ProjectStoreInterface store = getStore();
     synchronized (store) {
       try {
         do {
@@ -82,9 +81,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
             try {
               getProjectApplication().attachProject(proj);
 
-              proj.setStatus("ACTIVE"); // TODO dans le start application.
-
-              Project projResult = store.update(proj);
+              Project projResult = store.retrieve(getProjectId());
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.update.success");
@@ -112,8 +109,6 @@ public final class ActivationProjectResource extends AbstractProjectResource {
               // Par mesure de securite
               try {
                 getProjectApplication().detachProject(proj);
-                proj.setStatus("INACTIVE"); // TODO dans le stop application.
-                store.update(proj);
               }
               catch (Exception e) {
                 trace(Level.INFO, "Cannot stop the project " + proj.getName());
@@ -128,8 +123,7 @@ public final class ActivationProjectResource extends AbstractProjectResource {
             // FIXME Transaction de desactivation d'un project
             try {
               getProjectApplication().detachProject(proj);
-              proj.setStatus("INACTIVE"); // TODO dans le stop application.
-              Project projResult = store.update(proj);
+              Project projResult = store.retrieve(getProjectId());
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.stop.success");

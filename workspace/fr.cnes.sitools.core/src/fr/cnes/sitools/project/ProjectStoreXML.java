@@ -35,6 +35,7 @@ import fr.cnes.sitools.project.model.Project;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class ProjectStoreXML extends SitoolsSynchronizedStoreXML<Project> {
 
   /** default location for file persistence */

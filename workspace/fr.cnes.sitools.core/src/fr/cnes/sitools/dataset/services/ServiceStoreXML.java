@@ -1,4 +1,4 @@
-     /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -35,6 +35,7 @@ import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
  * 
  * @author m.gond
  */
+@Deprecated
 public class ServiceStoreXML extends SitoolsStoreXML<ServiceCollectionModel> {
 
   /** default location for file persistence */
@@ -70,8 +71,6 @@ public class ServiceStoreXML extends SitoolsStoreXML<ServiceCollectionModel> {
     for (Iterator<ServiceCollectionModel> it = getRawList().iterator(); it.hasNext();) {
       ServiceCollectionModel current = it.next();
       if (current.getId().equals(services.getId())) {
-        getLog().info("Updating Services");
-
         result = current;
         current.setId(services.getId());
         current.setName(services.getName());

@@ -116,7 +116,7 @@ public final class SearchActionResource extends AbstractStorageResource {
 //          this.sd.setErrorMsg(resp.getMessage());
         }
 //        this.getOpenSearchApplication().setCancelled(false);
-        // TODO DataStorageStore sdResult = 
+
         getStore().update(sd);
         response = new Response(true, sd, StorageDirectory.class, "storage");
 

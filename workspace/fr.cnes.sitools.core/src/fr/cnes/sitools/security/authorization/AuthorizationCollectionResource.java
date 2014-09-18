@@ -19,6 +19,7 @@
 package fr.cnes.sitools.security.authorization;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -68,6 +69,7 @@ public final class AuthorizationCollectionResource extends AbstractAuthorization
       ResourceAuthorization authorizationInput = getObject(representation);
 
       // Business service
+      authorizationInput.setLastAuthorizationUpdate(new Date());
       ResourceAuthorization authorizationOutput = getStore().create(authorizationInput);
 
       // Notify observers

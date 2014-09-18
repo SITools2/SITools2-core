@@ -127,13 +127,13 @@ public class WgetListFileCartOrderResourceTestCase extends AbstractTaskResourceT
     super.setUp();
     setMediaTest(MediaType.APPLICATION_JSON);
 
-    File dirStoreTasks = new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR));
+    File dirStoreTasks = new File(settings.getStoreDIR(Consts.APP_TASK_STORE_DIR) + "/map");
     cleanDirectory(dirStoreTasks);
 
-    File dirStoreOrder = new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR));
+    File dirStoreOrder = new File(settings.getStoreDIR(Consts.APP_ORDERS_STORE_DIR) + "/map");
     cleanDirectory(dirStoreOrder);
 
-    File dirStoreResPlugin = new File(settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR));
+    File dirStoreResPlugin = new File(settings.getStoreDIR(Consts.APP_PLUGINS_RESOURCES_STORE_DIR) + "/map");
     cleanDirectory(dirStoreResPlugin);
   }
 

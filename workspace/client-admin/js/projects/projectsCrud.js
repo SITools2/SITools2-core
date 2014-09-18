@@ -20,15 +20,11 @@
  showHelp, loadUrl*/
 Ext.namespace('sitools.component.projects');
 
-sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
-
+sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.EditorGridPanel, {
     border : false,
     height : 300,
     id : ID.BOX.PROJECTS,
-    sm : new Ext.grid.RowSelectionModel(),
     pageSize : 10,
-
-    // loadMask: true,
 
     initComponent : function () {
         this.url = loadUrl.get('APP_URL') + loadUrl.get('APP_PROJECTS_URL');
@@ -69,28 +65,42 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             }, {
                 name : 'maintenance',
                 type : 'boolean'
+            }, {
+                name : 'priority',
+                type : 'integer'
+            }, {
+                name : 'categoryProject',
+                type : 'string'
             } ]
         });
 
+        this.sm = new Ext.grid.RowSelectionModel();
+        
         this.cm = new Ext.grid.ColumnModel({
             // specify any defaults for each column
             defaults : {
-                sortable : false
+                sortable : true
             // columns are not sortable by default
             },
             columns : [ {
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 100,
+                width : 120,
                 sortable : true
             }, {
                 header : i18n.get('label.image'),
                 dataIndex : 'image',
-                width : 300
+                width : 50,
+                renderer : function (value, metadata, record, rowIndex, colIndex, store) {
+                    if (!Ext.isEmpty(value)) {
+                        value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
+                    }
+                    return value;
+                }
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 400
+                width : 260
             }, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
@@ -98,7 +108,7 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             }, {
                 header : i18n.get('label.maintenance'),
                 dataIndex : 'maintenance',
-                width : 150, 
+                width : 50, 
                  
                 renderer: function (value) {
 					if (value) {
@@ -108,7 +118,41 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 						return '<div>&nbsp;</div>';
 					}
                 }
-            } ]
+            }, {
+                header : i18n.get('label.projectCategory') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                dataIndex : 'categoryProject',
+                width : 100,
+                sortable : true,
+                tooltip : i18n.get('label.projectCategoryHelp'),
+                editor : new Ext.form.TextField({
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addClass('not-save-textfield');
+                            this.savePropertiesBtn.hasToBeSaved = true;
+                        }
+                    }
+                })
+            }, {
+                header : i18n.get('label.projectPriority') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                dataIndex : 'priority',
+                width : 50,
+                sortable : true,
+                tooltip : i18n.get('label.projectPriorityHelp'),
+                editor : new Ext.form.NumberField({
+                    minValue: 0,
+                    maxValue: 100,
+                    allowDecimals: false,
+                    allowNegative : false,
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addClass('not-save-textfield');
+                            this.savePropertiesBtn.hasToBeSaved = true;
+                        }
+                    }
+                })
+            }]
         });
 
         this.bbar = {
@@ -117,9 +161,40 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
-            emptyMsg : i18n.get('paging.empty')
+            emptyMsg : i18n.get('paging.empty'),
+            listeners : {
+                scope : this,
+                beforechange : function (paging, start, limit) {
+                    if (this.savePropertiesBtn.hasToBeSaved) {
+                        Ext.Msg.show({
+                            title : i18n.get('label.warning'),
+                            msg : i18n.get('label.warning'),
+                            icon : Ext.MessageBox.WARNING,
+                            buttons : Ext.MessageBox.YESNO,
+                            closable : false,
+                            start : start,
+                            limit : limit,
+                            fn : function (btnId, text) {
+                                var oek;
+                            },
+                            scope : this
+                        });
+                        return false;
+                        
+                    }
+                }
+            }
         };
 
+        this.savePropertiesBtn = new Ext.Button({
+            text : i18n.get('label.saveProperties'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+            handler : this.onSaveProperties,
+            tooltip : i18n.get('label.savePropertiesHelp'),
+            xtype : 's-menuButton',
+            hasToBeSaved : false
+        });
+        
         this.tbar = {
             xtype : 'toolbar',
             defaults : {
@@ -164,7 +239,7 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
                 text : i18n.get('label.duplicate'),
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/presentation1.png',
                 handler : this.onDuplicate
-            },
+            }, this.savePropertiesBtn,
             // { text: i18n.get('label.members'), icon:
             // 'res/images/icons/toolbar_group_add.png', handler: this.onMembers
             // },
@@ -181,7 +256,13 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
 
         this.listeners = {
             scope : this, 
-            rowDblClick : this.onModify
+//            rowDblClick : this.onModify,
+            celldblclick : function (grid, row, col) {
+                if (grid.getColumnModel().isCellEditable(col, row)) {
+                    return;
+                }
+                this.onModify();
+            }
         };
         sitools.component.projects.projectsCrudPanel.superclass.initComponent.call(this);
     },
@@ -350,6 +431,49 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.GridPanel, {
             store : this.getStore()
         });
         up.show(ID.BOX.DATASETS);
+    },
+    
+    /**
+     * Save priority and category for current page projects
+     */
+    onSaveProperties : function () {
+        var pageProjects = this.getStore().data.items;
+        
+        var putObject = {};
+        putObject.minimalProjectPriorityList = [];
+        Ext.each(pageProjects, function (project) {
+            if (Ext.isEmpty(project.data.categoryProject) && Ext.isEmpty(project.data.priority)) {
+                return;
+            }
+            var minimalRec = {
+                    id : project.id,
+                    categoryProject : project.data.categoryProject,
+                    priority : project.data.priority
+                };
+            putObject.minimalProjectPriorityList.push(minimalRec);
+        }, this);
+        
+        Ext.Ajax.request({
+            url : this.url,
+            method : 'PUT',
+            jsonData : putObject,
+            scope : this,
+            success : function (ret) {
+                this.savePropertiesBtn.removeClass('not-save-textfield');
+                this.savePropertiesBtn.hasToBeSaved = false;
+                
+                new Ext.ux.Notification({
+                    iconCls : 'x-icon-information',
+                    title : i18n.get('label.information'),
+                    html : i18n.get('label.priorityCategoryProjectSaved'),
+                    autoDestroy : true,
+                    hideDelay : 1000
+                }).show(document);
+                
+                this.store.reload();
+            },
+            failure : alertFailure
+        });
     }
 
 });

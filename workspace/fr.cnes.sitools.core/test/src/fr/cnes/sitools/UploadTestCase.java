@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -183,7 +183,7 @@ public class UploadTestCase extends AbstractSitoolsTestCase {
     }
 
   }
-  
+
   /**
    * Test of updating a server text file with PUT method
    */
@@ -197,16 +197,16 @@ public class UploadTestCase extends AbstractSitoolsTestCase {
       if (!toUpdate.exists()) {
         fail("FILE MUST EXIST FOR TEST :" + toUpdate.getName());
       }
-      
+
       ClientResource res = new ClientResource(getBaseUrl() + "/" + fileName);
-      
+
       MediaType media = MediaType.TEXT_PLAIN;
-      
+
       FileRepresentation rep = new FileRepresentation(toUpdate, media);
       Representation result = res.put(rep);
       assertEquals(Status.SUCCESS_CREATED.getCode(), res.getStatus().getCode());
       assertNotNull(result);
-      
+
       // update content
       ClientResource resourceUpdate = new ClientResource(getBaseUrl() + "/" + fileName);
       Representation resultUpdate = resourceUpdate.put(new StringRepresentation("nouveau contenu"), media);
@@ -218,80 +218,81 @@ public class UploadTestCase extends AbstractSitoolsTestCase {
     }
 
   }
-  
-// POUR FONCTIONNER LES 2 TESTS SUIVANTS NECESSITENT LA CREATION DE 2 MEDIATYPES
-// qui surchargent includes pour permettre la compatiblité de l'entité reçue (octet) 
-// et donc l'écriture du fichier.
 
-//  /**
-//   * Test of updating a server text file with PUT method
-//   */
-//  @Test
-//  public void updatePUTFTL() {
-//    String fileName = "testupdateftl.ftl";
-//    try {
-//      BioUtils.delete(new File(getTestRepository(), fileName));
-//
-//      File toUpdate = new File(super.getTestRepository(), fileName);
-//      if (!toUpdate.exists()) {
-//        fail("FILE MUST EXIST FOR TEST :" + toUpdate.getName());
-//      }
-//      
-//      ClientResource res = new ClientResource(getBaseUrl() + "/" + fileName);
-//
-//      MediaType media = new MediaType("fremmarker", "Freemarker templates");//  new MediaType(M,  Encoding.FREEMARKER.getName());
-//      
-//      FileRepresentation rep = new FileRepresentation(toUpdate, media);
-//      Representation result = res.put(rep);
-//      assertEquals(Status.SUCCESS_CREATED.getCode(), res.getStatus().getCode());
-//      assertNotNull(result);
-//      
-//      // update content
-//      ClientResource resourceUpdate = new ClientResource(getBaseUrl() + "/" + fileName);
-//      Representation resultUpdate = resourceUpdate.put(new StringRepresentation("nouveau contenu"), media);
-//      assertEquals(Status.SUCCESS_OK.getCode(), resourceUpdate.getStatus().getCode());
-//      assertNotNull(resultUpdate);
-//    }
-//    catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//
-//  }
-//  
-//  /**
-//   * Test of updating a server text file with PUT method
-//   */
-//  @Test
-//  public void updatePUTCSS() {
-//    String fileName = "testupdatecss.css";
-//    try {
-//      BioUtils.delete(new File(getTestRepository(), fileName));
-//
-//      File toUpdate = new File(super.getTestRepository(), fileName);
-//      if (!toUpdate.exists()) {
-//        fail("FILE MUST EXIST FOR TEST :" + toUpdate.getName());
-//      }
-//      
-//      ClientResource res = new ClientResource(getBaseUrl() + "/" + fileName);
-//      
-//      //MediaType media = MediaType.TEXT_CSS;
-//      MediaType media = new MediaType("css", "Common Style Cheet");
-//      
-//      FileRepresentation rep = new FileRepresentation(toUpdate, media);
-//      Representation result = res.put(rep);
-//      assertEquals(Status.SUCCESS_CREATED.getCode(), res.getStatus().getCode());
-//      assertNotNull(result);
-//      
-//      // update content
-//      ClientResource resourceUpdate = new ClientResource(getBaseUrl() + "/" + fileName);
-//      Representation resultUpdate = resourceUpdate.put(new StringRepresentation("nouveau contenu"), media);
-//      assertEquals(Status.SUCCESS_OK.getCode(), resourceUpdate.getStatus().getCode());
-//      assertNotNull(resultUpdate);
-//    }
-//    catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//
-//  }
-  
+  // POUR FONCTIONNER LES 2 TESTS SUIVANTS NECESSITENT LA CREATION DE 2 MEDIATYPES
+  // qui surchargent includes pour permettre la compatiblité de l'entité reçue (octet)
+  // et donc l'écriture du fichier.
+
+  // /**
+  // * Test of updating a server text file with PUT method
+  // */
+  // @Test
+  // public void updatePUTFTL() {
+  // String fileName = "testupdateftl.ftl";
+  // try {
+  // BioUtils.delete(new File(getTestRepository(), fileName));
+  //
+  // File toUpdate = new File(super.getTestRepository(), fileName);
+  // if (!toUpdate.exists()) {
+  // fail("FILE MUST EXIST FOR TEST :" + toUpdate.getName());
+  // }
+  //
+  // ClientResource res = new ClientResource(getBaseUrl() + "/" + fileName);
+  //
+  // MediaType media = new MediaType("fremmarker", "Freemarker templates");// new MediaType(M,
+  // Encoding.FREEMARKER.getName());
+  //
+  // FileRepresentation rep = new FileRepresentation(toUpdate, media);
+  // Representation result = res.put(rep);
+  // assertEquals(Status.SUCCESS_CREATED.getCode(), res.getStatus().getCode());
+  // assertNotNull(result);
+  //
+  // // update content
+  // ClientResource resourceUpdate = new ClientResource(getBaseUrl() + "/" + fileName);
+  // Representation resultUpdate = resourceUpdate.put(new StringRepresentation("nouveau contenu"), media);
+  // assertEquals(Status.SUCCESS_OK.getCode(), resourceUpdate.getStatus().getCode());
+  // assertNotNull(resultUpdate);
+  // }
+  // catch (Exception e) {
+  // e.printStackTrace();
+  // }
+  //
+  // }
+  //
+  // /**
+  // * Test of updating a server text file with PUT method
+  // */
+  // @Test
+  // public void updatePUTCSS() {
+  // String fileName = "testupdatecss.css";
+  // try {
+  // BioUtils.delete(new File(getTestRepository(), fileName));
+  //
+  // File toUpdate = new File(super.getTestRepository(), fileName);
+  // if (!toUpdate.exists()) {
+  // fail("FILE MUST EXIST FOR TEST :" + toUpdate.getName());
+  // }
+  //
+  // ClientResource res = new ClientResource(getBaseUrl() + "/" + fileName);
+  //
+  // //MediaType media = MediaType.TEXT_CSS;
+  // MediaType media = new MediaType("css", "Common Style Cheet");
+  //
+  // FileRepresentation rep = new FileRepresentation(toUpdate, media);
+  // Representation result = res.put(rep);
+  // assertEquals(Status.SUCCESS_CREATED.getCode(), res.getStatus().getCode());
+  // assertNotNull(result);
+  //
+  // // update content
+  // ClientResource resourceUpdate = new ClientResource(getBaseUrl() + "/" + fileName);
+  // Representation resultUpdate = resourceUpdate.put(new StringRepresentation("nouveau contenu"), media);
+  // assertEquals(Status.SUCCESS_OK.getCode(), resourceUpdate.getStatus().getCode());
+  // assertNotNull(resultUpdate);
+  // }
+  // catch (Exception e) {
+  // e.printStackTrace();
+  // }
+  //
+  // }
+
 }

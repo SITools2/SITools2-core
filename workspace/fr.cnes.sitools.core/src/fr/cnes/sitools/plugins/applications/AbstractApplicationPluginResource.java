@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.plugins.applications;
 
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
+
 /**
  * Abstract Resource for Resource attached to the ApplicationPluginApplication Gives access to the store
  * 
@@ -29,7 +31,7 @@ public abstract class AbstractApplicationPluginResource extends AbstractApplicat
   private ApplicationPluginApplication application = null;
 
   /** store */
-  private ApplicationPluginStore store = null;
+  private ApplicationPluginStoreInterface store = null;
 
   /** appId */
   private String appId;
@@ -59,7 +61,7 @@ public abstract class AbstractApplicationPluginResource extends AbstractApplicat
    * 
    * @return the store
    */
-  public final ApplicationPluginStore getStore() {
+  public final ApplicationPluginStoreInterface getStore() {
     return this.store;
   }
 

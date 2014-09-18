@@ -35,6 +35,7 @@ import fr.cnes.sitools.plugins.filters.model.FilterModel;
  * 
  * @author jp.boignard (AKKA Technologies)
  */
+@Deprecated
 public final class FilterPluginStoreXML extends SitoolsStoreXML<FilterModel> {
 
   /** default location for file persistence */

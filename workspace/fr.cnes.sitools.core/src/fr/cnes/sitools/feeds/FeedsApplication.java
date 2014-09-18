@@ -28,8 +28,6 @@ import org.restlet.routing.Router;
 
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.feeds.model.FeedModel;
 
 /**
  * Application for managing projects Dependencies : DataSets
@@ -43,7 +41,7 @@ import fr.cnes.sitools.feeds.model.FeedModel;
 public class FeedsApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<FeedModel> store = null;
+  private FeedsStoreInterface store = null;
 
   /**
    * Constructor
@@ -54,7 +52,7 @@ public class FeedsApplication extends SitoolsApplication {
    *          FeedsStore
    * 
    */
-  public FeedsApplication(Context context, SitoolsStore<FeedModel> store) {
+  public FeedsApplication(Context context, FeedsStoreInterface store) {
     super(context);
     this.store = store;
     // Description de cette instance dataSetId d'application.
@@ -94,7 +92,7 @@ public class FeedsApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public final SitoolsStore<FeedModel> getStore() {
+  public final FeedsStoreInterface getStore() {
     return store;
   }
 
@@ -104,7 +102,7 @@ public class FeedsApplication extends SitoolsApplication {
    * @param store
    *          the store to set
    */
-  public final void setStore(SitoolsStore<FeedModel> store) {
+  public final void setStore(FeedsStoreInterface store) {
     this.store = store;
   }
 

@@ -87,6 +87,9 @@ public final class SitoolsSettings {
 
   /** Root directory for application stores. NOT final for tests */
   private String storeDIR; // = getString("Starter.STORE_DIR");
+  
+  /** Root directory for application stores (absolute path) */
+  private String externalStoreDIR;
 
   /** Authorization Domain for BASIC / DIGEST Authentication */
   private String authenticationDOMAIN; // = getString("Starter.AUTHENTICATION_DOMAIN");
@@ -158,6 +161,11 @@ public final class SitoolsSettings {
    * Whether or not to check stores at startup
    */
   private boolean checkStores = false;
+  
+  /**
+   * Whether the store directory is an absolute path or not
+   */
+  private boolean externalStore = false;
 
   /**
    * Private constructor for utility class
@@ -185,7 +193,23 @@ public final class SitoolsSettings {
       return;
     }
     setRootDirectory(getString("Starter.ROOT_DIRECTORY"));
+    
+    if ("true".equals(getString("Starter.WITH_EXTERNAL_STORE"))) {
+      if (getString("Starter.EXTERNAL_STORE_DIR") != null && !getString("Starter.EXTERNAL_STORE_DIR").equals("")) {
+        setExternalStore(true);
+      } 
+      else {
+        System.err.println("No external store directory set. ignoring ...");
+        setExternalStore(false); 
+      }
+    } 
+    else {
+      setExternalStore(false);  
+    }
+    
     setStoreDIR(getString("Starter.STORE_DIR"));
+    setExternalStoreDIR(getString("Starter.EXTERNAL_STORE_DIR"));
+    
     setAuthenticationDOMAIN(getString("Starter.AUTHENTICATION_DOMAIN"));
     setAuthenticationSCHEME(getString("Starter.AUTHENTICATION_SCHEME"));
     setAuthenticationALGORITHM(getString("Starter.AUTHENTICATION_ALGORITHM"));
@@ -469,7 +493,13 @@ public final class SitoolsSettings {
    * @return String
    */
   public String getStoreDIR(String storeID) {
-    return getRootDirectory() + getStoreDIR() + getString(storeID);
+    
+    if (isExternalStore()) {
+      return getExternalStoreDIR() + getString(storeID);
+    }
+    else {
+      return getRootDirectory() + getStoreDIR() + getString(storeID);
+    }
   }
 
   /**
@@ -877,7 +907,7 @@ public final class SitoolsSettings {
   public boolean isStartWithMigration() {
     return startWithMigration;
   }
-
+  
   /**
    * Sets the value of startWithMigration
    * 
@@ -925,6 +955,41 @@ public final class SitoolsSettings {
    */
   public String getAdminMail() {
     return getString("Starter.StatusService.CONTACT_MAIL", null);
+  }
+
+  /** 
+   * Gets the withExternalStore value
+   * @return true or false
+   */
+  public boolean isExternalStore() {
+    return externalStore;
+  }
+  
+  /**
+   * Sets the external store boolean value
+   * @param externalStore
+   *    the external store directory to set (absolute path)
+   */
+  public void setExternalStore(boolean externalStore) {
+    this.externalStore = externalStore;
+  }
+
+  /**
+   * Gets the external store directory
+   * @return externalStoreDIR
+   *    the external store directory
+   */
+  public String getExternalStoreDIR() {
+    return externalStoreDIR;
+  }
+
+  /**
+   * Sets the external store directory
+   * @param externalStoreDIR
+   *    the external store directory to set
+   */
+  public void setExternalStoreDIR(String externalStoreDIR) {
+    this.externalStoreDIR = externalStoreDIR;
   }
 
 }

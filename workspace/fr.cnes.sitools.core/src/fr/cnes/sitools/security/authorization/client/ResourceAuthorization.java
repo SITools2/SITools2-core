@@ -20,6 +20,7 @@ package fr.cnes.sitools.security.authorization.client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -73,6 +74,8 @@ public final class ResourceAuthorization implements Serializable, IResource {
   /** Authorization list to apply on resource */
   private ArrayList<RoleAndMethodsAuthorization> authorizations = null;
 
+  private Date lastAuthorizationUpdate;
+  
   /**
    * Default constructor
    */
@@ -370,5 +373,13 @@ public final class ResourceAuthorization implements Serializable, IResource {
       return new DelegatedAuthorizer(Authorizer.ALWAYS);
     }
     return new SitoolsOrAuthorizer(rama);
+  }
+
+  public Date getLastAuthorizationUpdate() {
+    return lastAuthorizationUpdate;
+  }
+
+  public void setLastAuthorizationUpdate(Date lastAuthorizationUpdate) {
+    this.lastAuthorizationUpdate = lastAuthorizationUpdate;
   }
 }

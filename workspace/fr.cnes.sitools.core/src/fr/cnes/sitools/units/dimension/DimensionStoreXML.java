@@ -27,15 +27,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.restlet.Context;
 
-import fr.cnes.sitools.common.store.SitoolsStoreXML;
+import fr.cnes.sitools.persistence.XmlListStore;
 import fr.cnes.sitools.units.dimension.model.SitoolsDimension;
 
 /**
  * Storage of dimensions
  * 
+ * For migrating old SitoolsStoreXML<SitoolsDimension> store
+ * 
  * @author m.marseille (AKKA technologies)
+ * 
+ * @deprecated
  */
-public final class DimensionStoreXML extends SitoolsStoreXML<SitoolsDimension> {
+public final class DimensionStoreXML extends XmlListStore<SitoolsDimension> {
 
   /** default location for file persistence */
   private static final String COLLECTION_NAME = "dimensions";

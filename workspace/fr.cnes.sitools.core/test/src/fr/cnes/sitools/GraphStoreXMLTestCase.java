@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -33,9 +33,12 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.project.graph.GraphStoreXML;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
+import fr.cnes.sitools.project.graph.GraphStoreXMLMap;
 import fr.cnes.sitools.project.graph.model.Graph;
 import fr.cnes.sitools.server.Consts;
+
+;
 
 /**
  * Test GraphStoreXML
@@ -47,7 +50,7 @@ public class GraphStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static GraphStoreXML store = null;
+  private static GraphStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -56,7 +59,7 @@ public class GraphStoreXMLTestCase extends AbstractSitoolsTestCase {
 
   @Override
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_PROJECTS_STORE_DIR) + "/map";
   }
 
   @Before
@@ -68,10 +71,12 @@ public class GraphStoreXMLTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
-      store = new GraphStoreXML(storeDirectory, ctx);
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      store = new GraphStoreXMLMap(storeDirectory, ctx);
     }
   }
 

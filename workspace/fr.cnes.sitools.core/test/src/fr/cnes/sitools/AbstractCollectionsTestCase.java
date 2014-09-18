@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -98,7 +98,7 @@ public class AbstractCollectionsTestCase extends AbstractDataSetManagerTestCase 
    */
   public void setUp() throws Exception {
     // File storeDirectory = new File(getTestRepository());
-    // cleanDirectory(storeDirectory);
+    // cleanDirectory(storeDirectory);cleanMapDirectories(storeDirectory);
 
   }
 

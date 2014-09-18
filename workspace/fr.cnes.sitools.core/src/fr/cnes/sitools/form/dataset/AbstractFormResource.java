@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.form.dataset.dto.FormDTO;
 import fr.cnes.sitools.form.dataset.dto.ParameterDTO;
@@ -51,7 +50,7 @@ import fr.cnes.sitools.util.RIAPUtils;
 public abstract class AbstractFormResource extends SitoolsResource {
 
   /** store */
-  private SitoolsStore<Form> store = null;
+  private FormStoreInterface store = null;
 
   /** form identifier parameter */
   private String formId = null;
@@ -223,7 +222,7 @@ public abstract class AbstractFormResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<Form> getStore() {
+  public final FormStoreInterface getStore() {
     return store;
   }
 

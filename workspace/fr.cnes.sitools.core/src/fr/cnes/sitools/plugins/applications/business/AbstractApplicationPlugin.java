@@ -18,6 +18,8 @@
  ******************************************************************************/
 package fr.cnes.sitools.plugins.applications.business;
 
+import java.util.Date;
+
 import org.restlet.Context;
 import org.restlet.representation.Representation;
 
@@ -25,7 +27,7 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.validator.Validable;
 import fr.cnes.sitools.common.validator.Validator;
-import fr.cnes.sitools.plugins.applications.ApplicationPluginStore;
+import fr.cnes.sitools.plugins.applications.ApplicationPluginStoreInterface;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginModel;
 import fr.cnes.sitools.plugins.applications.model.ApplicationPluginParameter;
 
@@ -114,23 +116,31 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   @Override
   public synchronized void start() throws Exception {
     super.start();
+    boolean isSynchro = getIsSynchro();
     if (isStarted()) {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       if (appModel != null) {
-        model.setStatus("ACTIVE");
-        store.update(appModel);
+        if (!isSynchro) {
+          model.setStatus("ACTIVE");
+          model.setLastStatusUpdate(new Date());
+          store.update(model);
+        }
       }
     }
     else {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       getLogger().warning("ApplicationPlugin should be started.");
       if (appModel != null) {
-        appModel.setStatus("INACTIVE");
-        store.update(appModel);
+        if (!isSynchro) {
+          appModel.setStatus("INACTIVE");
+          appModel.setLastStatusUpdate(new Date());
+          store.update(appModel);
+        }
+
       }
     }
   }
@@ -138,23 +148,30 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   @Override
   public synchronized void stop() throws Exception {
     super.stop();
+    boolean isSynchro = getIsSynchro();
     if (isStopped()) {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       if (appModel != null) {
-        appModel.setStatus("INACTIVE");
-        store.update(appModel);
+        if (!isSynchro) {
+          appModel.setStatus("INACTIVE");
+          appModel.setLastStatusUpdate(new Date());
+          store.update(appModel);
+        }
       }
     }
     else {
-      ApplicationPluginStore store = (ApplicationPluginStore) getContext().getAttributes().get(
+      ApplicationPluginStoreInterface store = (ApplicationPluginStoreInterface) getContext().getAttributes().get(
           ContextAttributes.APP_STORE);
-      ApplicationPluginModel appModel = store.get(getId());
+      ApplicationPluginModel appModel = store.retrieve(getId());
       getLogger().warning("ApplicationPlugin should be stopped.");
       if (appModel != null) {
-        appModel.setStatus("ACTIVE");
-        store.update(appModel);
+        if (!isSynchro) {
+          appModel.setStatus("ACTIVE");
+          appModel.setLastStatusUpdate(new Date());
+          store.update(appModel);
+        }
       }
     }
 
@@ -215,6 +232,19 @@ public abstract class AbstractApplicationPlugin extends SitoolsParameterizedAppl
   public Validator<AbstractApplicationPlugin> getValidator() {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  /**
+   * Return true if the application is in synchro mode, false otherwise
+   * 
+   * @return true if the application is in synchro mode, false otherwise
+   */
+  private boolean getIsSynchro() {
+    Object dontUpdateStatusDate = getContext().getAttributes().get("IS_SYNCHRO");
+    if (dontUpdateStatusDate == null) {
+      return false;
+    }
+    return ((Boolean) dontUpdateStatusDate);
   }
 
 }

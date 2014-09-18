@@ -29,8 +29,6 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.form.dataset.model.Form;
 
 /**
  * Application for managing Forms
@@ -43,7 +41,7 @@ import fr.cnes.sitools.form.dataset.model.Form;
 public final class FormApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<Form> store = null;
+  private FormStoreInterface store = null;
 
   /**
    * Constructor
@@ -54,7 +52,7 @@ public final class FormApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public FormApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Form>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (FormStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -81,7 +79,7 @@ public final class FormApplication extends SitoolsApplication {
    * 
    * @return the store associated
    */
-  public SitoolsStore<Form> getStore() {
+  public FormStoreInterface getStore() {
     return store;
   }
   

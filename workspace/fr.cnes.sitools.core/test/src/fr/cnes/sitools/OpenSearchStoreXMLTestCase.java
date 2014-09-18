@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -33,7 +33,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXML;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreInterface;
+import fr.cnes.sitools.dataset.opensearch.OpenSearchStoreXMLMap;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.server.Consts;
 
@@ -47,7 +48,7 @@ public class OpenSearchStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static OpenSearchStoreXML store = null;
+  private static OpenSearchStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -56,7 +57,8 @@ public class OpenSearchStoreXMLTestCase extends AbstractSitoolsTestCase {
 
   @Override
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_OPENSEARCH_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_OPENSEARCH_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -68,10 +70,12 @@ public class OpenSearchStoreXMLTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
-      store = new OpenSearchStoreXML(storeDirectory, ctx);
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      store = new OpenSearchStoreXMLMap(storeDirectory, ctx);
     }
   }
 

@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -37,7 +37,8 @@ import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.exception.SitoolsException;
 import fr.cnes.sitools.ext.test.common.AbstractExtSitoolsTestCase;
 import fr.cnes.sitools.order.OrderAdministration;
-import fr.cnes.sitools.order.OrderStoreXML;
+import fr.cnes.sitools.order.OrderStoreInterface;
+import fr.cnes.sitools.order.OrderStoreXMLMap;
 import fr.cnes.sitools.order.model.Order;
 import fr.cnes.sitools.resources.order.utils.OrderAPI;
 import fr.cnes.sitools.server.Consts;
@@ -56,7 +57,7 @@ public class OrderAPITestCase extends AbstractExtSitoolsTestCase {
 
   private User user;
 
-  private OrderStoreXML store;
+  private OrderStoreInterface store;
 
   private OrderAdministration orderApp;
 
@@ -89,8 +90,6 @@ public class OrderAPITestCase extends AbstractExtSitoolsTestCase {
     // Directory
     String tempAppDIR = SitoolsSettings.getInstance().getStoreDIR(Consts.APP_TMP_FOLDER_DIR);
 
-    
-
     if (this.component == null) {
       this.component = new Component();
       this.component.getServers().add(Protocol.HTTP, getTestPort());
@@ -107,12 +106,12 @@ public class OrderAPITestCase extends AbstractExtSitoolsTestCase {
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
 
       if (store == null) {
-        File storeDirectory = new File(getTestRepository());
+        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_ORDERS_STORE_DIR));
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new OrderStoreXML(storeDirectory, ctx);
-
+        store = new OrderStoreXMLMap(storeDirectory, ctx);
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_ATTACH_REF, getAttachUrl());
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
       orderApp = new OrderAdministration(ctx);
@@ -167,7 +166,7 @@ public class OrderAPITestCase extends AbstractExtSitoolsTestCase {
 
     order.setDescription(orderDescription + "_modified");
     order = OrderAPI.updateOrder(order, context);
-    assertEquals(orderDescription + "_modified", order.getDescription());    
+    assertEquals(orderDescription + "_modified", order.getDescription());
 
     order = OrderAPI.createEvent(order, context, "Order activated and modified");
     // 2 events are already in the order, 1 for creation, the other for

@@ -23,11 +23,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
 
+import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.persistence.FilePersistenceStrategy;
 import com.thoughtworks.xstream.persistence.XmlMap;
@@ -44,6 +46,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
  * 
  * @param <E>
  *          Element must extend Persistent
+ * @deprecated  use Xml<Map or List>Store / XStream instead
  */
 public abstract class XmlPersistenceDaoImpl<E extends Persistent> implements PersistenceDao<E> {
 
@@ -106,12 +109,13 @@ public abstract class XmlPersistenceDaoImpl<E extends Persistent> implements Per
   }
 
   @Override
-  public final void update(E o) {
+  public final E update(E o) {
     dataStore.put(o.getId(), o);
+    return o;
   }
 
   @Override
-  public final void saveAll(Collection<E> os) {
+  public final void saveAll(List<E> os) {
     Iterator<E> iterator = os.iterator();
     while (iterator.hasNext()) {
       E e = iterator.next();
@@ -120,22 +124,22 @@ public abstract class XmlPersistenceDaoImpl<E extends Persistent> implements Per
   }
 
   @Override
-  public final Collection<E> getList() {
-    return dataStore.values();
+  public final List<E> getList() {
+    return Lists.newArrayList(dataStore.values());
   }
 
   @Override
-  public Collection<E> getList(ResourceCollectionFilter filter) {
-    return dataStore.values();
+  public List<E> getList(ResourceCollectionFilter filter) {
+    return Lists.newArrayList(dataStore.values());
   }
 
   @Override
-  public final Collection<E> getPage(ResourceCollectionFilter filter, Collection<E> result) {
+  public final List<E> getPage(ResourceCollectionFilter filter, Collection<E> result) {
     if (result == null) {
       result = dataStore.values();
     }
     if ((result == null) || (result.size() == 0)) {
-      return result;
+      return new ArrayList<E>();
     }
 
     // Pagination

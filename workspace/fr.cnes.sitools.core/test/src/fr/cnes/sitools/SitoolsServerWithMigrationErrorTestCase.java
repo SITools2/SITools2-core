@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -81,7 +81,7 @@ public class SitoolsServerWithMigrationErrorTestCase extends AbstractSitoolsServ
    */
   @Test
   public void test() {
-    // Test that the server is accessible meaning that the migration was succesfull
+    // Test that the server is not accessible meaning that the migration wasn't successful
     String url = getBaseUrl() + settings.getString(Consts.APP_DATASETS_VIEWS_URL) + "/" + dataviewId;
     final Client client = new Client(Protocol.HTTP);
     Request request = new Request(Method.GET, url);
@@ -97,80 +97,6 @@ public class SitoolsServerWithMigrationErrorTestCase extends AbstractSitoolsServ
       if (response != null) {
         RIAPUtils.exhaust(response);
       }
-    }
-
-  }
-
-  // ------------------------------------------------------------
-  // RESPONSE REPRESENTATION WRAPPING
-
-  /**
-   * REST API Response wrapper for single item expected.
-   * 
-   * @param media
-   *          MediaType expected
-   * @param representation
-   *          service response representation
-   * @param dataClass
-   *          class expected in the item property of the Response object
-   * @return Response the response.
-   */
-  public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass) {
-    return getResponse(media, representation, dataClass, false);
-  }
-
-  /**
-   * REST API Response Representation wrapper for single or multiple items expexted
-   * 
-   * @param media
-   *          MediaType expected
-   * @param representation
-   *          service response representation
-   * @param dataClass
-   *          class expected for items of the Response object
-   * @param isArray
-   *          if true wrap the data property else wrap the item property
-   * @return Response
-   */
-  public static Response getResponse(MediaType media, Representation representation, Class<?> dataClass, boolean isArray) {
-    try {
-      if (!media.isCompatible(getMediaTest()) && !media.isCompatible(MediaType.APPLICATION_XML)) {
-        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null;
-      }
-
-      XStream xstream = XStreamFactory.getInstance().getXStreamReader(media);
-      xstream.autodetectAnnotations(false);
-      xstream.alias("response", Response.class);
-      xstream.alias("datasetView", DatasetView.class);
-
-      // Parce que les annotations ne sont apparemment prises en compte
-      xstream.omitField(Response.class, "itemName");
-      xstream.omitField(Response.class, "itemClass");
-
-      if (isArray) {
-        xstream.addImplicitCollection(Response.class, "data", dataClass);
-      }
-      else {
-        xstream.alias("item", dataClass);
-        xstream.alias("item", Object.class, dataClass);
-      }
-      xstream.aliasField("datasetView", Response.class, "item");
-
-      SitoolsXStreamRepresentation<Response> rep = new SitoolsXStreamRepresentation<Response>(representation);
-      rep.setXstream(xstream);
-
-      if (media.isCompatible(getMediaTest())) {
-        Response response = rep.getObject("response");
-        return response;
-      }
-      else {
-        Engine.getLogger(AbstractSitoolsTestCase.class.getName()).warning("Only JSON or XML supported in tests");
-        return null; // TODO complete test with ObjectRepresentation
-      }
-    }
-    finally {
-      RIAPUtils.exhaust(representation);
     }
   }
 }

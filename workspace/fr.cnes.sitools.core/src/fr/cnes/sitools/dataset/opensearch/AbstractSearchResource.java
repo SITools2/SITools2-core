@@ -37,13 +37,12 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.model.Column;
 import fr.cnes.sitools.dataset.model.DataSet;
 import fr.cnes.sitools.dataset.opensearch.model.Opensearch;
 import fr.cnes.sitools.dataset.opensearch.model.OpensearchColumn;
 import fr.cnes.sitools.dataset.opensearch.runnables.OpensearchRefreshRunnable;
-import fr.cnes.sitools.feeds.model.FeedModel;
+import fr.cnes.sitools.feeds.FeedsStoreInterface;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.server.Consts;
@@ -62,10 +61,10 @@ public abstract class AbstractSearchResource extends SitoolsResource {
   private OpenSearchApplication application = null;
 
   /** store */
-  private SitoolsStore<Opensearch> store = null;
+  private OpenSearchStoreInterface store = null;
 
   /** other store needed for Feeds definition */
-  private SitoolsStore<FeedModel> storeFeed = null;
+  private FeedsStoreInterface storeFeed = null;
 
   /** DataSet identifier parameter */
   private String datasetId = null;
@@ -95,7 +94,7 @@ public abstract class AbstractSearchResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<Opensearch> getStore() {
+  public final OpenSearchStoreInterface getStore() {
     return store;
   }
 
@@ -104,7 +103,7 @@ public abstract class AbstractSearchResource extends SitoolsResource {
    * 
    * @return the storeFeed
    */
-  public final SitoolsStore<FeedModel> getStoreFeed() {
+  public final FeedsStoreInterface getStoreFeed() {
     return storeFeed;
   }
 

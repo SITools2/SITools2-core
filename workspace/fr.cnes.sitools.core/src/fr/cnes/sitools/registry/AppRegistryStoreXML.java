@@ -31,8 +31,6 @@ import org.restlet.engine.Engine;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.store.SitoolsStoreXML;
-import fr.cnes.sitools.feeds.model.FeedAuthorModel;
-import fr.cnes.sitools.feeds.model.FeedEntryModel;
 import fr.cnes.sitools.registry.model.AppRegistry;
 
 /**
@@ -41,6 +39,7 @@ import fr.cnes.sitools.registry.model.AppRegistry;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class AppRegistryStoreXML extends SitoolsStoreXML<AppRegistry> {
 
   /** default location for file persistence */
@@ -154,8 +153,6 @@ public final class AppRegistryStoreXML extends SitoolsStoreXML<AppRegistry> {
   public void init(File location) {
     Map<String, Class<?>> aliases = new ConcurrentHashMap<String, Class<?>>();
     aliases.put("manager", AppRegistry.class);
-    aliases.put("FeedEntryModel", FeedEntryModel.class);
-    aliases.put("author", FeedAuthorModel.class);
     this.init(location, aliases);
   }
 

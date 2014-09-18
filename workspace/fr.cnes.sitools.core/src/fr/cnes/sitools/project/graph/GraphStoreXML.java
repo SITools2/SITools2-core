@@ -35,6 +35,7 @@ import fr.cnes.sitools.project.graph.model.Graph;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class GraphStoreXML extends SitoolsStoreXML<Graph> {
 
   /** default location for file persistence */

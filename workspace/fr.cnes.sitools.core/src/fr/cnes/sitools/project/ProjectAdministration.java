@@ -186,4 +186,22 @@ public final class ProjectAdministration extends AbstractProjectApplication {
     return result;
   }
 
+  @Override
+  public void detachProjectDefinitif(Project ds, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void detachProject(Project project, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void attachProject(Project project, boolean isSynchro) {
+    // TODO Auto-generated method stub
+    
+  }
+
 }

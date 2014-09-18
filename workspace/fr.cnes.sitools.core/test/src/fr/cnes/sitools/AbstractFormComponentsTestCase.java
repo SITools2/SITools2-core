@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -46,7 +46,8 @@ import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.form.components.FormComponentsApplication;
-import fr.cnes.sitools.form.components.FormComponentsStoreXML;
+import fr.cnes.sitools.form.components.FormComponentsStoreInterface;
+import fr.cnes.sitools.form.components.FormComponentsStoreXMLMap;
 import fr.cnes.sitools.form.components.model.FormComponent;
 import fr.cnes.sitools.server.Consts;
 import fr.cnes.sitools.util.RIAPUtils;
@@ -62,7 +63,7 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
   /**
    * static xml store instance for the test
    */
-  private static FormComponentsStoreXML store = null;
+  private static FormComponentsStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -93,7 +94,8 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_FORMCOMPONENTS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_FORMCOMPONENTS_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -104,7 +106,7 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
    * @throws java.lang.Exception
    */
   public void setUp() throws Exception {
-    
+
     SitoolsSettings settings = SitoolsSettings.getInstance();
     if (this.component == null) {
       this.component = createTestComponent(settings);
@@ -112,19 +114,19 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
       // Context
       Context ctx = this.component.getContext().createChildContext();
       ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
-      
+
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       if (store == null) {
-        store = new FormComponentsStoreXML(storeDirectory, ctx);
+        store = new FormComponentsStoreXMLMap(storeDirectory, ctx);
       }
-      
+
       ctx.getAttributes().put(ContextAttributes.APP_STORE, store);
 
       this.component.getDefaultHost().attach(getAttachUrl(), new FormComponentsApplication(ctx));
     }
-    
-    
 
     if (!this.component.isStarted()) {
       this.component.start();
@@ -185,7 +187,8 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
   /**
    * Invoke Get to check that nobody's in there
    * 
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    * 
    */
   public void assertNone() throws IOException {
@@ -207,7 +210,8 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
    * 
    * @param item
    *          Form Component
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void create(FormComponent item) throws IOException {
     Representation rep = getRepresentation(item, getMediaTest());
@@ -235,7 +239,8 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
    * 
    * @param item
    *          Form Component
-   * @throws IOException Exception when ... TODO
+   * @throws IOException
+   *           Exception when ... TODO
    */
   public void modify(FormComponent item) throws IOException {
     item.setComponentDefaultHeight("687");
@@ -258,7 +263,8 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
   /**
    * Invoke GET for all components
    * 
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void retrieveAll() throws IOException {
     ClientResource cr = new ClientResource(getBaseUrl());
@@ -277,7 +283,8 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
    * 
    * @param item
    *          the item to get
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void retrieve(FormComponent item) throws IOException {
     ClientResource cr = new ClientResource(getBaseUrl() + "/" + item.getId());
@@ -302,7 +309,8 @@ public abstract class AbstractFormComponentsTestCase extends AbstractSitoolsTest
    * 
    * @param item
    *          the item to delete
-   * @throws IOException Exception when copying configuration files from TEST to data/TESTS 
+   * @throws IOException
+   *           Exception when copying configuration files from TEST to data/TESTS
    */
   public void delete(FormComponent item) throws IOException {
     ClientResource cr = new ClientResource(getBaseUrl() + "/" + item.getId());

@@ -35,7 +35,7 @@ import fr.cnes.sitools.inscription.model.Inscription;
 public abstract class AbstractInscriptionApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<Inscription> store = null;
+  private InscriptionStoreInterface store = null;
 
   /**
    * Constructor with context
@@ -46,7 +46,7 @@ public abstract class AbstractInscriptionApplication extends SitoolsApplication 
   @SuppressWarnings("unchecked")
   public AbstractInscriptionApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Inscription>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (InscriptionStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   /**
@@ -66,7 +66,7 @@ public abstract class AbstractInscriptionApplication extends SitoolsApplication 
    * 
    * @return InscriptionStore
    */
-  public final SitoolsStore<Inscription> getStore() {
+  public final InscriptionStoreInterface getStore() {
     return store;
   }
 

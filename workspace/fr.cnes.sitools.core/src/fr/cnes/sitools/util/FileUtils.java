@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -227,13 +227,17 @@ public final class FileUtils {
       throw new IllegalArgumentException(dir + " is not a directory");
     }
 
-    SuffixFileFilter suffixeFilter = new SuffixFileFilter(suffixes);
+    IOFileFilter suffixeFilter = new SuffixFileFilter(suffixes);
+    IOFileFilter folderFileFilter = new DirectoryFileFilter();
+
+    FileFilter fileFilter = new OrFileFilter(new IOFileFilter[] {suffixeFilter, folderFileFilter});
+
     final File[] files;
     if (suffixes.length == 0) {
       files = dir.listFiles();
     }
     else {
-      files = dir.listFiles((FileFilter) suffixeFilter);
+      files = dir.listFiles((FileFilter) fileFilter);
     }
 
     if (files == null) { // null if security restricted

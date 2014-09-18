@@ -29,9 +29,7 @@ import org.restlet.routing.Router;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.business.NotifierFilter;
-import fr.cnes.sitools.role.model.Role;
 
 /**
  * Application for managing role
@@ -44,7 +42,7 @@ import fr.cnes.sitools.role.model.Role;
 public final class RoleApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<Role> store = null;
+  private RoleStoreInterface store = null;
 
   /**
    * Constructor
@@ -55,7 +53,7 @@ public final class RoleApplication extends SitoolsApplication {
   @SuppressWarnings("unchecked")
   public RoleApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Role>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (RoleStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -89,7 +87,7 @@ public final class RoleApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<Role> getStore() {
+  public RoleStoreInterface getStore() {
     return store;
   }
 

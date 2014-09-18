@@ -34,8 +34,7 @@ import fr.cnes.sitools.client.PortalIndex;
 import fr.cnes.sitools.client.ProjectIndex;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.project.model.Project;
+import fr.cnes.sitools.project.ProjectStoreInterface;
 import fr.cnes.sitools.proxy.DirectoryProxy;
 import fr.cnes.sitools.server.Consts;
 
@@ -50,7 +49,7 @@ public final class ClientUserApplication extends StaticWebApplication {
   /**
    * Project Store
    */
-  private SitoolsStore<Project> store = null;
+  private ProjectStoreInterface store = null;
 
   /**
    * portalIndex URL
@@ -104,7 +103,7 @@ public final class ClientUserApplication extends StaticWebApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<Project> getStore() {
+  public ProjectStoreInterface getStore() {
     return this.store;
   }
 
@@ -114,7 +113,7 @@ public final class ClientUserApplication extends StaticWebApplication {
    * @param stor
    *          the store to set
    */
-  public void setStore(final SitoolsStore<Project> stor) {
+  public void setStore(final ProjectStoreInterface stor) {
     this.store = stor;
   }
 

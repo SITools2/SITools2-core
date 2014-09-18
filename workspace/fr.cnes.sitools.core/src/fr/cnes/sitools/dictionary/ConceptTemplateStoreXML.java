@@ -35,6 +35,7 @@ import fr.cnes.sitools.dictionary.model.ConceptTemplate;
  * @author AKKA
  * 
  */
+@Deprecated
 public final class ConceptTemplateStoreXML extends SitoolsStoreXML<ConceptTemplate> {
 
   /** default location for file persistence */

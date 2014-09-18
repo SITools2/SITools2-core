@@ -27,12 +27,15 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.Get;
 import org.restlet.resource.Post;
+import org.restlet.resource.Put;
 import org.restlet.resource.ResourceException;
 
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
 import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.notification.model.Notification;
+import fr.cnes.sitools.project.model.MinimalProjectPriorityDTO;
 import fr.cnes.sitools.project.model.Project;
+import fr.cnes.sitools.project.model.ProjectPriorityDTO;
 
 /**
  * Class Resource for managing Project Collection (GET, POST)
@@ -165,6 +168,48 @@ public final class ProjectCollectionResource extends AbstractProjectResource {
     this.addStandardObjectResponseInfo(info);
     this.addStandardInternalServerErrorInfo(info);
     this.addStandardResourceCollectionFilterInfo(info);
+  }
+  
+  /**
+   * Update / Validate existing project
+   * 
+   * @param representation
+   *          Project representation
+   * @param variant
+   *          client preferred media type
+   * @return Representation
+   */
+  @Put
+  public Representation saveProjectsList(Representation representation, Variant variant) {
+    try {
+      Response response = null;
+      // Parse object representation
+      ProjectPriorityDTO projectListInput = getListObject(representation, variant);
+
+
+      for (MinimalProjectPriorityDTO m : projectListInput.getMinimalProjectPriorityList()) {
+        Project projectFromStore = getStore().retrieve(m.getId());
+        
+        // update properties
+        projectFromStore.setCategoryProject(m.getCategoryProject());
+        projectFromStore.setPriority(m.getPriority());
+        getStore().update(projectFromStore);
+      }
+      // Response
+      response = new Response(true, "Priority and Category successfully updated");
+      return getRepresentation(response, variant);
+
+    }
+    catch (ResourceException e) {
+      trace(Level.INFO, "Cannot update projects priority and category");
+      getLogger().log(Level.INFO, null, e);
+      throw e;
+    }
+    catch (Exception e) {
+      trace(Level.INFO, "Cannot update projects priority and category");
+      getLogger().log(Level.WARNING, null, e);
+      throw new ResourceException(Status.SERVER_ERROR_INTERNAL, e);
+    }
   }
 
 }

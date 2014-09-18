@@ -72,6 +72,7 @@ public class UserTrigger extends TriggerResource {
     if (notification.getEvent().equals("USER_CREATED")) {
       // update realm
       realm.refreshUsersAndGroups();
+      realm.updateUsersAndGroupsLastModified();
 
       // Creation de l'espace de stockage utilisateur
       UserStorage us = new UserStorage();
@@ -98,8 +99,9 @@ public class UserTrigger extends TriggerResource {
 
     // ====================================================
 
-    if (notification.getEvent().equals("USER_UPDATED")) {
+    if (notification.getEvent().equals("USER_UPDATED")) {          
       realm.refreshUsersAndGroups();
+      realm.updateUsersAndGroupsLastModified();
     }
 
     // ====================================================
@@ -111,6 +113,8 @@ public class UserTrigger extends TriggerResource {
 
       // update realm
       realm.removeUser(userId);
+      realm.updateUsersAndGroupsLastModified();
+      realm.updateRolesLastModified();
 
       // delete user storage
       Request reqDELETE = new Request(Method.DELETE, RIAPUtils.getRiapBase()

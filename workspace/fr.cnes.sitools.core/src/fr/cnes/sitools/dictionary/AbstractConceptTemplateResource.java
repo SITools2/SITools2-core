@@ -29,7 +29,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dictionary.model.ConceptTemplate;
 import fr.cnes.sitools.util.Property;
 
@@ -42,7 +41,7 @@ import fr.cnes.sitools.util.Property;
 public abstract class AbstractConceptTemplateResource extends SitoolsResource {
   
   /** Store */
-  private SitoolsStore<ConceptTemplate> store = null;
+  private ConceptTemplateStoreInterface store = null;
   
   /** Template id in the request */
   private String templateId = null;
@@ -133,7 +132,7 @@ public abstract class AbstractConceptTemplateResource extends SitoolsResource {
    * Gets the store value
    * @return the store
    */
-  public final SitoolsStore<ConceptTemplate> getStore() {
+  public final ConceptTemplateStoreInterface getStore() {
     return store;
   }
 }

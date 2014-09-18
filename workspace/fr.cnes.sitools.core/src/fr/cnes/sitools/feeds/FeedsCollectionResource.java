@@ -247,7 +247,7 @@ public final class FeedsCollectionResource extends AbstractFeedsResource {
           FeedModel feedModel = iterator.next();
           // Store specific function
 
-          ((FeedsStoreXML) getStore()).updateDetails(feedModel);
+          ((FeedsStoreInterface) getStore()).updateDetails(feedModel);
           if (feedModel.isVisible()) {
             visibleFeedsName.add(feedModel.getName());
           }

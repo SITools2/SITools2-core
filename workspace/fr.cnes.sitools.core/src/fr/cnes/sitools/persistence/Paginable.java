@@ -45,6 +45,7 @@ import fr.cnes.sitools.common.model.ResourceCollectionFilter;
  * @param <E>
  *          The elements returned for pagination
  * @author AKKA
+ * @deprecated @see Xml<List or Map>StoreXStream
  */
 public abstract class Paginable<E extends IResource> {
 

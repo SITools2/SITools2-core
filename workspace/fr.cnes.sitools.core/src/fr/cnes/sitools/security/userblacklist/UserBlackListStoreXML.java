@@ -17,6 +17,7 @@ import fr.cnes.sitools.common.store.SitoolsStoreXML;
  * 
  * @author m.gond
  */
+@Deprecated
 public class UserBlackListStoreXML extends SitoolsStoreXML<UserBlackListModel> {
 
   /** default location for file persistence */

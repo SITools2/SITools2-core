@@ -26,11 +26,9 @@ import org.restlet.ext.wadl.ApplicationInfo;
 import org.restlet.ext.wadl.DocumentationInfo;
 import org.restlet.routing.Router;
 
-import fr.cnes.sitools.collections.model.Collection;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
 
 /**
  * Application for managing Collection
@@ -43,7 +41,7 @@ import fr.cnes.sitools.common.store.SitoolsStore;
 public final class CollectionsApplication extends SitoolsApplication {
 
   /** Store */
-  private SitoolsStore<Collection> store = null;
+  private CollectionStoreInterface store = null;
 
   /**
    * Constructor
@@ -51,10 +49,9 @@ public final class CollectionsApplication extends SitoolsApplication {
    * @param context
    *          Restlet Host Context
    */
-  @SuppressWarnings("unchecked")
   public CollectionsApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Collection>) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (CollectionStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
   }
 
   @Override
@@ -82,7 +79,7 @@ public final class CollectionsApplication extends SitoolsApplication {
    * 
    * @return the store
    */
-  public SitoolsStore<Collection> getStore() {
+  public CollectionStoreInterface getStore() {
     return store;
   }
 

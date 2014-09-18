@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -55,7 +55,8 @@ import fr.cnes.sitools.common.model.Response;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
 import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
 import fr.cnes.sitools.inscription.InscriptionApplication;
-import fr.cnes.sitools.inscription.InscriptionStoreXML;
+import fr.cnes.sitools.inscription.InscriptionStoreInterface;
+import fr.cnes.sitools.inscription.InscriptionStoreXMLMap;
 import fr.cnes.sitools.inscription.UserInscriptionApplication;
 import fr.cnes.sitools.inscription.model.Inscription;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
@@ -76,7 +77,7 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static InscriptionStoreXML store = null;
+  private static InscriptionStoreInterface store = null;
 
   /**
    * Restlet Component for server
@@ -125,7 +126,8 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
    * @return path
    */
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_INSCRIPTIONS_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_INSCRIPTIONS_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -136,8 +138,6 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
    */
   public void setUp() throws Exception {
     SitoolsSettings settings = SitoolsSettings.getInstance();
-
-    
 
     if (this.component == null) {
       this.component = new Component();
@@ -157,7 +157,6 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
               SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_DRIVER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_URL"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_USER"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_PASSWORD"), SitoolsSettings.getInstance().getString("Tests.PGSQL_DATABASE_SCHEMA")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
       JDBCUsersAndGroupsStore ugstore = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", ds, ctxUAG);
 
-        
       ctxUAG.getAttributes().put(ContextAttributes.APP_STORE, ugstore);
 
       UsersAndGroupsAdministration anApplication = new UsersAndGroupsAdministration(ctxUAG);
@@ -169,16 +168,16 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
 
       Context ctxAdmin = this.component.getContext().createChildContext();
       ctxAdmin.getAttributes().put(ContextAttributes.SETTINGS, settings);
-      
+
       if (store == null) {
         File storeDirectory = new File(getTestRepository());
+        storeDirectory.mkdirs();
         cleanDirectory(storeDirectory);
-        store = new InscriptionStoreXML(storeDirectory, ctxAdmin);
+        cleanMapDirectories(storeDirectory);
+        store = new InscriptionStoreXMLMap(storeDirectory, ctxAdmin);
       }
-      
+
       ctxAdmin.getAttributes().put(ContextAttributes.APP_STORE, store);
-      
-      
 
       this.component.getDefaultHost().attach(getAttachUrlAdmin(), new InscriptionApplication(ctxAdmin));
 
@@ -283,12 +282,14 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
 
     getImage(MediaType.IMAGE_PNG);
     getImage(MediaType.IMAGE_JPEG);
-    
+
   }
-  
+
   /**
    * test getCaptcha image resource with different image formats
-   * @param expectedMediaType MediaType
+   * 
+   * @param expectedMediaType
+   *          MediaType
    */
   public void getImage(MediaType expectedMediaType) {
     // Get image captcha
@@ -298,7 +299,7 @@ public class InscriptionWithCaptchaTestCase extends AbstractSitoolsTestCase {
       Representation representation = cr.get(expectedMediaType);
       MediaType media = representation.getMediaType();
       assertEquals(expectedMediaType, media);
-      
+
       Series<CookieSetting> cookies = cr.getResponse().getCookieSettings();
       CookieSetting id = cookies.getFirst("captcha");
       assertNotNull(id);

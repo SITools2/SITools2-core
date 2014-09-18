@@ -110,6 +110,11 @@ sitoolsSnap="${sitoolsHome}/workspace"
 sitoolsCots="${sitoolsHome}/cots"
 sitoolsCore="${sitoolsSnap}/fr.cnes.sitools.core"
 
+#parameters for scalability
+scalabilityExtension="eu.akka.sitools.scalability.jar"
+MAIN_CLASS="fr.cnes.sitools.server.Starter"
+
+
 # Parametres du script
 prog=`basename ${0}`
 myDir=`dirname ${0}`
@@ -145,18 +150,28 @@ fi
 
 ARGS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true"
 
-
-
 if [ "$i" != "--tests" ];then
- #List of parameters to pass to the java program
- PROGRAM_PARAMS="${1}"
- echo "Refreshing ClassPath for plugins ..."
- nohup java -jar ${sitoolsSnap}/sitools-update-classpath/sitools-update-classpath.jar --tmp_directory=./ext --directory=./ext --jar_target=./${sitoolsJarName} 2>&#38;1 | tee -a ${LOG}
- echo "Lancement de JAVA sitools..." | tee -a ${LOG}
- nohup java -jar ${ARGS} ${sitoolsCore}/${sitoolsJarName} ${PROGRAM_PARAMS} 2>&#38;1 | tee -a ${LOG} &#38;
+        #List of parameters to pass to the java program
+        PROGRAM_PARAMS="${1}"
+        echo "Refreshing ClassPath for plugins ..."
+        nohup java -jar ${sitoolsSnap}/sitools-update-classpath/sitools-update-classpath.jar --tmp_directory=./ext --directory=./ext --jar_target=./${sitoolsJarName} 2>&#38;1 | tee -a ${LOG}
+        if [ "$1" = "-scalable" ];then
+                if [ ! -f ${scalabilityExtension} ];then
+                        echo "-- ERREUR ---"
+                        echo "Impossible de trouver ${scalabilityExtension}. Abandon."
+                        echo " --- ERREUR ---"
+                        exit 1
+                else
+                        echo "Lancement de JAVA sitools in scalable mode..." | tee -a ${LOG}
+                        nohup java ${ARGS} -cp .:${scalabilityExtension}:${sitoolsCore}/${sitoolsJarName} ${MAIN_CLASS} ${PROGRAM_PARAMS} 2>&#38;1 | tee -a ${LOG} &#38;
+                fi
+        else
+                echo "Lancement de JAVA sitools..." | tee -a ${LOG}
+                nohup java -jar ${ARGS} ${sitoolsCore}/${sitoolsJarName} ${PROGRAM_PARAMS} 2>&#38;1 | tee -a ${LOG} &#38;
+        fi
 else
- echo "Lancement de la suite de tests JAVA sitools..." | tee -a ${LOG}
- nohup java -jar ${ARGS} ${sitoolsCore}/fr.cnes.sitools.test.jar 2>&#38;1 | tee -a ${LOG} &#38;
+        echo "Lancement de la suite de tests JAVA sitools..." | tee -a ${LOG}
+        nohup java -jar ${ARGS} ${sitoolsCore}/fr.cnes.sitools.test.jar 2>&#38;1 | tee -a ${LOG} &#38;
 fi
 
 sitoolsPid=`ps -ef |grep $sitoolsJarName | grep -v 'grep' | awk '{print $2}'`
@@ -213,6 +228,9 @@ SET sitoolsSnap=%sitoolsHome%\workspace
 SET sitoolsCots=%sitoolsHome%\cots
 SET sitoolsCore=%sitoolsSnap%\fr.cnes.sitools.core
 
+SET scalabilityExtension=eu.akka.sitools.scalability.jar
+SET MAIN_CLASS=fr.cnes.sitools.server.Starter
+
 :: Parametres du script
 SET prog=%0
 SET prog=%prog:.bat=%
@@ -243,10 +261,22 @@ IF "%1"=="--tests" GOTO tests
   	TITLE Sitools2
   	ECHO Refreshing CLASSPATH
 	java -jar %sitoolsSnap%/sitools-update-classpath/sitools-update-classpath.jar --tmp_directory=ext --directory=ext --jar_target=fr.cnes.sitools.core.jar 2>&amp;1 >> %LOG%
-  	ECHO JAVA Sitools2 starting ...
-  	ECHO JAVA Sitools2 starting ... >> %LOG%
-  	java -jar %ARGS% fr.cnes.sitools.core.jar %PROGRAM_PARAMS% >> %LOG% 2>&amp;1
-  	GOTO :EOF
+  	IF "%1"=="-scalable" GOTO scalable
+		ECHO JAVA Sitools2 starting ...
+		ECHO JAVA Sitools2 starting ... >> %LOG%	
+		java -jar %ARGS% fr.cnes.sitools.core.jar %PROGRAM_PARAMS% >> %LOG% 2>&amp;1
+		GOTO :EOF
+	:scalable
+		IF EXIST %scalabilityExtension% GOTO scalableNoError
+		ECHO --- ERREUR ---
+		ECHO Impossible de trouver %scalabilityExtension%. Abandon.
+		ECHO --- ERREUR ---
+		GOTO :EOF
+	:scalableNoError
+		ECHO JAVA Sitools2 starting with scalability enabled ...
+		ECHO JAVA Sitools2 starting with scalability enabled ... >> %LOG%
+		java %ARGS% -cp  .;%scalabilityExtension%;fr.cnes.sitools.core.jar %MAIN_CLASS% %PROGRAM_PARAMS% >> %LOG% 2>&amp;1
+		GOTO :EOF
 :tests
 	TITLE Sitools2-Tests
 	ECHO JAVA Sitools2 test suite starting ...

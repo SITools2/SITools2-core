@@ -45,7 +45,7 @@ public abstract class AbstractPortalResource extends SitoolsResource {
   private PortalApplication application = null;
   
   /** Store */
-  private PersistenceDao<Portal> store = null;
+  private PortalStoreInterface store = null;
   
   /** id in the request */
   private String portalId = "portail-sitools"; 
@@ -183,7 +183,7 @@ public abstract class AbstractPortalResource extends SitoolsResource {
    * Return the store associated to the Portal resource
    * @return the store
    */
-  public final PersistenceDao<Portal> getStore() {
+  public final PortalStoreInterface getStore() {
     return this.store;
   }
   

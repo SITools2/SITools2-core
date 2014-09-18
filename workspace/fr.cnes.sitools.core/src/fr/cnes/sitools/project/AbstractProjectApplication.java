@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -23,8 +23,7 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.application.SitoolsParameterizedApplication;
 import fr.cnes.sitools.common.model.Category;
-import fr.cnes.sitools.common.store.SitoolsStore;
-import fr.cnes.sitools.project.graph.model.Graph;
+import fr.cnes.sitools.project.graph.GraphStoreInterface;
 import fr.cnes.sitools.project.model.Project;
 import fr.cnes.sitools.server.Consts;
 
@@ -39,10 +38,10 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   private String projectId = null;
 
   /** Store */
-  private SitoolsStore<Project> store = null;
+  private ProjectStoreInterface store = null;
 
   /** store for graph **/
-  private SitoolsStore<Graph> graphStore = null;
+  private GraphStoreInterface graphStore = null;
 
   /**
    * Constructor
@@ -53,8 +52,8 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   @SuppressWarnings("unchecked")
   public AbstractProjectApplication(Context context) {
     super(context);
-    this.store = (SitoolsStore<Project>) context.getAttributes().get(ContextAttributes.APP_STORE);
-    this.graphStore = (SitoolsStore<Graph>) context.getAttributes().get(Consts.APP_STORE_GRAPH);
+    this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.graphStore = (GraphStoreInterface) context.getAttributes().get(Consts.APP_STORE_GRAPH);
   }
 
   /**
@@ -69,8 +68,8 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   public AbstractProjectApplication(Context context, String projectId) {
     super(context);
     this.projectId = projectId;
-    this.store = (SitoolsStore<Project>) context.getAttributes().get(ContextAttributes.APP_STORE);
-    this.graphStore = (SitoolsStore<Graph>) context.getAttributes().get(Consts.APP_STORE_GRAPH);
+    this.store = (ProjectStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.graphStore = (GraphStoreInterface) context.getAttributes().get(Consts.APP_STORE_GRAPH);
     setCategory(Category.USER);
   }
 
@@ -79,7 +78,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
    * 
    * @return the ProjectStore
    */
-  public final SitoolsStore<Project> getStore() {
+  public final ProjectStoreInterface getStore() {
     return store;
   }
 
@@ -89,7 +88,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
    * @param graphStore
    *          the graphStore to set
    */
-  public final void setGraphStore(SitoolsStore<Graph> graphStore) {
+  public final void setGraphStore(GraphStoreInterface graphStore) {
     this.graphStore = graphStore;
   }
 
@@ -98,7 +97,7 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
    * 
    * @return the graphStore
    */
-  public final SitoolsStore<Graph> getGraphStore() {
+  public final GraphStoreInterface getGraphStore() {
     return graphStore;
   }
 
@@ -127,6 +126,17 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   public abstract void detachProjectDefinitif(Project ds);
 
   /**
+   * Detach the ProjectApplication corresponding with the Project given object
+   * 
+   * @param ds
+   *          Project object
+   * 
+   * @param isSynchro
+   *          true not to update the store when detaching the project
+   */
+  public abstract void detachProjectDefinitif(Project ds, boolean isSynchro);
+
+  /**
    * Gets the projectId value
    * 
    * @return the projectId
@@ -134,5 +144,25 @@ public abstract class AbstractProjectApplication extends SitoolsParameterizedApp
   public final String getProjectId() {
     return projectId;
   }
+
+  /**
+   * Detach the ProjectApplication corresponding with the Project given object
+   * 
+   * @param project
+   *          Project object
+   * @param isSynchro
+   *          true not to update the store when detaching the project
+   */
+  public abstract void detachProject(Project project, boolean isSynchro);
+
+  /**
+   * Create and attach a new ProjectApplication
+   * 
+   * @param project
+   *          Project object
+   * @param isSynchro
+   *          true not to update the store when detaching the project
+   */
+  public abstract void attachProject(Project project, boolean isSynchro);
 
 }

@@ -32,7 +32,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dictionary.model.Concept;
 import fr.cnes.sitools.dictionary.model.Dictionary;
 
@@ -45,7 +44,7 @@ import fr.cnes.sitools.dictionary.model.Dictionary;
 public abstract class AbstractDictionaryResource extends SitoolsResource {
 
   /** Store */
-  private SitoolsStore<Dictionary> store = null;
+  private DictionaryStoreInterface store = null;
 
   /** Dictionary id in the request */
   private String dictionaryId = null;
@@ -179,7 +178,7 @@ public abstract class AbstractDictionaryResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<Dictionary> getStore() {
+  public final DictionaryStoreInterface getStore() {
     return store;
   }
 }

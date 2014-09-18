@@ -189,13 +189,14 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
           break;
         }
 
-        ds.setStatus("ACTIVE"); // TODO dans le start application.
-
         ds.setExpirationDate(new Date(new GregorianCalendar().getTime().getTime()));
 
         DataSet dsResult = store.update(ds);
 
         application.attachDataSet(dsResult);
+
+        // get the modifications done by the starting of the application
+        dsResult = store.retrieve(getDatasetId());
 
         response = new Response(true, dsResult, DataSet.class, "dataset");
         response.setMessage("dataset.update.success");
@@ -233,8 +234,6 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
         // Par mesure de securite
         try {
           application.detachDataSet(ds);
-          ds.setStatus("INACTIVE"); // TODO dans le stop application.
-          store.update(ds);
         }
         catch (Exception e) {
           getLogger().log(Level.INFO, null, e);
@@ -246,8 +245,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
 
       try {
         application.detachDataSet(ds);
-        ds.setStatus("INACTIVE"); // TODO dans le stop application.
-        DataSet dsResult = store.update(ds);
+        DataSet dsResult = store.retrieve(getDatasetId());
 
         response = new Response(true, dsResult, DataSet.class, "dataset");
         response.setMessage("dataset.stop.success");
@@ -318,7 +316,7 @@ public final class ActivationDataSetResource extends AbstractDataSetResource {
    *           throws SitoolsException
    */
   protected int getTotalResults(DataSet ds, List<Structure> structures, List<Column> columns, List<Predicat> predicats)
-    throws SitoolsException {
+      throws SitoolsException {
 
     int totalResults;
 

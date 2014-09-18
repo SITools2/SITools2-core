@@ -33,7 +33,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.dataset.services.model.ServiceCollectionModel;
 import fr.cnes.sitools.dataset.services.model.ServiceModel;
 import fr.cnes.sitools.notification.business.NotificationManager;
@@ -52,7 +51,7 @@ public abstract class AbstractServiceResource extends SitoolsResource {
   private ServiceApplication application = null;
 
   /** store */
-  private SitoolsStore<ServiceCollectionModel> store = null;
+  private ServiceStoreInterface store = null;
 
   /** The parent Id */
   private String parentId;
@@ -128,7 +127,7 @@ public abstract class AbstractServiceResource extends SitoolsResource {
    * @param store
    *          the store to set
    */
-  public final void setStore(SitoolsStore<ServiceCollectionModel> store) {
+  public final void setStore(ServiceStoreInterface store) {
     this.store = store;
   }
 
@@ -137,7 +136,7 @@ public abstract class AbstractServiceResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<ServiceCollectionModel> getStore() {
+  public final ServiceStoreInterface getStore() {
     return store;
   }
 

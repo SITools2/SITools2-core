@@ -42,7 +42,7 @@ import fr.cnes.sitools.feeds.FeedsClientResource;
 public final class PortalApplication extends SitoolsApplication {
 
   /** Store */
-  private PortalStore store = null;
+  private PortalStoreInterface store = null;
 
   /**
    * Constructor
@@ -52,7 +52,7 @@ public final class PortalApplication extends SitoolsApplication {
    */
   public PortalApplication(Context context) {
     super(context);
-    this.store = (PortalStore) context.getAttributes().get(ContextAttributes.APP_STORE);
+    this.store = (PortalStoreInterface) context.getAttributes().get(ContextAttributes.APP_STORE);
 
     if (this.store == null) {
       getLogger().warning("Missing APP_STORE in PortalApplication context");
@@ -89,7 +89,7 @@ public final class PortalApplication extends SitoolsApplication {
 
    * @return the store
    */
-  public PortalStore getStore() {
+  public PortalStoreInterface getStore() {
     return store;
   }
 

@@ -44,7 +44,7 @@ import fr.cnes.sitools.userstorage.model.UserStorage;
 /**
  * Implementation of UserStorageStore with XStream FilePersistenceStrategy
  * 
- * @author AKKA
+ * @author jp.boignard (AKKA Technologies)
  * 
  */
 public final class UserStorageStoreXML implements UserStorageStore {
@@ -188,12 +188,6 @@ public final class UserStorageStoreXML implements UserStorageStore {
   }
 
   @Override
-  public UserStorage[] getArrayByXQuery(String xquery) {
-    log.severe("getArrayByXQuery NOT IMPLEMENTED");
-    return null;
-  }
-
-  @Override
   public List<UserStorage> getList(ResourceCollectionFilter filter) {
     List<UserStorage> result = new ArrayList<UserStorage>();
     if ((list == null) || (list.size() <= 0) || (filter.getStart() > list.size())) {
@@ -279,12 +273,6 @@ public final class UserStorageStoreXML implements UserStorageStore {
         }
       });
     }
-  }
-
-  @Override
-  public List<UserStorage> getListByXQuery(String xquery) {
-    log.warning("getListByXQuery DEFAULT IMPLEMENTATION : getList");
-    return getList();
   }
 
   /**

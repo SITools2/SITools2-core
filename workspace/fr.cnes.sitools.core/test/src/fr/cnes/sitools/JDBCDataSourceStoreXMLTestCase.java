@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -33,7 +33,8 @@ import org.restlet.Context;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.application.ContextAttributes;
 import fr.cnes.sitools.common.model.ResourceCollectionFilter;
-import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXML;
+import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreInterface;
+import fr.cnes.sitools.datasource.jdbc.JDBCDataSourceStoreXMLMap;
 import fr.cnes.sitools.datasource.jdbc.model.JDBCDataSource;
 import fr.cnes.sitools.server.Consts;
 
@@ -48,7 +49,7 @@ public class JDBCDataSourceStoreXMLTestCase extends AbstractSitoolsTestCase {
   /**
    * static xml store instance for the test
    */
-  private static JDBCDataSourceStoreXML store = null;
+  private static JDBCDataSourceStoreInterface store = null;
 
   @Override
   protected String getBaseUrl() {
@@ -57,7 +58,8 @@ public class JDBCDataSourceStoreXMLTestCase extends AbstractSitoolsTestCase {
 
   @Override
   protected String getTestRepository() {
-    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASOURCES_STORE_DIR);
+    return super.getTestRepository() + SitoolsSettings.getInstance().getString(Consts.APP_DATASOURCES_STORE_DIR)
+        + "/map";
   }
 
   @Before
@@ -69,10 +71,12 @@ public class JDBCDataSourceStoreXMLTestCase extends AbstractSitoolsTestCase {
   public void setUp() throws Exception {
     if (store == null) {
       File storeDirectory = new File(getTestRepository());
+      storeDirectory.mkdirs();
       cleanDirectory(storeDirectory);
+      cleanMapDirectories(storeDirectory);
       Context ctx = new Context();
-      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());   
-      store = new JDBCDataSourceStoreXML(storeDirectory, ctx);
+      ctx.getAttributes().put(ContextAttributes.SETTINGS, SitoolsSettings.getInstance());
+      store = new JDBCDataSourceStoreXMLMap(storeDirectory, ctx);
     }
   }
 

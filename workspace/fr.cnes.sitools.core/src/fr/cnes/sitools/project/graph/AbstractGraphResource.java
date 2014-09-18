@@ -32,7 +32,6 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.XStreamFactory;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.notification.business.NotificationManager;
 import fr.cnes.sitools.notification.model.RestletObserver;
 import fr.cnes.sitools.project.ProjectAdministration;
@@ -57,7 +56,7 @@ public abstract class AbstractGraphResource extends SitoolsResource {
   private ProjectAdministration application = null;
 
   /** store */
-  private SitoolsStore<Graph> store = null;
+  private GraphStoreInterface store = null;
 
   /** project identifier parameter */
   private String projectId = null;
@@ -218,7 +217,7 @@ public abstract class AbstractGraphResource extends SitoolsResource {
    * 
    * @return the store
    */
-  public final SitoolsStore<Graph> getStore() {
+  public final GraphStoreInterface getStore() {
     return store;
   }
 

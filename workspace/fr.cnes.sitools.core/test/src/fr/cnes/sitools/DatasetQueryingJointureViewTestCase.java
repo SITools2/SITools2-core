@@ -1,4 +1,4 @@
- /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -43,13 +43,14 @@ public class DatasetQueryingJointureViewTestCase extends AbstractDataSetManagerT
   /** Test title */
   protected static final String TITLE = "Dataset Filter API with JSON format";
 
-  /** url attachment of the dataset with MySQL datasource with join*/
+  /** url attachment of the dataset with MySQL datasource with join */
   private static String urlAttachJoin = "/dataset/tests/joinTest";
 
   /**
    * Dataset Id
    */
   private String datasetId = "datasetJoinId";
+
   /**
    * absolute url for dataset management REST API
    * 
@@ -92,9 +93,9 @@ public class DatasetQueryingJointureViewTestCase extends AbstractDataSetManagerT
     deleteDataset(datasetId);
   }
 
-
   /**
-   * Create and activate a Dataset for Mysql datasource with join. This dataset is created on the HEADERS, IAPDATASET and OBJECT_CLASS table
+   * Create and activate a Dataset for Mysql datasource with join. This dataset is created on the HEADERS, IAPDATASET
+   * and OBJECT_CLASS table
    * 
    * @return the DataSet created
    * @throws InterruptedException
@@ -108,8 +109,10 @@ public class DatasetQueryingJointureViewTestCase extends AbstractDataSetManagerT
 
     return item;
   }
+
   /**
-   * Create and activate a Dataset for Pg datasource with join. This dataset is created on the HEADERS, IAPDATASET and OBJECT_CLASS table
+   * Create and activate a Dataset for Pg datasource with join. This dataset is created on the HEADERS, IAPDATASET and
+   * OBJECT_CLASS table
    * 
    * @return the DataSet created
    * @throws InterruptedException
@@ -125,32 +128,31 @@ public class DatasetQueryingJointureViewTestCase extends AbstractDataSetManagerT
   }
 
   /**
-   * Test DataSet on Inner Join 
-   * @throws InterruptedException 
+   * Test DataSet on Inner Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetMysql() throws InterruptedException {
     createDatasetHeadersJoinMySQL();
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 426);
-    
+
   }
 
-
   /**
-   * Test DataSet on inner Join 
-   * @throws InterruptedException 
+   * Test DataSet on inner Join
+   * 
+   * @throws InterruptedException
    */
   @Test
   public void testDataSetPg() throws InterruptedException {
     createDatasetHeadersJoinPG();
     String params = "/records?start=0&limit=10000&media=json";
-    
+
     queryDatasetRequestUrl(urlAttachJoin, params, 426);
-    
+
   }
-
-
 
 }
