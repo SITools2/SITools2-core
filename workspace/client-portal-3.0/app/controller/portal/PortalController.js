@@ -41,7 +41,6 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
     preferences : null,
     autoChainAjaxRequest : true,
     
-//    requires: ['sitools.clientportal.view.portal.PortalView'],
     views : ['sitools.clientportal.view.portal.PortalView'],
     
     init : function () {
@@ -50,7 +49,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
         });
         
         this.control({
-            'dataview[name="viewProjectPublic"]' : {
+            'dataview' : {
                 itemclick : this.openProject
             },
             'dataview[name="viewProjectPrivate"]' : {
@@ -233,7 +232,8 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
                 register : loadUrl.get('APP_URL') + '/inscriptions/user',
                 reset : loadUrl.get('APP_URL') + '/lostPassword',
                 unblacklist : loadUrl.get('APP_URL') + '/unblacklist',
-                handler : function () {
+                urlProject : urlProject,
+                callback : function () {
                     if (!maintenance) {
                         window.open(urlProject);
                     }

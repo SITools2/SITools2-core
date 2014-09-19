@@ -202,6 +202,12 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 xtype : 'hidden',
                 name : 'maintenance'
             }, {
+                xtype : 'hidden',
+                name : 'categoryProject'
+            }, {
+                xtype : 'hidden',
+                name : 'priority'
+            }, {
                 xtype : 'textfield',
                 name : 'name',
                 fieldLabel : i18n.get('label.name'),
@@ -1043,6 +1049,8 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                         rec.htmlDescription = data.htmlDescription;
                         rec.maintenanceText = data.maintenanceText;
                         rec.maintenance = data.maintenance;
+                        rec.categoryProject = data.categoryProject;
+                        rec.priority = data.priority;
                         
                         f.setValues(rec);
                         

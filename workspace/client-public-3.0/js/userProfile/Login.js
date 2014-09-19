@@ -286,6 +286,7 @@ Ext.define('sitools.public.userProfile.Login', {
                     Ext.Msg.alert(i18n.get('label.error'), err);
                 }
             },
+            callback : this.callback,
             failure : function (response, opts) {
                 sitools.public.utils.Logout.logout(false);
 

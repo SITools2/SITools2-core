@@ -39,6 +39,7 @@ import fr.cnes.sitools.client.model.FeedModelDTO;
 import fr.cnes.sitools.client.model.PortalIndexDTO;
 import fr.cnes.sitools.common.SitoolsResource;
 import fr.cnes.sitools.common.SitoolsSettings;
+import fr.cnes.sitools.common.store.SitoolsStore;
 import fr.cnes.sitools.feeds.model.FeedModel;
 import fr.cnes.sitools.feeds.model.FeedSource;
 import fr.cnes.sitools.project.ProjectStoreInterface;
@@ -84,7 +85,10 @@ public final class PortalIndex extends SitoolsResource {
     String portalId = application.getPortalId();
     String projectList = "";
 
-    ProjectStoreInterface store = ((ClientUserApplication) getApplication()).getStore();    PortalIndexDTO pid = new PortalIndexDTO();
+//    ProjectStoreInterface store = ((ClientUserApplication) getApplication()).getStore();    
+    SitoolsStore<Project> store = ((ClientPortalApplication) getApplication()).getStore();
+
+    PortalIndexDTO pid = new PortalIndexDTO();
 
     List<FeedModel> listFeeds = this.getFeedsForPortal(portalId);
     this.addFeedsDTOForPortal(listFeeds, pid, portalId);

@@ -79,6 +79,12 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             }, {
                 name : 'maintenance',
                 type : 'boolean'
+            }, {
+                name : 'priority',
+                type : 'integer'
+            }, {
+                name : 'categoryProject',
+                type : 'string'
             }]
         });
 
@@ -108,11 +114,11 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 400
+                width : 200
             }, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
-                width : 150,
+                width : 70,
                 renderer : function (value, meta, record, index, colIndex, store) {
                     meta.tdCls += value;
                     return value;
@@ -120,7 +126,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             }, {
                 header : i18n.get('label.maintenance'),
                 dataIndex : 'maintenance',
-                width : 150, 
+                width : 70, 
                  
                 renderer: function (value) {
 					if (value) {
@@ -130,22 +136,92 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
 						return '<div>&nbsp;</div>';
 					}
                 }
+            }, {
+                header : i18n.get('label.projectCategory') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                dataIndex : 'categoryProject',
+                width : 100,
+                sortable : true,
+                tooltip : i18n.get('label.projectCategoryHelp'),
+                editor : {
+                	xtype : 'textfield',
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addCls('not-save-textfield');
+                            this.savePropertiesBtn.hasToBeSaved = true;
+                        }
+                    }
+                }
+            }, {
+                header : i18n.get('label.projectPriority') + ' <img title="Editable" height=14 widht=14 src="/sitools/common/res/images/icons/toolbar_edit.png"/>',
+                dataIndex : 'priority',
+                width : 50,
+                sortable : true,
+                tooltip : i18n.get('label.projectPriorityHelp'),
+                editor : {
+                	xtype : 'numberfield',
+                    minValue: 0,
+                    maxValue: 100,
+                    allowDecimals: false,
+                    allowNegative : false,
+                    listeners : {
+                        scope : this,
+                        change : function (textfield, newValue, oldValue) {
+                            this.savePropertiesBtn.addCls('not-save-textfield');
+                            this.savePropertiesBtn.hasToBeSaved = true;
+                        }
+                    }
+                }
             }]
         };
 
+        this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+        })];
+        
         this.bbar = {
             xtype : 'pagingtoolbar',
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
-            emptyMsg : i18n.get('paging.empty')
+            emptyMsg : i18n.get('paging.empty'),
+            listeners : {
+                scope : this,
+                beforechange : function (paging, start, limit) {
+                    if (this.savePropertiesBtn.hasToBeSaved) {
+                        Ext.Msg.show({
+                            title : i18n.get('label.warning'),
+                            msg : i18n.get('label.warning'),
+                            icon : Ext.MessageBox.WARNING,
+                            buttons : Ext.MessageBox.YESNO,
+                            closable : false,
+                            start : start,
+                            limit : limit,
+                            fn : function (btnId, text) {
+                            },
+                            scope : this
+                        });
+                        return false;
+                    }
+                }
+            }
         };
 
+        this.savePropertiesBtn = Ext.create('Ext.button.Button', {
+            text : i18n.get('label.saveProperties'),
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/save.png',
+            handler : this.onSaveProperties,
+            tooltip : i18n.get('label.savePropertiesHelp'),
+            xtype : 's-menuButton',
+            hasToBeSaved : false
+        });
+        
         this.tbar = {
             xtype : 'toolbar',
             defaults : {
                 scope : this
             },
+            enableOverflow : true,
             items : [ {
                 text : i18n.get('label.create'),
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_create.png',
@@ -185,7 +261,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
                 text : i18n.get('label.duplicate'),
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/presentation1.png',
                 handler : this.onDuplicate
-            }, '->', {
+            }, this.savePropertiesBtn, '->', {
                 xtype : 's-filter',
                 emptyText : i18n.get('label.search'),
                 store : this.store,
@@ -195,18 +271,24 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
 
         this.listeners = {
             scope : this, 
-            itemdblclick : this.onModify
+            itemdblclick : this.onModify,
+            celldblclick : function (grid, row, col) {
+//                if (grid.getColumnModel().isCellEditable(col, row)) {
+//                    return;
+//                }
+                this.onModify();
+            }
         };
         
         this.selModel = Ext.create('Ext.selection.RowModel', {
             mode : "SINGLE"
         });
         
-        sitools.admin.projects.ProjectsCrud.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     onRender : function () {
-        sitools.admin.projects.ProjectsCrud.superclass.onRender.apply(this, arguments);
+    	this.callParent(arguments);
         this.store.load({
             start : 0,
             limit : this.pageSize
@@ -389,6 +471,43 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             store : this.getStore()
         });
         up.show(ID.BOX.PROJECTS);
+    },
+    
+    /**
+     * Save priority and category for current page projects
+     */
+    onSaveProperties : function () {
+        var pageProjects = this.getStore().data.items;
+        
+        var putObject = {};
+        putObject.minimalProjectPriorityList = [];
+        Ext.each(pageProjects, function (project) {
+            if (Ext.isEmpty(project.get('categoryProject')) && Ext.isEmpty(project.get('priority'))) {
+                return;
+            }
+            var minimalRec = {
+                    id : project.get('id'),
+                    categoryProject : project.get('categoryProject'),
+                    priority : project.get('priority')
+                };
+            putObject.minimalProjectPriorityList.push(minimalRec);
+        }, this);
+        
+        Ext.Ajax.request({
+            url : this.url,
+            method : 'PUT',
+            jsonData : putObject,
+            scope : this,
+            success : function (ret) {
+                this.savePropertiesBtn.removeCls('not-save-textfield');
+                this.savePropertiesBtn.hasToBeSaved = false;
+                
+                popupMessage(i18n.get('label.information'), i18n.get('label.priorityCategoryProjectSaved'), null, 'x-icon-information');
+                
+                this.store.reload();
+            },
+            failure : alertFailure
+        });
     }
 
 });
