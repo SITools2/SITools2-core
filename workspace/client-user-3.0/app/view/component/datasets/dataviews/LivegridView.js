@@ -86,15 +86,18 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         this.callParent(arguments);
     },
     
+    //generic method
     getNbRowsSelected : function () {
         return this.getSelectionModel().getSelection().length;
     },
     
+    //generic method
     isAllSelected : function () {
         var nbRowsSelected = this.getNbRowsSelected();
         return nbRowsSelected === this.getStore().getTotalCount() || this.getSelectionModel().markAll;
     },
     
+    //generic method
     /**
      * Return an array containing a button to show or hide columns
      * @returns {Array}
@@ -120,6 +123,11 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         });
         array.push("-");
         return array;
+    },
+    
+    //generic method
+    getSelections : function () {
+    	return this.getSelectionModel().getSelection();
     },
     
     /**
