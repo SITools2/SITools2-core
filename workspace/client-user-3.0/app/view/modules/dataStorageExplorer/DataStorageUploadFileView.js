@@ -43,56 +43,55 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageUploadFileV
 			itemId : 'uploadForm',
 			border : false,
 			bodyBorder : false,
-			items : [
-					{
-						xtype : 'fileuploadfield',
-						name : 'form-file',
-						cls : 'menuItemCls',
-						emptyText : i18n.get('label.selectFile'),
-						fieldLabel : i18n.get('label.file'),
-						name : 'image',
-						buttonText : '',
-						buttonCfg : {
-							iconCls : 'upload-icon'
-						},
-						listeners : {
-							scope : this,
-							fileselected : function(field) {
-								var wuf = this.down('checkbox');
-								var fileName = field.value;
-								var tabTmp = fileName.split('.');
-								var extension = tabTmp[tabTmp.length - 1];
-								if (extension == "zip") {
-									wuf.setValue(false);
-									wuf.setVisible(true);
-								} else {
-									wuf.setValue(false);
-									wuf.setVisible(false);
-								}
-							}
+			items : [{
+				xtype : 'fileuploadfield',
+				name : 'form-file',
+				cls : 'menuItemCls',
+				allowBlank: false,
+				labelWidth : 80,
+				emptyText : i18n.get('label.selectFile'),
+				fieldLabel : i18n.get('label.file'),
+				name : 'image',
+				anchor: '100%',
+				buttonText : '',
+				buttonConfig : {
+					iconCls : 'upload-icon'
+				},
+				listeners : {
+					scope : this,
+					fileselected : function(field) {
+						var wuf = this.down('checkbox');
+						var fileName = field.value;
+						var tabTmp = fileName.split('.');
+						var extension = tabTmp[tabTmp.length - 1];
+						if (extension == "zip") {
+							wuf.setValue(false);
+							wuf.setVisible(true);
+						} else {
+							wuf.setValue(false);
+							wuf.setVisible(false);
 						}
-					}, {
-						xtype : 'checkbox',
-						name : 'wantUnzipFile',
-						boxLabel : 'unzip',
-						label : 'unzip',
-						checked : false,
-						hidden : true,
-						inputValue : "unzip"
-					} ]
-		},
-		{
+					}
+				}
+			}, {
+				xtype : 'checkbox',
+				name : 'wantUnzipFile',
+				boxLabel : 'unzip',
+				label : 'unzip',
+				checked : false,
+				hidden : true,
+				inputValue : "unzip"
+			}]
+		}, {
 			xtype : 'menuseparator',
 			separatorCls : 'customMenuSeparator'
-		},
-		{
+		}, {
 			text : i18n.get('label.uploadFile'),
 			cls : 'menuItemCls',
-			icon : loadUrl.get('APP_URL')
-					+ '/client-user/resources/images/cmsModule/add.png',
+			icon : loadUrl.get('APP_URL') + '/client-user/resources/images/cmsModule/add.png',
 			scope : this,
 			handler : this.upload
-		} ];
+		}];
     	
        this.callParent(arguments);
     },
@@ -113,21 +112,22 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageUploadFileV
             	params : { 
             		unzip : wantedUnzipFile
             	},
-            	success : function (response) {
-					popupMessage(i18n.get('label.information'), i18n.get('label.fileUploaded'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');;
+            	success : function(form, action) {
+					popupMessage(i18n.get('label.information'), i18n.get('label.fileUploaded'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
 					
 					this.close();
 					// call callback in order to add the
 					// uploadedFile to the parent component
 					this.callback.call(this.scope, this.uploadedFileNode);
 	              },
-	              failure : function (response) {
-	                  Ext.Msg.alert(i18n.get('label.error'), response.responseText);
+	              failure : function(form, action) { // never goes in success...managing success in failure
+	            	  this.close();
+	            	  this.callback.call(this.scope, this.uploadedFileNode);
 	              },
 	              scope : this,
 	              waitMsg : i18n.get("label.wait") + "...",
 	              waitTitle : i18n.get("label.fileUploading")
-            })
+            });
 
 //            Ext.Ajax.request({
 //                url : this.urlUpload,

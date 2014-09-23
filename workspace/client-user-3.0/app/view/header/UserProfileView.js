@@ -87,14 +87,14 @@ Ext.define('sitools.user.view.header.UserProfileView', {
         
         var help = Ext.create('Ext.menu.Item', {
             text  : i18n.get('label.help'),
-            name : 'usrProfileHelp',
+            name : 'helpBtn',
             iconCls : 'help-icon',
             cls : 'menuItemCls'
         });
         
         var version = Ext.create('Ext.menu.Item', {
             text  : i18n.get('label.version'),
-            name : 'usrProfileVersion',
+            name : 'versionBtn',
             iconCls : 'version-icon',
             cls : 'menuItemCls'
         });

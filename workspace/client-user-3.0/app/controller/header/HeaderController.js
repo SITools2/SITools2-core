@@ -140,7 +140,21 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 		user : menu.user
                 	});
                 }
-            }
+            },
+            
+            'userProfileWindow menuitem[name=versionBtn]' : {
+				click : function (btn) {
+					btn.up('userProfileWindow').close();
+					Ext.create('sitools.public.version.Version').show();
+				}
+			},
+			
+			'userProfileWindow menuitem[name=helpBtn]' : {
+				click : function (btn) {
+					btn.up('userProfileWindow').close();
+					Ext.create('sitools.public.utils.Help').show();
+				}
+			}
         });
         
         this.callParent(arguments);

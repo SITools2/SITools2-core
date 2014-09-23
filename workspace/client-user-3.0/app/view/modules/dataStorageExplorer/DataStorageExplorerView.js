@@ -111,7 +111,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             forceFit : true,
             rowLines : true,
             selModel : Ext.create("Ext.selection.TreeModel", {
-                allowDeselect : true,
+                allowDeselect : false,
                 mode : "SINGLE"
             })
         });
@@ -313,10 +313,12 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageExplorerVie
             scope : this,
             success : function (ret) {
                 var ind = this.store.find('id', node.id);
+                var parent = node.parentNode;
                 node.remove();
                 this.store.removeAt(ind);
 
                 this.dataview.refresh();
+                this.reloadNode(parent);
                 
                 popupMessage(i18n.get('label.information'), i18n.get('label.fileDeleted'), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
             },

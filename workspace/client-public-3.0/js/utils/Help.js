@@ -24,16 +24,21 @@ Ext.namespace('sitools.public.utils');
  * @extends Ext.Panel
  */
 Ext.define('sitools.public.utils.Help', {
-	extend : 'Ext.panel.Panel',
+//	extend : 'Ext.panel.Panel',
+	extend : 'Ext.window.Window',
 	
     /**
 	 * the node to activate
 	 * @type Ext.tree.TreeNode
 	 */
     activeNode : null,
+    
+    width : 800,
+    height : 600,
+    
     initComponent : function () {
 //        this.url = loadUrl.get('APP_URL') + "/client-user/res/help/fr/Client-userUG.html";
-        this.url = loadUrl.get('APP_URL') + "/client-user/res/help/fr/User_Guide.html";
+        this.url = loadUrl.get('APP_URL') + "/client-user/resources/help/fr/User_Guide.html";
         this.layout = "border";
         var htmlReaderCfg = {
             defaults : {
@@ -46,10 +51,25 @@ Ext.define('sitools.public.utils.Help', {
         if (!Ext.isEmpty(this.cfgCmp) && !Ext.isEmpty(this.cfgCmp.activeNode)) {
             this.activeNode = this.cfgCmp.activeNode;
         } else {
-            htmlReaderCfg.defaultSrc = this.url;
+            htmlReaderCfg.src = this.url;
         }
 
-        this.tree = new Ext.tree.TreePanel({
+        this.treeStore = Ext.create('Ext.data.TreeStore', {
+        	model : 'sitools.user.model.HelpModel',
+        	root : {
+        		nodeType : 'async',
+        		text : "rootHelp"
+        	},
+        	proxy : {
+        		type : 'ajax',
+        		url : loadUrl.get('APP_URL') + "/common/res/statics/help.json",
+        		reader : {
+        			type : 'json'
+        		}
+        	}
+        });
+        
+        this.tree = Ext.create('Ext.tree.Panel', {
             region : 'west',
             animate : true,
             width : 200,
@@ -59,61 +79,23 @@ Ext.define('sitools.public.utils.Help', {
             split : true,
             collapsible : true,
             collapsed : false,
-            title : "menu",
-            root : {
-                nodeType : 'async',
-                text : "rootHelp"
-            },
-            loader : new Ext.tree.TreeLoader({
-                requestMethod : 'GET',
-                url : loadUrl.get('APP_URL') + "/client-user/tmp/help.json",
-                listeners : {
-                    scope : this,
-                    load : function () {
-                        if (!Ext.isEmpty(this.activeNode)) {
-                            var node = this.tree.getNodeById(this.activeNode);
-                            if (!Ext.isEmpty(node)) {
-                                this.tree.selectPath(node.getPath());
-                                this.treeAction(node);
-                            } else {
-                                Ext.Msg.alert(i18n.get('label.warning'), i18n.get('msg.nodeundefined'));
-                            }
-                        }
-                    }
-                }
-            }),
+            store : this.treeStore,
             listeners : {
-                scope : this,
-                click : function (node, e) {
-                    this.treeAction(node);
-                }
+            	scope : this,
+            	itemclick : function (view, record, item) {
+            		this.treeAction(record);
+            	},
+            	viewready : function (tree) {
+            		tree.getRootNode().expand(true);
+            	}
             }
-
         });
 
-        this.htmlReader = new Ext.ux.ManagedIFrame.Panel(htmlReaderCfg);
+        this.htmlReader = Ext.create('Ext.ux.IFrame', htmlReaderCfg);
 
         this.items = [ this.tree, this.htmlReader ];
         
-        this.tbar = {
-                xtype : 'toolbar',
-                cls : 'services-toolbar',
-                height : 15,
-                defaults : {
-                    scope : this,
-                    cls : 'services-toolbar-btn'
-                },
-                items : [ ]
-            };
-
-        // tree.getRootNode().expand(true);
-        sitools.user.component.help.superclass.initComponent.call(this);
-    },
-
-    onRender : function () {
-        sitools.user.component.help.superclass.onRender.apply(this, arguments);
-        this.tree.getRootNode().expand(true);
-
+        this.callParent(arguments);
     },
 
     /**
@@ -122,19 +104,15 @@ Ext.define('sitools.public.utils.Help', {
      * @param node
      * @returns
      */
-    treeAction : function (node) {
+    treeAction : function (record) {
         // Getting node urlArticle
-        var nodeAnchor = node.attributes.nodeAnchor;
+        var nodeAnchor = record.get('id');
 
         if (!Ext.isDefined(nodeAnchor)) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('msg.nodeundefined'));
             return;
         }
-        this.htmlReader.setSrc(this.url + "#" + nodeAnchor);
+        this.htmlReader.load(this.url + "#" + nodeAnchor);
     }
 
 });
-
-Ext.reg('sitools.user.component.help', sitools.user.component.help);
-
-

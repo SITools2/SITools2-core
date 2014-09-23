@@ -77,5 +77,15 @@ Ext.define('sitools.user.core.Module', {
      * method called when trying to save preference
      * @returns
      */
-    _getSettings : Ext.emptyFn
+    _getSettings : Ext.emptyFn,
+    
+    /**
+     * use to open a component linked to the module
+     */
+    openMyComponent : null,
+    
+    /**
+     * use to delegate opening to the module itself
+     */
+    openMe : null
 });

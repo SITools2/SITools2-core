@@ -30,42 +30,54 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
             'moduleTaskBar #sitoolsButton' : {
 				click : function (btn) {
 					btn.toggle();
-					this.dvModules = Ext.create('sitools.user.view.header.ModuleDataView');
-					this.dvModules.show();
+					Ext.create('sitools.user.view.header.ModuleDataView').show();
+//					this.dvModules.show();
 				}
 			},
 			
 			'moduleDataview' : {
-				blur : function (window) {
-					window.hide();
-					Desktop.getDesktopEl().unmask();
-				},
 				boxready : function (window) {
 					window.center();
 					window.focus();
-					
 				}
 			},
 			
 			'moduleDataview dataview' : {
 				itemclick : function (dataview, moduleRecord, item, index, event) {
-					this.openModule(moduleRecord, event);
-					dataview.up('window').hide();
-					Desktop.getDesktopEl().unmask();
-				}
-			},
-			
-			'moduleDataview toolbar button[name=versionBtn]' : {
-				click : function (btn) {
-					btn.up('moduleDataview').close();
-					Ext.create('sitools.public.version.Version').show();
-				}
-			},
-			
-			'moduleDataview toolbar button[name=helpBtn]' : {
-				click : function (btn) {
-					btn.up('moduleDataview').close();
-					Ext.create('sitools.public.utils.Help').show();
+					
+					var moduleDataview = dataview.up('moduleDataview');
+					
+					if (!Ext.isEmpty(moduleRecord.get('properties')) && moduleRecord.get('properties').category) {
+						var category = moduleRecord.get('name');
+						
+						moduleDataview.store.removeAll();
+						
+						moduleDataview.moduleStore.each(function (module) {
+				    		var categoryModule = module.get('categoryModule');
+				    		if (category === categoryModule) {
+				    			module.set('type', 'module');
+				    			moduleDataview.store.add(module);
+				    		}
+				    	});
+						
+					} else {
+						var type = moduleRecord.get('type');
+						var module = Ext.create(moduleRecord.get("xtype"));
+						if (type == 'module') {
+							if (Ext.isFunction(module.openMe)) {
+								module.openMe(moduleDataview, moduleRecord, event);
+							} else {
+								this.openModule(moduleRecord, event);
+								moduleDataview.hide();
+								Desktop.getDesktopEl().unmask();
+							}
+						} else if (type == 'component' && Ext.isFunction(module.openMyComponent)) {
+							module.openMyComponent(moduleRecord, event);
+							moduleDataview.hide();
+							Desktop.getDesktopEl().unmask();
+						}
+						
+					}
 				}
 			}
         });
@@ -73,7 +85,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         this.getApplication().on('projectInitialized', this.loadProject, this);
         this.getApplication().on('footerLoaded', Desktop.loadPreferences, this);
         this.getApplication().on('footerLoaded', Desktop.loadModulesInDiv, this);
-        
     },
     
     // 8
@@ -119,6 +130,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         // get the module from the button
         var module = button.module;
         this.openModule(module);
-    }
-
+    },
+    
 });

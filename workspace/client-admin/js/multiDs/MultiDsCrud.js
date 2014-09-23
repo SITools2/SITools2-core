@@ -253,7 +253,8 @@ Ext.define('sitools.admin.multiDs.MultiDsCrud', {
             scope : this,
             success : function (ret) {
                 if (showResponse(ret)) {
-                    this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
+//                    this.httpProxyMultiDs.url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
+                	this.store.getProxy().url = this.baseUrlMultiDs + "/" + projectId + loadUrl.get('APP_FORMPROJECT_URL');
                     this.store.reload();
                 }
             },

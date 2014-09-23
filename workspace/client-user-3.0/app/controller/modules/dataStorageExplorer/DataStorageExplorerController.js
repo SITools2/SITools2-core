@@ -109,8 +109,8 @@ Ext.define('sitools.user.controller.modules.dataStorageExplorer.DataStorageExplo
                 itemclick : function (tree, node, item, e) {
                     
                     var self = tree.up('dataStorageExplorer');
-                    
                     self.manageToolbar(node);
+                    
                     if (node.get('text').match(/\.(fits)$/)) {
                         var sitoolsFitsViewer = new sitools.user.component.dataviews.services.sitoolsFitsViewer({
                             nodeFits : node

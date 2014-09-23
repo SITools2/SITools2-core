@@ -14,8 +14,16 @@
 	cursor: pointer;
 }
 
+.moduleDv-menu {
+	width: 165px;
+	height: 120px;
+	padding: 16px 8px 0px 8px;
+	float: left;
+	cursor: progress;
+}
+
 .moduleDv:HOVER .moduleDvText {
-	text-shadow: 0.1em 0.1em 0.1em #002 !important;
+	text-shadow: 0.1em 0.1em 0.1em #376584 !important;
 }
 
 .moduleDv:HOVER {
@@ -23,10 +31,19 @@
 }
 
 .moduleDvText {
-	color: #FFF;
+	color: #F7F7F7;
 	font-size: 15px;
 	text-align: center;
-	text-shadow: 0.1em 0.1em 0.1em #000;
+	text-shadow: 0.1em 0.1em 0.1em #326A8F;
+	padding-top: 10px;
+}
+
+.moduleDvTextCategory {
+	color: #F7F7F7;
+	font-size: 15px;
+	text-shadow: 0.1em 0.1em 0.1em #326A8F;
+	font-style: italic;
+	font-weight: bold;
 	padding-top: 10px;
 }
 

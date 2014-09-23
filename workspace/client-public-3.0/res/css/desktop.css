@@ -377,6 +377,10 @@ html, body {
 	background-repeat: no-repeat;
 }
 
+.formIcon {
+	background-image:url( /sitools/common/res/images/desktop/72x72/form.png ) !important;
+}
+
 .add {
     background-image:url(../images/desktop/icons/add.gif) !important;
 }
