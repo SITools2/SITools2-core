@@ -719,7 +719,6 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
                 scope : this,
                 tabchange : function (tabPanel, newPanel, oldPanel) {
                     if(newPanel.getId() == "gridModules") {
-                        console.log("refresh the grid");
                         newPanel.getView().refresh();
                     }
                 }

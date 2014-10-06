@@ -32,13 +32,20 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
 
     views : ['component.datasets.services.ServiceToolbarView'],
     
-    requires : [],
+    requires : ['sitools.user.utils.ServerServiceUtils'],
     
     init : function () {
         this.control({
             'livegridView' : {
                 selectionchange : function (selectionModel, selected, opts) {
                     selectionModel.gridView.down('toolbar').updateContextToolbar();
+                },
+                afterrender : function (livegrid) {
+                     this.serverServiceUtil = Ext.create('sitools.user.utils.ServerServiceUtils', {
+				        datasetUrl : livegrid.datasetUrl,
+				        grid : livegrid,
+				        origin : 'sitools.user.view.component.datasets.dataviews.LivegridView'
+				    });
                 }
             },
             'livegridView toolbar button' : {
@@ -48,11 +55,20 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
             }
         });
     },
+    
     callService : function (button) {
         if (button.typeService === 'SERVER') {
-            this.serverServiceUtil.callServerService(button.idService, this.dataview.getSelections());
+            var dataview = button.up("livegridView");
+            this.serverServiceUtil.callServerService(button.idService, dataview.getSelections());
         } else if (button.typeService === 'GUI') {
-            this.callGuiService(button);
+            
+            var idService = button.idService;
+	        var guiServiceStore = button.up('toolbar').getGuiServiceStore();
+	        var service = guiServiceStore.getById(idService);
+            var serviceToolbarView = button.up("serviceToolbarView");
+            
+//            this.callGuiService(button);
+            this.callGuiService(service, serviceToolbarView);
         }
     },
     
@@ -66,10 +82,12 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
      * @param columnAlias
      *            {String} the columnAlias
      */
-    callGuiService : function (button, record, columnAlias) {
+//    callGuiService : function (button, record, columnAlias) {
+    callGuiService : function (button) {
         var idService = button.idService;
         var guiServiceStore = button.up('toolbar').getGuiServiceStore();
         var service = guiServiceStore.getById(idService);
+        
         if (Ext.isEmpty(service)) {
             popupMessage({
                 iconCls : 'x-icon-information',
@@ -98,5 +116,42 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
         });
 
         serviceObj.executeAsService(config);     
+    },
+    
+    callGuiService : function (service, serviceView, record, columnAlias) {
+        var guiServiceStore = serviceView.getGuiServiceStore();
+        if (Ext.isEmpty(service)) {
+            popupMessage({
+                iconCls : 'x-icon-information',
+                title : i18n.get('label.warning'),
+                html : i18n.get("label.cannot-find-guiservice"),
+                autoDestroy : true,
+                hideDelay : 1000
+            });
+            return;
+        }
+        
+        var guiServicePlugin = {};
+        Ext.apply(guiServicePlugin, service.data);
+        
+        var dataview = serviceView.up("livegridView");
+        
+        var serviceObj = Ext.create(guiServicePlugin.xtype);
+        serviceObj.create(this.getApplication());
+        var config = Ext.apply(guiServicePlugin, {
+            columnModel : dataview.columns,
+            store : dataview.getStore(),
+            dataview : dataview,
+            origin : this.origin,
+            record : record,
+            columnAlias : columnAlias
+        });
+
+        serviceObj.executeAsService(config);     
+    },
+    
+     getService : function (columnAlias, serviceToolbarView) {
+        return serviceToolbarView.guiServiceStore.guiServiceMap.get(columnAlias);
     }
+    
 });

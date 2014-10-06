@@ -69,6 +69,7 @@
 --------------------------------------------------------------------------------------------------- -->
 
     <script src="/sitools/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+    <script src="/sitools/common/js/utils/prototyp.js"></script>
 	
 	 <script type="text/javascript">
 		Ext.Loader.setConfig('disableCaching', false);

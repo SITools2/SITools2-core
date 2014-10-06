@@ -30,7 +30,7 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
     initComponent : function () {
     	
     	if (Project.getNavigationMode() == 'fixed') {
-    		this.width = 170;
+    		this.width = 190;
     	}
     	
         var items =  Desktop.getNavMode().createButtonsLeftTaskbar();

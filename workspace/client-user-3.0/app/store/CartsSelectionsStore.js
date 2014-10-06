@@ -20,36 +20,34 @@
 Ext.define('sitools.user.store.CartsSelectionsStore', {
     extend : 'Ext.data.Store',
     model : 'sitools.user.model.CartSelectionModel',
-    
-    constructor : function (config) {
-    	Ext.apply(config, {
-    		proxy : {
-				type : 'ajax',
-				url : this.url,
-				reader : {
-					type : 'json',
-					root : 'selections',
-					idProperty : 'selectionId'
-				}
-			},
-			listeners : {
-                scope : this,
-                exception : function (dataProxy, type, action, options, response, arg) {
-                    if (response.status === 404) {
-                        this.cartsSelectionsStore.removeAll();
-                        return;
-                    }
-                    if (response.status === 403) {
-                        return Ext.Msg.show({
-                            title : i18n.get('label.warning'),
-                            msg : i18n.get('label.needToBeLogged'),
-                            icon : Ext.MessageBox.WARNING,
-                            buttons : Ext.MessageBox.OK
-                        });
-                    }                    
-                }
+    proxy : {
+		type : 'ajax',
+		reader : {
+			type : 'json',
+			root : 'selections',
+			idProperty : 'selectionId'
+		}
+	},
+	
+	listeners : {
+        scope : this,
+        exception : function (dataProxy, type, action, options, response, arg) {
+            if (response.status === 404) {
+                this.cartsSelectionsStore.removeAll();
+                return;
             }
-        });
-        this.callParent([config]);
+            if (response.status === 403) {
+                return Ext.Msg.show({
+                    title : i18n.get('label.warning'),
+                    msg : i18n.get('label.needToBeLogged'),
+                    icon : Ext.MessageBox.WARNING,
+                    buttons : Ext.MessageBox.OK
+                });
+            }                    
+        }
+    },
+    
+    setCustomUrl : function (url) {
+        this.getProxy().url = url;
     }
 });

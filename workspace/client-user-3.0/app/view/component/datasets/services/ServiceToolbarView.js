@@ -24,6 +24,7 @@ Ext.namespace('sitools.user.view.component.datasets.services');
 
 Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
     extend : 'Ext.toolbar.Toolbar',
+    alias : 'widget.serviceToolbarView',
     
     config : {
         store : null,
@@ -48,14 +49,12 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
             }
         });
         
-        
         var guiServiceStore = Ext.create("sitools.user.store.GuiServicesStore", {
-            datasetUrl : this.datasetUrl 
+            datasetUrl : this.datasetUrl,
+            columnModel : this.columnModel
         });
-        
-        this.setGuiServiceStore(guiServiceStore);
-        
         guiServiceStore.load();
+        this.setGuiServiceStore(guiServiceStore);
         
         this.callParent(arguments);
     },
@@ -138,7 +137,7 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         var button;
         if (Ext.isEmpty(buttonSearch)) {
             button = {
-            		xtype : "button",
+        		xtype : "button",
                 category : category,
                 text : category,
                 cls : 'services-toolbar-btn',
@@ -239,8 +238,5 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         }
         return selectionOK;
     }
-    
-    
-    
     
 });

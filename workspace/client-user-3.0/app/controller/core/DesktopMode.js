@@ -237,8 +237,9 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
 		var homeButton = Ext.create('Ext.Button', {
         	itemId : 'sitoolsButton',
             scale : "medium",
-            cls : 'sitools_button_main',
-            iconCls : 'sitools_button_img',
+//            cls : 'sitools_button_main',
+            cls : 'navBarButtons-icon',
+            iconCls : 'main_button_img',
             listeners : {
 				afterrender : function (btn) {
 					var label = i18n.get('label.mainMenu');
@@ -282,7 +283,8 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
         var moreButton = Ext.create('Ext.Button', {
 //            id : 'btn-more',
             iconCls : 'more_button_img',
-            cls : 'sitools_button_main',
+//            cls : 'sitools_button_main',
+            cls : 'navBarButtons-icon',
             arrowCls : null,
             menu : {
             	xtype : 'menu',

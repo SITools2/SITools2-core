@@ -400,12 +400,12 @@ var clientAdmin = {
 	        title : i18n.get('label.menu'),
 //	        split : true,
 	        autoScroll : true,
-	        width : 295,
+	        width : 300,
 	        layout : 'fit',
 	        border : false,
             bodyBorder : false,
             header : {
-                cls : 'x-toolbar-shadow',
+                cls : 'x-toolbar-shadow'
             },
 	        defaults : {
 	            padding : 10

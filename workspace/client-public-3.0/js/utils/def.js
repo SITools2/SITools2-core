@@ -629,7 +629,7 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, data
                 }
             }
            
-            var renderer = sitools.user.component.dataviews.dataviewUtils.getRendererLiveGrid(item, dataviewConfig, dataviewId);
+            var renderer = sitools.user.utils.DataviewUtils.getRendererLiveGrid(item, dataviewConfig, dataviewId);
             var hidden;
             if (Ext.isEmpty(item.visible)) {
                 hidden = item.hidden;

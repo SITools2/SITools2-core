@@ -21,8 +21,36 @@ body {
 }
 
 body,a,p,span,div,td,input,select,label,th,button,dt,em {
-	font-family: arial, helvetica, verdana !important;
+	font-family: verdana, arial, helvetica !important;
+	font-size: 11px;
 }
+
+body,a,p,div,td,input,select,label,th,button,dt,em {
+	color : #19191A;
+}
+
+/* THEME CUTSOMING */
+.x-btn-default-toolbar-small .x-btn-inner {
+	font-size: 11px;
+}
+
+.x-tab-default .x-tab-inner {
+	font-size: 12px;
+}
+
+.x-tree-node-text {
+	font-size: 12px;
+}
+
+.x-btn-default-large .x-btn-inner {
+	font-size: 14px;
+}
+
+.x-menu-item-text {
+	font-size: 11px;
+}
+
+/* END CUSTOMING */
 
 .formBg {
 	background-image:

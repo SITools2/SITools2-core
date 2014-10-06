@@ -212,8 +212,9 @@ Ext.define('sitools.user.controller.core.FixedMode', {
 		var homeButton = Ext.create('Ext.Button', {
         	itemId : 'sitoolsButton',
             scale : "medium",
-            cls : 'sitools_button_main',
-            iconCls : 'sitools_button_img',
+//            cls : 'sitools_button_main',
+            cls : 'navBarButtons-icon',
+            iconCls : 'main_button_img',
             listeners : {
 				afterrender : function (btn) {
 					var label = i18n.get('label.mainMenu');
@@ -236,6 +237,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             action : "minimize",
             text : i18n.get('label.removeActiveModule'),
             iconCls : 'delete_button_small_img',
+            cls : 'navBarButtons-icon',
             cls : 'menuItemCls',
             handler : function (btn) {
             	Desktop.clearDesktop();
@@ -246,6 +248,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             action : "minimize",
             text : i18n.get("label.showDesktopButton"),
             iconCls : 'desktop_button_img',
+            cls : 'navBarButtons-icon',
             cls : 'menuItemCls',
             handler : function (btn) {
             	Desktop.showDesktop();
@@ -254,7 +257,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
         
         var moreButton = Ext.create('Ext.Button', {
             iconCls : 'more_button_img',
-            cls : 'sitools_button_main',
+            cls : 'navBarButtons-icon',
             arrowCls : null,
             menu : {
             	xtype : 'menu',
@@ -288,7 +291,8 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             	Desktop.activePreviousPanel();
             }, 
             scale : "medium", 
-            cls : 'sitools_button_main',
+//            cls : 'sitools_button_main',
+            cls : 'navBarButtons-icon',
             iconCls : 'previous_button_img',
             listeners : {
 				afterrender : function (btn) {
@@ -315,7 +319,8 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             	Desktop.activeNextPanel();
             }, 
             scale : "medium",
-            cls : 'sitools_button_main',
+//            cls : 'sitools_button_main',
+            cls : 'navBarButtons-icon',
             iconCls : 'next_button_img',
             listeners : {
 				afterrender : function (btn) {
@@ -345,7 +350,8 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             	}
             }, 
             scale : "medium",
-            cls : 'sitools_button_main',
+//            cls : 'sitools_button_main',
+            cls : 'navBarButtons-icon',
             iconCls : 'delete_button_img',
             listeners : {
 				afterrender : function (btn) {

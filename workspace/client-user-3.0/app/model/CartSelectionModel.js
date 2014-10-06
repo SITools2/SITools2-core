@@ -57,6 +57,8 @@ Ext.define('sitools.user.model.CartSelectionModel', {
         name : 'formParams'
     }, {
         name : 'filtersCfg'
+    }, {
+    	name : 'colModel'
     }]
 
 });

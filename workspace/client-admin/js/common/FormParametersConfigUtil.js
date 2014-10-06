@@ -34,7 +34,6 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
     extend : 'Ext.form.Panel',
 	alias : 'widget.s-formParametersConfigUtil',
     autoScroll : true,
-    frame : true,
     border : false,
     bodyBorder : false,
     padding : 5,

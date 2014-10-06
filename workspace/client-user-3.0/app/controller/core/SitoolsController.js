@@ -38,7 +38,23 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 			'moduleDataview' : {
 				boxready : function (window) {
 					window.center();
-					window.focus();
+				},
+				
+				afterrender : function (window) {
+					focusDataview = function (window) {
+						this.focus();
+					}
+					Ext.defer(focusDataview, 400, window);
+				},
+				
+				render : function (window) {
+					window.getEl().on('keypress', function(e) {
+	                      if (e.getKey() == e.ECHAP) {
+	                    	  var moduleDataview = dataview.up('moduleDataview');
+	                    	  moduleDataview.hide();
+	                    	  Desktop.getDesktopEl().unmask();
+	                      }
+	                 });
 				}
 			},
 			
@@ -76,7 +92,6 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 							moduleDataview.hide();
 							Desktop.getDesktopEl().unmask();
 						}
-						
 					}
 				}
 			}
@@ -109,9 +124,33 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         store.load({
         	scope : this,
         	callback : function (records, operation, success) {
-                this.getApplication().noticeProjectLoaded();
+                this.loadGuiServices();
             }
         })
+    },
+    
+    loadGuiServices : function () {
+        Ext.Ajax.request({
+            method : 'GET',
+            url : Project.getSitoolsAttachementForUsers() + loadUrl.get('APP_GUI_SERVICES_URL'),
+            scope : this,
+            success : function (response) {
+                var services = Ext.decode(response.responseText).data;
+		        Ext.each(services, function (service) {
+		            var dependencies = service.dependencies;
+		            if (!Ext.isEmpty(dependencies)) {
+		                includeJsForceOrder(dependencies.js, 0, Ext.emptyFn);
+		                
+		                Ext.each(dependencies.css, function (css) {
+		                    includeCss(css.url);
+		                });
+		            }
+		        });
+            },
+            callback : function () {
+                this.getApplication().noticeProjectLoaded();
+            }
+        });
     },
 
     openModule : function (moduleModel, event) {

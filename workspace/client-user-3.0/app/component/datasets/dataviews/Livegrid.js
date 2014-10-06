@@ -62,8 +62,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         	datasetName : componentConfig.name,
             type : "data",
             title : i18n.get('label.datasets') + " : " + componentConfig.name,
-//            id : "dataset" + dataset.id,
-            id : Ext.id(),
+            id : "dataset_" + componentConfig.id,
+//            id : Ext.id(),
             saveToolbar : true,
             winWidth : 900,
             winHeight : 400,
@@ -77,8 +77,9 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             preferencesPath : "/" + componentConfig.name + "/datasets",
             preferencesFileName : componentConfig.name,
             columns : columns,
-            // searchAction : this.searchAction,
+            urlRecords : componentConfig.sitoolsAttachementForUsers + '/records',
             scope : this
+            // searchAction : this.searchAction,
         });
         
         var view = Ext.create('sitools.user.view.component.datasets.dataviews.LivegridView', componentSettings);
@@ -138,7 +139,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                     }
                 }
                
-//                var renderer = sitools.user.component.dataviews.dataviewUtils.getRendererLiveGrid(item, dataviewConfig, dataviewId);
+                var renderer = sitools.user.utils.DataviewUtils.getRendererLiveGrid(item, dataviewConfig, dataviewId);
                 var hidden;
                 if (Ext.isEmpty(item.visible)) {
                     hidden = item.hidden;
@@ -156,7 +157,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                         hidden : hidden,
                         tooltip : tooltip,
                         //TODO
-//                        renderer : renderer,
+                        renderer : renderer,
                         schema : item.schema,
                         tableName : item.tableName,
                         tableAlias : item.tableAlias,
@@ -206,7 +207,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         }
         return fields;
     },
-
+    
     /**
      * method called when trying to save preference
      * 

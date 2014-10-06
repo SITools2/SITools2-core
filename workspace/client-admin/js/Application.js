@@ -44,7 +44,7 @@ Ext.define('sitools.admin.Application', {
         
         'sitools.admin.menu.TreeMenu',
         
-        'sitools.public.widget.datasets.columnRenderer.behaviorEnum',
+        'sitools.public.widget.datasets.columnRenderer.BehaviorEnum',
         
         'sitools.public.widget.grid.SitoolsView',
         

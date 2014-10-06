@@ -33,7 +33,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
     views : [ 'component.datasets.dataviews.LivegridView',
               'component.datasets.services.ServiceToolbarView'],
     
-    requires : ['sitools.public.widget.datasets.columnRenderer.behaviorEnum',
+    requires : ['sitools.public.widget.datasets.columnRenderer.BehaviorEnum',
                 'sitools.public.utils.Utils'],
                 
 
@@ -77,6 +77,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
             	resize : function (view) {
             		view.getSelectionModel().updateSelection();
             	},
+                
             	afterrender: function (view) {
             		view.getView().getEl().on('scroll', function () {
             			view.getSelectionModel().updateSelection();
@@ -85,7 +86,21 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
             		view.on('scroll', function () {
             			view.getSelectionModel().updateSelection();
             		}, view);
-				}
+				},
+                
+                cellclick : function (table, td, cellIndex, record, tr, rowIndex, e) {
+                    var livegrid = table.up('livegridView');
+                    
+                    var column = livegrid.columnManager.getHeaderAtIndex(cellIndex)
+                    if (Ext.isEmpty(column.columnRenderer)) {
+                        return;
+                    }
+                    
+                    var serviceToolbarView = livegrid.down('serviceToolbarView');
+                    var serviceController = this.getApplication().getController('sitools.user.controller.component.datasets.services.ServicesController');
+                    sitools.user.utils.DataviewUtils.featureTypeAction(column, record, serviceController, serviceToolbarView);                   
+                }
+                
             }
         });
     }

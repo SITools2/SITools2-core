@@ -23,7 +23,7 @@
  * List of constants
  * @type sitools.admin.datasets.columnRenderer.columnRenderEnum
  */
-Ext.define('sitools.public.widget.datasets.columnRenderer.behaviorEnum', {
+Ext.define('sitools.public.widget.datasets.columnRenderer.BehaviorEnum', {
     singleton : true,
     alternateClassNames : ['sitools.admin.datasets.columnRenderer.behaviorEnum'],
     
@@ -134,4 +134,4 @@ Ext.define('sitools.public.widget.datasets.columnRenderer.behaviorEnum', {
     }
 });
 
-ColumnRendererEnum = sitools.public.widget.datasets.columnRenderer.behaviorEnum;
+ColumnRendererEnum = sitools.public.widget.datasets.columnRenderer.BehaviorEnum;

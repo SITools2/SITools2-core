@@ -556,13 +556,8 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
             scope : this,
             success : function (ret) {
                 this.savePropertiesBtn.removeCls('not-save-textfield');
-                Ext.create("Ext.ux.Notification", {
-                    iconCls : 'x-icon-information',
-                    title : i18n.get('label.information'),
-                    html : i18n.get('label.datasetServicePropertiesSaved'),
-                    autoDestroy : true,
-                    hideDelay : 1000
-                }).show(document);
+                popupMessage(i18n.get('label.information'), i18n.get('label.datasetServicePropertiesSaved'),
+                loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
                 
                 this.store.reload();
             },
@@ -622,7 +617,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesCrud', {
                 var json = Ext.decode(ret.responseText);
                 var resourcePlugin = {};
                 resourcePlugin.data = json.resourcePlugin;
-                var up = Ext.create("sitools.admin.resourcesPlugins.resourcesPluginsProp", {
+                var up = Ext.create("sitools.admin.resourcesPlugins.ResourcesPluginsProp", {
                     action : 'modify',
                     record : resourcePlugin,
                     parentPanel : this,

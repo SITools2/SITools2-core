@@ -231,7 +231,8 @@ function extColModelToJsonColModel(ExtColModel) {
                 columnAlias : column.columnAlias,
                 dataIndex : column.dataIndexSitools,
                 dataIndexSitools : column.dataIndexSitools,
-                header : column.header,
+//                header : column.header,
+                header : column.text,
                 filter : column.filter,
                 hidden : column.hidden,
                 id : column.id,
@@ -434,6 +435,81 @@ Ext.data.Types.DATEASSTRING = {
 	
 };
 
+function includeJs(url) {
+    if (Ext.isEmpty(url)) {
+        return;
+    }
+    var head = document.getElementsByTagName('head')[0];
+    var script = document.createElement('script');
+    script.setAttribute('src',  url);
+    script.setAttribute('type', 'text/javascript');
+    head.appendChild(script);
+}
+
+/**
+ * Include JS scripts in the given order and trigger callback when all scripts are loaded  
+ * @param ConfUrls {Array} the list of scripts to load
+ * @param indexAInclure {int} the index during the iteration
+ * @param callback {function} the callback
+ * @param scope {Object} the scope of the callback
+ */
+function includeJsForceOrder(ConfUrls, indexAInclure, callback, scope) {
+    //Test if all inclusions are done for this list of urls
+    if (indexAInclure < ConfUrls.length) {
+        var url = ConfUrls[indexAInclure].url;
+        
+        var trouve = false;
+        var targetEl = "script";
+        var targetAttr = "src";
+        var scripts = document.getElementsByTagName(targetEl);
+        var script;
+        for (var i = scripts.length; i > 0; i--) {
+            script = scripts[i - 1];
+            if (script && script.getAttribute(targetAttr) !== null && script.getAttribute(targetAttr).indexOf(url) != -1) {
+                trouve = true;
+            }
+        }
+        if (!trouve) {
+            // if not : include the Js Script
+            var DSLScript = document.createElement("script");
+            DSLScript.type = "text/javascript";
+//            DSLScript.onload = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+//            DSLScript.onreadystatechange = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+//            DSLScript.onerror = includeJsForceOrder.createDelegate(this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            
+            DSLScript.onload = Ext.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.onreadystatechange = Ext.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.onerror = Ext.bind(includeJsForceOrder, this, [ ConfUrls, indexAInclure + 1, callback, scope ]);
+            DSLScript.src = url;
+
+            var headID = document.getElementsByTagName('head')[0];
+           headID.appendChild(DSLScript);           
+        } else {
+            includeJsForceOrder(ConfUrls, indexAInclure + 1, callback, scope);
+        }
+    } else {
+        if (!Ext.isEmpty(callback)) {
+            if (Ext.isEmpty(scope)) {
+                callback.call();
+            } else {
+                callback.call(scope);
+            }
+        }
+    }
+}
+
+
+function includeCss(url) {
+    var headID = document.getElementsByTagName("head")[0];
+    var newCss = document.createElement('link');
+    newCss.type = 'text/css';
+    newCss.rel = 'stylesheet';
+    newCss.href = url;
+    newCss.media = 'screen';
+    // pas possible de monitorer l'evenement onload sur une balise link
+    headID.appendChild(newCss);
+}
+
 /**
  * Build a {Ext.grid.ColumnModel} columnModel with a dataset informations
  * @param {Array} listeColonnes Array of dataset Columns
@@ -464,7 +540,7 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, data
                 }
             }
            
-            var renderer = sitools.user.component.dataviews.dataviewUtils.getRendererLiveGrid(item, dataviewConfig, dataviewId);
+            var renderer = sitools.user.utils.DataviewUtils.getRendererLiveGrid(item, dataviewConfig, dataviewId);
             var hidden;
             if (Ext.isEmpty(item.visible)) {
                 hidden = item.hidden;
@@ -472,7 +548,7 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, data
                 hidden = !item.visible;
             }
             if (Ext.isEmpty(item.columnRenderer) ||  ColumnRendererEnum.NO_CLIENT_ACCESS != item.columnRenderer.behavior) {
-	            columns.push(new Ext.grid.Column({
+	            columns.push(Ext.create('Ext.grid.column.Column', {
 	                columnAlias : item.columnAlias,
 	                dataIndexSitools : item.dataIndex,
 	                dataIndex : item.columnAlias,
@@ -505,9 +581,9 @@ function getColumnModel(listeColonnes, dictionnaryMappings, dataviewConfig, data
         }, this);
     }
 
-    var cm = new Ext.grid.ColumnModel({
-        columns : columns
-    });
+    var cm = {
+        items : columns
+    };
     return cm;
 }
 
@@ -732,331 +808,6 @@ function viewFileContent(url, title) {
     }
 
 });*/
-
-
-/**
- * A méthod call when click on dataset Icon. Request the dataset, and open a window depending on type
- * 
- * @static
- * @param {string} url the url to request the dataset
- * @param {string} type the type of the component.
- * @param {} extraCmpConfig an extra config to apply to the component.
- */
-//sitools.user.clickDatasetIcone = function (url, type, extraCmpConfig) {
-//	Ext.Ajax.request({
-//		method : "GET", 
-//		url : url, 
-//		success : function (ret) {
-//            var Json = Ext.decode(ret.responseText);
-//            if (showResponse(ret)) {
-//                var dataset = Json.dataset;
-//	            var componentCfg, javascriptObject;
-//	            var windowConfig = {
-//	                datasetName : dataset.name, 
-//	                type : type, 
-//	                saveToolbar : true, 
-//	                toolbarItems : []
-//	            };
-//                switch (type) {
-//                
-//				case "desc" : 
-//					Ext.apply(windowConfig, {
-//						title : i18n.get('label.description') + " : " + dataset.name, 
-//						id : "desc" + dataset.id, 
-//						saveToolbar : false, 
-//						iconCls : "version"
-//					});
-//					
-//					componentCfg = {
-//						autoScroll : true,
-//						html : dataset.descriptionHTML
-//					};
-//					Ext.applyIf(componentCfg, extraCmpConfig);
-//					javascriptObject = Ext.Panel;
-//					SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//					
-//					break;
-//					
-//				case "data" : 
-//                    javascriptObject = eval(SitoolsDesk.navProfile.getDatasetOpenMode(dataset));
-//                
-//	                Ext.apply(windowConfig, {
-//	                    winWidth : 900, 
-//	                    winHeight : 400,
-//                        title : i18n.get('label.dataTitle') + " : " + dataset.name, 
-//                        id : type + dataset.id, 
-//                        iconCls : "dataviews"
-//	                });
-//                    
-//	                componentCfg = {
-//	                    dataUrl : dataset.sitoolsAttachementForUsers,
-//	                    datasetId : dataset.Id,
-//	                    datasetCm : dataset.columnModel, 
-//	                    datasetName : dataset.name,
-//	                    dictionaryMappings : dataset.dictionaryMappings,
-//	                    datasetViewConfig : dataset.datasetViewConfig, 
-//	                    preferencesPath : "/" + dataset.datasetName, 
-//	                    preferencesFileName : "datasetOverview", 
-//	                    sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers
-//	                };
-//                
-//                
-//	                Ext.applyIf(componentCfg, extraCmpConfig);
-//					SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//
-//					break;
-//				case "forms" : 
-//		            var menuForms = new Ext.menu.Menu();
-//		            Ext.Ajax.request({
-//						method : "GET", 
-//						url : dataset.sitoolsAttachementForUsers + "/forms", 
-//						success : function (ret) {
-//							try {
-//								var Json = Ext.decode(ret.responseText);
-//								if (! Json.success) {
-//									throw Json.message;
-//								}
-//								if (Json.total === 0) {
-//									throw i18n.get('label.noForms');
-//								}
-//				                javascriptObject = sitools.user.component.forms.mainContainer;
-//								if (Json.total == 1) {
-//						            var form = Json.data[0];
-//						            Ext.apply(windowConfig, {
-//						                title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name, 
-//						                iconCls : "forms"
-//						            });
-//						            
-//						
-//					                Ext.apply(windowConfig, {
-//					                    id : type + dataset.id + form.id
-//					                });
-//					                componentCfg = {
-//					                    dataUrl : dataset.sitoolsAttachementForUsers,
-//					                    dataset : dataset, 
-//					                    formId : form.id,
-//					                    formName : form.name,
-//					                    formParameters : form.parameters,
-//					                    formZones : form.zones,
-//					                    formWidth : form.width,
-//					                    formHeight : form.height, 
-//					                    formCss : form.css, 
-//				                        preferencesPath : "/" + dataset.name + "/forms", 
-//				                        preferencesFileName : form.name
-//					                };
-//					                Ext.applyIf(componentCfg, extraCmpConfig);
-//									SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//
-//				                }
-//								else {
-//									
-//									var handler = null;
-//									Ext.each(Json.data, function (form) {
-//										handler = function (form, dataset) {
-//											Ext.apply(windowConfig, {
-//												title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name, 
-//												iconCls : "forms"
-//								            });
-//								
-//							                Ext.apply(windowConfig, {
-//							                    id : type + dataset.id + form.id
-//							                });
-//							                componentCfg = {
-//							                    dataUrl : dataset.sitoolsAttachementForUsers,
-//							                    formId : form.id,
-//							                    formName : form.name,
-//							                    formParameters : form.parameters,
-//							                    formWidth : form.width,
-//							                    formHeight : form.height, 
-//							                    formCss : form.css, 
-//							                    dataset : dataset
-//							                };
-//							                Ext.applyIf(componentCfg, extraCmpConfig);
-//											SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//										};
-//										menuForms.addItem({
-//											text : form.name, 
-//											handler : function () {
-//												handler(form, dataset);
-//											}, 
-//											icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_forms.png"
-//										});
-//						                
-//									}, this);
-//									menuForms.showAt(Ext.EventObject.xy);
-//								}
-//					            
-//				
-//								
-//							}
-//							catch (err) {
-//								var tmp = new Ext.ux.Notification({
-//						            iconCls : 'x-icon-information',
-//						            title : i18n.get('label.information'),
-//						            html : i18n.get(err),
-//						            autoDestroy : true,
-//						            hideDelay : 1000
-//						        }).show(document);
-//							}
-//						}
-//		            });
-//
-//					break;
-//				case "feeds" : 
-//		            var menuFeeds = new Ext.menu.Menu();
-//		            Ext.Ajax.request({
-//						method : "GET", 
-//						url : dataset.sitoolsAttachementForUsers + "/feeds", 
-//						success : function (ret) {
-//							try {
-//								var Json = Ext.decode(ret.responseText);
-//								if (! Json.success) {
-//									throw Json.message;
-//								}
-//								if (Json.total === 0) {
-//									throw i18n.get('label.noFeeds');
-//								}
-//				                javascriptObject = sitools.widget.FeedGridFlux;
-//								if (Json.total == 1) {
-//						            var feed = Json.data[0];
-//						            Ext.apply(windowConfig, {
-//						                title : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title, 
-//						                id : type + dataset.id + feed.id, 
-//						                iconCls : "feedsModule"
-//						            });
-//						
-//					                componentCfg = {
-//					                    datasetId : dataset.id,
-//					                    urlFeed : dataset.sitoolsAttachementForUsers + "/clientFeeds/" + feed.name,
-//					                    feedType : feed.feedType, 
-//					                    datasetName : dataset.name,
-//					                    feedSource : feed.feedSource,
-//					                    autoLoad : true
-//					                };
-//						            Ext.applyIf(componentCfg, extraCmpConfig);
-//									SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//
-//				                }
-//								else {
-//									var handler = null;
-//									Ext.each(Json.data, function (feed) {
-//										handler = function (feed, dataset) {
-//											Ext.apply(windowConfig, {
-//												title : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title, 
-//												id : type + dataset.id + feed.id, 
-//												iconCls : "feedsModule"
-//								            });
-//								
-//							                
-//							                componentCfg = {
-//							                    datasetId : dataset.id,
-//							                    urlFeed : dataset.sitoolsAttachementForUsers + "/clientFeeds/" + feed.name,
-//							                    feedType : feed.feedType, 
-//							                    datasetName : dataset.name,
-//							                    feedSource : feed.feedSource,
-//							                    autoLoad : true
-//							                };
-//							                Ext.applyIf(componentCfg, extraCmpConfig);
-//											SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//										};
-//										menuFeeds.addItem({
-//											text : feed.name, 
-//											handler : function () {
-//												handler(feed, dataset);
-//											}, 
-//											icon : loadUrl.get('APP_URL') + "/common/res/images/icons/rss.png"
-//										});
-//						                
-//									}, this);
-//									menuFeeds.showAt(Ext.EventObject.xy);
-//								}
-//					            
-//				
-//								
-//							}
-//							catch (err) {
-//								var tmp = new Ext.ux.Notification({
-//						            iconCls : 'x-icon-information',
-//						            title : i18n.get('label.information'),
-//						            html : i18n.get(err),
-//						            autoDestroy : true,
-//						            hideDelay : 1000
-//						        }).show(document);
-//							}
-//						}
-//		            });
-//
-//					break;
-//				case "defi" : 
-//		            Ext.apply(windowConfig, {
-//		                title : i18n.get('label.definitionTitle') + " : " + dataset.name, 
-//		                id : type + dataset.id, 
-//		                iconCls : "semantic"
-//		            });
-//		
-//	                javascriptObject = sitools.user.component.columnsDefinition;
-//	                
-//	                componentCfg = {
-//	                    datasetId : dataset.id,
-//	                    datasetCm : dataset.columnModel, 
-//	                    datasetName : dataset.name,
-//                        dictionaryMappings : dataset.dictionaryMappings, 
-//                        preferencesPath : "/" + dataset.name, 
-//                        preferencesFileName : "semantic"
-//	                };
-//	                Ext.applyIf(componentCfg, extraCmpConfig);
-//					SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//
-//					break;
-//				case "openSearch" : 
-//		            Ext.Ajax.request({
-//						method : "GET", 
-//						url : dataset.sitoolsAttachementForUsers + "/opensearch.xml", 
-//						success : function (ret) {
-//                            var xml = ret.responseXML;
-//                            var dq = Ext.DomQuery;
-//                            // check if there is a success node
-//                            // in the xml
-//                            var success = dq.selectNode('OpenSearchDescription ', xml);
-//							if (!success) {
-//								var tmp = new Ext.ux.Notification({
-//						            iconCls : 'x-icon-information',
-//						            title : i18n.get('label.information'),
-//						            html : i18n.get("label.noOpenSearch"),
-//						            autoDestroy : true,
-//						            hideDelay : 1000
-//						        }).show(document);
-//								return;
-//							}
-//							
-//							Ext.apply(windowConfig, {
-//				                title : i18n.get('label.opensearch') + " : " + dataset.name, 
-//				                id : type + dataset.id, 
-//				                iconCls : "openSearch"
-//				            });
-//				
-//			                javascriptObject = sitools.user.component.datasetOpensearch;
-//			                
-//			                componentCfg = {
-//			                    datasetId : dataset.id,
-//			                    dataUrl : dataset.sitoolsAttachementForUsers, 
-//			                    datasetName : dataset.name, 
-//		                        preferencesPath : "/" + dataset.name, 
-//		                        preferencesFileName : "openSearch"
-//			                };
-//			                Ext.applyIf(componentCfg, extraCmpConfig);
-//							SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-//                            
-//                        }
-//		            });
-//
-//					break;
-//				}
-//            }
-//		}, 
-//		failure : alertFailure
-//	});
-//};
 
 /**
  * Add a tooltip on every form field: tooltip could be an object like tooltip : {

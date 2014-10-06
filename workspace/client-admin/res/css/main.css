@@ -183,38 +183,38 @@ pre {
 	border-radius: 2px;
 }
 
-.INACTIVE, .DISACTIVE {
-	color: #157FCC;
+.INACTIVE div, .DISACTIVE div {
+	color: #157FCC !important;
 	font-weight: bold;
 }
 
-.ACTIVE {
-	color: #14BD12;
+.ACTIVE div {
+	color: #14BD12 !important;
 	font-weight: bold;
 }
 
-.NEW {
-	color: #43c2db;
+.NEW div {
+	color: #43c2db !important;
 	font-weight: bold;
 }
 
-.STOPPED {
-	color: #157FCC;
+.STOPPED div {
+	color: #157FCC !important;
 	font-weight: bold;
 }
 
-.STARTED {
-	color: #14BD12;
+.STARTED div {
+	color: #14BD12 !important;
 	font-weight: bold;
 }
 
-.GUI {
-	color: #14BD12;
+.GUI div {
+	color: #14BD12 !important;
 	font-weight: bold;
 }
 
-.SERVER {
-	color: #157FCC;
+.SERVER div {
+	color: #157FCC !important;
 	font-weight: bold;
 }
 

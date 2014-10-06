@@ -22,7 +22,8 @@ Ext.define('sitools.user.Application', {
                  /* UTILS USER */
                  'sitools.user.utils.FormUtils',
                  'sitools.user.utils.ServerServiceUtils',
-                 'sitools.user.utils.DatasetUtils'
+                 'sitools.user.utils.DatasetUtils',
+                 'sitools.user.utils.DataviewUtils'
                  ],
 
     extend : 'Ext.app.Application',
@@ -127,7 +128,7 @@ Ext.define('sitools.user.Application', {
         this.fireEvent('projectInitialized'); // listened by SitoolsController
     },
     
-    // 10
+    // 11
     noticeProjectLoaded : function () {
         this.setLoaded(true);
         this.fireEvent('projectLoaded');

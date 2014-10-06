@@ -28,7 +28,9 @@ Ext.namespace('sitools.user.controller.modules.addToCartModule');
 Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController', {
     extend : 'Ext.app.Controller',
     
-    views : [ 'modules.addToCartModule.AddToCartView' ],
+    views : [ 'sitools.user.view.modules.addToCartModule.AddToCartModuleView',
+              'sitools.user.view.modules.addToCartModule.CartSelectionDetailsView'
+          ],
 
     init : function () {
     	
@@ -49,13 +51,12 @@ Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController'
             	}
             },
             
-            'addToCartModule gridPanel[name=cartGridPanel]' : {
-            	rowclick : function (grid, ind) {
+            'addToCartModule grid[name=cartGridPanel]' : {
+            	itemclick : function (grid, record, item, ind) {
             		var cartView = grid.up('addToCartModule');
-                    var selected = grid.selModel.getSelections()[0];
                     
                     var modifyBtn = cartView.down('toolbar').down('buton[name=modifySelectionBtn]');
-                    if (Ext.isEmpty(selected)) {
+                    if (Ext.isEmpty(record)) {
                         if (!Ext.isEmpty(modifyBtn)) {
                         	cartView.down('toolbar').remove(modifyBtn);
                         }

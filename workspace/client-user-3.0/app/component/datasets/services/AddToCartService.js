@@ -79,11 +79,12 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
         			jsObj : "sitools.public.widget.datasets.selectItems",
         			config : {
         				height : 250,
-    					padding : 5,
+    					padding : 10,
         				layout : {
         					type : 'hbox',
         					pack : 'start',
-        					align : 'stretch'
+        					align : 'stretch',
+        					defaultMargins : {top:10, right:0, bottom:0, left:0}
         				},
         				grid1 : Ext.create("Ext.grid.GridPanel", {
         					border : false,
@@ -101,7 +102,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
         							reader : {
         								type : 'json',
         								idProperty : 'columnAlias',
-        								root : "dataset.columnModel",
+        								root : "dataset.columnModel"
         							}
         						},
         						listeners : {
@@ -135,7 +136,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
         								'columnRenderer', 'isDataExported'],
         						idProperty : 'columnAlias',
         						proxy : {
-        							type : 'memory',
+        							type : 'memory'
         						},
         						listeners : {
         							add : function(store, records) {
@@ -345,13 +346,14 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 		globalOrder.selections = this.dataview.getRequestParamWithoutColumnModel();
 		globalOrder.selections = globalOrder.selections.slice(1);
 		
-//		globalOrder.ranges = this.dataview.getSelectionsRange();
+		globalOrder.ranges = this.dataview.getSelectionsRange();
 		globalOrder.dataToExport = dataToExport;
 
 		globalOrder.startIndex = this.dataview.getStore().lastRequestStart;
 
 //		globalOrder.nbRecords = (grid.isAllSelected()) ? this.dataview.store
 //				.getTotalCount() : this.dataview.getNbRowsSelected();
+		globalOrder.nbRecords = this.dataview.getNbRowsSelected();
 
 		var orderDate = new Date();
 		var orderDateStr = Ext.Date.format(orderDate, SITOOLS_DATE_FORMAT);
@@ -361,15 +363,16 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 
 		this.createFilters(globalOrder, this.dataview);
 
+		var index = "";
 		if (Ext.isEmpty(this.cartSelectionFile.selections)) {
 			this.cartSelectionFile.selections = [];
+		} else {
+			index = Ext.each(this.cartSelectionFile.selections, function(sel) {
+				if (sel.selectionId === this.dataview.name) {
+					return false;
+				}
+			}, this);
 		}
-
-		var index = Ext.each(this.cartSelectionFile.selections, function(sel) {
-					if (sel.selectionId === this.dataview.datasetName) {
-						return false;
-					}
-				}, this);
 
 		if (Ext.isEmpty(index)) {
 			this.cartSelectionFile.selections.push(globalOrder);
@@ -412,24 +415,29 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 	 */
 	createFilters : function(order, grid) {
 //		var filters = grid.getFilters();
-//		if (!Ext.isEmpty(filters)) {
+		var filters = grid.getStore().filters;
+		
+		if (!Ext.isEmpty(filters)) {
 //			order.filters = filters.getFilterData(filters);
-//		}
-//
+			order.filters = filters.getSorters();
+		}
+
 //		var storeSort = grid.getStore().getSortState();
-//		if (!Ext.isEmpty(storeSort)) {
-//			order.storeSort = storeSort;
-//		}
-//
-//		var filtersCfg = grid.getStore().filtersCfg;
-//		if (!Ext.isEmpty(filtersCfg)) {
-//			order.filtersCfg = filtersCfg;
-//		}
-//
+		var storeSort = grid.getStore().sorters;
+		if (!Ext.isEmpty(storeSort)) {
+			order.storeSort = storeSort;
+		}
+
+		var filtersCfg = grid.getStore().filtersCfg;
+		if (!Ext.isEmpty(filtersCfg)) {
+			order.filtersCfg = filtersCfg;
+		}
+
 //		var formParams = grid.getStore().getFormParams();
-//		if (!Ext.isEmpty(formParams)) {
-//			order.formParams = formParams;
-//		}
+		var formParams = grid.getStore().formParams;
+		if (!Ext.isEmpty(formParams)) {
+			order.formParams = formParams;
+		}
 	},
 
 	closeDataviewIfModify : function() {

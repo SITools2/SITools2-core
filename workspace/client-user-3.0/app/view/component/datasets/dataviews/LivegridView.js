@@ -45,9 +45,14 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     	pluginId : 'renderer',
         ptype : 'bufferedrenderer',
         trailingBufferZone: 20,  // Keep 20 rows rendered in the table behind scroll
-        leadingBufferZone: 50   // Keep 50 rows rendered in the table ahead of scroll
+        leadingBufferZone: 50,   // Keep 50 rows rendered in the table ahead of scroll,
+        rowHeight : 25
     },
-    
+    viewConfig : {
+        getRowClass : function (record, index) {
+            return 'rowHeight'; 
+        }
+    },
     
     initComponent : function () {
         
@@ -80,7 +85,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         
         this.tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
             enableOverflow: true,
-            datasetUrl : this.dataset.sitoolsAttachementForUsers
+            datasetUrl : this.dataset.sitoolsAttachementForUsers,
+            columnModel : this.dataset.columnModel
         });
         
         this.callParent(arguments);
@@ -128,6 +134,113 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     //generic method
     getSelections : function () {
     	return this.getSelectionModel().getSelection();
+    },
+    
+     /**
+     * 
+     * @return {String} 
+     */
+    getRequestParam : function () {
+        var request = "", formParams = {};
+    
+        var colModel = extColModelToSrv(this.columns);
+        if (!Ext.isEmpty(colModel)) {
+            request += "&colModel=" + Ext.JSON.encode(colModel);
+        }
+    
+        request += this.getRequestParamWithoutColumnModel();
+        
+        return request;
+    }, 
+    
+    getRequestParamWithoutColumnModel : function () {
+        var request = "";
+        // First case : no records selected: build the Query
+        if (Ext.isEmpty(this.getSelections())) {
+            request = this.getRequestParamWithoutSelection();
+        } 
+        // Second case : Records are selected
+        else {
+            request += "&" + this.getRecSelectedParamForLiveGrid();
+        }
+        return request;
+    },
+    
+    getRequestParamWithoutSelection : function () {
+        var result = "", formParams = {};
+        // Add the filters params
+        var filters = this.getFilters();
+        if (!Ext.isEmpty(filters)) {
+            filters = this.store.buildQuery(filters.getFilterData(filters));
+            if (!Ext.isEmpty(Ext.urlEncode(filters))) {
+                result += "&" + Ext.urlEncode(filters);
+            }
+
+        }
+        // add the sorting params
+        var storeSort = this.getStore().getSortState();
+        if (!Ext.isEmpty(storeSort)) {
+            var sort;
+            if (!Ext.isEmpty(storeSort.sorters)) {
+                sort = {
+                    ordersList : storeSort.sorters
+                };
+            } else {
+                sort = {
+                    ordersList : [ storeSort ]
+                };
+            }
+            result += "&sort=" + Ext.encode(sort);
+        }
+
+        // add the formParams
+        var formParamsTmp = this.getStore().getFormParams(), i = 0;
+        if (!Ext.isEmpty(formParamsTmp)) {
+            Ext.each(formParamsTmp, function (param) {
+                formParams["p[" + i + "]"] = param;
+                i += 1;
+            }, this);
+            result += "&" + Ext.urlEncode(formParams);
+        }
+        return result;
+    },
+    
+        /**
+     * @method
+     * will check if there is some pendingSelection (no requested records)
+     * <li>First case, there is no pending Selection, it will build a form parameter
+     * with a list of id foreach record.</li>
+     * <li>Second case, there is some pending Selection : it will build a ranges parameter
+     * with all the selected ranges.</li>
+     * @returns {} Depending on liveGridSelectionModel, will return either an object that will use form API 
+     * (p[0] = LISTBOXMULTIPLE|primaryKeyName|primaryKeyValue1|primaryKeyValue1|...|primaryKeyValueN), 
+     * either an object that will contain an array of ranges of selection 
+     * (ranges=[range1, range2, ..., rangen] where rangeN = [startIndex, endIndex])
+     * 
+     */
+    getRecSelectedParamForLiveGrid : function () {
+        var sm = this.getSelectionModel(), result;
+        
+        if (this.isAllSelected()) {
+            //First Case : all the dataset is selected.
+            result = "ranges=[[0," + (this.store.getTotalCount() - 1) + "]]";
+            //We have to re-build all the request in case we use a range selection.
+            result += this.getRequestParamWithoutSelection();
+        }
+//        else if (Ext.isEmpty(sm.getPendingSelections())) {
+        else if (Ext.isEmpty(sm.getSelection())) {
+            //second Case : no pending Selections.
+            var recSelected = sm.getSelection();
+            result = Ext.urlEncode(this.dataviewUtils.getFormParamsFromRecsSelected(recSelected));
+        }
+        else {
+            //Second Case : there is a pending Selection, send all the ranges.
+            var ranges = sm.getAllSelections(true);
+            result = "ranges=" + Ext.JSON.encode(ranges);
+            //We have to re-build all the request in case we use a range selection.
+            result += this.getRequestParamWithoutSelection();
+        }
+        return result;
     },
     
     /**

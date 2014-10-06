@@ -35,6 +35,10 @@
 	background-image: none;
 }
 
+.sitools_button_main span{
+	color : #666;
+}
+
 .sitools_button {
 	padding: 4px 4px 4px 4px;
 	border: none;
@@ -46,92 +50,48 @@
 	background-image: url("/sitools/common/res/images/sitools_logo24.png");
 }
 
-.sitools_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/sitools_logo24_hover.png");
-}
-
-.sitools_button_img:ACTIVE {
-	background-image: url("/sitools/common/res/images/sitools_logo24_hover.png");
+.main_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/mainMenu.png");
 }
 
 .user_button_img {
 	background-image: url("/sitools/common/res/images/icons/general/user.png");
 }
 
-.user_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/user.png");
-}
-
 .save_button_img {
-	background-image: url("/sitools/common/res/images/icons/general/save.png");
-}
-
-.save_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/save.png");
+	background-image: url("/sitools/common/res/images/icons/general/save-icon.png");
 }
 
 .maxi_button_img {
-	background-image: url("/sitools/common/res/images/icons/general/maxi.png");
-}
-
-.maxi_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/maxi.png");
+	background-image: url("/sitools/common/res/images/icons/general/maxi-icon.png");
 }
 
 .mini_button_img {
-	background-image: url("/sitools/common/res/images/icons/general/mini.png");
-}
-
-.mini_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/mini.png");
+	background-image: url("/sitools/common/res/images/icons/general/mini-icon.png");
 }
 
 .delete_button_img {
 	background-image: url("/sitools/common/res/images/icons/general/delete.png");
 }
 
-.delete_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/delete.png");
-}
-
 .delete_button_small_img {
 	background-image: url("/sitools/common/res/images/icons/general/delete16x16.png");
-}
-
-.delete_button_small_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/delete16x16.png");
 }
 
 .desktop_button_img {
 	background-image: url("/sitools/common/res/images/icons/general/desktop.png");
 }
 
-.desktop_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/desktop.png");
-}
-
 .more_button_img {
 	background-image: url("/sitools/common/res/images/icons/general/more.png");
-}
-
-.more_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/more.png");
 }
 
 .next_button_img {
 	background-image: url("/sitools/common/res/images/icons/general/next.png");
 }
 
-.next_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/next.png");
-}
-
 .previous_button_img {
 	background-image: url("/sitools/common/res/images/icons/general/previous.png");
-}
-
-.previous_button_img:HOVER {
-	background-image: url("/sitools/common/res/images/icons/general/saturate/previous.png");
 }
 
 .version-icon {

@@ -936,14 +936,18 @@ td.ux-taskButtons-edge {
 }
 
 .navBarButtons-icon {
-	height : 32px !important;
-	width :32px !important;
+	/* height : 32px !important;
+	width :32px !important; */
 	-webkit-transition: width .5s cubic-bezier( .4, 1, .4, 1);
    	-moz-transition: width .5s cubic-bezier( .4, 1, .4, 1);
     -ms-transition: width .5s cubic-bezier( .4, 1, .4, 1);
     -o-transition: width .5s cubic-bezier( .4, 1, .4, 1);
     transition: width .5s cubic-bezier( .4, 1, .4, 1);
     z-index:1;
+    padding: 4px 0px 0px 4px;
+	border: none;
+	background-color: transparent;
+	background-image: none;
 }
 
 .navBarButtons-icon:HOVER {
@@ -953,9 +957,9 @@ td.ux-taskButtons-edge {
 	-o-transform: scale(1.09);
 	transform: scale(1.09); */
 	z-index:5;
-	opacity: .85;
-    -moz-opacity: .85;
-    filter:alpha(opacity=85);
+	opacity: .70;
+    -moz-opacity: .70;
+    filter:alpha(opacity=70);
 }
 
 .navBarButtons-icon:ACTIVE {
@@ -1360,11 +1364,11 @@ td.ux-taskButtons-edge {
 /** START TOOLBAR BUTTON **/
 
 .arrow-back{
-	background-image : url(../images/icons/simple-arrow-left.png);
+	background-image : url(../images/icons/arrow-left.png);
 }
 
 .arrow-next{
-	background-image : url(../images/icons/simple-arrow-right.png);
+	background-image : url(../images/icons/arrow-right.png);
 }
 
 .btn-format-icon {
@@ -1442,6 +1446,18 @@ td.ux-taskButtons-edge {
 
 .moduleInDiv {
 	box-shadow: #818181 -3px 0px 7px 0px;
+}
+
+.recordDetailLabel {
+	font-size: 15px;
+	padding: 24px;
+	line-height: 25px;
+	font-weight: bold;
+}
+
+.rowHeight .x-grid-cell {  
+     line-height: 30px !important;
+     height: 30px !important;
 }
 
 ::-webkit-scrollbar-thumb {

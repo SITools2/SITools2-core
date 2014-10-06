@@ -49,7 +49,8 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         this.profilButton = Ext.create("Ext.button.Button", {
         	name : 'profilBtn',
             scope : this, 
-            cls : 'sitools_button',
+//            cls : 'sitools_button',
+            cls : 'navBarButtons-icon',
             iconCls : 'user_button_img',
             scale : 'medium',
             id : this.profileButtonId,
@@ -80,7 +81,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
                 handler : function (btn, evt) {
                 	this.desktopController.fireEvent('saveBtnClicked', btn, evt);
     			},
-    			cls : 'sitools_button',
+    			cls : 'navBarButtons-icon',
                 iconCls : 'save_button_img',
                 scale : 'medium',
                 id : "saveBtnId",
@@ -105,7 +106,7 @@ Ext.define('sitools.user.view.header.ButtonTaskBarView', {
         /** A specialized btn to switch between normal and maximize mode */
         this.maximizeButton = Ext.create('Ext.button.Button', {
 			name : 'maximizeBtn',
-			cls : 'sitools_button',
+			cls : 'navBarButtons-icon',
             iconCls : (Desktop.getDesktopMaximized() != false) ? "mini_button_img" : "maxi_button_img",  
             scale : 'medium',
             scope : this, 

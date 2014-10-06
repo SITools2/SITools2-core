@@ -62,7 +62,7 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                 var resource = json.resourcePlugin;
                 var parameters = resource.parameters;
                 var url = null, runTypeUserInput = null, methods = null;
-                parameters.each(function (param) {
+                Ext.each(parameters, function (param) {
                     switch (param.name) {
                     case "methods":
                         methods = param.value;
@@ -226,13 +226,13 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
 
         var request = "";
         if (this.origin !== "sitools.user.modules.projectServices") {
-            try {
+//            try {
                 request = this.grid.getRequestParam();
-            }
-            catch (err) {
-                Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.notImplementedService'), err));
-                return false;
-            }
+//            }
+//            catch (err) {
+//                Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.notImplementedService'), err));
+//                return false;
+//            }
         }
 
         url += "?1=1" + request;

@@ -25,6 +25,7 @@ Ext.define('sitools.public.widget.datasets.selectItems', {
     grid2 : null, 
     defaultRecord : null, 
     defaultFlexGrid : 0.47,
+    border : false,
     
     initComponent : function () {
 
@@ -35,7 +36,8 @@ Ext.define('sitools.public.widget.datasets.selectItems', {
                 pack : "center", 
                 defaultMargins : {top:10, right:0, bottom:0, left:0}
             },
-            flex : 0.06, 
+            flex : 0.06,
+            border : false,
             defaults : {
                 scope : this
             },

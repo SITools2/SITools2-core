@@ -21,9 +21,14 @@
 Ext.define('sitools.user.store.GuiServicesStore', {
     extend : 'Ext.data.Store',
     model : 'sitools.user.model.GuiServiceModel',
+    storeId : 'GuiServicesStore',
     
     requires : ['sitools.public.widget.datasets.columnRenderer.behaviorEnum'],
 
+    config : {
+        guiServiceMap : new Ext.util.MixedCollection()
+    },
+    
     constructor : function (config) {
         Ext.apply(config, {
             root : 'data',
@@ -46,37 +51,38 @@ Ext.define('sitools.user.store.GuiServicesStore', {
     
     onLoad : function (store, services, success, opts) {
         this.createMapParamServices(services);
+        
         //For each column, find the Gui_Service configured, if exists
-//        Ext.each(this.columnModel, function (column) {
-//            if (!Ext.isEmpty(column.columnRenderer)) {
-//                var featureTypeColumn = sitools.public.widget.datasets.columnRenderer.behaviorEnum.getColumnRendererCategoryFromBehavior(column.columnRenderer.behavior);
-//                
-//                var guiServiceWithColumn = null;
-//                var guiServiceWithoutColumn = null;
-//                
-//                
-//                Ext.each(services, function (service) {
-//                    var parameters = service.get("parametersMap");
-//                    if (!Ext.isEmpty(parameters)) {
-//                        var featureTypeService = parameters.get("featureType");
-//                        if (!Ext.isEmpty(featureTypeService) && featureTypeService === featureTypeColumn) {
-//                            var columnAlias = parameters.get("columnAlias");
-//                            if (columnAlias === column.columnAlias) {
-//                                guiServiceWithColumn = service;
-//                            } else if (Ext.isEmpty(columnAlias)) {
-//                                guiServiceWithoutColumn = service;
-//                            }
-//                        }
-//                    }
-//                }, this);
-//                
-//                if (!Ext.isEmpty(guiServiceWithColumn)) {
-//                    this.guiServiceMap.add(column.columnAlias, guiServiceWithColumn);
-//                } else if (!Ext.isEmpty(guiServiceWithoutColumn)) {
-//                    this.guiServiceMap.add(column.columnAlias, guiServiceWithoutColumn);
-//                }
-//            }
-//        }, this);
+        Ext.each(this.columnModel, function (column) {
+            if (!Ext.isEmpty(column.columnRenderer)) {
+                var featureTypeColumn = sitools.public.widget.datasets.columnRenderer.BehaviorEnum.getColumnRendererCategoryFromBehavior(column.columnRenderer.behavior);
+                
+                var guiServiceWithColumn = null;
+                var guiServiceWithoutColumn = null;
+                
+                
+                Ext.each(services, function (service) {
+                    var parameters = service.get("parametersMap");
+                    if (!Ext.isEmpty(parameters)) {
+                        var featureTypeService = parameters.get("featureType");
+                        if (!Ext.isEmpty(featureTypeService) && featureTypeService === featureTypeColumn) {
+                            var columnAlias = parameters.get("columnAlias");
+                            if (columnAlias === column.columnAlias) {
+                                guiServiceWithColumn = service;
+                            } else if (Ext.isEmpty(columnAlias)) {
+                                guiServiceWithoutColumn = service;
+                            }
+                        }
+                    }
+                }, this);
+                
+                if (!Ext.isEmpty(guiServiceWithColumn)) {
+                    this.guiServiceMap.add(column.columnAlias, guiServiceWithColumn);
+                } else if (!Ext.isEmpty(guiServiceWithoutColumn)) {
+                    this.guiServiceMap.add(column.columnAlias, guiServiceWithoutColumn);
+                }
+            }
+        }, this);
         
         this.fireEvent("guiServicesLoaded");
     },
