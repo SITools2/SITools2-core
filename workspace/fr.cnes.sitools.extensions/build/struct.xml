@@ -35,7 +35,7 @@
 	<!-- Informations generales sur le projet -->
 	<property name="project.name" value="fr.cnes.sitools.extensions" />
 	<property name="project.fullname" value="Sitools2" />
-	<property name="project.version"         value="2.4.1-scalable"/>
+	<property name="project.version"         value="2.4.2"/>
 
 	<!-- Nom de l'application WEB -->
 	<property name="webapps.name" value="sitools" />
