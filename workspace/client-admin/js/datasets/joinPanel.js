@@ -187,7 +187,7 @@ sitools.component.datasets.joinCrudTreePanel = Ext.extend(Ext.tree.TreePanel, {
             contextMenuRoot : new Ext.menu.Menu({
 				items : [{
                     id : 'create-node',
-                    text : i18n.get("Add Table"), 
+                    text : i18n.get("label.addTable"), 
                     icon : loadUrl.get('APP_URL') + '/res/images/icons/add_folder.png', 
                     menu : {
 						items : [ {
