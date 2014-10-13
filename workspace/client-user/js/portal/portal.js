@@ -1,25 +1,22 @@
-/*******************************************************************************
- * Copyright 2010-2013 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- * 
- * This file is part of SITools2.
- * 
- * SITools2 is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * SITools2 is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * SITools2. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
-/*
- * global Ext, sitools, i18n, locale, utils_logout, window,
- * userPreferences:true, userStorage, DEFAULT_PREFERENCES_FOLDER, ID, portal,
- * userLogin, loadUrl, showVersion
- */
+/***************************************
+* Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
+* 
+* This file is part of SITools2.
+* 
+* SITools2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+* 
+* SITools2 is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+* 
+* You should have received a copy of the GNU General Public License
+* along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
+***************************************/
+/*global Ext, sitools, i18n, locale, utils_logout, window, userPreferences:true, userStorage, DEFAULT_PREFERENCES_FOLDER, ID, portal, userLogin, loadUrl, showVersion*/
 
 sitools.Portal = function (projectsList, languages, preferences) {
     /***************************************************************************
@@ -38,15 +35,13 @@ sitools.Portal = function (projectsList, languages, preferences) {
             handler : function () {
                 sitools.userProfile.LoginUtils.connect({
                     closable : true,
-                    url : loadUrl.get('APP_URL') + '/login',
+                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_LOGIN_PATH_URL') + '/login',
                     register : loadUrl.get('APP_URL') + '/inscriptions/user',
-                    reset : loadUrl.get('APP_URL') + '/resetPassword',
-                    handler : function () {
-                        portal.initAppliPortal({
-                            siteMapRes : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')
-                        });
-                    }
+                    reset : loadUrl.get('APP_URL') + '/lostPassword',
+                    unblacklist : loadUrl.get('APP_URL') + '/unblacklist'
                 });
+                
+                
             }
 
         };
@@ -63,84 +58,77 @@ sitools.Portal = function (projectsList, languages, preferences) {
 
     }
     var versionButton = {
-        xtype : 'tbbutton',
-        text : i18n.get('label.version'),
-        itemId : 'menu_version',
-        icon : loadUrl.get('APP_URL') + '/common/res/images/icons/version.png',
-        handler : function () {
-            showIngcsVersion();
-        }
+            xtype : 'tbbutton',
+            text : i18n.get('label.version'),
+            itemId : 'menu_version',
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/version.png',
+            handler : function () {
+                showVersion();
+            }
 
-    };
+        };
     var menuLangues = new Ext.menu.Menu({
         plain : true
     });
     Ext.each(languages, function (language) {
-        menuLangues
-                .add({
-                    text : language.displayName,
-                    scope : this,
-                    handler : function () {
-                        var callback = function () {
-                            Ext.util.Cookies.set('language', language.localName);
-                            window.location.reload();
-                        };
-                        var date = new Date();
-                        Ext.util.Cookies.set('language', language.localName, date.add(Date.MINUTE, 20));
-                        userPreferences = {};
-                        userPreferences.language = language.localName;
-                        if (!Ext.isEmpty(userLogin)) {
-                            userStorage.set(loadUrl.get('APP_PORTAL_URL'), "/" + DEFAULT_PREFERENCES_FOLDER + loadUrl.get('APP_PORTAL_URL'), userPreferences,
-                                    callback);
-                            // userStorage.set("portal", "/" +
-                            // DEFAULT_PREFERENCES_FOLDER + "/portal",
-                            // userPreferences, callback);
-                        } else {
-                            window.location.reload();
-                        }
+        menuLangues.add({
+            text : language.displayName,
+            scope : this,
+            handler : function () {
+                var callback = function () {
+                    Ext.util.Cookies.set('language', language.localName);
+                    window.location.reload();
+                };
+                var date = new Date();
+                Ext.util.Cookies.set('language', language.localName, date.add(Date.MINUTE, 20));
+                userPreferences = {};
+                userPreferences.language = language.localName;
+                if (!Ext.isEmpty(userLogin)) {
+                    userStorage.set(loadUrl.get('APP_PORTAL_URL'),  "/" + DEFAULT_PREFERENCES_FOLDER + loadUrl.get('APP_PORTAL_URL'), userPreferences, callback);
+//                    userStorage.set("portal",  "/" + DEFAULT_PREFERENCES_FOLDER + "/portal", userPreferences, callback);
+                } else {
+                    window.location.reload();
+                }
 
-                    },
-                    icon : language.image
-                });
+            },
+            icon : language.image
+        });
     }, this);
-
+    
     var editProfileButton;
     if (!Ext.isEmpty(Ext.util.Cookies.get('userLogin'))) {
-        editProfileButton = {
-            xtype : 'tbbutton',
-            text : i18n.get('label.editProfile'),
-            itemId : 'menu_editProfile',
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_userman.png',
-            identifier : user,
-            edit : loadUrl.get('APP_URL') + '/editProfile/' + user,
-            scope : this,
-            handler : function (button, e) {
-                var callback = Ext.createDelegate(this.onEditProfile, this, [ user, button.edit ]);
-                sitools.userProfile.LoginUtils.editProfile(callback);
-            }
-
-        };
+	    editProfileButton = {
+	            xtype : 'tbbutton',
+	            text : i18n.get('label.editProfile'),
+	            itemId : 'menu_editProfile',
+	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_userman.png',
+	            identifier : user,
+	            edit : loadUrl.get('APP_URL') + '/editProfile/' + user,
+	            scope : this,
+	            handler : function (button, e) {	                
+	                var callback = Ext.createDelegate(this.onEditProfile, this, [user, button.edit]);
+	                sitools.userProfile.LoginUtils.editProfile(callback);
+	            }
+	    
+	        };
     } else {
         editProfileButton = {
             xtype : 'tbbutton',
-            text : i18n.get('label.editProfile'),
-            itemId : 'menu_editProfile',
-            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/tree_userman.png',
-            disabled: true
+            hidden : true
         };
     }
+    
 
     var toolbar = {
         xtype : 'toolbar',
         id : 'toolbar',
-        items : [ /*
-                     * { xtype : 'label', html : '<img src=' +
-                     * loadUrl.get('APP_URL') + '/common/res/images/cnes.png
-                     * width=92 height=28>' }, { xtype : 'label', html : '<img
-                     * src=' + loadUrl.get('APP_URL') +
-                     * '/common/res/images/logo_01_petiteTaille.png width=92
-                     * height=28>' },
-                     */'->', {
+        items : [ {
+            xtype : 'label',
+            html : '<img src=' + loadUrl.get('APP_URL') + '/common/res/images/cnes.png width=92 height=28>'
+        }, {
+            xtype : 'label',
+            html : '<img src=' + loadUrl.get('APP_URL') + '/common/res/images/logo_01_petiteTaille.png width=92 height=28>'
+        }, '->', {
             xtype : 'label',
             margins : {
                 top : 0,
@@ -153,9 +141,10 @@ sitools.Portal = function (projectsList, languages, preferences) {
             text : i18n.get('label.langues'),
             menu : menuLangues
         }, '-', editProfileButton, '-', menuLoginLogout
-
-        /*
-         * , {xtype : 'button', text : i18n.get('label.connection'), handler :
+        
+		/*
+         * , {xtype : 'button', text :
+         * i18n.get('label.connection'), handler :
          * this.connect}
          */
         ]
@@ -169,15 +158,6 @@ sitools.Portal = function (projectsList, languages, preferences) {
         items : [ toolbar ]
     });
 
-    /***************************************************************************
-     * Creation du menu d'affichage des portlets
-     */
-    /*
-     * var treePanel = new Ext.Panel({ id : 'tree', region : 'west', title :
-     * i18n.get('label.components'), split : true, collapsible : true,
-     * autoScroll : true, width : 200, layout : 'fit', defaults : { padding : 10 },
-     * collapsed : true });
-     */
 
     /***************************************************************************
      * Creation du portlet Liste des projets
@@ -191,7 +171,7 @@ sitools.Portal = function (projectsList, languages, preferences) {
 //            direction : 'ASC'
 //        }
 //    });
-
+    
 var portletCollection = new Ext.util.MixedCollection();
     
     Ext.each(projectsList, function (project) {
@@ -208,15 +188,16 @@ var portletCollection = new Ext.util.MixedCollection();
             categoryProject : project.categoryProject
         });
         
+        
+        if (Ext.isEmpty(project.categoryProject)) {
+        	project.categoryProject = "Public";
+        }
+        
         // creation of the portletObject if it does not already exist
-        if (portletCollection.get(project.categoryProject) === undefined) {
+        if (Ext.isEmpty(portletCollection.get(project.categoryProject))) {
             
             var portletObject = {};
-            if (project.categoryProject === "" && portletCollection.get("") === undefined) {
-                portletObject.category = "Public";
-            } else {
-                portletObject.category = project.categoryProject;
-            }
+            portletObject.category = project.categoryProject;
             
             portletObject.store = this.createStore();
             portletObject.store.add(record);
@@ -241,77 +222,62 @@ var portletCollection = new Ext.util.MixedCollection();
         }
     }, this);
 
-//    var portletProjet = new Ext.ux.Portlet({
-//        id : ID.PORTLET.PROJET,
-//        title : i18n.get('label.portletProjetTitle'),
-//        height : 460,
-//        // tbar : tbar,
-//        items : [ myDataView ],
-//        autoScroll : true
-//    });
-
-    /***************************************************************************
+     /***************************************************************************
      * Creation du portlet d'affichage des flux de l'archive
      */
 
-    /*
-     * var panelFluxPortal = { xtype :
-     * 'sitools.component.users.portal.feedsReaderPortal' };
-     *  // panelFlux.loadFeed( '/sitools/client-user/tmp/feed-proxy.xml');
-     * 
-     * var portletFluxPortal = new Ext.ux.Portlet({ layout : 'fit', id :
-     * ID.PORTLET.FEEDS, title : i18n.get('title.portlelFeedsPortal'), height :
-     * 460, items : [ panelFluxPortal ] });
-     */
+    var panelFluxPortal = {
+        xtype : 'sitools.component.users.portal.feedsReaderPortal'
+    };
 
-    // Contenu HTML du portlet
-//    var htmlAbout = '<div class="containerAbout"><div class="titleAbout">Groundwater</div><b>Pesticides in GroundWater</b> This application is about finding areas where there are high concentrations of pesticides in the groundwater. The user is able to search for specific pesticides and restrict the output to pesticides found at a certain depth interval and/or from certain geology (lithology or lithostratigraphy). \n\
-//    <br/><br/><div class="titleAbout">Shakemaps</div><b>ShakeMaps</b> This application is about viewing and downloading shaking intensity distribution maps for important earthquakes. The application produces automatically a new shakemap dataset a few minutes after the earthquake. Data is available to the user for viewing over a mapping interface and for downloading and re-using through the use of WMS and WFS services.\n\
-//    <br/><br/><div class="titleAbout">GeoHazards</div><b>Landslides Susceptibility Maps</b> This application provides automatically produced susceptibility maps of triggering landslides due to higher precipitation levels. The endangered zones will be predicted using the combination of the landslide susceptibility model, the precipitation forecast and the landslide triggering threshold values. \n\
-//    <br/>Data is available to the user for viewing over a mapping interface and for downloading and re-using through the use of WMS and WFS services.\n\
-//    <br/><br/><div class="titleAbout">GeoPublication</div><b>An integrated Platform/Infrastructure for data dissemination</b> The Inspire Compliant Data publication is a data-provider service that allows to publish your own geo-data and to create maps. It allows you to simplify the re-use of data, without worrying about all technical, legal and Information Technology (IT) issues.</div>'
+    // panelFlux.loadFeed( '/sitools/client-user/tmp/feed-proxy.xml');
 
-    var portletAbout = new Ext.ux.Portlet({
+    var portletFluxPortal = new Ext.ux.Portlet({
         layout : 'fit',
-        height : 460,
-        autoLoad : 'res/html/' + locale.getLocale() + '/projectsDescription.html'
-    }); 
-    
-//   var portletAbout = new Ext.ux.Portlet({
-//        layout : 'fit',
-//        id : ID.PORTLET.FEEDS,
-//        /* title : i18n.get('label.portletAbout'), */
-//        height : 460,
-//        // items : [ /*panelFluxPortal*/ ]
-//        html : htmlAbout
-//    });
+        id : ID.PORTLET.FEEDS,
+        title : i18n.get('title.portlelFeedsPortal'),
+        height : 400,
+        items : [ panelFluxPortal ]
+    });
 
     /***************************************************************************
      * Creation du portlet Open Search
      */
-    /*
-     * var osPanel = new sitools.component.users.portal.portalOpensearch({
-     * dataUrl : loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL'), suggest :
-     * false, pagging : false
-     * 
-     * });
-     * 
-     * 
-     * var portletRecherche = new Ext.ux.Portlet({ collapsed : true,
-     * bodyCssClass : 'portletRecherche', id : ID.PORTLET.RECHERCHE, title :
-     * i18n.get('label.portletRechercheTitle'), items : [ osPanel ], layout:
-     * "fit", height : 400 });
-     */
+    
+    var osPanel = new sitools.component.users.portal.portalOpensearch({
+        dataUrl : loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL'),
+        suggest : false,
+        pagging : false
+        
+    });
+   
+    var portletRecherche = new Ext.ux.Portlet({
+        collapsed : true, 
+        bodyCssClass : 'portletRecherche',
+        id : ID.PORTLET.RECHERCHE,
+        title : i18n.get('label.portletRechercheTitle'),        
+        items : [ osPanel ],
+        layout: "fit", 
+        height : 400
+    });
 
     /***************************************************************************
      * Creation des autres composants du tabPanel
      */
-    /*
-     * var helpPanel = new Ext.ux.ManagedIFrame.Panel({ id : 'helpPanelId',
-     * title : i18n.get('label.helpTitle'), // split: true, // collapsible:
-     * true, autoScroll : true, // layout: 'fit', defaults : { padding : 10 },
-     * defaultSrc : "res/html/" + locale.getLocale() + "/help.html" });
-     */
+
+    var helpPanel = new Ext.ux.ManagedIFrame.Panel({
+        id : 'helpPanelId',
+        title : i18n.get('label.helpTitle'),
+        // split: true,
+        // collapsible: true,
+        autoScroll : true,
+        // layout: 'fit',
+        defaults : {
+            padding : 10
+        },
+        defaultSrc : "res/html/" + locale.getLocale() + "/help.html"
+    });
+
     var linkPanel = new Ext.ux.ManagedIFrame.Panel({
         id : 'link',
         title : i18n.get('label.linkTitle'),
@@ -341,12 +307,12 @@ var portletCollection = new Ext.util.MixedCollection();
     /***************************************************************************
      * Creation tabPanel Center qui contient le portal
      */
-
+    
     var onlyPortletTab = [];
     portletCollection.each(function (item, index, length) {
         onlyPortletTab.push(item.portlet);
     }, this);
-    
+
     var mainPanel = new Ext.TabPanel({
         baseCls : 'portalMainPanel',
         region : 'center',
@@ -361,7 +327,7 @@ var portletCollection = new Ext.util.MixedCollection();
             items : [ {
                 region : 'north',
                 xtype : 'iframepanel',
-                // title : i18n.get('label.freeText'),
+                title : i18n.get('label.freeText'),
                 autoScroll : true,
                 defaults : {
                     padding : 10
@@ -373,6 +339,7 @@ var portletCollection = new Ext.util.MixedCollection();
                 baseCls : 'portalMainPanel',
                 xtype : 'portal',
                 id : 'portalId',
+                // region:'center',
                 margins : '35 5 5 0',
                 // layout : 'fit',
                 defaults : {
@@ -380,34 +347,19 @@ var portletCollection = new Ext.util.MixedCollection();
                 },
                 items : [ {
                     columnWidth : 0.50,
-                    style : 'padding:10px 0 10px 10px;',
+                    style : 'padding:10px 0 10px 10px',
                     // baseCls : 'portalMainPanel',
-//                    items : [ portletProjet ]
                     items : onlyPortletTab
                 }, {
                     columnWidth : 0.50,
                     style : 'padding:10px',
                     // baseCls : 'portalMainPanel',
-                    items : [ portletAbout /*
-                                             * portletFluxPortal,
-                                             * portletRecherche
-                                             */]
+                    items : [ portletFluxPortal, portletRecherche]
                 } ]
-            }, {
-                region : 'south',
-                xtype : 'iframepanel',
-                // style : 'padding-left : 10px; padding-right : 10px;',
-                // style : 'margin-top : 10px;',
-                // title : i18n.get('label.freeText'),
-                autoScroll : true,
-                // margins : '35 5 5 0',
-                defaults : {
-                    padding : 10
-                },
-                defaultSrc : "res/html/" + locale.getLocale() + "/footer.html",
-                height : 160
             } ]
-        }, contactPanel, linkPanel /* , helpPanel */]
+        }
+
+        , contactPanel, linkPanel, helpPanel ]
 
     /*
      * Uncomment this block to test handling of the drop event. You could use
@@ -421,94 +373,9 @@ var portletCollection = new Ext.util.MixedCollection();
      */
     sitools.Portal.superclass.constructor.call(this, Ext.apply({
         layout : 'border',
-        items : [ menuPanel, /* treePanel, */mainPanel ]
+        items : [ menuPanel, mainPanel ]
     }));
 
-    var treeNav = new Ext.tree.TreePanel({
-        id : 'panelNav',
-        useArrows : true,
-        autoScroll : true,
-        animate : true,
-        enableDD : false,
-        containerScroll : true,
-        rootVisible : false,
-        width : 200,
-        root : new Ext.tree.AsyncTreeNode({
-            expanded : true,
-            children : [ {
-                id : ID.PORTALTREENAV.PROJET,
-                panelId : ID.PORTLET.PROJET,
-                icon : 'res/images/icons/portlet.png',
-                text : i18n.get('label.portletProjetTitle'),
-                leaf : true,
-                checked : true,
-                listeners : {
-                    checkchange : function (node) {
-                        if (!node.attributes.checked) {
-                            Ext.get(node.attributes.panelId).hide();
-                            // Pour que le panel n'ait plus de place reservee
-                            // dans le portal
-                            Ext.get(node.attributes.panelId).addClass('x-hide-display');
-                        } else {
-                            Ext.get(node.attributes.panelId).show();
-                            Ext.get(node.attributes.panelId).removeClass('x-hide-display');
-                        }
-                    }
-                }
-            }, {
-                id : ID.PORTALTREENAV.RECHERCHE,
-                icon : 'res/images/icons/portlet.png',
-                panelId : ID.PORTLET.RECHERCHE,
-                text : i18n.get('label.portletRechercheTitle'),
-                leaf : true,
-                checked : true,
-                listeners : {
-                    checkchange : function (node) {
-                        if (!node.attributes.checked) {
-                            Ext.get(node.attributes.panelId).hide();
-                            // Pour que le panel n'ait plus de place reservee
-                            // dans le portal
-                            Ext.get(node.attributes.panelId).addClass('x-hide-display');
-                        } else {
-                            Ext.get(node.attributes.panelId).show();
-                            Ext.get(node.attributes.panelId).removeClass('x-hide-display');
-                        }
-                    }
-                }
-            }, {
-                id : ID.PORTALTREENAV.FEEDS,
-                icon : 'res/images/icons/portlet.png',
-                panelId : ID.PORTLET.FEEDS,
-                text : i18n.get('label.portletFeedsTitle'),
-                leaf : true,
-                checked : true,
-                listeners : {
-                    checkchange : function (node) {
-                        if (!node.attributes.checked) {
-                            Ext.get(node.attributes.panelId).hide();
-                            // Pour que le panel n'ait plus de place reservee
-                            // dans le portal
-                            Ext.get(node.attributes.panelId).addClass('x-hide-display');
-                        } else {
-                            Ext.get(node.attributes.panelId).show();
-                            Ext.get(node.attributes.panelId).removeClass('x-hide-display');
-                        }
-                    }
-                }
-            } ]
-        }),
-        listeners : {
-            'checkchange' : function (node, checked) {
-                if (checked) {
-                    node.getUI().addClass('complete');
-                } else {
-                    node.getUI().removeClass('complete');
-                }
-            }
-        }
-    });
-    // treePanel.add(treeNav);
-    // treePanel.doLayout();
     // portletFlux.doLayout();
 
 };
@@ -518,17 +385,17 @@ Ext.extend(sitools.Portal, Ext.Viewport, {
         sitools.Portal.superclass.onRender.apply(this, arguments);
         // this.
         // this.doLayout();
-    },
-
+    }, 
+    
     onEditProfile : function (user, url) {
         var win = new Ext.Window({
-            items : [],
-            modal : true,
-            width : 400,
-            height : 405,
+            items : [], 
+            modal : true, 
+            width : 400, 
+            height : 405, 
             resizable : false
         });
-
+        
         win.show();
         var edit = new sitools.userProfile.editProfile({
             closable : true,
@@ -575,7 +442,7 @@ Ext.extend(sitools.Portal, Ext.Viewport, {
                         return authorized === true;
                     }
                 }),
-            id : 'projectDataView',
+            cls : 'projectDataView',
             itemSelector : 'li.project',
             overClass : 'project-hover',
             singleSelect : true,

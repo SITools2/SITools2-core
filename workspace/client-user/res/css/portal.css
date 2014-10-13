@@ -73,23 +73,23 @@
  * licensing@extjs.com
  * http://www.extjs.com/license
  */
-#projectDataView {
+.projectDataView {
 	background-color: #fff;
 	text-shadow: #fff 0 1px 0;
 }
 
-#projectDataView ul {
+.projectDataView ul {
 	position: relative;
 	display: block;
 	height: auto;
 	font-size: 85%;
 }
 
-#projectDataView ul li img {
+.projectDataView ul li img {
 	margin-bottom: 1px;
 }
 
-#projectDataView ul li {
+.projectDataView ul li {
 	float: left;
 	padding: 8px 10px;
 	margin: 5px;
@@ -105,22 +105,22 @@
 	cursor: pointer;
 }
 
-/*#projectDataView ul li.phone-hover {
+/*.projectDataView ul li.phone-hover {
     background-color: #eee;
 }*/
-#projectDataView ul li.x-view-selected {
+.projectDataView ul li.x-view-selected {
 	background-color: rgba(100, 100, 100, .15);
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-top: 1px solid rgba(0, 0, 0, .15);
 }
 
-#projectDataView li strong {
+.projectDataView li strong {
 	color: #000;
 	display: block;
 }
 
-#projectDataView li span {
+.projectDataView li span {
 	color: #999;
 }
 
