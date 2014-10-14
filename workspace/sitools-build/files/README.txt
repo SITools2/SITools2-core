@@ -26,7 +26,6 @@ _________________
 		- data are automatically loaded from old directory
 		- StoreHelper can be configured in sitools.properties file
 		- Minify javascripts during izpack generation
-		- 
 		
 	* API changes :
 		- data folder are now data/<datatype>/map
@@ -38,7 +37,7 @@ _________________
 		
 	* Know bugs
 		- #66 Fits change frame menu visible
-		- #70 Authorisations are not removed when a role is deleted
+		- #70 Authorizations are not removed when a role is deleted
 _________________
 -2.4.1 (2014-05-28)
 	* Enhancements : 
