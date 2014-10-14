@@ -32,8 +32,8 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
         this.AppUserStorage = loadUrl.get('APP_USERSTORAGE_USER_URL').replace('{identifier}', userLogin) + "/files";
 
         
-        this.tbar = new Ext.ux.StatusBar({
-            statusAlign: 'right'              
+        this.tbar = new Ext.Toolbar({
+            buttonAlign : 'right'              
         });
         
         this.buttons = [ {
@@ -131,10 +131,12 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
     },
     
     setUserStorageSize : function () {
+        
+        var urlStatus = loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace("{identifier}", userLogin) + "/status?forceRefresh=true";
         Ext.Ajax.request({
             method : "GET",
             scope : this,
-            url : loadUrl.get('APP_URL') + loadUrl.get('APP_USERSTORAGE_USER_URL').replace("{identifier}", userLogin) + "/status", 
+            url : urlStatus, 
             success : function (ret) {
                 var json = Ext.decode(ret.responseText);
                 if (!json.success) {
@@ -152,10 +154,21 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
                 else if (pourcentage > 100) {
                     cls = "x-status-error";
                 }
-                var str = String.format(i18n.get('label.diskSpaceLong'), Ext.util.Format.round(pourcentage, 0), Ext.util.Format.fileSize(totalSpace));
                 
-                this.getTopToolbar().setText(str);
-                this.getTopToolbar().setIcon(cls);
+                var str = String.format(i18n.get('label.diskSpaceLong'), Ext.util.Format.round(pourcentage, 2), Ext.util.Format.fileSize(totalSpace));
+                var statusLabel = this.getTopToolbar().find('name', 'statusLabel')[0];
+                
+                if (statusLabel) {
+                    statusLabel.setText(str);
+                } else {
+                    this.getTopToolbar().add(new Ext.form.Label({
+                        name : 'statusLabel',
+                        text : str
+                    }))
+                }
+                
+//                this.getTopToolbar().setText(str);
+//                this.getTopToolbar().setIcon(cls);
                 this.doLayout();
             }
         });
@@ -189,9 +202,12 @@ sitools.user.component.entete.userProfile.diskSpace = Ext.extend(Ext.tree.TreePa
                     notify.show(document);
                     node.destroy();
                 },
-                failure : alertFailure
-            }, this);
-        });
+                failure : alertFailure,
+                callback : function () {
+                    this.setUserStorageSize();
+                }
+            });
+        }, this);
     }
 
 });
