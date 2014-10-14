@@ -98,7 +98,7 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
 
         this.pbar = new Ext.ProgressBar({
             region : 'north',
-            value : 0,
+            value : 0
         });
         
         this.treeContainer = new Ext.Panel({
@@ -171,6 +171,7 @@ sitools.user.modules.sitoolsFitsMain = Ext.extend(Ext.Panel, {
         new Ext.Window({
             title : 'Load Fits',
             id : 'formWindId',
+            modal : true,
             height : 120,
             width : 400,
             items : [{
