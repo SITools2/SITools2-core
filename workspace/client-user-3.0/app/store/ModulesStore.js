@@ -20,6 +20,7 @@
 Ext.define('sitools.user.store.ModulesStore', {
     extend : 'Ext.data.Store',
     model : 'sitools.user.model.ModuleModel',
+    storeId : 'ModuleStore',
     proxy : {
         type : 'ajax',
         reader : {

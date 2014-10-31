@@ -525,8 +525,6 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                             
                         },
                         commit: function( data ) {
-                            
-                            
                             data.datasetLink.link = this.dataLinkComponent;
                             
                             // reset the dataLinkComponent value
@@ -541,30 +539,30 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                             var datasetField = dialog.getContentElement('info','datasetFieldId');
                             var datasetText = dialog.getContentElement('info','datasetTextId');
                             
-                            var browser = new sitools.widget.sitoolsEditorPlugins.datasetBrowser({
-                                field : datasetField,
+                            var browser = Ext.create('sitools.public.widget.ckeditor.sitoolsPlugins.DatasetBrowser', {
+                                browseField : datasetField,
                                 textField :datasetText
                             });
-                            var win = new Ext.Window({
+                            
+                            var win = Ext.create('Ext.window.Window', {
                                 title : i18n.get('label.selectDatasetLink'),
                                 iconCls : 'x-edit-datasetLink',
-                                layout : 'fit',
                                 height : 300,
                                 width : 300,
-                                dialog : dialog,
-                                autoScroll : true,
+                                layout : 'fit',
                                 items : [browser],
                                 listeners : {
-	                                render : function (win){
-			                            //SitoolsDesk.getDesktop().getManager().bringToFront(this);
+	                               afterrender : function (win) {
+                                        Ext.defer(function () {
+				                            Ext.WindowManager.bringToFront(win);
+                                        }, 400);
 	                                }
                                 }
                             });
                             win.show();
-                            win.setZIndex(20000);
+                            win.setZIndex(22000);
                         }
-                        }
-                    ],
+                    }],
                     setup: function( data ) {
                         if ( !this.getDialog().getContentElement( 'info', 'linkType' ) )
                             this.getElement().show();
@@ -683,7 +681,7 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                             var moduleField = dialog.getContentElement('info','moduleFieldId');
                             var textField = dialog.getContentElement('info','moduleTextId');
                             
-                            var browser = new sitools.widget.sitoolsEditorPlugins.moduleBrowser({
+                            var browser = Ext.create('sitools.public.widget.ckeditor.sitoolsPlugins.ModuleBrowser', {
                                 browseField : moduleField,
                                 textField : textField
                             });
@@ -691,19 +689,19 @@ CKEDITOR.dialog.add( 'link', function( editor ) {
                                 title : i18n.get('label.selectModuleTitle'),
                                 iconCls : 'x-edit-datasetLink',
                                 layout : 'fit',
-                                height : 300,
-                                width : 300,
+                                height : 320,
+                                width : 400,
                                 dialog : dialog,
                                 autoScroll : true,
                                 items : [browser],
                                 listeners : {
-                                    render : function (win){
-                                        //SitoolsDesk.getDesktop().getManager().bringToFront(this);
+                                    afterrender : function (win){
+                                        Ext.WindowManager.bringToFront(win);
                                     }
                                 }
                             });
                             win.show();
-                            win.setZIndex(20000);
+                            win.setZIndex(22000);
                         }
                         }
                     ],

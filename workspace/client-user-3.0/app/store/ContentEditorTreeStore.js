@@ -15,23 +15,19 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+/*global Ext, sitools, window */
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
+Ext.define('sitools.user.store.ContentEditorTreeStore', {
+    extend : 'Ext.data.TreeStore',
+    model : 'sitools.user.model.ContentEditorTreeModel',
+    proxy : {
+        type : 'ajax',
+        reader : {
+            type : 'json'
+        }
+    },
 
-Ext.namespace('sitools.user.controller.modules.contentEditor');
-/**
- * dataStorageExplorer Module
- * 
- * @class sitools.user.modules.dataStorageExplorer
- * @extends Ext.Panel
- */
-Ext.define('sitools.user.controller.modules.contentEditor.ContentEditorController', {
-    extend : 'Ext.app.Controller',
-
-    views : ['sitools.user.view.modules.contentEditor.ContentEditorView'],
-
-    init : function () {
+    setCustomUrl : function (url) {
+        this.getProxy().url = url;
     }
-
-
 });

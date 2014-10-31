@@ -409,20 +409,26 @@ Ext.define('sitools.user.utils.DataviewUtils', {
      *            true if the url is displayable in a window, false otherwise
      */
     showDisplayableUrl : function (value, isDisplayable, customConfig) {
+        
+        
         if (isDisplayable) {
             
+            var windowConfig;
+            
+            // in case customConfig comes from HTML link (content Editor)
+            if (typeof customConfig == "string") {
+                var customConfig = Ext.decode(customConfig);
+            }
+            
             if (customConfig) {
-                var windowConfig = customConfig;
+                windowConfig = customConfig;
             }
             else {
-                var windowConfig = {
-                    title : value,
-                    id : value, 
-                    iconCls : "version"
+                windowConfig = {
+                    title : value
                 };
             }
             
-            var jsObj = Ext.ux.IFrame;
             var componentCfg = {
                 defaults : {
                     padding : 10
@@ -431,13 +437,16 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                 region : 'center',
                 src : value,
                 listeners : {
-                    documentloaded : function (iframe){
-                        this.ownerCt.syncSize();
+                    documentloaded : function (iframe) {
+                        iframe.up('window').syncSize();
                     }
                 }
             };
+	        var iframeComponent = Ext.create('sitools.user.component.common.IFrameComponent');
+	        iframeComponent.create(Desktop.getApplication());
+	        iframeComponent.init(componentCfg, windowConfig);
             
-        SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+//        SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
         } else {             
             sitools.user.utils.DataviewUtils.downloadFile(value);                
         }

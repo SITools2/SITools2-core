@@ -16,22 +16,25 @@
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
+/*global Ext, sitools, i18n,document */
+Ext.namespace("sitools.user.utils");
 
-Ext.namespace('sitools.user.controller.modules.contentEditor');
 /**
- * dataStorageExplorer Module
- * 
- * @class sitools.user.modules.dataStorageExplorer
- * @extends Ext.Panel
+ *  Singleton containing common methods for Module
  */
-Ext.define('sitools.user.controller.modules.contentEditor.ContentEditorController', {
-    extend : 'Ext.app.Controller',
-
-    views : ['sitools.user.view.modules.contentEditor.ContentEditorView'],
-
-    init : function () {
-    }
-
-
+Ext.define('sitools.user.utils.ModuleUtils', {
+        singleton : true,
+        
+        openModule : function (moduleId) {
+            var modulestore = Ext.data.StoreManager.lookup("ModulesStore");
+            var index = modulestore.find('id', moduleId);
+            var module = modulestore.getAt(index);
+            
+            if (Ext.isEmpty(module)) {
+                return Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.notEnoughtRightModule'));
+            }
+            
+            var controller = Desktop.getApplication().getController('core.SitoolsController');
+            controller.openModule(module);
+        }
 });

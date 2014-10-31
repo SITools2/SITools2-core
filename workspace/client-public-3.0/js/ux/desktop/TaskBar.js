@@ -31,13 +31,14 @@ Ext.define('Ext.ux.desktop.TaskBar', {
 
     alias: 'widget.taskbar',
 
-    cls: 'ux-taskbar moduleTaskbar-bg',
+    cls: 'ux-taskbar moduleInstances-bg',
 
     /**
      * The toggled button in the taskbar
      */
     activeButton: null,
     border : false,
+    bodyBorder : false,
     
     initComponent: function () {
         var me = this;
@@ -63,6 +64,7 @@ Ext.define('Ext.ux.desktop.TaskBar', {
             flex: 1,
             height : 25,
             cls: 'ux-desktop-windowbar',
+            border : false,
             items: [],
             layout: { overflowHandler: 'Scroller' }
         };

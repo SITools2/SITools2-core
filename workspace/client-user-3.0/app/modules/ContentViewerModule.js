@@ -21,25 +21,25 @@
 Ext.namespace('sitools.user.modules');
 /**
  * ProjectDescription Module
- * @class sitools.user.modules.projectDescription
- * @extends Ext.Panel
+ * @class sitools.user.view.modules.contentViewer.ContentViewer
+ * @extends sitools.user.core.Module
  */
-Ext.define('sitools.user.modules.ContentEditor', {
+Ext.define('sitools.user.modules.ContentViewerModule', {
     extend : 'sitools.user.core.Module',
     
-    controllers : ['sitools.user.controller.modules.contentEditor.ContentEditorController'],
+    controllers : ['sitools.user.controller.modules.contentViewer.ContentViewerController'],
     
     init : function () {
     	
-        var contentEditorView = Ext.create('sitools.user.view.modules.contentEditor.ContentEditorView', {
+        var contentViewerView = Ext.create('sitools.user.view.modules.contentViewer.ContentViewerView', {
             moduleModel : this.getModuleModel()
         });
-        this.show(contentEditorView);
+        this.show(contentViewerView);
     }
     
 });
 
-sitools.user.modules.ContentEditor.getParameters = function () {
+sitools.user.modules.ContentViewerModule.getParameters = function () {
 	return [{
 		jsObj : "Ext.form.ComboBox", 
 		config : {
@@ -49,12 +49,12 @@ sitools.user.modules.ContentEditor.getParameters = function () {
 			editable : false,
 			triggerAction : 'all',
 			width : 200,
-			valueField : 'attachUrl',
+			valueField : 'name',
 			displayField : 'name',
 			store : Ext.create('Ext.data.JsonStore', {
 				proxy : {
 					type : 'ajax',
-					url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories',
+                    url : loadUrl.get('APP_URL') + loadUrl.get('APP_DATASTORAGE_ADMIN_URL') + '/directories',
 					reader : {
 						type : 'json',
 						root : 'data'
@@ -81,31 +81,22 @@ sitools.user.modules.ContentEditor.getParameters = function () {
 					});
 				},
 				select : function (combo, recs, ind) {
-					var dsName = this.up('form').down('#nameDatastorageId');
-					dsName.setValue(recs[0].get('name'));
+					var urlAttachField = this.up('form').down('#urlDatastorageId');
+                    urlAttachField.setValue(recs[0].data.attachUrl);
 				}
 			},
-			name : "dynamicUrlDatastorage",
-			value : undefined
+			name : "nameDatastorageSrc",
+			value : ""
 		}
 	}, {
-		jsObj : "Ext.form.TextField",
-		config : {
-			itemId : "nameDatastorageId",
-			fieldLabel : i18n.get("label.nameDatastorage"),
-			allowBlank : true,
-			hidden : true,
-			width : 200,
-			listeners : {
-				render : function (c) {
-					Ext.QuickTips.register({
-						target : c,
-						text : "the label NAME of the datastorage to display (cf. Storage)"
-					});
-				}
-			},
-			name : "nameDatastorage",
-			value : undefined
-		}
-	} ];
+        jsObj : "Ext.form.TextField", 
+        config : {
+            fieldLabel : i18n.get("label.urlDatastorage"),
+            allowBlank : false,
+            id : "urlDatastorageId",
+            hidden : true,
+            name : "dynamicUrlDatastorage",
+            value : ""
+        }
+    }];
 };

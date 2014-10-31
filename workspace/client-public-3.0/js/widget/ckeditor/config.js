@@ -15,7 +15,7 @@ CKEDITOR.editorConfig = function( config ) {
 	
 	config.allowedContent = true;
 	
-	//config.baseFloatZIndex = 9001;
+	config.baseFloatZIndex = 21000;
 	
 	config.toolbar_SITools_Advanced = [
         { name: 'document',    items : [ 'Source','Preview'] },

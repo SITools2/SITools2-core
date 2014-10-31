@@ -59,11 +59,18 @@ CKEDITOR.dialog.add( 'documentDialog', function ( editor ) {
                     label: 'Document...',
                     title: i18n.get('label.chooseDocument'),
                     onClick: function() {
-                        var docBrowser = new sitools.widget.sitoolsEditorPlugins.documentBrowser({
+                        var docBrowser = Ext.create('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
                             datastorageUrl : CKEDITOR.datastorageUrl,
                             dialog : CKEDITOR.dialog.getCurrent(),
                             editor : editor,
-                            zindex : 20000
+                            listeners : {
+                               afterrender : function (win) {
+                                    Ext.defer(function () {
+                                        win.setZIndex(22000);
+                                        Ext.WindowManager.bringToFront(win);
+                                    }, 500);
+                                }
+                            }
                          });
                          
                          docBrowser.show(document, function (data, config) {
@@ -137,7 +144,7 @@ CKEDITOR.dialog.add( 'documentDialog', function ( editor ) {
                         
                         if (this.getValue() == false) {
                             var documentText = this.getDialog().getContentElement('mainFrameDocument','textDocUrlID');
-                            data.documentComponent.link = Ext.String.format("parent.sitools.user.component.dataviews.dataviewUtils.downloadFile(\"{0}\"); return false;",
+                            data.documentComponent.link = Ext.String.format("parent.sitools.user.utils.DataviewUtils.downloadFile(\"{0}\"); return false;",
                                     documentText.documentUrl);
                         }
                         

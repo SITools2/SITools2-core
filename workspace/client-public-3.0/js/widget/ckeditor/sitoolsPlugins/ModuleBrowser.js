@@ -17,23 +17,32 @@
  ******************************************************************************/
 /* global Ext, sitools, i18n, loadUrl */
 
-Ext.namespace('sitools.widget.sitoolsEditorPlugins');
+Ext.namespace('sitools.public.widget.ckeditor.sitoolsPlugins');
 /**
  * datasetLink widget
  * 
  * @class sitools.widget.sitoolsEditorPlugins.moduleBrowser
  * @extends Ext.util.Observable
  */
-Ext.define('sitools.widget.sitoolsEditorPlugins.moduleBrowser', {
-    extend : 'Ext.grid.GridPanel',
+Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.ModuleBrowser', {
+    extend : 'Ext.grid.Panel',
+    alias : 'widget.moduleBrowser',    
+    
     layout : 'fit',
+    forceFit: true,
     initComponent : function () {
         
-        this.urlModule = projectGlobal.sitoolsAttachementForUsers + loadUrl.get('APP_PROJECTS_MODULES_URL');
+        this.urlModule = Project.sitoolsAttachementForUsers + loadUrl.get('APP_PROJECTS_MODULES_URL');
         
-        this.store = new Ext.data.JsonStore({
-            root : 'data',
-            url : this.urlModule,
+        this.store = Ext.create('Ext.data.JsonStore', {
+            proxy : {
+                type : 'ajax',
+	            url : this.urlModule,
+                reader : {
+                    type : 'json',
+		            root : 'data'
+                }
+            },
             autoLoad : true,
             fields : [{
                 name : 'id'
@@ -52,29 +61,19 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.moduleBrowser', {
             }]
         });
         
-        this.viewConfig = {
-            forceFit: true,
-            autoFill : true
-        };
-        
-        this.sm = new Ext.grid.RowSelectionModel({
-            singleSelect:true,
+        this.selModel = Ext.create('Ext.selection.RowModel', {
+            mode : 'SINGLE',
             listeners : {
                 scope : this,
-                rowselect : function (grid, rowInd, rec) {
-                    var btn = this.getBottomToolbar().find('name', 'selectButton')[0];
-                    btn.setDisabled(false);
-                },
-                rowdeselect : function (grid, rowInd, rec) {
-                    var btn = this.getBottomToolbar().find('name', 'selectButton')[0];
-                    btn.setDisabled(true);
-                }
+	            select : function (rowModel, record, item) {
+	                var btn = this.down('toolbar button[name="selectButton"]');
+	                btn.setDisabled(false);
+	            }
             }
-                
         });
         
-        this.cm = new Ext.grid.ColumnModel({
-            columns : [{
+        this.columns = {
+            items : [{
                 width : 35,
                 sortable : true,
                 dataIndex : 'icon',
@@ -98,7 +97,7 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.moduleBrowser', {
                 sortable : true,
                 dataIndex : 'title'
             }]
-        });
+        };
         
         this.bbar = ['->', {
             xtype : 'button',
@@ -110,7 +109,7 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.moduleBrowser', {
             handler : this.onValidate
         }];
         
-        sitools.widget.sitoolsEditorPlugins.moduleBrowser.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     /**
@@ -126,19 +125,15 @@ Ext.define('sitools.widget.sitoolsEditorPlugins.moduleBrowser', {
     },
 
     onValidate : function() {
-        var module = this.getSelectionModel().getSelected();
-        if (Ext.isEmpty(module)) {
-            return Ext.Msg.alert(i18n.get('label.info'), i18n.get('label.selectModule'));
-        }
+        var module = this.getSelectionModel().getSelection()[0];
         
         this.browseField.moduleTitle = module.data.title;
-        this.browseField.moduleComponent = Ext.String.format("parent.sitools.user.component.module.moduleUtils.openModule(\"{0}\"); return false;", module.data.id);
+        this.browseField.moduleComponent = Ext.String.format("parent.sitools.user.utils.ModuleUtils.openModule(\"{0}\"); return false;", module.data.id);
         
         
         this.browseField.setValue('Module : ' + module.data.title);
         this.textField.setValue(module.data.title);
         
-        this.ownerCt.close();
+        this.up('window').close();
     }
 });
-Ext.reg('sitools.widget.sitoolsEditorPlugins.moduleBrowser', sitools.widget.sitoolsEditorPlugins.moduleBrowser);

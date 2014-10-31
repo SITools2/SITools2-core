@@ -18,17 +18,17 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
 
-Ext.namespace('sitools.user.controller.modules.contentEditor');
+Ext.namespace('sitools.user.controller.modules.contentViewer');
 /**
- * dataStorageExplorer Module
+ * Controller for ContentViewer Module
  * 
- * @class sitools.user.modules.dataStorageExplorer
- * @extends Ext.Panel
+ * @class sitools.user.controller.modules.contentViewer.ContentViewerController
+ * @extends Ext.app.Controller
  */
-Ext.define('sitools.user.controller.modules.contentEditor.ContentEditorController', {
+Ext.define('sitools.user.controller.modules.contentViewer.ContentViewerController', {
     extend : 'Ext.app.Controller',
 
-    views : ['sitools.user.view.modules.contentEditor.ContentEditorView'],
+    views : ['sitools.user.view.modules.contentViewer.ContentViewerView'],
 
     init : function () {
     }

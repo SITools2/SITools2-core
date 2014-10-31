@@ -15,23 +15,37 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
+/*global Ext, sitools, window*/
 
-/*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
+Ext.define('sitools.user.model.ContentEditorTreeModel', {
+    extend : 'Ext.data.Model',
 
-Ext.namespace('sitools.user.controller.modules.contentEditor');
-/**
- * dataStorageExplorer Module
- * 
- * @class sitools.user.modules.dataStorageExplorer
- * @extends Ext.Panel
- */
-Ext.define('sitools.user.controller.modules.contentEditor.ContentEditorController', {
-    extend : 'Ext.app.Controller',
-
-    views : ['sitools.user.view.modules.contentEditor.ContentEditorView'],
-
-    init : function () {
-    }
-
-
+	fields : [{
+		name : 'text',
+        type : 'string'
+    },{
+        name : 'leaf',
+        type :'boolean'
+    }, {
+        name : 'size'
+    }, {
+        name : 'url',
+        type : 'string'
+    }, {
+        name : 'link',
+        type : 'string'
+    }, {
+        name : 'lastmod',
+        type : 'date',
+        dateFormat : 'timestamp'
+    }, {
+        name : 'cls',
+        type : 'string'
+    }, {
+        name : 'uuid'
+    }, {
+        name : 'sync'
+    }, {
+        name : 'icon'
+    }]
 });
