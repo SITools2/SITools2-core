@@ -26,9 +26,11 @@ Ext.namespace('sitools.user.view.modules.contentEditor');
  * @cfg allowDataPublish display or not publish button
  * @extends Ext.Toolbar
  */
-Ext.define('sitools.user.view.modules.contentEditor.ContentEditorTreeToolbar', {
+Ext.define('sitools.user.view.modules.contentEditor.ContentEditorTreeTopBar', {
 	extend : 'Ext.toolbar.Toolbar',
-	
+    alias : 'widget.contentEditorTreeTopBar',
+	border : false,
+    
     initComponent : function () {
         var storeLanguage = Ext.create('Ext.data.JsonStore', {
             fields : [ 'text', 'locale']
@@ -66,15 +68,14 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorTreeToolbar', {
         
         this.comboLanguage.setValue(locale.getLocale());
         
-        this.labelUpToDate = Ext.create('Ext.form.Label');
         
-        this.items = [ this.comboLanguage, '->', 
-                       this.labelUpToDate, "&nbsp;",
+        this.items = [
+            this.comboLanguage, '->',
 	        {
 	            xtype : 'button',
 	            iconAlign : 'right',
 	            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
-	            tooltip : i18n.get('label.refresh'),
+	            text : i18n.get('label.refresh'),
 	            scope : this.cms,
 	            handler : this.cms.refreshTree
 	        }, {
@@ -89,20 +90,6 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorTreeToolbar', {
 	        }];
     
         this.callParent(arguments);
-    },
-    
-
-    setTreeUpToDate : function (upToDate, dateStr) {
-        var date = Ext.Date.parse(dateStr, SITOOLS_DEFAULT_IHM_DATE_FORMAT);
-        if (!upToDate) {
-            this.labelUpToDate.update(String.format("<span class='sitools-userProfile-warning-text'>{0}{1}</span>", i18n.get("label.lastUpdate"), date));
-            this.labelUpToDate.addClass("x-status-warning");
-        } else {
-            this.labelUpToDate.update(String.format("<span>{0}{1}</span>", i18n.get("label.lastUpdate"), date));
-            this.labelUpToDate.removeClass("x-status-warning");
-        }
-        
     }
-    
     
 });
