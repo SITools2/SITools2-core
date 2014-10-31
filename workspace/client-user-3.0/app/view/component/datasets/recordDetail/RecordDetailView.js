@@ -42,21 +42,21 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 	
     initComponent : function () {
         var rec;
-        
+
         switch (this.fromWhere) {
-        
-			case "openSearch" : 
+
+			case "openSearch" :
 		        this.recSelected = this.grid.getSelectionModel().getSelected();
-		        this.url = this.encodeUrlPrimaryKey(this.recSelected.data.guid);	        
+		        this.url = this.encodeUrlPrimaryKey(this.recSelected.data.guid);
 				break;
-				
-			case "dataView" : 
+
+			case "dataView" :
 				break;
-				
-		    case "plot" : 
+
+		    case "plot" :
 		        break;
-		        
-			default : 
+
+			default :
 				this.recSelected = this.selections[0];
 		        if (Ext.isEmpty(this.recSelected)) {
 					Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noSelection'));
@@ -68,26 +68,26 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		                this.primaryKeyName = field.name;
 		            }
 		        }, this);
-		        
+
 				this.primaryKeyValue = this.recSelected.get(this.primaryKeyName);
-		        
+
 		        this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
-		        
+
 		        this.url = this.baseUrl + this.primaryKeyValue;
 				break;
         }
-        
+
         this.linkStore = Ext.create('Ext.data.Store', {
 	        fields : [ 'name', 'value', 'image', 'behavior', 'columnRenderer', 'html']
 	    });
-        
+
         this.dataStore = Ext.create('Ext.data.Store', {
         	proxy : {
         		type : 'memory'
         	},
 	        fields : [ 'name', 'value', 'image', 'behavior', 'columnRenderer', 'html']
 	    });
-        
+
         this.gridDataview = Ext.create('Ext.grid.Panel', {
         	store : this.dataStore,
         	padding : 20,
@@ -115,7 +115,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 				trackOver : false
 			}
         });
-        
+
         this.metaDataPanel = Ext.create('Ext.panel.Panel', {
         	title : i18n.get('label.metadataInfo'),
         	layout : 'fit',
@@ -125,19 +125,19 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
         		text : ''
         	}, this.gridDataview]
         });
-        
+
         var linkDataview = Ext.create('Ext.view.View', {
-	        store : this.linkStore, 
-	        tpl : new Ext.XTemplate('<ul>', '<tpl for=".">', 
+	        store : this.linkStore,
+	        tpl : new Ext.XTemplate('<ul>', '<tpl for=".">',
                 '<li id="{name}" class="img-link"',
                 '<tpl if="this.hasToolTip(toolTip)">',
-                    'ext:qtip="{toolTip}">', 
+                    'ext:qtip="{toolTip}">',
                 '</tpl>',
                 '<tpl if="this.hasToolTip(toolTip) == false">',
-                    'ext:qtip="{name}">', 
+                    'ext:qtip="{name}">',
                 '</tpl>',
                 '{html}',
-                '</li>', '</tpl>', '</ul>', 
+                '</li>', '</tpl>', '</ul>',
                 {
                 compiled : true,
                 disableFormats : true,
@@ -154,37 +154,16 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 	        autoScroll : true,
 	        listeners : {
 	            scope : this,
-	            click : this.handleClickOnLink	
+	            click : this.handleClickOnLink
 	        }
 	    });
-        
-        
-        // set the text form
-        this.formPanel = Ext.create('Ext.form.Panel', {
-            labelAlign : "top",
-            anchor : "100%",
-            defaults : {
-                labelStyle: 'font-weight:bold;'
-            },
-            padding : 10
-            
-        });
-        
-        // set the text form
-        this.linkPanel = Ext.create('Ext.panel.Panel', {
-            title : i18n.get("label.complementaryInformation"),
-            items : [linkDataview],
-            anchor : "100%"
-        });
-        
+
         // set the search form
         this.formPanelImg = Ext.create('Ext.form.Panel', {
-            frame : true,
             autoScroll : true,
-            region : "east", 
-            hideLabels : true,
-            split : (this.fromWhere !== 'dataView'), 
-            collapsible : (this.fromWhere !== 'dataView'), 
+            region : "north",
+            split : (this.fromWhere !== 'dataView'),
+            collapsible : (this.fromWhere !== 'dataView'),
 //            collapsed : (this.fromWhere !== 'dataView'),
             collapsed : false,
             flex : 1,
@@ -192,18 +171,33 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
             listeners : {
                 scope : this,
                 expand : function (panel) {
-                    
-                } 
+
+                }
             }
         });
-        
+
+        // set the text form
+        this.linkPanel = Ext.create('Ext.panel.Panel', {
+            title : i18n.get("label.complementaryInformation"),
+            items : [linkDataview],
+            region : 'south'
+        });
+
+        // set the text form
+        this.extraMetaPanel = Ext.create('Ext.form.Panel', {
+            title : i18n.get('label.extraMetaPanel'),
+            layout : 'border',
+            padding : 10,
+            items : [ this.formPanelImg, this.linkPanel ]
+        });
+
         var centerPanelItems;
         if (this.fromWhere === 'dataView') {
-//            centerPanelItems = [this.formPanel, this.formPanelImg, this.linkPanel];
+//            centerPanelItems = [this.extraMetaPanel, this.formPanelImg, this.linkPanel];
             centerPanelItems = [this.gridDataview];
         }
         else {
-//            centerPanelItems = [this.formPanel, this.linkPanel];
+//            centerPanelItems = [this.extraMetaPanel, this.linkPanel];
             centerPanelItems = [this.gridDataview];
         }
         
@@ -212,7 +206,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
             autoScroll : true,
             region : "center",
             border : false,
-            items : [ this.metaDataPanel ]
+            items : [ this.metaDataPanel, this.formPanelImg ]
         });
 
         this.getCmDefAndbuildForm();
@@ -514,7 +508,9 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 						                    } else if (!Ext.isEmpty(columnRenderer.columnAlias)) {
 						                        imageUrl = this.findRecordValue(record, columnRenderer.columnAlias);            
 						                    }
+                                            
 	                                        item = Ext.create('Ext.Component', {
+                                                width : 100,
 	                                            html : Ext.String.format(html, value, imageUrl),
                                                 tooltip : tooltip,
 	                                            cls : "x-form-item"
@@ -537,17 +533,16 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		                    }
                         }
                         
-//	                    this.formPanel.removeAll();
+//	                    this.extraMetaPanel.removeAll();
 //	                    this.formPanelImg.removeAll();
 //	                    
-//                        this.formPanel.add(itemsForm);
-//	                    this.formPanel.doLayout();
+//                        this.extraMetaPanel.add(itemsForm);
+//	                    this.extraMetaPanel.doLayout();
                         
                         if (this.linkStore.getCount() === 0) {
                             this.linkPanel.setVisible(false);
                         } else {
                             this.linkPanel.setVisible(true);
-                            this.linkPanel.doLayout();
                         }
                         
                         if (itemsFormImg.length === 0) {
@@ -555,7 +550,6 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
                         } else {
                             this.formPanelImg.add(itemsFormImg);
                             this.formPanelImg.setVisible(true);
-                            this.linkPanel.doLayout();
                         }
                         
 	                    if (this._loadMaskAnchor && this._loadMaskAnchor.isMasked()) {
@@ -646,7 +640,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
     
     registerClickEvent : function (attributes) {
         
-        var nodeFormPanel = this.formPanel.getEl().dom;
+        var nodeFormPanel = this.extraMetaPanel.getEl().dom;
         var featureTypeNodes = Ext.DomQuery.jsSelect(".featureType", nodeFormPanel);
         
         var formPanelImgPanel = this.formPanelImg.getEl().dom;

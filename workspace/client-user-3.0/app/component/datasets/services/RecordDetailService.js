@@ -88,7 +88,8 @@ Ext.define('sitools.user.component.datasets.services.RecordDetailService', {
 	//    	            }
 	//    	        } ]
 	//    	    };
-		
+
+
 		var userPersonalComponent = Ext.create('sitools.user.component.datasets.recordDetail.RecordDetailComponent');
 		userPersonalComponent.create(this.getApplication());
 		userPersonalComponent.init(componentCfg);

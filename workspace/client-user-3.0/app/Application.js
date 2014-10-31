@@ -23,7 +23,8 @@ Ext.define('sitools.user.Application', {
                  'sitools.user.utils.FormUtils',
                  'sitools.user.utils.ServerServiceUtils',
                  'sitools.user.utils.DatasetUtils',
-                 'sitools.user.utils.DataviewUtils'
+                 'sitools.user.utils.DataviewUtils',
+                 'sitools.user.utils.ModuleUtils'
                  ],
 
     extend : 'Ext.app.Application',

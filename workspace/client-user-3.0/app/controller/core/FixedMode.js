@@ -86,7 +86,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
     minimize : function (desktopView) {
     	desktopView.windows.each(function (win) {
 			
-			win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+			win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.down('taskbar').getHeight() - desktopView.down('moduleToolbar').getHeight());
 			win.setWidth(Desktop.getDesktopEl().getWidth());
 			
 		}, this);
@@ -95,7 +95,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
     maximize : function (desktopView) {
     	desktopView.windows.each(function (win) {
 		
-			win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.taskbar.getHeight());
+			win.setHeight(Desktop.getDesktopEl().getHeight() - desktopView.down('taskbar').getHeight() - desktopView.down('moduleToolbar').getHeight());
 			win.setWidth(Desktop.getDesktopEl().getWidth());
 		
     	}, this);
@@ -209,29 +209,29 @@ Ext.define('sitools.user.controller.core.FixedMode', {
 	createButtonsLeftTaskbar : function () {
 		var buttons = [];
 		
-		var homeButton = Ext.create('Ext.Button', {
-        	itemId : 'sitoolsButton',
-            scale : "medium",
-//            cls : 'sitools_button_main',
-            cls : 'navBarButtons-icon',
-            iconCls : 'main_button_img',
-            listeners : {
-				afterrender : function (btn) {
-					var label = i18n.get('label.mainMenu');
-					var tooltipCfg = {
-							html : label,
-							target : btn.getEl(),
-							anchor : 'bottom',
-							anchorOffset : 10,
-							showDelay : 20,
-							hideDelay : 50,
-							dismissDelay : 0
-					};
-					Ext.create('Ext.tip.ToolTip', tooltipCfg);
-				}
-			}
-        });
-		buttons.push(homeButton);
+//		var homeButton = Ext.create('Ext.Button', {
+//        	itemId : 'sitoolsButton',
+//            scale : "medium",
+////            cls : 'sitools_button_main',
+//            cls : 'navBarButtons-icon',
+//            iconCls : 'main_button_img',
+//            listeners : {
+//				afterrender : function (btn) {
+//					var label = i18n.get('label.mainMenu');
+//					var tooltipCfg = {
+//							html : label,
+//							target : btn.getEl(),
+//							anchor : 'bottom',
+//							anchorOffset : 10,
+//							showDelay : 20,
+//							hideDelay : 50,
+//							dismissDelay : 0
+//					};
+//					Ext.create('Ext.tip.ToolTip', tooltipCfg);
+//				}
+//			}
+//        });
+//		buttons.push(homeButton);
         
         var cleanDesktopButton = Ext.create('Ext.menu.Item', {
             action : "minimize",
@@ -247,7 +247,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
         var showDesktopButton = Ext.create('Ext.menu.Item', {
             action : "minimize",
             text : i18n.get("label.showDesktopButton"),
-            iconCls : 'desktop_button_img',
+            iconCls : 'desktop_button_small_img',
             cls : 'navBarButtons-icon',
             cls : 'menuItemCls',
             handler : function (btn) {
@@ -258,6 +258,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
         var moreButton = Ext.create('Ext.Button', {
             iconCls : 'more_button_img',
             cls : 'navBarButtons-icon',
+            scale : "medium", 
             arrowCls : null,
             menu : {
             	xtype : 'menu',

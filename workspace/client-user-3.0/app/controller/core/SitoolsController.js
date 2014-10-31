@@ -35,6 +35,26 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 				}
 			},
 			
+            'moduleToolbar > toolbar >button' : {
+                click : function (btn, event) {
+                    var moduleRecord = btn.module;
+                    
+                    if (moduleRecord) {
+                        this.openModule(moduleRecord, event);
+                    }
+                }
+            },
+            
+            'moduleToolbar > toolbar button menu menuitem' : {
+                click : function (btn, event) {
+                    var moduleRecord = btn.module;
+                    
+                    if (moduleRecord) {
+                        this.openModule(moduleRecord, event);
+                    }
+                }
+            },
+            
 			'moduleDataview' : {
 				boxready : function (window) {
 					window.center();

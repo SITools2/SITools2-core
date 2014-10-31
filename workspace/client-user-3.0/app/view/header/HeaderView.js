@@ -27,22 +27,22 @@ Ext.define('sitools.user.view.header.HeaderView', {
     extend : 'Ext.Panel',
     alias : 'widget.headerView',
     
-    requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.ModuleTaskBarView' ],
+    requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.LeftTaskBarView' ],
     height : 0,
 
     initComponent : function () {
 
     	this.navBarHeight = 44;
     	
-        this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
-            modules : this.modules,
-            observer : this
-        });
-
-        this.navToolbarButtons = Ext.create('sitools.user.view.header.ButtonTaskBarView', {
-            observer : this,
-            width : '162px' // width without save button
-        });
+//        this.navBarModule = Ext.create('sitools.user.view.header.LeftTaskBarView', {
+//            modules : this.modules,
+//            observer : this
+//        });
+//
+//        this.navToolbarButtons = Ext.create('sitools.user.view.header.ButtonTaskBarView', {
+//            observer : this,
+//            width : '162px' // width without save button
+//        });
 
 //        this.NavBarsPanel = Ext.create('Ext.Toolbar', {
 //        	name : 'navbarPanels',

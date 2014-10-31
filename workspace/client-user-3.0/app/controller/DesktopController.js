@@ -26,7 +26,7 @@ Ext.define('sitools.user.controller.DesktopController', {
 
     init : function () {
     	
-        this.getApplication().on('projectInitialized', this.realInit, this);
+        this.getApplication().on('projectLoaded', this.realInit, this);
     	this.callParent(arguments);
     },
     
@@ -180,6 +180,13 @@ Ext.define('sitools.user.controller.DesktopController', {
         return cfg;
     },
     
+    onSettings : function () {
+        var dlg = Ext.create('Ext.ux.modules.Settings', {
+            desktop : this.desktopView
+        });
+        dlg.show();
+    },
+    
     /**
 	 * Set the height of the different elements of the desktop, according to the screen height.
 	 * @private 
@@ -296,6 +303,7 @@ Ext.define('sitools.user.controller.DesktopController', {
 			Desktop.getDesktopEl().setHeight(Ext.getBody().getHeight() - Desktop.getEnteteEl().getHeight());
 			Desktop.getDesktopEl().setWidth(Ext.getBody().getWidth());
 		}
+        
 		this.desktopView.fitDesktop();
 		
 		this.desktopView.windows.each(function (win) {

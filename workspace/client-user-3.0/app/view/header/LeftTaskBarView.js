@@ -23,18 +23,17 @@
  * @class sitools.user.component.entete.NavBar
  * @extends Ext.Toolbar
  */
-Ext.define('sitools.user.view.header.ModuleTaskBarView', {
+Ext.define('sitools.user.view.header.LeftTaskBarView', {
     extend : 'Ext.Toolbar',
     alias: 'widget.moduleTaskBar',
     
     initComponent : function () {
     	
     	if (Project.getNavigationMode() == 'fixed') {
-    		this.width = 190;
+    		this.width = 165;
     	}
     	
         var items =  Desktop.getNavMode().createButtonsLeftTaskbar();
-//        var categories = this.categorizeModules();
 
         this.callParent(Ext.apply(this, {
             enableOverflow : true,
@@ -42,44 +41,5 @@ Ext.define('sitools.user.view.header.ModuleTaskBarView', {
             cls : 'sitoolsTaskbar-bg',
             border : false
         }));
-    },
-    /**
-     * From the modules attribute, return an array of categories. Each items of
-     * the array could be either - { modules : [module] } - { category :
-     * categoryName, modules : [modules] }
-     * 
-     * @returns {Array}
-     */
-    categorizeModules : function () {
-        function getCategoryIndex (category, categoryList) {
-            var idx = -1;
-            for ( var i = 0; i < categoryList.length; i++) {
-                if (categoryList[i].category === category) {
-                    return i;
-                }
-            }
-            return idx;
-        }
-        var categoryModules = [];
-        this.modules.each(function (module) {
-            var categoryModule = module.get('categoryModule'); 
-            if (Ext.isEmpty(categoryModule)) {
-                categoryModules.push({
-                    modules : [ module ]
-                });
-            } else {
-                var idx = getCategoryIndex(categoryModule, categoryModules);
-                if (idx >= 0) {
-                    categoryModules[idx].modules.push(module);
-                } else {
-                    categoryModules.push({
-                        category : categoryModule,
-                        modules : [ module ]
-                    });
-                }
-            }
-
-        });
-        return categoryModules;
     }
 });

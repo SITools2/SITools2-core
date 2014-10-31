@@ -15,7 +15,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
 
     alias: 'widget.desktop',
     
-    requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.ModuleTaskBarView' ],
+    requires : [ 'sitools.user.view.header.ButtonTaskBarView', 'sitools.user.view.header.LeftTaskBarView' ],
 
     uses: [
         'Ext.util.MixedCollection',
@@ -86,33 +86,38 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         var me = this;
         me.windowMenu = Ext.create("Ext.menu.Menu", me.createWindowMenu());
 
-        this.taskbar = Ext.create("Ext.ux.desktop.TaskBar", me.taskbarConfig);
+        var navBarInstances = Ext.create("Ext.ux.desktop.TaskBar", me.taskbarConfig);
         
         this.navToolbarButtons = Ext.create('sitools.user.view.header.ButtonTaskBarView', {
             desktopController : this.desktopController,
             width : 90 // width without save button
         });
         
-        this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
+//        this.navBarModule = Ext.create('sitools.user.view.header.ModuleTaskBarView', {
+        this.leftTaskbar = Ext.create('sitools.user.view.header.LeftTaskBarView', {
         	desktopController : this.desktopController,
         	width : 90,
             observer : this
         });
         
+        this.navBarModules = Ext.create('sitools.user.view.header.ModuleToolbar');
+        
         this.NavBarsPanel = Ext.create('Ext.panel.Panel', {
         	name : 'navbarPanels',
         	cls : 'allTaskbars-bg',
-            padding : 0,
             border : false,
             layout : {
                 type : "hbox",
                 align : "stretch"
             },
-            items : [ this.navBarModule, this.taskbar, this.navToolbarButtons ]
+//            items : [ this.navBarModule, this.taskbar, this.navToolbarButtons ]
+            items : [ this.leftTaskbar, this.navBarModules, this.navToolbarButtons ]
         });
         
-        me.taskbar = this.taskbar;
+        me.taskbar = navBarInstances;
         me.tbar = this.NavBarsPanel;
+        
+        me.bbar = this.taskbar;
         
         me.taskbar.windowMenu = me.windowMenu;
 
@@ -133,7 +138,6 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         if (wallpaper) {
             me.setWallpaper(wallpaper, me.wallpaperStretch);
         }
-        
     },
 
     afterRender: function () {
@@ -143,7 +147,6 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         if (Project.getNavigationMode() == 'desktop') {
         	me.el.on('contextmenu', me.onDesktopMenu, me);
         }
-        
         this.fitDesktop();
     },
     
@@ -333,7 +336,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
                 listeners : {
                 	resizeDesktop : function (me, newW, newH) {
                 		var deskWidth = Desktop.getDesktopEl().getWidth();
-                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').taskbar.getHeight();
+                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').down('taskbar').getHeight() - me.up('desktop').down('moduleToolbar').getHeight();
                 		
                 		if (me.getWidth() > deskWidth) {
                 			me.setWidth(deskWidth);
@@ -408,7 +411,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
                 listeners : {
                 	resizeDesktop : function (me, newW, newH) {
                 		var deskWidth = Desktop.getDesktopEl().getWidth();
-                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').taskbar.getHeight();
+                		var deskHeight = Desktop.getDesktopEl().getHeight() - me.up('desktop').down('taskbar').getHeight() - me.up('desktop').down('moduleToolbar').getHeight();
                 		
                 		me.setWidth(deskWidth);
                 		me.setHeight(deskHeight);
