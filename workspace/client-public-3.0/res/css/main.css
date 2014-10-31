@@ -242,11 +242,11 @@ body,a,p,div,td,input,select,label,th,button,dt,em {
 	padding-left: 5px;
 }
 
-.red-row {
+.red-row div{
 	color: red;
 }
 
-.orange-row {
+.orange-row div{
 	color: orange;
 }
 

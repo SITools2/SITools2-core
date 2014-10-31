@@ -66,7 +66,7 @@ Ext.define('sitools.user.core.Module', {
         // initialize all controllers
         if (!Ext.isEmpty(this.getControllers())) {
             Ext.each(this.getControllers(), function (controller) {
-                this.getApplication().getController(controller).onLaunch();
+                this.getApplication().getController(controller);
             }, this);
         }        
     },

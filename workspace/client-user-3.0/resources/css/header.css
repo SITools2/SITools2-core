@@ -1,4 +1,4 @@
-/***************************************
+*/***************************************
 * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
 * 
 * This file is part of SITools2.
@@ -78,8 +78,12 @@
 	background-image: url("/sitools/common/res/images/icons/general/delete16x16.png");
 }
 
-.desktop_button_img {
+.desktop_button_small_img {
 	background-image: url("/sitools/common/res/images/icons/general/desktop.png");
+}
+
+.desktop_button_img {
+	background-image: url("/sitools/common/res/images/icons/general/desktop24.png");
 }
 
 .more_button_img {
@@ -100,20 +104,4 @@
 
 .help-icon {
 	background-image: url(/sitools/common/res/images/icons/general/help.png);
-}
-
-#btn-more {
-	padding: 0px 0px 0px 0px;
-	margin: 0px 0px 0px 0px !important;
-	position: absolute !important;
-}
-
-.more_button_desktopMode {
-	top: 16px !important;
-	left: 58px !important;
-}
-
-.more_button_fixedMode {
-	top: 16px !important;
-	left: 131px !important;
 }
