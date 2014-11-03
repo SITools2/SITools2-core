@@ -229,18 +229,18 @@ Ext.define('sitools.user.controller.DesktopController', {
 			Desktop.getDesktopEl().setWidth(Ext.getBody().getWidth());
 		}
 		
-//		var desktopMaxHeight = Ext.getBody().getHeight() - this.desktopView.taskbar.getHeight();
-//		var desktopMaxWidth = Ext.getBody().getWidth();
+		var desktopMaxHeight = Ext.getBody().getHeight() - this.desktopView.taskbar.getHeight();
+		var desktopMaxWidth = Ext.getBody().getWidth();
 //		
-//		var desktopTaskBarMaxHeight = Ext.getBody().getHeight();
+		var desktopTaskBarMaxHeight = Ext.getBody().getHeight();
 			
 		//Agrandir la zone desktopAndTaskbar
 		Desktop.getDesktopAndTaskBarEl().setHeight(Ext.getBody().getHeight() - 1);
-//		Desktop.getDesktopAndTaskBarEl().setWidth(Ext.getBody().getWidth());
+		Desktop.getDesktopAndTaskBarEl().setWidth(Ext.getBody().getWidth());
 //		
-//		Desktop.getDesktopEl().setHeight(desktopMaxHeight - this.desktopView.taskbar.getHeight());
-//		Desktop.getDesktopEl().setWidth(desktopMaxWidth);
-//		
+		Desktop.getDesktopEl().setHeight(desktopMaxHeight - this.desktopView.taskbar.getHeight());
+		Desktop.getDesktopEl().setWidth(desktopMaxWidth);
+
 //		Desktop.getBottomEl().setHeight(0);
 		
 //		Desktop.getMainDesktop().setHeight(desktopMaxHeight);
@@ -286,7 +286,7 @@ Ext.define('sitools.user.controller.DesktopController', {
 	},
 	
 	/**
-	 * Called on a desktop Resize. 
+	 * Called on a desktop Resize.
 	 * It will redefine the height and size of desktop Element. 
 	 * Fires events for each component so that they can resize according to their container
 	 * Fires event resizeDesktop on activePanel
