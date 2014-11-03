@@ -8,7 +8,7 @@
       <role>Administrator</role>
       <ALL>true</ALL>
     </authorize>
-	 <authorize>
+    <authorize>
       <role>public</role>
       <ALL>false</ALL>
       <GET>true</GET>
