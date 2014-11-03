@@ -1,12 +1,12 @@
 <formComponent>
-  <id>89c7571c-b067-4d32-afe4-22e14b0c6d47</id>
-  <type>LISTBOXMULTIPLE</type>
+  <id>LISTBOX</id>
+  <type>LISTBOX</type>
   <componentDefaultHeight>100</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
   <jsAdminObject>sitools.admin.forms.oneParam.withValues</jsAdminObject>
-  <jsUserObject>sitools.common.forms.components.ListBoxMultiple</jsUserObject>
+  <jsUserObject>sitools.common.forms.components.ListBox</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/WithValues.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/common/js/forms/components/ListBoxMultiple.js</fileUrlUser>
-  <imageUrl>/sitools/common/res/images/formComponents/multipleListBox.gif</imageUrl>
+  <fileUrlUser>/sitools/common/js/forms/components/Listbox.js</fileUrlUser>
+  <imageUrl>/sitools/common/res/images/formComponents/singleListBox.gif</imageUrl>
   <priority>1</priority>
 </formComponent>
