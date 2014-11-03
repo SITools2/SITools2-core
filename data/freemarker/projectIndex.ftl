@@ -54,8 +54,9 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/combo.css">
     <link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/formComponents.css">
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/res/css/main.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/fileUploadField/fileUploadField.css">
-	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/imageChooser/imageChooser.css">-->
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/fileUploadField/fileUploadField.css">-->
+	
+	<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widget/imageChooser/imageChooser.css"></link>
 	
 	<!-- HTML EDITOR ADVANCED CSS -->
 	<!--<link rel="stylesheet" type="text/css" href="${appUrl}/client-public/js/widgets/htmlEditorAdvanced/resources/css/htmleditorplugins.css">

@@ -111,14 +111,14 @@ Ext.define('sitools.public.userProfile.Login', {
                 items : [{
                     text : i18n.get('label.login'),
                     iconCls : 'loginIcon',
-                    scale : 'large',
+                    scale : 'medium',
                     handler : this.getAuth,
                     scope : this
                 }, {
                     text : i18n.get('label.register'),
                     hidden : !this.register,
                     scope : this,
-                    scale : 'large',
+                    scale : 'medium',
                     handler : function () {
                         this.close();
                         var register = Ext.create('sitools.public.userProfile.Register', {

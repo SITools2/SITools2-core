@@ -31,7 +31,7 @@ Ext.define('sitools.user.view.modules.contentEditor.ChooseFileInExplorerView', {
     extend : 'Ext.window.Window',
 
     height : 250,
-    width : 445,
+    width : 460,
     layout : {
         type : 'vbox',
         align : 'stretch'

@@ -55,7 +55,17 @@ Ext.define('sitools.user.view.modules.contentViewer.ContentViewerView', {
 //            this.jsonUrl = this.CONST_URLDATASTORAGE + "/json/postel_fr.json";
 //        }
         
-        this.treeStore = Ext.create('sitools.user.store.ContentEditorTreeStore');
+        this.treeStore = Ext.create('sitools.user.store.ContentEditorTreeStore', {
+            listeners : {
+                beforeappend : function (nodeParent, nodeToAppend) {
+                    if (!nodeToAppend.isLeaf())
+                        return;
+                    
+                    if (!Ext.isEmpty(nodeToAppend.get('sync')) && !nodeToAppend.get('sync'))
+                        return false;
+                }
+            }
+        });
         this.treeStore.setCustomUrl(this.jsonUrl);          
 
         this.tree = Ext.create('Ext.tree.Panel', {
@@ -229,7 +239,7 @@ Ext.define('sitools.user.view.modules.contentViewer.ContentViewerView', {
 	                      var msg = Ext.Msg.alert(i18n.get("warning.serverError"), i18n.get("label.forbiddenResource"));
 	                      Ext.defer(function () {
 	                          Ext.WindowManager.bringToFront(msg);
-	                            this.getEl().mask();
+	                          this.getEl().mask();
 	                      }, 300, this);
 	                  }
                  }

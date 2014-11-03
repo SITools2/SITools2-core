@@ -28,6 +28,8 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorNodeManagerTool
 	extend : 'Ext.toolbar.Toolbar',
     border : false,
 
+    enableOverflow : true,
+    
     initComponent : function () {
         
         this.items = [{

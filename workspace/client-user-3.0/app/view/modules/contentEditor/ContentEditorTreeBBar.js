@@ -39,6 +39,11 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorTreeBBar', {
 
     setTreeUpToDate : function (upToDate, dateStr) {
         var date = Ext.Date.format(new Date(dateStr), SITOOLS_DEFAULT_IHM_DATE_FORMAT);
+        
+        if (Ext.isEmpty(this.labelUpToDate)) {
+            return;
+        }
+        
         if (!upToDate) {
             this.labelUpToDate.update(Ext.String.format("<span class='sitools-userProfile-warning-text'>{0} : {1}</span>", i18n.get("label.lastUpdate"), date));
             this.labelUpToDate.addCls("x-status-warning");

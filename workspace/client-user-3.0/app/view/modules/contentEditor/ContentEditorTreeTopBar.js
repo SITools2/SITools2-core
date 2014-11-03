@@ -29,8 +29,10 @@ Ext.namespace('sitools.user.view.modules.contentEditor');
 Ext.define('sitools.user.view.modules.contentEditor.ContentEditorTreeTopBar', {
 	extend : 'Ext.toolbar.Toolbar',
     alias : 'widget.contentEditorTreeTopBar',
-	border : false,
-    
+	
+    border : false,
+    enableOverflow : true,
+	
     initComponent : function () {
         var storeLanguage = Ext.create('Ext.data.JsonStore', {
             fields : [ 'text', 'locale']

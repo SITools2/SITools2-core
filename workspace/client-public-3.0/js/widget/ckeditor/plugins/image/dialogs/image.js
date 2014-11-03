@@ -506,40 +506,47 @@
                                     validate: CKEDITOR.dialog.validate.notEmpty( editor.lang.image.urlMissing )
                                 },
                                 {
-                                type: 'button',
-                                id: 'uploadImage',
-                                label: 'Image...',
-                                title: i18n.get('label.chooseImage'),
-                                onClick: function() {
-                                    var chooser = new ImageChooser({
-                                        url : CKEDITOR.datastorageUrl + '/images/',
-                                        urlToUpload : CKEDITOR.datastorageUrl + '/images/',
-                                        isDatastorage : true,
-                                        width : 515,
-                                        height : 450,
-                                        fieldUrl : this,
-                                        zindex : 20000
-                                    });
-                                    chooser.show(document, function (data, config) {
-                                        var dialog = CKEDITOR.dialog.getCurrent();
-                                        dialog.setValueOf('info','txtUrl', data.url);
-                                    });
-                                }
+	                                type: 'button',
+	                                id: 'uploadImage',
+	                                label: 'Image...',
+	                                title: i18n.get('label.chooseImage'),
+	                                onClick: function() {
+	                                    var chooser = Ext.create('sitools.public.widget.imageChooser.ImageChooser', {
+	                                        url : CKEDITOR.datastorageUrl + '/images/',
+	                                        urlToUpload : CKEDITOR.datastorageUrl + '/images/',
+	                                        isDatastorage : true,
+	                                        width : 515,
+	                                        height : 450,
+	                                        fieldUrl : this,
+	                                        zindex : 22000,
+                                            callback : function (data, config) {
+		                                        var dialog = CKEDITOR.dialog.getCurrent();
+		                                        dialog.setValueOf('info','txtUrl', data.url);
+		                                    },
+                                            listeners : {
+				                               afterrender : function (win) {
+				                                    Ext.defer(function () {
+				                                        win.setZIndex(22000);
+				                                        Ext.WindowManager.bringToFront(win);
+				                                    }, 500);
+				                                }
+				                            }
+	                                    });
+	                                    chooser.show();
+	                                }
                                 },
 								{
-								type: 'button',
-								id: 'browse',
-								// v-align with the 'txtUrl' field.
-								// TODO: We need something better than a fixed size here.
-								style: 'display:inline-block;margin-top:10px;',
-								align: 'center',
-								label: editor.lang.common.browseServer,
-								hidden: true,
-								filebrowser: 'info:txtUrl'
-							}
-							]
-						}
-						]
+									type: 'button',
+									id: 'browse',
+									// v-align with the 'txtUrl' field.
+									// TODO: We need something better than a fixed size here.
+									style: 'display:inline-block;margin-top:10px;',
+									align: 'center',
+									label: editor.lang.common.browseServer,
+									hidden: true,
+									filebrowser: 'info:txtUrl'
+							    }]
+						}]
 					},
 						{
 						id: 'txtAlt',

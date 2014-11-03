@@ -162,51 +162,48 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
 	            link: "",
 	            children : []
             },
+            selModel : new Ext.create('Ext.selection.TreeModel', {
+            	mode : 'SINGLE',
+            	allowDeselect : false,
+            	ignoreRightMouseSelection : true,
+            	listeners : {
+            		scope : this,
+            		beforeselect : function (rowModel, record, index) {
+            			var labelSaving = this.saveLabelInfo;
+                        if (labelSaving.getEl().dom.isTextModified) {
+                            Ext.Msg.show({
+                                title : i18n.get('label.warning'),
+                                buttons : Ext.Msg.YESNO,
+                                icon : Ext.MessageBox.WARNING,
+                                msg : i18n.get('label.confirmQuitEditor'),
+                                scope : this,
+                                fn : function (btn, text) {
+                                    if (btn == 'no') {
+                                    	var lastRecord = this.tree.getSelectionModel().getLastSelected();
+                                    	this.tree.getSelectionModel().select(lastRecord, false, true);
+                                        return false;
+                                    } else {
+                                        labelSaving.setText("<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "", false);
+                                        labelSaving.getEl().dom.isTextModified = false;
+                                        this.tree.getSelectionModel().select(record, false, true);
+                                        this.treeAction(record);
+                                    }
+                                }
+                            });
+                            return false;
+                        }
+                        return true;
+            		}
+            	}
+            }),
             listeners : {
                 scope : this,
-                beforeclick : function (node) {
-                    var labelSaving = this.saveLabelInfo.getEl().dom;
-                    if (labelSaving.isTextModified) {
-                        Ext.Msg.show({
-                            title : i18n.get('label.warning'),
-                            buttons : {
-                                yes : i18n.get('label.yes'),
-                                no : i18n.get('label.no')
-                            },
-                            icon : Ext.MessageBox.WARNING,
-                            msg : i18n.get('label.confirmQuitEditor'),
-                            scope : this,
-                            fn : function (btn, text) {
-                                if (btn == 'no') {
-                                    return false;
-                                } else {
-                                    labelSaving.innerHTML = "<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "";
-                                    labelSaving.isTextModified = false;
-                                    this.tree.selectPath(node.getPath());
-                                    this.treeAction(node);
-                                }
-                            }
-                        });
-                        return false;
-                    }
-                    return true;
-                },
                 itemclick : function (tree, node) {
                     this.treeAction(node);
                     this.manageNodeToolbar.manage(node);
                 },
                 itemcontextmenu : function (tree, node, item, index, e) {
                     e.stopEvent();
-//                    this.tree.getSelectionModel().select(node, e, true);
-//                    var c = node.getOwnerTree().contextMenu;
-//                    if (!node.isLeaf()) {
-//                        c.getComponent('manage-node').setVisible(false);
-//                    }
-//                    else {
-//                        c.getComponent('manage-node').setVisible(true);
-//                    }
-//                    c.contextItem = item;
-//                    c.showAt(e.getXY());
                 },
                 render : function () {
                     this.tree.getRootNode().expand(true);
@@ -252,7 +249,6 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
         
         this.saveLabelInfo = Ext.create('Ext.form.Label', {
             name : 'saveInfoLabel',
-            id : 'saveInfoLabelID',
             isTextModified : false,
             html : "<img src='/sitools/common/res/images/icons/valid.png'/> <b>" + i18n.get('label.textUpToDate') + "</b>"
         });
@@ -334,10 +330,7 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
             }
             Ext.Msg.show({
                 title : i18n.get('label.delete'),
-                buttons : {
-                    yes : i18n.get('label.yes'),
-                    no : i18n.get('label.no')
-                },
+                buttons : Ext.Msg.YESNO,
                 icon : Ext.MessageBox.WARNING,
                 msg : i18n.get('label.confirmQuitEditor'),
                 scope : this,
@@ -826,14 +819,18 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
     
     manageSaving : function (isSaved) {
         this.isTextModified = isSaved;
+        var label = Ext.ComponentQuery.query('toolbar > label[name="saveInfoLabel"]')[0];
         
-        var label = Ext.getDoc('saveInfoLabelID');
+        if (!label) {
+        	return;
+        }
+        
         if (isSaved == false) {
-            label.dom.innerHTML = "<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "";
-            label.dom.isTextModified = false;
+            label.setText("<img src='/sitools/common/res/images/icons/valid.png'/> " + i18n.get('label.textUpToDate') + "", false);
+            label.getEl().dom.isTextModified = false;
         } else {
-            label.dom.innerHTML = "<img src='/sitools/common/res/images/ux/warning.gif'/> " + i18n.get('label.textNotUpToDate') + "";
-            label.dom.isTextModified = true;
+        	label.setText("<img src='/sitools/common/res/images/ux/warning.gif'/> " + i18n.get('label.textNotUpToDate') + "", false);
+            label.getEl().dom.isTextModified = true;
         }
     },
 

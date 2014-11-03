@@ -35,7 +35,20 @@ Ext.define('sitools.user.modules.ContentEditor', {
             moduleModel : this.getModuleModel()
         });
         this.show(contentEditorView);
-    }
+    },
+    
+    /**
+     * method called when trying to save preference
+     * 
+     * @returns
+     */
+    _getSettings : function () {
+        return {
+            preferencesPath : "/modules",
+            preferencesFileName : this.itemId
+        };
+
+    },
     
 });
 

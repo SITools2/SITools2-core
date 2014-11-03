@@ -16,6 +16,8 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
+
+Ext.namespace('sitools.public.widget.imageChooser.ImageChooser');
 /*
  * Ext JS Library 3.3.1
  * Copyright(c) 2006-2010 Sencha Inc.
@@ -30,6 +32,7 @@
 Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
    alternateClassName : ['ImageChooser'], 
    extend : 'Ext.window.Window',
+   
    title: i18n.get('label.chooseImage'),
    layout: 'border',
    minWidth: 550,
@@ -90,11 +93,9 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
        
        this.store.load();
 
-      
-
        this.view = Ext.create("Ext.view.View", {
            tpl: this.thumbTemplate,
-           id : 'imageChooserDataViewId', 
+//           id : 'imageChooserDataViewId', 
            singleSelect: true,
            overItemCls:'x-view-over',
            selectedItemCls : 'x-view-selected',
@@ -111,11 +112,7 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
            }
        });
 
-//       if (!Ext.isEmpty(this.fp)){
-//           this.fp.destroy();
-//       }
-       
-       this.fp = Ext.create("Ext.FormPanel", {
+       this.fp = Ext.create("Ext.form.Panel", {
            fileUpload: true,
            formId : 'formUploadId', 
            height: 100,
@@ -141,14 +138,7 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
                scope : this,
                anchor: '50%',
                handler : this.uploadFile
-           }],
-//           buttons: [{
-//               text: i18n.get('label.uploadFile'),
-//               scope : this, 
-//               handler: function() {
-//                   
-//               }
-//           }]
+           }]
        });
 
        this.items = [{
@@ -199,12 +189,11 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
            minWidth: 150,
            maxWidth: 250
        },{
-           id: 'img-upload-panel', 
+//           id: 'img-upload-panel', 
            title : i18n.get('label.uploadFile'),
            region: 'south', 
            collapsible : true, 
            autoHeight : true, 
-//         height : 100, 
            items: [this.fp]
        }];
        
@@ -219,28 +208,9 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
            scope: this
        }];
        
-       this.listeners = {
-           scope : this,
-           activate : function (win) {
-               this.bringToFront(win);
-           },
-           show : function (win) {
-               this.bringToFront(win);
-           }
-       };
-       
        this.callParent(arguments);
    },
    
-//   show : function(el, callback){
-//
-////       this.reset();
-//       this.win.show(el);
-//       
-//       this.callback = callback;
-//       this.animateTarget = el;
-//   },
-
    initTemplates : function() {
        this.thumbTemplate = new Ext.XTemplate(
            '<tpl for=".">',
@@ -281,7 +251,7 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
        this.detailsTemplate.compile();
    },
 
-   showDetails : function (self, selected){
+   showDetails : function (self, selected) {
        var selNode = selected;
        var detailEl = this.down('panel[name=detailPanel]').body;
        if(selNode && selNode.length > 0){
@@ -367,7 +337,7 @@ Ext.define('sitools.public.widget.imageChooser.ImageChooser', {
        this.view.getEl().update('<div style="padding:10px;">Error loading images.</div>');
    },
    
-   bringToFront : function (win){
+   bringToFront : function (win) {
        if (win && !Ext.isEmpty(win.zindex) && win.isVisible()) {
            win.focus();
            win.setZIndex(win.zindex);
