@@ -1,7 +1,7 @@
 <project>
-  <id>5132d85b-68e4-4e2b-a921-6fd7de5dc4ef</id>
-  <name>ExampleProject_desktop</name>
-  <description>Project example using the Desktop IHM mode</description>
+  <id>654654654-68e4-4e2b-a921-6fd7de5dc4ef</id>
+  <name>ExampleProject_fixed</name>
+  <description>Project example using the Fixed IHM mode</description>
   <image>
     <type>Image</type>
     <url>/sitools/res/images/logo_01_petiteTaille.jpg</url>
@@ -9,7 +9,7 @@
   </image>
   <css>cnes</css>
   <status>ACTIVE</status>
-  <sitoolsAttachementForUsers>/ExampleProject_desktop</sitoolsAttachementForUsers>
+  <sitoolsAttachementForUsers>/ExampleProject/fixed</sitoolsAttachementForUsers>
   <visible>false</visible>
   <authorized>false</authorized>
   <modules>
@@ -152,7 +152,10 @@ espace de stockage sur le serveur de données) et permet de sécuriser l&apos;en
 des ressources en fonction du rôle de chaque utilisateur.&lt;/p&gt;&lt;/div&gt;</htmlDescription>
   <maintenance>false</maintenance>
   <maintenanceText></maintenanceText>
-  <links></links>
+  <links/>
   <ftlTemplateFile>default.project.ftl</ftlTemplateFile>
-  <navigationMode>desktop</navigationMode>
+  <navigationMode>fixed</navigationMode>
+  <priority>0</priority>
+  <categoryProject></categoryProject>
+  <lastStatusUpdate>2014-11-03 11:10:54.892 CET</lastStatusUpdate>
 </project>
