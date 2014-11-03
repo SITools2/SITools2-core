@@ -1,5 +1,5 @@
 <guiService>
-  <id>fb778415-7c64-41bb-9f55-be719e6ebc12</id>
+  <id>Filter_Tool</id>
   <name>Filter Tool</name>
   <description>a filter tool for dataset</description>
   <label>label.filter</label>

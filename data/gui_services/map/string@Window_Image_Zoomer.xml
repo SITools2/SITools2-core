@@ -1,5 +1,5 @@
 <guiService>
-  <id>56b12ab7-4fdb-49ac-921c-db23f6d892df</id>
+  <id>Window_Image_Zoomer</id>
   <name>Window Image Zoomer</name>
   <description>Display an image with zoom functions</description>
   <label>label.windowImgZoomer</label>

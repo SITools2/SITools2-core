@@ -1,5 +1,5 @@
 <guiService>
-  <id>8c48e76b-7ce4-4af1-8c4e-a120e47d5ed8</id>
+  <id>Sorter_tool</id>
   <name>Sorter Tool</name>
   <description>a GUI service to sort</description>
   <label>label.multiSort</label>

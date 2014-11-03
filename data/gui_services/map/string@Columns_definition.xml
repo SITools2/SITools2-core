@@ -1,5 +1,5 @@
 <guiService>
-  <id>31615731-6d95-43a4-9d90-2c03816bded3</id>
+  <id>Columns_definition</id>
   <name>Columns Definition</name>
   <description>retrieve the columns definition for a dataset</description>
   <label>label.definitionTitle</label>

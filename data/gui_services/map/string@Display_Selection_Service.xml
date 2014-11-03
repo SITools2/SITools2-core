@@ -1,5 +1,5 @@
 <guiService>
-  <id>3f5428ff-8f26-4508-90a7-0db4b89bfd13</id>
+  <id>Display_Selection_Service</id>
   <name>Display Selection Service</name>
   <description>Display the current dataset selection for ordering</description>
   <label>label.displaySelectionCart</label>
