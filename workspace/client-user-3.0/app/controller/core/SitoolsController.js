@@ -143,7 +143,18 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         
         store.load({
         	scope : this,
-        	callback : function (records, operation, success) {
+        	callback : function (modules, operation, success) {
+                Ext.each(modules, function (service) {
+                    var dependencies = service.dependencies;
+                    if (!Ext.isEmpty(dependencies)) {
+                        includeJsForceOrder(dependencies.js, 0, Ext.emptyFn);
+
+                        Ext.each(dependencies.css, function (css) {
+                            includeCss(css.url);
+                        });
+                    }
+                });
+
                 this.loadGuiServices();
             }
         })

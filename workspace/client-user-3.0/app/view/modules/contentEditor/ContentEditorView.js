@@ -326,6 +326,7 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
         this.ownerCt.addListener('beforeclose', function (panel) {
             var labelSaving = this.saveLabelInfo.getEl().dom;
             if (!labelSaving.isTextModified) {
+                this.checkTreeUpToDateTask.cancel();
                 return;
             }
             Ext.Msg.show({
@@ -337,6 +338,7 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
                 fn : function (btn, text) {
                     if (btn == 'yes') {
                         this.ownerCt.doClose();
+                        this.checkTreeUpToDateTask.cancel();
                     }
                 }
             });

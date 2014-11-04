@@ -18,7 +18,7 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
 
-Ext.namespace('sitools.user.modules.datasetExplorer');
+Ext.namespace('sitools.user.modules');
 /**
  * datasetExplorer Module
  * 

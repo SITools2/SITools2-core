@@ -30,7 +30,6 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageCreateFolde
 	alias: 'widget.datastorageCreateFolder',
 	
     width : 300,
-    height : 70,
     border : false,
     closeAction : 'hide',
     plain : true,

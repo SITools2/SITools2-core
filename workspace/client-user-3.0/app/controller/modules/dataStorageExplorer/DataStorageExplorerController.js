@@ -99,8 +99,15 @@ Ext.define('sitools.user.controller.modules.dataStorageExplorer.DataStorageExplo
                                 throw err;
                             }
                         },
-                        failure : function (ret) {
-                            return null;
+                        failure : function (response) {
+                            if (response.status == 403) {
+                                return Ext.Msg.alert(i18n.get("label.error"), i18n.get("label.datastorageForbidden"));
+                            }
+                            if (response.status == 404) {
+                                return Ext.Msg.alert(i18n.get("label.error"), i18n.get("label.datastorageNotFound"));
+                            } else {
+                                 return Ext.Msg.alert(response.status, response.statusText);
+                            }
                         }
                     });
                     return true;

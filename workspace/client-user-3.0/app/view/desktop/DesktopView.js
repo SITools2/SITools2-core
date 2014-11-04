@@ -146,6 +146,10 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         
         if (Project.getNavigationMode() == 'desktop') {
         	me.el.on('contextmenu', me.onDesktopMenu, me);
+        } else {
+            me.el.on('contextmenu', function (e) {
+                e.stopEvent();
+            }, me);
         }
         this.fitDesktop();
     },
