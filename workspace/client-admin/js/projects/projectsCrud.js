@@ -299,8 +299,12 @@ sitools.component.projects.projectsCrudPanel = Ext.extend(Ext.grid.EditorGridPan
             url : this.url + '/' + rec.id,
             action : rec.data.status == 'ACTIVE' ? "view" : "modify",
             store : this.getStore(),
-            projectName : rec.name, 
-            projectAttachement : rec.sitoolsAttachementForUsers
+            projectName : rec.data.name, 
+            projectAttachement : rec.data.sitoolsAttachementForUsers,
+            propertiesToKeep : {
+            	priority : rec.data.priority,
+            	categoryProject : rec.data.categoryProject            
+            }
         });
         up.show(ID.BOX.PROJECTS);
     },

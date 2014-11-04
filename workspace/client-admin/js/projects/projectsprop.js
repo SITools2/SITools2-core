@@ -27,6 +27,7 @@ Ext.namespace('sitools.component.projects');
  * @cfg {Ext.data.Store} store the store that contains all projects
  * @cfg {string} projectName the name of the selected project if action != "create"
  * @cfg {string} projectAttachement the sitoolsAttachement of the edit project. 
+ * @cfg {Object} propertiesToKeep A list of properties to be posted when saving the project. 
  * @class sitools.component.projects.ProjectsPropPanel
  * @extends Ext.Window
  */
@@ -72,7 +73,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
             this.title = i18n.get('label.viewProject');
         }
         if (this.action === 'modify') {
-            this.title = i18n.get('label.modifyProject');            
+            this.title = i18n.get('label.modifyProject');
         }
         if (this.action === 'create') {
             this.title = i18n.get('label.createProject');
@@ -80,6 +81,8 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         if (this.action === 'duplicate') {
             this.title = i18n.get('label.duplicateProject');
         }
+
+        this.projectProperties = this.propertiesToKeep;
 
         var storeDataSets = new Ext.data.JsonStore({
             id : 'storeDataSets',
@@ -770,6 +773,7 @@ sitools.component.projects.ProjectsPropPanel = Ext.extend(Ext.Window, {
         
         var f = this.findByType('form')[0].getForm();
         var putObject = {};
+        Ext.apply(putObject, this.projectProperties);
         Ext.iterate(f.getValues(), function (key, value) {
             if (key == 'image') {
                 // TODO : definir une liste de mediaType et type
