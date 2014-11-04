@@ -20,8 +20,8 @@
 Ext.namespace('sitools.public.utils');
 
 Ext.define('sitools.public.utils.i18n', {
-    singleton : true,
     map : [],
+    
     /**
      * Load a properties file and and the name/values in a associative array ;
      * Executing this function on multiple properties file increase the size of
@@ -87,48 +87,5 @@ Ext.define('sitools.public.utils.i18n', {
     }
 });
 
-i18n = sitools.public.utils.i18n;
-
-///**
-// * To be defined
-// */
-//var componentManager = {
-//	
-//		loadedComponents : [],
-//		
-//		load  : function (name) {
-//			
-//		}
-//		
-//	};
-//
-//var data = {
-//		ret : null,
-//		/**
-//		 * Fetch a html file in the url, and display its content into the helpPanel. *
-//		 * 
-//		 * @param url
-//		 * @returns
-//		 */
-//		get : function (url, cbk) {
-//			Ext.Ajax.request({
-//				method : 'GET',
-//				url : url,
-//				success : function (response, opts) {
-//					cbk(Ext.decode(response.responseText));
-//				},
-//				failure : function (response, opts) {
-//					Ext.Msg.alert("Warning", "Error! Can't get data with url :" + url);
-//				}
-//			});
-//			return this.ret;
-//		}
-//
-//	};
-//    
-//    
-//Ext.applyIf(Array.prototype, {
-//	clone : function() {
-//		return [].concat(this);
-//	}
-//});
+//define global variable
+i18n = Ext.create("sitools.public.utils.i18n");
