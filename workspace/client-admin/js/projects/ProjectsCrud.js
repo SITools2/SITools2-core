@@ -95,7 +95,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             items : [{
                 header : i18n.get('label.name'),
                 dataIndex : 'name',
-                width : 100,
+                width : 120,
                 sortable : true,
                 renderer : function (value, meta, record) {
                     meta.style = "font-weight: bold;";
@@ -104,7 +104,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             }, {
                 header : i18n.get('label.image'),
                 dataIndex : 'image',
-                width : 50,
+                width : 45,
                 renderer : function (value, metadata, record, rowIndex, colIndex, store) {
                     if (!Ext.isEmpty(value)) {
                         value = '<img src="' + value + '" height=15 width=18 style="margin:auto; display: block;"/>';
@@ -114,7 +114,7 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             }, {
                 header : i18n.get('label.description'),
                 dataIndex : 'description',
-                width : 200
+                width : 150
             }, {
                 header : i18n.get('label.status'),
                 dataIndex : 'status',
@@ -248,6 +248,23 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
                 handler : this._onDisactive,
                 xtype : 's-menuButton'
             }, '-', {
+                text : i18n.get('label.duplicate'),
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/presentation1.png',
+                handler : this.onDuplicate
+            }, '->', {
+                xtype : 's-filter',
+                emptyText : i18n.get('label.search'),
+                store : this.store,
+                pageSize : this.pageSize
+            } ]
+        };
+
+        this.rbar = {
+            xtype : 'toolbar',
+            defaults : {
+                scope : this
+            },
+            items : [{
                 text : i18n.get('label.startmaintenance'),
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_active.png',
                 handler : this._onStartMaintenance,
@@ -257,27 +274,12 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
                 icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/toolbar_disactive.png',
                 handler : this._onStopMaintenance,
                 xtype : 's-menuButton'
-            }, {
-                text : i18n.get('label.duplicate'),
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/icons/presentation1.png',
-                handler : this.onDuplicate
-            }, this.savePropertiesBtn, '->', {
-                xtype : 's-filter',
-                emptyText : i18n.get('label.search'),
-                store : this.store,
-                pageSize : this.pageSize
-            } ]
-        };
+            }, this.savePropertiesBtn]
+        }
 
         this.listeners = {
             scope : this, 
-            itemdblclick : this.onModify,
-            celldblclick : function (grid, row, col) {
-//                if (grid.getColumnModel().isCellEditable(col, row)) {
-//                    return;
-//                }
-                this.onModify();
-            }
+            itemdblclick : this.onModify
         };
         
         this.selModel = Ext.create('Ext.selection.RowModel', {

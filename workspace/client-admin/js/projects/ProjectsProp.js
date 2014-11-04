@@ -994,7 +994,7 @@ Ext.define('sitools.admin.projects.ProjectsProp', {
      * do a specific render to fill informations from the project.
      */
     afterRender : function () {
-        sitools.admin.projects.ProjectsProp.superclass.afterRender.apply(this, arguments);
+        this.callParent(arguments);
         if (this.url) {
             var url = this.url;
             if (this.action == 'duplicate') {
