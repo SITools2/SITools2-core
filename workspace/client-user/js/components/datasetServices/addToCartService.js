@@ -228,11 +228,11 @@ sitools.user.component.dataviews.services.addToCartService = {
 
 	closeDataviewIfModify : function() {
 		if (this.dataview.isModifySelection) {
-			if (Ext.isFunction(this.dataview.ownerCt.close)) {
-				this.dataview.ownerCt.close();
-			} else {
-				this.dataview.ownerCt.destroy();
-			}
+			var parentComponent = this.dataview.findParentBy(function(container, self) {
+				return ("component" === container.specificType || "componentWindow" === container.specificType); 
+			});
+			
+			SitoolsDesk.navProfile.taskbar.closeWin(null, null, parentComponent);
 			var cartModule = Ext.getCmp("cartModuleHBox");
 			if (!Ext.isEmpty(cartModule)) {
 				cartModule.ownerCt.onRefresh();
