@@ -97,7 +97,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                     userPreferences = {};
                     userPreferences.language = language.localName;
                     if (!Ext.isEmpty(userLogin)) {
-                        userStorage.set(loadUrl.get('APP_PORTAL_URL'),  "/" + DEFAULT_PREFERENCES_FOLDER + loadUrl.get('APP_PORTAL_URL'), userPreferences, callback);
+                        UserStorage.set(loadUrl.get('APP_PORTAL_URL'),  "/" + DEFAULT_PREFERENCES_FOLDER + loadUrl.get('APP_PORTAL_URL'), userPreferences, callback);
 //                        userStorage.set("portal",  "/" + DEFAULT_PREFERENCES_FOLDER + "/portal", userPreferences, callback);
                     } else {
                         window.location.reload();
