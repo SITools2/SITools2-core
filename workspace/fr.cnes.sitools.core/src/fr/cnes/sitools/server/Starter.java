@@ -47,6 +47,7 @@ import org.restlet.service.Service;
 
 import fr.cnes.sitools.applications.AdministratorApplication;
 import fr.cnes.sitools.applications.ClientAdminApplication;
+import fr.cnes.sitools.applications.ClientExtensionApplication;
 import fr.cnes.sitools.applications.ClientPortalApplication;
 import fr.cnes.sitools.applications.ClientPublicApplication;
 import fr.cnes.sitools.applications.ClientUserApplication;
@@ -732,6 +733,25 @@ public final class Starter {
 
     // Attachment
     appManager.attachApplication(clientPortalApp);
+    
+    
+    // -----------------------
+    // Client-extensions application
+
+    // Directory
+    String extensionAppPath = appPath + settings.getString(Consts.APP_CLIENT_EXTENSION_PATH);
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appReference = baseUrl + settings.getString(Consts.APP_CLIENT_EXTENSION_URL);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+    
+    // Application
+    ClientExtensionApplication clientExtensionApp = new ClientExtensionApplication(appContext, extensionAppPath, baseRef + appReference);
+
+    // Attachment
+    appManager.attachApplication(clientExtensionApp);
     
     // ===========================================================================
     // Gestion des utilisateurs / groupes

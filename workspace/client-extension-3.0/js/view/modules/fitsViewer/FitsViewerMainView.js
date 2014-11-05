@@ -17,14 +17,14 @@
  ******************************************************************************/
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin, DEFAULT_ORDER_FOLDER, userStorage*/
-Ext.namespace('sitools.user.view.modules.fitsViewer');
+Ext.namespace('sitools.extension.view.modules.fitsViewer');
 /**
  * Main class of Fits Explorer
  * 
- * @class sitools.user.view.modules.fitsViewer.FitsViewerMainView
+ * @class sitools.extension.view.modules.fitsViewer.FitsViewerMainView
  * @extends Ext.panel.Panel
  */
-Ext.define('sitools.user.view.modules.fitsViewer.FitsViewerMainView', {
+Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.fitsViewerMainView',
 
@@ -74,7 +74,7 @@ Ext.define('sitools.user.view.modules.fitsViewer.FitsViewerMainView', {
                         this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
 
                         Ext.defer(function () {
-                            this.sitoolsFitsTable = Ext.create('sitools.user.view.modules.fitsViewer.FitsTableView', {
+                            this.sitoolsFitsTable = Ext.create('sitools.extension.view.modules.fitsViewer.FitsTableView', {
                                 headerData : node.get('header'),
                                 data : node.get('data'),
                                 fits : this.fits,
@@ -90,7 +90,7 @@ Ext.define('sitools.user.view.modules.fitsViewer.FitsViewerMainView', {
                         this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
 
                         Ext.defer(function () {
-                            this.sitoolsFitsViewer = Ext.create('sitools.user.view.modules.fitsViewer.FitsViewerView', {
+                            this.sitoolsFitsViewer = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
                                 urlFits : this.url,
                                 headerData : node.get('header'),
                                 fits : this.fits,
@@ -182,7 +182,7 @@ Ext.define('sitools.user.view.modules.fitsViewer.FitsViewerMainView', {
     loadFitsFromUrl : function (e) {
         var fitsLoaderMenu = Ext.ComponentQuery.query('fitsLoaderMenuView')[0];
         if (Ext.isEmpty(fitsLoaderMenu)) {
-            var menu = Ext.create('sitools.user.view.modules.fitsViewer.FitsLoaderMenuView', {
+            var menu = Ext.create('sitools.extension.view.modules.fitsViewer.FitsLoaderMenuView', {
                 fitsMainView : this
             });
             menu.showAt(e.getX(), e.getY());

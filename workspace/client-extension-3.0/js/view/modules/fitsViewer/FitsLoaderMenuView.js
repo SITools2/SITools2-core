@@ -17,15 +17,15 @@
  ******************************************************************************/
 /*global Ext, sitools, i18n, loadUrl */
 
-Ext.namespace('sitools.user.view.modules.fitsViewer');
+Ext.namespace('sitools.extension.view.modules.fitsViewer');
 
 /**
  * Load a fits from the given URL
  *
- * @class sitools.user.view.modules.fitsViewer.FitsLoaderMenuView
+ * @class sitools.extension.view.modules.fitsViewer.FitsLoaderMenuView
  * @extends Ext.menu.Menu
  */
-Ext.define('sitools.user.view.modules.fitsViewer.FitsLoaderMenuView', {
+Ext.define('sitools.extension.view.modules.fitsViewer.FitsLoaderMenuView', {
     extend : 'Ext.menu.Menu',
     alias: 'widget.fitsLoaderMenuView',
 

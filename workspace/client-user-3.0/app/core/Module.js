@@ -32,7 +32,10 @@ Ext.define('sitools.user.core.Module', {
         moduleModel : null,
         viewCmp : null,
         application : null,
-        controllers : []
+        controllers : [],
+        moduleName : null,
+        js : [],
+        css : []
     },
     
     /**
@@ -60,7 +63,7 @@ Ext.define('sitools.user.core.Module', {
      *            the application
      * @moduleModel moduleModel
      */
-    create : function (application, moduleModel) {
+    create : function (application, moduleModel, event) {
         this.setModuleModel(moduleModel);
         this.setApplication(application);
         // initialize all controllers
@@ -68,7 +71,10 @@ Ext.define('sitools.user.core.Module', {
             Ext.each(this.getControllers(), function (controller) {
                 this.getApplication().getController(controller);
             }, this);
-        }        
+        }
+        
+        //load javascripts, this css then internationalization
+        this.loadJs(event);
     },
     
     createViewForDiv : Ext.emptyFn,
@@ -87,5 +93,49 @@ Ext.define('sitools.user.core.Module', {
     /**
      * use to delegate opening to the module itself
      */
-    openMe : null
+    openMe : null,
+    
+    loadJs : function (event) {
+    	if(!Ext.isEmpty(this.getJs()) && this.getJs().length > 0) {
+	    	var urls = [];
+	    	Ext.each(this.getJs(), function(url) {
+	    		urls.push(loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_EXTENSION_URL')
+						+ "/resources/libs/" + this.getModuleName() + "/" + url);
+	    	}, this);
+	    	
+	    	ScriptLoader.loadScripts(urls, function() {
+	    		this.loadResources(event);
+	    	}, function () {
+	    		alert("Cannot load all js dependencies");
+	    	}, this);
+    	}
+    	else {
+    		this.loadResources(event);
+    	}
+    },
+    
+    loadResources : function (event) {
+    	if(!Ext.isEmpty(this.getCss()) && this.getCss().length > 0) {
+    		var urls = [];
+    		Ext.each(this.getCss(), function(url) {
+	    		urls.push(loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_EXTENSION_URL')
+						+ "/resources/css/" + this.getModuleName() + "/" + url);
+	    	}, this);
+    		
+	    	Ext.each(urls, function (css) {
+				includeCss(css);
+			});
+	    	
+	    	var guiUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_EXTENSION_URL')
+			+ "/resources/i18n/" + this.getModuleName() + "/" + locale.getLocale() + '/gui.properties'
+	    	I18nRegistry.register(this.getModuleName(), guiUrl, function() {
+	    		this.init(event);
+	    	}, function() {
+	    		this.init(event);
+	    	}, this);
+    	}
+    },
+    
+    
+    
 });

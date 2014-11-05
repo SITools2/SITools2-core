@@ -144,16 +144,16 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         store.load({
         	scope : this,
         	callback : function (modules, operation, success) {
-                Ext.each(modules, function (service) {
-                    var dependencies = service.dependencies;
-                    if (!Ext.isEmpty(dependencies)) {
-                        includeJsForceOrder(dependencies.js, 0, Ext.emptyFn);
-
-                        Ext.each(dependencies.css, function (css) {
-                            includeCss(css.url);
-                        });
-                    }
-                });
+//                Ext.each(modules, function (service) {
+//                    var dependencies = service.dependencies;
+//                    if (!Ext.isEmpty(dependencies)) {
+//                        includeJsForceOrder(dependencies.js, 0, Ext.emptyFn);
+//
+//                        Ext.each(dependencies.css, function (css) {
+//                            includeCss(css.url);
+//                        });
+//                    }
+//                });
 
                 this.loadGuiServices();
             }
@@ -187,7 +187,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     openModule : function (moduleModel, event) {
         var module = Ext.create(moduleModel.data.xtype);
         module.create(this.getApplication(), moduleModel);
-        module.init(event);
+//        module.init(event);
     },
     
     openComponent : function (componentClazz, componentConfig, windowConfig) {

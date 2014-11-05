@@ -26,6 +26,7 @@ Ext.application({
         "sitools.public" : "../client-public/js",
         "sitools.common" : "../client-public/js",
         "sitools.user" : "../client-user/app",
-        "Ext.ux" : "../client-public/js/ux"
+        "Ext.ux" : "../client-public/js/ux",
+        "sitools.extension" : "../client-extension/js"
     }    
 });

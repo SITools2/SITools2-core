@@ -17,14 +17,14 @@
  ******************************************************************************/
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin, DEFAULT_ORDER_FOLDER, userStorage*/
-Ext.namespace('sitools.user.view.modules.fitsViewer');
+Ext.namespace('sitools.extension.view.modules.fitsViewer');
 /**
  * Visualize data from Fits header in a grid
  *
- * @class sitools.user.view.modules.fitsViewer.FitsHeaderView
+ * @class sitools.extension.view.modules.fitsViewer.FitsHeaderView
  * @extends Ext.grid.Panel
  */
-Ext.define('sitools.user.view.modules.fitsViewer.FitsHeaderView', {
+Ext.define('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
     extend : 'Ext.grid.Panel',
 	alias : 'widget.fitsHeaderView',
 

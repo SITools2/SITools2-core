@@ -18,6 +18,8 @@ Ext.define('sitools.user.Application', {
                  'sitools.public.utils.PublicStorage',
                  'sitools.public.utils.PopupMessage',              
                  'sitools.public.version.Version',
+                 'sitools.user.utils.I18nRegistry',
+                 'sitools.user.utils.ScriptLoader',
                  
                  /* UTILS USER */
                  'sitools.user.utils.FormUtils',

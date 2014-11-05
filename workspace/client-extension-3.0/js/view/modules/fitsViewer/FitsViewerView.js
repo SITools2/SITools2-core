@@ -18,14 +18,14 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin, DEFAULT_ORDER_FOLDER, userStorage*/
 
-Ext.namespace('sitools.user.view.modules.fitsViewer');
+Ext.namespace('sitools.extension.view.modules.fitsViewer');
 /**
  *Visualize images from Fits File
  *
- * @class sitools.user.view.modules.fitsViewer.FitsViewerView
+ * @class sitools.extension.view.modules.fitsViewer.FitsViewerView
  * @extends Ext.panel.Panel
  */
-Ext.define('sitools.user.view.modules.fitsViewer.FitsViewerView', {
+Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.fitsViewerView',
 
@@ -249,7 +249,7 @@ Ext.define('sitools.user.view.modules.fitsViewer.FitsViewerView', {
             }
         });
         
-        this.headerPanel = Ext.create('sitools.user.view.modules.fitsViewer.FitsHeaderView', {
+        this.headerPanel = Ext.create('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
             title : i18n.get('label.headerData'),
             headerData : this.headerData,
             region : 'south',

@@ -17,16 +17,16 @@
  ******************************************************************************/
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin, DEFAULT_ORDER_FOLDER, userStorage*/
-Ext.namespace('sitools.user.modules');
+Ext.namespace('sitools.extension.modules');
 /**
- * sitools.user.modules.sitoolsFitsPlot
+ * sitools.extension.modules.sitoolsFitsPlot
  * 
- * @class sitools.user.modules.sitoolsFitsPlot
+ * @class sitools.extension.modules.sitoolsFitsPlot
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.sitoolsFitsPlot', {
+Ext.define('sitools.extension.modules.sitoolsFitsPlot', {
     extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.sitoolsFitsPlot',
+    alias : 'sitools.extension.modules.sitoolsFitsPlot',
             
     initComponent : function () {
         this.width = 605;
@@ -95,11 +95,11 @@ Ext.define('sitools.user.modules.sitoolsFitsPlot', {
         
         this.items = [this.panel];
 
-        sitools.user.modules.sitoolsFitsPlot.superclass.initComponent.call(this);
+        sitools.extension.modules.sitoolsFitsPlot.superclass.initComponent.call(this);
     },
     
     afterRender : function () {
-        sitools.user.modules.sitoolsFitsPlot.superclass.afterRender.apply(this, arguments);
+        sitools.extension.modules.sitoolsFitsPlot.superclass.afterRender.apply(this, arguments);
         
     },
     

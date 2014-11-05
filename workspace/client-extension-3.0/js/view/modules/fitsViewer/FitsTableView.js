@@ -15,18 +15,18 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-Ext.namespace('sitools.user.modules');
+Ext.namespace('sitools.extension.modules');
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin, DEFAULT_ORDER_FOLDER, userStorage*/
 
 /**
- * sitools.user.modules.sitoolsFitsTable
+ * sitools.extension.modules.sitoolsFitsTable
  * 
- * @class sitools.user.modules.sitoolsFitsTable
+ * @class sitools.extension.modules.sitoolsFitsTable
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.sitoolsFitsTable', {
+Ext.define('sitools.extension.modules.sitoolsFitsTable', {
     extend : 'Ext.panel.Panel',
-    alias : 'sitools.user.modules.sitoolsFitsTable',
+    alias : 'sitools.extension.modules.sitoolsFitsTable',
     
     layout : 'border',
     split : true,
@@ -76,7 +76,7 @@ Ext.define('sitools.user.modules.sitoolsFitsTable', {
             }
         });
 
-        this.headerPanel = new sitools.user.modules.sitoolsFitsHeader({
+        this.headerPanel = new sitools.extension.modules.sitoolsFitsHeader({
             title : i18n.get('label.headerData'),
             headerData : this.headerData,
             region : 'south',
@@ -99,11 +99,11 @@ Ext.define('sitools.user.modules.sitoolsFitsTable', {
         
         this.items = [this.gridPanel, this.headerPanel];
         
-        sitools.user.modules.sitoolsFitsTable.superclass.initComponent.call(this);
+        sitools.extension.modules.sitoolsFitsTable.superclass.initComponent.call(this);
     },
     
     afterRender : function () {
-        sitools.user.modules.sitoolsFitsTable.superclass.afterRender.apply(this, arguments);
+        sitools.extension.modules.sitoolsFitsTable.superclass.afterRender.apply(this, arguments);
         this.fitsMainPanel.getEl().unmask();
     },
     
@@ -128,7 +128,7 @@ Ext.define('sitools.user.modules.sitoolsFitsTable', {
             }
         }
         
-        var jsObj = sitools.user.modules.sitoolsFitsPlot;
+        var jsObj = sitools.extension.modules.sitoolsFitsPlot;
         
         var config = {
             fitsTable : this,

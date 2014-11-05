@@ -251,6 +251,8 @@ public interface Consts {
   String APP_DOCUMENTATION_PATH = "Starter.APP_DOCUMENTATION_PATH";
   /** path */
   String APP_LOGS_PATH = "Starter.APP_LOGS_PATH";
+  /** Path for extensions */
+  String APP_CLIENT_EXTENSION_PATH = "Starter.APP_CLIENT_EXTENSION_PATH";
 
   /** ============================= */
   /** Applications URL attachements */
@@ -273,6 +275,8 @@ public interface Consts {
   String APP_CLIENT_USER_URL = "Starter.APP_CLIENT_USER_URL";
   /** application url */
   String APP_CLIENT_PORTAL_URL = "Starter.APP_CLIENT_PORTAL_URL";
+  /** application url */
+  String APP_CLIENT_EXTENSION_URL = "Starter.APP_CLIENT_EXTENSION_URL";
   /** application url */
   String APP_DEVELOPER_URL = "Starter.APP_DEVELOPER_URL";
   /** application url */
@@ -514,4 +518,7 @@ public interface Consts {
 
   /** The security filter user blacklist container. */
   String SECURITY_FILTER_USER_BLACKLIST_CONTAINER = "Security.filter.userBlacklist.Container";
+
+
+
 }

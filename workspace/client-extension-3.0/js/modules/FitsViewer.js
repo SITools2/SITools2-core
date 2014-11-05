@@ -18,30 +18,38 @@
 
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse */
 
-Ext.namespace('sitools.user.modules');
+Ext.namespace('sitools.extension.modules');
 /**
  * FitsModule Module
  * 
- * @class sitools.user.modules.FitsViewer
+ * @class sitools.extension.modules.FitsViewer
  * @extends Ext.Panel
  */
-Ext.define('sitools.user.modules.FitsViewer', {
+Ext.define('sitools.extension.modules.FitsViewer', {
     extend : 'sitools.user.core.Module',
-
-    js : ['/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/fits.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/binaryajax.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/excanvas.compiled.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/FitsLoader.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/flotr2.min.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/astroFits.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/Histogram.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/vec3.js',
-        '/sitools/client-user/app/view/modules/fitsViewer/resources/librairies/wcs.js'
+    
+    moduleName : 'fitsViewer',
+    
+    requires : ['sitools.ext.resources.fitsViewer.fits',
+        'sitools.ext.resources.fitsViewer.binaryajax',
+        'sitools.ext.resources.fitsViewer.excanvasCompiled',
+        'sitools.ext.resources.fitsViewer.FitsLoader',
+        'sitools.ext.resources.fitsViewer.flotr2Min',
+        'sitools.ext.resources.fitsViewer.astroFits',
+        'sitools.ext.resources.fitsViewer.Histogram',
+        'sitools.ext.resources.fitsViewer.vec3',
+        'sitools.ext.resources.fitsViewer.wcs'
     ],
-
+    
+    css : ['fits.css'],
+    
     init : function () {
         this.callParent(arguments);
-        var view = Ext.create('sitools.user.view.modules.fitsViewer.FitsViewerMainView');
+        
+        var localI18n = I18nRegistry.retrieve('fitsViewer');
+        alert(localI18n.get("label.title"));
+        
+        var view = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerMainView');
         this.show(view);
     },
     

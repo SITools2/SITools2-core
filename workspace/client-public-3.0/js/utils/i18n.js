@@ -33,7 +33,18 @@ Ext.define('sitools.public.utils.i18n', {
      * @returns void
      */
     load : function (url, callback, scope) {
+    	this.doLoad(url, callback, function(response, opts) {
+    		if (!opts.loopOnFailure) {
+                Ext.Msg.alert("Error! Can't read i18n file with url :" + url);
+            } else {
+                locale.restoreDefault();
+                url = loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/i18n/' + locale.getLocale() + '/gui.properties';
+                i18n.load(url, callback, scope);
+            }
+    	}, scope);
+    },
     
+    doLoad : function (url, callback, onFailure, scope) {
         var i18nRef = this;
         Ext.Ajax.request({
             method : 'GET',
@@ -43,17 +54,8 @@ Ext.define('sitools.public.utils.i18n', {
                 i18nRef.map = i18nRef.transformsPropertiesToMap(response.responseText);
                 Ext.callback(callback, scope);
             },
-            failure : function (response, opts) {
-                if (!opts.loopOnFailure) {
-                    Ext.Msg.alert("Error! Can't read i18n file with url :" + url);
-                } else {
-                    locale.restoreDefault();
-                    url = loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + '/res/i18n/' + locale.getLocale() + '/gui.properties';
-                    i18n.load(url, callback, scope);
-                }
-            }
-        });
-
+            failure : onFailure
+        });    	
     },
     /**
      * Transforms a properties Text to a map
