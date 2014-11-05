@@ -31,7 +31,6 @@ import org.restlet.routing.Template;
 
 import fr.cnes.sitools.client.ClientSiteMapResource;
 import fr.cnes.sitools.client.PortalIndex;
-import fr.cnes.sitools.client.ProjectIndex;
 import fr.cnes.sitools.common.application.StaticWebApplication;
 import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.store.SitoolsStore;

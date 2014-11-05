@@ -158,16 +158,16 @@ public final class PublicApplication extends SitoolsApplication {
     router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
     
     // TODO REMOVE REDIRECTOR AFTER DEMO
-    Redirector redirectorCommon = new Redirector(getContext(), getSettings().getPublicHostDomain()
-        + "/sitools/client-public{rr}", Redirector.MODE_SERVER_OUTBOUND);
-    // attach the portal resource to client-user
-    router.attach("/common", redirectorCommon);
-
-    Redirector redirectorCots = new Redirector(getContext(), getSettings().getPublicHostDomain()
-        + "/sitools/client-public/cots{rr}", Redirector.MODE_SERVER_OUTBOUND);
-    router.attach("/cots", redirectorCots);
-    
-    router.attach("/", redirectorCommon);
+//    Redirector redirectorCommon = new Redirector(getContext(), getSettings().getPublicHostDomain()
+//        + "/sitools/client-public{rr}", Redirector.MODE_SERVER_OUTBOUND);
+//    // attach the portal resource to client-user
+//    router.attach("/common", redirectorCommon);
+//
+//    Redirector redirectorCots = new Redirector(getContext(), getSettings().getPublicHostDomain()
+//        + "/sitools/client-public/cots{rr}", Redirector.MODE_SERVER_OUTBOUND);
+//    router.attach("/cots", redirectorCots);
+//    
+//    router.attach("/", redirectorCommon);
 
     return router;
   }

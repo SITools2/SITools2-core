@@ -69,8 +69,8 @@
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
 
-    <script src="/sitools/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
-    <script src="/sitools/common/js/utils/prototyp.js"></script>
+    <script src="/sitools/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+    <script src="/sitools/client-public/js/utils/prototyp.js"></script>
 	
 	 <script type="text/javascript">
 		Ext.Loader.setConfig('disableCaching', false);

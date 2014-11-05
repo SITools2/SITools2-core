@@ -661,6 +661,8 @@ public final class Starter {
     
     // -------------------------
     // Client-public application (commons)
+    
+    //Attached to /client-public
 
     // Directory
     String clientPublicAppPath = appPath + settings.getString(Consts.APP_CLIENT_PUBLIC_PATH);
@@ -678,6 +680,22 @@ public final class Starter {
     appManager.attachApplication(clientPublicApp);
 
     component.getInternalRouter().attach(settings.getString(Consts.APP_CLIENT_PUBLIC_PATH), clientPublicApp);
+    
+    //Attached to /common for retro compatibility
+    // Context
+    appContext = host.getContext().createChildContext();
+    appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
+    appReference = baseUrl + settings.getString(Consts.APP_CLIENT_PUBLIC_COMMON_URL);
+    appContext.getAttributes().put(ContextAttributes.APP_ATTACH_REF, appReference);
+    appContext.getAttributes().put(ContextAttributes.APP_REGISTER, true);
+
+    // Application
+    ClientPublicApplication clientPublicApp2 = new ClientPublicApplication(appContext, clientPublicAppPath, baseRef + appReference);
+
+    // Attachment
+    appManager.attachApplication(clientPublicApp2);
+    
+    
     
     // ------------------------
     // Client-admin application
