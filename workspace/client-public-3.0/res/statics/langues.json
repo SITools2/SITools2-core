@@ -2,12 +2,12 @@
 	"data" : [{
 		"displayName" : "Français", 
 		"localName": "fr", 
-		"image" : "/sitools/res/images/icons/countries/fr.png", 
-		"largeIcon" : "/sitools/res/images/icons/countries/25x25/fr.png"
+		"image" : "/sitools/client-public/res/images/icons/countries/fr.png", 
+		"largeIcon" : "/sitools/client-public/res/images/icons/countries/25x25/fr.png"
 	}, {
 		"displayName" : "English", 
 		"localName": "en", 
-		"image" : "/sitools/res/images/icons/countries/en.png", 
-		"largeIcon" : "/sitools/res/images/icons/countries/25x25/en.png"
+		"image" : "/sitools/client-public/res/images/icons/countries/en.png", 
+		"largeIcon" : "/sitools/client-public/res/images/icons/countries/25x25/en.png"
 	}]
 }

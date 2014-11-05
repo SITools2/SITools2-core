@@ -54,7 +54,8 @@ Ext.define('sitools.public.utils.i18n', {
                 i18nRef.map = i18nRef.transformsPropertiesToMap(response.responseText);
                 Ext.callback(callback, scope);
             },
-            failure : onFailure
+            failure : onFailure,
+            scope : scope
         });    	
     },
     /**

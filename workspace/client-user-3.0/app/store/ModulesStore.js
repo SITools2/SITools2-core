@@ -32,7 +32,8 @@ Ext.define('sitools.user.store.ModulesStore', {
     listeners : {
     	load : function (store, records, success) {
     		var modulesStore = Ext.data.StoreManager.lookup("ProjectStore").getProject().modules();
-    		
+    		//remove all modules to add only correct modules
+    		store.removeAll();
     		modulesStore.each(function (moduleFromProject) {
     			Ext.each(records, function (moduleToCheck) {
     				if (moduleFromProject.get('xtype') === moduleToCheck.get('xtype')) {
@@ -49,8 +50,6 @@ Ext.define('sitools.user.store.ModulesStore', {
     				
     			});
     		});
-    		
-    		
     	}
     },
     

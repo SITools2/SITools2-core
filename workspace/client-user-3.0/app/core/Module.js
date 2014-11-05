@@ -63,7 +63,7 @@ Ext.define('sitools.user.core.Module', {
      *            the application
      * @moduleModel moduleModel
      */
-    create : function (application, moduleModel, event) {
+    create : function (application, moduleModel, callback, scope) {
         this.setModuleModel(moduleModel);
         this.setApplication(application);
         // initialize all controllers
@@ -74,7 +74,7 @@ Ext.define('sitools.user.core.Module', {
         }
         
         //load javascripts, this css then internationalization
-        this.loadJs(event);
+        this.loadJs(callback, scope);
     },
     
     createViewForDiv : Ext.emptyFn,
@@ -95,7 +95,7 @@ Ext.define('sitools.user.core.Module', {
      */
     openMe : null,
     
-    loadJs : function (event) {
+    loadJs : function (callback, scope) {
     	if(!Ext.isEmpty(this.getJs()) && this.getJs().length > 0) {
 	    	var urls = [];
 	    	Ext.each(this.getJs(), function(url) {
@@ -104,17 +104,17 @@ Ext.define('sitools.user.core.Module', {
 	    	}, this);
 	    	
 	    	ScriptLoader.loadScripts(urls, function() {
-	    		this.loadResources(event);
+	    		this.loadResources(callback, scope);
 	    	}, function () {
 	    		alert("Cannot load all js dependencies");
 	    	}, this);
     	}
     	else {
-    		this.loadResources(event);
+    		this.loadResources(callback, scope);
     	}
     },
     
-    loadResources : function (event) {
+    loadResources : function (callback, scope) {
     	if(!Ext.isEmpty(this.getCss()) && this.getCss().length > 0) {
     		var urls = [];
     		Ext.each(this.getCss(), function(url) {
@@ -126,14 +126,23 @@ Ext.define('sitools.user.core.Module', {
 				includeCss(css);
 			});
 	    	
+    	}
+
+    	var registered = false;
+    	if(!Ext.isEmpty(this.getModuleName())){
 	    	var guiUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_EXTENSION_URL')
-			+ "/resources/i18n/" + this.getModuleName() + "/" + locale.getLocale() + '/gui.properties'
-	    	I18nRegistry.register(this.getModuleName(), guiUrl, function() {
-	    		this.init(event);
+	    	+ "/resources/i18n/" + this.getModuleName() + "/" + locale.getLocale() + '/gui.properties'
+	    	registered = I18nRegistry.register(this.getModuleName(), guiUrl, function() {
+	    		Ext.callback(callback, scope);
 	    	}, function() {
-	    		this.init(event);
+	    		Ext.callback(callback, scope);
 	    	}, this);
     	}
+    	
+
+    	if (!registered) {
+    		Ext.callback(callback, scope);
+		}
     },
     
     

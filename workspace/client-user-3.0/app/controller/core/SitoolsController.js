@@ -186,7 +186,9 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 
     openModule : function (moduleModel, event) {
         var module = Ext.create(moduleModel.data.xtype);
-        module.create(this.getApplication(), moduleModel);
+        module.create(this.getApplication(), moduleModel, function() {
+        	this.init(event);
+        }, module);
 //        module.init(event);
     },
     

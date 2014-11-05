@@ -184,23 +184,26 @@ Ext.define('sitools.user.view.header.ModuleToolbar', {
         
         var categoryModules = [];
         this.moduleStore.each(function (module) {
-            if (Ext.isEmpty(module.get('categoryModule'))) {
-                categoryModules.push({
-                    modules : [module]
-                });
-            }
-            else {
-                var idx = getCategoryIndex(module.get('categoryModule'), categoryModules);
-                if (idx >= 0) {
-                    categoryModules[idx].modules.push(module);
-                }
-                else {
-                    categoryModules.push({
-                        category : module.get('categoryModule'),
-                        modules : [module]
-                    });
-                }
-            }
+        	if (Ext.isEmpty(module.get('divIdToDisplay'))) {
+        	
+	            if (Ext.isEmpty(module.get('categoryModule'))) {
+	                categoryModules.push({
+	                    modules : [module]
+	                });
+	            }
+	            else {
+	                var idx = getCategoryIndex(module.get('categoryModule'), categoryModules);
+	                if (idx >= 0) {
+	                    categoryModules[idx].modules.push(module);
+	                }
+	                else {
+	                    categoryModules.push({
+	                        category : module.get('categoryModule'),
+	                        modules : [module]
+	                    });
+	                }
+	            }
+        	}
             
         });
         return categoryModules;

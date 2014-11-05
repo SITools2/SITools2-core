@@ -6,12 +6,9 @@
   <author>Akka Technologies</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/toolbar_details.png</icon>
-  <xtype>sitools.user.component.dataviews.services.viewDataDetailsService</xtype>
+  <xtype>sitools.user.component.datasets.services.RecordDetailService</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/viewDataDetailsService.js</url>
-      </url>
+    <js>      
     </js>
     <css/>
   </dependencies>
