@@ -121,7 +121,7 @@ Ext.define('sitools.user.view.modules.dataStorageExplorer.DataStorageBrowserView
 //                                    item.setIcon(loadUrl.get('APP_URL') + '/common/res/images/icons/icon-pdf-small.png');
 //                                }
 //                                else {
-//                                    item.setIcon(loadUrl.get('APP_URL') + '/cots/extjs/resources/images/default/tree/leaf.gif');
+//                                    item.setIcon(loadUrl.get('APP_URL') + '/cots/'+EXT_JS_FOLDER+'/resources/images/default/tree/leaf.gif');
 //                                }
 //                            }
 //                            return true;

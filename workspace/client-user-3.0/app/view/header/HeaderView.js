@@ -141,10 +141,10 @@ Ext.define('sitools.user.view.header.HeaderView', {
         if (SitoolsDesk.desktopMaximizeMode) {
             tpl = new Ext.XTemplate("<div style='left:{width - 60}px;' class='sitools-userContainer-arrow-border-up'></div>",
                     "<div style='left:{width - 60}px;' class='sitools-userContainer-arrow-up'></div>",
-                    "<div><img class='sitools-userContainer-icon' src='/sitools/cots/extjs/resources/images/default/window/icon-info.gif'>{text}</div>");
+                    "<div><img class='sitools-userContainer-icon' src='/sitools/cots/"+EXT_JS_FOLDER+"/resources/images/default/window/icon-info.gif'>{text}</div>");
         } else {
             tpl = new Ext.XTemplate(
-                    "<div><img class='sitools-userContainer-icon' src='/sitools/cots/extjs/resources/images/default/window/icon-info.gif'>{text}</div>",
+                    "<div><img class='sitools-userContainer-icon' src='/sitools/cots/"+EXT_JS_FOLDER+"/resources/images/default/window/icon-info.gif'>{text}</div>",
                     "<div style='left:{width - 60}px;' class='sitools-userContainer-arrow-border-down'></div>",
                     "<div style='left:{width - 60}px;' class='sitools-userContainer-arrow-down'></div>");
         }

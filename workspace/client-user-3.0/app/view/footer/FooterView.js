@@ -53,7 +53,7 @@ Ext.define('sitools.user.view.footer.FooterView', {
                             itemId : 'leftPanel',
                             border : false,
                             flex : 0.5,
-                            html : "<img id='sitools_logo' src='" + loadUrl.get("APP_URL") + "/res/images/logo_01_petiteTaille.png' alt='sitools_logo'/>",
+                            html : "<img id='sitools_logo' src='" + loadUrl.get("APP_URL") + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/logo_01_petiteTaille.png' alt='sitools_logo'/>",
                             bodyCls : 'no-background'
                         },
                         {

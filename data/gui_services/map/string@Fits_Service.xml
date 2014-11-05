@@ -9,7 +9,7 @@
   <xtype>sitools.user.component.dataviews.services.sitoolsFitsService</xtype>
   <dependencies>
     <js>
-      <url>
+      <!--<url>
         <url>/sitools/client-user/js/modules/sitoolsFitsViewer/lib/excanvas.compiled.js</url>
       </url>
       <url>
@@ -20,7 +20,7 @@
       </url>
       <url>
         <url>/sitools/client-user/js/components/datasetServices/sitoolsFitsService.js</url>
-      </url>
+      </url>-->
     </js>
     <css/>
   </dependencies>

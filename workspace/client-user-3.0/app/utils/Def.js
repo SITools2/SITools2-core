@@ -41,6 +41,8 @@ var URL_CGU = "/sitools/res/licences/cgu.html";
 var COOKIE_DURATION = 20;
 var MULTIDS_TIME_DELAY = 2000;
 var SITOOLS_DEFAULT_PROJECT_IMAGE_URL = "/sitools/res/images/sitools2_logo.png";
+var EXT_JS_VERSION=Ext.versions.extjs.version;
+var EXT_JS_FOLDER="extjs4/ext-"+EXT_JS_VERSION;
 /**
  * The nearLimit is a
      * parameter for the predictive fetch algorithm within the view. If your
@@ -51,7 +53,7 @@ var DEFAULT_NEAR_LIMIT_SIZE = 100;
 
 userLogin = Ext.util.Cookies.get('userLogin');
 
-Ext.BLANK_IMAGE_URL = '/sitools/cots/extjs/resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';
 Ext.USE_NATIVE_JSON  = DEFAULT_NATIVEJSON;
 Ext.Ajax.timeout = DEFAULT_TIMEOUT;
 var onBeforeRequest = function (conn, options) {

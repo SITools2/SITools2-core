@@ -33,6 +33,9 @@ var SHOW_HELP = true;
 var COOKIE_DURATION = 20;
 var SITOOLS_DATE_FORMAT = 'Y-m-d\\TH:i:s.u';
 var SITOOLS_DEFAULT_IHM_DATE_FORMAT = 'Y-m-d H:i:s.u';
+var EXT_JS_VERSION=Ext.versions.extjs.version;
+var EXT_JS_FOLDER="extjs4/ext-"+EXT_JS_VERSION;
+
 var JAVA_TYPES = [{
 	name : "String"
 }, {
@@ -177,7 +180,7 @@ var onRequestException = function (conn, response, options) {
 Ext.Ajax.on('requestexception', onRequestException, this);
 
 var helpUrl;
-Ext.BLANK_IMAGE_URL = '/sitools/cots/extjs/resources/images/default/s.gif';
+Ext.BLANK_IMAGE_URL = '/sitools/client-public/cots/'+EXT_JS_FOLDER+'/resources/themes/images/default/tree/s.gif';
 Ext.USE_NATIVE_JSON = DEFAULT_NATIVEJSON;
 Ext.Ajax.timeout = DEFAULT_TIMEOUT;
 // Default headers to pass in every request
