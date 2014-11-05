@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -78,19 +78,17 @@ public class UserStorageStatusResource extends SitoolsResource {
   public Representation getStatus(Variant variant) {
     Response response;
     Boolean forceRefresh = false;
-    
+
     if (userStorage == null) {
       response = new Response(false, "No user storage defined for that user");
     }
     else {
-     Parameter parameter = getRequest().getResourceRef().getQueryAsForm().get(0);
-     
-     if (parameter != null) {
-       if (parameter.getName().equals("forceRefresh")) {
-         forceRefresh = Boolean.valueOf(parameter.getValue());
-       }
-     }
-      
+      Parameter parameter = getRequest().getResourceRef().getQueryAsForm().getFirst("forceRefresh");
+
+      if (parameter != null && parameter.getValue() != null) {
+        forceRefresh = Boolean.valueOf(parameter.getValue());
+      }
+
       UserStorageManager.refresh(getContext(), userStorage, forceRefresh);
       store.update(userStorage);
       response = new Response(true, userStorage, UserStorage.class, "userstorage");

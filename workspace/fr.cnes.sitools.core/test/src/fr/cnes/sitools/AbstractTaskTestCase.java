@@ -70,7 +70,9 @@ import fr.cnes.sitools.role.RoleStoreXMLMap;
 import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
 import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
 import fr.cnes.sitools.security.authorization.AuthorizationApplication;
+import fr.cnes.sitools.security.authorization.AuthorizationStore;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
+import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
 import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
 import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
 import fr.cnes.sitools.security.userblacklist.UserBlackListStoreInterface;
@@ -85,6 +87,8 @@ import fr.cnes.sitools.tasks.exposition.TaskApplication;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.tasks.model.TaskStatus;
+import fr.cnes.sitools.util.FileCopyUtils;
+import fr.cnes.sitools.util.FileUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
 public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
@@ -184,10 +188,9 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
         JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity,
             appContextAuthorization);
 
-        File roleStoreDir = new File(settings.getStoreDIR(Consts.APP_ROLES_STORE_DIR) + "/map");
+        File roleStoreDir = new File(getTestRepository() + settings.getString(Consts.APP_ROLES_STORE_DIR) + "/map");
         roleStoreDir.mkdirs();
         RoleStoreInterface storeRole = new RoleStoreXMLMap(roleStoreDir, appContextAuthorization);
-
         // Realm
         smr = new SitoolsMemoryRealm(storeUandG, storeRole, settings);
 
@@ -202,9 +205,22 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
       this.component.getContext().getAttributes().put("APP_REALM", smr);
 
       if (storeAuthorization == null) {
-        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_AUTHORIZATIONS_STORE_DIR)
-            + "/map");
-        storeAuthorization = new AuthorizationStoreXMLMap(storeDirectory, appContextAuthorization);
+        String authPath = getTestRepository() + settings.getString(Consts.APP_AUTHORIZATIONS_STORE_DIR);
+        File authStoreDirectoryMap = new File(authPath + "/map");
+        authStoreDirectoryMap.mkdirs();
+        cleanDirectory(authStoreDirectoryMap);
+        String source = settings.getRootDirectory() + settings.getString("Tests.REFERENCE_STORE_DIR")
+            + settings.getString(Consts.APP_AUTHORIZATIONS_STORE_DIR);
+
+        FileCopyUtils.copyAFolderExclude(source, authPath, ".svn");
+
+        storeAuthorization = new AuthorizationStoreXMLMap(authStoreDirectoryMap, appContextAuthorization);
+
+        // Migrating Authorizations
+        AuthorizationStore storeAuthorizationOLD = new AuthorizationStoreXML(new File(authPath), appContextAuthorization);
+        if (storeAuthorization.getList().isEmpty()) {
+          storeAuthorization.saveList(storeAuthorizationOLD.getList());
+        }
       }
 
       appContextAuthorization.getAttributes().put(ContextAttributes.APP_STORE, storeAuthorization);
@@ -927,7 +943,7 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
 
         Representation result = responseRestlet.getEntity();
         assertNotNull(result);
-        assertTrue(responseRestlet.getStatus().isSuccess());
+        assertTrue(responseRestlet.getStatus().toString(), responseRestlet.getStatus().isSuccess());
         Response response = getResponse(getMediaTest(), result, TaskModel.class);
         assertTrue(response.getSuccess());
         TaskModel task = (TaskModel) response.getItem();
