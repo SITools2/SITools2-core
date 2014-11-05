@@ -1,5 +1,5 @@
 <guiService>
-  <id>e67b91ab-8c51-447b-add3-cefb1825a832</id>
+  <id>Fits_Service</id>
   <name>Fits Service</name>
   <description>service to display FITS image</description>
   <label>label.FitsService</label>

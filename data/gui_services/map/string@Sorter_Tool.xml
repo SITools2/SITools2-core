@@ -1,17 +1,17 @@
 <guiService>
-  <id>fb778415-7c64-41bb-9f55-be719e6ebc12</id>
-  <name>Filter Tool</name>
-  <description>a filter tool for dataset</description>
-  <label>label.filter</label>
+  <id>Sorter_Tool</id>
+  <name>Sorter Tool</name>
+  <description>a GUI service to sort</description>
+  <label>label.multiSort</label>
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/hmenu-asc-all.png</icon>
-  <xtype>sitools.user.component.datasets.services.FilterService</xtype>
+  <xtype>sitools.user.component.datasets.services.SorterService</xtype>
   <dependencies>
     <js/>
     <css/>
   </dependencies>
-  <priority>3</priority>
+  <priority>1</priority>
   <dataSetSelection>NONE</dataSetSelection>
   <defaultGuiService>true</defaultGuiService>
   <defaultVisibility>true</defaultVisibility>

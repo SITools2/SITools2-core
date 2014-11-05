@@ -1,5 +1,5 @@
 <guiService>
-  <id>cec5c162-41c8-4866-88eb-df21784dbb5e</id>
+  <id>Record_details_Service</id>
   <name>Record details Service</name>
   <description>Display the details of a selected record</description>
   <label>label.details</label>
