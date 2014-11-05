@@ -27,7 +27,8 @@ Ext.namespace('sitools.user.modules');
 Ext.define('sitools.user.modules.ContentEditor', {
     extend : 'sitools.user.core.Module',
     
-    controllers : ['sitools.user.controller.modules.contentEditor.ContentEditorController'],
+    controllers : ['sitools.user.controller.modules.contentEditor.ContentEditorController',
+                   'sitools.user.controller.modules.dataStorageExplorer.DataStorageExplorerBrowserController'],
     
     init : function () {
     	
