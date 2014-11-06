@@ -46,8 +46,7 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
         this.urlDatasetServiceServer = this.datasetUrl + "/services" + '/server/{idService}';
     },
     
-    callServerService : function (idService, selections) {
-        this.setSelections(selections);
+    callServerService : function (idService) {
         Ext.Ajax.request({
             url : this.urlDatasetServiceServer.replace('{idService}', idService),
             method : 'GET',
@@ -105,13 +104,6 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
         this.grid = cmp;
     },
     /**
-     * sets the selections attribute
-     * @param {} selections
-     */
-    setSelections : function (selections) {
-        this.selections = selections;
-    },
-    /**
      * Method called when a resource item is clicked.
      * 
      * @param {} resource The resource description
@@ -150,42 +142,47 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
         }
         var config = null, windowConfig = null, jsObj = null;
         if (showParameterBox && this.origin !== "sitools.user.modules.ProjectService") {
-        	
+        	windowConfig = {
+                title : i18n.get("label.resourceReqParam"), 
+                iconCls : "datasetRessource"
+            };
         	config = {
             		resource : resource,
             		url : url,
             		methods : methods,
             		runType : runType,
             		parameters : parameters,
-            		contextMenu : this,
+            		serverServiceUtil : this,
             		postParameter : postParameter,
             		callback : callback,
             		withSelection : (this.getNbRowsSelected() !== 0)
             };
             
-            var serviceParamComponent = Ext.create('sitools.user.component.services.ServiceParamComponent');
-            serviceParamComponent.create(this.projectServiceController.getApplication());
-            serviceParamComponent.init(config);
-            
-//            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+        	var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        	//On ouvre le composant
+        	sitoolsController.openComponent("sitools.user.component.services.ServiceParamComponent", config, windowConfig);
+        	
         }
         else if (showParameterBox) {
-            
+        	windowConfig = {
+                    title : i18n.get("label.resourceReqParam"), 
+                    iconCls : "datasetRessource"
+                };
             config = {
                 resource : resource,
                 url : url,
                 methods : methods,
                 runType : runType,
                 parameters : parameters,
-                contextMenu : this,
+                serverServiceUtil : this,
                 withSelection : false,
                 postParameter : postParameter,
                 callback : callback
             };
             
-            var serviceParamComponent = Ext.create('sitools.user.component.services.ServiceParamComponent');
-            serviceParamComponent.create(this.projectServiceController.getApplication());
-            serviceParamComponent.init(config);
+            var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        	//On ouvre le composant
+        	sitoolsController.openComponent("sitools.user.component.services.ServiceParamComponent", config, windowConfig);
             
 //            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
         }
@@ -227,7 +224,8 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
         var request = "";
         if (this.origin !== "sitools.user.modules.projectServices") {
 //            try {
-                request = this.grid.getRequestParam();
+                var params = this.grid.getRequestParam();
+                var request = Ext.Object.toQueryString(params);
 //            }
 //            catch (err) {
 //                Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.notImplementedService'), err));
@@ -235,7 +233,8 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
 //            }
         }
 
-        url += "?1=1" + request;
+        url += "?1=1&" + request;
+        console.log(decodeURIComponent(url));
         if (!Ext.isEmpty(limit)) {
             url += "&limit=" + limit;
         }

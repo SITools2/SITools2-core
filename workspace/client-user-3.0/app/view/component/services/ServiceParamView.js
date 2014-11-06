@@ -117,54 +117,12 @@ Ext.define('sitools.user.view.component.services.ServiceParamView', {
         
         this.buttons = [{
             text : i18n.get('label.submit'),
-            scope : this,
-            handler : this.onCall            
+            itemId : 'submit'
         }, {
             text : i18n.get('label.cancel'),
-            scope : this,
-            handler : function () {
-                this.ownerCt.close();
-                this.callback.call(undefined, false);
-            }
+            itemId : 'cancel'            
         }];
         this.callParent(arguments);
-    },
-    
-    onCall : function () {        
-        var method;
-        if (this.showMethod) {
-	        var form = this.formParams.getForm();
-	        method = form.findField("method").getValue();
-        }
-        else {
-			method = this.defaultMethod;	
-        }
-		
-        var runTypeUserInput;
-        if (this.showRunType) {
-			runTypeUserInput = this.formParamsUserInput.getForm().findField("runTypeUserInput").getValue();
-        }
-        else {
-			runTypeUserInput = this.runType;
-        }
-        var limit;
-
-        var userParameters = {};
-        if (!Ext.isEmpty(this.formParamsUserInput)) {
-            var formParams = this.formParamsUserInput.getForm();
-            Ext.iterate(formParams.getValues(), function (key, value) {
-                userParameters[key] = value;                
-            });
-        }
-        
-        Ext.each(this.parameters, function (param) {
-            if (param.type == "PARAMETER_IN_QUERY") {
-                userParameters[param.name] = param.value;
-            }
-        });
-        
-        this.contextMenu.onResourceCallClick(this.resource, this.url, method, runTypeUserInput, limit, userParameters, this.postParameter, this.callback);
-        this.ownerCt.close();
     },
     
     buildFormItemFromParam : function (value, userInputParams) {

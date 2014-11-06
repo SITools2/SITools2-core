@@ -180,26 +180,26 @@ Ext.define('sitools.user.controller.component.form.FormController', {
             if (Ext.isFunction(container.getParameterValue)) {
                 var param = container.getParameterValue();
                 if (!Ext.isEmpty(param)) {
-                    formParams.push(this.paramValueToApi(param));
+                    formParams.push(param);
                 }
             }
         }, this);
 
-        var allObjectParams = {};
-        Ext.each(formParams, function (param, index, arrayParams) {
-        	allObjectParams["p[" + index + "]"] = param;
-        });
+//        var allObjectParams = {};
+//        Ext.each(formParams, function (param, index, arrayParams) {
+//        	allObjectParams["p[" + index + "]"] = param;
+//        });
         
         if (Ext.isFunction(this.searchAction)) {
-            this.searchAction(allObjectParams, dataset, this.scope);
+            this.searchAction(formParams, dataset, this.scope);
         }
         else {
-            this.defaultSearchAction(allObjectParams, dataset);
+            this.defaultSearchAction(formParams, dataset);
         }
         
     },
     
-    defaultSearchAction : function (allObjectParams, dataset) {
+    defaultSearchAction : function (formParams, dataset) {
         var windowConfig = {
 //            id : "windResultForm" + config.formId,
             title : i18n.get('label.dataTitle') + " : " + dataset.name, 
@@ -209,21 +209,13 @@ Ext.define('sitools.user.controller.component.form.FormController', {
             iconCls : "dataviews"
         };
         
-//        var existingDataset;
-//        if (existingDataset = Ext.getCmp(dataset.id)) {
-//        	existingDataset.close(function () {
-//                alert('ta merer');
-//            });
-//        }
+        var componentsConfig = {
+        	formFilters : formParams,
+        	dataset : dataset
+        };
         
-        var datasetViewComponent = Ext.create(dataset.datasetView.jsObject);
-        datasetViewComponent.create(this.getApplication());
-        dataset.formParams = allObjectParams;
-        datasetViewComponent.init(dataset, allObjectParams);
-        
-//        var control = this.getApplication().getController(dataset.datasetView.jsObject);
-//        control.onLaunch(this.getApplication()); 
-//        control.openDataset(dataset, windowConfig);
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        sitoolsController.openComponent(dataset.datasetView.jsObject, componentsConfig, windowConfig);
     }, 
     
     _getSettings : function () {

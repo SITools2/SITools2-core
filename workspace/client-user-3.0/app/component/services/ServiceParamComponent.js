@@ -30,7 +30,8 @@ Ext.namespace('sitools.user.component.services');
 Ext.define('sitools.user.component.services.ServiceParamComponent', {
     extend : 'sitools.user.core.Component',
     
-    controllers : ['sitools.user.controller.modules.projectService.ProjectServiceController'],
+    controllers : ['sitools.user.controller.modules.projectService.ProjectServiceController',
+                   'sitools.user.controller.component.services.ServiceParamController'],
     
     init : function (componentCfg) {
         

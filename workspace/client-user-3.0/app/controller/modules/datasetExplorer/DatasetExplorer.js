@@ -90,9 +90,17 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                         switch(node.get("type")) {
                         case "data" :
                             var dataset = node.get("properties").dataset;
-                            var datasetViewComponent  = Ext.create(dataset.datasetView.jsObject);
-                            datasetViewComponent.create(this.getApplication());
-                            datasetViewComponent.init(dataset);
+//                            var datasetViewComponent  = Ext.create(dataset.datasetView.jsObject);
+//                            datasetViewComponent.create(this.getApplication());
+//                            datasetViewComponent.init(dataset);
+                            
+                            var componentsConfig = {
+                            		dataset : dataset
+                            };
+                            
+                            var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+                            sitoolsController.openComponent(dataset.datasetView.jsObject, componentsConfig, {});
+                            
                             break;
                         case "defi" : 
                             var columnDefinition  = Ext.create("sitools.user.component.datasets.columnsDefinition.ColumnsDefinition");

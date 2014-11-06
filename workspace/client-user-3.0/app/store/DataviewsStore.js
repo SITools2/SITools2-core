@@ -56,10 +56,25 @@ Ext.define('sitools.user.store.DataviewsStore', {
     pageSize : 300,
     buffered : true,
     
+    config : {
+    	// Object definition of the filters
+    	formFilters : null,
+    	// Object of string parameters corresponding to the filters definition
+    	formParams : null,
+    	// list of object filters added by the filter service
+    	servicefilters : null
+    },
+    
     paramPrefix : "filter",
 
     constructor : function (config) {
         config = Ext.apply({}, config);
+        
+        this.setFormFilters(config.formFilters);
+        
+        if(!Ext.isEmpty(this.getFormFilters())) {
+        	this.setFormParams(this.buildFormParamsUrl(this.getFormFilters()));
+        }
 
         Ext.apply(config, {
             fields : config.fields,
@@ -107,25 +122,25 @@ Ext.define('sitools.user.store.DataviewsStore', {
                         Ext.apply(options.params, params);
                     }
 
-                    if ((this.sortInfo || this.multiSortInfo) && this.remoteSort) {
-                        var pn = this.paramNames;
-                        options.params = Ext.apply({}, options.params);
-                        this.isInSort = true;
-                        var root = pn.sort;
-                        if (this.hasMultiSort) {
-                            options.params[pn.sort] = Ext.encode({
-                                "ordersList" : this.multiSortInfo.sorters
-                            });
-                        } else {
-                            options.params[pn.sort] = Ext.encode({
-                                "ordersList" : [ this.sortInfo ]
-                            });
-                        }
-                    }
+//                    if ((this.sortInfo || this.multiSortInfo) && this.remoteSort) {
+//                        var pn = this.paramNames;
+//                        options.params = Ext.apply({}, options.params);
+//                        this.isInSort = true;
+//                        var root = pn.sort;
+//                        if (this.hasMultiSort) {
+//                            options.params[pn.sort] = Ext.encode({
+//                                "ordersList" : this.multiSortInfo.sorters
+//                            });
+//                        } else {
+//                            options.params[pn.sort] = Ext.encode({
+//                                "ordersList" : [ this.sortInfo ]
+//                            });
+//                        }
+//                    }
                     
                     // adding optional form parameters 
-                    if (!Ext.isEmpty(store.formParams)) {
-                    	Ext.apply(operation.params, store.formParams);
+                    if (!Ext.isEmpty(store.getFormParams())) {
+                    	Ext.apply(operation.params, store.getFormParams());
                     }
                     
                     if (!Ext.isEmpty(store.servicefilters) && Ext.isFunction(store.servicefilters.getFilterData)) {
@@ -164,5 +179,28 @@ Ext.define('sitools.user.store.DataviewsStore', {
             }
         }
         return p;
+    },
+    /**
+     * Build a string using a form param Value. 
+     * @param {} paramValue An object with attributes : at least type, code, value and optionnal userDimension, userUnit
+     * @return {string} something like "TEXTFIELD|ColumnAlias|value"
+     */
+    paramValueToApi : function (paramValue) {
+        var stringParam = paramValue.type + "|" + paramValue.code + "|" + paramValue.value;
+        if (!Ext.isEmpty(paramValue.userDimension) && !Ext.isEmpty(paramValue.userUnit)) {
+            stringParam += "|" + paramValue.userDimension + "|" + paramValue.userUnit.unitName; 
+        }  
+        return stringParam;
+    },
+    
+    /**
+     * Build a string path from the given formFilters
+     */
+    buildFormParamsUrl : function (formFilters) {
+    	var formParams={};
+    	Ext.each(formFilters, function (filter, index, arrayParams) {
+    		formParams["p[" + index + "]"] = this.paramValueToApi(filter);
+        }, this);
+    	return formParams;
     }
 });

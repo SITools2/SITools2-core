@@ -42,7 +42,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
                 },
                 afterrender : function (livegrid) {
                      this.serverServiceUtil = Ext.create('sitools.user.utils.ServerServiceUtils', {
-				        datasetUrl : livegrid.datasetUrl,
+				        datasetUrl : livegrid.sitoolsAttachementForUsers,
 				        grid : livegrid,
 				        origin : 'sitools.user.view.component.datasets.dataviews.LivegridView'
 				    });
@@ -59,7 +59,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
     callService : function (button) {
         if (button.typeService === 'SERVER') {
             var dataview = button.up("livegridView");
-            this.serverServiceUtil.callServerService(button.idService, dataview.getSelections());
+            this.serverServiceUtil.callServerService(button.idService);
         } else if (button.typeService === 'GUI') {
             
             var idService = button.idService;

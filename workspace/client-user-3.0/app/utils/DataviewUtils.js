@@ -35,10 +35,10 @@ Ext.define('sitools.user.utils.DataviewUtils', {
      * @param [Ext.data.Record] recSelected the selected records
      * @returns {} this object contains the param that will use FORM API 
      */
-    getFormParamsFromRecsSelected : function (recSelected) {
+    getParamsFromRecsSelected : function (recSelected) {
         var rec = recSelected[0], result = {};
         var primaryKeyName = "";
-        Ext.each(rec.fields.items, function (field) {
+        rec.fields.each(function (field) {
             if (field.primaryKey) {
                 primaryKeyName = field.name;
             }

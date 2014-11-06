@@ -37,32 +37,40 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                 'sitools.user.store.DataviewsStore'],
     
     /**
-     * @require dataset
-     * @optionnal formParams
+     * @param {Object} componentConfig config object
+     * 
+     * @param {DatasetModel} dataset.dataset the dataset definition
+     * @optionnal {Array} dataset.formFilters formFilters
      */
 //    init : function (dataset, formParams) {
 	init : function (componentConfig, windowConfig) {
         
 		var windowSettings = {}, componentSettings = {};
 		
-        var dataviewConfig = sitoolsUtils.arrayProperties2Object(componentConfig.datasetViewConfig);
+		var dataset = componentConfig.dataset;
+		
+		if (Ext.isEmpty(dataset)) {
+			Ext.MessageBox.alert(i18n.get('label.warning'), i18n.get("label.notdatasetprovided"));
+		}
+		
+        var dataviewConfig = sitoolsUtils.arrayProperties2Object(dataset.datasetViewConfig);
 
-        var fields = this.getFields(componentConfig.columnModel);
-        var columns = this.getColumns(componentConfig.columnModel, componentConfig.dictionaryMappings, dataviewConfig);
-        var primaryKey = this.getPrimaryKey(componentConfig);
+        var fields = this.getFields(dataset.columnModel);
+        var columns = this.getColumns(dataset.columnModel, dataset.dictionaryMappings, dataviewConfig);
+        var primaryKey = this.getPrimaryKey(dataset);
         
         var datasetStore = Ext.create("sitools.user.store.DataviewsStore", {
             fields : fields,
-            urlAttach : componentConfig.sitoolsAttachementForUsers,
+            urlAttach : dataset.sitoolsAttachementForUsers,
             primaryKey : primaryKey,
-            formParams : componentConfig.formParams
+            formFilters : componentConfig.formFilters
         });
         
         Ext.apply(windowSettings, windowConfig, {
-        	datasetName : componentConfig.name,
+        	datasetName : dataset.name,
             type : "data",
-            title : i18n.get('label.datasets') + " : " + componentConfig.name,
-            id : "dataset_" + componentConfig.id,
+            title : i18n.get('label.datasets') + " : " + dataset.name,
+            id : "dataset_" + dataset.id,
 //            id : Ext.id(),
             saveToolbar : true,
             winWidth : 900,
@@ -71,13 +79,13 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             typeWindow : 'data'
         });
         
-        Ext.apply(componentSettings, componentConfig, {
-            dataset : componentConfig,
+        Ext.apply(componentSettings, dataset, {
+            dataset : dataset,
             store : datasetStore,
-            preferencesPath : "/" + componentConfig.name + "/datasets",
-            preferencesFileName : componentConfig.name,
+            preferencesPath : "/" + dataset.name + "/datasets",
+            preferencesFileName : dataset.name,
             columns : columns,
-            urlRecords : componentConfig.sitoolsAttachementForUsers + '/records',
+            urlRecords : dataset.sitoolsAttachementForUsers + '/records',
             scope : this
             // searchAction : this.searchAction,
         });
