@@ -1,18 +1,17 @@
 <resourceAuthorization>
-  <id>urn:uuid:TaskApplicationForUser:type:fr.cnes.sitools.server.Starter$8</id>
+  <id>urn:uuid:TaskApplicationForUser:type:fr.cnes.sitools.server.Starter$9</id>
   <name>TaskApplicationForUser</name>
   <description>Exposes the list of tasks for a particular user</description>
   <url>/sitools/userresource/{identifier}/tasks</url>
   <authorizations>
     <authorize>
-      <role>public</role>
+      <role>Administrator</role>
       <ALL>true</ALL>
-      <POST>false</POST>
-      <GET>false</GET>
-      <PUT>false</PUT>
-      <DELETE>false</DELETE>
-      <HEAD>false</HEAD>
-      <OPTIONS>false</OPTIONS>
+    </authorize>
+    <authorize>
+      <role>public</role>
+      <ALL>false</ALL>
+      <GET>true</GET>
     </authorize>
   </authorizations>
 </resourceAuthorization>

@@ -22,22 +22,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.restlet.Client;
-import org.restlet.Component;
 import org.restlet.Context;
 import org.restlet.Request;
-import org.restlet.Restlet;
 import org.restlet.data.ChallengeResponse;
 import org.restlet.data.ChallengeScheme;
 import org.restlet.data.MediaType;
@@ -58,64 +51,17 @@ import com.thoughtworks.xstream.XStream;
 import fr.cnes.sitools.common.SitoolsSettings;
 import fr.cnes.sitools.common.SitoolsXStreamRepresentation;
 import fr.cnes.sitools.common.XStreamFactory;
-import fr.cnes.sitools.common.application.ContextAttributes;
-import fr.cnes.sitools.common.model.Category;
 import fr.cnes.sitools.common.model.Response;
-import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSource;
-import fr.cnes.sitools.datasource.jdbc.business.SitoolsSQLDataSourceFactory;
-import fr.cnes.sitools.plugins.resources.ResourcePluginStoreInterface;
-import fr.cnes.sitools.plugins.resources.ResourcePluginStoreXMLMap;
-import fr.cnes.sitools.role.RoleStoreInterface;
-import fr.cnes.sitools.role.RoleStoreXMLMap;
-import fr.cnes.sitools.security.JDBCUsersAndGroupsStore;
-import fr.cnes.sitools.security.authentication.SitoolsMemoryRealm;
-import fr.cnes.sitools.security.authorization.AuthorizationApplication;
-import fr.cnes.sitools.security.authorization.AuthorizationStore;
-import fr.cnes.sitools.security.authorization.AuthorizationStoreInterface;
-import fr.cnes.sitools.security.authorization.AuthorizationStoreXML;
-import fr.cnes.sitools.security.authorization.AuthorizationStoreXMLMap;
-import fr.cnes.sitools.security.authorization.client.ResourceAuthorization;
-import fr.cnes.sitools.security.userblacklist.UserBlackListStoreInterface;
-import fr.cnes.sitools.security.userblacklist.UserBlackListStoreXMLMap;
 import fr.cnes.sitools.server.Consts;
-import fr.cnes.sitools.tasks.TaskStoreInterface;
-import fr.cnes.sitools.tasks.TaskStoreXMLMap;
 import fr.cnes.sitools.tasks.TaskUtils;
 import fr.cnes.sitools.tasks.business.Task;
 import fr.cnes.sitools.tasks.business.TaskManager;
-import fr.cnes.sitools.tasks.exposition.TaskApplication;
 import fr.cnes.sitools.tasks.model.TaskModel;
 import fr.cnes.sitools.tasks.model.TaskResourceModel;
 import fr.cnes.sitools.tasks.model.TaskStatus;
-import fr.cnes.sitools.util.FileCopyUtils;
-import fr.cnes.sitools.util.FileUtils;
 import fr.cnes.sitools.util.RIAPUtils;
 
-public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
-
-  /**
-   * static xml store instance for the test
-   */
-  private static TaskStoreInterface store = null;
-
-  /**
-   * static xml store instance for the test
-   */
-  private static ResourcePluginStoreInterface storeResource = null;
-  /**
-   * static xml store instance for the test
-   */
-  private static UserBlackListStoreInterface storeBlacklist = null;
-
-  /** The SitoolsMemoryRealm */
-  private static SitoolsMemoryRealm smr = null;
-  /** AuthorizationStore */
-  private AuthorizationStoreInterface storeAuthorization;
-
-  /**
-   * Restlet Component for server
-   */
-  private Component component = null;
+public class AbstractTaskTestCase extends AbstractSitoolsServerTestCase {
 
   private String userAdminId = "admin";
   private String userAdminPwd = "admin";
@@ -156,182 +102,6 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
   protected String getBaseUrlUser() {
     return super.getBaseUrl() + SitoolsSettings.getInstance().getString(Consts.APP_USERRESOURCE_ROOT_URL)
         + "/{identifier}" + SitoolsSettings.getInstance().getString(Consts.APP_TASK_URL);
-  }
-
-  @Before
-  @Override
-  /**
-   * Init and Start a server with TaskApplication
-   *
-   * @throws java.lang.Exception
-   */
-  public void setUp() throws Exception {
-    SitoolsSettings settings = SitoolsSettings.getInstance();
-
-    if (this.component == null) {
-      this.component = new Component();
-      this.component.getServers().add(Protocol.HTTP, getTestPort());
-      this.component.getClients().add(Protocol.HTTP);
-      this.component.getClients().add(Protocol.FILE);
-      this.component.getClients().add(Protocol.CLAP);
-
-      // Context
-      Context appContextAuthorization = this.component.getContext().createChildContext();
-      appContextAuthorization.getAttributes().put(ContextAttributes.SETTINGS, settings);
-
-      if (smr == null) {
-        SitoolsSQLDataSource dsSecurity = SitoolsSQLDataSourceFactory
-            .getInstance()
-            .setupDataSource(
-                settings.getString("Starter.DATABASE_DRIVER"), settings.getString("Starter.DATABASE_URL"), settings.getString("Starter.DATABASE_USER"), settings.getString("Starter.DATABASE_PASSWORD"), settings.getString("Starter.DATABASE_SCHEMA")); //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-        JDBCUsersAndGroupsStore storeUandG = new JDBCUsersAndGroupsStore("SitoolsJDBCStore", dsSecurity,
-            appContextAuthorization);
-
-        File roleStoreDir = new File(getTestRepository() + settings.getString(Consts.APP_ROLES_STORE_DIR) + "/map");
-        roleStoreDir.mkdirs();
-        RoleStoreInterface storeRole = new RoleStoreXMLMap(roleStoreDir, appContextAuthorization);
-        // Realm
-        smr = new SitoolsMemoryRealm(storeUandG, storeRole, settings);
-
-      }
-
-      // attachment du sitoolsMemoryRealm
-      this.component.getContext().setDefaultEnroler(smr.getEnroler());
-      this.component.getContext().setDefaultVerifier(smr.getVerifier());
-
-      // Set global AuthenticationRealm in SitoolsProperties.
-      settings.setAuthenticationRealm(smr);
-      this.component.getContext().getAttributes().put("APP_REALM", smr);
-
-      if (storeAuthorization == null) {
-        String authPath = getTestRepository() + settings.getString(Consts.APP_AUTHORIZATIONS_STORE_DIR);
-        File authStoreDirectoryMap = new File(authPath + "/map");
-        authStoreDirectoryMap.mkdirs();
-        cleanDirectory(authStoreDirectoryMap);
-        String source = settings.getRootDirectory() + settings.getString("Tests.REFERENCE_STORE_DIR")
-            + settings.getString(Consts.APP_AUTHORIZATIONS_STORE_DIR);
-
-        FileCopyUtils.copyAFolderExclude(source, authPath, ".svn");
-
-        storeAuthorization = new AuthorizationStoreXMLMap(authStoreDirectoryMap, appContextAuthorization);
-
-        // Migrating Authorizations
-        AuthorizationStore storeAuthorizationOLD = new AuthorizationStoreXML(new File(authPath), appContextAuthorization);
-        if (storeAuthorization.getList().isEmpty()) {
-          storeAuthorization.saveList(storeAuthorizationOLD.getList());
-        }
-      }
-
-      appContextAuthorization.getAttributes().put(ContextAttributes.APP_STORE, storeAuthorization);
-
-      // Application
-      AuthorizationApplication appAuthorization = new AuthorizationApplication(appContextAuthorization);
-
-      // Attachement
-      component.getInternalRouter().attach(settings.getString(Consts.APP_AUTHORIZATIONS_URL), appAuthorization);
-
-      settings.setStores(new HashMap<String, Object>());
-
-      // Context
-      Context appContext = this.component.getContext().createChildContext();
-      appContext.getAttributes().put(ContextAttributes.SETTINGS, settings);
-
-      if (store == null) {
-        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_TASK_STORE_DIR) + "/map");
-        storeDirectory.mkdirs();
-        cleanDirectory(storeDirectory);
-        cleanMapDirectories(storeDirectory);
-        store = new TaskStoreXMLMap(storeDirectory, appContext);
-      }
-
-      if (storeResource == null) {
-        File storeDirectory = new File(getTestRepository() + settings.getString(Consts.APP_PLUGINS_RESOURCES_STORE_DIR)
-            + "/map");
-        storeDirectory.mkdirs();
-        cleanDirectory(storeDirectory);
-        cleanMapDirectories(storeDirectory);
-        storeResource = new ResourcePluginStoreXMLMap(storeDirectory, appContext);
-      }
-
-      if (storeBlacklist == null) {
-        File storeBlacklistDirectory = new File(getTestRepository()
-            + settings.getString(Consts.APP_USER_BLACKLIST_STORE_DIR) + "/map");
-        storeBlacklistDirectory.mkdirs();
-        cleanDirectory(storeBlacklistDirectory);
-        storeBlacklist = new UserBlackListStoreXMLMap(storeBlacklistDirectory, appContext);
-      }
-
-      settings.getStores().put(Consts.APP_STORE_USER_BLACKLIST, storeBlacklist);
-
-      appContext.getAttributes().put(ContextAttributes.APP_STORE, store);
-      appContext.getAttributes().put(Consts.APP_STORE_PLUGINS_RESOURCES, storeResource);
-      appContext.getAttributes().put("APP_REALM", smr);
-
-      final String identifier = "identifier";
-
-      TaskApplication taskUser = new TaskApplication(appContext) {
-        @Override
-        public void sitoolsDescribe() {
-          setCategory(Category.USER);
-          this.setName("TaskApplication for user");
-          this.setDescription("TaskApplication");
-        }
-
-        // On ajoute un authorizer spécifique pour qu'un user puisse avoir que ses taches.
-        @Override
-        public Restlet getSecure() {
-          // GET, PUT and DELETE authorized for public tasks on this application
-          // it means that public user can retrieve, edit or delete every public tasks, but only public tasks
-          List<Method> methods = new ArrayList<Method>();
-          methods.add(Method.GET);
-          methods.add(Method.PUT);
-          methods.add(Method.DELETE);
-          methods.add(Method.OPTIONS);
-          return addSecurity(this, identifier, methods);
-        }
-      };
-      // create an authorization on the taskUser
-      ResourceAuthorization author = new ResourceAuthorization();
-      author.setId(taskUser.getId());
-      author.setName(taskUser.getName());
-      author.setUrl(taskUser.getAttachementRef());
-
-      storeAuthorization.create(author);
-
-      Restlet taskUserRestlet = taskUser.getSecure();
-      this.component.getDefaultHost().attach(getAttachUrlUser(), taskUserRestlet);
-
-      TaskApplication taskAdmin = new TaskApplication(appContext) {
-        @Override
-        public void sitoolsDescribe() {
-          setCategory(Category.ADMIN);
-          this.setName("TaskApplication for admin");
-          this.setDescription("TaskApplication");
-        }
-      };
-
-      this.component.getDefaultHost().attach(getAttachUrlAdmin(), taskAdmin);
-      // Attachement
-      component.getInternalRouter().attach(settings.getString(Consts.APP_TASK_URL), taskAdmin);
-
-    }
-
-    if (!this.component.isStarted()) {
-      this.component.start();
-    }
-  }
-
-  @After
-  @Override
-  /**
-   * Stop server
-   * @throws java.lang.Exception
-   */
-  public void tearDown() throws Exception {
-    super.tearDown();
-    this.component.stop();
-    this.component = null;
   }
 
   @Test
@@ -957,30 +727,6 @@ public class AbstractTaskTestCase extends AbstractSitoolsTestCase {
     }
     return null;
 
-  }
-
-  @Test
-  public void createTaskRIAP() {
-
-    String userId = "admin";
-    assertNone(null, null, false);
-
-    TaskModel taskModel = new TaskModel();
-    taskModel.setName("A task");
-    taskModel.setDescription("A task created the rest way with RIAP");
-    taskModel.setUserId(userId);
-
-    SitoolsSettings settings = SitoolsSettings.getInstance();
-
-    String url = settings.getString(Consts.APP_TASK_URL);
-
-    TaskModel taskModelPersist = RIAPUtils.persistObject(taskModel, url, this.component.getContext());
-
-    retrieveTasks(null, 1, null, false);
-    // On supprime à la main
-    deleteTask(null, taskModelPersist.getId(), null, false);
-
-    assertNone(null, null, false);
   }
 
   // ------------------------------------------------------------
