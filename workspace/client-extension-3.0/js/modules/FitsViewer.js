@@ -32,15 +32,16 @@ Ext.define('sitools.extension.modules.FitsViewer', {
     
     //requires : [],
     
-    js : ['fits',
-        'binaryajax',
-        'excanvasCompiled',
-        'FitsLoader',
-        'flotr2Min',
-        'astroFits',
-        'Histogram',
-        'vec3',
-        'wcs'
+    js : ['fits.js',
+        'binaryajax.js',
+        'excanvasCompiled.js',
+        'FitsLoader.js',
+        'flotr2Min.js',
+        'astroFits.js',
+        'Histogram.js',
+        'vec3.js',
+        'wcs.js',
+        'ColorMap.js'
     ],
     
     css : ['fits.css'],
@@ -49,6 +50,7 @@ Ext.define('sitools.extension.modules.FitsViewer', {
         this.callParent(arguments);
         
 //        var localI18n = I18nRegistry.retrieve('fitsViewer');
+//        alert(localI18n.get("label.title"));
         
         var view = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerMainView');
         this.show(view);

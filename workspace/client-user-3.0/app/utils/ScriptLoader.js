@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/* global Ext */
+/*global Ext */
 Ext.namespace('sitools.user.utils');
 
 /**
@@ -24,49 +24,48 @@ Ext.namespace('sitools.user.utils');
 Ext.define('sitools.user.utils.ScriptLoader', {
     singleton : true,
     scriptLoaded : Ext.create("Ext.util.MixedCollection"),
-    
-    
+
     loadScript : function (url, callback, onError, scope) {
-    	if(Ext.isEmpty(this.scriptLoaded.get(url))) {
-	    	Ext.Loader.loadScript({
-	    		url : url,
-	    		onLoad : function () {
-	    			this.scriptLoaded.add(url, true);
-	    			Ext.callback(callback, scope, arguments);
-	    		},
-	    		onError : onError,
-	    		scope : this
-	    	});
-    	} else {
-    		Ext.callback(callback, scope, arguments);
-    	}
+        if (Ext.isEmpty(this.scriptLoaded.get(url))) {
+            Ext.Loader.loadScript({
+                url : url,
+                onLoad : function () {
+                    this.scriptLoaded.add(url, true);
+                    Ext.callback(callback, scope, arguments);
+                },
+                onError : onError,
+                scope : this
+            });
+        } else {
+            Ext.callback(callback, scope, arguments);
+        }
     },
-    
+
     loadScripts : function (urls, callback, onError, scope) {
-    	this.doLoadScripts(urls, callback, onError, scope, 0);
+        this.doLoadScripts(urls, callback, onError, scope, 0);
     },
-    
+
     /**
-	 * @private
-	 * 
-	 */
+     * @private
+     * 
+     */
     doLoadScripts : function (urls, callback, onError, scope, indexAInclure) {
-    	if(Ext.isEmpty(indexAInclure)){
-    		return;
-    	}
-    	
-    	if(indexAInclure >= urls.length) {
-    		Ext.callback(callback, scope, arguments);
-    		return;
-    	}
-    	
-    	var futureIndexAInclure = indexAInclure+1;
-    	
-    	this.loadScript(urls[indexAInclure], function() {
-    		this.doLoadScripts(urls, callback, onError, scope, futureIndexAInclure);
-    	}, onError, this);
-    } 
-    
+        if (Ext.isEmpty(indexAInclure)) {
+            return;
+        }
+
+        if (indexAInclure >= urls.length) {
+            Ext.callback(callback, scope, arguments);
+            return;
+        }
+
+        var futureIndexAInclure = indexAInclure + 1;
+
+        this.loadScript(urls[indexAInclure], function () {
+            this.doLoadScripts(urls, callback, onError, scope, futureIndexAInclure);
+        }, onError, this);
+    }
+
 });
 
 ScriptLoader = sitools.user.utils.ScriptLoader;

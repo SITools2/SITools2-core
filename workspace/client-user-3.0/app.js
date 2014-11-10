@@ -12,7 +12,6 @@ Ext.application({
     paths : {
         "Ext.ux" : "../client-public/js/ux",
         "sitools.public" : "../client-public/js",
-        "sitools.extension" : "../client-extension/js",
-       	"sitools.ext.resources" : "../client-extension/resources/libs"
+        "sitools.extension" : "../client-extension/js"
     }
 });

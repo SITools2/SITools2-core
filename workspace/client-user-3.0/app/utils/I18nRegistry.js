@@ -37,14 +37,14 @@ Ext.define('sitools.user.utils.I18nRegistry', {
      * @see sitools.public.utils.i18n
      */
     register : function (name, url, callback, onfailure, scope) {
-    	if(Ext.isEmpty(this.retrieve(name))) {
-	    	var i18nLocal = Ext.create("sitools.public.utils.i18n");
-	    	this.map.add(name, i18nLocal);
-	    	i18nLocal.doLoad(url, callback, onfailure, scope);
-	    	return true;
-    	} else {
-    		return false;
-    	}
+        if (Ext.isEmpty(this.retrieve(name))) {
+            var i18nLocal = Ext.create("sitools.public.utils.i18n");
+            this.map.add(name, i18nLocal);
+            i18nLocal.doLoad(url, callback, onfailure, scope);
+            return true;
+        } else {
+            return false;
+        }
     },
 
     retrieve : function (name) {
