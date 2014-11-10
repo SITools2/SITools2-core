@@ -36,13 +36,15 @@ Ext.namespace('sitools.user.view.component.datasets.dataviews');
 Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     extend : 'Ext.grid.Panel',
     
+    requires : ['sitools.user.view.component.datasets.dataviews.CheckboxModel'],
+    
     alias : 'widget.livegridView',
     layout : 'fit',
     autoScroll : true,
     bodyBorder : false,
     border : false,
     plugins: {
-    	pluginId : 'renderer',
+        pluginId : 'renderer',
         ptype : 'bufferedrenderer',
         trailingBufferZone: 20,  // Keep 20 rows rendered in the table behind scroll
         leadingBufferZone: 50,   // Keep 50 rows rendered in the table ahead of scroll,
@@ -55,7 +57,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     },
     
     initComponent : function () {
-        
         this.selModel = new Ext.create("sitools.user.view.component.datasets.dataviews.CheckboxModel", {
             checkOnly : true,
             pruneRemoved : false,
@@ -131,64 +132,83 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         return array;
     },
     
-    //generic method
+
+    // generic method
     getSelections : function () {
-    	return this.getSelectionModel().getSelection();
+        return this.getSelectionModel().getSelection();
     },
     
+
     getRequestColumnModel : function () {
-    	var params = {};
-        
+        var params = {};
+
         var colModel = extColModelToSrv(this.columns);
         if (!Ext.isEmpty(colModel)) {
-        	params["colModel"] = Ext.JSON.encode(colModel);
+            params["colModel"] = Ext.JSON.encode(colModel);
         }
         return params;
     },
     
+
     getRequestParam : function () {
-    	var params = {};
-    	
-    	Ext.apply(params, this.getRequestColumnModel());
-    	Ext.apply(params, this.getSelectionParam());
-    	//If a simple selection is done, don't add the form params as the selection is done on the ids
-    	if(Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])){
-    		Ext.apply(params, this.getRequestFilterParams());
-    	} 
-    	Ext.apply(params, this.getSortParams());
-    	
-    	return params;
+        var params = {};
+
+        Ext.apply(params, this.getRequestColumnModel());
+        Ext.apply(params, this.getSelectionParam());
+        // If a simple selection is done, don't add the form params as the
+        // selection is done on the ids
+        if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
+            Ext.apply(params, this.getRequestFormFilterParams());
+            Ext.apply(params, this.this.getRequestGridFilterParams());
+            Ext.apply(params, this.getSortParams());
+        }
+
+        return params;
     },
     
     /**
      * Return all request parameters without the column model and selection
      * @return {String} 
      */
-    getRequestFilterParams : function () {
+    getRequestFormFilterParams : function () {
+        //add the form params
+        return this.store.getFormParams();
+    },
+
+    /**
+     * Return all request parameters without the column model and selection
+     * @return {String} 
+     */
+    getRequestGridFilterParams : function () {
         var params = {};
         // Add the filters params
         if (!Ext.isEmpty(this.getStore().servicefilters) && Ext.isFunction(this.getStore().servicefilters.getFilterData)) {
-        	Ext.apply(params, this.store.buildQuery(this.store.servicefilters.getFilterData()));
+            var gridFiltersParam = this.store.servicefilters.getFilterData();
+            if (!Ext.isEmpty(gridFiltersParam)) {
+                params.filter = [];
+                Ext.each(gridFiltersParam, function (filter, index) {
+                    params.filter[index] = filter;
+                });
+            }
         }
-       
-        //add the form params
-        Ext.apply(params, this.store.getFormParams());
         return params;
     },
-    
+
     getSortParams : function () {
-    	 //add the sorters
+        // add the sorters
         var sortersCfg = this.store.sorters;
-        
+
         var sorters = [];
-        this.store.sorters.each(function(sorter){
+        this.store.sorters.each(function (sorter) {
             sorters.push({
                 field : sorter.property,
-                direction: sorter.direction
-            });       	
+                direction : sorter.direction
+            });
         }, this);
-        
-    	return {sort : Ext.JSON.encode(sorters)};
+
+        return {
+            sort : Ext.JSON.encode(sorters)
+        };
     },
     
     /**
@@ -206,25 +226,23 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
      */
     getSelectionParam : function () {
         var sm = this.getSelectionModel(), param = {};
-        
-        if (this.isAllSelected()) {
-            //First Case : all the dataset is selected.
-            param["ranges"]="[[0," + (this.store.getTotalCount() - 1) + "]]";
-        }
-        else /*if (Ext.isEmpty(sm.getPendingSelections()))*/ {
-            //second Case : no pending Selections
-        	var recSelected = sm.getSelection();
-			param = sitools.user.utils.DataviewUtils.getParamsFromRecsSelected(recSelected);
-        }
-        /*else {
-        	//TODO
-            //Third Case : there is a pending Selection, send all the ranges.
-//            var ranges = sm.getAllSelections(true);
-//            result = "ranges=" + Ext.JSON.encode(ranges);
-//            //We have to re-build all the request in case we use a range selection.
-//            result += this.getRequestUrlWithoutSelection();
 
-        }*/
+        if (this.isAllSelected()) {
+            // First Case : all the dataset is selected.
+            param.ranges = "[[0," + (this.store.getTotalCount() - 1) + "]]";
+        } else /* if (Ext.isEmpty(sm.getPendingSelections())) */{
+            // second Case : no pending Selections
+            var recSelected = sm.getSelection();
+            param = sitools.user.utils.DataviewUtils.getParamsFromRecsSelected(recSelected);
+        }
+        /*
+         * else { //TODO //Third Case : there is a pending Selection, send all
+         * the ranges. // var ranges = sm.getAllSelections(true); // result =
+         * "ranges=" + Ext.JSON.encode(ranges); // //We have to re-build all the
+         * request in case we use a range selection. // result +=
+         * this.getRequestUrlWithoutSelection();
+         *  }
+         */
         return param;
     },
     
@@ -233,11 +251,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
      * @return {String} 
      */
     getRequestUrl : function () {
-        var request = "";
-        
-        var params = this.getRequestParam(); 
-        
-        return Ext.Object.toQueryString(params);
+        var params = this.getRequestParam();
+        return Ext.Object.toQueryString(params, true);
     }, 
     
     /**
@@ -246,11 +261,16 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
      */
     getRequestUrlWithoutColumnModel : function () {
         var params = {};
-    	
-    	Ext.apply(params, this.getRequestFilterAndSortParams());
-    	Ext.apply(params, this.getSelectionParam());
-    	
-    	return Ext.Object.toQueryString(params);
+
+        Ext.apply(params, this.getSelectionParam());
+        // If a simple selection is done, don't add the form params as the
+        // selection is done on the ids
+        if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
+            Ext.apply(params, this.getRequestFormFilterParams());
+            Ext.apply(params, this.getRequestGridFilterParams());
+            Ext.apply(params, this.getSortParams());
+        }
+        return Ext.Object.toQueryString(params, true);
     },
     
     /**
@@ -258,14 +278,22 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
      * @return {String} 
      */
     getRequestUrlWithoutSelection : function () {
-         var params = {};
-     	
-     	Ext.apply(params, this.getRequestFilterAndSortParams());
-     	
-     	return Ext.Object.toQueryString(params);
+        var params = {};
+
+        Ext.apply(params, this.getRequestGridFilterParams());
+        Ext.apply(params, this.getRequestFormFilterParams());
+        Ext.apply(params, this.getSortParams());
+
+        return Ext.Object.toQueryString(params, true);
     },
     
-//        /**
+    getSelectionsRange : function () {
+        //TODO finish the method implementation when the selection model is correct
+        var sm = this.getSelectionModel();
+        return "[]";
+    },
+    
+// /**
 //     * @method
 //     * will check if there is some pendingSelection (no requested records)
 //     * <li>First case, there is no pending Selection, it will build a form parameter

@@ -198,6 +198,7 @@ Ext.define('sitools.user.store.DataviewsStore', {
      */
     buildFormParamsUrl : function (formFilters) {
     	var formParams={};
+    	formParams.p = [];
     	Ext.each(formFilters, function (filter, index, arrayParams) {
     		formParams["p[" + index + "]"] = this.paramValueToApi(filter);
         }, this);

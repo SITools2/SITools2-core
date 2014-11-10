@@ -28,15 +28,13 @@ Ext.define('sitools.user.component.datasets.services.AddToCartCustomCheckColumn'
     extend : 'Ext.grid.column.CheckColumn',
     alias : 'widget.addToCartServiceCheckColumn',
     renderer : function (value, meta, rec) {
-    	
-    	var columnRenderer = rec.get("columnRenderer");
-		var featureType = ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior);
-		if (featureType === "Image" || featureType == "URL") {
-			return this.callParent(arguments);
-		}
-		else {
-			return "";
-		}
+        var columnRenderer = rec.get("columnRenderer");
+        var featureType = ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior);
+        if (featureType === "Image" || featureType == "URL") {
+            return this.callParent(arguments);
+        } else {
+            return "";
+        }
     }
 });
 
@@ -57,194 +55,203 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
     requires : ['sitools.public.widget.datasets.columnRenderer.behaviorEnum'],
     statics : {
         getParameters : function () {
-        		return [{
-        			jsObj : "Ext.form.Label",
-        			config : {
-        				name : "descriptionLabel",
-        				listeners : {
-        					render : function(label) {
-        						label.setText(label.value);
-        					}
-        				},
-        				getValue : function() {
-        					return this.value;
-        				},
-        				setValue : function(value) {
-        					this.setText(value);
-        				},
-        				value : "Select columns you want to export in the cart module. All columns with a Feature Type can be downloadable (download the real data and not the link) by checking 'Export Data' column."
+            return [
+                    {
+                        jsObj : "Ext.form.Label",
+                        config : {
+                            name : "descriptionLabel",
+                            listeners : {
+                                render : function (label) {
+                                    label.setText(label.value);
+                                }
+                            },
+                            getValue : function () {
+                                return this.value;
+                            },
+                            setValue : function (value) {
+                                this.setText(value);
+                            },
+                            value : "Select columns you want to export in the cart module. All columns with a Feature Type can be downloadable (download the real data and not the link) by checking 'Export Data' column."
 
-        			}
-        		}, {
-        			jsObj : "sitools.public.widget.datasets.selectItems",
-        			config : {
-        				height : 250,
-    					padding : 10,
-        				layout : {
-        					type : 'hbox',
-        					pack : 'start',
-        					align : 'stretch',
-        					defaultMargins : {top:10, right:0, bottom:0, left:0}
-        				},
-        				grid1 : Ext.create("Ext.grid.GridPanel", {
-        					border : false,
-        					bodyBorder : false,
-        					flex : 1,
-        					forceFit : true,
-        					store : Ext.create("Ext.data.JsonStore", { 
-        						type : 'json',
-        						fields : ['dataIndex', 'columnAlias', 'primaryKey',
-        								'columnRenderer', 'featureType'],
-								autoLoad : true,
-        						proxy : {
-        							type : 'ajax',
-        							url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
-        							reader : {
-        								type : 'json',
-        								idProperty : 'columnAlias',
-        								root : "dataset.columnModel"
-        							}
-        						},
-        						listeners : {
-        							load : function(store, records) {
-        								Ext.each(records, function(rec) {
-        									var columnRenderer = rec.get("columnRenderer");
-        									if (!Ext.isEmpty(columnRenderer)) {
-        										rec.set("featureType", ColumnRendererEnum.getColumnRendererCategoryFromBehavior(columnRenderer.behavior));
-        									}
-        								});
-        							}
-        						}
-        					}),
-        					columns : [{
-        						header : i18n.get('label.selectColumns'),
-        						dataIndex : 'columnAlias',
-        						sortable : true
-        					}, {
-        						header : i18n.get('headers.previewUrl'),
-        						dataIndex : 'featureType',
-        						sortable : true
-        					}]
-        				}),
-        				grid2 : Ext.create("Ext.grid.GridPanel", {
-        					border : false,
-        					bodyBorder : false,
-        					flex : 1,
-        					forceFit : true,
-        					store : Ext.create("Ext.data.JsonStore", {
-        						fields : ['dataIndex', 'columnAlias', 'primaryKey',
-        								'columnRenderer', 'isDataExported'],
-        						idProperty : 'columnAlias',
-        						proxy : {
-        							type : 'memory'
-        						},
-        						listeners : {
-        							add : function(store, records) {
-        								Ext.each(records, function(rec) {
-        									var columnRenderer = rec.get("columnRenderer");
-        									if (!Ext.isEmpty(columnRenderer)) {
-        										var featureType = ColumnRendererEnum
-        												.getColumnRendererCategoryFromBehavior(columnRenderer.behavior);
-        										if (rec.data.isDataExported
-        												&& (featureType === "Image" || featureType === "URL")) {
-        											rec.data.isDataExported = true;
-        										} else {
-        											rec.data.isDataExported = false;
-        										}
-        									}
-        								});
-        							}
-        						}
-        					}),
-        					columns : [{
-        						header : i18n.get('label.exportColumns'),
-        						dataIndex : 'columnAlias',
-        						sortable : true
-        					}, {
-        	        		    xtype : 'addToCartServiceCheckColumn',
-        	        			header : i18n.get('headers.exportData'),
-        	        			tooltip : i18n.get('headers.helpExportData'),
-        	        			dataIndex : 'isDataExported',
-        	        			editable : true,
-        	        			width : 50
-        	        		}]
-        				}),
-        				name : "exportcolumns",
-        				value : [],
-        				getValue : function() {
-        					var columnsToExport = [];
-        					var store = this.grid2.getStore();
+                        }
+                    },
+                    {
+                        jsObj : "sitools.public.widget.datasets.selectItems",
+                        config : {
+                            height : 250,
+                            padding : 10,
+                            layout : {
+                                type : 'hbox',
+                                pack : 'start',
+                                align : 'stretch',
+                                defaultMargins : {
+                                    top : 10,
+                                    right : 0,
+                                    bottom : 0,
+                                    left : 0
+                                }
+                            },
+                            grid1 : Ext.create("Ext.grid.GridPanel", {
+                                border : false,
+                                bodyBorder : false,
+                                flex : 1,
+                                forceFit : true,
+                                selModel : Ext.create('Ext.selection.RowModel', {
+                                    mode : 'MULTI'
+                                }),
+                                store : Ext.create("Ext.data.JsonStore", {
+                                    type : 'json',
+                                    fields : [ 'dataIndex', 'columnAlias', 'primaryKey', 'columnRenderer', 'featureType' ],
+                                    autoLoad : true,
+                                    proxy : {
+                                        type : 'ajax',
+                                        url : Ext.getCmp("dsFieldParametersPanel").urlDataset,
+                                        reader : {
+                                            type : 'json',
+                                            idProperty : 'columnAlias',
+                                            root : "dataset.columnModel"
+                                        }
+                                    },
+                                    listeners : {
+                                        load : function (store, records) {
+                                            Ext.each(records, function (rec) {
+                                                var columnRenderer = rec.get("columnRenderer");
+                                                if (!Ext.isEmpty(columnRenderer)) {
+                                                    rec.set("featureType", ColumnRendererEnum
+                                                            .getColumnRendererCategoryFromBehavior(columnRenderer.behavior));
+                                                }
+                                            });
+                                        }
+                                    }
+                                }),
+                                columns : [ {
+                                    header : i18n.get('label.selectColumns'),
+                                    dataIndex : 'columnAlias',
+                                    sortable : true
+                                }, {
+                                    header : i18n.get('headers.previewUrl'),
+                                    dataIndex : 'featureType',
+                                    sortable : true
+                                } ]
+                            }),
+                            grid2 : Ext.create("Ext.grid.GridPanel", {
+                                border : false,
+                                bodyBorder : false,
+                                flex : 1,
+                                forceFit : true,
+                                selModel : Ext.create('Ext.selection.RowModel', {
+                                    mode : 'MULTI'
+                                }),
+                                store : Ext.create("Ext.data.JsonStore", {
+                                    fields : [ 'dataIndex', 'columnAlias', 'primaryKey', 'columnRenderer', 'isDataExported' ],
+                                    idProperty : 'columnAlias',
+                                    proxy : {
+                                        type : 'memory'
+                                    },
+                                    listeners : {
+                                        add : function (store, records) {
+                                            Ext.each(records, function (rec) {
+                                                var columnRenderer = rec.get("columnRenderer");
+                                                if (!Ext.isEmpty(columnRenderer)) {
+                                                    var featureType = ColumnRendererEnum
+                                                            .getColumnRendererCategoryFromBehavior(columnRenderer.behavior);
+                                                    if (rec.data.isDataExported && (featureType === "Image" || featureType === "URL")) {
+                                                        rec.data.isDataExported = true;
+                                                    } else {
+                                                        rec.data.isDataExported = false;
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }),
+                                columns : [ {
+                                    header : i18n.get('label.exportColumns'),
+                                    dataIndex : 'columnAlias',
+                                    sortable : true
+                                }, {
+                                    xtype : 'addToCartServiceCheckColumn',
+                                    header : i18n.get('headers.exportData'),
+                                    tooltip : i18n.get('headers.helpExportData'),
+                                    dataIndex : 'isDataExported',
+                                    editable : true,
+                                    width : 50
+                                } ]
+                            }),
+                            name : "exportcolumns",
+                            value : [],
+                            getValue : function () {
+                                var columnsToExport = [];
+                                var store = this.grid2.getStore();
 
-        					store.each(function(record) {
-        								var rec = {};
-        								rec.columnAlias = record.data.columnAlias;
-        								rec.isDataExported = record.data.isDataExported;
-        								rec.columnRenderer = record.data.columnRenderer;
-        								columnsToExport.push(rec);
+                                store.each(function (record) {
+                                    var rec = {};
+                                    rec.columnAlias = record.data.columnAlias;
+                                    rec.isDataExported = record.data.isDataExported;
+                                    rec.columnRenderer = record.data.columnRenderer;
+                                    columnsToExport.push(rec);
 
-        							});
-        					var columnsString = Ext.JSON.encode(columnsToExport);
-        					return columnsString;
-        				},
-        				setValue : function(value) {
-        					var columnsToExport = Ext.JSON.decode(value);
-        					Ext.each(columnsToExport, function(column) {
-								this.grid2.getStore().add(column);
-							}, this);
-        					this.value = value;
-        				}
-        			}
-        		}];
+                                });
+                                var columnsString = Ext.JSON.encode(columnsToExport);
+                                return columnsString;
+                            },
+                            setValue : function (value) {
+                                var columnsToExport = Ext.JSON.decode(value);
+                                Ext.each(columnsToExport, function (column) {
+                                    this.grid2.getStore().add(column);
+                                }, this);
+                                this.value = value;
+                            }
+                        }
+                    } ];
         }
     },
     
     executeAsService : function (config) {
-    	
     	var selections = config.dataview.getSelections();
 
-    	if (Ext.isEmpty(userLogin)) {
-    		return popupMessage({
-    					title : i18n.get('label.info'),
-    					msg : i18n.get('label.needToBeLogged'),
-    					buttons : Ext.MessageBox.OK,
-    					icon : Ext.MessageBox.INFO
-    				});
-    	}
-    	Ext.apply(this, config);
+        if (Ext.isEmpty(userLogin)) {
+            return popupMessage({
+                title : i18n.get('label.info'),
+                msg : i18n.get('label.needToBeLogged'),
+                buttons : Ext.MessageBox.OK,
+                icon : Ext.MessageBox.INFO
+            });
+        }
+        Ext.apply(this, config);
 
-    	this.cartSelectionFile = [];
+        this.cartSelectionFile = [];
 
-    	(Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
+        (Ext.isEmpty(userLogin)) ? this.user = "public" : this.user = userLogin;
 
-    	var rec = selections[0];
-    	if (Ext.isEmpty(rec)) {
-    		Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noRecordsSelected'));
-    		return;
-    	}
+        var rec = selections[0];
+        if (Ext.isEmpty(rec)) {
+            Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noRecordsSelected'));
+            return;
+        }
 
-    	Ext.each(this.parameters, function(config) {
-			if (!Ext.isEmpty(config.value)) {
-				switch (config.name) {
-					case "exportcolumns" :
-						this.selectionColumns = Ext.JSON.decode(config.value);
-						break;
-				}
-			}
-		}, this);
+        Ext.each(this.parameters, function (config) {
+            if (!Ext.isEmpty(config.value)) {
+                switch (config.name) {
+                case "exportcolumns":
+                    this.selectionColumns = Ext.JSON.decode(config.value);
+                    break;
+                }
+            }
+        }, this);
 
-    	this.selectionName = config.dataview.dataset.name;
-    	this.config = config;
-    	this.addToCart();
+        this.selectionName = config.dataview.dataset.name;
+        this.config = config;
+        this.addToCart();
     },
     
-    addToCart : function() {
-    	
-    	var projectName = Ext.getStore('ProjectStore').getProject().get("name");
-    	
-    	UserStorage.get(this.user + "_CartSelections.json",
-    			getCartFolder(projectName), this,
-    			this.getCartSelectionFile, this.checkCartSelectionFile,
-    			this.saveSelection);
+
+    addToCart : function () {
+
+        var projectName = Ext.getStore('ProjectStore').getProject().get("name");
+
+        UserStorage.get(this.user + "_CartSelections.json", getCartFolder(projectName), this, this.getCartSelectionFile,
+                this.checkCartSelectionFile, this.saveSelection);
     },
     
     getCartSelectionFile : function(response) {
@@ -295,86 +302,74 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 	 *            orderName the name of the future file.
 	 */
 	_addSelection : function(selections, grid, datasetId) {
-		var primaryKey = "";
-		var project = Ext.getStore('ProjectStore').getProject();
-		var cartFolder = getCartFolder(project.get("name"));
+		var primaryKey = grid.component.getPrimaryKey();
 		var rec = selections[0];
-		Ext.each(rec.fields.items, function(field) {
-			if (field.primaryKey) {
-				primaryKey = field.name;
-			}
-		}, rec);
 		if (Ext.isEmpty(primaryKey) || Ext.isEmpty(rec.get(primaryKey))) {
-			Ext.Msg.alert(i18n.get('label.warning'), i18n
-							.get('warning.noPrimaryKey'));
+			Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noPrimaryKey'));
 			return;
 		}
 
-		var globalOrder = {};
-		// var recordsOrder = {};
-		// recordsOrder.records = [];
+		var project = Ext.getStore('ProjectStore').getProject();
+		var cartFolder = getCartFolder(project.get("name"));
 
 		var colModelTmp = extColModelToJsonColModel(this.config.columnModel);
 		var colModel = [];
 		var dataToExport = [];
 
-		// On stocke seulement les colonnes configurées dans le Gui service
+		// Stores only column configured in the Gui service
 		Ext.each(this.selectionColumns, function(selectCol) {
-					if (selectCol.isDataExported) {
-						dataToExport.push(selectCol.columnAlias);
-					}
-					Ext.each(colModelTmp, function(col) {
-								if (col.columnAlias == selectCol.columnAlias) {
-									var newcol = {
-										columnAlias : col.columnAlias,
-										header : col.header
-									};
-									colModel.push(newcol);
-								}
-							}, this);
-				}, this);
+			if (selectCol.isDataExported) {
+				dataToExport.push(selectCol.columnAlias);
+			}
+			Ext.each(colModelTmp, function(col) {
+				if (col.columnAlias == selectCol.columnAlias) {
+					var newcol = {
+						columnAlias : col.columnAlias,
+						header : col.header
+					};
+					colModel.push(newcol);
+				}
+			}, this);
+		}, this);
 
 		var dataset = this.config.dataview.dataset;
 		
-		globalOrder.selectionName = this.selectionName;
-		globalOrder.selectionId = dataset.name;
-		globalOrder.datasetId = dataset.id;
-		globalOrder.projectId = project.get("id");
-		globalOrder.dataUrl = dataset.sitoolsAttachementForUsers;
-		globalOrder.datasetName = dataset.name;
-
-		globalOrder.selections = this.dataview.getRequestParamWithoutColumnModel();
-		globalOrder.selections = globalOrder.selections.slice(1);
-		
-		globalOrder.ranges = this.dataview.getSelectionsRange();
-		globalOrder.dataToExport = dataToExport;
-
-		globalOrder.startIndex = this.dataview.getStore().lastRequestStart;
-
-//		globalOrder.nbRecords = (grid.isAllSelected()) ? this.dataview.store
-//				.getTotalCount() : this.dataview.getNbRowsSelected();
-		globalOrder.nbRecords = this.dataview.getNbRowsSelected();
-
 		var orderDate = new Date();
 		var orderDateStr = Ext.Date.format(orderDate, SITOOLS_DATE_FORMAT);
-		globalOrder.orderDate = orderDateStr;
-
-		globalOrder.colModel = colModel;
-
-		this.createFilters(globalOrder, this.dataview);
+		
+		globalOrder = {
+				selectionName : this.selectionName,
+				selectionId : dataset.name,
+				datasetId : dataset.id,
+				projectId : project.get("id"),
+				dataUrl : dataset.sitoolsAttachementForUsers,
+				datasetName : dataset.name,
+				selections : this.dataview.getRequestUrlWithoutColumnModel(),
+				ranges : this.dataview.getSelectionsRange(),
+				dataToExport : dataToExport,
+				startIndex : this.dataview.getStore().lastRequestStart,
+				nbRecords : this.dataview.getNbRowsSelected(),
+				orderDate : orderDateStr
+		};
+		
+		var sortersAndFilters = this.createSortersAndFilters(this.dataview);
+		
+		Ext.apply(globalOrder, sortersAndFilters);
 
 		var index = "";
 		if (Ext.isEmpty(this.cartSelectionFile.selections)) {
+			//If no selections has been defined create a new array to add the current one
 			this.cartSelectionFile.selections = [];
 		} else {
+			// Try to find an existing selection for the current one 
 			index = Ext.each(this.cartSelectionFile.selections, function(sel) {
-				if (sel.selectionId === this.dataview.name) {
+				if (sel.selectionId === dataset.name) {
 					return false;
 				}
 			}, this);
 		}
 
-		if (Ext.isEmpty(index)) {
+		if (Ext.isEmpty(index) || !Ext.isNumber(index)) {
 			this.cartSelectionFile.selections.push(globalOrder);
 			var putObject = {};
 			putObject.selections = [];
@@ -405,7 +400,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 	},
 
 	/**
-	 * Add filters, sort, formParams to the current order selection
+	 * Get filters, sort, formParams to the current order selection
 	 * 
 	 * @param {Object}
 	 *            order
@@ -413,44 +408,38 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 	 *            grid The current grid.
 	 * 
 	 */
-	createFilters : function(order, grid) {
-//		var filters = grid.getFilters();
-		var filters = grid.getStore().filters;
-		
-		if (!Ext.isEmpty(filters)) {
-//			order.filters = filters.getFilterData(filters);
-			order.filters = filters.getSorters();
+	createSortersAndFilters : function(grid) {
+		var order = {};
+		// Grid filters
+		var gridFilters = grid.getRequestGridFilterParams();
+		if (!Ext.isEmpty(gridFilters)) {
+			order.gridFilters = gridFilters;
 		}
-
-//		var storeSort = grid.getStore().getSortState();
-		var storeSort = grid.getStore().sorters;
+		
+		//Sorters
+		var storeSort = grid.getSortParams();
 		if (!Ext.isEmpty(storeSort)) {
 			order.storeSort = storeSort;
 		}
 
-		var filtersCfg = grid.getStore().filtersCfg;
-		if (!Ext.isEmpty(filtersCfg)) {
-			order.filtersCfg = filtersCfg;
+		// Form filters
+		var formFilters = grid.getRequestFormFilterParams();
+		if (!Ext.isEmpty(formFilters)) {
+			order.formFilters = formFilters;
 		}
-
-//		var formParams = grid.getStore().getFormParams();
-		var formParams = grid.getStore().formParams;
-		if (!Ext.isEmpty(formParams)) {
-			order.formParams = formParams;
-		}
+		
+		return order;
 	},
 
 	closeDataviewIfModify : function() {
 		if (this.dataview.isModifySelection) {
-			if (Ext.isFunction(this.dataview.ownerCt.close)) {
-				this.dataview.ownerCt.close();
-			} else {
-				this.dataview.ownerCt.destroy();
+			this.dataview.up("component[specificType=componentWindow]").close();
+
+			var cartModules = Ext.ComponentQuery.query("addToCartModule");
+			if (!Ext.isEmpty(cartModules)) {
+				cartModules[i].fireEvent("refresh");
 			}
-			var cartModule = Ext.getCmp("cartModuleHBox");
-			if (!Ext.isEmpty(cartModule)) {
-				cartModule.ownerCt.onRefresh();
-			}
+			
 		}
 	}
 });

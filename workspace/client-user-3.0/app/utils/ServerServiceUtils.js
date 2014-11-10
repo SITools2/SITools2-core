@@ -147,20 +147,21 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                 iconCls : "datasetRessource"
             };
         	config = {
-            		resource : resource,
-            		url : url,
-            		methods : methods,
-            		runType : runType,
-            		parameters : parameters,
-            		serverServiceUtil : this,
-            		postParameter : postParameter,
-            		callback : callback,
-            		withSelection : (this.getNbRowsSelected() !== 0)
+                resource : resource,
+                url : url,
+                methods : methods,
+                runType : runType,
+                parameters : parameters,
+                serverServiceUtil : this,
+                postParameter : postParameter,
+                callback : callback,
+                withSelection : (this.getNbRowsSelected() !== 0)
             };
             
-        	var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
-        	//On ouvre le composant
-        	sitoolsController.openComponent("sitools.user.component.services.ServiceParamComponent", config, windowConfig);
+
+        	var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
+            // On ouvre le composant
+            sitoolsController.openComponent("sitools.user.component.services.ServiceParamComponent", config, windowConfig);
         	
         }
         else if (showParameterBox) {
@@ -224,8 +225,7 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
         var request = "";
         if (this.origin !== "sitools.user.modules.projectServices") {
 //            try {
-                var params = this.grid.getRequestParam();
-                var request = Ext.Object.toQueryString(params);
+            request = this.grid.getRequestUrl();
 //            }
 //            catch (err) {
 //                Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.notImplementedService'), err));
@@ -234,7 +234,6 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
         }
 
         url += "?1=1&" + request;
-        console.log(decodeURIComponent(url));
         if (!Ext.isEmpty(limit)) {
             url += "&limit=" + limit;
         }
@@ -451,10 +450,7 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                 } 
                 Ext.Msg.show({
                     title : i18n.get('label.warning'),
-                    buttons : {
-                        yes : i18n.get('label.yes'),
-                        no : i18n.get('label.no')
-                    },
+                    buttons : Ext.MessageBox.YESNO,
                     msg : warningTresholdText,
                     scope : this,
                     fn : function (btn, text) {

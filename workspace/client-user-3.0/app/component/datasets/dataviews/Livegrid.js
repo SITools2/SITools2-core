@@ -36,6 +36,10 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
     requires : ['sitools.user.view.component.datasets.dataviews.LivegridView',
                 'sitools.user.store.DataviewsStore'],
     
+	config : {
+	    primaryKey : null
+	},
+                
     /**
      * @param {Object} componentConfig config object
      * 
@@ -57,21 +61,22 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
 
         var fields = this.getFields(dataset.columnModel);
         var columns = this.getColumns(dataset.columnModel, dataset.dictionaryMappings, dataviewConfig);
-        var primaryKey = this.getPrimaryKey(dataset);
+        this.primaryKey = this.calcPrimaryKey(dataset);
         
         var datasetStore = Ext.create("sitools.user.store.DataviewsStore", {
             fields : fields,
             urlAttach : dataset.sitoolsAttachementForUsers,
-            primaryKey : primaryKey,
-            formFilters : componentConfig.formFilters
+            primaryKey : this.primaryKey,
+            formFilters : componentConfig.formFilters,
+            gridFilters : componentConfig.gridFilters,
+            sortInfo : componentConfig.sortInfo
         });
         
         Ext.apply(windowSettings, windowConfig, {
-        	datasetName : dataset.name,
+            datasetName : dataset.name,
             type : "data",
             title : i18n.get('label.datasets') + " : " + dataset.name,
             id : "dataset_" + dataset.id,
-//            id : Ext.id(),
             saveToolbar : true,
             winWidth : 900,
             winHeight : 400,
@@ -79,14 +84,15 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             typeWindow : 'data'
         });
         
-        Ext.apply(componentSettings, dataset, {
+        Ext.apply(componentSettings, {
             dataset : dataset,
             store : datasetStore,
             preferencesPath : "/" + dataset.name + "/datasets",
             preferencesFileName : dataset.name,
             columns : columns,
             urlRecords : dataset.sitoolsAttachementForUsers + '/records',
-            scope : this
+            scope : this,
+            component : this
             // searchAction : this.searchAction,
         });
         
@@ -102,7 +108,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
      * 
      * @returns {String} The columnAlias of the primaryKey
      */
-    getPrimaryKey : function (dataset) {
+    calcPrimaryKey : function (dataset) {
         var listeColonnes = dataset.columnModel;
         var i = 0, primaryKey = "";
         if (!Ext.isEmpty(listeColonnes)) {

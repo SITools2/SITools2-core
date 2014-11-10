@@ -1,0 +1,128 @@
+# Bonnes pratiques de développement IHM sitools2 #
+
+### Ouverture d'un composant : ###
+
+ 	//On récupère le sitoolsController
+	var sitoolsController = Desktop.getApplication().getController	('core.SitoolsController'); 
+	//On ouvre le composant
+	sitoolsController.openComponent(jsObject, componentsConfig, windowConfig);
+
+
+### DatasetView ###
+
+Definition d'un sorter :
+
+	{
+		property : columnAlias
+		direction : ASC ou DESC
+	}
+
+Résultat dans la requête :
+
+	sort:[{"field":"dataset","direction":"ASC"}]
+
+Definition d'un filtre de formulaire (formFilter):
+
+	{
+		type : this.type, 
+    	code : this.code, 
+    	value : value1 | value2..., 
+    	userDimension : this.userDimension, 
+    	userUnit : this.userUnit
+	}
+
+Résultat dans la requête :
+	
+	p[0]=type|code|value|userDimension|userUnit
+
+Definition d'un filtre dans la dataview (gridFilter):
+
+	{
+		"columnAlias" : "dataset",
+		"data" : {
+			"comparison" : "LIKE",
+			"value" : "A00%",
+			"type" : "string"
+		}
+	}
+
+Résultat dans la requête :
+	
+	filter[0][columnAlias]=dataset&filter[0][data][comparison]=LIKE&filter[0][data][value]=A00%&filter[0][data][type]=string
+
+Définition d'une sélection
+
+*Une sélection est toujours relative à une liste de tri et une liste de sorters*
+
+	{
+		ranges : [[0,10], [15,25]],
+		nbRecordsSelection : 10,
+		startIndex : 25
+	}
+
+
+Liste des parametres nécessaires pour ouverture d'une dataview :
+
+	{
+		dataset =>  dataset {
+			id
+			name
+			sitoolsAttachementForUsers
+			columnModel
+			dictionaryMappings
+			datasetViewConfig		
+		} 
+		formParams => Liste de filtres de type formulaire
+		gridFilters => Liste de filtres de type grid
+		sortInfo => Liste des tris
+	}
+
+
+### Panier ###
+
+
+Example de définition d'une sélection dans le panier pour un dataset 
+
+	{
+		"selectionName" : "Headers",
+		"selectionId" : "Headers",
+		"datasetId" : "7d4571ba-6055-4ac2-86a8-9897fde17a10",
+		"dataUrl" : "/headers",
+		"datasetName" : "Headers",
+		"selections" : "ranges=[[0,16]]&filter%5B0%5D%5BcolumnAlias%5D=dataset&filter%5B0%5D%5Bdata%5D%5Bcomparison%5D=LIKE&filter%5B0%5D%5Bdata%5D%5Bvalue%5D=A00%25&filter%5B0%5 D%5Bdata%5D%5Btype%5D=string&sort={\"ordersList\":[{\"field\":\"dataset\",\"direction\":\"DESC\"}]}",
+		"ranges" : "[[0,16]]",
+		"dataToExport" : ["preview"],
+		"startIndex" : 0,
+		"nbRecords" : 17,
+		"orderDate" : "2014-11-07T14:48:34.381",
+		"colModel" : [{
+				"columnAlias" : "dataset",
+				"header" : "dataset"
+			}, {
+				"columnAlias" : "preview",
+				"header" : "preview"
+			}, {
+				"columnAlias" : "targname",
+				"header" : "targname"
+			}
+		],
+		"filters" : [{
+				"columnAlias" : "dataset",
+				"data" : {
+					"comparison" : "LIKE",
+					"value" : "A00%",
+					"type" : "string"
+				}
+			}
+		],
+		"storeSort" : {
+			"field" : "dataset",
+			"direction" : "DESC"
+		},
+		"filtersCfg" : [{
+				"columnAlias" : "dataset",
+				"value" : "A00%",
+				"type" : "string"
+			}
+		]
+	}

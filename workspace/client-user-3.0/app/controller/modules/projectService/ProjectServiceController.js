@@ -29,12 +29,13 @@ Ext.define('sitools.user.controller.modules.projectService.ProjectServiceControl
     
     views : ['modules.projectService.ProjectServiceView'],
     
+
     init : function () {
-    	this.control({
-    		'projectService actioncolumn' : {
-    			click : this.runJob
-    		}
-    	});
+        this.control({
+            'projectService actioncolumn' : {
+                click : this.runJob
+            }
+        });
     },
     
     runJob : function (view, rowIndex, colIndex, item, e, record) {
