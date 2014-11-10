@@ -20,8 +20,7 @@
         <url>/sitools/client-user/js/modules/projectGraph/projectGraph.js</url>
       </url>
     </js>
-    <css>      
-    </css>
+    <css/>
   </dependencies>
   <priority>2</priority>
 </projectModule>

@@ -1,0 +1,20 @@
+<projectModule>
+  <id>fd7788e8-1b9f-4135-876d-7bf76c336e2a</id>
+  <name>Fits Module</name>
+  <description>Visualize FITS Image and Table</description>
+  <label>label.FitsModule</label>
+  <author>AKKA</author>
+  <version>1.0</version>
+  <title>label.FitsModule</title>
+  <defaultWidth>1000</defaultWidth>
+  <defaultHeight>700</defaultHeight>
+  <x>0</x>
+  <y>0</y>
+  <icon>fitsModule</icon>
+  <xtype>sitools.extension.modules.FitsViewer</xtype>
+  <dependencies>
+    <js/>    
+    <css/>
+  </dependencies>
+  <priority>0</priority>
+</projectModule>
