@@ -20,8 +20,8 @@
 
 Ext.namespace('sitools.user.view.component.datasets.dataviews');
 
-Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
-    extend: 'Ext.selection.CheckboxModel',
+Ext.define('sitools.user.view.component.datasets.dataviews.selectionModel.SitoolsCheckboxModel', {
+    extend: 'sitools.user.view.component.datasets.dataviews.selectionModel.CheckboxModel',
     
     constructor: function(){
         var me = this;
@@ -77,7 +77,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
 
         switch (me.selectionMode) {
             case 'MULTI':
-                if (shift && start) {
+                if (shift && !Ext.isEmpty(start)) {
                 	if (me.isSelected(start)) {
                 		me.selectRange(start, record, true);
                 	} else {
@@ -162,7 +162,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
     		var renderer = this.gridView.getPlugin('renderer');
             var firstIndex = renderer.getFirstVisibleRowIndex();
             var lastIndex = renderer.getLastVisibleRowIndex();
-            this.selectRange(firstIndex, lastIndex, false);
+            this.selectRange(firstIndex, lastIndex, false, true);
     	}
     },
     
@@ -174,13 +174,12 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
         this.markAll = true;
         this.updateSelection();
         this.toggleUiHeader(this.markAll);
-        this.callParent();
     },
     
     deselectAll : function () {
     	this.markAll = false;
     	this.toggleUiHeader(this.markAll);
-    	this.callParent();
+    	this.callParent([true]);
     },
     
     /**
@@ -203,10 +202,10 @@ Ext.define('sitools.user.view.component.datasets.dataviews.CheckboxModel', {
 //            if (mode !== 'SINGLE') {
 //                me.setSelectionMode('SIMPLE');
 //            }
-            me.selectWithEvent(record, e);
+            me.selectWithEvent(index, e);
             me.setSelectionMode(mode);
         } else {
-            me.selectWithEvent(record, e);
+            me.selectWithEvent(index, e);
         }
     }
     

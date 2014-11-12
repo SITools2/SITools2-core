@@ -75,18 +75,14 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
             },
             'livegridView' : {
             	resize : function (view) {
-            		view.getSelectionModel().updateSelection();
-            	},
-                
-            	afterrender: function (view) {
-            		view.getView().getEl().on('scroll', function () {
-            			view.getSelectionModel().updateSelection();
-            		}, view);
-            		
-            		view.on('scroll', function () {
-            			view.getSelectionModel().updateSelection();
-            		}, view);
-				},
+                    view.getSelectionModel().updateSelection();
+                },
+
+                afterrender : function (view) {
+                    view.getView().getEl().on('scroll', function (e, t, eOpts) {
+                        view.getSelectionModel().updateSelection();
+                    }, view);
+                },
                 
                 cellclick : function (table, td, cellIndex, record, tr, rowIndex, e) {
                     var livegrid = table.up('livegridView');
