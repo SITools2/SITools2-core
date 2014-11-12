@@ -23,7 +23,6 @@ Ext.namespace('sitools.user.view.component.datasets.dataviews');
 Ext.define('sitools.user.view.component.datasets.dataviews.selectionModel.RowModel', {
 //        extend: "sitools.user.view.component.datasets.dataviews.selectionModel.SelectionModel",
         extend: "sitools.user.view.component.datasets.dataviews.selectionModel.SelectionModel",
-        alias: 'selection.sitoolsRowmodel',
                                       
 
         /**

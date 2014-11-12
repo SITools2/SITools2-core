@@ -22,7 +22,6 @@ Ext.namespace('sitools.user.view.component.datasets.dataviews');
 
 Ext.define('sitools.user.view.component.datasets.dataviews.selectionModel.SelectionModel', {
     extend: 'Ext.util.Observable',
-    alternateClassName: 'Ext.AbstractSelectionModel',
     requires: ['Ext.data.StoreManager'],
     mixins: {
         bindable: 'Ext.util.Bindable'    
