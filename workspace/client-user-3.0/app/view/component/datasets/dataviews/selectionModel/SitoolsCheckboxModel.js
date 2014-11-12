@@ -174,12 +174,14 @@ Ext.define('sitools.user.view.component.datasets.dataviews.selectionModel.Sitool
         this.markAll = true;
         this.updateSelection();
         this.toggleUiHeader(this.markAll);
+        this.maybeFireSelectionChange(true);
     },
     
     deselectAll : function () {
     	this.markAll = false;
     	this.toggleUiHeader(this.markAll);
     	this.callParent([true]);
+    	this.maybeFireSelectionChange(true);
     },
     
     /**
