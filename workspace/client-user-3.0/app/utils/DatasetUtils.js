@@ -33,15 +33,15 @@ Ext.namespace("sitools.user.utils");
 Ext.define('sitools.user.utils.DatasetUtils', {
     singleton : true,
     
-    openDataset : function (url, extraCmpConfig) {
+    openDataset : function (url, componentConfig) {
     	Ext.Ajax.request({
     		method : "GET", 
     		url : url, 
     		success : function (ret) {
                 var Json = Ext.decode(ret.responseText);
-//                if (showResponse(ret)) {
                 var dataset = Json.dataset;
-	            var componentCfg, javascriptObject;
+	            var javascriptObject;
+	            
 	            var windowConfig = {
 	                datasetName : dataset.name, 
 	                saveToolbar : true, 
@@ -61,24 +61,13 @@ Ext.define('sitools.user.utils.DatasetUtils', {
                 	iconCls : "dataviews"
                 });
                 
-                Ext.apply(dataset, extraCmpConfig);
-                datasetViewComponent.init(dataset, windowConfig);
+                componentConfig.dataset = dataset;
                 
-//                
-//                componentCfg = {
-//                    dataUrl : dataset.sitoolsAttachementForUsers,
-//                    datasetId : dataset.Id,
-//                    datasetCm : dataset.columnModel, 
-//                    datasetName : dataset.name,
-//                    dictionaryMappings : dataset.dictionaryMappings,
-//                    datasetViewConfig : dataset.datasetViewConfig, 
-//                    preferencesPath : "/" + dataset.datasetName, 
-//                    preferencesFileName : "datasetOverview", 
-//                    sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers
-//                };
-//            
-//                Ext.applyIf(componentCfg, extraCmpConfig);
-//				SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+//                Ext.apply(dataset, extraCmpConfig);
+//                datasetViewComponent.init(componentConfig, windowConfig);
+                
+                var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+            	sitoolsController.openComponent(javascriptObject, componentConfig, windowConfig);
     		}
     	});
     },
@@ -161,7 +150,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 					break;
 					
 				case "data" : 
-                
+					
                     javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
                     var dataViewComponent  = Ext.create(javascriptObject);
                     dataViewComponent.create(Desktop.getApplication());
@@ -186,12 +175,14 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 //    	                    sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers
 //    	                };
                 
-                
-	                Ext.applyIf(dataset, extraCmpConfig);
-                    dataViewComponent.init(dataset, windowConfig);
-                    
-//    					SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
+	                var componentConfig = {
+                		dataset : dataset
+	                };
+	                Ext.applyIf(componentConfig, extraCmpConfig);
+	                
+	                var sitoolsController = Desktop.getApplication().getController	('core.SitoolsController'); 
+	            	sitoolsController.openComponent(javascriptObject, componentConfig, windowConfig);
+	                
 					break;
 				case "forms" : 
 		            var menuForms = new Ext.menu.Menu();

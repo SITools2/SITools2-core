@@ -250,12 +250,8 @@ Ext.define('sitools.user.utils.DataviewUtils', {
         return html;
     },
     
-    getRendererViewDataDetails : function (item) {
-        
-        
-    },
+    getRendererViewDataDetails : function (item) {},
     
-
     /**
      * Execute the action on a featureType column. It can be either a
      * Gui_Service action if one is configured, or a classic featureType
@@ -410,7 +406,6 @@ Ext.define('sitools.user.utils.DataviewUtils', {
      */
     showDisplayableUrl : function (value, isDisplayable, customConfig) {
         
-        
         if (isDisplayable) {
             
             var windowConfig;
@@ -486,49 +481,67 @@ Ext.define('sitools.user.utils.DataviewUtils', {
     showDetailsData : function (value, columnAlias, datasetUrl) {
         var desktop = getDesktop();
     
+        var config = {};
+        config.formFilters = [ "RADIO|" + columnAlias + "|" + value ];
+        
+        config.formFilters = {
+        	code : columnAlias,
+        	type : "RADIO",
+        	value : value
+        };
+        
+        sitools.user.utils.DatasetUtils.openDataset(datasetUrl, config);
+        
         // récupération des données du dataset
-        Ext.Ajax.request({
-            scope : this,
-            method : 'GET',
-            url : datasetUrl,
-            success : function (response, opts) {
-                try {
-                    var json = Ext.decode(response.responseText);
-                    if (!json.success) {
-                        Ext.Msg.alert(i18n.get('label.error'), json.message);
-                        return;
-                    }
-                    var formParams = [ "RADIO|" + columnAlias + "|" + value ];
-                    var dataset = json.dataset;
-                    var jsObj = eval(dataset.datasetView.jsObject);
-                    var componentCfg = {
-                        dataUrl : dataset.sitoolsAttachementForUsers,
-                        datasetId : dataset.id,
-                        datasetCm : dataset.columnModel,
-                        formParams : formParams, 
-                        datasetName : dataset.name, 
-                        dictionaryMappings : dataset.dictionaryMappings, 
-                        datasetViewConfig : dataset.datasetViewConfig, 
-                        preferencesPath : "/" + dataset.name, 
-                        preferencesFileName : "datasetView"
-                        
-                    };
-                    
-                    var windowConfig = {
-                        id : "wind" + dataset.id + columnAlias + value,
-                        title : i18n.get('label.dataTitle') + " : " + dataset.name,
-                        datasetName : dataset.name,
-                        type : "data",
-                        saveToolbar : true, 
-                        iconCls : "dataDetail"
-                    };
-                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-    
-                } catch (err) {                
-                }
-            }
-        });
-
+//        Ext.Ajax.request({
+//            scope : this,
+//            method : 'GET',
+//            url : datasetUrl,
+//            success : function (response, opts) {
+//                try {
+//                    var json = Ext.decode(response.responseText);
+//                    if (!json.success) {
+//                        Ext.Msg.alert(i18n.get('label.error'), json.message);
+//                        return;
+//                    }
+//                    var formParams = [ "RADIO|" + columnAlias + "|" + value ];
+//                    var dataset = json.dataset;
+//                    
+////                    var jsObj = eval(dataset.datasetView.jsObject);
+//                    
+//                    var componentCfg = {
+//                        dataUrl : dataset.sitoolsAttachementForUsers,
+//                        datasetId : dataset.id,
+//                        datasetCm : dataset.columnModel,
+//                        formParams : formParams, 
+//                        datasetName : dataset.name, 
+//                        dictionaryMappings : dataset.dictionaryMappings, 
+//                        datasetViewConfig : dataset.datasetViewConfig, 
+//                        preferencesPath : "/" + dataset.name, 
+//                        preferencesFileName : "datasetView"
+//                        
+//                    };
+//                    
+//                    var windowConfig = {
+//                        id : "wind" + dataset.id + columnAlias + value,
+//                        title : i18n.get('label.dataTitle') + " : " + dataset.name,
+//                        datasetName : dataset.name,
+//                        type : "data",
+//                        saveToolbar : true, 
+//                        iconCls : "dataDetail"
+//                    };
+//                    
+//                    javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
+//                    var datasetViewComponent  = Ext.create(javascriptObject);
+//                    
+//                    datasetViewComponent.create(Desktop.getApplication());
+//                    datasetViewComponent.init(dataset, windowConfig);
+//                    
+////                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+//    
+//                } catch (err) {}
+//            }
+//        });
     },
     
     /**
