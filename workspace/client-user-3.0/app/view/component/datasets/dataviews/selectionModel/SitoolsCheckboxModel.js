@@ -209,6 +209,60 @@ Ext.define('sitools.user.view.component.datasets.dataviews.selectionModel.Sitool
         } else {
             me.selectWithEvent(index, e);
         }
+    },
+    
+    
+    getSelectedRanges : function () {
+        
+        var index = 1,
+        ranges = [],
+        currentRange = 0,
+        tmpSelected = this.selected.clone();
+        
+        if(Ext.isEmpty(this.selected) && this.store.getTotalCount() == 0) {
+            return [];
+        }
+
+        if (this.markAll) {
+            return [ [ 0, this.store.getTotalCount() - 1 ] ];
+        } 
+        
+        
+        var lastIndex;
+        tmpSelected.sort(function(o1, o2){
+                if (o1 > o2) {
+                    return 1;
+                } else if (o1 < o2) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        );
+        tmpSelected.each(function(index) {
+            if(Ext.isEmpty(lastIndex)){
+                ranges[currentRange] = [index, index];
+            }
+            else {
+
+                if (index - lastIndex === 1) {
+                    ranges[currentRange][1] = index;
+                } else {
+                    currentRange++;
+                    ranges[currentRange] = [index, index];
+                }
+            }
+            
+            lastIndex = index;
+        }, this);
+        
+        return ranges;
+    },
+    
+    clearSelections : function () {
+        this.markAll = false;
+        this.toggleUiHeader(this.markAll);
+        this.callParent(arguments);
     }
     
     

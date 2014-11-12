@@ -114,7 +114,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.selectionModel.Select
         me.setSelectionMode(cfg.mode || me.mode);
 
         // maintains the currently selected records.
-        me.selected = new Ext.util.MixedCollection(null, me.getSelectionId);
+        me.selected = new Ext.util.MixedCollection();
 
         me.callParent(arguments);
     },
@@ -830,10 +830,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.selectionModel.Select
      */
     hasSelection: function() {
         return this.selected.getCount() > 0;
-    },
-
-    getSelectionId: function(record){
-        return record;
     },
 
     pruneIf: Ext.emptyFn,

@@ -83,8 +83,6 @@ Ext.define('sitools.user.controller.component.datasets.services.SorterServiceCon
                     view.store.sorters.clear();
                     if (sorters.length < 1) {
                         view.store.reload();
-                        view.close();
-                        return;
                     } else if (sorters.length === 1) {
                         view.store.sort(sorters[0].property, sorters[0].direction);
                     } else {

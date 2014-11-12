@@ -36,7 +36,7 @@ Ext.namespace('sitools.user.view.component.datasets.dataviews');
 Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     extend : 'Ext.grid.Panel',
     
-    requires : ['sitools.user.view.component.datasets.dataviews.CheckboxModel'],
+    requires : ['sitools.user.view.component.datasets.dataviews.selectionModel.SitoolsCheckboxModel'],
     
     alias : 'widget.livegridView',
     layout : 'fit',
@@ -159,7 +159,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         // selection is done on the ids
         if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
             Ext.apply(params, this.getRequestFormFilterParams());
-            Ext.apply(params, this.this.getRequestGridFilterParams());
+            Ext.apply(params, this.getRequestGridFilterParams());
             Ext.apply(params, this.getSortParams());
         }
 
@@ -227,14 +227,16 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     getSelectionParam : function () {
         var sm = this.getSelectionModel(), param = {};
 
-        if (this.isAllSelected()) {
-            // First Case : all the dataset is selected.
-            param.ranges = "[[0," + (this.store.getTotalCount() - 1) + "]]";
-        } else /* if (Ext.isEmpty(sm.getPendingSelections())) */{
-            // second Case : no pending Selections
-            var recSelected = sm.getSelection();
-            param = sitools.user.utils.DataviewUtils.getParamsFromRecsSelected(recSelected);
-        }
+        param.ranges = Ext.JSON.encode(sm.getSelectedRanges());
+        
+//        if (this.isAllSelected()) {
+//            // First Case : all the dataset is selected.
+//            param.ranges = "[[0," + (this.store.getTotalCount() - 1) + "]]";
+//        } else /* if (Ext.isEmpty(sm.getPendingSelections())) */{
+//            // second Case : no pending Selections
+//            var recSelected = sm.getSelection();
+//            param = sitools.user.utils.DataviewUtils.getParamsFromRecsSelected(recSelected);
+//        }
         /*
          * else { //TODO //Third Case : there is a pending Selection, send all
          * the ranges. // var ranges = sm.getAllSelections(true); // result =
@@ -288,9 +290,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     },
     
     getSelectionsRange : function () {
-        //TODO finish the method implementation when the selection model is correct
         var sm = this.getSelectionModel();
-        return "[]";
+        return sm.getSelectedRanges();
     },
     
 // /**

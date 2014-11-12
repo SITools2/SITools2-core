@@ -303,7 +303,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 	 */
 	_addSelection : function(selections, grid, datasetId) {
 		var primaryKey = grid.component.getPrimaryKey();
-		var rec = selections[0];
+		var rec = grid.store.getAt(selections[0]);
 		if (Ext.isEmpty(primaryKey) || Ext.isEmpty(rec.get(primaryKey))) {
 			Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noPrimaryKey'));
 			return;
