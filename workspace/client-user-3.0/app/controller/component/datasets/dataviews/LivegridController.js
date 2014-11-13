@@ -74,6 +74,28 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                 }
             },
             'livegridView' : {
+                
+                render : function (view) {
+                    view.getStore().on("load", function() {
+                     // do selection if those ranges are passed to the dataview
+                        var ranges = view.getRanges();
+                        if (!Ext.isEmpty(ranges)) {
+                            var nbRecordsSelection = view.getNbRecordsSelection(); 
+                             if (!Ext.isEmpty(nbRecordsSelection) && (nbRecordsSelection === view.store.getTotalCount())) {
+                                 view.getSelectionModel().selectAll();
+                                 view.setNbRecordsSelection(null);
+                                 view.setRanges(null);
+                             } else {
+                                 ranges = Ext.JSON.decode(ranges);
+                                 this.selectRangeDataview(view, ranges);
+                                 view.setNbRecordsSelection(null);
+                                 view.setRanges(null);
+                             }
+                         }
+                    }, this);
+                    
+                },
+                
             	resize : function (view) {
                     view.getSelectionModel().updateSelection();
                 },
@@ -95,9 +117,18 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                     var serviceToolbarView = livegrid.down('serviceToolbarView');
                     var serviceController = this.getApplication().getController('sitools.user.controller.component.datasets.services.ServicesController');
                     sitools.user.utils.DataviewUtils.featureTypeAction(column, record, serviceController, serviceToolbarView);                   
+                },
+                
+                viewready : function (view) {
                 }
                 
             }
         });
-    }
+    },
+    
+    selectRangeDataview : function (dataview, ranges) {
+         Ext.each(ranges, function (range) {
+             dataview.getSelectionModel().selectRange(range[0], range[1], true);
+         }, this);
+     }
 });

@@ -94,7 +94,9 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             columns : columns,
             urlRecords : dataset.sitoolsAttachementForUsers + '/records',
             scope : this,
-            component : this
+            component : this,
+            ranges : componentConfig.ranges,
+            nbRecordsSelection : componentConfig.nbRecordsSelection
             // searchAction : this.searchAction,
         });
         

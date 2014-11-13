@@ -163,18 +163,6 @@ Ext.define('sitools.user.utils.DatasetUtils', {
                         iconCls : "dataviews"
 	                });
                     
-//    	                componentCfg = {
-//    	                    dataUrl : dataset.sitoolsAttachementForUsers,
-//    	                    datasetId : dataset.Id,
-//    	                    datasetCm : dataset.columnModel, 
-//    	                    datasetName : dataset.name,
-//    	                    dictionaryMappings : dataset.dictionaryMappings,
-//    	                    datasetViewConfig : dataset.datasetViewConfig, 
-//    	                    preferencesPath : "/" + dataset.datasetName, 
-//    	                    preferencesFileName : "datasetOverview", 
-//    	                    sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers
-//    	                };
-                
 	                var componentConfig = {
                 		dataset : dataset
 	                };

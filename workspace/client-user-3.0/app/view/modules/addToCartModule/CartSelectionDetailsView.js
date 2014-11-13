@@ -32,6 +32,8 @@ Ext.namespace('sitools.user.view.modules.addToCartModule');
 Ext.define('sitools.user.view.modules.addToCartModule.CartSelectionDetailsView', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.cartSelectionDetails',
+    border : false,
+    bodyBorder : false,
     
     disableSelection : true,
     initComponent : function () {
@@ -65,11 +67,10 @@ Ext.define('sitools.user.view.modules.addToCartModule.CartSelectionDetailsView',
                 
                 item.renderer = function (value, metadata, record, rowIndex, colIndex, store) {
                     if(value.length > 10) {
-                        metadata.attr = 'ext:qtip="' + value + '" ext:qwidth="auto"';
+                        metadata.tdAttr = 'data-qtip="'+value+'"';
                     }
                     return value;
                 };
-//                columns.push(Ext.create('Ext.grid.column.Column', item));
                 columns.push(Ext.create('Ext.grid.column.Column', item));
             }
         });
@@ -89,23 +90,25 @@ Ext.define('sitools.user.view.modules.addToCartModule.CartSelectionDetailsView',
         this.params.colModel = Ext.JSON.encode(colModel);
         
         this.store = Ext.create('Ext.data.JsonStore', {
+            pageSize : 300,
+            remoteSort : true,
             proxy : {
             	type : 'ajax',
                 method : 'GET',
                 url : this.url,
+                extraParams : this.params,
                 reader : {
                 	type : 'json',
-                	root : 'data'
+                	root : 'data',
+                	idProperty : this.primaryKey
                 }
             },
-            restful : true,
             fields : fields
             
         });
 
         this.bbar = {
             xtype : 'pagingtoolbar',
-            pageSize : 300,
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -113,35 +116,6 @@ Ext.define('sitools.user.view.modules.addToCartModule.CartSelectionDetailsView',
         };
         
         this.callParent(arguments);
-    },
-    
-    onRender : function () {
-    	this.callParent(arguments);
-        this.loadRecordsFile();
-    },
-    
-    afterRender : function () {
-    	this.callParent(arguments);
-        this.getEl().mask(i18n.get('label.loadingArticles'));
-    },
-    
-    loadRecordsFile : function () {
-    	var params = Ext.apply({
-    		start : 0,
-            limit : 300
-    	}, this.params);
-    	
-        this.store.load({
-            params : params
-        });
-    },
-    
-    onRefresh : function () {
-//        this.store.removeAll();
-//        this.store.loadData(this.records);
-//        this.cartModule.fireEvent('onDetail');
-        this.cartModule.store.reload();
-        this.getEl().unmask();
     },
     
     getPrimaryKeyFromCm : function (colModel) {

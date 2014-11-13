@@ -31,7 +31,9 @@ Ext.define('sitools.user.modules.AddToCartModule', {
     controllers : ['sitools.user.controller.modules.addToCartModule.AddToCartController'],
 
     init : function () {
-        var view = Ext.create('sitools.user.view.modules.addToCartModule.AddToCartModuleView');
+        var view = Ext.create('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
+            moduleModel : this.getModuleModel()
+        });
         
         this.show(view);
 
@@ -171,8 +173,7 @@ sitools.user.modules.AddToCartModule.getParameters = function () {
             setValue : function (value) {
                 var orderServices = Ext.JSON.decode(value);
                 Ext.each(orderServices, function (service) {
-                    var serviceRecord = new Ext.data.Record(service);
-                    this.grid2.getStore().add(serviceRecord);
+                    this.grid2.getStore().add(orderServices);
                 }, this);
                 this.value = value;
             }

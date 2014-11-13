@@ -49,17 +49,12 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
                     livegrid.serviceServerUtil = serverServiceUtil;
                 }
             },
-            'livegridView > serviceToolbarView > #servicesDsToolbar > button' : {
+            'livegridView > serviceToolbarView > #servicesDsToolbar button, livegridView > serviceToolbarView > #servicesDsToolbar menuitem' : {
                 click : function (button, e, opts) {
                     this.callService(button);
                 }
             },
 
-            'livegridView > serviceToolbarView > #servicesDsToolbar button > menu > button' : {
-                click : function (button, e, opts) {
-                    this.callService(button);
-                }
-            }
         });
     },
     

@@ -56,6 +56,11 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         }
     },
     
+    config : {
+        ranges : null,
+        nbRecordsSelection : null
+    },
+    
     initComponent : function () {
         this.selModel = new Ext.create("sitools.user.view.component.datasets.dataviews.selectionModel.SitoolsCheckboxModel", {
             checkOnly : true,
@@ -95,7 +100,13 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     
     //generic method
     getNbRowsSelected : function () {
-        return this.getSelectionModel().getSelection().length;
+        var sm = this.getSelectionModel();
+        if (sm.markAll) {
+            return this.store.getTotalCount();
+        }
+        else {
+            return sm.getSelection().length;
+        }
     },
     
     //generic method
@@ -186,8 +197,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     getRequestGridFilterParams : function () {
         var params = {};
         // Add the filters params
-        if (!Ext.isEmpty(this.getStore().servicefilters) && Ext.isFunction(this.getStore().servicefilters.getFilterData)) {
-            var gridFiltersParam = this.store.servicefilters.getFilterData();
+        if (!Ext.isEmpty(this.getStore().getGridFilters())) {
+            var gridFiltersParam = this.getStore().getGridFilters();
             if (!Ext.isEmpty(gridFiltersParam)) {
                 params.filter = [];
                 Ext.each(gridFiltersParam, function (filter, index) {
@@ -231,14 +242,16 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     getSelectionParam : function () {
         var sm = this.getSelectionModel(), param = {};
 
-        if (this.isAllSelected()) {
-            // First Case : all the dataset is selected.
-            param.ranges = "[[0," + (this.store.getTotalCount() - 1) + "]]";
-        } else /* if (Ext.isEmpty(sm.getPendingSelections())) */{
-            // second Case : no pending Selections
-            var recSelected = sm.getSelection();
-            param = sitools.user.utils.DataviewUtils.getParamsFromRecsSelected(recSelected);
-        }
+        param.ranges = Ext.JSON.encode(sm.getSelectedRanges());
+        
+//        if (this.isAllSelected()) {
+//            // First Case : all the dataset is selected.
+//            param.ranges = "[[0," + (this.store.getTotalCount() - 1) + "]]";
+//        } else /* if (Ext.isEmpty(sm.getPendingSelections())) */{
+//            // second Case : no pending Selections
+//            var recSelected = sm.getSelection();
+//            param = sitools.user.utils.DataviewUtils.getParamsFromRecsSelected(recSelected);
+//        }
         /*
          * else { //TODO //Third Case : there is a pending Selection, send all
          * the ranges. // var ranges = sm.getAllSelections(true); // result =
@@ -292,9 +305,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     },
     
     getSelectionsRange : function () {
-        //TODO finish the method implementation when the selection model is correct
         var sm = this.getSelectionModel();
-        return "[]";
+        return sm.getSelectedRanges();
     },
     
 // /**

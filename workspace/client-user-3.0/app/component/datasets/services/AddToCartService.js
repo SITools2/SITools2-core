@@ -345,7 +345,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 				dataUrl : dataset.sitoolsAttachementForUsers,
 				datasetName : dataset.name,
 				selections : this.dataview.getRequestUrlWithoutColumnModel(),
-				ranges : this.dataview.getSelectionsRange(),
+				ranges : Ext.JSON.encode(this.dataview.getSelectionsRange()),
 				dataToExport : dataToExport,
 				startIndex : this.dataview.getStore().lastRequestStart,
 				nbRecords : this.dataview.getNbRowsSelected(),
@@ -421,7 +421,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 		//Sorters
 		var storeSort = grid.getSortParams();
 		if (!Ext.isEmpty(storeSort)) {
-			order.storeSort = storeSort.sort;
+			order.sortInfo = storeSort.sort;
 		}
 
 		// Form filters

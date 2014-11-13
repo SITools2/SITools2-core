@@ -941,3 +941,8 @@ function generateId() {
     });
     return uuid;
 }
+
+function initLocalisedVariables() {
+    Ext.MessageBox.buttonText.yes = i18n.get('label.yes'),
+    Ext.MessageBox.buttonText.no = i18n.get('label.no');
+}

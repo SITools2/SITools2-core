@@ -58,7 +58,7 @@ Ext.define('sitools.user.model.CartSelectionModel', {
     }, {
         name : 'gridFiltersCfg'
     }, {
-        name : 'storeSort'
+        name : 'sortInfo'
     }, {
         name : 'formFilters'
     }, {
