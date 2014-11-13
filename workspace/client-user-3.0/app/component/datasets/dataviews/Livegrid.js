@@ -77,13 +77,14 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             datasetName : dataset.name,
             type : "data",
             title : i18n.get('label.datasets') + " : " + dataset.name,
-            id : "dataset_" + dataset.id,
             saveToolbar : true,
             winWidth : 900,
             winHeight : 400,
             iconCls : "dataviews",
             typeWindow : 'data'
         });
+        
+        windowSettings.id = "dataset_" + dataset.id + "_" + Ext.id();
         
         Ext.apply(componentSettings, {
             dataset : dataset,
