@@ -49,7 +49,13 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
                     livegrid.serviceServerUtil = serverServiceUtil;
                 }
             },
-            'livegridView toolbar button' : {
+            'livegridView > serviceToolbarView > #servicesDsToolbar > button' : {
+                click : function (button, e, opts) {
+                    this.callService(button);
+                }
+            },
+
+            'livegridView > serviceToolbarView > #servicesDsToolbar button > menu > button' : {
                 click : function (button, e, opts) {
                     this.callService(button);
                 }
@@ -64,10 +70,11 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
         } else if (button.typeService === 'GUI') {
             
             var idService = button.idService;
-	        var guiServiceStore = button.up('toolbar').getGuiServiceStore();
-	        var service = guiServiceStore.getById(idService);
             var serviceToolbarView = button.up("serviceToolbarView");
-            
+
+	        var guiServiceStore = serviceToolbarView.getGuiServiceStore();
+	        var service = guiServiceStore.getById(idService);
+
 //            this.callGuiService(button);
             this.callGuiService(service, serviceToolbarView);
         }

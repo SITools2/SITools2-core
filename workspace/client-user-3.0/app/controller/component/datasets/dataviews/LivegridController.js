@@ -47,7 +47,7 @@ Ext.define('sitools.user.controller.component.datasets.dataviews.LivegridControl
                             target : btn.getEl(),
                             autoWidth : true,
                             autoLoad : {
-                                url : loadUrl.get('APP_URL') + "/common/html/"+ locale.getLocale() + "/tips.html",
+                                url : loadUrl.get('APP_URL') + "/common/html/"+ locale.getLocale() + "/tips.html"
                             },
                             anchor : 'left',
                             autoHide : false,

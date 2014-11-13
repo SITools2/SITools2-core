@@ -23,7 +23,7 @@ Ext.namespace('sitools.user.component.common');
  * IFrame Component to open an iframe in the desktop context
  * 
  * @class sitools.user.component.common.IFrameComponent
- * @extendssitools.user.core.Component
+ * @extend sitools.user.core.Component
  */
 Ext.define('sitools.user.component.common.IFrameComponent', {
     extend : 'sitools.user.core.Component',

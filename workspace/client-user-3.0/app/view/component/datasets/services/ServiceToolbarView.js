@@ -32,7 +32,11 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         sortedRecords : null
     },
     border : false,
-    
+    layout : {
+        type : 'hbox',
+        align : 'stretch'
+    },
+
     initComponent : function () {
         var store = Ext.create("sitools.user.store.DatasetServicesStore", {
             datasetUrl : this.datasetUrl  
@@ -55,14 +59,29 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         });
         guiServiceStore.load();
         this.setGuiServiceStore(guiServiceStore);
-        
+
+        this.staticToolbar = Ext.create('Ext.toolbar.Toolbar', {
+            itemId : 'staticDsToolbar',
+            border : false,
+            width : 150
+        });
+
+        this.servicesToolbar = Ext.create('Ext.toolbar.Toolbar', {
+            itemId : 'servicesDsToolbar',
+            enableOverflow : true,
+            border : false,
+            flex : 1
+        });
+
+        this.items = [this.servicesToolbar, this.staticToolbar];
+
         this.callParent(arguments);
     },
     
     afterRenderToolbar : function (grid) {
         var customToolbarButtons = grid.getCustomToolbarButtons();
-        var toolbar = grid.getDockedItems('toolbar[dock="top"]')[0];
-        toolbar.add(customToolbarButtons);
+        var serviceToolbarView = grid.down('serviceToolbarView');
+        serviceToolbarView.staticToolbar.add(customToolbarButtons);
     },
     
     onLoadServices : function (records) {
@@ -111,7 +130,8 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
             }
             
         }, this);
-        this.add(cfg);
+
+        this.servicesToolbar.add(cfg);
     },
     
     /**
@@ -123,7 +143,7 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
         }
         
         var records = this.getSortedRecords();
-        this.removeAll();
+        this.servicesToolbar.removeAll();
         
         this.onLoadServices(records);
     },
@@ -178,7 +198,10 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
      */
     sortServices : function (records) {
         var tbRight = [], tb = [];
-        tb = tb.concat(this.addAdditionalButton());
+
+//        tb = tb.concat(this.addAdditionalButton());
+        this.staticToolbar.add(this.addAdditionalButton());
+
         Ext.each(records, function (item) {
         	if (item.get("visible")) {
 	            if (item.get('position') === 'left' || Ext.isEmpty(item.get('position'))) {

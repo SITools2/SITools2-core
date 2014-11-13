@@ -111,15 +111,20 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
      */
     getCustomToolbarButtons : function () {
         var array = [];
-        
         var colMenu = this.headerCt.getColumnMenu(this.headerCt);
+
         array.push({
             itemId: 'columnItem',
             text: this.headerCt.columnsText,
             cls: this.headerCt.menuColsIcon,
             hideOnClick: false,
             tooltip : i18n.get('label.addOrDeleteColumns'),
-            menu : colMenu,
+            menu : {
+                xtype : 'menu',
+                border : false,
+                plain : true,
+                items : colMenu
+            },
             name : "columnsButton"
         });
 
@@ -158,7 +163,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         // selection is done on the ids
         if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
             Ext.apply(params, this.getRequestFormFilterParams());
-            Ext.apply(params, this.this.getRequestGridFilterParams());
+            Ext.apply(params, this.getRequestGridFilterParams());
             Ext.apply(params, this.getSortParams());
         }
 
