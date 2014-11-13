@@ -10,7 +10,7 @@
 
 ### DatasetView ###
 
-Definition d'un sorter :
+#### Definition d'un sorter :
 
 	{
 		property : columnAlias
@@ -21,7 +21,7 @@ Résultat dans la requête :
 
 	sort:[{"field":"dataset","direction":"ASC"}]
 
-Definition d'un filtre de formulaire (formFilter):
+#### Definition d'un filtre de formulaire (formFilter):
 
 	{
 		type : this.type, 
@@ -35,20 +35,43 @@ Résultat dans la requête :
 	
 	p[0]=type|code|value|userDimension|userUnit
 
-Definition d'un filtre dans la dataview (gridFilter):
+#### Definition d'un filtre dans la dataview (gridFilter):
+
+La définition se décompose en 2 parties :
+
+Configuration du filtre (nécessaire pour ouvrir le FilterService avec la configuration sauvegardé)
+
+	[{
+		"columnAlias" : "dateobs",
+		"data" : {
+			"comparison" : "gte",
+			"value" : "2000-11-13T00:00:00.000",
+			"type" : "date"
+		}
+	}, {
+		"columnAlias" : "dateobs",
+		"data" : {
+			"comparison" : "lte",
+			"value" : "2014-11-13T00:00:00.000",
+			"type" : "date"
+		}
+	}]
+
+
+Definition du filtre (nécessaire pour produire la requête)
 
 	{
-		"columnAlias" : "dataset",
-		"data" : {
-			"comparison" : "LIKE",
-			"value" : "A00%",
-			"type" : "string"
-		}
+		"columnAlias" : "dateobs",
+		"value" : {
+			"from" : "2000-11-13T00:00:00",
+			"to" : "2014-11-13T00:00:00"
+		},
+		"type" : "date"
 	}
 
 Résultat dans la requête :
 	
-	filter[0][columnAlias]=dataset&filter[0][data][comparison]=LIKE&filter[0][data][value]=A00%&filter[0][data][type]=string
+	filter[0][columnAlias]=dateobs&filter[0][data][comparison]=gte&filter[0][data][value]=2000-11-13T00:00:00.000&filter[0][data][type]=date&filter[1][columnAlias]=dateobs&filter[1][data][comparison]=lte&filter[1][data][value]=2014-11-13T00:00:00.000&filter[1][data][type]=date
 
 Définition d'une sélection
 
@@ -74,7 +97,10 @@ Liste des parametres nécessaires pour ouverture d'une dataview :
 		} 
 		formParams => Liste de filtres de type formulaire
 		gridFilters => Liste de filtres de type grid
-		sortInfo => Liste des tris
+		gridFiltersCfg => Liste de configuration de filtres de type grid
+		sortInfo => Liste des tris,
+		ranges => Liste de ranges
+		
 	}
 
 

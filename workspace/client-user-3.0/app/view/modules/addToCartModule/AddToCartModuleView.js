@@ -90,8 +90,7 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/refresh.png',
                 tooltip : i18n.get('label.refreshOrder'),
                 cls : 'button-transition',
-                scope : this,
-                handler : this.onRefresh
+                itemId : 'refresh'
             }, {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
                 tooltip : i18n.get('label.deleteOrder'),
@@ -154,15 +153,7 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
             columns : columns,
             store : this.cartsSelectionsStore,
             forceFit : true,
-            viewConfig : {
-//                preserveScrollOnRefresh : true,
-//                listeners : {
-//                    scope : this,
-//                    refresh : function (view) {
-//                        this.callbackOrderFile();
-//                    }
-//                }
-            }
+            itemId: "selectionsPanel"
         });
         
         this.containerArticlesDetailsPanel = Ext.create('Ext.panel.Panel', {
@@ -432,37 +423,7 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
         
     },
     
-    viewArticlesDetails : function () {
-        var selected = this.gridPanel.getSelectionModel().getSelection()[0];
-        
-        this.containerArticlesDetailsPanel.removeAll();
-        var detailsSelectionPanel = Ext.create('sitools.user.view.modules.addToCartModule.CartSelectionDetailsView', {
-            selection : selected,
-            columnModel : selected.data.colModel,
-            url : selected.data.dataUrl + "/records",
-            selections : selected.data.selections, 
-            cartOrderFile : this.cartOrderFile,
-            cartModule : this
-        });
-        
-        this.containerArticlesDetailsPanel.add(detailsSelectionPanel);
-        this.containerArticlesDetailsPanel.setTitle(Ext.String.format(i18n.get('label.orderDetails'), selected.data.selectionName));
-//        this.containerArticlesDetailsPanel.doLayout();
-    },
     
-    onRefresh : function () {
-        this.cartsSelectionsStore.reload();
-        this.gridPanel.getSelectionModel().clearSelections();
-        this.containerArticlesDetailsPanel.collapse();
-        this.containerArticlesDetailsPanel.setTitle('');
-        this.containerArticlesDetailsPanel.removeAll();
-        
-        var modifySelBtn = this.down('toolbar').down('button[name=modifySelectionBtn]');
-        if (!Ext.isEmpty(modifySelBtn)) {
-            this.down('toolbar').remove(modifySelBtn);
-//            this.down('toolbar').doLayout();
-        }
-    },
     
     onDelete : function () {
         UserStorage.get(this.user + "_CartSelections.json", getCartFolder(projectGlobal.projectName), this, this.setCartOrdersFile, Ext.emptyFn, this.deleteOrder);
@@ -556,21 +517,5 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
             preferencesFileName : this.id
         };
 
-    },
-    
-    modifySelection : function () {
-        var selected = this.gridPanel.getSelectionModel().getSelections()[0];
-        var url = selected.data.dataUrl;
-        var params = {
-            ranges : selected.get('ranges'),
-            startIndex : selected.get('startIndex'),
-            nbRecordsSelection : selected.get('nbRecords'),
-            filters : selected.get('filters'),
-            storeSort : selected.get('storeSort'),
-            formParams : selected.get('formParams'),
-            filtersCfg : selected.get('filtersCfg'),
-            isModifySelection : true
-        };
-        sitools.user.clickDatasetIcone(url, 'data', params);
-    }
+    } 
 });

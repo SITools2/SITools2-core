@@ -69,6 +69,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             primaryKey : this.primaryKey,
             formFilters : componentConfig.formFilters,
             gridFilters : componentConfig.gridFilters,
+            gridFiltersCfg : componentConfig.gridFiltersCfg,
             sortInfo : componentConfig.sortInfo
         });
         

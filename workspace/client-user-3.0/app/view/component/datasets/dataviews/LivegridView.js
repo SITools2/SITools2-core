@@ -182,8 +182,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     getRequestGridFilterParams : function () {
         var params = {};
         // Add the filters params
-        if (!Ext.isEmpty(this.getStore().servicefilters) && Ext.isFunction(this.getStore().servicefilters.getFilterData)) {
-            var gridFiltersParam = this.store.servicefilters.getFilterData();
+        if (!Ext.isEmpty(this.getStore().getGridFilters())) {
+            var gridFiltersParam = this.getStore().getGridFilters();
             if (!Ext.isEmpty(gridFiltersParam)) {
                 params.filter = [];
                 Ext.each(gridFiltersParam, function (filter, index) {

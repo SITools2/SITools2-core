@@ -26,8 +26,26 @@ Ext.define('sitools.user.model.CartSelectionModel', {
     }, {
         name : 'selectionId'
     }, {
+        name : 'datasetId',
+        type : 'string'
+    }, {
+        name : 'projectId',
+        type : 'string'
+    }, {
+        name : 'dataUrl',
+        type : 'string'
+    }, {
         name : 'datasetName',
         type : 'string'
+    }, {
+        name : 'selections',
+        type : 'string'
+    }, {
+        name : 'ranges'
+    }, {
+        name : 'dataToExport'
+    }, {
+        name : 'startIndex'
     }, {
         name : 'nbRecords',
         type : 'int'
@@ -36,29 +54,15 @@ Ext.define('sitools.user.model.CartSelectionModel', {
         type: 'date',
         dateFormat : SITOOLS_DATE_FORMAT
     }, {
-        name : 'colModel'
+        name : 'gridFilters'
     }, {
-        name : 'datasetId'
-    }, {
-        name : 'selections'
-    }, {
-        name : 'dataUrl'
-    }, {
-        name : 'ranges'
-    }, {
-        name : 'dataToExport'
-    }, {
-        name : 'startIndex'
-    }, {
-        name : 'filters'
+        name : 'gridFiltersCfg'
     }, {
         name : 'storeSort'
     }, {
-        name : 'formParams'
+        name : 'formFilters'
     }, {
-        name : 'filtersCfg'
-    }, {
-    	name : 'colModel'
+        name : 'colModel'
     }]
 
 });

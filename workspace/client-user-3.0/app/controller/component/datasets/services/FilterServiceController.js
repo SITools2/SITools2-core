@@ -47,9 +47,9 @@ Ext.define('sitools.user.controller.component.datasets.services.FilterServiceCon
                     var i = 0;
                     Ext.each(view.filters, function (filter) {
                         var compositeField = view.f.getComponent(i);
-                        view.updateFilterUI(compositeField, filter);
+                        this.updateFilterUI(compositeField, filter);
                         i++;
-                    }, view);
+                    }, this);
                 }
             },
             "filterServiceView combo" : {
@@ -114,7 +114,6 @@ Ext.define('sitools.user.controller.component.datasets.services.FilterServiceCon
                     var i = view.f.items.length;
                     var compositeField = view.buildCompositeField(i);
                     view.f.add(compositeField);
-                    view.updateWindowSize();
                 }
             },
             "filterServiceView button#remove" : {
@@ -135,11 +134,7 @@ Ext.define('sitools.user.controller.component.datasets.services.FilterServiceCon
             "filterServiceView button#ok" : {
                 click : function (button) {
                     var view = button.up('filterServiceView');
-                    if (Ext.isEmpty(view.store.servicefilters)) {
-                        view.store.servicefilters = Ext.create("sitools.public.widget.sitoolsFilter.FiltersCollection");
-                    }
-                    
-                    view.store.servicefilters.clear();
+                    var servicefilters = Ext.create("sitools.public.widget.sitoolsFilter.FiltersCollection");
                     
                     var filters = [];
                     var filtersCfg = [];
@@ -152,23 +147,25 @@ Ext.define('sitools.user.controller.component.datasets.services.FilterServiceCon
                         //Build the filters for the store query
                         var filterValue = filter.getValue();                    
                         Ext.each(filterValue, function (filterValueItem) {
-                            view.store.servicefilters.add(i++, filterValueItem);        
+                            servicefilters.add(i++, filterValueItem);        
                             if (!Ext.isEmpty(filterValueItem)) {
                                 filters.push(filterValueItem);
                             }
                         });
+                        
                         if (!Ext.isEmpty(filter.getConfig())) {
                             filtersCfg.push(filter.getConfig());
                         }
                         
+                        
+                        
                     }, view);
                     
-                    view.store.filtersCfg = filtersCfg;
-//                  view.store.filters = filters;
+                    view.store.setGridFilters(servicefilters.getFilterData());
+                    view.store.setGridFiltersCfg(filtersCfg);
                     
-                    // var options = view.store.storeOptions() || {};
+
                     var options = view.store.lastOptions || {};
-                    
 //                  
                     options.params = options.params || {};
                     
@@ -204,4 +201,18 @@ Ext.define('sitools.user.controller.component.datasets.services.FilterServiceCon
             }
         }
     },
+    
+    updateFilterUI : function (container, filter) {
+        var combo = container.down("combobox");
+        var store = combo.getStore();
+        var rec = store.findRecord("columnAlias", filter.columnAlias);
+        
+        combo.setValue(filter.columnAlias);
+        combo.fireEvent('select', combo, [rec]);
+        
+        
+        var filterCmp = container.down("container[specificType=filter]");
+        filterCmp.setValue(filter.value);
+        
+    }
 });

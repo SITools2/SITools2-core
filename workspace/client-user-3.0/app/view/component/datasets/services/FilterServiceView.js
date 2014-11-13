@@ -64,11 +64,7 @@ Ext.define('sitools.user.view.component.datasets.services.FilterServiceView', {
             bodyBorder : false
         });
         
-        this.filters = this.store.filtersCfg;
-        
-        if (Ext.isEmpty(this.filters) && !Ext.isEmpty(this.dataview.filtersCfg)) {
-            this.filters = this.dataview.filtersCfg;
-        }
+        this.filters = this.store.getGridFiltersCfg();
         
         var len;
         if (! Ext.isEmpty(this.filters)) {
@@ -138,18 +134,6 @@ Ext.define('sitools.user.view.component.datasets.services.FilterServiceView', {
             
         });
         return compositeField;
-    },
-    updateFilterUI : function (container, filter) {
-        var combo = container.down("combobox");
-        var store = combo.getStore();
-        var rec = store.findRecord("columnAlias", filter.columnAlias);
-        
-        combo.setValue(filter.columnAlias);
-        combo.fireEvent('select', combo, [rec]);
-        
-        
-        var filterCmp = container.down("container[specificType=filter]");
-        filterCmp.setValue(filter.value);
-        
     }
+    
 });

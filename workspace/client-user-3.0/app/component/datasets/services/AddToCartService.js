@@ -349,7 +349,8 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 				dataToExport : dataToExport,
 				startIndex : this.dataview.getStore().lastRequestStart,
 				nbRecords : this.dataview.getNbRowsSelected(),
-				orderDate : orderDateStr
+				orderDate : orderDateStr,
+				colModel : colModel
 		};
 		
 		var sortersAndFilters = this.createSortersAndFilters(this.dataview);
@@ -413,13 +414,14 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 		// Grid filters
 		var gridFilters = grid.getRequestGridFilterParams();
 		if (!Ext.isEmpty(gridFilters)) {
-			order.gridFilters = gridFilters;
+			order.gridFilters = gridFilters.filter;
+			order.gridFiltersCfg = grid.store.getGridFiltersCfg();
 		}
 		
 		//Sorters
 		var storeSort = grid.getSortParams();
 		if (!Ext.isEmpty(storeSort)) {
-			order.storeSort = storeSort;
+			order.storeSort = storeSort.sort;
 		}
 
 		// Form filters

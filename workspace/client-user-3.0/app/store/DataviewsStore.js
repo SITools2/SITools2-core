@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-/* global Ext, sitools, window */
+/*global Ext, sitools, window */
 
 /**
  * Specific JsonReader to handle totalProperty reading.
@@ -25,22 +25,22 @@
  * @private
  */
 Ext.define('sitools.user.store.DataviewsJsonReader', {
-	
-	extend : 'Ext.data.reader.Json',
-	alias : 'reader.dataviewsreader',
-	
-	constructor : function () {
-    	this.callParent(arguments);
-    	this.extractTotal = this.getTotal;
-        
+
+    extend : 'Ext.data.reader.Json',
+    alias : 'reader.dataviewsreader',
+
+    constructor : function () {
+        this.callParent(arguments);
+        this.extractTotal = this.getTotal;
+
         this.getTotal = function (data) {
-        	var total = this.extractTotal(data);
-        	if(Ext.isEmpty(total)) {
-        		return this.total;
-        	}
-        	this.total = total;
-        	return total;
-        }
+            var total = this.extractTotal(data);
+            if (Ext.isEmpty(total)) {
+                return this.total;
+            }
+            this.total = total;
+            return total;
+        };
     }
 });
 
@@ -56,13 +56,16 @@ Ext.define('sitools.user.store.DataviewsStore', {
     pageSize : 300,
     buffered : true,
     
+
     config : {
-    	// Object definition of the filters
-    	formFilters : null,
-    	// Object of string parameters corresponding to the filters definition
-    	formParams : null,
-    	// list of object filters added by the filter service
-    	servicefilters : null
+        // Object definition of the filters
+        formFilters : null,
+        // Object of string parameters corresponding to the filters definition
+        formParams : null,
+        // list of value object filters added by the filter service
+        gridFilters : null,
+        // list of config object filters added by the filter service
+        gridFiltersCfg : null
     },
     
     paramPrefix : "filter",
@@ -71,9 +74,11 @@ Ext.define('sitools.user.store.DataviewsStore', {
         config = Ext.apply({}, config);
         
         this.setFormFilters(config.formFilters);
-        
-        if(!Ext.isEmpty(this.getFormFilters())) {
-        	this.setFormParams(this.buildFormParamsUrl(this.getFormFilters()));
+        this.setGridFilters(config.gridFilters);
+        this.setGridFiltersCfg(config.gridFiltersCfg);
+
+        if (!Ext.isEmpty(this.getFormFilters())) {
+            this.setFormParams(this.buildFormParamsUrl(this.getFormFilters()));
         }
 
         Ext.apply(config, {
@@ -86,7 +91,7 @@ Ext.define('sitools.user.store.DataviewsStore', {
                     id : config.primaryKey,
                     root : 'data'
                 },
-                encodeSorters: function(sorters) {
+                encodeSorters: function (sorters) {
                     var min = [],
                         length = sorters.length,
                         i = 0;
@@ -117,34 +122,13 @@ Ext.define('sitools.user.store.DataviewsStore', {
                     store.isInSort = true;
                     store.isNewFilter = false;
 
-                    if (!Ext.isEmpty(store.filters) && Ext.isFunction(store.filters.getFilterData)) {
-                        var params = store.buildQuery(store.filters.getFilterData());
-                        Ext.apply(options.params, params);
-                    }
-
-//                    if ((this.sortInfo || this.multiSortInfo) && this.remoteSort) {
-//                        var pn = this.paramNames;
-//                        options.params = Ext.apply({}, options.params);
-//                        this.isInSort = true;
-//                        var root = pn.sort;
-//                        if (this.hasMultiSort) {
-//                            options.params[pn.sort] = Ext.encode({
-//                                "ordersList" : this.multiSortInfo.sorters
-//                            });
-//                        } else {
-//                            options.params[pn.sort] = Ext.encode({
-//                                "ordersList" : [ this.sortInfo ]
-//                            });
-//                        }
-//                    }
-                    
                     // adding optional form parameters 
                     if (!Ext.isEmpty(store.getFormParams())) {
                     	Ext.apply(operation.params, store.getFormParams());
                     }
                     
-                    if (!Ext.isEmpty(store.servicefilters) && Ext.isFunction(store.servicefilters.getFilterData)) {
-                        var params = this.buildQuery(store.servicefilters.getFilterData());
+                    if (!Ext.isEmpty(store.gridFilters)) {
+                        var params = this.buildQuery(store.gridFilters);
                         Ext.apply(operation.params, params);
                     }
                 }
@@ -197,11 +181,11 @@ Ext.define('sitools.user.store.DataviewsStore', {
      * Build a string path from the given formFilters
      */
     buildFormParamsUrl : function (formFilters) {
-    	var formParams={};
-    	formParams.p = [];
-    	Ext.each(formFilters, function (filter, index, arrayParams) {
-    		formParams["p[" + index + "]"] = this.paramValueToApi(filter);
+        var formParams = {};
+        formParams.p = [];
+        Ext.each(formFilters, function (filter, index, arrayParams) {
+            formParams["p[" + index + "]"] = this.paramValueToApi(filter);
         }, this);
-    	return formParams;
+        return formParams;
     }
 });
