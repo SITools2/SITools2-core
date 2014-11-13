@@ -35,74 +35,55 @@ Ext.define('sitools.user.component.datasets.services.DisplaySelectionCartService
 	extend : 'sitools.user.core.Component',
 	alias : 'widget.displaySelectionCartService',
     
-	getCartSelectionFile : function(response) {
-		if (Ext.isEmpty(response.responseText)) {
-			return;
-		}
-		try {
-			var json = Ext.decode(response.responseText);
-			this.cartSelectionFile = json;
-		} catch (err) {
-			return;
-		}
-	},
-
 	getCart : function() {
 		UserStorage.get(this.user + "_CartSelections.json",
 				getCartFolder(Project.projectName), this,
-				this.getCartSelectionFile, Ext.emptyFn,
-				this.displaySelectionCart);
+				this.displaySelectionCart, this.noSelectionArticle);
+	},
+	
+	noSelectionArticle : function () {
+	    Ext.Msg.alert(i18n.get('label.information'), i18n.get('label.noSelectionArticles'));
 	},
 
-	displaySelectionCart : function() {
+	displaySelectionCart : function(response) {
+	    
+	    if (Ext.isEmpty(response.responseText)) {
+	        return Ext.Msg.alert(i18n.get('label.information'), i18n.get('label.noSelectionArticles'));
+        }
+        
+	    var json = Ext.decode(response.responseText);
+        var cartSelectionFile = json;
+	    
 		var selection = {};
 
-		if (this.cartSelectionFile) {
-			Ext.each(this.cartSelectionFile.selections, function(sel) {
-						if (sel.selectionName === this.dataview.name) {
-							selection = sel;
-							return false;
-						}
-					}, this);
+		if (cartSelectionFile) {
+			Ext.each(cartSelectionFile.selections, function(sel) {
+				if (sel.selectionName === this.dataview.dataset.name) {
+					selection = sel;
+					return false;
+				}
+			}, this);
 		}
 
 		if (Ext.isEmpty(selection.ranges)) {
 			return Ext.Msg.alert(i18n.get('label.information'), i18n.get('label.noSelectionArticles'));
 		}
-//
-//		if (Ext.isFunction(this.dataview.ownerCt.close)) {
-//			this.dataview.ownerCt.close();
-//		} else {
-//			this.dataview.ownerCt.ownerCt.destroy();
-//		}
+
+		this.dataview.up("component[specificType=componentWindow]").close();
+		
+		var url = selection.dataUrl;
 		var params = {
 			ranges : selection.ranges,
 			startIndex : selection.startIndex,
 			nbRecordsSelection : selection.nbRecords,
-			filters : selection.filters,
-			filtersCfg : selection.filtersCfg,
-			storeSort : selection.storeSort,
+			gridFilters : selection.gridFilters,
+			gridFiltersCfg : selection.gridFiltersCfg,
+			sortInfo : selection.sortInfo,
 			formParams : selection.formParams,
 			isModifySelection : true
 		};
 		
-//		sitools.user.clickDatasetIcone(selection.dataUrl, 'data', params);
-		
-		var datasetViewComponent = Ext.create(this.dataview.componentClazz);
-        datasetViewComponent.create(this.getApplication());
-        
-        var dataset = this.dataview.dataset;
-        dataset.formParams = params;
-        
-        datasetViewComponent.init(dataset, params);
-
-		// this.dataview.store.load({
-		// params : {
-		// start : startIndex,
-		// limit : DEFAULT_LIVEGRID_BUFFER_SIZE
-		// },
-		// scope : this
-		// });
+		sitools.user.utils.DatasetUtils.clickDatasetIcone(url, 'data', params);
 	},
 	
 	executeAsService : function(config) {

@@ -96,7 +96,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             scope : this,
             component : this,
             ranges : componentConfig.ranges,
-            nbRecordsSelection : componentConfig.nbRecordsSelection
+            nbRecordsSelection : componentConfig.nbRecordsSelection,
+            isModifySelection : componentConfig.isModifySelection
             // searchAction : this.searchAction,
         });
         

@@ -6,13 +6,9 @@
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/tree_orders_selections.png</icon>
-  <xtype>sitools.user.component.dataviews.services.displaySelectionCartService</xtype>
+  <xtype>sitools.user.component.datasets.services.DisplaySelectionCartService</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/displaySelectionCartService.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>4</priority>

@@ -439,7 +439,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 
 			var cartModules = Ext.ComponentQuery.query("addToCartModule");
 			if (!Ext.isEmpty(cartModules)) {
-				cartModules[i].fireEvent("refresh");
+				cartModules[0].fireEvent("refresh");
 			}
 			
 		}

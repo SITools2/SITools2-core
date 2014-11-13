@@ -51,7 +51,9 @@ Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController'
             		
             		
             		cartView.gridPanel.getStore().on("load", this.callbackOrderFile, this);
-            	}
+            	},
+            	
+            	'refresh' : this.onRefresh
             },
             
             'addToCartModule toolbar#staticCartToolbar button#refresh' : {

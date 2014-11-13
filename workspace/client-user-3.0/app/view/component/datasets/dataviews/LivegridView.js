@@ -58,7 +58,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     
     config : {
         ranges : null,
-        nbRecordsSelection : null
+        nbRecordsSelection : null,
+        isModifySelection : null
     },
     
     initComponent : function () {
