@@ -175,11 +175,7 @@ Ext.define('sitools.admin.datasets.ColumnRendererWin', {
 			scope : this,
 			beforeclose : function () {
                 if (!this.validAction) {
-					// clear the grid record
-                    var colRendererCategory = this.lastColumnRendererType;
-                    this.selectedRecord.set("columnRendererCategory", colRendererCategory);
-                    var ok = (Ext.isEmpty(this.validAction)) ? false : this.validAction;
-                    Ext.callback(this.callback, this.scope, [ok]);
+                    this.selectedRecord.set("columnRendererCategory", this.lastColumnRendererType);
                 }
 			}
 		};

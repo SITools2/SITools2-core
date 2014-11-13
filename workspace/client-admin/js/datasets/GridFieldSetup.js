@@ -146,38 +146,32 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
             store : comboStore,
             queryMode : 'local',
             typeAhead : true,
+            editable : false,
             triggerAction : 'all',
             forceSelection : true,
-            selectOnFocus : true,
             valueField : 'value',
             displayField : 'display',
             emptyText : " ",
-            listeners : {
-                scope : this, 
-                beforeselect : function (combo, record, index) {
-                    combo.oldValue = combo.lastValue;
-                },
-                click : function () {
-                  debugger;  
-                },
-                select : function (combo, record) {
-                    var selectedRecord = this.getLastSelectedRecord();
-                    if (combo.getValue() == "" || combo.getValue() == "&nbsp;"){ 
-                        combo.setValue(null);
-                        selectedRecord.set("columnRenderer", null);
-                        return;
-                    }
-                    
-                    var columnRendererType = combo.getValue();
-                    //get the last value, which is either the last value selected or the first value.
-                    var oldValue = (Ext.isEmpty(combo.oldValue)) ? combo.getStore().getAt(0) : combo.oldValue;
-                    if (!Ext.isEmpty(columnRendererType)) {                
+            listConfig: {
+                listeners: {
+                    scope : this,
+                    beforeitemclick : function (list, record, item) {
+                        var combo = list.up('combo');
+                        combo.oldValue = combo.lastValue;
+                    },
+                    itemclick: function(list, record) {
+                        var combo = list.up('combo');
+                        var columnRendererType = record.get('value');
+
+                        var selectedRecord = this.getLastSelectedRecord();
+
                         var colWindow = Ext.create('sitools.admin.datasets.ColumnRendererWin', {
-                            selectedRecord : selectedRecord, 
+                            selectedRecord : selectedRecord,
                             gridView : this.getView(),
                             columnRendererType : columnRendererType,
                             datasetColumnStore : storeColumn,
-                            lastColumnRendererType : oldValue,
+                            lastColumnRendererType : combo.oldValue,
+                            validAction : false,
                             callback : function (ok) {
                                 this.getView().refresh();
                             },
@@ -185,7 +179,13 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
                         });
                         colWindow.show();
                     }
-                }       
+                }
+            },
+            listeners : {
+                scope : this,
+                focus : function (combo) {
+                    combo.expand();
+                }
             }
         };
 
@@ -422,7 +422,7 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
      * @method
      */
     onModifyColumn : function () {
-        var rec = this.getLastSelectedRecord()
+        var rec = this.getLastSelectedRecord();
         if (!rec) {
             Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.noselection'));
             return;
