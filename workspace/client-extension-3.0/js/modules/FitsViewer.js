@@ -49,9 +49,6 @@ Ext.define('sitools.extension.modules.FitsViewer', {
     init : function () {
         this.callParent(arguments);
         
-//        var localI18n = I18nRegistry.retrieve('fitsViewer');
-//        alert(localI18n.get("label.title"));
-        
         var view = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerMainView');
         this.show(view);
     },

@@ -26,10 +26,13 @@ Ext.namespace('sitools.extension.modules');
  */
 Ext.define('sitools.extension.modules.sitoolsFitsPlot', {
     extend : 'Ext.panel.Panel',
-    alias : 'sitools.extension.modules.sitoolsFitsPlot',
+    alias : 'widget.sitoolsFitsPlot',
             
     initComponent : function () {
-        this.width = 605;
+        
+    	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
+    	
+    	this.width = 605;
         this.height = 420;
         
         this.comboColX = new Ext.form.ComboBox({

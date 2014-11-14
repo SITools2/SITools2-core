@@ -26,12 +26,14 @@ Ext.namespace('sitools.extension.modules');
  */
 Ext.define('sitools.extension.modules.sitoolsFitsTable', {
     extend : 'Ext.panel.Panel',
-    alias : 'sitools.extension.modules.sitoolsFitsTable',
+    alias : 'widget.sitoolsFitsTable',
     
     layout : 'border',
     split : true,
     initComponent : function () {
 
+    	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
+    	
         var columns = [];
         
         Ext.each(this.data.columns, function (col) {
@@ -62,7 +64,7 @@ Ext.define('sitools.extension.modules.sitoolsFitsTable', {
                         if (i == 300) {
                             Ext.Msg.show({
                                 title : i18n.get('label.info'),
-                                msg : i18n.get('label.only300dataloaded'),
+                                msg : this.i18nFitsViewer.get('label.only300dataloaded'),
                                 icon : Ext.MessageBox.INFO,
                                 buttons : Ext.MessageBox.OK
                             });
@@ -77,7 +79,7 @@ Ext.define('sitools.extension.modules.sitoolsFitsTable', {
         });
 
         this.headerPanel = new sitools.extension.modules.sitoolsFitsHeader({
-            title : i18n.get('label.headerData'),
+            title : this.i18nFitsViewer.get('label.headerData'),
             headerData : this.headerData,
             region : 'south',
             height : 500,

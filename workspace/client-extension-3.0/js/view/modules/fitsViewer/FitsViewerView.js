@@ -37,14 +37,16 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
 
     initComponent : function () {
         
+    	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
+    	
         this.sliderTip = Ext.create('Ext.slider.Tip', {
             getText: function(thumb){
-                return Ext.String.format(i18n.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
+                return Ext.String.format(this.i18nFitsViewer.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
             }
         });
         
         this.sliderFrame = Ext.create('Ext.slider.SingleSlider', {
-            title: i18n.get('label.frames'),
+            title: this.i18nFitsViewer.get('label.frames'),
             height : 30,
             width: 100,
             value: 0,
@@ -65,7 +67,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         });
         
         this.functionsGroupBtn = Ext.create('Ext.container.ButtonGroup', {
-            title: i18n.get('label.functions'),
+            title: this.i18nFitsViewer.get('label.functions'),
             defaults: {
                 scope : this,
                 enableToogle: true,
@@ -77,38 +79,38 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
             items: [{
                 value : 'loglog',
                 name : 'log2',
-                text : i18n.get('label.loglog'),
+                text : this.i18nFitsViewer.get('label.loglog'),
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/log2.1.png"
             }, {
                 value : 'linear',
                 name : 'linear',
-                text : i18n.get('label.linear'),
+                text : this.i18nFitsViewer.get('label.linear'),
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/linear1.png"
             }, {
                 value : 'sqrtlog',
                 name : 'sqrtlog',
-                text : i18n.get('label.squareLog'),
+                text : this.i18nFitsViewer.get('label.squareLog'),
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/vlog1.png"
             }, {
                 value : 'sqrt',
                 name : 'sqrt',
-                text : i18n.get('label.square'),
+                text : this.i18nFitsViewer.get('label.square'),
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/square1.png"
             }, {
                 value : 'cuberoot',
                 name : 'cuberoot',
-                text : i18n.get('label.cubeRoot'),
+                text : this.i18nFitsViewer.get('label.cubeRoot'),
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/v3.1.png"
             }, {
                 value : 'log',
                 name : 'log',
-                text : i18n.get('label.log'),
+                text : this.i18nFitsViewer.get('label.log'),
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/log1.png"
             }]
         });
         
         this.colorsGroupBtn =  Ext.create('Ext.container.ButtonGroup', {
-            title: i18n.get('label.colors'),
+            title: this.i18nFitsViewer.get('label.colors'),
             activeItem : 0,
             hideBorders : true,
             defaults: {
@@ -120,22 +122,22 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
                 cls : 'services-toolbar-btn'
             },
             items: [{
-                text: i18n.get('label.gray'),
+                text: this.i18nFitsViewer.get('label.gray'),
                 name : 'gray',
                 value : 'gray',
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/grey.png"
             },{
-                text: i18n.get('label.red'),
+                text: this.i18nFitsViewer.get('label.red'),
                 name : 'red',
                 value : 'heat',
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/red.png"
             },{
-                text: i18n.get('label.green'),
+                text: this.i18nFitsViewer.get('label.green'),
                 name : 'green',
                 value : 'A',
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/green.png"
             },{
-                text: i18n.get('label.blue'),
+                text: this.i18nFitsViewer.get('label.blue'),
                 name : 'blue',
                 value : 'B',
                 icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/blue.png"
@@ -143,7 +145,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         });
         
         this.histoGroupBtn = Ext.create('Ext.container.ButtonGroup', {
-            title: i18n.get('label.processing'),
+            title: this.i18nFitsViewer.get('label.processing'),
             activeItem : 0,
             hideBorders : true,
             defaults: {
@@ -213,7 +215,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         });
         
         this.thresoldLabel = Ext.create('Ext.form.Label', {
-            text : i18n.get('label.manageThreshold'),
+            text : this.i18nFitsViewer.get('label.manageThreshold'),
             style : 'padding : 0px 7px 0px 0px; font-weight:bold;'
         });
         
@@ -250,7 +252,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         });
         
         this.headerPanel = Ext.create('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
-            title : i18n.get('label.headerData'),
+            title : this.i18nFitsViewer.get('label.headerData'),
             headerData : this.headerData,
             region : 'south',
             height : 260,
@@ -374,7 +376,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         
         if (pressed) {
             btn.addCls("sitools-btn-green-bold");
-            this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+            this.canvasPanel.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
             
             Ext.defer(function () {
                 this.jsFits.update({
@@ -400,7 +402,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
     manageColors : function (btn, pressed) {
         if (pressed) {
             btn.addCls("sitools-btn-green-bold");
-            this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+            this.canvasPanel.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
             
             Ext.defer(function () {
                 this.jsFits.update({
@@ -452,7 +454,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
     },
     
     manageThresholds : function (slider, newValue, thumb) {
-        this.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+        this.canvasPanel.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
         
         Ext.defer(function () {
             var values = slider.getValues();

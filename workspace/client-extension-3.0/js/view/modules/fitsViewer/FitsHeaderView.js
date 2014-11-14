@@ -34,6 +34,8 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
 
     initComponent : function () {
 
+    	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
+    	
         this.store = Ext.create('Ext.data.JsonStore', {
             idProperty: 'name',
             fields: ['name', 'value', 'description']
@@ -41,7 +43,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
         
         this.colModel = {
             items : [{header: i18n.get('headers.name'), width: 200, sortable: true, dataIndex: 'name'},
-                  {header: 'Description', width: 200, sortable: true, dataIndex: 'description'},
+                  {header: i18n.get('label.description'), width: 200, sortable: true, dataIndex: 'description'},
                 {header: i18n.get('headers.value'), width: 200, sortable: true, dataIndex: 'value'}]
         };
         

@@ -34,12 +34,15 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsLoaderMenuView', {
     plain : true,
 
     initComponent : function () {
-
+    	
+    	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
+    	
         this.items = [{
             xtype : 'textfield',
+            allowBlank : false,
             name : 'fitsUrl',
             cls : 'menuItemCls',
-            fieldLabel : i18n.get('label.fitsUrl'),
+            fieldLabel : this.i18nFitsViewer.get('label.fitsUrl'),
             listeners : {
                 scope : this,
                 afterrender : function (textfield) {
@@ -55,7 +58,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsLoaderMenuView', {
             xtype : 'menuseparator',
             separatorCls : 'customMenuSeparator'
         }, {
-            text : i18n.get("label.load"),
+            text : this.i18nFitsViewer.get("label.load"),
             icon : loadUrl.get('APP_URL') + '/common/res/images/ux/accept.png',
             cls : 'menuItemCls',
             scope : this,

@@ -36,10 +36,12 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
 
 //        this.fitsName = this.url.substring(this.url.lastIndexOf('/') + 1, this.url.lastIndexOf('.'));
 
+    	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
+    	
         this.loader = new FitsLoader();
 
         var rootNode = {
-            "text" : i18n.get("label.nothingLoaded"),
+            "text" : this.i18nFitsViewer.get("label.nothingLoaded"),
             "children" : [],
             "leaf" : true
         };
@@ -71,7 +73,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
                     }
 
                     if (node.get('text') == "TABLE" || node.get('text') == "BINTABLE") {
-                        this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+                        this.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
 
                         Ext.defer(function () {
                             this.sitoolsFitsTable = Ext.create('sitools.extension.view.modules.fitsViewer.FitsTableView', {
@@ -87,7 +89,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
                         }, 5, this);
 
                     } else if (node.get('text') == "IMAGE") {
-                        this.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+                        this.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
 
                         Ext.defer(function () {
                             this.sitoolsFitsViewer = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
@@ -269,7 +271,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
         var current = Ext.util.Format.fileSize(prog.loaded);
 
         if (prog.loaded == prog.totalSize) {
-            this.pbar.updateProgress(1, i18n.get('label.done'));
+            this.pbar.updateProgress(1, this.i18nFitsViewer.get('label.done'));
         } else {
             this.pbar.updateProgress(prog.loaded / prog.totalSize, current + "/" + total);
         }
