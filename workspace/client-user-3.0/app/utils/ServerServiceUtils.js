@@ -223,7 +223,7 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
         }
 
         var request = "";
-        if (this.origin !== "sitools.user.modules.projectServices") {
+        if (this.origin !== "sitools.user.modules.ProjectService") {
 //            try {
             request = this.grid.getRequestUrl();
 //            }
@@ -252,17 +252,19 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                 window.open(url);
 //                Ext.getBody().unmask();
                 break;
+                
             case "DISPLAY_IN_DESKTOP" :
                 var windowConfig = {
                     title : i18n.get('downloadedResource'), 
                     iconCls : "datasetRessource"
                 };
-                var jsObj = Ext.ux.ManagedIFrame.Panel;
+                var jsObj = Ext.ux.IFrame;
                 var componentCfg = {
                     layout : 'fit',
-                    defaultSrc: url, 
+                    src: url, 
                     autoScroll : true
                 };
+                
                 Ext.Ajax.request({
                     method : "HEAD", 
                     url : url, 
@@ -285,9 +287,9 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                             }
                             var iFrame = Ext.getCmp("tempMifDownload");
                             if (Ext.isEmpty(iFrame)) {
-                                iFrame  = new Ext.ux.ManagedIFrame.Panel({
+                                iFrame  = Ext.create('Ext.ux.IFrame', {
                                     layout : 'fit',
-                                    defaultSrc: url, 
+                                    src: url, 
                                     autoScroll : true, 
                                     renderTo : Ext.getBody(), 
                                     id : "tempMifDownload",
@@ -306,6 +308,7 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                     failure : alertFailure
                 });
                 break;
+                
             case "DOWNLOAD" :
                 if (!Ext.isEmpty(callback)) {
                     callback.call();
@@ -313,9 +316,9 @@ Ext.define('sitools.user.utils.ServerServiceUtils', {
                 //générer un panel caché
                 var iFrame = Ext.getCmp("tempMifDownload");
                 if (Ext.isEmpty(iFrame)) {
-                    iFrame  = new Ext.ux.ManagedIFrame.Panel({
+                    iFrame  = Ext.create('Ext.ux.IFrame', {
                         layout : 'fit',
-                        defaultSrc: url, 
+                        src: url, 
                         autoScroll : true, 
                         renderTo : Ext.getBody(), 
                         id : "tempMifDownload",

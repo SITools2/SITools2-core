@@ -28,11 +28,16 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
 	extend : 'Ext.panel.Panel',
 	
 	border : false,
+	layout : {
+		type : 'vbox',
+		align : 'stretch'
+	},
+	
     initComponent : function () {
     	
         this.mainPanel = this.createNewFormComponent(this.task);
  
-        this.buttons = ["->",  {
+        this.bbar = ["->",  {
             text : i18n.get('label.goToTask'),
             scope : this,
             handler : this.goToTask
@@ -87,7 +92,8 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
         }
         
         var panel = Ext.create('Ext.panel.Panel', {
-			padding: 10,
+			padding: 15,
+			height : 100,
 			border : false,
 			html : html, 
 			listeners : {
@@ -119,14 +125,20 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
      * Open the home Module Window with the taskPanel opened.
      */
     goToTask : function () {
-        this.ownerCt.close();
-		var jsObj = sitools.user.component.entete.userProfile.tasks;
-        var windowConfig = {
-            title : i18n.get('label.Tasks'),
-            saveToolbar : false, 
-            iconCls : "tasks"
-        };
-        SitoolsDesk.addDesktopWindow(windowConfig, {}, jsObj, true);
+        this.up().close();
+        
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
+        var userPersonalComponent = sitoolsController.openComponent('sitools.user.component.personal.UserPersonalComponent', {}, {});
+        
+//        var userPersonalComponent = Ext.create('sitools.user.component.personal.UserPersonalComponent');
+//    	userPersonalComponent.create(Desktop.getApplication());
+//    	userPersonalComponent.init();
+    	
+    	var personalView = userPersonalComponent.getComponentView();
+    	var orderRecBtn = personalView.storeAction.getById('orders');
+        
+    	personalView.gridAction.getSelectionModel().select(orderRecBtn);
+    	
     },
     
     /**
@@ -224,16 +236,17 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
      * @param {} task
      */
     showTaskDetail : function (task) {
-	    var jsObj = sitools.user.component.entete.userProfile.tasksDetails;
-	    var componentCfg = {
-	        sva : task    
-	    };
-	    var windowConfig = {
-	        id : "taskStatusDetails", 
-	        title : i18n.get("label.taskDetails") + ":" + task.id, 
-	        iconCls : "dataDetail"
-	    };
-	    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
+    	
+    	if (this.down('taskDetailView')) {
+    		return;
+    	}
+    	
+    	var taskDetailView = Ext.create('sitools.user.view.component.personal.TaskDetailView', {
+    		task : task
+    	});
+    	
+    	this.add(taskDetailView);
+    	
 	},
 	
 	/**

@@ -41,6 +41,7 @@ Ext.define('sitools.user.view.component.services.ServiceParamView', {
     showMethod : false, 
     defaultMethod : "",
     showRunType : false, 
+    border : false,
     
     initComponent : function () {
     	
@@ -80,6 +81,7 @@ Ext.define('sitools.user.view.component.services.ServiceParamView', {
 			
 			this.formParams = Ext.create('Ext.form.Panel', {
 	            padding: 5,
+	            border : false,
 	//            title : "Request parameters",
 	            items : [{
 	                xtype : 'fieldset',
@@ -104,10 +106,12 @@ Ext.define('sitools.user.view.component.services.ServiceParamView', {
 
         if (!Ext.isEmpty(userInputParams)) {
             this.formParamsUserInput = Ext.create('Ext.form.Panel', {
-                padding: 5,
+            	border : false,
+                padding: 10,
                 labelWidth : 150, 
                 items : {
                     xtype : 'fieldset',
+                    padding : 5,
                     title : i18n.get("label.specificParameter"),
                     items : userInputParams
                 }
@@ -115,13 +119,17 @@ Ext.define('sitools.user.view.component.services.ServiceParamView', {
             this.items.push(this.formParamsUserInput);
         }
         
-        this.buttons = [{
-            text : i18n.get('label.submit'),
-            itemId : 'submit'
-        }, {
-            text : i18n.get('label.cancel'),
-            itemId : 'cancel'            
-        }];
+        this.buttons = {
+            xtype : 'toolbar',
+            style : 'background-color:white;',
+            items : [{
+	            text : i18n.get('label.submit'),
+	            itemId : 'submit'
+	        }, {
+	            text : i18n.get('label.cancel'),
+	            itemId : 'cancel'            
+	        }]
+        }
         this.callParent(arguments);
     },
     

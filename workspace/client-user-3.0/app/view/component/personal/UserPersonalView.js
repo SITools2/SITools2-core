@@ -78,6 +78,13 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
         });
         
 	    this.storeAction = Ext.create('Ext.data.JsonStore', {
+	    	proxy : {
+	    		type : 'memory',
+	    		reader : {
+	    			type : 'json',
+	    			idProperty : 'identifier'
+	    		}
+	    	},
 	        fields : ['name', 'icon', 'action', 'comment', 'identifier'],
 	        data : data
 	    });
@@ -90,6 +97,15 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
 			bodyBorder : false,
 			syncRowHeight : false,
 			store: this.storeAction,
+			selModel : {
+				xtype : 'rowmodel',
+				mode : 'SINGLE',
+				allowDeselect : false,
+				listeners : {
+					scope : this,
+					select : this.actionItemClick
+				}
+			},
             columns: [{
                 dataIndex: 'icon',
                 width : 40,
@@ -101,11 +117,7 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
                 dataIndex: 'name',
                 border : false,
                 flex: 1
-            }],
-            listeners : {
-            	scope : this,
-            	itemclick : this.actionItemClick
-            }
+            }]
 		});
 		
 		this.contentPanel = Ext.create('Ext.panel.Panel', {
@@ -123,9 +135,11 @@ Ext.define('sitools.user.view.component.personal.UserPersonalView', {
         this.callParent(arguments);
     },
     
-    actionItemClick : function (grid, record, item, index, e) {
-    	var data = grid.getSelectionModel().getSelection()[0].data;   
-    	eval("this." + data.action).call(this, grid, record, index);
+    actionItemClick : function (rowModel, record, index) {
+    	var me = this;
+    	
+    	var data = me.gridAction.getSelectionModel().getSelection()[0].data;   
+    	eval("this." + data.action).call(me, me.gridAction, record, index);
 	},
     
     /**
