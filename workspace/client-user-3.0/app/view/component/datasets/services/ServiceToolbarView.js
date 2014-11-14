@@ -102,8 +102,10 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
                 return;
             }
             
+            var xtype = "button";
             if (!Ext.isEmpty(category = item.get('category'))) {
                 menu = this.getMenu(category, cfg);
+                xtype = "menuitem";
             }
             
             btn = {};
@@ -120,7 +122,7 @@ Ext.define('sitools.user.view.component.datasets.services.ServiceToolbarView', {
                 text : i18n.get(item.get('label')),
                 cls : 'services-toolbar-btn',
                 icon : icon,
-                xtype :'button'
+                xtype : xtype
             });
             
             menu.push(btn);

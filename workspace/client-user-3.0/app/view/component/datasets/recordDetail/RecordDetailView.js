@@ -57,11 +57,13 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		        break;
 
 			default :
-				this.recSelected = this.selections[0];
-		        if (Ext.isEmpty(this.recSelected)) {
+				var selectedLines = this.selections;
+		        if (Ext.isEmpty(selectedLines) || selectedLines.length === 0) {
 					Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.noSelection'));
 					return;
 		        }
+		        
+		        this.recSelected = this.grid.getStore().getAt(selectedLines[0]);
 		        var primaryKeyValue = "", primaryKeyName = "";
 		        Ext.each(this.recSelected.fields.items, function (field) {
 		            if (field.primaryKey) {
@@ -305,7 +307,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		        if (! rowSelect.selectNext()) {
 		            return;
 		        }
-		        rec = rec = rowSelect.getSelection()[0];
+		        rec = this.grid.getStore().getAt(rowSelect.getSelection()[0]);
 	            this.primaryKeyValue = rec.get(this.primaryKeyName);
 	            this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
 	            this.url = this.baseUrl + this.primaryKeyValue;
@@ -348,7 +350,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		        if (! rowSelect.selectPrevious()) {
 		            return;
 		        }
-		        rec = rowSelect.getSelection()[0];
+		        rec = this.grid.getStore().getAt(rowSelect.getSelection()[0]);
 	            this.primaryKeyValue = rec.get(this.primaryKeyName);
 	            this.primaryKeyValue = encodeURIComponent(this.primaryKeyValue);
 	            this.url = this.baseUrl + this.primaryKeyValue;
