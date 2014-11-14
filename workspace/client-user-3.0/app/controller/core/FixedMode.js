@@ -379,7 +379,10 @@ Ext.define('sitools.user.controller.core.FixedMode', {
      * @return the specific JS View to display dataset
      */
     getDatasetOpenMode : function (dataset) {
-        return sitools.user.component.DatasetOverview;
+//    	 TODO implement DatasetOverview
+//    	return sitools.user.component.DatasetOverview;
+    	
+    	return dataset.datasetView.jsObject;
     },
 	
 	/**

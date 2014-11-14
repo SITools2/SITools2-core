@@ -29,7 +29,7 @@ Ext.namespace("sitools.user.utils");
  */
 Ext.define('sitools.user.utils.DataviewUtils', {
 	singleton : true,
-	
+
     /**
      * build the param that will represent the active selection.
      * @param [Ext.data.Record] recSelected the selected records
@@ -82,7 +82,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                     var str;
                     if (!Ext.isEmpty(html)) {
                         if (item.columnRenderer.behavior == ColumnRendererEnum.IMAGE_FROM_SQL) {
-                            var imageUrl = record.get(item.columnRenderer.columnAlias);                     
+                            var imageUrl = record.get(item.columnRenderer.columnAlias);
                             str = Ext.String.format(html, value, imageUrl);
                         } else {
                             str = Ext.String.format(html, value);
@@ -91,7 +91,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                     return str;
                 } else {
                     return value;
-                }                
+                }
             };
         } else {
             renderer = function (value) {
@@ -359,32 +359,27 @@ Ext.define('sitools.user.utils.DataviewUtils', {
             scope : this,
             success : function (ret) {
                 try {
-                    var headerFile = ret.getResponseHeader("Content-Type")
-                            .split(";")[0].split("/")[0];
+                    var headerFile = ret.getResponseHeader("Content-Type").split(";")[0].split("/")[0];
+                    var fileName = value.substring(value.lastIndexOf('/') + 1, value.length);
                     if (headerFile == "text") {
-                        Ext.Ajax.request({
-                            url : value,
-                            method : 'GET',
-                            scope : this,
-                            success : function (ret) {
-                                var windowConfig = {
-                                    id : "winPreferenceDetailId",
-                                    title : value, 
-                                    iconCls : "version"
-                                };
-                                var jsObj = Ext.Panel;
-                                var componentCfg = {
-                                    layout : 'fit',
-                                    autoScroll : true,
-                                    html : ret.responseText
-                                };
-                                SitoolsDesk.addDesktopWindow(
-                                        windowConfig, componentCfg,
-                                        jsObj);
-                            }
-                        });
+
+                        var windowConfig = {
+                            title : fileName,
+                            iconCls : "version"
+                        };
+
+                        var componentConfig = {
+                            layout : 'fit',
+                            autoScroll : true,
+                            src : value
+                        };
+
+                        var javascriptObject = 'sitools.user.component.common.IFrameComponent';
+                        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
+                        sitoolsController.openComponent(javascriptObject, componentConfig, windowConfig);
+
                     } else if (headerFile == "image") {
-                        sitools.user.utils.DataviewUtils.showPreview(value, item.header);
+                        sitools.user.utils.DataviewUtils.showPreview(value, fileName);
                     } else {
                         sitools.user.utils.DataviewUtils.downloadFile(value);         
                     }
@@ -392,8 +387,29 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                     Ext.Msg.alert(i18n.get('label.error'), err);
                 }
             },
-            failure : function (ret) {
-                return null;
+            failure : function (response) {
+                if (response.status == 404) {
+                    Ext.Msg.show({
+                        title : i18n.get('label.404'),
+                        msg : i18n.get('label.fileNotFound'),
+                        icon : Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                    });
+                } else if (response.status == 403) {
+                    Ext.Msg.show({
+                        title : i18n.get('label.403'),
+                        msg : i18n.get('label.fileForbidden'),
+                        icon : Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                    });
+                } else {
+                    Ext.Msg.show({
+                        title : i18n.get('label.error'),
+                        msg : response.responseText,
+                        icon : Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                    });
+                }
             }
         });
     }, 
@@ -440,9 +456,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
 	        var iframeComponent = Ext.create('sitools.user.component.common.IFrameComponent');
 	        iframeComponent.create(Desktop.getApplication());
 	        iframeComponent.init(componentCfg, windowConfig);
-            
-//        SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-        } else {             
+        } else {
             sitools.user.utils.DataviewUtils.downloadFile(value);                
         }
         
@@ -491,57 +505,6 @@ Ext.define('sitools.user.utils.DataviewUtils', {
         };
         
         sitools.user.utils.DatasetUtils.openDataset(datasetUrl, config);
-        
-        // récupération des données du dataset
-//        Ext.Ajax.request({
-//            scope : this,
-//            method : 'GET',
-//            url : datasetUrl,
-//            success : function (response, opts) {
-//                try {
-//                    var json = Ext.decode(response.responseText);
-//                    if (!json.success) {
-//                        Ext.Msg.alert(i18n.get('label.error'), json.message);
-//                        return;
-//                    }
-//                    var formParams = [ "RADIO|" + columnAlias + "|" + value ];
-//                    var dataset = json.dataset;
-//                    
-////                    var jsObj = eval(dataset.datasetView.jsObject);
-//                    
-//                    var componentCfg = {
-//                        dataUrl : dataset.sitoolsAttachementForUsers,
-//                        datasetId : dataset.id,
-//                        datasetCm : dataset.columnModel,
-//                        formParams : formParams, 
-//                        datasetName : dataset.name, 
-//                        dictionaryMappings : dataset.dictionaryMappings, 
-//                        datasetViewConfig : dataset.datasetViewConfig, 
-//                        preferencesPath : "/" + dataset.name, 
-//                        preferencesFileName : "datasetView"
-//                        
-//                    };
-//                    
-//                    var windowConfig = {
-//                        id : "wind" + dataset.id + columnAlias + value,
-//                        title : i18n.get('label.dataTitle') + " : " + dataset.name,
-//                        datasetName : dataset.name,
-//                        type : "data",
-//                        saveToolbar : true, 
-//                        iconCls : "dataDetail"
-//                    };
-//                    
-//                    javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
-//                    var datasetViewComponent  = Ext.create(javascriptObject);
-//                    
-//                    datasetViewComponent.create(Desktop.getApplication());
-//                    datasetViewComponent.init(dataset, windowConfig);
-//                    
-////                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-//    
-//                } catch (err) {}
-//            }
-//        });
     },
     
     /**
@@ -552,8 +515,8 @@ Ext.define('sitools.user.utils.DataviewUtils', {
     showPreview : function (value, title) {
         var previewWin = Ext.create('sitools.public.widget.image.WindowImageViewer', {            
             title : title,
+            icon : loadUrl.get('APP_URL') + '/common/res/images/icons/image-icon.png',
             src : value,
-            hideAction : 'close',
             resizeImage : false
         });
         

@@ -39,17 +39,21 @@ Ext.define('sitools.public.widget.image.WindowImageViewer', {
     initComponent : function () {
     
         if (!this.resizeImage) {
-	        this.panel = Ext.create('Ext.Component', {                
-	            autoEl : {
+	        this.panel = Ext.create('Ext.Component', {
+                autoEl : {
 	                tag : 'img',
-	                src : this.src
+                    name : 'imgViewer',
+                    src : this.src,
 	            },
-	            listeners :  {
+                listeners :  {
 	                scope : this,
 	                render : function (me) {
 		                me.getEl().on('load', this.onImageLoad, this, {
 				            single : true
 				        });
+                        me.getEl().on('error', function (e, t, opts) {
+                            alert('toto');
+                        });
 		            }
 	            }
 	        });
@@ -58,10 +62,12 @@ Ext.define('sitools.public.widget.image.WindowImageViewer', {
         } else {
             this.autoEl = {
                 tag : 'img',
+                name : 'imgViewer',
                 src : this.src
             };
         }
         this.constrain = true;
+
         this.callParent(arguments);
     },
     
@@ -77,8 +83,7 @@ Ext.define('sitools.public.widget.image.WindowImageViewer', {
      * Method called when the image is loaded. It is in charge of resizing the image according to the desktop size
      */
     onImageLoad : function () {
-//        var imgTag = Ext.DomQuery.select("div[id='"+this.id+"'] img")[0];
-        var imgTag = Ext.DomQuery.select("div > img[name='toto']");
+        var imgTag = Ext.DomQuery.select("div > img[name='imgViewer']")[0];
 		var hi = this.body.dom.offsetHeight;
 		var wi = this.body.dom.offsetWidth;
         
