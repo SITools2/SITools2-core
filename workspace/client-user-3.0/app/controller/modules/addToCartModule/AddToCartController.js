@@ -304,10 +304,13 @@ Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController'
                         value : this.urlCartFileForServer
                     });
                     
+                    var detailsGrid = me.down('cartSelectionDetails');
+                    
                     var serviceServerUtil = Ext.create("sitools.user.utils.ServerServiceUtils", {
                         datasetUrl : Project.sitoolsAttachementForUsers,
                         datasetId : Project.projectId, 
-                        origin : "sitools.user.modules.projectServices"
+                        origin : "sitools.user.modules.ProjectService",
+                        grid : detailsGrid
                     });
                     
                     var cb = function (success) {

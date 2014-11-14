@@ -57,7 +57,14 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
         	itemId : 'orderMenu'
         });
         
-        this.tbarMenu.add('<b class="menu-title"><i>' + i18n.get('label.broadcastMode') + '</i></b>', '-');
+//        this.tbarMenu.add('<b class="menu-title"><i>' + i18n.get('label.broadcastMode') + '</i></b>', '-');
+        
+        this.tbarMenu.add({
+        	text : i18n.get('label.broadcastMode'),
+        	plain : false,
+        	canActivate : false,
+        	cls : 'userMenuCls'
+        }, '-');
         
         Ext.each(orderServices, function (service) {
             this.tbarMenu.add({
@@ -65,6 +72,7 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
                 serviceName : service.name,
                 serviceId : service.id,
                 serviceUrl : service.url,
+                cls : 'menuItemCls'
             });
         }, this);
         
