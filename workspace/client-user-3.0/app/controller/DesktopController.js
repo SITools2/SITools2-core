@@ -167,7 +167,7 @@ Ext.define('sitools.user.controller.DesktopController', {
                 scope : me
             } ],
 
-            wallpaper : 'resources/wallpapers/space.jpg',
+            wallpaper : 'resources/wallpapers/Wood-Sencha.jpg',
             wallpaperStretch : false
         });
     },
