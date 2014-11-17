@@ -146,7 +146,7 @@ Ext.define('sitools.admin.datasets.GridFieldSetup', {
             store : comboStore,
             queryMode : 'local',
             typeAhead : true,
-            editable : false,
+            editable : true,
             triggerAction : 'all',
             forceSelection : true,
             valueField : 'value',

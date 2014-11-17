@@ -233,6 +233,7 @@ Ext.define('sitools.admin.datasets.ColumnsProp', { extend : 'Ext.Window',
                     tableAlias : ""
                 };
             }
+            rec.id = Ext.id();
             this.store.add(rec);
         }
         this.close();
