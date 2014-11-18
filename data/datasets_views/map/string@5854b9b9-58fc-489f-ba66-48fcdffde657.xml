@@ -6,8 +6,8 @@
   <priority>0</priority>
   <name>Sitools Infinite Scrolling View</name>
   <description>Sitools LiveGrid</description>
-  <dependencies>    
-   <js/>
-   <css/>
- </dependencies>
+  <dependencies>
+    <js/>
+    <css/>
+  </dependencies>
 </datasetView>
