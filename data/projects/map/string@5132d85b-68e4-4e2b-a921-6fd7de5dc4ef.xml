@@ -4,36 +4,10 @@
   <description>Project example using the Desktop IHM mode</description>
   <image>
     <type>Image</type>
-    <url>/sitools/res/images/logo_01_petiteTaille.jpg</url>
+    <url>/sitools/client-public/res/images/logo_01_petiteTaille.jpg</url>
     <mediaType>Image</mediaType>
   </image>
   <css>cnes</css>
-  <dataSets>
-    <resource>
-      <id>18d3c881-a81c-4ab9-97f0-3d9b51816bae</id>
-      <name>fuse</name>
-      <description></description>
-      <type>DataSet</type>
-      <url>/fuse</url>
-      <mediaType>DataSet</mediaType>
-      <status>ACTIVE</status>
-      <visible>false</visible>
-      <properties>
-        <fr.cnes.sitools.util.Property>
-          <name>nbRecord</name>
-          <value>813</value>
-        </fr.cnes.sitools.util.Property>
-        <fr.cnes.sitools.util.Property>
-          <name>descriptionHTML</name>
-          <value></value>
-        </fr.cnes.sitools.util.Property>
-        <fr.cnes.sitools.util.Property>
-          <name>imageUrl</name>
-          <value></value>
-        </fr.cnes.sitools.util.Property>
-      </properties>
-    </resource>
-  </dataSets>
   <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/ExampleProject_desktop</sitoolsAttachementForUsers>
   <visible>false</visible>
@@ -171,7 +145,6 @@
   <maintenanceText></maintenanceText>
   <ftlTemplateFile>default.project.ftl</ftlTemplateFile>
   <navigationMode>desktop</navigationMode>
-  <priority>1</priority>
   <categoryProject></categoryProject>
-  <lastStatusUpdate>2014-11-06 10:31:14.897 CET</lastStatusUpdate>
+  <lastStatusUpdate>2014-11-18 11:48:17.600 CET</lastStatusUpdate>
 </project>
