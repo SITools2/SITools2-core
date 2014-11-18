@@ -5,24 +5,15 @@
   <label>label.contentViewer</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <imagePath>http://localhost:8182/sitools/upload/postel-icon.png</imagePath>
   <title>Content Viewer</title>
   <defaultWidth>1000</defaultWidth>
   <defaultHeight>600</defaultHeight>
   <x>0</x>
   <y>0</y>
   <icon>contentViewerModule</icon>
-  <specificType></specificType>
-  <xtype>sitools.user.modules.contentViewerModule</xtype>
+  <xtype>sitools.user.modules.ContentViewerModule</xtype>
   <dependencies>
-    <js>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/contentViewerModule.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/cmsModule/cmsViewerTreeToolbar.js</url>
-      </url>
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>9</priority>
