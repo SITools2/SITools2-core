@@ -62,15 +62,8 @@ CKEDITOR.dialog.add( 'documentDialog', function ( editor ) {
                         var docBrowser = Ext.create('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
                             datastorageUrl : CKEDITOR.datastorageUrl,
                             dialog : CKEDITOR.dialog.getCurrent(),
-                            editor : editor,
-                            listeners : {
-                               afterrender : function (win) {
-                                    Ext.defer(function () {
-                                        win.setZIndex(22000);
-                                        Ext.WindowManager.bringToFront(win);
-                                    }, 500);
-                                }
-                            }
+                            dialogVisible : false,
+                            editor : editor
                          });
                          
                          docBrowser.show(document, function (data, config) {
