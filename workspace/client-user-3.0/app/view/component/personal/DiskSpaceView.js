@@ -168,7 +168,7 @@ Ext.define('sitools.user.view.component.personal.DiskSpaceView', {
             forceFit : true,
             rowLines : true,
             selModel : Ext.create("Ext.selection.TreeModel", {
-                allowDeselect : true,
+                allowDeselect : false,
                 mode : "SINGLE"
             }),
             listeners : {

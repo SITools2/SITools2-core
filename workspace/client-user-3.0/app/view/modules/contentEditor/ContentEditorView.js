@@ -262,16 +262,24 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
             region : 'center'
         });
         
-        var viewerIFrame = Ext.create('Ext.ux.IFrame', {
-            itemId : 'viewerIFrame'
-        });
 
         this.viewerEditorPanel = Ext.create('Ext.panel.Panel', {
-            id : 'viewerEditorPanel',
+            itemId : 'viewerEditorPanel',
             region : 'south',
+            layout : 'fit',
             autoScroll : true,
+            border : false,
             hidden : true,
-            items : [viewerIFrame]
+            items : [],
+            listeners : {
+            	scope : this,
+            	expand : function (panel) {
+            		CKEDITOR.instances[this.itemIdTextarea].container.hide();
+            	},
+            	hide : function (panel) {
+            		CKEDITOR.instances[this.itemIdTextarea].container.show();
+            	}
+            }
         });
         
         var toolbar = undefined;
@@ -424,6 +432,8 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
                                 }
                             }
                         });
+                        
+                        
                     }
                     if (contentType.indexOf("text") > -1) {
                         var data = ret.responseText;
@@ -434,14 +444,12 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
                         //	                base.href = this.dynamicUrlDatastorage + "/";
                         //	                this.htmlEditor.iframe.contentDocument.getElementsByTagName("head")[0].appendChild(base);
                         //                }
-//                        this.findByType('htmleditor')[0].setValue(data);
                         var callback = Ext.bind(function () {
                             CKEDITOR.instances[this.itemIdTextarea].setReadOnly(false);
                         }, this);
                         
                         CKEDITOR.instances[this.itemIdTextarea].setData(data, callback);
                     } else {
-//                        this.findByType('textarea')[0].setValue(i18n.get("label.cannotEditOtherThanText"));
                         CKEDITOR.instances[this.itemIdTextarea].setData(i18n.get("label.cannotEditOtherThanText"));
                         CKEDITOR.instances[this.itemIdTextarea].setReadOnly(true);
                     }
@@ -450,7 +458,6 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
                     var data = ret.responseText;
                     if(!Ext.isEmpty(CKEDITOR.instances[this.itemIdTextarea])){
                         CKEDITOR.instances[this.itemIdTextarea].setData(data);
-    //                    this.findByType('textarea')[0].setValue(data);
                         CKEDITOR.instances[this.itemIdTextarea].setReadOnly(true);
                     }
                 }
@@ -867,21 +874,32 @@ Ext.define('sitools.user.view.modules.contentEditor.ContentEditorView', {
     },
     
     displayViewer : function (url) {
-        this.viewerEditorPanel.remove();
+        this.viewerEditorPanel.removeAll();
+        
         if (this.isPdf(this.newUrl) && this.islocal(this.newUrl)) {
             this.newUrl = Ext.urlAppend(this.newUrl, "dc=" + new Date().getTime());
         }
-        var iframe = this.viewerEditorPanel.down();
-        iframe.setSrc(this.newUrl);
-        this.viewerEditorPanel.setHeight(this.contentPanel.getHeight() - 30);
+        
+        var ifrm = Ext.create('Ext.ux.IFrame', {
+    		layout : 'fit',
+    		border : false,
+    		src : this.newUrl
+    	})
+    	
+        this.viewerEditorPanel.add(ifrm);
+        
+        this.viewerEditorPanel.setHeight(this.contentPanel.getHeight() - this.contentPanel.down('toolbar').getHeight());
         this.viewerEditorPanel.setVisible(true);
         this.viewerEditorPanel.expand(true);
+        
+        this.viewerEditorPanel.fireEvent('expand', this.viewerEditorPanel);
         
     },
     
     hideViewer : function () {
-        this.viewerEditorPanel.remove();
+//        this.viewerEditorPanel.remove();
         this.viewerEditorPanel.setVisible(false);
+        this.viewerEditorPanel.hide();
     },
     
     /**

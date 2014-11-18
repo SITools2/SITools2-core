@@ -34,9 +34,12 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
     width : 500,
     height : 500,
     layout : 'fit',
+    modal : true,
     
     initComponent : function () {
         
+    	this.dialog.hide();
+    	
         this.title = i18n.get('label.importDocTitle');
         this.documentUrl = this.datastorageUrl + '/documents/';
         
@@ -130,7 +133,7 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
             formId : 'formUploadId',
             autoHeight : true,
             bodyStyle : 'padding: 10px 10px 0 10px;',
-            height : 100,
+            height : 150,
             region : 'north',
             labelWidth : 100,
             border : false,
@@ -140,6 +143,15 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
                 msgTarget : 'side'
             },
             items : [{
+            	xtype : 'label',
+            	html : i18n.get('label.infoDocumentBrowser1'),
+            }, {
+            	xtype : 'label',
+            	html : i18n.get('label.infoDocumentBrowser2'),
+            }, {
+            	xtype : 'label',
+            	html : i18n.get('label.infoDocumentBrowser3'),
+            }, {
                 xtype : 'fileuploadfield',
                 name : 'form-file',
                 cls : 'menuItemCls',
@@ -165,38 +177,18 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
                         fileName = fileName.substring(fileName.lastIndexOf("\\") + 1, fileName.lenght);
 
                         this.grid.getEl().mask(i18n.get("label.fileUploading"));
-                        form.submit({
-                            url : this.documentUrl,
-//			                waitMsg : i18n.get("label.wait") + "...",
-//			                waitTitle : i18n.get("label.fileUploading"),
-                            scope : this,
-                            success : function (form, action) {
-                                this.grid.getStore().reload();
-                                this.grid.getEl().unmask();
-                            },
-                            failure : function (response) {
-                                this.grid.getStore().reload();
-                                this.grid.getEl().unmask();
-//                                Ext.Msg.alert(i18n.get('label.error'), response.responseText);
-                            }
-                        });
                         
-//                        Ext.Ajax.request({
-//                            url : this.documentUrl,
-//                            form : 'formUploadId',
-//                            isUpload : true,
-//                            waitMsg : "wait...",
-//                            method : 'POST',
-//                            scope : this,
-//                            success : function (response) {
-//                            },
-//                            failure : function (response) {
-//                                Ext.Msg.alert(i18n.get('label.error'), response.responseText);
-//                            },
-//                            callback : function () {
-//                                this.grid.getStore().reload();
-//                            }
-//                        });
+                        Ext.Ajax.request({
+                        	url :  this.documentUrl,
+                        	method : 'HEAD',
+                        	scope : this,
+                        	success : function (response) {
+                        		this.submittingForm();
+                        	},
+                        	failure : function (response) {
+                        		this.creatingDocumentDirectory();
+                        	}
+                        });
                     }
                 }
             }]
@@ -215,15 +207,20 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
             }]
         });
         
-//        this.listeners = {
-//            scope : this,
-//            activate : function (win) {
-//                this.bringToFront(win);
-//            },
-//            show : function (win) {
-//                this.bringToFront(win);
-//            }
-//        };
+        this.listeners = {
+    		scope : this,
+            afterrender : function (win) {
+                 Ext.defer(function () {
+                     win.setZIndex(24000);
+                     Ext.WindowManager.bringToFront(win);
+                 }, 600);
+             },
+             close : function () {
+            	 if (!this.dialogVisible) {
+            		 this.dialog.show();
+            	 }
+             }
+         };
         
         this.items = [this.container];
         this.callParent(arguments);
@@ -235,6 +232,9 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
         if (Ext.isEmpty(document)) {
             return;
         }
+        
+        this.dialog.show();
+        this.dialogVisible = true;
         
         var textfield = this.dialog.getContentElement('mainFrameDocument', 'textDocUrlID');
         var docUrl = this.documentUrl + document.data.name;
@@ -255,11 +255,41 @@ Ext.define('sitools.public.widget.ckeditor.sitoolsPlugins.DocumentBrowser', {
         this.close();
     },
     
-    bringToFront : function (win) {
-        if (win && !Ext.isEmpty(win.zindex) && win.isVisible()) {
-            win.focus();
-            win.setZIndex(win.zindex);
-        }
+    creatingDocumentDirectory : function () {
+    	Ext.Ajax.request({
+			url : this.documentUrl,
+			method : 'PUT',
+			scope : this,
+			success : function (response) {
+				this.submittingForm();
+			},
+			failure : function (response) {
+				Ext.Msg.show({
+					title : i18n.get('label.info'),
+					msg : i18n.get('label.cannotCreateDocumentDirectory'),
+					icon : Ext.Msg.ERROR,
+					buttons : Ext.Msg.OK
+				});
+			}
+		})
+    },
+    
+    submittingForm : function () {
+    	
+    	this.formPanel.getForm().submit({
+            url : this.documentUrl,
+//            waitMsg : i18n.get("label.wait") + "...",
+//            waitTitle : i18n.get("label.fileUploading"),
+            scope : this,
+            success : function (form, action) {
+                this.grid.getStore().reload();
+                this.grid.getEl().unmask();
+            },
+            failure : function (response) {
+                this.grid.getStore().reload();
+                this.grid.getEl().unmask();
+            }
+        });
     },
     
     getIcon : function (ext) {
