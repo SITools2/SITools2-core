@@ -20,7 +20,7 @@
       <priority>0</priority>
       <categoryModule></categoryModule>
       <divIdToDisplay></divIdToDisplay>
-      <xtype>sitools.user.modules.projectDescription</xtype>
+      <xtype>sitools.user.modules.ProjectDescription</xtype>
       <label>label.projectDescription</label>
     </fr.cnes.sitools.project.model.ProjectModule>
     <fr.cnes.sitools.project.model.ProjectModule>
@@ -30,7 +30,7 @@
       <priority>1</priority>
       <categoryModule></categoryModule>
       <divIdToDisplay>news</divIdToDisplay>
-      <xtype>sitools.user.modules.datasetExplorer</xtype>
+      <xtype>sitools.user.modules.DatasetExplorer</xtype>
       <label>label.datasetExplorer</label>
     </fr.cnes.sitools.project.model.ProjectModule>
     <fr.cnes.sitools.project.model.ProjectModule>
@@ -40,18 +40,8 @@
       <priority>2</priority>
       <categoryModule>Data Access</categoryModule>
       <divIdToDisplay></divIdToDisplay>
-      <xtype>sitools.user.modules.formsModule</xtype>
+      <xtype>sitools.user.modules.FormModule</xtype>
       <label>label.forms</label>
-    </fr.cnes.sitools.project.model.ProjectModule>
-    <fr.cnes.sitools.project.model.ProjectModule>
-      <id>projectGraph</id>
-      <name>projectGraph</name>
-      <description>Project Graph</description>
-      <priority>3</priority>
-      <categoryModule></categoryModule>
-      <divIdToDisplay></divIdToDisplay>
-      <xtype>sitools.user.modules.projectGraphTree</xtype>
-      <label>label.projectGraph</label>
     </fr.cnes.sitools.project.model.ProjectModule>
     <fr.cnes.sitools.project.model.ProjectModule>
       <id>8e573bd6-a329-448c-8a25-a44134b3e99c</id>
@@ -60,7 +50,7 @@
       <priority>4</priority>
       <categoryModule></categoryModule>
       <divIdToDisplay></divIdToDisplay>
-      <xtype>sitools.user.modules.projectServices</xtype>
+      <xtype>sitools.user.modules.ProjectService</xtype>
       <label>label.projectServices</label>
     </fr.cnes.sitools.project.model.ProjectModule>
     <fr.cnes.sitools.project.model.ProjectModule>
@@ -70,18 +60,8 @@
       <priority>5</priority>
       <categoryModule></categoryModule>
       <divIdToDisplay>shortcuts</divIdToDisplay>
-      <xtype>sitools.user.modules.feedsReaderProject</xtype>
+      <xtype>sitools.user.modules.FeedsProjectModule</xtype>
       <label>label.projectFeeds</label>
-    </fr.cnes.sitools.project.model.ProjectModule>
-    <fr.cnes.sitools.project.model.ProjectModule>
-      <id>DataSetExplorerDataView</id>
-      <name>DataSetExplorerDataView</name>
-      <description>Dataset Explorer with new dataview</description>
-      <priority>6</priority>
-      <categoryModule>Data Access</categoryModule>
-      <divIdToDisplay></divIdToDisplay>
-      <xtype>sitools.user.modules.datasetExplorerDataView</xtype>
-      <label>label.datasetExplorerDataview</label>
     </fr.cnes.sitools.project.model.ProjectModule>
     <fr.cnes.sitools.project.model.ProjectModule>
       <id>739954a4-5593-48fe-bd5a-3eb4e4c3a7f6</id>
@@ -90,18 +70,8 @@
       <priority>7</priority>
       <categoryModule>Data Access</categoryModule>
       <divIdToDisplay></divIdToDisplay>
-      <xtype>sitools.user.modules.formsAsMenu</xtype>
+      <xtype>sitools.user.modules.FormAsMenuModule</xtype>
       <label>label.formsAsMenu</label>
-    </fr.cnes.sitools.project.model.ProjectModule>
-    <fr.cnes.sitools.project.model.ProjectModule>
-      <id>uploadPosterTest</id>
-      <name>Poster</name>
-      <description>Poster module to test API</description>
-      <priority>8</priority>
-      <categoryModule></categoryModule>
-      <divIdToDisplay></divIdToDisplay>
-      <xtype>sitools.user.modules.extPoster</xtype>
-      <label>label.poster</label>
     </fr.cnes.sitools.project.model.ProjectModule>
   </modules>
   <htmlHeader>&lt;div id=&quot;top-header&quot; style=&quot;background-color: black;&quot;&gt;&lt;a href=&quot;http://www.cnes.fr&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;/sitools/common/res/images/bg_cnes.jpg&quot; style=&quot;border: none;&quot; /&gt; &lt;/a&gt;&lt;/div&gt;
@@ -146,5 +116,5 @@
   <ftlTemplateFile>default.project.ftl</ftlTemplateFile>
   <navigationMode>fixed</navigationMode>
   <categoryProject></categoryProject>
-  <lastStatusUpdate>2014-11-18 11:48:15.808 CET</lastStatusUpdate>
+  <lastStatusUpdate>2014-11-18 15:28:20.687 CET</lastStatusUpdate>
 </project>
