@@ -1,4 +1,4 @@
-    /*******************************************************************************
+/*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
  *
  * This file is part of SITools2.
@@ -305,6 +305,10 @@ public final class Task implements Runnable {
     if (!this.getTaskStatus().equals(TaskStatus.TASK_STATUS_FAILURE)) {
       this.setTaskStatus(TaskStatus.TASK_STATUS_FINISHED);
     }
+    //Clear custom status if status is OK
+    if (this.getTaskStatus().equals(TaskStatus.TASK_STATUS_FINISHED)) {
+      this.setCustomStatus(null);
+    }
   }
 
   /**
@@ -317,6 +321,11 @@ public final class Task implements Runnable {
     if (!this.getTaskStatus().equals(TaskStatus.TASK_STATUS_FAILURE)) {
       this.setTaskStatus(TaskStatus.TASK_STATUS_FINISHED);
     }
+    //Clear custom status if status is OK
+    if (this.getTaskStatus().equals(TaskStatus.TASK_STATUS_FINISHED)) {
+      this.setCustomStatus(null);
+    }
+
     if (repr != null) {
       this.setUrlResult(rootUrl + "/represent");
     }
