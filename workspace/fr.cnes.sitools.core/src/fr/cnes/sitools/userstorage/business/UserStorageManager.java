@@ -123,6 +123,43 @@ public final class UserStorageManager {
       }
     }
   }
+  
+  /**
+   * Refresh UserStorage definition according to the physical user directory
+   * 
+   * @param context
+   *          Context containing SitoolsSettings instance attribute
+   * @param storage
+   *          UserStorage to refresh
+   * @param forceRefresh
+   *          true to force user storage refresh
+   */
+  public static void refresh(Context context, UserStorage storage, boolean forceRefresh) {
+    if (storage.getStorage() != null) {
+
+      Date currentDate = new Date();
+      Date lastUpdate = storage.getStorage().getLastUpdate();
+
+      int refreshDelay = getSettings(context).getUserStorageRefreshDelay();
+      if (lastUpdate == null || forceRefresh == true || DateUtils.add(lastUpdate, Calendar.MINUTE, refreshDelay).before(currentDate)) {
+        context.getLogger().finest("UserStorageManager.refresh(" + storage.getUserId() + ")");
+
+        String path = getSettings(context).getFormattedString(storage.getStorage().getUserStoragePath());
+
+        File userDir = new File(path);
+        if (userDir.exists() && userDir.isDirectory()) {
+          long size = FileUtils.getFileSize(userDir);
+          storage.getStorage().setBusyUserSpace(size);
+          storage.getStorage().setFreeUserSpace(
+              (storage.getStorage().getQuota() == null ? 0 : storage.getStorage().getQuota()) - size);
+        }
+        else {
+          storage.getStorage().setBusyUserSpace(new Long(0));
+        }
+        storage.getStorage().setLastUpdate(currentDate);
+      }
+    }
+  }
 
   /**
    * Delete recursively all files except config files.

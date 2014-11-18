@@ -90,7 +90,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
             }, {
                 value : 'log',
                 text : i18n.get('label.log'),
-                icon : loadUrl.get("APP_URL") + "/client-user/js/modules/sitoolsFitsViewer/images/log1.png",
+                icon : loadUrl.get("APP_URL") + "/client-user/js/modules/sitoolsFitsViewer/images/log1.png"
             }]
         });
         
@@ -125,24 +125,17 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
             }]
         });
         
-        this.histoGroupBtn = new Ext.ButtonGroup({
+        this.histoGroupBtn = new Ext.Button({
             title: i18n.get('label.processing'),
-            activeItem : 0,
             hideBorders : true,
-            defaults: {
-                scope : this,
-                enableToogle: true,
-                toggleGroup : 'histo',
-                toggleHandler : this.manageHistogram,
-                cls : 'services-toolbar-btn'
-            },
-            items : [{
-                text : 'Histogram',
-                id : 'histoBtnId',
-                icon : loadUrl.get("APP_URL") + "/client-user/js/modules/sitoolsFitsViewer/images/function.png",
-                cls : 'sitools-btn-green-bold',
-                pressed : true
-            }]
+            scope : this,
+            enableToogle: true,
+            handler : this.manageHistogram,
+            text : 'Histogram',
+            id : 'histoBtnId',
+            icon : loadUrl.get("APP_URL") + "/client-user/js/modules/sitoolsFitsViewer/images/function.png",
+            cls : 'sitools-btn-green-bold',
+            pressed : true
         });
         
         this.tbar = {
@@ -153,7 +146,7 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
             defaults : {
                 scope : this
             },
-            items : [this.functionsGroupBtn, '-' , this.colorsGroupBtn, '-', this.sliderFrameGroupBtn, this.histoGroupBtn]
+            items : [this.sliderFrameGroupBtn, this.functionsGroupBtn, this.colorsGroupBtn, '-' , this.histoGroupBtn]
         };
         
         this.canvasPanel = new Ext.Panel({
@@ -430,14 +423,16 @@ sitools.user.modules.sitoolsFitsViewer = Ext.extend(Ext.Panel, {
         }, 5, this);
     },
     
-    manageHistogram : function (btn, pressed) {
-        if (pressed) {
-            btn.addClass("sitools-btn-green-bold");
-        } else {
+    manageHistogram : function (btn) {
+        if (btn.pressed) {
             btn.removeClass("sitools-btn-green-bold");
+            btn.pressed = false;
+        } else {
+            btn.addClass("sitools-btn-green-bold");
+            btn.pressed = true;
         }
         
-        var btnEl = this.histoGroupBtn.findByType('button')[0].getEl();
+        var btnEl = btn.getEl();
         if (this.processingWindow.isVisible()) {
             this.processingWindow.hide(btnEl);
         } else {

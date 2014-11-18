@@ -1,8 +1,8 @@
 <resourceAuthorization>
-  <id>urn:uuid:TaskApplicationForUser:type:fr.cnes.sitools.server.Starter$8</id>
-  <name>TaskApplicationForUser</name>
-  <description>Exposes the list of tasks for a particular user</description>
-  <url>/sitools/userresource/{identifier}/tasks</url>
+  <id>urn:uuid:ProjectModuleApplication:type:fr.cnes.sitools.project.modules.ProjectModuleApplication</id>
+  <name>ProjectModuleApplication</name>
+  <description>Management of GUI components for projectModule.</description>
+  <url>/sitools/projectModules</url>
   <authorizations>
     <authorize>
       <role>Administrator</role>

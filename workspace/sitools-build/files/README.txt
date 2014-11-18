@@ -2,8 +2,8 @@
 ______________
 
 Identification                       : SITools2
-Date                                 : 2014-07-08
-Version                              : 2.4.1-scalable
+Date                                 : 2014-10-13
+Version                              : 2.4.2
 Owner                                : CNES
 Developer                            : AKKA Technologies
 Type                                 : Complete
@@ -17,25 +17,27 @@ Reference tag                        : (2.4)
 2/ Changes
 
 _________________
--2.4.1-scalable (2014-07-08)
+-2.4.2 (2014-10-13)
 	* New features :
-		- Possibility to run multiple SITools2 on the same data folder
-		- Synchronization on multiple instances of :
-			- DataSets
-			- Projects
-			- Users/Groups
-			- Authorizations
-			- DataSources
-			- Applications plugins
+		- Project can be regrouped using named categories
 	
 	* Enhancements :
 		- Stores uses map interface to simplify file naming
 		- data are automatically loaded from old directory
 		- StoreHelper can be configured in sitools.properties file
+		- Minify javascripts during izpack generation
 		
 	* API changes :
 		- data folder are now data/<datatype>/map
-
+		
+	* Bug Fixed :
+		- #71 Add Table label
+		- #68 Bug in user panel [ADMIN], sort users and groups is case insensitive
+		- #67 Unable to see new user after I create one
+		
+	* Know bugs
+		- #66 Fits change frame menu visible
+		- #70 Authorizations are not removed when a role is deleted
 _________________
 -2.4.1 (2014-05-28)
 	* Enhancements : 

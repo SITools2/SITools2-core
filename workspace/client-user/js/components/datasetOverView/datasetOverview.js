@@ -38,6 +38,8 @@ sitools.user.component.DatasetOverview = function(config) {
 	this.DEFAULT_WIDTH_EAST_PANEL = 200;
 
 	Ext.apply(this, config);
+	
+	this.forceShowDataset = this.isModifySelection;
 
 	this.formsTabPanel = new Ext.TabPanel({
 				items : []
@@ -107,7 +109,7 @@ sitools.user.component.DatasetOverview = function(config) {
 						return true;
 					},
 					datasetLoaded : function() {
-						this.loadForms();
+						this.onDatasetLoaded();
 					},
 					formsLoaded : function() {
 						this.loadSemantic();
@@ -175,6 +177,15 @@ Ext.extend(sitools.user.component.DatasetOverview, Ext.Panel, {
 					failure : alertFailure
 				});
 	},
+	onDatasetLoaded : function () {
+		if (!this.forceShowDataset) {
+			this.loadForms();
+		} else {
+			this.showDataview();
+			this.mainPanel.doLayout();
+			this.fireEvent("formsLoaded");
+		}
+	},
 	loadForms : function() {
 		Ext.Ajax.request({
 			method : "GET",
@@ -239,29 +250,7 @@ Ext.extend(sitools.user.component.DatasetOverview, Ext.Panel, {
 							this.formsTabPanel.setActiveTab(0);
 						}
 					} else {
-						this.semanticPanel.show();
-
-						var jsObj = eval(this.dataset.datasetView.jsObject);
-						var componentCfg = {
-							dataUrl : this.dataset.sitoolsAttachementForUsers,
-							datasetId : this.dataset.id,
-							datasetCm : this.dataset.columnModel,
-							datasetName : this.dataset.name,
-							dictionaryMappings : this.dataset.dictionaryMappings,
-							datasetViewConfig : this.dataset.datasetViewConfig,
-							preferencesPath : "/" + this.dataset.name,
-							preferencesFileName : "datasetView"
-						};
-						this.dataview = new jsObj(componentCfg);
-						this.formsContainerPanel.removeAll();
-						this.formsContainerPanel.hide();
-						this.eastPanel.setVisible(true);
-						this.eastPanel.add(this.mainPanel.items.items);
-
-						this.mainPanel.removeAll();
-						this.mainPanel.add(this.dataview);
-						this.doLayout();
-
+						this.showDataview();
 					}
 					this.mainPanel.doLayout();
 					this.fireEvent(eventToFire);
@@ -270,6 +259,40 @@ Ext.extend(sitools.user.component.DatasetOverview, Ext.Panel, {
 			failure : alertFailure
 		});
 	},
+	showDataview : function () {
+		this.semanticPanel.show();
+
+		var jsObj = eval(this.dataset.datasetView.jsObject);
+		var componentCfg = {
+			dataUrl : this.dataset.sitoolsAttachementForUsers,
+			datasetId : this.dataset.id,
+			datasetCm : this.dataset.columnModel,
+			datasetName : this.dataset.name,
+			dictionaryMappings : this.dataset.dictionaryMappings,
+			datasetViewConfig : this.dataset.datasetViewConfig,
+			preferencesPath : "/" + this.dataset.name,
+			preferencesFileName : "datasetView",
+			isModifySelection : this.isModifySelection,
+			ranges : this.ranges,
+			startIndex : this.startIndex,
+			nbRecordsSelection : this.nbRecords,
+			filters : this.filters,
+			filtersCfg : this.filtersCfg,
+			storeSort : this.storeSort,
+			formParams : this.formParams
+		};
+		this.dataview = new jsObj(componentCfg);
+		this.formsContainerPanel.removeAll();
+		this.formsContainerPanel.hide();
+		this.eastPanel.setVisible(true);
+		this.eastPanel.add(this.mainPanel.items.items);
+
+		this.mainPanel.removeAll();
+		this.mainPanel.add(this.dataview);
+		this.doLayout();
+	},
+	
+	
 	loadSemantic : function() {
 		var panel = new sitools.user.component.columnsDefinition({
 					datasetId : this.dataset.id,

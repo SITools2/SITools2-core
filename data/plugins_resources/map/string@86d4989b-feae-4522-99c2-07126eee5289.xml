@@ -16,6 +16,7 @@
         <value>GET|PUT</value>
         <valueType>xs:enum-multiple[GET, POST, PUT, DELETE]</valueType>
         <type>PARAMETER_INTERN</type>
+        <sequence>0</sequence>
       </resourceParameter>
     </entry>
     <entry>
@@ -26,16 +27,7 @@
         <value></value>
         <valueType>xs:template</valueType>
         <type>PARAMETER_USER_INPUT</type>
-      </resourceParameter>
-    </entry>
-    <entry>
-      <string>outputurl</string>
-      <resourceParameter>
-        <name>outputurl</name>
-        <description>Url of result</description>
-        <value>${context_host_ref}/sitools/admin/miscellaneous/analog/report.html</value>
-        <valueType>xs:url</valueType>
-        <type>PARAMETER_INTERN</type>
+        <sequence>0</sequence>
       </resourceParameter>
     </entry>
     <entry>
@@ -46,6 +38,18 @@
         <value>${context_root_dir}/workspace/fr.cnes.sitools.core/logs/sitools-log-application-service.log</value>
         <valueType>xs:path</valueType>
         <type>PARAMETER_INTERN</type>
+        <sequence>0</sequence>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>outputurl</string>
+      <resourceParameter>
+        <name>outputurl</name>
+        <description>Url of result</description>
+        <value>${context_host_ref}/sitools/admin/miscellaneous/analog/report.html</value>
+        <valueType>xs:url</valueType>
+        <type>PARAMETER_INTERN</type>
+        <sequence>0</sequence>
       </resourceParameter>
     </entry>
     <entry>
@@ -56,16 +60,7 @@
         <value>/sitools/admin/miscellaneous/analog/images/</value>
         <valueType>xs:string</valueType>
         <type>PARAMETER_INTERN</type>
-      </resourceParameter>
-    </entry>
-    <entry>
-      <string>url</string>
-      <resourceParameter>
-        <name>url</name>
-        <description>attachment url</description>
-        <value>/plugin/analog</value>
-        <valueType>xs:string</valueType>
-        <type>PARAMETER_ATTACHMENT</type>
+        <sequence>0</sequence>
       </resourceParameter>
     </entry>
     <entry>
@@ -76,6 +71,18 @@
         <value>${context_root_dir}/data/analog</value>
         <valueType>xs:path</valueType>
         <type>PARAMETER_INTERN</type>
+        <sequence>0</sequence>
+      </resourceParameter>
+    </entry>
+    <entry>
+      <string>url</string>
+      <resourceParameter>
+        <name>url</name>
+        <description>attachment url</description>
+        <value>/plugin/analog</value>
+        <valueType>xs:string</valueType>
+        <type>PARAMETER_ATTACHMENT</type>
+        <sequence>0</sequence>
       </resourceParameter>
     </entry>
     <entry>
@@ -86,6 +93,7 @@
         <value>/usr/bin/analog</value>
         <valueType>xs:path</valueType>
         <type>PARAMETER_INTERN</type>
+        <sequence>0</sequence>
       </resourceParameter>
     </entry>
   </parametersMap>

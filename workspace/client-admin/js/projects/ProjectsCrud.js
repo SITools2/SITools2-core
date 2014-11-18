@@ -319,8 +319,12 @@ Ext.define('sitools.admin.projects.ProjectsCrud', {
             url : this.url + '/' + rec.data.id,
             action : rec.data.status == 'ACTIVE' ? "view" : "modify",
             store : this.getStore(),
-            projectName : rec.name, 
-            projectAttachement : rec.sitoolsAttachementForUsers
+            projectName : rec.data.name, 
+            projectAttachement : rec.data.sitoolsAttachementForUsers,
+            propertiesToKeep : {
+            	priority : rec.data.priority,
+            	categoryProject : rec.data.categoryProject            
+            }
         });
         up.show(ID.BOX.PROJECTS);
     },

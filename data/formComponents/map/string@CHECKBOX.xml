@@ -1,12 +1,12 @@
 <formComponent>
-  <id>379c2bc8-777f-4daa-bf11-9875dd47a15f</id>
-  <type>RADIO</type>
+  <id>CHECKBOX</id>
+  <type>CHECKBOX</type>
   <componentDefaultHeight>25</componentDefaultHeight>
   <componentDefaultWidth>400</componentDefaultWidth>
   <jsAdminObject>sitools.admin.forms.componentsAdminDef.oneParam.WithValues</jsAdminObject>
-  <jsUserObject>sitools.public.forms.components.Radio</jsUserObject>
+  <jsUserObject>sitools.public.forms.components.CheckBox</jsUserObject>
   <fileUrlAdmin>/sitools/client-admin/js/forms/componentsAdminDef/OneParam/WithValues.js</fileUrlAdmin>
-  <fileUrlUser>/sitools/client-public/js/forms/components/Radio.js</fileUrlUser>
-  <imageUrl>/sitools/client-public/res/images/formComponents/Radio.gif</imageUrl>
+  <fileUrlUser>/sitools/client-public/js/forms/components/CheckBox.js</fileUrlUser>
+  <imageUrl>/sitools/client-public/res/images/formComponents/CheckBox.gif</imageUrl>
   <priority>1</priority>
 </formComponent>

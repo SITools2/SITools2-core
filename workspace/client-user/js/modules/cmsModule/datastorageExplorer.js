@@ -29,7 +29,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
     alias : 'sitools.user.modules.datastorageExplorer',
 
     autoScroll : true,
-    id : 'datastorageExpId',
     initComponent : function () {
         
         var noPreviewAvailableUrlTemplate = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/res/html/{locale}/noPreviewAvailable.html";
@@ -56,7 +55,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
 
         this.uplButton = {
             xtype : 'button',
-            id : 'uplButton',
             // iconAlign : 'right',
             iconCls : 'upload-icon',
             text : i18n.get('label.uploadFile'),
@@ -74,7 +72,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
 
         this.dwlButton = {
             xtype : 'button',
-            id : 'dwlButton',
             // iconAlign : 'right',
             icon : loadUrl.get('APP_URL') + '/client-user/js/modules/cmsModule/res/icons/download.png',
             text : i18n.get('label.downloadFile'),
@@ -102,7 +99,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
 
         this.delButton = {
             xtype : 'button',
-            id : 'delButton',
             // iconAlign : 'right',
             iconCls : 'delete-icon',
             text : i18n.get('label.delete'),
@@ -128,7 +124,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         
         this.createFolderButton = {
                 xtype : 'button',
-                id : 'createFolderButton',
                 icon : loadUrl.get('APP_URL') + '/client-user/js/modules/cmsModule/res/icons/createFolder.png',
                 text : i18n.get('label.createFolder'),
                 scope : this,
@@ -435,7 +430,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         });
 
         this.dataview = new Ext.DataView({
-            id : 'file-view',
             autoScroll : true,
             height : 350,
             region : 'center',
@@ -463,7 +457,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         });
 
         this.detailPanel = new Ext.ux.ManagedIFrame.Panel({
-            id : 'detail-view',
             region : 'south',
             collapsible : true,
             collapsed : true,
@@ -474,7 +467,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
             title : i18n.get('label.defaultTitleDetailPanel'),
             defaultSrc : this.noPreviewAvailableUrl,
             tools : [ {
-                id : 'plus',
                 qtip : i18n.get("label.showInWindow"),
                 scope : this,
                 handler : function (event, toolEl, panel) {
@@ -484,7 +476,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
         });
 
         this.contentPanel = new Ext.Panel({
-            id : 'content-view',
             layout : 'border',
             region : 'center',
             items : [ this.dataview, this.detailPanel ]
@@ -648,7 +639,6 @@ Ext.define('sitools.user.modules.datastorageExplorer', {
     detachPanel : function (panel) {
         var customConfig = {
             title : panel.title,
-            id : panel.title,
             modal : true,
             iconCls : 'dataDetail'
         };

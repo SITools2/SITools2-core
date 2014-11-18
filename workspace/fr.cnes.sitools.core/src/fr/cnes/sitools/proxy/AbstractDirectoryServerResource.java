@@ -465,10 +465,6 @@ public abstract class AbstractDirectoryServerResource extends ServerResource {
           items = upload.parseRequest(getRequest());
 
           String path = getDirectory().getRootRef().getPath() + getRelativePart();
-          // Prepare a classloader URI, removing the leading slash
-          if ((path != null) && path.startsWith("/")) {
-            path = path.substring(1);
-          }
           String repertoire = Reference.decode(path);
           
           // Process only the uploaded item called "fileToUpload" and
@@ -834,11 +830,6 @@ public abstract class AbstractDirectoryServerResource extends ServerResource {
 
                 // SITOOLS2 - ReferenceFileList = reference and File
                 String path = ref.getPath();
-                // Prepare a classloader URI, removing the leading slash
-                if ((path != null) && path.startsWith("/")) {
-                  path = path.substring(1);
-                }
-
                 String repertoire = Reference.decode(path);
                 File file = new File(repertoire);
 

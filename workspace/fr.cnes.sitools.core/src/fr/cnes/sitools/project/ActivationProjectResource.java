@@ -155,7 +155,9 @@ public final class ActivationProjectResource extends AbstractProjectResource {
               proj.setMaintenance(true);
               Project projResult = store.update(proj);
 
-              getProjectApplication().attachProject(proj);
+              if ("ACTIVE".equals(projResult.getStatus())) {
+                getProjectApplication().attachProject(proj);
+              }
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.maintenance.on.success");
@@ -180,7 +182,9 @@ public final class ActivationProjectResource extends AbstractProjectResource {
               proj.setMaintenance(false);
               Project projResult = store.update(proj);
 
-              getProjectApplication().attachProject(proj);
+              if ("ACTIVE".equals(projResult.getStatus())) {
+                getProjectApplication().attachProject(proj);
+              }
 
               response = new Response(true, projResult, Project.class, "project");
               response.setMessage("project.maintenance.off.success");

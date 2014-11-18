@@ -8,6 +8,32 @@
     <mediaType>Image</mediaType>
   </image>
   <css>cnes</css>
+  <dataSets>
+    <resource>
+      <id>18d3c881-a81c-4ab9-97f0-3d9b51816bae</id>
+      <name>fuse</name>
+      <description></description>
+      <type>DataSet</type>
+      <url>/fuse</url>
+      <mediaType>DataSet</mediaType>
+      <status>ACTIVE</status>
+      <visible>false</visible>
+      <properties>
+        <fr.cnes.sitools.util.Property>
+          <name>nbRecord</name>
+          <value>813</value>
+        </fr.cnes.sitools.util.Property>
+        <fr.cnes.sitools.util.Property>
+          <name>descriptionHTML</name>
+          <value></value>
+        </fr.cnes.sitools.util.Property>
+        <fr.cnes.sitools.util.Property>
+          <name>imageUrl</name>
+          <value></value>
+        </fr.cnes.sitools.util.Property>
+      </properties>
+    </resource>
+  </dataSets>
   <status>ACTIVE</status>
   <sitoolsAttachementForUsers>/ExampleProject_desktop</sitoolsAttachementForUsers>
   <visible>false</visible>
@@ -104,55 +130,48 @@
       <label>label.poster</label>
     </fr.cnes.sitools.project.model.ProjectModule>
   </modules>
-  <htmlHeader>&lt;div id=&quot;top-header&quot; style=&quot;background-color: black;&quot;&gt;
-&lt;a href=&quot;http://www.cnes.fr&quot; target=&quot;_blank&quot;&gt;
-&lt;img src=&quot;/sitools/common/res/images/bg_cnes.jpg&quot; style=&quot;border: none;&quot;&gt;
-&lt;/a&gt;
-&lt;/div&gt;</htmlHeader>
-  <htmlDescription>SITools2 est une plate-forme web conviviale permettant de mettre en place un 
-système de recherche et d&apos;accès aux données à partir d&apos;une ou plusieurs bases de 
-données existantes. SiTools2 permet de prendre en compte et de s&apos;adapter aux 
-structures de nombreuses bases de données qui sont gérées dans divers centres 
-scientifiques, et permet d&apos;éviter des processus lourds et complexes de migration 
-de données. 
+  <htmlHeader>&lt;div id=&quot;top-header&quot; style=&quot;background-color: black;&quot;&gt;&lt;a href=&quot;http://www.cnes.fr&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;/sitools/common/res/images/bg_cnes.jpg&quot; style=&quot;border: none;&quot; /&gt; &lt;/a&gt;&lt;/div&gt;
+</htmlHeader>
+  <htmlDescription>&lt;p&gt;SITools2 est une plate-forme web conviviale permettant de mettre en place un syst&amp;egrave;me de recherche et d&amp;#39;acc&amp;egrave;s aux donn&amp;eacute;es &amp;agrave; partir d&amp;#39;une ou plusieurs bases de donn&amp;eacute;es existantes. SiTools2 permet de prendre en compte et de s&amp;#39;adapter aux structures de nombreuses bases de donn&amp;eacute;es qui sont g&amp;eacute;r&amp;eacute;es dans divers centres scientifiques, et permet d&amp;#39;&amp;eacute;viter des processus lourds et complexes de migration de donn&amp;eacute;es.&lt;/p&gt;
+
 &lt;div class=&quot;field-items&quot;&gt;
-&lt;p&gt;L&apos;architecture de cette plate-forme est composée&amp;nbsp;:&lt;/p&gt;
+&lt;p&gt;L&amp;#39;architecture de cette plate-forme est compos&amp;eacute;e :&lt;/p&gt;
+
 &lt;ol&gt;
-&lt;li&gt;d&apos;un serveur de données exposant des ressources,&amp;nbsp; 
-&lt;/li&gt;&lt;li&gt;d&apos;une interface web pour l&apos;administrateur permettant de configurer 
-l&apos;ensemble des fonctionnalités du serveur,&amp;nbsp; 
-&lt;/li&gt;&lt;li&gt;d&apos;une interface web pour les utilisateurs comportant un portail qui liste 
-les projets, avec un bureau pour chaque projet qui expose l&apos;ensemble des 
-services mis à disposition par l&apos;administrateur,&amp;nbsp; 
-&lt;/li&gt;&lt;li&gt;d&apos;un mécanisme de plugins permettant aux développeurs d&apos;ajouter des 
-fonctionnalités métiers aussi bien au niveau du serveur qu&apos;au niveau du client 
-et de les partager avec une communauté d&apos;utilisateurs.&amp;nbsp; &lt;/li&gt;&lt;/ol&gt;
-&lt;p&gt;SITools2 s&apos;articule autour de trois concepts importants&amp;nbsp;:&lt;/p&gt;
+	&lt;li&gt;d&amp;#39;un serveur de donn&amp;eacute;es exposant des ressources, &lt;/li&gt;
+	&lt;li&gt;d&amp;#39;une interface web pour l&amp;#39;administrateur permettant de configurer l&amp;#39;ensemble des fonctionnalit&amp;eacute;s du serveur, &lt;/li&gt;
+	&lt;li&gt;d&amp;#39;une interface web pour les utilisateurs comportant un portail qui liste les projets, avec un bureau pour chaque projet qui expose l&amp;#39;ensemble des services mis &amp;agrave; disposition par l&amp;#39;administrateur, &lt;/li&gt;
+	&lt;li&gt;d&amp;#39;un m&amp;eacute;canisme de plugins permettant aux d&amp;eacute;veloppeurs d&amp;#39;ajouter des fonctionnalit&amp;eacute;s m&amp;eacute;tiers aussi bien au niveau du serveur qu&amp;#39;au niveau du client et de les partager avec une communaut&amp;eacute; d&amp;#39;utilisateurs. &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;SITools2 s&amp;#39;articule autour de trois concepts importants :&lt;/p&gt;
+
 &lt;ul&gt;
-&lt;li&gt;la source de données&amp;nbsp;: infrastructure contenant les données (actuellement 
-une base de données relationnelle accessible via l&apos;API JDBC), 
-&lt;/li&gt;&lt;li&gt;le jeu de données&amp;nbsp;: exposition d&apos;un sous-ensemble de la source de données 
-par l&apos;intermédiaire d&apos;un service web, 
-&lt;/li&gt;&lt;li&gt;le projet&amp;nbsp;: ensemble de jeux de données. &lt;/li&gt;&lt;/ul&gt;
-&lt;p&gt;Des services peuvent être ensuite définis à partir de ces trois 
-concepts&amp;nbsp;:&lt;/p&gt;
+	&lt;li&gt;la source de donn&amp;eacute;es : infrastructure contenant les donn&amp;eacute;es (actuellement une base de donn&amp;eacute;es relationnelle accessible via l&amp;#39;API JDBC),&lt;/li&gt;
+	&lt;li&gt;le jeu de donn&amp;eacute;es : exposition d&amp;#39;un sous-ensemble de la source de donn&amp;eacute;es par l&amp;#39;interm&amp;eacute;diaire d&amp;#39;un service web,&lt;/li&gt;
+	&lt;li&gt;le projet : ensemble de jeux de donn&amp;eacute;es.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Des services peuvent &amp;ecirc;tre ensuite d&amp;eacute;finis &amp;agrave; partir de ces trois concepts :&lt;/p&gt;
+
 &lt;ul&gt;
-&lt;li&gt;définition et exposition du formulaire de recherche, 
-&lt;/li&gt;&lt;li&gt;définition et exposition de la recherche OpenSearch, 
-&lt;/li&gt;&lt;li&gt;définition et exposition des fonctions de conversion (unité, fonction de 
-transfert), 
-&lt;/li&gt;&lt;li&gt;définition et exposition des fonctions de filtrage, 
-&lt;/li&gt;&lt;li&gt;définition et exposition de dictionnaires de données, 
-&lt;/li&gt;&lt;li&gt;définition et exposition de flux RSS, 
-&lt;/li&gt;&lt;li&gt;définition et exposition des plugins. &lt;/li&gt;&lt;/ul&gt;
-&lt;p&gt;Comme tout système d&apos;accès, il est important de pouvoir sécuriser l&apos;accès à 
-certaines ressources selon le profil de l&apos;utilisateur. C&apos;est pourquoi SITools2 
-implémente une gestion complète des utilisateurs (information personnalisable, 
-espace de stockage sur le serveur de données) et permet de sécuriser l&apos;ensemble 
-des ressources en fonction du rôle de chaque utilisateur.&lt;/p&gt;&lt;/div&gt;</htmlDescription>
+	&lt;li&gt;d&amp;eacute;finition et exposition du formulaire de recherche,&lt;/li&gt;
+	&lt;li&gt;d&amp;eacute;finition et exposition de la recherche OpenSearch,&lt;/li&gt;
+	&lt;li&gt;d&amp;eacute;finition et exposition des fonctions de conversion (unit&amp;eacute;, fonction de transfert),&lt;/li&gt;
+	&lt;li&gt;d&amp;eacute;finition et exposition des fonctions de filtrage,&lt;/li&gt;
+	&lt;li&gt;d&amp;eacute;finition et exposition de dictionnaires de donn&amp;eacute;es,&lt;/li&gt;
+	&lt;li&gt;d&amp;eacute;finition et exposition de flux RSS,&lt;/li&gt;
+	&lt;li&gt;d&amp;eacute;finition et exposition des plugins.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Comme tout syst&amp;egrave;me d&amp;#39;acc&amp;egrave;s, il est important de pouvoir s&amp;eacute;curiser l&amp;#39;acc&amp;egrave;s &amp;agrave; certaines ressources selon le profil de l&amp;#39;utilisateur. C&amp;#39;est pourquoi SITools2 impl&amp;eacute;mente une gestion compl&amp;egrave;te des utilisateurs (information personnalisable, espace de stockage sur le serveur de donn&amp;eacute;es) et permet de s&amp;eacute;curiser l&amp;#39;ensemble des ressources en fonction du r&amp;ocirc;le de chaque utilisateur.&lt;/p&gt;
+&lt;/div&gt;
+</htmlDescription>
   <maintenance>false</maintenance>
   <maintenanceText></maintenanceText>
-  <links></links>
   <ftlTemplateFile>default.project.ftl</ftlTemplateFile>
   <navigationMode>desktop</navigationMode>
+  <priority>1</priority>
+  <categoryProject></categoryProject>
+  <lastStatusUpdate>2014-11-06 10:31:14.897 CET</lastStatusUpdate>
 </project>
