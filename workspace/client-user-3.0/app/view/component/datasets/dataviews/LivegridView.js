@@ -36,7 +36,8 @@ Ext.namespace('sitools.user.view.component.datasets.dataviews');
 Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     extend : 'Ext.grid.Panel',
     
-    requires : ['sitools.user.view.component.datasets.dataviews.selectionModel.CheckboxModel'],
+    requires : ['sitools.user.view.component.datasets.dataviews.selectionModel.CheckboxModel',
+                'sitools.user.view.component.datasets.dataviews.paging.LivegridPagingToolbar'],
     
     alias : 'widget.livegridView',
     layout : 'fit',
@@ -71,8 +72,8 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
             mode : 'MULTI'
         });
         
-        this.bbar = {
-            xtype : 'pagingtoolbar',
+        this.bbar = Ext.create("sitools.user.view.component.datasets.dataviews.paging.LivegridPagingToolbar", {
+            xtype : 'livegridpagingtoolbar',
             store : this.store,
             displayInfo : true,
             displayMsg : i18n.get('paging.display'),
@@ -88,7 +89,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
                     scope: me
                 }];
             }
-        };
+        });
         
         this.tbar = Ext.create("sitools.user.view.component.datasets.services.ServiceToolbarView", {
             enableOverflow: true,
