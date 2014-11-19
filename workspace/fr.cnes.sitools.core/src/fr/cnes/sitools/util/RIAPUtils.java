@@ -27,6 +27,7 @@ import java.util.logging.Level;
 
 import org.restlet.Context;
 import org.restlet.Request;
+import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Preference;
@@ -46,6 +47,8 @@ import fr.cnes.sitools.common.model.Response;
  * @author m.gond (AKKA Technologies)
  */
 public final class RIAPUtils {
+
+  public static String CLIENT_INFO_CONTEXT_PARAM = "client_info";
 
   /**
    * Private constructor
@@ -131,6 +134,12 @@ public final class RIAPUtils {
     Request reqGET = new Request(Method.GET, getRiapBase() + url);
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(mediaType));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      reqGET.setClientInfo(info);
+    }
+
     reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
     org.restlet.Response response = null;
 
@@ -185,7 +194,6 @@ public final class RIAPUtils {
 
   }
 
-
   /**
    * Get an Object of class <T> with the specified <code>id</code>, at the specified <code>url</code> using the RIAP
    * protocol. The <code>context</code> is required in order to make an RIAP call
@@ -202,6 +210,12 @@ public final class RIAPUtils {
     Request reqGET = new Request(Method.GET, getRiapBase() + url);
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      reqGET.setClientInfo(info);
+    }
+    
     reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
     org.restlet.Response response = null;
 
@@ -255,6 +269,12 @@ public final class RIAPUtils {
 
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      reqPOST.setClientInfo(info);
+    }
+    
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
 
     org.restlet.Response response = null;
@@ -303,6 +323,12 @@ public final class RIAPUtils {
 
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      reqPOST.setClientInfo(info);
+    }
+    
     reqPOST.getClientInfo().setAcceptedMediaTypes(objectMediaType);
 
     org.restlet.Response response = null;
@@ -361,6 +387,12 @@ public final class RIAPUtils {
     Request reqGET = new Request(Method.DELETE, getRiapBase() + url);
     ArrayList<Preference<MediaType>> objectMediaType = new ArrayList<Preference<MediaType>>();
     objectMediaType.add(new Preference<MediaType>(MediaType.APPLICATION_JAVA_OBJECT));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      reqGET.setClientInfo(info);
+    }
+    
     reqGET.getClientInfo().setAcceptedMediaTypes(objectMediaType);
     org.restlet.Response response = null;
 
@@ -401,6 +433,12 @@ public final class RIAPUtils {
     Request req = new Request(method, getRiapBase() + url);
     ArrayList<Preference<MediaType>> acceptedMediaTypes = new ArrayList<Preference<MediaType>>();
     acceptedMediaTypes.add(new Preference<MediaType>(mediaType));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      req.setClientInfo(info);
+    }
+    
     req.getClientInfo().setAcceptedMediaTypes(acceptedMediaTypes);
     org.restlet.Response response = null;
 
@@ -435,6 +473,12 @@ public final class RIAPUtils {
     Request req = new Request(method, getRiapBase() + url, entity);
     ArrayList<Preference<MediaType>> acceptedMediaTypes = new ArrayList<Preference<MediaType>>();
     acceptedMediaTypes.add(new Preference<MediaType>(mediaType));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      req.setClientInfo(info);
+    }
+    
     req.getClientInfo().setAcceptedMediaTypes(acceptedMediaTypes);
     org.restlet.Response response = null;
 
@@ -466,6 +510,12 @@ public final class RIAPUtils {
     Request req = new Request(method, reference);
     ArrayList<Preference<MediaType>> acceptedMediaTypes = new ArrayList<Preference<MediaType>>();
     acceptedMediaTypes.add(new Preference<MediaType>(mediaType));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      req.setClientInfo(info);
+    }
+    
     req.getClientInfo().setAcceptedMediaTypes(acceptedMediaTypes);
     org.restlet.Response response = null;
     try {
@@ -513,6 +563,12 @@ public final class RIAPUtils {
     Request req = new Request(method, getRiapBase() + url, entity);
     ArrayList<Preference<MediaType>> acceptedMediaTypes = new ArrayList<Preference<MediaType>>();
     acceptedMediaTypes.add(new Preference<MediaType>(mediaType));
+    
+    if (context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM) != null) {
+      ClientInfo info = (ClientInfo) context.getAttributes().get(CLIENT_INFO_CONTEXT_PARAM);
+      req.setClientInfo(info);
+    }
+    
     req.getClientInfo().setAcceptedMediaTypes(acceptedMediaTypes);
     org.restlet.Response response = null;
     try {
