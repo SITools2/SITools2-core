@@ -203,7 +203,9 @@ public abstract class AbstractCartOrderResource extends AbstractOrderResource {
       do {
 
         String url = urlTemplate.replace("{start}", start.toString()).replace("{limit}", limit.toString());
-
+        
+        getContext().getAttributes().put(RIAPUtils.CLIENT_INFO_CONTEXT_PARAM, getClientInfo());
+        
         Response response = RIAPUtils.handleParseResponse(url, Method.GET, MediaType.APPLICATION_JAVA_OBJECT,
             getContext());
         nbTotalResult = response.getTotal();
