@@ -159,6 +159,8 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
             }
         });
         
+        var passwordItems = []
+        
         this.items = [ {
             // xtype: 'tabpanel',
             // activeTab: 0,
@@ -205,6 +207,26 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
                     disabled : this.action == "create" ? false : true,
                     vtype : "name", 
                     id : "nameField"
+                },{
+                    xtype : 'checkbox',
+                    name : 'modifypassword',
+                    fieldLabel : i18n.get('label.modifyPassword'),
+                    checked : false,
+                    hidden : this.action == "create" ? true : false,
+                    listeners : {
+                        scope : this,
+                        check : function (checkbox, checked) {
+                            var f = this.findByType('form')[0].getForm();
+                            f.findField('secret').setDisabled(!checked);
+                            f.findField('confirmSecret').setDisabled(!checked);
+                            f.findField('generate').setDisabled(!checked);
+                            if(!checked) {
+                                f.findField('secret').setValue("");
+                                f.findField('confirmSecret').setValue("");
+                                f.findField('generate').setValue(false);
+                            }
+                        } 
+                    }
                 }, {
                     xtype : 'textfield',
                     fieldLabel : i18n.get('label.password'),
@@ -213,7 +235,8 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
                     name : 'secret',
                     id : "passwordField", 
                     vtype: 'passwordComplexity',
-                    allowBlank : false
+                    allowBlank : false,
+                    disabled : this.action == "create" ? false : true
                 }, {
                     id : "confirmSecret",
                     xtype : 'textfield',
@@ -224,12 +247,14 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
                     vtype: 'password',
                     name : 'confirmSecret',
                     submitValue : false,
-                    allowBlank : false
+                    allowBlank : false,
+                    disabled : this.action == "create" ? false : true
                 }, {
                     xtype : 'checkbox',
                     name : 'generate',
                     fieldLabel : i18n.get('label.generatePassword'),
                     checked : false,
+                    disabled : this.action == "create" ? false : true,
                     listeners : {
                         scope : this,
                         check : function (checkbox, checked) {
@@ -291,8 +316,12 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
             Ext.Msg.alert(i18n.get('label.error'), i18n.get('warning.invalidForm'));
             return;
         }
+        
         var putObject = f.getValues();
+        
+        var modifyPassword = putObject.modifypassword;
         Ext.destroyMembers(putObject, "generate");
+        Ext.destroyMembers(putObject, "modifypassword");
         putObject.properties = [];
         this.gridProperties.getStore().each(function (item) {
 			putObject.properties.push({
@@ -301,10 +330,19 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
 				scope : item.data.scope
 			});
         });
+        
+        var params = {};
+        if(this.action!=="create" && (Ext.isEmpty(modifyPassword) || !modifyPassword)) {
+            // set origin as user not to update the password on the server side
+            params.origin = "user";
+            Ext.destroyMembers(putObject, "password");
+        }
+        
         Ext.Ajax.request({
             url : this.url,
             method : method,
             scope : this,
+            params : params,
             jsonData : putObject,
             success : function (ret) {
                 var data = Ext.decode(ret.responseText);
@@ -354,20 +392,6 @@ sitools.admin.usergroups.UserPropPanel = Ext.extend(Ext.Window, {
                 failure : alertFailure
             });
         }
-    },
-    
-    /**
-     * Generate a random password
-     */
-    generatePassword : function () {
-        var generator = new PasswordGenerator();
-        var randomstring = generator.generate(10);
-        console.log(randomstring);
-        
-        var f = Ext.getCmp('formCreateUser').getForm();
-        f.findField('secret').setValue(randomstring);
-        f.findField('confirmSecret').setValue(randomstring);
-
     }
     
 
