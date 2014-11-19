@@ -34,7 +34,7 @@ Ext.define('sitools.admin.usergroups.UserProp', {
 	alias : 'widget.s-userprop',
 	id: 'winCreateUser',
     width : 700,
-    height : 480,
+    height : 520,
     modal : true,
     pageSize : ADMIN_PANEL_NB_ELEMENTS,
     layout : 'fit',
@@ -215,8 +215,8 @@ Ext.define('sitools.admin.usergroups.UserProp', {
                     hidden : this.action == "create" ? true : false,
                     listeners : {
                         scope : this,
-                        check : function (checkbox, checked) {
-                            var f = this.findByType('form')[0].getForm();
+                        change : function (checkbox, checked) {
+                            var f = this.down('form').getForm();
                             f.findField('secret').setDisabled(!checked);
                             f.findField('confirmSecret').setDisabled(!checked);
                             f.findField('generate').setDisabled(!checked);
