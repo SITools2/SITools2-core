@@ -213,7 +213,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
         if (Ext.isEmpty(userLogin)) {
             return popupMessage({
                 title : i18n.get('label.info'),
-                msg : i18n.get('label.needToBeLogged'),
+                html : i18n.get('label.needToBeLogged'),
                 buttons : Ext.MessageBox.OK,
                 icon : Ext.MessageBox.INFO
             });

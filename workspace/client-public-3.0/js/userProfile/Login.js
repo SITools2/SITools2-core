@@ -111,14 +111,20 @@ Ext.define('sitools.public.userProfile.Login', {
                 items : [{
                     text : i18n.get('label.login'),
                     iconCls : 'loginIcon',
-                    scale : 'medium',
                     handler : this.getAuth,
-                    scope : this
+                    scope : this,
+                    border : false,
+                    bodyBorder : false,
+                    plain : true,
+                    cls : 'x-custom-button-color'
                 }, {
                     text : i18n.get('label.register'),
                     hidden : !this.register,
+                    iconCls : 'registerIcon',
                     scope : this,
-                    scale : 'medium',
+                    border : false,
+                    bodyBorder : false,
+                    cls : 'x-custom-button-color',
                     handler : function () {
                         this.close();
                         var register = Ext.create('sitools.public.userProfile.Register', {

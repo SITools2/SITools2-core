@@ -29,16 +29,8 @@
 	background-image: url(/sitools/client-user/resources/images/icons/session/logout.png) !important;
 }
 
-.registerIcon {
-	background-image: url(/sitools/client-user/resources/images/icons/session/register.png) !important;
-}
-
 .personalIcon {
 	background-image: url(/sitools/client-user/resources/images/icons/session/personal.png) !important;
-}
-
-.languageMenuIcon {
-	background-image: url(/sitools/client-user/resources/images/icons/session/language.png) !important;
 }
 
 .saveUserIcon {

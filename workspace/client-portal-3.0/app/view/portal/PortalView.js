@@ -78,8 +78,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             name : 'menuLangues',
             plain : true,
             border : false,
-            bodyBorder : false,
-            cls : 'x-custom-button-color'
+            bodyBorder : false
         });
         
         Ext.each(this.languages, function (language) {
@@ -158,7 +157,8 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             }, versionButton, '-', {
                 text : i18n.get('label.langues'),
                 cls : 'x-custom-button-color',
-                menu : menuLangues
+                menu : menuLangues,
+                iconCls : 'languageMenuIcon',
             }, '-', editProfileButton, (editProfileButton.hidden) ? null : '-', menuLoginLogout ]
         };
         

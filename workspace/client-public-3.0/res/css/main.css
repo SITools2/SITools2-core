@@ -606,3 +606,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .loginIcon {
 	background-image: url(/sitools/client-user/resources/images/icons/session/login.png) !important;
 }
+
+.registerIcon {
+    background-image: url(/sitools/client-user/resources/images/icons/session/register.png) !important;
+}
+
+.languageMenuIcon {
+    background-image: url(/sitools/client-user/resources/images/icons/session/language.png) !important;
+}
