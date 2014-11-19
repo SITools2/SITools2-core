@@ -88,7 +88,7 @@ Ext.define('sitools.user.view.modules.addToCartModule.AddToCartModuleView', {
                 itemId : 'refresh'
             }, {
                 icon : loadUrl.get('APP_URL') + '/common/res/images/icons/toolbar_delete.png',
-                tooltip : i18n.get('label.deleteOrder'),
+                tooltip : i18n.get('label.deleteArticleSelection'),
                 itemId : 'deleteOrder',
                 cls : 'button-transition'
             }]
