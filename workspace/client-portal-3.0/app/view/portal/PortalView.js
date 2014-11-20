@@ -322,7 +322,6 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
 //        });
 //        
 //        var portletProjetPublic = Ext.create('sitools.clientportal.view.portal.Portlet', {
-////            id : ID.PORTLET.PROJET,
 //            title : i18n.get('label.portletProjetPublicTitle'),
 //            height : 400,
 //            items : [ dataViewProjectPublic ],
@@ -369,7 +368,6 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
         var portletFluxPortal = {
             xtype : 'portlet',
             layout : 'fit',
-            id : ID.PORTLET.FEEDS,
             title : i18n.get('title.portlelFeedsPortal'),
             height : 410,
             items : [ panelFluxPortal ]

@@ -7,7 +7,10 @@ Ext.define('sitools.clientportal.Application', {
     useQuickTips: true,
     
     requires : [
-                /* UTILS */
+                
+        /* UTILS */
+        'sitools.public.utils.def',
+        'sitools.public.widget.vtype',
         'sitools.public.utils.loadUrl',
         'sitools.public.utils.i18n',
         'sitools.public.utils.sql2ext',
