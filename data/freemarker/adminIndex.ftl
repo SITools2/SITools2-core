@@ -53,23 +53,12 @@
 <!-- --------------------------------------------------------------------------------------------------------------------------
 					IMPORT DES LIBRAIRIES JS
 -------------------------------------------------------------------------------------------------------------------------- -->
-    <!--<script type="text/javascript" src="${appUrl}/client-public/cots/extjs/adapter/ext/ext-base.js"></script>-->
-
-    <!-- Need the Ext itself, either debug or production version. -->
-<!--script type="text/javascript" src="${appUrl}/client-public/cots/extjs/ext-all-debug.js"></script-->
-    <!--script type="text/javascript" src="${appUrl}/client-public/cots/extjs/ext-all.js"></script-->
-
 	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
 	
-	<!--<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/compatibility/ext3-core-compat.js"></script>   
- 	<script type="text/javascript" src="${appUrl}/client-public/cots/extjs4/compatibility/ext3-compat.js"></script>-->
-
 	<!--<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.11/OpenLayers.js"></script>-->
-<!-- <script type="text/javascript" src="${appUrl}/client-public/cots/GeoExt/script/GeoExt.js"></script> -->
+	<!-- <script type="text/javascript" src="${appUrl}/client-public/cots/GeoExt/script/GeoExt.js"></script> -->
 	
-	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
-		
-    <!-- Need in debug mode, to remove in production version. -->
+	<!-- Need in debug mode, to remove in production version. -->
 	
 	<script type="text/javascript">
 		Ext.Loader.setConfig('disableCaching', false);
@@ -79,58 +68,28 @@
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_JS_DEV_INCLUDES -->
-	<script type="text/javascript" src="${appUrl}/client-public/js/utils/i18n.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-public/js/utils/loadUrl.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-public/js/utils/reference.js"></script>
-
-	
-	
-    
-    <!--<script type="text/javascript" src="${appUrl}/client-public/js/widgets/Ext.ux.Plugin.RemoteComponent.js"></script>-->
-    <!--<script type="text/javascript" src="${appUrl}/client-public/js/widgets/multiSelect/Ext.ux.multiselect.js"></script>-->
-    <script type="text/javascript" src="${appUrl}/client-public/js/utils/Logout.js"></script>
-    <script type="text/javascript" src="${appUrl}/client-public/js/widget/vtype.js"></script>
-	
-	<script type="text/javascript" src="${appUrl}/client-public/js/widget/grid/SitoolsView.js"></script>
-    
-    <script type="text/javascript" src="js/def.js"></script>
-    <script type="text/javascript" src="js/id.js"></script>
-    <script type="text/javascript" src="js/gui.js"></script>
-    <script type="text/javascript" src="js/tools.js"></script>
-	<script type="text/javascript" src="js/menu/seeAlso.js"></script>
-	<script type="text/javascript" src="js/quickstart/QsStart.js"></script>
-	<script type="text/javascript" src="js/quickstart/QsProject.js"></script>
-	<script type="text/javascript" src="js/quickstart/QsDatasource.js"></script>
-	<script type="text/javascript" src="js/quickstart/QsDataset.js"></script>
-	<script type="text/javascript" src="js/quickstart/QsSecurity.js"></script>
-	<script type="text/javascript" src="js/quickstart/QsForm.js"></script>
-	
-	
-	<script type="text/javascript" src="app.js"></script>	
-	
-	
-<!-- END_JS_DEV_INCLUDES -->
+<!-- BEGIN_JS_DEV_INCLUDES
+		<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>		
+		<script type="text/javascript" src="app.js"></script>	
+END_JS_DEV_INCLUDES -->
   
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE DEBUG
 --------------------------------------------------------------------------------------------------- -->
 <!--
-	<script type="text/javascript" src="js/minified/client-admin-all.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="dist/app.all.js"></script>
+	<script type="text/javascript" src="app.js"></script>
 -->
 
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_PROD
-	<script type="text/javascript" src="${appUrl}/cots/extjs/adapter/ext/ext-base.js"></script>
-	<script type="text/javascript" src="${appUrl}/cots/extjs/ext-all.js"></script>
-	<script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
-    <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>
-	<script type="text/javascript" src="${appUrl}/common/js/widgets/ckeditor/ckeditor.js"></script>
-	
-	<script type="text/javascript" src="js/minified/client-admin-all-min.js"></script>
-END PROD -->
+<!-- BEGIN_PROD -->
+	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="dist/app.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+<!-- END PROD -->
     
 	<link rel="shortcut icon" href="${appUrl}/client-public/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	

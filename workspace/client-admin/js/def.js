@@ -18,6 +18,11 @@
 ***************************************/
 /*global Ext, sitools, ID, i18n, document, Digest, window*/
 
+Ext.define("sitools.admin.def",{
+    singleton : true
+});
+
+
 // GLOBAL BEHAVIOUR
 var DEFAULT_NATIVEJSON = false; // can be set to true if greater than FF 3.5, IE
 // 8, Opera 10.5, Webkit-based browsers

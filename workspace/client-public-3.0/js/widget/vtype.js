@@ -23,6 +23,11 @@ var emailErrFormat = 'Email not valid !';
 var emailErrUnique = 'Email already in use !';
 var emailSuccess = 'Email valid & avaliable';
 
+
+Ext.define("sitools.public.widget.vtype",{
+    singleton : true
+});
+
 Ext.apply(Ext.form.field.VTypes, {
     uniqueloginMask : /[a-z0-9_\.\-@\+]/i,
 	uniquelogin : function(val) {

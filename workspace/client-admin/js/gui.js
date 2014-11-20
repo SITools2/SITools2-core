@@ -21,6 +21,10 @@
 /*
  * @include "menu/TreeMenu.js"
  */
+Ext.define("sitools.admin.gui",{
+    singleton : true
+});
+
 var user = null;
 var viewport = null;
 var treePanel = null;

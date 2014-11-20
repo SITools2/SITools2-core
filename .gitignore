@@ -19,6 +19,11 @@ workspace/client-user/js/modules/igcsSmartQueriesModule/
 workspace/client-user/js/modules/cartoModule/
 .sencha/
 
+node_modules/
+
+
+workspace/client-*/dist/
+
 # OS generated files #
 ######################
 .DS_Store

@@ -25,15 +25,33 @@ Ext.define('sitools.admin.Application', {
     
     requires : [ 
                 /* UTILS */
-        'sitools.public.utils.loadUrl',
         'sitools.public.utils.i18n',
+        'sitools.public.utils.loadUrl',
+        'sitools.public.utils.reference',
         'sitools.public.utils.sql2ext',
         'sitools.public.utils.LoginUtils',
         'sitools.public.utils.Logout',
         'sitools.public.crypto.Base64',
         'sitools.public.utils.PopupMessage',
         
-                /* WIDGETS */
+        'sitools.admin.def',
+        'sitools.admin.id',
+        'sitools.admin.gui',
+        
+        /* QUICKSTART MENU */
+        'sitools.admin.quickstart.Qs',
+        'sitools.admin.quickstart.QsDataset',
+        'sitools.admin.quickstart.QsDatasource',
+        'sitools.admin.quickstart.QsForm',
+        'sitools.admin.quickstart.QsProject',
+        'sitools.admin.quickstart.QsSecurity',
+        'sitools.admin.quickstart.QsStart',
+        
+        'sitools.admin.menu.seeAlso',
+        
+        /* WIDGETS */
+        'sitools.public.widget.vtype',
+        'sitools.public.widget.grid.SitoolsView',
         'sitools.public.widget.StatusBar',
         
         'sitools.public.version.Version',

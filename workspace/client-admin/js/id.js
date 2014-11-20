@@ -16,7 +16,10 @@
 * You should have received a copy of the GNU General Public License
 * along with SITools2.  If not, see <http://www.gnu.org/licenses/>.
 ***************************************/
-var ID = {
+
+Ext.define("sitools.admin.id",{
+    singleton : true,
+    
     PANEL : {
         MENU : 'menuPanelId',
         TREE : 'treePanelId',
@@ -87,4 +90,6 @@ var ID = {
         OKBUTTON : 'okButtonId',
         CANCELBUTTON : 'cancelButtonId'
     }
-};
+});
+
+var ID = sitools.admin.id;
