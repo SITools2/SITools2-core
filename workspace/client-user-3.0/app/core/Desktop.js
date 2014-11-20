@@ -30,21 +30,21 @@ Ext.define('sitools.user.core.Desktop', {
 		activePanel : null,
 		modulesInDiv : [],
 		
-		sitoolsDesktop : Ext.get("sitools-desktop"),
-		mainDesktop : Ext.get("x-main"),
+		sitoolsDesktop : null,
+		mainDesktop : null,
 		
-		desktopEl : Ext.get('x-desktop'),
-		desktopAndTaskBarEl : Ext.get('x-desktop-taskbar'),
+		desktopEl : null,
+		desktopAndTaskBarEl : null,
 		
-		enteteEl : Ext.get('x-headers'),
-		enteteComp : Ext.getCmp('headersCompId'),
+		enteteEl : null,
+		enteteComp : null,
 		
-		bottomEl : Ext.get('x-bottom'),
-		bottomComp : Ext.getCmp('bottomCompId'),
+		bottomEl : null,
+		bottomComp : null,
 		
-		taskbarEl : Ext.get('ux-taskbar'),
+		taskbarEl : null,
 		
-		shortcutsEl : Ext.get('x-shortcuts'),
+		shortcutsEl : null,
 		
 		desktopMaximized : false,
 		showDesktopAction : 'minimize'
@@ -52,6 +52,26 @@ Ext.define('sitools.user.core.Desktop', {
 	
 	getNavMode : function () {
 		return this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(Project.getNavigationMode());
+	},
+	
+	init : function () {
+	    Ext.apply(this, {
+	        sitoolsDesktop : Ext.get("sitools-desktop"),
+	        mainDesktop : Ext.get("x-main"),
+        
+	        desktopEl : Ext.get('x-desktop'),
+	        desktopAndTaskBarEl : Ext.get('x-desktop-taskbar'),
+        
+            enteteEl : Ext.get('x-headers'),
+            enteteComp : Ext.getCmp('headersCompId'),
+            
+            bottomEl : Ext.get('x-bottom'),
+            bottomComp : Ext.getCmp('bottomCompId'),
+            
+            taskbarEl : Ext.get('ux-taskbar'),
+            
+            shortcutsEl : Ext.get('x-shortcuts')
+	    });
 	},
 	
 	 /**

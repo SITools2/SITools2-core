@@ -22,10 +22,13 @@ Ext.define('sitools.user.Application', {
     requires : [ 'Ext.container.Viewport', 
                  
                  /* CORE */
+                 'sitools.user.utils.Def',
                  'sitools.user.core.Project',
                  'sitools.user.core.Desktop',
                  
                  /* UTILS PUBLIC */
+                 'sitools.public.widget.vtype',
+                 'sitools.public.utils.reference',
                  'sitools.public.utils.i18n',
                  'sitools.public.utils.loadUrl',
                  'sitools.public.utils.sql2ext',
@@ -44,7 +47,12 @@ Ext.define('sitools.user.Application', {
                  'sitools.user.utils.ServerServiceUtils',
                  'sitools.user.utils.DatasetUtils',
                  'sitools.user.utils.DataviewUtils',
-                 'sitools.user.utils.ModuleUtils'
+                 'sitools.user.utils.ModuleUtils',
+                 'sitools.user.core.Module',
+                 
+                 
+                 /* MODULE LOADER, uncomment if all plugins have to be loaded at startup*/
+//                 'sitools.user.utils.PluginDependenciesLoader'
                  ],
 
     extend : 'Ext.app.Application',
@@ -89,6 +97,7 @@ Ext.define('sitools.user.Application', {
             };
         }
         
+        Desktop.init();
         Desktop.setApplication(this);
         this.initSiteMap();
     },
@@ -127,6 +136,8 @@ Ext.define('sitools.user.Application', {
         var storeUser = Ext.create('sitools.user.store.UserStore', {
             storeId : 'UserStore'
         });
+        
+        storeUser.setCustomUrl(loadUrl.get('APP_URL') + loadUrl.get('APP_USER_ROLE_URL'));
         
 //        var url = sitools.user.utils.Project.getSitoolsAttachementForUsers();
 //        storeUser.setCustomUrl(loadUrl.get('APP_URL') + loadUrl.get('APP_USER_ROLE_URL'));

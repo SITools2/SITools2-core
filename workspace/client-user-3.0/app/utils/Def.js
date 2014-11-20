@@ -25,6 +25,10 @@
 
 /*global Ext, i18n, date, Digest, sql2ext, SitoolsDesk, loadUrl, sitools, showResponse, ColumnRendererEnum, document, localStorage, SITOOLS_DATE_FORMAT, window*/
 
+Ext.define("sitools.user.utils.Def",{
+    singleton : true
+});
+
 // GLOBAL BEHAVIOUR
 var DEFAULT_NATIVEJSON = false; //must be set to false to constrain Ext.doEncode (if true, doesn't work with prototype library)
 var DEFAULT_TIMEOUT = 30000; // server request timeout (msec)

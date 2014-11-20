@@ -65,44 +65,44 @@
 	<link rel="stylesheet" type="text/css" href="${appUrl}/client-user/js/components/dataviews/services/servicesToolbar.css">-->
 
 	
+	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
-
-    <script src="/sitools/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
-    <script src="/sitools/client-public/js/utils/prototyp.js"></script>
-	
-	 <script type="text/javascript">
-		Ext.Loader.setConfig('disableCaching', false);
-	</script>
-    <!--<script type="text/javascript" src="${appUrl}/cots/OpenLayers-2.11/OpenLayers.js"></script>
-    <script type="text/javascript" src="${appUrl}/cots/GeoExt/script/GeoExt.js"></script>-->
-	
-	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
-	<script src="${appUrl}/client-public/js/widget/vtype.js"></script>
-	
-<!-- BEGIN_JS_DEV_INCLUDES -->
-	<script type="text/javascript" src="${appUrl}/client-public/js/utils/reference.js"></script>
-	<script type="text/javascript" src="${appUrl}/client-user/app/utils/Def.js"></script>
-	<script src="${appUrl}/client-user/bootstrap.js"></script>
-        <!-- </x-bootstrap> -->
-        <script src="${appUrl}/client-user/app.js"></script>
+<!-- BEGIN_JS_DEV_INCLUDES
+		<script src="${appUrl}/client-user/bootstrap.js"></script>
+		<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>		
+		<script type="text/javascript" src="app.js"></script>	
 <!-- END_JS_DEV_INCLUDES -->
- 
+  
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE DEBUG
 --------------------------------------------------------------------------------------------------- -->
-
+<!--
+	<script src="${appUrl}/client-user/bootstrap.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="dist/app.all.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+	-->
 
 
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
-	
+<!-- BEGIN_PROD_WITHOUT_PLUGIN -->
+	<script src="${appUrl}/client-user/bootstrap.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="dist/app.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+<!-- END_PROD_WITHOUT_PLUGIN -->
 
-
-    
-
+<!-- BEGIN_PROD
+	<script src="${appUrl}/client-user/bootstrap.js"></script>
+	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="dist/app.withplugins.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+<!-- END PROD -->
 
 	<!-- Opensearch list -->
 	<#list appDsOsDTOs as appDsOsDTO>

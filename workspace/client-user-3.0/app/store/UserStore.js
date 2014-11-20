@@ -22,7 +22,6 @@ Ext.define('sitools.user.store.UserStore', {
     model : 'sitools.user.model.UserModel',
     proxy : {
         type : 'ajax',
-        url : loadUrl.get('APP_URL') + loadUrl.get('APP_USER_ROLE_URL'),
         reader : {
             type : 'json',
             root : 'user',
