@@ -82,7 +82,8 @@ Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView'
 
         var rec;
         if (Ext.isEmpty(this.record)) {
-            rec = this.dataview.getSelections()[0];
+            var recIndex = this.dataview.getSelections()[0];
+            rec = this.dataview.getStore().getAt(recIndex);
         } else {
             rec = this.record;
         }

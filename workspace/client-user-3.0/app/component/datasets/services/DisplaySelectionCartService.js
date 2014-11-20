@@ -86,7 +86,7 @@ Ext.define('sitools.user.component.datasets.services.DisplaySelectionCartService
 		sitools.user.utils.DatasetUtils.clickDatasetIcone(url, 'data', params);
 	},
 	
-	executeAsService : function(config) {
+	init : function(config) {
 
 		if (Ext.isEmpty(userLogin)) {
 			popupMessage(i18n.get('label.information'), i18n.get('label.needToBeLogged', 'x-icon-information'));

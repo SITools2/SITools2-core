@@ -28,23 +28,26 @@ Ext.namespace('sitools.extension.modules');
 Ext.define('sitools.extension.modules.FitsViewer', {
     extend : 'sitools.user.core.Module',
     
-    moduleName : 'fitsViewer',
+    pluginName : 'fitsViewer',
     
     //requires : [],
     
-    js : ['fits.js',
-        'binaryajax.js',
-        'excanvasCompiled.js',
-        'FitsLoader.js',
-        'flotr2Min.js',
-        'astroFits.js',
-        'Histogram.js',
-        'vec3.js',
-        'wcs.js',
-        'ColorMap.js'
+
+    js : [ '/sitools/client-extension/resources/libs/fitsViewer/fits.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/binaryajax.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/excanvasCompiled.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/FitsLoader.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/flotr2Min.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/astroFits.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/Histogram.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/vec3.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/wcs.js',
+           '/sitools/client-extension/resources/libs/fitsViewer/ColorMap.js'
     ],
     
-    css : ['fits.css'],
+    css : ['/sitools/client-extension/resources/css/fitsViewer/fits.css'],
+
+    i18nFolderPath : ['/sitools/client-extension/resources/i18n/fitsViewer/'],
     
     init : function () {
         this.callParent(arguments);

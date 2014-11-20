@@ -6,7 +6,7 @@
   <author>AKKA</author>
   <version>1.0</version>
   <icon>/sitools/common/res/images/icons/tree_dictionary.png</icon>
-  <xtype>sitools.user.component.datasets.columnsDefinition.ColumnsDefinition</xtype>
+  <xtype>sitools.user.component.datasets.services.ColumnsDefinitionService</xtype>
   <dependencies>
     <js/>
     <css/>

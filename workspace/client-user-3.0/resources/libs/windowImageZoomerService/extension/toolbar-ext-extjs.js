@@ -61,7 +61,7 @@ viewer.toolbarextjs = function (viewer) {
     divToolbar.appendChild(map);
     viewer.frameElement.parentNode.appendChild(divToolbar);
     
-    var labelPourcentage = new Ext.form.Label({
+    var labelPourcentage = Ext.create("Ext.form.Label", {
         // xtype: 'button', // default for Toolbars, same as 'tbbutton'
         text: '100%',
         xtype : 'label',
@@ -70,7 +70,7 @@ viewer.toolbarextjs = function (viewer) {
         autoWidth : true
     });
     
-    var tb = new Ext.Toolbar({
+    var tb = Ext.create("Ext.Toolbar", {
         renderTo: id,
         height: 50,
         enableOverflow : true,
@@ -101,7 +101,7 @@ viewer.toolbarextjs = function (viewer) {
             ,
             {
                 xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar/zoom-in.png",
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar/zoom-in.png",
                 tooltip : i18n.get('label.zoomIn'),
                 iconCls : 'previewBarBtn-icon',
                 handler : function () {
@@ -111,7 +111,7 @@ viewer.toolbarextjs = function (viewer) {
             },
             {
                 xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar/zoom-out.png",
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')+"/resources/libs/windowImageZoomerService/images/toolbar/zoom-out.png",
                 tooltip : i18n.get('label.zoomOut'),
                 iconCls : 'previewBarBtn-icon',
                 handler : function () {
@@ -121,7 +121,7 @@ viewer.toolbarextjs = function (viewer) {
             },
             {
                 xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + '/common/res/multizoom/images/toolbar/download-image.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/resources/libs/windowImageZoomerService/images/toolbar/download-image.png',
                 tooltip : i18n.get('label.downloadImage'),
                 iconCls : 'previewBarBtn-icon',
                 //text : 'download',
@@ -143,7 +143,7 @@ viewer.toolbarextjs = function (viewer) {
             },*/
             {
                 xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/stretch-optimally.png',
+                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar" + '/stretch-optimally.png',
                 tooltip : i18n.get('label.resetZoom'),
                 iconCls : 'previewBarBtn-icon',
                 handler : function () {
@@ -154,7 +154,7 @@ viewer.toolbarextjs = function (viewer) {
                 autoEl : {
                     tag : 'img',
                     style : 'padding-left:10px;',
-                    src : loadUrl.get('APP_URL') + "/common/res/multizoom/images/toolbar" + '/movement-controls.png',
+                    src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar" + '/movement-controls.png',
                     useMap : "#controls"
                 }
             }

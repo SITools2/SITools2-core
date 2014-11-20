@@ -33,14 +33,6 @@ Ext.namespace('sitools.user.component.datasets.columnsDefinition');
  */
 Ext.define('sitools.user.component.datasets.columnsDefinition.ColumnsDefinition', {
     extend : 'sitools.user.core.Component',
-//    controllers : ['sitools.user.controller.component.datasets.services.SorterServiceController'],
-    alias : 'sitools.user.component.dataviews.services.columnsDefinitionService',
-    statics : {
-        getParameters : function () {
-            return [];
-        }
-    },
-    
     /**
      * 
      * @param config
@@ -66,20 +58,5 @@ Ext.define('sitools.user.component.datasets.columnsDefinition.ColumnsDefinition'
         var columnDef = Ext.create("sitools.user.view.component.datasets.columnsDefinition.ColumnsDefinitionView", config);
         this.setComponentView(columnDef);
         this.show(columnDef, windowConfig);
-    },
-    
-    executeAsService : function (config) {
-        
-        var configService = {
-            datasetId : config.dataview.dataset.id,
-            datasetDescription : config.dataview.dataset.description,
-            datasetCm : config.dataview.columns,
-            datasetName : config.dataview.dataset.name,
-            dictionaryMappings : config.dataview.dataset.dictionaryMappings,
-            preferencesPath : "/" + config.dataview.dataset.name,
-            preferencesFileName : "semantic"
-        };
-        
-        this.init(configService);
     }
 });

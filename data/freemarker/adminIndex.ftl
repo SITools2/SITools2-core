@@ -68,10 +68,10 @@
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_JS_DEV_INCLUDES
+<!-- BEGIN_JS_DEV_INCLUDES -->
 		<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>		
 		<script type="text/javascript" src="app.js"></script>	
-END_JS_DEV_INCLUDES -->
+<!-- END_JS_DEV_INCLUDES -->
   
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE DEBUG
@@ -85,7 +85,7 @@ END_JS_DEV_INCLUDES -->
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_PROD -->
+<!-- BEGIN_PROD
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>

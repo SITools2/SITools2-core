@@ -30,10 +30,18 @@ Ext.namespace('sitools.user.component.datasets.services');
  * @extends Ext.Window
  */
 Ext.define('sitools.user.component.datasets.services.WindowImageZoomerService', {
-    extend : 'sitools.user.core.Component',
+    extend : 'sitools.user.core.PluginComponent',
     controllers : [],
     alias : 'widget.windowImageZoomerSerice',
     
+    js : ['/sitools/client-user/resources/libs/windowImageZoomerService/core/Simple_Viewer_beta_1.1.js',
+      '/sitools/client-user/resources/libs/windowImageZoomerService/extension/toolbar-ext.js',
+      '/sitools/client-user/resources/libs/windowImageZoomerService/extension/preview-ext.js',
+      '/sitools/client-user/resources/libs/windowImageZoomerService/extension/toolbar-ext-extjs.js'],
+      
+    css : ['/sitools/client-user/resources/libs/windowImageZoomerService/extension/toolbar-ext.css',
+           '/sitools/client-user/resources/libs/windowImageZoomerService/extension/preview-ext.css'],
+
     statics : {
         getParameters : function () {
             return [{
@@ -242,7 +250,7 @@ Ext.define('sitools.user.component.datasets.services.WindowImageZoomerService', 
 		}
     },
     
-    executeAsService : function (config) {
+    init : function (config) {
          if (Ext.isEmpty(config.parameters)) {
             config.parameters = sitools.user.view.component.datasets.services.WindowImageZoomerView.getDefaultParameters();
         }

@@ -18,7 +18,7 @@
 /*global Ext, sitools, ID, i18n, document, showResponse, alertFailure, LOCALE, ImageChooser, loadUrl, extColModelToStorage, SitoolsDesk, sql2ext
  */
 
-Ext.namespace('sitools.user.component.datasets.services');
+Ext.namespace('sitools.user.component.datasets.columnsDefinition');
 
 /**
  * Window that contains a tools to sort a store
@@ -31,11 +31,9 @@ Ext.namespace('sitools.user.component.datasets.services');
  * @class sitools.user.component.datasets.services.SorterService
  * @extends Ext.Window
  */
-Ext.define('sitools.user.component.datasets.services.SorterService', {
-    extend : 'sitools.user.core.Component',
-    controllers : ['sitools.user.controller.component.datasets.services.SorterServiceController'],
-    alias : 'sitools.user.component.dataviews.services.sorterService',
-    
+Ext.define('sitools.user.component.datasets.services.ColumnsDefinitionService', {
+    extend : 'sitools.user.core.PluginComponent',
+    alias : 'sitools.user.component.dataviews.services.columnsDefinitionService',
     statics : {
         getParameters : function () {
             return [];
@@ -43,7 +41,18 @@ Ext.define('sitools.user.component.datasets.services.SorterService', {
     },
     
     init : function (config) {
-        var sorterTool = Ext.create("sitools.user.view.component.datasets.services.SorterServiceView", config);
-        sorterTool.show();
+        
+        var configService = {
+            datasetId : config.dataview.dataset.id,
+            datasetDescription : config.dataview.dataset.description,
+            datasetCm : config.dataview.columns,
+            datasetName : config.dataview.dataset.name,
+            dictionaryMappings : config.dataview.dataset.dictionaryMappings,
+            preferencesPath : "/" + config.dataview.dataset.name,
+            preferencesFileName : "semantic"
+        };
+        
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        sitoolsController.openComponent("sitools.user.component.datasets.columnsDefinition.ColumnsDefinition", configService);
     }
 });

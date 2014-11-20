@@ -41,7 +41,7 @@ Ext.define('sitools.user.component.datasets.services.RecordDetailService', {
     	}
     },
     
-	executeAsService : function (config) {
+	init : function (config) {
 		
 		var grid = config.dataview;
 		var fromWhere = config.origin;

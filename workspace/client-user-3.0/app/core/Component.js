@@ -20,9 +20,8 @@
 
 Ext.namespace('sitools.user.core.Component');
 /**
- * Abstract Module class
- * @class sitools.user.controller.modules.Module
- * @extends Ext.Panel
+ * Abstract Component class
+ * @class sitools.user.core.Component
  */
 Ext.define('sitools.user.core.Component', {
     mixins: {
@@ -56,7 +55,7 @@ Ext.define('sitools.user.core.Component', {
      * @param application
      *            the application
      */
-    create : function (application) {
+    create : function (application, callback, scope) {
         this.setApplication(application);
         this.setProject(Ext.getStore("ProjectStore").getProject());
         // initialize all controllers
@@ -64,6 +63,9 @@ Ext.define('sitools.user.core.Component', {
             Ext.each(this.getControllers(), function (controller) {
                 this.getApplication().getController(controller).onLaunch();
             }, this);
+        }
+        if (!Ext.isEmpty(callback)) {
+            Ext.callback(callback, scope);
         }
     },
     

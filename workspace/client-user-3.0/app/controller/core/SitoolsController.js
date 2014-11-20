@@ -194,8 +194,9 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     
     openComponent : function (componentClazz, componentConfig, windowConfig) {
         var component = Ext.create(componentClazz);
-        component.create(this.getApplication());
-        component.init(componentConfig, windowConfig);
+        component.create(this.getApplication(), function() {
+            component.init(componentConfig, windowConfig);
+        }, component);
         return component;
     },
     

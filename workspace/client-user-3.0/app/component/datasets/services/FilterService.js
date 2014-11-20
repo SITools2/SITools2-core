@@ -36,7 +36,7 @@ Ext.define('sitools.user.component.datasets.services.FilterService', {
         }
     },
     
-    executeAsService : function (config) {
+    init : function (config) {
         var filterTool = Ext.create("sitools.user.view.component.datasets.services.FilterServiceView", config);
         filterTool.show();
     }

@@ -66,11 +66,17 @@
 
 	
 	<script src="${appUrl}/client-public/cots/extjs4/ext-4.2.1.883/ext-all-debug.js"></script>
+	<script src="${appUrl}/client-public/js/utils/prototyp.js"></script>
+
+	<!-- Need in debug mode, to remove in production version. -->
 	
+	<script type="text/javascript">
+		Ext.Loader.setConfig('disableCaching', false);
+	</script>
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_JS_DEV_INCLUDES
+<!-- BEGIN_JS_DEV_INCLUDES -->
 		<script src="${appUrl}/client-user/bootstrap.js"></script>
 		<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>		
 		<script type="text/javascript" src="app.js"></script>	
@@ -90,7 +96,7 @@
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_PROD_WITHOUT_PLUGIN -->
+<!-- BEGIN_PROD_WITHOUT_PLUGIN
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.min.js"></script>

@@ -85,42 +85,6 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
      * @param columnAlias
      *            {String} the columnAlias
      */
-//    callGuiService : function (button, record, columnAlias) {
-    callGuiService : function (button) {
-        var idService = button.idService;
-        var guiServiceStore = button.up('toolbar').getGuiServiceStore();
-        var service = guiServiceStore.getById(idService);
-        
-        if (Ext.isEmpty(service)) {
-            popupMessage({
-                iconCls : 'x-icon-information',
-                title : i18n.get('label.warning'),
-                html : i18n.get("label.cannot-find-guiservice"),
-                autoDestroy : true,
-                hideDelay : 1000
-            });
-            return;
-        }
-        
-        var guiServicePlugin = {};
-        Ext.apply(guiServicePlugin, service.data);
-        
-        var dataview = button.up("livegridView");
-        
-        var serviceObj = Ext.create(guiServicePlugin.xtype);
-        serviceObj.create(this.getApplication());
-        var config = Ext.apply(guiServicePlugin, {
-            columnModel : dataview.columns,
-            store : dataview.getStore(),
-            dataview : dataview,
-            origin : this.origin,
-            record : record,
-            columnAlias : columnAlias
-        });
-
-        serviceObj.executeAsService(config);     
-    },
-    
     callGuiService : function (service, serviceView, record, columnAlias) {
         var guiServiceStore = serviceView.getGuiServiceStore();
         if (Ext.isEmpty(service)) {
@@ -139,8 +103,8 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
         
         var dataview = serviceView.up("livegridView");
         
-        var serviceObj = Ext.create(guiServicePlugin.xtype);
-        serviceObj.create(this.getApplication());
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        
         var config = Ext.apply(guiServicePlugin, {
             columnModel : dataview.columns,
             store : dataview.getStore(),
@@ -150,7 +114,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
             columnAlias : columnAlias
         });
 
-        serviceObj.executeAsService(config);     
+        var serviceObj = sitoolsController.openComponent(guiServicePlugin.xtype, config);            
     },
     
      getService : function (columnAlias, serviceToolbarView) {

@@ -25,17 +25,15 @@ Ext.namespace('sitools.user.core');
  */
 Ext.define('sitools.user.core.Module', {
     mixins: {
-        observable: 'Ext.util.Observable'
+        observable: 'Ext.util.Observable',
+        plugin : 'sitools.user.core.SitoolsPlugin'
     },
     
     config : {
         moduleModel : null,
         viewCmp : null,
         application : null,
-        controllers : [],
-        moduleName : null,
-        js : [],
-        css : []
+        controllers : []
     },
     
     /**
@@ -96,53 +94,5 @@ Ext.define('sitools.user.core.Module', {
     openMe : null,
     
 
-    loadJs : function (callback, scope) {
-        if (!Ext.isEmpty(this.getJs()) && this.getJs().length > 0) {
-            var urls = [];
-            Ext.each(this.getJs(), function (url) {
-                urls.push(loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_EXTENSION_URL') + "/resources/libs/" + this.getModuleName() + "/" + url);
-            }, this);
-
-            ScriptLoader.loadScripts(urls, function () {
-                this.loadResources(callback, scope);
-            }, function () {
-                alert("Cannot load all js dependencies");
-            }, this);
-        } else {
-            this.loadResources(callback, scope);
-        }
-    },
-    
-
-    loadResources : function (callback, scope) {
-        if (!Ext.isEmpty(this.getCss()) && this.getCss().length > 0) {
-            var urls = [];
-            Ext.each(this.getCss(), function (url) {
-                urls.push(loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_EXTENSION_URL') + "/resources/css/" + this.getModuleName() + "/" + url);
-            }, this);
-
-            Ext.each(urls, function (css) {
-                includeCss(css);
-            });
-
-        }
-
-        var registered = false;
-        if (!Ext.isEmpty(this.getModuleName())) {
-            var guiUrl = loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_EXTENSION_URL') + "/resources/i18n/" + this.getModuleName() + "/"
-                    + locale.getLocale() + '/gui.properties'
-            registered = I18nRegistry.register(this.getModuleName(), guiUrl, function () {
-                Ext.callback(callback, scope);
-            }, function () {
-                Ext.callback(callback, scope);
-            }, this);
-        }
-
-        if (!registered) {
-            Ext.callback(callback, scope);
-        }
-    },
-    
-    
     
 });

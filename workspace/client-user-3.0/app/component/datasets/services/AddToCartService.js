@@ -53,6 +53,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 //    controllers : ['sitools.user.controller.component.datasets.services.AddToCartServiceController'],
     alias : 'sitools.user.component.dataviews.services.addToCartService',
     requires : ['sitools.public.widget.datasets.columnRenderer.behaviorEnum'],
+    
     statics : {
         getParameters : function () {
             return [
@@ -207,7 +208,7 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
         }
     },
     
-    executeAsService : function (config) {
+    init : function (config) {
     	var selections = config.dataview.getSelections();
 
         if (Ext.isEmpty(userLogin)) {
