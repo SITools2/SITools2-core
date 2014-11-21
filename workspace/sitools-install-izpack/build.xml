@@ -166,8 +166,20 @@
 	
 	<target name="minify-javascripts" description="build javascript and freemarker for production use">
 		
-		<subant target="" buildpath="${ROOT_DIRECTORY_LOCAL}/workspace/client-user/"/>
-		<subant target="" buildpath="${ROOT_DIRECTORY_LOCAL}/workspace/client-admin/"/>
+		<exec executable="conf/scripts/minifyjs.bat" osfamily="windows" failonerror="true">
+            <arg value="${ROOT_DIRECTORY_LOCAL}/workspace/client-user-3.0"/>
+        </exec>
+		<exec executable="conf/scripts/minifyjs.bat" osfamily="windows" failonerror="true">
+			<arg value="${ROOT_DIRECTORY_LOCAL}/workspace/client-portal-3.0"/>
+        </exec>
+		<exec executable="conf/scripts/minifyjs.bat" osfamily="windows" failonerror="true">
+			<arg value="${ROOT_DIRECTORY_LOCAL}/workspace/client-admin"/>
+        </exec>
+        
+        <exec executable="conf/scripts/minifyjs.sh" osfamily="unix" failonerror="true">
+            <arg value="${ROOT_DIRECTORY}"/>
+        </exec>
+		
 		<antcall target="build-freemarker-sources"/>
 	</target>
 

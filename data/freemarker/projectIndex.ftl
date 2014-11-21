@@ -108,7 +108,7 @@
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.withplugins.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
-<!-- END PROD -->
+END PROD -->
 
 	<!-- Opensearch list -->
 	<#list appDsOsDTOs as appDsOsDTO>

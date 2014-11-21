@@ -89,7 +89,7 @@
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
-<!-- END PROD -->
+END PROD -->
     
 	<link rel="shortcut icon" href="${appUrl}/client-public/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	

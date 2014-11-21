@@ -336,8 +336,8 @@
 		<!-- PUBLIC -->
 		<pack name="public" preselected="yes" required="no" parent="Client">
 			<description>Public</description>
-			<fileset override="update" dir="../client-public"
-				targetdir="$INSTALL_PATH/$workspacePath/client-public">
+			<fileset override="update" dir="../client-public-3.0"
+				targetdir="$INSTALL_PATH/$workspacePath/client-public-3.0">
 				<exclude name=".*" />
 				<exclude name=".settings/" />
 			</fileset>
@@ -356,8 +356,13 @@
 		<!-- CLIENT USER -->
 		<pack name="client-user" preselected="yes" required="no" parent="Client">
 			<description>Client-user</description>
-			<fileset override="update" dir="../client-user"
-				targetdir="$INSTALL_PATH/$workspacePath/client-user">
+			<fileset override="update" dir="../client-user-3.0"
+				targetdir="$INSTALL_PATH/$workspacePath/client-user-3.0">
+				<exclude name=".*" />
+				<exclude name=".settings/" />
+			</fileset>
+			<fileset override="update" dir="../client-portal-3.0"
+				targetdir="$INSTALL_PATH/$workspacePath/client-portal-3.0">
 				<exclude name=".*" />
 				<exclude name=".settings/" />
 			</fileset>
