@@ -21,13 +21,15 @@ function getObjectXY(object) {
 			left += object.offsetLeft;
 			if(object.style.borderLeftWidth!='')
 				left+=parseInt(object.style.borderLeftWidth);
-			else
-				object.style.borderLeftWidth='0px';
+			//MG: do not edit object style 
+//			else
+//				object.style.borderLeftWidth='0px';
 			top += object.offsetTop;
 			if(object.style.borderTopWidth!='')
 				top+=parseInt(object.style.borderTopWidth);
-			else
-				object.style.borderTopWidth='0px';
+			//MG: do not edit object style 
+//			else
+//				object.style.borderTopWidth='0px';
 		}
 		while (object = object.offsetParent);
 	}

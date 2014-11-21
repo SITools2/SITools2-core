@@ -30,15 +30,14 @@ Ext.namespace('sitools.user.view.component.datasets.services');
 Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView', {
     extend : 'Ext.window.Window',
     alias : 'widget.windowImageZoomerView',
-
-    border : false,
     resizeImage : false,
     maximizable : true,
     modal : true,
     minHeight : 0,
     minWidth : 0,
-    padding : '2px 2px 2px 2px',
+    layout : 'fit',
 
+    
     initComponent : function (config) {
         viewer.onload = function (self) {
             viewer.toolbarextjs(self);
@@ -100,23 +99,7 @@ Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView'
         }
         this.title = this.columnImage;
 
-        var id = Ext.id();
-        this.panel = Ext.create('Ext.Component', {
-            border : false,
-            autoEl : {
-                tag : 'img',
-	            border : false,
-                src : this.src,
-                name : 'img_' + this.id
-            },
-            listeners : {
-                scope : this,
-                render : function (me) {
-                    me.getEl().on('load', this.onImageLoad, this, {
-                        single : true
-                    });
-                }
-            }
+        this.panel = Ext.create("Ext.Component", {
         });
 
         this.items = [ this.panel ];
@@ -126,8 +109,11 @@ Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView'
 
             resize : function (window, width, height) {
                 if (!Ext.isEmpty(this.viewer)) {
-                    var frameElementWidth = width - this.getAdditionalWidth();
-                    var frameElementHeight = height - this.getAdditionalHeight();
+                    var frameElementWidth = window.body.getWidth() - this.getAdditionalWidth();
+                    var frameElementHeight = window.body.getHeight() - this.getAdditionalHeight();
+                    
+                    this.panel.setSize(frameElementWidth, frameElementHeight);
+                    
                     this.viewer.setFrameProp([ frameElementWidth + "px", frameElementHeight + "px" ]);
                     this.viewer.reset();
                     this.viewer.fireEvent("resize");
@@ -136,10 +122,24 @@ Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView'
         };
 
         // this.items = [this.panel];
-        this.autoScroll = true;
         this.constrain = true;
 
         this.callParent(arguments);
+    },
+    
+    afterRender : function () {
+        this.callParent(arguments);
+        var parent = this.panel.getEl();
+        
+        var img = parent.appendChild({
+            src : this.src,
+            name : "img_" + this.id,
+            tag : 'img'
+        });
+        
+        img.on('load', this.onImageLoad, this, {
+              single : true
+        });
     },
 
     /**
@@ -147,25 +147,21 @@ Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView'
      * image according to the desktop size
      */
     onImageLoad : function () {
-//        var img = this.panel.getEl().child("img");
-        var img = Ext.DomQuery.select("div > img[name='" + 'img_' + this.id + "']")[0];
+        var img = Ext.DomQuery.select("img[name='" + 'img_' + this.id + "']")[0];
         
         this.viewer = new viewer({
             image : img,
             frame : [ this.sizeLimitWidth + "px", this.sizeLimitHeight + "px" ],
             zoomFactor : this.zoomFactor,
             maxZoom : this.maxZoom,
-            previewSrc : this.previewSrc
+            previewSrc : this.previewSrc,
         });
         this.updateWindowSize(this.sizeLimitHeight, this.sizeLimitWidth)
     },
 
     getAdditionalHeight : function () {
-        var height = 45;
-//        var enteteEl = this.getEl().child(".x-window-tl");
-        var enteteEl = this.getEl().down("div[id='" + this.id + "_header" + "']");
+        var height = 0;
         
-        height += enteteEl.getHeight();
         if (!Ext.isEmpty(this.viewer) && !Ext.isEmpty(this.viewer.toolbarHeight)) {
             height += this.viewer.toolbarHeight;
         }
@@ -175,7 +171,7 @@ Ext.define('sitools.user.view.component.datasets.services.WindowImageZoomerView'
     },
 
     getAdditionalWidth : function () {
-        return 45;
+        return 0;
     },
 
     updateWindowSize : function (frameHeight, frameWidth) {

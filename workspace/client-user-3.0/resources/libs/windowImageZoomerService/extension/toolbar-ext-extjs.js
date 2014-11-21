@@ -4,7 +4,7 @@ viewer.toolbarextjs = function (viewer) {
     
     var self = this;
     
-    viewer.toolbarHeight = 53;
+    viewer.toolbarHeight = 63;
     viewer.withToolbar = true;
     
     var id  = Ext.id();
@@ -72,7 +72,8 @@ viewer.toolbarextjs = function (viewer) {
     
     var tb = Ext.create("Ext.Toolbar", {
         renderTo: id,
-        height: 50,
+        height: 60,
+        padding : 5,
         enableOverflow : true,
         cls : 'preview-toolbar',
         items: [
@@ -100,34 +101,53 @@ viewer.toolbarextjs = function (viewer) {
             labelPourcentage
             ,
             {
-                xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar/zoom-in.png",
+                xtype: 'image', // same as 'tbsplitbutton'
+                src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar/zoom-in.png",
                 tooltip : i18n.get('label.zoomIn'),
-                iconCls : 'previewBarBtn-icon',
-                handler : function () {
-                    var frameDimension = viewer.getFrameDimension();
-                    viewer.zoomTo(viewer.getZoomLevel() + 1, frameDimension[0] / 2, frameDimension[1] / 2);
+                width : 32,
+                cls : 'previewBarBtn-icon',
+//                handler : function () {
+//                    var frameDimension = viewer.getFrameDimension();
+//                    viewer.zoomTo(viewer.getZoomLevel() + 1, frameDimension[0] / 2, frameDimension[1] / 2);
+//                }
+                listeners : {
+                    el : {
+                        click : function () {
+                            var frameDimension = viewer.getFrameDimension();
+                            viewer.zoomTo(viewer.getZoomLevel() + 1, frameDimension[0] / 2, frameDimension[1] / 2);
+                        }
+                    }
                 }
             },
             {
-                xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')+"/resources/libs/windowImageZoomerService/images/toolbar/zoom-out.png",
+                xtype: 'image', // same as 'tbsplitbutton'
+                src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL')+"/resources/libs/windowImageZoomerService/images/toolbar/zoom-out.png",
                 tooltip : i18n.get('label.zoomOut'),
-                iconCls : 'previewBarBtn-icon',
-                handler : function () {
-                    var frameDimension = viewer.getFrameDimension();
-                    viewer.zoomTo(viewer.getZoomLevel() - 1, frameDimension[0] / 2, frameDimension[1] / 2);
+                cls : 'previewBarBtn-icon',
+                width : 32,
+                listeners : {
+                    el : {
+                        click : function () {
+                            var frameDimension = viewer.getFrameDimension();
+                            viewer.zoomTo(viewer.getZoomLevel() - 1, frameDimension[0] / 2, frameDimension[1] / 2);
+                        }
+                    }
                 }
             },
             {
-                xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/resources/libs/windowImageZoomerService/images/toolbar/download-image.png',
+                xtype: 'image', // same as 'tbsplitbutton'
+                src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + '/resources/libs/windowImageZoomerService/images/toolbar/download-image.png',
                 tooltip : i18n.get('label.downloadImage'),
-                iconCls : 'previewBarBtn-icon',
+                cls : 'previewBarBtn-icon',
+                width : 32,
                 //text : 'download',
-                handler : function () {
-                    var img = viewer.frameElement.firstChild;
-                    sitools.user.component.dataviews.dataviewUtils.downloadFile(img.src);
+                listeners : {
+                    el : {
+                        click : function () {
+                            var img = viewer.frameElement.firstChild;
+                            sitools.user.component.dataviews.dataviewUtils.downloadFile(img.src);
+                        }
+                    }
                 }
             },
             /*{
@@ -142,18 +162,24 @@ viewer.toolbarextjs = function (viewer) {
                 }
             },*/
             {
-                xtype: 'button', // same as 'tbsplitbutton'
-                icon : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar" + '/stretch-optimally.png',
+                xtype: 'image', // same as 'tbsplitbutton'
+                src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar" + '/stretch-optimally.png',
                 tooltip : i18n.get('label.resetZoom'),
-                iconCls : 'previewBarBtn-icon',
-                handler : function () {
-                    viewer.reset();
+                cls : 'previewBarBtn-icon',
+                width : 32,
+                listeners : {
+                    el : {
+                        click : function () {
+                            viewer.reset();
+                        }
+                    }
                 }
             }, {
-                xtype : 'component',
+                xtype : 'image',
+                height : 48,
+                width : 48,
                 autoEl : {
                     tag : 'img',
-                    style : 'padding-left:10px;',
                     src : loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_USER_URL') + "/resources/libs/windowImageZoomerService/images/toolbar" + '/movement-controls.png',
                     useMap : "#controls"
                 }
