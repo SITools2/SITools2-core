@@ -535,8 +535,8 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                         'class="project projectUnauthorized"',
                     '</tpl>', 
                     '>', 
-                    '<img width="80" height="80" src="{image}" />', '<strong>{name}</strong>',
-                    '<span>{description} </span>', '</li>', '</tpl>', '</ul>', 
+                    '<img width="80" height="80" src="{image}" />', '<p data-qtip="{name}" class="projectName">{name}</>',
+                    '<p class="projectDescription" data-qtip="{description}">{description} </p>', '</li>', '</tpl>', '</ul>', 
                     {
                     compiled : true, 
                     disableFormats : true, 
@@ -559,7 +559,6 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
             height : 200, 
             boxMaxHeight : 430,
             items : [ portletObject.dataview ],
-            autoScroll : true,
             resizable : false,
             listeners : {
                 scope : this,
