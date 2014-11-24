@@ -72,7 +72,6 @@ Ext.define('sitools.user.view.component.form.FormView', {
         
         Ext.iterate(panelIdObject, function (key, formParams) {
             var componentList = Ext.create('sitools.user.view.component.form.FormContainerView', {
-                border: true,
                 css : this.formCss, 
                 formId : this.formId,
                 id : key,
@@ -94,6 +93,7 @@ Ext.define('sitools.user.view.component.form.FormView', {
         
         this.zonesPanel = Ext.create('Ext.panel.Panel', {
             autoScroll : true,
+            border : false,
             width : this.formWidth,
             height : this.formHeight,
             css : this.formCss, 

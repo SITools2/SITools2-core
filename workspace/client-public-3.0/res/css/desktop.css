@@ -1455,6 +1455,12 @@ td.ux-taskButtons-edge {
 	font-weight: bold;
 }
 
+.linkStyle {
+	color: blue;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
 /**.rowHeight .x-grid-cell {  
      line-height: 30px !important;
      height: 30px !important;

@@ -324,8 +324,9 @@ Ext.define('sitools.user.core.Desktop', {
 	},
 	
 	clearDesktop : function () {
+		Desktop.setShowDesktopAction('minimize');
+		Desktop.restoreAllWindows();
 		Desktop.getApplication().getController('DesktopController').desktopView.windows.each(function (window) {
-//		Ext.WindowManager.each(function (window) {
 			if (window instanceof Ext.window.Window || window instanceof Ext.panel.Panel) {
 				window.close();
 			}
@@ -333,6 +334,11 @@ Ext.define('sitools.user.core.Desktop', {
 	},
 	
 	showDesktop : function () {
+		var windowCollection = Desktop.getApplication().getController('DesktopController').desktopView.windows;
+		if (windowCollection.items.length == 0) {
+			return;
+		}
+		
 		if (Desktop.getShowDesktopAction() == 'minimize') {
 			Desktop.minifyAllWindows();
 			Desktop.setShowDesktopAction('restore');
@@ -344,7 +350,6 @@ Ext.define('sitools.user.core.Desktop', {
 	
 	minifyAllWindows : function () {
 		Desktop.getApplication().getController('DesktopController').desktopView.windows.each(function (window) {
-//		Ext.WindowManager.each(function (window) {
 			if (window.xtype == 'window') {
 				window.minimize();
 			} else if (window instanceof Ext.panel.Panel) {
@@ -355,7 +360,6 @@ Ext.define('sitools.user.core.Desktop', {
 	
 	restoreAllWindows : function () {
 		Desktop.getApplication().getController('DesktopController').desktopView.windows.each(function (window) {
-//		Ext.WindowManager.each(function (window) {
 			if (window.xtype == 'window' || window instanceof Ext.panel.Panel) {
 				window.show();
 			}

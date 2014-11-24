@@ -113,7 +113,8 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
         
         if (!Ext.isEmpty(parameters.formZones)) {
             Ext.each(parameters.formZones, function (zone) {
-                var zoneFieldset = Ext.create('sitools.public.ux.form.ToolFieldSet', {
+//                var zoneFieldset = Ext.create('sitools.public.ux.form.ToolFieldSet', {
+            	var zoneFieldset = Ext.create('Ext.form.FieldSet', {
                     title : (!Ext.isEmpty(zone.title) ? zone.title : zone.id),
                     itemId : zone.id,
                     height : zone.height,

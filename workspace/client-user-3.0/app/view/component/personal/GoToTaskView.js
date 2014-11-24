@@ -135,7 +135,7 @@ Ext.define('sitools.user.view.component.personal.GoToTaskView', {
 //    	userPersonalComponent.init();
     	
     	var personalView = userPersonalComponent.getComponentView();
-    	var orderRecBtn = personalView.storeAction.getById('orders');
+    	var orderRecBtn = personalView.storeAction.getById('tasks');
         
     	personalView.gridAction.getSelectionModel().select(orderRecBtn);
     	

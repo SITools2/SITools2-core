@@ -34,26 +34,69 @@ Ext.define('sitools.user.view.component.personal.TaskDetailView', {
     
 	initComponent : function () {
         
-        var itemsForm = [];
-        
-        Ext.iterate(this.task, function (key, value) {
-            if (value != undefined && value != ""){
-                itemsForm.push({
-                    xtype : 'textfield',
-                    name : key,
-                    labelWidth : 130,
-                    fieldLabel : i18n.get('label.' + key),
-                    disabled : true,
-                    disabledCls : 'x-item-disabled-custom',
-                    labelStyle : 'font-weight:bold;',
-                    anchor : '100%',
-                    value : value                
-                });
+		this.fieldDefaults = {
+            labelWidth : 130,
+            disabled : true,
+            disabledCls : 'x-item-disabled-custom',
+            labelStyle : 'font-weight:bold;',
+            anchor : '100%',
+            htmlEncode : true
+		};
+		
+        var itemsForm = [{
+        	xtype : 'textfield',
+        	name : i18n.get('label.userId'),
+        	fieldLabel : i18n.get('label.userId'),
+        	value : this.task.userId
+        }, {
+        	xtype : 'textfield',
+        	name : i18n.get('label.statusUrl'),
+        	fieldLabel : i18n.get('label.statusUrl'),
+        	value : this.task.statusUrl,
+        	fieldCls : 'linkStyle',
+        	hidden : (Ext.isEmpty(this.task.statusUrl))
+        }, {
+        	xtype : 'textfield',
+            itemId : 'urlResult',
+        	name : i18n.get('label.task.urlResult'),
+        	fieldLabel : i18n.get('label.urlResult'),
+        	value : this.task.urlResult,
+        	fieldCls : 'linkStyle',
+        	hidden : (Ext.isEmpty(this.task.urlResult)),
+        	listeners: {
+        		afterrender : function( component ) {
+	                component.inputEl.on('click', function( event, el ) {
+                       var textfield = Ext.ComponentQuery.query('textfield#urlResult');
+	                   var value = textfield.getValue();
+                        window.open(value, '_blank');
+	                });
+	            }
             }
-        });
+        }];
+        
+//        Ext.iterate(this.task, function (key, value) {
+//            if (value != undefined && value != ""){
+//                itemsForm.push({
+//                    xtype : 'textfield',
+//                    name : key,
+//                    labelWidth : 130,
+//                    fieldLabel : i18n.get('label.' + key),
+//                    disabled : true,
+//                    disabledCls : 'x-item-disabled-custom',
+//                    labelStyle : 'font-weight:bold;',
+//                    anchor : '100%',
+//                    value : value                
+//                });
+//            }
+//        });
         
 		this.items = itemsForm;
 		
 		this.callParent(arguments);
+	},
+	
+	openLink : function (textfield) {
+		var value = textfield.getValue();
+		window.open(value, '_blank');
 	}
 });

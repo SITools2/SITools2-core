@@ -259,6 +259,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     onWindowMenuClose: function () {
         var me = this, win = me.windowMenu.theWin;
 
+        win.show();
         win.close();
     },
 
@@ -278,7 +279,11 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     onWindowMenuMinimize: function () {
         var me = this, win = me.windowMenu.theWin;
 
-        win.minimize();
+        if (win.xtype == 'window') {
+        	win.minimize();
+		} else if (win instanceof Ext.panel.Panel) {
+			win.hide();
+		}
     },
 
     onWindowMenuRestore: function () {
@@ -502,12 +507,18 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     },
 
     restoreWindow: function (win) {
-        if (win.isVisible()) {
-            win.restore();
-            win.toFront();
-        } else {
-            win.show();
-        }
+    	
+    	if (win.xtype == 'window' || win instanceof Ext.panel.Panel) {
+    		win.show();
+    		win.toFront();
+    	}
+    	
+//        if (win.isVisible()) {
+//            win.restore();
+//            win.toFront();
+//        } else {
+//            win.show();
+//        }
         return win;
     },
 
