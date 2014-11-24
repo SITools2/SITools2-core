@@ -33,7 +33,7 @@ Ext.define('sitools.user.core.Module', {
         moduleModel : null,
         viewCmp : null,
         application : null,
-        controllers : []
+        controllers : [] 
     },
     
     /**
@@ -43,10 +43,13 @@ Ext.define('sitools.user.core.Module', {
      *            the view to show
      */
     show : function (view) {
+        this.setViewCmp(view);
+        view.type = "module";
         var project = Ext.getStore("ProjectStore").getProject();
         var navMode = this.getApplication().getController('core.NavigationModeFactory').getNavigationMode(project.get("navigationMode"));
         
-        navMode.openModule(view, this.getModuleModel());        
+        navMode.openModule(view, this.getModuleModel());
+        view.fireEvent("registermodule", this, view);
     },
     
     /**

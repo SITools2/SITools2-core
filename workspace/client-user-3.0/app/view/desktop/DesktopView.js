@@ -551,7 +551,7 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
         }
 
         if (last) {
-            if (last.el.dom) {
+            if (!Ext.isEmpty(last.el) && !Ext.isEmpty(last.el.dom)) {
                 last.addCls(me.inactiveWindowCls);
                 last.removeCls(me.activeWindowCls);
             }

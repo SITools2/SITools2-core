@@ -63,6 +63,14 @@ Ext.define('sitools.user.model.ModuleModel', {
     	type : 'int'
     }, {
     	name : 'dependencies'
+    }, {
+        name : 'instantiated',
+        type : 'boolean'
+    }, {
+        name : 'viewClassType',
+        type : 'String'
+    }, {
+        name : 'instance'
     } ],
     hasMany : [ {
         model : 'sitools.user.model.RoleModel',

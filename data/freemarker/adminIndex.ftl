@@ -86,6 +86,10 @@ END PROD -->
     
 	<link rel="shortcut icon" href="${appUrl}/client-public/res/images/icons/logo_fav_icone.ico" type="image/x-icon">
 	
+	<script type="text/javascript">
+		Ext.Loader.setConfig('disableCaching', false);
+	</script>
+	
   </head>
 
   <body>

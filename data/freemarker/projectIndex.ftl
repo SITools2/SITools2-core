@@ -142,7 +142,9 @@ END PROD -->
 <!--	<link rel="stylesheet" type="text/css" href="${appUrl}/client-supervision/js/components/corot/dataview/css/ext-ux-livegrid.css">-->
 
 
-
+	<script type="text/javascript">
+		Ext.Loader.setConfig('disableCaching', false);
+	</script>
 
   </head>
 

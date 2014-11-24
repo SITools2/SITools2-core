@@ -21,6 +21,8 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     extend : 'Ext.app.Controller',
 
     stores : [ 'ProjectStore', 'ModulesStore' ],
+    
+    
 
     init : function () {
         var me = this, desktopCfg;
@@ -114,9 +116,32 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
 						}
 					}
 				}
+			},
+			
+			"component [type='module']" : {
+			    registermodule : function (module, view) {
+			        module.moduleModel.set("instantiated", true);
+			        module.moduleModel.set("viewClassType", view.$className);
+			        module.moduleModel.set("instance", module);
+			    }
+			},
+			"panel,window" : {
+			    beforeclose : function (viewContainer) {
+                    if (viewContainer.specificType === "moduleWindow") {
+                        var view = viewContainer.down('component[type="module"]');
+                        
+                        var store = this.getStore("ModulesStore");
+                        var module = store.findRecord("viewClassType", view.$className);
+                        
+                        module.set("instantiated", false);
+                        module.set("viewClassType", null);
+                        module.set("instance", null);
+                    }
+                }
 			}
         });
-
+        
+        
         this.getApplication().on('projectInitialized', this.loadProject, this);
         this.getApplication().on('footerLoaded', Desktop.loadPreferences, this);
         this.getApplication().on('footerLoaded', Desktop.loadModulesInDiv, this);
@@ -185,11 +210,16 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     },
 
     openModule : function (moduleModel, event) {
-        var module = Ext.create(moduleModel.data.xtype);
-        module.create(this.getApplication(), moduleModel, function() {
-        	this.init(event);
-        }, module);
-//        module.init(event);
+        if (moduleModel.get("instantiated")) {
+            var module = moduleModel.get("instance");
+            module.show(module.getViewCmp());
+        }
+        else {
+            var module = Ext.create(moduleModel.data.xtype);
+            module.create(this.getApplication(), moduleModel, function() {
+                this.init(event);
+            }, module);
+        }
     },
     
     openComponent : function (componentClazz, componentConfig, windowConfig) {
@@ -204,6 +234,5 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         // get the module from the button
         var module = button.module;
         this.openModule(module);
-    },
-    
+    }
 });
