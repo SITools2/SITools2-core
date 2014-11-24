@@ -58,13 +58,6 @@
 	<!--<script type="text/javascript" src="${appUrl}/client-public/cots/OpenLayers-2.11/OpenLayers.js"></script>-->
 	<!-- <script type="text/javascript" src="${appUrl}/client-public/cots/GeoExt/script/GeoExt.js"></script> -->
 	
-	<!-- Need in debug mode, to remove in production version. -->
-	
-	<script type="text/javascript">
-		Ext.Loader.setConfig('disableCaching', false);
-	</script>
-	
-	
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->

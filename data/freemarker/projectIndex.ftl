@@ -69,10 +69,7 @@
 	<script src="${appUrl}/client-public/js/utils/prototyp.js"></script>
 
 	<!-- Need in debug mode, to remove in production version. -->
-	
-	<script type="text/javascript">
-		Ext.Loader.setConfig('disableCaching', false);
-	</script>
+
 <!-- --------------------------------------------------------------------------------------------------
 						LISTE DES FICHIERS A INCLURE POUR LA VERSION DE DEV
 --------------------------------------------------------------------------------------------------- -->
@@ -96,12 +93,12 @@
 <!-- --------------------------------------------------------------------------------------------------
  						A INCLURE POUR LA VERSION DE PROD
 --------------------------------------------------------------------------------------------------- -->
-<!-- BEGIN_PROD_WITHOUT_PLUGIN
+<!-- WITHOUT_PLUGIN_BEGIN_PROD
 	<script src="${appUrl}/client-user/bootstrap.js"></script>
 	<script type="text/javascript" src="${appUrl}/client-public/js/widget/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="dist/app.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
-<!-- END_PROD_WITHOUT_PLUGIN -->
+<!-- WITHOUT_PLUGIN_END_PROD -->
 
 <!-- BEGIN_PROD
 	<script src="${appUrl}/client-user/bootstrap.js"></script>

@@ -326,7 +326,7 @@
 		<!-- EXT JS -->
 		<pack name="client-cots" preselected="yes" required="no" parent="Client">
 			<description>Ext-js librairy, Openlayers, GeoExt</description>
-			<fileset override="update" dir="../../cots/extjs" targetdir="$INSTALL_PATH/cots/extjs"
+			<fileset override="update" dir="../../cots/extjs4" targetdir="$INSTALL_PATH/cots/extjs4"
 				excludes="**/*.zip" />
 			<fileset override="update" dir="../../cots/GeoExt" targetdir="$INSTALL_PATH/cots/GeoExt"
 				excludes="**/*.zip" />
@@ -340,6 +340,9 @@
 				targetdir="$INSTALL_PATH/$workspacePath/client-public-3.0">
 				<exclude name=".*" />
 				<exclude name=".settings/" />
+				<exclude name="node_modules/" />
+				<exclude name="build/" />
+                <exclude name=".sencha/" />
 			</fileset>
 			<depends packname="client-cots" />
 		</pack>
@@ -350,6 +353,9 @@
 				targetdir="$INSTALL_PATH/$workspacePath/client-admin">
 				<exclude name=".*" />
 				<exclude name=".settings/" />
+				<exclude name="node_modules/" />
+				<exclude name="build/" />
+                <exclude name=".sencha/" />
 			</fileset>
 			<depends packname="public" />
 		</pack>
@@ -360,11 +366,17 @@
 				targetdir="$INSTALL_PATH/$workspacePath/client-user-3.0">
 				<exclude name=".*" />
 				<exclude name=".settings/" />
+				<exclude name="node_modules/" />
+				<exclude name="build/" />
+				<exclude name=".sencha/" />
 			</fileset>
 			<fileset override="update" dir="../client-portal-3.0"
 				targetdir="$INSTALL_PATH/$workspacePath/client-portal-3.0">
 				<exclude name=".*" />
 				<exclude name=".settings/" />
+				<exclude name="node_modules/" />
+				<exclude name="build/" />
+                <exclude name=".sencha/" />
 			</fileset>
 			<depends packname="public" />
 		</pack>
