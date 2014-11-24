@@ -108,7 +108,7 @@ Ext.define('sitools.widget.WindowImageViewer', {
 			wi *= 0.9;
 		}
 
-		this.setSize(wi + this.getFrameWidth(), hi + this.getFrameHeight());
+		this.setSize(wi /*+ this.getFrameWidth()*/, hi + this.getHeader().getHeight());
         
 		// if (Ext.isIE) {
 		this.center();
