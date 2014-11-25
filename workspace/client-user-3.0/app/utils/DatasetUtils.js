@@ -33,45 +33,137 @@ Ext.namespace("sitools.user.utils");
 Ext.define('sitools.user.utils.DatasetUtils', {
     singleton : true,
     
-    openDataset : function (url, componentConfig) {
+    openDataset : function (url, componentConfig, windowConfig) {
     	Ext.Ajax.request({
     		method : "GET", 
     		url : url, 
     		success : function (ret) {
                 var Json = Ext.decode(ret.responseText);
                 var dataset = Json.dataset;
-	            var javascriptObject;
-	            
-	            var windowConfig = {
-	                datasetName : dataset.name, 
-	                saveToolbar : true, 
-	                toolbarItems : []
-	            };
-	            
-                javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
-            
-                var datasetViewComponent  = Ext.create(javascriptObject);
-                datasetViewComponent.create(Desktop.getApplication());
-                
-                Ext.apply(windowConfig, {
-                	winWidth : 900, 
-                	winHeight : 400,
-                	title : i18n.get('label.dataTitle') + " : " + dataset.name, 
-                	id : dataset.id, 
-                	iconCls : "dataviews"
-                });
-                
-                componentConfig.dataset = dataset;
-                
-//                Ext.apply(dataset, extraCmpConfig);
-//                datasetViewComponent.init(componentConfig, windowConfig);
-                
-                var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
-            	sitoolsController.openComponent(javascriptObject, componentConfig, windowConfig);
+                sitools.user.utils.DatasetUtils.showDataset(dataset, componentConfig, windowConfig);
     		}
     	});
     },
+
+    openForm : function (formId, datasetUrl, componentConfig, windowConfig) {
+        var formUrl = datasetUrl + "/forms/" + formId;
+        //get dataset
+        Ext.Ajax.request({
+            method : "GET", 
+            url : datasetUrl, 
+            success : function (ret) {
+                var Json = Ext.decode(ret.responseText);
+                var dataset = Json.dataset;
+                Ext.Ajax.request({
+                    method : "GET", 
+                    url : formUrl, 
+                    success : function (ret) {
+                        var Json = Ext.decode(ret.responseText);
+                        var form = Json.form;
+                        sitools.user.utils.DatasetUtils.showForm(form, dataset, componentConfig, windowConfig);
+                    }
+                });
+            }
+        });
+    },
     
+    showDataset : function (dataset, componentConfig, windowConfig) {
+        var javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
+        
+        if(Ext.isEmpty(componentConfig)) {
+            componentConfig = {};
+        }
+        
+        if(Ext.isEmpty(windowConfig)) {
+            windowConfig = {};
+        }
+        
+        componentConfig = Ext.apply(componentConfig, {
+            dataset : dataset,
+            preferencesPath : "/" + dataset.name, 
+            preferencesFileName : "datasetOverview"
+            
+        });
+        
+        windowConfig = Ext.apply(windowConfig,{
+            saveToolbar : true
+        });
+        
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        sitoolsController.openComponent(javascriptObject, componentConfig, windowConfig);
+    },
+    
+    showForm : function (form, dataset, componentConfig, windowConfig) {
+        if(Ext.isEmpty(windowConfig)) {
+            windowConfig = {};
+        }
+        if(Ext.isEmpty(componentConfig)) {
+            componentConfig = {};
+        }
+        
+        Ext.apply(componentConfig, {
+            dataset : dataset,
+            form : form,
+            preferencesPath : "/" + dataset.name + "/forms",
+            preferencesFileName : form.name
+            
+        });
+        
+        windowConfig = Ext.apply(windowConfig,{
+            saveToolbar : true
+        });
+        
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        sitoolsController.openComponent('sitools.user.component.form.FormComponent', componentConfig, windowConfig);
+    },
+    showFeed : function (feed, dataset, componentConfig, windowConfig) {
+        if(Ext.isEmpty(componentConfig)) {
+            componentConfig = {};
+        }
+        
+        var url = dataset.sitoolsAttachementForUsers + "/clientFeeds/" + feed.name;
+        
+        Ext.apply(componentConfig, {
+            parentId : dataset.id,
+            parentName : dataset.name,
+            feed : feed,
+            url : url
+        });
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        sitoolsController.openComponent('sitools.user.component.feeds.FeedComponent', componentConfig, windowConfig);
+    },
+    showOpensearch : function (dataset, componentConfig, windowConfig) {
+        if(Ext.isEmpty(componentConfig)) {
+            componentConfig = {};
+        }
+        
+        Ext.apply(componentConfig, {
+            datasetId : dataset.id,
+            dataUrl : dataset.sitoolsAttachementForUsers, 
+            datasetName : dataset.name
+        });
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        sitoolsController.openComponent('sitools.user.component.datasetOpensearch', componentConfig, windowConfig);
+    },
+    
+    showDefinition : function (dataset, componentConfig, windowConfig) {
+        if(Ext.isEmpty(componentConfig)) {
+            componentConfig = {};
+        }
+        
+        Ext.apply(componentConfig, {
+            datasetId : dataset.id,
+            datasetDescription : dataset.description,
+            datasetCm : dataset.columnModel,
+            datasetName : dataset.name,
+            dictionaryMappings : dataset.dictionaryMappings,
+        });
+        
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+        sitoolsController.openComponent('sitools.user.component.datasets.columnsDefinition.ColumnsDefinition', componentConfig, windowConfig);
+    },
+    
+
     openDefinition : function (url) {
     	
     	Ext.Ajax.request({
@@ -79,21 +171,8 @@ Ext.define('sitools.user.utils.DatasetUtils', {
     		url : url, 
     		success : function (ret) {
                 var Json = Ext.decode(ret.responseText);
-                
                 var dataset = Json.dataset;
-	            
-	            var columnDefinition  = Ext.create("sitools.user.component.datasets.columnsDefinition.ColumnsDefinition");
-	            columnDefinition.create(Desktop.getApplication());
-	            var configService = {
-	            		datasetId : dataset.id,
-	            		datasetDescription : dataset.description,
-	            		datasetCm : dataset.columnModel,
-	            		datasetName : dataset.name,
-	            		dictionaryMappings : dataset.dictionaryMappings,
-	            		preferencesPath : "/" + dataset.name,
-	            		preferencesFileName : "semantic"
-	            };
-	            columnDefinition.init(configService);
+                sitools.user.utils.DatasetUtils.showDefinition(dataset);
     		}
     	});
     	
@@ -107,7 +186,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
      * @param {string} type the type of the component.
      * @param {} extraCmpConfig an extra config to apply to the component.
      */
-    clickDatasetIcone : function (url, type, extraCmpConfig) {
+    clickDatasetIcone : function (url, type, extraCmpConfig, windowConfig) {
     	Ext.Ajax.request({
     		method : "GET", 
     		url : url, 
@@ -116,12 +195,12 @@ Ext.define('sitools.user.utils.DatasetUtils', {
                 
                 var dataset = Json.dataset;
 	            var componentCfg, javascriptObject;
-	            var windowConfig = {
+	            windowConfig = Ext.apply({
 	                datasetName : dataset.name, 
 	                type : type, 
 	                saveToolbar : true, 
 	                toolbarItems : []
-	            };
+	            });
                 switch (type) {
                 
 				case "desc" : 
@@ -131,46 +210,14 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 						saveToolbar : false, 
 						iconCls : "version"
 					});
-					
-//    					componentCfg = {
-//    						autoScroll : true,
-//    						html : dataset.descriptionHTML
-//    					};
-                    
 					Ext.applyIf(dataset, extraCmpConfig);
 					
-                    javascriptObject = Ext.panel.Panel;
-	                var descriptionViewComponent  = Ext.create(javascriptObject);
-	                descriptionViewComponent.create(Desktop.getApplication());
-                    
-                    descriptionViewComponent.init(dataset, windowConfig);
-                    
-//    					SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-					
+                    var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+                    sitoolsController.openComponent("sitools.user.component.datasets.columnsDefinition.ColumnsDefinition", componentConfig, windowConfig);
 					break;
 					
 				case "data" : 
-					
-                    javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
-                    var dataViewComponent  = Ext.create(javascriptObject);
-                    dataViewComponent.create(Desktop.getApplication());
-                
-	                Ext.apply(windowConfig, {
-	                    winWidth : 900, 
-	                    winHeight : 400,
-                        title : i18n.get('label.dataTitle') + " : " + dataset.name, 
-                        id : type + dataset.id, 
-                        iconCls : "dataviews"
-	                });
-                    
-	                var componentConfig = {
-                		dataset : dataset
-	                };
-	                Ext.applyIf(componentConfig, extraCmpConfig);
-	                
-	                var sitoolsController = Desktop.getApplication().getController	('core.SitoolsController'); 
-	            	sitoolsController.openComponent(javascriptObject, componentConfig, windowConfig);
-	                
+                    sitools.user.utils.DatasetUtils.showDataset(dataset);    
 					break;
 				case "forms" : 
 		            var menuForms = new Ext.menu.Menu();
@@ -187,76 +234,21 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 									throw i18n.get('label.noForms');
 								}
                                 
-				                javascriptObject = Desktop.getNavMode().getFormOpenMode();
-                                 var formViewComponent  = Ext.create(javascriptObject);
-                                formViewComponent.create(Desktop.getApplication());
-                                
+				                var javascriptObject = Desktop.getNavMode().getFormOpenMode();
+				                var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
+				                
 								if (Json.total == 1) {
 						            var form = Json.data[0];
-						            Ext.apply(windowConfig, {
-						                title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name, 
-						                iconCls : "forms"
-						            });
-						            
-					                Ext.apply(windowConfig, {
-					                    id : type + dataset.id + form.id
-					                });
-                                    
-					                componentCfg = {
-					                    dataUrl : dataset.sitoolsAttachementForUsers,
-					                    dataset : dataset, 
-					                    formId : form.id,
-					                    formName : form.name,
-					                    formParameters : form.parameters,
-					                    formZones : form.zones,
-					                    formWidth : form.width,
-					                    formHeight : form.height, 
-					                    formCss : form.css, 
-				                        preferencesPath : "/" + dataset.name + "/forms", 
-				                        preferencesFileName : form.name
-					                };
-                                    
-					                Ext.applyIf(dataset, extraCmpConfig);
-					                Ext.applyIf(dataset, componentCfg);
-                                    
-                                    formViewComponent.init(dataset, windowConfig);
-//    									SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
+						            sitools.user.utils.DatasetUtils.showForm(form,dataset);
 				                }
 								else {
 									
 									var handler = null;
 									Ext.each(Json.data, function (form) {
-										handler = function (form, dataset) {
-											Ext.apply(windowConfig, {
-												title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name, 
-												iconCls : "forms"
-								            });
-								
-							                Ext.apply(windowConfig, {
-							                    id : type + dataset.id + form.id
-							                });
-							                componentCfg = {
-							                    dataUrl : dataset.sitoolsAttachementForUsers,
-							                    formId : form.id,
-							                    formName : form.name,
-							                    formParameters : form.parameters,
-							                    formWidth : form.width,
-							                    formHeight : form.height, 
-							                    formCss : form.css, 
-							                    dataset : dataset
-							                };
-                                            
-							                Ext.applyIf(dataset, extraCmpConfig);
-                                            Ext.applyIf(dataset, componentCfg);
-                                            
-                                            formViewComponent.init(dataset, windowConfig);
-//    											SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-										};
 										menuForms.add({
 											text : form.name, 
 											handler : function () {
-												handler(form, dataset);
+											    sitools.user.utils.DatasetUtils.showForm(form, dataset);
 											}, 
 											icon : loadUrl.get('APP_URL') + "/common/res/images/icons/tree_forms.png"
 										});
@@ -289,50 +281,15 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 				                javascriptObject = sitools.widget.FeedGridFlux;
 								if (Json.total == 1) {
 						            var feed = Json.data[0];
-						            Ext.apply(windowConfig, {
-						                title : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title, 
-						                id : type + dataset.id + feed.id, 
-						                iconCls : "feedsModule"
-						            });
-						
-					                componentCfg = {
-					                    datasetId : dataset.id,
-					                    urlFeed : dataset.sitoolsAttachementForUsers + "/clientFeeds/" + feed.name,
-					                    feedType : feed.feedType, 
-					                    datasetName : dataset.name,
-					                    feedSource : feed.feedSource,
-					                    autoLoad : true
-					                };
-						            Ext.applyIf(componentCfg, extraCmpConfig);
-									SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
+						            sitools.user.utils.DatasetUtils.showFeed(feed, dataset);
 				                }
 								else {
 									var handler = null;
 									Ext.each(Json.data, function (feed) {
-										handler = function (feed, dataset) {
-											Ext.apply(windowConfig, {
-												title : i18n.get('label.feeds') + " : (" + dataset.name + ") " + feed.title, 
-												id : type + dataset.id + feed.id, 
-												iconCls : "feedsModule"
-								            });
-								
-							                
-							                componentCfg = {
-							                    datasetId : dataset.id,
-							                    urlFeed : dataset.sitoolsAttachementForUsers + "/clientFeeds/" + feed.name,
-							                    feedType : feed.feedType, 
-							                    datasetName : dataset.name,
-							                    feedSource : feed.feedSource,
-							                    autoLoad : true
-							                };
-							                Ext.applyIf(componentCfg, extraCmpConfig);
-											SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-										};
 										menuFeeds.addItem({
 											text : feed.name, 
 											handler : function () {
-												handler(feed, dataset);
+											    sitools.user.utils.DatasetUtils.showFeed(feed, dataset);
 											}, 
 											icon : loadUrl.get('APP_URL') + "/common/res/images/icons/rss.png"
 										});
@@ -340,43 +297,23 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 									}, this);
 									menuFeeds.showAt(Ext.EventObject.xy);
 								}
-					            
-				
 								
 							}
 							catch (err) {
-								var tmp = new Ext.ux.Notification({
+								popupMessage({
 						            iconCls : 'x-icon-information',
 						            title : i18n.get('label.information'),
 						            html : i18n.get(err),
 						            autoDestroy : true,
 						            hideDelay : 1000
-						        }).show(document);
+						        });
 							}
 						}
 		            });
 
 					break;
 				case "defi" : 
-		            Ext.apply(windowConfig, {
-		                title : i18n.get('label.definitionTitle') + " : " + dataset.name, 
-		                id : type + dataset.id, 
-		                iconCls : "semantic"
-		            });
-		
-	                javascriptObject = sitools.user.component.columnsDefinition;
-	                
-	                componentCfg = {
-	                    datasetId : dataset.id,
-	                    datasetCm : dataset.columnModel, 
-	                    datasetName : dataset.name,
-                        dictionaryMappings : dataset.dictionaryMappings, 
-                        preferencesPath : "/" + dataset.name, 
-                        preferencesFileName : "semantic"
-	                };
-	                Ext.applyIf(componentCfg, extraCmpConfig);
-					SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-
+				    sitools.user.utils.DatasetUtils.showDefinition(dataset);
 					break;
 				case "openSearch" : 
 		            Ext.Ajax.request({
@@ -389,33 +326,17 @@ Ext.define('sitools.user.utils.DatasetUtils', {
                             // in the xml
                             var success = dq.selectNode('OpenSearchDescription ', xml);
 							if (!success) {
-								var tmp = new Ext.ux.Notification({
+								popupMessage({
 						            iconCls : 'x-icon-information',
 						            title : i18n.get('label.information'),
 						            html : i18n.get("label.noOpenSearch"),
 						            autoDestroy : true,
 						            hideDelay : 1000
-						        }).show(document);
+						        });
 								return;
 							}
 							
-							Ext.apply(windowConfig, {
-				                title : i18n.get('label.opensearch') + " : " + dataset.name, 
-				                id : type + dataset.id, 
-				                iconCls : "openSearch"
-				            });
-				
-			                javascriptObject = sitools.user.component.datasetOpensearch;
-			                
-			                componentCfg = {
-			                    datasetId : dataset.id,
-			                    dataUrl : dataset.sitoolsAttachementForUsers, 
-			                    datasetName : dataset.name, 
-		                        preferencesPath : "/" + dataset.name, 
-		                        preferencesFileName : "openSearch"
-			                };
-			                Ext.applyIf(componentCfg, extraCmpConfig);
-							SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
+							sitools.user.utils.DatasetUtils.showOpensearch(dataset);
                             
                         }
 		            });

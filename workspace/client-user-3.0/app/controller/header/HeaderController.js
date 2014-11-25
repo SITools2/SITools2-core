@@ -154,6 +154,27 @@ Ext.define('sitools.user.controller.header.HeaderController', {
 					btn.up('userProfileWindow').close();
 					Ext.create('sitools.public.utils.Help').show();
 				}
+			},
+			
+			'menu#saveMenu menuitem#saveUser' : {
+			    click : function (btn) {
+			        Desktop.saveWindowSettings();
+			    }
+			},
+			'menu#saveMenu menuitem#deleteUser' : {
+			    click : function (btn) {
+			        UserStorage.remove();
+			    }
+			},
+			'menu#saveMenu menuitem#savePublic' : {
+			    click : function (btn) {
+			        Desktop.saveWindowSettings(true);
+			    }
+			},
+			'menu#saveMenu menuitem#deletePublic' : {
+			    click : function (btn) {
+			        PublicStorage.remove();
+			    }
 			}
         });
         
@@ -205,6 +226,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                 plain : true,
                 width : 260,
                 closeAction : 'hide',
+                itemId : 'saveMenu',
                 items: [saveLabel, {
                 	xtype : 'menuseparator',
                 	separatorCls : 'customMenuSeparator'
@@ -212,9 +234,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     text: i18n.get("label.myself"),
                     cls : 'menuItemCls',
                     iconCls : 'saveUserIcon',
-                    handler : function () {
-                        Desktop.saveWindowSettings();
-                    }
+                    itemId : 'saveUser',
                 }, {
                 	xtype : 'menuseparator',
                 	separatorCls : 'customMenuSeparator'
@@ -222,9 +242,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     text : i18n.get('label.deleteUserPref'),
                     cls : 'menuItemCls',
                     iconCls : 'deleteSaveIcon',
-                    handler : function () {
-                        UserStorage.remove();
-                    }
+                    itemId : 'deleteUser'
                 }, {
                 	xtype : 'menuseparator',
                 	separatorCls : 'customMenuSeparator'
@@ -232,9 +250,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     text: i18n.get("label.publicUser"),
                     cls : 'menuItemCls',
                     iconCls : 'savePublicIcon',
-                    handler : function () {
-                    	Desktop.saveWindowSettings(true);
-                    }
+                    itemId : 'savePublic',
                 }, {
                 	xtype : 'menuseparator',
                 	separatorCls : 'customMenuSeparator'
@@ -242,9 +258,7 @@ Ext.define('sitools.user.controller.header.HeaderController', {
                     text : i18n.get('label.deletePublicPref'),
                     cls : 'menuItemCls',
                     iconCls : 'deleteSaveIcon',
-                    handler : function () {
-                        PublicStorage.remove();
-                    }
+                    itemId : 'deletePublic'
                 }] 
             });
             

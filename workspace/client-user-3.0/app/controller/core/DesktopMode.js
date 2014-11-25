@@ -68,7 +68,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
                     var component = window.items.items[0];
 
                     componentSettings = component._getSettings();
-                    componentSettings.preferencesFileName = this.name;
+                    componentSettings.preferencesFileName = componentSettings.preferencesFileName;
                     desktopSettings.push(window.saveSettings(componentSettings, forPublicUser));
                 }
             }

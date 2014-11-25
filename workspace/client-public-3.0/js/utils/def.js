@@ -230,36 +230,29 @@ function extColModelToJsonColModel(ExtColModel) {
 		columns = ExtColModel;
 	}
 	Ext.each(columns, function (column) {
-	    if (!column.isSelectionModel) {
-            colModel.push({
-                columnAlias : column.columnAlias,
-                dataIndex : column.dataIndexSitools,
-                dataIndexSitools : column.dataIndexSitools,
-                header : column.header,
-                filter : column.filter,
-                hidden : column.hidden,
-                id : column.id,
-                previewColumn : column.previewColumn,
-                primaryKey : column.primaryKey,
-                schema : column.schema,
-                sortable : column.sortable,
-                sqlColumnType : column.sqlColumnType,
-                tableAlias : column.tableAlias,
-                tableName : column.tableName,
-                toolTip : column.tooltip,
-                urlColumn : column.urlColumn,
-                width : column.width,
-                // columnAliasDetail : column.columnAliasDetail,
-                columnRenderer : column.columnRenderer,
-                // datasetDetailId : column.datasetDetailId,
-                specificColumnType : column.specificColumnType,
-                javaSqlColumnType : column.javaSqlColumnType,
-                format : column.format
-            //			image : column.image,
-            //			datasetDetailUrl : column.datasetDetailUrl
-
-            });
-        }
+        colModel.push({
+            columnAlias : column.columnAlias,
+            dataIndex : column.dataIndexSitools,
+            dataIndexSitools : column.dataIndexSitools,
+            header : column.header,
+            filter : column.filter,
+            hidden : column.hidden,
+            id : column.id,
+            previewColumn : column.previewColumn,
+            primaryKey : column.primaryKey,
+            schema : column.schema,
+            sortable : column.sortable,
+            sqlColumnType : column.sqlColumnType,
+            tableAlias : column.tableAlias,
+            tableName : column.tableName,
+            toolTip : column.tooltip,
+            urlColumn : column.urlColumn,
+            width : column.width,
+            columnRenderer : column.columnRenderer,
+            specificColumnType : column.specificColumnType,
+            javaSqlColumnType : column.javaSqlColumnType,
+            format : column.format
+        });
 	});
 	return colModel;
 }

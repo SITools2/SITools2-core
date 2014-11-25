@@ -145,5 +145,9 @@ Ext.define('sitools.user.view.component.form.FormView', {
         this.items = [this.zonesPanel];
         
         this.callParent(arguments);
+    },
+    
+    _getSettings : function () {
+        return this.component._getSettings();
     }
 });

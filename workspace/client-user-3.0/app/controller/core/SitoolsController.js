@@ -223,6 +223,80 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
     },
     
     openComponent : function (componentClazz, componentConfig, windowConfig) {
+        
+        if (Ext.isEmpty(windowConfig) ||  windowConfig.saveToolbar === false) {
+            this.doOpenComponent(componentClazz, componentConfig, windowConfig);
+            return;
+        }
+
+        //construction de l'url pour les préférences utilisateur. 
+        var baseFilePath = "/" + DEFAULT_PREFERENCES_FOLDER + "/" + Project.getProjectName();
+
+        var filePath = componentConfig.preferencesPath;
+        var fileName = componentConfig.preferencesFileName;
+        if (Ext.isEmpty(filePath) || Ext.isEmpty(fileName)) {
+            this.doOpenComponent(componentClazz, componentConfig, windowConfig);
+            return;
+        }
+        filePath = baseFilePath + filePath;
+
+        //Méthod to call if no userPreferences found
+        var doOpenPublic = function (componentClazz, componentConfig, windowConfig) {
+            var successPublic = function (response, opts) {
+                try {
+                    var json = Ext.decode(response.responseText);
+
+                    Ext.apply(windowConfig, json.windowSettings);
+                    Ext.apply(componentConfig, 
+                        {
+                            userPreference : json.componentSettings
+                        });
+                    this.doOpenComponent(componentClazz, componentConfig, windowConfig);
+                } catch (err) {
+                    this.doOpenComponent(componentClazz, componentConfig, windowConfig);
+                }
+            };
+
+            var failurePublic = function (response, opts) {
+                this.doOpenComponent(componentClazz, componentConfig, windowConfig);
+            };
+
+            PublicStorage.get(fileName, filePath, this, successPublic,
+                    failurePublic);
+        };
+
+        if (Ext.isEmpty(userLogin)) {
+            this.doOpenPublic(componentClazz, componentConfig, windowConfig);
+        } else {
+            //Méthode appelée si l'on trouve des préférences pour le user
+            var successMethod = function (response, opts) {
+                try {
+                    var json = Ext.decode(response.responseText);
+
+                    Ext.apply(windowConfig, json.windowSettings);
+                    Ext.apply(componentConfig, 
+                        {
+                            userPreference : json.componentSettings
+                        });
+                } catch (err) {
+                    doOpenPublic(componentClazz, componentConfig, windowConfig);
+                    return;
+                }
+                this.doOpenComponent(componentClazz, componentConfig, windowConfig);
+            };
+            //Si pas de préférences trouvées, on utilise addWinPublic
+            var failureMethod = function (response, opts) {
+                Ext.callback(doOpenPublic, this, [componentClazz, componentConfig, windowConfig]);
+            };
+
+            UserStorage.get(fileName, filePath, this, successMethod,
+                    failureMethod);
+        }
+    },
+    
+    
+    
+    doOpenComponent : function (componentClazz, componentConfig, windowConfig) {
         var component = Ext.create(componentClazz);
         component.create(this.getApplication(), function() {
             component.init(componentConfig, windowConfig);

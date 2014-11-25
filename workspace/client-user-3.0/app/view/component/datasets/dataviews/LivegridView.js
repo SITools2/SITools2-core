@@ -355,11 +355,6 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
      * @returns
      */
     _getSettings : function () {
-        return {
-            preferencesPath : "/components",
-            preferencesFileName : this.id,
-            componentClazz : this.componentClazz,
-            datasetUrl : this.dataset.sitoolsAttachementForUsers
-        };
+        return this.component._getSettings();
     }
 });

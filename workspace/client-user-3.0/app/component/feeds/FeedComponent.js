@@ -34,6 +34,7 @@ Ext.define('sitools.user.component.feeds.FeedComponent', {
      * @param config
      *  feed the feed
      *  parentId the id of the parent object (dataset, project...)
+     *  parentId the parentName  
      *  url the url of the feed
      */
     init : function (config) {

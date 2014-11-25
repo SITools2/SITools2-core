@@ -970,7 +970,7 @@ sitools.user.clickDatasetIcone = function (url, type, extraCmpConfig) {
 	                    dictionaryMappings : dataset.dictionaryMappings,
 	                    datasetViewConfig : dataset.datasetViewConfig, 
 	                    preferencesPath : "/" + dataset.datasetName, 
-	                    preferencesFileName : "datasetOverview", 
+	                    preferencesFileName : "datasetOverview",
 	                    sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers
 	                };
                 

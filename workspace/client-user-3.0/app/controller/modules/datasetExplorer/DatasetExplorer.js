@@ -86,76 +86,25 @@ Ext.define('sitools.user.controller.modules.datasetExplorer.DatasetExplorer', {
                 
                 itemclick : function ( tree, node, item, index, e, eOpts ) {
                     if(node.isLeaf()) {
-                        
+                        var dataset = node.get("properties").dataset;
                         switch(node.get("type")) {
                         case "data" :
-                            var dataset = node.get("properties").dataset;
-//                            var datasetViewComponent  = Ext.create(dataset.datasetView.jsObject);
-//                            datasetViewComponent.create(this.getApplication());
-//                            datasetViewComponent.init(dataset);
-                            
-                            var componentsConfig = {
-                            		dataset : dataset
-                            };
-                            
-                            var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
-                            sitoolsController.openComponent(dataset.datasetView.jsObject, componentsConfig, {});
-                            
+                            sitools.user.utils.DatasetUtils.showDataset(dataset);
                             break;
                         case "defi" : 
-                            var columnDefinition  = Ext.create("sitools.user.component.datasets.columnsDefinition.ColumnsDefinition");
-                            columnDefinition.create(this.getApplication());
-                            var dataset = node.get("properties").dataset;
-                            var configService = {
-                                datasetId : dataset.id,
-                                datasetDescription : dataset.description,
-                                datasetCm : dataset.columnModel,
-                                datasetName : dataset.name,
-                                dictionaryMappings : dataset.dictionaryMappings,
-                                preferencesPath : "/" + dataset.name,
-                                preferencesFileName : "semantic"
-                            };
-                            columnDefinition.init(configService);
+                            sitools.user.utils.DatasetUtils.showDefinition(dataset);
                             break;
                         case 'form' :
-                            var dataset = node.get("properties").dataset;
                             var form = node.get("properties").form;
-                            var formComponent = Ext.create('sitools.user.component.form.FormComponent');
-                            formComponent.create(this.getApplication());
-                            formComponent.init(form, dataset);
+                            sitools.user.utils.DatasetUtils.showForm(form, dataset);
                             break;
                         case 'feeds' :
-                            var dataset = node.get("properties").dataset;
                             var feed = node.get("properties").feed;
-                            var feedComponent = Ext.create('sitools.user.component.feeds.FeedComponent');
-                            feedComponent.create(this.getApplication());
-                            
-                            var url = dataset.sitoolsAttachementForUsers + "/clientFeeds/" + feed.name;
-                            
-                            var configFeed = {
-                                parentId : dataset.id,
-                                parentName : dataset.name,
-                                feed : feed,
-                                url : url
-                            }
-                            
-                            feedComponent.init(configFeed);
+                            sitools.user.utils.DatasetUtils.showFeed(feed, dataset);
                             break;
                             
                         case 'openSearch' : 
-                            
-                            var dataset = node.get("properties").dataset;
-                            var opensearchComponent = Ext.create('sitools.user.component.datasets.opensearch.Opensearch');
-                            opensearchComponent.create(this.getApplication());
-                            
-                            var config = {
-                                datasetId : dataset.id,
-                                dataUrl : dataset.sitoolsAttachementForUsers, 
-                                datasetName : dataset.name, 
-                                preferencesPath : "/" + dataset.name, 
-                                preferencesFileName : "openSearch"
-                            };
-                            opensearchComponent.init(config);
+                            sitools.user.utils.DatasetUtils.showOpensearch(dataset);
                             break;
                         }
                     }

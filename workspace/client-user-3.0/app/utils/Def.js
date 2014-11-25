@@ -235,32 +235,25 @@ function extColModelToJsonColModel(ExtColModel) {
 	    if (!column.isSelectionModel) {
             colModel.push({
                 columnAlias : column.columnAlias,
-                dataIndex : column.dataIndexSitools,
                 dataIndexSitools : column.dataIndexSitools,
-//                header : column.header,
+                dataIndex : column.dataIndexSitools,
                 header : column.text,
-                filter : column.filter,
-                hidden : column.hidden,
-                id : column.id,
-                previewColumn : column.previewColumn,
-                primaryKey : column.primaryKey,
-                schema : column.schema,
-                sortable : column.sortable,
-                sqlColumnType : column.sqlColumnType,
-                tableAlias : column.tableAlias,
-                tableName : column.tableName,
-                toolTip : column.tooltip,
-                urlColumn : column.urlColumn,
                 width : column.width,
-                // columnAliasDetail : column.columnAliasDetail,
-                columnRenderer : column.columnRenderer,
-                // datasetDetailId : column.datasetDetailId,
+                sortable : column.sortable,
+                hidden : column.hidden,
+                tooltip : column.tooltip,
+                renderer : column.renderer,
+                schema : column.schema,
+                tableName : column.tableName,
+                tableAlias : column.tableAlias,
+                primaryKey : column.primaryKey,
+                previewColumn : column.previewColumn,
+                filter : column.filter,
+                sqlColumnType : column.sqlColumnType, 
+                columnRenderer : column.columnRenderer, 
                 specificColumnType : column.specificColumnType,
-                javaSqlColumnType : column.javaSqlColumnType,
+                menuDisabled : true,
                 format : column.format
-            //			image : column.image,
-            //			datasetDetailUrl : column.datasetDetailUrl
-
             });
         }
 	});

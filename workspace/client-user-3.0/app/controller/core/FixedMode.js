@@ -63,7 +63,6 @@ Ext.define('sitools.user.controller.core.FixedMode', {
                     var component = window.items.items[0];
 
                     componentSettings = component._getSettings();
-                    componentSettings.preferencesFileName = component.$className;
                     desktopSettings.push(window.saveSettings(componentSettings, forPublicUser));
                 }
             }
@@ -74,7 +73,6 @@ Ext.define('sitools.user.controller.core.FixedMode', {
             	 var component = activePanel.items.items[0];
 
                  componentSettings = component._getSettings();
-                 componentSettings.preferencesFileName = component.$className;
                  desktopSettings.push(activePanel.saveSettings(componentSettings, forPublicUser));
             	
             }

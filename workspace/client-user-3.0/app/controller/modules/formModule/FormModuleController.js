@@ -94,6 +94,9 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
             method : 'GET',
             scope : this,
             success : function (response) {
+                
+                
+                
 //                try {
                     var json = Ext.decode(response.responseText);
                     if (! json.success) {
@@ -102,11 +105,7 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
                     }
 
                     var dataset = json.dataset;
-                    
-                    var formComponent = Ext.create('sitools.user.component.form.FormComponent');
-                    formComponent.create(this.getApplication());
-                    formComponent.init(rec.getData(true), dataset);
-//                    formController.openForm(rec.getData(true), dataset);
+                    sitools.user.utils.DatasetUtils.showForm(rec.getData(true), dataset);
                     
                     return;
 //                }

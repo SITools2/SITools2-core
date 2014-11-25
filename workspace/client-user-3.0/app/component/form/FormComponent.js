@@ -33,16 +33,25 @@ Ext.define('sitools.user.component.form.FormComponent', {
     controllers : ['sitools.user.controller.component.form.FormController',
                    'sitools.user.controller.component.form.ProjectFormController'],
     
-    init : function (form, dataset) {
+    /**
+     * @param ComponentConfig : Object containing form description and dataset description 
+     */
+    init : function (componentConfig, windowConfig) {
         
-    	var windowSettings = {
+        var windowSettings = {}, componentSettings = {};
+        
+        var form = componentConfig.form;
+        var dataset = componentConfig.dataset;
+        
+        Ext.apply(windowSettings, windowConfig, {
             datasetName : dataset.name,
             type : "form",
             title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name,
             id : "form" + dataset.id + form.id,
             saveToolbar : true,
-            iconCls : "form"
-        };
+            iconCls : "form",
+            typeWindow : 'form'
+        });
         
         var view = Ext.create('sitools.user.view.component.form.FormView', {
             dataUrl : dataset.sitoolsAttachementForUsers,
@@ -58,7 +67,8 @@ Ext.define('sitools.user.component.form.FormComponent', {
             preferencesPath : "/" + dataset.name + "/forms",
             preferencesFileName : form.name,
             // searchAction : this.searchAction,
-            scope : this
+            scope : this,
+            component : this
         });
 
         this.setComponentView(view);
@@ -97,17 +107,25 @@ Ext.define('sitools.user.component.form.FormComponent', {
         this.setComponentView(view);
         this.show(view, windowSettings);
     },
-
-    /**
-     * method called when trying to save preference
-     * 
-     * @returns
-     */
+    
     _getSettings : function () {
+        var view = this.getComponentView();
         return {
-            preferencesPath : "/modules",
-            preferencesFileName : this.id
+            objectName : "forms", 
+            dataUrl : view.dataUrl,
+            dataset : view.dataset,
+            formId : view.formId,
+            id : view.id,
+            formName : view.formName,
+            formParameters : view.formParameters,
+            formZones : view.formZones,
+            formWidth : view.formWidth,
+            formHeight : view.formHeight, 
+            formCss : view.formCss, 
+            datasetView : view.datasetView,
+            dictionaryMappings : view.dictionaryMappings, 
+            preferencesPath : view.preferencesPath, 
+            preferencesFileName : view.preferencesFileName
         };
-
-    }
+    }, 
 });

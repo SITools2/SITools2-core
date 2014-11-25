@@ -45,7 +45,6 @@ Ext.define('sitools.user.Application', {
                  /* UTILS USER */
                  'sitools.user.utils.FormUtils',
                  'sitools.user.utils.ServerServiceUtils',
-                 'sitools.user.utils.DatasetUtils',
                  'sitools.user.utils.DataviewUtils',
                  'sitools.user.utils.ModuleUtils',
                  'sitools.user.core.Module',

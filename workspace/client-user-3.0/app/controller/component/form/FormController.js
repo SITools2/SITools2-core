@@ -200,22 +200,12 @@ Ext.define('sitools.user.controller.component.form.FormController', {
     },
     
     defaultSearchAction : function (formParams, dataset) {
-        var windowConfig = {
-//            id : "windResultForm" + config.formId,
-            title : i18n.get('label.dataTitle') + " : " + dataset.name, 
-            datasetName : dataset.name, 
-            type : "data", 
-            saveToolbar : true, 
-            iconCls : "dataviews"
-        };
-        
-        var componentsConfig = {
+        var componentConfig = {
         	formFilters : formParams,
         	dataset : dataset
         };
         
-        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
-        sitoolsController.openComponent(dataset.datasetView.jsObject, componentsConfig, windowConfig);
+        sitools.user.utils.DatasetUtils.showDataset(dataset, componentConfig);
     }, 
     
     _getSettings : function () {

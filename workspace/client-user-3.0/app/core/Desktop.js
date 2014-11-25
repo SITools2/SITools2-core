@@ -24,6 +24,9 @@ Ext.namespace('sitools.user.core');
  */
 Ext.define('sitools.user.core.Desktop', {
 	singleton : true,
+	alternateClassName : ['Desktop'],
+	
+	requires : ['sitools.user.utils.DatasetUtils'],
 
 	config : {
 		application : null,
@@ -141,53 +144,9 @@ Ext.define('sitools.user.core.Desktop', {
             else {
                 var type = pref.windowSettings.typeWindow;
                 var componentCfg, jsObj, windowSettings;
+                var datasetUrl = pref.componentSettings.datasetUrl;
                 if (type === "data") {
-                    var datasetUrl = pref.componentSettings.datasetUrl;
-                    Ext.Ajax.request({
-                        method : "GET",
-                        url : datasetUrl,
-                        success : function (ret) {
-                        	
-                            var Json = Ext.decode(ret.responseText);
-                            var dataset = Json.dataset;
-                            var componentCfg = {}, windowConfig = {};
-                            
-                            Ext.apply(windowConfig, pref.windowSettings, {
-                                datasetName : dataset.name,
-                                datasetDescription : dataset.description,
-                                type : type,
-                                saveToolbar : true,
-                                toolbarItems : [],
-                                iconCls : "dataviews",
-                            	id : type + dataset.id // add the toolbarItems configuration
-                            });
-
-//                            javascriptObject = eval(dataset.datasetView.jsObject);
-
-                            if (dataset.description !== "") {
-                                windowConfig.title = dataset.description;
-                            } else {
-                                windowConfig.title = "Diplay data :" + dataset.name;
-                            }
-                            
-                            Ext.apply(componentCfg, pref.componentSettings, {
-//                                dataUrl : dataset.sitoolsAttachementForUsers,
-                                id : dataset.id,
-                                columnModel : dataset.columnModel,
-                                name : dataset.name,
-                                sitoolsAttachementForUsers : datasetUrl,
-                                datasetViewConfig : dataset.datasetViewConfig,
-                                dictionaryMappings : dataset.dictionaryMappings,
-                                preferencesPath : "/" + dataset.name,
-                                preferencesFileName : "datasetOverview"
-                            });
-                            
-                            var cmpSettings = pref.componentSettings;
-                    		Desktop.getApplication().getController('core.SitoolsController').openComponent(cmpSettings.componentClazz, componentCfg, pref.windowSettings);
-//                            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, javascriptObject);
-                        },
-                        failure : alertFailure
-                    });
+                    sitools.user.utils.DatasetUtils.openDataset(datasetUrl, pref.componentSettings, pref.windowSettings);
                 }
                 if (type === "formProject") {
                     jsObj = sitools.user.component.forms.projectForm;
@@ -218,32 +177,10 @@ Ext.define('sitools.user.core.Desktop', {
                     SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
 
                 }
+                
                 if (type === "form") {
-                    jsObj = sitools.user.component.forms.mainContainer;
-                    componentCfg = {
-                        dataUrl : pref.componentSettings.dataUrl,
-                        dataset : pref.componentSettings.dataset,
-                        formId : pref.componentSettings.formId,
-                        formName : pref.componentSettings.formName,
-                        formParameters : pref.componentSettings.formParameters,
-                        formZones : pref.componentSettings.zones,
-                        formWidth : pref.componentSettings.formWidth,
-                        formHeight : pref.componentSettings.formHeight,
-                        formCss : pref.componentSettings.formCss,
-                        preferencesPath : pref.componentSettings.preferencesPath,
-                        preferencesFileName : pref.componentSettings.preferencesFileName
-                    };
-
-                    windowSettings = {
-                        datasetName : pref.componentSettings.dataset.name,
-                        type : "form",
-                        title : i18n.get('label.forms') + " : " + pref.componentSettings.dataset.name + "." + pref.componentSettings.formName,
-                        id : "form" + pref.componentSettings.dataset.id + pref.componentSettings.formId,
-                        saveToolbar : true,
-                        iconCls : "form"
-                    };
-                    
-                    SitoolsDesk.addDesktopWindow(windowSettings, componentCfg, jsObj);
+                    var datasetUrl = pref.componentSettings.dataUrl;
+                    sitools.user.utils.DatasetUtils.openForm(pref.componentSettings.formId, datasetUrl, pref.componentSettings, pref.windowSettings);
                 }
             }
         });
@@ -386,4 +323,3 @@ Ext.define('sitools.user.core.Desktop', {
 	}
 });
 
-Desktop = sitools.user.core.Desktop;

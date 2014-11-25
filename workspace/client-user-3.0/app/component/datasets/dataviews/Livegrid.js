@@ -46,7 +46,6 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
      * @param {DatasetModel} dataset.dataset the dataset definition
      * @optionnal {Array} dataset.formFilters formFilters
      */
-//    init : function (dataset, formParams) {
 	init : function (componentConfig, windowConfig) {
         
 		var windowSettings = {}, componentSettings = {};
@@ -58,9 +57,15 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
 		}
 		
         var dataviewConfig = sitoolsUtils.arrayProperties2Object(dataset.datasetViewConfig);
-
+        
+        if (!Ext.isEmpty(componentConfig.userPreference) && !Ext.isEmpty(componentConfig.userPreference.colModel)) {
+            colModel = componentConfig.userPreference.colModel;
+        } else {
+            colModel = dataset.columnModel;
+        }
+        
         var fields = this.getFields(dataset.columnModel);
-        var columns = this.getColumns(dataset.columnModel, dataset.dictionaryMappings, dataviewConfig);
+        var columns = this.getColumns(colModel, dataset.dictionaryMappings, dataviewConfig);
         this.primaryKey = this.calcPrimaryKey(dataset);
         
         var datasetStore = Ext.create("sitools.user.store.DataviewsStore", {
@@ -77,11 +82,11 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             datasetName : dataset.name,
             type : "data",
             title : i18n.get('label.datasets') + " : " + dataset.name,
-            saveToolbar : true,
             winWidth : 900,
             winHeight : 400,
             iconCls : "dataviews",
-            typeWindow : 'data'
+            typeWindow : 'data',
+            saveToolbar : windowConfig.saveToolbar
         });
         
         windowSettings.id = "dataset_" + dataset.id + "_" + Ext.id();
@@ -89,15 +94,15 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         Ext.apply(componentSettings, {
             dataset : dataset,
             store : datasetStore,
-            preferencesPath : "/" + dataset.name + "/datasets",
-            preferencesFileName : dataset.name,
             columns : columns,
             urlRecords : dataset.sitoolsAttachementForUsers + '/records',
             scope : this,
             component : this,
             ranges : componentConfig.ranges,
             nbRecordsSelection : componentConfig.nbRecordsSelection,
-            isModifySelection : componentConfig.isModifySelection
+            isModifySelection : componentConfig.isModifySelection,
+            preferencesPath : componentConfig.preferencesPath, 
+            preferencesFileName : componentConfig.preferencesFileName,
             // searchAction : this.searchAction,
         });
         
@@ -175,12 +180,10 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                         sortable : item.sortable,
                         hidden : hidden,
                         tooltip : tooltip,
-                        //TODO
                         renderer : renderer,
                         schema : item.schema,
                         tableName : item.tableName,
                         tableAlias : item.tableAlias,
-//                        id : item.id,
                         primaryKey : item.primaryKey,
                         previewColumn : item.previewColumn,
                         filter : item.filter,
@@ -233,9 +236,17 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
      * @returns
      */
     _getSettings : function () {
+        var view = this.getComponentView();
         return {
-            preferencesPath : "/modules",
-            preferencesFileName : this.id
+            preferencesPath : view.preferencesPath, 
+            preferencesFileName : view.preferencesFileName,
+            datasetName : view.dataset.name, 
+            colModel : extColModelToJsonColModel(view.columns), 
+            datasetView : this.$className,
+            dictionaryMappings : view.dataset.dictionaryMappings,
+            componentClazz : view.componentClazz,
+            datasetUrl : view.dataset.sitoolsAttachementForUsers,
+            origin : view.$className
         };
 
     }
