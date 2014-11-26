@@ -50,7 +50,6 @@ Ext.define('sitools.user.component.datasets.columnsDefinition.ColumnsDefinition'
             iconCls : "semantic",
             datasetDescription : config.datasetDescription,
             type : "defi",
-            saveToolbar : true,
             toolbarItems : [],
             id : "defi" + config.datasetId
         };

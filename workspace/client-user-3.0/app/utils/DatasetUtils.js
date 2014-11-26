@@ -204,18 +204,21 @@ Ext.define('sitools.user.utils.DatasetUtils', {
                 switch (type) {
                 
 				case "desc" : 
-					Ext.apply(windowConfig, {
-						title : i18n.get('label.description') + " : " + dataset.name, 
-						id : "desc" + dataset.id, 
-						saveToolbar : false, 
-						iconCls : "version"
-					});
-					Ext.applyIf(dataset, extraCmpConfig);
-					
+				    Ext.apply(windowConfig, {
+                        title : i18n.get('label.description') + " : " + dataset.name, 
+                        id : "desc" + dataset.id, 
+                        saveToolbar : false, 
+                        iconCls : "version"
+                    });
+                    
+                    componentCfg = {
+                        autoScroll : true,
+                        html : dataset.descriptionHTML
+                    };
+                    var view = Ext.create("Ext.Panel", componentCfg);
                     var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
-                    sitoolsController.openComponent("sitools.user.component.datasets.columnsDefinition.ColumnsDefinition", componentConfig, windowConfig);
+                    sitoolsController.openSimpleWindow(view, windowConfig);
 					break;
-					
 				case "data" : 
                     sitools.user.utils.DatasetUtils.showDataset(dataset);    
 					break;

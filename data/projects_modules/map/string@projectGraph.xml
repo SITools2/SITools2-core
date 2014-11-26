@@ -1,0 +1,22 @@
+<projectModule>
+   <id>projectGraph</id>
+   <name>projectGraph</name>
+   <description>Project Graph</description>
+   <label>label.projectGraph</label>
+   <author>akka</author>
+   <version>1.0</version>
+   <imagePath>/sitools/common/res/images/desktop/120x120_sans_cadre/project_graph.png</imagePath>
+   <title>title.ProjectGraph</title>
+   <defaultWidth>800</defaultWidth>
+   <defaultHeight>500</defaultHeight>
+   <x>0</x>
+   <y>0</y>
+   <icon>graphModule</icon>
+   <specificType>projectGraph</specificType>
+   <xtype>sitools.user.modules.ProjectGraphModule</xtype>
+   <dependencies>
+     <js/>
+     <css/>     
+   </dependencies>
+   <priority>2</priority>
+ </projectModule>

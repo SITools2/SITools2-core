@@ -308,5 +308,11 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         // get the module from the button
         var module = button.module;
         this.openModule(module);
+    },
+    
+    openSimpleWindow : function (view, windowConfig) {
+        var project = Ext.getStore("ProjectStore").getProject();
+        var navMode = Desktop.getApplication().getController('core.NavigationModeFactory').getNavigationMode(project.get("navigationMode"));
+        navMode.openComponent(view, windowConfig);
     }
 });
