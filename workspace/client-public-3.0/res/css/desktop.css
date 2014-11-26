@@ -35,6 +35,10 @@ html, body {
 	height: 100%;
 }
 
+.x-mask-msg-text {
+	background-image: url(/sitools/common/res/images/icons/sitoolsLoading.gif);
+}
+
 .start {
 	background-image: url( ../images/taskbar/black/startbutton-icon.gif ) !important;
 }
@@ -1465,6 +1469,10 @@ td.ux-taskButtons-edge {
      line-height: 30px !important;
      height: 30px !important;
 }**/
+
+.x-panel-body-silver .x-panel-body-default {
+	border-color: silver !important;
+}
 
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;

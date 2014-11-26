@@ -15,21 +15,23 @@
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-Ext.namespace('sitools.extension.modules');
+Ext.namespace('sitools.extension.view.modules.fitsViewer');
 /*global Ext, sitools, i18n, projectGlobal, alertFailure, showResponse, loadUrl, userLogin, DEFAULT_ORDER_FOLDER, userStorage*/
 
 /**
- * sitools.extension.modules.sitoolsFitsTable
+ * Display metadata from FITS file in a grid
  * 
- * @class sitools.extension.modules.sitoolsFitsTable
- * @extends Ext.Panel
+ * @class sitools.extension.view.modules.fitsViewer.FitsTableView
+ * @extends Ext.panel.Panel
  */
-Ext.define('sitools.extension.modules.sitoolsFitsTable', {
+Ext.define('sitools.extension.view.modules.fitsViewer.FitsTableView', {
     extend : 'Ext.panel.Panel',
-    alias : 'widget.sitoolsFitsTable',
+    alias : 'widget.fitsTableView',
     
     layout : 'border',
     split : true,
+    border : false,
+    
     initComponent : function () {
 
     	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
@@ -37,7 +39,7 @@ Ext.define('sitools.extension.modules.sitoolsFitsTable', {
         var columns = [];
         
         Ext.each(this.data.columns, function (col) {
-            var c = new Ext.grid.Column({
+            var c = Ext.create('Ext.grid.column.Column', {
                 header : col,
                 dataIndex : col,
                 sortable : true,
@@ -47,19 +49,20 @@ Ext.define('sitools.extension.modules.sitoolsFitsTable', {
             
         }, this);
         
-        this.gridPanel = new Ext.grid.GridPanel({
+        this.gridPanel = Ext.create('Ext.grid.Panel', {
             region : 'center',
-            store : new Ext.data.JsonStore({
-//                fields : [ 'name', 'value', 'description' ]
+            border : false,
+            store : Ext.create('Ext.data.JsonStore', {
                 fields : this.data.columns // only the columns names
             }),
-            colModel : new Ext.grid.ColumnModel(columns),
-            selModel : Ext.create('Ext.selection.RowModel',{
+            colModel : columns,
+            selModel : Ext.create('Ext.selection.RowModel', {
                 mode : 'SINGLE'
             }),
             listeners : {
                 scope : this,
                 afterrender : function (grid) {
+                	Ext.suspendLayouts();
                     for (var i = 0; i < this.data.rows; i++) {
                         if (i == 300) {
                             Ext.Msg.show({
@@ -70,42 +73,41 @@ Ext.define('sitools.extension.modules.sitoolsFitsTable', {
                             });
                             break;
                         }
-                        var row = this.data.getRow(i);
-                        var rec = new Ext.data.Record(row);
+                        var rec = this.data.getRow(i);
                         grid.getStore().add(rec);
                     }
+                    Ext.resumeLayouts(true);
                 }
             }
         });
 
-        this.headerPanel = new sitools.extension.modules.sitoolsFitsHeader({
+//        this.headerPanel = new sitools.extension.modules.sitoolsFitsHeader({
+        this.headerPanel = Ext.create('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
             title : this.i18nFitsViewer.get('label.headerData'),
+            border : false,
             headerData : this.headerData,
             region : 'south',
-            height : 500,
+            height : 450,
             collapsible : true
         });
 
         this.tbar = {
-            autoHeight : true,
-            cls : 'services-toolbar',
-            defaults : {
-                scope : this
-            },
-            items : [{
-                text : 'Plot',
-                handler : this.plot,
-                icon : "/sitools/res/images/icons/plot.png"
-            }]
+        	border : false,
+        	items : [{
+	            text : 'Plot',
+	            scope : this,
+	            handler : this.plot,
+	            icon : "/sitools/common/res/images/icons/plot.png"
+	        }] 
         };
         
         this.items = [this.gridPanel, this.headerPanel];
         
-        sitools.extension.modules.sitoolsFitsTable.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
     
     afterRender : function () {
-        sitools.extension.modules.sitoolsFitsTable.superclass.afterRender.apply(this, arguments);
+    	this.callParent(arguments);
         this.fitsMainPanel.getEl().unmask();
     },
     
@@ -130,19 +132,13 @@ Ext.define('sitools.extension.modules.sitoolsFitsTable', {
             }
         }
         
-        var jsObj = sitools.extension.modules.sitoolsFitsPlot;
+        var fitsViewerPlot = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerPlot', {
+        	fitsTable : this,
+        	dataColumns : dataColumns,
+        	i18nFitsViewer : this.i18nFitsViewer,
+        	title : this.i18nFitsViewer.get('label.plotTable'),
+        });
         
-        var config = {
-            fitsTable : this,
-            dataColumns : dataColumns
-        };
-        
-        var windowConfig = {
-            layout : 'fit',
-            title : 'Plot Table',
-            autoScroll : true
-        };
-        
-        SitoolsDesk.addDesktopWindow(windowConfig, config, jsObj);
+        fitsViewerPlot.show();
     }
 });

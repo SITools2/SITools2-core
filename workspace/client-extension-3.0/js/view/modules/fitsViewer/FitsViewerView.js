@@ -32,7 +32,6 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
     bodyBorder : false,
     border : false,
     layout : 'border',
-//    id : 'sitoolsFitsViewer',
     bodyStyle : 'background-color: white;',
 
     initComponent : function () {
@@ -40,6 +39,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
     	this.i18nFitsViewer = I18nRegistry.retrieve('fitsViewer');
     	
         this.sliderTip = Ext.create('Ext.slider.Tip', {
+        	i18nFitsViewer : this.i18nFitsViewer,
             getText: function(thumb){
                 return Ext.String.format(this.i18nFitsViewer.get('label.fitsFrame'), thumb.value, thumb.slider.maxValue);
             }
@@ -68,44 +68,57 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         
         this.functionsGroupBtn = Ext.create('Ext.container.ButtonGroup', {
             title: this.i18nFitsViewer.get('label.functions'),
+            columns : 3,
             defaults: {
                 scope : this,
                 enableToogle: true,
                 toggleGroup : 'functions',
                 toggleHandler : this.manageFunctions,
-                allowDepress : false,
-                cls : 'services-toolbar-btn'
+                allowDepress : false
             },
             items: [{
                 value : 'loglog',
                 name : 'log2',
+                cls : 'testButton',
+                width : 123,
+                height : 25,
                 text : this.i18nFitsViewer.get('label.loglog'),
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/log2.1.png"
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/log2.1.png"
             }, {
                 value : 'linear',
                 name : 'linear',
+                width : 123,
+                height : 25,
                 text : this.i18nFitsViewer.get('label.linear'),
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/linear1.png"
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/linear1.png"
             }, {
                 value : 'sqrtlog',
                 name : 'sqrtlog',
+                width : 123,
+                height : 25,
                 text : this.i18nFitsViewer.get('label.squareLog'),
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/vlog1.png"
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/vlog1.png"
             }, {
                 value : 'sqrt',
                 name : 'sqrt',
+                width : 123,
+                height : 25,
                 text : this.i18nFitsViewer.get('label.square'),
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/square1.png"
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/square1.png"
             }, {
                 value : 'cuberoot',
                 name : 'cuberoot',
+                width : 123,
+                height : 25,
                 text : this.i18nFitsViewer.get('label.cubeRoot'),
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/v3.1.png"
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/v3.1.png"
             }, {
                 value : 'log',
                 name : 'log',
+                width : 123,
+                height : 25,
                 text : this.i18nFitsViewer.get('label.log'),
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/log1.png"
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/log1.png"
             }]
         });
         
@@ -113,73 +126,119 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
             title: this.i18nFitsViewer.get('label.colors'),
             activeItem : 0,
             hideBorders : true,
+            columns : 2,
             defaults: {
                 scope : this,
                 enableToogle: true,
                 toggleGroup : 'colors',
                 toggleHandler : this.manageColors,
-                allowDepress : false,
-                cls : 'services-toolbar-btn'
+                allowDepress : false
             },
             items: [{
                 text: this.i18nFitsViewer.get('label.gray'),
                 name : 'gray',
                 value : 'gray',
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/grey.png"
+                width : 75,
+                height : 25,
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/grey.png"
             },{
                 text: this.i18nFitsViewer.get('label.red'),
                 name : 'red',
                 value : 'heat',
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/red.png"
+                width : 75,
+                height : 25,
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/red.png"
             },{
                 text: this.i18nFitsViewer.get('label.green'),
                 name : 'green',
                 value : 'A',
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/green.png"
+                width : 75,
+                height : 25,
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/green.png"
             },{
                 text: this.i18nFitsViewer.get('label.blue'),
                 name : 'blue',
                 value : 'B',
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/blue.png"
+                width : 75,
+                height : 25,
+                icon : loadUrl.get("APP_URL") +  loadUrl.get("APP_CLIENT_EXTENSION_URL") + "/resources/img/fitsViewer/blue.png"
             }]
         });
         
         this.histoGroupBtn = Ext.create('Ext.container.ButtonGroup', {
-            title: this.i18nFitsViewer.get('label.processing'),
-            activeItem : 0,
             hideBorders : true,
             defaults: {
                 scope : this,
-                enableToogle: true,
-                toggleGroup : 'histo',
-                toggleHandler : this.manageHistogram,
-                cls : 'services-toolbar-btn'
+                toggleGroup : 'save',
+                toggleHandler : this.saveCanvas,
             },
             items : [{
-                text : 'Histogram',
-                name : 'histoBtn',
-                icon : loadUrl.get("APP_URL") + "/client-user/app/view/modules/fitsViewer/resources/images/function.png",
-                cls : 'sitools-btn-green-bold',
-                pressed : true
+                text : this.i18nFitsViewer.get('label.saveImage'),
+                tooltip : this.i18nFitsViewer.get('label.saveImageTooltip'),
+                name : 'save',
+                icon : loadUrl.get("APP_URL") +  "/common/res/images/icons/save.png",
             }]
         });
         
         this.tbar = {
             xtype : 'toolbar',
-            cls : 'services-toolbar',
             enableOverflow : true,
             border : false,
             defaults : {
                 scope : this
             },
-            items : [this.functionsGroupBtn, '-' , this.colorsGroupBtn, '-', this.sliderFrameGroupBtn]
+            items : [this.functionsGroupBtn, '-' , this.colorsGroupBtn, '-', this.sliderFrameGroupBtn, this.histoGroupBtn]
         };
 
-        this.lbar = {
-            xtype : 'toolbar',
+     // Value define later
+        this.thresoldSlider = Ext.create('Ext.slider.Multi', {
+            width   : 110,
+            minValue: 0,
+            maxValue: 0,
+            values  : [0, 0],
+//            fieldLabel : "Thresholds",
+            plugins : new Ext.slider.Tip(),
+            listeners : {
+                scope : this,
+                changecomplete : this.manageThresholds
+            }
+        });
+        
+        this.thresoldLabel = Ext.create('Ext.form.Label', {
+            text : this.i18nFitsViewer.get('label.manageThreshold'),
+            cls : 'thresoldLabel'
+        });
+        
+        var processingContainerWidth = this.fitsMainPanel.additionalContainer.getWidth();
+        var processingContainerHeight = this.fitsMainPanel.additionalContainer.getHeight();
+        
+        var canvasTpl = '<canvas id="processingPanel"></canvas>';
+        
+//        var canvasTpl = Ext.String.format('<canvas class="noSelect"' +
+//        		'style="float:left;width:{0}px; height:150px" id="processingPanel"></canvas>', processingContainerWidth);
+//        
+        this.processingPanel = Ext.create('Ext.panel.Panel', {
+            title : 'Histogram',
+            itemId : 'processingPanel',
             border : false,
-            items : [this.histoGroupBtn]
-        };
+            bodyCls : 'histogram-background',
+            html : canvasTpl,
+            tbar : [this.thresoldLabel, this.thresoldSlider],
+            listeners : {
+                scope : this,
+                afterrender : function () {
+                    this.initHistogram(this.fits);
+                }
+            }
+        });
+        
+//        this.processingPanel = Ext.create('Ext.panel.Panel', {
+//        	title : 'oo',
+//        	tbar : [{
+//        		xtype : 'label',
+//        		text : 'toto'
+//        	}]
+//        });
         
         this.canvasPanel = Ext.create('Ext.panel.Panel', {
            region : 'center',
@@ -190,65 +249,12 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
            border : false,
            html : '<canvas class="shadow-canvas" style="float:left;" id="FITSimage"></canvas>',
            listeners : {
-               scope : this,
-               afterrender : function (canvasPanel) {
-//                   this.processingWindow.render(this.canvasPanel.getEl());
-//
-//                   this.initHistogram(this.fits);
-//                   this.processingWindow.show();
-               }
+        	   scope : this,
+        	   afterrender : function (canvasPanel) {
+//        		   this.processingPanel.render(canvasPanel.getEl());
+//        		   this.processingPanel.show();
+        	   }
            }
-        });
-        
-        // Value define later
-        this.thresoldSlider = Ext.create('Ext.slider.Multi', {
-            width   : 214,
-            minValue: 0,
-            maxValue: 0,
-            values  : [0, 0],
-            fieldLabel : "Thresholds",
-            plugins : new Ext.slider.Tip(),
-            listeners : {
-                scope : this,
-                changecomplete : this.manageThresholds
-            }
-        });
-        
-        this.thresoldLabel = Ext.create('Ext.form.Label', {
-            text : this.i18nFitsViewer.get('label.manageThreshold'),
-            style : 'padding : 0px 7px 0px 0px; font-weight:bold;'
-        });
-        
-        this.processingWindow = Ext.create('Ext.window.Window', {
-            title : 'Histogram',
-            padding : '5px',
-            border : false,
-            bodyCls : 'histogram-background',
-            closable : false,
-            name : 'processingWindow',
-            html : '<canvas class="noSelect" style="float:left;" id="processingWindow"></canvas>',
-            tbar : {
-                autoHeight : true,
-                cls : 'services-toolbar',
-                defaults : {
-                    scope : this
-                },
-                items : [this.thresoldLabel, this.thresoldSlider]
-            },
-            listeners : {
-                scope : this,
-                afterrender : function (window) {
-                    var x = this.getWidth() - window.getWidth() - 20;
-                    this.processingWindow.setPosition(x, 20);
-//                    this.processingWindow.render(this.canvasPanel.getEl());
-
-//                    this.initHistogram(this.fits);
-//                    this.processingWindow.show();
-                },
-                boxready : function (window) {
-                    this.initHistogram(this.fits);
-                }
-            }
         });
         
         this.headerPanel = Ext.create('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
@@ -256,10 +262,11 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
             headerData : this.headerData,
             region : 'south',
             height : 260,
+            padding : 5,
             collapsible : true
         });
         
-        this.items = [this.canvasPanel, this.processingWindow, this.headerPanel];
+        this.items = [this.canvasPanel, this.headerPanel];
         
         this.callParent(arguments);
     },
@@ -289,13 +296,12 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         }.bind(this));
         
         var btnLinear = this.functionsGroupBtn.down('button[name="linear"]');
-//        var btnLinear = this.functionsGroupBtn.find('value', 'linear')[0];
         btnLinear.pressed = true;
-        btnLinear.addCls('sitools-btn-green-bold');
+        btnLinear.addCls('activeButton');
         
         var btnGray = this.colorsGroupBtn.down('button[name="gray"]');
         btnGray.pressed = true;
-        btnGray.addCls('sitools-btn-green-bold');
+        btnGray.addCls('activeButton');
         
         // Load an initial FITS file
 //        this.jsFits.viewer = this;
@@ -367,7 +373,8 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
                 }.bind(this));
             }
             
-//            this.initHistogram(this.fits);
+            this.fitsMainPanel.additionalContainer.add(this.processingPanel);
+            
             this.fitsMainPanel.getEl().unmask();
         }.bind(this));
     },
@@ -375,7 +382,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
     manageFunctions : function (btn, pressed) {
         
         if (pressed) {
-            btn.addCls("sitools-btn-green-bold");
+            btn.addCls("activeButton");
             this.canvasPanel.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
             
             Ext.defer(function () {
@@ -389,19 +396,19 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
                     this.histogram.image.transferFn = btn.value;
                     this.histogram.compute();
                     this.histogram.draw();
-                    this.canvasPanel.getEl().unmask();
                 }
+                this.canvasPanel.getEl().unmask();
 
             }, 5, this);
             
         } else {
-            btn.removeCls("sitools-btn-green-bold");
+            btn.removeCls("activeButton");
         }
     },
     
     manageColors : function (btn, pressed) {
         if (pressed) {
-            btn.addCls("sitools-btn-green-bold");
+            btn.addCls("activeButton");
             this.canvasPanel.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
             
             Ext.defer(function () {
@@ -415,13 +422,15 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
             }, 5, this);
             
         } else {
-            btn.removeCls("sitools-btn-green-bold");
+            btn.removeCls("activeButton");
         }
     },
     
     manageFrames : function (slider, newValue, thumb) {
-        this.jsFits.update({index:newValue});
-        var arrayData = this.jsFits.ctx.getImageData();
+        this.jsFits.update({
+        	index:newValue
+    	});
+        var arrayData = this.jsFits.ctx.getImageData(0, 0, this.jsFits.ctx.canvas.width, this.jsFits.ctx.canvas.height);
         
         if (!Ext.isEmpty(this.histogram)) {
             
@@ -445,7 +454,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
                 viewer : this,
                 jsFits : this.jsFits,
                 image : this.image,
-                canvas: 'processingWindow'
+                canvas: 'processingPanel'
             });
             
             this.histogram.compute();
@@ -467,19 +476,12 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         }, 5, this);
     },
     
-    manageHistogram : function (btn, pressed) {
-        if (pressed) {
-            btn.addCls("sitools-btn-green-bold");
-        } else {
-            btn.removeCls("sitools-btn-green-bold");
-        }
-        
-        var btnEl = this.histoGroupBtn.down('button').getEl();
-        if (this.processingWindow.isVisible()) {
-            this.processingWindow.hide(btnEl);
-        } else {
-            this.processingWindow.show(btnEl);
-        }
+    saveCanvas : function () {
+    	var canvasImage = document.getElementById('FITSimage');
+    	var canvasUrl = canvasImage.toDataURL("image/png").replace("image/png", "image/octet-stream");;
+    	
+    	window.open(canvasUrl, '_parent');
+    	
     },
     
     initHistogram : function (fits) {
@@ -500,7 +502,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
             jsFits : this.jsFits,
             image : this.image,
             vec3 : new vec3(),
-            canvas: 'processingWindow'
+            canvas: 'processingPanel'
         });
         
         this.histogram.compute();

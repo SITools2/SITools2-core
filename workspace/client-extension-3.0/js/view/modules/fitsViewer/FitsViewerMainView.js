@@ -28,10 +28,13 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.fitsViewerMainView',
 
-    layout : 'fit',
     itemId : 'fitsMain',
     border : false,
-
+    layout : {
+    	type : 'hbox',
+    	align : 'stretch'
+    },
+    
     initComponent : function () {
 
 //        this.fitsName = this.url.substring(this.url.lastIndexOf('/') + 1, this.url.lastIndexOf('.'));
@@ -54,8 +57,8 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
         });
 
         this.tree = Ext.create('Ext.tree.Panel', {
-            region : 'center',
-            layout : 'fit',
+            flex : 1,
+            border : false,
             expanded : true,
             useArrows : true,
             autoScroll : true,
@@ -72,6 +75,8 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
                         return;
                     }
 
+                    this.additionalContainer.removeAll();
+                    
                     if (node.get('text') == "TABLE" || node.get('text') == "BINTABLE") {
                         this.getEl().mask(this.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
 
@@ -85,7 +90,6 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
 
                             this.centerPanel.removeAll(false);
                             this.centerPanel.add(this.sitoolsFitsTable);
-                            this.centerPanel.doLayout();
                         }, 5, this);
 
                     } else if (node.get('text') == "IMAGE") {
@@ -108,20 +112,33 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
         });
 
         this.pbar = Ext.create('Ext.ProgressBar', {
-            region : 'north',
             bodyStyle : 'background-color:white;',
+            height : 25,
+            border : false,
+            hidden : true,
             value : 0
+        });
+        
+        this.additionalContainer = Ext.create('Ext.panel.Panel', {
+        	height : 250,
+        	layout : 'fit',
+        	border : false,
+        	items : []
         });
 
         this.treeContainer = Ext.create('Ext.panel.Panel', {
-            layout : 'border',
-            region : 'west',
-            width : 220,
-            items : [this.tree, this.pbar],
-            border : false,
+        	collapsible : true,
+        	cls : 'x-panel-body-silver',
+        	collapseDirection : 'left',
+        	layout: {
+        	    type: 'vbox',
+        	    align : 'stretch'
+        	},
+            width : 300,
+            items : [this.pbar, this.tree, this.additionalContainer],
             tbar : {
                 height : 34,
-//                border : false,
+                bodyBorder : false,
                 defaults : {
                     scope : this
                 },
@@ -131,19 +148,6 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
                     handler : function (btn , evt) {
                         this.loadFitsFromUrl(evt);
                     }
-                }, '->', {
-                    name : 'collapseIcon',
-                    icon : '/sitools/common/res/images/icons/toolbar_remove.png',
-                    scope : this,
-                    handler : function () {
-                        if (this.treeContainer.collapsed) {
-                            this.treeContainer.expand();
-                            this.treeContainer.down('toolbar > button[name="collapseIcon"]').setIcon('/sitools/common/res/images/icons/toolbar_remove.png');
-                        } else {
-                            this.treeContainer.collapse();
-                            this.treeContainer.down('toolbar > button[name="collapseIcon"]').setIcon('/sitools/common/res/images/icons/toolbar_create.png');
-                        }
-                    }
                 }]
             }
         });
@@ -151,21 +155,13 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
         Ext.QuickTips.init();
 
         this.centerPanel = Ext.create('Ext.panel.Panel', {
-            region : 'center',
             layout : 'fit',
+            flex : 1,
             border : false,
             items : []
         });
 
-        this.panel = Ext.create('Ext.panel.Panel', {
-            layout : 'border',
-            border : false,
-            width : 800,
-            height : 600,
-            items : [this.treeContainer, this.centerPanel ]
-        });
-
-        this.items = [this.panel];
+        this.items = [this.treeContainer, this.centerPanel];
 
         this.callParent(arguments);
 
@@ -195,6 +191,8 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
 
     loadFits : function (url) {
 
+    	this.pbar.setVisible(true);
+    	
         this.url = url;
         this.fits = this.loader.loadFits(url, function (fits) {
 
@@ -252,8 +250,8 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
 
             this.tree.setRootNode(rootNode);
             this.tree.expandAll();
-
             this.centerPanel.removeAll();
+            
         }.bind(this), this.failLoadFits, this.onprogressFits.bind(this));
     },
 

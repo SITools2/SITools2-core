@@ -47,13 +47,14 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
                 {header: i18n.get('headers.value'), width: 200, sortable: true, dataIndex: 'value'}]
         };
         
-        this.selModel = Ext.create('Ext.selection.RowModel',{
+        this.selModel = Ext.create('Ext.selection.RowModel', {
             mode : 'SINGLE'
         });
         
         this.listeners = {
             scope : this,
             afterrender : function(grid) {
+            	Ext.suspendLayouts();
                 Ext.iterate(grid.headerData.cards, function (meta, value) {
                     if (value.length == 2) {
                         var rec = {
@@ -72,9 +73,9 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsHeaderView', {
                         grid.getStore().add(rec);
                     }
                 });
+                Ext.resumeLayouts(true);
             }
         };
-        
         this.callParent(arguments);
     }
 });

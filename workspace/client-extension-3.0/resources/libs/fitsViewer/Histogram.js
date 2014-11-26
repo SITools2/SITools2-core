@@ -293,7 +293,7 @@ Histogram = {
                  if ( self.updateThreshold )
                  {
 
-                     this.viewer.canvasPanel.getEl().mask(i18n.get('label.loadingFits'), "x-mask-loading");
+                     this.viewer.canvasPanel.getEl().mask(this.viewer.i18nFitsViewer.get('label.loadingFits'), "x-mask-loading");
 
                      Ext.defer(function () {
                          var min = self.getHistValue(self.minThreshold.a);
@@ -305,8 +305,6 @@ Histogram = {
                          self.updateThreshold(min,max);
                      }, 5, this);
                  }
-
-
              }.bind(this));
 
          /**
