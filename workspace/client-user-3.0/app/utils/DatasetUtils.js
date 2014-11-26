@@ -143,7 +143,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
             datasetName : dataset.name
         });
         var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
-        sitoolsController.openComponent('sitools.user.component.datasetOpensearch', componentConfig, windowConfig);
+        sitoolsController.openComponent('sitools.user.component.datasets.opensearch.Opensearch', componentConfig, windowConfig);
     },
     
     showDefinition : function (dataset, componentConfig, windowConfig) {
@@ -223,12 +223,12 @@ Ext.define('sitools.user.utils.DatasetUtils', {
                     sitools.user.utils.DatasetUtils.showDataset(dataset);    
 					break;
 				case "forms" : 
-		            var menuForms = new Ext.menu.Menu();
+		            
 		            Ext.Ajax.request({
 						method : "GET", 
 						url : dataset.sitoolsAttachementForUsers + "/forms", 
 						success : function (ret) {
-//							try {
+							try {
 								var Json = Ext.decode(ret.responseText);
 								if (! Json.success) {
 									throw Json.message;
@@ -247,6 +247,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 								else {
 									
 									var handler = null;
+									var menuItem = []
 									Ext.each(Json.data, function (form) {
 										menuForms.add({
 											text : form.name, 
@@ -257,18 +258,34 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 										});
 						                
 									}, this);
-									menuForms.showAt(Ext.EventObject.xy);
+									
+									var menuForms = Ext.create("Ext.menu.Menu", {
+                                        border : false,
+                                        plain : true,
+                                        width : 260,
+                                        closeAction : 'hide',
+                                        items : menuItem
+                                    });
+									menuForms.showAt(Ext.EventObject.getXY());
 								}
-//							}
-//							catch (err) {
-//                                popupMessage(i18n.get('label.information'), i18n.get(err), null, 'x-icon-information');
-//							}
+							}
+							catch (err) {
+							    var errorMsg = (Ext.isEmpty(err.message))?err:err.message;
+                                popupMessage({
+                                    iconCls : 'x-icon-information',
+                                    title : i18n.get('label.information'),
+                                    html : i18n.get(errorMsg),
+                                    autoDestroy : true,
+                                    hideDelay : 1000
+                                });
+                                throw err;
+							}
 						}
 		            });
 
 					break;
 				case "feeds" : 
-		            var menuFeeds = new Ext.menu.Menu();
+		            
 		            Ext.Ajax.request({
 						method : "GET", 
 						url : dataset.sitoolsAttachementForUsers + "/feeds", 
@@ -281,15 +298,16 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 								if (Json.total === 0) {
 									throw i18n.get('label.noFeeds');
 								}
-				                javascriptObject = sitools.widget.FeedGridFlux;
+								
 								if (Json.total == 1) {
 						            var feed = Json.data[0];
 						            sitools.user.utils.DatasetUtils.showFeed(feed, dataset);
 				                }
 								else {
 									var handler = null;
+									var menuItem = []
 									Ext.each(Json.data, function (feed) {
-										menuFeeds.addItem({
+									    menuItem.push({
 											text : feed.name, 
 											handler : function () {
 											    sitools.user.utils.DatasetUtils.showFeed(feed, dataset);
@@ -298,18 +316,27 @@ Ext.define('sitools.user.utils.DatasetUtils', {
 										});
 						                
 									}, this);
-									menuFeeds.showAt(Ext.EventObject.xy);
+									var menuFeeds = Ext.create("Ext.menu.Menu", {
+									    border : false,
+				                        plain : true,
+				                        width : 260,
+				                        closeAction : 'hide',
+									    items : menuItem
+									});
+									menuFeeds.showAt(Ext.EventObject.getXY());
 								}
 								
 							}
 							catch (err) {
+							    var errorMsg = (Ext.isEmpty(err.message))?err:err.message;
 								popupMessage({
 						            iconCls : 'x-icon-information',
 						            title : i18n.get('label.information'),
-						            html : i18n.get(err),
+						            html : i18n.get(errorMsg),
 						            autoDestroy : true,
 						            hideDelay : 1000
 						        });
+								throw err;
 							}
 						}
 		            });

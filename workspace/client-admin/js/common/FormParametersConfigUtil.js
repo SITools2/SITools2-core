@@ -112,7 +112,9 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
                                     });
                                     var p = Ext.create(param.jsObj, config);
                                     
-                                    p.setValue(customValue);
+                                    if (Ext.isFunction(p.setValue)) {
+                                        p.setValue(customValue);
+                                    }
                                     this.parametersFieldset.add(p);
                                 }
                             }, this);

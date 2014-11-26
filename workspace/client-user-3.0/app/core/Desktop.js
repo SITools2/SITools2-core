@@ -196,7 +196,7 @@ Ext.define('sitools.user.core.Desktop', {
 			} else {
 				
 				var moduleComponent = Ext.create(module.get('xtype'));
-				moduleComponent.create(Desktop.getApplication(), module.data);
+				moduleComponent.create(Desktop.getApplication(), module);
 				var view = moduleComponent.createViewForDiv();
 				
 				module = Ext.create('Ext.panel.Panel', {
