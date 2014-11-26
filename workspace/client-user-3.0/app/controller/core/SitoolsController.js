@@ -266,7 +266,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         };
 
         if (Ext.isEmpty(userLogin)) {
-            this.doOpenPublic(componentClazz, componentConfig, windowConfig);
+            Ext.callback(doOpenPublic, this, [componentClazz, componentConfig, windowConfig]);
         } else {
             //Méthode appelée si l'on trouve des préférences pour le user
             var successMethod = function (response, opts) {
