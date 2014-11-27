@@ -49,7 +49,7 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
         });
         
         this.control({
-            'dataview' : {
+            'dataview[cls=projectDataView]' : {
                 itemclick : this.openProject
             },
             'dataview[name="viewProjectPrivate"]' : {
@@ -69,7 +69,6 @@ Ext.define('sitools.clientportal.controller.portal.PortalController', {
             scope : this,
             /* sitools/portal/projects...*/
             url : loadUrl.get('APP_URL') + loadUrl.get('APP_PORTAL_URL') + '/projects?media=json', 
-//            url : '/sitools/portal/projects?media=json', 
             method : 'GET',
             success : function (response) {
                 try {
