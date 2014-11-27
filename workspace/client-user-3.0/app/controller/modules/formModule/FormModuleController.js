@@ -37,7 +37,9 @@ Ext.namespace('sitools.user.controller.modules.formModule');
  */
 Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
 	extend : 'Ext.app.Controller',
-    
+
+    requires : ['sitools.user.component.form.FormProjectComponent'],
+
     views : ['modules.formModule.FormModuleView'],
     
     init : function () {
@@ -127,10 +129,12 @@ Ext.define('sitools.user.controller.modules.formModule.FormModuleController', {
             return;
         }
 
-        var formComponent = Ext.create('sitools.user.component.form.FormComponent');
-        formComponent.create(this.getApplication());
-        formComponent.openProjectForm(rec.getData(true));
-        
+        var componentConfig = {
+            form : rec.getData(true)
+        };
+
+        var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
+        sitoolsController.openComponent('sitools.user.component.form.FormProjectComponent', componentConfig, {});
     },
     
     /**

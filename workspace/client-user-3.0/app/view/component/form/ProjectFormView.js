@@ -128,7 +128,6 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
         this.propertyPanel = Ext.create('Ext.form.Panel', {
             itemId : 'propertyPanelId',
             title : i18n.get("label.defineProperties"),
-            padding : 10,
             labelWidth : 100,
             flex : 2,
             autoScroll : true,
@@ -137,7 +136,8 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
                 labelSeparator : ""
             },
             buttons : [ {
-                text : i18n.get('label.refreshDatasets')
+                text : i18n.get('label.refreshDatasets'),
+                itemId : "refreshDatasets"
             } ]
         });
         if (!Ext.isEmpty(this.properties)) {
@@ -262,10 +262,134 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
                 multiDsSearchDone : function () {
 //                    this.searchButton.setDisabled(false);
                 }
-
-            },
+            }
         });
         
         this.callParent(arguments);
+    },
+
+    /**
+     * Build for a properties a new formField depending on property type.
+     * The property type could be one of :
+     *  - TEXTFIELD,
+     *  - NUMERIC_FIELD,
+     *  - NUMERIC_BETWEEN,
+     *  - DATE_BETWEEN
+     * @param {} prop the Json definition of a property.
+     * @return {Ext.form.Field} a simple or composite field.
+     */
+    buildPropertyField : function (prop) {
+        var field;
+        switch (prop.type) {
+            case "TEXTFIELD" :
+                field = {
+                    xtype : "textfield",
+                    name : prop.name,
+                    anchor : '98%',
+                    enableKeyEvents : true,
+                    fieldLabel : prop.name,
+                    getAPIValue : function () {
+                        if (Ext.isEmpty(this.getValue())) {
+                            return null;
+                        }
+                        return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
+                    }
+                };
+                break;
+            case "NUMBER_FIELD" :
+                field = {
+                    xtype : "numberfield",
+                    name : prop.name,
+                    anchor : '98%',
+                    enableKeyEvents : true,
+                    fieldLabel : prop.name,
+                    getAPIValue : function () {
+                        if (Ext.isEmpty(this.getValue())) {
+                            return null;
+                        }
+                        return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
+                    }
+                };
+                break;
+            case "NUMERIC_BETWEEN" :
+                field = {
+                    xtype: 'fieldcontainer',
+                    defaults: {
+                        flex: 1
+                    },
+                    msgTarget: 'under',
+                    anchor : '98%',
+                    items: [
+                        {
+                            xtype: 'numberfield',
+                            name : prop.name + "deb",
+                            enableKeyEvents : true,
+                            itemId : 'deb'
+                        },
+                        {
+                            xtype: 'numberfield',
+                            name : prop.name + "fin",
+                            itemId : 'fin'
+
+                        }
+                    ],
+                    fieldLabel : prop.name,
+                    getAPIValue : function () {
+                        var deb = this.down("deb").getValue();
+                        var fin = this.down("fin").getValue();
+                        if (Ext.isEmpty(deb) || Ext.isEmpty(fin)) {
+                            return null;
+                        }
+                        return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
+                    }
+                };
+                break;
+            case "DATE_BETWEEN" :
+                field = {
+                    xtype: 'fieldcontainer',
+                    defaults: {
+                        flex: 1
+                    },
+                    msgTarget: 'under',
+                    anchor : '98%',
+                    items: [
+                        {
+                            xtype: 'datefield',
+                            name : prop.name + "deb",
+                            enableKeyEvents : true,
+                            format : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
+                            showTime : true,
+                            itemId : 'deb'
+                        },
+                        {
+                            xtype: 'datefield',
+                            name : prop.name + "fin",
+                            format : SITOOLS_DEFAULT_IHM_DATE_FORMAT,
+                            showTime : true,
+                            itemId : 'fin'
+                        }
+                    ],
+                    fieldLabel : prop.name,
+                    getAPIValue : function () {
+                        var debDate, finDate;
+                        var deb = this.down("deb").getValue();
+                        var fin = this.down("fin").getValue();
+                        try {
+                            debDate = Ext.Date.format(deb,SITOOLS_DATE_FORMAT);
+                            finDate = Ext.Date.format(fin,SITOOLS_DATE_FORMAT);
+                        }
+                        catch (err) {
+                            return null;
+                        }
+                        if (Ext.isEmpty(debDate) || Ext.isEmpty(finDate)) {
+                            return null;
+                        }
+                        return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, debDate, finDate);
+                    }
+                };
+                break;
+        }
+        return field;
     }
+
 });

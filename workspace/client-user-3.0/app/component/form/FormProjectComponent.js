@@ -27,54 +27,53 @@ Ext.namespace('sitools.user.controller.modules.datasets.dataviews');
  * @extends Ext.grid.GridPanel
  * @requires sitools.user.component.datasets.mainContainer
  */
-Ext.define('sitools.user.component.form.FormComponent', {
+Ext.define('sitools.user.component.form.FormProjectComponent', {
     extend : 'sitools.user.core.Component',
-    
-    controllers : ['sitools.user.controller.component.form.FormController'],
-    
+
+    controllers : ['sitools.user.controller.component.form.ProjectFormController'],
+
     /**
-     * @param ComponentConfig : Object containing form description and dataset description 
+     * @param ComponentConfig : Object containing form description and dataset description
      */
     init : function (componentConfig, windowConfig) {
-        
-        var windowSettings = {}, componentSettings = {};
-        
+
         var form = componentConfig.form;
-        var dataset = componentConfig.dataset;
-        
-        Ext.apply(windowSettings, windowConfig, {
-            datasetName : dataset.name,
-            type : "form",
-            title : i18n.get('label.forms') + " : " + dataset.name + "." + form.name,
-            id : "form" + dataset.id + form.id,
+
+
+        var windowSettings = {
+            type : "formProject",
+            title : i18n.get('label.forms') + " : " + form.name + ", Collection " + form.collection.name,
+            id : "formProject"  + form.id,
             saveToolbar : true,
-            iconCls : "form",
-            typeWindow : 'form'
-        });
-        
-        var view = Ext.create('sitools.user.view.component.form.FormView', {
-            dataUrl : dataset.sitoolsAttachementForUsers,
-            dataset : dataset,
+            datasetName : form.name,
+            winWidth : 600,
+            winHeight : 600,
+            iconCls : "form"
+        };
+
+        var view = Ext.create('sitools.user.view.component.form.ProjectFormView', {
             formId : form.id,
-            id : form.id,
             formName : form.name,
             formParameters : form.parameters,
-            formZones : form.zones,
             formWidth : form.width,
             formHeight : form.height,
             formCss : form.css,
-            preferencesPath : "/" + dataset.name + "/forms",
+            properties : form.properties,
+            urlServicePropertiesSearch : form.urlServicePropertiesSearch,
+            urlServiceDatasetSearch : form.urlServiceDatasetSearch,
+            dictionaryName : form.dictionary.name,
+            nbDatasetsMax : form.nbDatasetsMax,
+            preferencesPath : "/formProjects",
             preferencesFileName : form.name,
-            // searchAction : this.searchAction,
-            scope : this,
-            component : this
+            formZones : form.zones
         });
 
         this.setComponentView(view);
         this.show(view, windowSettings);
     },
-    
+
     _getSettings : function () {
+        //TODO
         var view = this.getComponentView();
         return {
             objectName : "forms", 

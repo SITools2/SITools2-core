@@ -243,7 +243,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             },
             items: [{
                 text : i18n.get('label.ajoutCondition'),
-                icon : loadUrl.get('APP_URL') + "/res/images/icons/add_condition.png",
+                icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/icons/add_condition.png",
                 listeners : {
                     scope : this,
                     click : function () {
@@ -260,14 +260,16 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
 //                        });
 //                        this.stopEditing();
                         
-                        this.store.insert(rowIndex, {});
+                        this.store.insert(rowIndex, {
+                            opLogique : 'and'
+                        });
 
                     }
                 }
             },
             {
                 text : i18n.get('label.suppressionCondition'),
-                icon : loadUrl.get('APP_URL') + "/res/images/icons/delete_condition.png",
+                icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/icons/delete_condition.png",
                 listeners : {
                     scope : this,
                     click : function () {
@@ -284,7 +286,7 @@ Ext.define('sitools.admin.datasets.PredicatsPanel', {
             },
             {
                 text : i18n.get('label.suppressionParenthese'),
-                icon : loadUrl.get('APP_URL') + "/res/images/icons/delete_parenthesis.png",
+                icon : loadUrl.get('APP_URL') + loadUrl.get("APP_CLIENT_PUBLIC_URL") + "/res/images/icons/delete_parenthesis.png",
                 listeners : {
                     scope : this,
                     click : function () {

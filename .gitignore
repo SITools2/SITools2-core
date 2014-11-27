@@ -18,6 +18,7 @@ workspace/client-user/js/modules/metacatalog/
 workspace/client-user/js/modules/igcsSmartQueriesModule/
 workspace/client-user/js/modules/cartoModule/
 .sencha/
+.idea/
 
 node_modules/
 

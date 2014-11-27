@@ -49,12 +49,12 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                 resize : this.resizeForm
             },
             
-            'projectformview #propertyPanelId' : {
-                click : this.propertySearch
-            },
-            
             'projectformview #btnSearchForm' : {
                 click : this.onSearch
+            },
+
+            'projectformview button#refreshDatasets' : {
+                click : this.propertySearch
             }
         });
     },
@@ -249,146 +249,28 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
      */
     getSearchButton : function () {
         return this.searchButton;
-    }, 
+    },
+
     /**
-     * Build for a properties a new formField depending on property type. 
-     * The property type could be one of : 
-     *  - TEXTFIELD, 
-     *  - NUMERIC_FIELD, 
-     *  - NUMERIC_BETWEEN, 
-     *  - DATE_BETWEEN
-     * @param {} prop the Json definition of a property. 
-     * @return {Ext.form.Field} a simple or composite field. 
-     */
-    buildPropertyField : function (prop) {
-        var field;
-        switch (prop.type) {
-        case "TEXTFIELD" : 
-            field = {
-                xtype : "textfield", 
-                name : prop.name, 
-                anchor : '98%', 
-                enableKeyEvents : true, 
-                fieldLabel : prop.name, 
-                getAPIValue : function () {
-                    if (Ext.isEmpty(this.getValue())) {
-                        return null;
-                    }
-                    return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
-                }
-            };          
-            break;
-        case "NUMBER_FIELD" : 
-            field = {
-                xtype : "numberfield", 
-                name : prop.name, 
-                anchor : '98%', 
-                enableKeyEvents : true, 
-                fieldLabel : prop.name, 
-                getAPIValue : function () {
-                    if (Ext.isEmpty(this.getValue())) {
-                        return null;
-                    }
-                    return Ext.String.format("{0}|{1}|{2}", prop.type, prop.name, this.getValue());
-                }
-            };          
-            break;
-        case "NUMERIC_BETWEEN" : 
-            field = {
-                xtype: 'fieldcontainer',
-                defaults: {
-                    flex: 1
-                },
-                msgTarget: 'under',
-                anchor : '98%', 
-                items: [
-                    {
-                        xtype: 'numberfield',
-                        name : prop.name + "deb", 
-                        enableKeyEvents : true
-                    },
-                    {
-                        xtype: 'numberfield',
-                        name : prop.name + "fin"
-                
-                    }
-                ],
-                fieldLabel : prop.name, 
-                getAPIValue : function () {
-                    var deb = this.items.itemAt(0).getValue();
-                    var fin = this.items.itemAt(1).getValue();
-                    if (Ext.isEmpty(deb) || Ext.isEmpty(fin)) {
-                        return null;
-                    }
-                    return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
-                }
-            };          
-            break;
-        case "DATE_BETWEEN" : 
-            field = {
-                xtype: 'fieldcontainer',
-                defaults: {
-                    flex: 1
-                },
-                msgTarget: 'under',
-                anchor : '98%', 
-                items: [
-                    {
-                        xtype: 'datefield',
-                        name : prop.name + "deb", 
-                        enableKeyEvents : true, 
-                        format : SITOOLS_DEFAULT_IHM_DATE_FORMAT, 
-                        showTime : true
-                    },
-                    {
-                        xtype: 'datefield',
-                        name : prop.name + "fin", 
-                        format : SITOOLS_DEFAULT_IHM_DATE_FORMAT, 
-                        showTime : true
-                
-                    }
-                ],
-                fieldLabel : prop.name, 
-                getAPIValue : function () {
-                    var deb, fin;
-                    try {
-                        deb = this.items.itemAt(0).getValue().format(SITOOLS_DATE_FORMAT);
-                        fin = this.items.itemAt(1).getValue().format(SITOOLS_DATE_FORMAT);
-                    
-                    }
-                    catch (err) {
-                        return null;
-                    }
-                    if (Ext.isEmpty(deb) || Ext.isEmpty(fin)) {
-                        return null;
-                    }
-                    return Ext.String.format("{0}|{1}|{2}|{3}", prop.type, prop.name, deb, fin);
-                }
-            };          
-            break;
-        }
-        return field;
-    }, 
-    /**
-     * Method called when user pressed on refresh Datasets button. 
+     * Method called when user pressed on refresh Datasets button.
      * Course properties and creates the parameters of the query to search the list of datasets
      */
-    propertySearch : function () {
-        var properties = this.propertyPanel.items.items;
+    propertySearch : function (btn) {
+        var form = btn.up("form#propertyPanelId");
+        var view = form.up("projectformview");
         var params = {};
         var j = 0;
-        var k = {};
-        for (var i = 0; i < properties.length; i++) {
-            var prop = properties[i];
+        form.items.each(function(prop) {
             if (!Ext.isEmpty(prop.getAPIValue())) {
                 params["k[" + j + "]"] = prop.getAPIValue();
                 j++;
             }
-        }
-        this.datasetPanel.getStore().load({
+        });
+
+        view.datasetPanel.getStore().load({
             params : params
         });
-        this.datasetPanel.getView().refresh();
+        view.datasetPanel.getView().refresh();
     }
     
 });
