@@ -19,6 +19,9 @@
 
 Ext.namespace('sitools.user.component.datasets.dataviews');
 
+
+
+
 /**
  * Datasets Module : Displays All Datasets depending on datasets attached to the
  * project.
@@ -38,6 +41,25 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
     
 	config : {
 	    primaryKey : null
+	},
+	
+	statics : {
+	    getParameters : function () {
+	        return [{
+	            jsObj : "Ext.slider.Single", 
+	            config : {
+	                minValue : 20, 
+	                maxValue : 100, 
+	                increment : 5, 
+	                value : 25,
+	                height : 50,
+	                anchor : '95%',
+	                fieldLabel : i18n.get("label.lineHeight"), 
+	                name : "lineHeight",
+	                plugins : [Ext.create("Ext.ux.slider.SliderRange")],
+	            }
+	        }];
+	    }
 	},
                 
     /**

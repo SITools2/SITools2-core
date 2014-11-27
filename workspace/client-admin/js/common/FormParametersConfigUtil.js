@@ -45,12 +45,6 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
     
     initComponent : function () {
 
-        this.bbar = Ext.create("sitools.public.widget.StatusBar", {
-            text : i18n.get('label.formReady'),
-            id : 'bbarFormParam',
-            iconCls : 'x-status-valid'
-        });
-        
         this.parametersFieldset = Ext.create("Ext.form.FieldSet", {
             title : i18n.get('label.parameters'),
             padding : 6
@@ -69,7 +63,7 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
     buildViewConfig : function (recSelected) {
         this.parametersFieldset.removeAll();
             
-        try {
+        //try {
             Ext.syncRequire(recSelected.xtype, function(classz) {
                     if(Ext.isEmpty(classz)){
                         this.parametersFieldset.add({
@@ -91,7 +85,6 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
                     var parameters = getParametersMethod();
                     
                     if (Ext.isEmpty(parameters)) {
-                        //this.parametersFieldset.setVisible(false);
                         this.parametersFieldset.add({
                             xtype : 'label',
                             html : '<h2 style="text-align:center;">'+ i18n.get('label.noParameter')+ '</h2>'
@@ -136,16 +129,16 @@ Ext.define('sitools.admin.common.FormParametersConfigUtil', {
                         
                     }, this);
             }, this);
-        } catch (err) {
-            this.parametersFieldset.add({
-                xtype : 'label',
-                html : '<h2 style="text-align:center;">'+ i18n.get('label.error.creating.form.parameter')+ '</h2>'
-            });
-            throw err;
-            // Ext.Msg.alert(i18n.get('label.error'),
-            // i18n.get('label.notImplementedMethod'));
-            // return;
-        }
+//        } catch (err) {
+//            this.parametersFieldset.add({
+//                xtype : 'label',
+//                html : '<h2 style="text-align:center;">'+ i18n.get('label.error.creating.form.parameter')+ '</h2>'
+//            });
+//            throw err;
+//            // Ext.Msg.alert(i18n.get('label.error'),
+//            // i18n.get('label.notImplementedMethod'));
+//            // return;
+//        }
             
     },
 

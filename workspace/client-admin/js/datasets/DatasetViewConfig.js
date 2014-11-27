@@ -90,7 +90,7 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
             forceSelection : true,
             editable : false,
             selectOnFocus : true,
-            anchor : '95%',    
+            anchor : '100%',    
             allowBlank : false,
             maxHeight : 200,
             validator : function (value) {
@@ -120,12 +120,8 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
             }
         });
 
-        this.parametersFieldset = Ext.create('Ext.form.FieldSet', {
-            title : i18n.get('label.parameters'), 
-            anchor : "95%"
-        });
         Ext.apply(this, {
-            items : [this.comboDatasetViews, this.parametersFieldset], 
+            items : [this.comboDatasetViews], 
             listeners : {
                 "activate" : function () {
                     if (this.action == 'view') {
@@ -146,58 +142,22 @@ Ext.define('sitools.admin.datasets.DatasetViewConfig', {
         this.viewConfigParamsValue = data;
     },
     buildViewConfig : function (recSelected) {
-        try {
-            this.parametersFieldset.removeAll();
-            var getParametersMethod = eval(recSelected[0].data.jsObject + ".getParameters");
-            if (!Ext.isFunction(getParametersMethod)) {
-                console.log(i18n.get('label.notImplementedMethod <br/>') + getParametersMethod);
-//                Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod) + '<br/>' + getParametersMethod);
-                return;
-            }
-            var parameters = getParametersMethod();
-            if (Ext.isEmpty(parameters)) {
-                this.parametersFieldset.setVisible(false);
-            }
-            else {
-                this.parametersFieldset.setVisible(true);
-            }
-            Ext.each(parameters, function (param) {
-                var parameterValue = this.findDefaultParameterValue(param);
-                var JsObj = eval(param.jsObj); 
-                var config = Ext.applyIf(param.config, {
-                    anchor : "95%"
-                });
-
-                var p = new JsObj(config);
-                if (!Ext.isEmpty(parameterValue)) {
-                    p.setValue(parameterValue);
-                }
-                this.parametersFieldset.add(p);
-                
-            }, this);
-            
-            this.doLayout();
-        }
-        catch (err) {
-//            Ext.Msg.alert(i18n.get('label.error'), i18n.get('label.notImplementedMethod') +  '<br/>' + err);
-            console.log(i18n.get('label.notImplementedMethod') +'<br/>' + err);
-            return;
+        if(this.formParametersPanel) {
+            this.remove(this.formParametersPanel);
         }
         
+        var record = recSelected[0].copy().data;
+        record.xtype = record.jsObject;
         
+        this.formParametersPanel = Ext.create("sitools.admin.common.FormParametersConfigUtil", {
+            rec : record,
+            parametersList : this.viewConfigParamsValue,
+            padding : 0
+        });
+        this.add(this.formParametersPanel);
     }, 
     getParametersValue : function () {
-        var result = [];
-        if (Ext.isEmpty(this.parametersFieldset.items)) {
-            return result;
-        }
-        this.parametersFieldset.items.each(function (param) {
-            result.push({
-                name : param.parameterName, 
-                value : param.getValue()
-            });
-        }, this);
-        return result;
+        return this.formParametersPanel.getParametersValue();
     }, 
     findDefaultParameterValue : function (param) {
         var result;
