@@ -195,9 +195,10 @@ Ext.define('sitools.admin.dictionary.DictionaryProp', {
             var property = templateSelected.properties[i];
             newConcept[property.name] = property.value; 
         }
+        newConcept.id = Ext.data.IdGenerator.get('uuid').generate();
         this.down('dictionaryGridPanel').getStore().add(newConcept);
         
-        if (this.down('dictionaryGridPan#[el').getStore().getCount() == 1) {
+        if (this.down('dictionaryGridPanel').getStore().getCount() == 1) {
             this.gridTemplates.getEl().mask();
         }
     },
