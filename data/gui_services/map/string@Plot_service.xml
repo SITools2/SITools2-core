@@ -5,7 +5,7 @@
   <label>label.plot</label>
   <author>AKKA Technologies</author>
   <version>1.0</version>
-  <icon>/sitools/res/images/icons/plot.png</icon>
+  <icon>/sitools/common/res/images/icons/plot.png</icon>
   <xtype>sitools.user.component.dataviews.services.plotService</xtype>
   <dependencies>
     <js>

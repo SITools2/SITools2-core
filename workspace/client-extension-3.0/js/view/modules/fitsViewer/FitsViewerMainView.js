@@ -249,9 +249,9 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', {
             }, this);
 
             this.tree.setRootNode(rootNode);
-            this.tree.expandAll();
             this.centerPanel.removeAll();
-            
+            this.tree.expandAll();
+
         }.bind(this), this.failLoadFits, this.onprogressFits.bind(this));
     },
 

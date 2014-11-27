@@ -156,7 +156,7 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
                 items : [{
                     header : i18n.get('label.name'),
                     dataIndex : 'name',
-                    width : 100
+                    width : 200
                 }, {
                     header : i18n.get('label.description'),
                     dataIndex : 'description',
@@ -164,11 +164,11 @@ Ext.define('sitools.admin.datasets.services.DatasetServicesProp', {
                 }, {
                     header : i18n.get('label.xtype'),
                     dataIndex : 'xtype',
-                    width : 300
+                    width : 250
                 }, {
                     header : i18n.get('label.version'),
                     dataIndex : 'version',
-                    width : 200,
+                    width : 80,
                     sortable : false
                 }]
             },
