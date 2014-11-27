@@ -44,7 +44,7 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.projectformview',
     layout : {
-        type : 'border',
+        type : 'vbox',
         align : 'stretch'
     },
 
@@ -82,9 +82,7 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
                 border : true,
                 css : this.formCss,
                 formId : this.formId,
-                id : key,
-                formWidth : this.formWidth,
-                height : this.formHeight
+                formWidth : this.formWidth
             });
 
             if (!Ext.isEmpty(this.formZones)) {
@@ -113,12 +111,11 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
         var displayComponentPanel = Ext.create('Ext.panel.Panel', {
             itemId : 'displayPanelId',
             title : i18n.get('label.formConcepts'),
-            region : "center",
             flex : 2,
             autoScroll : true,
             border : false,
             items : [this.zonesPanel],
-            layout : "absolute"
+            layout : "fit"
         });
 
         /**
@@ -214,10 +211,8 @@ Ext.define('sitools.user.view.component.form.ProjectFormView', {
             height : 300,
             items : [ this.propertyPanel, this.datasetPanel ],
             collapsedTitle : i18n.get('label.advancedSearch'),
-            region : "north",
             collapsible : true,
             collapsed : true,
-            flex : 2,
             layout : {
                 type : 'hbox',
                 align : 'stretch'

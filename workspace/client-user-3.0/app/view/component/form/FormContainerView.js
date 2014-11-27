@@ -43,10 +43,8 @@ Ext.define('sitools.user.view.component.form.FormContainerView', {
 
         Ext.apply(this, {
 //            title: this.formName,
-            id : "panelResultForm" + this.formId,
             bodyCls : this.css,
             height : this.formHeight,
-            width : this.width,
             border : false,
             bodyBorder : false,
             layout : 'form',

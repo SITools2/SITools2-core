@@ -39,7 +39,9 @@ Ext.define('sitools.user.view.component.form.ResultProjectForm', {
     
     forceFit : true,
     layout : 'fit',
-    
+	bodyBorder : false,
+	border : false,
+
     initComponent : function () {
         var params = {};
         params.datasetsList = this.datasets.join("|");
@@ -57,8 +59,6 @@ Ext.define('sitools.user.view.component.form.ResultProjectForm', {
 		});
         
         this.store = Ext.create('Ext.data.JsonStore', {
-            baseParams : params,
-            restful : true,
             proxy : {
             	type : 'ajax',
             	url : this.urlTask,
@@ -135,22 +135,18 @@ Ext.define('sitools.user.view.component.form.ResultProjectForm', {
                     store.each(function (record) {
                         var error = record.get("errorMessage");
                         if (!Ext.isEmpty(error)) {
-                            var index = store.indexOf(record);
-                            var htmlLineEl = this.getView().getRow(index);
-                            var el = Ext.get(htmlLineEl);
-                            
-                            var cls = "x-form-invalid-tip";
-                            
-                            var ttConfig = {
-                                html : error,
-                                dismissDelay : 0,
-                                target : el,
-                                cls : cls
-                            };
-    
-                            var ttip = new Ext.ToolTip(ttConfig);
-                        }
-                    }, this);					
+						    var index = store.indexOf(record);
+						    var htmlLineEl = this.getView().getNode(index);
+
+						    Ext.create("Ext.tip.ToolTip", {
+						        html : error,
+						        dismissDelay : 0,
+						        target : htmlLineEl,
+						        cls : "x-form-invalid-tip"
+						    });
+
+						}
+                    }, this);
 				}
 			}
         });
@@ -165,17 +161,32 @@ Ext.define('sitools.user.view.component.form.ResultProjectForm', {
 		}, {
 			width : 100, 
 			dataIndex : 'name', 
-			header : i18n.get('label.name')
+			header : i18n.get('label.name'),
+			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
+				if (record.get('status') == "REQUEST_ERROR") {
+					metaData.tdCls+="red-row";
+				}
+				if (record.get('status') == "UNAUTHORIZED") {
+					metaData.tdCls+="orange-row";
+				}
+				return value;
+			}
 		}, {
-			width : 100, 
-			dataIndex : 'nbRecord', 
+			width : 100,
+			dataIndex : 'nbRecord',
 			header : i18n.get('label.nbRecords')
 		}, {
-            width : 150, 
-            dataIndex : 'description', 
+            width : 150,
+            dataIndex : 'description',
             header : i18n.get('label.description'),
             renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				metaData.attr = "ext:qtip='" + value + "'";
+				if (record.get('status') == "REQUEST_ERROR") {
+					metaData.tdCls+="red-row";
+				}
+				if (record.get('status') == "UNAUTHORIZED") {
+					metaData.tdCls+="orange-row";
+				}
+				metaData.attr = "data-qtip='" + value + "'";
 				return value;
 			}
         }, {

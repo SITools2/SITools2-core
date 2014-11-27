@@ -44,11 +44,6 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
     
     init : function () {
         this.control({
-//        	'projectformview #displayPanelId' : {
-            'projectformview' : {
-                resize : this.resizeForm
-            },
-            
             'projectformview #btnSearchForm' : {
                 click : this.onSearch
             },
@@ -58,25 +53,6 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             }
         });
     },
-    
-    resizeForm :  function (displayPanel, width, height, oldWidth, oldHeight) {
-        
-        if (!Ext.isEmpty(displayPanel.zonesPanel.getEl())) {
-        	
-            var cmpChildSize = displayPanel.zonesPanel.getSize();
-            var size = displayPanel.body.getSize();
-            var xpos = 0, ypos = 0;
-            
-            if (size.height > cmpChildSize.height) {
-                ypos = (size.height - cmpChildSize.height) / 2;
-            }
-            if (size.width > cmpChildSize.width) {
-                xpos = (size.width - cmpChildSize.width) / 2;
-            }
-            
-            displayPanel.zonesPanel.setPosition(xpos, ypos);
-        }
-    }, 
     
     /**
      * Build the query for the multiDs search
@@ -104,7 +80,7 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             return;
         }
         
-        if (!Ext.isEmpty(projectformview.nbDatasetsMax) && datasets.length > projectformview.nbDatasetsMax) {          
+        if (projectformview.nbDatasetsMax > 0 && datasets.length > projectformview.nbDatasetsMax) {
             Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.toManyDatasetsAllowed'), projectformview.nbDatasetsMax));
             button.setDisabled(false);
             return;
@@ -159,7 +135,7 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             scope : this, 
             url : urlService, 
             success : function (response) {
-                try {
+                //try {
                     var json = Ext.decode(response.responseText);
                     if (! json.success) {
                         Ext.Msg.alert(i18n.get('label.error'), json.message);
@@ -184,18 +160,22 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                         saveToolbar : false, 
                         iconCls : "dataviews"
                     };
-                    
+
                     var viewResultForm = Ext.create(jsObj, componentCfg);
-                    
-                    Desktop.getNavMode().openComponent(viewResultForm, windowConfig);
-//                    SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj);
-                    
-                }
-                catch (err) {
-                    Ext.Msg.alert(i18n.get('label.error'), err);
-                    return;
-                }
-            }, 
+                    var sitoolsController = Desktop.getApplication().getController	('core.SitoolsController');
+                    //On ouvre le composant
+                    sitoolsController.openSimpleWindow(viewResultForm, windowConfig);
+
+                    //
+                    //
+                    //Desktop.getNavMode().openComponent(viewResultForm, windowConfig);
+
+                //}
+                //catch (err) {
+                //    Ext.Msg.alert(i18n.get('label.error'), err);
+                //    return;
+                //}
+            },
                 
             failure : alertFailure
         });

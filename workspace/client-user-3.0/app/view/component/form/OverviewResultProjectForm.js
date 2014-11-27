@@ -37,12 +37,24 @@ Ext.namespace('sitools.user.view.component.form');
 Ext.define('sitools.user.view.component.form.OverviewResultProjectForm', {
 	extend : 'Ext.panel.Panel',
 	alias : 'widget.overviewResultProjectForm',
+
+	bodyBorder : false,
+	border : false,
+	layout : 'fit',
+	padding : "5px",
 	
     initComponent : function () {
 
+		//var params = Ext.apply(this, {
+		//	flex : 2
+		//});
+
 		var results = Ext.create('sitools.user.view.component.form.ResultProjectForm', {
-			region : 'center'
-		});
+			flex : 1,
+			datasets : this.datasets,
+			formMultiDsParams : this.formMultiDsParams,
+			urlTask : this.urlTask
+		} );
 //		Ext.apply(results, {
 //			region : "center"
 //		});
@@ -50,30 +62,36 @@ Ext.define('sitools.user.view.component.form.OverviewResultProjectForm', {
 		var description = i18n.get('label.descriptionMultiDS');
 		
 		this.southPanel = Ext.create('Ext.tab.Panel', {
-        	title : i18n.get('label.results'), 
-			region : "south", 
-        	height : 300, 
+        	title : i18n.get('label.results'),
+			height : 300,
         	split : true, 
         	autoScroll : false, 
-        	collapsible : false, 
-        	collapsed : true
+        	collapsible : true,
+        	collapsed : true,
+			bodyBorder : false,
+			border : false,
+			collapseFirst : true,
+			collapseDirection : 'bottom'
 		});
 		Ext.apply(this, {
-			layout : "border", 
+			layout : {
+				type : "vbox",
+				align : 'stretch'
+			},
 			items : [results, this.southPanel]
 		});
 		
 		if (description !== "label.descriptionMultiDS") {
 			this.items.unshift({
 				xtype : 'panel',
-				height : 100, 
+				height : 100,
 				html : description, 
-				padding : "10px", 
-				region : "north", 
-				collapsible : true, 
+				collapsible : true,
 				split : true, 
 				autoScroll : true, 
-				title : i18n.get('label.description')
+				title : i18n.get('label.description'),
+				border : false,
+				bodyStyle : "background-color : white;"
 			});
 		}
 
