@@ -57,7 +57,7 @@ Ext.define('sitools.public.forms.components.ListBox', {
                 colModel : [ this.code ],
                 distinct : true
             };
-            store = new Ext.data.JsonStore({
+            store = Ext.create("Ext.data.JsonStore", {
                 fields : [ {
                     name : 'value',
                     mapping : this.code
@@ -103,9 +103,7 @@ Ext.define('sitools.public.forms.components.ListBox', {
         this.multiSelect =  Ext.create("Ext.ux.form.MultiSelect", {
             anchor : '100%',
             msgTarget : 'side',
-            fieldLabel : 'Multiselect',
             name : 'multiselect',
-            id : 'multiselect-field',
             allowBlank : false,
             store : store,
             width : this.width,
