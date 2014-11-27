@@ -19,6 +19,7 @@
 package fr.cnes.sitools.form.project;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +149,59 @@ public class FormProjectStoreXMLMap extends XmlMapStore<FormProject> implements 
         }
       });
     }
+  }
+  
+  @Override
+  public List<FormProject> getList(ResourceCollectionFilter filter) {
+    List<FormProject> result = new ArrayList<FormProject>();
+    if ((getMap() == null) || (getMap().size() <= 0) || (filter.getStart() > getMap().size())) {
+      return result;
+    }
+
+    // Filtre parent en premier
+    if ((filter.getParent() != null) && !filter.getParent().equals("")) {
+      for (FormProject formProject : getMap().values()) {
+        if (null == formProject.getParent()) {
+          continue;
+        }
+        if (formProject.getParent().equals(filter.getParent())) {
+          result.add(formProject);
+        }
+      }
+    }
+    else {
+      result.addAll(getMap().values());
+    }
+
+    // Filtre
+    if ((filter.getQuery() != null) && !filter.getQuery().equals("")) {
+      for (FormProject resource : result) {
+        if (null == resource.getName()) {
+          continue;
+        }
+        if ("strict".equals(filter.getMode())) {
+          if (resource.getName().equals(filter.getQuery())) {
+            result.add(resource);
+          }
+        }
+        else {
+          if (resource.getName().toLowerCase().startsWith(filter.getQuery().toLowerCase())) {
+            result.add(resource);
+          }
+        }
+      }
+    }
+
+    // Si index premier element > nombre d'elements filtres => resultat vide
+    if (filter.getStart() > result.size()) {
+      result.clear();
+      return result;
+    }
+
+    // Tri
+    sort(result, filter);
+
+    return new ArrayList<FormProject>(result);
   }
 
 }
