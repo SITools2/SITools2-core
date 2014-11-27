@@ -42,7 +42,9 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
                     var moduleRecord = btn.module;
                     
                     if (moduleRecord) {
-                        this.openModule(moduleRecord, event);
+                        this.openModule(moduleRecord, {
+                            event : event
+                        });
                     }
                 }
             },
@@ -52,72 +54,13 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
                     var moduleRecord = btn.module;
                     
                     if (moduleRecord) {
-                        this.openModule(moduleRecord, event);
+                        this.openModule(moduleRecord, {
+                            event : event
+                        });
                     }
                 }
             },
             
-			'moduleDataview' : {
-				boxready : function (window) {
-					window.center();
-				},
-				
-				afterrender : function (window) {
-					focusDataview = function (window) {
-						this.focus();
-					}
-					Ext.defer(focusDataview, 400, window);
-				},
-				
-				render : function (window) {
-					window.getEl().on('keypress', function(e) {
-	                      if (e.getKey() == e.ECHAP) {
-	                    	  var moduleDataview = dataview.up('moduleDataview');
-	                    	  moduleDataview.hide();
-	                    	  Desktop.getDesktopEl().unmask();
-	                      }
-	                 });
-				}
-			},
-			
-			'moduleDataview dataview' : {
-				itemclick : function (dataview, moduleRecord, item, index, event) {
-					
-					var moduleDataview = dataview.up('moduleDataview');
-					
-					if (!Ext.isEmpty(moduleRecord.get('properties')) && moduleRecord.get('properties').category) {
-						var category = moduleRecord.get('name');
-						
-						moduleDataview.store.removeAll();
-						
-						moduleDataview.moduleStore.each(function (module) {
-				    		var categoryModule = module.get('categoryModule');
-				    		if (category === categoryModule) {
-				    			module.set('type', 'module');
-				    			moduleDataview.store.add(module);
-				    		}
-				    	});
-						
-					} else {
-						var type = moduleRecord.get('type');
-						var module = Ext.create(moduleRecord.get("xtype"));
-						if (type == 'module') {
-							if (Ext.isFunction(module.openMe)) {
-								module.openMe(moduleDataview, moduleRecord, event);
-							} else {
-								this.openModule(moduleRecord, event);
-								moduleDataview.hide();
-								Desktop.getDesktopEl().unmask();
-							}
-						} else if (type == 'component' && Ext.isFunction(module.openMyComponent)) {
-							module.openMyComponent(moduleRecord, event);
-							moduleDataview.hide();
-							Desktop.getDesktopEl().unmask();
-						}
-					}
-				}
-			},
-			
 			"component [type='module']" : {
 			    registermodule : function (module, view) {
 			        module.moduleModel.set("instantiated", true);
@@ -198,7 +141,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         });
     },
 
-    openModule : function (moduleModel, event) {
+    openModule : function (moduleModel, componentConfig) {
         if (moduleModel.get("instantiated")) {
             var module = moduleModel.get("instance");
             module.show(module.getViewCmp());
@@ -206,7 +149,7 @@ Ext.define('sitools.user.controller.core.SitoolsController', {
         else {
             var module = Ext.create(moduleModel.data.xtype);
             module.create(this.getApplication(), moduleModel, function() {
-                this.init(event);
+                this.init(componentConfig);
             }, module);
         }
     },

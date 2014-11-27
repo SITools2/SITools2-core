@@ -35,6 +35,10 @@ html, body {
 	height: 100%;
 }
 
+.sitoolsLoadingWhite .x-mask-msg-text {
+	background-image: url(/sitools/common/res/images/icons/sitoolsLoading_white.gif);
+}
+
 .x-mask-msg-text {
 	background-image: url(/sitools/common/res/images/icons/sitoolsLoading.gif);
 }
