@@ -61,7 +61,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         });
         
         this.sliderFrameGroupBtn = Ext.create('Ext.container.ButtonGroup', {
-            title: 'Frames',
+            title: this.i18nFitsViewer.get('label.frames'),
             hidden : true,
             items : [this.sliderFrame]
         });
@@ -165,20 +165,20 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
             }]
         });
         
-        this.histoGroupBtn = Ext.create('Ext.container.ButtonGroup', {
-            hideBorders : true,
-            defaults: {
-                scope : this,
-                toggleGroup : 'save',
-                toggleHandler : this.saveCanvas,
-            },
-            items : [{
-                text : this.i18nFitsViewer.get('label.saveImage'),
-                tooltip : this.i18nFitsViewer.get('label.saveImageTooltip'),
-                name : 'save',
-                icon : loadUrl.get("APP_URL") +  "/common/res/images/icons/save.png",
-            }]
-        });
+        //this.histoGroupBtn = Ext.create('Ext.container.ButtonGroup', {
+        //    hideBorders : true,
+        //    defaults: {
+        //        scope : this,
+        //        toggleGroup : 'save',
+        //        toggleHandler : this.saveCanvas
+        //    },
+        //    items : [{
+        //        text : this.i18nFitsViewer.get('label.saveImage'),
+        //        tooltip : this.i18nFitsViewer.get('label.saveImageTooltip'),
+        //        name : 'save',
+        //        icon : loadUrl.get("APP_URL") +  "/common/res/images/icons/save.png",
+        //    }]
+        //});
         
         this.tbar = {
             xtype : 'toolbar',
@@ -187,7 +187,7 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
             defaults : {
                 scope : this
             },
-            items : [this.functionsGroupBtn, '-' , this.colorsGroupBtn, '-', this.sliderFrameGroupBtn, this.histoGroupBtn]
+            items : [this.sliderFrameGroupBtn, this.functionsGroupBtn, '-' , this.colorsGroupBtn, '-', /*this.histoGroupBtn*/]
         };
 
      // Value define later
@@ -476,13 +476,13 @@ Ext.define('sitools.extension.view.modules.fitsViewer.FitsViewerView', {
         }, 5, this);
     },
     
-    saveCanvas : function () {
-    	var canvasImage = document.getElementById('FITSimage');
-    	var canvasUrl = canvasImage.toDataURL("image/png").replace("image/png", "image/octet-stream");;
-    	
-    	window.open(canvasUrl, '_parent');
-    	
-    },
+    //saveCanvas : function () {
+    //	var canvasImage = document.getElementById('FITSimage');
+    //	var canvasUrl = canvasImage.toDataURL("image/png").replace("image/png", "image/octet-stream");;
+    //
+    //	window.open(canvasUrl, '_parent');
+    //
+    //},
     
     initHistogram : function (fits) {
         this.fitsData = fits.getHDU().data;

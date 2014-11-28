@@ -174,7 +174,7 @@ Ext.define('sitools.user.Application', {
     },
     
     addMask : function () {
-        this.splashScreen = Ext.getBody().mask('', 'splashscreen');
+        this.splashScreen = Ext.getBody().mask('', 'splashscreen sitoolsLoadingWhite');
         this.splashScreen.addCls('splashscreen');
         Ext.DomHelper.insertFirst(Ext.query('.x-mask-msg')[0],{
             cls : 'x-splash-icon'

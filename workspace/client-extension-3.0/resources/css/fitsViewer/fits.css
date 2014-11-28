@@ -66,7 +66,7 @@
 		Direction=135, Strength=8);
 }
 
-.link-style button {
+.link-style .x-btn-inner {
 	font-style: italic;
 	text-decoration: underline;
 	color: blue;

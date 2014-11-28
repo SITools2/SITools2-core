@@ -30,9 +30,6 @@ Ext.define('sitools.extension.modules.FitsViewer', {
     
     pluginName : 'fitsViewer',
     
-    //requires : [],
-    
-
     js : [ '/sitools/client-extension/resources/libs/fitsViewer/fits.js',
            '/sitools/client-extension/resources/libs/fitsViewer/binaryajax.js',
            '/sitools/client-extension/resources/libs/fitsViewer/excanvasCompiled.js',
@@ -49,10 +46,16 @@ Ext.define('sitools.extension.modules.FitsViewer', {
 
     i18nFolderPath : ['/sitools/client-extension/resources/i18n/fitsViewer/'],
     
-    init : function () {
+    init : function (componentConfig) {
         this.callParent(arguments);
-        
-        var view = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerMainView');
+
+        var view = Ext.create('sitools.extension.view.modules.fitsViewer.FitsViewerMainView', componentConfig);
+
+        //if (!Ext.isEmpty(componentConfig.urlFits)) {
+        //    view.loadFits(componentConfig.urlFits);
+        //    view.tree.expandAll(true);
+        //}
+
         this.show(view);
     },
     

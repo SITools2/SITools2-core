@@ -81,6 +81,8 @@ Ext.define('sitools.user.view.desktop.DesktopView', {
     taskbarConfig: null,
 
     windowMenu: null,
+    
+    cls : 'x-panel-body-silver',
 
     initComponent: function () {
         var me = this;

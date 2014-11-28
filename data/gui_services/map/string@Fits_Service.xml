@@ -5,23 +5,10 @@
   <label>label.FitsService</label>
   <author>AKKA</author>
   <version>1.0</version>
-  <icon>/sitools/client-user/js/modules/sitoolsFitsViewer/images/stars.png</icon>
-  <xtype>sitools.user.component.dataviews.services.sitoolsFitsService</xtype>
+  <icon>/sitools/client-extension/resources/img/fitsViewer/stars.png</icon>
+  <xtype>sitools.extension.component.datasets.services.fitsService.FitsService</xtype>
   <dependencies>
-    <js>
-      <!--<url>
-        <url>/sitools/client-user/js/modules/sitoolsFitsViewer/lib/excanvas.compiled.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/sitoolsFitsViewer/lib/binaryajax.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/modules/sitoolsFitsViewer/lib/fits.js</url>
-      </url>
-      <url>
-        <url>/sitools/client-user/js/components/datasetServices/sitoolsFitsService.js</url>
-      </url>-->
-    </js>
+    <js/>
     <css/>
   </dependencies>
   <priority>1</priority>

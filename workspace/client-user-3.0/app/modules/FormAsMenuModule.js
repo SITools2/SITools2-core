@@ -30,7 +30,8 @@ Ext.define('sitools.user.modules.FormAsMenuModule', {
     
     controllers : ['sitools.user.controller.modules.formModule.FormAsMenuModuleController'],
     
-    init : function (event) {
+    init : function (componentConfig) {
+        var event = componentConfig.event;
         var view = Ext.create('sitools.user.view.modules.formModule.FormAsMenuModuleView');
         
         this.show(view, event.getX(), event.getY());
