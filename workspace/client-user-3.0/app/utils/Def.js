@@ -705,6 +705,22 @@ function viewFileContent(url, title) {
     });
 }
 
+function showResponse(ret) {
+    try {
+        var Json = Ext.decode(ret.responseText);
+        if (!Json.success) {
+            Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
+            return false;
+        }
+        popupMessage(i18n.get('label.info'), i18n.get(Json.message), loadUrl.get('APP_URL') + loadUrl.get('APP_CLIENT_PUBLIC_URL')+'/res/images/msgBox/16/icon-info.png');
+
+        return true;
+    } catch (err) {
+        Ext.Msg.alert(i18n.get('label.warning'), i18n.get('warning.javascriptError') + " : " + err);
+        return false;
+    }
+}
+
 /*Ext.override(Ext.data.XmlReader, {
     buildExtractors : function () {
         if (this.ef) {

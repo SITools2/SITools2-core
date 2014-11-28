@@ -40,7 +40,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
                 'sitools.user.store.DataviewsStore'],
     
 	config : {
-	    primaryKey : null
+	    primaryKey : null,
+        autoShow : true
 	},
 	
 	statics : {
@@ -56,7 +57,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
 	                anchor : '95%',
 	                fieldLabel : i18n.get("label.lineHeight"), 
 	                name : "lineHeight",
-	                plugins : [Ext.create("Ext.ux.slider.SliderRange")],
+	                plugins : [Ext.create("Ext.ux.slider.SliderRange")]
 	            }
 	        }];
 	    }
@@ -112,8 +113,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
         });
         
         windowSettings.id = "dataset_" + dataset.id + "_" + Ext.id();
-        
-        Ext.apply(componentSettings, {
+
+        componentSettings = Ext.apply(componentConfig, {
             dataset : dataset,
             store : datasetStore,
             columns : columns,
@@ -124,14 +125,16 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             nbRecordsSelection : componentConfig.nbRecordsSelection,
             isModifySelection : componentConfig.isModifySelection,
             preferencesPath : componentConfig.preferencesPath, 
-            preferencesFileName : componentConfig.preferencesFileName,
+            preferencesFileName : componentConfig.preferencesFileName
             // searchAction : this.searchAction,
         });
         
         var view = Ext.create('sitools.user.view.component.datasets.dataviews.LivegridView', componentSettings);
 
         this.setComponentView(view);
-        this.show(view, windowSettings);
+        if(this.getAutoShow()){
+            this.show(view, windowSettings);
+        }
     },
     
     /**

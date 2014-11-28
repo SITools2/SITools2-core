@@ -156,7 +156,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
             datasetDescription : dataset.description,
             datasetCm : dataset.columnModel,
             datasetName : dataset.name,
-            dictionaryMappings : dataset.dictionaryMappings,
+            dictionaryMappings : dataset.dictionaryMappings
         });
         
         var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 

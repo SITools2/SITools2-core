@@ -50,10 +50,97 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
 
             'projectformview button#refreshDatasets' : {
                 click : this.propertySearch
+            },
+
+            'resultProjectForm actioncolumn#showDefinition' : {
+                click : function (view, cell, rowIndex, col, e) {
+                    var grid = view.up("grid")
+                    var rec = grid.getStore().getAt(rowIndex);
+                    if (Ext.isEmpty(rec)) {
+                        return;
+                    }
+                    var url = rec.get('url');
+                    sitools.user.utils.DatasetUtils.openDefinition(url);
+                }
+            },
+
+            'resultProjectForm actioncolumn#showData' : {
+                click : function (view, cell, rowIndex, col, e) {
+                    var grid = view.up("grid");
+                    Desktop.getNavMode().multiDataset.showDataset(grid, rowIndex, col );
+                }
             }
         });
+
+        this.listen({
+            store : {
+                '#resultProjectFormStore' : {
+                    load: function (store, recs, success ,options) {
+                        var grid = store.grid;
+                        if(Ext.isEmpty(store.task)) {
+                            store.task = Ext.create("Ext.util.DelayedTask", function () {
+                                return;
+                            });
+                        }
+                        store.task.cancel();
+                        if (store.getProxy().reader.jsonData.TaskModel.status == "TASK_STATUS_RUNNING" ||
+                            store.getProxy().reader.jsonData.TaskModel.status == "TASK_STATUS_PENDING") {
+                            grid.down('toolbar').setStatus({
+                                // text: ret.error ? ret.error :
+                                // i18n.get('warning.serverUnreachable'),
+                                text: i18n.get('label.loading'),
+                                iconCls: 'x-status-busy'
+                            });
+
+                            store.task.delay(MULTIDS_TIME_DELAY, function () {
+                                store.load();
+                            });
+                        }
+                        else {
+                            Ext.Ajax.request({
+                                scope: this,
+                                url: grid.urlTask,
+                                method: "DELETE",
+                                success: function (ret) {
+                                    //								var callerCmp = Ext.getCmp(grid.callerId);
+                                    //								callerCmp.fireEvent("multiDsSearchDone");
+                                },
+                                failure: alertFailure
+                            });
+                            if (store.getProxy().reader.jsonData.TaskModel.status == "TASK_STATUS_FAILURE") {
+                                grid.down('toolbar').setStatus({
+                                    text: store.getProxy().reader.jsonData.TaskModel.customStatus,
+                                    iconCls: 'x-status-error'
+                                });
+                            }
+                            else {
+                                grid.down('toolbar').setStatus({
+                                    text: i18n.get("label.requestDone"),
+                                    iconCls: 'x-status-valid'
+                                });
+                            }
+                        }
+                        store.each(function (record) {
+                            var error = record.get("errorMessage");
+                            if (!Ext.isEmpty(error)) {
+                                var index = store.indexOf(record);
+                                var htmlLineEl = grid.getView().getNode(index);
+
+                                Ext.create("Ext.tip.ToolTip", {
+                                    html: error,
+                                    dismissDelay: 0,
+                                    target: htmlLineEl,
+                                    bodyCls: "x-tip-body-form-invalid"
+                                });
+
+                            }
+                        }, this);
+                    }
+                }
+            }
+        })
     },
-    
+
     /**
      * Build the query for the multiDs search
      * @param {Ext.Button} button The button that launch the request (to be disabled)
@@ -61,10 +148,10 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
      */
     onSearch : function (button) {
 //        button.setDisabled(true);
-        
+
         var projectformview = button.up('projectformview');
         var containers = projectformview.down('[stype="sitoolsFormContainer"]');
-        
+
         var formMultiDsParams = [];
         var glue = "";
         var i = 0;
@@ -79,42 +166,42 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             button.setDisabled(false);
             return;
         }
-        
+
         if (projectformview.nbDatasetsMax > 0 && datasets.length > projectformview.nbDatasetsMax) {
             Ext.Msg.alert(i18n.get('label.error'), Ext.String.format(i18n.get('label.toManyDatasetsAllowed'), projectformview.nbDatasetsMax));
             button.setDisabled(false);
             return;
         }
         var valid = true;
-        
+
         projectformview.zonesPanel.items.each(function(componentList) {
-            valid = valid && componentList.isComponentsValid();            
+            valid = valid && componentList.isComponentsValid();
         },projectformview);
-        
+
         if (!valid) {
         	projectformview.down('toolbar').setStatus({
                 text : i18n.get('label.checkformvalue'),
                 iconCls : 'x-status-error'
             });
-        	projectformview.down('toolbar').setVisible(true);    
+        	projectformview.down('toolbar').setVisible(true);
             button.setDisabled(false);
             return;
         } else {
         	projectformview.down('toolbar').setVisible(false);
         }
-        
+
         Ext.each(containers, function (container) {
             if (Ext.isFunction(container.getParameterValue)) {
                 var param = container.getParameterValue();
-                
+
                 if (!Ext.isEmpty(param)) {
                     formMultiDsParams.push(this.paramValueToApi(param, projectformview));
                 }
             }
         }, this);
-        
+
         var urlService = Project.sitoolsAttachementForUsers + projectformview.urlServiceDatasetSearch;
-        
+
         var params = {};
         params.datasetsList = datasets.join("|");
 
@@ -126,14 +213,14 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             }, this);
         }
 
-        //Launch the first POST Request on service: 
+        //Launch the first POST Request on service:
         Ext.Ajax.request({
-            method : "POST", 
-            params : params, 
+            method : "POST",
+            params : params,
             //Just to be sure that params are passed with the url request
-            jsonData : {}, 
-            scope : this, 
-            url : urlService, 
+            jsonData : {},
+            scope : this,
+            url : urlService,
             success : function (response) {
                 //try {
                     var json = Ext.decode(response.responseText);
@@ -141,10 +228,10 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                         Ext.Msg.alert(i18n.get('label.error'), json.message);
                         return;
                     }
-                    
+
 //                    var jsObj = SitoolsDesk.navProfile.multiDataset.getObjectResults();
                     var jsObj = Desktop.getNavMode().multiDataset.getObjectResults();
-                    
+
                     var componentCfg = {
                         urlTask : json.TaskModel.statusUrl,
                         formId : projectformview.formId,

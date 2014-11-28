@@ -24,10 +24,8 @@ Ext.namespace('sitools.user.core.Component');
  * @class sitools.user.core.Component
  */
 Ext.define('sitools.user.core.Component', {
-    mixins: {
-        observable: 'Ext.util.Observable'
-    },
-    
+    extend : 'Ext.util.Observable',
+
     config : {
         componentView : null,
         project : null,

@@ -49,6 +49,9 @@ Ext.define('sitools.public.utils.PopupMessage', {
         if(!this.msgCt){
             this.msgCt = Ext.DomHelper.insertFirst(document.body, {id:'msg-div'}, true);
         }
+        if(Ext.isEmpty(message)) {
+            message = "";
+        }
         var s = Ext.String.format.apply(String, [message]);
         var m = Ext.DomHelper.append(this.msgCt, sitools.public.utils.PopupMessage.createBox(title, s, icon, iconClass), true);
         m.hide();

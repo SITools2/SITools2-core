@@ -417,33 +417,46 @@ Ext.define('sitools.user.controller.core.FixedMode', {
                 url : rec.get('url'), 
                 scope : this, 
                 success : function (ret) {
-                    var Json = Ext.decode(ret.responseText);
-                    if (showResponse(ret)) {
-                        var dataset = Json.dataset;
-                        var componentCfg, JsObj;
-                        
-                        JsObj = eval(dataset.datasetView.jsObject);
-                        componentCfg = {
-                            title : dataset.name, 
-                            closable : true, 
-                            dataUrl : dataset.sitoolsAttachementForUsers,
-                            datasetId : dataset.Id,
-                            datasetCm : dataset.columnModel, 
-                            datasetName : dataset.name,
-                            dictionaryMappings : dataset.dictionaryMappings,
-                            datasetViewConfig : dataset.datasetViewConfig, 
-                            sitoolsAttachementForUsers : dataset.sitoolsAttachementForUsers, 
-                            formMultiDsParams : this.formMultiDsParams
-                        };
-                        var dataview = new JsObj(componentCfg);
-                        
-                        this.ownerCt.southPanel.add(dataview);
-                        this.ownerCt.southPanel.setVisible(true);
-                        this.ownerCt.southPanel.expand();
-                        this.ownerCt.southPanel.setActiveTab(this.ownerCt.southPanel.items.length - 1);
-                        this.ownerCt.doLayout();
-                    }
-                }, 
+
+					var Json = Ext.decode(ret.responseText);
+					if (!Json.success) {
+						Ext.Msg.alert(i18n.get('label.warning'), i18n.get(Json.message));
+						return false;
+					}
+
+					var dataset = Json.dataset;
+
+					var javascriptObject = Desktop.getNavMode().getDatasetOpenMode(dataset);
+
+					var componentConfig = {
+						dataset : dataset,
+						preferencesPath : "/" + dataset.name,
+						preferencesFileName : "datasetOverview",
+						formMultiDsParams : this.formMultiDsParams,
+						title : dataset.name,
+						closable : true
+					};
+
+					var windowConfig = {
+						saveToolbar : false
+					};
+
+					var component = Ext.create(javascriptObject, {
+						autoShow : false
+					});
+
+					component.create(Desktop.getApplication(), function() {
+						component.init(componentConfig, windowConfig);
+
+						var me = grid.up("panel").down("tabpanel");
+						var dataview = component.getComponentView();
+						me.add(dataview);
+						me.setVisible(true);
+						me.expand();
+						me.setActiveTab(dataview);
+
+					}, component);
+                },
                 failure : alertFailure
             });
 
