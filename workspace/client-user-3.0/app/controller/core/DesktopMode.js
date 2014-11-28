@@ -375,8 +375,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
          *            colIndex the index of the column
          * @returns
          */
-        showDataset : function (grid, rowIndex, colIndex) {
-            var rec = grid.getStore().getAt(rowIndex);
+		showDataset : function (grid, rec, formConceptFilters) {
             if (Ext.isEmpty(rec)) {
                 return;
             }
@@ -386,8 +385,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
             
             var url = rec.get("url");
             sitools.user.utils.DatasetUtils.openDataset(url, {
-//                formMultiDsParams : this.formMultiDsParams
-                formParams : this.formMultiDsParams
+				formConceptFilters : formConceptFilters
             });
         }
     }
