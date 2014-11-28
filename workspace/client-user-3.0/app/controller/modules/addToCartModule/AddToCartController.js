@@ -159,10 +159,11 @@ Ext.define('sitools.user.controller.modules.addToCartModule.AddToCartController'
             gridFilters : selected.get('gridFilters'),
             gridFiltersCfg : selected.get('gridFiltersCfg'),
             sortInfo : selected.get('sortInfo'),
-            formParams : selected.get('formParams'),
-            isModifySelection : true
+            formFilters : selected.get('formFilters'),
+            isModifySelection : true,
+            formConceptFilters : selected.get("formConceptFilters")
         };
-        sitools.user.utils.DatasetUtils.clickDatasetIcone(url, 'data', params);
+        sitools.user.utils.DatasetUtils.openDataset(url, params, {});
     },
     
     /**

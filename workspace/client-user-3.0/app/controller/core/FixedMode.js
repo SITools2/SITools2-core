@@ -403,8 +403,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
          * @param {int} colIndex the index of the column
          * @returns
          */
-        showDataset : function (grid, rowIndex, colIndex) {
-            var rec = grid.getStore().getAt(rowIndex);
+        showDataset : function (grid, rec, formConceptFilters) {
             if (Ext.isEmpty(rec)) {
                 return;
             }
@@ -432,7 +431,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
 						dataset : dataset,
 						preferencesPath : "/" + dataset.name,
 						preferencesFileName : "datasetOverview",
-						formMultiDsParams : this.formMultiDsParams,
+						formConceptFilters : formConceptFilters,
 						title : dataset.name,
 						closable : true
 					};

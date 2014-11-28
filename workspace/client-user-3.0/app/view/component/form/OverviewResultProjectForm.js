@@ -52,7 +52,7 @@ Ext.define('sitools.user.view.component.form.OverviewResultProjectForm', {
 		var results = Ext.create('sitools.user.view.component.form.ResultProjectForm', {
 			flex : 1,
 			datasets : this.datasets,
-			formMultiDsParams : this.formMultiDsParams,
+			formConceptFilters : this.formConceptFilters,
 			urlTask : this.urlTask
 		} );
 //		Ext.apply(results, {

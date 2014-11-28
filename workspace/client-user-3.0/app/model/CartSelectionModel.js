@@ -63,6 +63,8 @@ Ext.define('sitools.user.model.CartSelectionModel', {
         name : 'formFilters'
     }, {
         name : 'colModel'
+    }, {
+        name : 'formConceptFilters'
     }]
 
 });

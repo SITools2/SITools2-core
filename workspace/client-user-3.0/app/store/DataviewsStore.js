@@ -65,7 +65,11 @@ Ext.define('sitools.user.store.DataviewsStore', {
         // list of value object filters added by the filter service
         gridFilters : null,
         // list of config object filters added by the filter service
-        gridFiltersCfg : null
+        gridFiltersCfg : null,
+        // Object definition of the concept filters (used by formProject (multidataset forms))
+        formConceptFilters : null,
+        // Object of string parameters corresponding to the concept filters definition
+        formConceptParams : null
     },
     
     paramPrefix : "filter",
@@ -76,9 +80,14 @@ Ext.define('sitools.user.store.DataviewsStore', {
         this.setFormFilters(config.formFilters);
         this.setGridFilters(config.gridFilters);
         this.setGridFiltersCfg(config.gridFiltersCfg);
+        this.setFormConceptFilters(config.formConceptFilters);
 
         if (!Ext.isEmpty(this.getFormFilters())) {
             this.setFormParams(this.buildFormParamsUrl(this.getFormFilters()));
+        }
+
+        if (!Ext.isEmpty(this.getFormConceptFilters())) {
+            this.setFormConceptParams(this.buildFormParamsUrl(this.getFormConceptFilters(), "c"));
         }
 
         Ext.apply(config, {
@@ -126,7 +135,12 @@ Ext.define('sitools.user.store.DataviewsStore', {
                     if (!Ext.isEmpty(store.getFormParams())) {
                     	Ext.apply(operation.params, store.getFormParams());
                     }
-                    
+
+                    // adding optional form parameters
+                    if (!Ext.isEmpty(store.getFormConceptParams())) {
+                    	Ext.apply(operation.params, store.getFormConceptParams());
+                    }
+
                     if (!Ext.isEmpty(store.gridFilters)) {
                         var params = this.buildQuery(store.gridFilters);
                         Ext.apply(operation.params, params);
@@ -145,10 +159,11 @@ Ext.define('sitools.user.store.DataviewsStore', {
 		this.getProxy().url += params;
     },
     
-    buildQuery : function (filters) {
+    buildQuery : function (filters, filterType) {
         if (Ext.isEmpty(filters)) {
             return;
         }
+
         var p = {}, i, f, root, dataPrefix, key, tmp,
             len = filters.length;
 
@@ -164,13 +179,20 @@ Ext.define('sitools.user.store.DataviewsStore', {
         }
         return p;
     },
+
     /**
      * Build a string using a form param Value. 
      * @param {} paramValue An object with attributes : at least type, code, value and optionnal userDimension, userUnit
      * @return {string} something like "TEXTFIELD|ColumnAlias|value"
      */
     paramValueToApi : function (paramValue) {
-        var stringParam = paramValue.type + "|" + paramValue.code + "|" + paramValue.value;
+        var code ="";
+        if(!Ext.isEmpty(paramValue.dictionary)) {
+            code += paramValue.dictionary + ",";
+        }
+        code += paramValue.code;
+
+        var stringParam = paramValue.type + "|" + code + "|" + paramValue.value;
         if (!Ext.isEmpty(paramValue.userDimension) && !Ext.isEmpty(paramValue.userUnit)) {
             stringParam += "|" + paramValue.userDimension + "|" + paramValue.userUnit.unitName; 
         }  
@@ -179,12 +201,14 @@ Ext.define('sitools.user.store.DataviewsStore', {
     
     /**
      * Build a string path from the given formFilters
+     * @param formFilters Array List of form filter or form concept filters
+     * @param paramType String type of parameter, p for form filter, c for form concept filters (default to p)
      */
-    buildFormParamsUrl : function (formFilters) {
+    buildFormParamsUrl : function (formFilters, paramType) {
+        var type = (Ext.isEmpty(paramType))?"p":paramType;
         var formParams = {};
-        formParams.p = [];
         Ext.each(formFilters, function (filter, index, arrayParams) {
-            formParams["p[" + index + "]"] = this.paramValueToApi(filter);
+            formParams[type + "[" + index + "]"] = this.paramValueToApi(filter);
         }, this);
         return formParams;
     }

@@ -98,7 +98,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             formFilters : componentConfig.formFilters,
             gridFilters : componentConfig.gridFilters,
             gridFiltersCfg : componentConfig.gridFiltersCfg,
-            sortInfo : componentConfig.sortInfo
+            sortInfo : componentConfig.sortInfo,
+            formConceptFilters : componentConfig.formConceptFilters
         });
         
         Ext.apply(windowSettings, windowConfig, {
@@ -125,7 +126,7 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             nbRecordsSelection : componentConfig.nbRecordsSelection,
             isModifySelection : componentConfig.isModifySelection,
             preferencesPath : componentConfig.preferencesPath, 
-            preferencesFileName : componentConfig.preferencesFileName
+            preferencesFileName : componentConfig.preferencesFileName,
             // searchAction : this.searchAction,
         });
         

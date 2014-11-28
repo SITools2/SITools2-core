@@ -67,7 +67,8 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
             'resultProjectForm actioncolumn#showData' : {
                 click : function (view, cell, rowIndex, col, e) {
                     var grid = view.up("grid");
-                    Desktop.getNavMode().multiDataset.showDataset(grid, rowIndex, col );
+                    var rec = grid.getStore().getAt(rowIndex);
+                    Desktop.getNavMode().multiDataset.showDataset(grid, rec, grid.formConceptFilters);
                 }
             }
         });
@@ -152,7 +153,7 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
         var projectformview = button.up('projectformview');
         var containers = projectformview.down('[stype="sitoolsFormContainer"]');
 
-        var formMultiDsParams = [];
+        var formConceptFilters = [];
         var glue = "";
         var i = 0;
         var datasets = [];
@@ -179,39 +180,36 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
         },projectformview);
 
         if (!valid) {
-        	projectformview.down('toolbar').setStatus({
+            projectformview.down('toolbar').setStatus({
                 text : i18n.get('label.checkformvalue'),
                 iconCls : 'x-status-error'
             });
-        	projectformview.down('toolbar').setVisible(true);
+            projectformview.down('toolbar').setVisible(true);
             button.setDisabled(false);
             return;
         } else {
-        	projectformview.down('toolbar').setVisible(false);
+            projectformview.down('toolbar').setVisible(false);
         }
 
+        var formConceptParams = {};
+        i = 0;
         Ext.each(containers, function (container) {
             if (Ext.isFunction(container.getParameterValue)) {
                 var param = container.getParameterValue();
-
                 if (!Ext.isEmpty(param)) {
-                    formMultiDsParams.push(this.paramValueToApi(param, projectformview));
+                    //Object filter definition
+                    param.dictionary = projectformview.dictionaryName;
+                    formConceptFilters.push(param);
+                    //url param filter definition
+                    formConceptParams["c[" + i + "]"] = this.paramValueToApi(param);
+                    i += 1;
                 }
             }
         }, this);
-
         var urlService = Project.sitoolsAttachementForUsers + projectformview.urlServiceDatasetSearch;
 
-        var params = {};
+        var params = Ext.clone(formConceptParams);
         params.datasetsList = datasets.join("|");
-
-        i = 0;
-        if (!Ext.isEmpty(formMultiDsParams)) {
-            Ext.each(formMultiDsParams, function (param) {
-                params["c[" + i + "]"] = param;
-                i += 1;
-            }, this);
-        }
 
         //Launch the first POST Request on service:
         Ext.Ajax.request({
@@ -235,8 +233,9 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
                     var componentCfg = {
                         urlTask : json.TaskModel.statusUrl,
                         formId : projectformview.formId,
-                        formMultiDsParams : formMultiDsParams,
-                        datasets : datasets, 
+                        formConceptFilters : formConceptFilters,
+                        formConceptParams : formConceptParams,
+                        datasets : datasets,
                         formName : projectformview.formName, 
                         callerId : this.id
                     };
@@ -303,8 +302,8 @@ Ext.define('sitools.user.controller.component.form.ProjectFormController', {
      * @param {} paramValue An object with attributes : at least type, code, value and optionnal userDimension, userUnit
      * @return {string} something like "TEXTFIELD|ColumnAlias|value"
      */
-    paramValueToApi : function (paramValue, projectformview) {
-        var stringParam = paramValue.type + "|" + projectformview.dictionaryName + "," + paramValue.code + "|" + paramValue.value;
+    paramValueToApi : function (paramValue) {
+        var stringParam = paramValue.type + "|" + paramValue.dictionary + "," + paramValue.code + "|" + paramValue.value;
         if (!Ext.isEmpty(paramValue.userDimension) && !Ext.isEmpty(paramValue.userUnit)) {
             stringParam += "|" + paramValue.userDimension + "|" + paramValue.userUnit.unitName; 
         }  

@@ -35,6 +35,22 @@ Résultat dans la requête :
 	
 	p[0]=type|code|value|userDimension|userUnit
 
+#### Definition d'un filtre de formulaire concept (formFilterConcept):
+
+	{
+		type : this.type, 
+    	code : this.code, // concept name
+		dictionary : this.dictionary,
+    	value : value1 | value2..., 
+    	userDimension : this.userDimension, 
+    	userUnit : this.userUnit,		
+	}
+
+Résultat dans la requête :
+	
+	c[0]=type|dictionary, concept|value|userDimension|userUnit
+
+
 #### Definition d'un filtre dans la dataview (gridFilter):
 
 La définition se décompose en 2 parties :
@@ -99,8 +115,8 @@ Liste des parametres nécessaires pour ouverture d'une dataview :
 		gridFilters => Liste de filtres de type grid
 		gridFiltersCfg => Liste de configuration de filtres de type grid
 		sortInfo => Liste des tris,
-		ranges => Liste de ranges
-		
+		ranges => Liste de ranges,
+		formConceptParams => List de filtres de type formulaire concept
 	}
 
 

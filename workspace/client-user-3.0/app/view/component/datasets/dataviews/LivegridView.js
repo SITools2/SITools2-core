@@ -176,11 +176,30 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         // selection is done on the ids
         if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
             Ext.apply(params, this.getRequestFormFilterParams());
+            Ext.apply(params, this.getRequestFormConceptFilterParams());
             Ext.apply(params, this.getRequestGridFilterParams());
             Ext.apply(params, this.getSortParams());
         }
 
         return params;
+    },
+
+    /**
+     * Return all request parameters without the column model and selection
+     * @return {String}
+     */
+    getRequestFormFilters : function () {
+        //add the form params
+        return this.store.getFormFilters();
+    },
+
+    /**
+     * Return all form concept request parameters without the column model and selection
+     * @return {String}
+     */
+    getRequestFormConceptFilters : function () {
+        //add the form params
+        return this.store.getFormConceptFilters();
     },
     
     /**
@@ -190,6 +209,15 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     getRequestFormFilterParams : function () {
         //add the form params
         return this.store.getFormParams();
+    },
+
+    /**
+     * Return all form concept request parameters without the column model and selection
+     * @return {String}
+     */
+    getRequestFormConceptFilterParams : function () {
+        //add the form params
+        return this.store.getFormConceptParams();
     },
 
     /**
@@ -286,6 +314,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
         // selection is done on the ids
         if (Ext.isEmpty(params["p[0]"]) && Ext.isEmpty(params["c[0]"])) {
             Ext.apply(params, this.getRequestFormFilterParams());
+            Ext.apply(params, this.getRequestFormConceptFilterParams());
             Ext.apply(params, this.getRequestGridFilterParams());
             Ext.apply(params, this.getSortParams());
         }
@@ -301,6 +330,7 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
 
         Ext.apply(params, this.getRequestGridFilterParams());
         Ext.apply(params, this.getRequestFormFilterParams());
+        Ext.apply(params, this.getRequestFormConceptFilterParams());
         Ext.apply(params, this.getSortParams());
 
         return Ext.Object.toQueryString(params, true);

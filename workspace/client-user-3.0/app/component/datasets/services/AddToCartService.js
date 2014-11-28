@@ -426,12 +426,18 @@ Ext.define('sitools.user.component.datasets.services.AddToCartService', {
 		}
 
 		// Form filters
-		var formFilters = grid.getRequestFormFilterParams();
+		var formFilters = grid.getRequestFormFilters();
 		if (!Ext.isEmpty(formFilters)) {
 			order.formFilters = formFilters;
 		}
-		
-		return order;
+
+		// Form concept filters
+		var formConceptFilters = grid.getRequestFormConceptFilters();
+		if (!Ext.isEmpty(formConceptFilters)) {
+			order.formConceptFilters = formConceptFilters;
+		}
+
+        return order;
 	},
 
 	closeDataviewIfModify : function() {
