@@ -24,8 +24,6 @@
  * @include "../../components/datasets/projectForm.js"
  */
 
-Ext.namespace('sitools.user.view.component.datasets.dataviews');
-
 /**
  * Datasets Module : 
  * Displays All Datasets depending on datasets attached to the project.
@@ -38,7 +36,11 @@ Ext.define('sitools.user.view.component.datasets.dataviews.LivegridView', {
     
     requires : ['sitools.user.view.component.datasets.dataviews.selectionModel.CheckboxModel',
                 'sitools.user.view.component.datasets.dataviews.paging.LivegridPagingToolbar'],
-    
+
+    //mixins : {
+    //    datasetview : 'sitools.user.view.component.datasets.dataviews.AbstractDataview'
+    //},
+
     alias : 'widget.livegridView',
     layout : 'fit',
     autoScroll : true,

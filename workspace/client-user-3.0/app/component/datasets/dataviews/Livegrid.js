@@ -128,7 +128,8 @@ Ext.define('sitools.user.component.datasets.dataviews.Livegrid', {
             preferencesPath : componentConfig.preferencesPath, 
             preferencesFileName : componentConfig.preferencesFileName,
             origin : 'sitools.user.view.component.datasets.dataviews.LivegridView',
-            dataviewConfig : dataviewConfig
+            dataviewConfig : dataviewConfig,
+            sitoolsType : 'datasetView'
             // searchAction : this.searchAction,
         });
         

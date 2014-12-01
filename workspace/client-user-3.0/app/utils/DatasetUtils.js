@@ -94,6 +94,9 @@ Ext.define('sitools.user.utils.DatasetUtils', {
     },
     
     showForm : function (form, dataset, componentConfig, windowConfig) {
+
+        var javascriptObject = Desktop.getNavMode().getFormOpenMode();
+
         if(Ext.isEmpty(windowConfig)) {
             windowConfig = {};
         }
@@ -114,7 +117,7 @@ Ext.define('sitools.user.utils.DatasetUtils', {
         });
         
         var sitoolsController = Desktop.getApplication().getController('core.SitoolsController'); 
-        sitoolsController.openComponent('sitools.user.component.form.FormComponent', componentConfig, windowConfig);
+        sitoolsController.openComponent(javascriptObject, componentConfig, windowConfig);
     },
     showFeed : function (feed, dataset, componentConfig, windowConfig) {
         if(Ext.isEmpty(componentConfig)) {

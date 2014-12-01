@@ -48,7 +48,7 @@ Ext.define('sitools.user.controller.core.FixedMode', {
     },
     
     getFormOpenMode : function () {
-        return "sitools.user.component.DatasetOverview";
+        return "sitools.user.component.datasets.overview.Overview";
     },
     
     getDesktopSettings : function (forPublicUser) {

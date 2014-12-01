@@ -46,7 +46,8 @@ Ext.define('sitools.user.view.component.datasets.overview.OverviewView', {
         DEFAULT_WIDTH_EAST_PANEL: 300,
         dataset : null,
         forceShowDataset : false,
-        outsideConfig : null
+        outsideConfig : null,
+        formId : null
     },
 
     /**

@@ -111,6 +111,9 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
             flex : 1
         });
 
+        //if a form is given as a parameter we must show it
+        var formParamId = overviewView.getFormId();
+        var activeFormIndex = -1;
         Ext.each(forms, function(form, index) {
 
             var componentConfig = {
@@ -129,13 +132,30 @@ Ext.define('sitools.user.controller.component.datasets.overview.OverviewControll
             component.create(Desktop.getApplication(), function () {
                 component.init(componentConfig, {});
 
-                var form = component.getComponentView();
-                tabPanel.add(form);
-                if(index === 0) {
-                    tabPanel.setActiveTab(form);
+                var formCmp = component.getComponentView();
+                tabPanel.add(formCmp);
+
+                if(!Ext.isEmpty(formParamId) && form.id === formParamId) {
+                    activeFormIndex = index;
                 }
             }, component);
         }, this);
+
+        if(activeFormIndex === -1) {
+            activeFormIndex = 0;
+            if (!Ext.isEmpty(formParamId)) {
+                popupMessage({
+                    buttons: Ext.MessageBox.OK,
+                    icon: Ext.MessageBox.INFO,
+                    modal: true,
+                    closable: false,
+                    title: i18n.get('label.info'),
+                    msg: i18n.get('label.cannotFindFormIdDisplayFirstOne')
+                });
+            }
+        }
+
+        tabPanel.setActiveTab(activeFormIndex);
 
         var westPanel = overviewView.down("container#westPanel");
         westPanel.removeAll();
