@@ -267,13 +267,17 @@ Ext.define('sitools.extension.view.component.datasets.services.fitsService.FitsS
         Ext.defer(function () {
             this.jsFits.load(this.urlFits, null, null, function (resp) {
                 this.getEl().unmask();
-                Ext.Msg.show({
+                var msgBox = Ext.Msg.show({
                     title: i18n.get('label.error'),
                     msg: this.i18nFitsService.get('label.errorFitsLoading'),
                     icon: Ext.MessageBox.ERROR,
                     buttons: Ext.MessageBox.OK,
                     scope: this
                 });
+                Ext.defer(function () {
+                    Ext.WindowManager.bringToFront(msgBox);
+                    this.getEl().mask();
+                }, 500, this);
             }.bind(this));
         }, 5, this);
     },

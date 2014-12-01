@@ -273,7 +273,7 @@ Ext.define('sitools.admin.filters.FiltersCrud', {
         if (Ext.isEmpty(this.comboDatasets.getValue())) {
             return;
         }
-        var up = Ext.create("sitools.admin.filters.filtersProp", {
+        var up = Ext.create("sitools.admin.filters.FiltersProp", {
             action : 'create',            
             parent : this,
             datasetId : this.datasetId,

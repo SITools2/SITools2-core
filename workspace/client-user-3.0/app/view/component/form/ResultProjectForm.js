@@ -90,6 +90,7 @@ Ext.define('sitools.user.view.component.form.ResultProjectForm', {
             dataIndex : 'description',
             header : i18n.get('label.description'),
             renderer : function (value, metaData, record, rowIndex, colIndex, store) {
+				metaData.attr = "data-qtip='" + value + "'";
 				if (record.get('status') == "REQUEST_ERROR") {
 					metaData.tdCls+="red-row";
 				}

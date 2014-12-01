@@ -384,7 +384,7 @@ Ext.define('sitools.clientportal.view.portal.PortalView', {
                         'class="project projectUnauthorized"',
                     '</tpl>', 
                     '>', 
-                    '<img width="80" height="80" src="{image}" />', '<p data-qtip="{name}" class="projectName">{name}</>',
+                    '<img width="80" height="80" src="{image}" />', '<p data-qtip="{name}" class="projectName">{name}</p>',
                     '<p class="projectDescription" data-qtip="{description}">{description} </p>', '</li>', '</tpl>', '</ul>', 
                     {
                     compiled : true, 
