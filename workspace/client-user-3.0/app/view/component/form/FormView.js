@@ -74,7 +74,6 @@ Ext.define('sitools.user.view.component.form.FormView', {
             var componentList = Ext.create('sitools.user.view.component.form.FormContainerView', {
                 css : this.formCss, 
                 formId : this.formId,
-                id : key,
                 formWidth : this.formWidth,
                 height : this.formHeight
             });

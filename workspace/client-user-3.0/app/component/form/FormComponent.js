@@ -31,7 +31,10 @@ Ext.define('sitools.user.component.form.FormComponent', {
     extend : 'sitools.user.core.Component',
     
     controllers : ['sitools.user.controller.component.form.FormController'],
-    
+
+    config : {
+        autoShow : true
+    },
     /**
      * @param ComponentConfig : Object containing form description and dataset description 
      */
@@ -51,12 +54,11 @@ Ext.define('sitools.user.component.form.FormComponent', {
             iconCls : "form",
             typeWindow : 'form'
         });
-        
-        var view = Ext.create('sitools.user.view.component.form.FormView', {
+
+        componentSettings = Ext.apply(componentConfig, {
             dataUrl : dataset.sitoolsAttachementForUsers,
             dataset : dataset,
             formId : form.id,
-            id : form.id,
             formName : form.name,
             formParameters : form.parameters,
             formZones : form.zones,
@@ -65,13 +67,16 @@ Ext.define('sitools.user.component.form.FormComponent', {
             formCss : form.css,
             preferencesPath : "/" + dataset.name + "/forms",
             preferencesFileName : form.name,
-            // searchAction : this.searchAction,
             scope : this,
             component : this
         });
+        
+        var view = Ext.create('sitools.user.view.component.form.FormView', componentSettings);
 
         this.setComponentView(view);
-        this.show(view, windowSettings);
+        if(this.getAutoShow()) {
+            this.show(view, windowSettings);
+        }
     },
     
     _getSettings : function () {

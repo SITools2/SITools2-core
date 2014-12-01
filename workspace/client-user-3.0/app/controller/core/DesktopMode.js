@@ -360,7 +360,7 @@ Ext.define('sitools.user.controller.core.DesktopMode', {
          * @returns
          */
         getObjectResults : function () {
-            return sitools.user.view.component.form.ResultProjectForm;
+            return "sitools.user.view.component.form.ResultProjectForm";
         },
         
         /**

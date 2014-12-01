@@ -190,8 +190,8 @@ Ext.define('sitools.user.controller.component.form.FormController', {
 //        	allObjectParams["p[" + index + "]"] = param;
 //        });
         
-        if (Ext.isFunction(this.searchAction)) {
-            this.searchAction(formParams, dataset, this.scope);
+        if (Ext.isFunction(formView.searchAction)) {
+            formView.searchAction(formParams, dataset, formView);
         }
         else {
             this.defaultSearchAction(formParams, dataset);
