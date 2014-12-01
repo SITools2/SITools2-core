@@ -46,8 +46,9 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
         switch (this.fromWhere) {
 
 			case "openSearch" :
-		        this.recSelected = this.grid.getSelectionModel().getSelected();
-		        this.url = this.encodeUrlPrimaryKey(this.recSelected.data.guid);
+		        var osRecord = this.grid.getSelectionModel().getSelection()[0];
+				this.url = this.encodeUrlPrimaryKey(osRecord.get('guid'));
+				this.getRecordFromOpenSearch(osRecord);
 				break;
 
 			case "dataView" :
@@ -287,7 +288,7 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
         
         this.tabPanel = Ext.create('Ext.tab.Panel', {
             border : false,
-            items : [ this.metaDataPanel, this.extraMetaPanel ]
+            items : [ this.metaDataPanel ]
         });
 
 		// ???
@@ -307,16 +308,42 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
     		items :  [{
 	            iconCls : 'arrow-back',
 	            scale : 'medium',
-				tooltip : i18n.get('label.previousRecord'),
 	            scope : this,
+				listeners : {
+					afterrender : function (btn) {
+						var label = i18n.get('label.previousRecord');
+						var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+						};
+						Ext.create('Ext.tip.ToolTip', tooltipCfg);
+					}
+				},
 	            handler : function () {
 	                this.goPrevious();
 	            }
 	        }, {
 	            iconCls : 'arrow-next',
 	            scale : 'medium',
-				tooltip : i18n.get('label.nextRecord'),
 	            scope : this,
+				listeners : {
+					afterrender : function (btn) {
+						var label = i18n.get('label.nextRecord');
+						var tooltipCfg = {
+							html : label,
+							target : btn.getEl(),
+							anchor : 'bottom',
+							showDelay : 20,
+							hideDelay : 50,
+							dismissDelay : 0
+						};
+						Ext.create('Ext.tip.ToolTip', tooltipCfg);
+					}
+				},
 	            handler : function () {
 	                this.goNext();
 	            }
@@ -348,8 +375,13 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
      * Go to the Next record of the grid passed into parameters
      */
     goNext : function () {
-		if (Ext.isEmpty(this.grid)) {
-			return;
+		if (!this.grid.isVisible()) {
+			return Ext.Msg.show({
+				title : i18n.get('label.warning'),
+				msg : i18n.get('label.gridNotFound'),
+				icon : Ext.Msg.WARNING,
+				buttons : Ext.Msg.OK
+			});
 		}
 		var rec, rowSelect;
 		switch (this.fromWhere) {
@@ -358,8 +390,8 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 		        if (! rowSelect.selectNext()) {
 		            return;
 		        }
-		        rec = rowSelect.getSelected();
-				this.url = this.encodeUrlPrimaryKey(rec.data.guid);
+		        rec = rowSelect.getSelection()[0];
+				this.url = this.encodeUrlPrimaryKey(rec.get('guid'));
 				break;
 			case "sitools.user.component.dataviews.tplView.TplView" : 
 				var index = this.grid.getStore().indexOf(this.recSelected);
@@ -392,18 +424,23 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
      * Go to the Previous record of the grid passed into parameters
      */
     goPrevious : function () {
-		if (Ext.isEmpty(this.grid)) {
-			return;
+		if (!this.grid.isVisible()) {
+			return Ext.Msg.show({
+				title : i18n.get('label.warning'),
+				msg : i18n.get('label.gridNotFound'),
+				icon : Ext.Msg.WARNING,
+				buttons : Ext.Msg.OK
+			});
 		}
 		var rec, rowSelect;
 		switch (this.fromWhere) {
 			case "openSearch" : 
 				rowSelect = this.grid.getSelectionModel();
-		        if (! rowSelect.selectPrevious()) {
+		        if (!rowSelect.selectPrevious()) {
 		            return;
 		        }
-		        rec = rowSelect.getSelected();
-	            this.url = this.encodeUrlPrimaryKey(rec.data.guid);
+		        rec = rowSelect.getSelection()[0];
+	            this.url = this.encodeUrlPrimaryKey(rec.get('guid'));
 	            break;
 			case "sitools.user.component.dataviews.tplView.TplView" : 
 				var index = this.grid.getStore().indexOf(this.recSelected);
@@ -542,6 +579,12 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 			} else {
 				this.imagePanel.setVisible(true);
 			}
+
+			if (this.linkStore.getCount() === 0 && this.imageStore.getCount() === 0) {
+				this.tabPanel.remove(this.extraMetaPanel);
+			} else if (!this.tabPanel.getComponent(this.extraMetaPanel)){
+				this.tabPanel.add(this.extraMetaPanel);
+			}
 		}
 	},
 
@@ -564,9 +607,12 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 				if (!Ext.isEmpty(columnRenderer.linkText)) {
 					var item = {
 						name : column.header,
-						value : Ext.String.format(html, value)
+						value : Ext.String.format(html, value),
+						column : column,
+						behavior : behavior,
+						columnRenderer : columnRenderer,
+						toolTip : columnRenderer.toolTip
 					};
-					//itemsForm.push(item);
 					this.dataStore.add(item);
 
 				} else if (!Ext.isEmpty(columnRenderer.image)) {
@@ -624,9 +670,10 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 			default :
 				//item = {
 				//	name : column.header,
-				//	value : Ext.String.format(html, value)
+				//	value : Ext.String.format(html, value),
+				//	column : column
 				//};
-				//itemToAdd = item;
+				//this.dataStore.add(item);
 				break;
 		}
 	},
@@ -667,7 +714,38 @@ Ext.define('sitools.user.view.component.datasets.recordDetail.RecordDetailView',
 			sitools.user.utils.DataviewUtils.executeFeatureType(column, this.recSelected);
 		}
     },
-    
+
+	getRecordFromOpenSearch : function (osRecord) {
+		var urlRecord = osRecord.get('guid');
+
+		if (Ext.isEmpty(urlRecord))
+			return
+
+		this.recSelected = undefined;
+
+		Ext.Ajax.request({
+			url : urlRecord,
+			method : 'GET',
+			scope : this,
+			success : function (response) {
+				var data = Ext.decode(response.responseText);
+				if (!data.success) {
+					Ext.Msg.alert(i18n.get('label.information'), "Server error");
+					return false;
+				}
+				var coll = Ext.create('Ext.util.MixedCollection');
+				coll.add('id', data.record.id);
+				Ext.each(data.record.attributeValues, function (column) {
+					coll.add(column.name, column.value);
+				});
+				this.recSelected = coll;
+			},
+			failure : function (response) {
+				Ext.Msg.alert(i18n.get('label.error', response.responseText));
+			}
+		})
+	},
+
     encodeUrlPrimaryKey : function (url) {
       //get the end of the uri and encode it
         var urlSplited = url.split('/');

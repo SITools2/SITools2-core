@@ -1,13 +1,14 @@
 Ext.define('sitools.clientportal.Application', {
-    name : 'clientportal',
-    extend : 'Ext.app.Application',
+    name: 'clientportal',
+    extend: 'Ext.app.Application',
 
-    controllers : ['sitools.clientportal.controller.portal.PortalController'],
+    controllers: ['sitools.clientportal.controller.portal.PortalController',
+        'sitools.user.controller.component.datasets.opensearch.OpensearchController'],
 
     useQuickTips: true,
-    
-    requires : [
-                
+
+    requires: [
+
         /* UTILS */
         'sitools.public.utils.def',
         'sitools.public.widget.vtype',
@@ -19,18 +20,19 @@ Ext.define('sitools.clientportal.Application', {
         'sitools.public.utils.Logout',
         'sitools.public.utils.UserStorage',
         'sitools.public.utils.PopupMessage',
-        
-                /* WIDGETS */
+
+        /* WIDGETS */
         'sitools.public.widget.StatusBar',
-        
         'sitools.public.crypto.Base64',
-        
-        'sitools.public.version.Version'
+        'sitools.public.version.Version',
+
+        /* USER */
+
     ],
-    
-    launch : function() {
-//        Ext.create('sitools.clientportal.view.portal.Portal');
+
+    launch: function () {
+        Desktop = undefined;
         Ext.create('sitools.clientportal.controller.portal.PortalController');
     }
-    
+
 });

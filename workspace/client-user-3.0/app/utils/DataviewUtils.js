@@ -227,7 +227,7 @@ Ext.define('sitools.user.utils.DataviewUtils', {
                 break;
                 
             case ColumnRendererEnum.IMAGE_FROM_SQL :
-                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image image-link' src='{1}' style ='" + imageStyle + "'></div>"; 
+                html = "<div class='image-link featureType' sitools:column='"+item.columnAlias+"'><img class='sitools-display-image image-link' src='{0}' style ='" + imageStyle + "'></div>";
                 break;
                 
             case ColumnRendererEnum.DATASET_LINK :

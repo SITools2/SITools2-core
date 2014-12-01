@@ -20,12 +20,10 @@
 Ext.namespace('sitools.user.component.datasets.recordDetail');
 
 /**
- * Datasets Module : Displays All Datasets depending on datasets attached to the
- * project.
+ * Component use to load record detail view
  * 
- * @class sitools.user.modules.datasetsModule
- * @extends Ext.grid.GridPanel
- * @requires sitools.user.component.datasets.mainContainer
+ * @class sitools.user.component.datasets.recordDetail.RecordDetailComponent
+ * @extends sitools.user.core.Component
  */
 Ext.define('sitools.user.component.datasets.recordDetail.RecordDetailComponent', {
     extend : 'sitools.user.core.Component',
@@ -41,7 +39,7 @@ Ext.define('sitools.user.component.datasets.recordDetail.RecordDetailComponent',
             datasetName : componentConfig.datasetName,
 	        saveToolbar : true,
 	        iconCls : "dataDetail",
-	        type : "dataDetail",
+	        type : "dataDetail"
 	        //shadow : true,
 	        //shadowOffset : 5,
 	        //toolbar : {

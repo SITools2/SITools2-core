@@ -88,7 +88,7 @@ Ext.define('sitools.public.feedsReader.AtomFeedReader', {
                     scope : this,
                     exception : onRequestFeedException
                 }
-            },
+            }
 
         });
 

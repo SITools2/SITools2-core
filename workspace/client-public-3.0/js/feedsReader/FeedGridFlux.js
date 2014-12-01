@@ -34,7 +34,7 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
     
     requires : ['sitools.public.feedsReader.AtomFeedReader',
                 'sitools.public.feedsReader.RssFeedReader',
-                'sitools.public.feedsReader.FeedItemDetails'
+                'sitools.public.feedsReader.FeedItemDetails',
                 ],
     
     initComponent : function () {
@@ -43,7 +43,7 @@ Ext.define('sitools.public.feedsReader.FeedGridFlux', {
         
         var gridPanel;
         if (this.feedSource !== undefined && this.feedSource === "OPENSEARCH") {
-            gridPanel = new sitools.user.component.openSearchResultFeed(this);
+            gridPanel = Ext.create('sitools.user.view.component.datasets.opensearch.OpensearchResultFeedView', this);
         } else {
             
             if (this.feedType !== undefined && this.feedType === "atom_1.0") {

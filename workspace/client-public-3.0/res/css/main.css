@@ -50,6 +50,10 @@ body,a,p,div,td,input,select,label,th,button,dt,em {
 	font-size: 11px;
 }
 
+.x-mask-msg-text {
+	background-image: url(/sitools/common/res/images/icons/sitoolsLoading.gif);
+}
+
 /* END CUSTOMING */
 
 .formBg {

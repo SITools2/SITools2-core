@@ -53,8 +53,7 @@ Ext.define('sitools.user.controller.component.datasets.services.ServicesControll
                 click : function (button, e, opts) {
                     this.callService(button);
                 }
-            },
-
+            }
         });
     },
     

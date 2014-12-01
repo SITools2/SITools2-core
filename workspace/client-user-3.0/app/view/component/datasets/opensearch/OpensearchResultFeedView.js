@@ -48,6 +48,7 @@ Ext.define('sitools.user.view.component.datasets.opensearch.OpensearchResultFeed
             pageSize : 10,
             proxy : {
                 type : 'ajax',
+                url : urlParam,
                 limitParam : 'rows',
                 startParam : 'start',
                 reader : {
@@ -65,7 +66,8 @@ Ext.define('sitools.user.view.component.datasets.opensearch.OpensearchResultFeed
                 property : 'pubDate',
                 direction : 'DESC'
             },
-            autoLoad : this.autoLoad,
+            //autoLoad : this.autoLoad,
+            autoLoad : true,
             listeners : {
                 scope : this,
                 load : function(self, records, index) {
@@ -122,8 +124,6 @@ Ext.define('sitools.user.view.component.datasets.opensearch.OpensearchResultFeed
             };
         }
 
-        
-
         Ext.apply(this, {
             columns : columns,
             layout : 'fit',
@@ -134,7 +134,7 @@ Ext.define('sitools.user.view.component.datasets.opensearch.OpensearchResultFeed
             }),
             forceFit : true,
             viewConfig : {
-                showPreview : true,
+                showPreview : true
 //                getRowClass : this.applyRowClass
             }
         });

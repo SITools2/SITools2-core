@@ -1,17 +1,17 @@
 /*******************************************************************************
  * Copyright 2010-2014 CNES - CENTRE NATIONAL d'ETUDES SPATIALES
- * 
+ *
  * This file is part of SITools2.
- * 
+ *
  * SITools2 is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * SITools2 is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * SITools2. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -29,27 +29,31 @@ Ext.namespace('sitools.user.controller.modules.opensearch');
 
 /**
  * Feeds project Module controller : Displays All Feeds on a project
- * 
+ *
  */
 Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchController', {
-	extend : 'Ext.app.Controller',
-    
-    init : function () {
+    extend: 'Ext.app.Controller',
+
+    views : ['sitools.user.view.component.datasets.opensearch.OpensearchView',
+        'sitools.user.view.component.datasets.opensearch.OpensearchResultFeedView'
+    ],
+
+    init: function () {
         this.control({
-            "opensearchView combo" : {
-                beforequery : function (queryPlan) {
+            "opensearchView combo": {
+                beforequery: function (queryPlan) {
                     if (queryPlan.query.indexOf(" ") == -1) {
                         return true;
                     } else {
                         return false;
                     }
                 },
-                specialkey : function (field, e) {
+                specialkey: function (field, e) {
                     if (e.getKey() == e.ENTER) {
-                       this._clickOnSearch(field.up("opensearchView"));
+                        this._clickOnSearch(field.up("opensearchView"));
                     }
                 },
-                beforeselect : function (combo, record, index) {
+                beforeselect: function (combo, record, index) {
                     var tabName = record.get("name").split(':');
                     if (tabName.length > 1) {
                         record.set("name", tabName[1]);
@@ -59,15 +63,15 @@ Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchCont
                     return true;
                 }
             },
-            
-            "opensearchView button#search" : {
-                click : function (button) {
+
+            "opensearchView button#search": {
+                click: function (button) {
                     this._clickOnSearch(button.up("opensearchView"));
                 }
             },
-            
-            "opensearchView button#help" : {
-                click : function (button) {
+
+            "opensearchView button#help": {
+                click: function (button) {
                     //          var helpModule = SitoolsDesk.app.findModule("helpWindow");
                     //          if (!Ext.isEmpty(helpModule.getWindow())) {
                     //              helpModule.getWindow().close();
@@ -78,71 +82,68 @@ Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchCont
                     alert("TODO HELP MODULE");
                 }
             },
-            
-            "opensearchResultFeedView" : {
-                itemdblclick : this.clickOnRow
+
+            "opensearchResultFeedView": {
+                itemdblclick: this.clickOnRow
             }
-            
-            
+
+
         });
     },
-    
+
     /**
      * click handler for the search button gets the search query and update the
      * RSS feed URI to display the results
      */
-    _clickOnSearch : function (view) {
+    _clickOnSearch: function (view) {
         var searchQuery = view.down("form").getForm().getValues().searchQuery;
         view.down("grid").updateStore(view.getUri() + "?q=" + searchQuery);
     },
-    
-    clickOnRow : function (grid, rec, item, index, e) {
+
+    clickOnRow: function (grid, rec, item, index, e) {
         var guid = rec.get("guid");
         if (Ext.isEmpty(guid)) {
-            Ext.Msg.alert(i18n.get('label.warning'), i18n
-                            .get('warning.noGuidFieldDefined')
-                            + "<br/>"
-                            + i18n.get('warning.noPrimaryKeyDefinedOSNotice'));
+            var msg = i18n.get('warning.noGuidFieldDefined') + "<br/>" + i18n.get('warning.noPrimaryKeyDefinedOSNotice');
+            Ext.Msg.alert(i18n.get('label.warning'), msg);
             return;
         }
         // si on est pas sur le bureau
-        if (Ext.isEmpty(window) || Ext.isEmpty(window.SitoolsDesk)) {
-//            var component = Ext.create("sitools.user.component.simpleViewDataDetail", {
-//                fromWhere : "openSearch",
-//                urlDataDetail : guid
-//            });
-//            var win = Ext.create("Ext.Window", {
-//                stateful : false,
-//                title : i18n.get('label.viewDataDetail'),
-//                width : 400,
-//                height : 600,
-//                shim : false,
-//                animCollapse : false,
-//                constrainHeader : true,
-//                layout : 'fit'
-//            });
-//            win.add(component);
-//            win.show();
-            
-            var component = Ext.create('sitools.public.feedsReader.FeedItemDetails', {
-                record : rec
+        if (Desktop == undefined) {
+            var component = Ext.create("sitools.user.view.component.datasets.opensearch.SimpleOpensearchDetailView", {
+                fromWhere : "openSearch",
+                urlDataDetail : guid
             });
-            
-            var win = Ext.create('Ext.window.Window', {
+            var win = Ext.create("Ext.Window", {
                 stateful : false,
-                title : i18n.get('label.viewFeedDetail'),
+                title : i18n.get('label.viewDataDetail'),
                 width : 400,
                 height : 600,
                 shim : false,
                 animCollapse : false,
                 constrainHeader : true,
-                layout : 'fit',
-                modal : true
+                layout : 'fit'
             });
             win.add(component);
             win.show();
-            
+
         } else {
+
+            var sitoolsController = Desktop.getApplication().getController('core.SitoolsController');
+
+            var openSearchView = grid.up('opensearchView');
+
+            var config = {
+                grid : grid,
+                fromWhere : "openSearch",
+                datasetId : openSearchView.datasetId,
+                datasetUrl : openSearchView.dataUrl,
+                datasetName : openSearchView.datasetName,
+                preferencesPath : "/" + openSearchView.datasetName,
+                preferencesFileName : "dataDetails"
+            };
+
+            var serviceObj = sitoolsController.openComponent("sitools.user.component.datasets.recordDetail.RecordDetailComponent", config);
+
 //            var componentCfg = {
 //                grid : this,
 //                fromWhere : "openSearch",
@@ -177,26 +178,26 @@ Ext.define('sitools.user.controller.component.datasets.opensearch.OpensearchCont
 //            };
 //            SitoolsDesk.addDesktopWindow(windowConfig, componentCfg, jsObj,
 //                    true);
-            
-            
+
+
         }
 
     },
-    
+
     /** CONTROL VIEW METHODS * */
-    
+
     /**
      * method called when trying to save preference
-     * 
+     *
      * @returns
      */
-    _getSettings : function () {
+    _getSettings: function () {
         return {
-            preferencesPath : "/modules", 
-            preferencesFileName : this.id
+            preferencesPath: "/modules",
+            preferencesFileName: this.id
         };
 
     }
-    
-    
+
+
 });

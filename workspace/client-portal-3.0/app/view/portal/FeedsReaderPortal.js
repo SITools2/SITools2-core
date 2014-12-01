@@ -107,7 +107,6 @@ Ext.define('sitools.clientportal.view.portal.FeedsReaderPortal', {
         
         this.add(this.feedsReader);
         this.doSort();
-        this.doLayout();
     },
     
     /**
@@ -152,9 +151,13 @@ Ext.define('sitools.clientportal.view.portal.FeedsReaderPortal', {
             iconCls  = button.iconCls;
         
         if (sortData != undefined) {
-            if (changeDirection !== false) {
-                button.sortData.direction = button.sortData.direction.toggle("ASC", "DESC");
-                button.setIconClass(iconCls.toggle("sort-asc", "sort-desc"));
+            if (changeDirection == true) {
+                var direction = (sortData.direction == "ASC") ? "DESC" : "ASC";
+                var cls = (iconCls == "sort-asc") ? "sort-desc" : "sort-asc";
+
+                button.toggle("ASC", "DESC");
+                button.sortData.direction = direction;
+                button.setIconCls(cls);
             }
             this.doSort();
         }
